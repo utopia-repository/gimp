@@ -43,12 +43,14 @@
 #include "widgets/gimpdevices.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpgrideditor.h"
+#include "widgets/gimphelp.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpmessagebox.h"
 #include "widgets/gimpmessagedialog.h"
 #include "widgets/gimpprofilechooserdialog.h"
 #include "widgets/gimppropwidgets.h"
 #include "widgets/gimptemplateeditor.h"
+#include "widgets/gimpwidgets-constructors.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "menus/menus.h"
@@ -436,7 +438,7 @@ prefs_resolution_source_callback (GtkWidget *widget,
 
   gimp_toggle_button_sensitive_update (GTK_TOGGLE_BUTTON (widget));
 
-  from_gdk = GTK_TOGGLE_BUTTON (widget)->active;
+  from_gdk = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
 
   if (from_gdk)
     {
@@ -509,10 +511,10 @@ prefs_input_devices_dialog (GtkWidget *widget,
                             G_CALLBACK (gtk_widget_destroy),
                             input_dialog);
 
-  g_signal_connect (input_dialog, "enable_device",
+  g_signal_connect (input_dialog, "enable-device",
                     G_CALLBACK (prefs_input_dialog_able_callback),
                     NULL);
-  g_signal_connect (input_dialog, "disable_device",
+  g_signal_connect (input_dialog, "disable-device",
                     G_CALLBACK (prefs_input_dialog_able_callback),
                     NULL);
 
@@ -1023,19 +1025,10 @@ prefs_profile_combo_add_tooltip (GtkWidget   *combo,
 
   blurb = g_param_spec_get_blurb (param_spec);
 
-  /*  can't set a tooltip on a combo_box  */
   if (blurb)
-    {
-      GtkWidget *ebox = gtk_event_box_new ();
-
-      gimp_help_set_help_data (ebox,
-                               dgettext (GETTEXT_PACKAGE "-libgimp", blurb),
-                               NULL);
-      gtk_container_add (GTK_CONTAINER (ebox), combo);
-      gtk_widget_show (combo);
-
-      return ebox;
-    }
+    gimp_help_set_help_data (combo,
+                             dgettext (GETTEXT_PACKAGE "-libgimp", blurb),
+                             NULL);
 
   return combo;
 }
@@ -1079,25 +1072,8 @@ prefs_button_add (const gchar *stock_id,
                   GtkBox      *box)
 {
   GtkWidget *button;
-  GtkWidget *hbox;
-  GtkWidget *image;
-  GtkWidget *lab;
 
-  button = gtk_button_new ();
-
-  hbox = gtk_hbox_new (FALSE, 6);
-  gtk_container_add (GTK_CONTAINER (button), hbox);
-  gtk_widget_show (hbox);
-
-  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
-  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-  gtk_widget_show (image);
-
-  lab = gtk_label_new_with_mnemonic (label);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (lab), button);
-  gtk_box_pack_start (GTK_BOX (hbox), lab, TRUE, TRUE, 0);
-  gtk_widget_show (lab);
-
+  button = gimp_stock_button_new (stock_id, label);
   gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
@@ -1350,7 +1326,7 @@ prefs_display_options_frame_add (Gimp         *gimp,
 
   g_signal_connect (button, "color-changed",
                     G_CALLBACK (prefs_canvas_padding_color_changed),
-                    gtk_bin_get_child (GTK_BIN (combo)));
+                    combo);
 }
 
 static void
@@ -1613,7 +1589,7 @@ prefs_dialog_new (Gimp       *gimp,
   vbox2 = prefs_frame_new (_("Document History"), GTK_CONTAINER (vbox), FALSE);
 
   prefs_check_button_add (object, "save-document-history",
-                          _("Save document _history on exit"),
+                          _("Keep record of used files in the Recent Documents list"),
                           GTK_BOX (vbox2));
 
 
@@ -1821,9 +1797,52 @@ prefs_dialog_new (Gimp       *gimp,
   prefs_check_button_add (object, "show-help-button",
                           _("Show help _buttons"),
                           GTK_BOX (vbox2));
-  prefs_check_button_add (object, "show-tips",
-                          _("Show tips on _startup"),
-                          GTK_BOX (vbox2));
+
+  {
+    GtkWidget   *combo;
+    GtkWidget   *hbox;
+    GtkWidget   *image;
+    GtkWidget   *label;
+    const gchar *icon;
+    const gchar *text;
+
+    table = prefs_table_new (2, GTK_CONTAINER (vbox2));
+    combo = prefs_boolean_combo_box_add (object, "user-manual-online",
+                                         _("Use the online version"),
+                                         _("Use a locally installed copy"),
+                                         _("User manual:"),
+                                         GTK_TABLE (table), 0, size_group);
+    gimp_help_set_help_data (combo, NULL, NULL);
+
+    if (gimp_help_user_manual_is_installed (gimp))
+      {
+        icon = GIMP_STOCK_INFO;
+        text = _("There's a local installation of the user manual.");
+      }
+    else
+      {
+        icon = GIMP_STOCK_WARNING;
+        text = _("The user manual is not installed locally.");
+      }
+
+    hbox = gtk_hbox_new (FALSE, 6);
+    gtk_table_attach_defaults (GTK_TABLE (table), hbox, 1, 2, 1, 2);
+    gtk_widget_show (hbox);
+
+    image = gtk_image_new_from_stock (icon, GTK_ICON_SIZE_BUTTON);
+    gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+    gtk_widget_show (image);
+
+    label = gtk_label_new (text);
+    gimp_label_set_attributes (GTK_LABEL (label),
+                               PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+                               -1);
+    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+
+    gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+    gtk_widget_show (label);
+  }
 
   /*  Help Browser  */
   vbox2 = prefs_frame_new (_("Help Browser"), GTK_CONTAINER (vbox), FALSE);
@@ -2371,7 +2390,8 @@ prefs_dialog_new (Gimp       *gimp,
   gtk_widget_show (hbox);
 
   calibrate_button = gtk_button_new_with_mnemonic (_("C_alibrate..."));
-  gtk_misc_set_padding (GTK_MISC (GTK_BIN (calibrate_button)->child), 4, 0);
+  label = gtk_bin_get_child (GTK_BIN (calibrate_button));
+  gtk_misc_set_padding (GTK_MISC (label), 4, 0);
   gtk_box_pack_start (GTK_BOX (hbox), calibrate_button, FALSE, FALSE, 0);
   gtk_widget_show (calibrate_button);
   gtk_widget_set_sensitive (calibrate_button,

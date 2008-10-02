@@ -25,6 +25,8 @@
 #include "display-types.h"
 #include "tools/tools-types.h"
 
+#include "config/gimpdisplayconfig.h"
+
 #include "core/gimp.h"
 #include "core/gimparea.h"
 #include "core/gimpimage.h"
@@ -38,6 +40,7 @@
 #include "gimpdisplay-handlers.h"
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-handlers.h"
+#include "gimpdisplayshell-icon.h"
 #include "gimpdisplayshell-transform.h"
 
 #include "gimp-intl.h"
@@ -47,6 +50,7 @@ enum
 {
   PROP_0,
   PROP_ID,
+  PROP_GIMP,
   PROP_IMAGE,
   PROP_SHELL
 };
@@ -117,6 +121,13 @@ gimp_display_class_init (GimpDisplayClass *klass)
                                                      GIMP_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT_ONLY));
 
+  g_object_class_install_property (object_class, PROP_GIMP,
+                                   g_param_spec_object ("gimp",
+                                                        NULL, NULL,
+                                                        GIMP_TYPE_GIMP,
+                                                        GIMP_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY));
+
   g_object_class_install_property (object_class, PROP_IMAGE,
                                    g_param_spec_object ("image",
                                                         NULL, NULL,
@@ -134,6 +145,8 @@ static void
 gimp_display_init (GimpDisplay *display)
 {
   display->ID           = 0;
+
+  display->gimp         = NULL;
 
   display->image        = NULL;
   display->instance     = 0;
@@ -170,10 +183,17 @@ gimp_display_set_property (GObject      *object,
     case PROP_ID:
       display->ID = g_value_get_int (value);
       break;
+
+    case PROP_GIMP:
+      display->gimp = g_value_get_object (value); /* don't ref the gimp */
+      display->config = GIMP_DISPLAY_CONFIG (display->gimp->config);
+      break;
+
     case PROP_IMAGE:
     case PROP_SHELL:
       g_assert_not_reached ();
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -193,12 +213,19 @@ gimp_display_get_property (GObject    *object,
     case PROP_ID:
       g_value_set_int (value, display->ID);
       break;
+
+    case PROP_GIMP:
+      g_value_set_object (value, display->gimp);
+      break;
+
     case PROP_IMAGE:
       g_value_set_object (value, display->image);
       break;
+
     case PROP_SHELL:
       g_value_set_object (value, display->shell);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -317,40 +344,46 @@ gimp_display_progress_canceled (GimpProgress *progress,
 /*  public functions  */
 
 GimpDisplay *
-gimp_display_new (GimpImage       *image,
-                  GimpUnit         unit,
-                  gdouble          scale,
-                  GimpMenuFactory *menu_factory,
-                  GimpUIManager   *popup_manager)
+gimp_display_new (Gimp              *gimp,
+                  GimpImage         *image,
+                  GimpUnit           unit,
+                  gdouble            scale,
+                  GimpMenuFactory   *menu_factory,
+                  GimpUIManager     *popup_manager,
+                  GimpDialogFactory *display_factory)
 {
   GimpDisplay *display;
   gint         ID;
 
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (image == NULL || GIMP_IS_IMAGE (image), NULL);
 
   /*  If there isn't an interface, never create a display  */
-  if (image->gimp->no_interface)
+  if (gimp->no_interface)
     return NULL;
 
   do
     {
-      ID = image->gimp->next_display_ID++;
+      ID = gimp->next_display_ID++;
 
-      if (image->gimp->next_display_ID == G_MAXINT)
-        image->gimp->next_display_ID = 1;
+      if (gimp->next_display_ID == G_MAXINT)
+        gimp->next_display_ID = 1;
     }
-  while (gimp_display_get_by_ID (image->gimp, ID));
+  while (gimp_display_get_by_ID (gimp, ID));
 
   display = g_object_new (GIMP_TYPE_DISPLAY,
-                          "id", ID,
+                          "id",   ID,
+                          "gimp", gimp,
                           NULL);
 
   /*  refs the image  */
-  gimp_display_connect (display, image);
+  if (image)
+    gimp_display_connect (display, image);
 
   /*  create the shell for the image  */
   display->shell = gimp_display_shell_new (display, unit, scale,
-                                           menu_factory, popup_manager);
+                                           menu_factory, popup_manager,
+                                           display_factory);
   gtk_widget_show (display->shell);
 
   g_signal_connect (GIMP_DISPLAY_SHELL (display->shell)->statusbar, "cancel",
@@ -358,11 +391,18 @@ gimp_display_new (GimpImage       *image,
                     display);
 
   /* add the display to the list */
-  gimp_container_add (image->gimp->displays, GIMP_OBJECT (display));
+  gimp_container_add (gimp->displays, GIMP_OBJECT (display));
 
   return display;
 }
 
+/**
+ * gimp_display_delete:
+ * @display:
+ *
+ * Closes the display and removes it from the display list. You should
+ * not call this function directly, use gimp_display_close() instead.
+ */
 void
 gimp_display_delete (GimpDisplay *display)
 {
@@ -371,17 +411,15 @@ gimp_display_delete (GimpDisplay *display)
   g_return_if_fail (GIMP_IS_DISPLAY (display));
 
   /* remove the display from the list */
-  gimp_container_remove (display->image->gimp->displays,
-                         GIMP_OBJECT (display));
+  gimp_container_remove (display->gimp->displays, GIMP_OBJECT (display));
 
-  /*  stop any active tool  */
-  tool_manager_control_active (display->image->gimp, GIMP_TOOL_ACTION_HALT,
-                               display);
+  /*  unrefs the image  */
+  gimp_display_set_image (display, NULL);
 
-  active_tool = tool_manager_get_active (display->image->gimp);
+  active_tool = tool_manager_get_active (display->gimp);
 
   if (active_tool && active_tool->focus_display == display)
-    tool_manager_focus_display_active (display->image->gimp, NULL);
+    tool_manager_focus_display_active (display->gimp, NULL);
 
   /*  free the update area lists  */
   gimp_area_list_free (display->update_areas);
@@ -399,10 +437,29 @@ gimp_display_delete (GimpDisplay *display)
       gtk_widget_destroy (shell);
     }
 
-  /*  unrefs the image  */
-  gimp_display_disconnect (display);
-
   g_object_unref (display);
+}
+
+/**
+ * gimp_display_close:
+ * @display:
+ *
+ * Closes the display. If this is the last display, it will remain
+ * open, but without an image.
+ */
+void
+gimp_display_close (GimpDisplay *display)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY (display));
+
+  if (gimp_container_num_children (display->gimp->displays) > 1)
+    {
+      gimp_display_delete (display);
+    }
+  else
+    {
+      gimp_display_empty (display);
+    }
 }
 
 gint
@@ -435,28 +492,65 @@ gimp_display_get_by_ID (Gimp *gimp,
 }
 
 void
-gimp_display_reconnect (GimpDisplay *display,
+gimp_display_set_image (GimpDisplay *display,
                         GimpImage   *image)
 {
-  GimpImage *old_image;
+  GimpImage *old_image = NULL;
 
+  g_return_if_fail (GIMP_IS_DISPLAY (display));
+  g_return_if_fail (image == NULL || GIMP_IS_IMAGE (image));
+
+  if (display->image)
+    {
+      /*  stop any active tool  */
+      tool_manager_control_active (display->gimp, GIMP_TOOL_ACTION_HALT,
+                                   display);
+
+      gimp_display_shell_disconnect (GIMP_DISPLAY_SHELL (display->shell));
+
+      old_image = g_object_ref (display->image);
+
+      gimp_display_disconnect (display);
+    }
+
+  if (image)
+    gimp_display_connect (display, image);
+
+  if (old_image)
+    g_object_unref (old_image);
+
+  if (image)
+    gimp_display_shell_reconnect (GIMP_DISPLAY_SHELL (display->shell));
+  else
+    gimp_display_shell_icon_update (GIMP_DISPLAY_SHELL (display->shell));
+
+  g_object_notify (G_OBJECT (display), "image");
+}
+
+void
+gimp_display_empty (GimpDisplay *display)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY (display));
+  g_return_if_fail (GIMP_IS_IMAGE (display->image));
+
+  gimp_display_set_image (display, NULL);
+
+  gimp_display_shell_empty (GIMP_DISPLAY_SHELL (display->shell));
+}
+
+void
+gimp_display_fill (GimpDisplay *display,
+                   GimpImage   *image,
+                   GimpUnit     unit,
+                   gdouble      scale)
+{
   g_return_if_fail (GIMP_IS_DISPLAY (display));
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
-  /*  stop any active tool  */
-  tool_manager_control_active (display->image->gimp, GIMP_TOOL_ACTION_HALT,
-                               display);
+  gimp_display_set_image (display, image);
 
-  gimp_display_shell_disconnect (GIMP_DISPLAY_SHELL (display->shell));
-
-  old_image = g_object_ref (display->image);
-
-  gimp_display_disconnect (display);
-  gimp_display_connect (display, image);
-
-  g_object_unref (old_image);
-
-  gimp_display_shell_reconnect (GIMP_DISPLAY_SHELL (display->shell));
+  gimp_display_shell_fill (GIMP_DISPLAY_SHELL (display->shell),
+                           image, unit, scale);
 }
 
 void
@@ -475,10 +569,14 @@ gimp_display_update_area (GimpDisplay *display,
     }
   else
     {
-      GimpArea *area = gimp_area_new (CLAMP (x, 0, display->image->width),
-                                      CLAMP (y, 0, display->image->height),
-                                      CLAMP (x + w, 0, display->image->width),
-                                      CLAMP (y + h, 0, display->image->height));
+      GimpArea *area;
+      gint      image_width  = gimp_image_get_width  (display->image);
+      gint      image_height = gimp_image_get_height (display->image);
+
+      area = gimp_area_new (CLAMP (x,     0, image_width),
+                            CLAMP (y,     0, image_height),
+                            CLAMP (x + w, 0, image_width),
+                            CLAMP (y + h, 0, image_height));
 
       display->update_areas = gimp_area_list_process (display->update_areas,
                                                       area);
@@ -540,15 +638,17 @@ gimp_display_paint_area (GimpDisplay *display,
                          gint         w,
                          gint         h)
 {
-  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
+  GimpDisplayShell *shell        = GIMP_DISPLAY_SHELL (display->shell);
+  gint              image_width  = gimp_image_get_width  (display->image);
+  gint              image_height = gimp_image_get_height (display->image);
   gint              x1, y1, x2, y2;
   gdouble           x1_f, y1_f, x2_f, y2_f;
 
   /*  Bounds check  */
-  x1 = CLAMP (x,     0, display->image->width);
-  y1 = CLAMP (y,     0, display->image->height);
-  x2 = CLAMP (x + w, 0, display->image->width);
-  y2 = CLAMP (y + h, 0, display->image->height);
+  x1 = CLAMP (x,     0, image_width);
+  y1 = CLAMP (y,     0, image_height);
+  x2 = CLAMP (x + w, 0, image_width);
+  y2 = CLAMP (y + h, 0, image_height);
 
   x = x1;
   y = y1;

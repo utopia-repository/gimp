@@ -13,7 +13,7 @@
 #include "gimp-composite-generic.h"
 #include "gimp-composite-sse2.h"
 
-int
+static int
 gimp_composite_sse2_test (int iterations, int n_pixels)
 {
 #if defined(COMPILE_SSE2_IS_OKAY)
@@ -151,7 +151,7 @@ main (int argc, char *argv[])
 
   srand (314159);
 
-  putenv ("GIMP_COMPOSITE=0x1");
+  g_setenv ("GIMP_COMPOSITE", "0x1", TRUE);
 
   iterations = 10;
   n_pixels = 8388625;

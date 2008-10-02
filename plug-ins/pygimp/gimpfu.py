@@ -126,6 +126,7 @@ PF_TEXT        = 1009
 PF_PALETTE     = 1010
 PF_FILENAME    = 1011
 PF_DIRNAME     = 1012
+PF_OPTION      = 1013
 
 _type_mapping = {
     PF_INT8        : PDB_INT8,
@@ -161,6 +162,7 @@ _type_mapping = {
     PF_PALETTE     : PDB_STRING,
     PF_FILENAME    : PDB_STRING,
     PF_DIRNAME     : PDB_STRING,
+    PF_OPTION      : PDB_INT32,
 }
 
 _obj_mapping = {
@@ -197,6 +199,7 @@ _obj_mapping = {
     PF_PALETTE     : str,
     PF_FILENAME    : str,
     PF_DIRNAME     : str,
+    PF_OPTION      : int,
 }
 
 _registered_plugins_ = {}
@@ -289,7 +292,9 @@ def _query():
          on_query, on_run) = _registered_plugins_[plugin]
 
         def make_params(params):
-            return [(_type_mapping[x[0]], x[1], x[2]) for x in params]
+            return [(_type_mapping[x[0]],
+                     x[1],
+                     _string.replace(x[2], "_", "")) for x in params]
 
         params = make_params(params)
         # add the run mode argument ...
@@ -380,7 +385,7 @@ def _interact(proc_name, start_params):
         exc_str = exc_only_str = _('Missing exception information')
 
         try:
-            etype, value, tb = sys.exc_info()        
+            etype, value, tb = sys.exc_info()
             exc_str = ''.join(traceback.format_exception(etype, value, tb))
             exc_only_str = ''.join(traceback.format_exception_only(etype, value))
         finally:
@@ -409,7 +414,7 @@ def _interact(proc_name, start_params):
         expander.add(scrolled)
         scrolled.show()
 
-        
+
         label = gtk.Label(exc_str)
         label.set_alignment(0.0, 0.0)
         label.set_padding(6, 6)
@@ -437,7 +442,7 @@ def _interact(proc_name, start_params):
         def __init__ (self, default=''):
             gtk.ScrolledWindow.__init__(self)
             self.set_shadow_type(gtk.SHADOW_IN)
-            
+
             self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
             self.set_size_request(100, -1)
 
@@ -448,7 +453,7 @@ def _interact(proc_name, start_params):
             self.buffer = self.view.get_buffer()
 
             self.set_value(str(default))
-            
+
         def set_value(self, text):
             self.buffer.set_text(text)
 
@@ -544,6 +549,23 @@ def _interact(proc_name, start_params):
         def get_value(self):
             return self.active_value
 
+    class ComboEntry(gtk.ComboBox):
+        def __init__(self, default=0, items=()):
+            store = gtk.ListStore(str)
+            for item in items:
+                store.append([item])
+
+            gtk.ComboBox.__init__(self, model=store)
+
+            cell = gtk.CellRendererText()
+            self.pack_start(cell)
+            self.set_attributes(cell, text=0)
+
+            self.set_active(default)
+
+        def get_value(self):
+            return self.get_active()
+
     def FileSelector(default=''):
        if default and default.endswith('/'):
            selector = DirnameSelector
@@ -597,6 +619,7 @@ def _interact(proc_name, start_params):
             PF_SLIDER      : SliderEntry,
             PF_SPINNER     : SpinnerEntry,
             PF_RADIO       : RadioEntry,
+            PF_OPTION      : ComboEntry,
 
             PF_FONT        : gimpui.FontSelector,
             PF_FILE        : FileSelector,
@@ -682,7 +705,7 @@ def _interact(proc_name, start_params):
         table.attach(label, 1, 2, i, i+1, xoptions=gtk.FILL)
         label.show()
 
-        if pf_type in (PF_SPINNER, PF_SLIDER, PF_RADIO):
+        if pf_type in (PF_SPINNER, PF_SLIDER, PF_RADIO, PF_OPTION):
             wid = _edit_mapping[pf_type](def_val, params[i][4])
         else:
             wid = _edit_mapping[pf_type](def_val)
@@ -692,10 +715,10 @@ def _interact(proc_name, start_params):
         table.attach(wid, 2,3, i,i+1, yoptions=0)
 
         if pf_type != PF_TEXT:
-            tooltips.set_tip(wid, desc, None)         
+            tooltips.set_tip(wid, desc, None)
         else:
             #Attach tip to TextView, not to ScrolledWindow
-            tooltips.set_tip(wid.view, desc, None)         
+            tooltips.set_tip(wid.view, desc, None)
         wid.show()
 
         wid.desc = desc
@@ -740,7 +763,7 @@ def _run(proc_name, params):
     if run_mode == RUN_NONINTERACTIVE:
         return apply(func, params[1:])
 
-    script_params = _registered_plugins_[proc_name][8] 
+    script_params = _registered_plugins_[proc_name][8]
 
     min_args = 0
     if len(params) > 1:

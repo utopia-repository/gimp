@@ -34,6 +34,7 @@
         <sub name="gimppixelrgn" link="libgimp-gimppixelrgn.html"/>
         <sub name="gimpregioniterator" link="libgimp-gimpregioniterator.html"/>
         <sub name="gimpselection" link="libgimp-gimpselection.html"/>
+        <sub name="gimptextlayer" link="libgimp-gimptextlayer.html"/>
         <sub name="gimptexttool" link="libgimp-gimptexttool.html"/>
         <sub name="gimptile" link="libgimp-gimptile.html"/>
         <sub name="gimptools" link="libgimp-gimptools.html"/>
@@ -88,6 +89,7 @@
     <sub name="Index" link="libgimp-index.html"/>
     <sub name="Index of new symbols in GIMP 2.2" link="libgimp-index-new-in-2-2.html"/>
     <sub name="Index of new symbols in GIMP 2.4" link="libgimp-index-new-in-2-4.html"/>
+    <sub name="Index of new symbols in GIMP 2.6" link="libgimp-index-new-in-2-6.html"/>
     <sub name="Index of deprecated symbols" link="libgimp-index-deprecated.html"/>
   </chapters>
   <functions>
@@ -115,6 +117,7 @@
     <keyword type="function" name="gimp_run_procedure2 ()" link="libgimp-gimp.html#gimp-run-procedure2"/>
     <keyword type="function" name="gimp_destroy_params ()" link="libgimp-gimp.html#gimp-destroy-params"/>
     <keyword type="function" name="gimp_destroy_paramdefs ()" link="libgimp-gimp.html#gimp-destroy-paramdefs"/>
+    <keyword type="function" name="gimp_get_pdb_error ()" link="libgimp-gimp.html#gimp-get-pdb-error" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_tile_width ()" link="libgimp-gimp.html#gimp-tile-width"/>
     <keyword type="function" name="gimp_tile_height ()" link="libgimp-gimp.html#gimp-tile-height"/>
     <keyword type="function" name="gimp_shm_ID ()" link="libgimp-gimp.html#gimp-shm-ID"/>
@@ -130,6 +133,7 @@
     <keyword type="function" name="gimp_wm_class ()" link="libgimp-gimp.html#gimp-wm-class"/>
     <keyword type="function" name="gimp_display_name ()" link="libgimp-gimp.html#gimp-display-name"/>
     <keyword type="function" name="gimp_monitor_number ()" link="libgimp-gimp.html#gimp-monitor-number"/>
+    <keyword type="function" name="gimp_user_time ()" link="libgimp-gimp.html#gimp-user-time" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_get_progname ()" link="libgimp-gimp.html#gimp-get-progname"/>
     <keyword type="function" name="gimp_extension_enable ()" link="libgimp-gimp.html#gimp-extension-enable"/>
     <keyword type="function" name="gimp_extension_ack ()" link="libgimp-gimp.html#gimp-extension-ack"/>
@@ -208,12 +212,15 @@
     <keyword type="function" name="gimp_plugin_icon_register ()" link="libgimp-gimpplugin.html#gimp-plugin-icon-register"/>
     <keyword type="function" name="gimp_plugin_menu_register ()" link="libgimp-gimpplugin.html#gimp-plugin-menu-register" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_plugin_menu_branch_register ()" link="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_plugin_set_pdb_error_handler ()" link="libgimp-gimpplugin.html#gimp-plugin-set-pdb-error-handler" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_plugin_get_pdb_error_handler ()" link="libgimp-gimpplugin.html#gimp-plugin-get-pdb-error-handler" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_procedural_db_temp_name ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-temp-name"/>
-    <keyword type="function" name="gimp_procedural_db_proc_info ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info"/>
     <keyword type="function" name="gimp_procedural_db_get_data ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data"/>
     <keyword type="function" name="gimp_procedural_db_set_data ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-set-data"/>
     <keyword type="function" name="gimp_procedural_db_dump ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-dump"/>
     <keyword type="function" name="gimp_procedural_db_query ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-query"/>
+    <keyword type="function" name="gimp_procedural_db_proc_exists ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-exists" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_procedural_db_proc_info ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info"/>
     <keyword type="function" name="gimp_procedural_db_proc_arg ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-arg"/>
     <keyword type="function" name="gimp_procedural_db_proc_val ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-val"/>
     <keyword type="function" name="gimp_procedural_db_get_data_size ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-size"/>
@@ -292,6 +299,7 @@
     <keyword type="function" name="gimp_drawable_get_sub_thumbnail_data ()" link="libgimp-gimpdrawable.html#gimp-drawable-get-sub-thumbnail-data"/>
     <keyword type="function" name="gimp_drawable_get_color_uchar ()" link="libgimp-gimpdrawable.html#gimp-drawable-get-color-uchar"/>
     <keyword type="function" name="gimp_drawable_merge_shadow ()" link="libgimp-gimpdrawable.html#gimp-drawable-merge-shadow"/>
+    <keyword type="function" name="gimp_drawable_free_shadow ()" link="libgimp-gimpdrawable.html#gimp-drawable-free-shadow" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_drawable_fill ()" link="libgimp-gimpdrawable.html#gimp-drawable-fill"/>
     <keyword type="function" name="gimp_drawable_update ()" link="libgimp-gimpdrawable.html#gimp-drawable-update"/>
     <keyword type="function" name="gimp_drawable_mask_bounds ()" link="libgimp-gimpdrawable.html#gimp-drawable-mask-bounds"/>
@@ -308,9 +316,10 @@
     <keyword type="function" name="gimp_drawable_width ()" link="libgimp-gimpdrawable.html#gimp-drawable-width"/>
     <keyword type="function" name="gimp_drawable_height ()" link="libgimp-gimpdrawable.html#gimp-drawable-height"/>
     <keyword type="function" name="gimp_drawable_offsets ()" link="libgimp-gimpdrawable.html#gimp-drawable-offsets"/>
+    <keyword type="function" name="gimp_drawable_is_channel ()" link="libgimp-gimpdrawable.html#gimp-drawable-is-channel"/>
     <keyword type="function" name="gimp_drawable_is_layer ()" link="libgimp-gimpdrawable.html#gimp-drawable-is-layer"/>
     <keyword type="function" name="gimp_drawable_is_layer_mask ()" link="libgimp-gimpdrawable.html#gimp-drawable-is-layer-mask"/>
-    <keyword type="function" name="gimp_drawable_is_channel ()" link="libgimp-gimpdrawable.html#gimp-drawable-is-channel"/>
+    <keyword type="function" name="gimp_drawable_is_text_layer ()" link="libgimp-gimpdrawable.html#gimp-drawable-is-text-layer" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_drawable_offset ()" link="libgimp-gimpdrawable.html#gimp-drawable-offset"/>
     <keyword type="function" name="gimp_drawable_foreground_extract ()" link="libgimp-gimpdrawable.html#gimp-drawable-foreground-extract" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_drawable_parasite_find ()" link="libgimp-gimpdrawable.html#gimp-drawable-parasite-find"/>
@@ -391,12 +400,13 @@
     <keyword type="function" name="gimp_image_base_type ()" link="libgimp-gimpimage.html#gimp-image-base-type"/>
     <keyword type="function" name="gimp_image_width ()" link="libgimp-gimpimage.html#gimp-image-width"/>
     <keyword type="function" name="gimp_image_height ()" link="libgimp-gimpimage.html#gimp-image-height"/>
-    <keyword type="function" name="gimp_image_free_shadow ()" link="libgimp-gimpimage.html#gimp-image-free-shadow"/>
+    <keyword type="function" name="gimp_image_free_shadow ()" link="libgimp-gimpimage.html#gimp-image-free-shadow" deprecated=""/>
     <keyword type="function" name="gimp_image_flip ()" link="libgimp-gimpimage.html#gimp-image-flip"/>
     <keyword type="function" name="gimp_image_rotate ()" link="libgimp-gimpimage.html#gimp-image-rotate"/>
     <keyword type="function" name="gimp_image_resize ()" link="libgimp-gimpimage.html#gimp-image-resize"/>
     <keyword type="function" name="gimp_image_resize_to_layers ()" link="libgimp-gimpimage.html#gimp-image-resize-to-layers" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_image_scale ()" link="libgimp-gimpimage.html#gimp-image-scale"/>
+    <keyword type="function" name="gimp_image_scale_full ()" link="libgimp-gimpimage.html#gimp-image-scale-full" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_image_crop ()" link="libgimp-gimpimage.html#gimp-image-crop"/>
     <keyword type="function" name="gimp_image_get_layers ()" link="libgimp-gimpimage.html#gimp-image-get-layers"/>
     <keyword type="function" name="gimp_image_get_channels ()" link="libgimp-gimpimage.html#gimp-image-get-channels"/>
@@ -448,6 +458,7 @@
     <keyword type="function" name="gimp_image_get_colormap ()" link="libgimp-gimpimage.html#gimp-image-get-colormap"/>
     <keyword type="function" name="gimp_image_set_colormap ()" link="libgimp-gimpimage.html#gimp-image-set-colormap"/>
     <keyword type="function" name="gimp_image_get_vectors ()" link="libgimp-gimpimage.html#gimp-image-get-vectors" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_image_get_vectors_by_tattoo ()" link="libgimp-gimpimage.html#gimp-image-get-vectors-by-tattoo" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_image_get_thumbnail_data ()" link="libgimp-gimpimage.html#gimp-image-get-thumbnail-data"/>
     <keyword type="function" name="gimp_image_parasite_find ()" link="libgimp-gimpimage.html#gimp-image-parasite-find"/>
     <keyword type="function" name="gimp_image_parasite_list ()" link="libgimp-gimpimage.html#gimp-image-parasite-list"/>
@@ -464,8 +475,11 @@
     <keyword type="function" name="gimp_image_raise_vectors_to_top ()" link="libgimp-gimpimage.html#gimp-image-raise-vectors-to-top" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_image_get_vectors_position ()" link="libgimp-gimpimage.html#gimp-image-get-vectors-position" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_layer_new ()" link="libgimp-gimplayer.html#gimp-layer-new"/>
+    <keyword type="function" name="gimp_layer_new_from_drawable ()" link="libgimp-gimplayer.html#gimp-layer-new-from-drawable"/>
+    <keyword type="function" name="gimp_layer_new_from_visible ()" link="libgimp-gimplayer.html#gimp-layer-new-from-visible" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_layer_copy ()" link="libgimp-gimplayer.html#gimp-layer-copy"/>
     <keyword type="function" name="gimp_layer_scale ()" link="libgimp-gimplayer.html#gimp-layer-scale"/>
+    <keyword type="function" name="gimp_layer_scale_full ()" link="libgimp-gimplayer.html#gimp-layer-scale-full" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_layer_resize ()" link="libgimp-gimplayer.html#gimp-layer-resize"/>
     <keyword type="function" name="gimp_layer_resize_to_image_size ()" link="libgimp-gimplayer.html#gimp-layer-resize-to-image-size"/>
     <keyword type="function" name="gimp_layer_translate ()" link="libgimp-gimplayer.html#gimp-layer-translate"/>
@@ -477,7 +491,6 @@
     <keyword type="function" name="gimp_layer_get_mask ()" link="libgimp-gimplayer.html#gimp-layer-get-mask"/>
     <keyword type="function" name="gimp_layer_add_mask ()" link="libgimp-gimplayer.html#gimp-layer-add-mask"/>
     <keyword type="function" name="gimp_layer_remove_mask ()" link="libgimp-gimplayer.html#gimp-layer-remove-mask"/>
-    <keyword type="function" name="gimp_layer_new_from_drawable ()" link="libgimp-gimplayer.html#gimp-layer-new-from-drawable"/>
     <keyword type="function" name="gimp_layer_get_lock_alpha ()" link="libgimp-gimplayer.html#gimp-layer-get-lock-alpha"/>
     <keyword type="function" name="gimp_layer_set_lock_alpha ()" link="libgimp-gimplayer.html#gimp-layer-set-lock-alpha"/>
     <keyword type="function" name="gimp_layer_get_preserve_trans ()" link="libgimp-gimplayer.html#gimp-layer-get-preserve-trans" deprecated=""/>
@@ -561,6 +574,33 @@
     <keyword type="function" name="gimp_selection_translate ()" link="libgimp-gimpselection.html#gimp-selection-translate"/>
     <keyword type="function" name="gimp_selection_layer_alpha ()" link="libgimp-gimpselection.html#gimp-selection-layer-alpha"/>
     <keyword type="function" name="gimp_selection_combine ()" link="libgimp-gimpselection.html#gimp-selection-combine"/>
+    <keyword type="function" name="gimp_text_layer_new ()" link="libgimp-gimptextlayer.html#gimp-text-layer-new" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_text ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-text" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_text ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-text" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_font ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-font" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_font ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-font" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_font_size ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-font-size" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_font_size ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-font-size" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_hinting ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-hinting" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_hinting ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-hinting" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_antialias ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-antialias" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_antialias ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-antialias" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_kerning ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-kerning" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_kerning ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-kerning" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_language ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-language" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_language ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-language" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_base_direction ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-base-direction" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_base_direction ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-base-direction" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_justification ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-justification" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_justification ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-justification" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_color ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-color" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_color ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-color" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_indent ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-indent" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_indent ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-indent" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_line_spacing ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-line-spacing" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_line_spacing ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-line-spacing" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_get_letter_spacing ()" link="libgimp-gimptextlayer.html#gimp-text-layer-get-letter-spacing" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_text_layer_set_letter_spacing ()" link="libgimp-gimptextlayer.html#gimp-text-layer-set-letter-spacing" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_text_fontname ()" link="libgimp-gimptexttool.html#gimp-text-fontname"/>
     <keyword type="function" name="gimp_text_get_extents_fontname ()" link="libgimp-gimptexttool.html#gimp-text-get-extents-fontname"/>
     <keyword type="function" name="gimp_text ()" link="libgimp-gimptexttool.html#gimp-text" deprecated=""/>
@@ -612,8 +652,8 @@
     <keyword type="function" name="gimp_image_undo_freeze ()" link="libgimp-gimpundo.html#gimp-image-undo-freeze"/>
     <keyword type="function" name="gimp_image_undo_thaw ()" link="libgimp-gimpundo.html#gimp-image-undo-thaw"/>
     <keyword type="function" name="gimp_vectors_new ()" link="libgimp-gimpvectors.html#gimp-vectors-new" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_vectors_import_from_file ()" link="libgimp-gimpvectors.html#gimp-vectors-import-from-file" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_vectors_import_from_string ()" link="libgimp-gimpvectors.html#gimp-vectors-import-from-string" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_new_from_text_layer ()" link="libgimp-gimpvectors.html#gimp-vectors-new-from-text-layer" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_vectors_copy ()" link="libgimp-gimpvectors.html#gimp-vectors-copy" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_vectors_is_valid ()" link="libgimp-gimpvectors.html#gimp-vectors-is-valid" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_get_image ()" link="libgimp-gimpvectors.html#gimp-vectors-get-image" since="GIMP 2.4"/>
@@ -627,6 +667,10 @@
     <keyword type="function" name="gimp_vectors_set_visible ()" link="libgimp-gimpvectors.html#gimp-vectors-set-visible" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_remove_stroke ()" link="libgimp-gimpvectors.html#gimp-vectors-remove-stroke" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_to_selection ()" link="libgimp-gimpvectors.html#gimp-vectors-to-selection" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_export_to_file ()" link="libgimp-gimpvectors.html#gimp-vectors-export-to-file" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_vectors_export_to_string ()" link="libgimp-gimpvectors.html#gimp-vectors-export-to-string" since="GIMP 2.6"/>
+    <keyword type="function" name="gimp_vectors_import_from_file ()" link="libgimp-gimpvectors.html#gimp-vectors-import-from-file" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_vectors_import_from_string ()" link="libgimp-gimpvectors.html#gimp-vectors-import-from-string" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_attach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-attach" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_detach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-detach" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_vectors_parasite_find ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-find" since="GIMP 2.4"/>
@@ -689,6 +733,7 @@
     <keyword type="function" name="gimp_gradient_is_editable ()" link="libgimp-gimpgradient.html#gimp-gradient-is-editable" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_gradient_get_uniform_samples ()" link="libgimp-gimpgradient.html#gimp-gradient-get-uniform-samples" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_gradient_get_custom_samples ()" link="libgimp-gimpgradient.html#gimp-gradient-get-custom-samples" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_gradient_get_number_of_segments ()" link="libgimp-gimpgradient.html#gimp-gradient-get-number-of-segments" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_gradient_segment_get_left_color ()" link="libgimp-gimpgradient.html#gimp-gradient-segment-get-left-color" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_gradient_segment_set_left_color ()" link="libgimp-gimpgradient.html#gimp-gradient-segment-set-left-color" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_gradient_segment_get_right_color ()" link="libgimp-gimpgradient.html#gimp-gradient-segment-get-right-color" since="GIMP 2.2"/>
@@ -724,6 +769,7 @@
     <keyword type="function" name="gimp_palette_rename ()" link="libgimp-gimppalette.html#gimp-palette-rename" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_palette_delete ()" link="libgimp-gimppalette.html#gimp-palette-delete" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_palette_get_info ()" link="libgimp-gimppalette.html#gimp-palette-get-info" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_palette_get_colors ()" link="libgimp-gimppalette.html#gimp-palette-get-colors" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_palette_get_columns ()" link="libgimp-gimppalette.html#gimp-palette-get-columns" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_palette_set_columns ()" link="libgimp-gimppalette.html#gimp-palette-set-columns" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_palette_add_entry ()" link="libgimp-gimppalette.html#gimp-palette-add-entry" since="GIMP 2.2"/>

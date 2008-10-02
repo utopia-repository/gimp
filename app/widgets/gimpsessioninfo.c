@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpsessioninfo.c
- * Copyright (C) 2001-2007 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2001-2008 Michael Natterer <mitch@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,58 +49,82 @@ enum
 #define DEFAULT_SCREEN  -1
 
 
-/*  public functions  */
+static void     gimp_session_info_config_iface_init (GimpConfigInterface *iface);
 
-GimpSessionInfo *
-gimp_session_info_new (void)
+static void     gimp_session_info_finalize          (GObject          *object);
+
+static gint64   gimp_session_info_get_memsize       (GimpObject       *object,
+                                                     gint64           *gui_size);
+
+static gboolean gimp_session_info_serialize         (GimpConfig       *config,
+                                                     GimpConfigWriter *writer,
+                                                     gpointer          data);
+static gboolean gimp_session_info_deserialize       (GimpConfig       *config,
+                                                     GScanner         *scanner,
+                                                     gint              nest_level,
+                                                     gpointer          data);
+
+
+G_DEFINE_TYPE_WITH_CODE (GimpSessionInfo, gimp_session_info, GIMP_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
+                                                gimp_session_info_config_iface_init))
+
+#define parent_class gimp_session_info_parent_class
+
+
+static void
+gimp_session_info_class_init (GimpSessionInfoClass *klass)
 {
-  return g_slice_new0 (GimpSessionInfo);
+  GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
+  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+
+  object_class->finalize         = gimp_session_info_finalize;
+
+  gimp_object_class->get_memsize = gimp_session_info_get_memsize;
 }
 
-void
-gimp_session_info_free (GimpSessionInfo *info)
+static void
+gimp_session_info_init (GimpSessionInfo *info)
 {
-  g_return_if_fail (info != NULL);
-
-  if (info->aux_info)
-    {
-      g_list_foreach (info->aux_info,
-                      (GFunc) gimp_session_info_aux_free, NULL);
-      g_list_free (info->aux_info);
-    }
-
-   if (info->books)
-     {
-       g_list_foreach (info->books,
-                       (GFunc) gimp_session_info_book_free, NULL);
-       g_list_free (info->books);
-     }
-
-   g_slice_free (GimpSessionInfo, info);
+  info->screen = DEFAULT_SCREEN;
 }
 
-void
-gimp_session_info_serialize (GimpConfigWriter *writer,
-                             GimpSessionInfo  *info,
-                             const gchar      *factory_name)
+static void
+gimp_session_info_config_iface_init (GimpConfigInterface *iface)
 {
-  const gchar *dialog_name;
+  iface->serialize   = gimp_session_info_serialize;
+  iface->deserialize = gimp_session_info_deserialize;
+}
 
-  g_return_if_fail (info != NULL);
-  g_return_if_fail (factory_name != NULL);
-  g_return_if_fail (writer != NULL);
+static void
+gimp_session_info_finalize (GObject *object)
+{
+  GimpSessionInfo *info = GIMP_SESSION_INFO (object);
 
-  if (info->widget)
-    gimp_session_info_get_geometry (info);
+  gimp_session_info_clear_info (info);
 
-  if (info->toplevel_entry)
-    dialog_name = info->toplevel_entry->identifier;
-  else
-    dialog_name = "dock";
+  G_OBJECT_CLASS (parent_class)->finalize (object);
+}
 
-  gimp_config_writer_open (writer, "session-info");
-  gimp_config_writer_string (writer, factory_name);
-  gimp_config_writer_string (writer, dialog_name);
+static gint64
+gimp_session_info_get_memsize (GimpObject *object,
+                               gint64     *gui_size)
+{
+#if 0
+  GimpSessionInfo *info    = GIMP_SESSION_INFO (object);
+#endif
+  gint64           memsize = 0;
+
+  return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+                                                                  gui_size);
+}
+
+static gboolean
+gimp_session_info_serialize (GimpConfig       *config,
+                             GimpConfigWriter *writer,
+                             gpointer          data)
+{
+  GimpSessionInfo *info = GIMP_SESSION_INFO (config);
 
   gimp_config_writer_open (writer, "position");
   gimp_config_writer_printf (writer, "%d %d", info->x, info->y);
@@ -123,67 +147,71 @@ gimp_session_info_serialize (GimpConfigWriter *writer,
       gimp_config_writer_close (writer);
     }
 
-  if (info->widget)
-    {
-      gimp_session_info_aux_serialize (writer, info->widget);
+  if (info->aux_info)
+    gimp_session_info_aux_serialize (writer, info->aux_info);
 
-      if (! info->toplevel_entry)
-        gimp_session_info_dock_serialize (writer, GIMP_DOCK (info->widget));
-    }
+  if (info->books)
+    gimp_session_info_dock_serialize (writer, info->books);
 
-  gimp_config_writer_close (writer);  /* session-info */
+  return TRUE;
 }
 
-GTokenType
-gimp_session_info_deserialize (GScanner *scanner,
-                               gint      scope)
+/*
+ * This function is just like gimp_scanner_parse_int(), but it is allows
+ * to detect the special value '-0'. This is used as in X geometry strings.
+ */
+static gboolean
+gimp_session_info_parse_offset (GScanner *scanner,
+                                gint     *dest,
+                                gboolean *negative)
 {
-  GimpDialogFactory *factory;
-  GimpSessionInfo   *info = NULL;
-  GTokenType         token;
-  gboolean           skip = FALSE;
-  gchar             *factory_name;
-  gchar             *entry_name;
-
-  g_return_val_if_fail (scanner != NULL, G_TOKEN_LEFT_PAREN);
-
-  g_scanner_scope_add_symbol (scanner, scope, "position",
-                              GINT_TO_POINTER (SESSION_INFO_POSITION));
-  g_scanner_scope_add_symbol (scanner, scope, "size",
-                              GINT_TO_POINTER (SESSION_INFO_SIZE));
-  g_scanner_scope_add_symbol (scanner, scope, "open-on-exit",
-                              GINT_TO_POINTER (SESSION_INFO_OPEN));
-  g_scanner_scope_add_symbol (scanner, scope, "aux-info",
-                              GINT_TO_POINTER (SESSION_INFO_AUX));
-  g_scanner_scope_add_symbol (scanner, scope, "dock",
-                              GINT_TO_POINTER (SESSION_INFO_DOCK));
-
-  token = G_TOKEN_STRING;
-
-  if (! gimp_scanner_parse_string (scanner, &factory_name))
-    goto error;
-
-  factory = gimp_dialog_factory_from_name (factory_name);
-  g_free (factory_name);
-
-  if (! factory)
-    goto error;
-
-  if (! gimp_scanner_parse_string (scanner, &entry_name))
-    goto error;
-
-  info = gimp_session_info_new ();
-
-  info->screen = DEFAULT_SCREEN;
-
-  if (strcmp (entry_name, "dock"))
+  if (g_scanner_peek_next_token (scanner) == '-')
     {
-      info->toplevel_entry = gimp_dialog_factory_find_entry (factory,
-                                                             entry_name);
-      skip = (info->toplevel_entry == NULL);
+      *negative = TRUE;
+      g_scanner_get_next_token (scanner);
+    }
+  else
+    {
+      *negative = FALSE;
     }
 
-  g_free (entry_name);
+  if (g_scanner_peek_next_token (scanner) != G_TOKEN_INT)
+    return FALSE;
+
+  g_scanner_get_next_token (scanner);
+
+  if (*negative)
+    *dest = -scanner->value.v_int64;
+  else
+    *dest = scanner->value.v_int64;
+
+  return TRUE;
+}
+
+static gboolean
+gimp_session_info_deserialize (GimpConfig *config,
+                               GScanner   *scanner,
+                               gint        nest_level,
+                               gpointer    data)
+{
+  GimpSessionInfo *info = GIMP_SESSION_INFO (config);
+  GTokenType       token;
+  guint            scope_id;
+  guint            old_scope_id;
+
+  scope_id = g_type_qname (G_TYPE_FROM_INSTANCE (config));
+  old_scope_id = g_scanner_set_scope (scanner, scope_id);
+
+  g_scanner_scope_add_symbol (scanner, scope_id, "position",
+                              GINT_TO_POINTER (SESSION_INFO_POSITION));
+  g_scanner_scope_add_symbol (scanner, scope_id, "size",
+                              GINT_TO_POINTER (SESSION_INFO_SIZE));
+  g_scanner_scope_add_symbol (scanner, scope_id, "open-on-exit",
+                              GINT_TO_POINTER (SESSION_INFO_OPEN));
+  g_scanner_scope_add_symbol (scanner, scope_id, "aux-info",
+                              GINT_TO_POINTER (SESSION_INFO_AUX));
+  g_scanner_scope_add_symbol (scanner, scope_id, "dock",
+                              GINT_TO_POINTER (SESSION_INFO_DOCK));
 
   token = G_TOKEN_LEFT_PAREN;
 
@@ -202,9 +230,13 @@ gimp_session_info_deserialize (GScanner *scanner,
             {
             case SESSION_INFO_POSITION:
               token = G_TOKEN_INT;
-              if (! gimp_scanner_parse_int (scanner, &info->x))
+              if (! gimp_session_info_parse_offset (scanner,
+                                                    &info->x,
+                                                    &info->right_align))
                 goto error;
-              if (! gimp_scanner_parse_int (scanner, &info->y))
+              if (! gimp_session_info_parse_offset (scanner,
+                                                    &info->y,
+                                                    &info->bottom_align))
                 goto error;
               break;
 
@@ -239,12 +271,12 @@ gimp_session_info_deserialize (GScanner *scanner,
               if (info->toplevel_entry)
                 goto error;
 
-              g_scanner_set_scope (scanner, scope + 1);
-              token = gimp_session_info_dock_deserialize (scanner, scope + 1,
+              g_scanner_set_scope (scanner, scope_id + 1);
+              token = gimp_session_info_dock_deserialize (scanner, scope_id + 1,
                                                           info);
 
               if (token == G_TOKEN_LEFT_PAREN)
-                g_scanner_set_scope (scanner, scope);
+                g_scanner_set_scope (scanner, scope_id);
               else
                 goto error;
 
@@ -265,29 +297,26 @@ gimp_session_info_deserialize (GScanner *scanner,
         }
     }
 
-  if (token == G_TOKEN_LEFT_PAREN)
-    {
-      token = G_TOKEN_RIGHT_PAREN;
+ error:
 
-      if (!skip && g_scanner_peek_next_token (scanner) == token)
-        factory->session_infos = g_list_append (factory->session_infos, info);
-      else
-        gimp_session_info_free (info);
-    }
-  else
-    {
-    error:
-      if (info)
-        gimp_session_info_free (info);
-    }
+  g_scanner_scope_remove_symbol (scanner, scope_id, "position");
+  g_scanner_scope_remove_symbol (scanner, scope_id, "size");
+  g_scanner_scope_remove_symbol (scanner, scope_id, "open-on-exit");
+  g_scanner_scope_remove_symbol (scanner, scope_id, "aux-info");
+  g_scanner_scope_remove_symbol (scanner, scope_id, "dock");
 
-  g_scanner_scope_remove_symbol (scanner, scope, "position");
-  g_scanner_scope_remove_symbol (scanner, scope, "size");
-  g_scanner_scope_remove_symbol (scanner, scope, "open-on-exit");
-  g_scanner_scope_remove_symbol (scanner, scope, "aux-info");
-  g_scanner_scope_remove_symbol (scanner, scope, "dock");
+  g_scanner_set_scope (scanner, old_scope_id);
 
-  return token;
+  return gimp_config_deserialize_return (scanner, token, nest_level);
+}
+
+
+/*  public functions  */
+
+GimpSessionInfo *
+gimp_session_info_new (void)
+{
+  return g_object_new (GIMP_TYPE_SESSION_INFO, NULL);
 }
 
 void
@@ -297,7 +326,7 @@ gimp_session_info_restore (GimpSessionInfo   *info,
   GdkDisplay *display;
   GdkScreen  *screen = NULL;
 
-  g_return_if_fail (info != NULL);
+  g_return_if_fail (GIMP_IS_SESSION_INFO (info));
   g_return_if_fail (GIMP_IS_DIALOG_FACTORY (factory));
 
   display = gdk_display_get_default ();
@@ -328,21 +357,17 @@ gimp_session_info_restore (GimpSessionInfo   *info,
     {
       gimp_session_info_dock_restore (info, factory, screen);
     }
-
-  g_list_foreach (info->aux_info, (GFunc) gimp_session_info_aux_free, NULL);
-  g_list_free (info->aux_info);
-  info->aux_info = NULL;
 }
 
 /* This function mostly lifted from
  * gtk+/gdk/gdkscreen.c:gdk_screen_get_monitor_at_window()
  */
 static gint
-get_appropriate_monitor (GdkScreen *screen,
-                         gint       x,
-                         gint       y,
-                         gint       w,
-                         gint       h)
+gimp_session_info_get_appropriate_monitor (GdkScreen *screen,
+                                           gint       x,
+                                           gint       y,
+                                           gint       w,
+                                           gint       h)
 {
   GdkRectangle rect;
   gint         area    = 0;
@@ -383,68 +408,90 @@ void
 gimp_session_info_set_geometry (GimpSessionInfo *info)
 {
   GdkScreen   *screen;
-  GdkRectangle monitor;
+  GdkRectangle rect;
   gchar        geom[32];
+  gint         monitor;
+  gboolean     use_size;
 
-  g_return_if_fail (info != NULL);
+  g_return_if_fail (GIMP_IS_SESSION_INFO (info));
   g_return_if_fail (GTK_IS_WINDOW (info->widget));
 
   screen = gtk_widget_get_screen (info->widget);
 
-  if ((! info->toplevel_entry || info->toplevel_entry->remember_size) &&
-      (info->width > 0 && info->height > 0))
-    {
-      gdk_screen_get_monitor_geometry (screen,
-                                       get_appropriate_monitor (screen,
-                                                                info->x,
-                                                                info->y,
-                                                                info->width,
-                                                                info->height),
-                                       &monitor);
+  use_size = ((! info->toplevel_entry || info->toplevel_entry->remember_size) &&
+              (info->width > 0 && info->height > 0));
 
-      info->x = CLAMP (info->x,
-                       monitor.x, monitor.x + monitor.width  - info->width);
-      info->y = CLAMP (info->y,
-                       monitor.y, monitor.y + monitor.height - info->height);
+  if (use_size)
+    {
+      monitor = gimp_session_info_get_appropriate_monitor (screen,
+                                                           info->x,
+                                                           info->y,
+                                                           info->width,
+                                                           info->height);
     }
   else
     {
-      gdk_screen_get_monitor_geometry (screen,
-                                       gdk_screen_get_monitor_at_point (screen,
-                                                                        info->x,
-                                                                        info->y),
-                                       &monitor);
-
-      info->x = CLAMP (info->x, monitor.x, monitor.x + monitor.width  - 128);
-      info->y = CLAMP (info->y, monitor.y, monitor.y + monitor.height - 128);
+      monitor = gdk_screen_get_monitor_at_point (screen, info->x, info->y);
     }
 
-  g_snprintf (geom, sizeof (geom), "+%d+%d", info->x, info->y);
+  gdk_screen_get_monitor_geometry (screen, monitor, &rect);
+
+  info->x = CLAMP (info->x,
+                   rect.x,
+                   rect.x + rect.width - (info->width > 0 ?
+                                          info->width : 128));
+  info->y = CLAMP (info->y,
+                   rect.y,
+                   rect.y + rect.height - (info->height > 0 ?
+                                           info->height : 128));
+
+  if (info->right_align && info->bottom_align)
+    {
+      g_strlcpy (geom, "-0-0", sizeof (geom));
+    }
+  else if (info->right_align)
+    {
+      g_snprintf (geom, sizeof (geom), "-0%+d", info->y);
+    }
+  else if (info->bottom_align)
+    {
+      g_snprintf (geom, sizeof (geom), "%+d-0", info->x);
+    }
+  else
+    {
+      g_snprintf (geom, sizeof (geom), "%+d%+d", info->x, info->y);
+    }
 
   gtk_window_parse_geometry (GTK_WINDOW (info->widget), geom);
 
-  if (! info->toplevel_entry || info->toplevel_entry->remember_size)
-    {
-      if (info->width > 0 && info->height > 0)
-        gtk_window_set_default_size (GTK_WINDOW (info->widget),
-                                     info->width, info->height);
-    }
+  if (use_size)
+    gtk_window_set_default_size (GTK_WINDOW (info->widget),
+                                 info->width, info->height);
 }
 
 void
 gimp_session_info_get_geometry (GimpSessionInfo *info)
 {
-  g_return_if_fail (info != NULL);
+  g_return_if_fail (GIMP_IS_SESSION_INFO (info));
   g_return_if_fail (GTK_IS_WINDOW (info->widget));
 
   if (info->widget->window)
     {
-      gdk_window_get_root_origin (info->widget->window, &info->x, &info->y);
+      gint x, y;
+
+      gdk_window_get_root_origin (info->widget->window, &x, &y);
+
+      /* Don't write negative values to the sessionrc, they are
+       * interpreted as relative to the right, respective bottom edge
+       * of the screen.
+       */
+      info->x = MAX (0, x);
+      info->y = MAX (0, y);
 
       if (! info->toplevel_entry || info->toplevel_entry->remember_size)
         {
-          info->width  = info->widget->allocation.width;
-          info->height = info->widget->allocation.height;
+          gdk_drawable_get_size (GDK_DRAWABLE (info->widget->window),
+                                 &info->width, &info->height);
         }
       else
         {
@@ -489,4 +536,40 @@ gimp_session_info_get_geometry (GimpSessionInfo *info)
       if (screen != gdk_display_get_default_screen (display))
         info->screen = gdk_screen_get_number (screen);
     }
+}
+
+void
+gimp_session_info_get_info (GimpSessionInfo *info)
+{
+  g_return_if_fail (GIMP_IS_SESSION_INFO (info));
+  g_return_if_fail (GTK_IS_WIDGET (info->widget));
+
+  gimp_session_info_get_geometry (info);
+
+  info->aux_info = gimp_session_info_aux_get_list (info->widget);
+
+  if (! info->toplevel_entry)
+    info->books = gimp_session_info_dock_from_widget (GIMP_DOCK (info->widget));
+}
+
+void
+gimp_session_info_clear_info (GimpSessionInfo *info)
+{
+  g_return_if_fail (GIMP_IS_SESSION_INFO (info));
+
+  if (info->aux_info)
+    {
+      g_list_foreach (info->aux_info,
+                      (GFunc) gimp_session_info_aux_free, NULL);
+      g_list_free (info->aux_info);
+      info->aux_info = NULL;
+    }
+
+   if (info->books)
+     {
+       g_list_foreach (info->books,
+                       (GFunc) gimp_session_info_book_free, NULL);
+       g_list_free (info->books);
+       info->books = NULL;
+     }
 }

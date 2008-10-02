@@ -1,3 +1,19 @@
+gimp (2.6.0-1) experimental; urgency=low
+
+  * New upstream release to experimental so we don't break any transitions
+    - Fixes Image Tile error message (Closes: #373184)
+    - Fixes crash in Frosty script (Closes: #405200)
+    - Uses webkit for help browser (Closes: #275605)
+    - Optionally includes pointer in screenshots (Closes: #292471)
+  * Merge gimp-python into main gimp package
+  * Remove gimp-libcurl and gimp-gnomevfs since we now build with
+    GIO support instead; gvfs-backends should provide the same functionality
+  * 02_help-crash.patch:
+    - Apply patch from upstream to fix crash when opening Help with
+      gimp-plugin-registry installed
+
+ -- Ari Pollak <ari@debian.org>  Wed, 01 Oct 2008 21:29:41 -0400
+
 gimp (2.4.7-1) unstable; urgency=low
 
   * New upstream bugfix release

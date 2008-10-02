@@ -37,6 +37,7 @@
 #include "gimpcontext.h"
 #include "gimpdrawable-combine.h"
 #include "gimpdrawable-preview.h"
+#include "gimpdrawable-shadow.h"
 #include "gimpdrawable-transform.h"
 #include "gimpimage.h"
 #include "gimpimage-colormap.h"
@@ -74,9 +75,9 @@ static gboolean   gimp_drawable_get_size           (GimpViewable      *viewable,
                                                     gint              *height);
 static void       gimp_drawable_invalidate_preview (GimpViewable      *viewable);
 
+static void       gimp_drawable_removed            (GimpItem          *item);
 static GimpItem * gimp_drawable_duplicate          (GimpItem          *item,
-                                                    GType              new_type,
-                                                    gboolean           add_alpha);
+                                                    GType              new_type);
 static void       gimp_drawable_translate          (GimpItem          *item,
                                                     gint               offset_x,
                                                     gint               offset_y,
@@ -128,6 +129,7 @@ static gint64  gimp_drawable_real_estimate_memsize (const GimpDrawable *drawable
                                                     gint               width,
                                                     gint               height);
 
+static TileManager * gimp_drawable_real_get_tiles  (GimpDrawable      *drawable);
 static void       gimp_drawable_real_set_tiles     (GimpDrawable      *drawable,
                                                     gboolean           push_undo,
                                                     const gchar       *undo_desc,
@@ -200,6 +202,7 @@ gimp_drawable_class_init (GimpDrawableClass *klass)
   viewable_class->invalidate_preview = gimp_drawable_invalidate_preview;
   viewable_class->get_preview        = gimp_drawable_get_preview;
 
+  item_class->removed                = gimp_drawable_removed;
   item_class->duplicate              = gimp_drawable_duplicate;
   item_class->translate              = gimp_drawable_translate;
   item_class->scale                  = gimp_drawable_scale;
@@ -215,6 +218,7 @@ gimp_drawable_class_init (GimpDrawableClass *klass)
   klass->get_active_components       = NULL;
   klass->apply_region                = gimp_drawable_real_apply_region;
   klass->replace_region              = gimp_drawable_real_replace_region;
+  klass->get_tiles                   = gimp_drawable_real_get_tiles;
   klass->set_tiles                   = gimp_drawable_real_set_tiles;
   klass->push_undo                   = gimp_drawable_real_push_undo;
   klass->swap_pixels                 = gimp_drawable_real_swap_pixels;
@@ -224,6 +228,7 @@ static void
 gimp_drawable_init (GimpDrawable *drawable)
 {
   drawable->tiles         = NULL;
+  drawable->shadow        = NULL;
   drawable->bytes         = 0;
   drawable->type          = -1;
   drawable->has_alpha     = FALSE;
@@ -254,6 +259,8 @@ gimp_drawable_finalize (GObject *object)
       drawable->tiles = NULL;
     }
 
+  gimp_drawable_free_shadow_tiles (drawable);
+
   if (drawable->preview_cache)
     gimp_preview_cache_invalidate (&drawable->preview_cache);
 
@@ -267,11 +274,11 @@ gimp_drawable_get_memsize (GimpObject *object,
   GimpDrawable *drawable = GIMP_DRAWABLE (object);
   gint64        memsize  = 0;
 
-  if (drawable->tiles)
-    memsize += tile_manager_get_memsize (drawable->tiles, FALSE);
+  memsize += tile_manager_get_memsize (gimp_drawable_get_tiles (drawable),
+                                       FALSE);
+  memsize += tile_manager_get_memsize (drawable->shadow, FALSE);
 
-  if (drawable->preview_cache)
-    *gui_size += gimp_preview_cache_get_memsize (drawable->preview_cache);
+  *gui_size += gimp_preview_cache_get_memsize (drawable->preview_cache);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -284,8 +291,8 @@ gimp_drawable_get_size (GimpViewable *viewable,
 {
   GimpItem *item = GIMP_ITEM (viewable);
 
-  *width  = item->width;
-  *height = item->height;
+  *width  = gimp_item_width  (item);
+  *height = gimp_item_height (item);
 
   return TRUE;
 }
@@ -304,55 +311,55 @@ gimp_drawable_invalidate_preview (GimpViewable *viewable)
     gimp_preview_cache_invalidate (&drawable->preview_cache);
 }
 
+static void
+gimp_drawable_removed (GimpItem *item)
+{
+  GimpDrawable *drawable = GIMP_DRAWABLE (item);
+
+  gimp_drawable_free_shadow_tiles (drawable);
+
+  if (GIMP_ITEM_CLASS (parent_class)->removed)
+    GIMP_ITEM_CLASS (parent_class)->removed (item);
+}
+
 static GimpItem *
 gimp_drawable_duplicate (GimpItem *item,
-                         GType     new_type,
-                         gboolean  add_alpha)
+                         GType     new_type)
 {
   GimpItem *new_item;
 
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_DRAWABLE), NULL);
 
-  new_item = GIMP_ITEM_CLASS (parent_class)->duplicate (item, new_type,
-                                                        add_alpha);
+  new_item = GIMP_ITEM_CLASS (parent_class)->duplicate (item, new_type);
 
   if (GIMP_IS_DRAWABLE (new_item))
     {
       GimpDrawable  *drawable     = GIMP_DRAWABLE (item);
       GimpDrawable  *new_drawable = GIMP_DRAWABLE (new_item);
-      GimpImageType  new_image_type;
       PixelRegion    srcPR;
       PixelRegion    destPR;
-
-      if (add_alpha)
-        new_image_type = gimp_drawable_type_with_alpha (drawable);
-      else
-        new_image_type = gimp_drawable_type (drawable);
 
       gimp_drawable_configure (new_drawable,
                                gimp_item_get_image (item),
                                item->offset_x,
                                item->offset_y,
-                               item->width,
-                               item->height,
-                               new_image_type,
+                               gimp_item_width  (item),
+                               gimp_item_height (item),
+                               gimp_drawable_type (drawable),
                                GIMP_OBJECT (new_drawable)->name);
 
-      pixel_region_init (&srcPR, drawable->tiles,
+      pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                          0, 0,
-                         item->width,
-                         item->height,
+                         gimp_item_width  (item),
+                         gimp_item_height (item),
                          FALSE);
-      pixel_region_init (&destPR, new_drawable->tiles,
+      pixel_region_init (&destPR, gimp_drawable_get_tiles (new_drawable),
                          0, 0,
-                         new_item->width,
-                         new_item->height,
+                         gimp_item_width  (new_item),
+                         gimp_item_height (new_item),
                          TRUE);
 
-      if (new_image_type == drawable->type)
-        copy_region (&srcPR, &destPR);
-      else
-        add_alpha_region (&srcPR, &destPR);
+      copy_region (&srcPR, &destPR);
     }
 
   return new_item;
@@ -387,16 +394,19 @@ gimp_drawable_scale (GimpItem              *item,
                      GimpProgress          *progress)
 {
   GimpDrawable *drawable = GIMP_DRAWABLE (item);
-  PixelRegion   srcPR, destPR;
   TileManager  *new_tiles;
+  PixelRegion   srcPR, destPR;
 
   new_tiles = tile_manager_new (new_width, new_height, drawable->bytes);
 
-  pixel_region_init (&srcPR, drawable->tiles,
-                     0, 0, item->width, item->height,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
+                     0, 0,
+                     gimp_item_width  (item),
+                     gimp_item_height (item),
                      FALSE);
   pixel_region_init (&destPR, new_tiles,
-                     0, 0, new_width, new_height,
+                     0, 0,
+                     new_width, new_height,
                      TRUE);
 
   /*  Scale the drawable -
@@ -433,9 +443,9 @@ gimp_drawable_resize (GimpItem    *item,
   gint          copy_width, copy_height;
 
   /*  if the size doesn't change, this is a nop  */
-  if (new_width  == item->width  &&
-      new_height == item->height &&
-      offset_x   == 0            &&
+  if (new_width  == gimp_item_width  (item) &&
+      new_height == gimp_item_height (item) &&
+      offset_x   == 0                       &&
       offset_y   == 0)
     return;
 
@@ -443,7 +453,8 @@ gimp_drawable_resize (GimpItem    *item,
   new_offset_y = item->offset_y - offset_y;
 
   gimp_rectangle_intersect (item->offset_x, item->offset_y,
-                            item->width, item->height,
+                            gimp_item_width  (item),
+                            gimp_item_height (item),
                             new_offset_x, new_offset_y,
                             new_width, new_height,
                             &copy_x, &copy_y,
@@ -472,7 +483,7 @@ gimp_drawable_resize (GimpItem    *item,
   /*  Determine whether anything needs to be copied  */
   if (copy_width && copy_height)
     {
-      pixel_region_init (&srcPR, drawable->tiles,
+      pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                          copy_x - item->offset_x, copy_y - item->offset_y,
                          copy_width, copy_height,
                          FALSE);
@@ -505,15 +516,18 @@ gimp_drawable_flip (GimpItem            *item,
 
   gimp_item_offsets (item, &off_x, &off_y);
 
-  tile_manager_get_offsets (drawable->tiles, &old_off_x, &old_off_y);
-  tile_manager_set_offsets (drawable->tiles, off_x, off_y);
+  tile_manager_get_offsets (gimp_drawable_get_tiles (drawable),
+                            &old_off_x, &old_off_y);
+  tile_manager_set_offsets (gimp_drawable_get_tiles (drawable),
+                            off_x, off_y);
 
   tiles = gimp_drawable_transform_tiles_flip (drawable, context,
-                                              drawable->tiles,
+                                              gimp_drawable_get_tiles (drawable),
                                               flip_type, axis,
                                               clip_result);
 
-  tile_manager_set_offsets (drawable->tiles, old_off_x, old_off_y);
+  tile_manager_set_offsets (gimp_drawable_get_tiles (drawable),
+                            old_off_x, old_off_y);
 
   if (tiles)
     {
@@ -537,15 +551,18 @@ gimp_drawable_rotate (GimpItem         *item,
 
   gimp_item_offsets (item, &off_x, &off_y);
 
-  tile_manager_get_offsets (drawable->tiles, &old_off_x, &old_off_y);
-  tile_manager_set_offsets (drawable->tiles, off_x, off_y);
+  tile_manager_get_offsets (gimp_drawable_get_tiles (drawable),
+                            &old_off_x, &old_off_y);
+  tile_manager_set_offsets (gimp_drawable_get_tiles (drawable),
+                            off_x, off_y);
 
   tiles = gimp_drawable_transform_tiles_rotate (drawable, context,
-                                                drawable->tiles,
+                                                gimp_drawable_get_tiles (drawable),
                                                 rotate_type, center_x, center_y,
                                                 clip_result);
 
-  tile_manager_set_offsets (drawable->tiles, old_off_x, old_off_y);
+  tile_manager_set_offsets (gimp_drawable_get_tiles (drawable),
+                            old_off_x, old_off_y);
 
   if (tiles)
     {
@@ -571,18 +588,21 @@ gimp_drawable_transform (GimpItem               *item,
 
   gimp_item_offsets (item, &off_x, &off_y);
 
-  tile_manager_get_offsets (drawable->tiles, &old_off_x, &old_off_y);
-  tile_manager_set_offsets (drawable->tiles, off_x, off_y);
+  tile_manager_get_offsets (gimp_drawable_get_tiles (drawable),
+                            &old_off_x, &old_off_y);
+  tile_manager_set_offsets (gimp_drawable_get_tiles (drawable),
+                            off_x, off_y);
 
   tiles = gimp_drawable_transform_tiles_affine (drawable, context,
-                                                drawable->tiles,
+                                                gimp_drawable_get_tiles (drawable),
                                                 matrix, direction,
                                                 interpolation_type,
                                                 recursion_level,
                                                 clip_result,
                                                 progress);
 
-  tile_manager_set_offsets (drawable->tiles, old_off_x, old_off_y);
+  tile_manager_set_offsets (gimp_drawable_get_tiles (drawable),
+                            old_off_x, old_off_y);
 
   if (tiles)
     {
@@ -600,8 +620,8 @@ gimp_drawable_get_pixel_at (GimpPickable *pickable,
   GimpDrawable *drawable = GIMP_DRAWABLE (pickable);
 
   /* do not make this a g_return_if_fail() */
-  if (x < 0 || x >= GIMP_ITEM (drawable)->width ||
-      y < 0 || y >= GIMP_ITEM (drawable)->height)
+  if (x < 0 || x >= gimp_item_width  (GIMP_ITEM (drawable)) ||
+      y < 0 || y >= gimp_item_height (GIMP_ITEM (drawable)))
     return FALSE;
 
   read_pixel_data_1 (gimp_drawable_get_tiles (drawable), x, y, pixel);
@@ -625,6 +645,12 @@ gimp_drawable_real_estimate_memsize (const GimpDrawable *drawable,
                                      gint                height)
 {
   return (gint64) gimp_drawable_bytes (drawable) * width * height;
+}
+
+static TileManager *
+gimp_drawable_real_get_tiles (GimpDrawable *drawable)
+{
+  return drawable->tiles;
 }
 
 static void
@@ -665,8 +691,8 @@ gimp_drawable_real_set_tiles (GimpDrawable *drawable,
   item->offset_x = offset_x;
   item->offset_y = offset_y;
 
-  if (item->width  != tile_manager_width (tiles) ||
-      item->height != tile_manager_height (tiles))
+  if (gimp_item_width  (item) != tile_manager_width (tiles) ||
+      gimp_item_height (item) != tile_manager_height (tiles))
     {
       item->width  = tile_manager_width (tiles);
       item->height = tile_manager_height (tiles);
@@ -908,11 +934,11 @@ gimp_drawable_replace_region (GimpDrawable *drawable,
 }
 
 TileManager *
-gimp_drawable_get_tiles (const GimpDrawable *drawable)
+gimp_drawable_get_tiles (GimpDrawable *drawable)
 {
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
 
-  return drawable->tiles;
+  return GIMP_DRAWABLE_GET_CLASS (drawable)->get_tiles (drawable);
 }
 
 void
@@ -958,12 +984,15 @@ gimp_drawable_set_tiles_full (GimpDrawable       *drawable,
   if (! gimp_item_is_attached (GIMP_ITEM (drawable)))
     push_undo = FALSE;
 
-  if (item->width    != tile_manager_width (tiles)  ||
-      item->height   != tile_manager_height (tiles) ||
-      item->offset_x != offset_x                    ||
-      item->offset_y != offset_y)
+  if (gimp_item_width  (item) != tile_manager_width (tiles)  ||
+      gimp_item_height (item) != tile_manager_height (tiles) ||
+      item->offset_x          != offset_x                    ||
+      item->offset_y          != offset_y)
     {
-      gimp_drawable_update (drawable, 0, 0, item->width, item->height);
+      gimp_drawable_update (drawable,
+                            0, 0,
+                            gimp_item_width  (item),
+                            gimp_item_height (item));
     }
 
   if (gimp_drawable_has_floating_sel (drawable))
@@ -977,7 +1006,10 @@ gimp_drawable_set_tiles_full (GimpDrawable       *drawable,
   if (gimp_drawable_has_floating_sel (drawable))
     floating_sel_rigor (gimp_image_floating_sel (image), FALSE);
 
-  gimp_drawable_update (drawable, 0, 0, item->width, item->height);
+  gimp_drawable_update (drawable,
+                        0, 0,
+                        gimp_item_width  (item),
+                        gimp_item_height (item));
 }
 
 void
@@ -1040,54 +1072,6 @@ gimp_drawable_push_undo (GimpDrawable *drawable,
   GIMP_DRAWABLE_GET_CLASS (drawable)->push_undo (drawable, undo_desc,
                                                  tiles, sparse,
                                                  x, y, width, height);
-}
-
-TileManager *
-gimp_drawable_get_shadow_tiles (GimpDrawable *drawable)
-{
-  GimpItem *item;
-
-  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
-
-  item = GIMP_ITEM (drawable);
-
-  g_return_val_if_fail (gimp_item_is_attached (item), NULL);
-
-  return gimp_image_get_shadow_tiles (gimp_item_get_image (item),
-                                      item->width, item->height,
-                                      drawable->bytes);
-}
-
-void
-gimp_drawable_merge_shadow (GimpDrawable *drawable,
-                            gboolean      push_undo,
-                            const gchar  *undo_desc)
-{
-  GimpImage *image;
-  gint       x, y, width, height;
-
-  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-  g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-
-  image = gimp_item_get_image (GIMP_ITEM (drawable));
-
-  g_return_if_fail (image->shadow != NULL);
-
-  /*  A useful optimization here is to limit the update to the
-   *  extents of the selection mask, as it cannot extend beyond
-   *  them.
-   */
-  if (gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
-    {
-      PixelRegion shadowPR;
-
-      pixel_region_init (&shadowPR, image->shadow,
-                         x, y, width, height, FALSE);
-      gimp_drawable_apply_region (drawable, &shadowPR,
-                                  push_undo, undo_desc,
-                                  GIMP_OPACITY_OPAQUE, GIMP_REPLACE_MODE,
-                                  NULL, x, y);
-    }
 }
 
 void

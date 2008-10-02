@@ -109,6 +109,7 @@ PDB_WRAPPERS_C = \
 	gimpprogress_pdb.c		\
 	gimpselection_pdb.c		\
 	gimpselectiontools_pdb.c	\
+	gimptextlayer_pdb.c		\
 	gimptexttool_pdb.c		\
 	gimptransformtools_pdb.c	\
 	gimpundo_pdb.c			\
@@ -158,6 +159,7 @@ PDB_WRAPPERS_H = \
 	gimpprogress_pdb.h		\
 	gimpselection_pdb.h		\
 	gimpselectiontools_pdb.h	\
+	gimptextlayer_pdb.h		\
 	gimptexttool_pdb.h		\
 	gimptransformtools_pdb.h	\
 	gimpundo_pdb.h			\
@@ -386,7 +388,7 @@ CLEANFILES = $(gen_sources)
 
 gimpenums.c: $(srcdir)/gimpenums.h $(srcdir)/gimpenums.c.tail $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
-		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpenums.h\"" \
+		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#undef GIMP_DISABLE_DEPRECATED\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpenums.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \
 		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static const G@Type@Value values[] =\n  {" \
 		--vprod "    { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \

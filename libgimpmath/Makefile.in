@@ -34,7 +34,6 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-EXTRA_PROGRAMS = test-md5$(EXEEXT)
 subdir = libgimpmath
 DIST_COMMON = $(libgimpmathinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
@@ -48,7 +47,7 @@ am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -67,8 +66,6 @@ libgimpmath_2_0_la_OBJECTS = $(am_libgimpmath_2_0_la_OBJECTS)
 libgimpmath_2_0_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libgimpmath_2_0_la_LDFLAGS) $(LDFLAGS) -o $@
-test_md5_SOURCES = test-md5.c
-test_md5_OBJECTS = test-md5.$(OBJEXT)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -81,15 +78,15 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libgimpmath_2_0_la_SOURCES) test-md5.c
-DIST_SOURCES = $(libgimpmath_2_0_la_SOURCES) test-md5.c
+SOURCES = $(libgimpmath_2_0_la_SOURCES)
+DIST_SOURCES = $(libgimpmath_2_0_la_SOURCES)
 DATA = $(noinst_DATA)
 libgimpmathincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(libgimpmathinclude_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-AA = @AA@
+AA_LIBS = @AA_LIBS@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -103,8 +100,12 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BABL_CFLAGS = @BABL_CFLAGS@
+BABL_LIBS = @BABL_LIBS@
 BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
 BINRELOC_LIBS = @BINRELOC_LIBS@
+CAIRO_CFLAGS = @CAIRO_CFLAGS@
+CAIRO_LIBS = @CAIRO_LIBS@
 CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
@@ -116,6 +117,8 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CURL_CFLAGS = @CURL_CFLAGS@
+CURL_LIBS = @CURL_LIBS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
@@ -141,15 +144,25 @@ EXIF_CFLAGS = @EXIF_CFLAGS@
 EXIF_LIBS = @EXIF_LIBS@
 F77 = @F77@
 FFLAGS = @FFLAGS@
+FILE_AA = @FILE_AA@
+FILE_MNG = @FILE_MNG@
+FILE_PDF = @FILE_PDF@
+FILE_PNG = @FILE_PNG@
+FILE_PSP = @FILE_PSP@
+FILE_SVG = @FILE_SVG@
+FILE_TIFF_LOAD = @FILE_TIFF_LOAD@
+FILE_TIFF_SAVE = @FILE_TIFF_SAVE@
+FILE_WMF = @FILE_WMF@
+FILE_XPM = @FILE_XPM@
 FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
-FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE_CONFIG = @FREETYPE_CONFIG@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
 GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
 GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
-GDK_PIXBUF_REQUIRED_VERSION = @GDK_PIXBUF_REQUIRED_VERSION@
+GEGL_CFLAGS = @GEGL_CFLAGS@
+GEGL_LIBS = @GEGL_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIMPINSTALL = @GIMPINSTALL@
 GIMP_API_VERSION = @GIMP_API_VERSION@
@@ -169,11 +182,14 @@ GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
+GIMP_REMOTE_MANPAGE = @GIMP_REMOTE_MANPAGE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
+GIO_CFLAGS = @GIO_CFLAGS@
+GIO_LIBS = @GIO_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
@@ -183,19 +199,16 @@ GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
 GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOME_VFS_CFLAGS = @GNOME_VFS_CFLAGS@
+GNOME_VFS_LIBS = @GNOME_VFS_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
-GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
-GTKHTML2_LIBS = @GTKHTML2_LIBS@
-GTKHTML2_REQUIRED_VERSION = @GTKHTML2_REQUIRED_VERSION@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HAVE_FINITE = @HAVE_FINITE@
-HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HTML_DIR = @HTML_DIR@
 INSTALL = @INSTALL@
@@ -228,27 +241,16 @@ INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_XAM_RULE = @INTLTOOL_XAM_RULE@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
-JPEG = @JPEG@
+ISO_CODES_LOCALEDIR = @ISO_CODES_LOCALEDIR@
+ISO_CODES_LOCATION = @ISO_CODES_LOCATION@
+JPEG_LIBS = @JPEG_LIBS@
 LCMS = @LCMS@
+LCMS_CFLAGS = @LCMS_CFLAGS@
+LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
-LIBAA = @LIBAA@
-LIBART_CFLAGS = @LIBART_CFLAGS@
-LIBART_LIBS = @LIBART_LIBS@
-LIBJPEG = @LIBJPEG@
-LIBLCMS = @LIBLCMS@
-LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
-LIBPNG = @LIBPNG@
-LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
-LIBSCREENSHOT = @LIBSCREENSHOT@
-LIBSVG = @LIBSVG@
-LIBTIFF = @LIBTIFF@
 LIBTOOL = @LIBTOOL@
-LIBWMF = @LIBWMF@
-LIBXMU = @LIBXMU@
-LIBXPM = @LIBXPM@
-LIBZ = @LIBZ@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
@@ -256,10 +258,11 @@ LT_VERSION_INFO = @LT_VERSION_INFO@
 MAIL = @MAIL@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
+MIME_TYPES = @MIME_TYPES@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
-MNG = @MNG@
+MNG_LIBS = @MNG_LIBS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
@@ -274,22 +277,18 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PANGOFT2_CFLAGS = @PANGOFT2_CFLAGS@
 PANGOFT2_LIBS = @PANGOFT2_LIBS@
-PANGOFT2_REQUIRED_VERSION = @PANGOFT2_REQUIRED_VERSION@
 PATHSEP = @PATHSEP@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
-PNG = @PNG@
 PNG_CFLAGS = @PNG_CFLAGS@
 PNG_LIBS = @PNG_LIBS@
 POFILES = @POFILES@
-POPPLER = @POPPLER@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
 POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-PSP = @PSP@
 PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
@@ -304,9 +303,9 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
 SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
@@ -314,32 +313,32 @@ SHELL = @SHELL@
 SOCKET_LIBS = @SOCKET_LIBS@
 SSE_EXTRA_CFLAGS = @SSE_EXTRA_CFLAGS@
 STRIP = @STRIP@
-SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF_LOAD = @TIFF_LOAD@
-TIFF_SAVE = @TIFF_SAVE@
-URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
-URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
-URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
-URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
+TIFF_LIBS = @TIFF_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
+WEBKIT_CFLAGS = @WEBKIT_CFLAGS@
+WEBKIT_LIBS = @WEBKIT_LIBS@
+WIN32_LARGE_ADDRESS_AWARE = @WIN32_LARGE_ADDRESS_AWARE@
 WINDRES = @WINDRES@
-WMF = @WMF@
 WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
-WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
+WMF_LIBS = @WMF_LIBS@
+XFIXES_CFLAGS = @XFIXES_CFLAGS@
+XFIXES_LIBS = @XFIXES_LIBS@
 XGETTEXT = @XGETTEXT@
 XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
-XPM = @XPM@
+XMU_LIBS = @XMU_LIBS@
+XPM_LIBS = @XPM_LIBS@
 XSLTPROC = @XSLTPROC@
 X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+Z_LIBS = @Z_LIBS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -445,19 +444,6 @@ libgimpmath_2_0_la_LDFLAGS = \
 
 libgimpmath_2_0_la_DEPENDENCIES = $(gimpmath_def) $(libgimpbase)
 libgimpmath_2_0_la_LIBADD = $(GLIB_LIBS) $(libm)
-
-#
-# test programs, not to be built by default and never installed
-#
-TESTS = test-md5$(EXEEXT)
-test_md5_DEPENDENCIES = \
-	$(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
-
-test_md5_LDADD = \
-	$(GLIB_LIBS) 		\
-	$(test_md5_DEPENDENCIES)
-
-CLEANFILES = $(EXTRA_PROGRAMS)
 all: all-am
 
 .SUFFIXES:
@@ -520,9 +506,6 @@ clean-libLTLIBRARIES:
 	done
 libgimpmath-2.0.la: $(libgimpmath_2_0_la_OBJECTS) $(libgimpmath_2_0_la_DEPENDENCIES) 
 	$(libgimpmath_2_0_la_LINK) -rpath $(libdir) $(libgimpmath_2_0_la_OBJECTS) $(libgimpmath_2_0_la_LIBADD) $(LIBS)
-test-md5$(EXEEXT): $(test_md5_OBJECTS) $(test_md5_DEPENDENCIES) 
-	@rm -f test-md5$(EXEEXT)
-	$(LINK) $(test_md5_OBJECTS) $(test_md5_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -533,7 +516,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmatrix.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmd5.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvector.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-md5.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -626,79 +608,6 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
-check-TESTS: $(TESTS)
-	@failed=0; all=0; xfail=0; xpass=0; skip=0; ws='[	 ]'; \
-	srcdir=$(srcdir); export srcdir; \
-	list=' $(TESTS) '; \
-	if test -n "$$list"; then \
-	  for tst in $$list; do \
-	    if test -f ./$$tst; then dir=./; \
-	    elif test -f $$tst; then dir=; \
-	    else dir="$(srcdir)/"; fi; \
-	    if $(TESTS_ENVIRONMENT) $${dir}$$tst; then \
-	      all=`expr $$all + 1`; \
-	      case " $(XFAIL_TESTS) " in \
-	      *$$ws$$tst$$ws*) \
-		xpass=`expr $$xpass + 1`; \
-		failed=`expr $$failed + 1`; \
-		echo "XPASS: $$tst"; \
-	      ;; \
-	      *) \
-		echo "PASS: $$tst"; \
-	      ;; \
-	      esac; \
-	    elif test $$? -ne 77; then \
-	      all=`expr $$all + 1`; \
-	      case " $(XFAIL_TESTS) " in \
-	      *$$ws$$tst$$ws*) \
-		xfail=`expr $$xfail + 1`; \
-		echo "XFAIL: $$tst"; \
-	      ;; \
-	      *) \
-		failed=`expr $$failed + 1`; \
-		echo "FAIL: $$tst"; \
-	      ;; \
-	      esac; \
-	    else \
-	      skip=`expr $$skip + 1`; \
-	      echo "SKIP: $$tst"; \
-	    fi; \
-	  done; \
-	  if test "$$failed" -eq 0; then \
-	    if test "$$xfail" -eq 0; then \
-	      banner="All $$all tests passed"; \
-	    else \
-	      banner="All $$all tests behaved as expected ($$xfail expected failures)"; \
-	    fi; \
-	  else \
-	    if test "$$xpass" -eq 0; then \
-	      banner="$$failed of $$all tests failed"; \
-	    else \
-	      banner="$$failed of $$all tests did not behave as expected ($$xpass unexpected passes)"; \
-	    fi; \
-	  fi; \
-	  dashes="$$banner"; \
-	  skipped=""; \
-	  if test "$$skip" -ne 0; then \
-	    skipped="($$skip tests were not run)"; \
-	    test `echo "$$skipped" | wc -c` -le `echo "$$banner" | wc -c` || \
-	      dashes="$$skipped"; \
-	  fi; \
-	  report=""; \
-	  if test "$$failed" -ne 0 && test -n "$(PACKAGE_BUGREPORT)"; then \
-	    report="Please report to $(PACKAGE_BUGREPORT)"; \
-	    test `echo "$$report" | wc -c` -le `echo "$$banner" | wc -c` || \
-	      dashes="$$report"; \
-	  fi; \
-	  dashes=`echo "$$dashes" | sed s/./=/g`; \
-	  echo "$$dashes"; \
-	  echo "$$banner"; \
-	  test -z "$$skipped" || echo "$$skipped"; \
-	  test -z "$$report" || echo "$$report"; \
-	  echo "$$dashes"; \
-	  test "$$failed" -eq 0; \
-	else :; fi
-
 distdir: $(DISTFILES)
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
@@ -726,7 +635,6 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-am
 all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
@@ -750,7 +658,6 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -820,14 +727,14 @@ uninstall-am: uninstall-libLTLIBRARIES \
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-TESTS check-am clean \
-	clean-generic clean-libLTLIBRARIES clean-libtool ctags \
-	distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-data-local install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-libLTLIBRARIES \
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
+	clean-libLTLIBRARIES clean-libtool ctags distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am \
+	install-data-local install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-libLTLIBRARIES \
 	install-libgimpmathincludeHEADERS install-man install-pdf \
 	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \

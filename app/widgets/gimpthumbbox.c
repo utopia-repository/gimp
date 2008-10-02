@@ -171,22 +171,23 @@ static void
 gimp_thumb_box_style_set (GtkWidget *widget,
                           GtkStyle  *prev_style)
 {
-  GimpThumbBox *box = GIMP_THUMB_BOX (widget);
+  GimpThumbBox *box   = GIMP_THUMB_BOX (widget);
+  GtkStyle     *style = gtk_widget_get_style (widget);
   GtkWidget    *ebox;
 
   GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 
   gtk_widget_modify_bg (box->preview, GTK_STATE_NORMAL,
-                        &widget->style->base[GTK_STATE_NORMAL]);
+                        &style->base[GTK_STATE_NORMAL]);
   gtk_widget_modify_bg (box->preview, GTK_STATE_INSENSITIVE,
-                        &widget->style->base[GTK_STATE_NORMAL]);
+                        &style->base[GTK_STATE_NORMAL]);
 
   ebox = gtk_bin_get_child (GTK_BIN (widget));
 
   gtk_widget_modify_bg (ebox, GTK_STATE_NORMAL,
-                        &widget->style->base[GTK_STATE_NORMAL]);
+                        &style->base[GTK_STATE_NORMAL]);
   gtk_widget_modify_bg (ebox, GTK_STATE_INSENSITIVE,
-                        &widget->style->base[GTK_STATE_NORMAL]);
+                        &style->base[GTK_STATE_NORMAL]);
 }
 
 static GimpProgress *
@@ -411,6 +412,7 @@ gimp_thumb_box_new (GimpContext *context)
   box->info = gtk_label_new (" \n \n \n ");
   gtk_misc_set_alignment (GTK_MISC (box->info), 0.5, 0.0);
   gtk_label_set_justify (GTK_LABEL (box->info), GTK_JUSTIFY_CENTER);
+  gtk_label_set_line_wrap (GTK_LABEL (box->info), TRUE);
   gimp_label_set_attributes (GTK_LABEL (box->info),
                              PANGO_ATTR_SCALE, PANGO_SCALE_SMALL,
                              -1);
@@ -428,13 +430,12 @@ gimp_thumb_box_new (GimpContext *context)
   gtk_widget_size_request (box->progress, &progress_requisition);
 
   gtk_widget_set_size_request (box->info,
-                               progress_requisition.width,
-                               info_requisition.height);
+                               -1, info_requisition.height);
   gtk_widget_set_size_request (box->filename,
                                progress_requisition.width, -1);
 
-  gtk_widget_set_size_request (box->progress, -1,
-                               progress_requisition.height);
+  gtk_widget_set_size_request (box->progress,
+                               -1, progress_requisition.height);
   gtk_progress_bar_set_text (GTK_PROGRESS_BAR (box->progress), "");
 
   return GTK_WIDGET (box);
@@ -723,7 +724,7 @@ gimp_thumb_box_auto_thumbnail (GimpThumbBox *box)
               gchar *size;
               gchar *text;
 
-              size = gimp_memsize_to_string (thumb->image_filesize);
+              size = g_format_size_for_display (thumb->image_filesize);
               text = g_strdup_printf ("%s\n%s",
                                       size, _("Creating preview..."));
 

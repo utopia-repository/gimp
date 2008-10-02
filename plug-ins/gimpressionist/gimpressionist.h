@@ -1,3 +1,20 @@
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 
 #ifndef __GIMPRESSIONIST_H
 #define __GIMPRESSIONIST_H
@@ -9,8 +26,9 @@
 #include "ppmtool.h"
 /* Defines */
 
-#define PLUG_IN_NAME    "plug-in-gimpressionist"
+#define PLUG_IN_PROC    "plug-in-gimpressionist"
 #define PLUG_IN_VERSION "v1.0, November 2003"
+#define PLUG_IN_BINARY  "gimpressionist"
 
 #define PREVIEWSIZE     150
 #define MAXORIENTVECT   50
@@ -118,11 +136,13 @@ gchar *findfile (const gchar *);
 
 void unselectall (GtkWidget *list);
 void reselect (GtkWidget *list, char *fname);
-void readdirintolist (char *subdir, GtkWidget *view, char *selected);
-void readdirintolist_extended (char *subdir, GtkWidget *view, char *selected,
+void readdirintolist (const char *subdir, GtkWidget *view, char *selected);
+void readdirintolist_extended (const char *subdir,
+                               GtkWidget *view, char *selected,
                                gboolean with_filename_column,
-                               gchar *(*get_object_name_cb)
-                               (gchar *dir, gchar *filename, void *context),
+                               gchar *(*get_object_name_cb) (const gchar *dir,
+                                                             gchar *filename,
+                                                             void *context),
                                void * context);
 
 GtkWidget *create_one_column_list (GtkWidget *parent,
@@ -148,7 +168,8 @@ void restore_default_values (void);
 
 GtkWidget *create_radio_button (GtkWidget *box, int orient_type,
                                 void (*callback)(GtkWidget *wg, void *d),
-                                gchar *label, gchar *help_string,
+                                const gchar *label,
+                                const gchar *help_string,
                                 GSList **radio_group,
                                 GtkWidget **buttons_array
                                );

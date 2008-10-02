@@ -27,6 +27,7 @@
 
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
 
@@ -82,19 +83,17 @@ gimp_view_renderer_palette_render (GimpViewRenderer *renderer,
   GimpViewRendererPalette *renderpal = GIMP_VIEW_RENDERER_PALETTE (renderer);
   GimpPalette             *palette;
   guchar                  *row;
-  guchar                  *dest_row;
+  guchar                  *dest;
   GList                   *list;
   gdouble                  cell_width;
   gint                     grid_width;
+  gint                     dest_stride;
   gint                     y;
 
   palette = GIMP_PALETTE (renderer->viewable);
 
   if (palette->n_colors < 1)
     return;
-
-  if (! renderer->buffer)
-    renderer->buffer = g_new (guchar, renderer->height * renderer->rowstride);
 
   grid_width = renderpal->draw_grid ? 1 : 0;
 
@@ -135,13 +134,15 @@ gimp_view_renderer_palette_render (GimpViewRenderer *renderer,
 
   list = palette->colors;
 
-  memset (renderer->buffer,
-          renderpal->draw_grid ? 0 : 255,
-          renderer->height * renderer->rowstride);
+  if (! renderer->surface)
+    renderer->surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24,
+                                                    renderer->width,
+                                                    renderer->height);
 
-  row = g_new (guchar, renderer->rowstride);
+  row = g_new (guchar, renderer->width * 4);
 
-  dest_row = renderer->buffer;
+  dest        = cairo_image_surface_get_data (renderer->surface);
+  dest_stride = cairo_image_surface_get_stride (renderer->surface);
 
   for (y = 0; y < renderer->height; y++)
     {
@@ -150,15 +151,13 @@ gimp_view_renderer_palette_render (GimpViewRenderer *renderer,
           guchar  r, g, b;
           gint    x;
           gint    n = 0;
-          guchar *p = row;
+          guchar *d = row;
 
-          memset (row,
-                  renderpal->draw_grid ? 0 : 255,
-                  renderer->rowstride);
+          memset (row, renderpal->draw_grid ? 0 : 255, renderer->width * 4);
 
           r = g = b = (renderpal->draw_grid ? 0 : 255);
 
-          for (x = 0; x < renderer->width; x++)
+          for (x = 0; x < renderer->width; x++, d += 4)
             {
               if ((x % renderpal->cell_width) == 0)
                 {
@@ -180,29 +179,25 @@ gimp_view_renderer_palette_render (GimpViewRenderer *renderer,
 
               if (renderpal->draw_grid && (x % renderpal->cell_width) == 0)
                 {
-                  *p++ = 0;
-                  *p++ = 0;
-                  *p++ = 0;
+                  GIMP_CAIRO_RGB24_SET_PIXEL (d, 0, 0, 0);
                 }
               else
                 {
-                  *p++ = r;
-                  *p++ = g;
-                  *p++ = b;
+                  GIMP_CAIRO_RGB24_SET_PIXEL (d, r, g, b);
                 }
             }
         }
 
       if (renderpal->draw_grid && (y % renderpal->cell_height) == 0)
         {
-          memset (dest_row, 0, renderer->rowstride);
+          memset (dest, 0, renderer->width * 4);
         }
       else
         {
-          memcpy (dest_row, row, renderer->rowstride);
+          memcpy (dest, row, renderer->width * 4);
         }
 
-      dest_row += renderer->rowstride;
+      dest += dest_stride;
     }
 
   g_free (row);

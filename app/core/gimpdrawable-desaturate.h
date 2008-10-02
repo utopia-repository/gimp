@@ -21,6 +21,7 @@
 
 
 void   gimp_drawable_desaturate (GimpDrawable       *drawable,
+                                 GimpProgress       *progress,
                                  GimpDesaturateMode  mode);
 
 

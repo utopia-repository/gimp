@@ -58,6 +58,8 @@ struct _GimpData
   guint         internal  : 1;
   gint          freeze_count;
   time_t        mtime;
+
+  GList        *tags;
 };
 
 struct _GimpDataClass
@@ -65,13 +67,13 @@ struct _GimpDataClass
   GimpViewableClass  parent_class;
 
   /*  signals  */
-  void       (* dirty)         (GimpData  *data);
+  void          (* dirty)         (GimpData  *data);
 
   /*  virtual functions  */
-  gboolean   (* save)          (GimpData  *data,
-                                GError   **error);
-  gchar    * (* get_extension) (GimpData  *data);
-  GimpData * (* duplicate)     (GimpData  *data);
+  gboolean      (* save)          (GimpData  *data,
+                                   GError   **error);
+  const gchar * (* get_extension) (GimpData  *data);
+  GimpData    * (* duplicate)     (GimpData  *data);
 };
 
 
@@ -102,6 +104,8 @@ GimpData    * gimp_data_duplicate        (GimpData     *data);
 
 void          gimp_data_make_internal    (GimpData     *data);
 
+gint          gimp_data_compare          (GimpData     *data1,
+                                          GimpData     *data2);
 gint          gimp_data_name_compare     (GimpData     *data1,
                                           GimpData     *data2);
 

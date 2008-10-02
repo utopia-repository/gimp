@@ -28,6 +28,8 @@
 
 #include "gui-types.h"
 
+#include "widgets/gimpwidgets-utils.h"
+
 #include "splash.h"
 
 #include "gimp-intl.h"
@@ -61,7 +63,6 @@ typedef struct
 static GimpSplash *splash = NULL;
 
 
-static void        splash_map                 (void);
 static void        splash_position_layouts    (GimpSplash     *splash,
                                                const gchar    *text1,
                                                const gchar    *text2,
@@ -97,8 +98,6 @@ splash_create (gboolean be_verbose)
   GtkWidget          *vbox;
   GdkPixbufAnimation *pixbuf;
   GdkScreen          *screen;
-  PangoAttrList      *attrs;
-  PangoAttribute     *attr;
   GdkGCValues         values;
 
   g_return_if_fail (splash == NULL);
@@ -123,12 +122,6 @@ splash_create (gboolean be_verbose)
   g_signal_connect_swapped (splash->window, "delete-event",
                             G_CALLBACK (exit),
                             GINT_TO_POINTER (0));
-
-  /* we don't want the splash screen to send the startup notification */
-  gtk_window_set_auto_startup_notification (FALSE);
-  g_signal_connect (splash->window, "map",
-                    G_CALLBACK (splash_map),
-                    NULL);
 
   screen = gtk_widget_get_screen (splash->window);
 
@@ -158,7 +151,7 @@ splash_create (gboolean be_verbose)
       splash->area = gtk_image_new_from_animation (pixbuf);
     }
 
-  gtk_box_pack_start_defaults (GTK_BOX (vbox), splash->area);
+  gtk_box_pack_start (GTK_BOX (vbox), splash->area, TRUE, TRUE, 0);
   gtk_widget_show (splash->area);
 
   gtk_widget_set_size_request (splash->area, splash->width, splash->height);
@@ -166,15 +159,7 @@ splash_create (gboolean be_verbose)
   /*  create the pango layouts  */
   splash->upper = gtk_widget_create_pango_layout (splash->area, "");
   splash->lower = gtk_widget_create_pango_layout (splash->area, "");
-
-  attrs = pango_attr_list_new ();
-  attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
-  attr->start_index = 0;
-  attr->end_index   = -1;
-  pango_attr_list_insert (attrs, attr);
-
-  pango_layout_set_attributes (splash->upper, attrs);
-  pango_attr_list_unref (attrs);
+  gimp_pango_layout_set_scale (splash->lower, PANGO_SCALE_SMALL);
 
   /*  this sets the initial layout positions  */
   splash_position_layouts (splash, "", "", NULL);
@@ -266,7 +251,7 @@ splash_update (const gchar *text1,
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (splash->progress),
                                  percentage);
 
-  while (gtk_events_pending ())
+  if (gtk_events_pending ())
     gtk_main_iteration ();
 }
 
@@ -287,15 +272,6 @@ splash_area_expose (GtkWidget      *widget,
                    splash->lower_x, splash->lower_y, splash->lower);
 
   return FALSE;
-}
-
-static void
-splash_map (void)
-{
-  /*  Reenable startup notification after the splash has been shown
-   *  so that the next window that is mapped sends the notification.
-   */
-   gtk_window_set_auto_startup_notification (TRUE);
 }
 
 /* area returns the union of the previous and new ink rectangles */

@@ -29,30 +29,14 @@ struct _Levels
 
   gint    low_output[5];
   gint    high_output[5];
-
-  guchar  input[5][256]; /* this is used only by the gui */
 };
 
 
-void     levels_init                (Levels               *levels);
-void     levels_channel_reset       (Levels               *levels,
-                                     GimpHistogramChannel  channel);
-void     levels_stretch             (Levels               *levels,
-                                     GimpHistogram        *hist,
-                                     gboolean              is_color);
-void     levels_channel_stretch     (Levels               *levels,
-                                     GimpHistogram        *hist,
-                                     GimpHistogramChannel  channel);
-void     levels_adjust_by_colors    (Levels               *levels,
-                                     GimpHistogramChannel  channel,
-                                     guchar               *black,
-                                     guchar               *gray,
-                                     guchar               *white);
-void     levels_calculate_transfers (Levels               *levels);
-gfloat   levels_lut_func            (Levels               *levels,
-                                     gint                  n_channels,
-                                     gint                  channel,
-                                     gfloat                value);
+void     levels_init     (Levels *levels);
+gfloat   levels_lut_func (Levels *levels,
+                          gint    n_channels,
+                          gint    channel,
+                          gfloat  value);
 
 
 #endif  /*  __LEVELS_H__  */

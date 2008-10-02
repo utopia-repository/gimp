@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp-python.HEAD.pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-09 12:20+0100\n"
+"POT-Creation-Date: 2008-03-09 12:18+0100\n"
 "PO-Revision-Date: 2008-03-06 09:56+0100\n"
 "Last-Translator: Bartosz Kosiorek <gang65@poczta.onet.pl>\n"
 "Language-Team: Polish <gnome-l10n@lists.aviary.pl>\n"
@@ -51,7 +51,7 @@ msgstr "Nie"
 msgid "Yes"
 msgstr "Tak"
 
-#: ../plug-ins/pygimp/gimpfu.py:558 ../plug-ins/pygimp/gimpui.py:222
+#: ../plug-ins/pygimp/gimpfu.py:558 ../plug-ins/pygimp/gimpui.py:224
 msgid "Python-Fu File Selection"
 msgstr "Wybór pliku Python-Fu"
 
@@ -64,7 +64,7 @@ msgstr "Wybór folderu Python-Fu"
 msgid "Invalid input for '%s'"
 msgstr "Błąd wejścia dla \"%s\""
 
-#: ../plug-ins/pygimp/gimpui.py:175
+#: ../plug-ins/pygimp/gimpui.py:177
 msgid "Python-Fu Color Selection"
 msgstr "Wybór koloru Python-Fu"
 
@@ -135,8 +135,7 @@ msgid "Save Python-Fu Console Output"
 msgstr "Zapis wyjścia konsoli Python-Fu"
 
 #: ../plug-ins/pygimp/plug-ins/gimpcons.py:218
-#, fuzzy
-msgid "Interactive Gimp-Python interpreter"
+msgid "Interactive GIMP Python interpreter"
 msgstr "Interaktywny interpreter GIMP Python"
 
 #: ../plug-ins/pygimp/plug-ins/gimpcons.py:223

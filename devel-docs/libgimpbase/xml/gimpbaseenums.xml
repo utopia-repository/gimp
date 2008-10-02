@@ -39,6 +39,7 @@ enum                <link linkend="GimpInterpolationType">GimpInterpolationType<
 enum                <link linkend="GimpMessageHandlerType">GimpMessageHandlerType</link>;
 enum                <link linkend="GimpPaintApplicationMode">GimpPaintApplicationMode</link>;
 enum                <link linkend="GimpPDBArgType">GimpPDBArgType</link>;
+enum                <link linkend="GimpPDBErrorHandler">GimpPDBErrorHandler</link>;
 enum                <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
 enum                <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
 enum                <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
@@ -46,6 +47,8 @@ enum                <link linkend="GimpRepeatMode">GimpRepeatMode</link>;
 enum                <link linkend="GimpRunMode">GimpRunMode</link>;
 enum                <link linkend="GimpSizeType">GimpSizeType</link>;
 enum                <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
+enum                <link linkend="GimpTextDirection">GimpTextDirection</link>;
+enum                <link linkend="GimpTextJustification">GimpTextJustification</link>;
 enum                <link linkend="GimpTransferMode">GimpTransferMode</link>;
 enum                <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
 enum                <link linkend="GimpTransformResize">GimpTransformResize</link>;
@@ -342,14 +345,27 @@ Basic GIMP enumeration data types.
   GIMP_PDB_CHANNEL,
   GIMP_PDB_DRAWABLE,
   GIMP_PDB_SELECTION,
-  GIMP_PDB_BOUNDARY,
+  GIMP_PDB_COLORARRAY,
   GIMP_PDB_VECTORS,
   GIMP_PDB_PARASITE,
   GIMP_PDB_STATUS,
   GIMP_PDB_END,
 
-  GIMP_PDB_PATH = GIMP_PDB_VECTORS /* deprecated */
+  /*  the following aliases are deprecated  */
+  GIMP_PDB_PATH     = GIMP_PDB_VECTORS,     /*&lt; skip &gt;*/
+  GIMP_PDB_BOUNDARY = GIMP_PDB_COLORARRAY   /*&lt; skip &gt;*/
 } GimpPDBArgType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2 id="GimpPDBErrorHandler" role="enum">
+<title>enum GimpPDBErrorHandler</title>
+<indexterm zone="GimpPDBErrorHandler"><primary>GimpPDBErrorHandler</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_PDB_ERROR_HANDLER_INTERNAL,
+  GIMP_PDB_ERROR_HANDLER_PLUGIN
+} GimpPDBErrorHandler;
 </programlisting>
 <para>
 
@@ -443,6 +459,30 @@ Basic GIMP enumeration data types.
 <para>
 
 </para></refsect2>
+<refsect2 id="GimpTextDirection" role="enum">
+<title>enum GimpTextDirection</title>
+<indexterm zone="GimpTextDirection"><primary>GimpTextDirection</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_TEXT_DIRECTION_LTR,   /*&lt; desc="From left to right" &gt;*/
+  GIMP_TEXT_DIRECTION_RTL    /*&lt; desc="From right to left" &gt;*/
+} GimpTextDirection;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2 id="GimpTextJustification" role="enum">
+<title>enum GimpTextJustification</title>
+<indexterm zone="GimpTextJustification"><primary>GimpTextJustification</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_TEXT_JUSTIFY_LEFT,    /*&lt; desc="Left justified"  &gt;*/
+  GIMP_TEXT_JUSTIFY_RIGHT,   /*&lt; desc="Right justified" &gt;*/
+  GIMP_TEXT_JUSTIFY_CENTER,  /*&lt; desc="Centered"        &gt;*/
+  GIMP_TEXT_JUSTIFY_FILL     /*&lt; desc="Filled"          &gt;*/
+} GimpTextJustification;
+</programlisting>
+<para>
+
+</para></refsect2>
 <refsect2 id="GimpTransferMode" role="enum">
 <title>enum GimpTransferMode</title>
 <indexterm zone="GimpTransferMode"><primary>GimpTransferMode</primary></indexterm><programlisting>typedef enum
@@ -479,9 +519,9 @@ Basic GIMP enumeration data types.
 <para>
 
 </para></refsect2>
-<refsect2 id="GimpUserDirectory" role="enum">
+<refsect2 id="GimpUserDirectory" role="enum" condition="deprecated:">
 <title>enum GimpUserDirectory</title>
-<indexterm zone="GimpUserDirectory"><primary>GimpUserDirectory</primary></indexterm><programlisting>typedef enum
+<indexterm zone="GimpUserDirectory" role="deprecated"><primary>GimpUserDirectory</primary></indexterm><programlisting>typedef enum
 {
   GIMP_USER_DIRECTORY_DESKTOP,
   GIMP_USER_DIRECTORY_DOCUMENTS,
@@ -493,6 +533,7 @@ Basic GIMP enumeration data types.
   GIMP_USER_DIRECTORY_VIDEOS
 } GimpUserDirectory;
 </programlisting>
+<warning><para><literal>GimpUserDirectory</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 
 </para></refsect2>

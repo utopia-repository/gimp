@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <glib-object.h>
+#include <cairo.h>
 
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpmath/gimpmath.h"
@@ -65,8 +66,7 @@ static gint64     gimp_vectors_get_memsize  (GimpObject       *object,
 
 static gboolean   gimp_vectors_is_attached  (GimpItem         *item);
 static GimpItem * gimp_vectors_duplicate    (GimpItem         *item,
-                                             GType             new_type,
-                                             gboolean          add_alpha);
+                                             GType             new_type);
 static void       gimp_vectors_convert      (GimpItem         *item,
                                              GimpImage        *dest_image);
 static void       gimp_vectors_translate    (GimpItem         *item,
@@ -108,7 +108,8 @@ static void       gimp_vectors_transform    (GimpItem         *item,
 static gboolean   gimp_vectors_stroke       (GimpItem         *item,
                                              GimpDrawable     *drawable,
                                              GimpStrokeDesc   *stroke_desc,
-                                             GimpProgress     *progress);
+                                             GimpProgress     *progress,
+                                             GError          **error);
 
 static void       gimp_vectors_real_thaw            (GimpVectors       *vectors);
 static void       gimp_vectors_real_stroke_add      (GimpVectors       *vectors,
@@ -135,7 +136,7 @@ static gint       gimp_vectors_real_interpolate     (const GimpVectors *vectors,
                                                      gdouble            precision,
                                                      gint               max_points,
                                                      GimpCoords        *ret_coords);
-static GimpVectors * gimp_vectors_real_make_bezier  (const GimpVectors *vectors);
+static GimpBezierDesc * gimp_vectors_real_make_bezier (const GimpVectors *vectors);
 
 
 G_DEFINE_TYPE (GimpVectors, gimp_vectors, GIMP_TYPE_ITEM)
@@ -220,9 +221,8 @@ gimp_vectors_class_init (GimpVectorsClass *klass)
 static void
 gimp_vectors_init (GimpVectors *vectors)
 {
-  GimpItem *item = GIMP_ITEM (vectors);
+  gimp_item_set_visible (GIMP_ITEM (vectors), FALSE, FALSE);
 
-  item->visible           = FALSE;
   vectors->strokes        = NULL;
   vectors->last_stroke_ID = 0;
   vectors->freeze_count   = 0;
@@ -271,15 +271,13 @@ gimp_vectors_is_attached (GimpItem *item)
 
 static GimpItem *
 gimp_vectors_duplicate (GimpItem *item,
-                        GType     new_type,
-                        gboolean  add_alpha)
+                        GType     new_type)
 {
   GimpItem *new_item;
 
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_VECTORS), NULL);
 
-  new_item = GIMP_ITEM_CLASS (parent_class)->duplicate (item, new_type,
-                                                        add_alpha);
+  new_item = GIMP_ITEM_CLASS (parent_class)->duplicate (item, new_type);
 
   if (GIMP_IS_VECTORS (new_item))
     {
@@ -296,8 +294,8 @@ static void
 gimp_vectors_convert (GimpItem  *item,
                       GimpImage *dest_image)
 {
-  item->width  = dest_image->width;
-  item->height = dest_image->height;
+  item->width  = gimp_image_get_width  (dest_image);
+  item->height = gimp_image_get_height (dest_image);
 
   GIMP_ITEM_CLASS (parent_class)->convert (item, dest_image);
 }
@@ -351,13 +349,16 @@ gimp_vectors_scale (GimpItem              *item,
       GimpStroke *stroke = list->data;
 
       gimp_stroke_scale (stroke,
-                         (gdouble) new_width  / (gdouble) item->width,
-                         (gdouble) new_height / (gdouble) item->height);
+                         (gdouble) new_width  / (gdouble) gimp_item_width  (item),
+                         (gdouble) new_height / (gdouble) gimp_item_height (item));
       gimp_stroke_translate (stroke, new_offset_x, new_offset_y);
     }
 
-  GIMP_ITEM_CLASS (parent_class)->scale (item, image->width, image->height,
-                                         0, 0, interpolation_type, progress);
+  GIMP_ITEM_CLASS (parent_class)->scale (item,
+                                         gimp_image_get_width  (image),
+                                         gimp_image_get_height (image),
+                                         0, 0,
+                                         interpolation_type, progress);
 
   gimp_vectors_thaw (vectors);
 }
@@ -387,7 +388,9 @@ gimp_vectors_resize (GimpItem    *item,
     }
 
   GIMP_ITEM_CLASS (parent_class)->resize (item, context,
-                                          image->width, image->height, 0, 0);
+                                          gimp_image_get_width  (image),
+                                          gimp_image_get_height (image),
+                                          0, 0);
 
   gimp_vectors_thaw (vectors);
 }
@@ -489,10 +492,11 @@ gimp_vectors_transform (GimpItem               *item,
 }
 
 static gboolean
-gimp_vectors_stroke (GimpItem       *item,
-                     GimpDrawable   *drawable,
-                     GimpStrokeDesc *stroke_desc,
-                     GimpProgress   *progress)
+gimp_vectors_stroke (GimpItem        *item,
+                     GimpDrawable    *drawable,
+                     GimpStrokeDesc  *stroke_desc,
+                     GimpProgress    *progress,
+                     GError         **error)
 {
   GimpVectors *vectors = GIMP_VECTORS (item);
   gboolean     retval  = FALSE;
@@ -518,7 +522,8 @@ gimp_vectors_stroke (GimpItem       *item,
 
         retval = gimp_paint_core_stroke_vectors (core, drawable,
                                                  stroke_desc->paint_options,
-                                                 vectors);
+                                                 stroke_desc->emulate_dynamics,
+                                                 vectors, error);
 
         g_object_unref (core);
       }
@@ -551,7 +556,9 @@ gimp_vectors_new (GimpImage   *image,
   vectors = g_object_new (GIMP_TYPE_VECTORS, NULL);
 
   gimp_item_configure (GIMP_ITEM (vectors), image,
-                       0, 0, image->width, image->height,
+                       0, 0,
+                       gimp_image_get_width  (image),
+                       gimp_image_get_height (image),
                        name);
 
   return vectors;
@@ -1008,7 +1015,7 @@ gimp_vectors_real_interpolate (const GimpVectors *vectors,
 }
 
 
-GimpVectors *
+GimpBezierDesc *
 gimp_vectors_make_bezier (const GimpVectors *vectors)
 {
   g_return_val_if_fail (GIMP_IS_VECTORS (vectors), NULL);
@@ -1016,11 +1023,38 @@ gimp_vectors_make_bezier (const GimpVectors *vectors)
   return GIMP_VECTORS_GET_CLASS (vectors)->make_bezier (vectors);
 }
 
-static GimpVectors *
+static GimpBezierDesc *
 gimp_vectors_real_make_bezier (const GimpVectors *vectors)
 {
-  g_printerr ("gimp_vectors_make_bezier: default implementation\n");
+  GimpStroke     *cur_stroke;
+  GArray         *cmd_array;
+  GimpBezierDesc *bezdesc;
+  GimpBezierDesc *ret_bezdesc = NULL;
 
-  return NULL;
+  cmd_array = g_array_new (FALSE, FALSE, sizeof (cairo_path_data_t));
+
+  for (cur_stroke = gimp_vectors_stroke_get_next (vectors, NULL);
+       cur_stroke;
+       cur_stroke = gimp_vectors_stroke_get_next (vectors, cur_stroke))
+    {
+      bezdesc = gimp_stroke_make_bezier (cur_stroke);
+      if (bezdesc)
+        {
+          cmd_array = g_array_append_vals (cmd_array, bezdesc->data,
+                                           bezdesc->num_data);
+          g_free (bezdesc->data);
+          g_free (bezdesc);
+        }
+    }
+
+  if (cmd_array->len > 0)
+    {
+      ret_bezdesc = g_new (GimpBezierDesc, 1);
+      ret_bezdesc->num_data = cmd_array->len;
+      ret_bezdesc->data = (cairo_path_data_t *) cmd_array->data;
+      g_array_free (cmd_array, FALSE);
+    }
+
+  return ret_bezdesc;
 }
 

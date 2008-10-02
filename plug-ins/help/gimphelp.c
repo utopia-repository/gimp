@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * The GIMP Help plug-in
- * Copyright (C) 1999-2004 Sven Neumann <sven@gimp.org>
+ * Copyright (C) 1999-2008 Sven Neumann <sven@gimp.org>
  *                         Michael Natterer <mitch@gimp.org>
  *                         Henrik Brix Andersen <brix@gimp.org>
  *
@@ -55,9 +55,7 @@ gimp_help_init (gint    num_domain_names,
                 gint    num_domain_uris,
                 gchar **domain_uris)
 {
-  const gchar *default_env_domain_uri;
-  gchar       *default_domain_uri;
-  gint         i;
+  gint i;
 
   if (num_domain_names != num_domain_uris)
     {
@@ -66,33 +64,8 @@ gimp_help_init (gint    num_domain_names,
       return FALSE;
     }
 
-  /*  set default values  */
-  default_env_domain_uri = g_getenv (GIMP_HELP_ENV_URI);
-
-  if (default_env_domain_uri)
-    {
-      default_domain_uri = g_strdup (default_env_domain_uri);
-    }
-  else
-    {
-      gchar *help_root = g_build_filename (gimp_data_directory (),
-                                           GIMP_HELP_PREFIX,
-                                           NULL);
-
-      default_domain_uri = g_filename_to_uri (help_root, NULL, NULL);
-
-      g_free (help_root);
-    }
-
-  gimp_help_register_domain (GIMP_HELP_DEFAULT_DOMAIN,
-                             default_domain_uri, NULL);
-
   for (i = 0; i < num_domain_names; i++)
-    {
-      gimp_help_register_domain (domain_names[i], domain_uris[i], NULL);
-    }
-
-  g_free (default_domain_uri);
+    gimp_help_register_domain (domain_names[i], domain_uris[i]);
 
   return TRUE;
 }
@@ -109,8 +82,7 @@ gimp_help_exit (void)
 
 void
 gimp_help_register_domain (const gchar *domain_name,
-                           const gchar *domain_uri,
-                           const gchar *domain_root)
+                           const gchar *domain_uri)
 {
   g_return_if_fail (domain_name != NULL);
   g_return_if_fail (domain_uri != NULL);
@@ -127,8 +99,7 @@ gimp_help_register_domain (const gchar *domain_name,
 
   g_hash_table_insert (domain_hash,
                        g_strdup (domain_name),
-                       gimp_help_domain_new (domain_name,
-                                             domain_uri, domain_root));
+                       gimp_help_domain_new (domain_name, domain_uri));
 }
 
 GimpHelpDomain *
@@ -165,7 +136,7 @@ gimp_help_parse_locales (const gchar *help_locales)
   if (*s)
     locales = g_list_append (locales, g_strdup (s));
 
-  /*  if the list doesn't contain the default domain yet, append it  */
+  /*  if the list doesn't contain the default locale yet, append it  */
   for (list = locales; list; list = list->next)
     if (strcmp ((const gchar *) list->data, GIMP_HELP_DEFAULT_LOCALE) == 0)
       break;

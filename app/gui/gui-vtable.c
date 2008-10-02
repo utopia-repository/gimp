@@ -22,6 +22,10 @@
 
 #include <gtk/gtk.h>
 
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
+
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "gui-types.h"
@@ -35,6 +39,8 @@
 #include "core/gimpcontext.h"
 #include "core/gimpgradient.h"
 #include "core/gimpimage.h"
+#include "core/gimpimagefile.h"
+#include "core/gimplist.h"
 #include "core/gimppalette.h"
 #include "core/gimppattern.h"
 #include "core/gimpprogress.h"
@@ -64,6 +70,8 @@
 
 #include "menus/menus.h"
 
+#include "dialogs/dialogs.h"
+
 #include "gui-message.h"
 #include "gui-vtable.h"
 #include "themes.h"
@@ -78,18 +86,22 @@ static void           gui_threads_leave        (Gimp                *gimp);
 static void           gui_set_busy             (Gimp                *gimp);
 static void           gui_unset_busy           (Gimp                *gimp);
 static void           gui_help                 (Gimp                *gimp,
+                                                GimpProgress        *progress,
                                                 const gchar         *help_domain,
                                                 const gchar         *help_id);
 static const gchar  * gui_get_program_class    (Gimp                *gimp);
 static gchar        * gui_get_display_name     (Gimp                *gimp,
                                                 gint                 display_ID,
                                                 gint                *monitor_number);
+static guint32        gui_get_user_time        (Gimp                *gimp);
 static const gchar  * gui_get_theme_dir        (Gimp                *gimp);
+static GimpObject   * gui_get_empty_display    (Gimp                *gimp);
 static GimpObject   * gui_display_get_by_ID    (Gimp                *gimp,
                                                 gint                 ID);
 static gint           gui_display_get_ID       (GimpObject          *display);
 static guint32        gui_display_get_window   (GimpObject          *display);
-static GimpObject   * gui_display_create       (GimpImage           *image,
+static GimpObject   * gui_display_create       (Gimp                *gimp,
+                                                GimpImage           *image,
                                                 GimpUnit             unit,
                                                 gdouble              scale);
 static void           gui_display_delete       (GimpObject          *display);
@@ -119,6 +131,8 @@ static gboolean       gui_pdb_dialog_close     (Gimp                *gimp,
 static gboolean       gui_recent_list_add_uri  (Gimp                *gimp,
                                                 const gchar         *uri,
                                                 const gchar         *mime_type);
+static void           gui_recent_list_load     (Gimp                *gimp);
+
 
 /*  public functions  */
 
@@ -136,7 +150,9 @@ gui_vtable_init (Gimp *gimp)
   gimp->gui.help                = gui_help;
   gimp->gui.get_program_class   = gui_get_program_class;
   gimp->gui.get_display_name    = gui_get_display_name;
+  gimp->gui.get_user_time       = gui_get_user_time;
   gimp->gui.get_theme_dir       = gui_get_theme_dir;
+  gimp->gui.get_empty_display   = gui_get_empty_display;
   gimp->gui.display_get_by_id   = gui_display_get_by_ID;
   gimp->gui.display_get_id      = gui_display_get_ID;
   gimp->gui.display_get_window  = gui_display_get_window;
@@ -149,6 +165,7 @@ gui_vtable_init (Gimp *gimp)
   gimp->gui.pdb_dialog_set      = gui_pdb_dialog_set;
   gimp->gui.pdb_dialog_close    = gui_pdb_dialog_close;
   gimp->gui.recent_list_add_uri = gui_recent_list_add_uri;
+  gimp->gui.recent_list_load    = gui_recent_list_load;
 }
 
 
@@ -197,11 +214,12 @@ gui_unset_busy (Gimp *gimp)
 }
 
 static void
-gui_help (Gimp        *gimp,
-          const gchar *help_domain,
-          const gchar *help_id)
+gui_help (Gimp         *gimp,
+          GimpProgress *progress,
+          const gchar  *help_domain,
+          const gchar  *help_id)
 {
-  gimp_help_show (gimp, help_domain, help_id);
+  gimp_help_show (gimp, progress, help_domain, help_id);
 }
 
 static const gchar *
@@ -245,10 +263,38 @@ gui_get_display_name (Gimp *gimp,
   return NULL;
 }
 
+static guint32
+gui_get_user_time (Gimp *gimp)
+{
+#ifdef GDK_WINDOWING_X11
+  return gdk_x11_display_get_user_time (gdk_display_get_default ());
+#endif
+  return 0;
+}
+
 static const gchar *
 gui_get_theme_dir (Gimp *gimp)
 {
   return themes_get_theme_dir (gimp, GIMP_GUI_CONFIG (gimp->config)->theme);
+}
+
+static GimpObject *
+gui_get_empty_display (Gimp *gimp)
+{
+  GimpObject *display = NULL;
+
+  if (gimp_container_num_children (gimp->displays) == 1)
+    {
+      display = gimp_container_get_first_child (gimp->displays);
+
+      if (GIMP_DISPLAY (display)->image)
+        {
+          /* The display was not empty */
+          display = NULL;
+        }
+    }
+
+  return display;
 }
 
 static GimpObject *
@@ -276,22 +322,39 @@ gui_display_get_window (GimpObject *display)
 }
 
 static GimpObject *
-gui_display_create (GimpImage *image,
+gui_display_create (Gimp      *gimp,
+                    GimpImage *image,
                     GimpUnit   unit,
                     gdouble    scale)
 {
-  GimpDisplay *display;
-  GList       *image_managers;
+  GimpContext *context = gimp_get_user_context (gimp);
+  GimpDisplay *display = GIMP_DISPLAY (gui_get_empty_display (gimp));
 
-  image_managers = gimp_ui_managers_from_name ("<Image>");
+  if (display)
+    {
+      gimp_display_fill (display, image, unit, scale);
+    }
+  else
+    {
+      GList *image_managers = gimp_ui_managers_from_name ("<Image>");
 
-  g_return_val_if_fail (image_managers != NULL, NULL);
+      g_return_val_if_fail (image_managers != NULL, NULL);
 
-  display = gimp_display_new (image, unit, scale,
-                              global_menu_factory,
-                              image_managers->data);
+      display = gimp_display_new (gimp, image, unit, scale,
+                                  global_menu_factory,
+                                  image_managers->data,
+                                  global_display_factory);
+   }
 
-  gimp_context_set_display (gimp_get_user_context (image->gimp), display);
+  if (gimp_context_get_display (context) == display)
+    {
+      gimp_context_set_image (context, image);
+      gimp_context_display_changed (context);
+    }
+  else
+    {
+      gimp_context_set_display (context, display);
+    }
 
   gimp_ui_manager_update (GIMP_DISPLAY_SHELL (display->shell)->menubar_manager,
                           display);
@@ -302,7 +365,7 @@ gui_display_create (GimpImage *image,
 static void
 gui_display_delete (GimpObject *display)
 {
-  gimp_display_delete (GIMP_DISPLAY (display));
+  gimp_display_close (GIMP_DISPLAY (display));
 }
 
 static void
@@ -551,16 +614,11 @@ gui_recent_list_add_uri (Gimp        *gimp,
                          const gchar *uri,
                          const gchar *mime_type)
 {
-  GtkRecentManager *manager;
-  GtkRecentData     recent;
-  const gchar      *groups[2] = { "Graphics", NULL };
+  GtkRecentData  recent;
+  const gchar   *groups[2] = { "Graphics", NULL };
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
   g_return_val_if_fail (uri != NULL, FALSE);
-
-  manager = gtk_recent_manager_get_default ();
-
-  g_return_val_if_fail (manager != NULL, FALSE);
 
   /* use last part of the URI */
   recent.display_name = NULL;
@@ -574,5 +632,56 @@ gui_recent_list_add_uri (Gimp        *gimp,
   recent.groups       = (gchar **) groups;
   recent.is_private   = FALSE;
 
-  return gtk_recent_manager_add_full (manager, uri, &recent);
+  return gtk_recent_manager_add_full (gtk_recent_manager_get_default (),
+                                      uri, &recent);
+}
+
+static gint
+gui_recent_list_compare (gconstpointer a,
+                         gconstpointer b)
+{
+  return (gtk_recent_info_get_modified ((GtkRecentInfo *) a) -
+          gtk_recent_info_get_modified ((GtkRecentInfo *) b));
+}
+
+static void
+gui_recent_list_load (Gimp *gimp)
+{
+  GList *items;
+  GList *list;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+
+  gimp_container_freeze (gimp->documents);
+  gimp_container_clear (gimp->documents);
+
+  items = gtk_recent_manager_get_items (gtk_recent_manager_get_default ());
+
+  items = g_list_sort (items, gui_recent_list_compare);
+
+  for (list = items; list; list = list->next)
+    {
+      GtkRecentInfo *info = list->data;
+
+      if (gtk_recent_info_has_application (info,
+                                           "GNU Image Manipulation Program"))
+        {
+          GimpImagefile *imagefile;
+
+          imagefile = gimp_imagefile_new (gimp,
+                                          gtk_recent_info_get_uri (info));
+
+          gimp_imagefile_set_mime_type (imagefile,
+                                        gtk_recent_info_get_mime_type (info));
+
+          gimp_container_add (gimp->documents, GIMP_OBJECT (imagefile));
+          g_object_unref (imagefile);
+        }
+
+      gtk_recent_info_unref (info);
+    }
+
+  g_list_free (items);
+
+  gimp_container_thaw (gimp->documents);
 }

@@ -75,7 +75,7 @@ sub jay_pdb_misc {
 }
 
 sub joao_pdb_misc {
-    contrib_pdb_misc('Jo\xc3\xa3o S. O. Bueno Calligaris', '', @_);
+    contrib_pdb_misc('Jo\xc3\xa3o S. O. Bueno', '', @_);
 }
 
 sub josh_pdb_misc {
@@ -92,6 +92,10 @@ sub larry_pdb_misc {
 
 sub marc_pdb_misc {
     contrib_pdb_misc('Marc Lehmann', '', @_);
+}
+
+sub marcus_pdb_misc {
+    contrib_pdb_misc('Marcus Heese', 'heese@cip.ifi.lmu.de', @_);
 }
 
 sub martin_pdb_misc {

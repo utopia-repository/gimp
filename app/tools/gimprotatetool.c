@@ -18,7 +18,10 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "libgimpmath/gimpmath.h"
 #include "libgimpwidgets/gimpwidgets.h"
@@ -53,19 +56,21 @@
 
 /*  local function prototypes  */
 
-static void   gimp_rotate_tool_dialog        (GimpTransformTool   *tr_tool);
-static void   gimp_rotate_tool_dialog_update (GimpTransformTool   *tr_tool);
-static void   gimp_rotate_tool_prepare       (GimpTransformTool   *tr_tool,
-                                              GimpDisplay         *display);
-static void   gimp_rotate_tool_motion        (GimpTransformTool   *tr_tool,
-                                              GimpDisplay         *display);
-static void   gimp_rotate_tool_recalc        (GimpTransformTool   *tr_tool,
-                                              GimpDisplay         *display);
-
-static void   rotate_angle_changed           (GtkAdjustment       *adj,
-                                              GimpTransformTool   *tr_tool);
-static void   rotate_center_changed          (GtkWidget           *entry,
-                                              GimpTransformTool   *tr_tool);
+static gboolean gimp_rotate_tool_key_press     (GimpTool            *tool,
+                                                GdkEventKey         *kevent,
+                                                GimpDisplay         *display);
+static void     gimp_rotate_tool_dialog        (GimpTransformTool   *tr_tool);
+static void     gimp_rotate_tool_dialog_update (GimpTransformTool   *tr_tool);
+static void     gimp_rotate_tool_prepare       (GimpTransformTool   *tr_tool,
+                                                GimpDisplay         *display);
+static void     gimp_rotate_tool_motion        (GimpTransformTool   *tr_tool,
+                                                GimpDisplay         *display);
+static void     gimp_rotate_tool_recalc        (GimpTransformTool   *tr_tool,
+                                                GimpDisplay         *display);
+static void     rotate_angle_changed           (GtkAdjustment       *adj,
+                                                GimpTransformTool   *tr_tool);
+static void     rotate_center_changed          (GtkWidget           *entry,
+                                                GimpTransformTool   *tr_tool);
 
 
 G_DEFINE_TYPE (GimpRotateTool, gimp_rotate_tool, GIMP_TYPE_TRANSFORM_TOOL)
@@ -93,7 +98,10 @@ gimp_rotate_tool_register (GimpToolRegisterCallback  callback,
 static void
 gimp_rotate_tool_class_init (GimpRotateToolClass *klass)
 {
+  GimpToolClass          *tool_class  = GIMP_TOOL_CLASS (klass);
   GimpTransformToolClass *trans_class = GIMP_TRANSFORM_TOOL_CLASS (klass);
+
+  tool_class->key_press      = gimp_rotate_tool_key_press;
 
   trans_class->dialog        = gimp_rotate_tool_dialog;
   trans_class->dialog_update = gimp_rotate_tool_dialog_update;
@@ -110,11 +118,49 @@ gimp_rotate_tool_init (GimpRotateTool *rotate_tool)
 
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_ROTATE);
 
-  tr_tool->undo_desc     = Q_("command|Rotate");
+  tr_tool->undo_desc     = C_("command", "Rotate");
   tr_tool->progress_text = _("Rotating");
 
   tr_tool->use_grid      = TRUE;
   tr_tool->use_center    = TRUE;
+}
+
+static gboolean
+gimp_rotate_tool_key_press (GimpTool    *tool,
+                            GdkEventKey *kevent,
+                            GimpDisplay *display)
+{
+  GimpDrawTool *draw_tool = GIMP_DRAW_TOOL (tool);
+
+  if (display == draw_tool->display)
+    {
+      GimpRotateTool *rotate     = GIMP_ROTATE_TOOL (tool);
+      GtkSpinButton  *angle_spin = GTK_SPIN_BUTTON (rotate->angle_spin_button);
+
+      switch (kevent->keyval)
+        {
+        case GDK_Up:
+          gtk_spin_button_spin (angle_spin, GTK_SPIN_STEP_FORWARD, 0.0);
+          return TRUE;
+
+        case GDK_Down:
+          gtk_spin_button_spin (angle_spin, GTK_SPIN_STEP_BACKWARD, 0.0);
+          return TRUE;
+
+        case GDK_Left:
+          gtk_spin_button_spin (angle_spin, GTK_SPIN_PAGE_FORWARD, 0.0);
+          return TRUE;
+
+        case GDK_Right:
+          gtk_spin_button_spin (angle_spin, GTK_SPIN_PAGE_BACKWARD, 0.0);
+          return TRUE;
+
+        default:
+          break;
+        }
+    }
+
+  return GIMP_TOOL_CLASS (parent_class)->key_press (tool, kevent, display);
 }
 
 static void
@@ -141,6 +187,7 @@ gimp_rotate_tool_dialog (GimpTransformTool *tr_tool)
   gtk_entry_set_width_chars (GTK_ENTRY (button), SB_WIDTH);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0, _("_Angle:"),
                              0.0, 0.5, button, 1, TRUE);
+  rotate->angle_spin_button = button;
 
   g_signal_connect (rotate->angle_adj, "value-changed",
                     G_CALLBACK (rotate_angle_changed),
@@ -152,7 +199,7 @@ gimp_rotate_tool_dialog (GimpTransformTool *tr_tool)
                     GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
   gtk_widget_show (scale);
 
-  button = gimp_spin_button_new (&adj, 0, -1, 1, 1, 10, 1, 1, 2);
+  button = gimp_spin_button_new (&adj, 0, -1, 1, 1, 10, 0, 1, 2);
   gtk_entry_set_width_chars (GTK_ENTRY (button), SB_WIDTH);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2, _("Center _X:"),
                              0.0, 0.5, button, 1, TRUE);
@@ -198,11 +245,15 @@ gimp_rotate_tool_prepare (GimpTransformTool *tr_tool,
                           GimpDisplay       *display)
 {
   GimpRotateTool *rotate = GIMP_ROTATE_TOOL (tr_tool);
+  gdouble         xres;
+  gdouble         yres;
 
   tr_tool->trans_info[ANGLE]      = 0.0;
   tr_tool->trans_info[REAL_ANGLE] = 0.0;
   tr_tool->trans_info[CENTER_X]   = tr_tool->cx;
   tr_tool->trans_info[CENTER_Y]   = tr_tool->cy;
+
+  gimp_image_get_resolution (display->image, &xres, &yres);
 
   g_signal_handlers_block_by_func (rotate->sizeentry,
                                    rotate_center_changed,
@@ -212,16 +263,18 @@ gimp_rotate_tool_prepare (GimpTransformTool *tr_tool,
                             GIMP_DISPLAY_SHELL (display->shell)->unit);
 
   gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (rotate->sizeentry), 0,
-                                  display->image->xresolution, FALSE);
+                                  xres, FALSE);
   gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (rotate->sizeentry), 1,
-                                  display->image->yresolution, FALSE);
+                                  yres, FALSE);
 
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (rotate->sizeentry), 0,
                                          -65536,
-                                         65536 + display->image->width);
+                                         65536 +
+                                         gimp_image_get_width (display->image));
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (rotate->sizeentry), 1,
                                          -65536,
-                                         65536 + display->image->height);
+                                         65536 +
+                                         gimp_image_get_height (display->image));
 
   gimp_size_entry_set_size (GIMP_SIZE_ENTRY (rotate->sizeentry), 0,
                             tr_tool->x1, tr_tool->x2);
@@ -277,21 +330,19 @@ gimp_rotate_tool_motion (GimpTransformTool *tr_tool,
   /*  limit the angle to between -180 and 180 degrees  */
   if (tr_tool->trans_info[REAL_ANGLE] < - G_PI)
     {
-      tr_tool->trans_info[REAL_ANGLE] =
-        2.0 * G_PI + tr_tool->trans_info[REAL_ANGLE];
+      tr_tool->trans_info[REAL_ANGLE] += 2.0 * G_PI;
     }
   else if (tr_tool->trans_info[REAL_ANGLE] > G_PI)
     {
-      tr_tool->trans_info[REAL_ANGLE] =
-        tr_tool->trans_info[REAL_ANGLE] - 2.0 * G_PI;
+      tr_tool->trans_info[REAL_ANGLE] -= 2.0 * G_PI;
     }
 
   /*  constrain the angle to 15-degree multiples if ctrl is held down  */
   if (options->constrain)
     {
       tr_tool->trans_info[ANGLE] =
-        FIFTEEN_DEG * (int) ((tr_tool->trans_info[REAL_ANGLE] +
-                              FIFTEEN_DEG / 2.0) / FIFTEEN_DEG);
+        FIFTEEN_DEG * (gint) ((tr_tool->trans_info[REAL_ANGLE] +
+                               FIFTEEN_DEG / 2.0) / FIFTEEN_DEG);
     }
   else
     {

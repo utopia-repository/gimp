@@ -57,6 +57,7 @@ typedef struct
   gint     waveform;
   gboolean antialias;
   gboolean tile;
+  gint     phase_shift;
 } RippleValues;
 
 
@@ -99,7 +100,8 @@ static RippleValues rvals =
   WRAP,       /* edges       */
   SINE,       /* waveform    */
   TRUE,       /* antialias   */
-  FALSE       /* tile        */
+  FALSE,      /* tile        */
+  0           /* phase shift */
 };
 
 /***** Functions *****/
@@ -486,8 +488,9 @@ ripple_dialog (GimpDrawable *drawable)
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
-  gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
+  gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
+
   g_signal_connect_swapped (preview, "invalidated",
                             G_CALLBACK (ripple),
                             drawable);
@@ -603,7 +606,7 @@ ripple_dialog (GimpDrawable *drawable)
 
   gtk_widget_show (table);
 
-  table = gtk_table_new (2, 3, FALSE);
+  table = gtk_table_new (3, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_box_pack_start (GTK_BOX (main_vbox), table, FALSE, FALSE, 0);
@@ -630,6 +633,19 @@ ripple_dialog (GimpDrawable *drawable)
   g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &rvals.amplitude);
+  g_signal_connect_swapped (scale_data, "value-changed",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
+
+  /*  Phase Shift  */
+  scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 2,
+                                     _("Phase _shift:"), SCALE_WIDTH, 0,
+                                     rvals.phase_shift, 0, 360, 1, 15, 0,
+                                     TRUE, 0, 0,
+                                     NULL, NULL);
+  g_signal_connect (scale_data, "value-changed",
+                    G_CALLBACK (gimp_int_adjustment_update),
+                    &rvals.phase_shift);
   g_signal_connect_swapped (scale_data, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
@@ -680,15 +696,20 @@ average_two_pixels (guchar   *dest,
 static gdouble
 displace_amount (gint location)
 {
+  gdouble phi     = rvals.phase_shift / 360.0;
+  gdouble lambda;
+
   switch (rvals.waveform)
     {
     case SINE:
       return (rvals.amplitude *
-              sin (location * (2 * G_PI) / (gdouble) rvals.period));
+              sin (2 * G_PI * (location / (gdouble) rvals.period - phi)));
+
     case SAWTOOTH:
-      return (rvals.amplitude *
-	      (fabs ((((location % rvals.period) /
-		       (gdouble) rvals.period) * 4) - 2) - 1));
+      lambda = location % rvals.period - phi * rvals.period;
+      if (lambda < 0)
+        lambda += rvals.period;
+      return (rvals.amplitude * (fabs (((lambda / rvals.period) * 4) - 2) - 1));
     }
 
   return 0.0;

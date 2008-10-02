@@ -25,11 +25,7 @@
 
 #include <glib.h>  /* lcms.h uses the "inline" keyword */
 
-#ifdef HAVE_LCMS_LCMS_H
-#include <lcms/lcms.h>
-#else
 #include <lcms.h>
-#endif
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -486,6 +482,9 @@ run (const gchar      *name,
     }
 
  done:
+  if (run_mode != GIMP_RUN_NONINTERACTIVE)
+    gimp_displays_flush ();
+
   if (config)
     g_object_unref (config);
 
@@ -733,9 +732,17 @@ lcms_calculate_checksum (const gchar *data,
                          guchar      *digest)
 {
   if (digest)
-    gimp_md5_get_digest (data + sizeof (icHeader),
-                         len - sizeof (icHeader),
-                         digest);
+    {
+      GChecksum *md5 = g_checksum_new (G_CHECKSUM_MD5);
+
+      g_checksum_update (md5,
+                         (const guchar *) data + sizeof (icHeader),
+                         len - sizeof (icHeader));
+
+      len = 16;
+      g_checksum_get_digest (md5, digest, &len);
+      g_checksum_free (md5);
+    }
 }
 
 static cmsHPROFILE
@@ -863,6 +870,8 @@ lcms_image_apply_profile (gint32                    image,
 
   if (! lcms_image_set_profile (image, dest_profile, filename, FALSE))
     {
+      gimp_image_undo_group_end (image);
+
       return FALSE;
     }
 
@@ -910,7 +919,6 @@ lcms_image_apply_profile (gint32                    image,
     }
 
   gimp_progress_update (1.0);
-  gimp_displays_flush ();
 
   gimp_image_undo_group_end (image);
 
@@ -947,7 +955,7 @@ lcms_image_transform_rgb (gint32                    image,
           break;
 
         default:
-          g_warning ("%s: unexpected bpp", G_GNUC_FUNCTION);
+          g_warning ("%s: unexpected bpp", G_STRLOC);
           continue;
         }
 

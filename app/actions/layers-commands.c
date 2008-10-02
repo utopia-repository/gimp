@@ -41,6 +41,7 @@
 #include "core/gimplayer.h"
 #include "core/gimplayer-floating-sel.h"
 #include "core/gimplayermask.h"
+#include "core/gimpprojection.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimpundostack.h"
 #include "core/gimpprogress.h"
@@ -228,7 +229,16 @@ layers_new_cmd_callback (GtkAction *action,
    */
   if ((floating_sel = gimp_image_floating_sel (image)))
     {
-      floating_sel_to_layer (floating_sel);
+      GError *error = NULL;
+
+      if (! floating_sel_to_layer (floating_sel, &error))
+        {
+          gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                        error->message);
+          g_clear_error (&error);
+          return;
+        }
+
       gimp_image_flush (image);
       return;
     }
@@ -256,6 +266,7 @@ layers_new_last_vals_cmd_callback (GtkAction *action,
                                    gpointer   data)
 {
   GimpImage            *image;
+  GtkWidget            *widget;
   GimpLayer            *floating_sel;
   GimpLayer            *new_layer;
   gint                  width, height;
@@ -263,13 +274,23 @@ layers_new_last_vals_cmd_callback (GtkAction *action,
   gdouble               opacity;
   GimpLayerModeEffects  mode;
   return_if_no_image (image, data);
+  return_if_no_widget (widget, data);
 
   /*  If there is a floating selection, the new command transforms
    *  the current fs into a new layer
    */
   if ((floating_sel = gimp_image_floating_sel (image)))
     {
-      floating_sel_to_layer (floating_sel);
+      GError *error = NULL;
+
+      if (! floating_sel_to_layer (floating_sel, &error))
+        {
+          gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                        error->message);
+          g_clear_error (&error);
+          return;
+        }
+
       gimp_image_flush (image);
       return;
     }
@@ -281,8 +302,8 @@ layers_new_last_vals_cmd_callback (GtkAction *action,
       gimp_item_offsets (GIMP_ITEM (template), &off_x, &off_y);
       width   = gimp_item_width  (GIMP_ITEM (template));
       height  = gimp_item_height (GIMP_ITEM (template));
-      opacity = template->opacity;
-      mode    = template->mode;
+      opacity = gimp_layer_get_opacity (template);
+      mode    = gimp_layer_get_mode (template);
     }
   else
     {
@@ -310,6 +331,27 @@ layers_new_last_vals_cmd_callback (GtkAction *action,
   gimp_image_add_layer (image, new_layer, -1);
 
   gimp_image_undo_group_end (image);
+
+  gimp_image_flush (image);
+}
+
+void
+layers_new_from_visible_cmd_callback (GtkAction *action,
+                                      gpointer   data)
+{
+  GimpImage      *image;
+  GimpLayer      *layer;
+  GimpProjection *projection;
+  return_if_no_image (image, data);
+
+  projection = gimp_image_get_projection (image);
+
+  layer = gimp_layer_new_from_tiles (gimp_projection_get_tiles (projection),
+                                     image,
+                                     gimp_image_base_type_with_alpha (image),
+                                     _("Visible"),
+                                     GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+  gimp_image_add_layer (image, layer, -1);
 
   gimp_image_flush (image);
 }
@@ -345,7 +387,7 @@ layers_raise_cmd_callback (GtkAction *action,
   GimpLayer *layer;
   return_if_no_layer (image, layer, data);
 
-  gimp_image_raise_layer (image, layer);
+  gimp_image_raise_layer (image, layer, NULL);
   gimp_image_flush (image);
 }
 
@@ -369,7 +411,7 @@ layers_lower_cmd_callback (GtkAction *action,
   GimpLayer *layer;
   return_if_no_layer (image, layer, data);
 
-  gimp_image_lower_layer (image, layer);
+  gimp_image_lower_layer (image, layer, NULL);
   gimp_image_flush (image);
 }
 
@@ -394,10 +436,8 @@ layers_duplicate_cmd_callback (GtkAction *action,
   GimpLayer *new_layer;
   return_if_no_layer (image, layer, data);
 
-  new_layer =
-    GIMP_LAYER (gimp_item_duplicate (GIMP_ITEM (layer),
-                                     G_TYPE_FROM_INSTANCE (layer),
-                                     TRUE));
+  new_layer = GIMP_LAYER (gimp_item_duplicate (GIMP_ITEM (layer),
+                                               G_TYPE_FROM_INSTANCE (layer)));
   gimp_image_add_layer (image, new_layer, -1);
 
   gimp_image_flush (image);
@@ -821,7 +861,7 @@ layers_opacity_cmd_callback (GtkAction *action,
 
   opacity = action_select_value ((GimpActionSelectType) value,
                                  gimp_layer_get_opacity (layer),
-                                 0.0, 1.0,
+                                 0.0, 1.0, 1.0,
                                  1.0 / 255.0, 0.01, 0.1, 0.0, FALSE);
   gimp_layer_set_opacity (layer, opacity, push_undo);
   gimp_image_flush (image);
@@ -850,7 +890,7 @@ layers_mode_cmd_callback (GtkAction *action,
 
   index = action_select_value ((GimpActionSelectType) value,
                                layers_mode_index (layer_mode),
-                               0, G_N_ELEMENTS (layer_modes) - 1,
+                               0, G_N_ELEMENTS (layer_modes) - 1, 0,
                                0.0, 1.0, 1.0, 0.0, FALSE);
   gimp_layer_set_mode (layer, layer_modes[index], push_undo);
   gimp_image_flush (image);
@@ -948,8 +988,21 @@ layers_edit_layer_response (GtkWidget          *widget,
 
       if (strcmp (new_name, gimp_object_get_name (GIMP_OBJECT (layer))))
         {
-          gimp_item_rename (GIMP_ITEM (layer), new_name);
-          gimp_image_flush (dialog->image);
+          GError *error = NULL;
+
+          if (gimp_item_rename (GIMP_ITEM (layer), new_name, &error))
+            {
+              gimp_image_flush (dialog->image);
+            }
+          else
+            {
+              gimp_message (dialog->image->gimp, G_OBJECT (widget),
+                            GIMP_MESSAGE_WARNING,
+                            "%s", error->message);
+              g_clear_error (&error);
+
+              return;
+            }
         }
 
       if (dialog->rename_toggle &&
@@ -957,7 +1010,7 @@ layers_edit_layer_response (GtkWidget          *widget,
         {
           g_object_set (layer,
                         "auto-rename",
-                        GTK_TOGGLE_BUTTON (dialog->rename_toggle)->active,
+                        gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dialog->rename_toggle)),
                         NULL);
         }
     }
@@ -996,7 +1049,7 @@ layers_add_mask_response (GtkWidget          *widget,
       if (layer_mask_invert)
         gimp_channel_invert (GIMP_CHANNEL (mask), FALSE);
 
-      gimp_layer_add_mask (layer, mask, TRUE);
+      gimp_layer_add_mask (layer, mask, TRUE, NULL);
 
       gimp_image_undo_group_end (image);
 

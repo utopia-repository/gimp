@@ -34,8 +34,8 @@
 #include "core/gimpitem-linked.h"
 #include "core/gimpitemundo.h"
 #include "core/gimplayermask.h"
+#include "core/gimpprogress.h"
 
-#include "dialogs/desaturate-dialog.h"
 #include "dialogs/offset-dialog.h"
 
 #include "actions.h"
@@ -44,48 +44,7 @@
 #include "gimp-intl.h"
 
 
-/*  local function prototypes  */
-
-static void   desaturate_response (GtkWidget        *widget,
-                                   gint              response_id,
-                                   DesaturateDialog *dialog);
-
-
-/*  private variables  */
-
-static GimpDesaturateMode  desaturate_mode = GIMP_DESATURATE_LIGHTNESS;
-
-
 /*  public functions  */
-
-void
-drawable_desaturate_cmd_callback (GtkAction *action,
-                                  gpointer   data)
-{
-  DesaturateDialog *dialog;
-  GimpImage        *image;
-  GimpDrawable     *drawable;
-  GtkWidget        *widget;
-  return_if_no_drawable (image, drawable, data);
-  return_if_no_widget (widget, data);
-
-  if (! gimp_drawable_is_rgb (drawable))
-    {
-      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    _("Desaturate operates only on RGB color layers."));
-      return;
-    }
-
-  dialog = desaturate_dialog_new (drawable,
-                                  action_data_get_context (data),
-                                  widget, desaturate_mode);
-
-  g_signal_connect (dialog->dialog, "response",
-                    G_CALLBACK (desaturate_response),
-                    dialog);
-
-  gtk_widget_show (dialog->dialog);
-}
 
 void
 drawable_equalize_cmd_callback (GtkAction *action,
@@ -114,8 +73,10 @@ drawable_invert_cmd_callback (GtkAction *action,
 {
   GimpImage    *image;
   GimpDrawable *drawable;
+  GimpDisplay  *display;
   GtkWidget    *widget;
   return_if_no_drawable (image, drawable, data);
+  return_if_no_display (display, data);
   return_if_no_widget (widget, data);
 
   if (gimp_drawable_is_indexed (drawable))
@@ -125,7 +86,7 @@ drawable_invert_cmd_callback (GtkAction *action,
       return;
     }
 
-  gimp_drawable_invert (drawable);
+  gimp_drawable_invert (drawable, GIMP_PROGRESS (display));
   gimp_image_flush (image);
 }
 
@@ -135,10 +96,10 @@ drawable_levels_stretch_cmd_callback (GtkAction *action,
 {
   GimpImage    *image;
   GimpDrawable *drawable;
-  GimpContext  *context;
+  GimpDisplay  *display;
   GtkWidget    *widget;
   return_if_no_drawable (image, drawable, data);
-  return_if_no_context (context, data);
+  return_if_no_display (display, data);
   return_if_no_widget (widget, data);
 
   if (! gimp_drawable_is_rgb (drawable))
@@ -148,7 +109,7 @@ drawable_levels_stretch_cmd_callback (GtkAction *action,
       return;
     }
 
-  gimp_drawable_levels_stretch (drawable, context);
+  gimp_drawable_levels_stretch (drawable, GIMP_PROGRESS (display));
   gimp_image_flush (image);
 }
 
@@ -321,27 +282,4 @@ drawable_rotate_cmd_callback (GtkAction *action,
     }
 
   gimp_image_flush (image);
-}
-
-/*  private functions  */
-
-static void
-desaturate_response (GtkWidget        *widget,
-                     gint              response_id,
-                     DesaturateDialog *dialog)
-{
-  if (response_id == GTK_RESPONSE_OK)
-    {
-      GimpDrawable *drawable = dialog->drawable;
-      GimpImage    *image   = gimp_item_get_image (GIMP_ITEM (drawable));
-
-      /*  remember for next invocation of the dialog  */
-      desaturate_mode = dialog->mode;
-
-      gimp_drawable_desaturate (drawable, desaturate_mode);
-
-      gimp_image_flush (image);
-    }
-
-  gtk_widget_destroy (dialog->dialog);
 }

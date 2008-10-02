@@ -247,11 +247,14 @@ gimp_color_tool_button_press (GimpTool        *tool,
       color_tool->sample_point_x      = color_tool->sample_point->x;
       color_tool->sample_point_y      = color_tool->sample_point->y;
 
+      gimp_tool_control_set_scroll_lock (tool->control, TRUE);
+
       gimp_display_shell_selection_control (shell, GIMP_SELECTION_PAUSE);
 
       gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
 
       gimp_tool_push_status_coords (tool, display,
+                                    gimp_tool_control_get_precision (tool->control),
                                     _("Move Sample Point: "),
                                     color_tool->sample_point_x,
                                     ", ",
@@ -299,6 +302,7 @@ gimp_color_tool_button_release (GimpTool              *tool,
 
       gimp_tool_pop_status (tool, display);
 
+      gimp_tool_control_set_scroll_lock (tool->control, FALSE);
       gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
       if (release_type == GIMP_BUTTON_RELEASE_CANCEL)
@@ -428,6 +432,7 @@ gimp_color_tool_motion (GimpTool        *tool,
       else
         {
           gimp_tool_push_status_coords (tool, display,
+                                        gimp_tool_control_get_precision (tool->control),
                                         color_tool->sample_point ?
                                         _("Move Sample Point: ") :
                                         _("Add Sample Point: "),
@@ -558,15 +563,17 @@ gimp_color_tool_draw (GimpDrawTool *draw_tool)
           if (color_tool->sample_point_x != -1 &&
               color_tool->sample_point_y != -1)
             {
+              GimpImage *image = draw_tool->display->image;
+
               gimp_draw_tool_draw_line (draw_tool,
                                         0, color_tool->sample_point_y + 0.5,
-                                        draw_tool->display->image->width,
+                                        gimp_image_get_width (image),
                                         color_tool->sample_point_y + 0.5,
                                         FALSE);
               gimp_draw_tool_draw_line (draw_tool,
                                         color_tool->sample_point_x + 0.5, 0,
                                         color_tool->sample_point_x + 0.5,
-                                        draw_tool->display->image->height,
+                                        gimp_image_get_height (image),
                                         FALSE);
             }
         }
@@ -809,6 +816,7 @@ gimp_color_tool_start_sample_point (GimpTool    *tool,
 
   tool->display = display;
   gimp_tool_control_activate (tool->control);
+  gimp_tool_control_set_scroll_lock (tool->control, TRUE);
 
   if (color_tool->sample_point)
     gimp_display_shell_draw_sample_point (GIMP_DISPLAY_SHELL (display->shell),

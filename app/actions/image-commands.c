@@ -133,26 +133,6 @@ image_new_cmd_callback (GtkAction *action,
 
   if (dialog)
     {
-      image_new_dialog_set (dialog, NULL, NULL);
-
-      gtk_window_present (GTK_WINDOW (dialog));
-    }
-}
-
-void
-image_new_from_image_cmd_callback (GtkAction *action,
-                                   gpointer   data)
-{
-  GtkWidget *widget;
-  GtkWidget *dialog;
-  return_if_no_widget (widget, data);
-
-  dialog = gimp_dialog_factory_dialog_new (global_dialog_factory,
-                                           gtk_widget_get_screen (widget),
-                                           "gimp-image-new-dialog", -1, FALSE);
-
-  if (dialog)
-    {
       GimpImage *image = action_data_get_image (data);
 
       image_new_dialog_set (dialog, image, NULL);
@@ -176,6 +156,7 @@ image_convert_cmd_callback (GtkAction *action,
   GtkWidget         *widget;
   GimpDisplay       *display;
   GimpImageBaseType  value;
+  GError            *error = NULL;
   return_if_no_image (image, data);
   return_if_no_widget (widget, data);
   return_if_no_display (display, data);
@@ -189,7 +170,14 @@ image_convert_cmd_callback (GtkAction *action,
     {
     case GIMP_RGB:
     case GIMP_GRAY:
-      gimp_image_convert (image, value, 0, 0, FALSE, FALSE, 0, NULL, NULL);
+      if (! gimp_image_convert (image, value, 0, 0, FALSE, FALSE, 0, NULL,
+                                NULL, &error))
+        {
+          gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                        error->message);
+          g_clear_error (&error);
+          return;
+        }
       break;
 
     case GIMP_INDEXED:
@@ -563,8 +551,8 @@ image_resize_callback (GtkWidget    *dialog,
 
       gtk_widget_destroy (dialog);
 
-      if (width  == image->width &&
-          height == image->height)
+      if (width  == gimp_image_get_width  (image) &&
+          height == gimp_image_get_height (image))
         return;
 
       progress = gimp_progress_start (GIMP_PROGRESS (display),
@@ -602,11 +590,16 @@ image_print_size_callback (GtkWidget *dialog,
                            GimpUnit   resolution_unit,
                            gpointer   data)
 {
+  gdouble xres;
+  gdouble yres;
+
   gtk_widget_destroy (dialog);
 
-  if (xresolution     == image->xresolution     &&
-      yresolution     == image->yresolution     &&
-      resolution_unit == image->resolution_unit)
+  gimp_image_get_resolution (image, &xres, &yres);
+
+  if (xresolution     == xres &&
+      yresolution     == yres &&
+      resolution_unit == gimp_image_get_unit (image))
     return;
 
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_SCALE,
@@ -633,17 +626,21 @@ image_scale_callback (GtkWidget              *dialog,
                       gpointer                user_data)
 {
   GimpImage *image = GIMP_IMAGE (viewable);
+  gdouble    xres;
+  gdouble    yres;
 
   image_scale_unit   = unit;
   image_scale_interp = interpolation;
 
+  gimp_image_get_resolution (image, &xres, &yres);
+
   if (width > 0 && height > 0)
     {
-      if (width           == image->width           &&
-          height          == image->height          &&
-          xresolution     == image->xresolution     &&
-          yresolution     == image->yresolution     &&
-          resolution_unit == image->resolution_unit)
+      if (width           == gimp_image_get_width  (image) &&
+          height          == gimp_image_get_height (image) &&
+          xresolution     == xres                          &&
+          yresolution     == yres                          &&
+          resolution_unit == gimp_image_get_unit (image))
         return;
 
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_SCALE,
@@ -652,8 +649,8 @@ image_scale_callback (GtkWidget              *dialog,
       gimp_image_set_resolution (image, xresolution, yresolution);
       gimp_image_set_unit (image, resolution_unit);
 
-      if (width  != image->width ||
-          height != image->height)
+      if (width  != gimp_image_get_width  (image) ||
+          height != gimp_image_get_height (image))
         {
           GimpProgress *progress;
 

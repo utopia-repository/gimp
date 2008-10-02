@@ -34,6 +34,9 @@ system.</refpurpose>
 <link linkend="void">void</link>                <link linkend="gimp-help-set-help-data">gimp_help_set_help_data</link>             (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                                          const <link linkend="gchar">gchar</link> *tooltip,
                                                          const <link linkend="gchar">gchar</link> *help_id);
+<link linkend="void">void</link>                <link linkend="gimp-help-set-help-data-with-markup">gimp_help_set_help_data_with_markup</link> (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                                         const <link linkend="gchar">gchar</link> *tooltip,
+                                                         const <link linkend="gchar">gchar</link> *help_id);
 <link linkend="void">void</link>                <link linkend="gimp-context-help">gimp_context_help</link>                   (<link linkend="GtkWidget">GtkWidget</link> *widget);
 </synopsis>
 </refsynopsisdiv>
@@ -101,7 +104,13 @@ Since: GIMP 2.2
 <title>gimp_help_enable_tooltips ()</title>
 <indexterm zone="gimp-help-enable-tooltips"><primary>gimp_help_enable_tooltips</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_enable_tooltips           (void);</programlisting>
 <para>
-This function calls <link linkend="gtk-tooltips-enable"><function>gtk_tooltips_enable()</function></link>.</para>
+Enable tooltips to be shown in the GIMP user interface.
+</para>
+<para>
+As a plug-in author, you don't need to care about this as this
+function is called for you from <link linkend="gimp-ui-init"><function>gimp_ui_init()</function></link>. This ensures that
+the user setting from the GIMP preferences dialog is respected in
+all plug-in dialogs.</para>
 <para>
 
 </para></refsect2>
@@ -109,7 +118,13 @@ This function calls <link linkend="gtk-tooltips-enable"><function>gtk_tooltips_e
 <title>gimp_help_disable_tooltips ()</title>
 <indexterm zone="gimp-help-disable-tooltips"><primary>gimp_help_disable_tooltips</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_disable_tooltips          (void);</programlisting>
 <para>
-This function calls <link linkend="gtk-tooltips-disable"><function>gtk_tooltips_disable()</function></link>.</para>
+Disable tooltips to be shown in the GIMP user interface.
+</para>
+<para>
+As a plug-in author, you don't need to care about this as this
+function is called for you from <link linkend="gimp-ui-init"><function>gimp_ui_init()</function></link>. This ensures that
+the user setting from the GIMP preferences dialog is respected in
+all plug-in dialogs.</para>
 <para>
 
 </para></refsect2>
@@ -163,9 +178,9 @@ constructors. You only have to call it for windows/dialogs you created
                                                          const <link linkend="gchar">gchar</link> *tooltip,
                                                          const <link linkend="gchar">gchar</link> *help_id);</programlisting>
 <para>
-The reason why we don't use <link linkend="gtk-tooltips-set-tip"><function>gtk_tooltips_set_tip()</function></link> is that it's
-impossible to set a <parameter>private_tip</parameter> (aka <parameter>help_id</parameter>) without a visible
-<parameter>tooltip</parameter>.
+The reason why we don't use <link linkend="gtk-widget-set-tooltip-text"><function>gtk_widget_set_tooltip_text()</function></link> is that
+elements in the GIMP user interface should, if possible, also have
+a <parameter>help_id</parameter> set for context-sensitive help.
 </para>
 <para>
 This function can be called with <link linkend="NULL:CAPS"><type>NULL</type></link> for <parameter>tooltip</parameter>. Use this feature
@@ -184,6 +199,29 @@ a visible tooltip.</para>
 <listitem><simpara> The <parameter>help_id</parameter> for the <link linkend="GtkTipsQuery"><type>GtkTipsQuery</type></link> tooltips inspector.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2 id="gimp-help-set-help-data-with-markup" role="function" condition="since:GIMP 2.6">
+<title>gimp_help_set_help_data_with_markup ()</title>
+<indexterm zone="gimp-help-set-help-data-with-markup" role="GIMP 2.6"><primary>gimp_help_set_help_data_with_markup</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_help_set_help_data_with_markup (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                                         const <link linkend="gchar">gchar</link> *tooltip,
+                                                         const <link linkend="gchar">gchar</link> *help_id);</programlisting>
+<para>
+Just like <link linkend="gimp-help-set-help-data"><function>gimp_help_set_help_data()</function></link>, but it allows to pass text which
+is marked up with
+<link linkend="PangoMarkupFormat">Pango text markup language</link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara>  The <link linkend="GtkWidget"><type>GtkWidget</type></link> you want to set a <parameter>tooltip</parameter> and/or <parameter>help_id</parameter> for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tooltip</parameter>&nbsp;:</term>
+<listitem><simpara> The markup for this widget's tooltip (or <link linkend="NULL:CAPS"><literal>NULL</literal></link>).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>help_id</parameter>&nbsp;:</term>
+<listitem><simpara> The <parameter>help_id</parameter> for the <link linkend="GtkTipsQuery"><type>GtkTipsQuery</type></link> tooltips inspector.
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
 <refsect2 id="gimp-context-help" role="function">
 <title>gimp_context_help ()</title>
 <indexterm zone="gimp-context-help"><primary>gimp_context_help</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_context_help                   (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>

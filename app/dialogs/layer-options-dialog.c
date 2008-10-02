@@ -130,6 +130,11 @@ layer_options_dialog_new (GimpImage    *image,
 
   if (! layer)
     {
+      gdouble xres;
+      gdouble yres;
+
+      gimp_image_get_resolution (image, &xres, &yres);
+
       /*  The size labels  */
       label = gtk_label_new (_("Width:"));
       gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -145,7 +150,7 @@ layer_options_dialog_new (GimpImage    *image,
 
       /*  The size sizeentry  */
       spinbutton = gimp_spin_button_new (&adjustment,
-                                         1, 1, 1, 1, 10, 1,
+                                         1, 1, 1, 1, 10, 0,
                                          1, 2);
       gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 10);
 
@@ -169,9 +174,9 @@ layer_options_dialog_new (GimpImage    *image,
                                 GIMP_UNIT_PIXEL);
 
       gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (options->size_se), 0,
-                                      image->xresolution, FALSE);
+                                      xres, FALSE);
       gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (options->size_se), 1,
-                                      image->yresolution, FALSE);
+                                      yres, FALSE);
 
       gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (options->size_se), 0,
                                              GIMP_MIN_IMAGE_SIZE,
@@ -181,14 +186,14 @@ layer_options_dialog_new (GimpImage    *image,
                                              GIMP_MAX_IMAGE_SIZE);
 
       gimp_size_entry_set_size (GIMP_SIZE_ENTRY (options->size_se), 0,
-                                0, image->width);
+                                0, gimp_image_get_width  (image));
       gimp_size_entry_set_size (GIMP_SIZE_ENTRY (options->size_se), 1,
-                                0, image->height);
+                                0, gimp_image_get_height (image));
 
       gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (options->size_se), 0,
-                                  image->width);
+                                  gimp_image_get_width  (image));
       gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (options->size_se), 1,
-                                  image->height);
+                                  gimp_image_get_height (image));
 
       /*  The radio frame  */
       frame = gimp_enum_radio_frame_new_with_range (GIMP_TYPE_FILL_TYPE,
@@ -234,7 +239,7 @@ static void
 layer_options_dialog_toggle_rename (GtkWidget          *widget,
                                     LayerOptionsDialog *options)
 {
-  if (GTK_TOGGLE_BUTTON (widget)->active &&
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)) &&
       gimp_drawable_is_text_layer (GIMP_DRAWABLE (options->layer)))
     {
       GimpTextLayer *text_layer = GIMP_TEXT_LAYER (options->layer);

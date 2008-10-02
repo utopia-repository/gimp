@@ -38,6 +38,7 @@ struct _GimpGui
                                           const gchar         *domain,
                                           const gchar         *message);
   void           (* help)                (Gimp                *gimp,
+                                          GimpProgress        *progress,
                                           const gchar         *help_domain,
                                           const gchar         *help_id);
 
@@ -45,13 +46,17 @@ struct _GimpGui
   gchar        * (* get_display_name)    (Gimp                *gimp,
                                           gint                 display_ID,
                                           gint                *monitor_number);
+  guint32        (* get_user_time)       (Gimp                *gimp);
+
   const gchar  * (* get_theme_dir)       (Gimp                *gimp);
 
+  GimpObject   * (* get_empty_display)   (Gimp                *gimp);
   GimpObject   * (* display_get_by_id)   (Gimp                *gimp,
                                           gint                 ID);
   gint           (* display_get_id)      (GimpObject          *display);
   guint32        (* display_get_window)  (GimpObject          *display);
-  GimpObject   * (* display_create)      (GimpImage           *image,
+  GimpObject   * (* display_create)      (Gimp                *gimp,
+                                          GimpImage           *image,
                                           GimpUnit             unit,
                                           gdouble              scale);
   void           (* display_delete)      (GimpObject          *display);
@@ -83,6 +88,7 @@ struct _GimpGui
   gboolean       (* recent_list_add_uri) (Gimp                *gimp,
                                           const gchar         *uri,
                                           const gchar         *mime_type);
+  void           (* recent_list_load)    (Gimp                *gimp);
 
 };
 
@@ -94,6 +100,7 @@ void           gimp_gui_ungrab           (Gimp                *gimp);
 void           gimp_threads_enter        (Gimp                *gimp);
 void           gimp_threads_leave        (Gimp                *gimp);
 
+GimpObject   * gimp_get_empty_display    (Gimp                *gimp);
 GimpObject   * gimp_get_display_by_ID    (Gimp                *gimp,
                                           gint                 ID);
 gint           gimp_get_display_ID       (Gimp                *gimp,
@@ -120,6 +127,7 @@ void           gimp_show_message         (Gimp                *gimp,
                                           const gchar         *domain,
                                           const gchar         *message);
 void           gimp_help                 (Gimp                *gimp,
+                                          GimpProgress        *progress,
                                           const gchar         *help_domain,
                                           const gchar         *help_id);
 
@@ -132,6 +140,7 @@ const gchar  * gimp_get_program_class    (Gimp                *gimp);
 gchar        * gimp_get_display_name     (Gimp                *gimp,
                                           gint                 display_ID,
                                           gint                *monitor_number);
+guint32        gimp_get_user_time        (Gimp                *gimp);
 const gchar  * gimp_get_theme_dir        (Gimp                *gimp);
 
 gboolean       gimp_pdb_dialog_new       (Gimp                *gimp,
@@ -153,5 +162,7 @@ gboolean       gimp_pdb_dialog_close     (Gimp                *gimp,
 gboolean       gimp_recent_list_add_uri  (Gimp                *gimp,
                                           const gchar         *uri,
                                           const gchar         *mime_type);
+void           gimp_recent_list_load     (Gimp                *gimp);
+
 
 #endif  /* __GIMP_GUI_H__ */

@@ -65,6 +65,97 @@ CODE
     );
 }
 
+sub layer_new_from_visible {
+    $blurb = 'Create a new layer from what is visible in an image.';
+
+    $help = <<'HELP';
+This procedure creates a new layer from what is visible in the given image.
+The new layer still needs to be added to the destination image, as this is
+not automatic. Add the new layer with the gimp_image_add_layer() command.
+Other attributes such as layer mask modes, and offsets should be set with
+explicit procedure calls.
+HELP
+
+    &neo_pdb_misc('2008', '2.6');
+
+    @inargs = (
+	{ name => 'image', type => 'image',
+	  desc => 'The source image from where the content is copied' },
+	{ name => 'dest_image', type => 'image',
+	  desc => 'The destination image to which to add the layer' },
+	{ name => 'name', type => 'string',
+	  desc => 'The layer name', null_ok => 1 }
+     );
+
+    @outargs = (
+	{ name => 'layer', type => 'layer',
+	  desc => 'The newly created layer' }
+    );
+
+    %invoke = (
+	code => <<'CODE'
+{
+  GimpProjection *projection = gimp_image_get_projection (image);
+
+  layer = gimp_layer_new_from_tiles (gimp_projection_get_tiles (projection),
+                                     dest_image,
+                                     gimp_image_base_type_with_alpha (dest_image),
+                                     name,
+                                     GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+}
+CODE
+    );
+}
+
+sub layer_new_from_drawable {
+    $blurb = 'Create a new layer by copying an existing drawable.';
+
+    $help = <<'HELP';
+This procedure creates a new layer as a copy of the specified drawable.  The
+new layer still needs to be added to the image, as this is not automatic.  Add
+the new layer with the gimp_image_add_layer() command. Other attributes such
+as layer mask modes, and offsets should be set with explicit procedure calls.
+HELP
+
+    &std_pdb_misc;
+
+    @inargs = (
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The source drawable from where the new layer is copied' },
+	{ name => 'dest_image', type => 'image',
+	  desc => 'The destination image to which to add the layer' }
+     );
+
+    @outargs = (
+	{ name => 'layer_copy', type => 'layer',
+	  desc => 'The newly copied layer' }
+    );
+
+    %invoke = (
+	code => <<'CODE'
+{
+  GType     new_type;
+  GimpItem *new_item;
+
+  if (GIMP_IS_LAYER (drawable))
+    new_type = G_TYPE_FROM_INSTANCE (drawable);
+  else
+    new_type = GIMP_TYPE_LAYER;
+
+  if (dest_image == gimp_item_get_image (GIMP_ITEM (drawable)))
+    new_item = gimp_item_duplicate (GIMP_ITEM (drawable), new_type);
+  else
+    new_item = gimp_item_convert (GIMP_ITEM (drawable), dest_image, new_type);
+
+  if (new_item)
+    layer_copy = GIMP_LAYER (new_item);
+  else
+    success = FALSE;
+}
+CODE
+    );
+}
+
 sub layer_copy {
     $blurb = 'Copy a layer.';
 
@@ -94,10 +185,16 @@ HELP
 	code => <<'CODE'
 {
   layer_copy = GIMP_LAYER (gimp_item_duplicate (GIMP_ITEM (layer),
-                                                G_TYPE_FROM_INSTANCE (layer),
-                                                add_alpha));
-  if (! layer_copy)
-    success = FALSE;
+                                                G_TYPE_FROM_INSTANCE (layer)));
+  if (layer_copy)
+    {
+      if (add_alpha)
+        gimp_layer_add_alpha (layer_copy);
+    }
+  else
+    {
+      success = FALSE;
+    }
 }
 CODE
     );
@@ -118,7 +215,7 @@ layer mask still needs to be added to the layer. This can be done with a call
 to gimp_layer_add_mask().
 HELP
 
-    &std_pdb_misc;
+    &std_pdb_misc();
 
     @inargs = (
 	{ name => 'layer', type => 'layer',
@@ -179,8 +276,10 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (layer)))
-    gimp_layer_add_mask (layer, mask, TRUE);
+  if (gimp_pdb_item_is_floating (GIMP_ITEM (mask),
+                                 gimp_item_get_image (GIMP_ITEM (layer)),
+                                 error))
+    success = (gimp_layer_add_mask (layer, mask, TRUE, error) == mask);
   else
     success = FALSE;
 }
@@ -208,7 +307,8 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (layer)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), error) &&
+      gimp_layer_get_mask (layer))
     gimp_layer_apply_mask (layer, mode, TRUE);
   else
     success = FALSE;
@@ -218,14 +318,14 @@ CODE
 }
 
 sub layer_scale {
-    $blurb = 'Scale the layer to the specified extents.';
+    $blurb = 'Scale the layer using the default interpolation method.';
 
     $help = <<'HELP';
 This procedure scales the layer so that its new width and height are
 equal to the supplied parameters. The 'local-origin' parameter
 specifies whether to scale from the center of the layer, or from the
 image origin. This operation only works if the layer has been added to
-an image.
+an image. The default interpolation method is used for scaling.
 HELP
 
     &std_pdb_misc;
@@ -244,12 +344,73 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (layer)))
-    gimp_item_scale_by_origin (GIMP_ITEM (layer), new_width, new_height,
-                               gimp->config->interpolation_type, NULL,
-                               local_origin);
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), error))
+    {
+      if (progress)
+        gimp_progress_start (progress, _("Scaling"), FALSE);
+
+      gimp_item_scale_by_origin (GIMP_ITEM (layer), new_width, new_height,
+                                 gimp->config->interpolation_type, progress,
+                                 local_origin);
+
+      if (progress)
+        gimp_progress_end (progress);
+    }
   else
-    success = FALSE;
+    {
+      success = FALSE;
+    }
+}
+CODE
+    );
+}
+
+sub layer_scale_full {
+    $blurb = 'Scale the layer using a specific interpolation method.';
+
+    $help = <<'HELP';
+This procedure scales the layer so that its new width and height are
+equal to the supplied parameters. The 'local-origin' parameter
+specifies whether to scale from the center of the layer, or from the
+image origin. This operation only works if the layer has been added to
+an image. This procedure allows you to specify the interpolation
+method explicitly.
+HELP
+
+    &neo_pdb_misc('2008', '2.6');
+
+    @inargs = (
+	{ name => 'layer', type => 'layer',
+	  desc => 'The layer' },
+	{ name => 'new_width', type => '1 <= int32 <= GIMP_MAX_IMAGE_SIZE',
+	  desc => 'New layer width' },
+	{ name => 'new_height', type => '1 <= int32 <= GIMP_MAX_IMAGE_SIZE',
+	  desc => 'New layer height' },
+	{ name => 'local_origin', type => 'boolean',
+	  desc => 'Use a local origin (as opposed to the image origin)' },
+	{ name => 'interpolation', type => 'enum GimpInterpolationType',
+	  desc => 'Type of interpolation' }
+    );
+
+    %invoke = (
+	code => <<'CODE'
+{
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), error))
+    {
+      if (progress)
+        gimp_progress_start (progress, _("Scaling"), FALSE);
+
+      gimp_item_scale_by_origin (GIMP_ITEM (layer), new_width, new_height,
+                                 interpolation, progress,
+                                 local_origin);
+
+      if (progress)
+        gimp_progress_end (progress);
+    }
+  else
+    {
+      success = FALSE;
+    }
 }
 CODE
     );
@@ -285,7 +446,7 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (layer)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), error))
     gimp_item_resize (GIMP_ITEM (layer), context,
                       new_width, new_height, offx, offy);
   else
@@ -313,7 +474,7 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (layer)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (layer), error))
     gimp_layer_resize_to_image (layer, context);
   else
     success = FALSE;
@@ -552,55 +713,6 @@ CODE
     );
 }
 
-sub layer_new_from_drawable {
-    $blurb = 'Create a new layer by copying an existing drawable.';
-
-    $help = <<'HELP';
-This procedure creates a new layer as a copy of the specified drawable.  The
-new layer still needs to be added to the image, as this is not automatic.  Add
-the new layer with the gimp_image_add_layer() command. Other attributes such
-as layer mask modes, and offsets should be set with explicit procedure calls.
-HELP
-
-    &std_pdb_misc;
-
-    @inargs = (
-	{ name => 'drawable', type => 'drawable',
-	  desc => 'The source drawable from where the new layer is copied' },
-	{ name => 'dest_image', type => 'image',
-	  desc => 'The destination image to which to add the layer' }
-     );
-
-    @outargs = (
-	{ name => 'layer_copy', type => 'layer',
-	  desc => 'The newly copied layer' }
-    );
-
-    %invoke = (
-	code => <<'CODE'
-{
-  GType     new_type;
-  GimpItem *new_item;
-
-  if (GIMP_IS_LAYER (drawable))
-    new_type = G_TYPE_FROM_INSTANCE (drawable);
-  else
-    new_type = GIMP_TYPE_LAYER;
-
-  if (dest_image == gimp_item_get_image (GIMP_ITEM (drawable)))
-    new_item = gimp_item_duplicate (GIMP_ITEM (drawable), new_type, TRUE);
-  else
-    new_item = gimp_item_convert (GIMP_ITEM (drawable), dest_image, new_type, TRUE);
-
-  if (new_item)
-    layer_copy = GIMP_LAYER (new_item);
-  else
-    success = FALSE;
-}
-CODE
-    );
-}
-
 sub layer_get_lock_alpha {
     $blurb = 'Get the lock alpha channel setting of the specified layer.';
 
@@ -757,9 +869,9 @@ sub layer_set_show_mask {
 
     $help = <<'HELP';
 This procedure sets the specified layer's show mask setting. This
-controls whether the layer's mask is currently affecting the alpha
-channel. If there is no layer mask, this function will return an
-error.
+controls whether the layer or its mask is visible. TRUE indicates that
+the mask should be visible. If there is no layer mask, this function
+will return an error.
 HELP
 
     &std_pdb_misc;
@@ -947,13 +1059,24 @@ CODE
               "core/gimp.h"
               "core/gimpimage-undo.h"
               "core/gimpitem-linked.h"
+              "core/gimpprogress.h"
+              "core/gimpprojection.h"
+              "gimppdb-utils.h"
               "gimp-intl.h");
 
-@procs = qw(layer_new layer_new_from_drawable layer_copy
-            layer_add_alpha layer_flatten
-            layer_scale layer_resize layer_resize_to_image_size
-	    layer_translate layer_set_offsets
-            layer_create_mask layer_get_mask layer_from_mask
+@procs = qw(layer_new
+            layer_new_from_visible
+            layer_new_from_drawable
+            layer_copy
+            layer_add_alpha
+            layer_flatten
+            layer_scale layer_scale_full
+            layer_resize layer_resize_to_image_size
+	    layer_translate
+            layer_set_offsets
+            layer_create_mask
+            layer_get_mask
+            layer_from_mask
             layer_add_mask layer_remove_mask
 	    layer_is_floating_sel
             layer_get_lock_alpha layer_set_lock_alpha

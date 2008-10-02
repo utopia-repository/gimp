@@ -20,14 +20,14 @@
 #define __GIMP_DISPLAY_SHELL_H__
 
 
-#include <gtk/gtkwindow.h>
-
 #include "libgimpwidgets/gimpwidgets.h"
+
+#include "widgets/gimpwindow.h"
 
 
 /* Apply to a float the same rounding mode used in the renderer */
-#define  PROJ_ROUND(coord)   ((gint) ((coord) + 0.5))
-#define  PROJ_ROUND64(coord) ((gint64) ((coord) + 0.5))
+#define  PROJ_ROUND(coord)   ((gint) RINT (coord))
+#define  PROJ_ROUND64(coord) ((gint64) RINT (coord))
 
 /* finding the effective screen resolution (double) */
 #define  SCREEN_XRES(s)   ((s)->dot_for_dot ? \
@@ -46,6 +46,10 @@
 #define  FUNSCALEX(s,x)   ((x) / (s)->scale_x)
 #define  FUNSCALEY(s,y)   ((y) / (s)->scale_y)
 
+/*  the size of the display render buffer  */
+#define GIMP_DISPLAY_RENDER_BUF_WIDTH  256
+#define GIMP_DISPLAY_RENDER_BUF_HEIGHT 256
+
 
 #define GIMP_TYPE_DISPLAY_SHELL            (gimp_display_shell_get_type ())
 #define GIMP_DISPLAY_SHELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DISPLAY_SHELL, GimpDisplayShell))
@@ -59,133 +63,146 @@ typedef struct _GimpDisplayShellClass  GimpDisplayShellClass;
 
 struct _GimpDisplayShell
 {
-  GtkWindow         parent_instance;
+  GimpWindow         parent_instance;
 
-  GimpDisplay      *display;
+  GimpDisplay       *display;
 
-  GimpUIManager    *menubar_manager;
-  GimpUIManager    *popup_manager;
+  GimpUIManager     *menubar_manager;
+  GimpUIManager     *popup_manager;
 
-  gdouble           monitor_xres;
-  gdouble           monitor_yres;
+  GimpDialogFactory *display_factory;
 
-  GimpUnit          unit;
+  gdouble            monitor_xres;
+  gdouble            monitor_yres;
 
-  GimpZoomModel    *zoom;
-  gdouble           other_scale;       /*  scale factor entered in Zoom->Other     */
-  gboolean          dot_for_dot;       /*  is monitor resolution being ignored?    */
+  GimpUnit           unit;
 
-  gint              offset_x;          /*  offset of display image into raw image  */
-  gint              offset_y;
+  GimpZoomModel     *zoom;
+  gdouble            other_scale;      /*  scale factor entered in Zoom->Other*/
+  gboolean           dot_for_dot;      /*  ignore monitor resolution          */
 
-  gdouble           scale_x;           /*  horizontal scale factor            */
-  gdouble           scale_y;           /*  vertical scale factor              */
+  gint               offset_x;         /*  offset of display image            */
+  gint               offset_y;
 
-  gint              x_src_dec;         /*  increments for the bresenham style */
-  gint              y_src_dec;         /*  image --> display transformation   */
-  gint              x_dest_inc;
-  gint              y_dest_inc;
+  gdouble            scale_x;          /*  horizontal scale factor            */
+  gdouble            scale_y;          /*  vertical scale factor              */
 
-  gdouble           last_scale;        /*  scale used when reverting zoom     */
-  guint             last_scale_time;   /*  time when last_scale was set       */
-  gint              last_offset_x;     /*  offsets used when reverting zoom   */
-  gint              last_offset_y;
+  gint               x_src_dec;        /*  increments for the bresenham style */
+  gint               y_src_dec;        /*  image --> display transformation   */
+  gint               x_dest_inc;
+  gint               y_dest_inc;
 
-  gint              disp_width;        /*  width of drawing area              */
-  gint              disp_height;       /*  height of drawing area             */
-  gint              disp_xoffset;
-  gint              disp_yoffset;
+  gdouble            last_scale;       /*  scale used when reverting zoom     */
+  guint              last_scale_time;  /*  time when last_scale was set       */
+  gint               last_offset_x;    /*  offsets used when reverting zoom   */
+  gint               last_offset_y;
 
-  gboolean          proximity;         /*  is a device in proximity           */
-  gboolean          snap_to_guides;    /*  should the guides be snapped to?   */
-  gboolean          snap_to_grid;      /*  should the grid be snapped to?     */
-  gboolean          snap_to_canvas;    /*  should the canvas be snapped to?   */
-  gboolean          snap_to_vectors;   /*  should the active path be snapped  */
+  gint               disp_width;       /*  width of drawing area              */
+  gint               disp_height;      /*  height of drawing area             */
 
-  Selection        *selection;         /*  Selection (marching ants)          */
+  gboolean           proximity;        /*  is a device in proximity           */
+  gboolean           snap_to_guides;   /*  should the guides be snapped to?   */
+  gboolean           snap_to_grid;     /*  should the grid be snapped to?     */
+  gboolean           snap_to_canvas;   /*  should the canvas be snapped to?   */
+  gboolean           snap_to_vectors;  /*  should the active path be snapped  */
 
-  GtkWidget        *canvas;            /*  GimpCanvas widget                  */
-  GdkGC            *grid_gc;           /*  GC for grid drawing                */
-  GdkGC            *pen_gc;            /*  GC for felt pen drawing            */
+  Selection         *selection;        /*  Selection (marching ants)          */
 
-  GtkAdjustment    *hsbdata;           /*  adjustments                        */
-  GtkAdjustment    *vsbdata;
-  GtkWidget        *hsb;               /*  scroll bars                        */
-  GtkWidget        *vsb;
+  GtkWidget         *canvas;           /*  GimpCanvas widget                  */
+  GdkGC             *grid_gc;          /*  GC for grid drawing                */
+  GdkGC             *pen_gc;           /*  GC for felt pen drawing            */
 
-  GtkWidget        *hrule;             /*  rulers                             */
-  GtkWidget        *vrule;
+  GtkAdjustment     *hsbdata;          /*  adjustments                        */
+  GtkAdjustment     *vsbdata;
+  GtkWidget         *hsb;              /*  scroll bars                        */
+  GtkWidget         *vsb;
 
-  GtkWidget        *origin;            /*  NW: origin                         */
-  GtkWidget        *quick_mask_button; /*  SW: quick mask button              */
-  GtkWidget        *zoom_button;       /*  NE: zoom toggle button             */
-  GtkWidget        *nav_ebox;          /*  SE: navigation event box           */
+  GtkWidget         *hrule;            /*  rulers                             */
+  GtkWidget         *vrule;
 
-  GtkWidget        *menubar;           /*  menubar                            */
-  GtkWidget        *statusbar;         /*  statusbar                          */
+  GtkWidget         *origin;           /*  NW: origin                         */
+  GtkWidget         *quick_mask_button;/*  SW: quick mask button              */
+  GtkWidget         *zoom_button;      /*  NE: zoom toggle button             */
+  GtkWidget         *nav_ebox;         /*  SE: navigation event box           */
 
-  guchar           *render_buf;        /*  buffer for rendering the image     */
+  GtkWidget         *menubar;          /*  menubar                            */
+  GtkWidget         *statusbar;        /*  statusbar                          */
 
-  guint             title_idle_id;     /*  title update idle ID               */
+  guchar            *render_buf;       /*  buffer for rendering the image     */
 
-  gint              icon_size;         /*  size of the icon pixmap            */
-  guint             icon_idle_id;      /*  ID of the idle-function            */
+  guint              title_idle_id;    /*  title update idle ID               */
 
-  GimpCursorFormat    cursor_format;   /*  Currently used cursor format       */
-  GimpCursorType      current_cursor;  /*  Currently installed main cursor    */
-  GimpToolCursorType  tool_cursor;     /*  Current Tool cursor                */
-  GimpCursorModifier  cursor_modifier; /*  Cursor modifier (plus, minus, ...) */
+  gint               icon_size;        /*  size of the icon pixmap            */
+  guint              icon_idle_id;     /*  ID of the idle-function            */
 
-  GimpCursorType    override_cursor;   /*  Overriding cursor                  */
-  gboolean          using_override_cursor; /*  is the cursor overridden?      */
+  guint              fill_idle_id;     /*  display_shell_fill() idle ID       */
 
-  gboolean          draw_cursor;       /* should we draw software cursor ?    */
-  gboolean          have_cursor;       /* is cursor currently drawn ?         */
-  gint              cursor_x;          /* software cursor X value             */
-  gint              cursor_y;          /* software cursor Y value             */
+  GimpCursorFormat   cursor_format;    /*  Currently used cursor format       */
+  GimpCursorType     current_cursor;   /*  Currently installed main cursor    */
+  GimpToolCursorType tool_cursor;      /*  Current Tool cursor                */
+  GimpCursorModifier cursor_modifier;  /*  Cursor modifier (plus, minus, ...) */
 
-  GtkWidget        *close_dialog;      /*  close dialog                       */
-  GtkWidget        *scale_dialog;      /*  scale (zoom) dialog                */
-  GtkWidget        *nav_popup;         /*  navigation popup                   */
-  GtkWidget        *grid_dialog;       /*  grid configuration dialog          */
+  GimpCursorType     override_cursor;  /*  Overriding cursor                 */
+  gboolean           using_override_cursor;
+  gboolean           draw_cursor;      /* should we draw software cursor ?    */
+  gboolean           have_cursor;      /* is cursor currently drawn ?         */
+  gint               cursor_x;         /* software cursor X value             */
+  gint               cursor_y;         /* software cursor Y value             */
+
+  GtkWidget         *close_dialog;     /*  close dialog                       */
+  GtkWidget         *scale_dialog;     /*  scale (zoom) dialog                */
+  GtkWidget         *nav_popup;        /*  navigation popup                   */
+  GtkWidget         *grid_dialog;      /*  grid configuration dialog          */
 
   GimpColorDisplayStack *filter_stack;   /* color display conversion stuff    */
   guint                  filter_idle_id;
   GtkWidget             *filters_dialog; /* color display filter dialog       */
 
-  gint              paused_count;
+  gint               paused_count;
 
-  GQuark            vectors_freeze_handler;
-  GQuark            vectors_thaw_handler;
-  GQuark            vectors_visible_handler;
+  GQuark             vectors_freeze_handler;
+  GQuark             vectors_thaw_handler;
+  GQuark             vectors_visible_handler;
 
-  GdkWindowState    window_state;      /* for fullscreen display              */
-  gboolean          zoom_on_resize;
-  gboolean          show_transform_preview;
+  GdkWindowState     window_state;     /* for fullscreen display              */
+  gboolean           zoom_on_resize;
+  gboolean           show_transform_preview;
+
+  gboolean           size_allocate_from_configure_event;
 
   GimpDisplayOptions *options;
   GimpDisplayOptions *fullscreen_options;
+  GimpDisplayOptions *no_image_options;
 
   /*  the state of gimp_display_shell_tool_events()  */
-  gboolean          space_pressed;
-  gboolean          space_release_pending;
-  const gchar      *space_shaded_tool;
-  gboolean          scrolling;
-  gint              scroll_start_x;
-  gint              scroll_start_y;
-  gboolean          button_press_before_focus;
-  guint32           last_motion_time;
+  gboolean           space_pressed;
+  gboolean           space_release_pending;
+  const gchar       *space_shaded_tool;
+  gboolean           scrolling;
+  gint               scroll_start_x;
+  gint               scroll_start_y;
+  gboolean           button_press_before_focus;
 
-  GdkRectangle     *highlight;         /* in image coordinates, can be NULL   */
-  GimpDrawable     *mask;
-  GimpChannelType   mask_color;
+  GdkRectangle      *highlight;        /* in image coordinates, can be NULL   */
+  GimpDrawable      *mask;
+  GimpChannelType    mask_color;
 
-  gpointer          scroll_info;
+  gpointer           scroll_info;
+
+  GimpCoords         last_coords;      /* last motion event                   */
+
+  guint32            last_motion_time; /*  previous time of a forwarded motion event  */
+  guint32            last_read_motion_time;
+  gdouble            last_motion_delta_time;
+  gdouble            last_motion_delta_x;
+  gdouble            last_motion_delta_y;
+  gdouble            last_motion_distance;
+
 };
 
 struct _GimpDisplayShellClass
 {
-  GtkWindowClass  parent_class;
+  GimpWindowClass    parent_class;
 
   void (* scaled)    (GimpDisplayShell *shell);
   void (* scrolled)  (GimpDisplayShell *shell);
@@ -199,9 +216,16 @@ GtkWidget * gimp_display_shell_new                 (GimpDisplay        *display,
                                                     GimpUnit            unit,
                                                     gdouble             scale,
                                                     GimpMenuFactory    *menu_factory,
-                                                    GimpUIManager      *popup_manager);
+                                                    GimpUIManager      *popup_manager,
+                                                    GimpDialogFactory  *display_factory);
 
 void        gimp_display_shell_reconnect           (GimpDisplayShell   *shell);
+
+void        gimp_display_shell_empty               (GimpDisplayShell   *shell);
+void        gimp_display_shell_fill                (GimpDisplayShell   *shell,
+                                                    GimpImage          *image,
+                                                    GimpUnit            unit,
+                                                    gdouble             scale);
 
 void        gimp_display_shell_scale_changed       (GimpDisplayShell   *shell);
 
@@ -214,7 +238,6 @@ GimpUnit    gimp_display_shell_get_unit            (GimpDisplayShell   *shell);
 
 gboolean    gimp_display_shell_snap_coords         (GimpDisplayShell   *shell,
                                                     GimpCoords         *coords,
-                                                    GimpCoords         *snapped_coords,
                                                     gint                snap_offset_x,
                                                     gint                snap_offset_y,
                                                     gint                snap_width,
@@ -245,7 +268,8 @@ void        gimp_display_shell_resume              (GimpDisplayShell   *shell);
 
 void        gimp_display_shell_update_icon         (GimpDisplayShell   *shell);
 
-void        gimp_display_shell_shrink_wrap         (GimpDisplayShell   *shell);
+void        gimp_display_shell_shrink_wrap         (GimpDisplayShell   *shell,
+                                                    gboolean            grow_only);
 
 void        gimp_display_shell_set_highlight       (GimpDisplayShell   *shell,
                                                     const GdkRectangle *highlight);

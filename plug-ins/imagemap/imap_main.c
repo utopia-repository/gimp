@@ -61,8 +61,6 @@
 #define ZOOMED(x) (_zoom_factor * (x))
 #define GET_REAL_COORD(x) ((x) / _zoom_factor)
 
-#define PLUG_IN_PROC "plug-in-imagemap"
-
 static gint             zoom_in         (void);
 static gint             zoom_out        (void);
 
@@ -516,7 +514,7 @@ main_set_title(const char *filename)
    char *title, *p;
 
    g_strreplace(&_filename, filename);
-   p = (filename) ? g_filename_display_basename (filename) : _("<Untitled>");
+   p = filename ? g_filename_display_basename (filename) : (gchar *) _("<Untitled>");
    title = g_strdup_printf("%s - Image Map", p);
    if (filename)
      g_free (p);
@@ -1260,7 +1258,7 @@ dialog(GimpDrawable *drawable)
    GtkWidget    *tools;
    Menu_t       *menu;
 
-   gimp_ui_init ("imagemap", TRUE);
+   gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
    set_arrow_func ();
 
@@ -1270,18 +1268,18 @@ dialog(GimpDrawable *drawable)
    gtk_window_set_resizable(GTK_WINDOW(dlg), TRUE);
 
    main_set_title(NULL);
-   gimp_help_connect (dlg, gimp_standard_help_func, "plug-in-imagemap", NULL);
+   gimp_help_connect (dlg, gimp_standard_help_func, PLUG_IN_PROC, NULL);
 
-   gtk_window_set_position(GTK_WINDOW(dlg), GTK_WIN_POS_MOUSE);
+   gtk_window_set_position (GTK_WINDOW (dlg), GTK_WIN_POS_MOUSE);
 
    gimp_window_set_transient (GTK_WINDOW (dlg));
 
-   g_signal_connect(dlg, "delete-event",
-                    G_CALLBACK(close_callback), NULL);
-   g_signal_connect(dlg, "key-press-event",
-                    G_CALLBACK(key_press_cb), NULL);
-   g_signal_connect(dlg, "key_release_event",
-                    G_CALLBACK(key_release_cb), NULL);
+   g_signal_connect (dlg, "delete-event",
+                     G_CALLBACK (close_callback), NULL);
+   g_signal_connect (dlg, "key-press-event",
+                     G_CALLBACK (key_press_cb), NULL);
+   g_signal_connect (dlg, "key-release-event",
+                     G_CALLBACK (key_release_cb), NULL);
 
    g_signal_connect (dlg, "destroy",
                      G_CALLBACK (gtk_main_quit),
@@ -1309,10 +1307,10 @@ dialog(GimpDrawable *drawable)
    gtk_box_pack_start(GTK_BOX(hbox), tools, FALSE, FALSE, 0);
 
    _preview = make_preview(drawable);
-   add_preview_motion_event(_preview, (GtkSignalFunc) preview_move);
-   add_enter_notify_event(_preview, (GtkSignalFunc) preview_enter);
-   add_leave_notify_event(_preview, (GtkSignalFunc) preview_leave);
-   add_preview_button_press_event(_preview, (GtkSignalFunc) button_press);
+   add_preview_motion_event(_preview, G_CALLBACK (preview_move));
+   add_enter_notify_event(_preview, G_CALLBACK (preview_enter));
+   add_leave_notify_event(_preview, G_CALLBACK (preview_leave));
+   add_preview_button_press_event(_preview, G_CALLBACK (button_press));
    gtk_container_add(GTK_CONTAINER(hbox), _preview->window);
 
    object_list_add_geometry_cb(_shapes, geometry_changed, NULL);

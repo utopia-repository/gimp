@@ -22,6 +22,7 @@
 <link rel="index" href="libgimpwidgets-index.html" title="Index">
 <link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpwidgets-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -188,6 +189,8 @@ void                <a class="link" href="libgimpwidgets-GimpStock.html#gimp-sto
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-INFO:CAPS" title="GIMP_STOCK_INFO">GIMP_STOCK_INFO</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUESTION:CAPS" title="GIMP_STOCK_QUESTION">GIMP_STOCK_QUESTION</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WARNING:CAPS" title="GIMP_STOCK_WARNING">GIMP_STOCK_WARNING</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GEGL:CAPS" title="GIMP_STOCK_GEGL">GIMP_STOCK_GEGL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-USER-MANUAL:CAPS" title="GIMP_STOCK_USER_MANUAL">GIMP_STOCK_USER_MANUAL</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER:CAPS" title="GIMP_STOCK_WILBER">GIMP_STOCK_WILBER</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-EEK:CAPS" title="GIMP_STOCK_WILBER_EEK">GIMP_STOCK_WILBER_EEK</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS" title="GIMP_STOCK_ZOOM_FOLLOW_WINDOW">GIMP_STOCK_ZOOM_FOLLOW_WINDOW</a>
@@ -204,6 +207,7 @@ void                <a class="link" href="libgimpwidgets-GimpStock.html#gimp-sto
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLORIZE:CAPS" title="GIMP_STOCK_TOOL_COLORIZE">GIMP_STOCK_TOOL_COLORIZE</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CROP:CAPS" title="GIMP_STOCK_TOOL_CROP">GIMP_STOCK_TOOL_CROP</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CURVES:CAPS" title="GIMP_STOCK_TOOL_CURVES">GIMP_STOCK_TOOL_CURVES</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-DESATURATE:CAPS" title="GIMP_STOCK_TOOL_DESATURATE">GIMP_STOCK_TOOL_DESATURATE</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-DODGE:CAPS" title="GIMP_STOCK_TOOL_DODGE">GIMP_STOCK_TOOL_DODGE</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS" title="GIMP_STOCK_TOOL_ELLIPSE_SELECT">GIMP_STOCK_TOOL_ELLIPSE_SELECT</a>
 #define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ERASER:CAPS" title="GIMP_STOCK_TOOL_ERASER">GIMP_STOCK_TOOL_ERASER</a>
@@ -275,7 +279,9 @@ locales.
 Initializes the GIMP stock icon factory.
 </p>
 <p>
-You don't need to call this function as <code class="function">gimp_ui_init()</code> already does
+You don't need to call this function as <a
+href="../libgimp/libgimp-gimpui.html#gimp-ui-init"
+><code class="function">gimp_ui_init()</code></a> already does
 this for you.</p>
 <p>
 
@@ -1585,6 +1591,28 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
+<a name="GIMP-STOCK-GEGL:CAPS"></a><h3>GIMP_STOCK_GEGL</h3>
+<pre class="programlisting">#define GIMP_STOCK_GEGL                     "gimp-gegl"
+</pre>
+<p>
+<img src="stock-gegl-22.png">
+<img src="stock-gegl-16.png">
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GIMP-STOCK-USER-MANUAL:CAPS"></a><h3>GIMP_STOCK_USER_MANUAL</h3>
+<pre class="programlisting">#define GIMP_STOCK_USER_MANUAL              "gimp-user-manual"
+</pre>
+<p>
+<img src="stock-user-manual-64.png">
+<img src="stock-user-manual-32.png">
+<img src="stock-user-manual-24.png">
+<img src="stock-user-manual-16.png">
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
 <a name="GIMP-STOCK-WILBER:CAPS"></a><h3>GIMP_STOCK_WILBER</h3>
 <pre class="programlisting">#define GIMP_STOCK_WILBER                   "gimp-wilber"
 </pre>
@@ -1739,6 +1767,15 @@ RTL variant
 <p>
 <img src="stock-tool-curves-22.png">
 <img src="stock-tool-curves-16.png">
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GIMP-STOCK-TOOL-DESATURATE:CAPS"></a><h3>GIMP_STOCK_TOOL_DESATURATE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_DESATURATE          GIMP_STOCK_CONVERT_GRAYSCALE
+</pre>
+<p>
+<img src="stock-convert-grayscale-16.png">
 </p>
 </div>
 <hr>
@@ -1927,7 +1964,8 @@ RTL variant
 <pre class="programlisting">#define GIMP_STOCK_TOOL_PERSPECTIVE_CLONE   "gimp-tool-perspective-clone"
 </pre>
 <p>
-
+<img src="stock-tool-perspective-clone-22.png">
+<img src="stock-tool-perspective-clone-16.png">
 </p>
 </div>
 <hr>

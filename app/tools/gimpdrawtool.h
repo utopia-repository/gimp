@@ -118,6 +118,9 @@ void       gimp_draw_tool_draw_dashed_line         (GimpDrawTool     *draw_tool,
                                                     gdouble           x2,
                                                     gdouble           y2,
                                                     gboolean          use_offsets);
+void       gimp_draw_tool_draw_guide_line          (GimpDrawTool     *draw_tool,
+                                                    GimpOrientationType  orientation,
+                                                    gint              position);
 void       gimp_draw_tool_draw_rectangle           (GimpDrawTool     *draw_tool,
                                                     gboolean          filled,
                                                     gdouble           x,
@@ -171,6 +174,7 @@ void       gimp_draw_tool_draw_handle              (GimpDrawTool     *draw_tool,
                                                     gboolean          use_offsets);
 void       gimp_draw_tool_draw_corner              (GimpDrawTool     *draw_tool,
                                                     gboolean          highlight,
+                                                    gboolean          put_outside,
                                                     gdouble           x1,
                                                     gdouble           y1,
                                                     gdouble           x2,
@@ -225,7 +229,7 @@ gboolean   gimp_draw_tool_on_vectors               (GimpDrawTool     *draw_tool,
                                                     GimpVectors     **ret_vectors);
 
 void       gimp_draw_tool_draw_lines               (GimpDrawTool     *draw_tool,
-                                                    const gdouble    *points,
+                                                    const GimpVector2 *points,
                                                     gint              n_points,
                                                     gboolean          filled,
                                                     gboolean          use_offsets);

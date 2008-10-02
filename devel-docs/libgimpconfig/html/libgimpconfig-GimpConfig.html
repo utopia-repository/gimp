@@ -14,6 +14,7 @@
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimpconfig-index.html" title="Index">
 <link rel="index" href="libgimpconfig-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpconfig-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimpconfig-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -76,6 +77,9 @@ gpointer            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-con
 gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-is-equal-to" title="gimp_config_is_equal_to ()">gimp_config_is_equal_to</a>             (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *a,
                                                          <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *b);
 void                <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-reset" title="gimp_config_reset ()">gimp_config_reset</a>                   (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config);
+gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-copy" title="gimp_config_copy ()">gimp_config_copy</a>                    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *src,
+                                                         <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *dest,
+                                                         GParamFlags flags);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -265,6 +269,11 @@ Serializes the object properties of <em class="parameter"><code>config</code></e
                                                          gpointer data,
                                                          GError **error);</pre>
 <p>
+Opens the file specified by <em class="parameter"><code>filename</code></em>, reads configuration data
+from it and configures <em class="parameter"><code>config</code></em> accordingly. Basically this function
+creates a properly configured <span class="type">GScanner</span> for you and calls the
+deserialize function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.</p>
+<p>
 
 </p>
 <div class="variablelist"><table border="0">
@@ -272,17 +281,17 @@ Serializes the object properties of <em class="parameter"><code>config</code></e
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
-<td>
+<td> the name of the file to read configuration from.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>
+<td> user data passed to the deserialize implementation.
 </td>
 </tr>
 <tr>
@@ -292,13 +301,14 @@ Serializes the object properties of <em class="parameter"><code>config</code></e
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>
-
+<td> <code class="literal">TRUE</code> if deserialization succeeded, <code class="literal">FALSE</code> otherwise.
 
 </td>
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since  GIMP 2.4
+</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -482,6 +492,51 @@ their properties.</p>
 </tr></tbody>
 </table></div>
 <p class="since">Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-config-copy"></a><h3>gimp_config_copy ()</h3>
+<pre class="programlisting">gboolean            gimp_config_copy                    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *src,
+                                                         <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *dest,
+                                                         GParamFlags flags);</pre>
+<p>
+Compares all read- and write-able properties from <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em>
+that have all <em class="parameter"><code>flags</code></em> set. Differing values are then copied from
+<em class="parameter"><code>src</code></em> to <em class="parameter"><code>dest</code></em>. If <em class="parameter"><code>flags</code></em> is 0, all differing read/write properties.
+</p>
+<p>
+Properties marked as "construct-only" are not touched.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dest</code></em> :</span></p></td>
+<td> another <span class="type">GObject</span> of the same type as <em class="parameter"><code>a</code></em>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
+<td> a mask of GParamFlags
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>dest</code></em> was modified, <code class="literal">FALSE</code> otherwise
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
 </p>
 </div>
 </div>

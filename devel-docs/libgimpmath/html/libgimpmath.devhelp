@@ -11,6 +11,7 @@
     <sub name="Index" link="libgimpmath-index.html"/>
     <sub name="Index of new symbols in GIMP 2.2" link="libgimpmath-index-new-in-2-2.html"/>
     <sub name="Index of new symbols in GIMP 2.4" link="libgimpmath-index-new-in-2-4.html"/>
+    <sub name="Index of new symbols in GIMP 2.6" link="libgimpmath-index-new-in-2-6.html"/>
     <sub name="Index of deprecated symbols" link="libgimpmath-index-deprecated.html"/>
   </chapters>
   <functions>

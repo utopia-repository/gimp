@@ -158,4 +158,4 @@
 )
 
 (script-fu-menu-register "script-fu-beveled-pattern-arrow"
-                         "<Toolbox>/Xtns/Web Page Themes/Beveled Pattern")
+                         "<Image>/File/Create/Web Page Themes/Beveled Pattern")

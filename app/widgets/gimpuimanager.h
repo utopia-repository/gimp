@@ -22,8 +22,6 @@
 #ifndef __GIMP_UI_MANAGER_H__
 #define __GIMP_UI_MANAGER_H__
 
-#include <gtk/gtkuimanager.h>
-
 
 typedef struct _GimpUIManagerUIEntry GimpUIManagerUIEntry;
 
@@ -99,7 +97,7 @@ void            gimp_ui_manager_ui_popup    (GimpUIManager          *manager,
                                              GtkWidget              *parent,
                                              GimpMenuPositionFunc    position_func,
                                              gpointer                position_data,
-                                             GtkDestroyNotify        popdown_func,
+                                             GDestroyNotify          popdown_func,
                                              gpointer                popdown_data);
 
 

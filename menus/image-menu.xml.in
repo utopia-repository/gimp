@@ -5,9 +5,13 @@
   <menubar-and-popup action-name="image">
 
     <menu action="file-menu" name="File">
-      <placeholder name="New">
-        <menuitem action="image-new-from-image" />
-      </placeholder>
+      <menuitem action="image-new" />
+      <menu action="file-create-menu" name="Create">
+        <placeholder name="Acquire">
+          <menuitem action="edit-paste-as-new" />
+        </placeholder>
+        <separator />
+      </menu>
       <placeholder name="Open">
         <menuitem action="file-open" />
         <menuitem action="file-open-as-layers" />
@@ -18,7 +22,15 @@
         <separator />
         <menuitem action="dialogs-document-history" />
       </menu>
-      <menu action="file-acquire-menu" name="Acquire" />
+
+<!--  The debug-menu is automatically excluded for stable releases  -->
+      <menu action="debug-menu" name="Debug">
+        <menuitem action="debug-mem-profile" />
+        <menuitem action="debug-dump-items" />
+        <menuitem action="debug-dump-managers" />
+        <menuitem action="debug-dump-attached-data" />
+      </menu>
+
       <separator />
       <placeholder name="Save">
 	<menuitem action="file-save" />
@@ -166,6 +178,7 @@
       </placeholder>
       <menu action="edit-paste-as-menu" name="Paste as">
 	<menuitem action="edit-paste-as-new-short" />
+	<menuitem action="edit-paste-as-new-layer" />
       </menu>
       <menu action="edit-buffer-menu" name="Buffer">
         <menuitem action="edit-named-cut" />
@@ -190,6 +203,7 @@
       <placeholder name="Preferences">
         <menuitem action="dialogs-preferences" />      
         <menuitem action="dialogs-keyboard-shortcuts" />
+        <menuitem action="dialogs-module-dialog"/>
       </placeholder>
       <separator />
     </menu>
@@ -225,7 +239,7 @@
         <menuitem action="view-zoom-out" />
         <menuitem action="view-zoom-in" />
         <menuitem action="view-zoom-fit-in" />
-        <menuitem action="view-zoom-fit-to" />
+        <menuitem action="view-zoom-fill" />
         <separator />
         <menuitem action="view-zoom-16-1" />
         <menuitem action="view-zoom-8-1" />
@@ -332,6 +346,7 @@
     <menu action="layers-menu" name="Layer">
       <placeholder name="New">
         <menuitem action="layers-new" />
+        <menuitem action="layers-new-from-visible" />
         <menuitem action="layers-duplicate" />
       </placeholder>
       <placeholder name="Structure">
@@ -465,11 +480,13 @@
       <menuitem action="tools-levels" />
       <menuitem action="tools-curves" />
       <menuitem action="tools-posterize" />
+      <menuitem action="tools-desaturate" />
       <separator />
-      <menuitem action="drawable-desaturate" />
       <placeholder name="Invert">
         <menuitem action="drawable-invert" />
       </placeholder>
+      <separator />
+      <menuitem action="config-use-gegl" />
       <separator />
       <menu action="colors-auto-menu" name="Auto">
         <menuitem action="drawable-equalize" />
@@ -531,25 +548,18 @@
 	<menuitem action="tools-levels" />
 	<menuitem action="tools-curves" />
 	<menuitem action="tools-posterize" />
+	<menuitem action="tools-desaturate" />
       </menu>
       <menuitem action="tools-vector" />
       <menuitem action="tools-color-picker" />
       <menuitem action="tools-zoom" />
       <menuitem action="tools-measure" />
       <menuitem action="tools-text" />
+      <menuitem action="tools-gegl" />
       <separator />
-      <menuitem action="dialogs-toolbox" />
+      <menuitem action="windows-show-toolbox" />
       <menuitem action="context-colors-default" />
       <menuitem action="context-colors-swap" />
-    </menu>
-
-    <menu action="dialogs-menu" name="Dialogs">
-      <menu action="dialogs-new-dock-menu" name="Create New Dock">
-	<menuitem action="dialogs-new-dock-lcp" />
-	<menuitem action="dialogs-new-dock-data" />
-	<menuitem action="dialogs-new-dock-stuff" />
-      </menu>
-      <xi:include href="dialogs-menuitems.xml" />
     </menu>
 
     <menu action="plug-in-menu" name="Filters">
@@ -574,8 +584,8 @@
       <menu action="plug-in-edge-detect-menu" name="Edge-Detect" />
       <menu action="plug-in-generic-menu" name="Generic" />
       <menu action="plug-in-combine-menu" name="Combine" />
-      <separator />
       <menu action="plug-in-artistic-menu" name="Artistic" />
+      <menu action="plug-in-decor-menu" name="Decor" />
       <menu action="plug-in-map-menu" name="Map" />
       <menu action="plug-in-render-menu" name="Render">
 	<menu action="plug-in-render-clouds-menu" name="Clouds" />
@@ -589,14 +599,26 @@
 	<separator />
       </menu>
       <separator />
+      <placeholder name="Menus" />
+      <separator />
+      <placeholder name="Languages" />
+      <placeholder name="Extensions" />
+      <separator />
     </menu>
 
-    <menu action="extensions-menu" name="Xtns">
-      <placeholder name="Extensions">
-	<menuitem action="dialogs-module-dialog"/>
+    <placeholder name="Menus" />
+
+    <menu action="windows-menu" name="Windows">
+      <menu action="windows-docks-menu" name="Recently Closed Docks" />
+      <menu action="windows-dialogs-menu" name="Dockable Dialogs">
+	<xi:include href="dialogs-menuitems.xml" />
+      </menu>
+      <separator />
+      <placeholder name="Images" />
+      <separator />
+      <placeholder name="Docks">
+	<menuitem action="windows-show-toolbox" />
       </placeholder>
-      <placeholder name="Languages"/>
-      <separator/>
     </menu>
 
     <menu action="help-menu" name="Help">
@@ -604,6 +626,8 @@
       <menuitem action="help-context-help" />
       <menuitem action="dialogs-tips" />
       <menuitem action="dialogs-about" />
+      <separator />
+      <placeholder name="Programming" />
       <separator />
     </menu>
 

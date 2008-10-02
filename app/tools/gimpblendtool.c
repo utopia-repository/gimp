@@ -22,7 +22,6 @@
 
 #include <gtk/gtk.h>
 
-#include "libgimpmath/gimpmath.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
@@ -46,7 +45,7 @@
 #include "gimp-intl.h"
 
 
-#define TARGET_SIZE 15
+#define TARGET_SIZE  15
 
 
 /*  local function prototypes  */
@@ -283,11 +282,11 @@ gimp_blend_tool_motion (GimpTool        *tool,
       blend_tool->end_y = coords->y;
     }
 
-  /* Restrict to multiples of 15 degrees if ctrl is pressed */
   if (state & GDK_CONTROL_MASK)
     {
       gimp_tool_motion_constrain (blend_tool->start_x, blend_tool->start_y,
-                                  &blend_tool->end_x, &blend_tool->end_y);
+                                  &blend_tool->end_x, &blend_tool->end_y,
+                                  GIMP_TOOL_CONSTRAIN_15_DEGREES);
     }
 
   gimp_tool_pop_status (tool, display);
@@ -319,7 +318,8 @@ gimp_blend_tool_active_modifier_key (GimpTool        *tool,
       if (press)
         {
           gimp_tool_motion_constrain (blend_tool->start_x, blend_tool->start_y,
-                                      &blend_tool->end_x, &blend_tool->end_y);
+                                      &blend_tool->end_x, &blend_tool->end_y,
+                                      GIMP_TOOL_CONSTRAIN_15_DEGREES);
         }
 
       gimp_tool_pop_status (tool, display);
@@ -359,8 +359,8 @@ gimp_blend_tool_draw (GimpDrawTool *draw_tool)
   /*  Draw start target  */
   gimp_draw_tool_draw_handle (draw_tool,
                               GIMP_HANDLE_CROSS,
-                              floor (blend_tool->start_x) + 0.5,
-                              floor (blend_tool->start_y) + 0.5,
+                              blend_tool->start_x,
+                              blend_tool->start_y,
                               TARGET_SIZE,
                               TARGET_SIZE,
                               GTK_ANCHOR_CENTER,
@@ -369,8 +369,8 @@ gimp_blend_tool_draw (GimpDrawTool *draw_tool)
   /*  Draw end target  */
   gimp_draw_tool_draw_handle (draw_tool,
                               GIMP_HANDLE_CROSS,
-                              floor (blend_tool->end_x) + 0.5,
-                              floor (blend_tool->end_y) + 0.5,
+                              blend_tool->end_x,
+                              blend_tool->end_y,
                               TARGET_SIZE,
                               TARGET_SIZE,
                               GTK_ANCHOR_CENTER,
@@ -378,10 +378,10 @@ gimp_blend_tool_draw (GimpDrawTool *draw_tool)
 
   /*  Draw the line between the start and end coords  */
   gimp_draw_tool_draw_line (draw_tool,
-                            floor (blend_tool->start_x) + 0.5,
-                            floor (blend_tool->start_y) + 0.5,
-                            floor (blend_tool->end_x) + 0.5,
-                            floor (blend_tool->end_y) + 0.5,
+                            blend_tool->start_x,
+                            blend_tool->start_y,
+                            blend_tool->end_x,
+                            blend_tool->end_y,
                             FALSE);
 }
 
@@ -390,7 +390,8 @@ gimp_blend_tool_push_status (GimpBlendTool   *blend_tool,
                              GdkModifierType  state,
                              GimpDisplay     *display)
 {
-  gchar *status_help;
+  GimpTool *tool = GIMP_TOOL (blend_tool);
+  gchar    *status_help;
 
   status_help = gimp_suggest_modifiers ("",
                                         ((GDK_CONTROL_MASK | GDK_MOD1_MASK)
@@ -398,11 +399,14 @@ gimp_blend_tool_push_status (GimpBlendTool   *blend_tool,
                                         NULL,
                                         _("%s for constrained angles"),
                                         _("%s to move the whole line"));
-  gimp_tool_push_status_coords (GIMP_TOOL (blend_tool), display,
+
+  gimp_tool_push_status_coords (tool, display,
+                                gimp_tool_control_get_precision (tool->control),
                                 _("Blend: "),
                                 blend_tool->end_x - blend_tool->start_x,
                                 ", ",
                                 blend_tool->end_y - blend_tool->start_y,
                                 status_help);
+
   g_free (status_help);
 }

@@ -55,27 +55,71 @@
 #include "gimpeditselectiontool.h"
 #include "gimptoolcontrol.h"
 #include "tool_manager.h"
+#include "tools-utils.h"
 
 #include "gimp-intl.h"
 
 
 #define EDIT_SELECT_SCROLL_LOCK FALSE
 #define ARROW_VELOCITY          25
+#define CENTER_CROSS_SIZE       6
 
 
-static void   gimp_edit_selection_tool_button_release (GimpTool              *tool,
-                                                       GimpCoords            *coords,
-                                                       guint32                time,
-                                                       GdkModifierType        state,
-                                                       GimpButtonReleaseType  release_type,
-                                                       GimpDisplay           *display);
-static void   gimp_edit_selection_tool_motion         (GimpTool              *tool,
-                                                       GimpCoords            *coords,
-                                                       guint32                time,
-                                                       GdkModifierType        state,
-                                                       GimpDisplay           *display);
+typedef struct _GimpEditSelectionTool
+{
+  GimpDrawTool        parent_instance;
 
-static void   gimp_edit_selection_tool_draw           (GimpDrawTool          *tool);
+  gint                origx, origy;    /*  Last x and y coords               */
+  gint                cumlx, cumly;    /*  Cumulative changes to x and yed   */
+  gint                x, y;            /*  Current x and y coords            */
+  gint                num_segs_in;     /*  Num seg in selection boundary     */
+  gint                num_segs_out;    /*  Num seg in selection boundary     */
+  BoundSeg           *segs_in;         /*  Pointer to the channel sel. segs  */
+  BoundSeg           *segs_out;        /*  Pointer to the channel sel. segs  */
+
+  gint                x1, y1;          /*  Bounding box of selection mask    */
+  gint                x2, y2;
+
+  gdouble             center_x;        /*  Where to draw the mark of center  */
+  gdouble             center_y;
+
+  GimpTranslateMode   edit_mode;       /*  Translate the mask or layer?      */
+
+  gboolean            first_move;      /*  Don't push undos after the first  */
+
+  gboolean            propagate_release;
+
+  gboolean            constrain;       /*  Constrain the movement            */
+  gdouble             start_x, start_y;/*  Coords when button was pressed    */
+  gdouble             last_x,  last_y; /*  Previous coords sent to _motion   */
+} GimpEditSelectionTool;
+
+typedef struct _GimpEditSelectionToolClass
+{
+  GimpDrawToolClass   parent_class;
+} GimpEditSelectionToolClass;
+
+
+static void       gimp_edit_selection_tool_button_release      (GimpTool                    *tool,
+                                                                GimpCoords                  *coords,
+                                                                guint32                      time,
+                                                                GdkModifierType              state,
+                                                                GimpButtonReleaseType        release_type,
+                                                                GimpDisplay                 *display);
+static void       gimp_edit_selection_tool_motion              (GimpTool                    *tool,
+                                                                GimpCoords                  *coords,
+                                                                guint32                      time,
+                                                                GdkModifierType              state,
+                                                                GimpDisplay                 *display);
+static void       gimp_edit_selection_tool_active_modifier_key (GimpTool                    *tool,
+                                                                GdkModifierType              key,
+                                                                gboolean                     press,
+                                                                GdkModifierType              state,
+                                                                GimpDisplay                 *display);
+static void       gimp_edit_selection_tool_draw                (GimpDrawTool                *tool);
+
+static GimpItem * gimp_edit_selection_tool_get_active_item     (const GimpEditSelectionTool *edit_select,
+                                                                const GimpImage             *image);
 
 
 G_DEFINE_TYPE (GimpEditSelectionTool, gimp_edit_selection_tool,
@@ -87,13 +131,14 @@ G_DEFINE_TYPE (GimpEditSelectionTool, gimp_edit_selection_tool,
 static void
 gimp_edit_selection_tool_class_init (GimpEditSelectionToolClass *klass)
 {
-  GimpToolClass     *tool_class = GIMP_TOOL_CLASS (klass);
-  GimpDrawToolClass *draw_class = GIMP_DRAW_TOOL_CLASS (klass);
+  GimpToolClass     *tool_class   = GIMP_TOOL_CLASS (klass);
+  GimpDrawToolClass *draw_class   = GIMP_DRAW_TOOL_CLASS (klass);
 
-  tool_class->button_release = gimp_edit_selection_tool_button_release;
-  tool_class->motion         = gimp_edit_selection_tool_motion;
+  tool_class->button_release      = gimp_edit_selection_tool_button_release;
+  tool_class->motion              = gimp_edit_selection_tool_motion;
+  tool_class->active_modifier_key = gimp_edit_selection_tool_active_modifier_key;
 
-  draw_class->draw           = gimp_edit_selection_tool_draw;
+  draw_class->draw                = gimp_edit_selection_tool_draw;
 }
 
 static void
@@ -111,6 +156,8 @@ gimp_edit_selection_tool_init (GimpEditSelectionTool *edit_selection_tool)
   edit_selection_tool->cumly      = 0;
 
   edit_selection_tool->first_move = TRUE;
+
+  edit_selection_tool->constrain  = FALSE;
 }
 
 static void
@@ -139,6 +186,7 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
                                 gboolean           propagate_release)
 {
   GimpEditSelectionTool *edit_select;
+  GimpTool              *tool;
   GimpDisplayShell      *shell;
   GimpItem              *active_item;
   GimpChannel           *channel;
@@ -148,9 +196,13 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
   gint                   num_groups;
   const gchar           *undo_desc;
 
-  edit_select = g_object_new (GIMP_TYPE_EDIT_SELECTION_TOOL, NULL);
+  edit_select = g_object_new (GIMP_TYPE_EDIT_SELECTION_TOOL,
+                              "tool-info", parent_tool->tool_info,
+                              NULL);
 
   edit_select->propagate_release = propagate_release;
+
+  tool = GIMP_TOOL (edit_select);
 
   shell = GIMP_DISPLAY_SHELL (display->shell);
 
@@ -172,10 +224,8 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
 
   edit_select->edit_mode = edit_mode;
 
-  if (edit_select->edit_mode == GIMP_TRANSLATE_MODE_VECTORS)
-    active_item = GIMP_ITEM (gimp_image_get_active_vectors (display->image));
-  else
-    active_item = GIMP_ITEM (gimp_image_get_active_drawable (display->image));
+  active_item = gimp_edit_selection_tool_get_active_item (edit_select,
+                                                          display->image);
 
   switch (edit_select->edit_mode)
     {
@@ -207,6 +257,12 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
   edit_select->x = edit_select->origx = coords->x - off_x;
   edit_select->y = edit_select->origy = coords->y - off_y;
 
+  /* Remember starting point for use in constrained movement */
+  edit_select->start_x = coords->x;
+  edit_select->start_y = coords->y;
+
+  edit_select->constrain = FALSE;
+
   switch (edit_select->edit_mode)
     {
     case GIMP_TRANSLATE_MODE_CHANNEL:
@@ -236,8 +292,8 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
     {
       edit_select->x1 = 0;
       edit_select->y1 = 0;
-      edit_select->x2 = display->image->width;
-      edit_select->y2 = display->image->height;
+      edit_select->x2 = gimp_image_get_width  (display->image);
+      edit_select->y2 = gimp_image_get_height (display->image);
     }
   else
     {
@@ -376,23 +432,28 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
         break;
       }
 
-    gimp_tool_control_set_snap_offsets (GIMP_TOOL (edit_select)->control,
+    gimp_tool_control_set_snap_offsets (tool->control,
                                         x1 - coords->x,
                                         y1 - coords->y,
                                         x2 - x1,
                                         y2 - y1);
+
+    /* Save where to draw the mark of the center */
+    edit_select->center_x = (x1 + x2) / 2.0;
+    edit_select->center_y = (y1 + y2) / 2.0;
   }
 
-  gimp_tool_control_activate (GIMP_TOOL (edit_select)->control);
-  GIMP_TOOL (edit_select)->display = display;
+  gimp_tool_control_activate (tool->control);
+  tool->display = display;
 
-  tool_manager_push_tool (display->image->gimp, GIMP_TOOL (edit_select));
+  tool_manager_push_tool (display->image->gimp, tool);
 
   /*  pause the current selection  */
   gimp_display_shell_selection_control (shell, GIMP_SELECTION_PAUSE);
 
   /* initialize the statusbar display */
-  gimp_tool_push_status_coords (GIMP_TOOL (edit_select), display,
+  gimp_tool_push_status_coords (tool, display,
+                                gimp_tool_control_get_precision (tool->control),
                                 _("Move: "), 0, ", ", 0, NULL);
 
   gimp_draw_tool_start (GIMP_DRAW_TOOL (edit_select), display);
@@ -421,10 +482,8 @@ gimp_edit_selection_tool_button_release (GimpTool              *tool,
 
   tool_manager_pop_tool (display->image->gimp);
 
-  if (edit_select->edit_mode == GIMP_TRANSLATE_MODE_VECTORS)
-    active_item = GIMP_ITEM (gimp_image_get_active_vectors (display->image));
-  else
-    active_item = GIMP_ITEM (gimp_image_get_active_drawable (display->image));
+  active_item = gimp_edit_selection_tool_get_active_item (edit_select,
+                                                          display->image);
 
   gimp_edit_selection_tool_calc_coords (edit_select,
                                         coords->x,
@@ -518,6 +577,161 @@ gimp_edit_selection_tool_button_release (GimpTool              *tool,
   g_object_unref (edit_select);
 }
 
+static void
+gimp_edit_selection_tool_update_motion (GimpEditSelectionTool *edit_select,
+                                        gdouble                new_x,
+                                        gdouble                new_y,
+                                        GimpDisplay           *display)
+{
+  GimpDrawTool *draw_tool = GIMP_DRAW_TOOL (edit_select);
+  GimpTool     *tool      = GIMP_TOOL (edit_select);
+  GimpItem     *active_item;
+  gint          off_x, off_y;
+  gdouble       motion_x, motion_y;
+  gint          x, y;
+
+  gdk_flush ();
+
+  gimp_draw_tool_pause (draw_tool);
+
+  active_item = gimp_edit_selection_tool_get_active_item (edit_select,
+                                                          display->image);
+
+  gimp_item_offsets (active_item, &off_x, &off_y);
+
+  if (edit_select->constrain)
+    {
+      gimp_tool_motion_constrain (edit_select->start_x, edit_select->start_y,
+                                  &new_x, &new_y,
+                                  GIMP_TOOL_CONSTRAIN_45_DEGREES);
+    }
+
+  motion_x = new_x - off_x;
+  motion_y = new_y - off_y;
+
+  /* now do the actual move. */
+
+  gimp_edit_selection_tool_calc_coords (edit_select,
+                                        motion_x,
+                                        motion_y);
+  x = edit_select->x;
+  y = edit_select->y;
+
+  /* if there has been movement, move the selection  */
+  if (edit_select->origx != x || edit_select->origy != y)
+    {
+      gint    xoffset;
+      gint    yoffset;
+      GError *error = NULL;
+
+      xoffset = x - edit_select->origx;
+      yoffset = y - edit_select->origy;
+
+      edit_select->cumlx += xoffset;
+      edit_select->cumly += yoffset;
+
+      switch (edit_select->edit_mode)
+        {
+        case GIMP_TRANSLATE_MODE_LAYER_MASK:
+        case GIMP_TRANSLATE_MODE_MASK:
+          /*  we don't do the actual edit selection move here.  */
+          edit_select->origx = x;
+          edit_select->origy = y;
+          break;
+
+        case GIMP_TRANSLATE_MODE_VECTORS:
+        case GIMP_TRANSLATE_MODE_CHANNEL:
+          edit_select->origx = x;
+          edit_select->origy = y;
+
+          /*  fallthru  */
+
+        case GIMP_TRANSLATE_MODE_LAYER:
+          /*  for CHANNEL_TRANSLATE, only translate the linked layers
+           *  and vectors on-the-fly, the channel is translated
+           *  on button_release.
+           */
+          if (edit_select->edit_mode != GIMP_TRANSLATE_MODE_CHANNEL)
+            gimp_item_translate (active_item, xoffset, yoffset,
+                                 edit_select->first_move);
+
+          if (gimp_item_get_linked (active_item))
+            {
+              /*  translate all linked layers & vectors as well  */
+
+              GList *linked;
+
+              linked = gimp_image_item_list_get_list (display->image,
+                                                      active_item,
+                                                      GIMP_ITEM_TYPE_LAYERS |
+                                                      GIMP_ITEM_TYPE_VECTORS,
+                                                      GIMP_ITEM_SET_LINKED);
+
+              gimp_image_item_list_translate (display->image,
+                                              linked,
+                                              xoffset, yoffset,
+                                              edit_select->first_move);
+
+              g_list_free (linked);
+            }
+          break;
+
+        case GIMP_TRANSLATE_MODE_MASK_TO_LAYER:
+        case GIMP_TRANSLATE_MODE_MASK_COPY_TO_LAYER:
+          if (! gimp_selection_float (gimp_image_get_mask (display->image),
+                                      GIMP_DRAWABLE (active_item),
+                                      gimp_get_user_context (display->image->gimp),
+                                      edit_select->edit_mode ==
+                                      GIMP_TRANSLATE_MODE_MASK_TO_LAYER,
+                                      0, 0, &error))
+            {
+              /* no region to float, abort safely */
+              gimp_message (display->image->gimp, G_OBJECT (display),
+                            GIMP_MESSAGE_WARNING,
+                            "%s", error->message);
+              g_clear_error (&error);
+              gimp_draw_tool_resume (draw_tool);
+
+              return;
+            }
+
+          edit_select->origx -= edit_select->x1;
+          edit_select->origy -= edit_select->y1;
+          edit_select->x2    -= edit_select->x1;
+          edit_select->y2    -= edit_select->y1;
+          edit_select->x1     = 0;
+          edit_select->y1     = 0;
+
+          edit_select->edit_mode = GIMP_TRANSLATE_MODE_FLOATING_SEL;
+
+          active_item =
+            GIMP_ITEM (gimp_image_get_active_drawable (display->image));
+
+          /* fall through */
+
+        case GIMP_TRANSLATE_MODE_FLOATING_SEL:
+          gimp_item_translate (active_item, xoffset, yoffset,
+                               edit_select->first_move);
+          break;
+        }
+
+      edit_select->first_move = FALSE;
+    }
+
+  gimp_projection_flush (gimp_image_get_projection (display->image));
+
+  gimp_tool_pop_status (tool, display);
+  gimp_tool_push_status_coords (tool, display,
+                                gimp_tool_control_get_precision (tool->control),
+                                _("Move: "),
+                                edit_select->cumlx,
+                                ", ",
+                                edit_select->cumly,
+                                NULL);
+
+  gimp_draw_tool_resume (draw_tool);
+}
+
 
 static void
 gimp_edit_selection_tool_motion (GimpTool        *tool,
@@ -527,160 +741,47 @@ gimp_edit_selection_tool_motion (GimpTool        *tool,
                                  GimpDisplay     *display)
 {
   GimpEditSelectionTool *edit_select = GIMP_EDIT_SELECTION_TOOL (tool);
-  GimpItem              *active_item;
-  gint                   off_x, off_y;
-  gdouble                motion_x, motion_y;
 
-  gdk_flush ();
+  edit_select->last_x = coords->x;
+  edit_select->last_y = coords->y;
 
-  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+  gimp_edit_selection_tool_update_motion (edit_select,
+                                          coords->x, coords->y,
+                                          display);
+}
 
-  if (edit_select->edit_mode == GIMP_TRANSLATE_MODE_VECTORS)
-    active_item = GIMP_ITEM (gimp_image_get_active_vectors (display->image));
-  else
-    active_item = GIMP_ITEM (gimp_image_get_active_drawable (display->image));
+static void
+gimp_edit_selection_tool_active_modifier_key (GimpTool        *tool,
+                                              GdkModifierType  key,
+                                              gboolean         press,
+                                              GdkModifierType  state,
+                                              GimpDisplay     *display)
+{
+  GimpEditSelectionTool *edit_select = GIMP_EDIT_SELECTION_TOOL (tool);
 
-  gimp_item_offsets (active_item, &off_x, &off_y);
+  edit_select->constrain = state & GDK_CONTROL_MASK ? TRUE : FALSE;
 
-  motion_x = coords->x - off_x;
-  motion_y = coords->y - off_y;
-
-  /* now do the actual move. */
-
-  gimp_edit_selection_tool_calc_coords (edit_select,
-                                        motion_x,
-                                        motion_y);
-
-  /******************************************* adam's live move *******/
-  /********************************************************************/
-  {
-    gint x, y;
-
-    x = edit_select->x;
-    y = edit_select->y;
-
-    /* if there has been movement, move the selection  */
-    if (edit_select->origx != x || edit_select->origy != y)
-      {
-        gint xoffset, yoffset;
-
-        xoffset = x - edit_select->origx;
-        yoffset = y - edit_select->origy;
-
-        edit_select->cumlx += xoffset;
-        edit_select->cumly += yoffset;
-
-        switch (edit_select->edit_mode)
-          {
-          case GIMP_TRANSLATE_MODE_LAYER_MASK:
-          case GIMP_TRANSLATE_MODE_MASK:
-            /*  we don't do the actual edit selection move here.  */
-            edit_select->origx = x;
-            edit_select->origy = y;
-            break;
-
-          case GIMP_TRANSLATE_MODE_VECTORS:
-          case GIMP_TRANSLATE_MODE_CHANNEL:
-            edit_select->origx = x;
-            edit_select->origy = y;
-
-            /*  fallthru  */
-
-          case GIMP_TRANSLATE_MODE_LAYER:
-            /*  for CHANNEL_TRANSLATE, only translate the linked layers
-             *  and vectors on-the-fly, the channel is translated
-             *  on button_release.
-             */
-            if (edit_select->edit_mode != GIMP_TRANSLATE_MODE_CHANNEL)
-              gimp_item_translate (active_item, xoffset, yoffset,
-                                   edit_select->first_move);
-
-            if (gimp_item_get_linked (active_item))
-              {
-                /*  translate all linked layers & vectors as well  */
-
-                GList *linked;
-
-                linked = gimp_image_item_list_get_list (display->image,
-                                                        active_item,
-                                                        GIMP_ITEM_TYPE_LAYERS |
-                                                        GIMP_ITEM_TYPE_VECTORS,
-                                                        GIMP_ITEM_SET_LINKED);
-
-                gimp_image_item_list_translate (display->image,
-                                                linked,
-                                                xoffset, yoffset,
-                                                edit_select->first_move);
-
-                g_list_free (linked);
-              }
-            break;
-
-          case GIMP_TRANSLATE_MODE_MASK_TO_LAYER:
-          case GIMP_TRANSLATE_MODE_MASK_COPY_TO_LAYER:
-            if (! gimp_selection_float (gimp_image_get_mask (display->image),
-                                        GIMP_DRAWABLE (active_item),
-                                        gimp_get_user_context (display->image->gimp),
-                                        edit_select->edit_mode ==
-                                        GIMP_TRANSLATE_MODE_MASK_TO_LAYER,
-                                        0, 0))
-              {
-                /* no region to float, abort safely */
-                gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
-
-                return;
-              }
-
-            edit_select->origx -= edit_select->x1;
-            edit_select->origy -= edit_select->y1;
-            edit_select->x2    -= edit_select->x1;
-            edit_select->y2    -= edit_select->y1;
-            edit_select->x1     = 0;
-            edit_select->y1     = 0;
-
-            edit_select->edit_mode = GIMP_TRANSLATE_MODE_FLOATING_SEL;
-
-            active_item =
-              GIMP_ITEM (gimp_image_get_active_drawable (display->image));
-
-            /* fall through */
-
-          case GIMP_TRANSLATE_MODE_FLOATING_SEL:
-            gimp_item_translate (active_item, xoffset, yoffset,
-                                 edit_select->first_move);
-            break;
-          }
-
-        edit_select->first_move = FALSE;
-      }
-
-    gimp_projection_flush (display->image->projection);
-  }
-  /********************************************************************/
-  /********************************************************************/
-
-  gimp_tool_pop_status (tool, display);
-  gimp_tool_push_status_coords (tool, display,
-                                _("Move: "),
-                                edit_select->cumlx,
-                                ", ",
-                                edit_select->cumly,
-                                NULL);
-
-  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+  /* If we didn't came here due to a mouse release, immediately update
+   * the position of the thing we move.
+   */
+  if (state & GDK_BUTTON1_MASK)
+    {
+      gimp_edit_selection_tool_update_motion (edit_select,
+                                              edit_select->last_x,
+                                              edit_select->last_y,
+                                              display);
+    }
 }
 
 static void
 gimp_edit_selection_tool_draw (GimpDrawTool *draw_tool)
 {
   GimpEditSelectionTool *edit_select = GIMP_EDIT_SELECTION_TOOL (draw_tool);
-  GimpDisplay           *display       = GIMP_TOOL (draw_tool)->display;
+  GimpDisplay           *display     = GIMP_TOOL (draw_tool)->display;
   GimpItem              *active_item;
 
-  if (edit_select->edit_mode == GIMP_TRANSLATE_MODE_VECTORS)
-    active_item = GIMP_ITEM (gimp_image_get_active_vectors (display->image));
-  else
-    active_item = GIMP_ITEM (gimp_image_get_active_drawable (display->image));
+  active_item = gimp_edit_selection_tool_get_active_item (edit_select,
+                                                          display->image);
 
   switch (edit_select->edit_mode)
     {
@@ -729,8 +830,8 @@ gimp_edit_selection_tool_draw (GimpDrawTool *draw_tool)
                                            FALSE,
                                            edit_select->cumlx + off_x,
                                            edit_select->cumly + off_y,
-                                           active_item->width,
-                                           active_item->height,
+                                           gimp_item_width  (active_item),
+                                           gimp_item_height (active_item),
                                            FALSE);
           }
       }
@@ -863,7 +964,30 @@ gimp_edit_selection_tool_draw (GimpDrawTool *draw_tool)
       break;
     }
 
+  /* Mark the center because we snap to it */
+  gimp_draw_tool_draw_cross_by_anchor (draw_tool,
+                                       edit_select->center_x + edit_select->cumlx,
+                                       edit_select->center_y + edit_select->cumly,
+                                       CENTER_CROSS_SIZE,
+                                       CENTER_CROSS_SIZE,
+                                       GTK_ANCHOR_CENTER,
+                                       FALSE);
+
   GIMP_DRAW_TOOL_CLASS (parent_class)->draw (draw_tool);
+}
+
+static GimpItem *
+gimp_edit_selection_tool_get_active_item (const GimpEditSelectionTool *edit_select,
+                                          const GimpImage             *image)
+{
+  GimpItem *active_item;
+
+  if (edit_select->edit_mode == GIMP_TRANSLATE_MODE_VECTORS)
+    active_item = GIMP_ITEM (gimp_image_get_active_vectors (image));
+  else
+    active_item = GIMP_ITEM (gimp_image_get_active_drawable (image));
+
+  return active_item;
 }
 
 static gint

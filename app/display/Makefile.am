@@ -41,6 +41,8 @@ libappdisplay_a_sources = \
 	gimpdisplayshell-filter-dialog.h	\
 	gimpdisplayshell-layer-select.c		\
 	gimpdisplayshell-layer-select.h		\
+	gimpdisplayshell-icon.c			\
+	gimpdisplayshell-icon.h			\
 	gimpdisplayshell-preview.c		\
 	gimpdisplayshell-preview.h		\
 	gimpdisplayshell-progress.c		\
@@ -49,6 +51,8 @@ libappdisplay_a_sources = \
 	gimpdisplayshell-render.h		\
 	gimpdisplayshell-scale.c		\
 	gimpdisplayshell-scale.h		\
+	gimpdisplayshell-scale-dialog.c		\
+	gimpdisplayshell-scale-dialog.h		\
 	gimpdisplayshell-scroll.c		\
 	gimpdisplayshell-scroll.h		\
 	gimpdisplayshell-selection.c		\
@@ -79,6 +83,7 @@ INCLUDES = \
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GTK_CFLAGS)		\
+	$(GEGL_CFLAGS)		\
 	-I$(includedir)
 
 EXTRA_DIST = makefile.msc

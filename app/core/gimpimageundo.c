@@ -28,6 +28,7 @@
 
 #include "core-types.h"
 
+#include "gimp-utils.h"
 #include "gimpdrawable.h"
 #include "gimpgrid.h"
 #include "gimpimage.h"
@@ -40,6 +41,10 @@
 enum
 {
   PROP_0,
+  PROP_PREVIOUS_ORIGIN_X,
+  PROP_PREVIOUS_ORIGIN_Y,
+  PROP_PREVIOUS_WIDTH,
+  PROP_PREVIOUS_HEIGHT,
   PROP_GRID,
   PROP_PARASITE_NAME
 };
@@ -88,6 +93,38 @@ gimp_image_undo_class_init (GimpImageUndoClass *klass)
   undo_class->pop                = gimp_image_undo_pop;
   undo_class->free               = gimp_image_undo_free;
 
+  g_object_class_install_property (object_class, PROP_PREVIOUS_ORIGIN_X,
+                                   g_param_spec_int ("previous-origin-x",
+                                                     NULL, NULL,
+                                                     -GIMP_MAX_IMAGE_SIZE,
+                                                     GIMP_MAX_IMAGE_SIZE,
+                                                     0,
+                                                     GIMP_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_PREVIOUS_ORIGIN_Y,
+                                   g_param_spec_int ("previous-origin-y",
+                                                     NULL, NULL,
+                                                     -GIMP_MAX_IMAGE_SIZE,
+                                                     GIMP_MAX_IMAGE_SIZE,
+                                                     0,
+                                                     GIMP_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_PREVIOUS_WIDTH,
+                                   g_param_spec_int ("previous-width",
+                                                     NULL, NULL,
+                                                     -GIMP_MAX_IMAGE_SIZE,
+                                                     GIMP_MAX_IMAGE_SIZE,
+                                                     0,
+                                                     GIMP_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_PREVIOUS_HEIGHT,
+                                   g_param_spec_int ("previous-height",
+                                                     NULL, NULL,
+                                                     -GIMP_MAX_IMAGE_SIZE,
+                                                     GIMP_MAX_IMAGE_SIZE,
+                                                     0,
+                                                     GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_GRID,
                                    g_param_spec_object ("grid", NULL, NULL,
                                                         GIMP_TYPE_GRID,
@@ -125,18 +162,19 @@ gimp_image_undo_constructor (GType                  type,
   switch (GIMP_UNDO (object)->undo_type)
     {
     case GIMP_UNDO_IMAGE_TYPE:
-      image_undo->base_type = image->base_type;
+      image_undo->base_type = gimp_image_base_type (image);
       break;
 
     case GIMP_UNDO_IMAGE_SIZE:
-      image_undo->width  = image->width;
-      image_undo->height = image->height;
+      image_undo->width  = gimp_image_get_width  (image);
+      image_undo->height = gimp_image_get_height (image);
       break;
 
     case GIMP_UNDO_IMAGE_RESOLUTION:
-      image_undo->xresolution     = image->xresolution;
-      image_undo->yresolution     = image->yresolution;
-      image_undo->resolution_unit = image->resolution_unit;
+      gimp_image_get_resolution (image,
+                                 &image_undo->xresolution,
+                                 &image_undo->yresolution);
+      image_undo->resolution_unit = gimp_image_get_unit (image);
       break;
 
     case GIMP_UNDO_IMAGE_GRID:
@@ -146,7 +184,7 @@ gimp_image_undo_constructor (GType                  type,
     case GIMP_UNDO_IMAGE_COLORMAP:
       image_undo->num_colors = gimp_image_get_colormap_size (image);
       image_undo->colormap   = g_memdup (gimp_image_get_colormap (image),
-                                         image_undo->num_colors * 3);
+                                         GIMP_IMAGE_COLORMAP_SIZE);
       break;
 
     case GIMP_UNDO_PARASITE_ATTACH:
@@ -174,6 +212,18 @@ gimp_image_undo_set_property (GObject      *object,
 
   switch (property_id)
     {
+    case PROP_PREVIOUS_ORIGIN_X:
+      image_undo->previous_origin_x = g_value_get_int (value);
+      break;
+    case PROP_PREVIOUS_ORIGIN_Y:
+      image_undo->previous_origin_y = g_value_get_int (value);
+      break;
+    case PROP_PREVIOUS_WIDTH:
+      image_undo->previous_width = g_value_get_int (value);
+      break;
+    case PROP_PREVIOUS_HEIGHT:
+      image_undo->previous_height = g_value_get_int (value);
+      break;
     case PROP_GRID:
       {
         GimpGrid *grid = g_value_get_object (value);
@@ -202,6 +252,18 @@ gimp_image_undo_get_property (GObject    *object,
 
   switch (property_id)
     {
+    case PROP_PREVIOUS_ORIGIN_X:
+      g_value_set_int (value, image_undo->previous_origin_x);
+      break;
+    case PROP_PREVIOUS_ORIGIN_Y:
+      g_value_set_int (value, image_undo->previous_origin_y);
+      break;
+    case PROP_PREVIOUS_WIDTH:
+      g_value_set_int (value, image_undo->previous_width);
+      break;
+    case PROP_PREVIOUS_HEIGHT:
+      g_value_set_int (value, image_undo->previous_height);
+      break;
     case PROP_GRID:
       g_value_set_object (value, image_undo->grid);
        break;
@@ -223,19 +285,12 @@ gimp_image_undo_get_memsize (GimpObject *object,
   gint64         memsize    = 0;
 
   if (image_undo->colormap)
-    memsize += image_undo->num_colors * 3;
+    memsize += GIMP_IMAGE_COLORMAP_SIZE;
 
-  if (image_undo->grid)
-    memsize += gimp_object_get_memsize (GIMP_OBJECT (image_undo->grid),
-                                        gui_size);
-
-  if (image_undo->parasite_name)
-    memsize += strlen (image_undo->parasite_name) + 1;
-
-  if (image_undo->parasite)
-    memsize += (sizeof (GimpParasite) +
-                strlen (image_undo->parasite->name) + 1 +
-                image_undo->parasite->size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (image_undo->grid),
+                                      gui_size);
+  memsize += gimp_string_get_memsize (image_undo->parasite_name);
+  memsize += gimp_parasite_get_memsize (image_undo->parasite, gui_size);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -258,12 +313,12 @@ gimp_image_undo_pop (GimpUndo            *undo,
         GimpImageBaseType base_type;
 
         base_type = image_undo->base_type;
-        image_undo->base_type = image->base_type;
+        image_undo->base_type = gimp_image_base_type (image);
         g_object_set (image, "base-type", base_type, NULL);
 
         gimp_image_colormap_changed (image, -1);
 
-        if (image_undo->base_type != image->base_type)
+        if (image_undo->base_type != gimp_image_base_type (image))
           accum->mode_changed = TRUE;
       }
       break;
@@ -272,12 +327,25 @@ gimp_image_undo_pop (GimpUndo            *undo,
       {
         gint width;
         gint height;
+        gint previous_origin_x;
+        gint previous_origin_y;
+        gint previous_width;
+        gint previous_height;
 
-        width  = image_undo->width;
-        height = image_undo->height;
+        width             = image_undo->width;
+        height            = image_undo->height;
+        previous_origin_x = image_undo->previous_origin_x;
+        previous_origin_y = image_undo->previous_origin_y;
+        previous_width    = image_undo->previous_width;
+        previous_height   = image_undo->previous_height;
 
-        image_undo->width  = image->width;
-        image_undo->height = image->height;
+        /* Transform to a redo */
+        image_undo->width             = gimp_image_get_width  (image);
+        image_undo->height            = gimp_image_get_height (image);
+        image_undo->previous_origin_x = -previous_origin_x;
+        image_undo->previous_origin_y = -previous_origin_y;
+        image_undo->previous_width    = width;
+        image_undo->previous_height   = height;
 
         g_object_set (image,
                       "width",  width,
@@ -287,36 +355,43 @@ gimp_image_undo_pop (GimpUndo            *undo,
         gimp_drawable_invalidate_boundary
           (GIMP_DRAWABLE (gimp_image_get_mask (image)));
 
-        if (image->width  != image_undo->width ||
-            image->height != image_undo->height)
-          accum->size_changed = TRUE;
+        if (gimp_image_get_width  (image) != image_undo->width ||
+            gimp_image_get_height (image) != image_undo->height)
+          {
+            accum->size_changed      = TRUE;
+            accum->previous_origin_x = previous_origin_x;
+            accum->previous_origin_y = previous_origin_y;
+            accum->previous_width    = previous_width;
+            accum->previous_height   = previous_height;
+          }
       }
       break;
 
     case GIMP_UNDO_IMAGE_RESOLUTION:
-      if (ABS (image_undo->xresolution - image->xresolution) >= 1e-5 ||
-          ABS (image_undo->yresolution - image->yresolution) >= 1e-5)
-        {
-          gdouble xres;
-          gdouble yres;
+      {
+        gdouble xres;
+        gdouble yres;
 
-          xres = image->xresolution;
-          yres = image->yresolution;
+        gimp_image_get_resolution (image, &xres, &yres);
 
-          image->xresolution = image_undo->xresolution;
-          image->yresolution = image_undo->yresolution;
+        if (ABS (image_undo->xresolution - xres) >= 1e-5 ||
+            ABS (image_undo->yresolution - yres) >= 1e-5)
+          {
+            image->xresolution = image_undo->xresolution;
+            image->yresolution = image_undo->yresolution;
 
-          image_undo->xresolution = xres;
-          image_undo->yresolution = yres;
+            image_undo->xresolution = xres;
+            image_undo->yresolution = yres;
 
-          accum->resolution_changed = TRUE;
-        }
+            accum->resolution_changed = TRUE;
+          }
+      }
 
-      if (image_undo->resolution_unit != image->resolution_unit)
+      if (image_undo->resolution_unit != gimp_image_get_unit (image))
         {
           GimpUnit unit;
 
-          unit = image->resolution_unit;
+          unit = gimp_image_get_unit (image);
           image->resolution_unit = image_undo->resolution_unit;
           image_undo->resolution_unit = unit;
 
@@ -344,7 +419,7 @@ gimp_image_undo_pop (GimpUndo            *undo,
 
         num_colors = gimp_image_get_colormap_size (image);
         colormap   = g_memdup (gimp_image_get_colormap (image),
-                               num_colors * 3);
+                               GIMP_IMAGE_COLORMAP_SIZE);
 
         gimp_image_set_colormap (image,
                                  image_undo->colormap, image_undo->num_colors,

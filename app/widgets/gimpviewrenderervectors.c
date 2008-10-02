@@ -39,10 +39,9 @@
 
 
 static void   gimp_view_renderer_vectors_draw (GimpViewRenderer   *renderer,
-                                               GdkWindow          *window,
                                                GtkWidget          *widget,
-                                               const GdkRectangle *draw_area,
-                                               const GdkRectangle *expose_area);
+                                               cairo_t            *cr,
+                                               const GdkRectangle *area);
 
 
 G_DEFINE_TYPE (GimpViewRendererVectors, gimp_view_renderer_vectors,
@@ -66,70 +65,45 @@ gimp_view_renderer_vectors_init (GimpViewRendererVectors *renderer)
 
 static void
 gimp_view_renderer_vectors_draw (GimpViewRenderer   *renderer,
-                                 GdkWindow          *window,
                                  GtkWidget          *widget,
-                                 const GdkRectangle *draw_area,
-                                 const GdkRectangle *expose_area)
+                                 cairo_t            *cr,
+                                 const GdkRectangle *area)
 {
-  GimpVectors  *vectors;
-  GimpStroke   *stroke;
-  GdkRectangle  rect, area;
-  gdouble       xscale, yscale;
+  GtkStyle       *style   = gtk_widget_get_style (widget);
+  GimpVectors    *vectors = GIMP_VECTORS (renderer->viewable);
+  GimpBezierDesc *bezdesc;
+  gdouble         xscale;
+  gdouble         yscale;
+  gint            x, y;
 
-  rect.width  = renderer->width;
-  rect.height = renderer->height;
-  rect.x      = draw_area->x + (draw_area->width  - rect.width)  / 2;
-  rect.y      = draw_area->y + (draw_area->height - rect.height) / 2;
+  gdk_cairo_set_source_color (cr, &style->white);
 
-  if (! gdk_rectangle_intersect (&rect, (GdkRectangle *) expose_area, &area))
-    return;
+  x = area->x + (area->width  - renderer->width)  / 2;
+  y = area->y + (area->height - renderer->height) / 2;
 
-  gdk_draw_rectangle (window, widget->style->white_gc, TRUE,
-                      area.x, area.y, area.width, area.height);
+  cairo_translate (cr, x, y);
+  cairo_rectangle (cr, 0, 0, renderer->width, renderer->height);
+  cairo_clip_preserve (cr);
+  cairo_fill (cr);
 
-  vectors = GIMP_VECTORS (renderer->viewable);
+  xscale = (gdouble) renderer->width / (gdouble) gimp_item_width  (GIMP_ITEM (vectors));
+  yscale = (gdouble) renderer->height / (gdouble) gimp_item_height (GIMP_ITEM (vectors));
+  cairo_scale (cr, xscale, yscale);
 
-  xscale = (gdouble) GIMP_ITEM (vectors)->width  / (gdouble) rect.width;
-  yscale = (gdouble) GIMP_ITEM (vectors)->height / (gdouble) rect.height;
+  /* determine line width */
+  xscale = yscale = 0.5;
+  cairo_device_to_user_distance (cr, &xscale, &yscale);
 
-  gdk_gc_set_clip_rectangle (widget->style->black_gc, &area);
+  cairo_set_line_width (cr, MAX (xscale, yscale));
+  gdk_cairo_set_source_color (cr, &style->black);
 
-  for (stroke = gimp_vectors_stroke_get_next (vectors, NULL);
-       stroke != NULL;
-       stroke = gimp_vectors_stroke_get_next (vectors, stroke))
+  bezdesc = gimp_vectors_make_bezier (vectors);
+
+  if (bezdesc)
     {
-      GArray   *coordinates;
-      GdkPoint *points;
-      gint      i;
-
-      coordinates = gimp_stroke_interpolate (stroke,
-                                             MIN (xscale, yscale) / 2,
-                                             NULL);
-      if (!coordinates)
-        continue;
-
-      if (coordinates->len > 0)
-        {
-          points = g_new (GdkPoint, coordinates->len);
-
-          for (i = 0; i < coordinates->len; i++)
-            {
-              GimpCoords *coords;
-
-              coords = &(g_array_index (coordinates, GimpCoords, i));
-
-              points[i].x = rect.x + ROUND (coords->x / xscale);
-              points[i].y = rect.y + ROUND (coords->y / yscale);
-            }
-
-          gdk_draw_lines (window, widget->style->black_gc,
-                          points, coordinates->len);
-
-          g_free (points);
-        }
-
-      g_array_free (coordinates, TRUE);
+      cairo_append_path (cr, (cairo_path_t *) bezdesc);
+      cairo_stroke (cr);
+      g_free (bezdesc->data);
+      g_free (bezdesc);
     }
-
-  gdk_gc_set_clip_rectangle (widget->style->black_gc, NULL);
 }

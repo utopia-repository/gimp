@@ -19,8 +19,6 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-
 #include <gtk/gtk.h>
 
 #include "libgimpmodule/gimpmodule.h"
@@ -52,7 +50,7 @@ static gboolean gimp_ui_initialized = FALSE;
  * gimp_ui_init:
  * @prog_name: The name of the plug-in which will be passed as argv[0] to
  *             gtk_init(). It's a convention to use the name of the
- *             executable and _not_ the PDB procedure name or something.
+ *             executable and _not_ the PDB procedure name.
  * @preview:   This parameter is unused and exists for historical
  *             reasons only.
  *
@@ -60,16 +58,19 @@ static gboolean gimp_ui_initialized = FALSE;
  * image rendering subsystem (GdkRGB) to follow the GIMP main program's
  * colormap allocation/installation policy.
  *
- * GIMP's colormap policy can be determinded by the user with the
- * gimprc variables @min_colors and @install_cmap.
+ * It also sets up various other things so that the plug-in user looks
+ * and behaves like the GIMP core. This includes selecting the GTK+
+ * theme and setting up the help system as chosen in the GIMP
+ * preferences. Any plug-in that provides a user interface should call
+ * this function.
  **/
 void
 gimp_ui_init (const gchar *prog_name,
               gboolean     preview)
 {
+  GdkScreen   *screen;
   const gchar *display_name;
   gchar       *themerc;
-  GdkScreen   *screen;
 
   g_return_if_fail (prog_name != NULL);
 
@@ -83,12 +84,21 @@ gimp_ui_init (const gchar *prog_name,
   if (display_name)
     {
 #if defined (GDK_WINDOWING_X11)
-      const gchar var_name[] = "DISPLAY";
+      g_setenv ("DISPLAY", display_name, TRUE);
 #else
-      const gchar var_name[] = "GDK_DISPLAY";
+      g_setenv ("GDK_DISPLAY", display_name, TRUE);
 #endif
+    }
 
-      putenv (g_strdup_printf ("%s=%s", var_name, display_name));
+  if (gimp_user_time ())
+    {
+      /* Construct a fake startup ID as we only want to pass the
+       * interaction timestamp, see _gdk_windowing_set_default_display().
+       */
+      gchar *startup_id = g_strdup_printf ("_TIME%u", gimp_user_time ());
+
+      g_setenv ("DESKTOP_STARTUP_ID", startup_id, TRUE);
+      g_free (startup_id);
     }
 
   gtk_init (NULL, NULL);

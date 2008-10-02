@@ -31,6 +31,7 @@ G_BEGIN_DECLS
 
 gboolean                 gimp_drawable_is_valid           (gint32                      drawable_ID);
 gboolean                 gimp_drawable_is_layer           (gint32                      drawable_ID);
+gboolean                 gimp_drawable_is_text_layer      (gint32                      drawable_ID);
 gboolean                 gimp_drawable_is_layer_mask      (gint32                      drawable_ID);
 gboolean                 gimp_drawable_is_channel         (gint32                      drawable_ID);
 GimpImageType            gimp_drawable_type               (gint32                      drawable_ID);
@@ -75,6 +76,7 @@ gboolean                 gimp_drawable_mask_intersect     (gint32               
                                                            gint                       *height);
 gboolean                 gimp_drawable_merge_shadow       (gint32                      drawable_ID,
                                                            gboolean                    undo);
+gboolean                 gimp_drawable_free_shadow        (gint32                      drawable_ID);
 gboolean                 gimp_drawable_update             (gint32                      drawable_ID,
                                                            gint                        x,
                                                            gint                        y,

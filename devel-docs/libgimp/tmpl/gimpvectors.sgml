@@ -27,32 +27,22 @@ gimpvectors
 @Returns: 
 
 
-<!-- ##### FUNCTION gimp_vectors_import_from_file ##### -->
+<!-- ##### FUNCTION gimp_vectors_new_from_text_layer ##### -->
 <para>
 
 </para>
 
 @image_ID: 
-@filename: 
-@merge: 
-@scale: 
-@num_vectors: 
-@vectors_ids: 
+@layer_ID: 
 @Returns: 
 
 
-<!-- ##### FUNCTION gimp_vectors_import_from_string ##### -->
+<!-- ##### FUNCTION gimp_vectors_copy ##### -->
 <para>
 
 </para>
 
-@image_ID: 
-@string: 
-@length: 
-@merge: 
-@scale: 
-@num_vectors: 
-@vectors_ids: 
+@vectors_ID: 
 @Returns: 
 
 
@@ -181,6 +171,56 @@ gimpvectors
 @feather: 
 @feather_radius_x: 
 @feather_radius_y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_vectors_export_to_file ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@filename: 
+@vectors_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_vectors_export_to_string ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@vectors_ID: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_vectors_import_from_file ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@filename: 
+@merge: 
+@scale: 
+@num_vectors: 
+@vectors_ids: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_vectors_import_from_string ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@string: 
+@length: 
+@merge: 
+@scale: 
+@num_vectors: 
+@vectors_ids: 
 @Returns: 
 
 

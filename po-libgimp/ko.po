@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp-libgimp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-22 12:57+0000\n"
-"PO-Revision-Date: 2008-04-04 16:40+0900\n"
+"POT-Creation-Date: 2008-09-17 06:01+0000\n"
+"PO-Revision-Date: 2008-09-17 15:50+0900\n"
 "Last-Translator: Mr.Dust <like.a.dust@gmail.com>\n"
 "Language-Team: Mr.Dust <like.a.dust@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,26 @@ msgstr ""
 "X-Poedit-Language: Korean\n"
 "X-Poedit-Country: KOREA, REPUBLIC OF\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#. procedure executed successfully
+#: ../libgimp/gimp.c:1044
+msgid "success"
+msgstr "성공"
+
+#. procedure execution failed
+#: ../libgimp/gimp.c:1048
+msgid "execution error"
+msgstr "실행 오류"
+
+#. procedure called incorrectly
+#: ../libgimp/gimp.c:1052
+msgid "calling error"
+msgstr "호출 오류"
+
+#. procedure execution cancelled
+#: ../libgimp/gimp.c:1056
+msgid "cancelled"
+msgstr "취소됨"
 
 #: ../libgimp/gimpbrushselectbutton.c:170
 msgid "Brush Selection"
@@ -320,15 +340,15 @@ msgstr "반환값"
 msgid "Additional Information"
 msgstr "추가 정보"
 
-#: ../libgimp/gimpprocview.c:210
+#: ../libgimp/gimpprocview.c:209
 msgid "Author:"
 msgstr "저자:"
 
-#: ../libgimp/gimpprocview.c:222
+#: ../libgimp/gimpprocview.c:221
 msgid "Date:"
 msgstr "날짜:"
 
-#: ../libgimp/gimpprocview.c:234
+#: ../libgimp/gimpprocview.c:233
 msgid "Copyright:"
 msgstr "저작권:"
 
@@ -336,442 +356,415 @@ msgstr "저작권:"
 msgid "percent"
 msgstr "백분율"
 
-#: ../libgimpbase/gimpbaseenums.c:27
+#: ../libgimpbase/gimpbaseenums.c:28
 msgid "_White (full opacity)"
 msgstr "흰색(_W) (완전 불투명)"
 
-#: ../libgimpbase/gimpbaseenums.c:28
+#: ../libgimpbase/gimpbaseenums.c:29
 msgid "_Black (full transparency)"
 msgstr "검정색(_B) (완전 투명)"
 
-#: ../libgimpbase/gimpbaseenums.c:29
+#: ../libgimpbase/gimpbaseenums.c:30
 msgid "Layer's _alpha channel"
 msgstr "레이어의 알파 채널(_A)"
 
-#: ../libgimpbase/gimpbaseenums.c:30
+#: ../libgimpbase/gimpbaseenums.c:31
 msgid "_Transfer layer's alpha channel"
 msgstr "레이어의 알파 채널 전송(_T)"
 
-#: ../libgimpbase/gimpbaseenums.c:31
+#: ../libgimpbase/gimpbaseenums.c:32
 msgid "_Selection"
 msgstr "선택(_S)"
 
-#: ../libgimpbase/gimpbaseenums.c:32
+#: ../libgimpbase/gimpbaseenums.c:33
 msgid "_Grayscale copy of layer"
 msgstr "레이어의 그레이스케일 사본(_G)"
 
-#: ../libgimpbase/gimpbaseenums.c:33
+#: ../libgimpbase/gimpbaseenums.c:34
 msgid "C_hannel"
 msgstr "채널(_H)"
 
-#: ../libgimpbase/gimpbaseenums.c:63
+#: ../libgimpbase/gimpbaseenums.c:64
 msgid "FG to BG (RGB)"
 msgstr "전경을 배경으로 (RGB)"
 
-#: ../libgimpbase/gimpbaseenums.c:64
+#: ../libgimpbase/gimpbaseenums.c:65
 msgid "FG to BG (HSV)"
 msgstr "전경을 배경으로 (HSV)"
 
-#: ../libgimpbase/gimpbaseenums.c:65
+#: ../libgimpbase/gimpbaseenums.c:66
 msgid "FG to transparent"
 msgstr "전경을 투명하게"
 
-#: ../libgimpbase/gimpbaseenums.c:66
+#: ../libgimpbase/gimpbaseenums.c:67
 msgid "Custom gradient"
 msgstr "사용자 그라디언트"
 
-#: ../libgimpbase/gimpbaseenums.c:95
+#: ../libgimpbase/gimpbaseenums.c:96
 msgid "FG color fill"
 msgstr "전경색으로 채우기"
 
-#: ../libgimpbase/gimpbaseenums.c:96
+#: ../libgimpbase/gimpbaseenums.c:97
 msgid "BG color fill"
 msgstr "배경색으로 채우기"
 
-#: ../libgimpbase/gimpbaseenums.c:97
+#: ../libgimpbase/gimpbaseenums.c:98
 msgid "Pattern fill"
 msgstr "무늬로 채우기"
 
-#: ../libgimpbase/gimpbaseenums.c:127
+#: ../libgimpbase/gimpbaseenums.c:128
 msgid "Add to the current selection"
 msgstr "현재 선택에 더하기"
 
-#: ../libgimpbase/gimpbaseenums.c:128
+#: ../libgimpbase/gimpbaseenums.c:129
 msgid "Subtract from the current selection"
 msgstr "현재 선택에서 빼기"
 
-#: ../libgimpbase/gimpbaseenums.c:129
+#: ../libgimpbase/gimpbaseenums.c:130
 msgid "Replace the current selection"
 msgstr "현재 선택 바꾸기"
 
-#: ../libgimpbase/gimpbaseenums.c:130
+#: ../libgimpbase/gimpbaseenums.c:131
 msgid "Intersect with the current selection"
 msgstr "현재 선택과 교차하기"
 
-#: ../libgimpbase/gimpbaseenums.c:162
+#: ../libgimpbase/gimpbaseenums.c:163
 #: ../libgimpwidgets/gimpwidgetsenums.c:126
 msgid "Red"
 msgstr "빨강"
 
-#: ../libgimpbase/gimpbaseenums.c:163
+#: ../libgimpbase/gimpbaseenums.c:164
 #: ../libgimpwidgets/gimpwidgetsenums.c:127
 msgid "Green"
 msgstr "초록"
 
-#: ../libgimpbase/gimpbaseenums.c:164
+#: ../libgimpbase/gimpbaseenums.c:165
 #: ../libgimpwidgets/gimpwidgetsenums.c:128
 msgid "Blue"
 msgstr "파랑"
 
-#: ../libgimpbase/gimpbaseenums.c:165
+#: ../libgimpbase/gimpbaseenums.c:166
 msgid "Gray"
 msgstr "회색"
 
-#: ../libgimpbase/gimpbaseenums.c:166
-#: ../libgimpbase/gimpbaseenums.c:531
+#: ../libgimpbase/gimpbaseenums.c:167
+#: ../libgimpbase/gimpbaseenums.c:532
 msgid "Indexed"
 msgstr "인덱스됨"
 
-#: ../libgimpbase/gimpbaseenums.c:167
+#: ../libgimpbase/gimpbaseenums.c:168
 #: ../libgimpwidgets/gimpwidgetsenums.c:129
 msgid "Alpha"
 msgstr "알파"
 
-#: ../libgimpbase/gimpbaseenums.c:196
+#: ../libgimpbase/gimpbaseenums.c:197
 msgid "Small"
 msgstr "작게"
 
-#: ../libgimpbase/gimpbaseenums.c:197
+#: ../libgimpbase/gimpbaseenums.c:198
 msgid "Medium"
 msgstr "중간"
 
-#: ../libgimpbase/gimpbaseenums.c:198
+#: ../libgimpbase/gimpbaseenums.c:199
 msgid "Large"
 msgstr "크게"
 
-#: ../libgimpbase/gimpbaseenums.c:230
+#: ../libgimpbase/gimpbaseenums.c:231
 msgid "Light checks"
 msgstr "밝은색 격자"
 
-#: ../libgimpbase/gimpbaseenums.c:231
+#: ../libgimpbase/gimpbaseenums.c:232
 msgid "Mid-tone checks"
 msgstr "중간색 격자"
 
-#: ../libgimpbase/gimpbaseenums.c:232
+#: ../libgimpbase/gimpbaseenums.c:233
 msgid "Dark checks"
 msgstr "어두운색 격자"
 
-#: ../libgimpbase/gimpbaseenums.c:233
+#: ../libgimpbase/gimpbaseenums.c:234
 msgid "White only"
 msgstr "흰색으로"
 
-#: ../libgimpbase/gimpbaseenums.c:234
+#: ../libgimpbase/gimpbaseenums.c:235
 msgid "Gray only"
 msgstr "회색으로"
 
-#: ../libgimpbase/gimpbaseenums.c:235
+#: ../libgimpbase/gimpbaseenums.c:236
 msgid "Black only"
 msgstr "검정색으로"
 
-#: ../libgimpbase/gimpbaseenums.c:263
+#: ../libgimpbase/gimpbaseenums.c:264
 msgid "Image"
 msgstr "이미지 파일"
 
-#: ../libgimpbase/gimpbaseenums.c:264
+#: ../libgimpbase/gimpbaseenums.c:265
 msgid "Pattern"
 msgstr "무늬로 칠하기"
 
-#: ../libgimpbase/gimpbaseenums.c:293
+#: ../libgimpbase/gimpbaseenums.c:294
 msgid "Lightness"
 msgstr "밝기"
 
-#: ../libgimpbase/gimpbaseenums.c:294
+#: ../libgimpbase/gimpbaseenums.c:295
 msgid "Luminosity"
 msgstr "광도"
 
-#: ../libgimpbase/gimpbaseenums.c:295
+#: ../libgimpbase/gimpbaseenums.c:296
 msgid "Average"
 msgstr "평균"
 
-#: ../libgimpbase/gimpbaseenums.c:323
+#: ../libgimpbase/gimpbaseenums.c:324
 msgid "Dodge"
 msgstr "피하기"
 
-#: ../libgimpbase/gimpbaseenums.c:324
+#: ../libgimpbase/gimpbaseenums.c:325
 msgid "Burn"
 msgstr "태우기"
 
-#: ../libgimpbase/gimpbaseenums.c:388
+#: ../libgimpbase/gimpbaseenums.c:389
 msgid "gradient|Linear"
 msgstr "선형"
 
-#: ../libgimpbase/gimpbaseenums.c:389
+#: ../libgimpbase/gimpbaseenums.c:390
 msgid "Bi-linear"
 msgstr "이중 선형"
 
-#: ../libgimpbase/gimpbaseenums.c:390
+#: ../libgimpbase/gimpbaseenums.c:391
 msgid "Radial"
 msgstr "원형"
 
-#: ../libgimpbase/gimpbaseenums.c:391
+#: ../libgimpbase/gimpbaseenums.c:392
 #: ../libgimpwidgets/gimpwidgetsenums.c:24
 msgid "Square"
 msgstr "사각형"
 
-#: ../libgimpbase/gimpbaseenums.c:392
+#: ../libgimpbase/gimpbaseenums.c:393
 msgid "Conical (sym)"
 msgstr "원뿔형 (대칭)"
 
-#: ../libgimpbase/gimpbaseenums.c:393
+#: ../libgimpbase/gimpbaseenums.c:394
 msgid "Conical (asym)"
 msgstr "원뿔형 (비대칭)"
 
-#: ../libgimpbase/gimpbaseenums.c:394
+#: ../libgimpbase/gimpbaseenums.c:395
 msgid "Shaped (angular)"
 msgstr "모양대로 (각지게)"
 
-#: ../libgimpbase/gimpbaseenums.c:395
+#: ../libgimpbase/gimpbaseenums.c:396
 msgid "Shaped (spherical)"
 msgstr "모양대로 (구형)"
 
-#: ../libgimpbase/gimpbaseenums.c:396
+#: ../libgimpbase/gimpbaseenums.c:397
 msgid "Shaped (dimpled)"
 msgstr "모양대로 (물결)"
 
-#: ../libgimpbase/gimpbaseenums.c:397
+#: ../libgimpbase/gimpbaseenums.c:398
 msgid "Spiral (cw)"
 msgstr "나선형 (시계방향)"
 
-#: ../libgimpbase/gimpbaseenums.c:398
+#: ../libgimpbase/gimpbaseenums.c:399
 msgid "Spiral (ccw)"
 msgstr "나선형 (시계 반대방향)"
 
-#: ../libgimpbase/gimpbaseenums.c:429
+#: ../libgimpbase/gimpbaseenums.c:430
 msgid "Intersections (dots)"
 msgstr "교차(점)"
 
-#: ../libgimpbase/gimpbaseenums.c:430
+#: ../libgimpbase/gimpbaseenums.c:431
 msgid "Intersections (crosshairs)"
 msgstr "교차(십자선)"
 
-#: ../libgimpbase/gimpbaseenums.c:431
+#: ../libgimpbase/gimpbaseenums.c:432
 msgid "Dashed"
 msgstr "대시"
 
-#: ../libgimpbase/gimpbaseenums.c:432
+#: ../libgimpbase/gimpbaseenums.c:433
 msgid "Double dashed"
 msgstr "이중 대시"
 
-#: ../libgimpbase/gimpbaseenums.c:433
+#: ../libgimpbase/gimpbaseenums.c:434
 msgid "Solid"
 msgstr "단색"
 
-#: ../libgimpbase/gimpbaseenums.c:462
+#: ../libgimpbase/gimpbaseenums.c:463
 msgid "Stock ID"
 msgstr "Stock ID"
 
-#: ../libgimpbase/gimpbaseenums.c:463
+#: ../libgimpbase/gimpbaseenums.c:464
 msgid "Inline pixbuf"
 msgstr "직렬 pixbuf"
 
-#: ../libgimpbase/gimpbaseenums.c:464
+#: ../libgimpbase/gimpbaseenums.c:465
 msgid "Image file"
 msgstr "이미지 파일"
 
-#: ../libgimpbase/gimpbaseenums.c:493
+#: ../libgimpbase/gimpbaseenums.c:494
 msgid "RGB color"
 msgstr "RGB 색상"
 
-#: ../libgimpbase/gimpbaseenums.c:494
-#: ../libgimpbase/gimpbaseenums.c:529
+#: ../libgimpbase/gimpbaseenums.c:495
+#: ../libgimpbase/gimpbaseenums.c:530
 msgid "Grayscale"
 msgstr "그레이스케일"
 
-#: ../libgimpbase/gimpbaseenums.c:495
+#: ../libgimpbase/gimpbaseenums.c:496
 msgid "Indexed color"
 msgstr "인덱스 색상"
 
-#: ../libgimpbase/gimpbaseenums.c:527
+#: ../libgimpbase/gimpbaseenums.c:528
 msgid "RGB"
 msgstr "RGB"
 
-#: ../libgimpbase/gimpbaseenums.c:528
+#: ../libgimpbase/gimpbaseenums.c:529
 msgid "RGB-alpha"
 msgstr "RGB-알파"
 
-#: ../libgimpbase/gimpbaseenums.c:530
+#: ../libgimpbase/gimpbaseenums.c:531
 msgid "Grayscale-alpha"
 msgstr "그레이스케일-알파"
 
-#: ../libgimpbase/gimpbaseenums.c:532
+#: ../libgimpbase/gimpbaseenums.c:533
 msgid "Indexed-alpha"
 msgstr "인덱스-알파"
 
-#: ../libgimpbase/gimpbaseenums.c:562
+#: ../libgimpbase/gimpbaseenums.c:563
 msgid "interpolation|None"
 msgstr "없음"
 
-#: ../libgimpbase/gimpbaseenums.c:563
+#: ../libgimpbase/gimpbaseenums.c:564
 msgid "interpolation|Linear"
 msgstr "선형"
 
-#: ../libgimpbase/gimpbaseenums.c:564
+#: ../libgimpbase/gimpbaseenums.c:565
 msgid "Cubic"
 msgstr "큐빅"
 
-#: ../libgimpbase/gimpbaseenums.c:565
+#: ../libgimpbase/gimpbaseenums.c:566
 msgid "Sinc (Lanczos3)"
 msgstr "Sinc (Lanczos3)"
 
-#: ../libgimpbase/gimpbaseenums.c:593
+#: ../libgimpbase/gimpbaseenums.c:594
 msgid "Constant"
 msgstr "상수"
 
-#: ../libgimpbase/gimpbaseenums.c:594
+#: ../libgimpbase/gimpbaseenums.c:595
 msgid "Incremental"
 msgstr "증가"
 
-#: ../libgimpbase/gimpbaseenums.c:623
-#: ../modules/cdisplay_lcms.c:224
+#: ../libgimpbase/gimpbaseenums.c:624
+#: ../modules/display-filter-lcms.c:191
 msgid "None"
 msgstr "없음"
 
-#: ../libgimpbase/gimpbaseenums.c:624
+#: ../libgimpbase/gimpbaseenums.c:625
 msgid "Sawtooth wave"
 msgstr "톱니파형"
 
-#: ../libgimpbase/gimpbaseenums.c:625
+#: ../libgimpbase/gimpbaseenums.c:626
 msgid "Triangular wave"
 msgstr "삼각파형"
 
-#: ../libgimpbase/gimpbaseenums.c:654
+#: ../libgimpbase/gimpbaseenums.c:655
 msgid "Run interactively"
 msgstr "대화식으로 실행"
 
-#: ../libgimpbase/gimpbaseenums.c:655
+#: ../libgimpbase/gimpbaseenums.c:656
 msgid "Run non-interactively"
 msgstr "비대화식으로 실행"
 
-#: ../libgimpbase/gimpbaseenums.c:656
+#: ../libgimpbase/gimpbaseenums.c:657
 msgid "Run with last used values"
 msgstr "마지막 사용값으로 실행"
 
-#: ../libgimpbase/gimpbaseenums.c:684
+#: ../libgimpbase/gimpbaseenums.c:685
 msgid "Pixels"
 msgstr "픽셀"
 
-#: ../libgimpbase/gimpbaseenums.c:685
+#: ../libgimpbase/gimpbaseenums.c:686
 msgid "Points"
 msgstr "포인트"
 
-#: ../libgimpbase/gimpbaseenums.c:714
+#: ../libgimpbase/gimpbaseenums.c:715
 msgid "Shadows"
 msgstr "그림자"
 
-#: ../libgimpbase/gimpbaseenums.c:715
+#: ../libgimpbase/gimpbaseenums.c:716
 msgid "Midtones"
 msgstr "중간톤"
 
-#: ../libgimpbase/gimpbaseenums.c:716
+#: ../libgimpbase/gimpbaseenums.c:717
 msgid "Highlights"
 msgstr "강조"
 
-#: ../libgimpbase/gimpbaseenums.c:744
+#: ../libgimpbase/gimpbaseenums.c:745
 msgid "Normal (Forward)"
 msgstr "일반(앞으로)"
 
-#: ../libgimpbase/gimpbaseenums.c:745
+#: ../libgimpbase/gimpbaseenums.c:746
 msgid "Corrective (Backward)"
 msgstr "교정(뒤로)"
 
-#: ../libgimpbase/gimpbaseenums.c:775
+#: ../libgimpbase/gimpbaseenums.c:776
 msgid "Adjust"
 msgstr "조정"
 
-#: ../libgimpbase/gimpbaseenums.c:776
+#: ../libgimpbase/gimpbaseenums.c:777
 msgid "Clip"
 msgstr "오리기"
 
-#: ../libgimpbase/gimpbaseenums.c:777
+#: ../libgimpbase/gimpbaseenums.c:778
 msgid "Crop to result"
 msgstr "결과물을 잘라내기"
 
-#: ../libgimpbase/gimpbaseenums.c:778
+#: ../libgimpbase/gimpbaseenums.c:779
 msgid "Crop with aspect"
 msgstr "특정 종횡비로 잘라내기"
 
-#: ../libgimpbase/gimpbaseenums.c:881
+#: ../libgimpbase/gimpbaseenums.c:909
 msgid "Internal GIMP procedure"
 msgstr "김프 내부 프로시저"
 
-#: ../libgimpbase/gimpbaseenums.c:882
+#: ../libgimpbase/gimpbaseenums.c:910
 msgid "GIMP Plug-In"
 msgstr "김프 플러그인"
 
-#: ../libgimpbase/gimpbaseenums.c:883
+#: ../libgimpbase/gimpbaseenums.c:911
 msgid "GIMP Extension"
 msgstr "김프 확장 기능"
 
-#: ../libgimpbase/gimpbaseenums.c:884
+#: ../libgimpbase/gimpbaseenums.c:912
 msgid "Temporary Procedure"
 msgstr "임시 프로시저"
 
-#: ../libgimpbase/gimpmemsize.c:180
-#, c-format
-msgid "%d Byte"
-msgid_plural "%d Bytes"
-msgstr[0] "%d 바이트"
+#: ../libgimpbase/gimpbaseenums.c:1074
+msgid "From left to right"
+msgstr "왼쪽에서 오른쪽으로"
 
-#: ../libgimpbase/gimpmemsize.c:186
-#, c-format
-msgid "%.2f KB"
-msgstr "%.2f KB"
+#: ../libgimpbase/gimpbaseenums.c:1075
+msgid "From right to left"
+msgstr "오른쪽에서 왼쪽으로"
 
-#: ../libgimpbase/gimpmemsize.c:190
-#, c-format
-msgid "%.1f KB"
-msgstr "%.1f KB"
+#: ../libgimpbase/gimpbaseenums.c:1105
+msgid "Left justified"
+msgstr "왼쪽 정렬"
 
-#: ../libgimpbase/gimpmemsize.c:194
-#, c-format
-msgid "%d KB"
-msgstr "%d KB"
+#: ../libgimpbase/gimpbaseenums.c:1106
+msgid "Right justified"
+msgstr "오른쪽 정렬"
 
-#: ../libgimpbase/gimpmemsize.c:201
-#, c-format
-msgid "%.2f MB"
-msgstr "%.2f MB"
+#: ../libgimpbase/gimpbaseenums.c:1107
+msgid "Centered"
+msgstr "중앙 정렬"
 
-#: ../libgimpbase/gimpmemsize.c:205
-#, c-format
-msgid "%.1f MB"
-msgstr "%.1f MB"
-
-#: ../libgimpbase/gimpmemsize.c:209
-#, c-format
-msgid "%d MB"
-msgstr "%d MB"
-
-#: ../libgimpbase/gimpmemsize.c:216
-#, c-format
-msgid "%.2f GB"
-msgstr "%.2f GB"
-
-#: ../libgimpbase/gimpmemsize.c:220
-#, c-format
-msgid "%.1f GB"
-msgstr "%.1f GB"
-
-#: ../libgimpbase/gimpmemsize.c:224
-#, c-format
-msgid "%d GB"
-msgstr "%d GB"
+#: ../libgimpbase/gimpbaseenums.c:1108
+msgid "Filled"
+msgstr "채움"
 
 #: ../libgimpbase/gimputils.c:170
 #: ../libgimpbase/gimputils.c:175
-#: ../modules/cdisplay_lcms.c:216
-#: ../modules/colorsel_cmyk_lcms.c:410
-#: ../modules/colorsel_cmyk_lcms.c:416
+#: ../modules/display-filter-lcms.c:183
+#: ../modules/color-selector-cmyk-lcms.c:407
+#: ../modules/color-selector-cmyk-lcms.c:413
 msgid "(invalid UTF-8 string)"
 msgstr "(잘못된 UTF-8 문자열)"
 
@@ -829,7 +822,7 @@ msgstr "모의 인쇄"
 
 #: ../libgimpconfig/gimpcolorconfig-enums.c:56
 msgid "Perceptual"
-msgstr "인식"
+msgstr "지각적"
 
 #: ../libgimpconfig/gimpcolorconfig-enums.c:57
 msgid "Relative colorimetric"
@@ -869,11 +862,11 @@ msgstr "잘못된 값 '%ld' (토큰 %s)"
 msgid "while parsing token '%s': %s"
 msgstr "토큰 '%s' 해석 중: %s"
 
-#: ../libgimpconfig/gimpconfig-iface.c:454
-#: ../libgimpconfig/gimpconfig-iface.c:467
+#: ../libgimpconfig/gimpconfig-iface.c:474
+#: ../libgimpconfig/gimpconfig-iface.c:487
 #: ../libgimpconfig/gimpscanner.c:498
 #: ../libgimpconfig/gimpscanner.c:579
-#: ../libgimpwidgets/gimpcolorprofilestore.c:654
+#: ../libgimpwidgets/gimpcolorprofilestore.c:656
 msgid "fatal parse error"
 msgstr "치명적인 해석 오류"
 
@@ -922,6 +915,7 @@ msgid "Could not create '%s': %s"
 msgstr "'%s'을(를) 만들 수 없습니다: %s"
 
 #: ../libgimpconfig/gimpscanner.c:255
+#, c-format
 msgid "invalid UTF-8 string"
 msgstr "잘못된 UTF-8 문자열"
 
@@ -955,7 +949,7 @@ msgstr "불러오기 실패"
 msgid "Not loaded"
 msgstr "불러오지 않음"
 
-#: ../libgimpthumb/gimpthumb-utils.c:125
+#: ../libgimpthumb/gimpthumb-utils.c:123
 #, c-format
 msgid ""
 "Cannot determine a valid home directory.\n"
@@ -964,13 +958,14 @@ msgstr ""
 "홈 디렉토리를 설정할 수 없습니다.\n"
 "미리보기는 (%s) 대신 임시 파일 폴더에 저장될 것입니다."
 
-#: ../libgimpthumb/gimpthumb-utils.c:249
-#: ../libgimpthumb/gimpthumb-utils.c:317
+#: ../libgimpthumb/gimpthumb-utils.c:247
+#: ../libgimpthumb/gimpthumb-utils.c:315
 #, c-format
 msgid "Failed to create thumbnail folder '%s'."
 msgstr "썸네일 폴더 '%s'을(를) 만들지 못했습니다."
 
 #: ../libgimpthumb/gimpthumbnail.c:498
+#, c-format
 msgid "Thumbnail contains no Thumb::URI tag"
 msgstr "미리보기에 Thumb 파일이 없습니다.::URI 태그"
 
@@ -1004,7 +999,8 @@ msgid "Select color profile from disk..."
 msgstr "디스크에서 색상 프로필 선택..."
 
 #: ../libgimpwidgets/gimpcolorprofilestore.c:280
-msgid "profile|None"
+msgctxt "profile"
+msgid "None"
 msgstr "없음"
 
 #: ../libgimpwidgets/gimpcolorscales.c:98
@@ -1026,6 +1022,10 @@ msgstr "HTML과 CSS용 16진수 색상 표기. 이 항목은 CSS 색상명을 �
 #: ../libgimpwidgets/gimpcolorselection.c:292
 msgid "HTML _notation:"
 msgstr "HTML 표기(_N):"
+
+#: ../libgimpwidgets/gimphelpui.c:420
+msgid "Press F1 for more help"
+msgstr "더 많은 정보를 보려면 F1 키를 누르십시오."
 
 #: ../libgimpwidgets/gimpfileentry.c:174
 msgid "Open a file selector to browse your folders"
@@ -1057,7 +1057,7 @@ msgstr "기가바이트"
 
 #. Count label
 #: ../libgimpwidgets/gimppageselector.c:269
-#: ../libgimpwidgets/gimppageselector.c:1171
+#: ../libgimpwidgets/gimppageselector.c:1166
 msgid "Nothing selected"
 msgstr "선택한 것 없음"
 
@@ -1077,18 +1077,18 @@ msgstr "페이지 열기(_P)"
 msgid "Page 000"
 msgstr "페이지 000"
 
-#: ../libgimpwidgets/gimppageselector.c:512
-#: ../libgimpwidgets/gimppageselector.c:749
+#: ../libgimpwidgets/gimppageselector.c:508
+#: ../libgimpwidgets/gimppageselector.c:744
 #, c-format
 msgid "Page %d"
 msgstr "페이지 %d"
 
-#: ../libgimpwidgets/gimppageselector.c:1176
+#: ../libgimpwidgets/gimppageselector.c:1171
 msgid "One page selected"
 msgstr "선택된 한 페이지"
 
-#: ../libgimpwidgets/gimppageselector.c:1183
-#: ../libgimpwidgets/gimppageselector.c:1187
+#: ../libgimpwidgets/gimppageselector.c:1178
+#: ../libgimpwidgets/gimppageselector.c:1182
 #, c-format
 msgid "%d page selected"
 msgid_plural "All %d pages selected"
@@ -1119,83 +1119,83 @@ msgstr "격자 형태"
 msgid "_Preview"
 msgstr "미리보기(_P)"
 
-#: ../libgimpwidgets/gimppropwidgets.c:1901
+#: ../libgimpwidgets/gimppropwidgets.c:1860
 #, c-format
 msgid "This text input field is limited to %d character."
 msgid_plural "This text input field is limited to %d characters."
 msgstr[0] "텍스트 입력란은 최대 %d 개의 문자를 입력할 수 있습니다."
 
-#: ../libgimpwidgets/gimpstock.c:113
+#: ../libgimpwidgets/gimpstock.c:112
 msgid "Anchor"
 msgstr "고정점"
 
-#: ../libgimpwidgets/gimpstock.c:114
+#: ../libgimpwidgets/gimpstock.c:113
 msgid "C_enter"
 msgstr "가운데(_E)"
 
-#: ../libgimpwidgets/gimpstock.c:115
+#: ../libgimpwidgets/gimpstock.c:114
 msgid "_Duplicate"
 msgstr "복제(_D)"
 
-#: ../libgimpwidgets/gimpstock.c:116
+#: ../libgimpwidgets/gimpstock.c:115
 msgid "_Edit"
 msgstr "편집(_E)"
 
-#: ../libgimpwidgets/gimpstock.c:117
+#: ../libgimpwidgets/gimpstock.c:116
 msgid "Linked"
 msgstr "연결됨"
 
-#: ../libgimpwidgets/gimpstock.c:118
+#: ../libgimpwidgets/gimpstock.c:117
 msgid "Paste as New"
 msgstr "새로 붙여 넣기"
 
-#: ../libgimpwidgets/gimpstock.c:119
+#: ../libgimpwidgets/gimpstock.c:118
 msgid "Paste Into"
 msgstr "안에 붙여 넣기"
 
-#: ../libgimpwidgets/gimpstock.c:120
+#: ../libgimpwidgets/gimpstock.c:119
 msgid "_Reset"
 msgstr "원래대로(_R)"
 
-#: ../libgimpwidgets/gimpstock.c:121
+#: ../libgimpwidgets/gimpstock.c:120
 msgid "Visible"
 msgstr "보임"
 
-#: ../libgimpwidgets/gimpstock.c:157
-#: ../libgimpwidgets/gimpstock.c:161
+#: ../libgimpwidgets/gimpstock.c:156
+#: ../libgimpwidgets/gimpstock.c:160
 msgid "_Stroke"
 msgstr "따라 그리기(_S)"
 
-#: ../libgimpwidgets/gimpstock.c:173
+#: ../libgimpwidgets/gimpstock.c:172
 msgid "L_etter Spacing"
 msgstr "자간(_E)"
 
-#: ../libgimpwidgets/gimpstock.c:174
+#: ../libgimpwidgets/gimpstock.c:173
 msgid "L_ine Spacing"
 msgstr "행간(_I)"
 
-#: ../libgimpwidgets/gimpstock.c:190
+#: ../libgimpwidgets/gimpstock.c:189
 msgid "_Resize"
 msgstr "크기 바꾸기(_R)"
 
-#: ../libgimpwidgets/gimpstock.c:191
-#: ../libgimpwidgets/gimpstock.c:319
+#: ../libgimpwidgets/gimpstock.c:190
+#: ../libgimpwidgets/gimpstock.c:320
 msgid "_Scale"
 msgstr "크기 조정(_S)"
 
-#: ../libgimpwidgets/gimpstock.c:295
+#: ../libgimpwidgets/gimpstock.c:296
 msgid "Cr_op"
 msgstr "잘라내기(_O)"
 
-#: ../libgimpwidgets/gimpstock.c:314
+#: ../libgimpwidgets/gimpstock.c:315
 msgid "_Transform"
 msgstr "변형(_T)"
 
-#: ../libgimpwidgets/gimpstock.c:318
+#: ../libgimpwidgets/gimpstock.c:319
 msgid "_Rotate"
 msgstr "회전(_R)"
 
-#: ../libgimpwidgets/gimpstock.c:320
+#: ../libgimpwidgets/gimpstock.c:321
 msgid "_Shear"
 msgstr "기울이기(_S)"
 
@@ -1215,19 +1215,19 @@ msgstr "단위"
 msgid "Factor"
 msgstr "팩터"
 
-#: ../libgimpwidgets/gimpwidgets.c:1005
+#: ../libgimpwidgets/gimpwidgets.c:511
 msgid "Use this value for random number generator seed - this allows you to repeat a given \"random\" operation"
 msgstr "이 값을 난수 생성기의 씨앗으로 사용합니다 - 주어진 \"난수\" 연산을 반복할 수 있습니다"
 
-#: ../libgimpwidgets/gimpwidgets.c:1009
+#: ../libgimpwidgets/gimpwidgets.c:515
 msgid "_New Seed"
 msgstr "새 씨앗 값(_N)"
 
-#: ../libgimpwidgets/gimpwidgets.c:1022
+#: ../libgimpwidgets/gimpwidgets.c:528
 msgid "Seed random number generator with a generated random number"
 msgstr "생성된 난수를 난수 생성기의 시작값으로 사용합니다"
 
-#: ../libgimpwidgets/gimpwidgets.c:1026
+#: ../libgimpwidgets/gimpwidgets.c:532
 msgid "_Randomize"
 msgstr "무작위화(_R)"
 
@@ -1295,550 +1295,578 @@ msgstr "확대"
 msgid "Zoom out"
 msgstr "축소"
 
-#: ../modules/cdisplay_colorblind.c:67
+#: ../modules/display-filter-color-blind.c:67
 msgid "Protanopia (insensitivity to red)"
 msgstr "제 1 색맹 (적색맹)"
 
-#: ../modules/cdisplay_colorblind.c:69
+#: ../modules/display-filter-color-blind.c:69
 msgid "Deuteranopia (insensitivity to green)"
 msgstr "제 2 색맹 (녹색맹)"
 
-#: ../modules/cdisplay_colorblind.c:71
+#: ../modules/display-filter-color-blind.c:71
 msgid "Tritanopia (insensitivity to blue)"
 msgstr "제 3 색맹 (청색맹)"
 
-#: ../modules/cdisplay_colorblind.c:200
+#: ../modules/display-filter-color-blind.c:198
 msgid "Color deficit simulation filter (Brettel-Vienot-Mollon algorithm)"
 msgstr "색맹 모의 실험 필터 (Brettel-Vienot-Mollon 알고리즘)"
 
-#: ../modules/cdisplay_colorblind.c:292
+#: ../modules/display-filter-color-blind.c:261
 msgid "Color Deficient Vision"
 msgstr "색맹 보기"
 
-#: ../modules/cdisplay_colorblind.c:507
+#: ../modules/display-filter-color-blind.c:483
 msgid "Color _deficiency type:"
 msgstr "색맹 유형(_D):"
 
-#: ../modules/cdisplay_gamma.c:91
+#: ../modules/display-filter-gamma.c:90
 msgid "Gamma color display filter"
 msgstr "감마 색상 화면 표시 필터"
 
-#: ../modules/cdisplay_gamma.c:160
+#: ../modules/display-filter-gamma.c:129
 msgid "Gamma"
 msgstr "감마"
 
-#: ../modules/cdisplay_gamma.c:253
+#: ../modules/display-filter-gamma.c:232
 msgid "_Gamma:"
 msgstr "감마(_G):"
 
-#: ../modules/cdisplay_highcontrast.c:91
+#: ../modules/display-filter-high-contrast.c:90
 msgid "High Contrast color display filter"
 msgstr "고휘도 색상 화면 표시 필터"
 
-#: ../modules/cdisplay_highcontrast.c:160
+#: ../modules/display-filter-high-contrast.c:129
 msgid "Contrast"
 msgstr "휘도"
 
-#: ../modules/cdisplay_highcontrast.c:253
+#: ../modules/display-filter-high-contrast.c:232
 msgid "Contrast c_ycles:"
 msgstr "대비 주기(_Y):"
 
-#: ../modules/cdisplay_lcms.c:111
+#: ../modules/display-filter-lcms.c:102
 msgid "Color management display filter using ICC color profiles"
 msgstr "ICC 색상 프로필을 사용하는 색상 관리 화면 필터"
 
-#: ../modules/cdisplay_lcms.c:172
+#: ../modules/display-filter-lcms.c:134
 msgid "Color Management"
 msgstr "색상 관리"
 
-#: ../modules/cdisplay_lcms.c:245
+#: ../modules/display-filter-lcms.c:212
 msgid "This filter takes its configuration from the Color Management section in the Preferences dialog."
 msgstr "이 필터는 기본 설정 대화상자의 색상 관리 부분의 설정을 사용합니다."
 
-#: ../modules/cdisplay_lcms.c:259
+#: ../modules/display-filter-lcms.c:226
 msgid "Mode of operation:"
 msgstr "동작 모드:"
 
-#: ../modules/cdisplay_lcms.c:267
+#: ../modules/display-filter-lcms.c:233
 msgid "Image profile:"
 msgstr "이미지 프로필:"
 
-#: ../modules/cdisplay_lcms.c:275
+#: ../modules/display-filter-lcms.c:241
 msgid "Monitor profile:"
 msgstr "모니터 프로필:"
 
-#: ../modules/cdisplay_lcms.c:283
+#: ../modules/display-filter-lcms.c:249
 msgid "Print simulation profile:"
 msgstr "모의 인쇄 프로필:"
 
-#: ../modules/cdisplay_proof.c:103
+#: ../modules/display-filter-proof.c:97
 msgid "Color proof filter using ICC color profile"
 msgstr "ICC 생삭 프로필을 사용하는 색상 교정 필터"
 
-#: ../modules/cdisplay_proof.c:180
+#: ../modules/display-filter-proof.c:145
 msgid "Color Proof"
 msgstr "색상 교정"
 
-#: ../modules/cdisplay_proof.c:340
+#: ../modules/display-filter-proof.c:311
 msgid "Choose an ICC Color Profile"
 msgstr "ICC 색상 프로필 선택"
 
-#: ../modules/cdisplay_proof.c:367
+#: ../modules/display-filter-proof.c:338
 msgid "All files (*.*)"
 msgstr "모든 파일 (*.*)"
 
-#: ../modules/cdisplay_proof.c:372
+#: ../modules/display-filter-proof.c:343
 msgid "ICC color profile (*.icc, *.icm)"
 msgstr "ICC 색상 프로필 (*.icc, *.icm)"
 
-#: ../modules/cdisplay_proof.c:430
+#: ../modules/display-filter-proof.c:401
 msgid "_Profile:"
 msgstr "프로필(_P):"
 
-#: ../modules/cdisplay_proof.c:436
+#: ../modules/display-filter-proof.c:407
 msgid "_Intent:"
 msgstr "의도(_I):"
 
-#: ../modules/cdisplay_proof.c:441
+#: ../modules/display-filter-proof.c:412
 msgid "_Black Point Compensation"
 msgstr "검정색 점 보상(_B)"
 
-#: ../modules/colorsel_cmyk.c:73
+#: ../modules/color-selector-cmyk.c:71
 msgid "CMYK color selector"
 msgstr "CMYK 색상 선택기"
 
-#: ../modules/colorsel_cmyk.c:130
-#: ../modules/colorsel_cmyk_lcms.c:154
+#: ../modules/color-selector-cmyk.c:102
+#: ../modules/color-selector-cmyk-lcms.c:150
 msgid "CMYK"
 msgstr "CMYK"
 
 #. Cyan
-#: ../modules/colorsel_cmyk.c:148
-#: ../modules/colorsel_cmyk_lcms.c:173
+#: ../modules/color-selector-cmyk.c:125
+#: ../modules/color-selector-cmyk-lcms.c:169
 msgid "_C"
 msgstr "_C"
 
 #. Magenta
-#: ../modules/colorsel_cmyk.c:150
-#: ../modules/colorsel_cmyk_lcms.c:175
+#: ../modules/color-selector-cmyk.c:127
+#: ../modules/color-selector-cmyk-lcms.c:171
 msgid "_M"
 msgstr "_M"
 
 #. Yellow
-#: ../modules/colorsel_cmyk.c:152
-#: ../modules/colorsel_cmyk_lcms.c:177
+#: ../modules/color-selector-cmyk.c:129
+#: ../modules/color-selector-cmyk-lcms.c:173
 msgid "_Y"
 msgstr "_Y"
 
 #. Key (Black)
-#: ../modules/colorsel_cmyk.c:154
-#: ../modules/colorsel_cmyk_lcms.c:179
+#: ../modules/color-selector-cmyk.c:131
+#: ../modules/color-selector-cmyk-lcms.c:175
 msgid "_K"
 msgstr "_K"
 
-#: ../modules/colorsel_cmyk.c:158
-#: ../modules/colorsel_cmyk_lcms.c:183
+#: ../modules/color-selector-cmyk.c:135
+#: ../modules/color-selector-cmyk-lcms.c:179
 msgid "Cyan"
 msgstr "청록"
 
-#: ../modules/colorsel_cmyk.c:159
-#: ../modules/colorsel_cmyk_lcms.c:184
+#: ../modules/color-selector-cmyk.c:136
+#: ../modules/color-selector-cmyk-lcms.c:180
 msgid "Magenta"
 msgstr "자홍"
 
-#: ../modules/colorsel_cmyk.c:160
-#: ../modules/colorsel_cmyk_lcms.c:185
+#: ../modules/color-selector-cmyk.c:137
+#: ../modules/color-selector-cmyk-lcms.c:181
 msgid "Yellow"
 msgstr "노랑"
 
-#: ../modules/colorsel_cmyk.c:161
-#: ../modules/colorsel_cmyk_lcms.c:186
+#: ../modules/color-selector-cmyk.c:138
+#: ../modules/color-selector-cmyk-lcms.c:182
 msgid "Black"
 msgstr "검정"
 
-#: ../modules/colorsel_cmyk.c:195
+#: ../modules/color-selector-cmyk.c:172
 msgid "Black _pullout:"
 msgstr "검정색 농도(_P):"
 
-#: ../modules/colorsel_cmyk.c:212
+#: ../modules/color-selector-cmyk.c:189
 msgid "The percentage of black to pull out of the colored inks."
 msgstr "색상 잉크로 만들 검정색의 비율"
 
-#: ../modules/colorsel_cmyk_lcms.c:91
+#: ../modules/color-selector-cmyk-lcms.c:87
 msgid "CMYK color selector (using color profile)"
 msgstr "CMYK 색상 선택기 (색상 프로필 사용)"
 
-#: ../modules/colorsel_cmyk_lcms.c:399
+#: ../modules/color-selector-cmyk-lcms.c:395
 msgid "Profile: (none)"
 msgstr "프로필: (없음)"
 
-#: ../modules/colorsel_cmyk_lcms.c:419
+#: ../modules/color-selector-cmyk-lcms.c:416
 #, c-format
 msgid "Profile: %s"
 msgstr "프로필: %s"
 
-#: ../modules/colorsel_triangle.c:104
-msgid "Painter-style triangle color selector"
-msgstr "페인터같은 삼각형 색 선택기"
-
-#: ../modules/colorsel_triangle.c:170
-msgid "Triangle"
-msgstr "삼각형"
-
-#: ../modules/colorsel_water.c:84
+#: ../modules/color-selector-water.c:82
 msgid "Watercolor style color selector"
 msgstr "수채화 형태의 색 선택기"
 
-#: ../modules/colorsel_water.c:150
+#: ../modules/color-selector-water.c:118
 msgid "Watercolor"
 msgstr "수채화"
 
-#: ../modules/colorsel_water.c:213
+#: ../modules/color-selector-water.c:186
 msgid "Pressure"
 msgstr "압력"
 
-#: ../modules/controller_linux_input.c:58
+#: ../modules/color-selector-wheel.c:98
+msgid "HSV color wheel"
+msgstr "HSV 색상 휠"
+
+#: ../modules/color-selector-wheel.c:129
+msgid "Wheel"
+msgstr "휠"
+
+#: ../modules/controller-linux-input.c:58
 msgid "Button 0"
 msgstr "버튼 0"
 
-#: ../modules/controller_linux_input.c:59
+#: ../modules/controller-linux-input.c:59
 msgid "Button 1"
 msgstr "버튼 1"
 
-#: ../modules/controller_linux_input.c:60
+#: ../modules/controller-linux-input.c:60
 msgid "Button 2"
 msgstr "버튼 2"
 
-#: ../modules/controller_linux_input.c:61
+#: ../modules/controller-linux-input.c:61
 msgid "Button 3"
 msgstr "버튼 3"
 
-#: ../modules/controller_linux_input.c:62
+#: ../modules/controller-linux-input.c:62
 msgid "Button 4"
 msgstr "버튼 4"
 
-#: ../modules/controller_linux_input.c:63
+#: ../modules/controller-linux-input.c:63
 msgid "Button 5"
 msgstr "버튼 5"
 
-#: ../modules/controller_linux_input.c:64
+#: ../modules/controller-linux-input.c:64
 msgid "Button 6"
 msgstr "버튼 6"
 
-#: ../modules/controller_linux_input.c:65
+#: ../modules/controller-linux-input.c:65
 msgid "Button 7"
 msgstr "버튼 7"
 
-#: ../modules/controller_linux_input.c:66
+#: ../modules/controller-linux-input.c:66
 msgid "Button 8"
 msgstr "버튼 8"
 
-#: ../modules/controller_linux_input.c:67
+#: ../modules/controller-linux-input.c:67
 msgid "Button 9"
 msgstr "버튼 9"
 
-#: ../modules/controller_linux_input.c:68
+#: ../modules/controller-linux-input.c:68
 msgid "Button Mouse"
 msgstr "버튼 마우스"
 
-#: ../modules/controller_linux_input.c:69
+#: ../modules/controller-linux-input.c:69
 msgid "Button Left"
 msgstr "버튼 왼쪽"
 
-#: ../modules/controller_linux_input.c:70
+#: ../modules/controller-linux-input.c:70
 msgid "Button Right"
 msgstr "버튼 오른쪽"
 
-#: ../modules/controller_linux_input.c:71
+#: ../modules/controller-linux-input.c:71
 msgid "Button Middle"
 msgstr "버튼 가운데"
 
-#: ../modules/controller_linux_input.c:72
+#: ../modules/controller-linux-input.c:72
 msgid "Button Side"
 msgstr "버튼 가장자리"
 
-#: ../modules/controller_linux_input.c:73
+#: ../modules/controller-linux-input.c:73
 msgid "Button Extra"
 msgstr "버튼 추가"
 
-#: ../modules/controller_linux_input.c:74
+#: ../modules/controller-linux-input.c:74
 msgid "Button Forward"
 msgstr "버튼 앞쪽"
 
-#: ../modules/controller_linux_input.c:75
+#: ../modules/controller-linux-input.c:75
 msgid "Button Back"
 msgstr "버튼 뒤쪽"
 
-#: ../modules/controller_linux_input.c:76
+#: ../modules/controller-linux-input.c:76
 msgid "Button Task"
 msgstr "버튼 작업"
 
-#: ../modules/controller_linux_input.c:78
+#: ../modules/controller-linux-input.c:78
 msgid "Button Wheel"
 msgstr "버튼 휠"
 
-#: ../modules/controller_linux_input.c:81
+#: ../modules/controller-linux-input.c:81
 msgid "Button Gear Down"
 msgstr "버튼 기어 다운"
 
-#: ../modules/controller_linux_input.c:84
+#: ../modules/controller-linux-input.c:84
 msgid "Button Gear Up"
 msgstr "버튼 기어 업"
 
-#: ../modules/controller_linux_input.c:90
-#: ../modules/controller_dx_dinput.c:469
+#: ../modules/controller-linux-input.c:90
+#: ../modules/controller-dx-dinput.c:443
 msgid "X Move Left"
 msgstr "X를 왼쪽으로 이동"
 
-#: ../modules/controller_linux_input.c:91
-#: ../modules/controller_dx_dinput.c:472
+#: ../modules/controller-linux-input.c:91
+#: ../modules/controller-dx-dinput.c:446
 msgid "X Move Right"
 msgstr "X를 오른쪽으로 이동"
 
-#: ../modules/controller_linux_input.c:92
+#: ../modules/controller-linux-input.c:92
 msgid "Y Move Forward"
 msgstr "X를 앞으로 이동"
 
-#: ../modules/controller_linux_input.c:93
+#: ../modules/controller-linux-input.c:93
 msgid "Y Move Back"
 msgstr "X를 뒤로 이동"
 
-#: ../modules/controller_linux_input.c:94
-#: ../modules/controller_dx_dinput.c:487
+#: ../modules/controller-linux-input.c:94
+#: ../modules/controller-dx-dinput.c:461
 msgid "Z Move Up"
 msgstr "Z를 위로 이동"
 
-#: ../modules/controller_linux_input.c:95
-#: ../modules/controller_dx_dinput.c:490
+#: ../modules/controller-linux-input.c:95
+#: ../modules/controller-dx-dinput.c:464
 msgid "Z Move Down"
 msgstr "Z를 아래로 이동"
 
-#: ../modules/controller_linux_input.c:97
+#: ../modules/controller-linux-input.c:97
 msgid "X Axis Tilt Forward"
 msgstr "X 축 기울기 앞으로"
 
-#: ../modules/controller_linux_input.c:98
+#: ../modules/controller-linux-input.c:98
 msgid "X Axis Tilt Back"
 msgstr "X 축 기울기 뒤로"
 
-#: ../modules/controller_linux_input.c:99
-#: ../modules/controller_dx_dinput.c:505
+#: ../modules/controller-linux-input.c:99
+#: ../modules/controller-dx-dinput.c:479
 msgid "Y Axis Tilt Right"
 msgstr "Y 축 기울기 오른쪽으로"
 
-#: ../modules/controller_linux_input.c:100
-#: ../modules/controller_dx_dinput.c:508
+#: ../modules/controller-linux-input.c:100
+#: ../modules/controller-dx-dinput.c:482
 msgid "Y Axis Tilt Left"
 msgstr "Y 축 기울기 왼쪽으로"
 
-#: ../modules/controller_linux_input.c:101
-#: ../modules/controller_dx_dinput.c:514
+#: ../modules/controller-linux-input.c:101
+#: ../modules/controller-dx-dinput.c:488
 msgid "Z Axis Turn Left"
 msgstr "Z 축 왼쪽으로 회전"
 
-#: ../modules/controller_linux_input.c:102
-#: ../modules/controller_dx_dinput.c:517
+#: ../modules/controller-linux-input.c:102
+#: ../modules/controller-dx-dinput.c:491
 msgid "Z Axis Turn Right"
 msgstr "Z 축 오른쪽으로 회전"
 
-#: ../modules/controller_linux_input.c:104
+#: ../modules/controller-linux-input.c:104
 msgid "Horiz. Wheel Turn Back"
 msgstr "수평선. 휠 뒤로 회전"
 
-#: ../modules/controller_linux_input.c:105
+#: ../modules/controller-linux-input.c:105
 msgid "Horiz. Wheel Turn Forward"
 msgstr "수평선. 휠 앞으로 회전"
 
-#: ../modules/controller_linux_input.c:106
+#: ../modules/controller-linux-input.c:106
 msgid "Dial Turn Left"
 msgstr "다이얼 왼쪽으로"
 
-#: ../modules/controller_linux_input.c:107
+#: ../modules/controller-linux-input.c:107
 msgid "Dial Turn Right"
 msgstr "다이얼 오른쪽으로"
 
-#: ../modules/controller_linux_input.c:108
+#: ../modules/controller-linux-input.c:108
 msgid "Wheel Turn Left"
 msgstr "휠 왼쪽으로"
 
-#: ../modules/controller_linux_input.c:109
+#: ../modules/controller-linux-input.c:109
 msgid "Wheel Turn Right"
 msgstr "휠 오른쪽으로"
 
-#: ../modules/controller_linux_input.c:179
+#: ../modules/controller-linux-input.c:178
 msgid "Linux input event controller"
 msgstr "리눅스 입력 이벤트 제어기"
 
-#: ../modules/controller_linux_input.c:249
-#: ../modules/controller_dx_dinput.c:227
-#: ../modules/controller_midi.c:245
+#: ../modules/controller-linux-input.c:218
+#: ../modules/controller-dx-dinput.c:196
+#: ../modules/controller-midi.c:212
 msgid "Device:"
 msgstr "장치:"
 
-#: ../modules/controller_linux_input.c:250
+#: ../modules/controller-linux-input.c:219
 msgid "The name of the device to read Linux Input events from."
 msgstr "리눅스 입력 이벤트로 읽을 수 있는 장치명"
 
-#: ../modules/controller_linux_input.c:261
+#: ../modules/controller-linux-input.c:230
 msgid "Linux Input"
 msgstr "리눅스 입력"
 
-#: ../modules/controller_linux_input.c:539
+#: ../modules/controller-linux-input.c:513
 msgid "Linux Input Events"
 msgstr "리눅스 입력 이벤트"
 
-#: ../modules/controller_linux_input.c:551
-#: ../modules/controller_dx_dinput.c:1122
-#: ../modules/controller_midi.c:533
+#: ../modules/controller-linux-input.c:525
+#: ../modules/controller-dx-dinput.c:1095
+#: ../modules/controller-midi.c:505
 msgid "No device configured"
 msgstr "설정된 장치가 없습니다."
 
-#: ../modules/controller_linux_input.c:577
-#: ../modules/controller_midi.c:482
-#: ../modules/controller_midi.c:508
+#: ../modules/controller-linux-input.c:551
+#: ../modules/controller-midi.c:454
+#: ../modules/controller-midi.c:480
 #, c-format
 msgid "Reading from %s"
 msgstr "%s에서 읽는 중"
 
-#: ../modules/controller_linux_input.c:595
-#: ../modules/controller_linux_input.c:649
-#: ../modules/controller_midi.c:464
-#: ../modules/controller_midi.c:525
-#: ../modules/controller_midi.c:596
+#: ../modules/controller-linux-input.c:569
+#: ../modules/controller-linux-input.c:623
+#: ../modules/controller-midi.c:436
+#: ../modules/controller-midi.c:497
+#: ../modules/controller-midi.c:568
 #, c-format
 msgid "Device not available: %s"
 msgstr "장치를 사용할 수 없습니다.:%s"
 
-#: ../modules/controller_linux_input.c:614
-#: ../modules/controller_dx_dinput.c:1147
+#: ../modules/controller-linux-input.c:588
+#: ../modules/controller-dx-dinput.c:1120
 msgid "Device not available"
 msgstr "장치를 사용할 수 없습니다."
 
-#: ../modules/controller_linux_input.c:658
-#: ../modules/controller_midi.c:605
+#: ../modules/controller-linux-input.c:632
+#: ../modules/controller-midi.c:577
 msgid "End of file"
 msgstr "파일 끝"
 
-#: ../modules/controller_dx_dinput.c:157
+#: ../modules/controller-dx-dinput.c:156
 msgid "DirectX DirectInput event controller"
 msgstr "다이렉트X 다이렉트입력 이벤트 제어기"
 
-#: ../modules/controller_dx_dinput.c:228
+#: ../modules/controller-dx-dinput.c:197
 msgid "The device to read DirectInput events from."
 msgstr "다이렉트입력 이벤트로 읽을 수 있는 장치"
 
-#: ../modules/controller_dx_dinput.c:237
+#: ../modules/controller-dx-dinput.c:206
 msgid "DirectX DirectInput"
 msgstr "다이렉트X 다이렉트입력"
 
-#: ../modules/controller_dx_dinput.c:446
+#: ../modules/controller-dx-dinput.c:420
 #, c-format
 msgid "Button %d"
 msgstr "버튼 %d"
 
-#: ../modules/controller_dx_dinput.c:449
+#: ../modules/controller-dx-dinput.c:423
 #, c-format
 msgid "Button %d Press"
 msgstr "버튼 %d 누름"
 
-#: ../modules/controller_dx_dinput.c:452
+#: ../modules/controller-dx-dinput.c:426
 #, c-format
 msgid "Button %d Release"
 msgstr "버튼 %d 뗌"
 
-#: ../modules/controller_dx_dinput.c:478
+#: ../modules/controller-dx-dinput.c:452
 msgid "Y Move Away"
 msgstr "Y를 멀리 이동"
 
-#: ../modules/controller_dx_dinput.c:481
+#: ../modules/controller-dx-dinput.c:455
 msgid "Y Move Near"
 msgstr "Y를 가까이 이동"
 
-#: ../modules/controller_dx_dinput.c:496
+#: ../modules/controller-dx-dinput.c:470
 msgid "X Axis Tilt Away"
 msgstr "X 축 틸트 멀리"
 
-#: ../modules/controller_dx_dinput.c:499
+#: ../modules/controller-dx-dinput.c:473
 msgid "X Axis Tilt Near"
 msgstr "X 축 틸트 가까이"
 
-#: ../modules/controller_dx_dinput.c:528
+#: ../modules/controller-dx-dinput.c:502
 #, c-format
 msgid "Slider %d Increase"
 msgstr "슬라이드 막대 %d 증가"
 
-#: ../modules/controller_dx_dinput.c:531
+#: ../modules/controller-dx-dinput.c:505
 #, c-format
 msgid "Slider %d Decrease"
 msgstr "슬라이드 막대 %d 감소"
 
-#: ../modules/controller_dx_dinput.c:541
+#: ../modules/controller-dx-dinput.c:515
 #, c-format
 msgid "POV %d X View"
 msgstr "POV %d X 보기"
 
-#: ../modules/controller_dx_dinput.c:544
+#: ../modules/controller-dx-dinput.c:518
 #, c-format
 msgid "POV %d Y View"
 msgstr "POV %d Y 보기"
 
-#: ../modules/controller_dx_dinput.c:547
+#: ../modules/controller-dx-dinput.c:521
 #, c-format
 msgid "POV %d Return"
 msgstr "POV %d 반환"
 
-#: ../modules/controller_dx_dinput.c:1111
+#: ../modules/controller-dx-dinput.c:1084
 msgid "DirectInput Events"
 msgstr "다이렉트입력 이벤트"
 
-#: ../modules/controller_midi.c:167
+#: ../modules/controller-midi.c:164
 msgid "MIDI event controller"
 msgstr "MIDI 이벤트 제어기"
 
-#: ../modules/controller_midi.c:236
+#: ../modules/controller-midi.c:203
 msgid "The name of the device to read MIDI events from."
 msgstr "MIDI 이벤트로 읽을 수 있는 장치명"
 
-#: ../modules/controller_midi.c:239
+#: ../modules/controller-midi.c:206
 msgid "Enter 'alsa' to use the ALSA sequencer."
 msgstr "ALSA 장치를 사용하려면 'alsa'를 입력하십시오."
 
-#: ../modules/controller_midi.c:254
+#: ../modules/controller-midi.c:221
 msgid "Channel:"
 msgstr "채널:"
 
-#: ../modules/controller_midi.c:255
+#: ../modules/controller-midi.c:222
 msgid "The MIDI channel to read events from. Set to -1 for reading from all MIDI channels."
 msgstr "이벤트로 읽을 수 있는 MIDI 채널. 모든 MIDI 채널에서 읽을 수 있게 하려면 -1로 설정하십시오."
 
-#: ../modules/controller_midi.c:259
+#: ../modules/controller-midi.c:226
 msgid "MIDI"
 msgstr "MIDI"
 
-#: ../modules/controller_midi.c:383
+#: ../modules/controller-midi.c:355
 #, c-format
 msgid "Note %02x on"
 msgstr "노트 %02x on"
 
-#: ../modules/controller_midi.c:386
+#: ../modules/controller-midi.c:358
 #, c-format
 msgid "Note %02x off"
 msgstr "노트 %02x off"
 
-#: ../modules/controller_midi.c:389
+#: ../modules/controller-midi.c:361
 #, c-format
 msgid "Controller %03d"
 msgstr "%03d 제어기"
 
-#: ../modules/controller_midi.c:436
+#: ../modules/controller-midi.c:408
 msgid "MIDI Events"
 msgstr "MIDI 이벤트"
 
-#: ../modules/controller_midi.c:454
+#: ../modules/controller-midi.c:426
 msgid "GIMP"
 msgstr "김프"
 
-#: ../modules/controller_midi.c:456
+#: ../modules/controller-midi.c:428
 msgid "GIMP MIDI Input Controller"
 msgstr "김프 MIDI 입력 제어기"
+
+#~ msgid "Painter-style triangle color selector"
+#~ msgstr "페인터같은 삼각형 색 선택기"
+#~ msgid "Triangle"
+#~ msgstr "삼각형"
+#~ msgid "%d Byte"
+#~ msgid_plural "%d Bytes"
+#~ msgstr[0] "%d 바이트"
+#~ msgid "%.2f KB"
+#~ msgstr "%.2f KB"
+#~ msgid "%.1f KB"
+#~ msgstr "%.1f KB"
+#~ msgid "%d KB"
+#~ msgstr "%d KB"
+#~ msgid "%.2f MB"
+#~ msgstr "%.2f MB"
+#~ msgid "%.1f MB"
+#~ msgstr "%.1f MB"
+#~ msgid "%d MB"
+#~ msgstr "%d MB"
+#~ msgid "%.2f GB"
+#~ msgstr "%.2f GB"
+#~ msgid "%.1f GB"
+#~ msgstr "%.1f GB"
+#~ msgid "%d GB"
+#~ msgstr "%d GB"
+#~ msgid "profile|None"
+#~ msgstr "없음"
 

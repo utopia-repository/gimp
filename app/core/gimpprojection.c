@@ -264,7 +264,10 @@ gimp_projection_get_pixel_at (GimpPickable *pickable,
 {
   GimpProjection *proj = GIMP_PROJECTION (pickable);
 
-  if (x < 0 || y < 0 || x >= proj->image->width || y >= proj->image->height)
+  if (x <  0                                   ||
+      y <  0                                   ||
+      x >= gimp_image_get_width  (proj->image) ||
+      y >= gimp_image_get_height (proj->image))
     return FALSE;
 
   read_pixel_data_1 (gimp_projection_get_tiles (proj), x, y, pixel);
@@ -310,28 +313,29 @@ gimp_projection_new (GimpImage *image)
 TileManager *
 gimp_projection_get_tiles (GimpProjection *proj)
 {
-  return gimp_projection_get_tiles_at_level (proj, 0);
+  return gimp_projection_get_tiles_at_level (proj, 0, NULL);
 
 }
 
 TileManager *
 gimp_projection_get_tiles_at_level (GimpProjection *proj,
-                                    gint            level)
+                                    gint            level,
+                                    gboolean       *is_premult)
 {
   g_return_val_if_fail (GIMP_IS_PROJECTION (proj), NULL);
 
   if (! proj->pyramid)
     {
       proj->pyramid = tile_pyramid_new (gimp_projection_get_image_type (proj),
-                                        proj->image->width,
-                                        proj->image->height);
+                                        gimp_image_get_width  (proj->image),
+                                        gimp_image_get_height (proj->image));
 
       tile_pyramid_set_validate_proc (proj->pyramid,
                                       (TileValidateProc) gimp_projection_validate_tile,
                                       proj);
     }
 
-  return tile_pyramid_get_tiles (proj->pyramid, level);
+  return tile_pyramid_get_tiles (proj->pyramid, level, is_premult);
 }
 
 /**
@@ -349,8 +353,8 @@ gimp_projection_get_level (GimpProjection *proj,
                            gdouble         scale_x,
                            gdouble         scale_y)
 {
-  return tile_pyramid_get_level (proj->image->width,
-                                 proj->image->height,
+  return tile_pyramid_get_level (gimp_image_get_width  (proj->image),
+                                 gimp_image_get_height (proj->image),
                                  MAX (scale_x, scale_y));
 }
 
@@ -378,6 +382,8 @@ gimp_projection_get_image_type (const GimpProjection *proj)
     }
 
   g_assert_not_reached ();
+
+  return 0;
 }
 
 gint
@@ -386,14 +392,6 @@ gimp_projection_get_bytes (const GimpProjection *proj)
   g_return_val_if_fail (GIMP_IS_PROJECTION (proj), 0);
 
   return GIMP_IMAGE_TYPE_BYTES (gimp_projection_get_image_type (proj));
-}
-
-gdouble
-gimp_projection_get_opacity (const GimpProjection *proj)
-{
-  g_return_val_if_fail (GIMP_IS_PROJECTION (proj), GIMP_OPACITY_OPAQUE);
-
-  return GIMP_OPACITY_OPAQUE;
 }
 
 void
@@ -446,10 +444,10 @@ gimp_projection_add_update_area (GimpProjection *proj,
 
   g_return_if_fail (GIMP_IS_PROJECTION (proj));
 
-  area = gimp_area_new (CLAMP (x, 0, proj->image->width),
-                        CLAMP (y, 0, proj->image->height),
-                        CLAMP (x + w, 0, proj->image->width),
-                        CLAMP (y + h, 0, proj->image->height));
+  area = gimp_area_new (CLAMP (x,     0, gimp_image_get_width  (proj->image)),
+                        CLAMP (y,     0, gimp_image_get_height (proj->image)),
+                        CLAMP (x + w, 0, gimp_image_get_width  (proj->image)),
+                        CLAMP (y + h, 0, gimp_image_get_height (proj->image)));
 
   proj->update_areas = gimp_area_list_process (proj->update_areas, area);
 }
@@ -656,11 +654,14 @@ gimp_projection_paint_area (GimpProjection *proj,
                             gint            w,
                             gint            h)
 {
+  const gint width  = gimp_image_get_width  (proj->image);
+  const gint height = gimp_image_get_height (proj->image);
+
   /*  Bounds check  */
-  gint x1 = CLAMP (x,     0, proj->image->width);
-  gint y1 = CLAMP (y,     0, proj->image->height);
-  gint x2 = CLAMP (x + w, 0, proj->image->width);
-  gint y2 = CLAMP (y + h, 0, proj->image->height);
+  gint x1 = CLAMP (x,     0, width);
+  gint y1 = CLAMP (y,     0, height);
+  gint x2 = CLAMP (x + w, 0, width);
+  gint y2 = CLAMP (y + h, 0, height);
 
   gimp_projection_invalidate (proj, x1, y1, x2 - x1, y2 - y1);
 
@@ -717,7 +718,10 @@ gimp_projection_image_size_changed (GimpImage      *image,
       proj->pyramid = NULL;
     }
 
-  gimp_projection_add_update_area (proj, 0, 0, image->width, image->height);
+  gimp_projection_add_update_area (proj,
+                                   0, 0,
+                                   gimp_image_get_width  (image),
+                                   gimp_image_get_height (image));
 }
 
 static void
@@ -730,7 +734,10 @@ gimp_projection_image_mode_changed (GimpImage      *image,
       proj->pyramid = NULL;
     }
 
-  gimp_projection_add_update_area (proj, 0, 0, image->width, image->height);
+  gimp_projection_add_update_area (proj,
+                                   0, 0,
+                                   gimp_image_get_width  (image),
+                                   gimp_image_get_height (image));
 }
 
 static void

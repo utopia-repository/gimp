@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -102,6 +103,7 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
                                                          guchar *color_uchar);
 gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-merge-shadow" title="gimp_drawable_merge_shadow ()">gimp_drawable_merge_shadow</a>          (gint32 drawable_ID,
                                                          gboolean undo);
+gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-free-shadow" title="gimp_drawable_free_shadow ()">gimp_drawable_free_shadow</a>           (gint32 drawable_ID);
 gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill" title="gimp_drawable_fill ()">gimp_drawable_fill</a>                  (gint32 drawable_ID,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpFillType" title="enum GimpFillType">GimpFillType</a> fill_type);
 gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-update" title="gimp_drawable_update ()">gimp_drawable_update</a>                (gint32 drawable_ID,
@@ -138,9 +140,10 @@ gint                <a class="link" href="libgimp-gimpdrawable.html#gimp-drawabl
 gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-offsets" title="gimp_drawable_offsets ()">gimp_drawable_offsets</a>               (gint32 drawable_ID,
                                                          gint *offset_x,
                                                          gint *offset_y);
+gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-channel" title="gimp_drawable_is_channel ()">gimp_drawable_is_channel</a>            (gint32 drawable_ID);
 gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-layer" title="gimp_drawable_is_layer ()">gimp_drawable_is_layer</a>              (gint32 drawable_ID);
 gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-layer-mask" title="gimp_drawable_is_layer_mask ()">gimp_drawable_is_layer_mask</a>         (gint32 drawable_ID);
-gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-channel" title="gimp_drawable_is_channel ()">gimp_drawable_is_channel</a>            (gint32 drawable_ID);
+gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-is-text-layer" title="gimp_drawable_is_text_layer ()">gimp_drawable_is_text_layer</a>         (gint32 drawable_ID);
 gboolean            <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-offset" title="gimp_drawable_offset ()">gimp_drawable_offset</a>                (gint32 drawable_ID,
                                                          gboolean wrap_around,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpOffsetType" title="enum GimpOffsetType">GimpOffsetType</a> fill_type,
@@ -943,7 +946,7 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 Merge the shadow buffer with the specified drawable.
 </p>
 <p>
-This procedure combines the contents of the image's shadow buffer
+This procedure combines the contents of the drawable's shadow buffer
 (for temporary processing) with the specified drawable. The 'undo'
 parameter specifies whether to add an undo step for the operation.
 Requesting no undo is useful for such applications as 'auto-apply'.</p>
@@ -970,6 +973,40 @@ Requesting no undo is useful for such applications as 'auto-apply'.</p>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-drawable-free-shadow"></a><h3>gimp_drawable_free_shadow ()</h3>
+<pre class="programlisting">gboolean            gimp_drawable_free_shadow           (gint32 drawable_ID);</pre>
+<p>
+Free the specified drawable's shadow data (if it exists).
+</p>
+<p>
+This procedure is intended as a memory saving device. If any shadow
+memory has been allocated, it will be freed automatically when the
+drawable is removed from the image, or when the plug-in procedure
+which allocated it returns.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
+<td> The drawable.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -1565,6 +1602,34 @@ The offsets of a channel will be returned as 0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
+<a name="gimp-drawable-is-channel"></a><h3>gimp_drawable_is_channel ()</h3>
+<pre class="programlisting">gboolean            gimp_drawable_is_channel            (gint32 drawable_ID);</pre>
+<p>
+Returns whether the drawable is a channel.
+</p>
+<p>
+This procedure returns TRUE if the specified drawable is a channel.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
+<td> The drawable.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE if the drawable is a channel, FALSE otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
 <a name="gimp-drawable-is-layer"></a><h3>gimp_drawable_is_layer ()</h3>
 <pre class="programlisting">gboolean            gimp_drawable_is_layer              (gint32 drawable_ID);</pre>
 <p>
@@ -1585,7 +1650,7 @@ This procedure returns TRUE if the specified drawable is a layer.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the drawable is a layer.
+<td> TRUE if the drawable is a layer, FALSE otherwise.
 </td>
 </tr>
 </tbody>
@@ -1614,7 +1679,7 @@ mask.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the drawable is a layer mask.
+<td> TRUE if the drawable is a layer mask, FALSE otherwise.
 </td>
 </tr>
 </tbody>
@@ -1622,13 +1687,14 @@ mask.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="gimp-drawable-is-channel"></a><h3>gimp_drawable_is_channel ()</h3>
-<pre class="programlisting">gboolean            gimp_drawable_is_channel            (gint32 drawable_ID);</pre>
+<a name="gimp-drawable-is-text-layer"></a><h3>gimp_drawable_is_text_layer ()</h3>
+<pre class="programlisting">gboolean            gimp_drawable_is_text_layer         (gint32 drawable_ID);</pre>
 <p>
-Returns whether the drawable is a channel.
+Returns whether the drawable is a text layer.
 </p>
 <p>
-This procedure returns TRUE if the specified drawable is a channel.</p>
+This procedure returns TRUE if the specified drawable is a text
+layer.</p>
 <p>
 
 </p>
@@ -1642,11 +1708,14 @@ This procedure returns TRUE if the specified drawable is a channel.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the drawable is a channel.
+<td> TRUE if the drawable is a text layer, FALSE otherwise.
+
 </td>
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since  GIMP 2.6
+</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

@@ -39,14 +39,19 @@
 #include "core/gimpcontext.h"
 #include "core/gimpguide.h"
 #include "core/gimpimage.h"
+#include "core/gimpimage-grid.h"
+#include "core/gimpimage-guides.h"
 #include "core/gimpimage-snap.h"
 #include "core/gimpprojection.h"
 #include "core/gimpmarshal.h"
 #include "core/gimpsamplepoint.h"
+#include "core/gimptemplate.h"
 
-#include "widgets/gimprender.h"
+#include "widgets/gimpactiongroup.h"
+#include "widgets/gimpdialogfactory.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpmenufactory.h"
+#include "widgets/gimpsessioninfo.h"
 #include "widgets/gimpuimanager.h"
 #include "widgets/gimpwidgets-utils.h"
 
@@ -62,10 +67,12 @@
 #include "gimpdisplayshell-cursor.h"
 #include "gimpdisplayshell-dnd.h"
 #include "gimpdisplayshell-draw.h"
+#include "gimpdisplayshell-draw.h"
 #include "gimpdisplayshell-filter.h"
 #include "gimpdisplayshell-handlers.h"
 #include "gimpdisplayshell-progress.h"
 #include "gimpdisplayshell-scale.h"
+#include "gimpdisplayshell-scroll.h"
 #include "gimpdisplayshell-selection.h"
 #include "gimpdisplayshell-title.h"
 #include "gimpdisplayshell-transform.h"
@@ -91,7 +98,7 @@ enum
 
 /*  local function prototypes  */
 
-static void     gimp_color_managed_iface_init      (GimpColorManagedInterface *iface);
+static void      gimp_color_managed_iface_init     (GimpColorManagedInterface *iface);
 
 static void      gimp_display_shell_finalize       (GObject          *object);
 static void      gimp_display_shell_set_property   (GObject          *object,
@@ -110,7 +117,14 @@ static void      gimp_display_shell_screen_changed (GtkWidget        *widget,
                                                     GdkScreen        *previous);
 static gboolean  gimp_display_shell_delete_event   (GtkWidget        *widget,
                                                     GdkEventAny      *aevent);
+static gboolean  gimp_display_shell_configure_event(GtkWidget        *widget,
+                                                    GdkEventConfigure*cevent);
+static gboolean
+             gimp_display_shell_window_state_event (GtkWidget        *widget,
+                                                    GdkEventWindowState *event);
 static gboolean  gimp_display_shell_popup_menu     (GtkWidget        *widget);
+static void      gimp_display_shell_style_set      (GtkWidget        *widget,
+                                                    GtkStyle         *prev_style);
 
 static void      gimp_display_shell_real_scaled    (GimpDisplayShell *shell);
 
@@ -129,7 +143,7 @@ static const guint8 * gimp_display_shell_get_icc_profile
                                                     gsize            *len);
 
 
-G_DEFINE_TYPE_WITH_CODE (GimpDisplayShell, gimp_display_shell, GTK_TYPE_WINDOW,
+G_DEFINE_TYPE_WITH_CODE (GimpDisplayShell, gimp_display_shell, GIMP_TYPE_WINDOW,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS,
                                                 gimp_display_shell_progress_iface_init)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_COLOR_MANAGED,
@@ -159,9 +173,9 @@ static const gchar display_rc_style[] =
 static void
 gimp_display_shell_class_init (GimpDisplayShellClass *klass)
 {
-  GObjectClass   *object_class      = G_OBJECT_CLASS (klass);
-  GtkObjectClass *gtk_object_class  = GTK_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class      = GTK_WIDGET_CLASS (klass);
+  GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
+  GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class     = GTK_WIDGET_CLASS (klass);
 
   display_shell_signals[SCALED] =
     g_signal_new ("scaled",
@@ -190,20 +204,23 @@ gimp_display_shell_class_init (GimpDisplayShellClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-  object_class->finalize       = gimp_display_shell_finalize;
-  object_class->set_property   = gimp_display_shell_set_property;
-  object_class->get_property   = gimp_display_shell_get_property;
+  object_class->finalize           = gimp_display_shell_finalize;
+  object_class->set_property       = gimp_display_shell_set_property;
+  object_class->get_property       = gimp_display_shell_get_property;
 
-  gtk_object_class->destroy    = gimp_display_shell_destroy;
+  gtk_object_class->destroy        = gimp_display_shell_destroy;
 
-  widget_class->unrealize      = gimp_display_shell_unrealize;
-  widget_class->screen_changed = gimp_display_shell_screen_changed;
-  widget_class->delete_event   = gimp_display_shell_delete_event;
-  widget_class->popup_menu     = gimp_display_shell_popup_menu;
+  widget_class->unrealize          = gimp_display_shell_unrealize;
+  widget_class->screen_changed     = gimp_display_shell_screen_changed;
+  widget_class->delete_event       = gimp_display_shell_delete_event;
+  widget_class->configure_event    = gimp_display_shell_configure_event;
+  widget_class->window_state_event = gimp_display_shell_window_state_event;
+  widget_class->popup_menu         = gimp_display_shell_popup_menu;
+  widget_class->style_set          = gimp_display_shell_style_set;
 
-  klass->scaled                = gimp_display_shell_real_scaled;
-  klass->scrolled              = NULL;
-  klass->reconnect             = NULL;
+  klass->scaled                    = gimp_display_shell_real_scaled;
+  klass->scrolled                  = NULL;
+  klass->reconnect                 = NULL;
 
   g_object_class_install_property (object_class, PROP_UNIT,
                                    gimp_param_spec_unit ("unit", NULL, NULL,
@@ -244,8 +261,6 @@ gimp_display_shell_init (GimpDisplayShell *shell)
 
   shell->disp_width             = 0;
   shell->disp_height            = 0;
-  shell->disp_xoffset           = 0;
-  shell->disp_yoffset           = 0;
 
   shell->proximity              = FALSE;
   shell->snap_to_guides         = TRUE;
@@ -276,13 +291,15 @@ gimp_display_shell_init (GimpDisplayShell *shell)
   shell->statusbar              = NULL;
 
   shell->render_buf             = g_new (guchar,
-                                         GIMP_RENDER_BUF_WIDTH  *
-                                         GIMP_RENDER_BUF_HEIGHT * 3);
+                                         GIMP_DISPLAY_RENDER_BUF_WIDTH  *
+                                         GIMP_DISPLAY_RENDER_BUF_HEIGHT * 3);
 
   shell->title_idle_id          = 0;
 
   shell->icon_size              = 32;
   shell->icon_idle_id           = 0;
+
+  shell->fill_idle_id           = 0;
 
   shell->cursor_format          = GIMP_CURSOR_FORMAT_BITMAP;
   shell->current_cursor         = (GimpCursorType) -1;
@@ -312,8 +329,11 @@ gimp_display_shell_init (GimpDisplayShell *shell)
   shell->zoom_on_resize         = FALSE;
   shell->show_transform_preview = FALSE;
 
+  shell->size_allocate_from_configure_event = FALSE;
+
   shell->options                = g_object_new (GIMP_TYPE_DISPLAY_OPTIONS, NULL);
   shell->fullscreen_options     = g_object_new (GIMP_TYPE_DISPLAY_OPTIONS_FULLSCREEN, NULL);
+  shell->no_image_options       = g_object_new (GIMP_TYPE_DISPLAY_OPTIONS_NO_IMAGE, NULL);
 
   shell->space_pressed          = FALSE;
   shell->space_release_pending  = FALSE;
@@ -326,6 +346,12 @@ gimp_display_shell_init (GimpDisplayShell *shell)
 
   shell->highlight              = NULL;
   shell->mask                   = NULL;
+
+  shell->last_motion_time       = 0;
+  shell->last_motion_delta_x    = 0.0;
+  shell->last_motion_delta_y    = 0.0;
+  shell->last_motion_distance   = 0.0;
+  shell->last_motion_delta_time = 0.0;
 
   gtk_window_set_role (GTK_WINDOW (shell), "gimp-image-window");
   gtk_window_set_resizable (GTK_WINDOW (shell), TRUE);
@@ -354,11 +380,6 @@ gimp_display_shell_init (GimpDisplayShell *shell)
   g_signal_connect (shell, "key-press-event",
                     G_CALLBACK (gimp_display_shell_events),
                     shell);
-  g_signal_connect (shell, "window-state-event",
-                    G_CALLBACK (gimp_display_shell_events),
-                    shell);
-
-  gimp_display_shell_dnd_init (shell);
 
   gimp_help_connect (GTK_WIDGET (shell), gimp_standard_help_func,
                      GIMP_HELP_IMAGE_WINDOW, NULL);
@@ -382,6 +403,9 @@ gimp_display_shell_finalize (GObject *object)
 
   if (shell->fullscreen_options)
     g_object_unref (shell->fullscreen_options);
+
+  if (shell->no_image_options)
+    g_object_unref (shell->no_image_options);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -431,7 +455,7 @@ gimp_display_shell_destroy (GtkObject *object)
 {
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (object);
 
-  if (shell->display)
+  if (shell->display && shell->display->image)
     gimp_display_shell_disconnect (shell);
 
   if (shell->menubar_manager)
@@ -475,6 +499,12 @@ gimp_display_shell_destroy (GtkObject *object)
     {
       g_source_remove (shell->title_idle_id);
       shell->title_idle_id = 0;
+    }
+
+  if (shell->fill_idle_id)
+    {
+      g_source_remove (shell->fill_idle_id);
+      shell->fill_idle_id = 0;
     }
 
   if (shell->nav_popup)
@@ -521,15 +551,12 @@ static void
 gimp_display_shell_screen_changed (GtkWidget *widget,
                                    GdkScreen *previous)
 {
-  GimpDisplayShell  *shell = GIMP_DISPLAY_SHELL (widget);
-  GimpDisplayConfig *config;
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (widget);
 
   if (GTK_WIDGET_CLASS (parent_class)->screen_changed)
     GTK_WIDGET_CLASS (parent_class)->screen_changed (widget, previous);
 
-  config = GIMP_DISPLAY_CONFIG (shell->display->image->gimp->config);
-
-  if (GIMP_DISPLAY_CONFIG (config)->monitor_res_from_gdk)
+  if (shell->display->config->monitor_res_from_gdk)
     {
       gimp_get_screen_resolution (gtk_widget_get_screen (widget),
                                   &shell->monitor_xres,
@@ -537,8 +564,8 @@ gimp_display_shell_screen_changed (GtkWidget *widget,
     }
   else
     {
-      shell->monitor_xres = GIMP_DISPLAY_CONFIG (config)->monitor_xres;
-      shell->monitor_yres = GIMP_DISPLAY_CONFIG (config)->monitor_yres;
+      shell->monitor_xres = shell->display->config->monitor_xres;
+      shell->monitor_yres = shell->display->config->monitor_yres;
     }
 }
 
@@ -554,11 +581,81 @@ gimp_display_shell_delete_event (GtkWidget   *widget,
 }
 
 static gboolean
+gimp_display_shell_configure_event (GtkWidget         *widget,
+                                    GdkEventConfigure *cevent)
+{
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (widget);
+  gint              current_width;
+  gint              current_height;
+
+  /* Grab the size before we run the parent implementation */
+  current_width  = widget->allocation.width;
+  current_height = widget->allocation.height;
+
+  /* Run the parent implementation */
+  if (GTK_WIDGET_CLASS (parent_class)->configure_event)
+    GTK_WIDGET_CLASS (parent_class)->configure_event (widget, cevent);
+
+  /* If the window size has changed, make sure additoinal logic is run
+   * on size-allocate
+   */
+  if (shell->display        &&
+      shell->display->image &&
+      (cevent->width  != current_width ||
+       cevent->height != current_height))
+    {
+      shell->size_allocate_from_configure_event = TRUE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+gimp_display_shell_window_state_event (GtkWidget           *widget,
+                                       GdkEventWindowState *event)
+{
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (widget);
+
+  shell->window_state = event->new_window_state;
+
+  if (event->changed_mask & GDK_WINDOW_STATE_FULLSCREEN)
+    {
+      Gimp            *gimp = shell->display->gimp;
+      GimpActionGroup *group;
+      gboolean         fullscreen;
+
+      gimp_display_shell_appearance_update (shell);
+
+      fullscreen = gimp_display_shell_get_fullscreen (shell);
+
+      group = gimp_ui_manager_get_action_group (shell->menubar_manager, "view");
+      gimp_action_group_set_action_active (group,
+                                           "view-fullscreen", fullscreen);
+
+      if (shell->display ==
+          gimp_context_get_display (gimp_get_user_context (gimp)))
+        {
+          group = gimp_ui_manager_get_action_group (shell->popup_manager,
+                                                    "view");
+          gimp_action_group_set_action_active (group,
+                                               "view-fullscreen", fullscreen);
+        }
+    }
+
+  if (event->changed_mask & GDK_WINDOW_STATE_ICONIFIED)
+    {
+      gimp_display_shell_progress_window_state_changed (shell);
+    }
+
+  return FALSE;
+}
+
+static gboolean
 gimp_display_shell_popup_menu (GtkWidget *widget)
 {
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (widget);
 
-  gimp_context_set_display (gimp_get_user_context (shell->display->image->gimp),
+  gimp_context_set_display (gimp_get_user_context (shell->display->gimp),
                             shell->display);
 
   gimp_ui_manager_ui_popup (shell->popup_manager, "/dummy-menubar/image-popup",
@@ -568,6 +665,35 @@ gimp_display_shell_popup_menu (GtkWidget *widget)
                             NULL, NULL);
 
   return TRUE;
+}
+
+static void
+gimp_display_shell_style_set (GtkWidget *widget,
+                              GtkStyle  *prev_style)
+{
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (widget);
+  GtkRequisition    requisition;
+  GdkGeometry       geometry;
+
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+
+  gtk_widget_size_request (shell->statusbar, &requisition);
+
+  geometry.min_height = 23;
+
+  geometry.min_width  = requisition.width;
+  geometry.min_height += requisition.height;
+
+  if (shell->menubar)
+    {
+      gtk_widget_size_request (shell->menubar, &requisition);
+
+      geometry.min_height += requisition.height;
+    }
+
+  gtk_window_set_geometry_hints (GTK_WINDOW (widget), NULL,
+                                 &geometry,
+                                 GDK_HINT_MIN_SIZE | GDK_HINT_USER_POS);
 }
 
 static void
@@ -583,7 +709,7 @@ gimp_display_shell_real_scaled (GimpDisplayShell *shell)
   /* update the <Image>/View/Zoom menu */
   gimp_ui_manager_update (shell->menubar_manager, shell->display);
 
-  user_context = gimp_get_user_context (shell->display->image->gimp);
+  user_context = gimp_get_user_context (shell->display->gimp);
 
   if (shell->display == gimp_context_get_display (user_context))
     gimp_ui_manager_update (shell->popup_manager, shell->display);
@@ -604,7 +730,7 @@ gimp_display_shell_show_tooltip (GimpUIManager    *manager,
                                  GimpDisplayShell *shell)
 {
   gimp_statusbar_push (GIMP_STATUSBAR (shell->statusbar), "menu-tooltip",
-                       "%s", tooltip);
+                       NULL, "%s", tooltip);
 }
 
 static void
@@ -621,22 +747,41 @@ gimp_display_shell_get_icc_profile (GimpColorManaged *managed,
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (managed);
   GimpImage        *image = shell->display->image;
 
-  return gimp_color_managed_get_icc_profile (GIMP_COLOR_MANAGED (image), len);
+  if (image)
+    return gimp_color_managed_get_icc_profile (GIMP_COLOR_MANAGED (image), len);
+
+  return NULL;
 }
+
+static void
+gimp_display_shell_zoom_button_callback (GimpDisplayShell *shell,
+                                         GtkWidget        *zoom_button)
+{
+  shell->zoom_on_resize =
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (zoom_button));
+
+  if (shell->zoom_on_resize &&
+      gimp_display_shell_scale_image_is_within_viewport (shell, NULL, NULL))
+    {
+      /* Implicitly make a View -> Fit Image in Window */
+      gimp_display_shell_scale_fit_in (shell);
+    }
+}
+
 
 /*  public functions  */
 
 GtkWidget *
-gimp_display_shell_new (GimpDisplay     *display,
-                        GimpUnit         unit,
-                        gdouble          scale,
-                        GimpMenuFactory *menu_factory,
-                        GimpUIManager   *popup_manager)
+gimp_display_shell_new (GimpDisplay       *display,
+                        GimpUnit           unit,
+                        gdouble            scale,
+                        GimpMenuFactory   *menu_factory,
+                        GimpUIManager     *popup_manager,
+                        GimpDialogFactory *display_factory)
 {
   GimpDisplayShell      *shell;
-  GimpDisplayConfig     *display_config;
+  GimpDisplayOptions    *options;
   GimpColorDisplayStack *filter;
-  Gimp                  *gimp;
   GtkWidget             *main_vbox;
   GtkWidget             *disp_vbox;
   GtkWidget             *upper_hbox;
@@ -646,98 +791,81 @@ gimp_display_shell_new (GimpDisplay     *display,
   GtkWidget             *image;
   GdkScreen             *screen;
   GtkAction             *action;
-  gint                   image_width, image_height;
-  gint                   n_width, n_height;
-  gint                   s_width, s_height;
-  gdouble                new_scale;
+  gint                   image_width;
+  gint                   image_height;
+  gint                   shell_width;
+  gint                   shell_height;
 
   g_return_val_if_fail (GIMP_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (GIMP_IS_MENU_FACTORY (menu_factory), NULL);
   g_return_val_if_fail (GIMP_IS_UI_MANAGER (popup_manager), NULL);
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (display_factory), NULL);
 
   /*  the toplevel shell */
   shell = g_object_new (GIMP_TYPE_DISPLAY_SHELL,
-                     /* "gravity", GDK_GRAVITY_CENTER, */
-                        "unit",    unit,
+                        "unit",            unit,
+                        /* The window position will be overridden by the
+                         * dialog factory, it is only really used on first
+                         * startup.
+                         */
+                        display->image ? NULL : "window-position",
+                        GTK_WIN_POS_CENTER,
                         NULL);
 
   shell->display = display;
 
-  image_width  = display->image->width;
-  image_height = display->image->height;
+  shell->display_factory = display_factory;
 
-  gimp = display->image->gimp;
-  display_config = GIMP_DISPLAY_CONFIG (gimp->config);
+  if (display->image)
+    {
+      options = shell->options;
 
-  shell->dot_for_dot = display_config->default_dot_for_dot;
+      image_width  = gimp_image_get_width  (display->image);
+      image_height = gimp_image_get_height (display->image);
+    }
+  else
+    {
+      options = shell->no_image_options;
 
-  gimp_config_sync (G_OBJECT (display_config->default_view),
+      /*
+       * These values are arbitrary. The width is determined by the
+       * menubar and the height is chosen to give a window aspect
+       * ratio of roughly 3:1 (as requested by the UI team).
+       */
+      image_width  = GIMP_DEFAULT_IMAGE_WIDTH;
+      image_height = GIMP_DEFAULT_IMAGE_HEIGHT / 3;
+    }
+
+  shell->dot_for_dot = display->config->default_dot_for_dot;
+
+  gimp_config_sync (G_OBJECT (display->config->default_view),
                     G_OBJECT (shell->options), 0);
-  gimp_config_sync (G_OBJECT (display_config->default_fullscreen_view),
+  gimp_config_sync (G_OBJECT (display->config->default_fullscreen_view),
                     G_OBJECT (shell->fullscreen_options), 0);
 
-  gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, scale);
-
-  /* adjust the initial scale -- so that window fits on screen the 75%
-   * value is the same as in gimp_display_shell_shrink_wrap. It
-   * probably should be a user-configurable option.
-   */
   screen = gtk_widget_get_screen (GTK_WIDGET (shell));
 
-  if (display_config->monitor_res_from_gdk)
+  if (display->config->monitor_res_from_gdk)
     {
       gimp_get_screen_resolution (screen,
                                   &shell->monitor_xres, &shell->monitor_yres);
     }
   else
     {
-      shell->monitor_xres = display_config->monitor_xres;
-      shell->monitor_yres = display_config->monitor_yres;
+      shell->monitor_xres = display->config->monitor_xres;
+      shell->monitor_yres = display->config->monitor_yres;
     }
 
-  s_width  = gdk_screen_get_width (screen)  * 0.75;
-  s_height = gdk_screen_get_height (screen) * 0.75;
-
-  n_width  = SCALEX (shell, image_width);
-  n_height = SCALEY (shell, image_height);
-
-  if (display_config->initial_zoom_to_fit)
+  /* adjust the initial scale -- so that window fits on screen. */
+  if (display->image)
     {
-      /*  Limit to the size of the screen...  */
-      if (n_width > s_width || n_height > s_height)
-        {
-          gdouble current = gimp_zoom_model_get_factor (shell->zoom);
-
-          new_scale = current * MIN (((gdouble) s_height) / n_height,
-                                     ((gdouble) s_width) / n_width);
-
-          new_scale = gimp_zoom_model_zoom_step (GIMP_ZOOM_OUT, new_scale);
-
-          /* Since zooming out might skip a zoom step we zoom in again
-           * and test if we are small enough.
-           */
-          gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO,
-                                gimp_zoom_model_zoom_step (GIMP_ZOOM_IN,
-                                                           new_scale));
-
-          if (SCALEX (shell, image_width) > s_width ||
-              SCALEY (shell, image_height) > s_height)
-            gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, new_scale);
-
-          n_width  = SCALEX (shell, image_width);
-          n_height = SCALEY (shell, image_height);
-        }
+      gimp_display_shell_set_initial_scale (shell, scale,
+                                            &shell_width, &shell_height);
     }
   else
     {
-      /* Set up size like above, but do not zoom to fit.
-         Useful when working on large images. */
-
-      if (n_width > s_width)
-        n_width = s_width;
-
-      if (n_height > s_height)
-        n_height = s_height;
+      shell_width  = -1;
+      shell_height = image_height;
     }
 
   shell->menubar_manager = gimp_menu_factory_manager_new (menu_factory,
@@ -798,7 +926,7 @@ gimp_display_shell_new (GimpDisplay     *display,
 
   /*  the vbox containing all widgets  */
 
-  main_vbox = gtk_vbox_new (FALSE, 1);
+  main_vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (shell), main_vbox);
 
 #ifndef GDK_WINDOWING_QUARTZ
@@ -811,7 +939,7 @@ gimp_display_shell_new (GimpDisplay     *display,
     {
       gtk_box_pack_start (GTK_BOX (main_vbox), shell->menubar, FALSE, FALSE, 0);
 
-      if (shell->options->show_menubar)
+      if (options->show_menubar)
         gtk_widget_show (shell->menubar);
       else
         gtk_widget_hide (shell->menubar);
@@ -869,12 +997,14 @@ gimp_display_shell_new (GimpDisplay     *display,
   shell->hsbdata = GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, image_width,
                                                        1, 1, image_width));
   shell->hsb = gtk_hscrollbar_new (shell->hsbdata);
+
   GTK_WIDGET_UNSET_FLAGS (shell->hsb, GTK_CAN_FOCUS);
 
   /*  the vertical scrollbar  */
   shell->vsbdata = GTK_ADJUSTMENT (gtk_adjustment_new (0, 0, image_height,
                                                        1, 1, image_height));
   shell->vsb = gtk_vscrollbar_new (shell->vsbdata);
+
   GTK_WIDGET_UNSET_FLAGS (shell->vsb, GTK_CAN_FOCUS);
 
   /*  create the contents of the inner_table  ********************************/
@@ -894,12 +1024,14 @@ gimp_display_shell_new (GimpDisplay     *display,
                            _("Access the image menu"),
                            GIMP_HELP_IMAGE_WINDOW_ORIGIN);
 
-  shell->canvas = gimp_canvas_new (shell->display->image->gimp);
+  shell->canvas = gimp_canvas_new (display->config);
+  gtk_widget_set_size_request (shell->canvas, shell_width, shell_height);
 
+  gimp_display_shell_dnd_init (shell);
   gimp_display_shell_selection_init (shell);
 
   /*  the horizontal ruler  */
-  shell->hrule = gtk_hruler_new ();
+  shell->hrule = gimp_ruler_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_widget_set_events (GTK_WIDGET (shell->hrule),
                          GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
@@ -913,7 +1045,7 @@ gimp_display_shell_new (GimpDisplay     *display,
   gimp_help_set_help_data (shell->hrule, NULL, GIMP_HELP_IMAGE_WINDOW_RULER);
 
   /*  the vertical ruler  */
-  shell->vrule = gtk_vruler_new ();
+  shell->vrule = gimp_ruler_new (GTK_ORIENTATION_VERTICAL);
   gtk_widget_set_events (GTK_WIDGET (shell->vrule),
                          GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
@@ -931,12 +1063,6 @@ gimp_display_shell_new (GimpDisplay     *display,
    */
   gtk_widget_set_extension_events (shell->hrule, GDK_EXTENSION_EVENTS_ALL);
   gtk_widget_set_extension_events (shell->vrule, GDK_EXTENSION_EVENTS_ALL);
-
-  /*  the canvas  */
-  gtk_widget_set_size_request (shell->canvas, n_width, n_height);
-  gtk_widget_set_events (shell->canvas, GIMP_DISPLAY_SHELL_CANVAS_EVENT_MASK);
-  gtk_widget_set_extension_events (shell->canvas, GDK_EXTENSION_EVENTS_ALL);
-  GTK_WIDGET_SET_FLAGS (shell->canvas, GTK_CAN_FOCUS);
 
   g_signal_connect (shell->canvas, "realize",
                     G_CALLBACK (gimp_display_shell_canvas_realize),
@@ -1003,9 +1129,9 @@ gimp_display_shell_new (GimpDisplay     *display,
                            _("Zoom image when window size changes"),
                            GIMP_HELP_IMAGE_WINDOW_ZOOM_FOLLOW_BUTTON);
 
-  g_signal_connect (shell->zoom_button, "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &shell->zoom_on_resize);
+  g_signal_connect_swapped (shell->zoom_button, "toggled",
+                            G_CALLBACK (gimp_display_shell_zoom_button_callback),
+                            shell);
 
   /*  create the contents of the lower_hbox  *********************************/
 
@@ -1092,7 +1218,7 @@ gimp_display_shell_new (GimpDisplay     *display,
 
   /*  show everything  *******************************************************/
 
-  if (shell->options->show_rulers)
+  if (options->show_rulers)
     {
       gtk_widget_show (shell->origin);
       gtk_widget_show (shell->hrule);
@@ -1101,7 +1227,7 @@ gimp_display_shell_new (GimpDisplay     *display,
 
   gtk_widget_show (GTK_WIDGET (shell->canvas));
 
-  if (shell->options->show_scrollbars)
+  if (options->show_scrollbars)
     {
       gtk_widget_show (shell->vsb);
       gtk_widget_show (shell->hsb);
@@ -1110,20 +1236,44 @@ gimp_display_shell_new (GimpDisplay     *display,
       gtk_widget_show (shell->nav_ebox);
     }
 
-  if (shell->options->show_statusbar)
+  if (options->show_statusbar)
     gtk_widget_show (shell->statusbar);
 
   gtk_widget_show (main_vbox);
 
+  /*  add display filter for color management  */
+
   filter = gimp_display_shell_filter_new (shell,
-                                          gimp->config->color_management);
+                                          display->gimp->config->color_management);
+
   if (filter)
     {
       gimp_display_shell_filter_set (shell, filter);
       g_object_unref (filter);
     }
 
-  gimp_display_shell_connect (shell);
+  if (display->image)
+    {
+      gimp_display_shell_connect (shell);
+
+      /* After connecting to the image we want to center it. Since we
+       * not even finnished creating the display shell, we can safely
+       * assume we will get a size-allocate later.
+       */
+      gimp_display_shell_scroll_center_image_on_next_size_allocate (shell,
+                                                                    TRUE,
+                                                                    TRUE);
+    }
+  else
+    {
+      gimp_statusbar_empty (GIMP_STATUSBAR (shell->statusbar));
+      gimp_dialog_factory_add_foreign (display_factory,
+                                       "gimp-empty-image-window",
+                                       GTK_WIDGET (shell));
+      gimp_help_set_help_data (shell->canvas,
+                               _("Drop image files here to open them"),
+                               NULL);
+    }
 
   gimp_display_shell_title_init (shell);
 
@@ -1140,15 +1290,138 @@ gimp_display_shell_reconnect (GimpDisplayShell *shell)
   g_return_if_fail (GIMP_IS_DISPLAY (shell->display));
   g_return_if_fail (GIMP_IS_IMAGE (shell->display->image));
 
+  if (shell->fill_idle_id)
+    {
+      g_source_remove (shell->fill_idle_id);
+      shell->fill_idle_id = 0;
+    }
+
   gimp_display_shell_connect (shell);
 
   g_signal_emit (shell, display_shell_signals[RECONNECT], 0);
 
   gimp_color_managed_profile_changed (GIMP_COLOR_MANAGED (shell));
 
-  gimp_display_shell_scale_setup (shell);
-  gimp_display_shell_expose_full (shell);
+  gimp_display_shell_scroll_clamp_and_update (shell);
+
   gimp_display_shell_scaled (shell);
+
+  gimp_display_shell_expose_full (shell);
+}
+
+void
+gimp_display_shell_empty (GimpDisplayShell *shell)
+{
+  GimpSessionInfo *session_info;
+  GimpContext     *user_context;
+  gint             width;
+  gint             height;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (GIMP_IS_DISPLAY (shell->display));
+  g_return_if_fail (shell->display->image == NULL);
+
+  gtk_window_unfullscreen (GTK_WINDOW (shell));
+
+  /*  get the NIW size before adding the display to the dialog factory
+   *  so the window's current size doesn't affect the stored session
+   *  info entry.
+   */
+  session_info =
+    gimp_dialog_factory_find_session_info (shell->display_factory,
+                                           "gimp-empty-image-window");
+
+  if (session_info)
+    {
+      width  = session_info->width;
+      height = session_info->height;
+    }
+  else
+    {
+      width  = GTK_WIDGET (shell)->allocation.width;
+      height = GTK_WIDGET (shell)->allocation.height;
+    }
+
+  gimp_dialog_factory_add_foreign (shell->display_factory,
+                                   "gimp-empty-image-window",
+                                   GTK_WIDGET (shell));
+
+  if (shell->fill_idle_id)
+    {
+      g_source_remove (shell->fill_idle_id);
+      shell->fill_idle_id = 0;
+    }
+
+  gimp_display_shell_selection_control (shell, GIMP_SELECTION_OFF);
+
+  gimp_display_shell_unset_cursor (shell);
+
+  gimp_statusbar_empty (GIMP_STATUSBAR (shell->statusbar));
+
+  gimp_display_shell_appearance_update (shell);
+
+  gimp_help_set_help_data (shell->canvas,
+                           _("Drop image files here to open them"), NULL);
+
+  gimp_display_shell_expose_full (shell);
+
+  gtk_window_resize (GTK_WINDOW (shell), width, height);
+
+  /*  update the ui managers  */
+
+  gimp_ui_manager_update (shell->menubar_manager, shell->display);
+
+  user_context = gimp_get_user_context (shell->display->gimp);
+
+  if (shell->display == gimp_context_get_display (user_context))
+    gimp_ui_manager_update (shell->popup_manager, shell->display);
+}
+
+static gboolean
+gimp_display_shell_fill_idle (GimpDisplayShell *shell)
+{
+  shell->fill_idle_id = 0;
+
+  gimp_display_shell_scale_shrink_wrap (shell, TRUE);
+
+  gtk_window_present (GTK_WINDOW (shell));
+
+  return FALSE;
+}
+
+void
+gimp_display_shell_fill (GimpDisplayShell *shell,
+                         GimpImage        *image,
+                         GimpUnit          unit,
+                         gdouble           scale)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (GIMP_IS_DISPLAY (shell->display));
+  g_return_if_fail (GIMP_IS_IMAGE (image));
+
+  gimp_dialog_factory_remove_dialog (shell->display_factory,
+                                     GTK_WIDGET (shell));
+
+  gimp_display_shell_set_unit (shell, unit);
+  gimp_display_shell_set_initial_scale (shell, scale, NULL, NULL);
+  gimp_display_shell_scale_changed (shell);
+
+  gimp_statusbar_fill (GIMP_STATUSBAR (shell->statusbar));
+
+  gimp_display_shell_appearance_update (shell);
+
+  gimp_help_set_help_data (shell->canvas, NULL, NULL);
+
+  /* A size-allocate will always occur because the scrollbars will
+   * become visible forcing the canvas to become smaller
+   */
+  gimp_display_shell_scroll_center_image_on_next_size_allocate (shell,
+                                                                TRUE,
+                                                                TRUE);
+
+  shell->fill_idle_id = g_idle_add_full (G_PRIORITY_LOW,
+                                         (GSourceFunc) gimp_display_shell_fill_idle,
+                                         shell, NULL);
 }
 
 /*
@@ -1166,16 +1439,28 @@ gimp_display_shell_scale_changed (GimpDisplayShell *shell)
 
   image = shell->display->image;
 
-  shell->scale_x = (gimp_zoom_model_get_factor (shell->zoom)
-                    * SCREEN_XRES (shell) / image->xresolution);
+  if (image)
+    {
+      gimp_display_shell_calculate_scale_x_and_y (shell,
+                                                  gimp_zoom_model_get_factor (shell->zoom),
+                                                  &shell->scale_x,
+                                                  &shell->scale_y);
 
-  shell->scale_y = (gimp_zoom_model_get_factor (shell->zoom)
-                    * SCREEN_YRES (shell) / image->yresolution);
+      shell->x_dest_inc = gimp_image_get_width  (image);
+      shell->y_dest_inc = gimp_image_get_height (image);
+      shell->x_src_dec  = SCALEX (shell, gimp_image_get_width  (image));
+      shell->y_src_dec  = SCALEY (shell, gimp_image_get_height (image));
+    }
+  else
+    {
+      shell->scale_x = 1.0;
+      shell->scale_y = 1.0;
 
-  shell->x_dest_inc = image->width;
-  shell->y_dest_inc = image->height;
-  shell->x_src_dec  = ceil (image->width  * shell->scale_x);
-  shell->y_src_dec  = ceil (image->height * shell->scale_y);
+      shell->x_dest_inc = 1;
+      shell->y_dest_inc = 1;
+      shell->x_src_dec  = 1;
+      shell->y_src_dec  = 1;
+    }
 }
 
 void
@@ -1204,7 +1489,8 @@ gimp_display_shell_set_unit (GimpDisplayShell *shell,
     {
       shell->unit = unit;
 
-      gimp_display_shell_scale_setup (shell);
+      gimp_display_shell_scale_update_rulers (shell);
+
       gimp_display_shell_scaled (shell);
 
       g_object_notify (G_OBJECT (shell), "unit");
@@ -1222,32 +1508,31 @@ gimp_display_shell_get_unit (GimpDisplayShell *shell)
 gboolean
 gimp_display_shell_snap_coords (GimpDisplayShell *shell,
                                 GimpCoords       *coords,
-                                GimpCoords       *snapped_coords,
                                 gint              snap_offset_x,
                                 gint              snap_offset_y,
                                 gint              snap_width,
                                 gint              snap_height)
 {
-  gboolean snap_to_guides  = FALSE;
-  gboolean snap_to_grid    = FALSE;
-  gboolean snap_to_canvas  = FALSE;
-  gboolean snap_to_vectors = FALSE;
-  gboolean snapped         = FALSE;
+  GimpImage *image;
+  gboolean   snap_to_guides  = FALSE;
+  gboolean   snap_to_grid    = FALSE;
+  gboolean   snap_to_canvas  = FALSE;
+  gboolean   snap_to_vectors = FALSE;
+  gboolean   snapped         = FALSE;
 
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
   g_return_val_if_fail (coords != NULL, FALSE);
-  g_return_val_if_fail (snapped_coords != NULL, FALSE);
 
-  *snapped_coords = *coords;
+  image = shell->display->image;
 
   if (gimp_display_shell_get_snap_to_guides (shell) &&
-      shell->display->image->guides)
+      gimp_image_get_guides (image))
     {
       snap_to_guides = TRUE;
     }
 
   if (gimp_display_shell_get_snap_to_grid (shell) &&
-      shell->display->image->grid)
+      gimp_image_get_grid (image))
     {
       snap_to_grid = TRUE;
     }
@@ -1255,18 +1540,17 @@ gimp_display_shell_snap_coords (GimpDisplayShell *shell,
   snap_to_canvas = gimp_display_shell_get_snap_to_canvas (shell);
 
   if (gimp_display_shell_get_snap_to_vectors (shell) &&
-      gimp_image_get_active_vectors (shell->display->image))
+      gimp_image_get_active_vectors (image))
     {
       snap_to_vectors = TRUE;
     }
 
   if (snap_to_guides || snap_to_grid || snap_to_canvas || snap_to_vectors)
     {
-      gdouble tx, ty;
       gint    snap_distance;
+      gdouble tx, ty;
 
-      snap_distance =
-        GIMP_DISPLAY_CONFIG (shell->display->image->gimp->config)->snap_distance;
+      snap_distance = shell->display->config->snap_distance;
 
       if (snap_width > 0 && snap_height > 0)
         {
@@ -1303,8 +1587,8 @@ gimp_display_shell_snap_coords (GimpDisplayShell *shell,
 
       if (snapped)
         {
-          snapped_coords->x = tx - snap_offset_x;
-          snapped_coords->y = ty - snap_offset_y;
+          coords->x = tx - snap_offset_x;
+          coords->y = ty - snap_offset_y;
         }
     }
 
@@ -1472,7 +1756,7 @@ gimp_display_shell_flush (GimpDisplayShell *shell,
 
       gimp_ui_manager_update (shell->menubar_manager, shell->display);
 
-      user_context = gimp_get_user_context (shell->display->image->gimp);
+      user_context = gimp_get_user_context (shell->display->gimp);
 
       if (shell->display == gimp_context_get_display (user_context))
         gimp_ui_manager_update (shell->popup_manager, shell->display);
@@ -1500,7 +1784,7 @@ gimp_display_shell_pause (GimpDisplayShell *shell)
   if (shell->paused_count == 1)
     {
       /*  pause the currently active tool  */
-      tool_manager_control_active (shell->display->image->gimp,
+      tool_manager_control_active (shell->display->gimp,
                                    GIMP_TOOL_ACTION_PAUSE,
                                    shell->display);
 
@@ -1530,47 +1814,15 @@ gimp_display_shell_resume (GimpDisplayShell *shell)
       gimp_display_shell_draw_vectors (shell);
 
       /* start the currently active tool */
-      tool_manager_control_active (shell->display->image->gimp,
+      tool_manager_control_active (shell->display->gimp,
                                    GIMP_TOOL_ACTION_RESUME,
                                    shell->display);
     }
 }
 
 void
-gimp_display_shell_update_icon (GimpDisplayShell *shell)
-{
-  GimpImage *image;
-  GdkPixbuf *pixbuf;
-  gint       width, height;
-  gdouble    factor;
-
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  image = shell->display->image;
-
-  factor = ((gdouble) gimp_image_get_height (image) /
-            (gdouble) gimp_image_get_width  (image));
-
-  if (factor >= 1)
-    {
-      height = MAX (shell->icon_size, 1);
-      width  = MAX (((gdouble) shell->icon_size) / factor, 1);
-    }
-  else
-    {
-      height = MAX (((gdouble) shell->icon_size) * factor, 1);
-      width  = MAX (shell->icon_size, 1);
-    }
-
-  pixbuf = gimp_viewable_get_pixbuf (GIMP_VIEWABLE (image),
-                                     gimp_get_user_context (image->gimp),
-                                     width, height);
-
-  gtk_window_set_icon (GTK_WINDOW (shell), pixbuf);
-}
-
-void
-gimp_display_shell_shrink_wrap (GimpDisplayShell *shell)
+gimp_display_shell_shrink_wrap (GimpDisplayShell *shell,
+                                gboolean          grow_only)
 {
   GtkWidget    *widget;
   GdkScreen    *screen;
@@ -1593,8 +1845,8 @@ gimp_display_shell_shrink_wrap (GimpDisplayShell *shell)
   monitor = gdk_screen_get_monitor_at_window (screen, widget->window);
   gdk_screen_get_monitor_geometry (screen, monitor, &rect);
 
-  width  = SCALEX (shell, shell->display->image->width);
-  height = SCALEY (shell, shell->display->image->height);
+  width  = SCALEX (shell, gimp_image_get_width  (shell->display->image));
+  height = SCALEY (shell, gimp_image_get_height (shell->display->image));
 
   disp_width  = shell->disp_width;
   disp_height = shell->disp_height;
@@ -1634,10 +1886,26 @@ gimp_display_shell_shrink_wrap (GimpDisplayShell *shell)
       if (width < shell->statusbar->requisition.width)
         width = shell->statusbar->requisition.width;
 
-      gtk_window_resize (GTK_WINDOW (shell),
-                         width  + border_x,
-                         height + border_y);
+      width  = width  + border_x;
+      height = height + border_y;
+
+      if (grow_only)
+        {
+          if (width < widget->allocation.width)
+            width = widget->allocation.width;
+
+          if (height < widget->allocation.height)
+            height = widget->allocation.height;
+        }
+
+      gtk_window_resize (GTK_WINDOW (shell), width, height);
     }
+
+  /* A wrap always means that we should center the image too. If the
+   * window changes size another center will be done in
+   * GimpDisplayShell::configure_event().
+   */
+  gimp_display_shell_scroll_center_image (shell, TRUE, TRUE);
 }
 
 /**

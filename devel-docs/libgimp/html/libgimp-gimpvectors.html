@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -49,19 +50,9 @@
 <pre class="synopsis">
 gint32              <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-new" title="gimp_vectors_new ()">gimp_vectors_new</a>                    (gint32 image_ID,
                                                          const gchar *name);
-gboolean            <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-import-from-file" title="gimp_vectors_import_from_file ()">gimp_vectors_import_from_file</a>       (gint32 image_ID,
-                                                         const gchar *filename,
-                                                         gboolean merge,
-                                                         gboolean scale,
-                                                         gint *num_vectors,
-                                                         gint32 **vectors_ids);
-gboolean            <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-import-from-string" title="gimp_vectors_import_from_string ()">gimp_vectors_import_from_string</a>     (gint32 image_ID,
-                                                         const gchar *string,
-                                                         gint length,
-                                                         gboolean merge,
-                                                         gboolean scale,
-                                                         gint *num_vectors,
-                                                         gint32 **vectors_ids);
+gint32              <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-new-from-text-layer" title="gimp_vectors_new_from_text_layer ()">gimp_vectors_new_from_text_layer</a>    (gint32 image_ID,
+                                                         gint32 layer_ID);
+gint32              <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-copy" title="gimp_vectors_copy ()">gimp_vectors_copy</a>                   (gint32 vectors_ID);
 gboolean            <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-is-valid" title="gimp_vectors_is_valid ()">gimp_vectors_is_valid</a>               (gint32 vectors_ID);
 gint*               <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-get-strokes" title="gimp_vectors_get_strokes ()">gimp_vectors_get_strokes</a>            (gint32 vectors_ID,
                                                          gint *num_strokes);
@@ -88,6 +79,24 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
                                                          gboolean feather,
                                                          gdouble feather_radius_x,
                                                          gdouble feather_radius_y);
+gboolean            <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-export-to-file" title="gimp_vectors_export_to_file ()">gimp_vectors_export_to_file</a>         (gint32 image_ID,
+                                                         const gchar *filename,
+                                                         gint32 vectors_ID);
+gchar*              <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-export-to-string" title="gimp_vectors_export_to_string ()">gimp_vectors_export_to_string</a>       (gint32 image_ID,
+                                                         gint32 vectors_ID);
+gboolean            <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-import-from-file" title="gimp_vectors_import_from_file ()">gimp_vectors_import_from_file</a>       (gint32 image_ID,
+                                                         const gchar *filename,
+                                                         gboolean merge,
+                                                         gboolean scale,
+                                                         gint *num_vectors,
+                                                         gint32 **vectors_ids);
+gboolean            <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-import-from-string" title="gimp_vectors_import_from_string ()">gimp_vectors_import_from_string</a>     (gint32 image_ID,
+                                                         const gchar *string,
+                                                         gint length,
+                                                         gboolean merge,
+                                                         gboolean scale,
+                                                         gint *num_vectors,
+                                                         gint32 **vectors_ids);
 gboolean            <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-parasite-attach" title="gimp_vectors_parasite_attach ()">gimp_vectors_parasite_attach</a>        (gint32 vectors_ID,
                                                          const <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
@@ -204,8 +213,8 @@ gint                <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-
 Creates a new empty vectors object.
 </p>
 <p>
-Creates a new empty vectors object. Needs to be added to an image
-using <a class="link" href="libgimp-gimpimage.html#gimp-image-add-vectors" title="gimp_image_add_vectors ()"><code class="function">gimp_image_add_vectors()</code></a>.</p>
+Creates a new empty vectors object. The vectors object needs to be
+added to the image using <a class="link" href="libgimp-gimpimage.html#gimp-image-add-vectors" title="gimp_image_add_vectors ()"><code class="function">gimp_image_add_vectors()</code></a>.</p>
 <p>
 
 </p>
@@ -235,19 +244,15 @@ using <a class="link" href="libgimp-gimpimage.html#gimp-image-add-vectors" title
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="gimp-vectors-import-from-file"></a><h3>gimp_vectors_import_from_file ()</h3>
-<pre class="programlisting">gboolean            gimp_vectors_import_from_file       (gint32 image_ID,
-                                                         const gchar *filename,
-                                                         gboolean merge,
-                                                         gboolean scale,
-                                                         gint *num_vectors,
-                                                         gint32 **vectors_ids);</pre>
+<a name="gimp-vectors-new-from-text-layer"></a><h3>gimp_vectors_new_from_text_layer ()</h3>
+<pre class="programlisting">gint32              gimp_vectors_new_from_text_layer    (gint32 image_ID,
+                                                         gint32 layer_ID);</pre>
 <p>
-Import paths from an SVG file.
+Creates a new vectors object from a text layer.
 </p>
 <p>
-This procedure imports paths from an SVG file. SVG elements other
-than paths and basic shapes are ignored.</p>
+Creates a new vectors object from a text layer. The vectors object
+needs to be added to the image using <a class="link" href="libgimp-gimpimage.html#gimp-image-add-vectors" title="gimp_image_add_vectors ()"><code class="function">gimp_image_add_vectors()</code></a>.</p>
 <p>
 
 </p>
@@ -260,58 +265,31 @@ than paths and basic shapes are ignored.</p>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
-<td> The name of the SVG file to import.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>merge</code></em> :</span></p></td>
-<td> Merge paths into a single vectors object.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>scale</code></em> :</span></p></td>
-<td> Scale the SVG to image dimensions.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>num_vectors</code></em> :</span></p></td>
-<td> The number of newly created vectors.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>vectors_ids</code></em> :</span></p></td>
-<td> The list of newly created vectors.
+<td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
+<td> The text layer.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE on success.
+<td> The vectors of the text layer.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
+<p class="since">Since  GIMP 2.6
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="gimp-vectors-import-from-string"></a><h3>gimp_vectors_import_from_string ()</h3>
-<pre class="programlisting">gboolean            gimp_vectors_import_from_string     (gint32 image_ID,
-                                                         const gchar *string,
-                                                         gint length,
-                                                         gboolean merge,
-                                                         gboolean scale,
-                                                         gint *num_vectors,
-                                                         gint32 **vectors_ids);</pre>
+<a name="gimp-vectors-copy"></a><h3>gimp_vectors_copy ()</h3>
+<pre class="programlisting">gint32              gimp_vectors_copy                   (gint32 vectors_ID);</pre>
 <p>
-Import paths from an SVG string.
+Copy a vectors object.
 </p>
 <p>
-This procedure works like <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-import-from-file" title="gimp_vectors_import_from_file ()"><code class="function">gimp_vectors_import_from_file()</code></a> but takes
-a string rather than reading the SVG from a file. This allows you to
-write scripts that generate SVG and feed it to GIMP.</p>
+This procedure copies the specified vectors object and returns the
+copy.</p>
 <p>
 
 </p>
@@ -319,49 +297,19 @@ write scripts that generate SVG and feed it to GIMP.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
-<td> The image.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>string</code></em> :</span></p></td>
-<td> A string that must be a complete and valid SVG document.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>length</code></em> :</span></p></td>
-<td> Number of bytes in string or -1 if the string is NULL terminated.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>merge</code></em> :</span></p></td>
-<td> Merge paths into a single vectors object.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>scale</code></em> :</span></p></td>
-<td> Scale the SVG to image dimensions.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>num_vectors</code></em> :</span></p></td>
-<td> The number of newly created vectors.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>vectors_ids</code></em> :</span></p></td>
-<td> The list of newly created vectors.
+<td><p><span class="term"><em class="parameter"><code>vectors_ID</code></em> :</span></p></td>
+<td> The vectors object to copy.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE on success.
+<td> The newly copied vectors object.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
+<p class="since">Since  GIMP 2.6
 </p>
 </div>
 <hr>
@@ -825,6 +773,223 @@ selection of the image the vectors object belongs to.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>feather_radius_y</code></em> :</span></p></td>
 <td> Feather radius y.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-vectors-export-to-file"></a><h3>gimp_vectors_export_to_file ()</h3>
+<pre class="programlisting">gboolean            gimp_vectors_export_to_file         (gint32 image_ID,
+                                                         const gchar *filename,
+                                                         gint32 vectors_ID);</pre>
+<p>
+save a path as an SVG file.
+</p>
+<p>
+This procedure creates an SVG file to save a Vectors object, that
+is, a path. The resulting file can be edited using a vector graphics
+application, or later reloaded into GIMP. If you pass 0 as the
+'vectors' argument, then all paths in the image will be exported.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
+<td> The name of the SVG file to create.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vectors_ID</code></em> :</span></p></td>
+<td> The vectors object to be saved, or 0 for all in the image.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-vectors-export-to-string"></a><h3>gimp_vectors_export_to_string ()</h3>
+<pre class="programlisting">gchar*              gimp_vectors_export_to_string       (gint32 image_ID,
+                                                         gint32 vectors_ID);</pre>
+<p>
+Save a path as an SVG string.
+</p>
+<p>
+This procedure works like <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-export-to-file" title="gimp_vectors_export_to_file ()"><code class="function">gimp_vectors_export_to_file()</code></a> but creates
+a string rather than a file. The contents are a <code class="literal">NUL</code>-terminated
+string that holds a complete XML document. If you pass 0 as the
+'vectors' argument, then all paths in the image will be exported.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vectors_ID</code></em> :</span></p></td>
+<td> The vectors object to save, or 0 for all in the image.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A string whose contents are a complete SVG document.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-vectors-import-from-file"></a><h3>gimp_vectors_import_from_file ()</h3>
+<pre class="programlisting">gboolean            gimp_vectors_import_from_file       (gint32 image_ID,
+                                                         const gchar *filename,
+                                                         gboolean merge,
+                                                         gboolean scale,
+                                                         gint *num_vectors,
+                                                         gint32 **vectors_ids);</pre>
+<p>
+Import paths from an SVG file.
+</p>
+<p>
+This procedure imports paths from an SVG file. SVG elements other
+than paths and basic shapes are ignored.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
+<td> The name of the SVG file to import.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>merge</code></em> :</span></p></td>
+<td> Merge paths into a single vectors object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>scale</code></em> :</span></p></td>
+<td> Scale the SVG to image dimensions.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>num_vectors</code></em> :</span></p></td>
+<td> The number of newly created vectors.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vectors_ids</code></em> :</span></p></td>
+<td> The list of newly created vectors.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-vectors-import-from-string"></a><h3>gimp_vectors_import_from_string ()</h3>
+<pre class="programlisting">gboolean            gimp_vectors_import_from_string     (gint32 image_ID,
+                                                         const gchar *string,
+                                                         gint length,
+                                                         gboolean merge,
+                                                         gboolean scale,
+                                                         gint *num_vectors,
+                                                         gint32 **vectors_ids);</pre>
+<p>
+Import paths from an SVG string.
+</p>
+<p>
+This procedure works like <a class="link" href="libgimp-gimpvectors.html#gimp-vectors-import-from-file" title="gimp_vectors_import_from_file ()"><code class="function">gimp_vectors_import_from_file()</code></a> but takes
+a string rather than reading the SVG from a file. This allows you to
+write scripts that generate SVG and feed it to GIMP.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>string</code></em> :</span></p></td>
+<td> A string that must be a complete and valid SVG document.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>length</code></em> :</span></p></td>
+<td> Number of bytes in string or -1 if the string is NULL terminated.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>merge</code></em> :</span></p></td>
+<td> Merge paths into a single vectors object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>scale</code></em> :</span></p></td>
+<td> Scale the SVG to image dimensions.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>num_vectors</code></em> :</span></p></td>
+<td> The number of newly created vectors.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vectors_ids</code></em> :</span></p></td>
+<td> The list of newly created vectors.
 </td>
 </tr>
 <tr>

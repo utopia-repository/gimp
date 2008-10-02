@@ -1,6 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
 AM_CPPFLAGS = \
+        -DISO_CODES_LOCATION=\"$(ISO_CODES_LOCATION)\"		\
+        -DISO_CODES_LOCALEDIR=\"$(ISO_CODES_LOCALEDIR)\"	\
 	-DG_LOG_DOMAIN=\"Gimp-Widgets\"
 
 INCLUDES = \
@@ -9,8 +11,6 @@ INCLUDES = \
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GTK_CFLAGS)		\
-	$(PANGOFT2_CFLAGS)	\
-	$(DBUS_GLIB_CFLAGS)	\
 	-I$(includedir)
 
 noinst_LIBRARIES = libappwidgets.a
@@ -20,6 +20,8 @@ libappwidgets_a_sources = \
 	widgets-types.h			\
 	gimpaction.c			\
 	gimpaction.h			\
+	gimpactioneditor.c		\
+	gimpactioneditor.h		\
 	gimpactionfactory.c		\
 	gimpactionfactory.h		\
 	gimpactiongroup.c		\
@@ -36,6 +38,8 @@ libappwidgets_a_sources = \
 	gimpbrushselect.h		\
 	gimpbufferview.c		\
 	gimpbufferview.h		\
+	gimpcairo-wilber.c		\
+	gimpcairo-wilber.h		\
 	gimpcellrendererdashes.c	\
 	gimpcellrendererdashes.h	\
 	gimpcellrendererviewable.c	\
@@ -98,14 +102,14 @@ libappwidgets_a_sources = \
 	gimpcursor.h			\
 	gimpcursorview.c		\
 	gimpcursorview.h		\
+	gimpcurveview.c			\
+	gimpcurveview.h			\
 	gimpdasheditor.c		\
 	gimpdasheditor.h		\
 	gimpdataeditor.c		\
 	gimpdataeditor.h		\
 	gimpdatafactoryview.c		\
 	gimpdatafactoryview.h		\
-	gimpdbusservice.c		\
-	gimpdbusservice.h		\
 	gimpdeviceinfo.c		\
 	gimpdeviceinfo.h		\
 	gimpdevices.c			\
@@ -158,6 +162,8 @@ libappwidgets_a_sources = \
 	gimpgradientselect.h		\
 	gimpgrideditor.c		\
 	gimpgrideditor.h		\
+	gimphandlebar.c			\
+	gimphandlebar.h			\
 	gimphelp.c			\
 	gimphelp.h			\
 	gimphelp-ids.h			\
@@ -183,6 +189,12 @@ libappwidgets_a_sources = \
 	gimpimageview.h			\
 	gimpitemtreeview.c		\
 	gimpitemtreeview.h		\
+	gimplanguageentry.c		\
+	gimplanguageentry.h		\
+	gimplanguagestore.c		\
+	gimplanguagestore.h		\
+	gimplanguagestore-parser.c	\
+	gimplanguagestore-parser.h	\
 	gimplayertreeview.c		\
 	gimplayertreeview.h		\
 	gimpmenudock.c			\
@@ -219,10 +231,14 @@ libappwidgets_a_sources = \
 	gimpprogressdialog.h		\
 	gimppropwidgets.c		\
 	gimppropwidgets.h		\
+	gimpradioaction.c		\
+	gimpradioaction.h		\
 	gimprender.c			\
 	gimprender.h			\
 	gimpsamplepointeditor.c		\
 	gimpsamplepointeditor.h		\
+	gimpscalebutton.c		\
+	gimpscalebutton.h		\
 	gimpselectiondata.c		\
 	gimpselectiondata.h		\
 	gimpselectioneditor.c		\
@@ -237,6 +253,10 @@ libappwidgets_a_sources = \
 	gimpsessioninfo-dock.h		\
 	gimpsessioninfo-dockable.c	\
 	gimpsessioninfo-dockable.h	\
+	gimpsettingsbox.c		\
+	gimpsettingsbox.h		\
+	gimpsettingseditor.c		\
+	gimpsettingseditor.h		\
 	gimpsizebox.c			\
 	gimpsizebox.h			\
 	gimpstringaction.c		\
@@ -251,6 +271,8 @@ libappwidgets_a_sources = \
 	gimptexteditor.h		\
 	gimpthumbbox.c			\
 	gimpthumbbox.h			\
+	gimptoggleaction.c		\
+	gimptoggleaction.h		\
 	gimptoolbox.c			\
 	gimptoolbox.h			\
 	gimptoolbox-color-area.c	\
@@ -315,6 +337,10 @@ libappwidgets_a_sources = \
 	gimpwidgets-constructors.h	\
 	gimpwidgets-utils.c		\
 	gimpwidgets-utils.h		\
+	gimpwindow.c			\
+	gimpwindow.h			\
+	gtkscalebutton.c		\
+	gtkscalebutton.h		\
 	gtkwrapbox.c			\
 	gtkwrapbox.h			\
 	gtkhwrapbox.c			\
@@ -322,29 +348,20 @@ libappwidgets_a_sources = \
 	gtkvwrapbox.c			\
 	gtkvwrapbox.h
 
-libappwidgets_a_built_sources = gimpdbusservice-glue.h widgets-enums.c
+libappwidgets_a_built_sources = widgets-enums.c
 
 libappwidgets_a_SOURCES = \
 	$(libappwidgets_a_built_sources) $(libappwidgets_a_sources)
 
-EXTRA_DIST = \
-	dbus-service.xml	\
-	makefile.msc
+EXTRA_DIST = makefile.msc
 
 
 #
 # rules to generate built sources
 #
 # setup autogeneration dependencies
-gen_sources = xgen-wec gimpdbusservice-glue.h
+gen_sources = xgen-wec
 CLEANFILES = $(gen_sources)
-
-
-$(srcdir)/gimpdbusservice.c: gimpdbusservice-glue.h
-
-gimpdbusservice-glue.h: $(srcdir)/dbus-service.xml
-	$(DBUS_BINDING_TOOL) --mode=glib-server --prefix=gimp $< > $(@F)
-
 
 widgets-enums.c: $(srcdir)/widgets-enums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \

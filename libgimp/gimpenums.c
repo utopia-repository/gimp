@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include <glib-object.h>
+#undef GIMP_DISABLE_DEPRECATED
 #include "libgimpbase/gimpbase.h"
 #include "gimpenums.h"
 
@@ -674,6 +675,7 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_offset_type_get_type,
   gimp_orientation_type_get_type,
   gimp_pdb_arg_type_get_type,
+  gimp_pdb_error_handler_get_type,
   gimp_pdb_proc_type_get_type,
   gimp_pdb_status_type_get_type,
   gimp_paint_application_mode_get_type,
@@ -684,6 +686,8 @@ static const GimpGetTypeFunc get_type_funcs[] =
   gimp_select_criterion_get_type,
   gimp_size_type_get_type,
   gimp_stack_trace_mode_get_type,
+  gimp_text_direction_get_type,
+  gimp_text_justification_get_type,
   gimp_transfer_mode_get_type,
   gimp_transform_direction_get_type,
   gimp_transform_resize_get_type,
@@ -726,6 +730,7 @@ static const gchar * const type_names[] =
   "GimpOffsetType",
   "GimpOrientationType",
   "GimpPDBArgType",
+  "GimpPDBErrorHandler",
   "GimpPDBProcType",
   "GimpPDBStatusType",
   "GimpPaintApplicationMode",
@@ -736,6 +741,8 @@ static const gchar * const type_names[] =
   "GimpSelectCriterion",
   "GimpSizeType",
   "GimpStackTraceMode",
+  "GimpTextDirection",
+  "GimpTextJustification",
   "GimpTransferMode",
   "GimpTransformDirection",
   "GimpTransformResize",

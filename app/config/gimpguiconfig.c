@@ -34,13 +34,18 @@
 #include "gimp-intl.h"
 
 
-#define DEFAULT_GIMP_HELP_BROWSER  GIMP_HELP_BROWSER_GIMP
-#define DEFAULT_THEME              "Default"
+#define DEFAULT_HELP_BROWSER   GIMP_HELP_BROWSER_GIMP
+#define DEFAULT_THEME          "Default"
+
+#define DEFAULT_USER_MANUAL_ONLINE_URI \
+  "http://docs.gimp.org/" GIMP_APP_VERSION_STRING
 
 #ifdef G_OS_WIN32
-#  define DEFAULT_WEB_BROWSER      "not used on Windows"
+#  define DEFAULT_WEB_BROWSER  "not used on Windows"
+#elif HAVE_CARBON
+#  define DEFAULT_WEB_BROWSER  "open %s"
 #else
-#  define DEFAULT_WEB_BROWSER      "firefox %s"
+#  define DEFAULT_WEB_BROWSER  "firefox %s"
 #endif
 
 
@@ -54,7 +59,6 @@ enum
   PROP_SAVE_SESSION_INFO,
   PROP_RESTORE_SESSION,
   PROP_SAVE_TOOL_OPTIONS,
-  PROP_SHOW_TIPS,
   PROP_SHOW_TOOLTIPS,
   PROP_TEAROFF_MENUS,
   PROP_CAN_CHANGE_ACCELS,
@@ -66,6 +70,7 @@ enum
   PROP_TOOLBOX_COLOR_AREA,
   PROP_TOOLBOX_FOO_AREA,
   PROP_TOOLBOX_IMAGE_AREA,
+  PROP_TOOLBOX_WILBER,
   PROP_THEME_PATH,
   PROP_THEME,
   PROP_USE_HELP,
@@ -73,6 +78,8 @@ enum
   PROP_HELP_LOCALES,
   PROP_HELP_BROWSER,
   PROP_WEB_BROWSER,
+  PROP_USER_MANUAL_ONLINE,
+  PROP_USER_MANUAL_ONLINE_URI,
   PROP_TOOLBOX_WINDOW_HINT,
   PROP_DOCK_WINDOW_HINT,
   PROP_TRANSIENT_DOCKS,
@@ -80,7 +87,8 @@ enum
 
   /* ignored, only for backward compatibility: */
   PROP_INFO_WINDOW_PER_DISPLAY,
-  PROP_SHOW_TOOL_TIPS
+  PROP_SHOW_TOOL_TIPS,
+  PROP_SHOW_TIPS
 };
 
 
@@ -122,7 +130,7 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRUST_DIRTY_FLAG,
                                     "trust-dirty-flag",
                                     TRUST_DIRTY_FLAG_BLURB,
-                                    FALSE,
+                                    TRUE,
                                     GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAVE_DEVICE_STATUS,
                                     "save-device-status",
@@ -143,14 +151,11 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                     SAVE_TOOL_OPTIONS_BLURB,
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
-  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TIPS,
-                                    "show-tips", SHOW_TIPS_BLURB,
-                                    TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TOOLTIPS,
                                     "show-tooltips", SHOW_TOOLTIPS_BLURB,
                                     TRUE,
-                                    GIMP_PARAM_STATIC_STRINGS);
+                                    GIMP_PARAM_STATIC_STRINGS |
+                                    GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TEAROFF_MENUS,
                                     "tearoff-menus", TEAROFF_MENUS_BLURB,
                                     TRUE,
@@ -197,6 +202,11 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                     TOOLBOX_IMAGE_AREA_BLURB,
                                     FALSE,
                                     GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TOOLBOX_WILBER,
+                                    "toolbox-wilber",
+                                    TOOLBOX_WILBER_BLURB,
+                                    TRUE,
+                                    GIMP_PARAM_STATIC_STRINGS);
   path = gimp_config_build_data_path ("themes");
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_THEME_PATH,
                                  "theme-path", THEME_PATH_BLURB,
@@ -223,25 +233,35 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_HELP_BROWSER,
                                  "help-browser", HELP_BROWSER_BLURB,
                                  GIMP_TYPE_HELP_BROWSER_TYPE,
-                                 DEFAULT_GIMP_HELP_BROWSER,
+                                 DEFAULT_HELP_BROWSER,
                                  GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_PATH (object_class, PROP_WEB_BROWSER,
                                  "web-browser", WEB_BROWSER_BLURB,
                                  GIMP_CONFIG_PATH_FILE,
                                  DEFAULT_WEB_BROWSER,
                                  GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USER_MANUAL_ONLINE,
+                                    "user-manual-online",
+                                    USER_MANUAL_ONLINE_BLURB,
+                                    FALSE,
+                                    GIMP_PARAM_STATIC_STRINGS);
+  GIMP_CONFIG_INSTALL_PROP_STRING (object_class, PROP_USER_MANUAL_ONLINE_URI,
+                                   "user-manual-online-uri",
+                                   USER_MANUAL_ONLINE_URI_BLURB,
+                                   DEFAULT_USER_MANUAL_ONLINE_URI,
+                                   GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_TOOLBOX_WINDOW_HINT,
                                  "toolbox-window-hint",
                                  TOOLBOX_WINDOW_HINT_BLURB,
                                  GIMP_TYPE_WINDOW_HINT,
-                                 GIMP_WINDOW_HINT_NORMAL,
+                                 GIMP_WINDOW_HINT_UTILITY,
                                  GIMP_PARAM_STATIC_STRINGS |
                                  GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_ENUM (object_class, PROP_DOCK_WINDOW_HINT,
                                  "dock-window-hint",
                                  DOCK_WINDOW_HINT_BLURB,
                                  GIMP_TYPE_WINDOW_HINT,
-                                 GIMP_WINDOW_HINT_NORMAL,
+                                 GIMP_WINDOW_HINT_UTILITY,
                                  GIMP_PARAM_STATIC_STRINGS |
                                  GIMP_CONFIG_PARAM_RESTART);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_TRANSIENT_DOCKS,
@@ -263,7 +283,12 @@ gimp_gui_config_class_init (GimpGuiConfigClass *klass)
                                     GIMP_CONFIG_PARAM_IGNORE);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TOOL_TIPS,
                                     "show-tool-tips", NULL,
-                                    TRUE,
+                                    FALSE,
+                                    GIMP_PARAM_STATIC_STRINGS |
+                                    GIMP_CONFIG_PARAM_IGNORE);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SHOW_TIPS,
+                                    "show-tips", NULL,
+                                    FALSE,
                                     GIMP_PARAM_STATIC_STRINGS |
                                     GIMP_CONFIG_PARAM_IGNORE);
 }
@@ -282,6 +307,7 @@ gimp_gui_config_finalize (GObject *object)
   g_free (gui_config->theme);
   g_free (gui_config->help_locales);
   g_free (gui_config->web_browser);
+  g_free (gui_config->user_manual_online_uri);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -317,9 +343,6 @@ gimp_gui_config_set_property (GObject      *object,
     case PROP_SAVE_TOOL_OPTIONS:
       gui_config->save_tool_options = g_value_get_boolean (value);
       break;
-    case PROP_SHOW_TIPS:
-      gui_config->show_tips = g_value_get_boolean (value);
-      break;
     case PROP_SHOW_TOOLTIPS:
       gui_config->show_tooltips = g_value_get_boolean (value);
       break;
@@ -353,7 +376,10 @@ gimp_gui_config_set_property (GObject      *object,
     case PROP_TOOLBOX_IMAGE_AREA:
       gui_config->toolbox_image_area = g_value_get_boolean (value);
       break;
-    case PROP_THEME_PATH:
+    case PROP_TOOLBOX_WILBER:
+      gui_config->toolbox_wilber = g_value_get_boolean (value);
+      break;
+     case PROP_THEME_PATH:
       g_free (gui_config->theme_path);
       gui_config->theme_path = g_value_dup_string (value);
       break;
@@ -378,6 +404,13 @@ gimp_gui_config_set_property (GObject      *object,
       g_free (gui_config->web_browser);
       gui_config->web_browser = g_value_dup_string (value);
       break;
+    case PROP_USER_MANUAL_ONLINE:
+      gui_config->user_manual_online = g_value_get_boolean (value);
+      break;
+    case PROP_USER_MANUAL_ONLINE_URI:
+      g_free (gui_config->user_manual_online_uri);
+      gui_config->user_manual_online_uri = g_value_dup_string (value);
+      break;
     case PROP_TOOLBOX_WINDOW_HINT:
       gui_config->toolbox_window_hint = g_value_get_enum (value);
       break;
@@ -393,6 +426,7 @@ gimp_gui_config_set_property (GObject      *object,
 
     case PROP_INFO_WINDOW_PER_DISPLAY:
     case PROP_SHOW_TOOL_TIPS:
+    case PROP_SHOW_TIPS:
       /* ignored */
       break;
 
@@ -433,9 +467,6 @@ gimp_gui_config_get_property (GObject    *object,
     case PROP_SAVE_TOOL_OPTIONS:
       g_value_set_boolean (value, gui_config->save_tool_options);
       break;
-    case PROP_SHOW_TIPS:
-      g_value_set_boolean (value, gui_config->show_tips);
-      break;
     case PROP_SHOW_TOOLTIPS:
       g_value_set_boolean (value, gui_config->show_tooltips);
       break;
@@ -469,6 +500,9 @@ gimp_gui_config_get_property (GObject    *object,
     case PROP_TOOLBOX_IMAGE_AREA:
       g_value_set_boolean (value, gui_config->toolbox_image_area);
       break;
+    case PROP_TOOLBOX_WILBER:
+      g_value_set_boolean (value, gui_config->toolbox_wilber);
+      break;
     case PROP_THEME_PATH:
       g_value_set_string (value, gui_config->theme_path);
       break;
@@ -490,6 +524,12 @@ gimp_gui_config_get_property (GObject    *object,
     case PROP_WEB_BROWSER:
       g_value_set_string (value, gui_config->web_browser);
       break;
+    case PROP_USER_MANUAL_ONLINE:
+      g_value_set_boolean (value, gui_config->user_manual_online);
+      break;
+    case PROP_USER_MANUAL_ONLINE_URI:
+      g_value_set_string (value, gui_config->user_manual_online_uri);
+      break;
     case PROP_TOOLBOX_WINDOW_HINT:
       g_value_set_enum (value, gui_config->toolbox_window_hint);
       break;
@@ -505,6 +545,7 @@ gimp_gui_config_get_property (GObject    *object,
 
     case PROP_INFO_WINDOW_PER_DISPLAY:
     case PROP_SHOW_TOOL_TIPS:
+    case PROP_SHOW_TIPS:
       /* ignored */
       break;
 

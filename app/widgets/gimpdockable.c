@@ -21,6 +21,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -36,12 +38,27 @@
 #include "gimpdockbook.h"
 #include "gimpdocked.h"
 #include "gimphelp-ids.h"
+#include "gimpsessioninfo-aux.h"
 #include "gimpuimanager.h"
 #include "gimpwidgets-utils.h"
 
 #include "gimp-intl.h"
 
 
+enum
+{
+  PROP_0,
+  PROP_LOCKED
+};
+
+static void       gimp_dockable_set_property      (GObject        *object,
+                                                   guint           property_id,
+                                                   const GValue   *value,
+                                                   GParamSpec     *pspec);
+static void       gimp_dockable_get_property      (GObject        *object,
+                                                   guint           property_id,
+                                                   GValue         *value,
+                                                   GParamSpec     *pspec);
 static void       gimp_dockable_destroy           (GtkObject      *object);
 static void       gimp_dockable_size_request      (GtkWidget      *widget,
                                                    GtkRequisition *requisition);
@@ -72,9 +89,11 @@ static void       gimp_dockable_remove            (GtkContainer   *container,
                                                    GtkWidget      *widget);
 static GType      gimp_dockable_child_type        (GtkContainer   *container);
 static void       gimp_dockable_forall            (GtkContainer   *container,
-                                                   gboolean       include_internals,
+                                                   gboolean        include_internals,
                                                    GtkCallback     callback,
                                                    gpointer        callback_data);
+
+static void       gimp_dockable_cursor_setup      (GimpDockable   *dockable);
 
 static void       gimp_dockable_get_title_area    (GimpDockable   *dockable,
                                                    GdkRectangle   *area);
@@ -100,11 +119,15 @@ static const GtkTargetEntry dialog_target_table[] = { GIMP_TARGET_DIALOG };
 static void
 gimp_dockable_class_init (GimpDockableClass *klass)
 {
-  GtkObjectClass    *object_class    = GTK_OBJECT_CLASS (klass);
-  GtkWidgetClass    *widget_class    = GTK_WIDGET_CLASS (klass);
-  GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
+  GObjectClass      *object_class     = G_OBJECT_CLASS (klass);
+  GtkObjectClass    *gtk_object_class = GTK_OBJECT_CLASS (klass);
+  GtkWidgetClass    *widget_class     = GTK_WIDGET_CLASS (klass);
+  GtkContainerClass *container_class  = GTK_CONTAINER_CLASS (klass);
 
-  object_class->destroy       = gimp_dockable_destroy;
+  object_class->set_property  = gimp_dockable_set_property;
+  object_class->get_property  = gimp_dockable_get_property;
+
+  gtk_object_class->destroy   = gimp_dockable_destroy;
 
   widget_class->size_request  = gimp_dockable_size_request;
   widget_class->size_allocate = gimp_dockable_size_allocate;
@@ -121,6 +144,11 @@ gimp_dockable_class_init (GimpDockableClass *klass)
   container_class->remove     = gimp_dockable_remove;
   container_class->child_type = gimp_dockable_child_type;
   container_class->forall     = gimp_dockable_forall;
+
+  g_object_class_install_property (object_class, PROP_LOCKED,
+                                   g_param_spec_boolean ("locked", NULL, NULL,
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
 
   gtk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("content-border",
@@ -175,7 +203,7 @@ gimp_dockable_init (GimpDockable *dockable)
                      dialog_target_table, G_N_ELEMENTS (dialog_target_table),
                      GDK_ACTION_MOVE);
 
-  /*  Filter out all button_press events not coming from the event window
+  /*  Filter out all button-press events not coming from the event window
       over the title area.  This keeps events that originate from widgets
       in the dockable to start a drag.
    */
@@ -185,6 +213,44 @@ gimp_dockable_init (GimpDockable *dockable)
   g_signal_connect (dockable, "button-release-event",
                     G_CALLBACK (gimp_dockable_button_release),
                     NULL);
+}
+
+static void
+gimp_dockable_set_property (GObject      *object,
+                            guint         property_id,
+                            const GValue *value,
+                            GParamSpec   *pspec)
+{
+  GimpDockable *dockable = GIMP_DOCKABLE (object);
+
+  switch (property_id)
+    {
+    case PROP_LOCKED:
+      gimp_dockable_set_locked (dockable, g_value_get_boolean (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_dockable_get_property (GObject    *object,
+                            guint       property_id,
+                            GValue     *value,
+                            GParamSpec *pspec)
+{
+  GimpDockable *dockable = GIMP_DOCKABLE (object);
+
+  switch (property_id)
+    {
+    case PROP_LOCKED:
+      g_value_set_boolean (value, dockable->locked);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -243,26 +309,29 @@ gimp_dockable_size_request (GtkWidget      *widget,
                             GtkRequisition *requisition)
 {
   GtkContainer   *container = GTK_CONTAINER (widget);
-  GtkBin         *bin       = GTK_BIN (widget);
   GimpDockable   *dockable  = GIMP_DOCKABLE (widget);
+  GtkWidget      *child     = gtk_bin_get_child (GTK_BIN (widget));
   GtkRequisition  child_requisition;
+  gint            border_width;
 
-  requisition->width  = container->border_width * 2;
-  requisition->height = container->border_width * 2;
+  border_width = gtk_container_get_border_width (container);
+
+  requisition->width  = border_width * 2;
+  requisition->height = border_width * 2;
 
   if (dockable->menu_button && GTK_WIDGET_VISIBLE (dockable->menu_button))
     {
       gtk_widget_size_request (dockable->menu_button, &child_requisition);
 
-      if (! bin->child)
+      if (! child)
         requisition->width += child_requisition.width;
 
       requisition->height += child_requisition.height;
     }
 
-  if (bin->child && GTK_WIDGET_VISIBLE (bin->child))
+  if (child && GTK_WIDGET_VISIBLE (child))
     {
-      gtk_widget_size_request (bin->child, &child_requisition);
+      gtk_widget_size_request (child, &child_requisition);
 
       requisition->width  += child_requisition.width;
       requisition->height += child_requisition.height;
@@ -274,13 +343,16 @@ gimp_dockable_size_allocate (GtkWidget     *widget,
                              GtkAllocation *allocation)
 {
   GtkContainer   *container = GTK_CONTAINER (widget);
-  GtkBin         *bin       = GTK_BIN (widget);
   GimpDockable   *dockable  = GIMP_DOCKABLE (widget);
+  GtkWidget      *child     = gtk_bin_get_child (GTK_BIN (widget));
 
   GtkRequisition  button_requisition = { 0, };
   GtkAllocation   child_allocation;
+  gint            border_width;
 
   widget->allocation = *allocation;
+
+  border_width = gtk_container_get_border_width (container);
 
   if (dockable->menu_button && GTK_WIDGET_VISIBLE (dockable->menu_button))
     {
@@ -289,33 +361,33 @@ gimp_dockable_size_allocate (GtkWidget     *widget,
       if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
         child_allocation.x    = (allocation->x +
                                  allocation->width -
-                                 container->border_width -
+                                 border_width -
                                  button_requisition.width);
       else
-        child_allocation.x    = allocation->x + container->border_width;
+        child_allocation.x    = allocation->x + border_width;
 
-      child_allocation.y      = allocation->y + container->border_width;
+      child_allocation.y      = allocation->y + border_width;
       child_allocation.width  = button_requisition.width;
       child_allocation.height = button_requisition.height;
 
       gtk_widget_size_allocate (dockable->menu_button, &child_allocation);
     }
 
-  if (bin->child && GTK_WIDGET_VISIBLE (bin->child))
+  if (child && GTK_WIDGET_VISIBLE (child))
     {
-      child_allocation.x      = allocation->x + container->border_width;
-      child_allocation.y      = allocation->y + container->border_width;
+      child_allocation.x      = allocation->x + border_width;
+      child_allocation.y      = allocation->y + border_width;
       child_allocation.width  = MAX (allocation->width  -
-                                     container->border_width * 2,
+                                     border_width * 2,
                                      0);
       child_allocation.height = MAX (allocation->height -
-                                     container->border_width * 2 -
+                                     border_width * 2 -
                                      button_requisition.height,
                                      0);
 
       child_allocation.y += button_requisition.height;
 
-      gtk_widget_size_allocate (bin->child, &child_allocation);
+      gtk_widget_size_allocate (child, &child_allocation);
     }
 
   if (dockable->title_window)
@@ -344,7 +416,6 @@ gimp_dockable_realize (GtkWidget *widget)
     {
       GdkWindowAttr  attributes;
       GdkRectangle   area;
-      GdkCursor     *cursor;
 
       gimp_dockable_get_title_area (dockable, &area);
 
@@ -367,12 +438,9 @@ gimp_dockable_realize (GtkWidget *widget)
                                                 GDK_WA_NOREDIR));
 
       gdk_window_set_user_data (dockable->title_window, widget);
-
-      cursor = gdk_cursor_new_for_display (gtk_widget_get_display (widget),
-                                           GDK_HAND2);
-      gdk_window_set_cursor (dockable->title_window, cursor);
-      gdk_cursor_unref (cursor);
     }
+
+  gimp_dockable_cursor_setup (dockable);
 }
 
 static void
@@ -430,6 +498,8 @@ gimp_dockable_style_set (GtkWidget *widget,
   GimpDockable *dockable = GIMP_DOCKABLE (widget);
   gint          content_border;
 
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+
   gtk_widget_style_get (widget,
                         "content-border", &content_border,
                         NULL);
@@ -441,9 +511,6 @@ gimp_dockable_style_set (GtkWidget *widget,
       g_object_unref (dockable->title_layout);
       dockable->title_layout = NULL;
     }
-
-  if (GTK_WIDGET_CLASS (parent_class)->style_set)
-    GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 }
 
 static PangoLayout *
@@ -451,16 +518,18 @@ gimp_dockable_create_title_layout (GimpDockable *dockable,
                                    GtkWidget    *widget,
                                    gint          width)
 {
+  GtkWidget   *child = gtk_bin_get_child (GTK_BIN (dockable));
   PangoLayout *layout;
-  GtkBin      *bin  = GTK_BIN (dockable);
   gchar       *title = NULL;
 
-  if (bin->child)
-    title = gimp_docked_get_title (GIMP_DOCKED (bin->child));
+  if (child)
+    title = gimp_docked_get_title (GIMP_DOCKED (child));
 
   layout = gtk_widget_create_pango_layout (widget,
                                            title ? title : dockable->blurb);
   g_free (title);
+
+  gimp_pango_layout_set_weight (layout, PANGO_WEIGHT_SEMIBOLD);
 
   if (width > 0)
     {
@@ -478,6 +547,7 @@ gimp_dockable_expose_event (GtkWidget      *widget,
   if (GTK_WIDGET_DRAWABLE (widget))
     {
       GimpDockable *dockable = GIMP_DOCKABLE (widget);
+      GtkStyle     *style    = gtk_widget_get_style (widget);
       GdkRectangle  title_area;
       GdkRectangle  expose_area;
 
@@ -492,7 +562,7 @@ gimp_dockable_expose_event (GtkWidget      *widget,
 
           if (dockable->blink_counter & 1)
             {
-              gtk_paint_box (widget->style, widget->window,
+              gtk_paint_box (style, widget->window,
                              GTK_STATE_SELECTED, GTK_SHADOW_NONE,
                              &expose_area, widget, "",
                              title_area.x, title_area.y,
@@ -520,7 +590,7 @@ gimp_dockable_expose_event (GtkWidget      *widget,
 
           text_y = title_area.y + (title_area.height - layout_height) / 2;
 
-          gtk_paint_layout (widget->style, widget->window,
+          gtk_paint_layout (style, widget->window,
                             (dockable->blink_counter & 1) ?
                             GTK_STATE_SELECTED : widget->state, TRUE,
                             &expose_area, widget, NULL,
@@ -568,7 +638,7 @@ gimp_dockable_add (GtkContainer *container,
 {
   GimpDockable *dockable;
 
-  g_return_if_fail (GTK_BIN (container)->child == NULL);
+  g_return_if_fail (gtk_bin_get_child (GTK_BIN (container)) == NULL);
 
   GTK_CONTAINER_CLASS (parent_class)->add (container, widget);
 
@@ -585,7 +655,7 @@ static void
 gimp_dockable_remove (GtkContainer *container,
                       GtkWidget    *widget)
 {
-  g_return_if_fail (GTK_BIN (container)->child == widget);
+  g_return_if_fail (gtk_bin_get_child (GTK_BIN (container)) == widget);
 
   g_signal_handlers_disconnect_by_func (widget,
                                         gimp_dockable_title_changed,
@@ -597,7 +667,7 @@ gimp_dockable_remove (GtkContainer *container,
 static GType
 gimp_dockable_child_type (GtkContainer *container)
 {
-  if (GTK_BIN (container)->child)
+  if (gtk_bin_get_child (GTK_BIN (container)))
     return G_TYPE_NONE;
 
   return GIMP_TYPE_DOCKED;
@@ -621,6 +691,110 @@ gimp_dockable_forall (GtkContainer *container,
                                               callback, callback_data);
 }
 
+static GtkWidget *
+gimp_dockable_get_icon (GimpDockable *dockable,
+                        GtkIconSize   size)
+{
+  GdkScreen    *screen = gtk_widget_get_screen (GTK_WIDGET (dockable));
+  GtkIconTheme *theme  = gtk_icon_theme_get_for_screen (screen);
+
+  if (gtk_icon_theme_has_icon (theme, dockable->stock_id))
+    {
+      return gtk_image_new_from_icon_name (dockable->stock_id, size);
+    }
+
+  return  gtk_image_new_from_stock (dockable->stock_id, size);
+}
+
+static GtkWidget *
+gimp_dockable_get_tab_widget_internal (GimpDockable *dockable,
+                                       GimpContext  *context,
+                                       GimpTabStyle  tab_style,
+                                       GtkIconSize   size,
+                                       gboolean      dnd)
+{
+  GtkWidget *tab_widget = NULL;
+  GtkWidget *label      = NULL;
+  GtkWidget *icon       = NULL;
+
+  switch (tab_style)
+    {
+    case GIMP_TAB_STYLE_NAME:
+    case GIMP_TAB_STYLE_ICON_NAME:
+    case GIMP_TAB_STYLE_PREVIEW_NAME:
+      label = gtk_label_new (dockable->name);
+      break;
+
+    case GIMP_TAB_STYLE_BLURB:
+    case GIMP_TAB_STYLE_ICON_BLURB:
+    case GIMP_TAB_STYLE_PREVIEW_BLURB:
+      label = gtk_label_new (dockable->blurb);
+      break;
+
+    default:
+      break;
+    }
+
+  switch (tab_style)
+    {
+    case GIMP_TAB_STYLE_ICON:
+    case GIMP_TAB_STYLE_ICON_NAME:
+    case GIMP_TAB_STYLE_ICON_BLURB:
+      icon = gimp_dockable_get_icon (dockable, size);
+      break;
+
+    case GIMP_TAB_STYLE_PREVIEW:
+    case GIMP_TAB_STYLE_PREVIEW_NAME:
+    case GIMP_TAB_STYLE_PREVIEW_BLURB:
+      {
+        GtkWidget *child = gtk_bin_get_child (GTK_BIN (dockable));
+
+        if (child)
+          icon = gimp_docked_get_preview (GIMP_DOCKED (child),
+                                          context, size);
+
+        if (! icon)
+          icon = gimp_dockable_get_icon (dockable, size);
+      }
+      break;
+
+    default:
+      break;
+    }
+
+  if (label && dnd)
+    gimp_label_set_attributes (GTK_LABEL (label),
+                               PANGO_ATTR_WEIGHT, PANGO_WEIGHT_SEMIBOLD,
+                               -1);
+
+  switch (tab_style)
+    {
+    case GIMP_TAB_STYLE_ICON:
+    case GIMP_TAB_STYLE_PREVIEW:
+      tab_widget = icon;
+      break;
+
+    case GIMP_TAB_STYLE_NAME:
+    case GIMP_TAB_STYLE_BLURB:
+      tab_widget = label;
+      break;
+
+    case GIMP_TAB_STYLE_ICON_NAME:
+    case GIMP_TAB_STYLE_ICON_BLURB:
+    case GIMP_TAB_STYLE_PREVIEW_NAME:
+    case GIMP_TAB_STYLE_PREVIEW_BLURB:
+      tab_widget = gtk_hbox_new (FALSE, dnd ? 6 : 2);
+
+      gtk_box_pack_start (GTK_BOX (tab_widget), icon, FALSE, FALSE, 0);
+      gtk_widget_show (icon);
+
+      gtk_box_pack_start (GTK_BOX (tab_widget), label, FALSE, FALSE, 0);
+      gtk_widget_show (label);
+      break;
+    }
+
+  return tab_widget;
+}
 
 /*  public functions  */
 
@@ -652,37 +826,73 @@ gimp_dockable_new (const gchar *name,
   return GTK_WIDGET (dockable);
 }
 
+
 void
 gimp_dockable_set_aux_info (GimpDockable *dockable,
                             GList        *aux_info)
 {
+  GtkWidget *child;
+
   g_return_if_fail (GIMP_IS_DOCKABLE (dockable));
 
-  if (GTK_BIN (dockable)->child)
-    gimp_docked_set_aux_info (GIMP_DOCKED (GTK_BIN (dockable)->child),
-                              aux_info);
+  child = gtk_bin_get_child (GTK_BIN (dockable));
+
+  if (child)
+    gimp_docked_set_aux_info (GIMP_DOCKED (child), aux_info);
 }
 
 GList *
 gimp_dockable_get_aux_info (GimpDockable *dockable)
 {
+  GtkWidget *child;
+
   g_return_val_if_fail (GIMP_IS_DOCKABLE (dockable), NULL);
 
+  child = gtk_bin_get_child (GTK_BIN (dockable));
 
-  if (GTK_BIN (dockable)->child)
-    return gimp_docked_get_aux_info (GIMP_DOCKED (GTK_BIN (dockable)->child));
+  if (child)
+    return gimp_docked_get_aux_info (GIMP_DOCKED (child));
 
   return NULL;
 }
+
+
+void
+gimp_dockable_set_locked (GimpDockable *dockable,
+                          gboolean      lock)
+{
+  g_return_if_fail (GIMP_IS_DOCKABLE (dockable));
+
+  if (dockable->locked != lock)
+    {
+      dockable->locked = lock ? TRUE : FALSE;
+
+      gimp_dockable_cursor_setup (dockable);
+
+      g_object_notify (G_OBJECT (dockable), "locked");
+    }
+}
+
+gboolean
+gimp_dockable_is_locked (GimpDockable *dockable)
+{
+  g_return_val_if_fail (GIMP_IS_DOCKABLE (dockable), FALSE);
+
+  return dockable->locked;
+}
+
 
 void
 gimp_dockable_set_tab_style (GimpDockable *dockable,
                              GimpTabStyle  tab_style)
 {
+  GtkWidget *child;
+
   g_return_if_fail (GIMP_IS_DOCKABLE (dockable));
 
-  if (GTK_BIN (dockable)->child &&
-      ! GIMP_DOCKED_GET_INTERFACE (GTK_BIN (dockable)->child)->get_preview)
+  child = gtk_bin_get_child (GTK_BIN (dockable));
+
+  if (child && ! GIMP_DOCKED_GET_INTERFACE (child)->get_preview)
     {
       switch (tab_style)
         {
@@ -712,81 +922,34 @@ gimp_dockable_get_tab_widget (GimpDockable *dockable,
                               GimpTabStyle  tab_style,
                               GtkIconSize   size)
 {
-  GtkWidget *tab_widget = NULL;
-  GtkWidget *label      = NULL;
-  GtkWidget *icon       = NULL;
-
   g_return_val_if_fail (GIMP_IS_DOCKABLE (dockable), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
 
-  switch (tab_style)
-    {
-    case GIMP_TAB_STYLE_NAME:
-    case GIMP_TAB_STYLE_ICON_NAME:
-    case GIMP_TAB_STYLE_PREVIEW_NAME:
-      label = gtk_label_new (dockable->name);
-      break;
+  return gimp_dockable_get_tab_widget_internal (dockable, context,
+                                                tab_style, size, FALSE);
+}
 
-    case GIMP_TAB_STYLE_BLURB:
-    case GIMP_TAB_STYLE_ICON_BLURB:
-    case GIMP_TAB_STYLE_PREVIEW_BLURB:
-      label = gtk_label_new (dockable->blurb);
-      break;
+GtkWidget *
+gimp_dockable_get_drag_widget (GimpDockable *dockable)
+{
+  GtkWidget *frame;
+  GtkWidget *widget;
 
-    default:
-      break;
-    }
+  g_return_val_if_fail (GIMP_IS_DOCKABLE (dockable), NULL);
 
-  switch (tab_style)
-    {
-    case GIMP_TAB_STYLE_ICON:
-    case GIMP_TAB_STYLE_ICON_NAME:
-    case GIMP_TAB_STYLE_ICON_BLURB:
-      icon = gtk_image_new_from_stock (dockable->stock_id, size);
-      break;
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
-    case GIMP_TAB_STYLE_PREVIEW:
-    case GIMP_TAB_STYLE_PREVIEW_NAME:
-    case GIMP_TAB_STYLE_PREVIEW_BLURB:
-      if (GTK_BIN (dockable)->child)
-        icon = gimp_docked_get_preview (GIMP_DOCKED (GTK_BIN (dockable)->child),
-                                        context, size);
+  widget = gimp_dockable_get_tab_widget_internal (dockable,
+                                                  dockable->context,
+                                                  GIMP_TAB_STYLE_ICON_BLURB,
+                                                  GTK_ICON_SIZE_DND,
+                                                  TRUE);
+  gtk_container_set_border_width (GTK_CONTAINER (widget), 6);
+  gtk_container_add (GTK_CONTAINER (frame), widget);
+  gtk_widget_show (widget);
 
-      if (! icon)
-        icon = gtk_image_new_from_stock (dockable->stock_id, size);
-      break;
-
-    default:
-      break;
-    }
-
-  switch (tab_style)
-    {
-    case GIMP_TAB_STYLE_ICON:
-    case GIMP_TAB_STYLE_PREVIEW:
-      tab_widget = icon;
-      break;
-
-    case GIMP_TAB_STYLE_NAME:
-    case GIMP_TAB_STYLE_BLURB:
-      tab_widget = label;
-      break;
-
-    case GIMP_TAB_STYLE_ICON_NAME:
-    case GIMP_TAB_STYLE_ICON_BLURB:
-    case GIMP_TAB_STYLE_PREVIEW_NAME:
-    case GIMP_TAB_STYLE_PREVIEW_BLURB:
-      tab_widget = gtk_hbox_new (FALSE, 2);
-
-      gtk_box_pack_start (GTK_BOX (tab_widget), icon, FALSE, FALSE, 0);
-      gtk_widget_show (icon);
-
-      gtk_box_pack_start (GTK_BOX (tab_widget), label, FALSE, FALSE, 0);
-      gtk_widget_show (label);
-      break;
-    }
-
-  return tab_widget;
+  return frame;
 }
 
 void
@@ -798,9 +961,10 @@ gimp_dockable_set_context (GimpDockable *dockable,
 
   if (context != dockable->context)
     {
-      if (GTK_BIN (dockable)->child)
-        gimp_docked_set_context (GIMP_DOCKED (GTK_BIN (dockable)->child),
-                                 context);
+      GtkWidget *child = gtk_bin_get_child (GTK_BIN (dockable));
+
+      if (child)
+        gimp_docked_set_context (GIMP_DOCKED (child), context);
 
       dockable->context = context;
     }
@@ -811,13 +975,16 @@ gimp_dockable_get_menu (GimpDockable  *dockable,
                         const gchar  **ui_path,
                         gpointer      *popup_data)
 {
+  GtkWidget *child;
+
   g_return_val_if_fail (GIMP_IS_DOCKABLE (dockable), NULL);
   g_return_val_if_fail (ui_path != NULL, NULL);
   g_return_val_if_fail (popup_data != NULL, NULL);
 
-  if (GTK_BIN (dockable)->child)
-    return gimp_docked_get_menu (GIMP_DOCKED (GTK_BIN (dockable)->child),
-                                 ui_path, popup_data);
+  child = gtk_bin_get_child (GTK_BIN (dockable));
+
+  if (child)
+    return gimp_docked_get_menu (GIMP_DOCKED (child), ui_path, popup_data);
 
   return NULL;
 }
@@ -836,6 +1003,7 @@ gimp_dockable_detach (GimpDockable *dockable)
 
   dock = gimp_dialog_factory_dock_new (src_dock->dialog_factory,
                                        gtk_widget_get_screen (GTK_WIDGET (dockable)));
+  gtk_window_set_position (GTK_WINDOW (dock), GTK_WIN_POS_MOUSE);
   gimp_dock_setup (GIMP_DOCK (dock), src_dock);
 
   dockbook = gimp_dockbook_new (GIMP_DOCK (dock)->dialog_factory->menu_factory);
@@ -882,14 +1050,41 @@ gimp_dockable_blink_cancel (GimpDockable *dockable)
     }
 }
 
+
 /*  private functions  */
+
+static void
+gimp_dockable_cursor_setup (GimpDockable *dockable)
+{
+  if (! GTK_WIDGET_REALIZED (dockable))
+    return;
+
+  if (! dockable->title_window)
+    return;
+
+  /*  only show a hand cursor for unlocked dockables  */
+
+  if (gimp_dockable_is_locked (dockable))
+    {
+      gdk_window_set_cursor (dockable->title_window, NULL);
+    }
+  else
+    {
+      GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (dockable));
+      GdkCursor  *cursor;
+
+      cursor = gdk_cursor_new_for_display (display, GDK_HAND2);
+      gdk_window_set_cursor (dockable->title_window, cursor);
+      gdk_cursor_unref (cursor);
+    }
+}
 
 static void
 gimp_dockable_get_title_area (GimpDockable *dockable,
                               GdkRectangle *area)
 {
   GtkWidget *widget = GTK_WIDGET (dockable);
-  gint       border = GTK_CONTAINER (dockable)->border_width;
+  gint       border = gtk_container_get_border_width (GTK_CONTAINER (dockable));
 
   area->x      = widget->allocation.x + border;
   area->y      = widget->allocation.y + border;
@@ -1033,6 +1228,17 @@ gimp_dockable_show_menu (GimpDockable *dockable)
                     "visible",  TRUE,
                     NULL);
 
+      if (dockable->stock_id)
+        {
+          if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (),
+                                       dockable->stock_id))
+            {
+              g_object_set (parent_menu_action,
+                            "icon-name", dockable->stock_id,
+                            NULL);
+            }
+        }
+
       if (! GTK_IS_MENU (child_menu_widget))
         {
           g_warning ("%s: child_menu_widget (%p) is not a GtkMenu",
@@ -1042,8 +1248,8 @@ gimp_dockable_show_menu (GimpDockable *dockable)
 
       /* FIXME */
       {
-        GtkWidget *image = gtk_image_new_from_stock (dockable->stock_id,
-                                                     GTK_ICON_SIZE_MENU);
+        GtkWidget *image = gimp_dockable_get_icon (dockable,
+                                                   GTK_ICON_SIZE_MENU);
 
         gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (parent_menu_widget),
                                        image);
@@ -1072,7 +1278,7 @@ gimp_dockable_show_menu (GimpDockable *dockable)
   gimp_ui_manager_ui_popup (dockbook_ui_manager, "/dockable-popup",
                             GTK_WIDGET (dockable),
                             gimp_dockable_menu_position, dockable,
-                            (GtkDestroyNotify) gimp_dockable_menu_end, dockable);
+                            (GDestroyNotify) gimp_dockable_menu_end, dockable);
 
   return TRUE;
 }

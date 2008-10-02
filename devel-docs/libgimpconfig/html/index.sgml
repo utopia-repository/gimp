@@ -17,6 +17,7 @@
 <ANCHOR id="gimp-config-duplicate" href="libgimpconfig/libgimpconfig-GimpConfig.html#gimp-config-duplicate">
 <ANCHOR id="gimp-config-is-equal-to" href="libgimpconfig/libgimpconfig-GimpConfig.html#gimp-config-is-equal-to">
 <ANCHOR id="gimp-config-reset" href="libgimpconfig/libgimpconfig-GimpConfig.html#gimp-config-reset">
+<ANCHOR id="gimp-config-copy" href="libgimpconfig/libgimpconfig-GimpConfig.html#gimp-config-copy">
 <ANCHOR id="libgimpconfig-gimpconfig-deserialize" href="libgimpconfig/libgimpconfig-gimpconfig-deserialize.html">
 <ANCHOR id="libgimpconfig-gimpconfig-deserialize.synopsis" href="libgimpconfig/libgimpconfig-gimpconfig-deserialize.html#libgimpconfig-gimpconfig-deserialize.synopsis">
 <ANCHOR id="libgimpconfig-gimpconfig-deserialize.description" href="libgimpconfig/libgimpconfig-gimpconfig-deserialize.html#libgimpconfig-gimpconfig-deserialize.description">
@@ -30,6 +31,7 @@
 <ANCHOR id="gimp-config-serialize-properties" href="libgimpconfig/libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-properties">
 <ANCHOR id="gimp-config-serialize-changed-properties" href="libgimpconfig/libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-changed-properties">
 <ANCHOR id="gimp-config-serialize-property" href="libgimpconfig/libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property">
+<ANCHOR id="gimp-config-serialize-property-by-name" href="libgimpconfig/libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property-by-name">
 <ANCHOR id="gimp-config-serialize-value" href="libgimpconfig/libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-value">
 <ANCHOR id="libgimpconfig-GimpConfigError" href="libgimpconfig/libgimpconfig-GimpConfigError.html">
 <ANCHOR id="libgimpconfig-GimpConfigError.synopsis" href="libgimpconfig/libgimpconfig-GimpConfigError.html#libgimpconfig-GimpConfigError.synopsis">

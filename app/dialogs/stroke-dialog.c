@@ -151,8 +151,10 @@ stroke_dialog_new (GimpItem    *item,
     font_desc = pango_font_description_new ();
     pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
 
-    gtk_widget_modify_font (GTK_BIN (libart_radio)->child, font_desc);
-    gtk_widget_modify_font (GTK_BIN (paint_radio)->child,  font_desc);
+    gtk_widget_modify_font (gtk_bin_get_child (GTK_BIN (libart_radio)),
+                            font_desc);
+    gtk_widget_modify_font (gtk_bin_get_child (GTK_BIN (paint_radio)),
+                            font_desc);
 
     pango_font_description_free (font_desc);
   }
@@ -173,9 +175,12 @@ stroke_dialog_new (GimpItem    *item,
 
   {
     GtkWidget *stroke_editor;
+    gdouble    xres;
+    gdouble    yres;
 
-    stroke_editor = gimp_stroke_editor_new (desc->stroke_options,
-                                            image->yresolution);
+    gimp_image_get_resolution (image, &xres, &yres);
+
+    stroke_editor = gimp_stroke_editor_new (desc->stroke_options, yres);
     gtk_container_add (GTK_CONTAINER (frame), stroke_editor);
     gtk_widget_show (stroke_editor);
 
@@ -199,17 +204,23 @@ stroke_dialog_new (GimpItem    *item,
                     NULL);
 
   {
+    GtkWidget *vbox;
     GtkWidget *hbox;
     GtkWidget *label;
     GtkWidget *combo;
+    GtkWidget *button;
+
+    vbox = gtk_vbox_new (FALSE, 6);
+    gtk_container_add (GTK_CONTAINER (frame), vbox);
+    gtk_widget_show (vbox);
+
+    gtk_widget_set_sensitive (vbox,
+                              desc->method == GIMP_STROKE_METHOD_PAINT_CORE);
+    g_object_set_data (G_OBJECT (paint_radio), "set_sensitive", vbox);
 
     hbox = gtk_hbox_new (FALSE, 6);
-    gtk_container_add (GTK_CONTAINER (frame), hbox);
+    gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
     gtk_widget_show (hbox);
-
-    gtk_widget_set_sensitive (hbox,
-                              desc->method == GIMP_STROKE_METHOD_PAINT_CORE);
-    g_object_set_data (G_OBJECT (paint_radio), "set_sensitive", hbox);
 
     label = gtk_label_new (_("Paint tool:"));
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
@@ -229,6 +240,12 @@ stroke_dialog_new (GimpItem    *item,
 
 
     g_object_set_data (G_OBJECT (dialog), "gimp-tool-menu", combo);
+
+    button = gimp_prop_check_button_new (G_OBJECT (desc),
+                                         "emulate-brush-dynamics",
+                                         _("_Emulate brush dynamics"));
+    gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+    gtk_widget_show (button);
   }
 
   return dialog;
@@ -273,6 +290,7 @@ stroke_dialog_response (GtkWidget  *widget,
       {
         GimpDrawable   *drawable = gimp_image_get_active_drawable (image);
         GimpStrokeDesc *saved_desc;
+        GError         *error    = NULL;
 
         if (! drawable)
           {
@@ -297,7 +315,16 @@ stroke_dialog_response (GtkWidget  *widget,
                                 saved_desc,
                                 (GDestroyNotify) g_object_unref);
 
-        gimp_item_stroke (item, drawable, context, desc, FALSE, NULL);
+        if (! gimp_item_stroke (item, drawable, context, desc, FALSE, NULL,
+                                &error))
+          {
+            gimp_message (context->gimp, G_OBJECT (widget),
+                          GIMP_MESSAGE_WARNING,
+                          error->message);
+            g_clear_error (&error);
+            return;
+          }
+
         gimp_image_flush (image);
       }
       /* fallthrough */

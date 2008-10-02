@@ -44,7 +44,11 @@ print_SOURCES = \
 	print-draw-page.h	\
 	print-page-layout.c	\
 	print-page-layout.h	\
+	print-page-setup.h	\
+	print-page-setup.c	\
 	print-preview.c		\
 	print-preview.h		\
 	print-settings.c	\
-	print-settings.h
+	print-settings.h	\
+	print-utils.c		\
+	print-utils.h

@@ -2,7 +2,7 @@
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
  * gimpcellrenderercolor.c
- * Copyright (C) 2004  Sven Neuman <sven1@gimp.org>
+ * Copyright (C) 2004,2007  Sven Neuman <sven1@gimp.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,11 +24,12 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 
 #include "gimpwidgetstypes.h"
 
-#include "gimpcolorarea.h"
+#include "gimpcairo-utils.h"
 #include "gimpcellrenderercolor.h"
 
 
@@ -66,6 +67,7 @@ static void gimp_cell_renderer_color_render       (GtkCellRenderer *cell,
                                                    GdkRectangle    *cell_area,
                                                    GdkRectangle    *expose_area,
                                                    GtkCellRendererState flags);
+
 
 
 G_DEFINE_TYPE (GimpCellRendererColor, gimp_cell_renderer_color,
@@ -235,39 +237,66 @@ gimp_cell_renderer_color_render (GtkCellRenderer      *cell,
 
   if (rect.width > 2 && rect.height > 2)
     {
+      cairo_t      *cr    = gdk_cairo_create (window);
+      GtkStyle     *style = gtk_widget_get_style (widget);
       GtkStateType  state;
-      guchar       *buf;
-      guint         rowstride = 3 * (rect.width - 2);
 
-      if (rowstride & 3)
-        rowstride += 4 - (rowstride & 3);
+      cairo_rectangle (cr,
+                       rect.x + 1, rect.y + 1,
+                       rect.width - 2, rect.height - 2);
 
-      buf = g_alloca (rowstride * (rect.height - 2));
+      gimp_cairo_set_source_rgb (cr, &color->color);
+      cairo_fill (cr);
 
-      _gimp_color_area_render_buf (widget,
-                                   (GTK_WIDGET_STATE (widget) ==
-                                    GTK_STATE_INSENSITIVE || !cell->sensitive),
-                                   (color->opaque ?
-                                    GIMP_COLOR_AREA_FLAT :
-                                    GIMP_COLOR_AREA_SMALL_CHECKS),
-                                   buf,
-                                   rect.width - 2, rect.height - 2, rowstride,
-                                   &color->color);
+      if (! color->opaque && color->color.a < 1.0)
+        {
+          cairo_pattern_t *pattern;
 
-      gdk_draw_rgb_image_dithalign (window,
-                                    widget->style->black_gc,
-                                    rect.x + 1, rect.y + 1,
-                                    rect.width - 2, rect.height - 2,
-                                    GDK_RGB_DITHER_MAX,
-                                    buf, rowstride, rect.x, rect.y);
+          cairo_move_to (cr, rect.x + 1,              rect.y + rect.height - 1);
+          cairo_line_to (cr, rect.x + rect.width - 1, rect.y + rect.height - 1);
+          cairo_line_to (cr, rect.x + rect.width - 1, rect.y + 1);
+          cairo_close_path (cr);
 
-      state = (flags & GTK_CELL_RENDERER_SELECTED ?
-               GTK_STATE_SELECTED : GTK_STATE_NORMAL);
+          pattern = gimp_cairo_checkerboard_create (cr,
+                                                    GIMP_CHECK_SIZE_SM,
+                                                    NULL, NULL);
+          cairo_set_source (cr, pattern);
+          cairo_pattern_destroy (pattern);
 
-      gdk_draw_rectangle (window,
-                          widget->style->fg_gc[state],
-                          FALSE,
-                          rect.x, rect.y, rect.width - 1, rect.height - 1);
+          cairo_fill_preserve (cr);
+
+          gimp_cairo_set_source_rgba (cr, &color->color);
+          cairo_fill (cr);
+        }
+
+      /* draw border */
+      cairo_rectangle (cr,
+                       rect.x + 0.5, rect.y + 0.5,
+                       rect.width - 1, rect.height - 1);
+
+      if (! cell->sensitive ||
+          GTK_WIDGET_STATE (widget) == GTK_STATE_INSENSITIVE)
+        {
+          state = GTK_STATE_INSENSITIVE;
+        }
+      else
+        {
+          state = (flags & GTK_CELL_RENDERER_SELECTED ?
+                   GTK_STATE_SELECTED : GTK_STATE_NORMAL);
+        }
+
+      cairo_set_line_width (cr, 1);
+      gdk_cairo_set_source_color (cr, &style->fg[state]);
+      cairo_stroke_preserve (cr);
+
+      if (state == GTK_STATE_SELECTED &&
+          gimp_cairo_set_focus_line_pattern (cr, widget))
+        {
+          gdk_cairo_set_source_color (cr, &style->fg[GTK_STATE_NORMAL]);
+          cairo_stroke (cr);
+        }
+
+      cairo_destroy (cr);
     }
 }
 

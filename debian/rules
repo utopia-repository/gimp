@@ -51,36 +51,10 @@ common-install-impl::
 	# postrm by dh_python
 	find $(CURDIR)/debian/tmp -name "*.py[co]" -exec rm '{}' ';'
 
-	rm debian/tmp/usr/lib/gimp/2.0/plug-ins/uri
 	rm debian/tmp/usr/lib/*.la
 
 	dh_movefiles
 	dh_icons
 
-binary-install/gimp-gnomevfs::
-	# Build gnomevfs URI plugin
-	rm $(DEB_BUILDDIR)/plug-ins/uri/uri.o
-
-	cd $(DEB_BUILDDIR)/plug-ins/uri && make
-
-	cp $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
-		$(CURDIR)/debian/gimp-gnomevfs/usr/lib/gimp/2.0/plug-ins/uri
-
-binary-install/gimp-libcurl::
-	# Build libcurl URI plugin
-	rm $(DEB_BUILDDIR)/plug-ins/uri/uri.o
-
-	sed	-e 's/\(backend_sources.*gnome\)/#\1/' \
-		-e 's/#\(backend_sources.*libcurl\)/\1/' \
-		-e 's/\(am__objects.*gnome\)/#\1/' \
-		-e 's/#\(am__objects.*libcurl\)/\1/' \
-		-e 's/$$(URI_GNOME_VFS/$$(URI_LIBCURL/g' \
-		$(DEB_BUILDDIR)/plug-ins/uri/Makefile > \
-			$(DEB_BUILDDIR)/plug-ins/uri/Makefile.libcurl
-	cd $(DEB_BUILDDIR)/plug-ins/uri && make -f Makefile.libcurl
-
-	cp $(DEB_BUILDDIR)/plug-ins/uri/.libs/uri \
-		$(CURDIR)/debian/gimp-libcurl/usr/lib/gimp/2.0/plug-ins/uri
-
-binary-install/gimp-python::
-	dh_pysupport -pgimp-python /usr/lib/gimp/2.0/python
+binary-install/gimp::
+	dh_pysupport -pgimp /usr/lib/gimp/2.0/python

@@ -40,6 +40,7 @@
 #include "gimpsamplepoint.h"
 #include "gimpsubprogress.h"
 
+#include "gimp-log.h"
 #include "gimp-intl.h"
 
 
@@ -55,6 +56,8 @@ gimp_image_scale (GimpImage             *image,
   GList        *remove           = NULL;
   gint          old_width;
   gint          old_height;
+  gint          offset_x;
+  gint          offset_y;
   gdouble       img_scale_w      = 1.0;
   gdouble       img_scale_h      = 1.0;
   gint          progress_steps;
@@ -78,13 +81,21 @@ gimp_image_scale (GimpImage             *image,
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_SCALE,
                                _("Scale Image"));
 
-  /*  Push the image size to the stack  */
-  gimp_image_undo_push_image_size (image, NULL);
-
-  old_width   = image->width;
-  old_height  = image->height;
+  old_width   = gimp_image_get_width  (image);
+  old_height  = gimp_image_get_height (image);
   img_scale_w = (gdouble) new_width  / (gdouble) old_width;
   img_scale_h = (gdouble) new_height / (gdouble) old_height;
+
+  offset_x = (old_width  - new_width)  / 2;
+  offset_y = (old_height - new_height) / 2;
+
+  /*  Push the image size to the stack  */
+  gimp_image_undo_push_image_size (image,
+                                   NULL,
+                                   offset_x,
+                                   offset_y,
+                                   new_width,
+                                   new_height);
 
   /*  Set the new width and height  */
   g_object_set (image,
@@ -168,7 +179,7 @@ gimp_image_scale (GimpImage             *image,
   g_list_free (remove);
 
   /*  Scale all Guides  */
-  for (list = image->guides; list; list = g_list_next (list))
+  for (list = gimp_image_get_guides (image); list; list = g_list_next (list))
     {
       GimpGuide *guide    = list->data;
       gint       position = gimp_guide_get_position (guide);
@@ -191,7 +202,9 @@ gimp_image_scale (GimpImage             *image,
     }
 
   /*  Scale all sample points  */
-  for (list = image->sample_points; list; list = g_list_next (list))
+  for (list = gimp_image_get_sample_points (image);
+       list;
+       list = g_list_next (list))
     {
       GimpSamplePoint *sample_point = list->data;
 
@@ -204,7 +217,12 @@ gimp_image_scale (GimpImage             *image,
 
   g_object_unref (sub_progress);
 
-  gimp_viewable_size_changed (GIMP_VIEWABLE (image));
+  gimp_image_size_changed_detailed (image,
+                                    -offset_x,
+                                    -offset_y,
+                                    old_width,
+                                    old_height);
+
   g_object_thaw_notify (G_OBJECT (image));
 
   gimp_unset_busy (image->gimp);
@@ -256,7 +274,7 @@ gimp_image_scale_check (const GimpImage *image,
                                              GIMP_ITEM_TYPE_LAYERS |
                                              GIMP_ITEM_TYPE_CHANNELS,
                                              GIMP_ITEM_SET_ALL);
-  drawables = g_list_prepend (drawables, image->selection_mask);
+  drawables = g_list_prepend (drawables, gimp_image_get_mask (image));
 
   scalable_size = 0;
   scaled_size   = 0;
@@ -290,6 +308,10 @@ gimp_image_scale_check (const GimpImage *image,
     gimp_projection_estimate_memsize (gimp_image_base_type (image),
                                       new_width, new_height);
 
+  GIMP_LOG (IMAGE_SCALE,
+            "scalable_size = %"G_GINT64_FORMAT"  scaled_size = %"G_GINT64_FORMAT,
+            scalable_size, scaled_size);
+
   undo_size = gimp_object_get_memsize (GIMP_OBJECT (image->undo_stack), NULL);
   redo_size = gimp_object_get_memsize (GIMP_OBJECT (image->redo_stack), NULL);
 
@@ -299,6 +321,10 @@ gimp_image_scale_check (const GimpImage *image,
   /*  calculate the new size, which is:  */
   new_size = (fixed_size +   /*  the fixed part                */
               scaled_size);  /*  plus the part that scales...  */
+
+  GIMP_LOG (IMAGE_SCALE,
+            "old_size = %"G_GINT64_FORMAT"  new_size = %"G_GINT64_FORMAT,
+            current_size - undo_size - redo_size, new_size);
 
   *new_memsize = new_size;
 

@@ -39,8 +39,10 @@
 
 #include "core-types.h"
 
+#include "gimp-utils.h"
 #include "gimpdata.h"
 #include "gimpmarshal.h"
+#include "gimptagged.h"
 
 #include "gimp-intl.h"
 
@@ -61,28 +63,36 @@ enum
 };
 
 
-static void      gimp_data_class_init   (GimpDataClass *klass);
-static void      gimp_data_init         (GimpData      *data,
-                                         GimpDataClass *data_class);
+static void      gimp_data_class_init        (GimpDataClass         *klass);
+static void      gimp_data_tagged_iface_init (GimpTaggedInterface   *iface);
 
-static GObject * gimp_data_constructor  (GType                  type,
-                                         guint                  n_params,
-                                         GObjectConstructParam *params);
+static void      gimp_data_init              (GimpData              *data,
+                                              GimpDataClass         *data_class);
 
-static void      gimp_data_finalize     (GObject       *object);
-static void      gimp_data_set_property (GObject       *object,
-                                         guint          property_id,
-                                         const GValue  *value,
-                                         GParamSpec    *pspec);
-static void      gimp_data_get_property (GObject       *object,
-                                         guint          property_id,
-                                         GValue        *value,
-                                         GParamSpec    *pspec);
+static GObject * gimp_data_constructor       (GType                  type,
+                                              guint                  n_params,
+                                              GObjectConstructParam *params);
 
-static gint64    gimp_data_get_memsize  (GimpObject    *object,
-                                         gint64        *gui_size);
+static void      gimp_data_finalize          (GObject               *object);
+static void      gimp_data_set_property      (GObject               *object,
+                                              guint                  property_id,
+                                              const GValue          *value,
+                                              GParamSpec            *pspec);
+static void      gimp_data_get_property      (GObject               *object,
+                                              guint                  property_id,
+                                              GValue                *value,
+                                              GParamSpec            *pspec);
 
-static void      gimp_data_real_dirty   (GimpData      *data);
+static gint64    gimp_data_get_memsize       (GimpObject            *object,
+                                              gint64                *gui_size);
+
+static void      gimp_data_real_dirty        (GimpData              *data);
+
+static gboolean  gimp_data_add_tag           (GimpTagged            *tagged,
+                                              GimpTag                tag);
+static gboolean  gimp_data_remove_tag        (GimpTagged            *tagged,
+                                              GimpTag                tag);
+static GList *   gimp_data_get_tags          (GimpTagged            *tagged);
 
 
 static guint data_signals[LAST_SIGNAL] = { 0 };
@@ -110,10 +120,19 @@ gimp_data_get_type (void)
         (GInstanceInitFunc) gimp_data_init,
       };
 
+      const GInterfaceInfo tagged_info =
+      {
+        (GInterfaceInitFunc) gimp_data_tagged_iface_init,
+        NULL,           /* interface_finalize */
+        NULL            /* interface_data     */
+      };
+
       data_type = g_type_register_static (GIMP_TYPE_VIEWABLE,
                                           "GimpData",
                                           &data_info, 0);
-  }
+
+      g_type_add_interface_static (data_type, GIMP_TYPE_TAGGED, &tagged_info);
+    }
 
   return data_type;
 }
@@ -170,6 +189,14 @@ gimp_data_class_init (GimpDataClass *klass)
 }
 
 static void
+gimp_data_tagged_iface_init (GimpTaggedInterface *iface)
+{
+  iface->add_tag    = gimp_data_add_tag;
+  iface->remove_tag = gimp_data_remove_tag;
+  iface->get_tags   = gimp_data_get_tags;
+}
+
+static void
 gimp_data_init (GimpData      *data,
                 GimpDataClass *data_class)
 {
@@ -181,6 +208,7 @@ gimp_data_init (GimpData      *data,
   data->internal     = FALSE;
   data->freeze_count = 0;
   data->mtime        = 0;
+  data->tags         = NULL;
 
   /*  look at the passed class pointer, not at GIMP_DATA_GET_CLASS(data)
    *  here, because the latter is always GimpDataClass itself
@@ -192,6 +220,20 @@ gimp_data_init (GimpData      *data,
   gimp_data_freeze (data);
 }
 
+static GObject *
+gimp_data_constructor (GType                  type,
+                       guint                  n_params,
+                       GObjectConstructParam *params)
+{
+  GObject *object;
+
+  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
+
+  gimp_data_thaw (GIMP_DATA (object));
+
+  return object;
+}
+
 static void
 gimp_data_finalize (GObject *object)
 {
@@ -201,6 +243,12 @@ gimp_data_finalize (GObject *object)
     {
       g_free (data->filename);
       data->filename = NULL;
+    }
+
+  if (data->tags)
+    {
+      g_list_free (data->tags);
+      data->tags = NULL;
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -276,20 +324,6 @@ gimp_data_get_property (GObject    *object,
     }
 }
 
-static GObject *
-gimp_data_constructor (GType                  type,
-                       guint                  n_params,
-                       GObjectConstructParam *params)
-{
-  GObject *object;
-
-  object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
-
-  gimp_data_thaw (GIMP_DATA (object));
-
-  return object;
-}
-
 static gint64
 gimp_data_get_memsize (GimpObject *object,
                        gint64     *gui_size)
@@ -297,8 +331,7 @@ gimp_data_get_memsize (GimpObject *object,
   GimpData *data    = GIMP_DATA (object);
   gint64    memsize = 0;
 
-  if (data->filename)
-    memsize += strlen (data->filename) + 1;
+  memsize += gimp_string_get_memsize (data->filename);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -312,6 +345,53 @@ gimp_data_real_dirty (GimpData *data)
   gimp_viewable_invalidate_preview (GIMP_VIEWABLE (data));
 
   gimp_object_name_changed (GIMP_OBJECT (data));
+}
+
+static gboolean
+gimp_data_add_tag (GimpTagged *tagged,
+                   GimpTag     tag)
+{
+  GimpData *data = GIMP_DATA (tagged);
+  GList    *list;
+
+  for (list = data->tags; list; list = list->next)
+    {
+      GimpTag this = GPOINTER_TO_UINT (list->data);
+
+      if (this == tag)
+        return FALSE;
+    }
+
+  data->tags = g_list_prepend (data->tags, GUINT_TO_POINTER (tag));
+
+  return TRUE;
+}
+
+static gboolean
+gimp_data_remove_tag (GimpTagged *tagged,
+                      GimpTag     tag)
+{
+  GimpData *data = GIMP_DATA (tagged);
+  GList    *list;
+
+  for (list = data->tags; list; list = list->next)
+    {
+      GimpTag this = GPOINTER_TO_UINT (list->data);
+
+      if (this == tag)
+        {
+          data->tags = g_list_delete_link (data->tags, list);
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+static GList *
+gimp_data_get_tags (GimpTagged *tagged)
+{
+  return GIMP_DATA (tagged)->tags;
 }
 
 /**
@@ -648,25 +728,30 @@ gimp_data_make_internal (GimpData *data)
 }
 
 /**
- * gimp_data_name_compare:
+ * gimp_data_compare:
  * @data1: a #GimpData object.
  * @data2: another #GimpData object.
  *
- * Compares the names of the two objects for use in sorting; see
- * gimp_object_name_collate() for the method.  Objects marked as
- * "internal" are considered to come before any objects that are not.
+ * Compares two data objects for use in sorting. Objects marked as
+ * "internal" come first, then user-writable objects, then system data
+ * files. In these three groups, the objects are sorted alphabetically
+ * by name, using gimp_object_name_collate().
  *
  * Return value: -1 if @data1 compares before @data2,
  *                0 if they compare equal,
  *                1 if @data1 compares after @data2.
  **/
 gint
-gimp_data_name_compare (GimpData *data1,
-                        GimpData *data2)
+gimp_data_compare (GimpData *data1,
+		   GimpData *data2)
 {
   /*  move the internal objects (like the FG -> BG) gradient) to the top  */
   if (data1->internal != data2->internal)
     return data1->internal ? -1 : 1;
+
+  /*  keep user-writable objects about system resource files  */
+  if (data1->writable != data2->writable)
+    return data1->writable ? -1 : 1;
 
   return gimp_object_name_collate ((GimpObject *) data1,
                                    (GimpObject *) data2);

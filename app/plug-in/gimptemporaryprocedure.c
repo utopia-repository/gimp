@@ -34,19 +34,20 @@
 #include "gimp-intl.h"
 
 
-static void          gimp_temporary_procedure_finalize (GObject       *object);
+static void          gimp_temporary_procedure_finalize (GObject        *object);
 
-static GValueArray * gimp_temporary_procedure_execute  (GimpProcedure *procedure,
-                                                        Gimp          *gimp,
-                                                        GimpContext   *context,
-                                                        GimpProgress  *progress,
-                                                        GValueArray   *args);
-static void     gimp_temporary_procedure_execute_async (GimpProcedure *procedure,
-                                                        Gimp          *gimp,
-                                                        GimpContext   *context,
-                                                        GimpProgress  *progress,
-                                                        GValueArray   *args,
-                                                        GimpObject    *display);
+static GValueArray * gimp_temporary_procedure_execute  (GimpProcedure  *procedure,
+                                                        Gimp           *gimp,
+                                                        GimpContext    *context,
+                                                        GimpProgress   *progress,
+                                                        GValueArray    *args,
+                                                        GError        **error);
+static void     gimp_temporary_procedure_execute_async (GimpProcedure  *procedure,
+                                                        Gimp           *gimp,
+                                                        GimpContext    *context,
+                                                        GimpProgress   *progress,
+                                                        GValueArray    *args,
+                                                        GimpObject     *display);
 
 const gchar    * gimp_temporary_procedure_get_progname (const GimpPlugInProcedure *procedure);
 
@@ -87,11 +88,12 @@ gimp_temporary_procedure_finalize (GObject *object)
 }
 
 static GValueArray *
-gimp_temporary_procedure_execute (GimpProcedure *procedure,
-                                  Gimp          *gimp,
-                                  GimpContext   *context,
-                                  GimpProgress  *progress,
-                                  GValueArray   *args)
+gimp_temporary_procedure_execute (GimpProcedure  *procedure,
+                                  Gimp           *gimp,
+                                  GimpContext    *context,
+                                  GimpProgress   *progress,
+                                  GValueArray    *args,
+                                  GError        **error)
 {
   return gimp_plug_in_manager_call_run_temp (gimp->plug_in_manager,
                                              context, progress,
@@ -107,14 +109,23 @@ gimp_temporary_procedure_execute_async (GimpProcedure *procedure,
                                         GValueArray   *args,
                                         GimpObject    *display)
 {
-  GValueArray *return_vals;
+  GimpTemporaryProcedure *temp_procedure = GIMP_TEMPORARY_PROCEDURE (procedure);
+  GValueArray            *return_vals;
 
   return_vals = gimp_plug_in_manager_call_run_temp (gimp->plug_in_manager,
                                                     context, progress,
-                                                    GIMP_TEMPORARY_PROCEDURE (procedure),
+                                                    temp_procedure,
                                                     args);
 
-  g_value_array_free (return_vals);
+  if (return_vals)
+    {
+      GimpPlugInProcedure *proc = GIMP_PLUG_IN_PROCEDURE (procedure);
+
+      gimp_plug_in_procedure_handle_return_values (proc,
+                                                   gimp, progress,
+                                                   return_vals);
+      g_value_array_free (return_vals);
+    }
 }
 
 const gchar *

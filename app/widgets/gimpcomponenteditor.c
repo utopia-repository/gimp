@@ -34,6 +34,7 @@
 #include "gimpcellrendererviewable.h"
 #include "gimpcomponenteditor.h"
 #include "gimpdnd.h"
+#include "gimpdocked.h"
 #include "gimpmenufactory.h"
 #include "gimpviewrendererimage.h"
 #include "gimpwidgets-utils.h"
@@ -51,7 +52,10 @@ enum
 };
 
 
-static void gimp_component_editor_unrealize         (GtkWidget           *widget);
+static void gimp_component_editor_docked_iface_init (GimpDockedInterface *iface);
+
+static void gimp_component_editor_set_context       (GimpDocked          *docked,
+                                                     GimpContext         *context);
 
 static void gimp_component_editor_set_image         (GimpImageEditor     *editor,
                                                      GimpImage           *image);
@@ -88,19 +92,20 @@ static GimpImage * gimp_component_editor_drag_component (GtkWidget       *widget
                                                          gpointer         data);
 
 
-G_DEFINE_TYPE (GimpComponentEditor, gimp_component_editor,
-               GIMP_TYPE_IMAGE_EDITOR)
+G_DEFINE_TYPE_WITH_CODE (GimpComponentEditor, gimp_component_editor,
+                         GIMP_TYPE_IMAGE_EDITOR,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
+                                                gimp_component_editor_docked_iface_init))
 
 #define parent_class gimp_component_editor_parent_class
+
+static GimpDockedInterface *parent_docked_iface = NULL;
 
 
 static void
 gimp_component_editor_class_init (GimpComponentEditorClass *klass)
 {
-  GtkWidgetClass       *widget_class       = GTK_WIDGET_CLASS (klass);
   GimpImageEditorClass *image_editor_class = GIMP_IMAGE_EDITOR_CLASS (klass);
-
-  widget_class->unrealize       = gimp_component_editor_unrealize;
 
   image_editor_class->set_image = gimp_component_editor_set_image;
 }
@@ -175,11 +180,25 @@ gimp_component_editor_init (GimpComponentEditor *editor)
 }
 
 static void
-gimp_component_editor_unrealize (GtkWidget *widget)
+gimp_component_editor_docked_iface_init (GimpDockedInterface *iface)
 {
-  GimpComponentEditor *editor = GIMP_COMPONENT_EDITOR (widget);
+  parent_docked_iface = g_type_interface_peek_parent (iface);
+
+  if (! parent_docked_iface)
+    parent_docked_iface = g_type_default_interface_peek (GIMP_TYPE_DOCKED);
+
+  iface->set_context = gimp_component_editor_set_context;
+}
+
+static void
+gimp_component_editor_set_context (GimpDocked  *docked,
+                                   GimpContext *context)
+{
+  GimpComponentEditor *editor = GIMP_COMPONENT_EDITOR (docked);
   GtkTreeIter          iter;
   gboolean             iter_valid;
+
+  parent_docked_iface->set_context (docked, context);
 
   for (iter_valid = gtk_tree_model_get_iter_first (editor->model, &iter);
        iter_valid;
@@ -191,11 +210,9 @@ gimp_component_editor_unrealize (GtkWidget *widget)
                           COLUMN_RENDERER, &renderer,
                           -1);
 
-      gimp_view_renderer_unrealize (renderer);
+      gimp_view_renderer_set_context (renderer, context);
       g_object_unref (renderer);
     }
-
-  GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
 }
 
 static void
@@ -269,6 +286,7 @@ gimp_component_editor_set_view_size (GimpComponentEditor *editor,
                                      gint                 view_size)
 {
   GtkWidget   *tree_widget;
+  GtkStyle    *tree_style;
   GtkIconSize  icon_size;
   GtkTreeIter  iter;
   gboolean     iter_valid;
@@ -278,14 +296,15 @@ gimp_component_editor_set_view_size (GimpComponentEditor *editor,
                     view_size <= GIMP_VIEWABLE_MAX_PREVIEW_SIZE);
 
   tree_widget = GTK_WIDGET (editor->view);
+  tree_style  = gtk_widget_get_style (tree_widget);
 
   icon_size = gimp_get_icon_size (tree_widget,
                                   GIMP_STOCK_VISIBLE,
                                   GTK_ICON_SIZE_BUTTON,
                                   view_size -
-                                  2 * tree_widget->style->xthickness,
+                                  2 * tree_style->xthickness,
                                   view_size -
-                                  2 * tree_widget->style->ythickness);
+                                  2 * tree_style->ythickness);
 
   g_object_set (editor->eye_cell,
                 "stock-size", icon_size,

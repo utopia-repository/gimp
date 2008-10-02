@@ -37,34 +37,17 @@ struct _GimpCurvesTool
 {
   GimpImageMapTool      parent_instance;
 
-  Curves               *curves;
+  GimpCurvesConfig     *config;
   GimpLut              *lut;
 
   /* dialog */
-  gboolean              color;
-  gboolean              alpha;
-  GimpHistogramChannel  channel;
-
-  gint                  selected;
-  gint                  last;
-  gint                  leftmost;
-  gint                  rightmost;
-  gint                  col_value[5];
-  gboolean              grabbed;
-
-  GimpHistogram        *hist;
+  gdouble               picked_color[5];
 
   GtkWidget            *channel_menu;
   GtkWidget            *xrange;
   GtkWidget            *yrange;
   GtkWidget            *graph;
   GtkWidget            *curve_type;
-
-  gint                  cursor_x;
-  gint                  cursor_y;
-  PangoLayout          *xpos_layout;
-  PangoLayout          *cursor_layout;
-  PangoRectangle        cursor_rect;
 };
 
 struct _GimpCurvesToolClass
@@ -79,4 +62,4 @@ void    gimp_curves_tool_register (GimpToolRegisterCallback  callback,
 GType   gimp_curves_tool_get_type (void) G_GNUC_CONST;
 
 
-#endif  /*  __CURVES_H__  */
+#endif  /*  __GIMP_CURVES_TOOL_H__  */

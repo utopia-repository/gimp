@@ -20,6 +20,15 @@
 #define __TILE_PYRAMID_H__
 
 
+/* Creates a new tile pyramid with the specified size for the
+ *  toplevel. The toplevel size is used to compute the number of
+ *  levels and their size. Each level is 1/2 the width and height of
+ *  the level above it.
+ *
+ * The toplevel is level 0. The smallest level in the hierarchy
+ *  is "nlevels - 1". That level will be smaller than TILE_WIDTH x
+ *  TILE_HEIGHT
+ */
 TilePyramid * tile_pyramid_new               (GimpImageType      type,
                                               gint               width,
                                               gint               height);
@@ -30,7 +39,8 @@ gint          tile_pyramid_get_level         (gint               width,
                                               gdouble            scale);
 
 TileManager * tile_pyramid_get_tiles         (TilePyramid       *pyramid,
-                                              gint               level);
+                                              gint               level,
+                                              gboolean          *is_premult);
 
 void          tile_pyramid_invalidate_area   (TilePyramid       *pyramid,
                                               gint               x,

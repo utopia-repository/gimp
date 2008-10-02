@@ -176,6 +176,8 @@ gimp_align_tool_init (GimpAlignTool *align_tool)
   align_tool->vert_offset = 0;
 
   gimp_tool_control_set_snap_to     (tool->control, FALSE);
+  gimp_tool_control_set_precision   (tool->control,
+                                     GIMP_CURSOR_PRECISION_PIXEL_BORDER);
   gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_MOVE);
 
 }
@@ -570,8 +572,8 @@ gimp_align_tool_status_update (GimpTool        *tool,
 
   if (proximity)
     {
-      gchar    *status = NULL;
-      gboolean  free_status = FALSE;
+      const gchar *status      = NULL;
+      gboolean     free_status = FALSE;
 
       if (! align_tool->selected_objects)
         {
@@ -634,7 +636,7 @@ gimp_align_tool_status_update (GimpTool        *tool,
         gimp_tool_push_status (tool, display, status);
 
       if (free_status)
-        g_free (status);
+        g_free ((gchar *) status);
     }
 }
 
@@ -882,9 +884,9 @@ gimp_align_tool_controls (GimpAlignTool *align_tool)
 
   spinbutton = gimp_spin_button_new (&align_tool->horz_offset_adjustment,
                                      0,
-                                     -100000.,
-                                     100000.,
-                                     1., 20., 20., 1., 0);
+                                     -100000,
+                                     100000,
+                                     1, 20, 0, 1, 0);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   g_signal_connect (align_tool->horz_offset_adjustment, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
@@ -906,7 +908,7 @@ do_alignment (GtkWidget *widget,
   GList             *list;
   gint               offset;
 
-  image = GIMP_TOOL (align_tool)->display->image;
+  image  = GIMP_TOOL (align_tool)->display->image;
   action = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "action"));
   offset = align_tool->horz_offset;
 
@@ -967,33 +969,24 @@ do_alignment (GtkWidget *widget,
       break;
 
     case GIMP_ALIGN_REFERENCE_SELECTION:
-      if (image->selection_mask)
-        {
-          reference_object = G_OBJECT (image->selection_mask);
-        }
-      else
-        return;
+      reference_object = G_OBJECT (gimp_image_get_mask (image));
       break;
 
     case GIMP_ALIGN_REFERENCE_ACTIVE_LAYER:
-      if (image->active_layer)
-        reference_object = G_OBJECT (image->active_layer);
-      else
-        return;
+      reference_object = G_OBJECT (gimp_image_get_active_layer (image));
       break;
 
     case GIMP_ALIGN_REFERENCE_ACTIVE_CHANNEL:
-      if (image->active_channel)
-        reference_object = G_OBJECT (image->active_channel);
-      else
-        return;
+      reference_object = G_OBJECT (gimp_image_get_active_channel (image));
       break;
 
     case GIMP_ALIGN_REFERENCE_ACTIVE_PATH:
       g_print ("reference = active path not yet handled.\n");
-      return;
       break;
     }
+
+  if (! reference_object)
+    return;
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (align_tool));
 

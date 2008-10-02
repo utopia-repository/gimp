@@ -84,8 +84,7 @@ gimp_vectors_mod_undo_constructor (GType                  type,
 
   vectors_mod_undo->vectors =
     GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
-                                       G_TYPE_FROM_INSTANCE (vectors),
-                                       FALSE));
+                                       G_TYPE_FROM_INSTANCE (vectors)));
 
   return object;
 }
@@ -97,9 +96,8 @@ gimp_vectors_mod_undo_get_memsize (GimpObject *object,
   GimpVectorsModUndo *vectors_mod_undo = GIMP_VECTORS_MOD_UNDO (object);
   gint64              memsize          = 0;
 
-  if (vectors_mod_undo->vectors)
-    memsize += gimp_object_get_memsize (GIMP_OBJECT (vectors_mod_undo->vectors),
-                                        gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (vectors_mod_undo->vectors),
+                                      gui_size);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -120,15 +118,14 @@ gimp_vectors_mod_undo_pop (GimpUndo            *undo,
 
   vectors_mod_undo->vectors =
     GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
-                                       G_TYPE_FROM_INSTANCE (vectors),
-                                       FALSE));
+                                       G_TYPE_FROM_INSTANCE (vectors)));
 
   gimp_vectors_freeze (vectors);
 
   gimp_vectors_copy_strokes (temp, vectors);
 
-  GIMP_ITEM (vectors)->width    = GIMP_ITEM (temp)->width;
-  GIMP_ITEM (vectors)->height   = GIMP_ITEM (temp)->height;
+  GIMP_ITEM (vectors)->width    = gimp_item_width  (GIMP_ITEM (temp));
+  GIMP_ITEM (vectors)->height   = gimp_item_height (GIMP_ITEM (temp));
   GIMP_ITEM (vectors)->offset_x = GIMP_ITEM (temp)->offset_x;
   GIMP_ITEM (vectors)->offset_y = GIMP_ITEM (temp)->offset_y;
 

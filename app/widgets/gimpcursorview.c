@@ -317,8 +317,7 @@ gimp_cursor_view_style_set (GtkWidget *widget,
   GimpCursorView *view = GIMP_CURSOR_VIEW (widget);
   gint            content_spacing;
 
-  if (GTK_WIDGET_CLASS (parent_class)->style_set)
-    GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 
   gtk_widget_style_get (GTK_WIDGET (view),
                         "content-spacing", &content_spacing,
@@ -383,12 +382,16 @@ gimp_cursor_view_update_cursor (GimpCursorView   *view,
   GimpImageType sample_type;
   GimpRGB       color;
   gint          color_index;
+  gdouble       xres;
+  gdouble       yres;
 
   g_return_if_fail (GIMP_IS_CURSOR_VIEW (view));
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
   if (unit == GIMP_UNIT_PIXEL)
     unit = gimp_image_get_unit (image);
+
+  gimp_image_get_resolution (image, &xres, &yres);
 
   in_image = (x >= 0.0 && x < gimp_image_get_width  (image) &&
               y >= 0.0 && y < gimp_image_get_height (image));
@@ -408,12 +411,10 @@ gimp_cursor_view_update_cursor (GimpCursorView   *view,
   g_snprintf (format_buf, sizeof (format_buf),
               FORMAT_STRING ("%%.%df %s"), unit_digits, unit_str);
 
-  g_snprintf (buf, sizeof (buf), format_buf,
-              x * unit_factor / image->xresolution);
+  g_snprintf (buf, sizeof (buf), format_buf, x * unit_factor / xres);
   gtk_label_set_text (GTK_LABEL (view->unit_x_label), buf);
 
-  g_snprintf (buf, sizeof (buf), format_buf,
-              y * unit_factor / image->yresolution);
+  g_snprintf (buf, sizeof (buf), format_buf, y * unit_factor / yres);
   gtk_label_set_text (GTK_LABEL (view->unit_y_label), buf);
 
   if (gimp_image_pick_color (image, NULL,

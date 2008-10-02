@@ -19,25 +19,18 @@
 #ifndef __CURVES_H__
 #define __CURVES_H__
 
-#define CURVES_NUM_POINTS 17
 
 struct _Curves
 {
-  GimpCurveType curve_type[5];
-  gint          points[5][CURVES_NUM_POINTS][2];
-  guchar        curve[5][256];
+  guchar curve[5][256];
 };
 
 
-void    curves_init            (Curves               *curves);
-void    curves_channel_reset   (Curves               *curves,
-                                GimpHistogramChannel  channel);
-void    curves_calculate_curve (Curves               *curves,
-                                GimpHistogramChannel  channel);
-gfloat  curves_lut_func        (Curves               *curves,
-                                gint                  nchannels,
-                                gint                  channel,
-                                gfloat                value);
+void    curves_init     (Curves *curves);
+gfloat  curves_lut_func (Curves *curves,
+                         gint    nchannels,
+                         gint    channel,
+                         gfloat  value);
 
 
 #endif  /*  __CURVES_H__  */

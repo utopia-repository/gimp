@@ -17,6 +17,7 @@
     </sub>
     <sub name="Index" link="libgimpconfig-index.html"/>
     <sub name="Index of new symbols in GIMP 2.4" link="libgimpconfig-index-new-in-2-4.html"/>
+    <sub name="Index of new symbols in GIMP 2.6" link="libgimpconfig-index-new-in-2-6.html"/>
     <sub name="Index of deprecated symbols" link="libgimpconfig-index-deprecated.html"/>
   </chapters>
   <functions>
@@ -31,11 +32,13 @@
     <function name="gimp_config_duplicate ()" link="libgimpconfig-GimpConfig.html#gimp-config-duplicate"/>
     <function name="gimp_config_is_equal_to ()" link="libgimpconfig-GimpConfig.html#gimp-config-is-equal-to"/>
     <function name="gimp_config_reset ()" link="libgimpconfig-GimpConfig.html#gimp-config-reset"/>
+    <function name="gimp_config_copy ()" link="libgimpconfig-GimpConfig.html#gimp-config-copy"/>
     <function name="gimp_config_deserialize_properties ()" link="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties"/>
     <function name="gimp_config_deserialize_property ()" link="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-property"/>
     <function name="gimp_config_serialize_properties ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-properties"/>
     <function name="gimp_config_serialize_changed_properties ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-changed-properties"/>
     <function name="gimp_config_serialize_property ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property"/>
+    <function name="gimp_config_serialize_property_by_name ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property-by-name"/>
     <function name="gimp_config_serialize_value ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-value"/>
     <function name="enum GimpConfigError" link="libgimpconfig-GimpConfigError.html#GimpConfigError"/>
     <function name="GIMP_CONFIG_ERROR" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS"/>

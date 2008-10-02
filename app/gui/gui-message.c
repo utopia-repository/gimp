@@ -117,7 +117,9 @@ gui_message_error_console (GimpMessageSeverity  severity,
 
   if (dockable)
     {
-      gimp_error_console_add (GIMP_ERROR_CONSOLE (GTK_BIN (dockable)->child),
+      GtkWidget *child = gtk_bin_get_child (GTK_BIN (dockable));
+
+      gimp_error_console_add (GIMP_ERROR_CONSOLE (child),
                               severity, domain, message);
 
       return TRUE;
@@ -191,7 +193,11 @@ gui_message_error_dialog (Gimp                *gimp,
 
   if (GIMP_IS_PROGRESS (handler))
     {
-      if (gimp_progress_message (GIMP_PROGRESS (handler), gimp,
+      /* If there's already an error dialog associated with this
+       * progress, then continue without trying gimp_progress_message().
+       */
+      if (! g_object_get_data (handler, "gimp-error-dialog") &&
+          gimp_progress_message (GIMP_PROGRESS (handler), gimp,
                                  severity, domain, message))
         {
           return TRUE;

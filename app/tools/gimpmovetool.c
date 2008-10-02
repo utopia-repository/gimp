@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -122,7 +124,7 @@ gimp_move_tool_register (GimpToolRegisterCallback  callback,
                 gimp_move_options_gui,
                 0,
                 "gimp-move-tool",
-                Q_("tool|Move"),
+                C_("tool", "Move"),
                 _("Move Tool: Move layers, selections, and other objects"),
                 N_("_Move"), "M",
                 NULL, GIMP_HELP_TOOL_MOVE,
@@ -260,6 +262,9 @@ gimp_move_tool_button_press (GimpTool        *tool,
               move->guide_orientation = gimp_guide_get_orientation (guide);
 
               gimp_tool_control_set_scroll_lock (tool->control, TRUE);
+              gimp_tool_control_set_precision   (tool->control,
+                                                 GIMP_CURSOR_PRECISION_PIXEL_BORDER);
+
               gimp_tool_control_activate (tool->control);
 
               gimp_display_shell_selection_control (shell,
@@ -364,6 +369,9 @@ gimp_move_tool_button_release (GimpTool              *tool,
       gimp_tool_pop_status (tool, display);
 
       gimp_tool_control_set_scroll_lock (tool->control, FALSE);
+      gimp_tool_control_set_precision   (tool->control,
+                                         GIMP_CURSOR_PRECISION_PIXEL_CENTER);
+
       gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
       if (release_type == GIMP_BUTTON_RELEASE_CANCEL)
@@ -762,27 +770,9 @@ gimp_move_tool_draw (GimpDrawTool *draw_tool)
 
   if (move->moving_guide && move->guide_position != -1)
     {
-      switch (move->guide_orientation)
-        {
-        case GIMP_ORIENTATION_HORIZONTAL:
-          gimp_draw_tool_draw_line (draw_tool,
-                                    0, move->guide_position,
-                                    draw_tool->display->image->width,
-                                    move->guide_position,
-                                    FALSE);
-          break;
-
-        case GIMP_ORIENTATION_VERTICAL:
-          gimp_draw_tool_draw_line (draw_tool,
-                                    move->guide_position, 0,
-                                    move->guide_position,
-                                    draw_tool->display->image->height,
-                                    FALSE);
-          break;
-
-        default:
-          g_assert_not_reached ();
-        }
+      gimp_draw_tool_draw_guide_line (draw_tool,
+                                      move->guide_orientation,
+                                      move->guide_position);
     }
 }
 

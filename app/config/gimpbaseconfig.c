@@ -32,14 +32,14 @@
 
 #include "config-types.h"
 
+#include "base/base-types.h" /* eek */
+#include "base/base-utils.h"
 #include "base/pixel-processor.h"
 
 #include "gimprc-blurbs.h"
 #include "gimpbaseconfig.h"
 
 #include "gimp-intl.h"
-
-#define NUM_PROCESSORS_DEFAULT 1
 
 
 enum
@@ -94,11 +94,7 @@ gimp_base_config_class_init (GimpBaseConfigClass *klass)
                                  GIMP_PARAM_STATIC_STRINGS |
                                  GIMP_CONFIG_PARAM_RESTART);
 
-#if defined(HAVE_UNISTD_H) && defined(_SC_NPROCESSORS_ONLN)
-  num_processors = sysconf (_SC_NPROCESSORS_ONLN);
-#else
-  num_processors = NUM_PROCESSORS_DEFAULT;
-#endif
+  num_processors = get_number_of_processors ();
 
 #ifdef GIMP_UNSTABLE
   num_processors = num_processors * 2;
@@ -110,7 +106,7 @@ gimp_base_config_class_init (GimpBaseConfigClass *klass)
                                  GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_MEMSIZE (object_class, PROP_TILE_CACHE_SIZE,
                                     "tile-cache-size", TILE_CACHE_SIZE_BLURB,
-                                    0, MIN (G_MAXULONG, GIMP_MAX_MEMSIZE),
+                                    0, MIN (G_MAXSIZE, GIMP_MAX_MEMSIZE),
                                     1 << 30, /* 1GB */
                                     GIMP_PARAM_STATIC_STRINGS |
                                     GIMP_CONFIG_PARAM_CONFIRM);

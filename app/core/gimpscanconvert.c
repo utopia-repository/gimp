@@ -22,8 +22,7 @@
 
 #include <glib-object.h>
 
-#include <libart_lgpl/libart.h>
-#include <libart_lgpl/art_svp_intersect.h>
+#include <cairo.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -46,51 +45,22 @@ struct _GimpScanConvert
   gint            clip_w;
   gint            clip_h;
 
-  /* stuff necessary for the _add_polygons API...  :-/  */
-  gboolean        got_first;
-  gboolean        need_closing;
-  GimpVector2     first;
-  GimpVector2     prev;
+  /* stroking options */
+  gboolean        do_stroke;
+  gdouble         width;
+  GimpJoinStyle   join;
+  GimpCapStyle    cap;
+  gdouble         miter;
+  gdouble         dash_offset;
+  GArray         *dash_info;
 
-  gboolean        have_open;
   guint           num_nodes;
-  ArtVpath       *vpath;
-
-  ArtSVP         *svp;      /* Sorted vector path
-                               (extension no longer possible)          */
-
-  /* stuff necessary for the rendering callback */
-  GimpChannelOps  op;
-  guchar         *buf;
-  gint            rowstride;
-  gint            x0, x1;
-  gboolean        antialias;
-  gboolean        value;
+  GArray         *path_data;
 };
 
-
 /* private functions */
+static gint   gimp_cairo_stride_for_width        (gint             width);
 
-static void   gimp_scan_convert_render_internal  (GimpScanConvert *sc,
-                                                  GimpChannelOps   op,
-                                                  TileManager     *tile_manager,
-                                                  gint             off_x,
-                                                  gint             off_y,
-                                                  gboolean         antialias,
-                                                  guchar           value);
-static void   gimp_scan_convert_finish           (GimpScanConvert *sc);
-static void   gimp_scan_convert_close_add_points (GimpScanConvert *sc);
-
-static void   gimp_scan_convert_render_callback  (gpointer            user_data,
-                                                  gint                y,
-                                                  gint                start_value,
-                                                  ArtSVPRenderAAStep *steps,
-                                                  gint                n_steps);
-static void   gimp_scan_convert_compose_callback (gpointer            user_data,
-                                                  gint                y,
-                                                  gint                start_value,
-                                                  ArtSVPRenderAAStep *steps,
-                                                  gint                n_steps);
 
 /*  public functions  */
 
@@ -106,6 +76,7 @@ gimp_scan_convert_new (void)
 {
   GimpScanConvert *sc = g_slice_new0 (GimpScanConvert);
 
+  sc->path_data = g_array_new (FALSE, FALSE, sizeof (cairo_path_data_t));
   sc->ratio_xy = 1.0;
 
   return sc;
@@ -122,11 +93,11 @@ gimp_scan_convert_free (GimpScanConvert *sc)
 {
   g_return_if_fail (sc != NULL);
 
-  if (sc->vpath)
-    art_free (sc->vpath);
+  if (sc->path_data)
+    g_array_free (sc->path_data, TRUE);
 
-  if (sc->svp)
-    art_svp_free (sc->svp);
+  if (sc->dash_info)
+    g_array_free (sc->dash_info, TRUE);
 
   g_slice_free (GimpScanConvert, sc);
 }
@@ -176,91 +147,6 @@ gimp_scan_convert_set_clip_rectangle (GimpScanConvert *sc,
 }
 
 /**
- * gimp_scan_convert_add_points:
- * @sc:          a #GimpScanConvert context
- * @n_points:    number of points to add
- * @points:      array of points to add
- * @new_polygon: whether to start a new polygon or append to the last one
- *
- * Adds @n_points from @points to the polygon currently being
- * described by @sc. This function is DEPRECATED, please use
- * gimp_scan_convert_add_polyline() instead.
- */
-void
-gimp_scan_convert_add_points (GimpScanConvert *sc,
-                              guint            n_points,
-                              GimpVector2     *points,
-                              gboolean         new_polygon)
-{
-  gint  i;
-
-  g_return_if_fail (sc != NULL);
-  g_return_if_fail (points != NULL);
-  g_return_if_fail (n_points > 0);
-  g_return_if_fail (sc->svp == NULL);
-
-  /* We need an extra nodes to end the path */
-  sc->vpath = art_renew (sc->vpath, ArtVpath, sc->num_nodes + n_points + 1);
-
-  if (sc->num_nodes == 0 || new_polygon)
-    {
-      if (sc->need_closing)
-        gimp_scan_convert_close_add_points (sc);
-
-      sc->got_first = FALSE;
-    }
-
-  /* We have to compress multiple identical coordinates */
-
-  for (i = 0; i < n_points; i++)
-    {
-      if (sc->got_first == FALSE ||
-          sc->prev.x != points[i].x || sc->prev.y != points[i].y)
-        {
-          sc->vpath[sc->num_nodes].code = ((! sc->got_first) || new_polygon) ?
-                                           ART_MOVETO : ART_LINETO;
-          sc->vpath[sc->num_nodes].x = points[i].x;
-          sc->vpath[sc->num_nodes].y = points[i].y;
-          sc->num_nodes++;
-          sc->prev = points[i];
-
-          if (!sc->got_first)
-            {
-              sc->got_first = TRUE;
-              sc->first = points[i];
-            }
-        }
-    }
-
-  sc->need_closing = TRUE;
-
-  sc->vpath[sc->num_nodes].code = ART_END;
-  sc->vpath[sc->num_nodes].x = 0.0;
-  sc->vpath[sc->num_nodes].y = 0.0;
-}
-
-
-static void
-gimp_scan_convert_close_add_points (GimpScanConvert *sc)
-{
-  if (sc->need_closing &&
-      (sc->prev.x != sc->first.x || sc->prev.y != sc->first.y))
-    {
-      sc->vpath = art_renew (sc->vpath, ArtVpath, sc->num_nodes + 2);
-      sc->vpath[sc->num_nodes].code = ART_LINETO;
-      sc->vpath[sc->num_nodes].x = sc->first.x;
-      sc->vpath[sc->num_nodes].y = sc->first.y;
-      sc->num_nodes++;
-      sc->vpath[sc->num_nodes].code = ART_END;
-      sc->vpath[sc->num_nodes].x = 0.0;
-      sc->vpath[sc->num_nodes].y = 0.0;
-    }
-
-  sc->need_closing = FALSE;
-}
-
-
-/**
  * gimp_scan_convert_add_polyline:
  * @sc:       a #GimpScanConvert context
  * @n_points: number of points to add
@@ -268,35 +154,23 @@ gimp_scan_convert_close_add_points (GimpScanConvert *sc)
  * @closed:   whether to close the polyline and make it a polygon
  *
  * Add a polyline with @n_points @points that may be open or closed.
- * It is not recommended to mix gimp_scan_convert_add_polyline() with
- * gimp_scan_convert_add_points().
  *
  * Please note that you should use gimp_scan_convert_stroke() if you
  * specify open polygons.
  */
 void
-gimp_scan_convert_add_polyline (GimpScanConvert *sc,
-                                guint            n_points,
-                                GimpVector2     *points,
-                                gboolean         closed)
+gimp_scan_convert_add_polyline (GimpScanConvert   *sc,
+                                guint              n_points,
+                                const GimpVector2 *points,
+                                gboolean           closed)
 {
-  GimpVector2  prev = { 0.0, 0.0, };
-  gint         i;
+  GimpVector2        prev = { 0.0, 0.0, };
+  cairo_path_data_t  pd;
+  gint               i;
 
   g_return_if_fail (sc != NULL);
   g_return_if_fail (points != NULL);
   g_return_if_fail (n_points > 0);
-  g_return_if_fail (sc->svp == NULL);
-
-  if (sc->need_closing)
-    gimp_scan_convert_close_add_points (sc);
-
-  if (!closed)
-    sc->have_open = TRUE;
-
-  /* make sure that we have enough space for the nodes */
-  sc->vpath = art_renew (sc->vpath, ArtVpath,
-                         sc->num_nodes + n_points + 2);
 
   for (i = 0; i < n_points; i++)
     {
@@ -305,36 +179,25 @@ gimp_scan_convert_add_polyline (GimpScanConvert *sc,
           prev.x != points[i].x ||
           prev.y != points[i].y)
         {
-          sc->vpath[sc->num_nodes].code = (i == 0 ? (closed ?
-                                                     ART_MOVETO :
-                                                     ART_MOVETO_OPEN) :
-                                                    ART_LINETO);
-          sc->vpath[sc->num_nodes].x = points[i].x;
-          sc->vpath[sc->num_nodes].y = points[i].y;
+          pd.header.type = (i == 0) ? CAIRO_PATH_MOVE_TO : CAIRO_PATH_LINE_TO;
+          pd.header.length = 2;
+          sc->path_data = g_array_append_val (sc->path_data, pd);
+
+          pd.point.x = points[i].x;
+          pd.point.y = points[i].y;
+          sc->path_data = g_array_append_val (sc->path_data, pd);
           sc->num_nodes++;
           prev = points[i];
         }
     }
 
   /* close the polyline when needed */
-  if (closed && (prev.x != points[0].x ||
-                 prev.y != points[0].y))
+  if (closed)
     {
-      sc->vpath[sc->num_nodes].x = points[0].x;
-      sc->vpath[sc->num_nodes].y = points[0].y;
-      sc->vpath[sc->num_nodes].code = ART_LINETO;
-      sc->num_nodes++;
+      pd.header.type = CAIRO_PATH_CLOSE_PATH;
+      pd.header.length = 1;
+      sc->path_data = g_array_append_val (sc->path_data, pd);
     }
-
-  sc->vpath[sc->num_nodes].code = ART_END;
-  sc->vpath[sc->num_nodes].x = 0.0;
-  sc->vpath[sc->num_nodes].y = 0.0;
-
-  /* If someone wants to mix this function with _add_points ()
-   * try to do something reasonable...
-   */
-
-  sc->got_first = FALSE;
 }
 
 
@@ -370,153 +233,80 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
                           gdouble          dash_offset,
                           GArray          *dash_info)
 {
-  ArtSVP                *stroke;
-  ArtPathStrokeJoinType  artjoin = 0;
-  ArtPathStrokeCapType   artcap  = 0;
-
-  g_return_if_fail (sc->svp == NULL);
-
-  if (sc->need_closing)
-    gimp_scan_convert_close_add_points (sc);
-
-  switch (join)
+  sc->do_stroke = TRUE;
+  sc->width = width;
+  sc->join  = join;
+  sc->cap   = cap;
+  sc->miter = miter;
+  if (sc->dash_info)
     {
-    case GIMP_JOIN_MITER:
-      artjoin = ART_PATH_STROKE_JOIN_MITER;
-      break;
-    case GIMP_JOIN_ROUND:
-      artjoin = ART_PATH_STROKE_JOIN_ROUND;
-      break;
-    case GIMP_JOIN_BEVEL:
-      artjoin = ART_PATH_STROKE_JOIN_BEVEL;
-      break;
-    }
-
-  switch (cap)
-    {
-    case GIMP_CAP_BUTT:
-      artcap = ART_PATH_STROKE_CAP_BUTT;
-      break;
-    case GIMP_CAP_ROUND:
-      artcap = ART_PATH_STROKE_CAP_ROUND;
-      break;
-    case GIMP_CAP_SQUARE:
-      artcap = ART_PATH_STROKE_CAP_SQUARE;
-      break;
-    }
-
-  if (sc->ratio_xy != 1.0)
-    {
-      gint i;
-
-      for (i = 0; i < sc->num_nodes; i++)
-        sc->vpath[i].x *= sc->ratio_xy;
+      g_array_free (sc->dash_info, TRUE);
+      sc->dash_info = NULL;
     }
 
   if (dash_info && dash_info->len >= 2)
     {
-      ArtVpath     *dash_vpath;
-      ArtVpathDash  dash;
+      gint          n_dashes;
       gdouble      *dashes;
       gint          i;
 
-      dash.offset = dash_offset * MAX (width, 1.0);
+      dash_offset = dash_offset * MAX (width, 1.0);
 
+      n_dashes = dash_info->len;
       dashes = g_new (gdouble, dash_info->len);
 
       for (i = 0; i < dash_info->len ; i++)
         dashes[i] = MAX (width, 1.0) * g_array_index (dash_info, gdouble, i);
 
-      dash.n_dash = dash_info->len;
-      dash.dash = dashes;
-
       /* correct 0.0 in the first element (starts with a gap) */
 
-      if (dash.dash[0] == 0.0)
+      if (dashes[0] == 0.0)
         {
           gdouble first;
 
-          first = dash.dash[1];
+          first = dashes[1];
 
           /* shift the pattern to really starts with a dash and
            * use the offset to skip into it.
            */
           for (i = 0; i < dash_info->len - 2; i++)
             {
-              dash.dash[i] = dash.dash[i+2];
-              dash.offset += dash.dash[i];
+              dashes[i] = dashes[i+2];
+              dash_offset += dashes[i];
             }
 
           if (dash_info->len % 2 == 1)
             {
-              dash.dash[dash_info->len - 2] = first;
-              dash.n_dash --;
+              dashes[dash_info->len - 2] = first;
+              n_dashes --;
             }
-          else
-            {
-              if (dash_info->len < 3)
-                {
-                  /* empty stroke */
-                  art_free (sc->vpath);
-                  sc->vpath = NULL;
-                }
-              else
-                {
-                  dash.dash [dash_info->len - 3] += first;
-                  dash.n_dash -= 2;
-                }
-            }
+          else if (dash_info->len > 2)
+           {
+             dashes [dash_info->len - 3] += first;
+             n_dashes -= 2;
+           }
         }
 
       /* correct odd number of dash specifiers */
 
-      if (dash.n_dash % 2 == 1)
+      if (n_dashes % 2 == 1)
         {
           gdouble last;
 
-          last = dash.dash[dash.n_dash - 1];
-          dash.dash[0] += last;
-          dash.offset += last;
-          dash.n_dash --;
+          last = dashes[n_dashes - 1];
+          dashes[0]   += last;
+          dash_offset += last;
+          n_dashes --;
         }
 
-
-      if (sc->vpath)
+      if (n_dashes >= 2)
         {
-          dash_vpath = art_vpath_dash (sc->vpath, &dash);
-          art_free (sc->vpath);
-          sc->vpath = dash_vpath;
+          sc->dash_info = g_array_sized_new (FALSE, FALSE, sizeof (gdouble), n_dashes);
+          sc->dash_info = g_array_append_vals (sc->dash_info, dashes, n_dashes);
+          sc->dash_offset = dash_offset;
         }
 
       g_free (dashes);
-    }
-
-  if (sc->vpath)
-    {
-      stroke = art_svp_vpath_stroke (sc->vpath, artjoin, artcap,
-                                     width, miter, 0.2);
-
-      if (sc->ratio_xy != 1.0)
-        {
-          ArtSVPSeg *segment;
-          ArtPoint  *point;
-          gint       i, j;
-
-          for (i = 0; i < stroke->n_segs; i++)
-            {
-              segment = stroke->segs + i;
-              segment->bbox.x0 /= sc->ratio_xy;
-              segment->bbox.x1 /= sc->ratio_xy;
-
-              for (j = 0; j < segment->n_points; j++)
-                {
-                  point = segment->points + j;
-                  point->x /= sc->ratio_xy;
-                }
-            }
-        }
-
-      sc->svp = stroke;
     }
 }
 
@@ -529,8 +319,8 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
  * @off_y:        vertical offset into the @tile_manager
  * @antialias:    whether to apply antialiasiing
  *
- * Actually renders the @sc to a mask. This function expects a tile
- * manager of depth 1.
+ * This is a wrapper around gimp_scan_convert_render_full() that replaces the
+ * content of the @tile_manager with a rendered form of the path passed in.
  *
  * You cannot add additional polygons after this command.
  */
@@ -541,12 +331,8 @@ gimp_scan_convert_render (GimpScanConvert *sc,
                           gint             off_y,
                           gboolean         antialias)
 {
-  g_return_if_fail (sc != NULL);
-  g_return_if_fail (tile_manager != NULL);
-
-  gimp_scan_convert_render_internal (sc, GIMP_CHANNEL_OP_REPLACE,
-                                     tile_manager, off_x, off_y,
-                                     antialias, 255);
+  gimp_scan_convert_render_full (sc, tile_manager, off_x, off_y,
+                                 TRUE, antialias, 255);
 }
 
 /**
@@ -557,10 +343,9 @@ gimp_scan_convert_render (GimpScanConvert *sc,
  * @off_y:        vertical offset into the @tile_manager
  * @value:        value to use for covered pixels
  *
- * A variant of gimp_scan_convert_render() that doesn't do
- * antialiasing but gives control over the value that should be used
- * for pixels covered by the scan conversion . Uncovered pixels are
- * set to zero.
+ * This is a wrapper around gimp_scan_convert_render_full() that doesn't do
+ * antialiasing but gives control over the value that should be used for pixels
+ * covered by the scan conversion. Uncovered pixels are set to zero.
  *
  * You cannot add additional polygons after this command.
  */
@@ -571,12 +356,8 @@ gimp_scan_convert_render_value (GimpScanConvert *sc,
                                 gint             off_y,
                                 guchar           value)
 {
-  g_return_if_fail (sc != NULL);
-  g_return_if_fail (tile_manager != NULL);
-
-  gimp_scan_convert_render_internal (sc, GIMP_CHANNEL_OP_REPLACE,
-                                     tile_manager, off_x, off_y,
-                                     FALSE, value);
+  gimp_scan_convert_render_full (sc, tile_manager, off_x, off_y,
+                                 TRUE, FALSE, value);
 }
 
 /**
@@ -586,45 +367,86 @@ gimp_scan_convert_render_value (GimpScanConvert *sc,
  * @off_x:        horizontal offset into the @tile_manager
  * @off_y:        vertical offset into the @tile_manager
  *
- * This is a variant of gimp_scan_convert_render() that composes the
- * (aliased) scan conversion with the content of the @tile_manager.
+ * This is a wrapper around of gimp_scan_convert_render_full() that composes
+ * the (aliased) scan conversion on top of the content of the @tile_manager.
  *
  * You cannot add additional polygons after this command.
  */
 void
 gimp_scan_convert_compose (GimpScanConvert *sc,
-                           GimpChannelOps   op,
                            TileManager     *tile_manager,
                            gint             off_x,
                            gint             off_y)
 {
-  g_return_if_fail (sc != NULL);
-  g_return_if_fail (tile_manager != NULL);
-
-  gimp_scan_convert_render_internal (sc, op,
-                                     tile_manager, off_x, off_y,
-                                     FALSE, 255);
+  gimp_scan_convert_render_full (sc, tile_manager, off_x, off_y,
+                                 FALSE, FALSE, 255);
 }
 
-static void
-gimp_scan_convert_render_internal (GimpScanConvert *sc,
-                                   GimpChannelOps   op,
-                                   TileManager     *tile_manager,
-                                   gint             off_x,
-                                   gint             off_y,
-                                   gboolean         antialias,
-                                   guchar           value)
+/**
+ * gimp_scan_convert_compose_value:
+ * @sc:           a #GimpScanConvert context
+ * @tile_manager: the #TileManager to render to
+ * @off_x:        horizontal offset into the @tile_manager
+ * @off_y:        vertical offset into the @tile_manager
+ * @value:        value to use for covered pixels
+ *
+ * This is a wrapper around gimp_scan_convert_render_full() that
+ * composes the (aliased) scan conversion with value @value on top of the
+ * content of the @tile_manager.
+ *
+ * You cannot add additional polygons after this command.
+ */
+void
+gimp_scan_convert_compose_value (GimpScanConvert *sc,
+                                 TileManager     *tile_manager,
+                                 gint             off_x,
+                                 gint             off_y,
+                                 gint             value)
 {
-  PixelRegion  maskPR;
-  gpointer     pr;
-  gpointer     callback;
-  gint         x, y;
-  gint         width, height;
+  gimp_scan_convert_render_full (sc, tile_manager, off_x, off_y,
+                                 FALSE, FALSE, value);
+}
 
-  gimp_scan_convert_finish (sc);
+/**
+ * gimp_scan_convert_render_full:
+ * @sc:           a #GimpScanConvert context
+ * @tile_manager: the #TileManager to render to
+ * @off_x:        horizontal offset into the @tile_manager
+ * @off_y:        vertical offset into the @tile_manager
+ * @replace:      if true the original content of the @tile_manager gets destroyed
+ * @antialias:    if true the rendering happens antialiased
+ * @value:        value to use for covered pixels
+ *
+ * This function renders the area described by the path to the @tile_manager,
+ * taking the offset @off_x and @off_y in the tilemanager into account.
+ * The rendering can happen antialiased and be rendered on top of existing
+ * content or replacing it completely. The @value specifies the opacity value
+ * to be used for the objects in the @sc.
+ *
+ * This function expects a tile manager of depth 1.
+ *
+ * You cannot add additional polygons after this command.
+ */
+void
+gimp_scan_convert_render_full (GimpScanConvert *sc,
+                               TileManager     *tile_manager,
+                               gint             off_x,
+                               gint             off_y,
+                               gboolean         replace,
+                               gboolean         antialias,
+                               guchar           value)
+{
+  PixelRegion      maskPR;
+  gpointer         pr;
+  gint             x, y;
+  gint             width, height;
 
-  if (!sc->svp)
-    return;
+  cairo_t         *cr;
+  cairo_surface_t *surface;
+  cairo_path_t     path;
+
+  g_return_if_fail (sc != NULL);
+  g_return_if_fail (tile_manager != NULL);
 
   x = 0;
   y = 0;
@@ -642,239 +464,116 @@ gimp_scan_convert_render_internal (GimpScanConvert *sc,
 
   g_return_if_fail (maskPR.bytes == 1);
 
-  sc->antialias = antialias;
-  sc->value     = value;
-  sc->op        = op;
-
-  callback = (op == GIMP_CHANNEL_OP_REPLACE ?
-              gimp_scan_convert_render_callback :
-              gimp_scan_convert_compose_callback);
+  path.status   = CAIRO_STATUS_SUCCESS;
+  path.data     = (cairo_path_data_t *) sc->path_data->data;
+  path.num_data = sc->path_data->len;
 
   for (pr = pixel_regions_register (1, &maskPR);
        pr != NULL;
        pr = pixel_regions_process (pr))
     {
-      sc->buf       = maskPR.data;
-      sc->rowstride = maskPR.rowstride;
-      sc->x0        = off_x + maskPR.x;
-      sc->x1        = off_x + maskPR.x + maskPR.w;
+      guchar *tmp_buf = NULL;
+      gint    stride;
 
-      art_svp_render_aa (sc->svp,
-                         sc->x0, off_y + maskPR.y,
-                         sc->x1, off_y + maskPR.y + maskPR.h,
-                         callback, sc);
-    }
-}
+      stride = gimp_cairo_stride_for_width (maskPR.w);
 
-/* private function to convert the vpath to a svp when not using
- * gimp_scan_convert_stroke
- */
-static void
-gimp_scan_convert_finish (GimpScanConvert *sc)
-{
-  ArtSVP       *svp, *svp2;
-  ArtSvpWriter *swr;
+      g_assert (stride > 0);
 
-  /* return gracefully on empty path */
-  if (!sc->vpath)
-    return;
-
-  if (sc->need_closing)
-    gimp_scan_convert_close_add_points (sc);
-
-  if (sc->svp)
-    return;   /* We already have a valid SVP */
-
-  /* Debug output of libart path */
-  /* {
-   *   gint i;
-   *   for (i = 0; i < sc->num_nodes + 1; i++)
-   *     {
-   *       g_printerr ("X: %f, Y: %f, Type: %d\n", sc->vpath[i].x,
-   *                                               sc->vpath[i].y,
-   *                                               sc->vpath[i].code );
-   *     }
-   * }
-   */
-
-  if (sc->have_open)
-    {
-      gint i;
-
-      for (i = 0; i < sc->num_nodes; i++)
-        if (sc->vpath[i].code == ART_MOVETO_OPEN)
-          {
-            g_printerr ("Fixing ART_MOVETO_OPEN - result might be incorrect\n");
-            sc->vpath[i].code = ART_MOVETO;
-          }
-    }
-
-  svp = art_svp_from_vpath (sc->vpath);
-
-  swr = art_svp_writer_rewind_new (ART_WIND_RULE_ODDEVEN);
-  art_svp_intersector (svp, swr);
-
-  svp2 = art_svp_writer_rewind_reap (swr); /* this also frees swr */
-
-  art_svp_free (svp);
-
-  sc->svp = svp2;
-}
-
-
-/*
- * private function to render libart SVPRenderAASteps into the pixel region
- *
- * A function pretty similiar to this could be used to implement a
- * lookup table for the values (just change VALUE_TO_PIXEL).
- *
- * from the libart documentation:
- *
- * The value 0x8000 represents 0% coverage by the polygon, while
- * 0xff8000 represents 100% coverage. This format is designed so that
- * >> 16 results in a standard 0x00..0xff value range, with nice
- * rounding.
- */
-
-static void
-gimp_scan_convert_render_callback (gpointer            user_data,
-                                   gint                y,
-                                   gint                start_value,
-                                   ArtSVPRenderAAStep *steps,
-                                   gint                n_steps)
-{
-  GimpScanConvert *sc        = user_data;
-  gint             cur_value = start_value;
-  gint             run_x0;
-  gint             run_x1;
-  gint             k;
-
-#define VALUE_TO_PIXEL(x) (sc->antialias ? \
-                           ((x) >> 16)   : \
-                           (((x) & (1 << 23) ? sc->value : 0)))
-
-  if (n_steps > 0)
-    {
-      run_x1 = steps[0].x;
-
-      if (run_x1 > sc->x0)
-        memset (sc->buf,
-                VALUE_TO_PIXEL (cur_value),
-                run_x1 - sc->x0);
-
-      for (k = 0; k < n_steps - 1; k++)
+      if (maskPR.rowstride != stride)
         {
-          cur_value += steps[k].delta;
+          const guchar *src = maskPR.data;
+          guchar       *dest;
+          gint          i;
 
-          run_x0 = run_x1;
-          run_x1 = steps[k + 1].x;
+          dest = tmp_buf = g_alloca (stride * maskPR.h);
 
-          if (run_x1 > run_x0)
-            memset (sc->buf + run_x0 - sc->x0,
-                    VALUE_TO_PIXEL (cur_value),
-                    run_x1 - run_x0);
+          if (!replace)
+            {
+              for (i = 0; i < maskPR.h; i++)
+                {
+                  memcpy (dest, src, maskPR.w);
+
+                  src  += maskPR.rowstride;
+                  dest += stride;
+                }
+            }
         }
 
-      cur_value += steps[k].delta;
+      surface = cairo_image_surface_create_for_data (tmp_buf ?
+                                                     tmp_buf : maskPR.data,
+                                                     CAIRO_FORMAT_A8,
+                                                     maskPR.w, maskPR.h,
+                                                     stride);
 
-      if (sc->x1 > run_x1)
-        memset (sc->buf + run_x1 - sc->x0,
-                VALUE_TO_PIXEL (cur_value),
-                sc->x1 - run_x1);
-    }
-  else
-    {
-      memset (sc->buf,
-              VALUE_TO_PIXEL (cur_value),
-              sc->x1 - sc->x0);
-    }
-
-  sc->buf += sc->rowstride;
-
-#undef VALUE_TO_PIXEL
-}
-
-static inline void
-compose (GimpChannelOps  op,
-         guchar         *buf,
-         guchar          value,
-         gint            len)
-{
-  switch (op)
-    {
-    case GIMP_CHANNEL_OP_ADD:
-      if (value)
-        memset (buf, value, len);
-      break;
-    case GIMP_CHANNEL_OP_SUBTRACT:
-      if (value)
-        memset (buf, 0, len);
-      break;
-    case GIMP_CHANNEL_OP_REPLACE:
-      memset (buf, value, len);
-      break;
-    case GIMP_CHANNEL_OP_INTERSECT:
-      do
+      cairo_surface_set_device_offset (surface,
+                                       -off_x - maskPR.x,
+                                       -off_y - maskPR.y);
+      cr = cairo_create (surface);
+      cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+      if (replace)
         {
-          if (*buf)
-            *buf = value;
-          buf++;
+          cairo_set_source_rgba (cr, 0, 0, 0, 0);
+          cairo_paint (cr);
         }
-      while (--len);
-      break;
-    }
-}
-
-static void
-gimp_scan_convert_compose_callback (gpointer            user_data,
-                                    gint                y,
-                                    gint                start_value,
-                                    ArtSVPRenderAAStep *steps,
-                                    gint                n_steps)
-{
-  GimpScanConvert *sc        = user_data;
-  gint             cur_value = start_value;
-  gint             k, run_x0, run_x1;
-
-#define VALUE_TO_PIXEL(x) (((x) & (1 << 23) ? 255 : 0))
-
-  if (n_steps > 0)
-    {
-      run_x1 = steps[0].x;
-
-      if (run_x1 > sc->x0)
-        compose (sc->op, sc->buf,
-                 VALUE_TO_PIXEL (cur_value),
-                 run_x1 - sc->x0);
-
-      for (k = 0; k < n_steps - 1; k++)
+      cairo_set_source_rgba (cr, 0, 0, 0, value / 255.0);
+      cairo_append_path (cr, &path);
+      cairo_set_antialias (cr, antialias ? CAIRO_ANTIALIAS_GRAY : CAIRO_ANTIALIAS_NONE);
+      cairo_set_miter_limit (cr, sc->miter);
+      if (sc->do_stroke)
         {
-          cur_value += steps[k].delta;
+          cairo_set_line_cap (cr, sc->cap == GIMP_CAP_BUTT ? CAIRO_LINE_CAP_BUTT :
+                                  sc->cap == GIMP_CAP_ROUND ? CAIRO_LINE_CAP_ROUND :
+                                  CAIRO_LINE_CAP_SQUARE);
+          cairo_set_line_join (cr, sc->join == GIMP_JOIN_MITER ? CAIRO_LINE_JOIN_MITER :
+                                   sc->join == GIMP_JOIN_ROUND ? CAIRO_LINE_JOIN_ROUND :
+                                   CAIRO_LINE_JOIN_BEVEL);
 
-          run_x0 = run_x1;
-          run_x1 = steps[k + 1].x;
-
-          if (run_x1 > run_x0)
-            compose (sc->op, sc->buf + run_x0 - sc->x0,
-                     VALUE_TO_PIXEL (cur_value),
-                     run_x1 - run_x0);
+          cairo_set_line_width (cr, sc->width);
+          if (sc->dash_info)
+            cairo_set_dash (cr, (double *) sc->dash_info->data, sc->dash_info->len, sc->dash_offset);
+          cairo_scale (cr, 1.0, sc->ratio_xy);
+          cairo_stroke (cr);
+        }
+      else
+        {
+          cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
+          cairo_fill (cr);
         }
 
-      cur_value += steps[k].delta;
+      cairo_destroy (cr);
+      cairo_surface_destroy (surface);
 
-      if (sc->x1 > run_x1)
-        compose (sc->op, sc->buf + run_x1 - sc->x0,
-                 VALUE_TO_PIXEL (cur_value),
-                 sc->x1 - run_x1);
+      if (tmp_buf)
+        {
+          guchar       *dest = maskPR.data;
+          const guchar *src  = tmp_buf;
+          gint          i;
+
+          for (i = 0; i < maskPR.h; i++)
+            {
+              memcpy (dest, src, maskPR.w);
+
+              src  += stride;
+              dest += maskPR.rowstride;
+            }
+        }
     }
-  else
-    {
-      compose (sc->op, sc->buf,
-               VALUE_TO_PIXEL (cur_value),
-               sc->x1 - sc->x0);
-    }
-
-  sc->buf += sc->rowstride;
-
-#undef VALUE_TO_PIXEL
 }
+
+static gint
+gimp_cairo_stride_for_width (gint width)
+{
+#ifdef __GNUC__
+#warning use cairo_format_stride_for_width() as soon as we depend on cairo 1.6
+#endif
+#if 0
+  return cairo_format_stride_for_width (CAIRO_FORMAT_A8, width);
+#endif
+
+#define CAIRO_STRIDE_ALIGNMENT (sizeof (guint32))
+#define CAIRO_STRIDE_FOR_WIDTH_BPP(w,bpp) \
+   (((bpp)*(w)+7)/8 + CAIRO_STRIDE_ALIGNMENT-1) & ~(CAIRO_STRIDE_ALIGNMENT-1)
+
+  return CAIRO_STRIDE_FOR_WIDTH_BPP (width, 8);
+}
+

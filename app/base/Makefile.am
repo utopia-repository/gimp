@@ -8,6 +8,8 @@ libappbase_a_SOURCES = \
 	base-enums.c		\
 	base-enums.h		\
 	base-types.h		\
+	base-utils.c		\
+	base-utils.h		\
 	boundary.c		\
 	boundary.h		\
 	color-balance.c		\
@@ -18,6 +20,8 @@ libappbase_a_SOURCES = \
 	cpercep.h		\
 	curves.c		\
 	curves.h		\
+	desaturate.c		\
+	desaturate.h		\
 	gimphistogram.c		\
 	gimphistogram.h		\
 	gimplut.c		\

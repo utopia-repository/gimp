@@ -30,7 +30,7 @@
 #include <unistd.h>
 #endif
 
-#include <glib-object.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpconfig/gimpconfig.h"
@@ -41,6 +41,8 @@
 
 #include "base/base.h"
 #include "base/tile-swap.h"
+
+#include "gegl/gimp-gegl.h"
 
 #include "core/gimp.h"
 #include "core/gimp-user-install.h"
@@ -60,6 +62,7 @@
 
 #include "gimp-intl.h"
 
+
 /*  local prototypes  */
 
 static void       app_init_update_none    (const gchar *text1,
@@ -76,12 +79,12 @@ void
 app_libs_init (GOptionContext *context,
                gboolean        no_interface)
 {
-  if (no_interface)
-    {
-      g_type_init ();
-    }
+  g_type_init ();
+
+  g_option_context_add_group (context, gegl_get_option_group ());
+
 #ifndef GIMP_CONSOLE_COMPILATION
-  else
+  if (! no_interface)
     {
       gui_libs_init (context);
     }
@@ -184,6 +187,8 @@ app_run (const gchar         *full_prog_name,
   /*  initialize lowlevel stuff  */
   swap_is_ok = base_init (config, be_verbose, use_cpu_accel);
 
+  gimp_gegl_init ();
+
 #ifndef GIMP_CONSOLE_COMPILATION
   if (! no_interface)
     update_status_func = gui_init (gimp, no_splash);
@@ -229,11 +234,6 @@ app_run (const gchar         *full_prog_name,
         file_open_from_command_line (gimp, filenames[i], as_new);
     }
 
-#ifndef GIMP_CONSOLE_COMPILATION
-  if (! no_interface)
-    gui_post_init (gimp);
-#endif
-
   batch_run (gimp, batch_interpreter, batch_commands);
 
   loop = g_main_loop_new (NULL, FALSE);
@@ -249,7 +249,9 @@ app_run (const gchar         *full_prog_name,
   g_main_loop_unref (loop);
 
   g_object_unref (gimp);
+
   errors_exit ();
+  gegl_exit ();
   base_exit ();
 }
 
@@ -269,7 +271,7 @@ app_exit_after_callback (Gimp      *gimp,
                          GMainLoop *loop)
 {
   if (gimp->be_verbose)
-    g_print ("EXIT: app_exit_after_callback\n");
+    g_print ("EXIT: %s\n", G_STRFUNC);
 
   /*
    *  In stable releases, we simply call exit() here. This speeds up
@@ -281,11 +283,18 @@ app_exit_after_callback (Gimp      *gimp,
    */
 
 #ifdef GIMP_UNSTABLE
+
   g_main_loop_quit (loop);
+
 #else
-  /*  make sure that the swap file is removed before we quit */
+
+  gegl_exit ();
+
+  /*  make sure that the swap files are removed before we quit */
   tile_swap_exit ();
+
   exit (EXIT_SUCCESS);
+
 #endif
 
   return FALSE;

@@ -52,6 +52,7 @@ STOCK_MENU_IMAGES = \
 	stock-flip-horizontal-16.png			\
 	stock-flip-vertical-16.png			\
 	stock-floating-selection-16.png			\
+	stock-gegl-16.png				\
 	stock-gradient-bilinear-16.png			\
 	stock-gradient-conical-asymmetric-16.png	\
 	stock-gradient-conical-symmetric-16.png		\
@@ -116,6 +117,7 @@ STOCK_MENU_IMAGES = \
 	stock-tools-16.png				\
 	stock-transparency-16.png			\
 	stock-undo-history-16.png			\
+	stock-user-manual-16.png			\
 	stock-video-16.png				\
 	stock-warning-16.png				\
 	stock-wilber-16.png				\
@@ -159,6 +161,7 @@ STOCK_BUTTON_IMAGES = \
 	stock-edit-16.png			\
 	stock-eye-20.png			\
 	stock-floating-selection-24.png		\
+	stock-gegl-22.png			\
 	stock-gravity-east-24.png		\
 	stock-gravity-north-24.png		\
 	stock-gravity-north-east-24.png		\
@@ -205,13 +208,15 @@ STOCK_BUTTON_IMAGES = \
 	stock-tool-options-24.png		\
 	stock-tools-24.png			\
 	stock-transparency-24.png		\
+	stock-undo-history-24.png		\
+	stock-user-manual-24.png		\
 	stock-vcenter-24.png			\
 	stock-vchain-24.png			\
 	stock-vchain-broken-24.png		\
 	stock-video-24.png			\
-	stock-undo-history-24.png		\
 	stock-warning-24.png			\
-	stock-web-24.png
+	stock-web-24.png			\
+	stock-wilber-22.png
 
 STOCK_DND_IMAGES = \
 	stock-channel-32.png			\
@@ -225,7 +230,8 @@ STOCK_DND_IMAGES = \
 	stock-image-32.png			\
 	stock-layer-32.png			\
 	stock-layer-mask-32.png			\
-	stock-text-layer-32.png
+	stock-text-layer-32.png			\
+	stock-user-manual-32.png
 
 STOCK_DIALOG_IMAGES = \
 	stock-channel-48.png			\
@@ -245,6 +251,7 @@ STOCK_DIALOG_IMAGES = \
 	stock-question-64.png			\
 	stock-text-layer-48.png			\
 	stock-texture-64.png			\
+	stock-user-manual-64.png		\
 	stock-warning-64.png			\
 	stock-wilber-64.png			\
 	stock-wilber-eek-64.png

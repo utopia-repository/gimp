@@ -128,13 +128,20 @@ sub marshal_inargs {
 
 sub marshal_outargs {
     my $proc = shift;
-
-    my $result = <<CODE;
-  return_vals = gimp_procedure_get_return_values (procedure, success);
-CODE
-
+    my $result;
     my $argc = 0;
     my @outargs = @{$proc->{outargs}} if exists $proc->{outargs};
+
+    if ($success) {
+	$result = <<CODE;
+  return_vals = gimp_procedure_get_return_values (procedure, success,
+                                                  error ? *error : NULL);
+CODE
+    } else {
+	$result = <<CODE;
+  return_vals = gimp_procedure_get_return_values (procedure, TRUE, NULL);
+CODE
+    }
 
     if (scalar @outargs) {
 	my $outargs = "";
@@ -175,10 +182,16 @@ CODE
         $result .= "\n" . ' ' x 2 . "return return_vals;\n";
     }
     else {
-	$result =~ s/_vals =//;
+	if ($success) {
+	    $result =~ s/return_vals =/return/;
+	    $result =~ s/       error/error/;
+	}
+	else {
+	    $result =~ s/  return_vals =/\n  return/;
+	    $result =~ s/       error/error/;
+	}
     }
 
-    $result =~ s/, success\);$/, TRUE);/m unless $success;
     $result;
 }
 
@@ -482,6 +495,14 @@ gimp_param_spec_string_array ("$name",
                               $flags)
 CODE
     }
+    elsif ($pdbtype eq 'colorarray') {
+	$pspec = <<CODE;
+gimp_param_spec_color_array ("$name",
+                             "$nick",
+                             "$blurb",
+                             $flags)
+CODE
+    }
     else {
 	warn "Unsupported PDB type: $arg->{name} ($arg->{type})";
 	exit -1;
@@ -523,7 +544,8 @@ sub generate {
    * gimp-$proc->{canonical_name}
    */
   procedure = gimp_procedure_new (${name}_invoker);
-  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-$proc->{canonical_name}");
+  gimp_object_set_static_name (GIMP_OBJECT (procedure),
+                               "gimp-$proc->{canonical_name}");
   gimp_procedure_set_static_strings (procedure,
                                      "gimp-$proc->{canonical_name}",
                                      @{[ &quotewrap($proc->{blurb}, 2) ]},
@@ -589,11 +611,12 @@ CODE
 	}
 
 	$out->{code} .= "\nstatic GValueArray *\n";
-	$out->{code} .= "${name}_invoker (GimpProcedure     *procedure,\n";
-	$out->{code} .=  ' ' x length($name) . "          Gimp              *gimp,\n";
-	$out->{code} .=  ' ' x length($name) . "          GimpContext       *context,\n";
-	$out->{code} .=  ' ' x length($name) . "          GimpProgress      *progress,\n";
-	$out->{code} .=  ' ' x length($name) . "          const GValueArray *args)\n{\n";
+	$out->{code} .= "${name}_invoker (GimpProcedure      *procedure,\n";
+	$out->{code} .=  ' ' x length($name) . "          Gimp               *gimp,\n";
+	$out->{code} .=  ' ' x length($name) . "          GimpContext        *context,\n";
+	$out->{code} .=  ' ' x length($name) . "          GimpProgress       *progress,\n";
+	$out->{code} .=  ' ' x length($name) . "          const GValueArray  *args,\n";
+	$out->{code} .=  ' ' x length($name) . "          GError            **error)\n{\n";
 
 	my $code = "";
 
@@ -668,6 +691,8 @@ GPL
 
 	foreach (@{$main::grp{$group}->{headers}}) { $out->{headers}->{$_}++ }
 
+	$out->{headers}->{"\"core/gimpparamspecs.h\""}++;
+
 	my @headers = sort {
 	    my ($x, $y) = ($a, $b);
 	    foreach ($x, $y) {
@@ -680,30 +705,23 @@ GPL
 	    }
 	    $x cmp $y;
 	} keys %{$out->{headers}};
-        my $headers = ""; my $lib = 0; my $seen = 0; my $nl = 0;
-	my $sys = 0; my $base = 0;
+
+	my $headers = "";
+	my $lib = 0;
+	my $seen = 0;
+	my $sys = 0;
+	my $base = 0;
+	my $error = 0;
+	my $utils = 0;
+	my $intl = 0;
+
 	foreach (@headers) {
-	    $headers .= "\n" if $nl;
-	    $nl = 0;
-
-	    if ($_ eq '<unistd.h>') {
-		$headers .= "\n" if $seen;
-		$headers .= "#ifdef HAVE_UNISTD_H\n";
-	    }
-	    if ($_ eq '<process.h>') {
-		$headers .= "\n" if $seen;
-		$headers .= "#include <glib.h>\n\n";	
-		$headers .= "#ifdef G_OS_WIN32\n";
-	    }
-
-
 	    $seen++ if /^</;
 
 	    if ($sys == 0 && !/^</) {
 		$sys = 1;
-		$headers .= "\n";
-		$headers .= '#include <glib-object.h>';
-		$headers .= "\n\n";
+		$headers .= "\n" if $seen;
+		$headers .= "#include <glib-object.h>\n\n";
 	    }
 
 	    $seen = 0 if !/^</;
@@ -717,55 +735,39 @@ GPL
 
 		if ($sys == 1 && $base == 0) {
 		    $base = 1;
-
-		    $headers .= '#include "pdb-types.h"';
-		    $headers .= "\n";
-		    $headers .= '#include "gimppdb.h"';
-		    $headers .= "\n";
-		    $headers .= '#include "gimpprocedure.h"';
-		    $headers .= "\n";
-		    $headers .= '#include "core/gimpparamspecs.h"';
-		    $headers .= "\n\n";
+		    $headers .= "#include \"pdb-types.h\"\n\n";
 		}
 	    }
 
-            if ($_ eq '"regexrepl/regex.h"') {
-		$headers .= "\n";
-		$headers .= "#ifdef HAVE_GLIBC_REGEX\n";
-		$headers .= "#include <regex.h>\n";
-		$headers .= "#else\n";
+	    if (/gimp-intl/) {
+		$intl = 1;
 	    }
-
-	    $headers .= "#include $_\n";
-
-            if ($_ eq '"regexrepl/regex.h"') {
-		$headers .= "#endif\n";
-		$nl = 1;
+	    elsif (/gimppdb-utils/) {
+		$utils = 1;
 	    }
-
-	    if ($_ eq '<unistd.h>') {
-		$headers .= "#endif\n";
-		$seen = 0;
-		$nl = 1;
- 	    }
-
-            if ($_ eq '<process.h>') {
-		$headers .= "#endif\n";
-		$seen = 0;
-		$nl = 1;
+	    elsif (/gimppdberror/) {
+		$error = 1;
 	    }
-
-	    $headers .= "\n" if $_ eq '"config.h"';
+	    else {
+		$headers .= "#include $_\n";
+	    }
 	}
 
-	$headers .= "\n#include \"internal_procs.h\"\n";
+	$headers .= "\n";
+	$headers .= "#include \"gimppdb.h\"\n";
+	$headers .= "#include \"gimppdberror.h\"\n" if $error;
+	$headers .= "#include \"gimppdb-utils.h\"\n" if $utils;
+	$headers .= "#include \"gimpprocedure.h\"\n";
+	$headers .= "#include \"internal-procs.h\"\n";
+
+	$headers .= "\n#include \"gimp-intl.h\"\n" if $intl;
 
 	my $extra = {};
 	if (exists $main::grp{$group}->{extra}->{app}) {
 	    $extra = $main::grp{$group}->{extra}->{app}
 	}
 
-	my $cfile = "$destdir/${group}_cmds.c$FILE_EXT";
+	my $cfile = "$destdir/".canonicalize(${group})."-cmds.c$FILE_EXT";
 	open CFILE, "> $cfile" or die "Can't open $cfile: $!\n";
 	print CFILE $gpl;
 	print CFILE qq/#include "config.h"\n\n/;
@@ -787,7 +789,7 @@ GPL
     }
 
     if (! $ENV{PDBGEN_GROUPS}) {
-	my $internal = "$destdir/internal_procs.h$FILE_EXT";
+	my $internal = "$destdir/internal-procs.h$FILE_EXT";
 	open IFILE, "> $internal" or die "Can't open $internal: $!\n";
 	print IFILE $gpl;
 	my $guard = "__INTERNAL_PROCS_H__";
@@ -811,14 +813,14 @@ HEADER
 	close IFILE;
 	&write_file($internal);
 
-	$internal = "$destdir/internal_procs.c$FILE_EXT";
+	$internal = "$destdir/internal-procs.c$FILE_EXT";
 	open IFILE, "> $internal" or die "Can't open $internal: $!\n";
 	print IFILE $gpl;
 	print IFILE qq@#include "config.h"\n\n@;
 	print IFILE qq@#include <glib-object.h>\n\n@;
 	print IFILE qq@#include "pdb-types.h"\n\n@;
 	print IFILE qq@#include "gimppdb.h"\n\n@;
-	print IFILE qq@#include "internal_procs.h"\n\n@;
+	print IFILE qq@#include "internal-procs.h"\n\n@;
 	chop $group_procs;
 	print IFILE "\n/* $total procedures registered total */\n\n";
 	print IFILE <<BODY;

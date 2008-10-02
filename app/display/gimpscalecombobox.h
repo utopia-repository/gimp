@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpscalecombobox.h
- * Copyright (C) 2004  Sven Neumann <sven@gimp.org>
+ * Copyright (C) 2004, 2008  Sven Neumann <sven@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,6 @@
 #ifndef __GIMP_SCALE_COMBO_BOX_H__
 #define __GIMP_SCALE_COMBO_BOX_H__
 
-#include <gtk/gtkcombobox.h>
-
 
 #define GIMP_TYPE_SCALE_COMBO_BOX            (gimp_scale_combo_box_get_type ())
 #define GIMP_SCALE_COMBO_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_SCALE_COMBO_BOX, GimpScaleComboBox))
@@ -37,14 +35,16 @@ typedef struct _GimpScaleComboBoxClass  GimpScaleComboBoxClass;
 
 struct _GimpScaleComboBoxClass
 {
-  GtkComboBoxClass  parent_instance;
+  GtkComboBoxEntryClass  parent_instance;
+
+  void (* entry_activated) (GimpScaleComboBox *combo_box);
 };
 
 struct _GimpScaleComboBox
 {
-  GtkComboBox       parent_instance;
+  GtkComboBoxEntry  parent_instance;
 
-  gboolean          actions_added;
+  gdouble           scale;
   GtkTreePath      *last_path;
   GList            *mru;
 };
@@ -53,9 +53,6 @@ struct _GimpScaleComboBox
 GType       gimp_scale_combo_box_get_type   (void) G_GNUC_CONST;
 
 GtkWidget * gimp_scale_combo_box_new        (void);
-void        gimp_scale_combo_box_add_action (GimpScaleComboBox *combo_box,
-                                             GtkAction         *action,
-                                             const gchar       *label);
 void        gimp_scale_combo_box_set_scale  (GimpScaleComboBox *combo_box,
                                              gdouble            scale);
 gdouble     gimp_scale_combo_box_get_scale  (GimpScaleComboBox *combo_box);

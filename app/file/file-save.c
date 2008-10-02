@@ -135,7 +135,7 @@ file_save (GimpImage           *image,
 
   return_vals =
     gimp_pdb_execute_procedure_by_name (image->gimp->pdb,
-                                        context, progress,
+                                        context, progress, error,
                                         GIMP_OBJECT (file_proc)->name,
                                         GIMP_TYPE_INT32,       run_mode,
                                         GIMP_TYPE_IMAGE_ID,    image_ID,
@@ -183,16 +183,18 @@ file_save (GimpImage           *image,
       /* only save a thumbnail if we are saving as XCF, see bug #25272 */
       if (GIMP_PROCEDURE (file_proc)->proc_type == GIMP_INTERNAL)
         gimp_imagefile_save_thumbnail (imagefile, file_proc->mime_type, image);
-
-      if (image->gimp->config->save_document_history)
-        gimp_recent_list_add_uri (image->gimp, uri, file_proc->mime_type);
     }
   else if (status != GIMP_PDB_CANCEL)
     {
-      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   _("%s plug-in could not save image"),
-                   gimp_plug_in_procedure_get_label (file_proc));
+      if (error && *error == NULL)
+        {
+          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                       _("%s plug-in could not save image"),
+                       gimp_plug_in_procedure_get_label (file_proc));
+        }
     }
+
+  gimp_image_flush (image);
 
   g_object_unref (image);
 

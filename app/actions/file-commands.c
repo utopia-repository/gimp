@@ -65,6 +65,7 @@
 /*  local function prototypes  */
 
 static void   file_open_dialog_show        (GtkWidget   *parent,
+                                            Gimp        *gimp,
                                             GimpImage   *image,
                                             const gchar *uri,
                                             gboolean     open_as_layers);
@@ -90,9 +91,11 @@ void
 file_open_cmd_callback (GtkAction *action,
                         gpointer   data)
 {
+  Gimp        *gimp;
   GimpImage   *image;
   GtkWidget   *widget;
   const gchar *uri = NULL;
+  return_if_no_gimp (gimp, data);
   return_if_no_widget (widget, data);
 
   image = action_data_get_image (data);
@@ -100,24 +103,26 @@ file_open_cmd_callback (GtkAction *action,
   if (image)
     uri = gimp_object_get_name (GIMP_OBJECT (image));
 
-  file_open_dialog_show (widget, NULL, uri, FALSE);
+  file_open_dialog_show (widget, gimp, NULL, uri, FALSE);
 }
 
 void
 file_open_as_layers_cmd_callback (GtkAction *action,
                                   gpointer   data)
 {
+  Gimp        *gimp;
   GimpDisplay *display;
   GtkWidget   *widget;
   GimpImage   *image;
   const gchar *uri;
+  return_if_no_gimp (gimp, data);
   return_if_no_display (display, data);
   return_if_no_widget (widget, data);
 
   image = display->image;
   uri = gimp_object_get_name (GIMP_OBJECT (image));
 
-  file_open_dialog_show (widget, image, uri, TRUE);
+  file_open_dialog_show (widget, gimp, image, uri, TRUE);
 }
 
 void
@@ -133,7 +138,7 @@ file_open_location_cmd_callback (GtkAction *action,
 }
 
 void
-file_last_opened_cmd_callback (GtkAction *action,
+file_open_recent_cmd_callback (GtkAction *action,
                                gint       value,
                                gpointer   data)
 {
@@ -152,12 +157,17 @@ file_last_opened_cmd_callback (GtkAction *action,
 
   if (imagefile)
     {
+      GimpDisplay       *display;
+      GimpProgress      *progress;
       GimpImage         *image;
       GimpPDBStatusType  status;
       GError            *error = NULL;
+      return_if_no_display (display, data);
+
+      progress = display->image ? NULL : GIMP_PROGRESS (display);
 
       image = file_open_with_display (gimp, action_data_get_context (data),
-                                      NULL,
+                                      progress,
                                       GIMP_OBJECT (imagefile)->name, FALSE,
                                       &status, &error);
 
@@ -166,7 +176,7 @@ file_last_opened_cmd_callback (GtkAction *action,
           gchar *filename =
             file_utils_uri_display_name (GIMP_OBJECT (imagefile)->name);
 
-          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
+          gimp_message (gimp, G_OBJECT (display), GIMP_MESSAGE_ERROR,
                         _("Opening '%s' failed:\n\n%s"),
                         filename, error->message);
           g_clear_error (&error);
@@ -185,6 +195,7 @@ file_save_cmd_callback (GtkAction *action,
   GimpImage    *image;
   GtkWidget    *widget;
   GimpSaveMode  save_mode;
+  const gchar  *uri;
   gboolean      saved = FALSE;
   return_if_no_display (display, data);
   return_if_no_widget (widget, data);
@@ -196,24 +207,25 @@ file_save_cmd_callback (GtkAction *action,
   if (! gimp_image_get_active_drawable (image))
     return;
 
+  uri = gimp_object_get_name (GIMP_OBJECT (image));
+
   switch (save_mode)
     {
     case GIMP_SAVE_MODE_SAVE:
     case GIMP_SAVE_MODE_SAVE_AND_CLOSE:
-      /*  Only save if the image has been modified  */
-      if (image->dirty ||
-          ! GIMP_GUI_CONFIG (image->gimp->config)->trust_dirty_flag)
+      /*  Only save if the image has been modified, or if it is new.  */
+      if ((image->dirty ||
+           ! GIMP_GUI_CONFIG (image->gimp->config)->trust_dirty_flag) ||
+          uri == NULL)
         {
-          const gchar         *uri;
-          GimpPlugInProcedure *save_proc = NULL;
-
-          uri       = gimp_object_get_name (GIMP_OBJECT (image));
-          save_proc = gimp_image_get_save_proc (image);
+          GimpPlugInProcedure *save_proc = gimp_image_get_save_proc (image);
 
           if (uri && ! save_proc)
-            save_proc =
-              file_procedure_find (image->gimp->plug_in_manager->save_procs,
-                                   uri, NULL);
+            {
+              save_proc =
+                file_procedure_find (image->gimp->plug_in_manager->save_procs,
+                                     uri, NULL);
+            }
 
           if (uri && save_proc)
             {
@@ -277,6 +289,8 @@ file_save_cmd_callback (GtkAction *action,
         }
       else
         {
+          gimp_message (image->gimp, G_OBJECT (display),
+                        GIMP_MESSAGE_INFO, _("No changes need to be saved"));
           saved = TRUE;
           break;
         }
@@ -297,7 +311,7 @@ file_save_cmd_callback (GtkAction *action,
   if (save_mode == GIMP_SAVE_MODE_SAVE_AND_CLOSE &&
       saved && ! display->image->dirty)
     {
-      gimp_display_delete (display);
+      gimp_display_close (display);
     }
 }
 
@@ -403,7 +417,7 @@ file_close_all_cmd_callback (GtkAction *action,
 
   if (! gimp_displays_dirty (gimp))
     {
-      gimp_displays_delete (gimp);
+      gimp_displays_close (gimp);
     }
   else
     {
@@ -431,7 +445,7 @@ file_file_open_dialog (Gimp        *gimp,
                        const gchar *uri,
                        GtkWidget   *parent)
 {
-  file_open_dialog_show (parent, NULL, uri, FALSE);
+  file_open_dialog_show (parent, gimp, NULL, uri, FALSE);
 }
 
 
@@ -439,6 +453,7 @@ file_file_open_dialog (Gimp        *gimp,
 
 static void
 file_open_dialog_show (GtkWidget   *parent,
+                       Gimp        *gimp,
                        GimpImage   *image,
                        const gchar *uri,
                        gboolean     open_as_layers)
@@ -451,6 +466,9 @@ file_open_dialog_show (GtkWidget   *parent,
 
   if (dialog)
     {
+      if (! uri)
+        uri = g_object_get_data (G_OBJECT (gimp), "gimp-file-open-last-uri");
+
       if (uri)
         gtk_file_chooser_set_uri (GTK_FILE_CHOOSER (dialog), uri);
 

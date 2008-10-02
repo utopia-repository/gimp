@@ -1,3 +1,1 @@
-- Merge gimp-python into main package since it's tiny and everyone has python
-installed anyway
 - Merge libgimp into main gimp package?

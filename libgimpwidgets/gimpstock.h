@@ -239,6 +239,7 @@ G_BEGIN_DECLS
 
 #define GIMP_STOCK_WEB                      "gimp-web"
 #define GIMP_STOCK_VIDEO                    "gimp-video"
+#define GIMP_STOCK_GEGL                     "gimp-gegl"
 
 #define GIMP_STOCK_SHAPE_CIRCLE             "gimp-shape-circle"
 #define GIMP_STOCK_SHAPE_DIAMOND            "gimp-shape-diamond"
@@ -262,6 +263,7 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_WILBER_EEK               "gimp-wilber-eek"
 #define GIMP_STOCK_FRAME                    "gimp-frame"
 #define GIMP_STOCK_TEXTURE                  "gimp-texture"
+#define GIMP_STOCK_USER_MANUAL              "gimp-user-manual"
 
 
 /*  missing icons:  */
@@ -273,6 +275,7 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_GRADIENT                 GIMP_STOCK_TOOL_BLEND
 #define GIMP_STOCK_PALETTE                  GTK_STOCK_SELECT_COLOR
 #define GIMP_STOCK_PATTERN                  GIMP_STOCK_TOOL_BUCKET_FILL
+#define GIMP_STOCK_TOOL_DESATURATE          GIMP_STOCK_CONVERT_GRAYSCALE
 
 
 void   gimp_stock_init (void);

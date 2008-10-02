@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -53,6 +54,10 @@ gchar*              <a class="link" href="libgimp-gimppalette.html#gimp-palette-
                                                          const gchar *new_name);
 gboolean            <a class="link" href="libgimp-gimppalette.html#gimp-palette-delete" title="gimp_palette_delete ()">gimp_palette_delete</a>                 (const gchar *name);
 gboolean            <a class="link" href="libgimp-gimppalette.html#gimp-palette-get-info" title="gimp_palette_get_info ()">gimp_palette_get_info</a>               (const gchar *name,
+                                                         gint *num_colors);
+<a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+>GimpRGB</a>*            <a class="link" href="libgimp-gimppalette.html#gimp-palette-get-colors" title="gimp_palette_get_colors ()">gimp_palette_get_colors</a>             (const gchar *name,
                                                          gint *num_colors);
 gint                <a class="link" href="libgimp-gimppalette.html#gimp-palette-get-columns" title="gimp_palette_get_columns ()">gimp_palette_get_columns</a>            (const gchar *name);
 gboolean            <a class="link" href="libgimp-gimppalette.html#gimp-palette-set-columns" title="gimp_palette_set_columns ()">gimp_palette_set_columns</a>            (const gchar *name,
@@ -271,6 +276,45 @@ This includes the name, and the number of colors.</p>
 </tbody>
 </table></div>
 <p class="since">Since  GIMP 2.2
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-palette-get-colors"></a><h3>gimp_palette_get_colors ()</h3>
+<pre class="programlisting"><a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+>GimpRGB</a>*            gimp_palette_get_colors             (const gchar *name,
+                                                         gint *num_colors);</pre>
+<p>
+Gets all colors from the specified palette.
+</p>
+<p>
+This procedure retrieves all color entries of the specified palette.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> The palette name.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>num_colors</code></em> :</span></p></td>
+<td> Length of the colors array.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The colors in the palette.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
 </p>
 </div>
 <hr>

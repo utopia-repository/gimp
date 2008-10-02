@@ -34,6 +34,7 @@
 #include "gimpcontext.h"
 #include "gimpgradient.h"
 #include "gimpimage.h"
+#include "gimpimage-colormap.h"
 #include "gimppalette.h"
 #include "gimppalette-import.h"
 #include "gimppalette-load.h"
@@ -287,8 +288,9 @@ gimp_palette_import_extract (GimpImage     *image,
   if (selection_only &&
       ! gimp_channel_is_empty (gimp_image_get_mask (image)))
     {
-      pixel_region_init (&mask_region,
-                         GIMP_DRAWABLE (gimp_image_get_mask (image))->tiles,
+      GimpDrawable *mask = GIMP_DRAWABLE (gimp_image_get_mask (image));
+
+      pixel_region_init (&mask_region, gimp_drawable_get_tiles (mask),
                          x + pickable_off_x, y + pickable_off_y,
                          width, height,
                          FALSE);
@@ -383,8 +385,8 @@ gimp_palette_import_from_image (GimpImage   *image,
     {
       x      = 0;
       y      = 0;
-      width  = image->width;
-      height = image->height;
+      width  = gimp_image_get_width  (image);
+      height = gimp_image_get_height (image);
     }
 
   colors = gimp_palette_import_extract (image,
@@ -404,9 +406,11 @@ GimpPalette *
 gimp_palette_import_from_indexed_image (GimpImage   *image,
                                         const gchar *palette_name)
 {
-  GimpPalette *palette;
-  gint         count;
-  GimpRGB      color;
+  GimpPalette  *palette;
+  const guchar *colormap;
+  guint         n_colors;
+  gint          count;
+  GimpRGB       color;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (gimp_image_base_type (image) == GIMP_INDEXED, NULL);
@@ -414,16 +418,19 @@ gimp_palette_import_from_indexed_image (GimpImage   *image,
 
   palette = GIMP_PALETTE (gimp_palette_new (palette_name));
 
-  for (count = 0; count < image->num_cols; ++count)
+  colormap = gimp_image_get_colormap (image);
+  n_colors = gimp_image_get_colormap_size (image);
+
+  for (count = 0; count < n_colors; ++count)
     {
       gchar name[256];
 
       g_snprintf (name, sizeof (name), _("Index %d"), count);
 
       gimp_rgba_set_uchar (&color,
-                           image->cmap[count * 3 + 0],
-                           image->cmap[count * 3 + 1],
-                           image->cmap[count * 3 + 2],
+                           colormap[count * 3 + 0],
+                           colormap[count * 3 + 1],
+                           colormap[count * 3 + 2],
                            255);
 
       gimp_palette_add_entry (palette, -1, name, &color);
@@ -513,6 +520,10 @@ gimp_palette_import_from_file (const gchar  *filename,
 
     case GIMP_PALETTE_FILE_FORMAT_ACO:
       palette_list = gimp_palette_load_aco (filename, error);
+      break;
+
+    case GIMP_PALETTE_FILE_FORMAT_CSS:
+      palette_list = gimp_palette_load_css (filename, error);
       break;
 
     default:

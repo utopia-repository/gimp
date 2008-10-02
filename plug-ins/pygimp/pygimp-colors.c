@@ -460,7 +460,7 @@ static PyGetSetDef rgb_getsets[] = {
     { NULL, (getter)0, (setter)0 },
 };
 
-static Py_ssize_t 
+static Py_ssize_t
 rgb_length(PyObject *self)
 {
     return 4;
@@ -480,7 +480,7 @@ rgb_getitem(PyObject *self, Py_ssize_t pos)
 	return NULL;
     }
 
-    rgb = pyg_boxed_get(self, GimpRGB); 
+    rgb = pyg_boxed_get(self, GimpRGB);
 
     switch (pos) {
     case 0: val = rgb->r; break;
@@ -600,7 +600,7 @@ rgb_subscript(PyObject *self, PyObject *item)
 	else {
 	    PyErr_SetObject(PyExc_KeyError, item);
 	    return NULL;
-	} 
+	}
     } else {
 	PyErr_SetString(PyExc_TypeError,
 			"indices must be integers");
@@ -667,7 +667,7 @@ rgb_pretty_print(PyObject *self, gboolean inexact)
     PyObject *r_f = NULL, *g_f = NULL, *b_f = NULL, *a_f = NULL;
     PyObject *r = NULL, *g = NULL, *b = NULL, *a = NULL;
     reprfunc repr;
-    char *prefix;
+    const char *prefix;
 
     if (inexact) {
 	repr = PyObject_Str;
@@ -983,7 +983,7 @@ static PyGetSetDef hsv_getsets[] = {
     { NULL, (getter)0, (setter)0 },
 };
 
-static Py_ssize_t 
+static Py_ssize_t
 hsv_length(PyObject *self)
 {
     return 4;
@@ -1003,7 +1003,7 @@ hsv_getitem(PyObject *self, Py_ssize_t pos)
 	return NULL;
     }
 
-    hsv = pyg_boxed_get(self, GimpHSV); 
+    hsv = pyg_boxed_get(self, GimpHSV);
 
     switch (pos) {
     case 0: val = hsv->h; scale_factor = 360.0; break;
@@ -1190,7 +1190,7 @@ hsv_pretty_print(PyObject *self, gboolean inexact)
     PyObject *h_f = NULL, *s_f = NULL, *v_f = NULL, *a_f = NULL;
     PyObject *h = NULL, *s = NULL, *v = NULL, *a = NULL;
     reprfunc repr;
-    char *prefix;
+    const char *prefix;
 
     if (inexact) {
 	repr = PyObject_Str;
@@ -1516,7 +1516,7 @@ hsl_getitem(PyObject *self, Py_ssize_t pos)
 	return NULL;
     }
 
-    hsl = pyg_boxed_get(self, GimpHSL); 
+    hsl = pyg_boxed_get(self, GimpHSL);
 
     switch (pos) {
     case 0: val = hsl->h; scale_factor = 360.0; break;
@@ -1703,7 +1703,7 @@ hsl_pretty_print(PyObject *self, gboolean inexact)
     PyObject *h_f = NULL, *s_f = NULL, *l_f = NULL, *a_f = NULL;
     PyObject *h = NULL, *s = NULL, *l = NULL, *a = NULL;
     reprfunc repr;
-    char *prefix;
+    const char *prefix;
 
     if (inexact) {
 	repr = PyObject_Str;
@@ -2020,7 +2020,7 @@ cmyk_getitem(PyObject *self, Py_ssize_t pos)
 	return NULL;
     }
 
-    cmyk = pyg_boxed_get(self, GimpCMYK); 
+    cmyk = pyg_boxed_get(self, GimpCMYK);
 
     switch (pos) {
     case 0: val = cmyk->c; break;
@@ -2212,7 +2212,7 @@ cmyk_pretty_print(PyObject *self, gboolean inexact)
     PyObject *c_f = NULL, *m_f = NULL, *y_f = NULL, *k_f = NULL, *a_f = NULL;
     PyObject *c = NULL, *m = NULL, *y = NULL, *k = NULL, *a = NULL;
     reprfunc repr;
-    char *prefix;
+    const char *prefix;
 
     if (inexact) {
 	repr = PyObject_Str;
@@ -2355,4 +2355,55 @@ PyObject *
 pygimp_cmyk_new(const GimpCMYK *cmyk)
 {
     return pyg_boxed_new(GIMP_TYPE_CMYK, (gpointer)cmyk, TRUE, TRUE);
+}
+
+int
+pygimp_rgb_from_pyobject(PyObject *object, GimpRGB *color)
+{
+    g_return_val_if_fail(color != NULL, FALSE);
+
+    if (pygimp_rgb_check(object)) {
+        *color = *pyg_boxed_get(object, GimpRGB);
+        return 1;
+    } else if (PyString_Check(object)) {
+        if (gimp_rgb_parse_css (color, PyString_AsString(object), -1)) {
+            return 1;
+        } else {
+            PyErr_SetString(PyExc_TypeError, "unable to parse color string");
+            return 0;
+        }
+    } else if (PySequence_Check(object)) {
+        PyObject *r, *g, *b, *a = NULL;
+
+        if (!PyArg_ParseTuple(object, "OOO|O", &r, &g, &b, &a))
+            return 0;
+
+#define SET_MEMBER(m)	G_STMT_START {				\
+    if (PyInt_Check(m))						\
+        color->m = (double) PyInt_AS_LONG(m) / 255.0;		\
+    else if (PyFloat_Check(m))					\
+        color->m = PyFloat_AS_DOUBLE(m);			\
+    else {							\
+	PyErr_SetString(PyExc_TypeError,			\
+			#m " must be an int or a float");	\
+	return 0;						\
+    }								\
+} G_STMT_END
+
+        SET_MEMBER(r);
+        SET_MEMBER(g);
+        SET_MEMBER(b);
+
+        if (a)
+            SET_MEMBER(a);
+        else
+            color->a = 1.0;
+
+        gimp_rgb_clamp(color);
+
+        return 1;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "could not convert to GimpRGB");
+    return 0;
 }

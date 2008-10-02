@@ -31,6 +31,7 @@
 typedef int Py_ssize_t;
 #define PY_SSIZE_T_MAX INT_MAX
 #define PY_SSIZE_T_MIN INT_MIN
+#define PyInt_AsSsize_t(o) PyInt_AsLong(o)
 #endif
 
 G_BEGIN_DECLS
@@ -112,6 +113,19 @@ PyObject *pygimp_vectors_new(gint32 vectors_ID);
 
 extern PyTypeObject PyGimpVectorsStroke_Type;
 extern PyTypeObject PyGimpVectorsBezierStroke_Type;
+
+typedef struct {
+    PyObject_HEAD
+    GimpPixelFetcher *pf;
+    PyGimpDrawable *drawable; /* keep the drawable around */
+    gboolean shadow;
+    GimpRGB bg_color;
+    GimpPixelFetcherEdgeMode edge_mode;
+    int bpp;
+} PyGimpPixelFetcher;
+
+extern PyTypeObject PyGimpPixelFetcher_Type;
+#define pygimp_pixel_fetcher_check(v) (PyObject_TypeCheck(v, &PyGimpPixelFetcher_Type))
 
 G_END_DECLS
 

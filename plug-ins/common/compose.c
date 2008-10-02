@@ -156,9 +156,9 @@ static void      type_combo_callback (GimpIntComboBox *combo,
 
 
 /* LAB colorspace constants */
-const double Xn	= 0.951;
-const double Yn	= 1.0;
-const double Zn	= 1.089;
+static const double Xn  = 0.951;
+static const double Yn  = 1.0;
+static const double Zn  = 1.089;
 
 /* Maximum number of images to compose */
 #define MAX_COMPOSE_IMAGES 4
@@ -703,9 +703,10 @@ compose (const gchar  *compose_type,
   /* Check image sizes */
   if (compose_by_drawable)
     {
-      if (0 == gimp_drawable_bpp (inputs[first_ID].comp.ID))
+      if (! gimp_drawable_is_valid (inputs[first_ID].comp.ID))
         {
-          g_message (_("Specified layer %d not found"), inputs[first_ID].comp.ID);
+          g_message (_("Specified layer %d not found"),
+                     inputs[first_ID].comp.ID);
           return -1;
         }
 
@@ -716,9 +717,10 @@ compose (const gchar  *compose_type,
 	{
           if (inputs[j].is_ID)
             {
-              if (0 == gimp_drawable_bpp (inputs[j].comp.ID))
+              if (! gimp_drawable_is_valid (inputs[j].comp.ID))
                 {
-                  g_message (_("Specified layer %d not found"), inputs[j].comp.ID);
+                  g_message (_("Specified layer %d not found"),
+                             inputs[j].comp.ID);
                   return -1;
                 }
 
@@ -761,19 +763,20 @@ compose (const gchar  *compose_type,
 	{
           if (inputs[j].is_ID)
             {
-              gint32 *g32;
+              gint32 *layers;
 
               /* Get first layer of image */
-              g32 = gimp_image_get_layers (inputs[j].comp.ID, &num_layers);
-              if ((g32 == NULL) || (num_layers <= 0))
+              layers = gimp_image_get_layers (inputs[j].comp.ID, &num_layers);
+
+              if (! layers || (num_layers <= 0))
                 {
                   g_message (_("Error in getting layer IDs"));
                   return -1;
                 }
 
               /* Get drawable for layer */
-              drawable_src[j] = gimp_drawable_get (g32[0]);
-              g_free (g32);
+              drawable_src[j] = gimp_drawable_get (layers[0]);
+              g_free (layers);
             }
 	}
     }
@@ -782,10 +785,12 @@ compose (const gchar  *compose_type,
   for (j = 0; j < num_images; j++)
     {
       gsize s;
+
       /* Check bytes per pixel */
       if (inputs[j].is_ID)
         {
           incr_src[j] = drawable_src[j]->bpp;
+
           if ((incr_src[j] != 1) && (incr_src[j] != 2))
             {
               g_message (_("Image is not a gray image (bpp=%d)"),
@@ -794,13 +799,14 @@ compose (const gchar  *compose_type,
             }
 
           /* Get pixel region */
-          gimp_pixel_rgn_init (&(pixel_rgn_src[j]), drawable_src[j], 0, 0,
+          gimp_pixel_rgn_init (&pixel_rgn_src[j], drawable_src[j], 0, 0,
                                width, height, FALSE, FALSE);
         }
       else
         {
           incr_src[j] = 1;
         }
+
       /* Get memory for retrieving information */
       s = tile_height * width * incr_src[j];
       src[j] = g_new (guchar, s);
@@ -813,20 +819,18 @@ compose (const gchar  *compose_type,
     {
       layer_ID_dst = composevals.source_layer_ID;
 
-      if (0 == gimp_drawable_bpp (layer_ID_dst))
+      if (! gimp_drawable_is_valid (layer_ID_dst))
         {
           g_message (_("Unable to recompose, source layer not found"));
           return -1;
         }
 
       drawable_dst = gimp_drawable_get (layer_ID_dst);
-      gimp_pixel_rgn_init (&pixel_rgn_dst, drawable_dst, 0, 0,
-                           drawable_dst->width,
-                           drawable_dst->height,
+      gimp_pixel_rgn_init (&pixel_rgn_dst, drawable_dst,
+                           0, 0, drawable_dst->width, drawable_dst->height,
                            TRUE, TRUE);
-      gimp_pixel_rgn_init (&pixel_rgn_dst_read, drawable_dst, 0, 0,
-                           drawable_dst->width,
-                           drawable_dst->height,
+      gimp_pixel_rgn_init (&pixel_rgn_dst_read, drawable_dst,
+                           0, 0, drawable_dst->width, drawable_dst->height,
                            FALSE, FALSE);
       image_ID_dst = gimp_drawable_get_image (layer_ID_dst);
     }

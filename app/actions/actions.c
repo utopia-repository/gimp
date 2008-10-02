@@ -52,6 +52,7 @@
 #include "buffers-actions.h"
 #include "channels-actions.h"
 #include "colormap-actions.h"
+#include "config-actions.h"
 #include "context-actions.h"
 #include "cursor-info-actions.h"
 #include "debug-actions.h"
@@ -83,6 +84,7 @@
 #include "tools-actions.h"
 #include "vectors-actions.h"
 #include "view-actions.h"
+#include "windows-actions.h"
 
 #include "gimp-intl.h"
 
@@ -111,7 +113,10 @@ static GimpActionFactoryEntry action_groups[] =
   { "colormap", N_("Colormap"), GIMP_STOCK_COLORMAP,
     colormap_actions_setup,
     colormap_actions_update },
-  { "context", N_("Context"), NULL,
+  { "config", N_("Configuration"), GTK_STOCK_PREFERENCES,
+    config_actions_setup,
+    config_actions_update },
+  { "context", N_("Context"), GIMP_STOCK_TOOL_OPTIONS /* well... */,
     context_actions_setup,
     context_actions_update },
   { "cursor-info", N_("Pointer Information"), NULL,
@@ -203,7 +208,10 @@ static GimpActionFactoryEntry action_groups[] =
     vectors_actions_update },
   { "view", N_("View"), GIMP_STOCK_VISIBLE,
     view_actions_setup,
-    view_actions_update }
+    view_actions_update },
+  { "windows", N_("Windows"), NULL,
+    windows_actions_setup,
+    windows_actions_update }
 };
 
 
@@ -252,7 +260,7 @@ action_data_get_gimp (gpointer data)
     return NULL;
 
   if (GIMP_IS_DISPLAY (data))
-    return ((GimpDisplay *) data)->image->gimp;
+    return ((GimpDisplay *) data)->gimp;
   else if (GIMP_IS_GIMP (data))
     return data;
   else if (GIMP_IS_DOCK (data))
@@ -279,7 +287,7 @@ action_data_get_context (gpointer data)
     return NULL;
 
   if (GIMP_IS_DISPLAY (data))
-    return gimp_get_user_context (((GimpDisplay *) data)->image->gimp);
+    return gimp_get_user_context (((GimpDisplay *) data)->gimp);
   else if (GIMP_IS_GIMP (data))
     return gimp_get_user_context (data);
   else if (GIMP_IS_DOCK (data))
@@ -372,6 +380,7 @@ action_select_value (GimpActionSelectType  select_type,
                      gdouble               value,
                      gdouble               min,
                      gdouble               max,
+                     gdouble               def,
                      gdouble               small_inc,
                      gdouble               inc,
                      gdouble               skip_inc,
@@ -380,6 +389,10 @@ action_select_value (GimpActionSelectType  select_type,
 {
   switch (select_type)
     {
+    case GIMP_ACTION_SELECT_SET_TO_DEFAULT:
+      value = def;
+      break;
+
     case GIMP_ACTION_SELECT_FIRST:
       value = min;
       break;
@@ -473,6 +486,7 @@ action_select_property (GimpActionSelectType  select_type,
                                    value,
                                    G_PARAM_SPEC_DOUBLE (pspec)->minimum,
                                    G_PARAM_SPEC_DOUBLE (pspec)->maximum,
+                                   G_PARAM_SPEC_DOUBLE (pspec)->default_value,
                                    small_inc, inc, skip_inc, 0, wrap);
 
       g_object_set (object, property_name, value, NULL);
@@ -487,6 +501,7 @@ action_select_property (GimpActionSelectType  select_type,
                                    value,
                                    G_PARAM_SPEC_INT (pspec)->minimum,
                                    G_PARAM_SPEC_INT (pspec)->maximum,
+                                   G_PARAM_SPEC_INT (pspec)->default_value,
                                    small_inc, inc, skip_inc, 0, wrap);
 
       g_object_set (object, property_name, value, NULL);

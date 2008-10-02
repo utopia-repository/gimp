@@ -67,6 +67,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimpbrowser.h			\
 	gimpbutton.c			\
 	gimpbutton.h			\
+	gimpcairo-utils.c		\
+	gimpcairo-utils.h		\
 	gimpcellrenderercolor.c		\
 	gimpcellrenderercolor.h		\
 	gimpcellrenderertoggle.c	\
@@ -148,6 +150,10 @@ libgimpwidgets_2_0_la_sources = \
 	gimppropwidgets.h		\
 	gimpquerybox.c			\
 	gimpquerybox.h			\
+	gimpruler.c			\
+	gimpruler.h			\
+	gimpscaleentry.c		\
+	gimpscaleentry.h		\
 	gimpscrolledpreview.c		\
 	gimpscrolledpreview.h		\
 	gimpsizeentry.c			\
@@ -181,6 +187,7 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpwidgetstypes.h		\
 	gimpbrowser.h			\
 	gimpbutton.h			\
+	gimpcairo-utils.h		\
 	gimpcellrenderercolor.h		\
 	gimpcellrenderertoggle.h	\
 	gimpchainbutton.h		\
@@ -221,6 +228,8 @@ libgimpwidgetsinclude_HEADERS = \
 	gimppreviewarea.h		\
 	gimppropwidgets.h		\
 	gimpquerybox.h			\
+	gimpruler.h			\
+	gimpscaleentry.h		\
 	gimpscrolledpreview.h		\
 	gimpsizeentry.h			\
 	gimpstock.h			\

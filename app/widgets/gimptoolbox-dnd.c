@@ -93,33 +93,30 @@ gimp_toolbox_dnd_init (GimpToolbox *toolbox)
 
   dock = GIMP_DOCK (toolbox);
 
-  gimp_dnd_uri_list_dest_add (GTK_WIDGET (toolbox),
-                              gimp_toolbox_drop_uri_list,
-                              dock->context);
-  gimp_dnd_uri_list_dest_add (toolbox->tool_wbox,
+  gimp_dnd_uri_list_dest_add (toolbox->vbox,
                               gimp_toolbox_drop_uri_list,
                               dock->context);
 
-  gimp_dnd_viewable_dest_add (toolbox->tool_wbox, GIMP_TYPE_LAYER,
+  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_LAYER,
                               gimp_toolbox_drop_drawable,
                               dock->context);
-  gimp_dnd_viewable_dest_add (toolbox->tool_wbox, GIMP_TYPE_LAYER_MASK,
+  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_LAYER_MASK,
                               gimp_toolbox_drop_drawable,
                               dock->context);
-  gimp_dnd_viewable_dest_add (toolbox->tool_wbox, GIMP_TYPE_CHANNEL,
+  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_CHANNEL,
                               gimp_toolbox_drop_drawable,
                               dock->context);
-  gimp_dnd_viewable_dest_add (toolbox->tool_wbox, GIMP_TYPE_TOOL_INFO,
+  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_TOOL_INFO,
                               gimp_toolbox_drop_tool,
                               dock->context);
-  gimp_dnd_viewable_dest_add (toolbox->tool_wbox, GIMP_TYPE_BUFFER,
+  gimp_dnd_viewable_dest_add (toolbox->vbox, GIMP_TYPE_BUFFER,
                               gimp_toolbox_drop_buffer,
                               dock->context);
 
-  gimp_dnd_component_dest_add (toolbox->tool_wbox,
+  gimp_dnd_component_dest_add (toolbox->vbox,
                                gimp_toolbox_drop_component,
                                dock->context);
-  gimp_dnd_pixbuf_dest_add    (toolbox->tool_wbox,
+  gimp_dnd_pixbuf_dest_add    (toolbox->vbox,
                                gimp_toolbox_drop_pixbuf,
                                dock->context);
 }
@@ -182,6 +179,8 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
   gint               off_x, off_y;
   gint               bytes;
   GimpImageBaseType  type;
+  gdouble            xres;
+  gdouble            yres;
 
   if (context->gimp->busy)
     return;
@@ -201,7 +200,8 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
                              gimp_image_get_colormap_size (image),
                              FALSE);
 
-  gimp_image_set_resolution (new_image, image->xresolution, image->yresolution);
+  gimp_image_get_resolution (image, &xres, &yres);
+  gimp_image_set_resolution (new_image, xres, yres);
   gimp_image_set_unit (new_image, gimp_image_get_unit (image));
 
   if (GIMP_IS_LAYER (drawable))
@@ -209,8 +209,8 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
   else
     new_type = GIMP_TYPE_LAYER;
 
-  new_layer = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (drawable), new_image,
-                                             new_type, FALSE));
+  new_layer = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (drawable),
+                                             new_image, new_type));
 
   gimp_object_set_name (GIMP_OBJECT (new_layer),
                         gimp_object_get_name (GIMP_OBJECT (drawable)));
@@ -281,6 +281,8 @@ gimp_toolbox_drop_component (GtkWidget       *widget,
   GimpImage   *new_image;
   GimpLayer   *new_layer;
   const gchar *desc;
+  gdouble      xres;
+  gdouble      yres;
 
   if (context->gimp->busy)
     return;
@@ -292,14 +294,14 @@ gimp_toolbox_drop_component (GtkWidget       *widget,
 
   gimp_image_undo_disable (new_image);
 
-  gimp_image_set_resolution (new_image, image->xresolution, image->yresolution);
+  gimp_image_get_resolution (image, &xres, &yres);
+  gimp_image_set_resolution (new_image, xres, yres);
   gimp_image_set_unit (new_image, gimp_image_get_unit (image));
 
   channel = gimp_channel_new_from_component (image, component, NULL, NULL);
 
-  new_layer = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (channel), new_image,
-                                             GIMP_TYPE_LAYER, FALSE));
-
+  new_layer = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (channel),
+                                             new_image, GIMP_TYPE_LAYER));
   g_object_unref (channel);
 
   gimp_enum_get_value (GIMP_TYPE_CHANNEL_TYPE, component,

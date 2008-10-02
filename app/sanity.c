@@ -20,7 +20,9 @@
 
 #include <glib.h>
 #include <fontconfig/fontconfig.h>
+#include <pango/pango.h>
 #include <pango/pangoft2.h>
+#include <gegl.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -31,8 +33,11 @@
 
 static gchar * sanity_check_gimp              (void);
 static gchar * sanity_check_glib              (void);
+static gchar * sanity_check_pango             (void);
 static gchar * sanity_check_fontconfig        (void);
 static gchar * sanity_check_freetype          (void);
+static gchar * sanity_check_babl              (void);
+static gchar * sanity_check_gegl              (void);
 static gchar * sanity_check_filename_encoding (void);
 
 
@@ -47,10 +52,19 @@ sanity_check (void)
     abort_message = sanity_check_glib ();
 
   if (! abort_message)
+    abort_message = sanity_check_pango ();
+
+  if (! abort_message)
     abort_message = sanity_check_fontconfig ();
 
   if (! abort_message)
     abort_message = sanity_check_freetype ();
+
+  if (! abort_message)
+    abort_message = sanity_check_babl ();
+
+  if (! abort_message)
+    abort_message = sanity_check_gegl ();
 
   if (! abort_message)
     abort_message = sanity_check_filename_encoding ();
@@ -84,15 +98,13 @@ sanity_check_gimp (void)
 static gchar *
 sanity_check_glib (void)
 {
-  const gchar *mismatch;
-
 #define GLIB_REQUIRED_MAJOR 2
-#define GLIB_REQUIRED_MINOR 12
-#define GLIB_REQUIRED_MICRO 3
+#define GLIB_REQUIRED_MINOR 16
+#define GLIB_REQUIRED_MICRO 1
 
-  mismatch = glib_check_version (GLIB_REQUIRED_MAJOR,
-                                 GLIB_REQUIRED_MINOR,
-                                 GLIB_REQUIRED_MICRO);
+  const gchar *mismatch = glib_check_version (GLIB_REQUIRED_MAJOR,
+                                              GLIB_REQUIRED_MINOR,
+                                              GLIB_REQUIRED_MICRO);
 
   if (mismatch)
     {
@@ -117,12 +129,46 @@ sanity_check_glib (void)
 }
 
 static gchar *
+sanity_check_pango (void)
+{
+#define PANGO_REQUIRED_MAJOR 1
+#define PANGO_REQUIRED_MINOR 18
+#define PANGO_REQUIRED_MICRO 0
+
+  const gchar *mismatch = pango_version_check (PANGO_REQUIRED_MAJOR,
+                                               PANGO_REQUIRED_MINOR,
+                                               PANGO_REQUIRED_MICRO);
+
+  if (mismatch)
+    {
+      const gint pango_major_version = pango_version () / 100 / 100;
+      const gint pango_minor_version = pango_version () / 100 % 100;
+      const gint pango_micro_version = pango_version () % 100;
+
+      return g_strdup_printf
+        ("%s\n\n"
+         "GIMP requires Pango version %d.%d.%d or later.\n"
+         "Installed Pango version is %d.%d.%d.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install GIMP with an older Pango version.\n\n"
+         "Please upgrade to Pango version %d.%d.%d or later.",
+         mismatch,
+         PANGO_REQUIRED_MAJOR, PANGO_REQUIRED_MINOR, PANGO_REQUIRED_MICRO,
+         pango_major_version, pango_minor_version, pango_micro_version,
+         PANGO_REQUIRED_MAJOR, PANGO_REQUIRED_MINOR, PANGO_REQUIRED_MICRO);
+    }
+
+#undef PANGO_REQUIRED_MAJOR
+#undef PANGO_REQUIRED_MINOR
+#undef PANGO_REQUIRED_MICRO
+
+  return NULL;
+}
+
+static gchar *
 sanity_check_fontconfig (void)
 {
-  gint   fc_version       = FcGetVersion ();
-  gint   fc_major_version = fc_version / 100 / 100;
-  gint   fc_minor_version = fc_version / 100 % 100;
-  gint   fc_micro_version = fc_version % 100;
+  const gint fc_version = FcGetVersion ();
 
 #define FC_REQUIRED_MAJOR 2
 #define FC_REQUIRED_MINOR 2
@@ -132,6 +178,10 @@ sanity_check_fontconfig (void)
                     (FC_REQUIRED_MINOR *   100) +
                     (FC_REQUIRED_MICRO *     1)))
     {
+      const gint fc_major_version = fc_version / 100 / 100;
+      const gint fc_minor_version = fc_version / 100 % 100;
+      const gint fc_micro_version = fc_version % 100;
+
       return g_strdup_printf
         ("The Fontconfig version being used is too old!\n\n"
          "GIMP requires Fontconfig version %d.%d.%d or later.\n"
@@ -197,6 +247,82 @@ sanity_check_freetype (void)
 #undef FT_REQUIRED_MAJOR
 #undef FT_REQUIRED_MINOR
 #undef FT_REQUIRED_MICRO
+
+  return NULL;
+}
+
+static gchar *
+sanity_check_babl (void)
+{
+  gint babl_major_version;
+  gint babl_minor_version;
+  gint babl_micro_version;
+
+#define BABL_REQUIRED_MAJOR 0
+#define BABL_REQUIRED_MINOR 0
+#define BABL_REQUIRED_MICRO 22
+
+  babl_get_version (&babl_major_version,
+                    &babl_minor_version,
+                    &babl_micro_version);
+
+  if (babl_major_version < BABL_REQUIRED_MAJOR ||
+      babl_minor_version < BABL_REQUIRED_MINOR ||
+      babl_micro_version < BABL_REQUIRED_MICRO)
+    {
+      return g_strdup_printf
+        ("BABL version too old!\n\n"
+         "GIMP requires BABL version %d.%d.%d or later.\n"
+         "Installed BABL version is %d.%d.%d.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install GIMP with an older BABL version.\n\n"
+         "Please upgrade to BABL version %d.%d.%d or later.",
+         BABL_REQUIRED_MAJOR, BABL_REQUIRED_MINOR, BABL_REQUIRED_MICRO,
+         babl_major_version, babl_minor_version, babl_micro_version,
+         BABL_REQUIRED_MAJOR, BABL_REQUIRED_MINOR, BABL_REQUIRED_MICRO);
+    }
+
+#undef BABL_REQUIRED_MAJOR
+#undef BABL_REQUIRED_MINOR
+#undef BABL_REQUIRED_MICRO
+
+  return NULL;
+}
+
+static gchar *
+sanity_check_gegl (void)
+{
+  gint gegl_major_version;
+  gint gegl_minor_version;
+  gint gegl_micro_version;
+
+#define GEGL_REQUIRED_MAJOR 0
+#define GEGL_REQUIRED_MINOR 0
+#define GEGL_REQUIRED_MICRO 18
+
+  gegl_get_version (&gegl_major_version,
+                    &gegl_minor_version,
+                    &gegl_micro_version);
+
+  if (gegl_major_version < GEGL_REQUIRED_MAJOR ||
+      gegl_minor_version < GEGL_REQUIRED_MINOR ||
+      gegl_micro_version < GEGL_REQUIRED_MICRO)
+    {
+      return g_strdup_printf
+        ("GEGL version too old!\n\n"
+         "GIMP requires GEGL version %d.%d.%d or later.\n"
+         "Installed GEGL version is %d.%d.%d.\n\n"
+         "Somehow you or your software packager managed\n"
+         "to install GIMP with an older GEGL version.\n\n"
+         "Please upgrade to GEGL version %d.%d.%d or later.",
+         GEGL_REQUIRED_MAJOR, GEGL_REQUIRED_MINOR, GEGL_REQUIRED_MICRO,
+         gegl_major_version, gegl_minor_version, gegl_micro_version,
+         GEGL_REQUIRED_MAJOR, GEGL_REQUIRED_MINOR, GEGL_REQUIRED_MICRO);
+    }
+
+#undef GEGL_REQUIRED_MAJOR
+#undef GEGL_REQUIRED_MINOR
+#undef GEGL_REQUIRED_MICRO
 
   return NULL;
 }

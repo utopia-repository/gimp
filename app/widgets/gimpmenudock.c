@@ -47,7 +47,7 @@
 #include "gimp-intl.h"
 
 
-#define DEFAULT_MINIMAL_WIDTH  250
+#define DEFAULT_MINIMAL_WIDTH  200
 #define DEFAULT_MENU_VIEW_SIZE GTK_ICON_SIZE_SMALL_TOOLBAR
 
 
@@ -201,12 +201,13 @@ gimp_menu_dock_destroy (GtkObject *object)
   /*  remove the image menu and the auto button manually here because
    *  of weird cross-connections with GimpDock's context
    */
-  if (GIMP_DOCK (dock)->main_vbox &&
-      dock->image_combo           &&
-      dock->image_combo->parent)
+  if (GIMP_DOCK (dock)->main_vbox && dock->image_combo)
     {
-      gtk_container_remove (GTK_CONTAINER (GIMP_DOCK (dock)->main_vbox),
-                            dock->image_combo->parent);
+      GtkWidget *parent = gtk_widget_get_parent (dock->image_combo);
+
+      if (parent)
+        gtk_container_remove (GTK_CONTAINER (GIMP_DOCK (dock)->main_vbox),
+                              parent);
     }
 
   GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -216,7 +217,8 @@ static void
 gimp_menu_dock_style_set (GtkWidget *widget,
                           GtkStyle  *prev_style)
 {
-  GimpMenuDock *menu_dock;
+  GimpMenuDock *menu_dock        = GIMP_MENU_DOCK (widget);
+  GtkStyle     *button_style;
   gint          minimal_width;
   GtkIconSize   menu_view_size;
   GtkSettings  *settings;
@@ -226,10 +228,7 @@ gimp_menu_dock_style_set (GtkWidget *widget,
   gint          focus_padding;
   gint          ythickness;
 
-  menu_dock = GIMP_MENU_DOCK (widget);
-
-  if (GTK_WIDGET_CLASS (parent_class)->style_set)
-    GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 
   gtk_widget_style_get (widget,
                         "minimal-width",     &minimal_width,
@@ -247,7 +246,8 @@ gimp_menu_dock_style_set (GtkWidget *widget,
                         "focus-padding",    &focus_padding,
                         NULL);
 
-  ythickness = menu_dock->auto_button->style->ythickness;
+  button_style = gtk_widget_get_style (widget);
+  ythickness = button_style->ythickness;
 
   gtk_widget_set_size_request (widget, minimal_width, -1);
 
@@ -455,12 +455,16 @@ void
 gimp_menu_dock_set_show_image_menu (GimpMenuDock *menu_dock,
                                     gboolean      show)
 {
+  GtkWidget *parent;
+
   g_return_if_fail (GIMP_IS_MENU_DOCK (menu_dock));
 
+  parent = gtk_widget_get_parent (menu_dock->image_combo);
+
   if (show)
-    gtk_widget_show (menu_dock->image_combo->parent);
+    gtk_widget_show (parent);
   else
-    gtk_widget_hide (menu_dock->image_combo->parent);
+    gtk_widget_hide (parent);
 
   menu_dock->show_image_menu = show ? TRUE : FALSE;
 }
@@ -504,7 +508,7 @@ gimp_menu_dock_update_title_idle (GimpMenuDock *menu_dock)
       g_list_free (children);
 
       if (g_list_next (list))
-        g_string_append (title, " | ");
+        g_string_append (title, " - ");
     }
 
   gtk_window_set_title (GTK_WINDOW (menu_dock), title->str);
@@ -561,21 +565,17 @@ gimp_menu_dock_image_changed (GimpContext *context,
 
   if (image == NULL && ! gimp_container_is_empty (image_container))
     {
-      image = GIMP_IMAGE (gimp_container_get_child_by_index (image_container,
-                                                              0));
+      image = GIMP_IMAGE (gimp_container_get_first_child (image_container));
 
-      if (image)
-        {
-          /*  this invokes this function recursively but we don't enter
-           *  the if() branch the second time
-           */
-          gimp_context_set_image (context, image);
+      /*  this invokes this function recursively but we don't enter
+       *  the if() branch the second time
+       */
+      gimp_context_set_image (context, image);
 
-          /*  stop the emission of the original signal (the emission of
-           *  the recursive signal is finished)
-           */
-          g_signal_stop_emission_by_name (context, "image-changed");
-        }
+      /*  stop the emission of the original signal (the emission of
+       *  the recursive signal is finished)
+       */
+      g_signal_stop_emission_by_name (context, "image-changed");
     }
   else if (image != NULL && ! gimp_container_is_empty (display_container))
     {
@@ -644,13 +644,9 @@ gimp_menu_dock_auto_clicked (GtkWidget *widget,
 
   if (menu_dock->auto_follow_active)
     {
-      if (gimp_context_get_display (dock->dialog_factory->context))
-        gimp_context_copy_property (dock->dialog_factory->context,
+      gimp_context_copy_properties (dock->dialog_factory->context,
                                     dock->context,
-                                    GIMP_CONTEXT_PROP_DISPLAY);
-      else
-        gimp_context_copy_property (dock->dialog_factory->context,
-                                    dock->context,
-                                    GIMP_CONTEXT_PROP_IMAGE);
+                                    GIMP_CONTEXT_DISPLAY_MASK |
+                                    GIMP_CONTEXT_IMAGE_MASK);
     }
 }

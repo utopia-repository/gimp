@@ -4,8 +4,12 @@ EXTRA_DIST = \
 	makefile.msc
 
 
-if BUILD_HELPBROWSER
-helpbrowser = helpbrowser
+if BUILD_HELP_BROWSER
+help_browser = help-browser
+endif
+
+if BUILD_JPEG
+file_jpeg = file-jpeg
 endif
 
 if BUILD_PRINT
@@ -25,53 +29,54 @@ twain = twain
 endif
 
 if HAVE_PNG
-winicon = winicon
+file_ico = file-ico
 endif
 
 if OS_WIN32
 twain = twain
-winsnap = winsnap
+win_snap = win-snap
 if HAVE_LIBCURL
-uri = uri
+file_uri = file-uri
 endif
 else
-uri = uri
+file_uri = file-uri
 endif
 
 if BUILD_XJT
-xjt = xjt
+file_xjt = file-xjt
 endif
 
 
 SUBDIRS = \
 	$(script_fu)		\
-	FractalExplorer		\
-	Lighting		\
-	MapObject		\
-	bmp			\
-	faxg3			\
-	fits			\
+	$(pygimp)		\
+	color-rotate		\
+	file-bmp		\
+	file-faxg3		\
+	file-fits		\
+	file-fli		\
+	$(file_ico)		\
+	$(file_jpeg)		\
+	file-psd		\
+	file-sgi		\
+	$(file_uri)		\
+	$(file_xjt)		\
 	flame			\
+	fractal-explorer	\
 	gfig			\
-	gflare			\
-	gfli			\
 	gimpressionist		\
+	gradient-flare		\
 	help			\
-	$(helpbrowser)		\
-	ifscompose		\
+	$(help_browser)		\
+	ifs-compose		\
 	imagemap		\
-	jpeg                    \
+	lighting		\
+	map-object		\
 	maze			\
 	metadata		\
 	pagecurl		\
 	$(print)		\
-	$(pygimp)		\
-	rcm			\
-	sgi			\
-	sel2path		\
+	selection-to-path	\
 	$(twain)		\
-	$(uri)			\
-	$(winicon)		\
-	$(winsnap)		\
-	$(xjt)			\
+	$(win_snap)		\
 	common

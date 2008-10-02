@@ -29,8 +29,8 @@
                                                          <link linkend="GimpPDBProcType">GimpPDBProcType</link> type,
                                                          <link linkend="gint">gint</link> n_params,
                                                          <link linkend="gint">gint</link> n_return_vals,
-                                                         <link linkend="GimpParamDef">GimpParamDef</link> *params,
-                                                         <link linkend="GimpParamDef">GimpParamDef</link> *return_vals);
+                                                         const <link linkend="GimpParamDef">GimpParamDef</link> *params,
+                                                         const <link linkend="GimpParamDef">GimpParamDef</link> *return_vals);
 </synopsis>
 </refsynopsisdiv>
 
@@ -63,8 +63,8 @@
                                                          <link linkend="GimpPDBProcType">GimpPDBProcType</link> type,
                                                          <link linkend="gint">gint</link> n_params,
                                                          <link linkend="gint">gint</link> n_return_vals,
-                                                         <link linkend="GimpParamDef">GimpParamDef</link> *params,
-                                                         <link linkend="GimpParamDef">GimpParamDef</link> *return_vals);</programlisting>
+                                                         const <link linkend="GimpParamDef">GimpParamDef</link> *params,
+                                                         const <link linkend="GimpParamDef">GimpParamDef</link> *return_vals);</programlisting>
 <para>
 
 </para><variablelist role="params">

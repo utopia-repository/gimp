@@ -18,12 +18,9 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
-#include "libgimpwidgets/gimpwidgets.h"
 
 #include "display-types.h"
 
@@ -33,175 +30,227 @@
 #include "core/gimpimage.h"
 #include "core/gimpunit.h"
 
-#include "widgets/gimphelp-ids.h"
-#include "widgets/gimpviewabledialog.h"
-
 #include "gimpdisplay.h"
 #include "gimpdisplayshell.h"
+#include "gimpdisplayshell-draw.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-scroll.h"
 #include "gimpdisplayshell-title.h"
+#include "gimpdisplayshell-transform.h"
 
-#include "gimp-intl.h"
 
-
-#define SCALE_TIMEOUT 1
-
-#define SCALE_EPSILON 0.0001
+#define SCALE_TIMEOUT             2
+#define SCALE_EPSILON             0.0001
+#define ALMOST_CENTERED_THRESHOLD 2
 
 #define SCALE_EQUALS(a,b) (fabs ((a) - (b)) < SCALE_EPSILON)
 
 
-typedef struct
-{
-  GimpDisplayShell *shell;
-  GimpZoomModel    *model;
-  GtkObject        *scale_adj;
-  GtkObject        *num_adj;
-  GtkObject        *denom_adj;
-} ScaleDialogData;
-
-
 /*  local function prototypes  */
 
-static void gimp_display_shell_scale_dialog_response (GtkWidget        *widget,
-                                                      gint              response_id,
-                                                      ScaleDialogData  *dialog);
-static void gimp_display_shell_scale_dialog_free     (ScaleDialogData  *dialog);
+static void      gimp_display_shell_scale_to             (GimpDisplayShell *shell,
+                                                          gdouble           scale,
+                                                          gint              viewport_x,
+                                                          gint              viewport_y);
 
-static void    update_zoom_values                    (GtkAdjustment    *adj,
-                                                      ScaleDialogData  *dialog);
-static gdouble img2real                              (GimpDisplayShell *shell,
-                                                      gboolean          xdir,
-                                                      gdouble           a);
+static gboolean  gimp_display_shell_scale_image_starts_to_fit
+                                                         (GimpDisplayShell *shell,
+                                                          gdouble           new_scale,
+                                                          gdouble           current_scale,
+                                                          gboolean         *vertically,
+                                                          gboolean         *horizontally);
+static void      gimp_display_shell_scale_viewport_coord_almost_centered
+                                                         (GimpDisplayShell *shell,
+                                                          gint              x,
+                                                          gint              y,
+                                                          gboolean         *horizontally,
+                                                          gboolean         *vertically);
+
+static void      gimp_display_shell_scale_get_zoom_focus (GimpDisplayShell *shell,
+                                                          gdouble           new_scale,
+                                                          gdouble           current_scale,
+                                                          gint             *x,
+                                                          gint             *y);
+
+static gdouble   img2real                                (GimpDisplayShell *shell,
+                                                          gboolean          xdir,
+                                                          gdouble           a);
 
 
 /*  public functions  */
 
 /**
- * gimp_display_shell_scale_setup:
- * @shell:        the #GimpDisplayShell
+ * gimp_display_shell_update_scrollbars_and_rulers:
+ * @shell: the #GimpDisplayShell
  *
- * Prepares the display for drawing the image at current scale and offset.
- * This preparation involves, for example, setting up scrollbars and rulers.
  **/
 void
-gimp_display_shell_scale_setup (GimpDisplayShell *shell)
+gimp_display_shell_update_scrollbars_and_rulers (GimpDisplayShell *shell)
 {
-  GtkRuler *hruler;
-  GtkRuler *vruler;
-  gfloat    sx, sy;
-  gint      image_width, image_height;
-
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   if (! shell->display)
     return;
 
-  image_width  = shell->display->image->width;
-  image_height = shell->display->image->height;
+  gimp_display_shell_scale_update_scrollbars (shell);
+  gimp_display_shell_scale_update_rulers (shell);
+}
 
-  sx = SCALEX (shell, image_width);
-  sy = SCALEY (shell, image_height);
+/**
+ * gimp_display_shell_scale_update_scrollbars:
+ * @shell:
+ *
+ **/
+void
+gimp_display_shell_scale_update_scrollbars (GimpDisplayShell *shell)
+{
+  GimpImage *image;
+  gint       image_width;
+  gint       image_height;
+
+  image = shell->display->image;
+
+  if (image)
+    {
+      image_width  = gimp_image_get_width  (image);
+      image_height = gimp_image_get_height (image);
+    }
+  else
+    {
+      image_width  = shell->disp_width;
+      image_height = shell->disp_height;
+    }
+
+
+  /* Horizontal scrollbar */
 
   shell->hsbdata->value          = shell->offset_x;
-  shell->hsbdata->upper          = sx;
-  shell->hsbdata->page_size      = MIN (sx, shell->disp_width);
+  shell->hsbdata->page_size      = shell->disp_width;
   shell->hsbdata->page_increment = shell->disp_width / 2;
-  shell->hsbdata->step_increment = shell->scale_x;
 
-  shell->vsbdata->value          = shell->offset_y;
-  shell->vsbdata->upper          = sy;
-  shell->vsbdata->page_size      = MIN (sy, shell->disp_height);
-  shell->vsbdata->page_increment = shell->disp_height / 2;
-  shell->vsbdata->step_increment = shell->scale_y;
+  gimp_display_shell_scroll_setup_hscrollbar (shell, shell->offset_x);
 
   gtk_adjustment_changed (shell->hsbdata);
+
+
+  /* Vertcal scrollbar */
+
+  shell->vsbdata->value          = shell->offset_y;
+  shell->vsbdata->page_size      = shell->disp_height;
+  shell->vsbdata->page_increment = shell->disp_height / 2;
+
+  gimp_display_shell_scroll_setup_vscrollbar (shell, shell->offset_y);
+
   gtk_adjustment_changed (shell->vsbdata);
+}
 
-  hruler = GTK_RULER (shell->hrule);
-  vruler = GTK_RULER (shell->vrule);
+/**
+ * gimp_display_shell_scale_update_rulers:
+ * @shell:
+ *
+ **/
+void
+gimp_display_shell_scale_update_rulers (GimpDisplayShell *shell)
+{
+  GimpImage *image;
+  gint       image_width;
+  gint       image_height;
+  gdouble    horizontal_lower;
+  gdouble    horizontal_upper;
+  gdouble    horizontal_max_size;
+  gdouble    vertical_lower;
+  gdouble    vertical_upper;
+  gdouble    vertical_max_size;
+  gint       scaled_viewport_offset_x;
+  gint       scaled_viewport_offset_y;
 
-  hruler->lower    = 0;
-  hruler->upper    = img2real (shell, TRUE,
-                               FUNSCALEX (shell, shell->disp_width));
-  hruler->max_size = img2real (shell, TRUE,
-                               MAX (image_width, image_height));
+  image = shell->display->image;
 
-  vruler->lower    = 0;
-  vruler->upper    = img2real (shell, FALSE,
-                               FUNSCALEY (shell, shell->disp_height));
-  vruler->max_size = img2real (shell, FALSE,
-                               MAX (image_width, image_height));
-
-  if (sx < shell->disp_width)
+  if (image)
     {
-      shell->disp_xoffset = (shell->disp_width - sx) / 2;
-
-      hruler->lower -= img2real (shell, TRUE,
-                                 FUNSCALEX (shell,
-                                            (gdouble) shell->disp_xoffset));
-      hruler->upper -= img2real (shell, TRUE,
-                                 FUNSCALEX (shell,
-                                            (gdouble) shell->disp_xoffset));
+      image_width  = gimp_image_get_width  (image);
+      image_height = gimp_image_get_height (image);
     }
   else
     {
-      shell->disp_xoffset = 0;
-
-      hruler->lower += img2real (shell, TRUE,
-                                 FUNSCALEX (shell,
-                                            (gdouble) shell->offset_x));
-      hruler->upper += img2real (shell, TRUE,
-                                 FUNSCALEX (shell,
-                                            (gdouble) shell->offset_x));
+      image_width  = shell->disp_width;
+      image_height = shell->disp_height;
     }
 
-  if (sy < shell->disp_height)
-    {
-      shell->disp_yoffset = (shell->disp_height - sy) / 2;
 
-      vruler->lower -= img2real (shell, FALSE,
-                                 FUNSCALEY (shell,
-                                            (gdouble) shell->disp_yoffset));
-      vruler->upper -= img2real (shell, FALSE,
-                                 FUNSCALEY (shell,
-                                            (gdouble) shell->disp_yoffset));
+  /* Initialize values */
+
+  horizontal_lower = 0;
+  vertical_lower   = 0;
+
+  if (image)
+    {
+      horizontal_upper    = img2real (shell, TRUE,
+                                      FUNSCALEX (shell, shell->disp_width));
+      horizontal_max_size = img2real (shell, TRUE,
+                                      MAX (image_width, image_height));
+
+      vertical_upper      = img2real (shell, FALSE,
+                                      FUNSCALEY (shell, shell->disp_height));
+      vertical_max_size   = img2real (shell, FALSE,
+                                      MAX (image_width, image_height));
     }
   else
     {
-      shell->disp_yoffset = 0;
+      horizontal_upper    = image_width;
+      horizontal_max_size = MAX (image_width, image_height);
 
-      vruler->lower += img2real (shell, FALSE,
-                                 FUNSCALEY (shell,
-                                            (gdouble) shell->offset_y));
-      vruler->upper += img2real (shell, FALSE,
-                                 FUNSCALEY (shell,
-                                            (gdouble) shell->offset_y));
+      vertical_upper      = image_height;
+      vertical_max_size   = MAX (image_width, image_height);
     }
 
-  gtk_widget_queue_draw (GTK_WIDGET (hruler));
-  gtk_widget_queue_draw (GTK_WIDGET (vruler));
 
-#if 0
-  g_printerr ("offset_x:     %d\n"
-              "offset_y:     %d\n"
-              "disp_width:   %d\n"
-              "disp_height:  %d\n"
-              "disp_xoffset: %d\n"
-              "disp_yoffset: %d\n\n",
-              shell->offset_x, shell->offset_y,
-              shell->disp_width, shell->disp_height,
-              shell->disp_xoffset, shell->disp_yoffset);
-#endif
+  /* Adjust due to scrolling */
+
+  gimp_display_shell_scroll_get_scaled_viewport_offset (shell,
+                                                        &scaled_viewport_offset_x,
+                                                        &scaled_viewport_offset_y);
+
+  horizontal_lower -= img2real (shell, TRUE,
+                                FUNSCALEX (shell,
+                                           (gdouble) scaled_viewport_offset_x));
+  horizontal_upper -= img2real (shell, TRUE,
+                                FUNSCALEX (shell,
+                                           (gdouble) scaled_viewport_offset_x));
+
+  vertical_lower   -= img2real (shell, FALSE,
+                                FUNSCALEY (shell,
+                                           (gdouble) scaled_viewport_offset_y));
+  vertical_upper   -= img2real (shell, FALSE,
+                                FUNSCALEY (shell,
+                                           (gdouble) scaled_viewport_offset_y));
+
+
+  /* Finally setup the actual rulers */
+
+  gimp_ruler_set_range (GIMP_RULER (shell->hrule),
+                        horizontal_lower,
+                        horizontal_upper,
+                        horizontal_max_size);
+
+  gimp_ruler_set_unit  (GIMP_RULER (shell->hrule),
+                        shell->unit);
+
+  gimp_ruler_set_range (GIMP_RULER (shell->vrule),
+                        vertical_lower,
+                        vertical_upper,
+                        vertical_max_size);
+
+  gimp_ruler_set_unit  (GIMP_RULER (shell->vrule),
+                        shell->unit);
 }
 
 /**
  * gimp_display_shell_scale_revert:
  * @shell:     the #GimpDisplayShell
  *
- * Reverts the display to the previously used scale. If no previous scale exist
- * then the call does nothing.
+ * Reverts the display to the previously used scale. If no previous
+ * scale exist, then the call does nothing.
  *
  * Return value: %TRUE if the scale was reverted, otherwise %FALSE.
  **/
@@ -227,7 +276,7 @@ gimp_display_shell_scale_revert (GimpDisplayShell *shell)
 
 /**
  * gimp_display_shell_scale_can_revert:
- * @shell:     the #GimpDisplayShell
+ * @shell: the #GimpDisplayShell
  *
  * Return value: %TRUE if a previous display scale exists, otherwise %FALSE.
  **/
@@ -256,8 +305,6 @@ gimp_display_shell_scale_set_dot_for_dot (GimpDisplayShell *shell,
 
   if (dot_for_dot != shell->dot_for_dot)
     {
-      Gimp *gimp = shell->display->image->gimp;
-
       /* freeze the active tool */
       gimp_display_shell_pause (shell);
 
@@ -266,8 +313,8 @@ gimp_display_shell_scale_set_dot_for_dot (GimpDisplayShell *shell,
       gimp_display_shell_scale_changed (shell);
 
       gimp_display_shell_scale_resize (shell,
-                                       GIMP_DISPLAY_CONFIG (gimp->config)->resize_windows_on_zoom,
-                                       TRUE);
+                                       shell->display->config->resize_windows_on_zoom,
+                                       FALSE);
 
       /* re-enable the active tool */
       gimp_display_shell_resume (shell);
@@ -280,110 +327,85 @@ gimp_display_shell_scale_set_dot_for_dot (GimpDisplayShell *shell,
  * @zoom_type: whether to zoom in, our or to a specific scale
  * @scale:     ignored unless @zoom_type == %GIMP_ZOOM_TO
  *
- * This function calls gimp_display_shell_scale_to(). It tries to be
- * smart whether to use the position of the mouse pointer or the
- * center of the display as coordinates.
+ * This function figures out the context of the zoom and behaves
+ * appropriatley thereafter.
+ *
  **/
 void
 gimp_display_shell_scale (GimpDisplayShell *shell,
                           GimpZoomType      zoom_type,
                           gdouble           new_scale)
 {
-  GdkEvent *event;
-  gint      x, y;
+  gint    x, y;
+  gdouble current_scale;
+  gdouble real_new_scale;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
   g_return_if_fail (shell->canvas != NULL);
 
-  if (zoom_type == GIMP_ZOOM_TO &&
-      SCALE_EQUALS (new_scale, gimp_zoom_model_get_factor (shell->zoom)))
-    return;
-
-  x = shell->disp_width  / 2;
-  y = shell->disp_height / 2;
-
-  /*  Center on the mouse position instead of the display center,
-   *  if one of the following conditions is fulfilled:
-   *
-   *   (1) there's no current event (the action was triggered by an
-   *       input controller)
-   *   (2) the event originates from the canvas (a scroll event)
-   *   (3) the event originates from the shell (a key press event)
-   *
-   *  Basically the only situation where we don't want to center on
-   *  mouse position is if the action is being called from a menu.
-   */
-
-  event = gtk_get_current_event ();
-
-  if (! event ||
-      gtk_get_event_widget (event) == shell->canvas ||
-      gtk_get_event_widget (event) == GTK_WIDGET (shell))
-    {
-      gtk_widget_get_pointer (shell->canvas, &x, &y);
-    }
-
-  gimp_display_shell_scale_to (shell, zoom_type, new_scale, x, y);
-}
-
-/**
- * gimp_display_shell_scale_to:
- * @shell:     the #GimpDisplayShell
- * @zoom_type: whether to zoom in, out or to a specified scale
- * @scale:     ignored unless @zoom_type == %GIMP_ZOOM_TO
- * @x:         x screen coordinate
- * @y:         y screen coordinate
- *
- * This function changes the scale (zoom ratio) of the display shell.
- * It either zooms in / out one step (%GIMP_ZOOM_IN / %GIMP_ZOOM_OUT)
- * or sets the scale to the zoom ratio passed as @scale (%GIMP_ZOOM_TO).
- *
- * The display offsets are adjusted so that the point specified by @x
- * and @y doesn't change it's position on screen (if possible). You
- * would typically pass either the display center or the mouse
- * position here.
- **/
-void
-gimp_display_shell_scale_to (GimpDisplayShell *shell,
-                             GimpZoomType      zoom_type,
-                             gdouble           scale,
-                             gdouble           x,
-                             gdouble           y)
-{
-  GimpDisplayConfig *config;
-  gdouble            current;
-  gdouble            offset_x;
-  gdouble            offset_y;
-
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  if (! shell->display)
-    return;
-
-  current = gimp_zoom_model_get_factor (shell->zoom);
-
-  offset_x = shell->offset_x + x;
-  offset_y = shell->offset_y + y;
-
-  offset_x /= current;
-  offset_y /= current;
+  current_scale = gimp_zoom_model_get_factor (shell->zoom);
 
   if (zoom_type != GIMP_ZOOM_TO)
-    scale = gimp_zoom_model_zoom_step (zoom_type, current);
+    {
+      real_new_scale = gimp_zoom_model_zoom_step (zoom_type, current_scale);
+    }
+  else
+    {
+      real_new_scale = new_scale;
+    }
 
-  offset_x *= scale;
-  offset_y *= scale;
+  if (! SCALE_EQUALS (real_new_scale, current_scale))
+    {
+      if (shell->display->config->resize_windows_on_zoom)
+        {
+          /* If the window is resized on zoom, simply do the zoom and
+           * get things rolling
+           */
+          gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, real_new_scale);
+          gimp_display_shell_shrink_wrap (shell, FALSE);
+        }
+      else
+        {
+          gboolean starts_fitting_horizontally;
+          gboolean starts_fitting_vertically;
+          gboolean almost_centered_horizontally;
+          gboolean almost_centered_vertically;
 
-  config = GIMP_DISPLAY_CONFIG (shell->display->image->gimp->config);
+          gimp_display_shell_scale_get_zoom_focus (shell,
+                                                   real_new_scale,
+                                                   current_scale,
+                                                   &x,
+                                                   &y);
 
-  gimp_display_shell_scale_by_values (shell, scale,
-                                      offset_x - x, offset_y - y,
-                                      config->resize_windows_on_zoom);
+          gimp_display_shell_scale_to (shell, real_new_scale, x, y);
+
+
+          /* If an image axis started to fit due to zooming out or if
+           * the focus point is as good as in the center, center on
+           * that axis
+           */
+          gimp_display_shell_scale_image_starts_to_fit (shell,
+                                                        real_new_scale,
+                                                        current_scale,
+                                                        &starts_fitting_horizontally,
+                                                        &starts_fitting_vertically);
+          gimp_display_shell_scale_viewport_coord_almost_centered (shell,
+                                                                   x,
+                                                                   y,
+                                                                   &almost_centered_horizontally,
+                                                                   &almost_centered_vertically);
+          gimp_display_shell_scroll_center_image (shell,
+                                                  starts_fitting_horizontally ||
+                                                  almost_centered_horizontally,
+                                                  starts_fitting_vertically ||
+                                                  almost_centered_vertically);
+        }
+    }
 }
 
 /**
  * gimp_display_shell_scale_fit_in:
- * @shell:     the #GimpDisplayShell
+ * @shell: the #GimpDisplayShell
  *
  * Sets the scale such that the entire image precisely fits in the display
  * area.
@@ -394,72 +416,136 @@ gimp_display_shell_scale_fit_in (GimpDisplayShell *shell)
   GimpImage *image;
   gint       image_width;
   gint       image_height;
+  gdouble    xres;
+  gdouble    yres;
   gdouble    zoom_factor;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   image = shell->display->image;
 
-  image_width  = image->width;
-  image_height = image->height;
+  image_width  = gimp_image_get_width  (image);
+  image_height = gimp_image_get_height (image);
+
+  gimp_image_get_resolution (image, &xres, &yres);
 
   if (! shell->dot_for_dot)
     {
-      image_width  = ROUND (image_width *
-                            shell->monitor_xres / image->xresolution);
-      image_height = ROUND (image_height *
-                            shell->monitor_yres / image->yresolution);
+      image_width  = ROUND (image_width  * shell->monitor_xres / xres);
+      image_height = ROUND (image_height * shell->monitor_yres / yres);
     }
 
   zoom_factor = MIN ((gdouble) shell->disp_width  / (gdouble) image_width,
                      (gdouble) shell->disp_height / (gdouble) image_height);
 
   gimp_display_shell_scale (shell, GIMP_ZOOM_TO, zoom_factor);
+  gimp_display_shell_scroll_center_image (shell, TRUE, TRUE);
 }
 
 /**
- * gimp_display_shell_scale_fit_to:
- * @shell:     the #GimpDisplayShell
+ * gimp_display_shell_scale_image_is_within_viewport:
+ * @shell:
+ *
+ * Returns: %TRUE if the (scaled) image is smaller than and within the
+ *          viewport.
+ **/
+gboolean
+gimp_display_shell_scale_image_is_within_viewport (GimpDisplayShell *shell,
+                                                   gboolean         *horizontally,
+                                                   gboolean         *vertically)
+{
+  gint     sw, sh;
+  gboolean horizontally_dummy, vertically_dummy;
+
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  if (! horizontally) horizontally = &horizontally_dummy;
+  if (! vertically)   vertically   = &vertically_dummy;
+
+  gimp_display_shell_draw_get_scaled_image_size (shell, &sw, &sh);
+
+  *horizontally = sw              <= shell->disp_width       &&
+                  shell->offset_x <= 0                       &&
+                  shell->offset_x >= sw - shell->disp_width;
+
+  *vertically   = sh              <= shell->disp_height      &&
+                  shell->offset_y <= 0                       &&
+                  shell->offset_y >= sh - shell->disp_height;
+
+  return *vertically && *horizontally;
+}
+
+/**
+ * gimp_display_shell_scale_fill:
+ * @shell: the #GimpDisplayShell
  *
  * Sets the scale such that the entire display area is precisely filled by the
  * image.
  **/
 void
-gimp_display_shell_scale_fit_to (GimpDisplayShell *shell)
+gimp_display_shell_scale_fill (GimpDisplayShell *shell)
 {
   GimpImage *image;
   gint       image_width;
   gint       image_height;
+  gdouble    xres;
+  gdouble    yres;
   gdouble    zoom_factor;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   image = shell->display->image;
 
-  image_width  = image->width;
-  image_height = image->height;
+  image_width  = gimp_image_get_width  (image);
+  image_height = gimp_image_get_height (image);
+
+  gimp_image_get_resolution (image, &xres, &yres);
 
   if (! shell->dot_for_dot)
     {
-      image_width  = ROUND (image_width *
-                            shell->monitor_xres / image->xresolution);
-      image_height = ROUND (image_height *
-                            shell->monitor_yres / image->yresolution);
+      image_width  = ROUND (image_width  * shell->monitor_xres / xres);
+      image_height = ROUND (image_height * shell->monitor_yres / yres);
     }
 
   zoom_factor = MAX ((gdouble) shell->disp_width  / (gdouble) image_width,
                      (gdouble) shell->disp_height / (gdouble) image_height);
 
   gimp_display_shell_scale (shell, GIMP_ZOOM_TO, zoom_factor);
+  gimp_display_shell_scroll_center_image (shell, TRUE, TRUE);
+}
+
+/**
+ * gimp_display_shell_scale_handle_zoom_revert:
+ * @shell:
+ *
+ * Handle the updating of the Revert Zoom variables.
+ **/
+void
+gimp_display_shell_scale_handle_zoom_revert (GimpDisplayShell *shell)
+{
+  guint now;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  now = time (NULL);
+
+  if (now - shell->last_scale_time >= SCALE_TIMEOUT)
+    {
+      shell->last_scale    = gimp_zoom_model_get_factor (shell->zoom);
+      shell->last_offset_x = shell->offset_x;
+      shell->last_offset_y = shell->offset_y;
+    }
+
+  shell->last_scale_time = now;
 }
 
 /**
  * gimp_display_shell_scale_by_values:
- * @shell:          the #GimpDisplayShell
- * @scale:          the new scale
- * @offset_x:       the new X offset
- * @offset_y:       the new Y offset
- * @resize_window:  whether the display window should be resized
+ * @shell:         the #GimpDisplayShell
+ * @scale:         the new scale
+ * @offset_x:      the new X offset
+ * @offset_y:      the new Y offset
+ * @resize_window: whether the display window should be resized
  *
  * Directly sets the image scale and image offsets used by the display. If
  * @resize_window is %TRUE then the display window is resized to better
@@ -472,8 +558,6 @@ gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
                                     gint              offset_y,
                                     gboolean          resize_window)
 {
-  guint now;
-
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   /*  Abort early if the values are all setup already. We don't
@@ -484,18 +568,7 @@ gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
       shell->offset_y == offset_y)
     return;
 
-  /* remember the current scale and offsets to allow reverting the scaling */
-
-  now = time (NULL);
-
-  if (now - shell->last_scale_time > SCALE_TIMEOUT)
-    {
-      shell->last_scale    = gimp_zoom_model_get_factor (shell->zoom);
-      shell->last_offset_x = shell->offset_x;
-      shell->last_offset_y = shell->offset_y;
-    }
-
-  shell->last_scale_time = now;
+  gimp_display_shell_scale_handle_zoom_revert (shell);
 
   /* freeze the active tool */
   gimp_display_shell_pause (shell);
@@ -505,7 +578,7 @@ gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
   shell->offset_x = offset_x;
   shell->offset_y = offset_y;
 
-  gimp_display_shell_scale_resize (shell, resize_window, TRUE);
+  gimp_display_shell_scale_resize (shell, resize_window, FALSE);
 
   /* re-enable the active tool */
   gimp_display_shell_resume (shell);
@@ -513,24 +586,25 @@ gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
 
 /**
  * gimp_display_shell_scale_shrink_wrap:
- * @shell:          the #GimpDisplayShell
+ * @shell: the #GimpDisplayShell
  *
  * Convenience function with the same functionality as
- * gimp_display_shell_scale_resize(@shell, TRUE, TRUE).
+ * gimp_display_shell_scale_resize(@shell, TRUE, grow_only).
  **/
 void
-gimp_display_shell_scale_shrink_wrap (GimpDisplayShell *shell)
+gimp_display_shell_scale_shrink_wrap (GimpDisplayShell *shell,
+                                      gboolean          grow_only)
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  gimp_display_shell_scale_resize (shell, TRUE, TRUE);
+  gimp_display_shell_scale_resize (shell, TRUE, grow_only);
 }
 
 /**
  * gimp_display_shell_scale_resize:
  * @shell:          the #GimpDisplayShell
  * @resize_window:  whether the display window should be resized
- * @redisplay:      whether the display window should be redrawn
+ * @grow_only:      whether shrinking of the window is allowed or not
  *
  * Function commonly called after a change in display scale to make the changes
  * visible to the user. If @resize_window is %TRUE then the display window is
@@ -540,251 +614,358 @@ gimp_display_shell_scale_shrink_wrap (GimpDisplayShell *shell)
 void
 gimp_display_shell_scale_resize (GimpDisplayShell *shell,
                                  gboolean          resize_window,
-                                 gboolean          redisplay)
+                                 gboolean          grow_only)
 {
-  Gimp *gimp;
-
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  gimp = shell->display->image->gimp;
 
   /* freeze the active tool */
   gimp_display_shell_pause (shell);
 
   if (resize_window)
-    gimp_display_shell_shrink_wrap (shell);
+    gimp_display_shell_shrink_wrap (shell, grow_only);
 
-  gimp_display_shell_scroll_clamp_offsets (shell);
-  gimp_display_shell_scale_setup (shell);
+  gimp_display_shell_scroll_clamp_and_update (shell);
   gimp_display_shell_scaled (shell);
 
-  if (resize_window || redisplay)
-    gimp_display_shell_expose_full (shell);
+  gimp_display_shell_expose_full (shell);
 
   /* re-enable the active tool */
   gimp_display_shell_resume (shell);
 }
 
 /**
- * gimp_display_shell_scale_dialog:
- * @shell:          the #GimpDisplayShell
+ * gimp_display_shell_calculate_scale_x_and_y:
+ * @shell:
+ * @scale:
+ * @scale_x:
+ * @scale_y:
  *
- * Constructs and displays a dialog allowing the user to enter a custom display
- * scale.
  **/
 void
-gimp_display_shell_scale_dialog (GimpDisplayShell *shell)
+gimp_display_shell_calculate_scale_x_and_y (const GimpDisplayShell *shell,
+                                            gdouble                 scale,
+                                            gdouble                *scale_x,
+                                            gdouble                *scale_y)
 {
-  ScaleDialogData *data;
-  GimpImage       *image;
-  GtkWidget       *hbox;
-  GtkWidget       *table;
-  GtkWidget       *spin;
-  GtkWidget       *label;
-  gint             num, denom, row;
+  gdouble xres;
+  gdouble yres;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (GIMP_IS_IMAGE (shell->display->image));
+
+  gimp_image_get_resolution (shell->display->image, &xres, &yres);
+
+  if (scale_x) *scale_x = scale * SCREEN_XRES (shell) / xres;
+  if (scale_y) *scale_y = scale * SCREEN_YRES (shell) / yres;
+}
+
+void
+gimp_display_shell_set_initial_scale (GimpDisplayShell *shell,
+                                      gdouble           scale,
+                                      gint             *display_width,
+                                      gint             *display_height)
+{
+  GdkScreen *screen;
+  gint       image_width;
+  gint       image_height;
+  gint       shell_width;
+  gint       shell_height;
+  gint       screen_width;
+  gint       screen_height;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  if (shell->scale_dialog)
+  screen = gtk_widget_get_screen (GTK_WIDGET (shell));
+
+  image_width  = gimp_image_get_width  (shell->display->image);
+  image_height = gimp_image_get_height (shell->display->image);
+
+  screen_width  = gdk_screen_get_width (screen)  * 0.75;
+  screen_height = gdk_screen_get_height (screen) * 0.75;
+
+  /* We need to zoom before we use SCALE[XY] */
+  gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, scale);
+
+  shell_width  = SCALEX (shell, image_width);
+  shell_height = SCALEY (shell, image_height);
+
+  if (shell->display->config->initial_zoom_to_fit)
     {
-      gtk_window_present (GTK_WINDOW (shell->scale_dialog));
-      return;
-    }
+      /*  Limit to the size of the screen...  */
+      if (shell_width > screen_width || shell_height > screen_height)
+        {
+          gdouble new_scale;
+          gdouble current = gimp_zoom_model_get_factor (shell->zoom);
 
-  if (SCALE_EQUALS (shell->other_scale, 0.0))
-    {
-      /* other_scale not yet initialized */
-      shell->other_scale = gimp_zoom_model_get_factor (shell->zoom);
-    }
+          new_scale = current * MIN (((gdouble) screen_height) / shell_height,
+                                     ((gdouble) screen_width)  / shell_width);
 
-  image = shell->display->image;
+          new_scale = gimp_zoom_model_zoom_step (GIMP_ZOOM_OUT, new_scale);
 
-  data = g_slice_new (ScaleDialogData);
+          /*  Since zooming out might skip a zoom step we zoom in
+           *  again and test if we are small enough.
+           */
+          gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO,
+                                gimp_zoom_model_zoom_step (GIMP_ZOOM_IN,
+                                                           new_scale));
 
-  data->shell = shell;
-  data->model = g_object_new (GIMP_TYPE_ZOOM_MODEL,
-                              "value", fabs (shell->other_scale),
-                              NULL);
+          if (SCALEX (shell, image_width) > screen_width ||
+              SCALEY (shell, image_height) > screen_height)
+            gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, new_scale);
 
-  shell->scale_dialog =
-    gimp_viewable_dialog_new (GIMP_VIEWABLE (image),
-                              gimp_get_user_context (image->gimp),
-                              _("Zoom Ratio"), "display_scale",
-                              GTK_STOCK_ZOOM_100,
-                              _("Select Zoom Ratio"),
-                              GTK_WIDGET (shell),
-                              gimp_standard_help_func,
-                              GIMP_HELP_VIEW_ZOOM_OTHER,
-
-                              GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                              GTK_STOCK_OK,     GTK_RESPONSE_OK,
-
-                              NULL);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (shell->scale_dialog),
-                                           GTK_RESPONSE_OK,
-                                           GTK_RESPONSE_CANCEL,
-                                           -1);
-
-  g_object_weak_ref (G_OBJECT (shell->scale_dialog),
-                     (GWeakNotify) gimp_display_shell_scale_dialog_free, data);
-  g_object_weak_ref (G_OBJECT (shell->scale_dialog),
-                     (GWeakNotify) g_object_unref, data->model);
-
-  g_object_add_weak_pointer (G_OBJECT (shell->scale_dialog),
-                             (gpointer) &shell->scale_dialog);
-
-  gtk_window_set_transient_for (GTK_WINDOW (shell->scale_dialog),
-                                GTK_WINDOW (shell));
-  gtk_window_set_destroy_with_parent (GTK_WINDOW (shell->scale_dialog), TRUE);
-
-  g_signal_connect (shell->scale_dialog, "response",
-                    G_CALLBACK (gimp_display_shell_scale_dialog_response),
-                    data);
-
-  table = gtk_table_new (2, 2, FALSE);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (shell->scale_dialog)->vbox),
-                     table);
-  gtk_widget_show (table);
-
-  row = 0;
-
-  hbox = gtk_hbox_new (FALSE, 6);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-                             _("Zoom ratio:"), 0.0, 0.5,
-                             hbox, 1, FALSE);
-
-  gimp_zoom_model_get_fraction (data->model, &num, &denom);
-
-  spin = gimp_spin_button_new (&data->num_adj,
-                               num, 1, 256,
-                               1, 8, 1, 1, 0);
-  gtk_entry_set_activates_default (GTK_ENTRY (spin), TRUE);
-  gtk_box_pack_start (GTK_BOX (hbox), spin, TRUE, TRUE, 0);
-  gtk_widget_show (spin);
-
-  label = gtk_label_new (":");
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  spin = gimp_spin_button_new (&data->denom_adj,
-                               denom, 1, 256,
-                               1, 8, 1, 1, 0);
-  gtk_entry_set_activates_default (GTK_ENTRY (spin), TRUE);
-  gtk_box_pack_start (GTK_BOX (hbox), spin, TRUE, TRUE, 0);
-  gtk_widget_show (spin);
-
-  hbox = gtk_hbox_new (FALSE, 6);
-  gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-                             _("Zoom:"), 0.0, 0.5,
-                             hbox, 1, FALSE);
-
-  spin = gimp_spin_button_new (&data->scale_adj,
-                               fabs (shell->other_scale) * 100,
-                               100.0 / 256.0, 25600.0,
-                               10, 50, 0, 1, 2);
-  gtk_entry_set_activates_default (GTK_ENTRY (spin), TRUE);
-  gtk_box_pack_start (GTK_BOX (hbox), spin, TRUE, TRUE, 0);
-  gtk_widget_show (spin);
-
-  label = gtk_label_new ("%");
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  g_signal_connect (data->scale_adj, "value-changed",
-                    G_CALLBACK (update_zoom_values), data);
-  g_signal_connect (data->num_adj, "value-changed",
-                    G_CALLBACK (update_zoom_values), data);
-  g_signal_connect (data->denom_adj, "value-changed",
-                    G_CALLBACK (update_zoom_values), data);
-
-  gtk_widget_show (shell->scale_dialog);
-}
-
-
-/*  private functions  */
-
-static void
-gimp_display_shell_scale_dialog_response (GtkWidget       *widget,
-                                          gint             response_id,
-                                          ScaleDialogData *dialog)
-{
-  if (response_id == GTK_RESPONSE_OK)
-    {
-      gdouble scale;
-
-      scale = gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->scale_adj));
-
-      gimp_display_shell_scale (dialog->shell, GIMP_ZOOM_TO, scale / 100.0);
+          shell_width  = SCALEX (shell, image_width);
+          shell_height = SCALEY (shell, image_height);
+        }
     }
   else
     {
-      /*  need to emit "scaled" to get the menu updated  */
-      gimp_display_shell_scaled (dialog->shell);
+      /*  Set up size like above, but do not zoom to fit. Useful when
+       *  working on large images.
+       */
+      if (shell_width > screen_width)
+        shell_width = screen_width;
+
+      if (shell_height > screen_height)
+        shell_height = screen_height;
     }
 
-  dialog->shell->other_scale = - fabs (dialog->shell->other_scale);
+  if (display_width)
+    *display_width = shell_width;
 
-  gtk_widget_destroy (dialog->shell->scale_dialog);
+  if (display_height)
+    *display_height = shell_height;
 }
 
+/**
+ * gimp_display_shell_scale_to:
+ * @shell:
+ * @scale:
+ * @viewport_x:
+ * @viewport_y:
+ *
+ * Zooms. The display offsets are adjusted so that the point specified
+ * by @x and @y doesn't change it's position on screen.
+ **/
 static void
-gimp_display_shell_scale_dialog_free (ScaleDialogData *dialog)
+gimp_display_shell_scale_to (GimpDisplayShell *shell,
+                             gdouble           scale,
+                             gint              viewport_x,
+                             gint              viewport_y)
 {
-  g_slice_free (ScaleDialogData, dialog);
+  gdouble scale_x, scale_y;
+  gdouble image_focus_x, image_focus_y;
+  gint    target_offset_x, target_offset_y;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  if (! shell->display)
+    return;
+
+  gimp_display_shell_untransform_xy_f (shell,
+                                       viewport_x,
+                                       viewport_y,
+                                       &image_focus_x,
+                                       &image_focus_y,
+                                       FALSE);
+
+  gimp_display_shell_calculate_scale_x_and_y (shell, scale, &scale_x, &scale_y);
+
+  target_offset_x = scale_x * image_focus_x - viewport_x;
+  target_offset_y = scale_y * image_focus_y - viewport_y;
+
+  /* Note that we never come here if we need to
+   * resize_windows_on_zoom
+   */
+  gimp_display_shell_scale_by_values (shell,
+                                      scale,
+                                      target_offset_x,
+                                      target_offset_y,
+                                      FALSE);
 }
 
-static void
-update_zoom_values (GtkAdjustment   *adj,
-                    ScaleDialogData *dialog)
+static gboolean
+gimp_display_shell_scale_image_starts_to_fit (GimpDisplayShell *shell,
+                                              gdouble           new_scale,
+                                              gdouble           current_scale,
+                                              gboolean         *vertically,
+                                              gboolean         *horizontally)
 {
-  gint    num, denom;
-  gdouble scale;
+  gboolean vertically_dummy;
+  gboolean horizontally_dummy;
 
-  g_signal_handlers_block_by_func (GTK_ADJUSTMENT (dialog->scale_adj),
-                                   G_CALLBACK (update_zoom_values),
-                                   dialog);
+  if (! vertically)   vertically   = &vertically_dummy;
+  if (! horizontally) horizontally = &horizontally_dummy;
 
-  g_signal_handlers_block_by_func (GTK_ADJUSTMENT (dialog->num_adj),
-                                   G_CALLBACK (update_zoom_values),
-                                   dialog);
-
-  g_signal_handlers_block_by_func (GTK_ADJUSTMENT (dialog->denom_adj),
-                                   G_CALLBACK (update_zoom_values),
-                                   dialog);
-
-  if (GTK_OBJECT (adj) == dialog->scale_adj)
+  /* The image can only start to fit if we zoom out */
+  if (new_scale > current_scale)
     {
-      scale = gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->scale_adj));
-
-      gimp_zoom_model_zoom (dialog->model, GIMP_ZOOM_TO, scale / 100.0);
-      gimp_zoom_model_get_fraction (dialog->model, &num, &denom);
-
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (dialog->num_adj), num);
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (dialog->denom_adj), denom);
+      *vertically   = FALSE;
+      *horizontally = FALSE;
     }
-  else   /* fraction adjustments */
+  else
     {
-      scale = (gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->num_adj)) /
-               gtk_adjustment_get_value (GTK_ADJUSTMENT (dialog->denom_adj)));
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (dialog->scale_adj),
-                                scale * 100);
+      gint current_scale_width;
+      gint current_scale_height;
+      gint new_scale_width;
+      gint new_scale_height;
+
+      gimp_display_shell_draw_get_scaled_image_size_for_scale (shell,
+                                                               current_scale,
+                                                               &current_scale_width,
+                                                               &current_scale_height);
+
+      gimp_display_shell_draw_get_scaled_image_size_for_scale (shell,
+                                                               new_scale,
+                                                               &new_scale_width,
+                                                               &new_scale_height);
+
+      *vertically   = (current_scale_width  >  shell->disp_width &&
+                       new_scale_width      <= shell->disp_width);
+      *horizontally = (current_scale_height >  shell->disp_height &&
+                       new_scale_height     <= shell->disp_height);
     }
 
-  g_signal_handlers_unblock_by_func (GTK_ADJUSTMENT (dialog->scale_adj),
-                                     G_CALLBACK (update_zoom_values),
-                                     dialog);
+  return *vertically && *horizontally;
+}
 
-  g_signal_handlers_unblock_by_func (GTK_ADJUSTMENT (dialog->num_adj),
-                                     G_CALLBACK (update_zoom_values),
-                                     dialog);
+static gboolean
+gimp_display_shell_scale_image_stops_to_fit (GimpDisplayShell *shell,
+                                             gdouble           new_scale,
+                                             gdouble           current_scale,
+                                             gboolean         *vertically,
+                                             gboolean         *horizontally)
+{
+  return gimp_display_shell_scale_image_starts_to_fit (shell,
+                                                       current_scale,
+                                                       new_scale,
+                                                       vertically,
+                                                       horizontally);
+}
 
-  g_signal_handlers_unblock_by_func (GTK_ADJUSTMENT (dialog->denom_adj),
-                                     G_CALLBACK (update_zoom_values),
-                                     dialog);
+/**
+ * gimp_display_shell_scale_viewport_coord_almost_centered:
+ * @shell:
+ * @x:
+ * @y:
+ * @horizontally:
+ * @vertically:
+ *
+ **/
+static void
+gimp_display_shell_scale_viewport_coord_almost_centered (GimpDisplayShell *shell,
+                                                         gint              x,
+                                                         gint              y,
+                                                         gboolean         *horizontally,
+                                                         gboolean         *vertically)
+{
+  gint center_x = shell->disp_width  / 2;
+  gint center_y = shell->disp_height / 2;
+
+  *horizontally = x > center_x - ALMOST_CENTERED_THRESHOLD &&
+                  x < center_x + ALMOST_CENTERED_THRESHOLD;
+
+  *vertically   = y > center_y - ALMOST_CENTERED_THRESHOLD &&
+                  y < center_y + ALMOST_CENTERED_THRESHOLD;
+}
+
+/**
+ * gimp_display_shell_scale_get_zoom_focus:
+ * @shell:
+ * @new_scale:
+ * @x:
+ * @y:
+ *
+ * Calculates the viewport coordinate to focus on when zooming
+ * independently for each axis.
+ **/
+static void
+gimp_display_shell_scale_get_zoom_focus (GimpDisplayShell *shell,
+                                         gdouble           new_scale,
+                                         gdouble           current_scale,
+                                         gint             *x,
+                                         gint             *y)
+{
+  gint image_center_x, image_center_y;
+  gint other_x, other_y;
+
+  /* Calculate stops-to-fit focus point */
+  {
+    gint sw, sh;
+
+    gimp_display_shell_draw_get_scaled_image_size (shell,
+                                                   &sw,
+                                                   &sh);
+    image_center_x = -shell->offset_x + sw / 2;
+    image_center_y = -shell->offset_y + sh / 2;
+  }
+
+  /* Calculate other focus point */
+  {
+    GdkEvent *event;
+    gboolean  event_looks_sane;
+    gboolean  cursor_within_canvas;
+    gint      canvas_pointer_x, canvas_pointer_y;
+
+    /*  Center on the mouse position instead of the display center if
+     *  one of the following conditions are fulfilled and pointer is
+     *  within the canvas:
+     *
+     *   (1) there's no current event (the action was triggered by an
+     *       input controller)
+     *   (2) the event originates from the canvas (a scroll event)
+     *   (3) the event originates from the shell (a key press event)
+     *
+     *  Basically the only situation where we don't want to center on
+     *  mouse position is if the action is being called from a menu.
+     */
+
+    event = gtk_get_current_event ();
+
+    event_looks_sane = ! event ||
+                       gtk_get_event_widget (event) == shell->canvas ||
+                       gtk_get_event_widget (event) == GTK_WIDGET (shell);
+
+
+    gtk_widget_get_pointer (shell->canvas,
+                            &canvas_pointer_x,
+                            &canvas_pointer_y);
+
+    cursor_within_canvas = canvas_pointer_x >= 0 &&
+                           canvas_pointer_y >= 0 &&
+                           canvas_pointer_x <  shell->disp_width &&
+                           canvas_pointer_y <  shell->disp_height;
+
+
+    if (event_looks_sane && cursor_within_canvas)
+      {
+        other_x = canvas_pointer_x;
+        other_y = canvas_pointer_y;
+      }
+    else
+      {
+        other_x = shell->disp_width  / 2;
+        other_y = shell->disp_height / 2;
+      }
+  }
+
+  /* Decide which one to use for each axis */
+  {
+    gboolean within_horizontally, within_vertically;
+    gboolean stops_horizontally, stops_vertically;
+
+    gimp_display_shell_scale_image_is_within_viewport (shell,
+                                                       &within_horizontally,
+                                                       &within_vertically);
+
+    gimp_display_shell_scale_image_stops_to_fit (shell,
+                                                 new_scale,
+                                                 current_scale,
+                                                 &stops_horizontally,
+                                                 &stops_vertically);
+
+    *x = within_horizontally && ! stops_horizontally ? image_center_x : other_x;
+    *y = within_vertically   && ! stops_vertically   ? image_center_y : other_y;
+  }
 }
 
 /* scale image coord to realworld units (cm, inches, pixels)
@@ -797,16 +978,19 @@ img2real (GimpDisplayShell *shell,
           gboolean          xdir,
           gdouble           len)
 {
-  GimpImage *image = shell->display->image;
-  gdouble    res;
+  gdouble xres;
+  gdouble yres;
+  gdouble res;
 
   if (shell->unit == GIMP_UNIT_PIXEL)
     return len;
 
-  if (xdir)
-    res = image->xresolution;
-  else
-    res = image->yresolution;
+  gimp_image_get_resolution (shell->display->image, &xres, &yres);
 
-  return len * _gimp_unit_get_factor (image->gimp, shell->unit) / res;
+  if (xdir)
+    res = xres;
+  else
+    res = yres;
+
+  return len * _gimp_unit_get_factor (shell->display->gimp, shell->unit) / res;
 }

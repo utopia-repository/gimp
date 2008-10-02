@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * GimpTextEditor
- * Copyright (C) 2002-2003  Sven Neumann <sven@gimp.org>
+ * Copyright (C) 2002-2003, 2008  Sven Neumann <sven@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 
 #include "gimphelp-ids.h"
 #include "gimpmenufactory.h"
+#include "gimplanguageentry.h"
 #include "gimptexteditor.h"
 #include "gimpuimanager.h"
 
@@ -166,6 +167,34 @@ gimp_text_editor_new (const gchar     *title,
       gtk_box_pack_start (GTK_BOX (GTK_DIALOG (editor)->vbox), toolbar,
                           FALSE, FALSE, 0);
       gtk_widget_show (toolbar);
+
+      /*  language entry, disabled until it works  */
+      if (FALSE)
+        {
+          GtkToolItem *item;
+          GtkWidget   *hbox;
+          GtkWidget   *label;
+          GtkWidget   *entry;
+
+          item = gtk_tool_item_new ();
+          gtk_tool_item_set_expand (item, TRUE);
+          gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+          gtk_widget_show (GTK_WIDGET (item));
+
+          hbox = gtk_hbox_new (FALSE, 6);
+          gtk_container_add (GTK_CONTAINER (item), hbox);
+          gtk_widget_show (hbox);
+
+          label = gtk_label_new_with_mnemonic (_("_Language:"));
+          gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+          gtk_widget_show (label);
+
+          entry = gimp_language_entry_new ();
+          gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
+          gtk_widget_show (entry);
+
+          gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
+        }
     }
 
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
@@ -178,6 +207,8 @@ gimp_text_editor_new (const gchar     *title,
   gtk_widget_show (scrolled_window);
 
   editor->view = gtk_text_view_new ();
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (editor->view),
+                               GTK_WRAP_WORD_CHAR);
   gtk_container_add (GTK_CONTAINER (scrolled_window), editor->view);
   gtk_widget_show (editor->view);
 
@@ -197,7 +228,7 @@ gimp_text_editor_new (const gchar     *title,
       break;
     }
 
-  gtk_widget_set_size_request (editor->view, 128, 64);
+  gtk_widget_set_size_request (editor->view, 200, 64);
 
   editor->font_toggle =
     gtk_check_button_new_with_mnemonic (_("_Use selected font"));

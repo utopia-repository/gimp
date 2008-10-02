@@ -48,7 +48,7 @@ def benchmark (folder, save_output):
     if not os.path.exists (folder):
         gimp.message("Folder '" + folder + "' doesn't exist.\n")
         return;
-    
+
     total_unclassified = 0
     total_misclassified = 0
     total_time = 0.0
@@ -193,6 +193,6 @@ register (
                   "~/segmentation/msbench/imagedata"),
       (PF_TOGGLE, "save-output",  "Save output images", False) ],
     [],
-    benchmark, menu="<Toolbox>/Xtns/Benchmark")
+    benchmark, menu="<Image>/Filters/Extensions/Benchmark")
 
 main ()

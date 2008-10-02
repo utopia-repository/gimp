@@ -1,5 +1,0 @@
-usr/lib/gimp/2.0/environ/pygimp.env
-usr/lib/gimp/2.0/interpreters/pygimp.interp
-usr/lib/gimp/2.0/plug-ins/*.py
-usr/lib/gimp/2.0/python/
-usr/share/locale/*/LC_MESSAGES/gimp??-python.mo

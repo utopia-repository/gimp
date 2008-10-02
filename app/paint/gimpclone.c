@@ -29,7 +29,6 @@
 
 #include "base/pixel-region.h"
 #include "base/temp-buf.h"
-#include "base/tile-manager.h"
 
 #include "paint-funcs/paint-funcs.h"
 
@@ -173,6 +172,7 @@ gimp_clone_motion (GimpSourceCore   *source_core,
   gint               y;
   PixelRegion        destPR;
   GimpPattern       *pattern = NULL;
+  gdouble            hardness;
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -236,14 +236,18 @@ gimp_clone_motion (GimpSourceCore   *source_core,
         }
     }
 
-  if (paint_options->pressure_options->opacity)
-    opacity *= PRESSURE_SCALE * paint_core->cur_coords.pressure;
+  opacity *= gimp_paint_options_get_dynamic_opacity (paint_options,
+                                                     &paint_core->cur_coords);
+
+  hardness = gimp_paint_options_get_dynamic_hardness (paint_options,
+                                                      &paint_core->cur_coords);
 
   gimp_brush_core_paste_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
                                 MIN (opacity, GIMP_OPACITY_OPAQUE),
                                 gimp_context_get_opacity (context),
                                 gimp_context_get_paint_mode (context),
                                 gimp_paint_options_get_brush_mode (paint_options),
+                                hardness,
 
                                 /* In fixed mode, paint incremental so the
                                  * individual brushes are properly applied

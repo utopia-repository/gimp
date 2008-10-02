@@ -90,7 +90,6 @@
 #  define USE_WIN32_SHM 1
 #endif
 
-#include <libintl.h>
 #include <locale.h>
 
 #include "libgimpbase/gimpbasetypes.h"
@@ -103,6 +102,8 @@
 
 #include "gimp.h"
 #include "gimpunitcache.h"
+
+#include "libgimp-intl.h"
 
 
 #define TILE_MAP_SIZE (_tile_width * _tile_height * 4)
@@ -156,6 +157,9 @@ static gboolean   gimp_extension_read          (GIOChannel      *channel,
                                                 GIOCondition     condition,
                                                 gpointer         data);
 
+static void       gimp_set_pdb_error           (const GimpParam *return_vals,
+                                                gint             n_return_vals);
+
 
 static GIOChannel *_readchannel  = NULL;
 GIOChannel *_writechannel = NULL;
@@ -179,6 +183,7 @@ static gint           _gdisp_ID          = -1;
 static gchar         *_wm_class          = NULL;
 static gchar         *_display_name      = NULL;
 static gint           _monitor_number    = 0;
+static guint32        _timestamp         = 0;
 static const gchar   *progname           = NULL;
 
 static gchar          write_buffer[WRITE_BUFFER_SIZE];
@@ -202,8 +207,11 @@ static const GDebugKey gimp_debug_keys[] =
   { "on",             GIMP_DEBUG_DEFAULT        }
 };
 
-
 static GimpPlugInInfo PLUG_IN_INFO;
+
+
+static GimpPDBStatusType  pdb_error_status   = GIMP_PDB_SUCCESS;
+static gchar             *pdb_error_message  = NULL;
 
 
 /**
@@ -735,7 +743,6 @@ gimp_run_procedure (const gchar *name,
         case GIMP_PDB_CHANNEL:
         case GIMP_PDB_DRAWABLE:
         case GIMP_PDB_SELECTION:
-        case GIMP_PDB_BOUNDARY:
         case GIMP_PDB_VECTORS:
         case GIMP_PDB_STATUS:
           (void) va_arg (args, gint);
@@ -768,6 +775,7 @@ gimp_run_procedure (const gchar *name,
           (void) va_arg (args, gchar **);
           break;
         case GIMP_PDB_COLOR:
+	case GIMP_PDB_COLORARRAY:
           (void) va_arg (args, GimpRGB *);
           break;
         case GIMP_PDB_PARASITE:
@@ -849,8 +857,8 @@ gimp_run_procedure (const gchar *name,
         case GIMP_PDB_SELECTION:
           params[i].data.d_selection = va_arg (args, gint32);
           break;
-        case GIMP_PDB_BOUNDARY:
-          params[i].data.d_boundary = va_arg (args, gint32);
+        case GIMP_PDB_COLORARRAY:
+          params[i].data.d_colorarray = va_arg (args, GimpRGB *);
           break;
         case GIMP_PDB_VECTORS:
           params[i].data.d_vectors = va_arg (args, gint32);
@@ -963,21 +971,9 @@ gimp_run_procedure2 (const gchar     *name,
   proc_return->nparams = 0;
   proc_return->params  = NULL;
 
-  switch (return_vals[0].data.d_status)
-    {
-    case GIMP_PDB_EXECUTION_ERROR:
-      break;
-
-    case GIMP_PDB_CALLING_ERROR:
-      g_printerr ("a calling error occurred while trying to run: \"%s\"\n",
-                  name);
-      break;
-
-    default:
-      break;
-    }
-
   gimp_wire_destroy (&msg);
+
+  gimp_set_pdb_error (return_vals, *n_return_vals);
 
   return return_vals;
 }
@@ -1002,7 +998,8 @@ gimp_destroy_params (GimpParam *params,
  * @paramdefs: the #GimpParamDef array to destroy
  * @n_params:  the number of elements in the array
  *
- * Destroys a #GimpParamDef array as returned by gimp_query_procedure()
+ * Destroys a #GimpParamDef array as returned by
+ * gimp_procedural_db_proc_info().
  **/
 void
 gimp_destroy_paramdefs (GimpParamDef *paramdefs,
@@ -1018,10 +1015,58 @@ gimp_destroy_paramdefs (GimpParamDef *paramdefs,
 }
 
 /**
+ * gimp_get_pdb_error:
+ *
+ * Retrieves the error message from the last procedure call.
+ *
+ * If a procedure call fails, then it might pass an error message with
+ * the return values. Plug-ins that are using the libgimp C wrappers
+ * don't access the procedure return values directly. Thus ligimp
+ * stores the error message and makes it available with this
+ * function. The next procedure call unsets the error message again.
+ *
+ * The returned string is owned by libgimp and must not be freed or
+ * modified.
+ *
+ * Return value: the error message
+ *
+ * Since: GIMP 2.6
+ **/
+const gchar *
+gimp_get_pdb_error (void)
+{
+  if (pdb_error_message && strlen (pdb_error_message))
+    return pdb_error_message;
+
+  switch (pdb_error_status)
+    {
+    case GIMP_PDB_SUCCESS:
+      /*  procedure executed successfully  */
+      return _("success");
+
+    case GIMP_PDB_EXECUTION_ERROR:
+      /*  procedure execution failed       */
+      return _("execution error");
+
+    case GIMP_PDB_CALLING_ERROR:
+      /*  procedure called incorrectly     */
+      return _("calling error");
+
+    case GIMP_PDB_CANCEL:
+      /*  procedure execution cancelled    */
+      return _("cancelled");
+
+    default:
+      return "invalid return status";
+    }
+}
+
+/**
  * gimp_tile_width:
  *
- * Returns the tile width GIMP is using. This is a constant value
- * given at plug-in configuration time.
+ * Returns the tile width GIMP is using.
+ *
+ * This is a constant value given at plug-in configuration time.
  *
  * Return value: the tile_width
  **/
@@ -1034,8 +1079,9 @@ gimp_tile_width (void)
 /**
  * gimp_tile_height:
  *
- * Returns the tile height GIMP is using. This is a constant value
- * given at plug-in configuration time.
+ * Returns the tile height GIMP is using.
+ *
+ * This is a constant value given at plug-in configuration time.
  *
  * Return value: the tile_height
  **/
@@ -1048,9 +1094,10 @@ gimp_tile_height (void)
 /**
  * gimp_shm_ID:
  *
- * Returns the shared memory ID used for passing tile data between the GIMP
- * core and the plug-in. This is a constant value
- * given at plug-in configuration time.
+ * Returns the shared memory ID used for passing tile data between the
+ * GIMP core and the plug-in.
+ *
+ * This is a constant value given at plug-in configuration time.
  *
  * Return value: the shared memory ID
  **/
@@ -1064,8 +1111,9 @@ gimp_shm_ID (void)
  * gimp_shm_addr:
  *
  * Returns the address of the shared memory segment used for passing
- * tile data between the GIMP core and the plug-in. This is a constant
- * value given at plug-in configuration time.
+ * tile data between the GIMP core and the plug-in.
+ *
+ * This is a constant value given at plug-in configuration time.
  *
  * Return value: the shared memory address
  **/
@@ -1079,7 +1127,9 @@ gimp_shm_addr (void)
  * gimp_gamma:
  *
  * Returns the global gamma value GIMP and all its plug-ins should
- * use. This is a constant value given at plug-in configuration time.
+ * use.
+ *
+ * This is a constant value given at plug-in configuration time.
  *
  * NOTE: This function will always return 2.2, the gamma value for
  * sRGB. There's currently no way to change this and all operations
@@ -1097,10 +1147,9 @@ gimp_gamma (void)
  * gimp_install_cmap:
  *
  * Returns whether or not the plug-in should allocate an own colormap
- * when running on an 8 bit display. This is a constant value given at
- * plug-in configuration time.
+ * when running on an 8 bit display. See also: gimp_min_colors().
  *
- * See also: gimp_min_colors()
+ * This is a constant value given at plug-in configuration time.
  *
  * Return value: the install_cmap boolean
  **/
@@ -1114,8 +1163,9 @@ gimp_install_cmap (void)
  * gimp_min_colors:
  *
  * Returns the minimum number of colors to use when allocating an own
- * colormap on 8 bit displays. This is a constant value given at
- * plug-in configuration time.
+ * colormap on 8 bit displays.
+ *
+ * This is a constant value given at plug-in configuration time.
  *
  * See also: gimp_install_cmap()
  *
@@ -1130,8 +1180,9 @@ gimp_min_colors (void)
 /**
  * gimp_show_tool_tips:
  *
- * Returns whether or not the plug-in should show tool-tips. This is a
- * constant value given at plug-in configuration time.
+ * Returns whether or not the plug-in should show tool-tips.
+ *
+ * This is a constant value given at plug-in configuration time.
  *
  * Return value: the show_tool_tips boolean
  **/
@@ -1147,6 +1198,8 @@ gimp_show_tool_tips (void)
  * Returns whether or not GimpDialog should automatically add a help
  * button if help_func and help_id are given.
  *
+ * This is a constant value given at plug-in configuration time.
+ *
  * Return value: the show_help_button boolean
  *
  * Since: GIMP 2.2
@@ -1161,6 +1214,7 @@ gimp_show_help_button (void)
  * gimp_check_size:
  *
  * Returns the size of the checkerboard to be used in previews.
+ *
  * This is a constant value given at plug-in configuration time.
  *
  * Return value: the check_size value
@@ -1177,6 +1231,7 @@ gimp_check_size (void)
  * gimp_check_type:
  *
  * Returns the type of the checkerboard to be used in previews.
+ *
  * This is a constant value given at plug-in configuration time.
  *
  * Return value: the check_type value
@@ -1193,8 +1248,9 @@ gimp_check_type (void)
  * gimp_default_display:
  *
  * Returns the default display ID. This corresponds to the display the
- * running procedure's menu entry was invoked from. This is a
- * constant value given at plug-in configuration time.
+ * running procedure's menu entry was invoked from.
+ *
+ * This is a constant value given at plug-in configuration time.
  *
  * Return value: the default display ID
  **/
@@ -1208,6 +1264,7 @@ gimp_default_display (void)
  * gimp_wm_class:
  *
  * Returns the window manager class to be used for plug-in windows.
+ *
  * This is a constant value given at plug-in configuration time.
  *
  * Return value: the window manager class
@@ -1215,13 +1272,14 @@ gimp_default_display (void)
 const gchar *
 gimp_wm_class (void)
 {
-  return (const gchar *) _wm_class;
+  return _wm_class;
 }
 
 /**
  * gimp_display_name:
  *
  * Returns the display to be used for plug-in windows.
+ *
  * This is a constant value given at plug-in configuration time.
  *
  * Return value: the display name
@@ -1229,13 +1287,14 @@ gimp_wm_class (void)
 const gchar *
 gimp_display_name (void)
 {
-  return (const gchar *) _display_name;
+  return _display_name;
 }
 
 /**
  * gimp_monitor_number:
  *
  * Returns the monitor number to be used for plug-in windows.
+ *
  * This is a constant value given at plug-in configuration time.
  *
  * Return value: the monitor number
@@ -1244,6 +1303,25 @@ gint
 gimp_monitor_number (void)
 {
   return _monitor_number;
+}
+
+/**
+ * gimp_user_time:
+ *
+ * Returns the timestamp of the user interaction that should be set on
+ * the plug-in window. This is handled transparently, plug-in authors
+ * do not have to care about it.
+ *
+ * This is a constant value given at plug-in configuration time.
+ *
+ * Return value: timestamp for plug-in window
+ *
+ * Since: GIMP 2.6
+ **/
+guint32
+gimp_user_time (void)
+{
+  return _timestamp;
 }
 
 /**
@@ -1712,6 +1790,7 @@ gimp_config (GPConfig *config)
   _wm_class         = g_strdup (config->wm_class);
   _display_name     = g_strdup (config->display_name);
   _monitor_number   = config->monitor_number;
+  _timestamp        = config->timestamp;
 
   if (config->app_name)
     g_set_application_name (config->app_name);
@@ -1815,8 +1894,7 @@ gimp_proc_run (GPProcRun *proc_run)
       (* PLUG_IN_INFO.run_proc) (proc_run->name,
                                  proc_run->nparams,
                                  (GimpParam *) proc_run->params,
-                                 &n_return_vals,
-                                 &return_vals);
+                                 &n_return_vals, &return_vals);
 
       proc_return.name    = proc_run->name;
       proc_return.nparams = n_return_vals;
@@ -1831,10 +1909,7 @@ gimp_proc_run (GPProcRun *proc_run)
 static void
 gimp_temp_proc_run (GPProcRun *proc_run)
 {
-  GimpRunProc run_proc;
-
-  run_proc = (GimpRunProc) g_hash_table_lookup (temp_proc_ht,
-                                                (gpointer) proc_run->name);
+  GimpRunProc run_proc = g_hash_table_lookup (temp_proc_ht, proc_run->name);
 
   if (run_proc)
     {
@@ -1844,9 +1919,8 @@ gimp_temp_proc_run (GPProcRun *proc_run)
 
       (* run_proc) (proc_run->name,
                     proc_run->nparams,
-                    (GimpParam*) proc_run->params,
-                    &n_return_vals,
-                    &return_vals);
+                    (GimpParam *) proc_run->params,
+                    &n_return_vals, &return_vals);
 
       proc_return.name    = proc_run->name;
       proc_return.nparams = n_return_vals;
@@ -1916,4 +1990,33 @@ gimp_extension_read (GIOChannel  *channel,
   gimp_single_message ();
 
   return TRUE;
+}
+
+static void
+gimp_set_pdb_error (const GimpParam *return_vals,
+                    gint             n_return_vals)
+{
+  if (pdb_error_message)
+    {
+      g_free (pdb_error_message);
+      pdb_error_message = NULL;
+    }
+
+  pdb_error_status = return_vals[0].data.d_status;
+
+  switch (pdb_error_status)
+    {
+    case GIMP_PDB_SUCCESS:
+    case GIMP_PDB_PASS_THROUGH:
+      break;
+
+    case GIMP_PDB_EXECUTION_ERROR:
+    case GIMP_PDB_CALLING_ERROR:
+    case GIMP_PDB_CANCEL:
+      if (n_return_vals > 1 && return_vals[1].type == GIMP_PDB_STRING)
+        {
+          pdb_error_message = g_strdup (return_vals[1].data.d_string);
+        }
+      break;
+    }
 }

@@ -40,6 +40,10 @@ struct _GimpImageUndo
   GimpImageBaseType  base_type;
   gint               width;
   gint               height;
+  gint               previous_origin_x;
+  gint               previous_origin_y;
+  gint               previous_width;
+  gint               previous_height;
   gdouble            xresolution;
   gdouble            yresolution;
   GimpUnit           resolution_unit;

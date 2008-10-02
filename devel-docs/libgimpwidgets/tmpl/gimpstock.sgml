@@ -1055,6 +1055,24 @@ RTL variant
 
 
 
+<!-- ##### MACRO GIMP_STOCK_GEGL ##### -->
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-gegl-22.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-gegl-16.png" format="png"></inlinegraphic>
+</para>
+
+
+
+<!-- ##### MACRO GIMP_STOCK_USER_MANUAL ##### -->
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-user-manual-64.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-user-manual-32.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-user-manual-24.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-user-manual-16.png" format="png"></inlinegraphic>
+</para>
+
+
+
 <!-- ##### MACRO GIMP_STOCK_WILBER ##### -->
 <para xml:base="../gimpstock.xml">
 <inlinegraphic fileref="stock-wilber-64.png" format="png"></inlinegraphic>
@@ -1177,6 +1195,13 @@ RTL variant
 <para xml:base="../gimpstock.xml">
 <inlinegraphic fileref="stock-tool-curves-22.png" format="png"></inlinegraphic>
 <inlinegraphic fileref="stock-tool-curves-16.png" format="png"></inlinegraphic>
+</para>
+
+
+
+<!-- ##### MACRO GIMP_STOCK_TOOL_DESATURATE ##### -->
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-convert-grayscale-16.png" format="png"></inlinegraphic>
 </para>
 
 
@@ -1326,8 +1351,9 @@ RTL variant
 
 
 <!-- ##### MACRO GIMP_STOCK_TOOL_PERSPECTIVE_CLONE ##### -->
-<para>
-
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-tool-perspective-clone-22.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-tool-perspective-clone-16.png" format="png"></inlinegraphic>
 </para>
 
 

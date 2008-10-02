@@ -30,7 +30,6 @@
 
 #include "config/gimpdisplayconfig.h"
 
-#include "core/gimp.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpimage.h"
 #include "core/gimpitem.h"
@@ -43,14 +42,16 @@
 #include "gimpdisplayshell-title.h"
 #include "gimpstatusbar.h"
 
+#include "about.h"
+
 #include "gimp-intl.h"
 
 
-#define MAX_TITLE_BUF 256
+#define MAX_TITLE_BUF 512
 
 
 static gboolean gimp_display_shell_update_title_idle (gpointer          data);
-static void     gimp_display_shell_format_title      (GimpDisplayShell *display,
+static gint     gimp_display_shell_format_title      (GimpDisplayShell *display,
                                                       gchar            *title,
                                                       gint              title_len,
                                                       const gchar      *format);
@@ -61,18 +62,6 @@ static void     gimp_display_shell_format_title      (GimpDisplayShell *display,
 void
 gimp_display_shell_title_init (GimpDisplayShell *shell)
 {
-  GimpDisplayConfig *config;
-  gchar              title[MAX_TITLE_BUF];
-
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  config = GIMP_DISPLAY_CONFIG (shell->display->image->gimp->config);
-
-  gimp_display_shell_format_title (shell, title, sizeof (title),
-                                   config->image_status_format);
-
-  gimp_statusbar_push (GIMP_STATUSBAR (shell->statusbar), "title",
-                       "%s", title);
 }
 
 void
@@ -93,29 +82,41 @@ gimp_display_shell_title_update (GimpDisplayShell *shell)
 static gboolean
 gimp_display_shell_update_title_idle (gpointer data)
 {
-  GimpDisplayShell  *shell;
-  GimpDisplayConfig *config;
-  gchar              title[MAX_TITLE_BUF];
-
-  shell  = GIMP_DISPLAY_SHELL (data);
-  config = GIMP_DISPLAY_CONFIG (shell->display->image->gimp->config);
+  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
 
   shell->title_idle_id = 0;
 
-  /* format the title */
-  gimp_display_shell_format_title (shell, title, sizeof (title),
-                                   config->image_title_format);
-  gdk_window_set_title (GTK_WIDGET (shell)->window, title);
-
-  /* format the statusbar */
-  if (strcmp (config->image_title_format, config->image_status_format))
+  if (shell->display->image)
     {
+      GimpDisplayConfig *config = shell->display->config;
+      gchar              title[MAX_TITLE_BUF];
+      gint               len;
+
+      /* format the title */
+      len = gimp_display_shell_format_title (shell, title, sizeof (title),
+                                             config->image_title_format);
+
+      if (len)  /* U+2013 EN DASH */
+        len += g_strlcpy (title + len, " \342\200\223 ", sizeof (title) - len);
+
+      g_strlcpy (title + len, GIMP_ACRONYM, sizeof (title) - len);
+
+      gdk_window_set_title (GTK_WIDGET (shell)->window, title);
+
+      /* format the statusbar */
       gimp_display_shell_format_title (shell, title, sizeof (title),
                                        config->image_status_format);
-    }
 
-  gimp_statusbar_replace (GIMP_STATUSBAR (shell->statusbar), "title",
-                          "%s", title);
+      gimp_statusbar_replace (GIMP_STATUSBAR (shell->statusbar), "title",
+                              NULL, "%s", title);
+    }
+  else
+    {
+      gdk_window_set_title (GTK_WIDGET (shell)->window, GIMP_NAME);
+
+      gimp_statusbar_replace (GIMP_STATUSBAR (shell->statusbar), "title",
+                              NULL, " ");
+    }
 
   return FALSE;
 }
@@ -148,7 +149,7 @@ print (gchar       *buf,
   return printed;
 }
 
-static void
+static gint
 gimp_display_shell_format_title (GimpDisplayShell *shell,
                                  gchar            *title,
                                  gint              title_len,
@@ -159,10 +160,16 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
   gint       num, denom;
   gint       i = 0;
 
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), 0);
 
   image = shell->display->image;
-  gimp  = image->gimp;
+  gimp  = shell->display->gimp;
+
+  if (! image)
+    {
+      title[0] = '\n';
+      return 0;
+    }
 
   gimp_zoom_model_get_fraction (shell->zoom, &num, &denom);
 
@@ -296,8 +303,8 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
                 GimpObject *object = GIMP_OBJECT (image);
                 gchar      *str;
 
-                str = gimp_memsize_to_string (gimp_object_get_memsize (object,
-                                                                       NULL));
+                str = g_format_size_for_display (gimp_object_get_memsize (object,
+                                                                          NULL));
 
                 i += print (title, title_len, i, "%s", str);
 
@@ -346,37 +353,47 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
             case 'W': /* width in real-world units */
               if (shell->unit != GIMP_UNIT_PIXEL)
                 {
-                  gchar unit_format[8];
+                  gdouble xres;
+                  gdouble yres;
+                  gchar   unit_format[8];
+
+                  gimp_image_get_resolution (image, &xres, &yres);
 
                   g_snprintf (unit_format, sizeof (unit_format), "%%.%df",
                               _gimp_unit_get_digits (gimp, shell->unit) + 1);
                   i += print (title, title_len, i, unit_format,
-                              (image->width *
+                              (gimp_image_get_width (image) *
                                _gimp_unit_get_factor (gimp, shell->unit) /
-                               image->xresolution));
+                               xres));
                   break;
                 }
               /* else fallthru */
             case 'w': /* width in pixels */
-              i += print (title, title_len, i, "%d", image->width);
+              i += print (title, title_len, i, "%d",
+                          gimp_image_get_width (image));
               break;
 
             case 'H': /* height in real-world units */
               if (shell->unit != GIMP_UNIT_PIXEL)
                 {
-                  gchar unit_format[8];
+                  gdouble xres;
+                  gdouble yres;
+                  gchar   unit_format[8];
+
+                  gimp_image_get_resolution (image, &xres, &yres);
 
                   g_snprintf (unit_format, sizeof (unit_format), "%%.%df",
                               _gimp_unit_get_digits (gimp, shell->unit) + 1);
                   i += print (title, title_len, i, unit_format,
-                              (image->height *
+                              (gimp_image_get_height (image) *
                                _gimp_unit_get_factor (gimp, shell->unit) /
-                               image->yresolution));
+                               yres));
                   break;
                 }
               /* else fallthru */
             case 'h': /* height in pixels */
-              i += print (title, title_len, i, "%d", image->height);
+              i += print (title, title_len, i, "%d",
+                          gimp_image_get_height (image));
               break;
 
             case 'u': /* unit symbol */
@@ -412,4 +429,6 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
     }
 
   title[MIN (i, title_len - 1)] = '\0';
+
+  return i;
 }

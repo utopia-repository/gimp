@@ -38,15 +38,17 @@
 #include "gimpdockable.h"
 #include "gimpdockbook.h"
 #include "gimpdockseparator.h"
-#include "gimpmessagebox.h"
-#include "gimpmessagedialog.h"
 #include "gimpwidgets-utils.h"
+
+#include "gimpsessioninfo.h"    /* FIXME */
+#include "core/gimpcontainer.h" /* FIXME */
+#include "dialogs/dialogs.h"    /* FIXME */
 
 #include "gimp-intl.h"
 
 
-#define DEFAULT_DOCK_HEIGHT 300
-
+#define DEFAULT_DOCK_HEIGHT     300
+#define DEFAULT_DOCK_FONT_SCALE PANGO_SCALE_SMALL
 
 enum
 {
@@ -78,10 +80,7 @@ static void      gimp_dock_get_property      (GObject               *object,
 static void      gimp_dock_destroy           (GtkObject             *object);
 
 static gboolean  gimp_dock_delete_event      (GtkWidget             *widget,
-                                              GdkEventAny              *event);
-static gboolean  gimp_dock_key_press_event   (GtkWidget             *widget,
-                                              GdkEventKey           *kevent);
-
+                                              GdkEventAny           *event);
 static void      gimp_dock_style_set         (GtkWidget             *widget,
                                               GtkStyle              *prev_style);
 
@@ -91,7 +90,7 @@ static void      gimp_dock_real_book_removed (GimpDock              *dock,
                                               GimpDockbook          *dockbook);
 
 
-G_DEFINE_TYPE (GimpDock, gimp_dock, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE (GimpDock, gimp_dock, GIMP_TYPE_WINDOW)
 
 #define parent_class gimp_dock_parent_class
 
@@ -132,7 +131,6 @@ gimp_dock_class_init (GimpDockClass *klass)
   gtk_object_class->destroy     = gimp_dock_destroy;
 
   widget_class->delete_event    = gimp_dock_delete_event;
-  widget_class->key_press_event = gimp_dock_key_press_event;
   widget_class->style_set       = gimp_dock_style_set;
 
   klass->setup                  = NULL;
@@ -158,19 +156,34 @@ gimp_dock_class_init (GimpDockClass *klass)
                                                              -1, G_MAXINT,
                                                              DEFAULT_DOCK_HEIGHT,
                                                              GIMP_PARAM_READABLE));
+  gtk_widget_class_install_style_property (widget_class,
+                                           g_param_spec_double ("font-scale",
+                                                                NULL, NULL,
+                                                                0.0,
+                                                                G_MAXDOUBLE,
+                                                                DEFAULT_DOCK_FONT_SCALE,
+                                                                GIMP_PARAM_READABLE));
 }
 
 static void
 gimp_dock_init (GimpDock *dock)
 {
-  GtkWidget *separator;
+  static gint  dock_ID = 1;
+  GtkWidget   *separator;
+  gchar       *name;
 
   dock->context        = NULL;
   dock->dialog_factory = NULL;
   dock->dockbooks      = NULL;
+  dock->ID             = dock_ID++;
+
+  name = g_strdup_printf ("gimp-dock-%d", dock->ID);
+  gtk_widget_set_name (GTK_WIDGET (dock), name);
+  g_free (name);
 
   gtk_window_set_role (GTK_WINDOW (dock), "gimp-dock");
   gtk_window_set_resizable (GTK_WINDOW (dock), TRUE);
+  gtk_window_set_focus_on_map (GTK_WINDOW (dock), FALSE);
 
   dock->main_vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (dock), dock->main_vbox);
@@ -219,11 +232,13 @@ gimp_dock_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_CONTEXT:
-      dock->context = GIMP_CONTEXT (g_value_dup_object (value));
+      dock->context = g_value_dup_object (value);
       break;
+
     case PROP_DIALOG_FACTORY:
       dock->dialog_factory = g_value_get_object (value);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -243,9 +258,11 @@ gimp_dock_get_property (GObject    *object,
     case PROP_CONTEXT:
       g_value_set_object (value, dock->context);
       break;
+
     case PROP_DIALOG_FACTORY:
       g_value_set_object (value, dock->dialog_factory);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -273,8 +290,7 @@ static gboolean
 gimp_dock_delete_event (GtkWidget   *widget,
                         GdkEventAny *event)
 {
-  GimpDock *dock   = GIMP_DOCK (widget);
-  gboolean  retval = FALSE;
+  GimpDock *dock = GIMP_DOCK (widget);
   GList    *list;
   gint      n;
 
@@ -283,89 +299,73 @@ gimp_dock_delete_event (GtkWidget   *widget,
 
   if (n > 1)
     {
-      GtkWidget *dialog =
-        gimp_message_dialog_new (_("Close all Tabs?"),
-                                 GIMP_STOCK_WARNING,
-                                 widget, GTK_DIALOG_MODAL,
-                                 NULL, NULL,
+      GimpSessionInfo *info = gimp_session_info_new ();
 
-                                 GTK_STOCK_CANCEL,    GTK_RESPONSE_CANCEL,
-                                 _("Close all Tabs"), GTK_RESPONSE_OK,
+      gimp_object_set_name (GIMP_OBJECT (info),
+                            gtk_window_get_title (GTK_WINDOW (widget)));
 
-                                 NULL);
+      info->widget = widget;
+      gimp_session_info_get_info (info);
+      info->widget = NULL;
 
-      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-                                               GTK_RESPONSE_OK,
-                                               GTK_RESPONSE_CANCEL,
-                                               -1);
-
-      gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                         _("Close all tabs?"));
-
-      gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                 ngettext ("This window has %d tab open. "
-                                           "Closing the window will also close "
-                                           "all its tabs.",
-                                           "This window has %d tabs open. "
-                                           "Closing the window will also close "
-                                           "all its tabs.", n), n);
-
-      retval = (gimp_dialog_run (GIMP_DIALOG (dialog)) != GTK_RESPONSE_OK);
-
-      gtk_widget_destroy (dialog);
+      gimp_container_add (global_recent_docks, GIMP_OBJECT (info));
+      g_object_unref (info);
     }
 
-  return retval;
-}
-
-static gboolean
-gimp_dock_key_press_event (GtkWidget   *widget,
-                           GdkEventKey *event)
-{
-  GtkWindow *window  = GTK_WINDOW (widget);
-  GtkWidget *focus   = gtk_window_get_focus (window);
-  gboolean   handled = FALSE;
-
-  /* we're overriding the GtkWindow implementation here to give
-   * the focus widget precedence over unmodified accelerators
-   * before the accelerator activation scheme.
-   */
-
-  /* text widgets get all key events first */
-  if (G_UNLIKELY (GTK_IS_EDITABLE (focus) || GTK_IS_TEXT_VIEW (focus)))
-    handled = gtk_window_propagate_key_event (window, event);
-
-  /* invoke control/alt accelerators */
-  if (! handled && event->state & (GDK_CONTROL_MASK | GDK_MOD1_MASK))
-    handled = gtk_window_activate_key (window, event);
-
-  /* invoke focus widget handlers */
-  if (! handled)
-    handled = gtk_window_propagate_key_event (window, event);
-
-  /* invoke non-(control/alt) accelerators */
-  if (! handled && ! (event->state & (GDK_CONTROL_MASK | GDK_MOD1_MASK)))
-    handled = gtk_window_activate_key (window, event);
-
-  /* chain up, bypassing gtk_window_key_press(), to invoke binding set */
-  if (! handled)
-    handled = GTK_WIDGET_CLASS (g_type_class_peek (g_type_parent (GTK_TYPE_WINDOW)))->key_press_event (widget, event);
-
-  return handled;
+  return FALSE;
 }
 
 static void
 gimp_dock_style_set (GtkWidget *widget,
                      GtkStyle  *prev_style)
 {
-  gint default_height;
+  gint    default_height;
+  gdouble font_scale;
 
-  if (GTK_WIDGET_CLASS (parent_class)->style_set)
-    GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 
-  gtk_widget_style_get (widget, "default-height", &default_height, NULL);
+  gtk_widget_style_get (widget,
+                        "default-height", &default_height,
+                        "font-scale",     &font_scale,
+                        NULL);
 
   gtk_window_set_default_size (GTK_WINDOW (widget), -1, default_height);
+
+  if (font_scale != 1.0)
+    {
+      PangoContext         *context;
+      PangoFontDescription *font_desc;
+      gint                  font_size;
+      gchar                *font_str;
+      gchar                *rc_string;
+
+      context = gtk_widget_get_pango_context (widget);
+      font_desc = pango_context_get_font_description (context);
+      font_desc = pango_font_description_copy (font_desc);
+
+      font_size = pango_font_description_get_size (font_desc);
+      font_size = font_scale * font_size;
+      pango_font_description_set_size (font_desc, font_size);
+
+      font_str = pango_font_description_to_string (font_desc);
+      pango_font_description_free (font_desc);
+
+      rc_string =
+        g_strdup_printf ("style \"gimp-dock-style\""
+                         "{"
+                         "  font_name = \"%s\""
+                         "}"
+                         "widget \"gimp-dock-%d.*\" style \"gimp-dock-style\"",
+                         font_str,
+                         GIMP_DOCK (widget)->ID);
+      g_free (font_str);
+
+      gtk_rc_parse_string (rc_string);
+      g_free (rc_string);
+
+      if (gtk_bin_get_child (GTK_BIN (widget)))
+        gtk_widget_reset_rc_styles (gtk_bin_get_child (GTK_BIN (widget)));
+    }
 }
 
 static void
@@ -487,13 +487,13 @@ gimp_dock_add_book (GimpDock     *dock,
       else
         old_book = g_list_nth_data (dock->dockbooks, index - 1);
 
-      parent = old_book->parent;
+      parent = gtk_widget_get_parent (old_book);
 
       if ((old_length > 1) && (index > 0))
         {
           GtkWidget *grandparent;
 
-          grandparent = parent->parent;
+          grandparent = gtk_widget_get_parent (parent);
 
           old_book = parent;
           parent   = grandparent;
@@ -575,13 +575,13 @@ gimp_dock_remove_book (GimpDock     *dock,
       GtkWidget *parent;
       GtkWidget *grandparent;
 
-      parent      = GTK_WIDGET (dockbook)->parent;
-      grandparent = parent->parent;
+      parent      = gtk_widget_get_parent (GTK_WIDGET (dockbook));
+      grandparent = gtk_widget_get_parent (parent);
 
       if (index == 0)
-        other_book = GTK_PANED (parent)->child2;
+        other_book = gtk_paned_get_child2 (GTK_PANED (parent));
       else
-        other_book = GTK_PANED (parent)->child1;
+        other_book = gtk_paned_get_child1 (GTK_PANED (parent));
 
       g_object_ref (other_book);
 

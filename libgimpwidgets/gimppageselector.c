@@ -460,11 +460,7 @@ gimp_page_selector_style_set (GtkWidget *widget,
 GtkWidget *
 gimp_page_selector_new (void)
 {
-  GimpPageSelector *selector;
-
-  selector = g_object_new (GIMP_TYPE_PAGE_SELECTOR, NULL);
-
-  return GTK_WIDGET (selector);
+  return g_object_new (GIMP_TYPE_PAGE_SELECTOR, NULL);
 }
 
 /**
@@ -563,8 +559,7 @@ gimp_page_selector_set_target (GimpPageSelector       *selector,
   GimpPageSelectorPrivate *priv;
 
   g_return_if_fail (GIMP_IS_PAGE_SELECTOR (selector));
-  g_return_if_fail (target >= GIMP_PAGE_SELECTOR_TARGET_LAYERS &&
-                    target <= GIMP_PAGE_SELECTOR_TARGET_IMAGES);
+  g_return_if_fail (target <= GIMP_PAGE_SELECTOR_TARGET_IMAGES);
 
   priv = GIMP_PAGE_SELECTOR_GET_PRIVATE (selector);
 

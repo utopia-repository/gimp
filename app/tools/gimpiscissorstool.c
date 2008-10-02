@@ -75,8 +75,8 @@
 
 #include "display/gimpdisplay.h"
 
+#include "gimpiscissorsoptions.h"
 #include "gimpiscissorstool.h"
-#include "gimpselectionoptions.h"
 #include "gimptoolcontrol.h"
 
 #include "gimp-intl.h"
@@ -271,8 +271,8 @@ gimp_iscissors_tool_register (GimpToolRegisterCallback  callback,
                               gpointer                  data)
 {
   (* callback) (GIMP_TYPE_ISCISSORS_TOOL,
-                GIMP_TYPE_SELECTION_OPTIONS,
-                gimp_selection_options_gui,
+                GIMP_TYPE_ISCISSORS_OPTIONS,
+                gimp_iscissors_options_gui,
                 0,
                 "gimp-iscissors-tool",
                 _("Scissors"),
@@ -405,7 +405,7 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
                                   GimpDisplay     *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpSelectionOptions *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+  GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
 
   iscissors->x = RINT (coords->x);
   iscissors->y = RINT (coords->y);
@@ -440,8 +440,10 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
                            &iscissors->x,
                            &iscissors->y);
 
-      iscissors->x = CLAMP (iscissors->x, 0, display->image->width - 1);
-      iscissors->y = CLAMP (iscissors->y, 0, display->image->height - 1);
+      iscissors->x = CLAMP (iscissors->x,
+                            0, gimp_image_get_width  (display->image) - 1);
+      iscissors->y = CLAMP (iscissors->y,
+                            0, gimp_image_get_height (display->image) - 1);
 
       iscissors->ix = iscissors->x;
       iscissors->iy = iscissors->y;
@@ -497,42 +499,57 @@ iscissors_convert (GimpIscissorsTool *iscissors,
   GimpSelectionOptions *options = GIMP_SELECTION_TOOL_GET_OPTIONS (iscissors);
   GimpScanConvert      *sc;
   GList                *list;
+  GimpVector2          *points = NULL;
+  guint                 n_total_points = 0;
 
   sc = gimp_scan_convert_new ();
+
+  for (list = g_queue_peek_tail_link (iscissors->curves);
+       list;
+       list = g_list_previous (list))
+    {
+      ICurve *icurve = list->data;
+
+      n_total_points += icurve->points->len;
+    }
+
+  points = g_new (GimpVector2, n_total_points);
+  n_total_points = 0;
 
   /* go over the curves in reverse order, adding the points we have */
   for (list = g_queue_peek_tail_link (iscissors->curves);
        list;
        list = g_list_previous (list))
     {
-      ICurve      *icurve = list->data;
-      GimpVector2 *points;
-      guint        n_points;
-      gint         i;
+      ICurve *icurve = list->data;
+      gint    i;
+      guint   n_points;
 
       n_points = icurve->points->len;
-      points   = g_new (GimpVector2, n_points);
 
-      for (i = 0; i < n_points; i ++)
+      for (i = 0; i < n_points; i++)
         {
           guint32  packed = GPOINTER_TO_INT (g_ptr_array_index (icurve->points,
                                                                 i));
 
-          points[i].x = packed & 0x0000ffff;
-          points[i].y = packed >> 16;
+          points[n_total_points+i].x = packed & 0x0000ffff;
+          points[n_total_points+i].y = packed >> 16;
         }
 
-      gimp_scan_convert_add_points (sc, n_points, points, FALSE);
-      g_free (points);
+      n_total_points += n_points;
     }
+
+  gimp_scan_convert_add_polyline (sc, n_total_points, points, TRUE);
+  g_free (points);
 
   if (iscissors->mask)
     g_object_unref (iscissors->mask);
 
   iscissors->mask = gimp_channel_new_mask (display->image,
-                                           display->image->width,
-                                           display->image->height);
-  gimp_scan_convert_render (sc, GIMP_DRAWABLE (iscissors->mask)->tiles,
+                                           gimp_image_get_width  (display->image),
+                                           gimp_image_get_height (display->image));
+  gimp_scan_convert_render (sc,
+                            gimp_drawable_get_tiles (GIMP_DRAWABLE (iscissors->mask)),
                             0, 0, options->antialias);
   gimp_scan_convert_free (sc);
 }
@@ -546,7 +563,7 @@ gimp_iscissors_tool_button_release (GimpTool              *tool,
                                     GimpDisplay           *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpSelectionOptions *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+  GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
 
   /* Make sure X didn't skip the button release event -- as it's known
    * to do
@@ -662,7 +679,7 @@ gimp_iscissors_tool_motion (GimpTool        *tool,
                             GimpDisplay     *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
-  GimpSelectionOptions *options   = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+  GimpIscissorsOptions *options   = GIMP_ISCISSORS_TOOL_GET_OPTIONS (tool);
 
   if (iscissors->state == NO_ACTION)
     return;
@@ -692,8 +709,10 @@ gimp_iscissors_tool_motion (GimpTool        *tool,
         find_max_gradient (iscissors, display->image,
                            &iscissors->x, &iscissors->y);
 
-      iscissors->x = CLAMP (iscissors->x, 0, display->image->width  - 1);
-      iscissors->y = CLAMP (iscissors->y, 0, display->image->height - 1);
+      iscissors->x = CLAMP (iscissors->x,
+                            0, gimp_image_get_width  (display->image) - 1);
+      iscissors->y = CLAMP (iscissors->y,
+                            0, gimp_image_get_height (display->image) - 1);
 
       if (iscissors->first_point)
         {
@@ -708,8 +727,10 @@ gimp_iscissors_tool_motion (GimpTool        *tool,
         find_max_gradient (iscissors, display->image,
                            &iscissors->x, &iscissors->y);
 
-      iscissors->x = CLAMP (iscissors->x, 0, display->image->width  - 1);
-      iscissors->y = CLAMP (iscissors->y, 0, display->image->height - 1);
+      iscissors->x = CLAMP (iscissors->x,
+                            0, gimp_image_get_width  (display->image) - 1);
+      iscissors->y = CLAMP (iscissors->y,
+                            0, gimp_image_get_height (display->image) - 1);
 
       iscissors->nx = iscissors->x;
       iscissors->ny = iscissors->y;
@@ -875,23 +896,23 @@ static void
 iscissors_draw_curve (GimpDrawTool *draw_tool,
                       ICurve       *curve)
 {
-  gdouble  *points;
-  gpointer *point;
-  gint      i, len;
+  GimpVector2 *points;
+  gpointer    *point;
+  gint         i, len;
 
   if (! curve->points)
     return;
 
   len = curve->points->len;
 
-  points = g_new (gdouble, 2 * len);
+  points = g_new (GimpVector2, len);
 
   for (i = 0, point = curve->points->pdata; i < len; i++, point++)
     {
       guint32 coords = GPOINTER_TO_INT (*point);
 
-      points[i * 2]     = (coords & 0x0000ffff);
-      points[i * 2 + 1] = (coords >> 16);
+      points[i].x = (coords & 0x0000ffff);
+      points[i].y = (coords >> 16);
     }
 
   gimp_draw_tool_draw_lines (draw_tool, points, len, FALSE, FALSE);
@@ -1011,9 +1032,18 @@ gimp_iscissors_tool_cursor_update (GimpTool        *tool,
   switch (iscissors->op)
     {
     case ISCISSORS_OP_SELECT:
-      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords,
-                                                     state, display);
-      return;
+      {
+        GimpSelectionOptions *options;
+
+        options = GIMP_SELECTION_TOOL_GET_OPTIONS (tool);
+
+        /* Do not overwrite the modifiers for add, subtract, intersect */
+        if (options->operation == GIMP_CHANNEL_OP_REPLACE)
+          {
+            modifier = GIMP_CURSOR_MODIFIER_SELECT;
+          }
+      }
+      break;
 
     case ISCISSORS_OP_MOVE_POINT:
       modifier = GIMP_CURSOR_MODIFIER_MOVE;
@@ -1035,10 +1065,18 @@ gimp_iscissors_tool_cursor_update (GimpTool        *tool,
       break;
     }
 
-  gimp_tool_set_cursor (tool, display,
-                        GIMP_CURSOR_MOUSE,
-                        GIMP_TOOL_CURSOR_ISCISSORS,
-                        modifier);
+  if (modifier != GIMP_CURSOR_MODIFIER_NONE)
+    {
+      gimp_tool_set_cursor (tool, display,
+                            GIMP_CURSOR_MOUSE,
+                            GIMP_TOOL_CURSOR_ISCISSORS,
+                            modifier);
+    }
+  else
+    {
+      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords,
+                                                     state, display);
+    }
 }
 
 static gboolean
@@ -1358,10 +1396,10 @@ calculate_curve (GimpTool *tool,
   display = tool->display;
 
   /*  Get the bounding box  */
-  xs = CLAMP (curve->x1, 0, display->image->width - 1);
-  ys = CLAMP (curve->y1, 0, display->image->height - 1);
-  xe = CLAMP (curve->x2, 0, display->image->width - 1);
-  ye = CLAMP (curve->y2, 0, display->image->height - 1);
+  xs = CLAMP (curve->x1, 0, gimp_image_get_width  (display->image) - 1);
+  ys = CLAMP (curve->y1, 0, gimp_image_get_height (display->image) - 1);
+  xe = CLAMP (curve->x2, 0, gimp_image_get_width  (display->image) - 1);
+  ye = CLAMP (curve->y2, 0, gimp_image_get_height (display->image) - 1);
   x1 = MIN (xs, xe);
   y1 = MIN (ys, ye);
   x2 = MAX (xs, xe) + 1;  /*  +1 because if xe = 199 & xs = 0, x2 - x1, width = 200  */
@@ -1378,11 +1416,12 @@ calculate_curve (GimpTool *tool,
   eheight = (y2 - y1) * EXTEND_BY + FIXED;
 
   if (xe >= xs)
-    x2 += CLAMP (ewidth, 0, display->image->width - x2);
+    x2 += CLAMP (ewidth, 0, gimp_image_get_width (display->image) - x2);
   else
     x1 -= CLAMP (ewidth, 0, x1);
+
   if (ye >= ys)
-    y2 += CLAMP (eheight, 0, display->image->height - y2);
+    y2 += CLAMP (eheight, 0, gimp_image_get_height (display->image) - y2);
   else
     y1 -= CLAMP (eheight, 0, y1);
 
@@ -1747,7 +1786,7 @@ gradmap_tile_validate (TileManager *tm,
   dw = tile_ewidth (tile);
   dh = tile_eheight (tile);
 
-  pickable = GIMP_PICKABLE (image->projection);
+  pickable = GIMP_PICKABLE (gimp_image_get_projection (image));
 
   gimp_pickable_flush (pickable);
 
@@ -1861,7 +1900,8 @@ gradient_map_new (GimpImage *image)
 {
   TileManager *tm;
 
-  tm = tile_manager_new (image->width, image->height,
+  tm = tile_manager_new (gimp_image_get_width  (image),
+                         gimp_image_get_height (image),
                          sizeof (guint8) * COST_WIDTH);
 
   tile_manager_set_validate_proc (tm,
@@ -1894,14 +1934,14 @@ find_max_gradient (GimpIscissorsTool *iscissors,
   radius = GRADIENT_SEARCH >> 1;
 
   /*  calculate the extent of the search  */
-  cx = CLAMP (*x, 0, image->width);
-  cy = CLAMP (*y, 0, image->height);
+  cx = CLAMP (*x, 0, gimp_image_get_width  (image));
+  cy = CLAMP (*y, 0, gimp_image_get_height (image));
   sx = cx - radius;
   sy = cy - radius;
-  x1 = CLAMP (cx - radius, 0, image->width);
-  y1 = CLAMP (cy - radius, 0, image->height);
-  x2 = CLAMP (cx + radius, 0, image->width);
-  y2 = CLAMP (cy + radius, 0, image->height);
+  x1 = CLAMP (cx - radius, 0, gimp_image_get_width  (image));
+  y1 = CLAMP (cy - radius, 0, gimp_image_get_height (image));
+  x2 = CLAMP (cx + radius, 0, gimp_image_get_width  (image));
+  y2 = CLAMP (cy + radius, 0, gimp_image_get_height (image));
   /*  calculate the factor to multiply the distance from the cursor by  */
 
   max_gradient = 0;

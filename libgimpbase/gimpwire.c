@@ -63,7 +63,7 @@ gimp_wire_register (guint32             type,
   handler = g_hash_table_lookup (wire_ht, &type);
 
   if (! handler)
-    handler = g_new0 (GimpWireHandler, 1);
+    handler = g_slice_new0 (GimpWireHandler);
 
   handler->type         = type;
   handler->read_func    = read_func;
@@ -432,7 +432,13 @@ _gimp_wire_read_string (GIOChannel  *channel,
 
       if (tmp > 0)
         {
-          data[i] = g_new (gchar, tmp);
+          data[i] = g_try_new (gchar, tmp);
+
+          if (! data[i])
+            {
+              g_printerr ("%s: failed to allocate %u bytes\n", G_STRFUNC, tmp);
+              return FALSE;
+            }
 
           if (! _gimp_wire_read_int8 (channel,
                                       (guint8 *) data[i], tmp, user_data))

@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -114,6 +115,7 @@ void                <a class="link" href="libgimp-gimp.html#gimp-destroy-params"
                                                          gint n_params);
 void                <a class="link" href="libgimp-gimp.html#gimp-destroy-paramdefs" title="gimp_destroy_paramdefs ()">gimp_destroy_paramdefs</a>              (<a class="link" href="libgimp-gimp.html#GimpParamDef" title="GimpParamDef">GimpParamDef</a> *paramdefs,
                                                          gint n_params);
+const gchar*        <a class="link" href="libgimp-gimp.html#gimp-get-pdb-error" title="gimp_get_pdb_error ()">gimp_get_pdb_error</a>                  (void);
 guint               <a class="link" href="libgimp-gimp.html#gimp-tile-width" title="gimp_tile_width ()">gimp_tile_width</a>                     (void);
 guint               <a class="link" href="libgimp-gimp.html#gimp-tile-height" title="gimp_tile_height ()">gimp_tile_height</a>                    (void);
 gint                <a class="link" href="libgimp-gimp.html#gimp-shm-ID" title="gimp_shm_ID ()">gimp_shm_ID</a>                         (void);
@@ -133,6 +135,7 @@ gint32              <a class="link" href="libgimp-gimp.html#gimp-default-display
 const gchar*        <a class="link" href="libgimp-gimp.html#gimp-wm-class" title="gimp_wm_class ()">gimp_wm_class</a>                       (void);
 const gchar*        <a class="link" href="libgimp-gimp.html#gimp-display-name" title="gimp_display_name ()">gimp_display_name</a>                   (void);
 gint                <a class="link" href="libgimp-gimp.html#gimp-monitor-number" title="gimp_monitor_number ()">gimp_monitor_number</a>                 (void);
+guint32             <a class="link" href="libgimp-gimp.html#gimp-user-time" title="gimp_user_time ()">gimp_user_time</a>                      (void);
 const gchar*        <a class="link" href="libgimp-gimp.html#gimp-get-progname" title="gimp_get_progname ()">gimp_get_progname</a>                   (void);
 void                <a class="link" href="libgimp-gimp.html#gimp-extension-enable" title="gimp_extension_enable ()">gimp_extension_enable</a>               (void);
 void                <a class="link" href="libgimp-gimp.html#gimp-extension-ack" title="gimp_extension_ack ()">gimp_extension_ack</a>                  (void);
@@ -380,6 +383,7 @@ This procedure returns the process ID of the currently running GIMP.</p>
   guint8           *d_int8array;
   gdouble          *d_floatarray;
   gchar           **d_stringarray;
+  GimpRGB          *d_colorarray;
   GimpRGB           d_color;
   GimpParamRegion   d_region;
   gint32            d_display;
@@ -907,7 +911,8 @@ Destroys a <a class="link" href="libgimp-gimp.html#GimpParam" title="GimpParam">
 <pre class="programlisting">void                gimp_destroy_paramdefs              (<a class="link" href="libgimp-gimp.html#GimpParamDef" title="GimpParamDef">GimpParamDef</a> *paramdefs,
                                                          gint n_params);</pre>
 <p>
-Destroys a <a class="link" href="libgimp-gimp.html#GimpParamDef" title="GimpParamDef"><span class="type">GimpParamDef</span></a> array as returned by <code class="function">gimp_query_procedure()</code></p>
+Destroys a <a class="link" href="libgimp-gimp.html#GimpParamDef" title="GimpParamDef"><span class="type">GimpParamDef</span></a> array as returned by
+<a class="link" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info" title="gimp_procedural_db_proc_info ()"><code class="function">gimp_procedural_db_proc_info()</code></a>.</p>
 <p>
 
 </p>
@@ -929,11 +934,45 @@ Destroys a <a class="link" href="libgimp-gimp.html#GimpParamDef" title="GimpPara
 </div>
 <hr>
 <div class="refsect2" lang="en">
+<a name="gimp-get-pdb-error"></a><h3>gimp_get_pdb_error ()</h3>
+<pre class="programlisting">const gchar*        gimp_get_pdb_error                  (void);</pre>
+<p>
+Retrieves the error message from the last procedure call.
+</p>
+<p>
+If a procedure call fails, then it might pass an error message with
+the return values. Plug-ins that are using the libgimp C wrappers
+don't access the procedure return values directly. Thus ligimp
+stores the error message and makes it available with this
+function. The next procedure call unsets the error message again.
+</p>
+<p>
+The returned string is owned by libgimp and must not be freed or
+modified.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the error message
+
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
 <a name="gimp-tile-width"></a><h3>gimp_tile_width ()</h3>
 <pre class="programlisting">guint               gimp_tile_width                     (void);</pre>
 <p>
-Returns the tile width GIMP is using. This is a constant value
-given at plug-in configuration time.</p>
+Returns the tile width GIMP is using.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.</p>
 <p>
 
 </p>
@@ -951,8 +990,10 @@ given at plug-in configuration time.</p>
 <a name="gimp-tile-height"></a><h3>gimp_tile_height ()</h3>
 <pre class="programlisting">guint               gimp_tile_height                    (void);</pre>
 <p>
-Returns the tile height GIMP is using. This is a constant value
-given at plug-in configuration time.</p>
+Returns the tile height GIMP is using.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.</p>
 <p>
 
 </p>
@@ -970,9 +1011,11 @@ given at plug-in configuration time.</p>
 <a name="gimp-shm-ID"></a><h3>gimp_shm_ID ()</h3>
 <pre class="programlisting">gint                gimp_shm_ID                         (void);</pre>
 <p>
-Returns the shared memory ID used for passing tile data between the GIMP
-core and the plug-in. This is a constant value
-given at plug-in configuration time.</p>
+Returns the shared memory ID used for passing tile data between the
+GIMP core and the plug-in.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.</p>
 <p>
 
 </p>
@@ -991,8 +1034,10 @@ given at plug-in configuration time.</p>
 <pre class="programlisting">guchar*             gimp_shm_addr                       (void);</pre>
 <p>
 Returns the address of the shared memory segment used for passing
-tile data between the GIMP core and the plug-in. This is a constant
-value given at plug-in configuration time.</p>
+tile data between the GIMP core and the plug-in.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.</p>
 <p>
 
 </p>
@@ -1011,7 +1056,10 @@ value given at plug-in configuration time.</p>
 <pre class="programlisting">gdouble             gimp_gamma                          (void);</pre>
 <p>
 Returns the global gamma value GIMP and all its plug-ins should
-use. This is a constant value given at plug-in configuration time.
+use.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.
 </p>
 <p>
 NOTE: This function will always return 2.2, the gamma value for
@@ -1035,11 +1083,10 @@ should assume that pixel data is in the sRGB colorspace.</p>
 <pre class="programlisting">gboolean            gimp_install_cmap                   (void);</pre>
 <p>
 Returns whether or not the plug-in should allocate an own colormap
-when running on an 8 bit display. This is a constant value given at
-plug-in configuration time.
+when running on an 8 bit display. See also: <a class="link" href="libgimp-gimp.html#gimp-min-colors" title="gimp_min_colors ()"><code class="function">gimp_min_colors()</code></a>.
 </p>
 <p>
-See also: <a class="link" href="libgimp-gimp.html#gimp-min-colors" title="gimp_min_colors ()"><code class="function">gimp_min_colors()</code></a></p>
+This is a constant value given at plug-in configuration time.</p>
 <p>
 
 </p>
@@ -1058,8 +1105,10 @@ See also: <a class="link" href="libgimp-gimp.html#gimp-min-colors" title="gimp_m
 <pre class="programlisting">gint                gimp_min_colors                     (void);</pre>
 <p>
 Returns the minimum number of colors to use when allocating an own
-colormap on 8 bit displays. This is a constant value given at
-plug-in configuration time.
+colormap on 8 bit displays.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.
 </p>
 <p>
 See also: <a class="link" href="libgimp-gimp.html#gimp-install-cmap" title="gimp_install_cmap ()"><code class="function">gimp_install_cmap()</code></a></p>
@@ -1080,8 +1129,10 @@ See also: <a class="link" href="libgimp-gimp.html#gimp-install-cmap" title="gimp
 <a name="gimp-show-tool-tips"></a><h3>gimp_show_tool_tips ()</h3>
 <pre class="programlisting">gboolean            gimp_show_tool_tips                 (void);</pre>
 <p>
-Returns whether or not the plug-in should show tool-tips. This is a
-constant value given at plug-in configuration time.</p>
+Returns whether or not the plug-in should show tool-tips.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.</p>
 <p>
 
 </p>
@@ -1100,7 +1151,10 @@ constant value given at plug-in configuration time.</p>
 <pre class="programlisting">gboolean            gimp_show_help_button               (void);</pre>
 <p>
 Returns whether or not GimpDialog should automatically add a help
-button if help_func and help_id are given.</p>
+button if help_func and help_id are given.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.</p>
 <p>
 
 </p>
@@ -1124,6 +1178,8 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"
 >GimpCheckSize</a>       gimp_check_size                     (void);</pre>
 <p>
 Returns the size of the checkerboard to be used in previews.
+</p>
+<p>
 This is a constant value given at plug-in configuration time.</p>
 <p>
 
@@ -1148,6 +1204,8 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"
 >GimpCheckType</a>       gimp_check_type                     (void);</pre>
 <p>
 Returns the type of the checkerboard to be used in previews.
+</p>
+<p>
 This is a constant value given at plug-in configuration time.</p>
 <p>
 
@@ -1170,8 +1228,10 @@ This is a constant value given at plug-in configuration time.</p>
 <pre class="programlisting">gint32              gimp_default_display                (void);</pre>
 <p>
 Returns the default display ID. This corresponds to the display the
-running procedure's menu entry was invoked from. This is a
-constant value given at plug-in configuration time.</p>
+running procedure's menu entry was invoked from.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.</p>
 <p>
 
 </p>
@@ -1190,6 +1250,8 @@ constant value given at plug-in configuration time.</p>
 <pre class="programlisting">const gchar*        gimp_wm_class                       (void);</pre>
 <p>
 Returns the window manager class to be used for plug-in windows.
+</p>
+<p>
 This is a constant value given at plug-in configuration time.</p>
 <p>
 
@@ -1209,6 +1271,8 @@ This is a constant value given at plug-in configuration time.</p>
 <pre class="programlisting">const gchar*        gimp_display_name                   (void);</pre>
 <p>
 Returns the display to be used for plug-in windows.
+</p>
+<p>
 This is a constant value given at plug-in configuration time.</p>
 <p>
 
@@ -1228,6 +1292,8 @@ This is a constant value given at plug-in configuration time.</p>
 <pre class="programlisting">gint                gimp_monitor_number                 (void);</pre>
 <p>
 Returns the monitor number to be used for plug-in windows.
+</p>
+<p>
 This is a constant value given at plug-in configuration time.</p>
 <p>
 
@@ -1240,6 +1306,32 @@ This is a constant value given at plug-in configuration time.</p>
 </td>
 </tr></tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-user-time"></a><h3>gimp_user_time ()</h3>
+<pre class="programlisting">guint32             gimp_user_time                      (void);</pre>
+<p>
+Returns the timestamp of the user interaction that should be set on
+the plug-in window. This is handled transparently, plug-in authors
+do not have to care about it.
+</p>
+<p>
+This is a constant value given at plug-in configuration time.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> timestamp for plug-in window
+
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

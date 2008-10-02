@@ -440,7 +440,7 @@ static void
 gimp_color_select_channel_toggled (GtkWidget       *widget,
                                    GimpColorSelect *select)
 {
-  if (GTK_TOGGLE_BUTTON (widget)->active)
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     {
       GimpColorSelector        *selector = GIMP_COLOR_SELECTOR (select);
       GimpColorSelectorChannel  channel;
@@ -667,15 +667,8 @@ gimp_color_select_xy_events (GtkWidget       *widget,
 
     case GDK_MOTION_NOTIFY:
       mevent = (GdkEventMotion *) event;
-      if (mevent->is_hint)
-        {
-          gdk_window_get_pointer (widget->window, &x, &y, NULL);
-        }
-      else
-        {
-          x = mevent->x;
-          y = mevent->y;
-        }
+      x = mevent->x;
+      y = mevent->y;
       break;
 
     default:
@@ -699,6 +692,9 @@ gimp_color_select_xy_events (GtkWidget       *widget,
   gimp_color_select_draw_xy_marker (select, NULL);
 
   gimp_color_select_update (select, UPDATE_VALUES | UPDATE_CALLER);
+
+  /* Ask for more motion events in case the event was a hint */
+  gdk_event_request_motions ((GdkEventMotion *) event);
 
   return TRUE;
 }
@@ -757,14 +753,7 @@ gimp_color_select_z_events (GtkWidget       *widget,
 
     case GDK_MOTION_NOTIFY:
       mevent = (GdkEventMotion *) event;
-      if (mevent->is_hint)
-        {
-          gdk_window_get_pointer (widget->window, NULL, &z, NULL);
-        }
-      else
-        {
-          z = mevent->y;
-        }
+      z = mevent->y;
       break;
 
     default:
@@ -783,6 +772,9 @@ gimp_color_select_z_events (GtkWidget       *widget,
   gimp_color_select_draw_z_marker (select, NULL);
   gimp_color_select_update (select,
                             UPDATE_VALUES | UPDATE_XY_COLOR | UPDATE_CALLER);
+
+  /* Ask for more motion events in case the event was a hint */
+  gdk_event_request_motions ((GdkEventMotion *) event);
 
   return TRUE;
 }

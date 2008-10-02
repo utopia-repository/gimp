@@ -56,6 +56,7 @@
       <xi:include href="xml/gimppixelrgn.xml" />
       <xi:include href="xml/gimpregioniterator.xml" />
       <xi:include href="xml/gimpselection.xml" />
+      <xi:include href="xml/gimptextlayer.xml" />
       <xi:include href="xml/gimptexttool.xml" />
       <xi:include href="xml/gimptile.xml" />
       <xi:include href="xml/gimptools.xml" />
@@ -128,6 +129,9 @@
   </index>
   <index role="GIMP 2.4" id="libgimp-index-new-in-2-4">
     <title>Index of new symbols in GIMP 2.4</title>
+  </index>
+  <index role="GIMP 2.6" id="libgimp-index-new-in-2-6">
+    <title>Index of new symbols in GIMP 2.6</title>
   </index>
   <index role="deprecated" id="libgimp-index-deprecated">
     <title>Index of deprecated symbols</title>

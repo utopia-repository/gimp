@@ -90,6 +90,10 @@ static void   gimp_paint_tool_oper_update    (GimpTool              *tool,
 
 static void   gimp_paint_tool_draw           (GimpDrawTool          *draw_tool);
 
+static void   gimp_paint_tool_hard_notify    (GimpPaintOptions      *options,
+                                              const GParamSpec      *pspec,
+                                              GimpTool              *tool);
+
 
 G_DEFINE_TYPE (GimpPaintTool, gimp_paint_tool, GIMP_TYPE_COLOR_TOOL)
 
@@ -121,8 +125,8 @@ gimp_paint_tool_init (GimpPaintTool *paint_tool)
 {
   GimpTool *tool = GIMP_TOOL (paint_tool);
 
-  gimp_tool_control_set_motion_mode (tool->control, GIMP_MOTION_MODE_EXACT);
-  gimp_tool_control_set_scroll_lock (tool->control, TRUE);
+  gimp_tool_control_set_motion_mode    (tool->control, GIMP_MOTION_MODE_EXACT);
+  gimp_tool_control_set_scroll_lock    (tool->control, TRUE);
   gimp_tool_control_set_action_value_1 (tool->control,
                                         "context/context-opacity-set");
 
@@ -133,6 +137,9 @@ gimp_paint_tool_init (GimpPaintTool *paint_tool)
   paint_tool->status_line = _("Click to draw the line");
   paint_tool->status_ctrl = _("%s to pick a color");
 
+  /*  Paint tools benefit most from strong smoothing on coordinates  */
+  tool->max_coord_smooth  = 0.80;
+
   paint_tool->core        = NULL;
 }
 
@@ -141,15 +148,17 @@ gimp_paint_tool_constructor (GType                  type,
                              guint                  n_params,
                              GObjectConstructParam *params)
 {
-  GObject       *object;
-  GimpTool      *tool;
-  GimpPaintInfo *paint_info;
-  GimpPaintTool *paint_tool;
+  GObject          *object;
+  GimpTool         *tool;
+  GimpPaintInfo    *paint_info;
+  GimpPaintTool    *paint_tool;
+  GimpPaintOptions *options;
 
   object = G_OBJECT_CLASS (parent_class)->constructor (type, n_params, params);
 
   tool       = GIMP_TOOL (object);
   paint_tool = GIMP_PAINT_TOOL (object);
+  options    = GIMP_PAINT_TOOL_GET_OPTIONS (tool);
 
   g_assert (GIMP_IS_TOOL_INFO (tool->tool_info));
   g_assert (GIMP_IS_PAINT_INFO (tool->tool_info->paint_info));
@@ -161,6 +170,12 @@ gimp_paint_tool_constructor (GType                  type,
   paint_tool->core = g_object_new (paint_info->paint_type,
                                    "undo-desc", paint_info->blurb,
                                    NULL);
+
+  g_signal_connect_object (options, "notify::hard",
+                           G_CALLBACK (gimp_paint_tool_hard_notify),
+                           tool, 0);
+
+  gimp_paint_tool_hard_notify (options, NULL, tool);
 
   return object;
 }
@@ -253,10 +268,10 @@ gimp_paint_tool_round_line (GimpPaintCore   *core,
       core->cur_coords.y  = floor (core->cur_coords.y ) + 0.5;
     }
 
-  /* Restrict to multiples of 15 degrees if ctrl is pressed */
   if (state & GDK_CONTROL_MASK)
     gimp_tool_motion_constrain (core->last_coords.x, core->last_coords.y,
-                                &core->cur_coords.x, &core->cur_coords.y);
+                                &core->cur_coords.x, &core->cur_coords.y,
+                                GIMP_TOOL_CONSTRAIN_15_DEGREES);
 }
 
 static void
@@ -271,7 +286,6 @@ gimp_paint_tool_button_press (GimpTool        *tool,
   GimpPaintOptions *paint_options = GIMP_PAINT_TOOL_GET_OPTIONS (tool);
   GimpPaintCore    *core          = paint_tool->core;
   GimpDrawable     *drawable;
-  GdkDisplay       *gdk_display;
   GimpCoords        curr_coords;
   gint              off_x, off_y;
   GError           *error = NULL;
@@ -308,11 +322,6 @@ gimp_paint_tool_button_press (GimpTool        *tool,
       tool->display = display;
     }
 
-  gdk_display = gtk_widget_get_display (display->shell);
-
-  core->use_pressure = (gimp_devices_get_current (display->image->gimp) !=
-                        gdk_display_get_core_pointer (gdk_display));
-
   if (! gimp_paint_core_start (core, drawable, paint_options, &curr_coords,
                                &error))
     {
@@ -342,7 +351,6 @@ gimp_paint_tool_button_press (GimpTool        *tool,
               GIMP_BRUSH_HARD);
 
       core->start_coords = core->last_coords;
-      core->use_pressure = FALSE;
 
       gimp_paint_tool_round_line (core, hard, state);
     }
@@ -369,7 +377,7 @@ gimp_paint_tool_button_press (GimpTool        *tool,
                              GIMP_PAINT_STATE_MOTION, time);
     }
 
-  gimp_projection_flush_now (display->image->projection);
+  gimp_projection_flush_now (gimp_image_get_projection (display->image));
   gimp_display_flush_now (display);
 
   gimp_draw_tool_start (draw_tool, display);
@@ -450,14 +458,17 @@ gimp_paint_tool_motion (GimpTool        *tool,
   core->cur_coords.x -= off_x;
   core->cur_coords.y -= off_y;
 
-  GIMP_TOOL_CLASS (parent_class)->motion (tool, coords, time, state,
-                                          display);
+  GIMP_TOOL_CLASS (parent_class)->motion (tool, coords, time, state, display);
+
+  /*  don't paint while the Shift key is pressed for line drawing  */
+  if (paint_tool->draw_line)
+    return;
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
   gimp_paint_core_interpolate (core, drawable, paint_options, time);
 
-  gimp_projection_flush_now (display->image->projection);
+  gimp_projection_flush_now (gimp_image_get_projection (display->image));
   gimp_display_flush_now (display);
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
@@ -547,7 +558,7 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
 
   gimp_tool_pop_status (tool, display);
 
-  if (tool->display          &&
+  if (tool->display            &&
       tool->display != display &&
       tool->display->image == display->image)
     {
@@ -606,15 +617,19 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
           else
             {
               GimpImage *image = display->image;
+              gdouble    xres;
+              gdouble    yres;
               gchar      format_str[64];
+
+              gimp_image_get_resolution (image, &xres, &yres);
 
               g_snprintf (format_str, sizeof (format_str), "%%.%df %s.  %%s",
                           _gimp_unit_get_digits (image->gimp, shell->unit),
                           _gimp_unit_get_symbol (image->gimp, shell->unit));
 
               dist = (_gimp_unit_get_factor (image->gimp, shell->unit) *
-                      sqrt (SQR (dx / image->xresolution) +
-                            SQR (dy / image->yresolution)));
+                      sqrt (SQR (dx / xres) +
+                            SQR (dy / yres)));
 
               gimp_tool_push_status (tool, display, format_str,
                                      dist, status_help);
@@ -702,4 +717,15 @@ gimp_paint_tool_draw (GimpDrawTool *draw_tool)
     }
 
   GIMP_DRAW_TOOL_CLASS (parent_class)->draw (draw_tool);
+}
+
+static void
+gimp_paint_tool_hard_notify (GimpPaintOptions *options,
+                             const GParamSpec *pspec,
+                             GimpTool         *tool)
+{
+  gimp_tool_control_set_precision (tool->control,
+                                   options->hard ?
+                                   GIMP_CURSOR_PRECISION_PIXEL_CENTER :
+                                   GIMP_CURSOR_PRECISION_SUBPIXEL);
 }

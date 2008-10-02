@@ -1,8 +1,8 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * tips-parser.h -- Parse the gimp-tips.xml file.
- * Copyright (C) 2002  Sven Neumann <sven@gimp.org>
+ * tips-parser.h - Parse the gimp-tips.xml file.
+ * Copyright (C) 2002, 2008  Sven Neumann <sven@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,14 +27,12 @@ typedef struct _GimpTip GimpTip;
 
 struct _GimpTip
 {
-  gchar *welcome;
-  gchar *thetip;
+  gchar *text;
+  gchar *help_id;
 };
 
 
-GimpTip * gimp_tip_new        (const gchar  *format,
-                               ...) G_GNUC_PRINTF(1, 2);
-void      gimp_tip_set        (GimpTip      *tip,
+GimpTip * gimp_tip_new        (const gchar  *title,
                                const gchar  *format,
                                ...) G_GNUC_PRINTF(2, 3);
 void      gimp_tip_free       (GimpTip      *tip);

@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -106,7 +108,7 @@ image_scale_dialog_new (GimpImage             *image,
 
   dialog->image  = image;
   dialog->dialog = scale_dialog_new (GIMP_VIEWABLE (image), context,
-                                     Q_("dialog-title|Scale Image"),
+                                     C_("dialog-title", "Scale Image"),
                                      "gimp-image-scale",
                                      parent,
                                      gimp_standard_help_func,
@@ -169,7 +171,7 @@ image_scale_callback (GtkWidget             *widget,
       break;
 
     case GIMP_IMAGE_SCALE_OK:
-      /* If all is well, return directly after scaling image. */
+      gtk_widget_hide (widget);
       dialog->callback (dialog->dialog,
                         GIMP_VIEWABLE (dialog->image),
                         dialog->width,
@@ -232,13 +234,13 @@ image_scale_confirm_large (ImageScaleDialog *dialog,
   GtkWidget *widget = image_scale_confirm_dialog (dialog);
   gchar     *size;
 
-  size = gimp_memsize_to_string (new_memsize);
+  size = g_format_size_for_display (new_memsize);
   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (widget)->box,
                                      _("You are trying to create an image "
                                        "with a size of %s."), size);
   g_free (size);
 
-  size = gimp_memsize_to_string (max_memsize);
+  size = g_format_size_for_display (max_memsize);
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (widget)->box,
                              _("Scaling the image to the chosen size will "
                                "make it use more memory than what is "
@@ -273,6 +275,7 @@ image_scale_confirm_response (GtkWidget        *widget,
 
   if (response_id == GTK_RESPONSE_OK)
     {
+      gtk_widget_hide (dialog->dialog);
       dialog->callback (dialog->dialog,
                         GIMP_VIEWABLE (dialog->image),
                         dialog->width,

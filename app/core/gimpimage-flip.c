@@ -57,11 +57,11 @@ gimp_image_flip (GimpImage           *image,
   switch (flip_type)
     {
     case GIMP_ORIENTATION_HORIZONTAL:
-      axis = (gdouble) image->width / 2.0;
+      axis = (gdouble) gimp_image_get_width (image) / 2.0;
       break;
 
     case GIMP_ORIENTATION_VERTICAL:
-      axis = (gdouble) image->height / 2.0;
+      axis = (gdouble) gimp_image_get_height (image) / 2.0;
       break;
 
     default:
@@ -123,7 +123,7 @@ gimp_image_flip (GimpImage           *image,
     }
 
   /*  Flip all Guides  */
-  for (list = image->guides; list; list = g_list_next (list))
+  for (list = gimp_image_get_guides (image); list; list = g_list_next (list))
     {
       GimpGuide *guide    = list->data;
       gint       position = gimp_guide_get_position (guide);
@@ -133,13 +133,15 @@ gimp_image_flip (GimpImage           *image,
         case GIMP_ORIENTATION_HORIZONTAL:
           if (flip_type == GIMP_ORIENTATION_VERTICAL)
             gimp_image_move_guide (image, guide,
-                                   image->height - position, TRUE);
+                                   gimp_image_get_height (image) - position,
+                                   TRUE);
           break;
 
         case GIMP_ORIENTATION_VERTICAL:
           if (flip_type == GIMP_ORIENTATION_HORIZONTAL)
             gimp_image_move_guide (image, guide,
-                                   image->width - position, TRUE);
+                                   gimp_image_get_width (image) - position,
+                                   TRUE);
           break;
 
         default:
@@ -148,19 +150,21 @@ gimp_image_flip (GimpImage           *image,
     }
 
   /*  Flip all sample points  */
-  for (list = image->sample_points; list; list = g_list_next (list))
+  for (list = gimp_image_get_sample_points (image); list; list = g_list_next (list))
     {
       GimpSamplePoint *sample_point = list->data;
 
       if (flip_type == GIMP_ORIENTATION_VERTICAL)
         gimp_image_move_sample_point (image, sample_point,
                                       sample_point->x,
-                                      image->height - sample_point->y,
+                                      gimp_image_get_height (image) -
+                                      sample_point->y,
                                       TRUE);
 
       if (flip_type == GIMP_ORIENTATION_HORIZONTAL)
         gimp_image_move_sample_point (image, sample_point,
-                                      image->width - sample_point->x,
+                                      gimp_image_get_width (image) -
+                                      sample_point->x,
                                       sample_point->y,
                                       TRUE);
     }

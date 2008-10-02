@@ -22,8 +22,6 @@
 #ifndef __GIMP_PROGRESS_BOX_H__
 #define __GIMP_PROGRESS_BOX_H__
 
-#include <gtk/gtkvbox.h>
-
 G_BEGIN_DECLS
 
 
@@ -43,6 +41,7 @@ struct _GimpProgressBox
 
   gboolean    active;
   gboolean    cancelable;
+  gdouble     value;
 
   GtkWidget  *label;
   GtkWidget  *progress;

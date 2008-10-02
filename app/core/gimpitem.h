@@ -65,13 +65,13 @@ struct _GimpItemClass
   /*  virtual functions  */
   gboolean   (* is_attached)  (GimpItem               *item);
   GimpItem * (* duplicate)    (GimpItem               *item,
-                               GType                   new_type,
-                               gboolean                add_alpha);
+                               GType                   new_type);
   void       (* convert)      (GimpItem               *item,
                                GimpImage              *dest_image);
   gboolean   (* rename)       (GimpItem               *item,
                                const gchar            *new_name,
-                               const gchar            *undo_desc);
+                               const gchar            *undo_desc,
+                               GError                **error);
   void       (* translate)    (GimpItem               *item,
                                gint                    offset_x,
                                gint                    offset_y,
@@ -111,7 +111,8 @@ struct _GimpItemClass
   gboolean   (* stroke)       (GimpItem               *item,
                                GimpDrawable           *drawable,
                                GimpStrokeDesc         *stroke_desc,
-                               GimpProgress           *progress);
+                               GimpProgress           *progress,
+                               GError                **error);
 
   const gchar *default_name;
   const gchar *rename_desc;
@@ -140,15 +141,14 @@ void            gimp_item_configure        (GimpItem           *item,
                                             gint                height,
                                             const gchar        *name);
 GimpItem      * gimp_item_duplicate        (GimpItem           *item,
-                                            GType               new_type,
-                                            gboolean            add_alpha);
+                                            GType               new_type);
 GimpItem      * gimp_item_convert          (GimpItem           *item,
                                             GimpImage          *dest_image,
-                                            GType               new_type,
-                                            gboolean            add_alpha);
+                                            GType               new_type);
 
 gboolean        gimp_item_rename           (GimpItem           *item,
-                                            const gchar        *new_name);
+                                            const gchar        *new_name,
+                                            GError            **error);
 
 gint            gimp_item_width            (const GimpItem     *item);
 gint            gimp_item_height           (const GimpItem     *item);
@@ -215,7 +215,8 @@ gboolean        gimp_item_stroke           (GimpItem           *item,
                                             GimpContext        *context,
                                             GimpStrokeDesc     *stroke_desc,
                                             gboolean            use_default_values,
-                                            GimpProgress       *progress);
+                                            GimpProgress       *progress,
+                                            GError            **error);
 
 gint            gimp_item_get_ID           (GimpItem           *item);
 GimpItem      * gimp_item_get_by_ID        (Gimp               *gimp,

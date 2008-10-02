@@ -28,6 +28,7 @@
 
 #include "core/gimp.h"
 #include "core/gimpchannel.h"
+#include "core/gimplayermask.h"
 #include "core/gimpimage.h"
 
 #include "gimpcanvas.h"
@@ -75,6 +76,7 @@ static void      selection_resume         (Selection      *selection);
 static void      selection_draw           (Selection      *selection);
 static void      selection_undraw         (Selection      *selection);
 static void      selection_layer_undraw   (Selection      *selection);
+static void      selection_layer_draw     (Selection      *selection);
 
 static void      selection_add_point      (GdkPoint       *points[8],
                                            gint            max_npoints[8],
@@ -164,7 +166,7 @@ gimp_display_shell_selection_control (GimpDisplayShell     *shell,
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  if (shell->selection)
+  if (shell->selection && shell->display->image)
     {
       Selection *selection = shell->selection;
 
@@ -176,6 +178,10 @@ gimp_display_shell_selection_control (GimpDisplayShell     *shell,
 
         case GIMP_SELECTION_LAYER_OFF:
           selection_layer_undraw (selection);
+          break;
+
+        case GIMP_SELECTION_LAYER_ON:
+          selection_layer_draw (selection);
           break;
 
         case GIMP_SELECTION_ON:
@@ -191,6 +197,11 @@ gimp_display_shell_selection_control (GimpDisplayShell     *shell,
           break;
         }
     }
+  else if (shell->selection)
+    {
+      selection_stop (shell->selection);
+      selection_free_segs (shell->selection);
+    }
 }
 
 void
@@ -199,7 +210,7 @@ gimp_display_shell_selection_set_hidden (GimpDisplayShell *shell,
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  if (shell->selection)
+  if (shell->selection && shell->display->image)
     {
       Selection *selection = shell->selection;
 
@@ -221,7 +232,7 @@ gimp_display_shell_selection_layer_set_hidden (GimpDisplayShell *shell,
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  if (shell->selection)
+  if (shell->selection && shell->display->image)
     {
       Selection *selection = shell->selection;
 
@@ -366,10 +377,14 @@ selection_undraw (Selection *selection)
 static void
 selection_layer_draw (Selection *selection)
 {
-  GimpCanvas *canvas = GIMP_CANVAS (selection->shell->canvas);
+  GimpCanvas   *canvas   = GIMP_CANVAS (selection->shell->canvas);
+  GimpImage    *image    = selection->shell->display->image;
+  GimpDrawable *drawable = gimp_image_get_active_drawable (image);
 
   if (selection->segs_layer)
-    gimp_canvas_draw_segments (canvas, GIMP_CANVAS_STYLE_LAYER_BOUNDARY,
+    gimp_canvas_draw_segments (canvas, GIMP_IS_LAYER_MASK (drawable) ?
+                               GIMP_CANVAS_STYLE_LAYER_MASK_ACTIVE:
+                               GIMP_CANVAS_STYLE_LAYER_BOUNDARY,
                                selection->segs_layer,
                                selection->num_segs_layer);
 }
@@ -674,6 +689,11 @@ static gboolean
 selection_start_timeout (Selection *selection)
 {
   selection_free_segs (selection);
+  selection->timeout = 0;
+
+  if (! selection->shell->display->image)
+    return FALSE;
+
   selection_generate_segs (selection);
 
   selection->index = 0;
@@ -685,8 +705,7 @@ selection_start_timeout (Selection *selection)
   if (! selection->hidden)
     {
       GimpCanvas        *canvas = GIMP_CANVAS (selection->shell->canvas);
-      GimpDisplayConfig *config = GIMP_DISPLAY_CONFIG
-        (selection->shell->display->image->gimp->config);
+      GimpDisplayConfig *config = selection->shell->display->config;
 
       selection_draw (selection);
 
@@ -741,6 +760,7 @@ selection_window_state_event (GtkWidget           *shell,
 
   return FALSE;
 }
+
 static gboolean
 selection_visibility_notify_event (GtkWidget          *shell,
                                    GdkEventVisibility *event,

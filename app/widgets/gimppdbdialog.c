@@ -242,11 +242,11 @@ gimp_pdb_dialog_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_PDB:
-      dialog->pdb = GIMP_PDB (g_value_dup_object (value));
+      dialog->pdb = g_value_dup_object (value);
       break;
 
     case PROP_CONTEXT:
-      dialog->caller_context = GIMP_CONTEXT (g_value_dup_object (value));
+      dialog->caller_context = g_value_dup_object (value);
       break;
 
     case PROP_SELECT_TYPE:
@@ -265,7 +265,7 @@ gimp_pdb_dialog_set_property (GObject      *object,
       break;
 
     case PROP_MENU_FACTORY:
-      dialog->menu_factory = (GimpMenuFactory *) g_value_dup_object (value);
+      dialog->menu_factory = g_value_dup_object (value);
       break;
 
     default:
@@ -341,8 +341,9 @@ gimp_pdb_dialog_run_callback (GimpPdbDialog *dialog,
       if (gimp_pdb_lookup_procedure (dialog->pdb, dialog->callback_name))
         {
           GValueArray *return_vals;
+          GError      *error = NULL;
 
-          return_vals = klass->run_callback (dialog, object, closing);
+          return_vals = klass->run_callback (dialog, object, closing, &error);
 
           if (g_value_get_enum (&return_vals->values[0]) != GIMP_PDB_SUCCESS)
             {
@@ -352,6 +353,13 @@ gimp_pdb_dialog_run_callback (GimpPdbDialog *dialog,
                               "The corresponding plug-in may have "
                               "crashed."),
                             g_type_name (G_TYPE_FROM_INSTANCE (dialog)));
+            }
+          else if (error)
+            {
+              gimp_message (dialog->context->gimp, G_OBJECT (dialog),
+                            GIMP_MESSAGE_ERROR,
+                            "%s", error->message);
+              g_error_free (error);
             }
 
           g_value_array_free (return_vals);

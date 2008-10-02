@@ -277,7 +277,7 @@ gimp_color_profile_store_add (GimpColorProfileStore *store,
   g_return_if_fail (label != NULL || filename == NULL);
 
   if (! filename && ! label)
-    label = Q_("profile|None");
+    label = C_("profile", "None");
 
   gimp_color_profile_store_get_separator (store, &separator, TRUE);
 
@@ -622,7 +622,7 @@ gimp_color_profile_store_load (GimpColorProfileStore  *store,
   if (! scanner)
     return FALSE;
 
-  g_scanner_scope_add_symbol (scanner, 0, "color-profile", 0);
+  g_scanner_scope_add_symbol (scanner, 0, "color-profile", NULL);
 
   token = G_TOKEN_LEFT_PAREN;
 

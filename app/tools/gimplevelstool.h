@@ -38,30 +38,29 @@ struct _GimpLevelsTool
 {
   GimpImageMapTool      parent_instance;
 
+  GimpLevelsConfig     *config;
   GimpLut              *lut;
-  Levels               *levels;
 
   /* dialog */
-  gboolean              color;
-  gboolean              alpha;
-  GimpHistogramChannel  channel;
+  GimpHistogram        *histogram;
 
-  gint                  active_slider;
-  gint                  slider_pos[5];
+  GtkWidget            *channel_menu;
 
-  GimpHistogram        *hist;
-  GtkWidget            *hist_view;
-  GtkWidget            *active_picker;
+  GtkWidget            *histogram_view;
+
+  GtkWidget            *input_bar;
+  GtkWidget            *input_sliders;
   GtkAdjustment        *low_input;
   GtkAdjustment        *gamma;
-  GtkAdjustment        *low_output;
+  GtkAdjustment        *gamma_linear;
   GtkAdjustment        *high_input;
-  GtkAdjustment        *high_output;
-  GtkWidget            *input_area;
-  GtkWidget            *input_bar;
-  GtkWidget            *output_area;
+
   GtkWidget            *output_bar;
-  GtkWidget            *channel_menu;
+  GtkWidget            *output_sliders;
+  GtkAdjustment        *low_output;
+  GtkAdjustment        *high_output;
+
+  GtkWidget            *active_picker;
 };
 
 struct _GimpLevelsToolClass

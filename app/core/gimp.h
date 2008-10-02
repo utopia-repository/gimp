@@ -53,7 +53,9 @@ struct _Gimp
   GimpStackTraceMode      stack_trace_mode;
   GimpPDBCompatMode       pdb_compat_mode;
 
-  GimpGui                 gui; /* gui vtable */
+  GimpGui                 gui;         /* gui vtable */
+
+  gboolean                restored;    /* becomes TRUE in gimp_restore() */
 
   gint                    busy;
   guint                   busy_idle_id;
@@ -150,6 +152,7 @@ void           gimp_initialize           (Gimp                *gimp,
                                           GimpInitStatusFunc   status_callback);
 void           gimp_restore              (Gimp                *gimp,
                                           GimpInitStatusFunc   status_callback);
+gboolean       gimp_is_restored          (Gimp                *gimp);
 
 void           gimp_exit                 (Gimp                *gimp,
                                           gboolean             force);
@@ -184,6 +187,8 @@ void           gimp_message_valist       (Gimp                *gimp,
                                           GimpMessageSeverity  severity,
                                           const gchar         *format,
                                           va_list              args);
+
+gboolean       gimp_use_gegl             (Gimp                *gimp);
 
 
 #endif  /* __GIMP_H__ */

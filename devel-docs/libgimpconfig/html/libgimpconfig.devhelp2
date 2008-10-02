@@ -17,6 +17,7 @@
     </sub>
     <sub name="Index" link="libgimpconfig-index.html"/>
     <sub name="Index of new symbols in GIMP 2.4" link="libgimpconfig-index-new-in-2-4.html"/>
+    <sub name="Index of new symbols in GIMP 2.6" link="libgimpconfig-index-new-in-2-6.html"/>
     <sub name="Index of deprecated symbols" link="libgimpconfig-index-deprecated.html"/>
   </chapters>
   <functions>
@@ -25,17 +26,19 @@
     <keyword type="function" name="gimp_config_serialize_to_file ()" link="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-file" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_serialize_to_fd ()" link="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-fd" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_serialize_to_string ()" link="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-string" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_config_deserialize_file ()" link="libgimpconfig-GimpConfig.html#gimp-config-deserialize-file"/>
+    <keyword type="function" name="gimp_config_deserialize_file ()" link="libgimpconfig-GimpConfig.html#gimp-config-deserialize-file" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_deserialize_string ()" link="libgimpconfig-GimpConfig.html#gimp-config-deserialize-string" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_deserialize_return ()" link="libgimpconfig-GimpConfig.html#gimp-config-deserialize-return" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_duplicate ()" link="libgimpconfig-GimpConfig.html#gimp-config-duplicate" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_is_equal_to ()" link="libgimpconfig-GimpConfig.html#gimp-config-is-equal-to" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_reset ()" link="libgimpconfig-GimpConfig.html#gimp-config-reset" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_config_copy ()" link="libgimpconfig-GimpConfig.html#gimp-config-copy" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_config_deserialize_properties ()" link="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-properties" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_deserialize_property ()" link="libgimpconfig-gimpconfig-deserialize.html#gimp-config-deserialize-property" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_serialize_properties ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-properties" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_config_serialize_changed_properties ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-changed-properties" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_config_serialize_property ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property"/>
+    <keyword type="function" name="gimp_config_serialize_property ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_config_serialize_property_by_name ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property-by-name" since="GIMP 2.6"/>
     <keyword type="function" name="gimp_config_serialize_value ()" link="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-value" since="GIMP 2.4"/>
     <keyword type="enum" name="enum GimpConfigError" link="libgimpconfig-GimpConfigError.html#GimpConfigError"/>
     <keyword type="macro" name="GIMP_CONFIG_ERROR" link="libgimpconfig-GimpConfigError.html#GIMP-CONFIG-ERROR:CAPS"/>

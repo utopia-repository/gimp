@@ -18,201 +18,63 @@
 
 #include "config.h"
 
-#include <glib-object.h>
-
-#include "libgimpcolor/gimpcolor.h"
+#include <gegl.h>
 
 #include "core-types.h"
 
-#include "base/pixel-processor.h"
-#include "base/pixel-region.h"
+#include "base/desaturate.h"
+
+#include "gegl/gimpdesaturateconfig.h"
+
+/* temp */
+#include "gimp.h"
+#include "gimpimage.h"
 
 #include "gimpdrawable.h"
 #include "gimpdrawable-desaturate.h"
-#include "gimpimage.h"
+#include "gimpdrawable-operation.h"
+#include "gimpdrawable-process.h"
+#include "gimpprogress.h"
 
 #include "gimp-intl.h"
 
 
-static void  desaturate_region_lightness  (gpointer     data,
-                                           PixelRegion *srcPR,
-                                           PixelRegion *destPR);
-
-static void  desaturate_region_luminosity (gpointer     data,
-                                           PixelRegion *srcPR,
-                                           PixelRegion *destPR);
-
-static void  desaturate_region_average    (gpointer     data,
-                                           PixelRegion *srcPR,
-                                           PixelRegion *destPR);
-
-
 void
 gimp_drawable_desaturate (GimpDrawable       *drawable,
+                          GimpProgress       *progress,
                           GimpDesaturateMode  mode)
 {
-  PixelRegion         srcPR, destPR;
-  PixelProcessorFunc  function;
-  gint                x, y;
-  gint                width, height;
-  gboolean            has_alpha;
-
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_drawable_is_rgb (drawable));
+  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
 
-  if (! gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
-    return;
-
-  switch (mode)
+  if (gimp_use_gegl (GIMP_ITEM (drawable)->image->gimp))
     {
-    case GIMP_DESATURATE_LIGHTNESS:
-      function = (PixelProcessorFunc) desaturate_region_lightness;
-      break;
+      GeglNode *desaturate;
+      GObject  *config;
 
-      break;
-    case GIMP_DESATURATE_LUMINOSITY:
-      function = (PixelProcessorFunc) desaturate_region_luminosity;
-      break;
+      desaturate = g_object_new (GEGL_TYPE_NODE,
+                                 "operation", "gimp-desaturate",
+                                 NULL);
 
-    case GIMP_DESATURATE_AVERAGE:
-      function = (PixelProcessorFunc) desaturate_region_average;
-      break;
+      config = g_object_new (GIMP_TYPE_DESATURATE_CONFIG,
+                             "mode", mode,
+                             NULL);
 
-    default:
-      g_return_if_reached ();
-      return;
+      gegl_node_set (desaturate,
+                     "config", config,
+                     NULL);
+
+      g_object_unref (config);
+
+      gimp_drawable_apply_operation (drawable, progress, _("Desaturate"),
+                                     desaturate, TRUE);
+      g_object_unref  (desaturate);
     }
-
-  has_alpha = gimp_drawable_has_alpha (drawable);
-
-  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                     x, y, width, height, FALSE);
-  pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
-                     x, y, width, height, TRUE);
-
-  pixel_regions_process_parallel (function, GINT_TO_POINTER (has_alpha),
-                                  2, &srcPR, &destPR);
-
-  gimp_drawable_merge_shadow (drawable, TRUE, _("Desaturate"));
-
-  gimp_drawable_update (drawable, x, y, width, height);
-}
-
-static void
-desaturate_region_lightness (gpointer     data,
-                             PixelRegion *srcPR,
-                             PixelRegion *destPR)
-{
-  const guchar *src       = srcPR->data;
-  guchar       *dest      = destPR->data;
-  gint          h         = srcPR->h;
-  gboolean      has_alpha = GPOINTER_TO_INT (data);
-
-  while (h--)
+  else
     {
-      const guchar *s = src;
-      guchar       *d = dest;
-      gint          j;
-
-      for (j = 0; j < srcPR->w; j++)
-        {
-          gint min, max;
-          gint lightness;
-
-          max = MAX (s[RED_PIX], s[GREEN_PIX]);
-          max = MAX (max, s[BLUE_PIX]);
-          min = MIN (s[RED_PIX], s[GREEN_PIX]);
-          min = MIN (min, s[BLUE_PIX]);
-
-          lightness = (max + min) / 2;
-
-          d[RED_PIX]   = lightness;
-          d[GREEN_PIX] = lightness;
-          d[BLUE_PIX]  = lightness;
-
-          if (has_alpha)
-            d[ALPHA_PIX] = s[ALPHA_PIX];
-
-          d += destPR->bytes;
-          s += srcPR->bytes;
-        }
-
-      src += srcPR->rowstride;
-      dest += destPR->rowstride;
-    }
-}
-
-static void
-desaturate_region_luminosity (gpointer     data,
-                              PixelRegion *srcPR,
-                              PixelRegion *destPR)
-{
-  const guchar *src       = srcPR->data;
-  guchar       *dest      = destPR->data;
-  gint          h         = srcPR->h;
-  gboolean      has_alpha = GPOINTER_TO_INT (data);
-
-  while (h--)
-    {
-      const guchar *s = src;
-      guchar       *d = dest;
-      gint          j;
-
-      for (j = 0; j < srcPR->w; j++)
-        {
-          gint luminosity = GIMP_RGB_LUMINANCE (s[RED_PIX],
-                                                s[GREEN_PIX],
-                                                s[BLUE_PIX]) + 0.5;
-
-          d[RED_PIX]   = luminosity;
-          d[GREEN_PIX] = luminosity;
-          d[BLUE_PIX]  = luminosity;
-
-          if (has_alpha)
-            d[ALPHA_PIX] = s[ALPHA_PIX];
-
-          d += destPR->bytes;
-          s += srcPR->bytes;
-        }
-
-      src += srcPR->rowstride;
-      dest += destPR->rowstride;
-    }
-}
-
-static void
-desaturate_region_average (gpointer     data,
-                           PixelRegion *srcPR,
-                           PixelRegion *destPR)
-{
-  const guchar *src       = srcPR->data;
-  guchar       *dest      = destPR->data;
-  gint          h         = srcPR->h;
-  gboolean      has_alpha = GPOINTER_TO_INT (data);
-
-  while (h--)
-    {
-      const guchar *s = src;
-      guchar       *d = dest;
-      gint          j;
-
-      for (j = 0; j < srcPR->w; j++)
-        {
-          gint average = (s[RED_PIX] + s[GREEN_PIX] + s[BLUE_PIX] + 1) / 3;
-
-          d[RED_PIX]   = average;
-          d[GREEN_PIX] = average;
-          d[BLUE_PIX]  = average;
-
-          if (has_alpha)
-            d[ALPHA_PIX] = s[ALPHA_PIX];
-
-          d += destPR->bytes;
-          s += srcPR->bytes;
-        }
-
-      src += srcPR->rowstride;
-      dest += destPR->rowstride;
+      gimp_drawable_process (drawable, progress, _("Desaturate"),
+                             (PixelProcessorFunc) desaturate_region, &mode);
     }
 }

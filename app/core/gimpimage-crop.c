@@ -87,9 +87,13 @@ gimp_image_crop (GimpImage   *image,
                  gboolean     crop_layers)
 {
   gint width, height;
+  gint previous_width, previous_height;
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
+
+  previous_width  = gimp_image_get_width (image);
+  previous_height = gimp_image_get_height (image);
 
   width  = x2 - x1;
   height = y2 - y1;
@@ -123,13 +127,18 @@ gimp_image_crop (GimpImage   *image,
 
       if (crop_layers)
         gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_CROP,
-                                     Q_("command|Crop Image"));
+                                     C_("command", "Crop Image"));
       else
         gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_IMAGE_RESIZE,
                                      _("Resize Image"));
 
       /*  Push the image size to the stack  */
-      gimp_image_undo_push_image_size (image, NULL);
+      gimp_image_undo_push_image_size (image,
+                                       NULL,
+                                       x1,
+                                       y1,
+                                       width,
+                                       height);
 
       /*  Set the new width and height  */
       g_object_set (image,
@@ -179,12 +188,12 @@ gimp_image_crop (GimpImage   *image,
 
               gimp_item_offsets (item, &off_x, &off_y);
 
-              lx1 = CLAMP (off_x, 0, image->width);
-              ly1 = CLAMP (off_y, 0, image->height);
+              lx1 = CLAMP (off_x, 0, gimp_image_get_width  (image));
+              ly1 = CLAMP (off_y, 0, gimp_image_get_height (image));
               lx2 = CLAMP (gimp_item_width  (item) + off_x,
-                           0, image->width);
+                           0, gimp_image_get_width (image));
               ly2 = CLAMP (gimp_item_height (item) + off_y,
-                           0, image->height);
+                           0, gimp_image_get_height (image));
 
               width  = lx2 - lx1;
               height = ly2 - ly1;
@@ -199,7 +208,7 @@ gimp_image_crop (GimpImage   *image,
         }
 
       /*  Reposition or remove all guides  */
-      list = image->guides;
+      list = gimp_image_get_guides (image);
       while (list)
         {
           GimpGuide *guide        = list->data;
@@ -235,7 +244,7 @@ gimp_image_crop (GimpImage   *image,
         }
 
       /*  Reposition or remove sample points  */
-      list = image->sample_points;
+      list = gimp_image_get_sample_points (image);
       while (list)
         {
           GimpSamplePoint *sample_point        = list->data;
@@ -262,9 +271,17 @@ gimp_image_crop (GimpImage   *image,
 
       gimp_image_undo_group_end (image);
 
-      gimp_image_update (image, 0, 0, image->width, image->height);
+      gimp_image_update (image,
+                         0, 0,
+                         gimp_image_get_width  (image),
+                         gimp_image_get_height (image));
 
-      gimp_viewable_size_changed (GIMP_VIEWABLE (image));
+      gimp_image_size_changed_detailed (image,
+                                        -x1,
+                                        -y1,
+                                        previous_width,
+                                        previous_height);
+
       g_object_thaw_notify (G_OBJECT (image));
     }
 

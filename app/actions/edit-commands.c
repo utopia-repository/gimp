@@ -32,6 +32,7 @@
 #include "core/gimpbuffer.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpdrawable.h"
+#include "core/gimplayer.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 
@@ -165,7 +166,7 @@ edit_undo_clear_cmd_callback (GtkAction *action,
                                       &guisize);
   memsize += guisize;
 
-  size = gimp_memsize_to_string (memsize);
+  size = g_format_size_for_display (memsize);
 
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
                              _("Clearing the undo history of this "
@@ -188,10 +189,25 @@ edit_cut_cmd_callback (GtkAction *action,
 {
   GimpImage    *image;
   GimpDrawable *drawable;
+  GError       *error = NULL;
   return_if_no_drawable (image, drawable, data);
 
-  if (gimp_edit_cut (image, drawable, action_data_get_context (data)))
-    gimp_image_flush (image);
+  if (gimp_edit_cut (image, drawable, action_data_get_context (data), &error))
+    {
+      GimpDisplay *display = action_data_get_display (data);
+
+      if (display)
+        gimp_message (image->gimp, G_OBJECT (display), GIMP_MESSAGE_INFO,
+                      _("Cut pixels to the clipboard"));
+
+      gimp_image_flush (image);
+    }
+  else
+    {
+      gimp_message (image->gimp, G_OBJECT (action_data_get_display (data)),
+                    GIMP_MESSAGE_WARNING, "%s", error->message);
+      g_clear_error (&error);
+    }
 }
 
 void
@@ -200,9 +216,10 @@ edit_copy_cmd_callback (GtkAction *action,
 {
   GimpImage    *image;
   GimpDrawable *drawable;
+  GError       *error = NULL;
   return_if_no_drawable (image, drawable, data);
 
-  if (gimp_edit_copy (image, drawable, action_data_get_context (data)))
+  if (gimp_edit_copy (image, drawable, action_data_get_context (data), &error))
     {
       GimpDisplay *display = action_data_get_display (data);
 
@@ -212,6 +229,12 @@ edit_copy_cmd_callback (GtkAction *action,
 
       gimp_image_flush (image);
     }
+  else
+    {
+      gimp_message (image->gimp, G_OBJECT (action_data_get_display (data)),
+                    GIMP_MESSAGE_WARNING, "%s", error->message);
+      g_clear_error (&error);
+    }
 }
 
 void
@@ -219,10 +242,25 @@ edit_copy_visible_cmd_callback (GtkAction *action,
                                 gpointer   data)
 {
   GimpImage *image;
+  GError    *error = NULL;
   return_if_no_image (image, data);
 
-  if (gimp_edit_copy_visible (image, action_data_get_context (data)))
-    gimp_image_flush (image);
+  if (gimp_edit_copy_visible (image, action_data_get_context (data), &error))
+    {
+      GimpDisplay *display = action_data_get_display (data);
+
+      if (display)
+        gimp_message (image->gimp, G_OBJECT (display), GIMP_MESSAGE_INFO,
+                      _("Copied pixels to the clipboard"));
+
+      gimp_image_flush (image);
+    }
+  else
+    {
+      gimp_message (image->gimp, G_OBJECT (action_data_get_display (data)),
+                    GIMP_MESSAGE_WARNING, "%s", error->message);
+      g_clear_error (&error);
+    }
 }
 
 void
@@ -231,7 +269,7 @@ edit_paste_cmd_callback (GtkAction *action,
 {
   GimpDisplay *display = action_data_get_display (data);
 
-  if (display)
+  if (display && display->image)
     edit_paste (display, FALSE);
   else
     edit_paste_as_new_cmd_callback (action, data);
@@ -263,14 +301,47 @@ edit_paste_as_new_cmd_callback (GtkAction *action,
 
       image = gimp_edit_paste_as_new (gimp, action_data_get_image (data),
                                       buffer);
+      g_object_unref (buffer);
 
       if (image)
         {
           gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
           g_object_unref (image);
         }
+    }
+  else
+    {
+      gimp_message (gimp, NULL, GIMP_MESSAGE_WARNING,
+                    _("There is no image data in the clipboard to paste."));
+    }
+}
 
+void
+edit_paste_as_new_layer_cmd_callback (GtkAction *action,
+                                      gpointer   data)
+{
+  Gimp       *gimp;
+  GimpImage  *image;
+  GimpBuffer *buffer;
+  return_if_no_gimp (gimp, data);
+  return_if_no_image (image, data);
+
+  buffer = gimp_clipboard_get_buffer (gimp);
+
+  if (buffer)
+    {
+      GimpLayer *layer;
+
+      layer = gimp_layer_new_from_tiles (gimp_buffer_get_tiles (buffer),
+                                         image,
+                                         gimp_image_base_type_with_alpha (image),
+                                         _("Clipboard"),
+                                         GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
       g_object_unref (buffer);
+
+      gimp_image_add_layer (image, layer, -1);
+
+      gimp_image_flush (image);
     }
   else
     {
@@ -463,6 +534,7 @@ cut_named_buffer_callback (GtkWidget   *widget,
 {
   GimpImage    *image    = GIMP_IMAGE (data);
   GimpDrawable *drawable = gimp_image_get_active_drawable (image);
+  GError       *error    = NULL;
 
   if (! drawable)
     {
@@ -475,9 +547,15 @@ cut_named_buffer_callback (GtkWidget   *widget,
     name = _("(Unnamed Buffer)");
 
   if (gimp_edit_named_cut (image, name, drawable,
-                           gimp_get_user_context (image->gimp)))
+                           gimp_get_user_context (image->gimp), &error))
     {
       gimp_image_flush (image);
+    }
+  else
+    {
+      gimp_message (image->gimp, NULL, GIMP_MESSAGE_WARNING,
+                    "%s", error->message);
+      g_clear_error (&error);
     }
 }
 
@@ -488,6 +566,7 @@ copy_named_buffer_callback (GtkWidget   *widget,
 {
   GimpImage    *image    = GIMP_IMAGE (data);
   GimpDrawable *drawable = gimp_image_get_active_drawable (image);
+  GError       *error    = NULL;
 
   if (! drawable)
     {
@@ -500,9 +579,15 @@ copy_named_buffer_callback (GtkWidget   *widget,
     name = _("(Unnamed Buffer)");
 
   if (gimp_edit_named_copy (image, name, drawable,
-                            gimp_get_user_context (image->gimp)))
+                            gimp_get_user_context (image->gimp), &error))
     {
       gimp_image_flush (image);
+    }
+  else
+    {
+      gimp_message (image->gimp, NULL, GIMP_MESSAGE_WARNING,
+                    "%s", error->message);
+      g_clear_error (&error);
     }
 }
 
@@ -512,13 +597,21 @@ copy_named_visible_buffer_callback (GtkWidget   *widget,
                                     gpointer     data)
 {
   GimpImage *image = GIMP_IMAGE (data);
+  GError    *error = NULL;
 
   if (! (name && strlen (name)))
     name = _("(Unnamed Buffer)");
 
   if (gimp_edit_named_copy_visible (image, name,
-                                    gimp_get_user_context (image->gimp)))
+                                    gimp_get_user_context (image->gimp),
+                                    &error))
     {
       gimp_image_flush (image);
+    }
+  else
+    {
+      gimp_message (image->gimp, NULL, GIMP_MESSAGE_WARNING,
+                    "%s", error->message);
+      g_clear_error (&error);
     }
 }

@@ -23,6 +23,7 @@
     <sub name="Index" link="libgimpbase-index.html"/>
     <sub name="Index of new symbols in GIMP 2.2" link="libgimpbase-index-new-in-2-2.html"/>
     <sub name="Index of new symbols in GIMP 2.4" link="libgimpbase-index-new-in-2-4.html"/>
+    <sub name="Index of new symbols in GIMP 2.6" link="libgimpbase-index-new-in-2-6.html"/>
     <sub name="Index of deprecated symbols" link="libgimpbase-index-deprecated.html"/>
   </chapters>
   <functions>
@@ -46,6 +47,7 @@
     <function name="enum GimpMessageHandlerType" link="libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"/>
     <function name="enum GimpPaintApplicationMode" link="libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"/>
     <function name="enum GimpPDBArgType" link="libgimpbase-gimpbaseenums.html#GimpPDBArgType"/>
+    <function name="enum GimpPDBErrorHandler" link="libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"/>
     <function name="enum GimpPDBProcType" link="libgimpbase-gimpbaseenums.html#GimpPDBProcType"/>
     <function name="enum GimpPDBStatusType" link="libgimpbase-gimpbaseenums.html#GimpPDBStatusType"/>
     <function name="enum GimpProgressCommand" link="libgimpbase-gimpbaseenums.html#GimpProgressCommand"/>
@@ -53,6 +55,8 @@
     <function name="enum GimpRunMode" link="libgimpbase-gimpbaseenums.html#GimpRunMode"/>
     <function name="enum GimpSizeType" link="libgimpbase-gimpbaseenums.html#GimpSizeType"/>
     <function name="enum GimpStackTraceMode" link="libgimpbase-gimpbaseenums.html#GimpStackTraceMode"/>
+    <function name="enum GimpTextDirection" link="libgimpbase-gimpbaseenums.html#GimpTextDirection"/>
+    <function name="enum GimpTextJustification" link="libgimpbase-gimpbaseenums.html#GimpTextJustification"/>
     <function name="enum GimpTransferMode" link="libgimpbase-gimpbaseenums.html#GimpTransferMode"/>
     <function name="enum GimpTransformDirection" link="libgimpbase-gimpbaseenums.html#GimpTransformDirection"/>
     <function name="enum GimpTransformResize" link="libgimpbase-gimpbaseenums.html#GimpTransformResize"/>

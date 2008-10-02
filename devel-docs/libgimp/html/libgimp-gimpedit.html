@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -124,7 +125,9 @@ selection is cut from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using
 the <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()"><code class="function">gimp_edit_paste()</code></a> command. If there is no selection, then the
 specified drawable will be removed and its contents stored in the
-internal GIMP edit buffer.</p>
+internal GIMP edit buffer. This procedure will fail if the selected
+area lies completely outside the bounds of the current drawable and
+there is nothing to copy from.</p>
 <p>
 
 </p>
@@ -138,7 +141,7 @@ internal GIMP edit buffer.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the cut was successful, FALSE if the selection contained only transparent pixels.
+<td> TRUE if the cut was successful, FALSE if there was nothing to copy from.
 </td>
 </tr>
 </tbody>
@@ -157,7 +160,9 @@ selection is copied from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using
 the <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()"><code class="function">gimp_edit_paste()</code></a> command. If there is no selection, then the
 specified drawable's contents will be stored in the internal GIMP
-edit buffer.</p>
+edit buffer. This procedure will fail if the selected area lies
+completely outside the bounds of the current drawable and there is
+nothing to copy from.</p>
 <p>
 
 </p>
@@ -171,7 +176,7 @@ edit buffer.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
+<td> TRUE if the cut was successful, FALSE if there was nothing to copy from.
 </td>
 </tr>
 </tbody>
@@ -204,7 +209,7 @@ buffer.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
+<td> TRUE if the copy was successful.
 
 </td>
 </tr>
@@ -319,7 +324,7 @@ operations.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The real name given to the buffer, or NULL if the selection contained only transparent pixels.
+<td> The real name given to the buffer, or NULL if the cut failed.
 
 </td>
 </tr>
@@ -359,7 +364,7 @@ operations.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The real name given to the buffer, or NULL if the selection contained only transparent pixels.
+<td> The real name given to the buffer, or NULL if the copy failed.
 
 </td>
 </tr>
@@ -399,7 +404,7 @@ cut operations.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The real name given to the buffer.
+<td> The real name given to the buffer, or NULL if the copy failed.
 
 </td>
 </tr>

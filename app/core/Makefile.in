@@ -44,7 +44,7 @@ am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
@@ -53,10 +53,10 @@ libappcore_a_AR = $(AR) $(ARFLAGS)
 libappcore_a_LIBADD =
 am__objects_1 = core-enums.$(OBJEXT) gimpmarshal.$(OBJEXT)
 am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
-	gimp-documents.$(OBJEXT) gimp-edit.$(OBJEXT) \
-	gimp-gradients.$(OBJEXT) gimp-gui.$(OBJEXT) \
-	gimp-modules.$(OBJEXT) gimp-parasites.$(OBJEXT) \
-	gimp-templates.$(OBJEXT) gimp-transform-region.$(OBJEXT) \
+	gimp-edit.$(OBJEXT) gimp-gradients.$(OBJEXT) \
+	gimp-gui.$(OBJEXT) gimp-modules.$(OBJEXT) \
+	gimp-parasites.$(OBJEXT) gimp-templates.$(OBJEXT) \
+	gimp-transform-region.$(OBJEXT) \
 	gimp-transform-resize.$(OBJEXT) gimp-transform-utils.$(OBJEXT) \
 	gimp-units.$(OBJEXT) gimp-user-install.$(OBJEXT) \
 	gimp-utils.$(OBJEXT) gimparea.$(OBJEXT) gimpbrush.$(OBJEXT) \
@@ -69,18 +69,28 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimpchannel-select.$(OBJEXT) gimpchannelpropundo.$(OBJEXT) \
 	gimpchannelundo.$(OBJEXT) gimpcontainer.$(OBJEXT) \
 	gimpcontainer-filter.$(OBJEXT) gimpcontext.$(OBJEXT) \
-	gimpcoords.$(OBJEXT) gimpdashpattern.$(OBJEXT) \
+	gimpcoords.$(OBJEXT) gimpcurve.$(OBJEXT) \
+	gimpcurve-load.$(OBJEXT) gimpcurve-map.$(OBJEXT) \
+	gimpcurve-save.$(OBJEXT) gimpdashpattern.$(OBJEXT) \
 	gimpdata.$(OBJEXT) gimpdatafactory.$(OBJEXT) \
 	gimpdocumentlist.$(OBJEXT) gimpdrawable.$(OBJEXT) \
 	gimpdrawable-blend.$(OBJEXT) \
+	gimpdrawable-brightness-contrast.$(OBJEXT) \
 	gimpdrawable-bucket-fill.$(OBJEXT) \
-	gimpdrawable-combine.$(OBJEXT) gimpdrawable-convert.$(OBJEXT) \
+	gimpdrawable-color-balance.$(OBJEXT) \
+	gimpdrawable-colorize.$(OBJEXT) gimpdrawable-combine.$(OBJEXT) \
+	gimpdrawable-convert.$(OBJEXT) gimpdrawable-curves.$(OBJEXT) \
 	gimpdrawable-desaturate.$(OBJEXT) \
 	gimpdrawable-equalize.$(OBJEXT) \
 	gimpdrawable-foreground-extract.$(OBJEXT) \
-	gimpdrawable-histogram.$(OBJEXT) gimpdrawable-invert.$(OBJEXT) \
-	gimpdrawable-levels.$(OBJEXT) gimpdrawable-offset.$(OBJEXT) \
-	gimpdrawable-preview.$(OBJEXT) gimpdrawable-stroke.$(OBJEXT) \
+	gimpdrawable-histogram.$(OBJEXT) \
+	gimpdrawable-hue-saturation.$(OBJEXT) \
+	gimpdrawable-invert.$(OBJEXT) gimpdrawable-levels.$(OBJEXT) \
+	gimpdrawable-offset.$(OBJEXT) gimpdrawable-operation.$(OBJEXT) \
+	gimpdrawable-posterize.$(OBJEXT) \
+	gimpdrawable-preview.$(OBJEXT) gimpdrawable-process.$(OBJEXT) \
+	gimpdrawable-shadow.$(OBJEXT) gimpdrawable-stroke.$(OBJEXT) \
+	gimpdrawable-threshold.$(OBJEXT) \
 	gimpdrawable-transform.$(OBJEXT) gimpdrawablemodundo.$(OBJEXT) \
 	gimpdrawableundo.$(OBJEXT) gimpfloatingselundo.$(OBJEXT) \
 	gimpgradient.$(OBJEXT) gimpgradient-load.$(OBJEXT) \
@@ -100,13 +110,14 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimpimage-snap.$(OBJEXT) gimpimage-undo.$(OBJEXT) \
 	gimpimage-undo-push.$(OBJEXT) gimpimageundo.$(OBJEXT) \
 	gimpimagefile.$(OBJEXT) gimpimagemap.$(OBJEXT) \
-	gimpitem.$(OBJEXT) gimpitem-linked.$(OBJEXT) \
-	gimpitem-preview.$(OBJEXT) gimpitempropundo.$(OBJEXT) \
-	gimpitemundo.$(OBJEXT) gimplayer.$(OBJEXT) \
-	gimplayer-floating-sel.$(OBJEXT) gimplayermask.$(OBJEXT) \
-	gimplayermaskpropundo.$(OBJEXT) gimplayermaskundo.$(OBJEXT) \
-	gimplayerpropundo.$(OBJEXT) gimplayerundo.$(OBJEXT) \
-	gimplist.$(OBJEXT) gimpmaskundo.$(OBJEXT) gimpobject.$(OBJEXT) \
+	gimpimagemapconfig.$(OBJEXT) gimpitem.$(OBJEXT) \
+	gimpitem-linked.$(OBJEXT) gimpitem-preview.$(OBJEXT) \
+	gimpitempropundo.$(OBJEXT) gimpitemundo.$(OBJEXT) \
+	gimplayer.$(OBJEXT) gimplayer-floating-sel.$(OBJEXT) \
+	gimplayermask.$(OBJEXT) gimplayermaskpropundo.$(OBJEXT) \
+	gimplayermaskundo.$(OBJEXT) gimplayerpropundo.$(OBJEXT) \
+	gimplayerundo.$(OBJEXT) gimplist.$(OBJEXT) \
+	gimpmaskundo.$(OBJEXT) gimpobject.$(OBJEXT) \
 	gimppaintinfo.$(OBJEXT) gimppattern.$(OBJEXT) \
 	gimppattern-load.$(OBJEXT) gimppatternclipboard.$(OBJEXT) \
 	gimppalette.$(OBJEXT) gimppalette-import.$(OBJEXT) \
@@ -119,9 +130,10 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimpsamplepointundo.$(OBJEXT) gimpscanconvert.$(OBJEXT) \
 	gimpselection.$(OBJEXT) gimpstrokedesc.$(OBJEXT) \
 	gimpstrokeoptions.$(OBJEXT) gimpsubprogress.$(OBJEXT) \
-	gimptemplate.$(OBJEXT) gimptoolinfo.$(OBJEXT) \
-	gimptooloptions.$(OBJEXT) gimptoolpresets.$(OBJEXT) \
-	gimpunit.$(OBJEXT) gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
+	gimptagged.$(OBJEXT) gimptemplate.$(OBJEXT) \
+	gimptoolinfo.$(OBJEXT) gimptooloptions.$(OBJEXT) \
+	gimptoolpresets.$(OBJEXT) gimpunit.$(OBJEXT) \
+	gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
 	gimpviewable.$(OBJEXT)
 am_libappcore_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libappcore_a_OBJECTS = $(am_libappcore_a_OBJECTS)
@@ -142,7 +154,7 @@ DIST_SOURCES = $(libappcore_a_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-AA = @AA@
+AA_LIBS = @AA_LIBS@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -156,8 +168,12 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BABL_CFLAGS = @BABL_CFLAGS@
+BABL_LIBS = @BABL_LIBS@
 BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
 BINRELOC_LIBS = @BINRELOC_LIBS@
+CAIRO_CFLAGS = @CAIRO_CFLAGS@
+CAIRO_LIBS = @CAIRO_LIBS@
 CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
@@ -169,6 +185,8 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CURL_CFLAGS = @CURL_CFLAGS@
+CURL_LIBS = @CURL_LIBS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
@@ -194,15 +212,25 @@ EXIF_CFLAGS = @EXIF_CFLAGS@
 EXIF_LIBS = @EXIF_LIBS@
 F77 = @F77@
 FFLAGS = @FFLAGS@
+FILE_AA = @FILE_AA@
+FILE_MNG = @FILE_MNG@
+FILE_PDF = @FILE_PDF@
+FILE_PNG = @FILE_PNG@
+FILE_PSP = @FILE_PSP@
+FILE_SVG = @FILE_SVG@
+FILE_TIFF_LOAD = @FILE_TIFF_LOAD@
+FILE_TIFF_SAVE = @FILE_TIFF_SAVE@
+FILE_WMF = @FILE_WMF@
+FILE_XPM = @FILE_XPM@
 FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
-FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE_CONFIG = @FREETYPE_CONFIG@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
 GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
 GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
-GDK_PIXBUF_REQUIRED_VERSION = @GDK_PIXBUF_REQUIRED_VERSION@
+GEGL_CFLAGS = @GEGL_CFLAGS@
+GEGL_LIBS = @GEGL_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIMPINSTALL = @GIMPINSTALL@
 GIMP_API_VERSION = @GIMP_API_VERSION@
@@ -222,11 +250,14 @@ GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
+GIMP_REMOTE_MANPAGE = @GIMP_REMOTE_MANPAGE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
+GIO_CFLAGS = @GIO_CFLAGS@
+GIO_LIBS = @GIO_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
@@ -236,19 +267,16 @@ GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
 GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOME_VFS_CFLAGS = @GNOME_VFS_CFLAGS@
+GNOME_VFS_LIBS = @GNOME_VFS_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
-GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
-GTKHTML2_LIBS = @GTKHTML2_LIBS@
-GTKHTML2_REQUIRED_VERSION = @GTKHTML2_REQUIRED_VERSION@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HAVE_FINITE = @HAVE_FINITE@
-HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HTML_DIR = @HTML_DIR@
 INSTALL = @INSTALL@
@@ -281,27 +309,16 @@ INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_XAM_RULE = @INTLTOOL_XAM_RULE@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
-JPEG = @JPEG@
+ISO_CODES_LOCALEDIR = @ISO_CODES_LOCALEDIR@
+ISO_CODES_LOCATION = @ISO_CODES_LOCATION@
+JPEG_LIBS = @JPEG_LIBS@
 LCMS = @LCMS@
+LCMS_CFLAGS = @LCMS_CFLAGS@
+LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
-LIBAA = @LIBAA@
-LIBART_CFLAGS = @LIBART_CFLAGS@
-LIBART_LIBS = @LIBART_LIBS@
-LIBJPEG = @LIBJPEG@
-LIBLCMS = @LIBLCMS@
-LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
-LIBPNG = @LIBPNG@
-LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
-LIBSCREENSHOT = @LIBSCREENSHOT@
-LIBSVG = @LIBSVG@
-LIBTIFF = @LIBTIFF@
 LIBTOOL = @LIBTOOL@
-LIBWMF = @LIBWMF@
-LIBXMU = @LIBXMU@
-LIBXPM = @LIBXPM@
-LIBZ = @LIBZ@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
@@ -309,10 +326,11 @@ LT_VERSION_INFO = @LT_VERSION_INFO@
 MAIL = @MAIL@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
+MIME_TYPES = @MIME_TYPES@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
-MNG = @MNG@
+MNG_LIBS = @MNG_LIBS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
@@ -327,22 +345,18 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PANGOFT2_CFLAGS = @PANGOFT2_CFLAGS@
 PANGOFT2_LIBS = @PANGOFT2_LIBS@
-PANGOFT2_REQUIRED_VERSION = @PANGOFT2_REQUIRED_VERSION@
 PATHSEP = @PATHSEP@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
-PNG = @PNG@
 PNG_CFLAGS = @PNG_CFLAGS@
 PNG_LIBS = @PNG_LIBS@
 POFILES = @POFILES@
-POPPLER = @POPPLER@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
 POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-PSP = @PSP@
 PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
@@ -357,9 +371,9 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
 SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
@@ -367,32 +381,32 @@ SHELL = @SHELL@
 SOCKET_LIBS = @SOCKET_LIBS@
 SSE_EXTRA_CFLAGS = @SSE_EXTRA_CFLAGS@
 STRIP = @STRIP@
-SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF_LOAD = @TIFF_LOAD@
-TIFF_SAVE = @TIFF_SAVE@
-URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
-URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
-URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
-URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
+TIFF_LIBS = @TIFF_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
+WEBKIT_CFLAGS = @WEBKIT_CFLAGS@
+WEBKIT_LIBS = @WEBKIT_LIBS@
+WIN32_LARGE_ADDRESS_AWARE = @WIN32_LARGE_ADDRESS_AWARE@
 WINDRES = @WINDRES@
-WMF = @WMF@
 WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
-WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
+WMF_LIBS = @WMF_LIBS@
+XFIXES_CFLAGS = @XFIXES_CFLAGS@
+XFIXES_LIBS = @XFIXES_LIBS@
 XGETTEXT = @XGETTEXT@
 XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
-XPM = @XPM@
+XMU_LIBS = @XMU_LIBS@
+XPM_LIBS = @XPM_LIBS@
 XSLTPROC = @XSLTPROC@
 X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+Z_LIBS = @Z_LIBS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -464,291 +478,322 @@ INCLUDES = \
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GDK_PIXBUF_CFLAGS)	\
-	$(LIBART_CFLAGS)	\
+	$(CAIRO_CFLAGS)		\
 	$(GLIB_CFLAGS)		\
+	$(GEGL_CFLAGS)		\
 	-I$(includedir)
 
 noinst_LIBRARIES = libappcore.a
 libappcore_a_sources = \
-	core-enums.h			\
-	core-types.h			\
-	gimp.c				\
-	gimp.h				\
-	gimp-contexts.c			\
-	gimp-contexts.h			\
-	gimp-documents.c		\
-	gimp-documents.h		\
-	gimp-edit.c			\
-	gimp-edit.h			\
-	gimp-gradients.c		\
-	gimp-gradients.h		\
-	gimp-gui.c			\
-	gimp-gui.h			\
-	gimp-modules.c			\
-	gimp-modules.h			\
-	gimp-parasites.c		\
-	gimp-parasites.h		\
-	gimp-templates.c		\
-	gimp-templates.h		\
-	gimp-transform-region.c		\
-	gimp-transform-region.h		\
-	gimp-transform-resize.c		\
-	gimp-transform-resize.h		\
-	gimp-transform-utils.c		\
-	gimp-transform-utils.h		\
-	gimp-units.c			\
-	gimp-units.h			\
-	gimp-user-install.c		\
-	gimp-user-install.h		\
-	gimp-utils.c			\
-	gimp-utils.h			\
-	gimparea.c			\
-	gimparea.h			\
-	gimpbrush.c			\
-	gimpbrush.h			\
-	gimpbrush-header.h		\
-	gimpbrush-load.c		\
-	gimpbrush-load.h		\
-	gimpbrush-scale.c		\
-	gimpbrush-scale.h		\
-	gimpbrushclipboard.c		\
-	gimpbrushclipboard.h		\
-	gimpbrushgenerated.c		\
-	gimpbrushgenerated.h		\
-	gimpbrushgenerated-load.c	\
-	gimpbrushgenerated-load.h	\
-	gimpbrushgenerated-save.c	\
-	gimpbrushgenerated-save.h	\
-	gimpbrushpipe.c			\
-	gimpbrushpipe.h			\
-	gimpbrushpipe-load.c		\
-	gimpbrushpipe-load.h		\
-	gimpbuffer.c			\
-	gimpbuffer.h			\
-	gimpchannel.c			\
-	gimpchannel.h			\
-	gimpchannel-combine.c		\
-	gimpchannel-combine.h		\
-	gimpchannel-select.c		\
-	gimpchannel-select.h		\
-	gimpchannelpropundo.c		\
-	gimpchannelpropundo.h		\
-	gimpchannelundo.c		\
-	gimpchannelundo.h		\
-	gimpcontainer.c			\
-	gimpcontainer.h			\
-	gimpcontainer-filter.c		\
-	gimpcontainer-filter.h		\
-	gimpcontext.c			\
-	gimpcontext.h			\
-	gimpcoords.c			\
-	gimpcoords.h			\
-	gimpdashpattern.c		\
-	gimpdashpattern.h		\
-	gimpdata.c			\
-	gimpdata.h			\
-	gimpdatafactory.c		\
-	gimpdatafactory.h		\
-	gimpdocumentlist.c		\
-	gimpdocumentlist.h		\
-	gimpdrawable.c			\
-	gimpdrawable.h			\
-	gimpdrawable-blend.c		\
-	gimpdrawable-blend.h		\
-	gimpdrawable-bucket-fill.c	\
-	gimpdrawable-bucket-fill.h	\
-	gimpdrawable-combine.c		\
-	gimpdrawable-combine.h		\
-	gimpdrawable-convert.c		\
-	gimpdrawable-convert.h		\
-	gimpdrawable-desaturate.c	\
-	gimpdrawable-desaturate.h	\
-	gimpdrawable-equalize.c		\
-	gimpdrawable-equalize.h		\
-	gimpdrawable-foreground-extract.c\
-	gimpdrawable-foreground-extract.h\
-	gimpdrawable-histogram.c	\
-	gimpdrawable-histogram.h	\
-	gimpdrawable-invert.c		\
-	gimpdrawable-invert.h		\
-	gimpdrawable-levels.c		\
-	gimpdrawable-levels.h		\
-	gimpdrawable-offset.c		\
-	gimpdrawable-offset.h		\
-	gimpdrawable-preview.c		\
-	gimpdrawable-preview.h		\
-	gimpdrawable-stroke.c		\
-	gimpdrawable-stroke.h		\
-	gimpdrawable-transform.c	\
-	gimpdrawable-transform.h	\
-	gimpdrawablemodundo.c		\
-	gimpdrawablemodundo.h		\
-	gimpdrawableundo.c		\
-	gimpdrawableundo.h		\
-	gimpfloatingselundo.c		\
-	gimpfloatingselundo.h		\
-	gimpgradient.c			\
-	gimpgradient.h			\
-	gimpgradient-load.c		\
-	gimpgradient-load.h		\
-	gimpgradient-save.c		\
-	gimpgradient-save.h		\
-	gimpgrid.c			\
-	gimpgrid.h			\
-	gimpguide.c			\
-	gimpguide.h			\
-	gimpguideundo.c			\
-	gimpguideundo.h			\
-	gimpimage.c			\
-	gimpimage.h			\
-	gimpimage-arrange.c		\
-	gimpimage-arrange.h		\
-	gimpimage-colorhash.c		\
-	gimpimage-colorhash.h		\
-	gimpimage-colormap.c		\
-	gimpimage-colormap.h		\
-	gimpimage-contiguous-region.c	\
-	gimpimage-contiguous-region.h	\
-	gimpimage-convert.c		\
-	gimpimage-convert.h		\
-	gimpimage-convert-fsdither.h	\
-	gimpimage-convert-data.h	\
-	gimpimage-crop.c		\
-	gimpimage-crop.h		\
-	gimpimage-duplicate.c		\
-	gimpimage-duplicate.h		\
-	gimpimage-flip.c		\
-	gimpimage-flip.h		\
-	gimpimage-grid.h                \
-	gimpimage-grid.c                \
-	gimpimage-guides.c		\
-	gimpimage-guides.h		\
-	gimpimage-item-list.c		\
-	gimpimage-item-list.h		\
-	gimpimage-merge.c		\
-	gimpimage-merge.h		\
-	gimpimage-new.c			\
-	gimpimage-new.h			\
-	gimpimage-pick-color.c		\
-	gimpimage-pick-color.h		\
-	gimpimage-preview.c		\
-	gimpimage-preview.h		\
-	gimpimage-quick-mask.c		\
-	gimpimage-quick-mask.h		\
-	gimpimage-resize.c		\
-	gimpimage-resize.h		\
-	gimpimage-rotate.c		\
-	gimpimage-rotate.h		\
-	gimpimage-sample-points.c	\
-	gimpimage-sample-points.h	\
-	gimpimage-scale.c		\
-	gimpimage-scale.h		\
-	gimpimage-snap.c		\
-	gimpimage-snap.h		\
-	gimpimage-undo.c		\
-	gimpimage-undo.h		\
-	gimpimage-undo-push.c		\
-	gimpimage-undo-push.h		\
-	gimpimageundo.c			\
-	gimpimageundo.h			\
-	gimpimagefile.c			\
-	gimpimagefile.h			\
-	gimpimagemap.c			\
-	gimpimagemap.h			\
-	gimpitem.c			\
-	gimpitem.h			\
-	gimpitem-linked.c		\
-	gimpitem-linked.h		\
-	gimpitem-preview.c		\
-	gimpitem-preview.h		\
-	gimpitempropundo.c		\
-	gimpitempropundo.h		\
-	gimpitemundo.c			\
-	gimpitemundo.h			\
-	gimplayer.c			\
-	gimplayer.h			\
-	gimplayer-floating-sel.c	\
-	gimplayer-floating-sel.h	\
-	gimplayermask.c			\
-	gimplayermask.h			\
-	gimplayermaskpropundo.c		\
-	gimplayermaskpropundo.h		\
-	gimplayermaskundo.c		\
-	gimplayermaskundo.h		\
-	gimplayerpropundo.c		\
-	gimplayerpropundo.h		\
-	gimplayerundo.c			\
-	gimplayerundo.h			\
-	gimplist.c			\
-	gimplist.h			\
-	gimpmaskundo.c			\
-	gimpmaskundo.h			\
-	gimpobject.c			\
-	gimpobject.h			\
-	gimppaintinfo.c			\
-	gimppaintinfo.h			\
-	gimppattern.c			\
-	gimppattern.h			\
-	gimppattern-header.h		\
-	gimppattern-load.c		\
-	gimppattern-load.h		\
-	gimppatternclipboard.c		\
-	gimppatternclipboard.h		\
-	gimppalette.c			\
-	gimppalette.h			\
-	gimppalette-import.c		\
-	gimppalette-import.h		\
-	gimppalette-load.c		\
-	gimppalette-load.h		\
-	gimppalette-save.c		\
-	gimppalette-save.h		\
-	gimpparamspecs.c		\
-	gimpparamspecs.h		\
-	gimpparamspecs-desc.c		\
-	gimpparamspecs-desc.h		\
-	gimpparasitelist.c		\
-	gimpparasitelist.h		\
-	gimppdbprogress.c		\
-	gimppdbprogress.h		\
-	gimppickable.c			\
-	gimppickable.h			\
-	gimppreviewcache.c		\
-	gimppreviewcache.h		\
-	gimpprogress.c			\
-	gimpprogress.h			\
-	gimpprojection.c		\
-	gimpprojection.h		\
-	gimpprojection-construct.c	\
-	gimpprojection-construct.h	\
-	gimpsamplepoint.c		\
-	gimpsamplepoint.h		\
-	gimpsamplepointundo.c		\
-	gimpsamplepointundo.h		\
-	gimpscanconvert.c		\
-	gimpscanconvert.h		\
-	gimpselection.c			\
-	gimpselection.h			\
-	gimpstrokedesc.c		\
-	gimpstrokedesc.h		\
-	gimpstrokeoptions.c		\
-	gimpstrokeoptions.h		\
-	gimpsubprogress.c		\
-	gimpsubprogress.h		\
-	gimptemplate.c			\
-	gimptemplate.h			\
-	gimptoolinfo.c			\
-	gimptoolinfo.h			\
-	gimptooloptions.c		\
-	gimptooloptions.h		\
-	gimptoolpresets.c		\
-	gimptoolpresets.h		\
-	gimpunit.c			\
-	gimpunit.h			\
-	gimpundo.c			\
-	gimpundo.h			\
-	gimpundostack.c			\
-	gimpundostack.h			\
-	gimpviewable.c			\
+	core-enums.h				\
+	core-types.h				\
+	gimp.c					\
+	gimp.h					\
+	gimp-contexts.c				\
+	gimp-contexts.h				\
+	gimp-edit.c				\
+	gimp-edit.h				\
+	gimp-gradients.c			\
+	gimp-gradients.h			\
+	gimp-gui.c				\
+	gimp-gui.h				\
+	gimp-modules.c				\
+	gimp-modules.h				\
+	gimp-parasites.c			\
+	gimp-parasites.h			\
+	gimp-templates.c			\
+	gimp-templates.h			\
+	gimp-transform-region.c			\
+	gimp-transform-region.h			\
+	gimp-transform-resize.c			\
+	gimp-transform-resize.h			\
+	gimp-transform-utils.c			\
+	gimp-transform-utils.h			\
+	gimp-units.c				\
+	gimp-units.h				\
+	gimp-user-install.c			\
+	gimp-user-install.h			\
+	gimp-utils.c				\
+	gimp-utils.h				\
+	gimparea.c				\
+	gimparea.h				\
+	gimpbrush.c				\
+	gimpbrush.h				\
+	gimpbrush-header.h			\
+	gimpbrush-load.c			\
+	gimpbrush-load.h			\
+	gimpbrush-scale.c			\
+	gimpbrush-scale.h			\
+	gimpbrushclipboard.c			\
+	gimpbrushclipboard.h			\
+	gimpbrushgenerated.c			\
+	gimpbrushgenerated.h			\
+	gimpbrushgenerated-load.c		\
+	gimpbrushgenerated-load.h		\
+	gimpbrushgenerated-save.c		\
+	gimpbrushgenerated-save.h		\
+	gimpbrushpipe.c				\
+	gimpbrushpipe.h				\
+	gimpbrushpipe-load.c			\
+	gimpbrushpipe-load.h			\
+	gimpbuffer.c				\
+	gimpbuffer.h				\
+	gimpchannel.c				\
+	gimpchannel.h				\
+	gimpchannel-combine.c			\
+	gimpchannel-combine.h			\
+	gimpchannel-select.c			\
+	gimpchannel-select.h			\
+	gimpchannelpropundo.c			\
+	gimpchannelpropundo.h			\
+	gimpchannelundo.c			\
+	gimpchannelundo.h			\
+	gimpcontainer.c				\
+	gimpcontainer.h				\
+	gimpcontainer-filter.c			\
+	gimpcontainer-filter.h			\
+	gimpcontext.c				\
+	gimpcontext.h				\
+	gimpcoords.c				\
+	gimpcoords.h				\
+	gimpcurve.c				\
+	gimpcurve.h				\
+	gimpcurve-load.c			\
+	gimpcurve-load.h			\
+	gimpcurve-map.c				\
+	gimpcurve-map.h				\
+	gimpcurve-save.c			\
+	gimpcurve-save.h			\
+	gimpdashpattern.c			\
+	gimpdashpattern.h			\
+	gimpdata.c				\
+	gimpdata.h				\
+	gimpdatafactory.c			\
+	gimpdatafactory.h			\
+	gimpdocumentlist.c			\
+	gimpdocumentlist.h			\
+	gimpdrawable.c				\
+	gimpdrawable.h				\
+	gimpdrawable-blend.c			\
+	gimpdrawable-blend.h			\
+	gimpdrawable-brightness-contrast.c	\
+	gimpdrawable-brightness-contrast.h	\
+	gimpdrawable-bucket-fill.c		\
+	gimpdrawable-bucket-fill.h		\
+	gimpdrawable-color-balance.c		\
+	gimpdrawable-color-balance.h		\
+	gimpdrawable-colorize.c			\
+	gimpdrawable-colorize.h			\
+	gimpdrawable-combine.c			\
+	gimpdrawable-combine.h			\
+	gimpdrawable-convert.c			\
+	gimpdrawable-convert.h			\
+	gimpdrawable-curves.c			\
+	gimpdrawable-curves.h			\
+	gimpdrawable-desaturate.c		\
+	gimpdrawable-desaturate.h		\
+	gimpdrawable-equalize.c			\
+	gimpdrawable-equalize.h			\
+	gimpdrawable-foreground-extract.c	\
+	gimpdrawable-foreground-extract.h	\
+	gimpdrawable-histogram.c		\
+	gimpdrawable-histogram.h		\
+	gimpdrawable-hue-saturation.c		\
+	gimpdrawable-hue-saturation.h		\
+	gimpdrawable-invert.c			\
+	gimpdrawable-invert.h			\
+	gimpdrawable-levels.c			\
+	gimpdrawable-levels.h			\
+	gimpdrawable-offset.c			\
+	gimpdrawable-offset.h			\
+	gimpdrawable-operation.c		\
+	gimpdrawable-operation.h		\
+	gimpdrawable-posterize.c		\
+	gimpdrawable-posterize.h		\
+	gimpdrawable-preview.c			\
+	gimpdrawable-preview.h			\
+	gimpdrawable-process.c			\
+	gimpdrawable-process.h			\
+	gimpdrawable-shadow.c			\
+	gimpdrawable-shadow.h			\
+	gimpdrawable-stroke.c			\
+	gimpdrawable-stroke.h			\
+	gimpdrawable-threshold.c		\
+	gimpdrawable-threshold.h		\
+	gimpdrawable-transform.c		\
+	gimpdrawable-transform.h		\
+	gimpdrawablemodundo.c			\
+	gimpdrawablemodundo.h			\
+	gimpdrawableundo.c			\
+	gimpdrawableundo.h			\
+	gimpfloatingselundo.c			\
+	gimpfloatingselundo.h			\
+	gimpgradient.c				\
+	gimpgradient.h				\
+	gimpgradient-load.c			\
+	gimpgradient-load.h			\
+	gimpgradient-save.c			\
+	gimpgradient-save.h			\
+	gimpgrid.c				\
+	gimpgrid.h				\
+	gimpguide.c				\
+	gimpguide.h				\
+	gimpguideundo.c				\
+	gimpguideundo.h				\
+	gimpimage.c				\
+	gimpimage.h				\
+	gimpimage-arrange.c			\
+	gimpimage-arrange.h			\
+	gimpimage-colorhash.c			\
+	gimpimage-colorhash.h			\
+	gimpimage-colormap.c			\
+	gimpimage-colormap.h			\
+	gimpimage-contiguous-region.c		\
+	gimpimage-contiguous-region.h		\
+	gimpimage-convert.c			\
+	gimpimage-convert.h			\
+	gimpimage-convert-fsdither.h		\
+	gimpimage-convert-data.h		\
+	gimpimage-crop.c			\
+	gimpimage-crop.h			\
+	gimpimage-duplicate.c			\
+	gimpimage-duplicate.h			\
+	gimpimage-flip.c			\
+	gimpimage-flip.h			\
+	gimpimage-grid.h                	\
+	gimpimage-grid.c                	\
+	gimpimage-guides.c			\
+	gimpimage-guides.h			\
+	gimpimage-item-list.c			\
+	gimpimage-item-list.h			\
+	gimpimage-merge.c			\
+	gimpimage-merge.h			\
+	gimpimage-new.c				\
+	gimpimage-new.h				\
+	gimpimage-pick-color.c			\
+	gimpimage-pick-color.h			\
+	gimpimage-preview.c			\
+	gimpimage-preview.h			\
+	gimpimage-quick-mask.c			\
+	gimpimage-quick-mask.h			\
+	gimpimage-resize.c			\
+	gimpimage-resize.h			\
+	gimpimage-rotate.c			\
+	gimpimage-rotate.h			\
+	gimpimage-sample-points.c		\
+	gimpimage-sample-points.h		\
+	gimpimage-scale.c			\
+	gimpimage-scale.h			\
+	gimpimage-snap.c			\
+	gimpimage-snap.h			\
+	gimpimage-undo.c			\
+	gimpimage-undo.h			\
+	gimpimage-undo-push.c			\
+	gimpimage-undo-push.h			\
+	gimpimageundo.c				\
+	gimpimageundo.h				\
+	gimpimagefile.c				\
+	gimpimagefile.h				\
+	gimpimagemap.c				\
+	gimpimagemap.h				\
+	gimpimagemapconfig.c			\
+	gimpimagemapconfig.h			\
+	gimpitem.c				\
+	gimpitem.h				\
+	gimpitem-linked.c			\
+	gimpitem-linked.h			\
+	gimpitem-preview.c			\
+	gimpitem-preview.h			\
+	gimpitempropundo.c			\
+	gimpitempropundo.h			\
+	gimpitemundo.c				\
+	gimpitemundo.h				\
+	gimplayer.c				\
+	gimplayer.h				\
+	gimplayer-floating-sel.c		\
+	gimplayer-floating-sel.h		\
+	gimplayermask.c				\
+	gimplayermask.h				\
+	gimplayermaskpropundo.c			\
+	gimplayermaskpropundo.h			\
+	gimplayermaskundo.c			\
+	gimplayermaskundo.h			\
+	gimplayerpropundo.c			\
+	gimplayerpropundo.h			\
+	gimplayerundo.c				\
+	gimplayerundo.h				\
+	gimplist.c				\
+	gimplist.h				\
+	gimpmaskundo.c				\
+	gimpmaskundo.h				\
+	gimpobject.c				\
+	gimpobject.h				\
+	gimppaintinfo.c				\
+	gimppaintinfo.h				\
+	gimppattern.c				\
+	gimppattern.h				\
+	gimppattern-header.h			\
+	gimppattern-load.c			\
+	gimppattern-load.h			\
+	gimppatternclipboard.c			\
+	gimppatternclipboard.h			\
+	gimppalette.c				\
+	gimppalette.h				\
+	gimppalette-import.c			\
+	gimppalette-import.h			\
+	gimppalette-load.c			\
+	gimppalette-load.h			\
+	gimppalette-save.c			\
+	gimppalette-save.h			\
+	gimpparamspecs.c			\
+	gimpparamspecs.h			\
+	gimpparamspecs-desc.c			\
+	gimpparamspecs-desc.h			\
+	gimpparasitelist.c			\
+	gimpparasitelist.h			\
+	gimppdbprogress.c			\
+	gimppdbprogress.h			\
+	gimppickable.c				\
+	gimppickable.h				\
+	gimppreviewcache.c			\
+	gimppreviewcache.h			\
+	gimpprogress.c				\
+	gimpprogress.h				\
+	gimpprojection.c			\
+	gimpprojection.h			\
+	gimpprojection-construct.c		\
+	gimpprojection-construct.h		\
+	gimpsamplepoint.c			\
+	gimpsamplepoint.h			\
+	gimpsamplepointundo.c			\
+	gimpsamplepointundo.h			\
+	gimpscanconvert.c			\
+	gimpscanconvert.h			\
+	gimpselection.c				\
+	gimpselection.h				\
+	gimpstrokedesc.c			\
+	gimpstrokedesc.h			\
+	gimpstrokeoptions.c			\
+	gimpstrokeoptions.h			\
+	gimpsubprogress.c			\
+	gimpsubprogress.h			\
+	gimptagged.c				\
+	gimptagged.h				\
+	gimptemplate.c				\
+	gimptemplate.h				\
+	gimptoolinfo.c				\
+	gimptoolinfo.h				\
+	gimptooloptions.c			\
+	gimptooloptions.h			\
+	gimptoolpresets.c			\
+	gimptoolpresets.h			\
+	gimpunit.c				\
+	gimpunit.h				\
+	gimpundo.c				\
+	gimpundo.h				\
+	gimpundostack.c				\
+	gimpundostack.h				\
+	gimpviewable.c				\
 	gimpviewable.h
 
 libappcore_a_built_sources = \
@@ -820,7 +865,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core-enums.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-contexts.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-documents.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-edit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-gradients.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-gui.Po@am__quote@
@@ -854,23 +898,37 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontainer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontext.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcoords.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcurve-load.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcurve-map.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcurve-save.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcurve.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdashpattern.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdatafactory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdocumentlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-blend.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-brightness-contrast.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-bucket-fill.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-color-balance.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-colorize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-combine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-convert.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-curves.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-desaturate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-equalize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-foreground-extract.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-histogram.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-hue-saturation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-invert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-levels.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-offset.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-operation.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-posterize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-preview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-process.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-shadow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-stroke.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-threshold.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-transform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawablemodundo.Po@am__quote@
@@ -908,6 +966,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagefile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagemap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagemapconfig.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem-linked.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem-preview.Po@am__quote@
@@ -949,6 +1008,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstrokedesc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstrokeoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsubprogress.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptagged.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemplate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptoolinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptooloptions.Po@am__quote@

@@ -22,6 +22,7 @@
 <ANCHOR id="GimpMessageHandlerType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType">
 <ANCHOR id="GimpPaintApplicationMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode">
 <ANCHOR id="GimpPDBArgType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType">
+<ANCHOR id="GimpPDBErrorHandler" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler">
 <ANCHOR id="GimpPDBProcType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType">
 <ANCHOR id="GimpPDBStatusType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBStatusType">
 <ANCHOR id="GimpProgressCommand" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpProgressCommand">
@@ -29,6 +30,8 @@
 <ANCHOR id="GimpRunMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode">
 <ANCHOR id="GimpSizeType" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType">
 <ANCHOR id="GimpStackTraceMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpStackTraceMode">
+<ANCHOR id="GimpTextDirection" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTextDirection">
+<ANCHOR id="GimpTextJustification" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTextJustification">
 <ANCHOR id="GimpTransferMode" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode">
 <ANCHOR id="GimpTransformDirection" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformDirection">
 <ANCHOR id="GimpTransformResize" href="libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransformResize">

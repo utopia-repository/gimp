@@ -28,8 +28,6 @@
 
 #include "base/pixel-region.h"
 #include "base/temp-buf.h"
-#include "base/tile.h"
-#include "base/tile-manager.h"
 
 #include "paint-funcs/paint-funcs.h"
 
@@ -76,18 +74,6 @@ static Blob    * ink_pen_ellipse         (GimpInkOptions   *options,
                                           gdouble           xtilt,
                                           gdouble           ytilt,
                                           gdouble           velocity);
-
-static void      time_smoother_add       (GimpInk          *ink,
-                                          guint32           value);
-static guint32   time_smoother_result    (GimpInk          *ink);
-static void      time_smoother_init      (GimpInk          *ink,
-                                          guint32           initval);
-
-static void      dist_smoother_add       (GimpInk          *ink,
-                                          gdouble           value);
-static gdouble   dist_smoother_result    (GimpInk          *ink);
-static void      dist_smoother_init      (GimpInk          *ink,
-                                          gdouble           initval);
 
 static void      render_blob             (Blob             *blob,
                                           PixelRegion      *dest);
@@ -202,7 +188,7 @@ gimp_ink_get_paint_area (GimpPaintCore    *paint_core,
                          GimpDrawable     *drawable,
                          GimpPaintOptions *paint_options)
 {
-  GimpInk *ink  = GIMP_INK (paint_core);
+  GimpInk *ink = GIMP_INK (paint_core);
   gint     x, y;
   gint     width, height;
   gint     dwidth, dheight;
@@ -270,69 +256,27 @@ gimp_ink_motion (GimpPaintCore    *paint_core,
                                         paint_core->cur_coords.pressure,
                                         paint_core->cur_coords.xtilt,
                                         paint_core->cur_coords.ytilt,
-                                        10.0);
+                                        100);
 
       if (ink->start_blob)
         g_free (ink->start_blob);
 
       ink->start_blob = blob_duplicate (ink->last_blob);
 
-      time_smoother_init (ink, time);
-      ink->last_time = time;
-
-      dist_smoother_init (ink, 0.0);
-      ink->init_velocity = TRUE;
-
       blob_to_render = ink->last_blob;
     }
   else
     {
-      Blob    *blob;
-      gdouble  dist;
-      gdouble  velocity;
-      guint32  lasttime = ink->last_time;
-      guint32  thistime;
-
-      time_smoother_add (ink, time);
-      thistime = ink->last_time = time_smoother_result (ink);
-
-      /* The time resolution on X-based GDK motion events is bloody
-       * awful, hence the use of the smoothing function.  Sadly this
-       * also means that there is always the chance of having an
-       * indeterminite velocity since this event and the previous
-       * several may still appear to issue at the same
-       * instant. -ADM
-       */
-      if (thistime == lasttime)
-        thistime = lasttime + 1;
-
-      dist = sqrt ((paint_core->last_coords.x - paint_core->cur_coords.x) *
-                   (paint_core->last_coords.x - paint_core->cur_coords.x) +
-                   (paint_core->last_coords.y - paint_core->cur_coords.y) *
-                   (paint_core->last_coords.y - paint_core->cur_coords.y));
-
-      if (ink->init_velocity)
-        {
-          dist_smoother_init (ink, dist);
-          ink->init_velocity = FALSE;
-        }
-      else
-        {
-          dist_smoother_add (ink, dist);
-          dist = dist_smoother_result (ink);
-        }
-
-      velocity = 10.0 * sqrt ((dist) / (gdouble) (thistime - lasttime));
-
-      blob = ink_pen_ellipse (options,
-                              paint_core->cur_coords.x,
-                              paint_core->cur_coords.y,
-                              paint_core->cur_coords.pressure,
-                              paint_core->cur_coords.xtilt,
-                              paint_core->cur_coords.ytilt,
-                              velocity);
+      Blob *blob = ink_pen_ellipse (options,
+                                    paint_core->cur_coords.x,
+                                    paint_core->cur_coords.y,
+                                    paint_core->cur_coords.pressure,
+                                    paint_core->cur_coords.xtilt,
+                                    paint_core->cur_coords.ytilt,
+                                    paint_core->cur_coords.velocity * 100);
 
       blob_union = blob_convex_union (ink->last_blob, blob);
+
       g_free (ink->last_blob);
       ink->last_blob = blob;
 
@@ -465,7 +409,7 @@ ink_pen_ellipse (GimpInkOptions *options,
               tscale_c, tscale_s, x, y);
 #endif
 
-  aspect = sqrt (x * x + y * y);
+  aspect = sqrt (SQR (x) + SQR (y));
 
   if (aspect != 0)
     {
@@ -510,84 +454,6 @@ ink_pen_ellipse (GimpInkOptions *options,
 }
 
 
-static void
-time_smoother_init (GimpInk *ink,
-                    guint32  initval)
-{
-  gint i;
-
-  ink->ts_index = 0;
-
-  for (i = 0; i < TIME_SMOOTHER_BUFFER; i++)
-    ink->ts_buffer[i] = initval;
-}
-
-static guint32
-time_smoother_result (GimpInk *ink)
-{
-  gint    i;
-  guint64 result = 0;
-
-  for (i = 0; i < TIME_SMOOTHER_BUFFER; i++)
-    result += ink->ts_buffer[i];
-
-  return (result / (guint64) TIME_SMOOTHER_BUFFER);
-}
-
-static void
-time_smoother_add (GimpInk *ink,
-                   guint32  value)
-{
-  guint64 long_value = (guint64) value;
-
-  /*  handle wrap-around of time values  */
-  if (long_value < ink->ts_buffer[ink->ts_index])
-    long_value += (guint64) + G_MAXUINT32;
-
-  ink->ts_buffer[ink->ts_index++] = long_value;
-
-  ink->ts_buffer[ink->ts_index++] = value;
-
-  if (ink->ts_index == TIME_SMOOTHER_BUFFER)
-    ink->ts_index = 0;
-}
-
-
-static void
-dist_smoother_init (GimpInk *ink,
-                    gdouble  initval)
-{
-  gint i;
-
-  ink->dt_index = 0;
-
-  for (i = 0; i < DIST_SMOOTHER_BUFFER; i++)
-    ink->dt_buffer[i] = initval;
-}
-
-static gdouble
-dist_smoother_result (GimpInk *ink)
-{
-  gint    i;
-  gdouble result = 0.0;
-
-  for (i = 0; i < DIST_SMOOTHER_BUFFER; i++)
-    result += ink->dt_buffer[i];
-
-  return (result / (gdouble) DIST_SMOOTHER_BUFFER);
-}
-
-static void
-dist_smoother_add (GimpInk *ink,
-                   gdouble  value)
-{
-  ink->dt_buffer[ink->dt_index++] = value;
-
-  if (ink->dt_index == DIST_SMOOTHER_BUFFER)
-    ink->dt_index = 0;
-}
-
-
 /*********************************/
 /*  Rendering functions          */
 /*********************************/
@@ -601,7 +467,11 @@ dist_smoother_add (GimpInk *ink,
  * do things. But it wouldn't be hard to implement at all.
  */
 
-enum { ROW_START, ROW_STOP };
+enum
+{
+  ROW_START,
+  ROW_STOP
+};
 
 /* The insertion sort here, for SUBSAMPLE = 8, tends to beat out
  * qsort() by 4x with CFLAGS=-O2, 2x with CFLAGS=-g
@@ -611,13 +481,14 @@ insert_sort (gint *data,
              gint  n)
 {
   gint i, j, k;
-  gint tmp1, tmp2;
 
   for (i = 2; i < 2 * n; i += 2)
     {
-      tmp1 = data[i];
-      tmp2 = data[i + 1];
+      gint tmp1 = data[i];
+      gint tmp2 = data[i + 1];
+
       j = 0;
+
       while (data[j] < tmp1)
         j += 2;
 
@@ -762,23 +633,19 @@ static void
 render_blob (Blob        *blob,
              PixelRegion *dest)
 {
-  gint      i;
-  gint      h;
-  guchar   *s;
   gpointer  pr;
 
   for (pr = pixel_regions_register (1, dest);
        pr != NULL;
        pr = pixel_regions_process (pr))
     {
-      h = dest->h;
-      s = dest->data;
+      guchar *d = dest->data;
+      gint    h = dest->h;
+      gint    y;
 
-      for (i=0; i<h; i++)
+      for (y = 0; y < h; y++, d += dest->rowstride)
         {
-          render_blob_line (blob, s,
-                            dest->x, dest->y + i, dest->w);
-          s += dest->rowstride;
+          render_blob_line (blob, d, dest->x, dest->y + y, dest->w);
         }
     }
 }

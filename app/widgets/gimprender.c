@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpcolor/gimpcolor.h"
 
 #include "widgets-types.h"
 
@@ -37,15 +38,19 @@ static void   gimp_render_setup_notify (gpointer    config,
                                         Gimp       *gimp);
 
 
-/*  accelerate transparency of image scaling  */
+/*  accelerate blending on the checkerboard  */
+
 guchar *gimp_render_check_buf         = NULL;
 guchar *gimp_render_empty_buf         = NULL;
 guchar *gimp_render_white_buf         = NULL;
-guchar *gimp_render_temp_buf          = NULL;
 
 guchar *gimp_render_blend_dark_check  = NULL;
 guchar *gimp_render_blend_light_check = NULL;
 guchar *gimp_render_blend_white       = NULL;
+
+
+static GimpRGB light;
+static GimpRGB dark;
 
 
 void
@@ -104,14 +109,19 @@ gimp_render_exit (Gimp *gimp)
       g_free (gimp_render_white_buf);
       gimp_render_white_buf = NULL;
     }
-
-  if (gimp_render_temp_buf)
-    {
-      g_free (gimp_render_temp_buf);
-      gimp_render_temp_buf = NULL;
-    }
 }
 
+const GimpRGB *
+gimp_render_light_check_color (void)
+{
+  return &light;
+}
+
+const GimpRGB *
+gimp_render_dark_check_color (void)
+{
+  return &dark;
+}
 
 static void
 gimp_render_setup_notify (gpointer    config,
@@ -119,29 +129,37 @@ gimp_render_setup_notify (gpointer    config,
                           Gimp       *gimp)
 {
   GimpCheckType check_type;
-  guchar        light, dark;
+  guchar        dark_check;
+  guchar        light_check;
   gint          i, j;
 
   g_object_get (config,
                 "transparency-type", &check_type,
                 NULL);
 
+  gimp_checks_get_shades (check_type, &light_check, &dark_check);
+
+  gimp_rgba_set_uchar (&light, light_check, light_check, light_check, 255);
+  gimp_rgba_set_uchar (&dark,  dark_check,  dark_check,  dark_check,  255);
+
   if (! gimp_render_blend_dark_check)
     gimp_render_blend_dark_check = g_new (guchar, 65536);
+
   if (! gimp_render_blend_light_check)
     gimp_render_blend_light_check = g_new (guchar, 65536);
+
   if (! gimp_render_blend_white)
     gimp_render_blend_white = g_new (guchar, 65536);
-
-  gimp_checks_get_shades (check_type, &light, &dark);
 
   for (i = 0; i < 256; i++)
     for (j = 0; j < 256; j++)
       {
         gimp_render_blend_dark_check [(i << 8) + j] =
-          (guchar) ((j * i + dark * (255 - i)) / 255);
+          (guchar) ((j * i + dark_check * (255 - i)) / 255);
+
         gimp_render_blend_light_check [(i << 8) + j] =
-          (guchar) ((j * i + light * (255 - i)) / 255);
+          (guchar) ((j * i + light_check * (255 - i)) / 255);
+
         gimp_render_blend_white [(i << 8) + j] =
           (guchar) ((j * i + 255 * (255 - i)) / 255);
       }
@@ -149,15 +167,12 @@ gimp_render_setup_notify (gpointer    config,
   g_free (gimp_render_check_buf);
   g_free (gimp_render_empty_buf);
   g_free (gimp_render_white_buf);
-  g_free (gimp_render_temp_buf);
 
-#define BUF_SIZE (MAX (GIMP_RENDER_BUF_WIDTH, \
-                       GIMP_VIEWABLE_MAX_PREVIEW_SIZE) + 4)
+#define BUF_SIZE (GIMP_VIEWABLE_MAX_PREVIEW_SIZE + 4)
 
   gimp_render_check_buf = g_new  (guchar, BUF_SIZE * 3);
   gimp_render_empty_buf = g_new0 (guchar, BUF_SIZE * 3);
   gimp_render_white_buf = g_new  (guchar, BUF_SIZE * 3);
-  gimp_render_temp_buf  = g_new  (guchar, BUF_SIZE * 3);
 
   /*  calculate check buffer for previews  */
 
@@ -167,15 +182,15 @@ gimp_render_setup_notify (gpointer    config,
     {
       if (i & 0x4)
         {
-          gimp_render_check_buf[i * 3 + 0] = gimp_render_blend_dark_check[0];
-          gimp_render_check_buf[i * 3 + 1] = gimp_render_blend_dark_check[0];
-          gimp_render_check_buf[i * 3 + 2] = gimp_render_blend_dark_check[0];
+          gimp_render_check_buf[i * 3 + 0] = dark_check;
+          gimp_render_check_buf[i * 3 + 1] = dark_check;
+          gimp_render_check_buf[i * 3 + 2] = dark_check;
         }
       else
         {
-          gimp_render_check_buf[i * 3 + 0] = gimp_render_blend_light_check[0];
-          gimp_render_check_buf[i * 3 + 1] = gimp_render_blend_light_check[0];
-          gimp_render_check_buf[i * 3 + 2] = gimp_render_blend_light_check[0];
+          gimp_render_check_buf[i * 3 + 0] = light_check;
+          gimp_render_check_buf[i * 3 + 1] = light_check;
+          gimp_render_check_buf[i * 3 + 2] = light_check;
         }
     }
 

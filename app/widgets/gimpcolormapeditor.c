@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #ifdef __GNUC__
 #warning GTK_DISABLE_DEPRECATED
 #endif
@@ -34,14 +36,12 @@
 
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
-#include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-colormap.h"
 #include "core/gimpmarshal.h"
 
 #include "gimpcolormapeditor.h"
 #include "gimpdnd.h"
-#include "gimprender.h"
 #include "gimpmenufactory.h"
 #include "gimpuimanager.h"
 
@@ -75,11 +75,15 @@ static GObject * gimp_colormap_editor_constructor  (GType               type,
                                                     guint               n_params,
                                                     GObjectConstructParam *params);
 
+static void   gimp_colormap_editor_finalize        (GObject            *object);
 static void   gimp_colormap_editor_destroy         (GtkObject          *object);
 static void   gimp_colormap_editor_unmap           (GtkWidget          *widget);
 
 static void   gimp_colormap_editor_set_image       (GimpImageEditor    *editor,
                                                     GimpImage          *image);
+
+static PangoLayout *
+              gimp_colormap_editor_create_layout   (GtkWidget          *widget);
 
 static void   gimp_colormap_editor_draw            (GimpColormapEditor *editor);
 static void   gimp_colormap_editor_draw_cell       (GimpColormapEditor *editor,
@@ -90,6 +94,9 @@ static void   gimp_colormap_editor_update_entries  (GimpColormapEditor *editor);
 
 static void   gimp_colormap_preview_size_allocate  (GtkWidget          *widget,
                                                     GtkAllocation      *allocation,
+                                                    GimpColormapEditor *editor);
+static void   gimp_colormap_preview_expose         (GtkWidget          *widget,
+                                                    GdkEventExpose     *event,
                                                     GimpColormapEditor *editor);
 static gboolean
               gimp_colormap_preview_button_press   (GtkWidget          *widget,
@@ -143,6 +150,7 @@ gimp_colormap_editor_class_init (GimpColormapEditorClass* klass)
                   GDK_TYPE_MODIFIER_TYPE);
 
   object_class->constructor     = gimp_colormap_editor_constructor;
+  object_class->finalize        = gimp_colormap_editor_finalize;
 
   gtk_object_class->destroy     = gimp_colormap_editor_destroy;
 
@@ -156,9 +164,11 @@ gimp_colormap_editor_class_init (GimpColormapEditorClass* klass)
 static void
 gimp_colormap_editor_init (GimpColormapEditor *editor)
 {
-  GtkWidget *frame;
-  GtkWidget *table;
-  GtkObject *adj;
+  GtkWidget      *frame;
+  GtkWidget      *table;
+  GtkObject      *adj;
+  gint            width;
+  gint            height;
 
   editor->col_index     = 0;
   editor->dnd_col_index = 0;
@@ -173,14 +183,23 @@ gimp_colormap_editor_init (GimpColormapEditor *editor)
   gtk_widget_show (frame);
 
   editor->preview = gtk_preview_new (GTK_PREVIEW_COLOR);
-  gtk_widget_set_size_request (editor->preview, -1, 60);
   gtk_preview_set_expand (GTK_PREVIEW (editor->preview), TRUE);
   gtk_widget_add_events (editor->preview, GDK_BUTTON_PRESS_MASK);
   gtk_container_add (GTK_CONTAINER (frame), editor->preview);
   gtk_widget_show (editor->preview);
 
+  editor->layout = gimp_colormap_editor_create_layout (editor->preview);
+
+  pango_layout_set_width (editor->layout, 180 * PANGO_SCALE);
+  pango_layout_get_pixel_size (editor->layout, &width, &height);
+  gtk_widget_set_size_request (editor->preview, width, height);
+
   g_signal_connect_after (editor->preview, "size-allocate",
                           G_CALLBACK (gimp_colormap_preview_size_allocate),
+                          editor);
+
+  g_signal_connect_after (editor->preview, "expose-event",
+                          G_CALLBACK (gimp_colormap_preview_expose),
                           editor);
 
   g_signal_connect (editor->preview, "button-press-event",
@@ -200,7 +219,7 @@ gimp_colormap_editor_init (GimpColormapEditor *editor)
   gtk_widget_show (table);
 
   editor->index_spinbutton = gimp_spin_button_new (&adj,
-                                                   0, 0, 0, 1, 10, 10, 1.0, 0);
+                                                   0, 0, 0, 1, 10, 0, 1.0, 0);
   editor->index_adjustment = GTK_ADJUSTMENT (adj);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
                              _("Color index:"), 0.0, 0.5,
@@ -246,6 +265,20 @@ gimp_colormap_editor_constructor (GType                  type,
                                    NULL);
 
   return object;
+}
+
+static void
+gimp_colormap_editor_finalize (GObject *object)
+{
+  GimpColormapEditor *editor = GIMP_COLORMAP_EDITOR (object);
+
+  if (editor->layout)
+    {
+      g_object_unref (editor->layout);
+      editor->layout = NULL;
+    }
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -447,20 +480,46 @@ gimp_colormap_editor_max_index (GimpColormapEditor *editor)
 
 /*  private functions  */
 
+
+static PangoLayout *
+gimp_colormap_editor_create_layout (GtkWidget *widget)
+{
+  PangoLayout    *layout;
+  PangoAttrList  *attrs;
+  PangoAttribute *attr;
+
+  layout = gtk_widget_create_pango_layout (widget,
+                                           _("Only indexed images have "
+                                             "a colormap."));
+  pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
+
+  attrs = pango_attr_list_new ();
+
+  attr = pango_attr_style_new (PANGO_STYLE_ITALIC);
+  attr->start_index = 0;
+  attr->end_index   = -1;
+  pango_attr_list_insert (attrs, attr);
+
+  pango_layout_set_attributes (layout, attrs);
+  pango_attr_list_unref (attrs);
+
+  return layout;
+}
+
 #define MIN_CELL_SIZE 4
 
 static void
 gimp_colormap_editor_draw (GimpColormapEditor *editor)
 {
-  GimpImage *image = GIMP_IMAGE_EDITOR (editor)->image;
-  gint       i, j, k, l, b;
+  GimpImage *image  = GIMP_IMAGE_EDITOR (editor)->image;
+  gint       i, j, k, b;
   gint       col;
   guchar    *row;
-  gint       cellsize, ncol, xn, yn, width, height;
+  gint       cellsize, ncol, xn, yn;
+  gint       width  = editor->preview->allocation.width;
+  gint       height = editor->preview->allocation.height;
 
-  width  = editor->preview->allocation.width;
-  height = editor->preview->allocation.height;
-  ncol   = gimp_image_get_colormap_size (image);
+  ncol = gimp_image_get_colormap_size (image);
 
   if (! ncol)
     {
@@ -500,19 +559,14 @@ gimp_colormap_editor_draw (GimpColormapEditor *editor)
         {
           for (k = 0; k < cellsize; k++)
             for (b = 0; b < 3; b++)
-              row[(j * cellsize + k) * 3 + b] = image->cmap[col * 3 + b];
+              row[(j * cellsize + k) * 3 + b] = image->colormap[col * 3 + b];
         }
+
+      if (j * cellsize < width)
+        memset (row + j * cellsize * 3, 255, 3 * (width - j * cellsize));
 
       for (k = 0; k < cellsize; k++)
         {
-          for (l = j * cellsize; l < width; l++)
-            for (b = 0; b < 3; b++)
-              row[l * 3 + b] = (((((i * cellsize + k) & 0x4) ?
-                                  (l) :
-                                  (l + 0x4)) & 0x4) ?
-                                gimp_render_blend_light_check[0] :
-                                gimp_render_blend_dark_check[0]);
-
           gtk_preview_draw_row (GTK_PREVIEW (editor->preview), row, 0,
                                 i * cellsize + k,
                                 width);
@@ -561,9 +615,9 @@ gimp_colormap_editor_draw_cell (GimpColormapEditor *editor,
 
       for (k = 1; k < cellsize - 1; k++)
         {
-          row[k*3]   = image->cmap[col * 3];
-          row[k*3+1] = image->cmap[col * 3 + 1];
-          row[k*3+2] = image->cmap[col * 3 + 2];
+          row[k*3]   = image->colormap[col * 3];
+          row[k*3+1] = image->colormap[col * 3 + 1];
+          row[k*3+2] = image->colormap[col * 3 + 2];
         }
       for (k = 1; k < cellsize - 1; k+=2)
         gtk_preview_draw_row (GTK_PREVIEW (editor->preview), row,
@@ -580,10 +634,11 @@ gimp_colormap_editor_draw_cell (GimpColormapEditor *editor,
     {
       for (k = 0; k < cellsize; k++)
         {
-          row[k*3]   = image->cmap[col * 3];
-          row[k*3+1] = image->cmap[col * 3 + 1];
-          row[k*3+2] = image->cmap[col * 3 + 2];
+          row[k*3]   = image->colormap[col * 3];
+          row[k*3+1] = image->colormap[col * 3 + 1];
+          row[k*3+2] = image->colormap[col * 3 + 2];
         }
+
       for (k = 0; k < cellsize; k++)
         gtk_preview_draw_row (GTK_PREVIEW (editor->preview), row,
                               x, y+k, cellsize);
@@ -595,16 +650,37 @@ gimp_colormap_editor_draw_cell (GimpColormapEditor *editor,
 }
 
 static void
+gimp_colormap_preview_expose (GtkWidget          *widget,
+                              GdkEventExpose     *event,
+                              GimpColormapEditor *editor)
+{
+  GimpImageEditor *image_editor = GIMP_IMAGE_EDITOR (editor);
+  gint             x, y;
+  gint             width, height;
+
+  if (image_editor->image == NULL ||
+      gimp_image_base_type (image_editor->image) == GIMP_INDEXED)
+    return;
+
+  pango_layout_get_pixel_size (editor->layout, &width, &height);
+
+  x = (widget->allocation.width - width) / 2;
+  y = (widget->allocation.height - height) / 2;
+
+  gdk_draw_layout (editor->preview->window,
+                   editor->preview->style->fg_gc[widget->state],
+                   MAX (x, 0), MAX (y, 0),
+                   editor->layout);
+}
+
+static void
 gimp_colormap_editor_clear (GimpColormapEditor *editor,
                             gint                start_row)
 {
-  gint    i, j;
-  gint    offset;
-  gint    width, height;
   guchar *row;
-
-  width  = editor->preview->allocation.width;
-  height = editor->preview->allocation.height;
+  gint    width  = editor->preview->allocation.width;
+  gint    height = editor->preview->allocation.height;
+  gint    y;
 
   if (start_row < 0)
     start_row = 0;
@@ -614,39 +690,10 @@ gimp_colormap_editor_clear (GimpColormapEditor *editor,
 
   row = g_alloca (width * 3);
 
-  if (start_row & 0x3)
-    {
-      offset = (start_row & 0x4) ? 0x4 : 0x0;
+  memset (row, 255, 3 * width);
 
-      for (j = 0; j < width; j++)
-        {
-          row[j * 3 + 0] = row[j * 3 + 1] = row[j * 3 + 2] =
-            ((j + offset) & 0x4) ?
-            gimp_render_blend_dark_check[0] : gimp_render_blend_light_check[0];
-        }
-
-      for (j = 0; j < (4 - (start_row & 0x3)) && start_row + j < height; j++)
-        gtk_preview_draw_row (GTK_PREVIEW (editor->preview), row,
-                              0, start_row + j, width);
-
-      start_row += (4 - (start_row & 0x3));
-    }
-
-  for (i = start_row; i < height; i += 4)
-    {
-      offset = (i & 0x4) ? 0x4 : 0x0;
-
-      for (j = 0; j < width; j++)
-        {
-          row[j * 3 + 0] = row[j * 3 + 1] = row[j * 3 + 2] =
-            ((j + offset) & 0x4) ?
-            gimp_render_blend_dark_check[0] : gimp_render_blend_light_check[0];
-        }
-
-      for (j = 0; j < 4 && i + j < height; j++)
-        gtk_preview_draw_row (GTK_PREVIEW (editor->preview), row,
-                              0, i + j, width);
-    }
+  for (y = start_row; y < height; y++)
+    gtk_preview_draw_row (GTK_PREVIEW (editor->preview), row, 0, y, width);
 
   gtk_widget_queue_draw (editor->preview);
 }
@@ -672,7 +719,7 @@ gimp_colormap_editor_update_entries (GimpColormapEditor *editor)
 
       gtk_adjustment_set_value (editor->index_adjustment, editor->col_index);
 
-      col = image->cmap + editor->col_index * 3;
+      col = image->colormap + editor->col_index * 3;
 
       string = g_strdup_printf ("%02x%02x%02x", col[0], col[1], col[2]);
       gtk_entry_set_text (GTK_ENTRY (editor->color_entry), string);
@@ -752,7 +799,7 @@ gimp_colormap_preview_drag_color (GtkWidget *widget,
                                   gpointer   data)
 {
   GimpColormapEditor *editor = GIMP_COLORMAP_EDITOR (data);
-  GimpImage          *image = GIMP_IMAGE_EDITOR (editor)->image;
+  GimpImage          *image  = GIMP_IMAGE_EDITOR (editor)->image;
 
   if (HAVE_COLORMAP (image))
     gimp_image_get_colormap_entry (image, editor->dnd_col_index, color);
@@ -766,7 +813,7 @@ gimp_colormap_preview_drop_color (GtkWidget     *widget,
                                   gpointer       data)
 {
   GimpColormapEditor *editor = GIMP_COLORMAP_EDITOR (data);
-  GimpImage          *image = GIMP_IMAGE_EDITOR (editor)->image;
+  GimpImage          *image  = GIMP_IMAGE_EDITOR (editor)->image;
 
   if (HAVE_COLORMAP (image) && gimp_image_get_colormap_size (image) < 256)
     {
@@ -782,7 +829,9 @@ gimp_colormap_adjustment_changed (GtkAdjustment      *adjustment,
 
   if (HAVE_COLORMAP (image))
     {
-      gimp_colormap_editor_set_index (editor, adjustment->value + 0.5, NULL);
+      gint index = ROUND (gtk_adjustment_get_value (adjustment));
+
+      gimp_colormap_editor_set_index (editor, index, NULL);
 
       gimp_colormap_editor_update_entries (editor);
     }

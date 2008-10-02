@@ -119,21 +119,22 @@ select_float_cmd_callback (GtkAction *action,
 {
   GimpImage *image;
   GtkWidget *widget;
+  GError    *error = NULL;
   return_if_no_image (image, data);
   return_if_no_widget (widget, data);
 
   if (gimp_selection_float (gimp_image_get_mask (image),
                             gimp_image_get_active_drawable (image),
                             action_data_get_context (data),
-                            TRUE, 0, 0))
+                            TRUE, 0, 0, &error))
     {
       gimp_image_flush (image);
     }
   else
     {
       gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
-                    _("Cannot float selection because the selected region "
-                      "is empty."));
+                    "%s", error->message);
+      g_clear_error (&error);
     }
 }
 
@@ -143,7 +144,11 @@ select_feather_cmd_callback (GtkAction *action,
 {
   GimpDisplay *display;
   GtkWidget   *dialog;
+  gdouble      xres;
+  gdouble      yres;
   return_if_no_display (display, data);
+
+  gimp_image_get_resolution (display->image, &xres, &yres);
 
   dialog = gimp_query_size_box (_("Feather Selection"),
                                 display->shell,
@@ -152,8 +157,7 @@ select_feather_cmd_callback (GtkAction *action,
                                 _("Feather selection by"),
                                 select_feather_radius, 0, 32767, 3,
                                 GIMP_DISPLAY_SHELL (display->shell)->unit,
-                                MIN (display->image->xresolution,
-                                     display->image->yresolution),
+                                MIN (xres, yres),
                                 FALSE,
                                 G_OBJECT (display->image), "disconnect",
                                 select_feather_callback, display->image);
@@ -178,7 +182,11 @@ select_shrink_cmd_callback (GtkAction *action,
   GimpDisplay *display;
   GtkWidget   *dialog;
   GtkWidget   *button;
+  gdouble      xres;
+  gdouble      yres;
   return_if_no_display (display, data);
+
+  gimp_image_get_resolution (display->image, &xres, &yres);
 
   dialog = gimp_query_size_box (_("Shrink Selection"),
                                 display->shell,
@@ -187,8 +195,7 @@ select_shrink_cmd_callback (GtkAction *action,
                                 _("Shrink selection by"),
                                 select_shrink_pixels, 1, 32767, 0,
                                 GIMP_DISPLAY_SHELL (display->shell)->unit,
-                                MIN (display->image->xresolution,
-                                     display->image->yresolution),
+                                MIN (xres, yres),
                                 FALSE,
                                 G_OBJECT (display->image), "disconnect",
                                 select_shrink_callback, display->image);
@@ -212,7 +219,11 @@ select_grow_cmd_callback (GtkAction *action,
 {
   GimpDisplay *display;
   GtkWidget   *dialog;
+  gdouble      xres;
+  gdouble      yres;
   return_if_no_display (display, data);
+
+  gimp_image_get_resolution (display->image, &xres, &yres);
 
   dialog = gimp_query_size_box (_("Grow Selection"),
                                 display->shell,
@@ -221,8 +232,7 @@ select_grow_cmd_callback (GtkAction *action,
                                 _("Grow selection by"),
                                 select_grow_pixels, 1, 32767, 0,
                                 GIMP_DISPLAY_SHELL (display->shell)->unit,
-                                MIN (display->image->xresolution,
-                                     display->image->yresolution),
+                                MIN (xres, yres),
                                 FALSE,
                                 G_OBJECT (display->image), "disconnect",
                                 select_grow_callback, display->image);
@@ -236,7 +246,11 @@ select_border_cmd_callback (GtkAction *action,
   GimpDisplay *display;
   GtkWidget   *dialog;
   GtkWidget   *button;
+  gdouble      xres;
+  gdouble      yres;
   return_if_no_display (display, data);
+
+  gimp_image_get_resolution (display->image, &xres, &yres);
 
   dialog = gimp_query_size_box (_("Border Selection"),
                                 display->shell,
@@ -245,8 +259,7 @@ select_border_cmd_callback (GtkAction *action,
                                 _("Border selection by"),
                                 select_border_radius, 1, 32767, 0,
                                 GIMP_DISPLAY_SHELL (display->shell)->unit,
-                                MIN (display->image->xresolution,
-                                     display->image->yresolution),
+                                MIN (xres, yres),
                                 FALSE,
                                 G_OBJECT (display->image), "disconnect",
                                 select_border_callback, display->image);
@@ -336,6 +349,7 @@ select_stroke_last_vals_cmd_callback (GtkAction *action,
   GimpContext    *context;
   GtkWidget      *widget;
   GimpStrokeDesc *desc;
+  GError         *error = NULL;
   return_if_no_image (image, data);
   return_if_no_context (context, data);
   return_if_no_widget (widget, data);
@@ -356,12 +370,19 @@ select_stroke_last_vals_cmd_callback (GtkAction *action,
   else
     desc = gimp_stroke_desc_new (image->gimp, context);
 
-  gimp_item_stroke (GIMP_ITEM (gimp_image_get_mask (image)),
-                    drawable, context, desc, FALSE, NULL);
+  if (! gimp_item_stroke (GIMP_ITEM (gimp_image_get_mask (image)),
+                          drawable, context, desc, FALSE, NULL, &error))
+    {
+      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                    error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      gimp_image_flush (image);
+    }
 
   g_object_unref (desc);
-
-  gimp_image_flush (image);
 }
 
 
@@ -381,12 +402,16 @@ select_feather_callback (GtkWidget *widget,
 
   if (unit != GIMP_UNIT_PIXEL)
     {
+      gdouble xres;
+      gdouble yres;
       gdouble factor;
 
-      factor = (MAX (image->xresolution, image->yresolution) /
-                MIN (image->xresolution, image->yresolution));
+      gimp_image_get_resolution (image, &xres, &yres);
 
-      if (image->xresolution == MIN (image->xresolution, image->yresolution))
+      factor = (MAX (xres, yres) /
+                MIN (xres, yres));
+
+      if (xres == MIN (xres, yres))
         radius_y *= factor;
       else
         radius_x *= factor;
@@ -420,12 +445,16 @@ select_border_callback (GtkWidget *widget,
 
   if (unit != GIMP_UNIT_PIXEL)
     {
+      gdouble xres;
+      gdouble yres;
       gdouble factor;
 
-      factor = (MAX (image->xresolution, image->yresolution) /
-                MIN (image->xresolution, image->yresolution));
+      gimp_image_get_resolution (image, &xres, &yres);
 
-      if (image->xresolution == MIN (image->xresolution, image->yresolution))
+      factor = (MAX (xres, yres) /
+                MIN (xres, yres));
+
+      if (xres == MIN (xres, yres))
         radius_y *= factor;
       else
         radius_x *= factor;
@@ -450,12 +479,16 @@ select_grow_callback (GtkWidget *widget,
 
   if (unit != GIMP_UNIT_PIXEL)
     {
+      gdouble xres;
+      gdouble yres;
       gdouble factor;
 
-      factor = (MAX (image->xresolution, image->yresolution) /
-                MIN (image->xresolution, image->yresolution));
+      gimp_image_get_resolution (image, &xres, &yres);
 
-      if (image->xresolution == MIN (image->xresolution, image->yresolution))
+      factor = (MAX (xres, yres) /
+                MIN (xres, yres));
+
+      if (xres == MIN (xres, yres))
         radius_y *= factor;
       else
         radius_x *= factor;
@@ -483,12 +516,16 @@ select_shrink_callback (GtkWidget *widget,
 
   if (unit != GIMP_UNIT_PIXEL)
     {
+      gdouble xres;
+      gdouble yres;
       gdouble factor;
 
-      factor = (MAX (image->xresolution, image->yresolution) /
-                MIN (image->xresolution, image->yresolution));
+      gimp_image_get_resolution (image, &xres, &yres);
 
-      if (image->xresolution == MIN (image->xresolution, image->yresolution))
+      factor = (MAX (xres, yres) /
+                MIN (xres, yres));
+
+      if (xres == MIN (xres, yres))
         radius_y *= factor;
       else
         radius_x *= factor;

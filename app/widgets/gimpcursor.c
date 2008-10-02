@@ -66,6 +66,8 @@
 #include "cursors/xbm/tool-ellipse-select-mask.xbm"
 #include "cursors/xbm/tool-free-select.xbm"
 #include "cursors/xbm/tool-free-select-mask.xbm"
+#include "cursors/xbm/tool-polygon-select.xbm"
+#include "cursors/xbm/tool-polygon-select-mask.xbm"
 #include "cursors/xbm/tool-fuzzy-select.xbm"
 #include "cursors/xbm/tool-fuzzy-select-mask.xbm"
 #include "cursors/xbm/tool-paths.xbm"
@@ -156,6 +158,8 @@
 #include "cursors/xbm/modifier-pattern-mask.xbm"
 #include "cursors/xbm/modifier-join.xbm"
 #include "cursors/xbm/modifier-join-mask.xbm"
+#include "cursors/xbm/modifier-select.xbm"
+#include "cursors/xbm/modifier-select-mask.xbm"
 
 
 typedef struct _GimpCursor GimpCursor;
@@ -303,6 +307,12 @@ static GimpCursor gimp_tool_cursors[] =
     tool_free_select_width, tool_free_select_height,
     0, 0,
     tool_free_select, NULL, NULL, NULL
+  },
+  {
+    tool_polygon_select_bits, tool_polygon_select_mask_bits,
+    tool_polygon_select_width, tool_polygon_select_height,
+    0, 0,
+    tool_polygon_select, NULL, NULL, NULL
   },
   {
     tool_fuzzy_select_bits, tool_fuzzy_select_mask_bits,
@@ -579,6 +589,12 @@ static GimpCursor gimp_cursor_modifiers[] =
     modifier_join_width, modifier_join_height,
     0, 0,
     modifier_join, NULL, NULL, NULL
+  },
+  {
+    modifier_select_bits, modifier_select_mask_bits,
+    modifier_select_width, modifier_select_height,
+    0, 0,
+    modifier_select, NULL, NULL, NULL
   }
 };
 

@@ -71,7 +71,7 @@ gimp_drawable_is_valid (gint32 drawable_ID)
  *
  * This procedure returns TRUE if the specified drawable is a layer.
  *
- * Returns: TRUE if the drawable is a layer.
+ * Returns: TRUE if the drawable is a layer, FALSE otherwise.
  */
 gboolean
 gimp_drawable_is_layer (gint32 drawable_ID)
@@ -94,6 +94,39 @@ gimp_drawable_is_layer (gint32 drawable_ID)
 }
 
 /**
+ * gimp_drawable_is_text_layer:
+ * @drawable_ID: The drawable.
+ *
+ * Returns whether the drawable is a text layer.
+ *
+ * This procedure returns TRUE if the specified drawable is a text
+ * layer.
+ *
+ * Returns: TRUE if the drawable is a text layer, FALSE otherwise.
+ *
+ * Since: GIMP 2.6
+ */
+gboolean
+gimp_drawable_is_text_layer (gint32 drawable_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean text_layer = FALSE;
+
+  return_vals = gimp_run_procedure ("gimp-drawable-is-text-layer",
+                                    &nreturn_vals,
+                                    GIMP_PDB_DRAWABLE, drawable_ID,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    text_layer = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return text_layer;
+}
+
+/**
  * gimp_drawable_is_layer_mask:
  * @drawable_ID: The drawable.
  *
@@ -102,7 +135,7 @@ gimp_drawable_is_layer (gint32 drawable_ID)
  * This procedure returns TRUE if the specified drawable is a layer
  * mask.
  *
- * Returns: TRUE if the drawable is a layer mask.
+ * Returns: TRUE if the drawable is a layer mask, FALSE otherwise.
  */
 gboolean
 gimp_drawable_is_layer_mask (gint32 drawable_ID)
@@ -132,7 +165,7 @@ gimp_drawable_is_layer_mask (gint32 drawable_ID)
  *
  * This procedure returns TRUE if the specified drawable is a channel.
  *
- * Returns: TRUE if the drawable is a channel.
+ * Returns: TRUE if the drawable is a channel, FALSE otherwise.
  */
 gboolean
 gimp_drawable_is_channel (gint32 drawable_ID)
@@ -938,7 +971,7 @@ gimp_drawable_mask_intersect (gint32  drawable_ID,
  *
  * Merge the shadow buffer with the specified drawable.
  *
- * This procedure combines the contents of the image's shadow buffer
+ * This procedure combines the contents of the drawable's shadow buffer
  * (for temporary processing) with the specified drawable. The 'undo'
  * parameter specifies whether to add an undo step for the operation.
  * Requesting no undo is useful for such applications as 'auto-apply'.
@@ -957,6 +990,40 @@ gimp_drawable_merge_shadow (gint32   drawable_ID,
                                     &nreturn_vals,
                                     GIMP_PDB_DRAWABLE, drawable_ID,
                                     GIMP_PDB_INT32, undo,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_drawable_free_shadow:
+ * @drawable_ID: The drawable.
+ *
+ * Free the specified drawable's shadow data (if it exists).
+ *
+ * This procedure is intended as a memory saving device. If any shadow
+ * memory has been allocated, it will be freed automatically when the
+ * drawable is removed from the image, or when the plug-in procedure
+ * which allocated it returns.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: GIMP 2.6
+ */
+gboolean
+gimp_drawable_free_shadow (gint32 drawable_ID)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-drawable-free-shadow",
+                                    &nreturn_vals,
+                                    GIMP_PDB_DRAWABLE, drawable_ID,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;

@@ -55,51 +55,59 @@
 #include "gimp-intl.h"
 
 
-static void    gimp_file_dialog_progress_iface_init (GimpProgressInterface *iface);
-static gboolean gimp_file_dialog_delete_event       (GtkWidget        *widget,
-                                                     GdkEventAny      *event);
-static void     gimp_file_dialog_response           (GtkDialog        *dialog,
-                                                     gint              response_id);
+struct _GimpFileDialogState
+{
+  gchar *filter_name;
+};
+
+
+static void     gimp_file_dialog_progress_iface_init (GimpProgressInterface *iface);
+static gboolean gimp_file_dialog_delete_event        (GtkWidget        *widget,
+                                                      GdkEventAny      *event);
+static void     gimp_file_dialog_response            (GtkDialog        *dialog,
+                                                      gint              response_id);
 
 static GimpProgress *
-                    gimp_file_dialog_progress_start (GimpProgress     *progress,
-                                                     const gchar      *message,
-                                                     gboolean          cancelable);
-static void     gimp_file_dialog_progress_end       (GimpProgress     *progress);
-static gboolean gimp_file_dialog_progress_is_active (GimpProgress     *progress);
-static void     gimp_file_dialog_progress_set_text  (GimpProgress     *progress,
-                                                     const gchar      *message);
-static void     gimp_file_dialog_progress_set_value (GimpProgress     *progress,
-                                                     gdouble           percentage);
-static gdouble  gimp_file_dialog_progress_get_value (GimpProgress     *progress);
-static void     gimp_file_dialog_progress_pulse     (GimpProgress     *progress);
-static guint32  gimp_file_dialog_progress_get_window(GimpProgress     *progress);
+                    gimp_file_dialog_progress_start  (GimpProgress     *progress,
+                                                      const gchar      *message,
+                                                      gboolean          cancelable);
+static void     gimp_file_dialog_progress_end        (GimpProgress     *progress);
+static gboolean gimp_file_dialog_progress_is_active  (GimpProgress     *progress);
+static void     gimp_file_dialog_progress_set_text   (GimpProgress     *progress,
+                                                      const gchar      *message);
+static void     gimp_file_dialog_progress_set_value  (GimpProgress     *progress,
+                                                      gdouble           percentage);
+static gdouble  gimp_file_dialog_progress_get_value  (GimpProgress     *progress);
+static void     gimp_file_dialog_progress_pulse      (GimpProgress     *progress);
+static guint32  gimp_file_dialog_progress_get_window (GimpProgress     *progress);
 
-static void     gimp_file_dialog_add_preview        (GimpFileDialog   *dialog,
-                                                     Gimp             *gimp);
-static void     gimp_file_dialog_add_filters        (GimpFileDialog   *dialog,
-                                                     Gimp             *gimp,
-                                                     GSList           *file_procs);
-static void     gimp_file_dialog_add_proc_selection (GimpFileDialog   *dialog,
-                                                     Gimp             *gimp,
-                                                     GSList           *file_procs,
-                                                     const gchar      *automatic,
-                                                     const gchar      *automatic_help_id);
+static void     gimp_file_dialog_add_user_dir        (GimpFileDialog   *dialog,
+                                                      GUserDirectory    directory);
+static void     gimp_file_dialog_add_preview         (GimpFileDialog   *dialog,
+                                                      Gimp             *gimp);
+static void     gimp_file_dialog_add_filters         (GimpFileDialog   *dialog,
+                                                      Gimp             *gimp,
+                                                      GSList           *file_procs);
+static void     gimp_file_dialog_add_proc_selection  (GimpFileDialog   *dialog,
+                                                      Gimp             *gimp,
+                                                      GSList           *file_procs,
+                                                      const gchar      *automatic,
+                                                      const gchar      *automatic_help_id);
 
-static void     gimp_file_dialog_selection_changed  (GtkFileChooser   *chooser,
-                                                     GimpFileDialog   *dialog);
-static void     gimp_file_dialog_update_preview     (GtkFileChooser   *chooser,
-                                                     GimpFileDialog   *dialog);
+static void     gimp_file_dialog_selection_changed   (GtkFileChooser   *chooser,
+                                                      GimpFileDialog   *dialog);
+static void     gimp_file_dialog_update_preview      (GtkFileChooser   *chooser,
+                                                      GimpFileDialog   *dialog);
 
-static void     gimp_file_dialog_proc_changed       (GimpFileProcView *view,
-                                                     GimpFileDialog   *dialog);
+static void     gimp_file_dialog_proc_changed        (GimpFileProcView *view,
+                                                      GimpFileDialog   *dialog);
 
-static void     gimp_file_dialog_help_func          (const gchar      *help_id,
-                                                     gpointer          help_data);
-static void     gimp_file_dialog_help_clicked       (GtkWidget        *widget,
-                                                     gpointer          dialog);
+static void     gimp_file_dialog_help_func           (const gchar      *help_id,
+                                                      gpointer          help_data);
+static void     gimp_file_dialog_help_clicked        (GtkWidget        *widget,
+                                                      gpointer          dialog);
 
-static gchar  * gimp_file_dialog_pattern_from_extension (const gchar  *extension);
+static gchar  * gimp_file_dialog_pattern_from_extension (const gchar   *extension);
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpFileDialog, gimp_file_dialog,
@@ -256,7 +264,6 @@ gimp_file_dialog_new (Gimp                 *gimp,
   GSList         *file_procs;
   const gchar    *automatic;
   const gchar    *automatic_help_id;
-  const gchar    *pictures;
   gboolean        local_only;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
@@ -335,11 +342,8 @@ gimp_file_dialog_new (Gimp                 *gimp,
       g_object_set_data (G_OBJECT (dialog), "gimp-dialog-help-button", button);
     }
 
-  pictures = gimp_user_directory (GIMP_USER_DIRECTORY_PICTURES);
-
-  if (pictures)
-    gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
-                                          pictures, NULL);
+  gimp_file_dialog_add_user_dir (dialog, G_USER_DIRECTORY_PICTURES);
+  gimp_file_dialog_add_user_dir (dialog, G_USER_DIRECTORY_DOCUMENTS);
 
   gimp_file_dialog_add_preview (dialog, gimp);
 
@@ -491,8 +495,76 @@ gimp_file_dialog_set_image (GimpFileDialog *dialog,
   g_free (basename);
 }
 
+GimpFileDialogState *
+gimp_file_dialog_get_state (GimpFileDialog *dialog)
+{
+  GimpFileDialogState *state;
+  GtkFileFilter       *filter;
+
+  g_return_val_if_fail (GIMP_IS_FILE_DIALOG (dialog), NULL);
+
+  state = g_slice_new0 (GimpFileDialogState);
+
+  filter = gtk_file_chooser_get_filter (GTK_FILE_CHOOSER (dialog));
+
+  if (filter)
+    state->filter_name = g_strdup (gtk_file_filter_get_name (filter));
+
+  return state;
+}
+
+void
+gimp_file_dialog_set_state (GimpFileDialog      *dialog,
+                            GimpFileDialogState *state)
+{
+  g_return_if_fail (GIMP_IS_FILE_DIALOG (dialog));
+  g_return_if_fail (state != NULL);
+
+  if (state->filter_name)
+    {
+      GSList *filters;
+      GSList *list;
+
+      filters = gtk_file_chooser_list_filters (GTK_FILE_CHOOSER (dialog));
+
+      for (list = filters; list; list = list->next)
+        {
+          GtkFileFilter *filter = GTK_FILE_FILTER (list->data);
+          const gchar   *name   = gtk_file_filter_get_name (filter);
+
+          if (name && strcmp (state->filter_name, name) == 0)
+            {
+              gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filter);
+              break;
+            }
+        }
+
+      g_slist_free (filters);
+    }
+}
+
+void
+gimp_file_dialog_state_destroy (GimpFileDialogState *state)
+{
+  g_return_if_fail (state != NULL);
+
+  g_free (state->filter_name);
+  g_slice_free (GimpFileDialogState, state);
+}
+
 
 /*  private functions  */
+
+static void
+gimp_file_dialog_add_user_dir (GimpFileDialog *dialog,
+                               GUserDirectory  directory)
+{
+  const gchar *user_dir = g_get_user_special_dir (directory);
+
+  if (user_dir)
+    gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
+                                          user_dir, NULL);
+}
 
 static void
 gimp_file_dialog_add_preview (GimpFileDialog *dialog,

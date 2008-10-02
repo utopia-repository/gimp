@@ -26,6 +26,8 @@
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-palette-delete">gimp_palette_delete</link>                 (const <link linkend="gchar">gchar</link> *name);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-palette-get-info">gimp_palette_get_info</link>               (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *num_colors);
+<link linkend="GimpRGB">GimpRGB</link>*            <link linkend="gimp-palette-get-colors">gimp_palette_get_colors</link>             (const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gint">gint</link> *num_colors);
 <link linkend="gint">gint</link>                <link linkend="gimp-palette-get-columns">gimp_palette_get_columns</link>            (const <link linkend="gchar">gchar</link> *name);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-palette-set-columns">gimp_palette_set_columns</link>            (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> columns);
@@ -177,6 +179,29 @@ This includes the name, and the number of colors.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
+</para></refsect2>
+<refsect2 id="gimp-palette-get-colors" role="function" condition="since:GIMP 2.6">
+<title>gimp_palette_get_colors ()</title>
+<indexterm zone="gimp-palette-get-colors" role="GIMP 2.6"><primary>gimp_palette_get_colors</primary></indexterm><programlisting><link linkend="GimpRGB">GimpRGB</link>*            gimp_palette_get_colors             (const <link linkend="gchar">gchar</link> *name,
+                                                         <link linkend="gint">gint</link> *num_colors);</programlisting>
+<para>
+Gets all colors from the specified palette.
+</para>
+<para>
+This procedure retrieves all color entries of the specified palette.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> The palette name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>num_colors</parameter>&nbsp;:</term>
+<listitem><simpara> Length of the colors array.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The colors in the palette.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
 </para></refsect2>
 <refsect2 id="gimp-palette-get-columns" role="function" condition="since:GIMP 2.4">
 <title>gimp_palette_get_columns ()</title>

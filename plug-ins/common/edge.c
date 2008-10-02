@@ -57,7 +57,7 @@
 
 
 #ifdef RCSID
-static gchar rcsid[] = "$Id: edge.c 23603 2007-09-21 13:27:33Z neo $";
+static gchar rcsid[] = "$Id: edge.c 26252 2008-07-21 13:41:00Z mitch $";
 #endif
 
 /* Some useful macros */
@@ -652,8 +652,9 @@ edge_dialog (GimpDrawable *drawable)
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
-  gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
+  gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
+
   g_signal_connect (preview, "invalidated",
                     G_CALLBACK (edge_preview_update),
                     NULL);

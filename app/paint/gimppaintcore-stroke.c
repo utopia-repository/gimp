@@ -34,15 +34,19 @@
 #include "gimppaintoptions.h"
 
 
+static void gimp_paint_core_stroke_emulate_dynamics (GimpCoords *coords,
+                                                     gint        length);
+
 static const GimpCoords default_coords = GIMP_COORDS_DEFAULT_VALUES;
 
 
 gboolean
-gimp_paint_core_stroke (GimpPaintCore    *core,
-                        GimpDrawable     *drawable,
-                        GimpPaintOptions *paint_options,
-                        GimpCoords       *strokes,
-                        gint              n_strokes)
+gimp_paint_core_stroke (GimpPaintCore     *core,
+                        GimpDrawable      *drawable,
+                        GimpPaintOptions  *paint_options,
+                        GimpCoords        *strokes,
+                        gint               n_strokes,
+                        GError           **error)
 {
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), FALSE);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
@@ -50,8 +54,10 @@ gimp_paint_core_stroke (GimpPaintCore    *core,
   g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options), FALSE);
   g_return_val_if_fail (strokes != NULL, FALSE);
   g_return_val_if_fail (n_strokes > 0, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (gimp_paint_core_start (core, drawable, paint_options, &strokes[0], NULL))
+  if (gimp_paint_core_start (core, drawable, paint_options, &strokes[0],
+                             error))
     {
       gint i;
 
@@ -85,13 +91,15 @@ gimp_paint_core_stroke (GimpPaintCore    *core,
 }
 
 gboolean
-gimp_paint_core_stroke_boundary (GimpPaintCore    *core,
-                                 GimpDrawable     *drawable,
-                                 GimpPaintOptions *paint_options,
-                                 const BoundSeg   *bound_segs,
-                                 gint              n_bound_segs,
-                                 gint              offset_x,
-                                 gint              offset_y)
+gimp_paint_core_stroke_boundary (GimpPaintCore     *core,
+                                 GimpDrawable      *drawable,
+                                 GimpPaintOptions  *paint_options,
+                                 gboolean           emulate_dynamics,
+                                 const BoundSeg    *bound_segs,
+                                 gint               n_bound_segs,
+                                 gint               offset_x,
+                                 gint               offset_y,
+                                 GError           **error)
 {
   GimpImage  *image;
   BoundSeg   *stroke_segs;
@@ -109,6 +117,7 @@ gimp_paint_core_stroke_boundary (GimpPaintCore    *core,
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), FALSE);
   g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options), FALSE);
   g_return_val_if_fail (bound_segs != NULL && n_bound_segs > 0, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -155,14 +164,18 @@ gimp_paint_core_stroke_boundary (GimpPaintCore    *core,
 
       n_coords++;
 
+      if (emulate_dynamics)
+        gimp_paint_core_stroke_emulate_dynamics (coords, n_coords);
+
       if (initialized ||
           gimp_paint_core_start (core, drawable, paint_options, &coords[0],
-                                 NULL))
+                                 error))
         {
           gint i;
 
           initialized = TRUE;
 
+          core->cur_coords   = coords[0];
           core->start_coords = coords[0];
           core->last_coords  = coords[0];
 
@@ -181,6 +194,10 @@ gimp_paint_core_stroke_boundary (GimpPaintCore    *core,
 
           gimp_paint_core_paint (core, drawable, paint_options,
                                  GIMP_PAINT_STATE_FINISH, 0);
+        }
+      else
+        {
+          break;
         }
 
       n_coords = 0;
@@ -203,27 +220,28 @@ gimp_paint_core_stroke_boundary (GimpPaintCore    *core,
   g_free (coords);
   g_free (stroke_segs);
 
-  return TRUE;
+  return initialized;
 }
 
 gboolean
-gimp_paint_core_stroke_vectors (GimpPaintCore    *core,
-                                GimpDrawable     *drawable,
-                                GimpPaintOptions *paint_options,
-                                GimpVectors      *vectors)
+gimp_paint_core_stroke_vectors (GimpPaintCore     *core,
+                                GimpDrawable      *drawable,
+                                GimpPaintOptions  *paint_options,
+                                gboolean           emulate_dynamics,
+                                GimpVectors       *vectors,
+                                GError           **error)
 {
-  GList      *stroke;
-  GArray     *coords      = NULL;
-  gboolean    initialized = FALSE;
-  gboolean    closed;
-  gint        off_x, off_y;
-  gint        vectors_off_x, vectors_off_y;
+  GList    *stroke;
+  gboolean  initialized = FALSE;
+  gint      off_x, off_y;
+  gint      vectors_off_x, vectors_off_y;
 
   g_return_val_if_fail (GIMP_IS_PAINT_CORE (core), FALSE);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), FALSE);
   g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (paint_options), FALSE);
   g_return_val_if_fail (GIMP_IS_VECTORS (vectors), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   gimp_item_offsets (GIMP_ITEM (vectors),  &vectors_off_x, &vectors_off_y);
   gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
@@ -233,6 +251,9 @@ gimp_paint_core_stroke_vectors (GimpPaintCore    *core,
 
   for (stroke = vectors->strokes; stroke; stroke = stroke->next)
     {
+      GArray   *coords;
+      gboolean  closed;
+
       coords = gimp_stroke_interpolate (GIMP_STROKE (stroke->data),
                                         1.0, &closed);
 
@@ -246,13 +267,18 @@ gimp_paint_core_stroke_vectors (GimpPaintCore    *core,
               g_array_index (coords, GimpCoords, i).y -= off_y;
             }
 
+          if (emulate_dynamics)
+            gimp_paint_core_stroke_emulate_dynamics ((GimpCoords *) coords->data,
+                                                     coords->len);
+
           if (initialized ||
               gimp_paint_core_start (core, drawable, paint_options,
                                      &g_array_index (coords, GimpCoords, 0),
-                                     NULL))
+                                     error))
             {
               initialized = TRUE;
 
+              core->cur_coords   = g_array_index (coords, GimpCoords, 0);
               core->start_coords = g_array_index (coords, GimpCoords, 0);
               core->last_coords  = g_array_index (coords, GimpCoords, 0);
 
@@ -272,6 +298,13 @@ gimp_paint_core_stroke_vectors (GimpPaintCore    *core,
               gimp_paint_core_paint (core, drawable, paint_options,
                                      GIMP_PAINT_STATE_FINISH, 0);
             }
+          else
+            {
+              if (coords)
+                g_array_free (coords, TRUE);
+
+              break;
+            }
         }
 
       if (coords)
@@ -285,5 +318,44 @@ gimp_paint_core_stroke_vectors (GimpPaintCore    *core,
       gimp_paint_core_cleanup (core);
     }
 
-  return TRUE;
+  return initialized;
+}
+
+static void
+gimp_paint_core_stroke_emulate_dynamics (GimpCoords *coords,
+                                         gint        length)
+{
+  const gint ramp_length = length / 3;
+
+  /* Calculate and create pressure ramp parameters */
+  if (ramp_length > 0)
+    {
+      gdouble slope = 1.0 / (gdouble) (ramp_length);
+      gint    i;
+
+      /* Calculate pressure start ramp */
+      for (i = 0; i < ramp_length; i++)
+        {
+          coords[i].pressure =  i * slope;
+        }
+
+      /* Calculate pressure end ramp */
+      for (i = length - ramp_length; i < length; i++)
+        {
+          coords[i].pressure = 1.0 - (i - (length - ramp_length)) * slope;
+        }
+    }
+
+  /* Calculate and create velocity ramp parameters */
+  if (length > 0)
+    {
+      gdouble slope = 1.0 / length;
+      gint    i;
+
+      /* Calculate velocity end ramp */
+      for (i = 0; i < length; i++)
+        {
+          coords[i].velocity = i * slope;
+        }
+    }
 }

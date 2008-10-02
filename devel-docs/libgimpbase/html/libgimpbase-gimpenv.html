@@ -14,6 +14,7 @@
 <link rel="index" href="libgimpbase-index.html" title="Index">
 <link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpbase-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimpbase-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -73,7 +74,9 @@ configuration files.
 <pre class="programlisting">void                gimp_env_init                       (gboolean plug_in);</pre>
 <p>
 You don't need to care about this function. It is being called for
-you automatically (by means of the <code class="function">MAIN()</code> macro that every plug-in
+you automatically (by means of the <a
+href="../libgimp/libgimp-gimp.html#MAIN:CAPS"
+><code class="function">MAIN()</code></a> macro that every plug-in
 runs). Calling it again will cause a fatal error.</p>
 <p>
 
@@ -245,13 +248,12 @@ UTF-8.).</p>
 <div class="refsect2" lang="en">
 <a name="gimp-user-directory"></a><h3>gimp_user_directory ()</h3>
 <pre class="programlisting">const gchar*        gimp_user_directory                 (<a class="link" href="libgimpbase-gimpbaseenums.html#GimpUserDirectory" title="enum GimpUserDirectory">GimpUserDirectory</a> type);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_user_directory</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
-Identifies special folders used frequently by applications, but
-which may not have the same name or location on any given system.
-</p>
-<p>
-Plug-ins may want to use this function to add shortcuts to such
-folders to a file-chooser.</p>
+This procedure is deprecated! Use <code class="function">g_get_user_special_dir()</code> instead.</p>
 <p>
 
 </p>

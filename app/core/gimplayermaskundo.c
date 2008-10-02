@@ -119,7 +119,7 @@ gimp_layer_mask_undo_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_LAYER_MASK:
-      layer_mask_undo->layer_mask = (GimpLayerMask *) g_value_dup_object (value);
+      layer_mask_undo->layer_mask = g_value_dup_object (value);
       break;
 
     default:
@@ -188,7 +188,7 @@ gimp_layer_mask_undo_pop (GimpUndo            *undo,
     {
       /*  restore layer mask  */
 
-      gimp_layer_add_mask (layer, layer_mask_undo->layer_mask, FALSE);
+      gimp_layer_add_mask (layer, layer_mask_undo->layer_mask, FALSE, NULL);
 
       GIMP_ITEM (layer_mask_undo->layer_mask)->removed = FALSE;
     }

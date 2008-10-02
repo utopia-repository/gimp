@@ -87,6 +87,7 @@ struct _GimpDialogFactory
   GList                 *session_infos;
 
   GList                 *open_dialogs;
+  gboolean               toggle_visibility;
 };
 
 struct _GimpDialogFactoryClass
@@ -94,6 +95,11 @@ struct _GimpDialogFactoryClass
   GimpObjectClass  parent_class;
 
   GHashTable      *factories;
+
+  void (* dock_added)   (GimpDialogFactory *factory,
+                         GimpDock          *dock);
+  void (* dock_removed) (GimpDialogFactory *factory,
+                         GimpDock          *dock);
 };
 
 
@@ -102,7 +108,8 @@ GType               gimp_dialog_factory_get_type  (void) G_GNUC_CONST;
 GimpDialogFactory * gimp_dialog_factory_new       (const gchar       *name,
                                                    GimpContext       *context,
                                                    GimpMenuFactory   *menu_factory,
-                                                   GimpDialogNewFunc  new_dock_func);
+                                                   GimpDialogNewFunc  new_dock_func,
+                                                   gboolean           toggle_visibility);
 
 GimpDialogFactory * gimp_dialog_factory_from_name (const gchar       *name);
 

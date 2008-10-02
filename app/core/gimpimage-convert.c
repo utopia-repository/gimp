@@ -690,15 +690,15 @@ remap_indexed_layer (GimpLayer    *layer,
   gpointer     pr;
   gboolean     has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
-  pixel_region_init (&destPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&destPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      TRUE);
 
   for (pr = pixel_regions_register (2, &srcPR, &destPR);
@@ -751,18 +751,19 @@ color_quicksort (const void *c1,
     return 0;
 }
 
-void
-gimp_image_convert (GimpImage              *image,
-                    GimpImageBaseType       new_type,
+gboolean
+gimp_image_convert (GimpImage               *image,
+                    GimpImageBaseType        new_type,
                     /* The following are only used for new_type == GIMP_INDEXED
                      */
-                    gint                    num_cols,
-                    GimpConvertDitherType   dither,
-                    gboolean                alpha_dither,
-                    gboolean                remove_dups,
-                    GimpConvertPaletteType  palette_type,
-                    GimpPalette            *custom_palette,
-                    GimpProgress           *progress)
+                    gint                     num_cols,
+                    GimpConvertDitherType    dither,
+                    gboolean                 alpha_dither,
+                    gboolean                 remove_dups,
+                    GimpConvertPaletteType   palette_type,
+                    GimpPalette             *custom_palette,
+                    GimpProgress            *progress,
+                    GError                 **error)
 {
   QuantizeObj       *quantobj = NULL;
   GimpImageBaseType  old_type;
@@ -770,25 +771,26 @@ gimp_image_convert (GimpImage              *image,
   const gchar       *undo_desc = NULL;
   gint               nth_layer, n_layers;
 
-  g_return_if_fail (GIMP_IS_IMAGE (image));
-  g_return_if_fail (new_type != gimp_image_base_type (image));
-  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_return_val_if_fail (new_type != gimp_image_base_type (image), FALSE);
+  g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if (palette_type == GIMP_CUSTOM_PALETTE)
     {
-      g_return_if_fail (custom_palette == NULL ||
-                        GIMP_IS_PALETTE (custom_palette));
-      g_return_if_fail (custom_palette == NULL ||
-                        custom_palette->n_colors <= 256);
+      g_return_val_if_fail (custom_palette == NULL ||
+                            GIMP_IS_PALETTE (custom_palette), FALSE);
+      g_return_val_if_fail (custom_palette == NULL ||
+                            custom_palette->n_colors <= 256, FALSE);
 
       if (! custom_palette)
         palette_type = GIMP_MONO_PALETTE;
 
       if (custom_palette->n_colors < 1)
         {
-          gimp_message (image->gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
-                        _("Cannot convert image: palette is empty."));
-          return;
+          g_set_error (error, 0, 0,
+                       _("Cannot convert image: palette is empty."));
+          return FALSE;
         }
     }
 
@@ -825,7 +827,7 @@ gimp_image_convert (GimpImage              *image,
   gimp_image_undo_push_image_type (image, NULL);
 
   /*  Set the new base type  */
-  old_type = image->base_type;
+  old_type = gimp_image_base_type (image);
 
   g_object_set (image, "base-type", new_type, NULL);
 
@@ -966,8 +968,8 @@ gimp_image_convert (GimpImage              *image,
       if (gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
         new_layer_type = GIMP_IMAGE_TYPE_WITH_ALPHA (new_layer_type);
 
-      new_tiles = tile_manager_new (GIMP_ITEM (layer)->width,
-                                    GIMP_ITEM (layer)->height,
+      new_tiles = tile_manager_new (gimp_item_width  (GIMP_ITEM (layer)),
+                                    gimp_item_height (GIMP_ITEM (layer)),
                                     GIMP_IMAGE_TYPE_BYTES (new_layer_type));
 
       switch (new_type)
@@ -1004,12 +1006,9 @@ gimp_image_convert (GimpImage              *image,
       break;
 
     case GIMP_INDEXED:
-      gimp_image_undo_push_image_colormap (image, NULL);
-
-      image->cmap = g_new0 (guchar, GIMP_IMAGE_COLORMAP_SIZE);
-
       if (remove_dups && (palette_type != GIMP_MAKE_PALETTE))
         {
+          guchar colormap[GIMP_IMAGE_COLORMAP_SIZE];
           gint   i, j;
           guchar old_palette[256 * 3];
           guchar new_palette[256 * 3];
@@ -1044,28 +1043,28 @@ gimp_image_convert (GimpImage              *image,
 
           for (i = 0, j = 0; i < num_entries; i++)
             {
-              image->cmap[j] = new_palette[j]; j++;
-              image->cmap[j] = new_palette[j]; j++;
-              image->cmap[j] = new_palette[j]; j++;
+              colormap[j] = new_palette[j]; j++;
+              colormap[j] = new_palette[j]; j++;
+              colormap[j] = new_palette[j]; j++;
             }
 
-          image->num_cols = num_entries;
+          gimp_image_set_colormap (image, colormap, num_entries, TRUE);
         }
       else
         {
-          gint i,j;
+          guchar colormap[GIMP_IMAGE_COLORMAP_SIZE];
+          gint   i, j;
 
           for (i = 0, j = 0; i < quantobj->actual_number_of_colors; i++)
             {
-              image->cmap[j++] = quantobj->cmap[i].red;
-              image->cmap[j++] = quantobj->cmap[i].green;
-              image->cmap[j++] = quantobj->cmap[i].blue;
+              colormap[j++] = quantobj->cmap[i].red;
+              colormap[j++] = quantobj->cmap[i].green;
+              colormap[j++] = quantobj->cmap[i].blue;
             }
 
-          image->num_cols = quantobj->actual_number_of_colors;
+          gimp_image_set_colormap (image, colormap,
+                                   quantobj->actual_number_of_colors, TRUE);
         }
-
-      gimp_image_colormap_changed (image, -1);
       break;
     }
 
@@ -1083,6 +1082,8 @@ gimp_image_convert (GimpImage              *image,
   g_object_thaw_notify (G_OBJECT (image));
 
   gimp_unset_busy (image->gimp);
+
+  return TRUE;
 }
 
 
@@ -1117,10 +1118,10 @@ generate_histogram_gray (CFHistogram  histogram,
   gpointer     pr;
   gboolean     has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
 
   for (pr = pixel_regions_register (1, &srcPR);
@@ -1176,13 +1177,14 @@ generate_histogram_rgb (CFHistogram   histogram,
 
   /*  g_printerr ("col_limit = %d, nfc = %d\n", col_limit, num_found_cols); */
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
 
-  layer_size = GIMP_ITEM (layer)->width * GIMP_ITEM (layer)->height;
+  layer_size = (gimp_item_width  (GIMP_ITEM (layer)) *
+                gimp_item_height (GIMP_ITEM (layer)));
 
   if (progress)
     gimp_progress_set_value (progress, 0.0);
@@ -2772,15 +2774,15 @@ median_cut_pass2_no_dither_gray (QuantizeObj *quantobj,
 
   has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
   pixel_region_init (&destPR, new_tiles,
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      TRUE);
 
   for (pr = pixel_regions_register (2, &srcPR, &destPR);
@@ -2869,15 +2871,15 @@ median_cut_pass2_fixed_dither_gray (QuantizeObj *quantobj,
 
   has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
   pixel_region_init (&destPR, new_tiles,
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      TRUE);
 
   for (pr = pixel_regions_register (2, &srcPR, &destPR);
@@ -3029,18 +3031,19 @@ median_cut_pass2_no_dither_rgb (QuantizeObj *quantobj,
 
   has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
   pixel_region_init (&destPR, new_tiles,
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      TRUE);
 
-  layer_size = GIMP_ITEM (layer)->width * GIMP_ITEM (layer)->height;
+  layer_size = (gimp_item_width  (GIMP_ITEM (layer)) *
+                gimp_item_height (GIMP_ITEM (layer)));
 
   for (pr = pixel_regions_register (2, &srcPR, &destPR);
        pr != NULL;
@@ -3153,18 +3156,19 @@ median_cut_pass2_fixed_dither_rgb (QuantizeObj *quantobj,
 
   has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
   pixel_region_init (&destPR, new_tiles,
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      TRUE);
 
-  layer_size = GIMP_ITEM (layer)->width * GIMP_ITEM (layer)->height;
+  layer_size = (gimp_item_width  (GIMP_ITEM (layer)) *
+                gimp_item_height (GIMP_ITEM (layer)));
 
   for (pr = pixel_regions_register (2, &srcPR, &destPR);
        pr != NULL;
@@ -3346,14 +3350,14 @@ median_cut_pass2_nodestruct_dither_rgb (QuantizeObj *quantobj,
 
   has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
   pixel_region_init (&destPR, new_tiles, 0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      TRUE);
 
   for (pr = pixel_regions_register (2, &srcPR, &destPR);
@@ -3560,20 +3564,20 @@ median_cut_pass2_fs_dither_gray (QuantizeObj *quantobj,
 
   has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
   pixel_region_init (&destPR, new_tiles, 0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      TRUE);
 
   src_bytes  = GIMP_DRAWABLE (layer)->bytes;
   dest_bytes = tile_manager_bpp (new_tiles);
-  width      = GIMP_ITEM (layer)->width;
-  height     = GIMP_ITEM (layer)->height;
+  width      = gimp_item_width  (GIMP_ITEM (layer));
+  height     = gimp_item_height (GIMP_ITEM (layer));
 
   error_limiter = init_error_limit (quantobj->error_freedom);
   range_limiter = range_array + 256;
@@ -3826,20 +3830,20 @@ median_cut_pass2_fs_dither_rgb (QuantizeObj *quantobj,
 
   has_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (layer)->tiles,
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                      0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      FALSE);
   pixel_region_init (&destPR, new_tiles, 0, 0,
-                     GIMP_ITEM (layer)->width,
-                     GIMP_ITEM (layer)->height,
+                     gimp_item_width  (GIMP_ITEM (layer)),
+                     gimp_item_height (GIMP_ITEM (layer)),
                      TRUE);
 
   src_bytes  = GIMP_DRAWABLE(layer)->bytes;
   dest_bytes = tile_manager_bpp (new_tiles);
-  width      = GIMP_ITEM (layer)->width;
-  height     = GIMP_ITEM (layer)->height;
+  width      = gimp_item_width  (GIMP_ITEM (layer));
+  height     = gimp_item_height (GIMP_ITEM (layer));
 
   error_limiter = init_error_limit (quantobj->error_freedom);
   range_limiter = range_array + 256;
@@ -4153,18 +4157,18 @@ delete_median_cut (QuantizeObj *quantobj)
 
 
 void
-gimp_image_convert_set_dither_matrix (gint          width,
-                                      gint          height,
-                                      const guchar *source)
+gimp_image_convert_set_dither_matrix (const guchar *matrix,
+                                      gint          width,
+                                      gint          height)
 {
   gint x;
   gint y;
 
-  /* if source is invalid, restore the default matrix */
-  if (source == NULL || width == 0 || height == 0)
+  /* if matrix is invalid, restore the default matrix */
+  if (matrix == NULL || width == 0 || height == 0)
     {
-      source = (guchar *) (&DM_ORIGINAL);
-      width = DM_WIDTH;
+      matrix = (const guchar *) DM_ORIGINAL;
+      width  = DM_WIDTH;
       height = DM_HEIGHT;
     }
 
@@ -4175,8 +4179,8 @@ gimp_image_convert_set_dither_matrix (gint          width,
     {
       for (x = 0; x < DM_WIDTH; x++)
         {
-          DM[x][y] = source[((x % width) * height) + (y % height)];
-       }
+          DM[x][y] = matrix[((x % width) * height) + (y % height)];
+        }
     }
 }
 

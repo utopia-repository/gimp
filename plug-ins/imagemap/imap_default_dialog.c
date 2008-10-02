@@ -93,11 +93,9 @@ make_default_dialog (const gchar *title)
    data->apply_cb = NULL;
    data->cancel_cb = NULL;
 
-   data->dialog = gimp_dialog_new (title, "imagemap",
+   data->dialog = gimp_dialog_new (title, PLUG_IN_BINARY,
                                    get_dialog(), 0,
-                                   /* gimp_standard_help_func,
-                                      "plug-in-imagemap", */
-                                   gimp_standard_help_func, NULL,
+                                   gimp_standard_help_func, PLUG_IN_PROC,
                                    NULL);
 
    data->apply = gtk_dialog_add_button (GTK_DIALOG (data->dialog),
@@ -162,7 +160,7 @@ default_dialog_set_title(DefaultDialog_t *dialog, const gchar *title)
 }
 
 void
-default_dialog_set_label(DefaultDialog_t *dialog, gchar *text)
+default_dialog_set_label(DefaultDialog_t *dialog, const gchar *text)
 {
    GtkWidget *label = gtk_label_new(text);
 

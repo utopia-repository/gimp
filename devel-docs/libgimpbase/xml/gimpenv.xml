@@ -188,16 +188,12 @@ UTF-8.).</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The top directory for GIMP config files.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="gimp-user-directory" role="function" condition="since:GIMP 2.4">
+<refsect2 id="gimp-user-directory" role="function" condition="deprecated:|since:GIMP 2.4">
 <title>gimp_user_directory ()</title>
-<indexterm zone="gimp-user-directory" role="GIMP 2.4"><primary>gimp_user_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_user_directory                 (<link linkend="GimpUserDirectory">GimpUserDirectory</link> type);</programlisting>
+<indexterm zone="gimp-user-directory" role="deprecated"><primary>gimp_user_directory</primary></indexterm><indexterm zone="gimp-user-directory" role="GIMP 2.4"><primary>gimp_user_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_user_directory                 (<link linkend="GimpUserDirectory">GimpUserDirectory</link> type);</programlisting>
+<warning><para><literal>gimp_user_directory</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
-Identifies special folders used frequently by applications, but
-which may not have the same name or location on any given system.
-</para>
-<para>
-Plug-ins may want to use this function to add shortcuts to such
-folders to a file-chooser.</para>
+This procedure is deprecated! Use <link linkend="g-get-user-special-dir"><function>g_get_user_special_dir()</function></link> instead.</para>
 <para>
 
 </para><variablelist role="params">

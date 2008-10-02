@@ -39,7 +39,7 @@
  * Ported to GIMP Plug-in API 1.0
  *    by Eiichi Takamori <taka@ma1.seikyou.ne.jp>
  *
- * $Id: plasma.c 23603 2007-09-21 13:27:33Z neo $
+ * $Id: plasma.c 26252 2008-07-21 13:41:00Z mitch $
  *
  * A few functions names and their order are changed :)
  * Plasma implementation almost hasn't been changed.
@@ -319,8 +319,9 @@ plasma_dialog (GimpDrawable *drawable)
   gtk_widget_show (main_vbox);
 
   preview = gimp_aspect_preview_new (drawable, NULL);
-  gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
+  gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
+
   g_signal_connect_swapped (preview, "invalidated",
                             G_CALLBACK (plasma_seed_changed_callback),
                             drawable);

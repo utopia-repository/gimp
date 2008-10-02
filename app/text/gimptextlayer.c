@@ -61,46 +61,46 @@ enum
   PROP_MODIFIED
 };
 
-static void       gimp_text_layer_finalize       (GObject        *object);
-static void       gimp_text_layer_get_property   (GObject        *object,
-                                                  guint           property_id,
-                                                  GValue         *value,
-                                                  GParamSpec     *pspec);
-static void       gimp_text_layer_set_property   (GObject        *object,
-                                                  guint           property_id,
-                                                  const GValue   *value,
-                                                  GParamSpec     *pspec);
+static void       gimp_text_layer_finalize       (GObject         *object);
+static void       gimp_text_layer_get_property   (GObject         *object,
+                                                  guint            property_id,
+                                                  GValue          *value,
+                                                  GParamSpec      *pspec);
+static void       gimp_text_layer_set_property   (GObject         *object,
+                                                  guint            property_id,
+                                                  const GValue    *value,
+                                                  GParamSpec      *pspec);
 
-static gint64     gimp_text_layer_get_memsize    (GimpObject     *object,
-                                                  gint64         *gui_size);
+static gint64     gimp_text_layer_get_memsize    (GimpObject      *object,
+                                                  gint64          *gui_size);
 
-static GimpItem * gimp_text_layer_duplicate      (GimpItem       *item,
-                                                  GType           new_type,
-                                                  gboolean        add_alpha);
-static gboolean   gimp_text_layer_rename         (GimpItem       *item,
-                                                  const gchar    *new_name,
-                                                  const gchar    *undo_desc);
+static GimpItem * gimp_text_layer_duplicate      (GimpItem        *item,
+                                                  GType            new_type);
+static gboolean   gimp_text_layer_rename         (GimpItem        *item,
+                                                  const gchar     *new_name,
+                                                  const gchar     *undo_desc,
+                                                  GError         **error);
 
-static void       gimp_text_layer_set_tiles      (GimpDrawable   *drawable,
-                                                  gboolean        push_undo,
-                                                  const gchar    *undo_desc,
-                                                  TileManager    *tiles,
-                                                  GimpImageType   type,
-                                                  gint            offset_x,
-                                                  gint            offset_y);
-static void       gimp_text_layer_push_undo      (GimpDrawable   *drawable,
-                                                  const gchar    *undo_desc,
-                                                  TileManager    *tiles,
-                                                  gboolean        sparse,
-                                                  gint            x,
-                                                  gint            y,
-                                                  gint            width,
-                                                  gint            height);
+static void       gimp_text_layer_set_tiles      (GimpDrawable    *drawable,
+                                                  gboolean         push_undo,
+                                                  const gchar     *undo_desc,
+                                                  TileManager     *tiles,
+                                                  GimpImageType    type,
+                                                  gint             offset_x,
+                                                  gint             offset_y);
+static void       gimp_text_layer_push_undo      (GimpDrawable    *drawable,
+                                                  const gchar     *undo_desc,
+                                                  TileManager     *tiles,
+                                                  gboolean         sparse,
+                                                  gint             x,
+                                                  gint             y,
+                                                  gint             width,
+                                                  gint             height);
 
-static void       gimp_text_layer_text_notify    (GimpTextLayer  *layer);
-static gboolean   gimp_text_layer_render         (GimpTextLayer  *layer);
-static void       gimp_text_layer_render_layout  (GimpTextLayer  *layer,
-                                                  GimpTextLayout *layout);
+static void       gimp_text_layer_text_notify    (GimpTextLayer   *layer);
+static gboolean   gimp_text_layer_render         (GimpTextLayer   *layer);
+static void       gimp_text_layer_render_layout  (GimpTextLayer   *layer,
+                                                  GimpTextLayout  *layout);
 
 
 G_DEFINE_TYPE (GimpTextLayer, gimp_text_layer, GIMP_TYPE_LAYER)
@@ -226,14 +226,11 @@ static gint64
 gimp_text_layer_get_memsize (GimpObject *object,
                              gint64     *gui_size)
 {
-  GimpTextLayer *text_layer;
-  gint64         memsize = 0;
+  GimpTextLayer *text_layer = GIMP_TEXT_LAYER (object);
+  gint64         memsize    = 0;
 
-  text_layer = GIMP_TEXT_LAYER (object);
-
-  if (text_layer->text)
-    memsize += gimp_object_get_memsize (GIMP_OBJECT (text_layer->text),
-                                        gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (text_layer->text),
+                                      gui_size);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -241,16 +238,13 @@ gimp_text_layer_get_memsize (GimpObject *object,
 
 static GimpItem *
 gimp_text_layer_duplicate (GimpItem *item,
-                           GType     new_type,
-                           gboolean  add_alpha)
+                           GType     new_type)
 {
   GimpItem *new_item;
 
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_DRAWABLE), NULL);
 
-  new_item = GIMP_ITEM_CLASS (parent_class)->duplicate (item,
-                                                        new_type,
-                                                        add_alpha);
+  new_item = GIMP_ITEM_CLASS (parent_class)->duplicate (item, new_type);
 
   if (GIMP_IS_TEXT_LAYER (new_item))
     {
@@ -277,11 +271,12 @@ gimp_text_layer_duplicate (GimpItem *item,
 }
 
 static gboolean
-gimp_text_layer_rename (GimpItem    *item,
-                        const gchar *new_name,
-                        const gchar *undo_desc)
+gimp_text_layer_rename (GimpItem     *item,
+                        const gchar  *new_name,
+                        const gchar  *undo_desc,
+                        GError      **error)
 {
-  if (GIMP_ITEM_CLASS (parent_class)->rename (item, new_name, undo_desc))
+  if (GIMP_ITEM_CLASS (parent_class)->rename (item, new_name, undo_desc, error))
     {
       g_object_set (item, "auto-rename", FALSE, NULL);
 
@@ -565,15 +560,16 @@ gimp_text_layer_render (GimpTextLayer *layer)
 
       tile_manager_unref (new_tiles);
 
-      if (GIMP_LAYER (layer)->mask)
+      if (gimp_layer_get_mask (GIMP_LAYER (layer)))
         {
+          GimpLayerMask *mask = gimp_layer_get_mask (GIMP_LAYER (layer));
+
           static GimpContext *unused_eek = NULL;
 
           if (! unused_eek)
             unused_eek = gimp_context_new (image->gimp, "eek", NULL);
 
-          gimp_item_resize (GIMP_ITEM (GIMP_LAYER (layer)->mask), unused_eek,
-                            width, height, 0, 0);
+          gimp_item_resize (GIMP_ITEM (mask), unused_eek, width, height, 0, 0);
         }
     }
 
@@ -626,7 +622,7 @@ gimp_text_layer_render_layout (GimpTextLayer  *layer,
 
   g_free (bitmap.buffer);
 
-  pixel_region_init (&textPR, drawable->tiles,
+  pixel_region_init (&textPR, gimp_drawable_get_tiles (drawable),
                      0, 0, bitmap.width, bitmap.rows, TRUE);
   pixel_region_init (&maskPR, mask,
                      0, 0, bitmap.width, bitmap.rows, FALSE);

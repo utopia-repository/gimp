@@ -200,7 +200,7 @@ vectors_raise_cmd_callback (GtkAction *action,
   GimpVectors *vectors;
   return_if_no_vectors (image, vectors, data);
 
-  gimp_image_raise_vectors (image, vectors);
+  gimp_image_raise_vectors (image, vectors, NULL);
   gimp_image_flush (image);
 }
 
@@ -224,7 +224,7 @@ vectors_lower_cmd_callback (GtkAction *action,
   GimpVectors *vectors;
   return_if_no_vectors (image, vectors, data);
 
-  gimp_image_lower_vectors (image, vectors);
+  gimp_image_lower_vectors (image, vectors, NULL);
   gimp_image_flush (image);
 }
 
@@ -249,10 +249,8 @@ vectors_duplicate_cmd_callback (GtkAction *action,
   GimpVectors *new_vectors;
   return_if_no_vectors (image, vectors, data);
 
-  new_vectors =
-    GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
-                                       G_TYPE_FROM_INSTANCE (vectors),
-                                       TRUE));
+  new_vectors = GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
+                                                   G_TYPE_FROM_INSTANCE (vectors)));
   gimp_image_add_vectors (image, new_vectors, -1);
   gimp_image_flush (image);
 }
@@ -275,9 +273,19 @@ vectors_merge_visible_cmd_callback (GtkAction *action,
 {
   GimpImage   *image;
   GimpVectors *vectors;
+  GtkWidget   *widget;
+  GError      *error = NULL;
   return_if_no_vectors (image, vectors, data);
+  return_if_no_widget (widget, data);
 
-  gimp_image_merge_visible_vectors (image);
+  if (! gimp_image_merge_visible_vectors (image, &error))
+    {
+      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                    error->message);
+      g_clear_error (&error);
+      return;
+    }
+
   gimp_image_flush (image);
 }
 
@@ -310,6 +318,7 @@ vectors_selection_to_vectors_cmd_callback (GtkAction *action,
   GimpProcedure *procedure;
   GValueArray   *args;
   GimpDisplay   *display;
+  GError        *error = NULL;
   return_if_no_image (image, data);
   return_if_no_widget (widget, data);
 
@@ -338,9 +347,16 @@ vectors_selection_to_vectors_cmd_callback (GtkAction *action,
   gimp_procedure_execute_async (procedure, image->gimp,
                                 action_data_get_context (data),
                                 GIMP_PROGRESS (display), args,
-                                GIMP_OBJECT (display));
+                                GIMP_OBJECT (display), &error);
 
   g_value_array_free (args);
+
+  if (error)
+    {
+      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_ERROR,
+                    "%s", error->message);
+      g_error_free (error);
+    }
 }
 
 void
@@ -383,6 +399,7 @@ vectors_stroke_last_vals_cmd_callback (GtkAction *action,
   GimpContext    *context;
   GtkWidget      *widget;
   GimpStrokeDesc *desc;
+  GError         *error = NULL;
   return_if_no_vectors (image, vectors, data);
   return_if_no_context (context, data);
   return_if_no_widget (widget, data);
@@ -404,11 +421,19 @@ vectors_stroke_last_vals_cmd_callback (GtkAction *action,
   else
     desc = gimp_stroke_desc_new (image->gimp, context);
 
-  gimp_item_stroke (GIMP_ITEM (vectors), drawable, context, desc, FALSE, NULL);
+  if (! gimp_item_stroke (GIMP_ITEM (vectors), drawable, context, desc, FALSE,
+                          NULL, &error))
+    {
+      gimp_message (image->gimp, G_OBJECT (widget), GIMP_MESSAGE_WARNING,
+                    error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      gimp_image_flush (image);
+    }
 
   g_object_unref (desc);
-
-  gimp_image_flush (image);
 }
 
 void
@@ -600,7 +625,7 @@ vectors_edit_vectors_response (GtkWidget            *widget,
 
       if (strcmp (new_name, gimp_object_get_name (GIMP_OBJECT (vectors))))
         {
-          gimp_item_rename (GIMP_ITEM (vectors), new_name);
+          gimp_item_rename (GIMP_ITEM (vectors), new_name, NULL);
           gimp_image_flush (options->image);
         }
     }

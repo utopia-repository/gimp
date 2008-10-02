@@ -36,6 +36,7 @@
 
 
 #define PLUG_IN_PROC      "plug-in-flame"
+#define PLUG_IN_BINARY    "flame"
 
 #define VARIATION_SAME    (-2)
 
@@ -642,7 +643,7 @@ edit_callback (GtkWidget *widget,
       GtkObject *adj;
       gint       i, j;
 
-      edit_dialog = gimp_dialog_new (_("Edit Flame"), "flame",
+      edit_dialog = gimp_dialog_new (_("Edit Flame"), PLUG_IN_BINARY,
                                      parent, GTK_DIALOG_DESTROY_WITH_PARENT,
                                      gimp_standard_help_func, PLUG_IN_PROC,
 
@@ -733,7 +734,8 @@ edit_callback (GtkWidget *widget,
       gtk_widget_show (hbox);
 
       button = gtk_button_new_with_mnemonic( _("_Randomize"));
-      gtk_misc_set_padding (GTK_MISC (GTK_BIN (button)->child), 2, 0);
+      gtk_misc_set_padding (GTK_MISC (gtk_bin_get_child (GTK_BIN (button))),
+                            2, 0);
       gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
       gtk_widget_show (button);
 
@@ -741,15 +743,37 @@ edit_callback (GtkWidget *widget,
                                 G_CALLBACK (randomize_callback),
                                 NULL);
 
-      combo = gimp_int_combo_box_new (_("Same"),       VARIATION_SAME,
-                                      _("Random"),     variation_random,
-                                      _("Linear"),     0,
-                                      _("Sinusoidal"), 1,
-                                      _("Spherical"),  2,
-                                      _("Swirl"),      3,
-                                      _("Horseshoe"),  4,
-                                      _("Polar"),      5,
-                                      _("Bent"),       6,
+      combo = gimp_int_combo_box_new (_("Same"),         VARIATION_SAME,
+                                      _("Random"),       variation_random,
+                                      _("Linear"),       0,
+                                      _("Sinusoidal"),   1,
+                                      _("Spherical"),    2,
+                                      _("Swirl"),        3,
+                                      _("Horseshoe"),    4,
+                                      _("Polar"),        5,
+                                      _("Bent"),         6,
+                                      _("Handkerchief"), 7,
+                                      _("Heart"),        8,
+                                      _("Disc"),         9,
+                                      _("Spiral"),       10,
+                                      _("Hyperbolic"),   11,
+                                      _("Diamond"),      12,
+                                      _("Ex"),           13,
+                                      _("Julia"),        14,
+                                      _("Waves"),        15,
+                                      _("Fisheye"),      16,
+                                      _("Popcorn"),      17,
+                                      _("Exponential"),  18,
+                                      _("Power"),        19,
+                                      _("Cosine"),       20,
+                                      _("Rings"),        21,
+                                      _("Fan"),          22,
+                                      _("Eyefish"),      23,
+                                      _("Bubble"),       24,
+                                      _("Cylinder"),     25,
+                                      _("Noise"),        26,
+                                      _("Blur"),         27,
+                                      _("Gaussian"),     28,
                                       NULL);
 
       gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (combo),
@@ -939,9 +963,9 @@ flame_dialog (void)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("flame", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Flame"), "flame",
+  dialog = gimp_dialog_new (_("Flame"), PLUG_IN_BINARY,
                             NULL, 0,
                             gimp_standard_help_func, PLUG_IN_PROC,
 

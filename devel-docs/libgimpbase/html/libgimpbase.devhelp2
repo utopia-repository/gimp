@@ -23,6 +23,7 @@
     <sub name="Index" link="libgimpbase-index.html"/>
     <sub name="Index of new symbols in GIMP 2.2" link="libgimpbase-index-new-in-2-2.html"/>
     <sub name="Index of new symbols in GIMP 2.4" link="libgimpbase-index-new-in-2-4.html"/>
+    <sub name="Index of new symbols in GIMP 2.6" link="libgimpbase-index-new-in-2-6.html"/>
     <sub name="Index of deprecated symbols" link="libgimpbase-index-deprecated.html"/>
   </chapters>
   <functions>
@@ -46,6 +47,7 @@
     <keyword type="enum" name="enum GimpMessageHandlerType" link="libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"/>
     <keyword type="enum" name="enum GimpPaintApplicationMode" link="libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"/>
     <keyword type="enum" name="enum GimpPDBArgType" link="libgimpbase-gimpbaseenums.html#GimpPDBArgType"/>
+    <keyword type="enum" name="enum GimpPDBErrorHandler" link="libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"/>
     <keyword type="enum" name="enum GimpPDBProcType" link="libgimpbase-gimpbaseenums.html#GimpPDBProcType"/>
     <keyword type="enum" name="enum GimpPDBStatusType" link="libgimpbase-gimpbaseenums.html#GimpPDBStatusType"/>
     <keyword type="enum" name="enum GimpProgressCommand" link="libgimpbase-gimpbaseenums.html#GimpProgressCommand"/>
@@ -53,10 +55,12 @@
     <keyword type="enum" name="enum GimpRunMode" link="libgimpbase-gimpbaseenums.html#GimpRunMode"/>
     <keyword type="enum" name="enum GimpSizeType" link="libgimpbase-gimpbaseenums.html#GimpSizeType"/>
     <keyword type="enum" name="enum GimpStackTraceMode" link="libgimpbase-gimpbaseenums.html#GimpStackTraceMode"/>
+    <keyword type="enum" name="enum GimpTextDirection" link="libgimpbase-gimpbaseenums.html#GimpTextDirection"/>
+    <keyword type="enum" name="enum GimpTextJustification" link="libgimpbase-gimpbaseenums.html#GimpTextJustification"/>
     <keyword type="enum" name="enum GimpTransferMode" link="libgimpbase-gimpbaseenums.html#GimpTransferMode"/>
     <keyword type="enum" name="enum GimpTransformDirection" link="libgimpbase-gimpbaseenums.html#GimpTransformDirection"/>
     <keyword type="enum" name="enum GimpTransformResize" link="libgimpbase-gimpbaseenums.html#GimpTransformResize"/>
-    <keyword type="enum" name="enum GimpUserDirectory" link="libgimpbase-gimpbaseenums.html#GimpUserDirectory"/>
+    <keyword type="enum" name="enum GimpUserDirectory" link="libgimpbase-gimpbaseenums.html#GimpUserDirectory" deprecated=""/>
     <keyword type="enum" name="enum GimpVectorsStrokeType" link="libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"/>
     <keyword type="struct" name="GimpEnumDesc" link="libgimpbase-gimpbasetypes.html#GimpEnumDesc"/>
     <keyword type="struct" name="GimpFlagsDesc" link="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"/>
@@ -103,7 +107,7 @@
     <keyword type="function" name="gimp_locale_directory ()" link="libgimpbase-gimpenv.html#gimp-locale-directory"/>
     <keyword type="function" name="gimp_plug_in_directory ()" link="libgimpbase-gimpenv.html#gimp-plug-in-directory"/>
     <keyword type="function" name="gimp_sysconf_directory ()" link="libgimpbase-gimpenv.html#gimp-sysconf-directory"/>
-    <keyword type="function" name="gimp_user_directory ()" link="libgimpbase-gimpenv.html#gimp-user-directory" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_user_directory ()" link="libgimpbase-gimpenv.html#gimp-user-directory" deprecated="" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_personal_rc_file ()" link="libgimpbase-gimpenv.html#gimp-personal-rc-file"/>
     <keyword type="function" name="gimp_gtkrc ()" link="libgimpbase-gimpenv.html#gimp-gtkrc"/>
     <keyword type="function" name="gimp_path_parse ()" link="libgimpbase-gimpenv.html#gimp-path-parse"/>
@@ -112,7 +116,7 @@
     <keyword type="function" name="gimp_path_get_user_writable_dir ()" link="libgimpbase-gimpenv.html#gimp-path-get-user-writable-dir"/>
     <keyword type="function" name="gimp_memsize_serialize ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-serialize" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_memsize_deserialize ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_memsize_to_string ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-to-string"/>
+    <keyword type="function" name="gimp_memsize_to_string ()" link="libgimpbase-gimpmemsize.html#gimp-memsize-to-string" deprecated=""/>
     <keyword type="macro" name="GIMP_TYPE_MEMSIZE" link="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS"/>
     <keyword type="macro" name="GIMP_TYPE_PARAM_MEMSIZE" link="libgimpbase-gimpmemsize.html#GIMP-TYPE-PARAM-MEMSIZE:CAPS"/>
     <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MEMSIZE()" link="libgimpbase-gimpmemsize.html#GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS"/>

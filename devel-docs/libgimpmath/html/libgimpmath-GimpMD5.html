@@ -14,6 +14,7 @@
 <link rel="index" href="libgimpmath-index.html" title="Index">
 <link rel="index" href="libgimpmath-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpmath-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpmath-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimpmath-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -60,16 +61,11 @@ void                <a class="link" href="libgimpmath-GimpMD5.html#gimp-md5-get-
                                                          gint buffer_size,
                                                          guchar digest[16]);</pre>
 <p>
-Get the md5 hash of a buffer. The result is put in the 16 bytes
-buffer <em class="parameter"><code>digest</code></em>.
+This function is deprecated! Use <code class="literal">GChecksum</code> from GLib instead.
 </p>
 <p>
-The MD5 algorithm takes as input a message of arbitrary length and
-produces as output a 128-bit "fingerprint" or "message digest" of
-the input.  It is conjectured that it is computationally infeasible
-to produce two messages having the same message digest, or to
-produce any message having a given prespecified target message
-digest. For more information see RFC 1321.</p>
+Get the md5 hash of a buffer. The result is put in the 16 bytes
+buffer <em class="parameter"><code>digest</code></em>. For more information see RFC 1321.</p>
 <p>
 
 </p>
@@ -78,7 +74,7 @@ digest. For more information see RFC 1321.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
-<td> byte buffer
+<td>      byte buffer
 </td>
 </tr>
 <tr>
@@ -88,7 +84,7 @@ digest. For more information see RFC 1321.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>digest</code></em> :</span></p></td>
-<td> 16 bytes buffer receiving the hash code.
+<td>      16 bytes buffer receiving the hash code.
 </td>
 </tr>
 </tbody>

@@ -1055,6 +1055,8 @@ add_layers (const gint32  image_id,
           lyr_chn = g_new (PSDchannel *, lyr_a[lidx]->num_channels);
           for (cidx = 0; cidx < lyr_a[lidx]->num_channels; ++cidx)
             {
+              guint16 comp_mode = PSD_COMP_RAW;
+
               /* Allocate channel record */
               lyr_chn[cidx] = g_malloc (sizeof (PSDchannel) );
 
@@ -1092,13 +1094,12 @@ add_layers (const gint32  image_id,
                                 lyr_chn[cidx]->columns,
                                 lyr_chn[cidx]->rows);
 
-              /* Only read channel data if there is more data than
-               * what compression method that is used
+              /* Only read channel data if there is any channel
+               * data. Note that the channel data can contain a
+               * compression method but no actual data.
                */
-              if (lyr_a[lidx]->chn_info[cidx].data_len > COMP_MODE_SIZE)
+              if (lyr_a[lidx]->chn_info[cidx].data_len >= COMP_MODE_SIZE)
                 {
-                  guint16 comp_mode;
-
                   if (fread (&comp_mode, COMP_MODE_SIZE, 1, f) < 1)
                     {
                       psd_set_error (feof (f), errno, error);
@@ -1106,7 +1107,9 @@ add_layers (const gint32  image_id,
                     }
                   comp_mode = GUINT16_FROM_BE (comp_mode);
                   IFDBG(3) g_debug ("Compression mode: %d", comp_mode);
-
+                }
+              if (lyr_a[lidx]->chn_info[cidx].data_len > COMP_MODE_SIZE)
+                {
                   switch (comp_mode)
                     {
                       case PSD_COMP_RAW:        /* Planar raw data */
@@ -1554,10 +1557,14 @@ add_merged_image (const gint32  image_id,
       if (img_a->transparency)
         {
           offset = 1;
+
           /* Free "Transparency" channel name */
-          alpha_name = g_ptr_array_index (img_a->alpha_names, 0);
-          if (alpha_name)
-            g_free (alpha_name);
+          if (img_a->alpha_names)
+            {
+              alpha_name = g_ptr_array_index (img_a->alpha_names, 0);
+              if (alpha_name)
+                g_free (alpha_name);
+            }
         }
       else
         offset = 0;

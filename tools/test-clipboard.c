@@ -91,7 +91,7 @@ static const GOptionEntry main_entries[] =
   {
     "paste", 'p', 0,
     G_OPTION_ARG_STRING, &option_paste_filename,
-    "Paste clipoard into <file>", "<file>"
+    "Paste clipoard into <file> ('-' pastes to STDOUT)", "<file>"
   },
   {
     "version", 'v', G_OPTION_FLAG_NO_ARG,
@@ -368,7 +368,10 @@ test_clipboard_paste (GtkClipboard *clipboard,
     {
       gint fd;
 
-      fd = open (filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+      if (! strcmp (filename, "-"))
+        fd = 1;
+      else
+        fd = open (filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
       if (fd < 0)
         {

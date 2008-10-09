@@ -1,3 +1,12 @@
+gimp (2.6.1-1) experimental; urgency=low
+
+  * New upstream release
+  * Fix watch file
+  * Fix typoed gimp-gnomevfs in Replaces (thanks to Michael Biebl for pointing
+    it out)
+
+ -- Ari Pollak <ari@debian.org>  Thu, 09 Oct 2008 19:06:37 -0400
+
 gimp (2.6.0-1) experimental; urgency=low
 
   * New upstream release to experimental so we don't break any transitions

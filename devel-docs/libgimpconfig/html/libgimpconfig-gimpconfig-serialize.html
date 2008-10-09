@@ -42,21 +42,41 @@
 <div class="refsynopsisdiv">
 <a name="libgimpconfig-gimpconfig-serialize.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-gboolean            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-properties" title="gimp_config_serialize_properties ()">gimp_config_serialize_properties</a>    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-properties" title="gimp_config_serialize_properties ()">gimp_config_serialize_properties</a>    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
                                                          <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);
-gboolean            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-changed-properties" title="gimp_config_serialize_changed_properties ()">gimp_config_serialize_changed_properties</a>
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-changed-properties" title="gimp_config_serialize_changed_properties ()">gimp_config_serialize_changed_properties</a>
                                                         (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
                                                          <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);
-gboolean            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property" title="gimp_config_serialize_property ()">gimp_config_serialize_property</a>      (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         GParamSpec *param_spec,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property" title="gimp_config_serialize_property ()">gimp_config_serialize_property</a>      (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a> *param_spec,
                                                          <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);
-gboolean            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property-by-name" title="gimp_config_serialize_property_by_name ()">gimp_config_serialize_property_by_name</a>
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-property-by-name" title="gimp_config_serialize_property_by_name ()">gimp_config_serialize_property_by_name</a>
                                                         (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         const gchar *prop_name,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *prop_name,
                                                          <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);
-gboolean            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-value" title="gimp_config_serialize_value ()">gimp_config_serialize_value</a>         (const GValue *value,
-                                                         GString *str,
-                                                         gboolean escaped);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimpconfig-gimpconfig-serialize.html#gimp-config-serialize-value" title="gimp_config_serialize_value ()">gimp_config_serialize_value</a>         (const <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *value,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Strings.html#GString"
+>GString</a> *str,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> escaped);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -70,7 +90,9 @@ Serializing interface for libgimpconfig.
 <a name="libgimpconfig-gimpconfig-serialize.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-config-serialize-properties"></a><h3>gimp_config_serialize_properties ()</h3>
-<pre class="programlisting">gboolean            gimp_config_serialize_properties    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_config_serialize_properties    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
                                                          <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 This function writes all object properties to the <em class="parameter"><code>writer</code></em>.</p>
@@ -92,7 +114,11 @@ This function writes all object properties to the <em class="parameter"><code>wr
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if serialization succeeded, <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if serialization succeeded, <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 
 </td>
 </tr>
@@ -104,7 +130,9 @@ This function writes all object properties to the <em class="parameter"><code>wr
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-serialize-changed-properties"></a><h3>gimp_config_serialize_changed_properties ()</h3>
-<pre class="programlisting">gboolean            gimp_config_serialize_changed_properties
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_config_serialize_changed_properties
                                                         (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
                                                          <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
@@ -128,7 +156,11 @@ their default values to the <em class="parameter"><code>writer</code></em>.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if serialization succeeded, <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if serialization succeeded, <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 
 </td>
 </tr>
@@ -140,8 +172,12 @@ their default values to the <em class="parameter"><code>writer</code></em>.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-serialize-property"></a><h3>gimp_config_serialize_property ()</h3>
-<pre class="programlisting">gboolean            gimp_config_serialize_property      (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         GParamSpec *param_spec,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_config_serialize_property      (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a> *param_spec,
                                                          <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 This function serializes a single object property to the <em class="parameter"><code>writer</code></em>.</p>
@@ -158,7 +194,9 @@ This function serializes a single object property to the <em class="parameter"><
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>param_spec</code></em> :</span></p></td>
-<td> a <span class="type">GParamSpec</span>.
+<td> a <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+><span class="type">GParamSpec</span></a>.
 </td>
 </tr>
 <tr>
@@ -168,7 +206,11 @@ This function serializes a single object property to the <em class="parameter"><
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if serialization succeeded, <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if serialization succeeded, <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 
 </td>
 </tr>
@@ -180,9 +222,13 @@ This function serializes a single object property to the <em class="parameter"><
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-serialize-property-by-name"></a><h3>gimp_config_serialize_property_by_name ()</h3>
-<pre class="programlisting">gboolean            gimp_config_serialize_property_by_name
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_config_serialize_property_by_name
                                                         (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         const gchar *prop_name,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *prop_name,
                                                          <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);</pre>
 <p>
 This function serializes a single object property to the <em class="parameter"><code>writer</code></em>.</p>
@@ -209,7 +255,11 @@ This function serializes a single object property to the <em class="parameter"><
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if serialization succeeded, <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if serialization succeeded, <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 
 </td>
 </tr>
@@ -221,11 +271,21 @@ This function serializes a single object property to the <em class="parameter"><
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-serialize-value"></a><h3>gimp_config_serialize_value ()</h3>
-<pre class="programlisting">gboolean            gimp_config_serialize_value         (const GValue *value,
-                                                         GString *str,
-                                                         gboolean escaped);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_config_serialize_value         (const <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+>GValue</a> *value,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Strings.html#GString"
+>GString</a> *str,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> escaped);</pre>
 <p>
-This utility function appends a string representation of <span class="type">GValue</span> to <em class="parameter"><code>str</code></em>.</p>
+This utility function appends a string representation of <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+><span class="type">GValue</span></a> to <em class="parameter"><code>str</code></em>.</p>
 <p>
 
 </p>
@@ -234,7 +294,9 @@ This utility function appends a string representation of <span class="type">GVal
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td> a <span class="type">GValue</span>.
+<td> a <a
+href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
+><span class="type">GValue</span></a>.
 </td>
 </tr>
 <tr>
@@ -249,7 +311,11 @@ This utility function appends a string representation of <span class="type">GVal
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if serialization succeeded, <code class="literal">FALSE</code> otherwise.
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if serialization succeeded, <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise.
 
 </td>
 </tr>

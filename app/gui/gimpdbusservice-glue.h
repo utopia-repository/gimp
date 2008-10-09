@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* BOOLEAN:STRING,POINTER,POINTER (/tmp/dbus-binding-tool-c-marshallers.VQ5FIU:1) */
+/* BOOLEAN:STRING,POINTER,POINTER (/tmp/dbus-binding-tool-c-marshallers.HE3PIU:1) */
 extern void dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure     *closure,
                                                                     GValue       *return_value,
                                                                     guint         n_param_values,
@@ -102,7 +102,7 @@ dbus_glib_marshal_gimp_BOOLEAN__STRING_POINTER_POINTER (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* BOOLEAN:POINTER (/tmp/dbus-binding-tool-c-marshallers.VQ5FIU:2) */
+/* BOOLEAN:POINTER (/tmp/dbus-binding-tool-c-marshallers.HE3PIU:2) */
 extern void dbus_glib_marshal_gimp_BOOLEAN__POINTER (GClosure     *closure,
                                                      GValue       *return_value,
                                                      guint         n_param_values,

@@ -45,33 +45,17 @@
                     <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>;
                     <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>;
                     <a class="link" href="libgimpmath-GimpVector.html#GimpVector4" title="GimpVector4">GimpVector4</a>;
-<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-new" title="gimp_vector2_new ()">gimp_vector2_new</a>                    (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y);
+<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-new" title="gimp_vector2_new ()">gimp_vector2_new</a>                    (gdouble x,
+                                                         gdouble y);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-set" title="gimp_vector2_set ()">gimp_vector2_set</a>                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-length" title="gimp_vector2_length ()">gimp_vector2_length</a>                 (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-length-val" title="gimp_vector2_length_val ()">gimp_vector2_length_val</a>             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector);
+                                                         gdouble x,
+                                                         gdouble y);
+gdouble             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-length" title="gimp_vector2_length ()">gimp_vector2_length</a>                 (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector);
+gdouble             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-length-val" title="gimp_vector2_length_val ()">gimp_vector2_length_val</a>             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-mul" title="gimp_vector2_mul ()">gimp_vector2_mul</a>                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);
+                                                         gdouble factor);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-mul-val" title="gimp_vector2_mul_val ()">gimp_vector2_mul_val</a>                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);
+                                                         gdouble factor);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-normalize" title="gimp_vector2_normalize ()">gimp_vector2_normalize</a>              (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-normalize-val" title="gimp_vector2_normalize_val ()">gimp_vector2_normalize_val</a>          (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-neg" title="gimp_vector2_neg ()">gimp_vector2_neg</a>                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector);
@@ -86,59 +70,31 @@ void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vecto
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector2);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-sub-val" title="gimp_vector2_sub_val ()">gimp_vector2_sub_val</a>                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector2);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-inner-product" title="gimp_vector2_inner_product ()">gimp_vector2_inner_product</a>          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector1,
+gdouble             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-inner-product" title="gimp_vector2_inner_product ()">gimp_vector2_inner_product</a>          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector1,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector2);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-inner-product-val" title="gimp_vector2_inner_product_val ()">gimp_vector2_inner_product_val</a>      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
+gdouble             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-inner-product-val" title="gimp_vector2_inner_product_val ()">gimp_vector2_inner_product_val</a>      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector2);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-cross-product" title="gimp_vector2_cross_product ()">gimp_vector2_cross_product</a>          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector1,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector2);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-cross-product-val" title="gimp_vector2_cross_product_val ()">gimp_vector2_cross_product_val</a>      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector2);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-rotate" title="gimp_vector2_rotate ()">gimp_vector2_rotate</a>                 (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha);
+                                                         gdouble alpha);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-rotate-val" title="gimp_vector2_rotate_val ()">gimp_vector2_rotate_val</a>             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha);
-<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-new" title="gimp_vector3_new ()">gimp_vector3_new</a>                    (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> z);
+                                                         gdouble alpha);
+<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-new" title="gimp_vector3_new ()">gimp_vector3_new</a>                    (gdouble x,
+                                                         gdouble y,
+                                                         gdouble z);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-set" title="gimp_vector3_set ()">gimp_vector3_set</a>                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> z);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-length" title="gimp_vector3_length ()">gimp_vector3_length</a>                 (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-length-val" title="gimp_vector3_length_val ()">gimp_vector3_length_val</a>             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector);
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gdouble z);
+gdouble             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-length" title="gimp_vector3_length ()">gimp_vector3_length</a>                 (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector);
+gdouble             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-length-val" title="gimp_vector3_length_val ()">gimp_vector3_length_val</a>             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-mul" title="gimp_vector3_mul ()">gimp_vector3_mul</a>                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);
+                                                         gdouble factor);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-mul-val" title="gimp_vector3_mul_val ()">gimp_vector3_mul_val</a>                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);
+                                                         gdouble factor);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-normalize" title="gimp_vector3_normalize ()">gimp_vector3_normalize</a>              (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-normalize-val" title="gimp_vector3_normalize_val ()">gimp_vector3_normalize_val</a>          (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-neg" title="gimp_vector3_neg ()">gimp_vector3_neg</a>                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector);
@@ -153,96 +109,44 @@ void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vecto
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector2);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-sub-val" title="gimp_vector3_sub_val ()">gimp_vector3_sub_val</a>                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector2);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-inner-product" title="gimp_vector3_inner_product ()">gimp_vector3_inner_product</a>          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector1,
+gdouble             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-inner-product" title="gimp_vector3_inner_product ()">gimp_vector3_inner_product</a>          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector1,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector2);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-inner-product-val" title="gimp_vector3_inner_product_val ()">gimp_vector3_inner_product_val</a>      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
+gdouble             <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-inner-product-val" title="gimp_vector3_inner_product_val ()">gimp_vector3_inner_product_val</a>      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector2);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-cross-product" title="gimp_vector3_cross_product ()">gimp_vector3_cross_product</a>          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector1,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector2);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-cross-product-val" title="gimp_vector3_cross_product_val ()">gimp_vector3_cross_product_val</a>      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector2);
 void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-rotate" title="gimp_vector3_rotate ()">gimp_vector3_rotate</a>                 (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> beta,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> gamma);
+                                                         gdouble alpha,
+                                                         gdouble beta,
+                                                         gdouble gamma);
 <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-rotate-val" title="gimp_vector3_rotate_val ()">gimp_vector3_rotate_val</a>             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> beta,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> gamma);
-void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector-2d-to-3d" title="gimp_vector_2d_to_3d ()">gimp_vector_2d_to_3d</a>                (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sx,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sy,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> w,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> h,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
+                                                         gdouble alpha,
+                                                         gdouble beta,
+                                                         gdouble gamma);
+void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector-2d-to-3d" title="gimp_vector_2d_to_3d ()">gimp_vector_2d_to_3d</a>                (gint sx,
+                                                         gint sy,
+                                                         gint w,
+                                                         gint h,
+                                                         gint x,
+                                                         gint y,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vp,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *p);
-<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector-2d-to-3d-val" title="gimp_vector_2d_to_3d_val ()">gimp_vector_2d_to_3d_val</a>            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sx,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sy,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> w,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> h,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
+<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         <a class="link" href="libgimpmath-GimpVector.html#gimp-vector-2d-to-3d-val" title="gimp_vector_2d_to_3d_val ()">gimp_vector_2d_to_3d_val</a>            (gint sx,
+                                                         gint sy,
+                                                         gint w,
+                                                         gint h,
+                                                         gint x,
+                                                         gint y,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vp,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> p);
-void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector-3d-to-2d" title="gimp_vector_3d_to_2d ()">gimp_vector_3d_to_2d</a>                (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sx,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sy,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> w,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> h,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *y,
+void                <a class="link" href="libgimpmath-GimpVector.html#gimp-vector-3d-to-2d" title="gimp_vector_3d_to_2d ()">gimp_vector_3d_to_2d</a>                (gint sx,
+                                                         gint sy,
+                                                         gint w,
+                                                         gint h,
+                                                         gdouble *x,
+                                                         gdouble *y,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vp,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *p);
 </pre>
@@ -291,12 +195,8 @@ A four dimensional vector.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-new"></a><h3>gimp_vector2_new ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_new                    (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y);</pre>
+<pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_new                    (gdouble x,
+                                                         gdouble y);</pre>
 <p>
 Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2"><span class="type">GimpVector2</span></a> of coordinates <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>.</p>
 <p>
@@ -327,12 +227,8 @@ Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-set"></a><h3>gimp_vector2_set ()</h3>
 <pre class="programlisting">void                gimp_vector2_set                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y);</pre>
+                                                         gdouble x,
+                                                         gdouble y);</pre>
 <p>
 Sets the X and Y coordinates of <em class="parameter"><code>vector</code></em> to <em class="parameter"><code>x</code></em> and <em class="parameter"><code>y</code></em>.</p>
 <p>
@@ -362,9 +258,7 @@ Sets the X and Y coordinates of <em class="parameter"><code>vector</code></em> t
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-length"></a><h3>gimp_vector2_length ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_vector2_length                 (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector);</pre>
+<pre class="programlisting">gdouble             gimp_vector2_length                 (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector);</pre>
 <p>
 Computes the length of a 2D vector.</p>
 <p>
@@ -389,9 +283,7 @@ Computes the length of a 2D vector.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-length-val"></a><h3>gimp_vector2_length_val ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_vector2_length_val             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector);</pre>
+<pre class="programlisting">gdouble             gimp_vector2_length_val             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-length" title="gimp_vector2_length ()"><code class="function">gimp_vector2_length()</code></a> but the
 vector is passed by value rather than by reference.</p>
@@ -418,9 +310,7 @@ vector is passed by value rather than by reference.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-mul"></a><h3>gimp_vector2_mul ()</h3>
 <pre class="programlisting">void                gimp_vector2_mul                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);</pre>
+                                                         gdouble factor);</pre>
 <p>
 Multiplies each component of the <em class="parameter"><code>vector</code></em> by <em class="parameter"><code>factor</code></em>. Note that this
 is equivalent to multiplying the vectors length by <em class="parameter"><code>factor</code></em>.</p>
@@ -447,9 +337,7 @@ is equivalent to multiplying the vectors length by <em class="parameter"><code>f
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-mul-val"></a><h3>gimp_vector2_mul_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_mul_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);</pre>
+                                                         gdouble factor);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-mul" title="gimp_vector2_mul ()"><code class="function">gimp_vector2_mul()</code></a> but the vector is
 passed by value rather than by reference.</p>
@@ -700,9 +588,7 @@ are passed by value rather than by reference.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-inner-product"></a><h3>gimp_vector2_inner_product ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_vector2_inner_product          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector1,
+<pre class="programlisting">gdouble             gimp_vector2_inner_product          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector1,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector2);</pre>
 <p>
 Computes the inner (dot) product of two 2D vectors.
@@ -734,9 +620,7 @@ This product is zero if and only if the two vectors are orthognal.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-inner-product-val"></a><h3>gimp_vector2_inner_product_val ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_vector2_inner_product_val      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
+<pre class="programlisting">gdouble             gimp_vector2_inner_product_val      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector2);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-inner-product" title="gimp_vector2_inner_product ()"><code class="function">gimp_vector2_inner_product()</code></a> but the
@@ -839,9 +723,7 @@ vectors are passed by value rather than by reference.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-rotate"></a><h3>gimp_vector2_rotate ()</h3>
 <pre class="programlisting">void                gimp_vector2_rotate                 (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha);</pre>
+                                                         gdouble alpha);</pre>
 <p>
 Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <em class="parameter"><code>alpha</code></em> radians.</p>
 <p>
@@ -867,9 +749,7 @@ Rotates the <em class="parameter"><code>vector</code></em> counterclockwise by <
 <div class="refsect2" lang="en">
 <a name="gimp-vector2-rotate-val"></a><h3>gimp_vector2_rotate_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a>         gimp_vector2_rotate_val             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector2" title="GimpVector2">GimpVector2</a> vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha);</pre>
+                                                         gdouble alpha);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector2-rotate" title="gimp_vector2_rotate ()"><code class="function">gimp_vector2_rotate()</code></a> but the vector
 is passed by value rather than by reference.</p>
@@ -901,15 +781,9 @@ radians.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-new"></a><h3>gimp_vector3_new ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_new                    (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> z);</pre>
+<pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_new                    (gdouble x,
+                                                         gdouble y,
+                                                         gdouble z);</pre>
 <p>
 Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3"><span class="type">GimpVector3</span></a> of coordinate <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em> and <em class="parameter"><code>z</code></em>.</p>
 <p>
@@ -945,15 +819,9 @@ Creates a <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-set"></a><h3>gimp_vector3_set ()</h3>
 <pre class="programlisting">void                gimp_vector3_set                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> z);</pre>
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gdouble z);</pre>
 <p>
 Sets the X, Y and Z coordinates of <em class="parameter"><code>vector</code></em> to <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em> and <em class="parameter"><code>z</code></em>.</p>
 <p>
@@ -988,9 +856,7 @@ Sets the X, Y and Z coordinates of <em class="parameter"><code>vector</code></em
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-length"></a><h3>gimp_vector3_length ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_vector3_length                 (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector);</pre>
+<pre class="programlisting">gdouble             gimp_vector3_length                 (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector);</pre>
 <p>
 Computes the length of a 3D vector.</p>
 <p>
@@ -1015,9 +881,7 @@ Computes the length of a 3D vector.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-length-val"></a><h3>gimp_vector3_length_val ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_vector3_length_val             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector);</pre>
+<pre class="programlisting">gdouble             gimp_vector3_length_val             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-length" title="gimp_vector3_length ()"><code class="function">gimp_vector3_length()</code></a> but the vector
 is passed by value rather than by reference.</p>
@@ -1044,9 +908,7 @@ is passed by value rather than by reference.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-mul"></a><h3>gimp_vector3_mul ()</h3>
 <pre class="programlisting">void                gimp_vector3_mul                    (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);</pre>
+                                                         gdouble factor);</pre>
 <p>
 Multiplies each component of the <em class="parameter"><code>vector</code></em> by <em class="parameter"><code>factor</code></em>. Note that
 this is equivalent to multiplying the vectors length by <em class="parameter"><code>factor</code></em>.</p>
@@ -1073,9 +935,7 @@ this is equivalent to multiplying the vectors length by <em class="parameter"><c
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-mul-val"></a><h3>gimp_vector3_mul_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_mul_val                (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);</pre>
+                                                         gdouble factor);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-mul" title="gimp_vector3_mul ()"><code class="function">gimp_vector3_mul()</code></a> but the vector is
 passed by value rather than by reference.</p>
@@ -1326,9 +1186,7 @@ are passed by value rather than by reference.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-inner-product"></a><h3>gimp_vector3_inner_product ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_vector3_inner_product          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector1,
+<pre class="programlisting">gdouble             gimp_vector3_inner_product          (const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector1,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector2);</pre>
 <p>
 Computes the inner (dot) product of two 3D vectors. This product
@@ -1360,9 +1218,7 @@ is zero if and only if the two vectors are orthognal.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-inner-product-val"></a><h3>gimp_vector3_inner_product_val ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_vector3_inner_product_val      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
+<pre class="programlisting">gdouble             gimp_vector3_inner_product_val      (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector1,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector2);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-inner-product" title="gimp_vector3_inner_product ()"><code class="function">gimp_vector3_inner_product()</code></a> but the
@@ -1465,15 +1321,9 @@ vectors are passed by value rather than by reference.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-rotate"></a><h3>gimp_vector3_rotate ()</h3>
 <pre class="programlisting">void                gimp_vector3_rotate                 (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> beta,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> gamma);</pre>
+                                                         gdouble alpha,
+                                                         gdouble beta,
+                                                         gdouble gamma);</pre>
 <p>
 Rotates the <em class="parameter"><code>vector</code></em> around the three axis (Z, Y, and X) by <em class="parameter"><code>alpha</code></em>,
 <em class="parameter"><code>beta</code></em> and <em class="parameter"><code>gamma</code></em>, respectively.
@@ -1516,15 +1366,9 @@ this function with only one of <em class="parameter"><code>alpha</code></em>, <e
 <div class="refsect2" lang="en">
 <a name="gimp-vector3-rotate-val"></a><h3>gimp_vector3_rotate_val ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector3_rotate_val             (<a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vector,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> beta,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> gamma);</pre>
+                                                         gdouble alpha,
+                                                         gdouble beta,
+                                                         gdouble gamma);</pre>
 <p>
 This function is identical to <a class="link" href="libgimpmath-GimpVector.html#gimp-vector3-rotate" title="gimp_vector3_rotate ()"><code class="function">gimp_vector3_rotate()</code></a> but the vectors
 are passed by value rather than by reference.</p>
@@ -1565,24 +1409,12 @@ are passed by value rather than by reference.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector-2d-to-3d"></a><h3>gimp_vector_2d_to_3d ()</h3>
-<pre class="programlisting">void                gimp_vector_2d_to_3d                (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sx,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sy,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> w,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> h,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
+<pre class="programlisting">void                gimp_vector_2d_to_3d                (gint sx,
+                                                         gint sy,
+                                                         gint w,
+                                                         gint h,
+                                                         gint x,
+                                                         gint y,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vp,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *p);</pre>
 <p>
@@ -1646,24 +1478,12 @@ through the screen (<em class="parameter"><code>sx</code></em>, <em class="param
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector-2d-to-3d-val"></a><h3>gimp_vector_2d_to_3d_val ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector_2d_to_3d_val            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sx,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sy,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> w,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> h,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
+<pre class="programlisting"><a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a>         gimp_vector_2d_to_3d_val            (gint sx,
+                                                         gint sy,
+                                                         gint w,
+                                                         gint h,
+                                                         gint x,
+                                                         gint y,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> vp,
                                                          <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> p);</pre>
 <p>
@@ -1727,24 +1547,12 @@ value rather than by reference.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-vector-3d-to-2d"></a><h3>gimp_vector_3d_to_2d ()</h3>
-<pre class="programlisting">void                gimp_vector_3d_to_2d                (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sx,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> sy,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> w,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> h,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *y,
+<pre class="programlisting">void                gimp_vector_3d_to_2d                (gint sx,
+                                                         gint sy,
+                                                         gint w,
+                                                         gint h,
+                                                         gdouble *x,
+                                                         gdouble *y,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *vp,
                                                          const <a class="link" href="libgimpmath-GimpVector.html#GimpVector3" title="GimpVector3">GimpVector3</a> *p);</pre>
 <p>

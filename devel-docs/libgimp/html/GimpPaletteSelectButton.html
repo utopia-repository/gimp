@@ -57,49 +57,25 @@
 <a name="GimpPaletteSelectButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpPaletteSelectButton.html#GimpPaletteSelectButton-struct" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpPaletteSelectButton.html#gimp-palette-select-button-new" title="gimp_palette_select_button_new ()">gimp_palette_select_button_new</a>      (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette_name);
-const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*        <a class="link" href="GimpPaletteSelectButton.html#gimp-palette-select-button-get-palette" title="gimp_palette_select_button_get_palette ()">gimp_palette_select_button_get_palette</a>
+GtkWidget*          <a class="link" href="GimpPaletteSelectButton.html#gimp-palette-select-button-new" title="gimp_palette_select_button_new ()">gimp_palette_select_button_new</a>      (const gchar *title,
+                                                         const gchar *palette_name);
+const gchar*        <a class="link" href="GimpPaletteSelectButton.html#gimp-palette-select-button-get-palette" title="gimp_palette_select_button_get_palette ()">gimp_palette_select_button_get_palette</a>
                                                         (<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button);
 void                <a class="link" href="GimpPaletteSelectButton.html#gimp-palette-select-button-set-palette" title="gimp_palette_select_button_set_palette ()">gimp_palette_select_button_set_palette</a>
                                                         (<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette_name);
+                                                         const gchar *palette_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpPaletteSelectButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBox.html"
->GtkBox</a>
-                                 +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkHBox.html"
->GtkHBox</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBox
+                                 +----GtkHBox
                                        +----<a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a>
                                              +----GimpPaletteSelectButton
 </pre>
@@ -108,19 +84,13 @@ href="/usr/share/gtk-doc/html/gtk/GtkHBox.html"
 <a name="GimpPaletteSelectButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPaletteSelectButton implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpPaletteSelectButton.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--palette-name" title='The "palette-name" property'>palette-name</a>"             <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*                : Read / Write
-  "<a class="link" href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--title" title='The "title" property'>title</a>"                    <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*                : Read / Write / Construct Only
+  "<a class="link" href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--palette-name" title='The "palette-name" property'>palette-name</a>"             gchar*                : Read / Write
+  "<a class="link" href="GimpPaletteSelectButton.html#GimpPaletteSelectButton--title" title='The "title" property'>title</a>"                    gchar*                : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -147,18 +117,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-palette-select-button-new"></a><h3>gimp_palette_select_button_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_palette_select_button_new      (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette_name);</pre>
+<pre class="programlisting">GtkWidget*          gimp_palette_select_button_new      (const gchar *title,
+                                                         const gchar *palette_name);</pre>
 <p>
-Creates a new <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
-><span class="type">GtkWidget</span></a> that completely controls the selection of
+Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
 a palette.  This widget is suitable for placement in a table in a
 plug-in dialog.</p>
 <p>
@@ -169,9 +131,7 @@ plug-in dialog.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>        Title of the dialog to use or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> to use the default title.
+<td>        Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
 </td>
 </tr>
 <tr>
@@ -181,9 +141,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
-><span class="type">GtkWidget</span></a> that you can use in your UI.
+<td> A <span class="type">GtkWidget</span> that you can use in your UI.
 
 </td>
 </tr>
@@ -195,9 +153,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-palette-select-button-get-palette"></a><h3>gimp_palette_select_button_get_palette ()</h3>
-<pre class="programlisting">const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*        gimp_palette_select_button_get_palette
+<pre class="programlisting">const gchar*        gimp_palette_select_button_get_palette
                                                         (<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button);</pre>
 <p>
 Retrieves the name of currently selected palette.</p>
@@ -228,9 +184,7 @@ Retrieves the name of currently selected palette.</p>
 <a name="gimp-palette-select-button-set-palette"></a><h3>gimp_palette_select_button_set_palette ()</h3>
 <pre class="programlisting">void                gimp_palette_select_button_set_palette
                                                         (<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *button,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette_name);</pre>
+                                                         const gchar *palette_name);</pre>
 <p>
 Sets the current palette for the palette select button.</p>
 <p>
@@ -246,9 +200,7 @@ Sets the current palette for the palette select button.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>palette_name</code></em> :</span></p></td>
-<td> Palette name to set; <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> means no change.
+<td> Palette name to set; <code class="literal">NULL</code> means no change.
 </td>
 </tr>
 </tbody>
@@ -261,9 +213,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 <a name="GimpPaletteSelectButton.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpPaletteSelectButton--palette-name"></a><h3>The <code class="literal">"palette-name"</code> property</h3>
-<pre class="programlisting">  "palette-name"             <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*                : Read / Write</pre>
+<pre class="programlisting">  "palette-name"             gchar*                : Read / Write</pre>
 <p>
 The name of the currently selected palette.</p>
 <p>
@@ -276,9 +226,7 @@ The name of the currently selected palette.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpPaletteSelectButton--title"></a><h3>The <code class="literal">"title"</code> property</h3>
-<pre class="programlisting">  "title"                    <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*                : Read / Write / Construct Only</pre>
+<pre class="programlisting">  "title"                    gchar*                : Read / Write / Construct Only</pre>
 <p>
 The title to be used for the palette selection popup dialog.</p>
 <p>
@@ -294,15 +242,9 @@ The title to be used for the palette selection popup dialog.</p>
 <div class="refsect2" lang="en">
 <a name="GimpPaletteSelectButton-palette-set"></a><h3>The <code class="literal">"palette-set"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a> *widget,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>                   *palette_name,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>                 dialog_closing,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>                 user_data)           : Run First</pre>
+                                                        gchar                   *palette_name,
+                                                        gboolean                 dialog_closing,
+                                                        gpointer                 user_data)           : Run First</pre>
 <p>
 The ::palette-set signal is emitted when the user selects a palette.</p>
 <p>

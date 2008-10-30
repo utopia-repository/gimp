@@ -50,92 +50,36 @@
 <a name="GimpConfigInterface"></a><pre class="synopsis">
                     <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a>;
                     <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface-struct" title="GimpConfigInterface">GimpConfigInterface</a>;
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-file" title="gimp_config_serialize_to_file ()">gimp_config_serialize_to_file</a>       (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *header,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *footer,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
->GError</a> **error);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-fd" title="gimp_config_serialize_to_fd ()">gimp_config_serialize_to_fd</a>         (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> fd,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-string" title="gimp_config_serialize_to_string ()">gimp_config_serialize_to_string</a>     (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-deserialize-file" title="gimp_config_deserialize_file ()">gimp_config_deserialize_file</a>        (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
->GError</a> **error);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-deserialize-string" title="gimp_config_deserialize_string ()">gimp_config_deserialize_string</a>      (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> text_len,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
->GError</a> **error);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-deserialize-return" title="gimp_config_deserialize_return ()">gimp_config_deserialize_return</a>      (<a
-href="/usr/share/gtk-doc/html/glib/glib-Lexical-Scanner.html#GScanner"
->GScanner</a> *scanner,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Lexical-Scanner.html#GTokenType"
->GTokenType</a> expected_token,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> nest_level);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-duplicate" title="gimp_config_duplicate ()">gimp_config_duplicate</a>               (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-is-equal-to" title="gimp_config_is_equal_to ()">gimp_config_is_equal_to</a>             (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *a,
+gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-file" title="gimp_config_serialize_to_file ()">gimp_config_serialize_to_file</a>       (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         const gchar *filename,
+                                                         const gchar *header,
+                                                         const gchar *footer,
+                                                         gpointer data,
+                                                         GError **error);
+gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-fd" title="gimp_config_serialize_to_fd ()">gimp_config_serialize_to_fd</a>         (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         gint fd,
+                                                         gpointer data);
+gchar*              <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-serialize-to-string" title="gimp_config_serialize_to_string ()">gimp_config_serialize_to_string</a>     (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         gpointer data);
+gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-deserialize-file" title="gimp_config_deserialize_file ()">gimp_config_deserialize_file</a>        (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         const gchar *filename,
+                                                         gpointer data,
+                                                         GError **error);
+gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-deserialize-string" title="gimp_config_deserialize_string ()">gimp_config_deserialize_string</a>      (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         const gchar *text,
+                                                         gint text_len,
+                                                         gpointer data,
+                                                         GError **error);
+gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-deserialize-return" title="gimp_config_deserialize_return ()">gimp_config_deserialize_return</a>      (GScanner *scanner,
+                                                         GTokenType expected_token,
+                                                         gint nest_level);
+gpointer            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-duplicate" title="gimp_config_duplicate ()">gimp_config_duplicate</a>               (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config);
+gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-is-equal-to" title="gimp_config_is_equal_to ()">gimp_config_is_equal_to</a>             (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *a,
                                                          <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *b);
 void                <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-reset" title="gimp_config_reset ()">gimp_config_reset</a>                   (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-copy" title="gimp_config_copy ()">gimp_config_copy</a>                    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *src,
+gboolean            <a class="link" href="libgimpconfig-GimpConfig.html#gimp-config-copy" title="gimp_config_copy ()">gimp_config_copy</a>                    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *src,
                                                          <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *dest,
-                                                         <a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
->GParamFlags</a> flags);
+                                                         GParamFlags flags);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -149,9 +93,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
 <a name="libgimpconfig-GimpConfig.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 GimpConfigInterface requires
- <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>.</p>
+ GObject.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="libgimpconfig-GimpConfig.implementations"></a><h2>Known Implementations</h2>
@@ -186,24 +128,12 @@ High-level API functions for libgimpconfig.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-serialize-to-file"></a><h3>gimp_config_serialize_to_file ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_config_serialize_to_file       (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *header,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *footer,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
->GError</a> **error);</pre>
+<pre class="programlisting">gboolean            gimp_config_serialize_to_file       (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         const gchar *filename,
+                                                         const gchar *header,
+                                                         const gchar *footer,
+                                                         gpointer data,
+                                                         GError **error);</pre>
 <p>
 Serializes the object properties of <em class="parameter"><code>config</code></em> to the file specified
 by <em class="parameter"><code>filename</code></em>. If a file with that name already exists, it is
@@ -217,9 +147,7 @@ calls the serialize function of the <em class="parameter"><code>config</code></e
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
@@ -249,11 +177,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if serialization succeeded, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise.
+<td> <code class="literal">TRUE</code> if serialization succeeded, <code class="literal">FALSE</code> otherwise.
 
 </td>
 </tr>
@@ -265,15 +189,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-serialize-to-fd"></a><h3>gimp_config_serialize_to_fd ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_config_serialize_to_fd         (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> fd,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting">gboolean            gimp_config_serialize_to_fd         (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         gint fd,
+                                                         gpointer data);</pre>
 <p>
 Serializes the object properties of <em class="parameter"><code>config</code></em> to the given file
 descriptor.</p>
@@ -285,9 +203,7 @@ descriptor.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
@@ -302,11 +218,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if serialization succeeded, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise.
+<td> <code class="literal">TRUE</code> if serialization succeeded, <code class="literal">FALSE</code> otherwise.
 
 </td>
 </tr>
@@ -318,12 +230,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-serialize-to-string"></a><h3>gimp_config_serialize_to_string ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_config_serialize_to_string     (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting">gchar*              gimp_config_serialize_to_string     (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         gpointer data);</pre>
 <p>
 Serializes the object properties of <em class="parameter"><code>config</code></em> to a string.</p>
 <p>
@@ -334,9 +242,7 @@ Serializes the object properties of <em class="parameter"><code>config</code></e
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
@@ -358,24 +264,14 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-deserialize-file"></a><h3>gimp_config_deserialize_file ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_config_deserialize_file        (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
->GError</a> **error);</pre>
+<pre class="programlisting">gboolean            gimp_config_deserialize_file        (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         const gchar *filename,
+                                                         gpointer data,
+                                                         GError **error);</pre>
 <p>
 Opens the file specified by <em class="parameter"><code>filename</code></em>, reads configuration data
 from it and configures <em class="parameter"><code>config</code></em> accordingly. Basically this function
-creates a properly configured <a
-href="/usr/share/gtk-doc/html/glib/glib-Lexical-Scanner.html#GScanner"
-><span class="type">GScanner</span></a> for you and calls the
+creates a properly configured <span class="type">GScanner</span> for you and calls the
 deserialize function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.</p>
 <p>
 
@@ -385,9 +281,7 @@ deserialize function of the <em class="parameter"><code>config</code></em>'s <a 
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
@@ -407,11 +301,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if deserialization succeeded, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise.
+<td> <code class="literal">TRUE</code> if deserialization succeeded, <code class="literal">FALSE</code> otherwise.
 
 </td>
 </tr>
@@ -423,26 +313,14 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-deserialize-string"></a><h3>gimp_config_deserialize_string ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_config_deserialize_string      (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> text_len,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
->GError</a> **error);</pre>
+<pre class="programlisting">gboolean            gimp_config_deserialize_string      (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config,
+                                                         const gchar *text,
+                                                         gint text_len,
+                                                         gpointer data,
+                                                         GError **error);</pre>
 <p>
 Configures <em class="parameter"><code>config</code></em> from <em class="parameter"><code>text</code></em>. Basically this function creates a
-properly configured <a
-href="/usr/share/gtk-doc/html/glib/glib-Lexical-Scanner.html#GScanner"
-><span class="type">GScanner</span></a> for you and calls the deserialize
+properly configured <span class="type">GScanner</span> for you and calls the deserialize
 function of the <em class="parameter"><code>config</code></em>'s <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.</p>
 <p>
 
@@ -452,9 +330,7 @@ function of the <em class="parameter"><code>config</code></em>'s <a class="link"
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
@@ -479,11 +355,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if deserialization succeeded, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise.
+<td> <code class="literal">TRUE</code> if deserialization succeeded, <code class="literal">FALSE</code> otherwise.
 
 </td>
 </tr>
@@ -495,17 +367,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-deserialize-return"></a><h3>gimp_config_deserialize_return ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_config_deserialize_return      (<a
-href="/usr/share/gtk-doc/html/glib/glib-Lexical-Scanner.html#GScanner"
->GScanner</a> *scanner,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Lexical-Scanner.html#GTokenType"
->GTokenType</a> expected_token,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> nest_level);</pre>
+<pre class="programlisting">gboolean            gimp_config_deserialize_return      (GScanner *scanner,
+                                                         GTokenType expected_token,
+                                                         gint nest_level);</pre>
 <p>
 </p>
 <p>
@@ -543,9 +407,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-duplicate"></a><h3>gimp_config_duplicate ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>            gimp_config_duplicate               (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config);</pre>
+<pre class="programlisting">gpointer            gimp_config_duplicate               (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *config);</pre>
 <p>
 Creates a copy of the passed object by copying all object
 properties. The default implementation of the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>
@@ -559,9 +421,7 @@ properties.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
@@ -578,9 +438,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-is-equal-to"></a><h3>gimp_config_is_equal_to ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_config_is_equal_to             (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *a,
+<pre class="programlisting">gboolean            gimp_config_is_equal_to             (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *a,
                                                          <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *b);</pre>
 <p>
 Compares the two objects. The default implementation of the
@@ -595,23 +453,17 @@ properties.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td> another <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> of the same type as <em class="parameter"><code>a</code></em>.
+<td> another <span class="type">GObject</span> of the same type as <em class="parameter"><code>a</code></em>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if the two objects are equal.
+<td> <code class="literal">TRUE</code> if the two objects are equal.
 
 </td>
 </tr>
@@ -635,9 +487,7 @@ their properties.</p>
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr></tbody>
 </table></div>
@@ -647,13 +497,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-copy"></a><h3>gimp_config_copy ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_config_copy                    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *src,
+<pre class="programlisting">gboolean            gimp_config_copy                    (<a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *src,
                                                          <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfig" title="GimpConfig">GimpConfig</a> *dest,
-                                                         <a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
->GParamFlags</a> flags);</pre>
+                                                         GParamFlags flags);</pre>
 <p>
 Compares all read- and write-able properties from <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em>
 that have all <em class="parameter"><code>flags</code></em> set. Differing values are then copied from
@@ -669,16 +515,12 @@ Properties marked as "construct-only" are not touched.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
+<td> a <span class="type">GObject</span> that implements the <a class="link" href="libgimpconfig-GimpConfig.html#GimpConfigInterface"><span class="type">GimpConfigInterface</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dest</code></em> :</span></p></td>
-<td> another <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
-><span class="type">GObject</span></a> of the same type as <em class="parameter"><code>a</code></em>.
+<td> another <span class="type">GObject</span> of the same type as <em class="parameter"><code>a</code></em>.
 </td>
 </tr>
 <tr>
@@ -688,11 +530,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if <em class="parameter"><code>dest</code></em> was modified, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>dest</code></em> was modified, <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>

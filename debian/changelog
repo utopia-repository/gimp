@@ -1,3 +1,9 @@
+gimp (2.6.2-1) experimental; urgency=low
+
+  * New upstream release
+
+ -- Ari Pollak <ari@debian.org>  Thu, 30 Oct 2008 18:22:51 -0400
+
 gimp (2.6.1-1) experimental; urgency=low
 
   * New upstream release

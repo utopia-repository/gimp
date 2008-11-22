@@ -7,6 +7,42 @@ This is the stable branch of GIMP. No new features are being added
 here, just bug-fixes.
 
 
+Overview of Changes since GIMP 2.6.2 to GIMP 2.6.3
+==================================================
+
+* Bugs fixed:
+
+ 558454 – Plugin Map Color Range disappears from GIMP
+ 559239 – Error while loading psd-data
+ 560903 – Explicit zooming with e.g. '1' should handle
+	  zoom-focus better
+ 560245 – Zoom selection always centered in the Navigation tab
+ 559490 – Wrong lang tags for 'no'
+ 559292 – SOTA Chrome cannot accept different textures
+ 560375 – Clearing an already empty document history crashes GIMP
+ 559580 – Image windows need better default locations
+ 560283 – "Scale image..." causes distortion around edges
+ 559716 – Changing crop size in Crop Tool Options can make UI
+          unresponsive
+ 558549 – Stroking a single-point path with a paint tool
+          crashes GIMP
+ 559015 – Move tool gives bad information about px moved
+ 558660 – help behavior for locales without manual translation
+
+* Updated translations:
+
+ Belarusian (be)
+ Dutch (nl)
+ German (de)
+ Japanese (ja)
+ Lithuanian (lt)
+ Norwegian Bokmål (nb)
+ Norwegian Nynorsk (nn)
+ Polish (pl)
+ Romanian (ro)
+
+
+
 Overview of Changes from GIMP 2.6.1 to GIMP 2.6.2
 =================================================
 

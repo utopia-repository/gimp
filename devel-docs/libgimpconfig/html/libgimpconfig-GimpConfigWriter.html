@@ -43,37 +43,73 @@
 <a name="libgimpconfig-GimpConfigWriter.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>;
-<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-new-file" title="gimp_config_writer_new_file ()">gimp_config_writer_new_file</a>         (const gchar *filename,
-                                                         gboolean atomic,
-                                                         const gchar *header,
-                                                         GError **error);
-<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-new-fd" title="gimp_config_writer_new_fd ()">gimp_config_writer_new_fd</a>           (gint fd);
-<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-new-string" title="gimp_config_writer_new_string ()">gimp_config_writer_new_string</a>       (GString *string);
+<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-new-file" title="gimp_config_writer_new_file ()">gimp_config_writer_new_file</a>         (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> atomic,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *header,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
+<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-new-fd" title="gimp_config_writer_new_fd ()">gimp_config_writer_new_fd</a>           (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> fd);
+<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-new-string" title="gimp_config_writer_new_string ()">gimp_config_writer_new_string</a>       (<a
+href="/usr/share/gtk-doc/html/glib/glib-Strings.html#GString"
+>GString</a> *string);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-open" title="gimp_config_writer_open ()">gimp_config_writer_open</a>             (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *name);
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-comment-mode" title="gimp_config_writer_comment_mode ()">gimp_config_writer_comment_mode</a>     (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         gboolean enable);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> enable);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-print" title="gimp_config_writer_print ()">gimp_config_writer_print</a>            (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *string,
-                                                         gint len);
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *string,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> len);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-printf" title="gimp_config_writer_printf ()">gimp_config_writer_printf</a>           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *format,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *format,
                                                          ...);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-identifier" title="gimp_config_writer_identifier ()">gimp_config_writer_identifier</a>       (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *identifier);
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-string" title="gimp_config_writer_string ()">gimp_config_writer_string</a>           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *string);
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *string);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-data" title="gimp_config_writer_data ()">gimp_config_writer_data</a>             (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         gint length,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> length,
                                                          const guint8 *data);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-comment" title="gimp_config_writer_comment ()">gimp_config_writer_comment</a>          (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *comment);
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *comment);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-linefeed" title="gimp_config_writer_linefeed ()">gimp_config_writer_linefeed</a>         (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-revert" title="gimp_config_writer_revert ()">gimp_config_writer_revert</a>           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);
 void                <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-close" title="gimp_config_writer_close ()">gimp_config_writer_close</a>            (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer);
-gboolean            <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-finish" title="gimp_config_writer_finish ()">gimp_config_writer_finish</a>           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *footer,
-                                                         GError **error);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-config-writer-finish" title="gimp_config_writer_finish ()">gimp_config_writer_finish</a>           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *footer,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -95,13 +131,23 @@ Functions for writing config info to a file for libgimpconfig.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-new-file"></a><h3>gimp_config_writer_new_file ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   gimp_config_writer_new_file         (const gchar *filename,
-                                                         gboolean atomic,
-                                                         const gchar *header,
-                                                         GError **error);</pre>
+<pre class="programlisting"><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   gimp_config_writer_new_file         (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> atomic,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *header,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 Creates a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> and sets it up to write to
-<em class="parameter"><code>filename</code></em>. If <em class="parameter"><code>atomic</code></em> is <code class="literal">TRUE</code>, a temporary file is used to avoid
+<em class="parameter"><code>filename</code></em>. If <em class="parameter"><code>atomic</code></em> is <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a>, a temporary file is used to avoid
 possible race conditions. The temporary file is then moved to
 <em class="parameter"><code>filename</code></em> when the writer is closed.</p>
 <p>
@@ -117,7 +163,9 @@ possible race conditions. The temporary file is then moved to
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>atomic</code></em> :</span></p></td>
-<td> if <code class="literal">TRUE</code> the file is written atomically
+<td> if <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> the file is written atomically
 </td>
 </tr>
 <tr>
@@ -132,7 +180,9 @@ possible race conditions. The temporary file is then moved to
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <code class="literal">NULL</code> in case of an error
+<td> a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> in case of an error
 
 </td>
 </tr>
@@ -144,7 +194,9 @@ possible race conditions. The temporary file is then moved to
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-new-fd"></a><h3>gimp_config_writer_new_fd ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   gimp_config_writer_new_fd           (gint fd);</pre>
+<pre class="programlisting"><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   gimp_config_writer_new_fd           (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> fd);</pre>
 <p>
 </p>
 <p>
@@ -160,7 +212,9 @@ possible race conditions. The temporary file is then moved to
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <code class="literal">NULL</code> in case of an error
+<td> a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> in case of an error
 
 </td>
 </tr>
@@ -172,7 +226,9 @@ possible race conditions. The temporary file is then moved to
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-new-string"></a><h3>gimp_config_writer_new_string ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   gimp_config_writer_new_string       (GString *string);</pre>
+<pre class="programlisting"><a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a>*   gimp_config_writer_new_string       (<a
+href="/usr/share/gtk-doc/html/glib/glib-Strings.html#GString"
+>GString</a> *string);</pre>
 <p>
 </p>
 <p>
@@ -188,7 +244,9 @@ possible race conditions. The temporary file is then moved to
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <code class="literal">NULL</code> in case of an error
+<td> a new <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a> or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> in case of an error
 
 </td>
 </tr>
@@ -201,7 +259,9 @@ possible race conditions. The temporary file is then moved to
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-open"></a><h3>gimp_config_writer_open ()</h3>
 <pre class="programlisting">void                gimp_config_writer_open             (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *name);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 This function writes the opening parenthese followed by <em class="parameter"><code>name</code></em>.
 It also increases the indentation level and sets a mark that
@@ -231,7 +291,9 @@ can be used by <a class="link" href="libgimpconfig-GimpConfigWriter.html#gimp-co
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-comment-mode"></a><h3>gimp_config_writer_comment_mode ()</h3>
 <pre class="programlisting">void                gimp_config_writer_comment_mode     (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         gboolean enable);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> enable);</pre>
 <p>
 This function toggles whether the <em class="parameter"><code>writer</code></em> should create commented
 or uncommented output. This feature is used to generate the
@@ -253,7 +315,11 @@ funtion will insert a newline if necessary.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enable</code></em> :</span></p></td>
-<td> <code class="literal">TRUE</code> to enable comment mode, <code class="literal">FALSE</code> to disable it
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> to enable comment mode, <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> to disable it
 </td>
 </tr>
 </tbody>
@@ -265,8 +331,12 @@ funtion will insert a newline if necessary.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-print"></a><h3>gimp_config_writer_print ()</h3>
 <pre class="programlisting">void                gimp_config_writer_print            (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *string,
-                                                         gint len);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *string,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> len);</pre>
 <p>
 Appends a space followed by <em class="parameter"><code>string</code></em> to the <em class="parameter"><code>writer</code></em>. Note that string
 must not contain any special characters that might need to be escaped.</p>
@@ -300,7 +370,9 @@ must not contain any special characters that might need to be escaped.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-printf"></a><h3>gimp_config_writer_printf ()</h3>
 <pre class="programlisting">void                gimp_config_writer_printf           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *format,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *format,
                                                          ...);</pre>
 <p>
 A printf-like function for <a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter"><span class="type">GimpConfigWriter</span></a>.</p>
@@ -317,7 +389,9 @@ A printf-like function for <a class="link" href="libgimpconfig-GimpConfigWriter.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td> a format string as described for <code class="function">g_strdup_printf()</code>.
+<td> a format string as described for <a
+href="/usr/share/gtk-doc/html/glib/glib-String-Utility-Functions.html#g-strdup-printf"
+><code class="function">g_strdup_printf()</code></a>.
 </td>
 </tr>
 <tr>
@@ -334,7 +408,9 @@ A printf-like function for <a class="link" href="libgimpconfig-GimpConfigWriter.
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-identifier"></a><h3>gimp_config_writer_identifier ()</h3>
 <pre class="programlisting">void                gimp_config_writer_identifier       (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *identifier);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *identifier);</pre>
 <p>
 Writes an identifier to <em class="parameter"><code>writer</code></em>. The <em class="parameter"><code>string</code></em> is *not* quoted and special
 characters are *not* escaped.</p>
@@ -363,7 +439,9 @@ characters are *not* escaped.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-string"></a><h3>gimp_config_writer_string ()</h3>
 <pre class="programlisting">void                gimp_config_writer_string           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *string);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *string);</pre>
 <p>
 Writes a string value to <em class="parameter"><code>writer</code></em>. The <em class="parameter"><code>string</code></em> is quoted and special
 characters are escaped.</p>
@@ -392,7 +470,9 @@ characters are escaped.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-data"></a><h3>gimp_config_writer_data ()</h3>
 <pre class="programlisting">void                gimp_config_writer_data             (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         gint length,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> length,
                                                          const guint8 *data);</pre>
 <p>
 </p>
@@ -426,7 +506,9 @@ characters are escaped.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-comment"></a><h3>gimp_config_writer_comment ()</h3>
 <pre class="programlisting">void                gimp_config_writer_comment          (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *comment);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *comment);</pre>
 <p>
 Appends the <em class="parameter"><code>comment</code></em> to <em class="parameter"><code>str</code></em> and inserts linebreaks and hash-marks to
 format it as a comment. Note that this function does not handle non-ASCII
@@ -515,9 +597,15 @@ Closes an element opened with <a class="link" href="libgimpconfig-GimpConfigWrit
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-writer-finish"></a><h3>gimp_config_writer_finish ()</h3>
-<pre class="programlisting">gboolean            gimp_config_writer_finish           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
-                                                         const gchar *footer,
-                                                         GError **error);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_config_writer_finish           (<a class="link" href="libgimpconfig-GimpConfigWriter.html#GimpConfigWriter" title="GimpConfigWriter">GimpConfigWriter</a> *writer,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *footer,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 This function finishes the work of <em class="parameter"><code>writer</code></em> and frees it afterwards.
 It closes all open elements, appends an optional comment and
@@ -546,8 +634,12 @@ the <em class="parameter"><code>writer</code></em> afterwards.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if everything could be successfully written,
-              <code class="literal">FALSE</code> otherwise
+<td> <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if everything could be successfully written,
+              <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise
 
 </td>
 </tr>

@@ -53,22 +53,44 @@
 <a name="GimpImageComboBox.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpImageComboBox.html#GimpImageComboBox-struct" title="GimpImageComboBox">GimpImageComboBox</a>;
-gboolean            (<a class="link" href="GimpImageComboBox.html#GimpImageConstraintFunc" title="GimpImageConstraintFunc ()">*GimpImageConstraintFunc</a>)          (gint32 image_id,
-                                                         gpointer data);
-GtkWidget*          <a class="link" href="GimpImageComboBox.html#gimp-image-combo-box-new" title="gimp_image_combo_box_new ()">gimp_image_combo_box_new</a>            (<a class="link" href="GimpImageComboBox.html#GimpImageConstraintFunc" title="GimpImageConstraintFunc ()">GimpImageConstraintFunc</a> constraint,
-                                                         gpointer data);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            (<a class="link" href="GimpImageComboBox.html#GimpImageConstraintFunc" title="GimpImageConstraintFunc ()">*GimpImageConstraintFunc</a>)          (gint32 image_id,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpImageComboBox.html#gimp-image-combo-box-new" title="gimp_image_combo_box_new ()">gimp_image_combo_box_new</a>            (<a class="link" href="GimpImageComboBox.html#GimpImageConstraintFunc" title="GimpImageConstraintFunc ()">GimpImageConstraintFunc</a> constraint,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpImageComboBox.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkComboBox
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
+>GtkComboBox</a>
                                        +----<a
 href="../libgimpwidgets/GimpIntComboBox.html"
 >GimpIntComboBox</a>
@@ -79,7 +101,13 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 <a name="GimpImageComboBox.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpImageComboBox implements
- AtkImplementorIface,  GtkBuildable,  GtkCellLayout and  GtkCellEditable.</p>
+ AtkImplementorIface,  <a
+href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>,  <a
+href="/usr/share/gtk-doc/html/gtk/GtkCellLayout.html"
+>GtkCellLayout</a> and  <a
+href="/usr/share/gtk-doc/html/gtk/GtkCellEditable.html"
+>GtkCellEditable</a>.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpImageComboBox.description"></a><h2>Description</h2>
@@ -99,8 +127,12 @@ A widget providing a popup menu of images.
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpImageConstraintFunc"></a><h3>GimpImageConstraintFunc ()</h3>
-<pre class="programlisting">gboolean            (*GimpImageConstraintFunc)          (gint32 image_id,
-                                                         gpointer data);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            (*GimpImageConstraintFunc)          (gint32 image_id,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 
 </p>
@@ -130,14 +162,20 @@ A widget providing a popup menu of images.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-image-combo-box-new"></a><h3>gimp_image_combo_box_new ()</h3>
-<pre class="programlisting">GtkWidget*          gimp_image_combo_box_new            (<a class="link" href="GimpImageComboBox.html#GimpImageConstraintFunc" title="GimpImageConstraintFunc ()">GimpImageConstraintFunc</a> constraint,
-                                                         gpointer data);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_image_combo_box_new            (<a class="link" href="GimpImageComboBox.html#GimpImageConstraintFunc" title="GimpImageConstraintFunc ()">GimpImageConstraintFunc</a> constraint,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 Creates a new <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 images. If a <em class="parameter"><code>constraint</code></em> function is specified, it is called for
-each image and only if the function returns <code class="literal">TRUE</code>, the image is
+each image and only if the function returns <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a>, the image is
 added to the combobox.
 </p>
 <p>
@@ -157,7 +195,9 @@ the selected image.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>constraint</code></em> :</span></p></td>
-<td> a <a class="link" href="GimpImageComboBox.html#GimpImageConstraintFunc" title="GimpImageConstraintFunc ()"><span class="type">GimpImageConstraintFunc</span></a> or <code class="literal">NULL</code>
+<td> a <a class="link" href="GimpImageComboBox.html#GimpImageConstraintFunc" title="GimpImageConstraintFunc ()"><span class="type">GimpImageConstraintFunc</span></a> or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>

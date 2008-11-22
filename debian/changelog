@@ -1,3 +1,10 @@
+gimp (2.6.3-1) experimental; urgency=low
+
+  * New upstream release
+  * Build gimp-remote (Closes: #504260)
+
+ -- Ari Pollak <ari@debian.org>  Sat, 22 Nov 2008 15:56:34 -0500
+
 gimp (2.6.2-1) experimental; urgency=low
 
   * New upstream release

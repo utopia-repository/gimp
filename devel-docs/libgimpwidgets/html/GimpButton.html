@@ -49,7 +49,9 @@
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2><span class="refentrytitle"><a name="GimpButton.top_of_page"></a>GimpButton</span></h2>
-<p>GimpButton — A <span class="type">GtkButton</span> with a little extra functionality.</p>
+<p>GimpButton — A <a
+href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+><span class="type">GtkButton</span></a> with a little extra functionality.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-button.png"></td>
 </tr></table></div>
@@ -57,21 +59,39 @@
 <a name="GimpButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpButton.html#GimpButton-struct" title="GimpButton">GimpButton</a>;
-GtkWidget*          <a class="link" href="GimpButton.html#gimp-button-new" title="gimp_button_new ()">gimp_button_new</a>                     (void);
+<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpButton.html#gimp-button-new" title="gimp_button_new ()">gimp_button_new</a>                     (void);
 void                <a class="link" href="GimpButton.html#gimp-button-extended-clicked" title="gimp_button_extended_clicked ()">gimp_button_extended_clicked</a>        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
-                                                         GdkModifierType state);
+                                                         <a
+href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+>GdkModifierType</a> state);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkButton
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+>GtkButton</a>
                                        +----GimpButton
                                              +----<a class="link" href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a>
 </pre>
@@ -80,7 +100,9 @@ void                <a class="link" href="GimpButton.html#gimp-button-extended-c
 <a name="GimpButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpButton implements
- AtkImplementorIface and  GtkBuildable.</p>
+ AtkImplementorIface and  <a
+href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpButton.signals"></a><h2>Signals</h2>
@@ -91,7 +113,9 @@ GimpButton implements
 <div class="refsect1" lang="en">
 <a name="GimpButton.description"></a><h2>Description</h2>
 <p>
-<a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> adds an extra signal to the <span class="type">GtkButton</span> widget that allows
+<a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> adds an extra signal to the <a
+href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+><span class="type">GtkButton</span></a> widget that allows
 to distinguish a normal click from a click that was performed with
 modifier keys pressed.
 </p>
@@ -108,7 +132,9 @@ modifier keys pressed.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-button-new"></a><h3>gimp_button_new ()</h3>
-<pre class="programlisting">GtkWidget*          gimp_button_new                     (void);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_button_new                     (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> widget.</p>
 <p>
@@ -127,7 +153,9 @@ Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span cl
 <div class="refsect2" lang="en">
 <a name="gimp-button-extended-clicked"></a><h3>gimp_button_extended_clicked ()</h3>
 <pre class="programlisting">void                gimp_button_extended_clicked        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
-                                                         GdkModifierType state);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+>GdkModifierType</a> state);</pre>
 <p>
 Emits the button's "extended_clicked" signal.</p>
 <p>
@@ -155,8 +183,12 @@ Emits the button's "extended_clicked" signal.</p>
 <div class="refsect2" lang="en">
 <a name="GimpButton-extended-clicked"></a><h3>The <code class="literal">"extended-clicked"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a>     *gimpbutton,
-                                                        GdkModifierType arg1,
-                                                        gpointer        user_data)       : Run First</pre>
+                                                        <a
+href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+>GdkModifierType</a> arg1,
+                                                        <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)       : Run First</pre>
 <p>
 
 </p>

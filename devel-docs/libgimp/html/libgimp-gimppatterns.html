@@ -48,17 +48,47 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimppatterns.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-gboolean            <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-refresh" title="gimp_patterns_refresh ()">gimp_patterns_refresh</a>               (void);
-gchar**             <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-list" title="gimp_patterns_get_list ()">gimp_patterns_get_list</a>              (const gchar *filter,
-                                                         gint *num_patterns);
-gchar*              <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-pattern" title="gimp_patterns_get_pattern ()">gimp_patterns_get_pattern</a>           (gint *width,
-                                                         gint *height);
-gboolean            <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-set-pattern" title="gimp_patterns_set_pattern ()">gimp_patterns_set_pattern</a>           (const gchar *name);
-gchar*              <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-pattern-data" title="gimp_patterns_get_pattern_data ()">gimp_patterns_get_pattern_data</a>      (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *mask_bpp,
-                                                         gint *length,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-refresh" title="gimp_patterns_refresh ()">gimp_patterns_refresh</a>               (void);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>**             <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-list" title="gimp_patterns_get_list ()">gimp_patterns_get_list</a>              (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filter,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *num_patterns);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-pattern" title="gimp_patterns_get_pattern ()">gimp_patterns_get_pattern</a>           (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *height);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-set-pattern" title="gimp_patterns_set_pattern ()">gimp_patterns_set_pattern</a>           (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimppatterns.html#gimp-patterns-get-pattern-data" title="gimp_patterns_get_pattern_data ()">gimp_patterns_get_pattern_data</a>      (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *mask_bpp,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *length,
                                                          guint8 **mask_data);
 </pre>
 </div>
@@ -73,7 +103,9 @@ Functions relating to patterns.
 <a name="libgimp-gimppatterns.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-patterns-refresh"></a><h3>gimp_patterns_refresh ()</h3>
-<pre class="programlisting">gboolean            gimp_patterns_refresh               (void);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_patterns_refresh               (void);</pre>
 <p>
 Refresh current patterns. This function always succeeds.
 </p>
@@ -95,8 +127,14 @@ pattern path and updates all pattern dialogs accordingly.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-patterns-get-list"></a><h3>gimp_patterns_get_list ()</h3>
-<pre class="programlisting">gchar**             gimp_patterns_get_list              (const gchar *filter,
-                                                         gint *num_patterns);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>**             gimp_patterns_get_list              (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filter,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *num_patterns);</pre>
 <p>
 Retrieve a complete listing of the available patterns.
 </p>
@@ -131,8 +169,14 @@ patterns. Each name returned can be used as input to the
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-patterns-get-pattern"></a><h3>gimp_patterns_get_pattern ()</h3>
-<pre class="programlisting">gchar*              gimp_patterns_get_pattern           (gint *width,
-                                                         gint *height);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_patterns_get_pattern           (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *height);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_patterns_get_pattern</code> is deprecated and should not be used in newly-written code.</p>
@@ -167,7 +211,11 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-patterns-set-pattern"></a><h3>gimp_patterns_set_pattern ()</h3>
-<pre class="programlisting">gboolean            gimp_patterns_set_pattern           (const gchar *name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_patterns_set_pattern           (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_patterns_set_pattern</code> is deprecated and should not be used in newly-written code.</p>
@@ -196,11 +244,23 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-patterns-get-pattern-data"></a><h3>gimp_patterns_get_pattern_data ()</h3>
-<pre class="programlisting">gchar*              gimp_patterns_get_pattern_data      (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *mask_bpp,
-                                                         gint *length,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_patterns_get_pattern_data      (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *mask_bpp,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> *length,
                                                          guint8 **mask_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>

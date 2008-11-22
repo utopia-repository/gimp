@@ -43,19 +43,53 @@
 <a name="libgimpconfig-gimpconfig-path.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 enum                <a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a>;
-GParamSpec*         <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path" title="gimp_param_spec_config_path ()">gimp_param_spec_config_path</a>         (const gchar *name,
-                                                         const gchar *nick,
-                                                         const gchar *blurb,
+<a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a>*         <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path" title="gimp_param_spec_config_path ()">gimp_param_spec_config_path</a>         (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *nick,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
                                                          <a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a> type,
-                                                         const gchar *default_value,
-                                                         GParamFlags flags);
-<a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a>  <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path-type" title="gimp_param_spec_config_path_type ()">gimp_param_spec_config_path_type</a>    (GParamSpec *pspec);
-gchar*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-path-expand" title="gimp_config_path_expand ()">gimp_config_path_expand</a>             (const gchar *path,
-                                                         gboolean recode,
-                                                         GError **error);
-gchar*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-data-path" title="gimp_config_build_data_path ()">gimp_config_build_data_path</a>         (const gchar *name);
-gchar*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path" title="gimp_config_build_writable_path ()">gimp_config_build_writable_path</a>     (const gchar *name);
-gchar*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path" title="gimp_config_build_plug_in_path ()">gimp_config_build_plug_in_path</a>      (const gchar *name);
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *default_value,
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
+>GParamFlags</a> flags);
+<a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a>  <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-param-spec-config-path-type" title="gimp_param_spec_config_path_type ()">gimp_param_spec_config_path_type</a>    (<a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a> *pspec);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-path-expand" title="gimp_config_path_expand ()">gimp_config_path_expand</a>             (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *path,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> recode,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-data-path" title="gimp_config_build_data_path ()">gimp_config_build_data_path</a>         (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path" title="gimp_config_build_writable_path ()">gimp_config_build_writable_path</a>     (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path" title="gimp_config_build_plug_in_path ()">gimp_config_build_plug_in_path</a>      (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
 #define             <a class="link" href="libgimpconfig-gimpconfig-path.html#GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS" title="GIMP_VALUE_HOLDS_CONFIG_PATH()">GIMP_VALUE_HOLDS_CONFIG_PATH</a>        (value)
 </pre>
 </div>
@@ -84,16 +118,30 @@ gchar*              <a class="link" href="libgimpconfig-gimpconfig-path.html#gim
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-param-spec-config-path"></a><h3>gimp_param_spec_config_path ()</h3>
-<pre class="programlisting">GParamSpec*         gimp_param_spec_config_path         (const gchar *name,
-                                                         const gchar *nick,
-                                                         const gchar *blurb,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a>*         gimp_param_spec_config_path         (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *nick,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
                                                          <a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a> type,
-                                                         const gchar *default_value,
-                                                         GParamFlags flags);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *default_value,
+                                                         <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
+>GParamFlags</a> flags);</pre>
 <p>
 Creates a param spec to hold a filename, dir name,
 or list of file or dir names.
-See <code class="function">g_param_spec_internal()</code> for more information.</p>
+See <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#g-param-spec-internal"
+><code class="function">g_param_spec_internal()</code></a> for more information.</p>
 <p>
 
 </p>
@@ -127,12 +175,16 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
-<td>         a combination of <span class="type">GParamFlags</span>
+<td>         a combination of <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
+><span class="type">GParamFlags</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly allocated <span class="type">GParamSpec</span> instance
+<td> a newly allocated <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+><span class="type">GParamSpec</span></a> instance
 
 </td>
 </tr>
@@ -144,7 +196,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-param-spec-config-path-type"></a><h3>gimp_param_spec_config_path_type ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a>  gimp_param_spec_config_path_type    (GParamSpec *pspec);</pre>
+<pre class="programlisting"><a class="link" href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType" title="enum GimpConfigPathType">GimpConfigPathType</a>  gimp_param_spec_config_path_type    (<a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a> *pspec);</pre>
 <p>
 Tells whether the path param encodes a filename,
 dir name, or list of file or dir names.</p>
@@ -156,7 +210,9 @@ dir name, or list of file or dir names.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pspec</code></em> :</span></p></td>
-<td>         A <span class="type">GParamSpec</span> for a path param
+<td>         A <a
+href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
+><span class="type">GParamSpec</span></a> for a path param
 </td>
 </tr>
 <tr>
@@ -173,9 +229,17 @@ dir name, or list of file or dir names.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-path-expand"></a><h3>gimp_config_path_expand ()</h3>
-<pre class="programlisting">gchar*              gimp_config_path_expand             (const gchar *path,
-                                                         gboolean recode,
-                                                         GError **error);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_config_path_expand             (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *path,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> recode,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 Paths as stored in the gimprc have to be treated special.  The
 string may contain special identifiers such as for example
@@ -219,7 +283,11 @@ filesystem encoding.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-build-data-path"></a><h3>gimp_config_build_data_path ()</h3>
-<pre class="programlisting">gchar*              gimp_config_build_data_path         (const gchar *name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_config_build_data_path         (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-data-path" title="gimp_config_build_data_path ()"><code class="function">gimp_config_build_data_path()</code></a> includes a directory
@@ -257,7 +325,11 @@ recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-co
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-build-writable-path"></a><h3>gimp_config_build_writable_path ()</h3>
-<pre class="programlisting">gchar*              gimp_config_build_writable_path     (const gchar *name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_config_build_writable_path     (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path" title="gimp_config_build_writable_path ()"><code class="function">gimp_config_build_writable_path()</code></a> is just the writable
@@ -294,7 +366,11 @@ recode it using <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-co
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-config-build-plug-in-path"></a><h3>gimp_config_build_plug_in_path ()</h3>
-<pre class="programlisting">gchar*              gimp_config_build_plug_in_path      (const gchar *name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_config_build_plug_in_path      (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a class="link" href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path" title="gimp_config_build_plug_in_path ()"><code class="function">gimp_config_build_plug_in_path()</code></a> includes a directory

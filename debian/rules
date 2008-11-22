@@ -21,7 +21,8 @@ micro=$(shell echo ${version} | cut -d. -f3 | cut -d+ -f1)
 nextmicro=$(shell expr ${micro} + 1)
 
 LDFLAGS = -Wl,--as-needed
-DEB_CONFIGURE_EXTRA_FLAGS := --enable-python --enable-default-binary
+DEB_CONFIGURE_EXTRA_FLAGS := \
+	--enable-python --enable-default-binary --enable-gimp-remote
 DEB_BUILDDIR := $(DEB_SRCDIR)/build
 
 DEB_DH_SHLIBDEPS_ARGS_ALL := -Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib

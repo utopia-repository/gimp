@@ -49,10 +49,18 @@
 <a name="libgimp-gimpchannel.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 gint32              <a class="link" href="libgimp-gimpchannel.html#gimp-channel-new" title="gimp_channel_new ()">gimp_channel_new</a>                    (gint32 image_ID,
-                                                         const gchar *name,
-                                                         guint width,
-                                                         guint height,
-                                                         gdouble opacity,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> width,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> height,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
@@ -60,29 +68,53 @@ gint32              <a class="link" href="libgimp-gimpchannel.html#gimp-channel-
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
 >GimpChannelType</a> component,
-                                                         const gchar *name);
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
 gint32              <a class="link" href="libgimp-gimpchannel.html#gimp-channel-copy" title="gimp_channel_copy ()">gimp_channel_copy</a>                   (gint32 channel_ID);
-gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-show-masked" title="gimp_channel_get_show_masked ()">gimp_channel_get_show_masked</a>        (gint32 channel_ID);
-gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-show-masked" title="gimp_channel_set_show_masked ()">gimp_channel_set_show_masked</a>        (gint32 channel_ID,
-                                                         gboolean show_masked);
-gdouble             <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-opacity" title="gimp_channel_get_opacity ()">gimp_channel_get_opacity</a>            (gint32 channel_ID);
-gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-opacity" title="gimp_channel_set_opacity ()">gimp_channel_set_opacity</a>            (gint32 channel_ID,
-                                                         gdouble opacity);
-gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-color" title="gimp_channel_get_color ()">gimp_channel_get_color</a>              (gint32 channel_ID,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-show-masked" title="gimp_channel_get_show_masked ()">gimp_channel_get_show_masked</a>        (gint32 channel_ID);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-show-masked" title="gimp_channel_set_show_masked ()">gimp_channel_set_show_masked</a>        (gint32 channel_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> show_masked);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-opacity" title="gimp_channel_get_opacity ()">gimp_channel_get_opacity</a>            (gint32 channel_ID);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-opacity" title="gimp_channel_set_opacity ()">gimp_channel_set_opacity</a>            (gint32 channel_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-get-color" title="gimp_channel_get_color ()">gimp_channel_get_color</a>              (gint32 channel_ID,
                                                          <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-color" title="gimp_channel_set_color ()">gimp_channel_set_color</a>              (gint32 channel_ID,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-set-color" title="gimp_channel_set_color ()">gimp_channel_set_color</a>              (gint32 channel_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-gboolean            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-combine-masks" title="gimp_channel_combine_masks ()">gimp_channel_combine_masks</a>          (gint32 channel1_ID,
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpchannel.html#gimp-channel-combine-masks" title="gimp_channel_combine_masks ()">gimp_channel_combine_masks</a>          (gint32 channel1_ID,
                                                          gint32 channel2_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         gint offx,
-                                                         gint offy);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> offx,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> offy);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -96,10 +128,18 @@ Functions for manipulating channels.
 <div class="refsect2" lang="en">
 <a name="gimp-channel-new"></a><h3>gimp_channel_new ()</h3>
 <pre class="programlisting">gint32              gimp_channel_new                    (gint32 image_ID,
-                                                         const gchar *name,
-                                                         guint width,
-                                                         guint height,
-                                                         gdouble opacity,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> width,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> height,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -165,7 +205,9 @@ initially.</p>
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelType"
 >GimpChannelType</a> component,
-                                                         const gchar *name);</pre>
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Create a new channel from a color component
 </p>
@@ -234,7 +276,9 @@ This procedure copies the specified channel and returns the copy.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-channel-get-show-masked"></a><h3>gimp_channel_get_show_masked ()</h3>
-<pre class="programlisting">gboolean            gimp_channel_get_show_masked        (gint32 channel_ID);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_channel_get_show_masked        (gint32 channel_ID);</pre>
 <p>
 Get the composite method of the specified channel.
 </p>
@@ -264,8 +308,12 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-channel-set-show-masked"></a><h3>gimp_channel_set_show_masked ()</h3>
-<pre class="programlisting">gboolean            gimp_channel_set_show_masked        (gint32 channel_ID,
-                                                         gboolean show_masked);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_channel_set_show_masked        (gint32 channel_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> show_masked);</pre>
 <p>
 Set the composite method of the specified channel.
 </p>
@@ -300,7 +348,9 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-channel-get-opacity"></a><h3>gimp_channel_get_opacity ()</h3>
-<pre class="programlisting">gdouble             gimp_channel_get_opacity            (gint32 channel_ID);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_channel_get_opacity            (gint32 channel_ID);</pre>
 <p>
 Get the opacity of the specified channel.
 </p>
@@ -328,8 +378,12 @@ This procedure returns the specified channel's opacity.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-channel-set-opacity"></a><h3>gimp_channel_set_opacity ()</h3>
-<pre class="programlisting">gboolean            gimp_channel_set_opacity            (gint32 channel_ID,
-                                                         gdouble opacity);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_channel_set_opacity            (gint32 channel_ID,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity);</pre>
 <p>
 Set the opacity of the specified channel.
 </p>
@@ -362,7 +416,9 @@ This procedure sets the specified channel's opacity.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-channel-get-color"></a><h3>gimp_channel_get_color ()</h3>
-<pre class="programlisting">gboolean            gimp_channel_get_color              (gint32 channel_ID,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_channel_get_color              (gint32 channel_ID,
                                                          <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -398,7 +454,9 @@ This procedure returns the specified channel's compositing color.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-channel-set-color"></a><h3>gimp_channel_set_color ()</h3>
-<pre class="programlisting">gboolean            gimp_channel_set_color              (gint32 channel_ID,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_channel_set_color              (gint32 channel_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
@@ -434,13 +492,19 @@ This procedure sets the specified channel's compositing color.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-channel-combine-masks"></a><h3>gimp_channel_combine_masks ()</h3>
-<pre class="programlisting">gboolean            gimp_channel_combine_masks          (gint32 channel1_ID,
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_channel_combine_masks          (gint32 channel1_ID,
                                                          gint32 channel2_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         gint offx,
-                                                         gint offy);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> offx,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> offy);</pre>
 <p>
 Combine two channel masks.
 </p>

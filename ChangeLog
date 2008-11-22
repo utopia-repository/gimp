@@ -1,3 +1,213 @@
+2008-11-21  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.6.3 release.
+
+2008-11-19  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 558454 – Plugin Map Color Range disappears from GIMP
+
+	* plug-ins/script-fu/scripts/Makefile.am
+
+	* plug-ins/script-fu/scripts/plug-in-compat.init: new file
+	providing compatibility with plug-ins from older GIMP
+	versions. Contains a reimplementation of plug-in-color-map based
+	on ideas and code from Eric Lamarque.
+
+	* plug-ins/script-fu/scheme-wrapper.c (tinyscheme_init): load the
+	plug-in-compat.init file.
+
+2008-11-18  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 559239 – Error while loading psd-data
+
+	* plug-ins/file-psd/psd-layer-res-load.c (load_layer_resource):
+	Layer resource data should not be padded.
+
+2008-11-15  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-scroll.[ch]: removed function
+	gimp_display_shell_scroll_get_scaled_viewport_offset() as it was
+	only returning -shell->offset_x and -shell->offset_y and it
+	started to show up in profiles.
+
+	* app/display/gimpdisplayshell-draw.c
+	* app/display/gimpdisplayshell-transform.c
+	* app/display/gimpdisplayshell-scale.c: use the shell offsets
+	directly.
+
+2008-11-15  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 560903 – Explicit zooming with e.g. '1' should handle
+	zoom-focus better
+
+	* app/display/display-enums.h: Added
+	GIMP_ZOOM_FOCUS_RETAIN_CENTERING_ELSE_BEST_GUESS.
+
+	* app/display/gimpdisplayshell-scale.c
+	(gimp_display_shell_scale_get_zoom_focus): Take the new enum into
+	account; if the image is centered, keep it centered, else use the
+	best-guess method.
+
+	* app/actions/view-commands.c (view_zoom_explicit_cmd_callback):
+	Use the new enum for explicit zooming.
+
+	* app/display/display-enums.c: Regenerated.
+
+2008-11-15  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 560245 – Zoom selection always centered in the Navigation tab
+
+	* app/display/gimpdisplayshell-scale.c (gimp_display_shell_scale):
+	Also take the image center and not only the zoom focus point into
+	account when deciding whether or not to center the image after
+	zoom.
+
+2008-11-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-preview.c
+	(gimp_display_shell_draw_quad): check that the resulting area has
+	positive width and height.
+
+2008-11-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 559292 – SOTA Chrome cannot accept different textures
+
+	* app/pdb/gimppdb-utils.c (gimp_pdb_image_is_base_type)
+	(gimp_pdb_image_is_not_base_type): gimp_object_get_name() may 
+	return NULL for images. Use gimp_image_get_uri() instead.
+
+2008-11-11  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 560375 – Clearing an already empty document history crashes GIMP
+
+	* app/actions/documents-commands.c (documents_clear_cmd_callback):
+	gtk_recent_manager_purge_items() may return 0 but not set an
+	error.
+
+2008-11-11  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	Bug 559580 – Image windows need better default locations
+
+	* app/display/gimpdisplayshell.c (gimp_display_shell_style_set):
+	Only set GDK_HINT_USER_POS on the empty display because it gets a
+	position set by gimp. All other displays should be placed by the
+	window manager. Fixes all displays appearing at 0,0.
+
+2008-11-11  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 560283 – "Scale image..." causes distortion around edges.
+
+	* app/paint-funcs/scale-region.c (scale): corrected fix for
+	bug #556248.
+
+2008-11-11  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/file-pdf.c: fixed size of the GimpParam array
+	used for the return values.
+
+2008-11-10  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 559716 – Changing crop size in Crop Tool Options can make UI
+	unresponsive
+
+	* app/tools/gimprectangletool.c: Accept a broader range of x, y,
+	width and height values from the tool options so we don't end up
+	in an infinite signal emission loop.
+
+2008-11-10  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimpdrawable-curves.c (gimp_drawable_curves_explicit):
+	use GIMP_CURVE_FREE, not _SMOOTH. Fixes the resp. PDB call.
+
+2008-11-09  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 558549 – Stroking a single-point path with a paint tool
+	crashes GIMP
+
+	* app/paint/gimppaintcore-stroke.c
+	(gimp_paint_core_stroke_vectors): Return an error message if there
+	were not enough points to stroke.
+
+	* app/dialogs/stroke-dialog.c (stroke_dialog_response): Guard
+	against crashes if an implementator forgets to set an error.
+
+2008-11-09  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-scale.c
+	(gimp_display_shell_scale_update_rulers): Avoid critical warnings
+	when converting an image window with a unit other than pixels into
+	a the empty image window. Probably fixes some of the crashes
+	reported by Windows users.
+
+2008-11-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/display/gimpdisplayshell-dnd.c
+	(gimp_display_shell_drop_uri_list): when dropping multiple images
+	to the empty image window, open them as seperate images.
+
+2008-11-04  Sven Neumann  <sven@gimp.org>
+
+	* app/file/file-procedure.c
+	* app/file/file-save.c
+	* app/pdb/gimpprocedure.c: be careful when passing literal strings
+	to g_set_error().
+
+2008-11-03  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	Bug 559015 – Move tool gives bad information about px moved
+
+	* app/tools/gimpeditselectiontool.c (gimp_edit_selection_tool_init):
+	set cursor precision to PIXEL_BORDER because that's what the move
+	tool snaps to.
+
+	Unrelated: set CENTER_CROSS_SIZE to an odd number so it's drawn
+	symmetrically.
+
+2008-10-31  Sven Neumann  <sven@gimp.org>
+
+	Bug 558660 – help behavior for locales without manual translation
+
+	* app/widgets/gimphelp.c (gimp_help_user_manual_is_installed):
+	as a fallback check for the english user manual.
+
+2008-10-30  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.6.3 (interface age 3).
+
 2008-10-30  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.6.2 release.
@@ -17,7 +227,7 @@
 
 2008-10-29  Sven Neumann  <sven@gimp.org>
 
- 	Merged from trunk:
+	Merged from trunk:
 
 	Bug 557950 – Scaling in Gimp 2.6 is much slower than in Gimp 2.4
 

@@ -14,38 +14,16 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
-## Read version numbers from the changelog (for upstream dev versions)
-version=$(shell dpkg-parsechangelog | grep '^Version: ' | sed -e 's/^Version: //' | sed -e 's/-.*//')
-major=$(shell echo ${version} | cut -d. -f1-2)
-micro=$(shell echo ${version} | cut -d. -f3 | cut -d+ -f1)
-nextmicro=$(shell expr ${micro} + 1)
 
 LDFLAGS = -Wl,--as-needed
-DEB_CONFIGURE_EXTRA_FLAGS := \
-	--enable-python --enable-default-binary --enable-gimp-remote
+DEB_CONFIGURE_EXTRA_FLAGS := --enable-python --enable-default-binary
 DEB_BUILDDIR := $(DEB_SRCDIR)/build
 
 DEB_DH_SHLIBDEPS_ARGS_ALL := -Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
 DEB_DH_SHLIBDEPS_ARGS_gimp := -Xlibcontroller_midi.so
 
-# For the stable branch:
-libgimp2.0_shlibs := libgimp2.0 (>= $(major).0)
-# For the development branch:
-#libgimp2.0_shlibs := \
-#	libgimp2.0 (>= ${version}), libgimp2.0 (<< ${major}.${nextmicro})
-
-DEB_DH_MAKESHLIBS_ARGS_libgimp2.0 := -V "$(libgimp2.0_shlibs)"
-
 clean::
 	rm -rf build
-
-binary-predeb/gimp::
-	# Remove automatically-generated libgimp dependency since we provide
-	# our own tight dependency in debian/control; this is needed
-	# because the gimp application contains a runtime check for the equivalent
-	# library version.
-	sed -i -e 's/$(libgimp2.0_shlibs), //' \
-		debian/gimp.substvars
 
 common-install-impl::
 	# Remove compiled python files from the distribution, they're compiled in

@@ -1,3 +1,10 @@
+gimp (2.6.4-1) experimental; urgency=low
+
+  * New upstream release (Closes: #514530)
+  * Revert building gimp-remote, since it's now deprecated.
+
+ -- Ari Pollak <ari@debian.org>  Sun, 08 Feb 2009 13:48:49 -0500
+
 gimp (2.6.3-1) experimental; urgency=low
 
   * New upstream release

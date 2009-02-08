@@ -2,8 +2,6 @@ usr/bin/gimp
 usr/bin/gimp-?.?
 usr/bin/gimp-console
 usr/bin/gimp-console-?.?
-usr/bin/gimp-remote
-usr/bin/gimp-remote-?.?
 usr/lib/gimp/2.0/environ/
 usr/lib/gimp/2.0/modules/
 usr/lib/gimp/2.0/interpreters/
@@ -14,5 +12,3 @@ usr/share/man/man1/gimp.1
 usr/share/man/man1/gimp-?.?.1
 usr/share/man/man1/gimp-console.1
 usr/share/man/man1/gimp-console-?.?.1
-usr/share/man/man1/gimp-remote.1
-usr/share/man/man1/gimp-remote-?.?.1

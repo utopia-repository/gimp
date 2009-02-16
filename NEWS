@@ -7,6 +7,39 @@ This is the stable branch of GIMP. No new features are being added
 here, just bug-fixes.
 
 
+Overview of Changes from GIMP 2.6.4 to GIMP 2.6.5
+=================================================
+
+* Bugs fixed:
+
+ 571628 – Scaling image to 25% turn background from white to grey
+ 567840 – GIMP's GtkScaleButton conflicts with GTK's
+ 569043 – GEGL tool - missing Operation Settings for all sub-tools
+ 568890 – don't rely on GtkAction implementation details
+ 568909 – wrong RGB values for color names in libgimpcolor/gimprgb-parse.c
+ 568839 – wrong hex RGB value for the color names slategrey and slategray
+ 559408 - Brushes dragged to the image window look strange
+ 563337 – Rectangle Select Tool does not allow 1:1 fixed ratio
+ 568016 – Black pullout parameter of plug-in-newsprint has no effect
+ 562818 – First image opened in GIMP offset
+ 562213 – Align Tool doesn't work properly if it is the active tool
+          at startup
+
+* Updated translations:
+
+ Spanish (es)
+ Estonian (et)
+ Hindi (hi)
+ Italian (it)
+ Brazilian Portuguese (pt_BR)
+ Romanian (ro)
+ Russian (ru)
+ Serbian (sr)
+ Tamil (ta)
+ Simplified Chinese (zh_CN)
+
+
+
 Overview of Changes from GIMP 2.6.3 to GIMP 2.6.4
 =================================================
 

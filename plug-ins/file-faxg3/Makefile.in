@@ -55,9 +55,9 @@ am_file_faxg3_OBJECTS = faxg3.$(OBJEXT) g3.$(OBJEXT)
 file_faxg3_OBJECTS = $(am_file_faxg3_OBJECTS)
 file_faxg3_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
-file_faxg3_DEPENDENCIES = $(libgimp) $(libgimpcolor) $(libgimpbase) \
-	$(libgimpmath) $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+file_faxg3_DEPENDENCIES = $(libgimp) $(libgimpconfig) $(libgimpcolor) \
+	$(libgimpbase) $(libgimpmath) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -408,12 +408,13 @@ INCLUDES = \
 	-I$(includedir)
 
 LDADD = \
-	$(libgimp)	\
-	$(libgimpcolor)	\
-	$(libgimpbase)	\
-	$(libgimpmath)	\
-	$(GLIB_LIBS)	\
-	$(RT_LIBS)	\
+	$(libgimp)		\
+	$(libgimpconfig)	\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(libgimpmath)		\
+	$(GLIB_LIBS)		\
+	$(RT_LIBS)		\
 	$(INTLLIBS)
 
 all: all-am

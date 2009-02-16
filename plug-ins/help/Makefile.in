@@ -69,9 +69,10 @@ gimp_help_lookup_DEPENDENCIES = $(libgimphelp) $(libgimpbase) \
 am_help_OBJECTS = help.$(OBJEXT)
 help_OBJECTS = $(am_help_OBJECTS)
 help_LDADD = $(LDADD)
-help_DEPENDENCIES = $(libgimphelp) $(libgimp) $(libgimpcolor) \
-	$(libgimpbase) $(libgimpmath) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+help_DEPENDENCIES = $(libgimphelp) $(libgimp) $(libgimpconfig) \
+	$(libgimpcolor) $(libgimpbase) $(libgimpmath) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -406,6 +407,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 libgimphelp = libgimphelp.a
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
@@ -434,13 +436,14 @@ INCLUDES = \
 	-I$(includedir)
 
 LDADD = \
-	$(libgimphelp)	\
-	$(libgimp)	\
-	$(libgimpcolor)	\
-	$(libgimpbase)	\
-	$(libgimpmath)	\
-	$(GIO_LIBS)	\
-	$(RT_LIBS)	\
+	$(libgimphelp)		\
+	$(libgimp)		\
+	$(libgimpconfig)	\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(libgimpmath)		\
+	$(GIO_LIBS)		\
+	$(RT_LIBS)		\
 	$(INTLLIBS)
 
 gimp_help_lookup_SOURCES = gimp-help-lookup.c

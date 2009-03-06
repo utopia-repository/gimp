@@ -4,7 +4,7 @@ Section: graphics
 Maintainer: Ari Pollak <ari@debian.org>
 Standards-Version: 3.7.3
 Build-Depends: debhelper (>= 5.0.53), cdbs (>= 0.4.37), autotools-dev,
- patchutils, gettext, intltool, libx11-dev, libice-dev, libsm-dev,
+ patchutils, gettext, intltool (>= 0.36.3), libx11-dev, libice-dev, libsm-dev,
  libxmu-dev, libxpm-dev, libxt-dev,
  libaa1-dev, libgtk2.0-dev (>= 2.10.13), libglib2.0-dev (>= 2.16.0),
  libpango1.0-dev (>= 1.12.2), libwebkit-dev, libjpeg62-dev,

@@ -1,3 +1,9 @@
+gimp (2.6.5-2) unstable; urgency=low
+
+  * Bump build-dep on intltool (Closes: #518373)
+
+ -- Ari Pollak <ari@debian.org>  Fri, 06 Mar 2009 18:25:42 -0500
+
 gimp (2.6.5-1) unstable; urgency=low
 
   * New upstream release

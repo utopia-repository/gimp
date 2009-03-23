@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpmenu.html" title="gimpmenu">
 <link rel="next" href="libgimp-gimpfontmenu.html" title="gimpfontmenu">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -32,9 +32,11 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfontmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpbrushmenu.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimp-gimpbrushmenu.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimp-gimpbrushmenu.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimp-gimpbrushmenu.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbrushmenu"></a><div class="titlepage"></div>
@@ -50,22 +52,22 @@
 <pre class="synopsis">
 <a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new" title="gimp_brush_select_widget_new ()">gimp_brush_select_widget_new</a>        (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>GtkWidget</a> *         <a class="link" href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new" title="gimp_brush_select_widget_new ()">gimp_brush_select_widget_new</a>        (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *title,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *brush_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> spacing,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a class="link" href="libgimp-gimpbrushselect.html#GimpRunBrushCallback" title="GimpRunBrushCallback ()">GimpRunBrushCallback</a> callback,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 void                <a class="link" href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-close" title="gimp_brush_select_widget_close ()">gimp_brush_select_widget_close</a>      (<a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
@@ -74,13 +76,13 @@ void                <a class="link" href="libgimp-gimpbrushmenu.html#gimp-brush-
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *brush_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> spacing,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
 </pre>
@@ -97,22 +99,22 @@ A widget for selecting brushes.
 <a name="gimp-brush-select-widget-new"></a><h3>gimp_brush_select_widget_new ()</h3>
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_brush_select_widget_new        (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>GtkWidget</a> *         gimp_brush_select_widget_new        (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *title,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *brush_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> spacing,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a class="link" href="libgimp-gimpbrushselect.html#GimpRunBrushCallback" title="GimpRunBrushCallback ()">GimpRunBrushCallback</a> callback,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -125,7 +127,6 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 a <span class="type">GimpBrush</span>. This widget is suitable for placement in a table in
 a plug-in dialog.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -133,14 +134,14 @@ a plug-in dialog.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
 <td>      Title of the dialog to use or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> to use the default title.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>brush_name</code></em> :</span></p></td>
 <td> Initial brush name or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> to use current selection.
 </td>
 </tr>
@@ -192,7 +193,6 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -210,13 +210,13 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *brush_name,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> spacing,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -228,7 +228,6 @@ Sets the current brush and other values for the brush select
 widget.  Calls the callback function if one was supplied in the
 call to <a class="link" href="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new" title="gimp_brush_select_widget_new ()"><code class="function">gimp_brush_select_widget_new()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -241,7 +240,7 @@ call to <a class="link" href="libgimp-gimpbrushmenu.html#gimp-brush-select-widge
 <tr>
 <td><p><span class="term"><em class="parameter"><code>brush_name</code></em> :</span></p></td>
 <td> Brush name to set; <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> means no change.
 </td>
 </tr>
@@ -267,6 +266,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

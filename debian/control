@@ -87,7 +87,7 @@ Description: Developers' Documentation for the GIMP library
 Package: gimp-dbg
 Priority: extra
 Architecture: any
-Section: graphics
+Section: debug
 Depends: gimp (= ${binary:Version}) | libgimp2.0 (= ${source:Version}), ${shlibs:Depends}
 Description: Debugging symbols for GIMP
  This package includes the debugging symbols useful for debugging

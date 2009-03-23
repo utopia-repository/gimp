@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>gimpgradient</refname>
 <refpurpose>Functions operating on a single gradient.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimp-gimpgradient.synopsis" role="synopsis">
@@ -158,45 +157,41 @@ Functions operating on a single gradient.
 <title role="details.title">Details</title>
 <refsect2 id="gimp-gradient-new" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_new ()</title>
-<indexterm zone="gimp-gradient-new" role="GIMP 2.2"><primary>gimp_gradient_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gradient_new                   (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm zone="gimp-gradient-new" role="GIMP 2.2"><primary sortas="gimp_gradient_new">gimp_gradient_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gradient_new                   (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a new gradient
 </para>
 <para>
 This procedure creates a new, uninitialized gradient</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The requested name of the new gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The actual new gradient name.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The actual new gradient name.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-duplicate" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_duplicate ()</title>
-<indexterm zone="gimp-gradient-duplicate" role="GIMP 2.2"><primary>gimp_gradient_duplicate</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gradient_duplicate             (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm zone="gimp-gradient-duplicate" role="GIMP 2.2"><primary sortas="gimp_gradient_duplicate">gimp_gradient_duplicate</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gradient_duplicate             (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Duplicates a gradient
 </para>
 <para>
 This procedure creates an identical gradient by a different name</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The name of the gradient's copy.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The name of the gradient's copy.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-rename" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_rename ()</title>
-<indexterm zone="gimp-gradient-rename" role="GIMP 2.2"><primary>gimp_gradient_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gradient_rename                (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-rename" role="GIMP 2.2"><primary sortas="gimp_gradient_rename">gimp_gradient_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gradient_rename                (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *new_name);</programlisting>
 <para>
 Rename a gradient
@@ -204,60 +199,54 @@ Rename a gradient
 <para>
 This procedure renames a gradient</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>new_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>new_name</parameter>&#160;:</term>
 <listitem><simpara> The new name of the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The actual new name of the gradient.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The actual new name of the gradient.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-delete" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_delete ()</title>
-<indexterm zone="gimp-gradient-delete" role="GIMP 2.2"><primary>gimp_gradient_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_delete                (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm zone="gimp-gradient-delete" role="GIMP 2.2"><primary sortas="gimp_gradient_delete">gimp_gradient_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_delete                (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Deletes a gradient
 </para>
 <para>
 This procedure deletes a gradient</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-is-editable" role="function" condition="since:GIMP 2.4">
 <title>gimp_gradient_is_editable ()</title>
-<indexterm zone="gimp-gradient-is-editable" role="GIMP 2.4"><primary>gimp_gradient_is_editable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_is_editable           (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm zone="gimp-gradient-is-editable" role="GIMP 2.4"><primary sortas="gimp_gradient_is_editable">gimp_gradient_is_editable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_is_editable           (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Tests if gradient can be edited
 </para>
 <para>
 Returns TRUE if you have permission to change the gradient</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the gradient can be edited.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE if the gradient can be edited.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-gradient-get-uniform-samples" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_get_uniform_samples ()</title>
-<indexterm zone="gimp-gradient-get-uniform-samples" role="GIMP 2.2"><primary>gimp_gradient_get_uniform_samples</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_get_uniform_samples   (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-get-uniform-samples" role="GIMP 2.2"><primary sortas="gimp_gradient_get_uniform_samples">gimp_gradient_get_uniform_samples</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_get_uniform_samples   (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> num_samples,
                                                          <link linkend="gboolean">gboolean</link> reverse,
                                                          <link linkend="gint">gint</link> *num_color_samples,
@@ -274,31 +263,29 @@ correspond to the { 0.0, 1.0 } positions in the gradient. For
 example, if the number of samples is 3, the procedure will return
 the colors at positions { 0.0, 0.5, 1.0 }.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_samples</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_samples</parameter>&#160;:</term>
 <listitem><simpara> The number of samples to take.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>reverse</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>reverse</parameter>&#160;:</term>
 <listitem><simpara> Use the reverse gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_color_samples</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_color_samples</parameter>&#160;:</term>
 <listitem><simpara> Length of the color_samples array (4 * num_samples).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>color_samples</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>color_samples</parameter>&#160;:</term>
 <listitem><simpara> Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-get-custom-samples" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_get_custom_samples ()</title>
-<indexterm zone="gimp-gradient-get-custom-samples" role="GIMP 2.2"><primary>gimp_gradient_get_custom_samples</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_get_custom_samples    (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-get-custom-samples" role="GIMP 2.2"><primary sortas="gimp_gradient_get_custom_samples">gimp_gradient_get_custom_samples</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_get_custom_samples    (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> num_samples,
                                                          const <link linkend="gdouble">gdouble</link> *positions,
                                                          <link linkend="gboolean">gboolean</link> reverse,
@@ -315,34 +302,32 @@ corresponds to position 0.0, and the right endpoint corresponds to
 1.0. The procedure returns a list of floating-point values which
 correspond to the RGBA values for each sample.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_samples</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_samples</parameter>&#160;:</term>
 <listitem><simpara> The number of samples to take.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>positions</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>positions</parameter>&#160;:</term>
 <listitem><simpara> The list of positions to sample along the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>reverse</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>reverse</parameter>&#160;:</term>
 <listitem><simpara> Use the reverse gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>num_color_samples</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>num_color_samples</parameter>&#160;:</term>
 <listitem><simpara> Length of the color_samples array (4 * num_samples).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>color_samples</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>color_samples</parameter>&#160;:</term>
 <listitem><simpara> Color samples: { R1, G1, B1, A1, ..., Rn, Gn, Bn, An }.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-get-number-of-segments" role="function" condition="since:GIMP 2.6">
 <title>gimp_gradient_get_number_of_segments ()</title>
-<indexterm zone="gimp-gradient-get-number-of-segments" role="GIMP 2.6"><primary>gimp_gradient_get_number_of_segments</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_gradient_get_number_of_segments
+<indexterm zone="gimp-gradient-get-number-of-segments" role="GIMP 2.6"><primary sortas="gimp_gradient_get_number_of_segments">gimp_gradient_get_number_of_segments</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_gradient_get_number_of_segments
                                                         (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Returns the number of segments of the specified gradient
@@ -351,19 +336,17 @@ Returns the number of segments of the specified gradient
 This procedure returns the number of segments of the specified
 gradient.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Number of segments.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Number of segments.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.6
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.6</para></refsect2>
 <refsect2 id="gimp-gradient-segment-get-left-color" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_get_left_color ()</title>
-<indexterm zone="gimp-gradient-segment-get-left-color" role="GIMP 2.2"><primary>gimp_gradient_segment_get_left_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_left_color
+<indexterm zone="gimp-gradient-segment-get-left-color" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_get_left_color">gimp_gradient_segment_get_left_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_left_color
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="GimpRGB">GimpRGB</link> *color,
@@ -375,28 +358,26 @@ Retrieves the left endpoint color of the specified segment
 This procedure retrieves the left endpoint color of the specified
 segment of the specified gradient.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>color</parameter>&#160;:</term>
 <listitem><simpara> The return color.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>opacity</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>opacity</parameter>&#160;:</term>
 <listitem><simpara> The opacity of the endpoint.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-set-left-color" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_set_left_color ()</title>
-<indexterm zone="gimp-gradient-segment-set-left-color" role="GIMP 2.2"><primary>gimp_gradient_segment_set_left_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_left_color
+<indexterm zone="gimp-gradient-segment-set-left-color" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_set_left_color">gimp_gradient_segment_set_left_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_left_color
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          const <link linkend="GimpRGB">GimpRGB</link> *color,
@@ -408,28 +389,26 @@ Sets the left endpoint color of the specified segment
 This procedure sets the left endpoint color of the specified segment
 of the specified gradient.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>color</parameter>&#160;:</term>
 <listitem><simpara> The color to set.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>opacity</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>opacity</parameter>&#160;:</term>
 <listitem><simpara> The opacity to set for the endpoint.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-get-right-color" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_get_right_color ()</title>
-<indexterm zone="gimp-gradient-segment-get-right-color" role="GIMP 2.2"><primary>gimp_gradient_segment_get_right_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_right_color
+<indexterm zone="gimp-gradient-segment-get-right-color" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_get_right_color">gimp_gradient_segment_get_right_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_right_color
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="GimpRGB">GimpRGB</link> *color,
@@ -441,28 +420,26 @@ Retrieves the right endpoint color of the specified segment
 This procedure retrieves the right endpoint color of the specified
 segment of the specified gradient.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>color</parameter>&#160;:</term>
 <listitem><simpara> The return color.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>opacity</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>opacity</parameter>&#160;:</term>
 <listitem><simpara> The opacity of the endpoint.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-set-right-color" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_set_right_color ()</title>
-<indexterm zone="gimp-gradient-segment-set-right-color" role="GIMP 2.2"><primary>gimp_gradient_segment_set_right_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_right_color
+<indexterm zone="gimp-gradient-segment-set-right-color" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_set_right_color">gimp_gradient_segment_set_right_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_right_color
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          const <link linkend="GimpRGB">GimpRGB</link> *color,
@@ -474,28 +451,26 @@ Sets the right endpoint color of the specified segment
 This procedure sets the right endpoint color of the specified
 segment of the specified gradient.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>color</parameter>&#160;:</term>
 <listitem><simpara> The color to set.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>opacity</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>opacity</parameter>&#160;:</term>
 <listitem><simpara> The opacity to set for the endpoint.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-get-left-pos" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_get_left_pos ()</title>
-<indexterm zone="gimp-gradient-segment-get-left-pos" role="GIMP 2.2"><primary>gimp_gradient_segment_get_left_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_left_pos  (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-segment-get-left-pos" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_get_left_pos">gimp_gradient_segment_get_left_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_left_pos  (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="gdouble">gdouble</link> *pos);</programlisting>
 <para>
@@ -505,25 +480,23 @@ Retrieves the left endpoint position of the specified segment
 This procedure retrieves the left endpoint position of the specified
 segment of the specified gradient.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
 <listitem><simpara> The return position.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-set-left-pos" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_set_left_pos ()</title>
-<indexterm zone="gimp-gradient-segment-set-left-pos" role="GIMP 2.2"><primary>gimp_gradient_segment_set_left_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_left_pos  (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-segment-set-left-pos" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_set_left_pos">gimp_gradient_segment_set_left_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_left_pos  (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="gdouble">gdouble</link> pos,
                                                          <link linkend="gdouble">gdouble</link> *final_pos);</programlisting>
@@ -537,28 +510,26 @@ between the position of the middle point to the left to the middle
 point of the current segement. This procedure returns the final
 position.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
 <listitem><simpara> The position to set the guidepoint to.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>final_pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>final_pos</parameter>&#160;:</term>
 <listitem><simpara> The return position.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-get-middle-pos" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_get_middle_pos ()</title>
-<indexterm zone="gimp-gradient-segment-get-middle-pos" role="GIMP 2.2"><primary>gimp_gradient_segment_get_middle_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_middle_pos
+<indexterm zone="gimp-gradient-segment-get-middle-pos" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_get_middle_pos">gimp_gradient_segment_get_middle_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_middle_pos
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="gdouble">gdouble</link> *pos);</programlisting>
@@ -569,25 +540,23 @@ Retrieves the middle point position of the specified segment
 This procedure retrieves the middle point position of the specified
 segment of the specified gradient.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
 <listitem><simpara> The return position.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-set-middle-pos" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_set_middle_pos ()</title>
-<indexterm zone="gimp-gradient-segment-set-middle-pos" role="GIMP 2.2"><primary>gimp_gradient_segment_set_middle_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_middle_pos
+<indexterm zone="gimp-gradient-segment-set-middle-pos" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_set_middle_pos">gimp_gradient_segment_set_middle_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_middle_pos
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="gdouble">gdouble</link> pos,
@@ -601,28 +570,26 @@ segment of the specified gradient. The final position will be
 between the two endpoints of the segment. This procedure returns the
 final position.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
 <listitem><simpara> The position to set the guidepoint to.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>final_pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>final_pos</parameter>&#160;:</term>
 <listitem><simpara> The return position.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-get-right-pos" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_get_right_pos ()</title>
-<indexterm zone="gimp-gradient-segment-get-right-pos" role="GIMP 2.2"><primary>gimp_gradient_segment_get_right_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_right_pos (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-segment-get-right-pos" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_get_right_pos">gimp_gradient_segment_get_right_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_right_pos (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="gdouble">gdouble</link> *pos);</programlisting>
 <para>
@@ -632,25 +599,23 @@ Retrieves the right endpoint position of the specified segment
 This procedure retrieves the right endpoint position of the
 specified segment of the specified gradient.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
 <listitem><simpara> The return position.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-set-right-pos" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_set_right_pos ()</title>
-<indexterm zone="gimp-gradient-segment-set-right-pos" role="GIMP 2.2"><primary>gimp_gradient_segment_set_right_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_right_pos (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-segment-set-right-pos" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_set_right_pos">gimp_gradient_segment_set_right_pos</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_set_right_pos (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="gdouble">gdouble</link> pos,
                                                          <link linkend="gdouble">gdouble</link> *final_pos);</programlisting>
@@ -664,28 +629,26 @@ between the position of the middle point of the current segment and
 the middle point of the segment to the right. This procedure returns
 the final position.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
 <listitem><simpara> The position to set the guidepoint to.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>final_pos</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>final_pos</parameter>&#160;:</term>
 <listitem><simpara> The return position.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-get-blending-function" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_get_blending_function ()</title>
-<indexterm zone="gimp-gradient-segment-get-blending-function" role="GIMP 2.2"><primary>gimp_gradient_segment_get_blending_function</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_blending_function
+<indexterm zone="gimp-gradient-segment-get-blending-function" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_get_blending_function">gimp_gradient_segment_get_blending_function</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_blending_function
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="GimpGradientSegmentType">GimpGradientSegmentType</link> *blend_func);</programlisting>
@@ -696,25 +659,23 @@ Retrieves the gradient segment's blending function
 This procedure retrieves the blending function of the segment at the
 specified gradient name and segment index.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>blend_func</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>blend_func</parameter>&#160;:</term>
 <listitem><simpara> The blending function of the segment.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-get-coloring-type" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_get_coloring_type ()</title>
-<indexterm zone="gimp-gradient-segment-get-coloring-type" role="GIMP 2.2"><primary>gimp_gradient_segment_get_coloring_type</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_coloring_type
+<indexterm zone="gimp-gradient-segment-get-coloring-type" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_get_coloring_type">gimp_gradient_segment_get_coloring_type</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_get_coloring_type
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
                                                          <link linkend="GimpGradientSegmentColor">GimpGradientSegmentColor</link> *coloring_type);</programlisting>
@@ -725,25 +686,23 @@ Retrieves the gradient segment's coloring type
 This procedure retrieves the coloring type of the segment at the
 specified gradient name and segment index.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>coloring_type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>coloring_type</parameter>&#160;:</term>
 <listitem><simpara> The coloring type of the segment.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-set-blending-function" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_set_blending_function ()</title>
-<indexterm zone="gimp-gradient-segment-range-set-blending-function" role="GIMP 2.2"><primary>gimp_gradient_segment_range_set_blending_function</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_set_blending_function
+<indexterm zone="gimp-gradient-segment-range-set-blending-function" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_set_blending_function">gimp_gradient_segment_range_set_blending_function</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_set_blending_function
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment,
@@ -755,28 +714,26 @@ Change the blending function of a segments range
 This function changes the blending function of a segment range to
 the specified blending function.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>blending_function</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>blending_function</parameter>&#160;:</term>
 <listitem><simpara> The blending function.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-set-coloring-type" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_set_coloring_type ()</title>
-<indexterm zone="gimp-gradient-segment-range-set-coloring-type" role="GIMP 2.2"><primary>gimp_gradient_segment_range_set_coloring_type</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_set_coloring_type
+<indexterm zone="gimp-gradient-segment-range-set-coloring-type" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_set_coloring_type">gimp_gradient_segment_range_set_coloring_type</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_set_coloring_type
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment,
@@ -788,28 +745,26 @@ Change the coloring type of a segments range
 This function changes the coloring type of a segment range to the
 specified coloring type.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>coloring_type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>coloring_type</parameter>&#160;:</term>
 <listitem><simpara> The coloring type.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-flip" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_flip ()</title>
-<indexterm zone="gimp-gradient-segment-range-flip" role="GIMP 2.2"><primary>gimp_gradient_segment_range_flip</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_flip    (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-segment-range-flip" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_flip">gimp_gradient_segment_range_flip</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_flip    (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment);</programlisting>
 <para>
@@ -818,25 +773,23 @@ Flip the segment range
 <para>
 This function flips a segment range.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-replicate" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_replicate ()</title>
-<indexterm zone="gimp-gradient-segment-range-replicate" role="GIMP 2.2"><primary>gimp_gradient_segment_range_replicate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_replicate
+<indexterm zone="gimp-gradient-segment-range-replicate" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_replicate">gimp_gradient_segment_range_replicate</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_replicate
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment,
@@ -849,28 +802,26 @@ This function replicates a segment range a given number of times.
 Instead of the original segment range, several smaller scaled copies
 of it will appear in equal widths.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>replicate_times</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>replicate_times</parameter>&#160;:</term>
 <listitem><simpara> The number of times to replicate.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-split-midpoint" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_split_midpoint ()</title>
-<indexterm zone="gimp-gradient-segment-range-split-midpoint" role="GIMP 2.2"><primary>gimp_gradient_segment_range_split_midpoint</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_split_midpoint
+<indexterm zone="gimp-gradient-segment-range-split-midpoint" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_split_midpoint">gimp_gradient_segment_range_split_midpoint</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_split_midpoint
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment);</programlisting>
@@ -881,25 +832,23 @@ Splits each segment in the segment range at midpoint
 This function splits each segment in the segment range at its
 midpoint.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-split-uniform" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_split_uniform ()</title>
-<indexterm zone="gimp-gradient-segment-range-split-uniform" role="GIMP 2.2"><primary>gimp_gradient_segment_range_split_uniform</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_split_uniform
+<indexterm zone="gimp-gradient-segment-range-split-uniform" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_split_uniform">gimp_gradient_segment_range_split_uniform</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_split_uniform
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment,
@@ -911,28 +860,26 @@ Splits each segment in the segment range uniformly
 This function splits each segment in the segment range uniformly
 according to the number of times specified by the parameter.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>split_parts</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>split_parts</parameter>&#160;:</term>
 <listitem><simpara> The number of uniform divisions to split each segment to.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-delete" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_delete ()</title>
-<indexterm zone="gimp-gradient-segment-range-delete" role="GIMP 2.2"><primary>gimp_gradient_segment_range_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_delete  (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-segment-range-delete" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_delete">gimp_gradient_segment_range_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_delete  (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment);</programlisting>
 <para>
@@ -941,25 +888,23 @@ Delete the segment range
 <para>
 This function deletes a segment range.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-redistribute-handles" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_redistribute_handles ()</title>
-<indexterm zone="gimp-gradient-segment-range-redistribute-handles" role="GIMP 2.2"><primary>gimp_gradient_segment_range_redistribute_handles</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_redistribute_handles
+<indexterm zone="gimp-gradient-segment-range-redistribute-handles" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_redistribute_handles">gimp_gradient_segment_range_redistribute_handles</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_redistribute_handles
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment);</programlisting>
@@ -970,25 +915,23 @@ Uniformly redistribute the segment range's handles
 This function redistributes the handles of the specified segment
 range of the specified gradient, so they'll be evenly spaced.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-blend-colors" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_blend_colors ()</title>
-<indexterm zone="gimp-gradient-segment-range-blend-colors" role="GIMP 2.2"><primary>gimp_gradient_segment_range_blend_colors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_blend_colors
+<indexterm zone="gimp-gradient-segment-range-blend-colors" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_blend_colors">gimp_gradient_segment_range_blend_colors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_blend_colors
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment);</programlisting>
@@ -1000,25 +943,23 @@ This function blends the colors (but not the opacity) of the
 segments' range of the gradient. Using it, the colors' transition
 will be uniform across the range.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-blend-opacity" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_blend_opacity ()</title>
-<indexterm zone="gimp-gradient-segment-range-blend-opacity" role="GIMP 2.2"><primary>gimp_gradient_segment_range_blend_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_blend_opacity
+<indexterm zone="gimp-gradient-segment-range-blend-opacity" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_blend_opacity">gimp_gradient_segment_range_blend_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradient_segment_range_blend_opacity
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment);</programlisting>
@@ -1030,25 +971,23 @@ This function blends the opacity (but not the colors) of the
 segments' range of the gradient. Using it, the opacity's transition
 will be uniform across the range.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 <refsect2 id="gimp-gradient-segment-range-move" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_range_move ()</title>
-<indexterm zone="gimp-gradient-segment-range-move" role="GIMP 2.2"><primary>gimp_gradient_segment_range_move</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_gradient_segment_range_move    (const <link linkend="gchar">gchar</link> *name,
+<indexterm zone="gimp-gradient-segment-range-move" role="GIMP 2.2"><primary sortas="gimp_gradient_segment_range_move">gimp_gradient_segment_range_move</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_gradient_segment_range_move    (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> start_segment,
                                                          <link linkend="gint">gint</link> end_segment,
                                                          <link linkend="gdouble">gdouble</link> delta,
@@ -1061,28 +1000,26 @@ This funtions moves the position of an entire segment range by a
 delta. The actual delta (which is returned) will be limited by the
 control points of the neighboring segments.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>start_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>start_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the first segment to operate on.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>end_segment</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>end_segment</parameter>&#160;:</term>
 <listitem><simpara> The index of the last segment to operate on. If negative, the selection will extend to the end of the string.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>delta</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>delta</parameter>&#160;:</term>
 <listitem><simpara> The delta to move the segment range.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>control_compress</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>control_compress</parameter>&#160;:</term>
 <listitem><simpara> Whether or not to compress the neighboring segments.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The final delta by which the range moved.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The final delta by which the range moved.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.2</para></refsect2>
 
 </refsect1>
 

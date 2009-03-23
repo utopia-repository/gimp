@@ -8,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimptile.html" title="gimptile">
 <link rel="next" href="libgimp-gimpundo.html" title="gimpundo">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -32,9 +32,11 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpundo.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimptools.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimp-gimptools.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimp-gimptools.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimp-gimptools.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimptools"></a><div class="titlepage"></div>
@@ -49,136 +51,156 @@
 <a name="libgimp-gimptools.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-airbrush" title="gimp_airbrush ()">gimp_airbrush</a>                       (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-airbrush" title="gimp_airbrush ()">gimp_airbrush</a>                       (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> pressure,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-airbrush-default" title="gimp_airbrush_default ()">gimp_airbrush_default</a>               (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-airbrush-default" title="gimp_airbrush_default ()">gimp_airbrush_default</a>               (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-by-color-select" title="gimp_by_color_select ()">gimp_by_color_select</a>                (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-by-color-select" title="gimp_by_color_select ()">gimp_by_color_select</a>                (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-by-color-select-full" title="gimp_by_color_select_full ()">gimp_by_color_select_full</a>           (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-by-color-select-full" title="gimp_by_color_select_full ()">gimp_by_color_select_full</a>           (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> select_transparent,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion" title="enum GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-clone" title="gimp_clone ()">gimp_clone</a>                          (gint32 drawable_ID,
-                                                         gint32 src_drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-clone" title="gimp_clone ()">gimp_clone</a>                          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> src_drawable_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCloneType"
 >GimpCloneType</a> clone_type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> src_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> src_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-clone-default" title="gimp_clone_default ()">gimp_clone_default</a>                  (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-clone-default" title="gimp_clone_default ()">gimp_clone_default</a>                  (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-convolve" title="gimp_convolve ()">gimp_convolve</a>                       (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-convolve" title="gimp_convolve ()">gimp_convolve</a>                       (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> pressure,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpConvolveType" title="enum GimpConvolveType">GimpConvolveType</a> convolve_type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-convolve-default" title="gimp_convolve_default ()">gimp_convolve_default</a>               (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-convolve-default" title="gimp_convolve_default ()">gimp_convolve_default</a>               (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-dodgeburn" title="gimp_dodgeburn ()">gimp_dodgeburn</a>                      (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-dodgeburn" title="gimp_dodgeburn ()">gimp_dodgeburn</a>                      (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> exposure,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"
@@ -187,404 +209,464 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"
 >GimpTransferMode</a> dodgeburn_mode,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-dodgeburn-default" title="gimp_dodgeburn_default ()">gimp_dodgeburn_default</a>              (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-dodgeburn-default" title="gimp_dodgeburn_default ()">gimp_dodgeburn_default</a>              (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-edit-bucket-fill-full" title="gimp_edit_bucket_fill_full ()">gimp_edit_bucket_fill_full</a>          (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-edit-bucket-fill-full" title="gimp_edit_bucket_fill_full ()">gimp_edit_bucket_fill_full</a>          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> threshold,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> fill_transparent,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion" title="enum GimpSelectCriterion">GimpSelectCriterion</a> select_criterion,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-ellipse-select" title="gimp_ellipse_select ()">gimp_ellipse_select</a>                 (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-ellipse-select" title="gimp_ellipse_select ()">gimp_ellipse_select</a>                 (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> width,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-eraser" title="gimp_eraser ()">gimp_eraser</a>                         (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-eraser" title="gimp_eraser ()">gimp_eraser</a>                         (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpBrushApplicationMode" title="enum GimpBrushApplicationMode">GimpBrushApplicationMode</a> hardness,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"
 >GimpPaintApplicationMode</a> method);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-eraser-default" title="gimp_eraser_default ()">gimp_eraser_default</a>                 (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-eraser-default" title="gimp_eraser_default ()">gimp_eraser_default</a>                 (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
-gint32              <a class="link" href="libgimp-gimptools.html#gimp-flip" title="gimp_flip ()">gimp_flip</a>                           (gint32 drawable_ID,
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimptools.html#gimp-flip" title="gimp_flip ()">gimp_flip</a>                           (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpOrientationType" title="enum GimpOrientationType">GimpOrientationType</a> flip_type);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-free-select" title="gimp_free_select ()">gimp_free_select</a>                    (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-free-select" title="gimp_free_select ()">gimp_free_select</a>                    (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_segs,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *segs,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-fuzzy-select" title="gimp_fuzzy_select ()">gimp_fuzzy_select</a>                   (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-fuzzy-select" title="gimp_fuzzy_select ()">gimp_fuzzy_select</a>                   (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-fuzzy-select-full" title="gimp_fuzzy_select_full ()">gimp_fuzzy_select_full</a>              (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-fuzzy-select-full" title="gimp_fuzzy_select_full ()">gimp_fuzzy_select_full</a>              (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> select_transparent,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion" title="enum GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-heal" title="gimp_heal ()">gimp_heal</a>                           (gint32 drawable_ID,
-                                                         gint32 src_drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-heal" title="gimp_heal ()">gimp_heal</a>                           (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> src_drawable_ID,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> src_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> src_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-heal-default" title="gimp_heal_default ()">gimp_heal_default</a>                   (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-heal-default" title="gimp_heal_default ()">gimp_heal_default</a>                   (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-paintbrush" title="gimp_paintbrush ()">gimp_paintbrush</a>                     (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-paintbrush" title="gimp_paintbrush ()">gimp_paintbrush</a>                     (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> fade_out,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"
 >GimpPaintApplicationMode</a> method,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> gradient_length);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-paintbrush-default" title="gimp_paintbrush_default ()">gimp_paintbrush_default</a>             (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-paintbrush-default" title="gimp_paintbrush_default ()">gimp_paintbrush_default</a>             (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-pencil" title="gimp_pencil ()">gimp_pencil</a>                         (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-pencil" title="gimp_pencil ()">gimp_pencil</a>                         (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
-gint32              <a class="link" href="libgimp-gimptools.html#gimp-perspective" title="gimp_perspective ()">gimp_perspective</a>                    (gint32 drawable_ID,
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimptools.html#gimp-perspective" title="gimp_perspective ()">gimp_perspective</a>                    (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x0,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y0,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x1,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y1,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x2,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y2,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x3,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y3);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-rect-select" title="gimp_rect_select ()">gimp_rect_select</a>                    (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-rect-select" title="gimp_rect_select ()">gimp_rect_select</a>                    (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> width,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-round-rect-select" title="gimp_round_rect_select ()">gimp_round_rect_select</a>              (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-round-rect-select" title="gimp_round_rect_select ()">gimp_round_rect_select</a>              (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> width,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> height,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> corner_radius_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> corner_radius_y,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_y);
-gint32              <a class="link" href="libgimp-gimptools.html#gimp-rotate" title="gimp_rotate ()">gimp_rotate</a>                         (gint32 drawable_ID,
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimptools.html#gimp-rotate" title="gimp_rotate ()">gimp_rotate</a>                         (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> angle);
-gint32              <a class="link" href="libgimp-gimptools.html#gimp-scale" title="gimp_scale ()">gimp_scale</a>                          (gint32 drawable_ID,
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimptools.html#gimp-scale" title="gimp_scale ()">gimp_scale</a>                          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x0,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y0,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x1,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y1);
-gint32              <a class="link" href="libgimp-gimptools.html#gimp-shear" title="gimp_shear ()">gimp_shear</a>                          (gint32 drawable_ID,
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimptools.html#gimp-shear" title="gimp_shear ()">gimp_shear</a>                          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpOrientationType" title="enum GimpOrientationType">GimpOrientationType</a> shear_type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> magnitude);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-smudge" title="gimp_smudge ()">gimp_smudge</a>                         (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-smudge" title="gimp_smudge ()">gimp_smudge</a>                         (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> pressure,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-smudge-default" title="gimp_smudge_default ()">gimp_smudge_default</a>                 (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimptools.html#gimp-smudge-default" title="gimp_smudge_default ()">gimp_smudge_default</a>                 (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);
-gint32              <a class="link" href="libgimp-gimptools.html#gimp-transform-2d" title="gimp_transform_2d ()">gimp_transform_2d</a>                   (gint32 drawable_ID,
+<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimptools.html#gimp-transform-2d" title="gimp_transform_2d ()">gimp_transform_2d</a>                   (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> source_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> source_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> scale_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> scale_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> angle,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> dest_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> dest_y);
 </pre>
 </div>
@@ -592,7 +674,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <a name="libgimp-gimptools.description"></a><h2>Description</h2>
 <p>
 Functions giving access to common toolbox tools.
-
 </p>
 </div>
 <div class="refsect1" lang="en">
@@ -600,16 +681,18 @@ Functions giving access to common toolbox tools.
 <div class="refsect2" lang="en">
 <a name="gimp-airbrush"></a><h3>gimp_airbrush ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_airbrush                       (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_airbrush                       (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> pressure,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Paint in the current brush with varying pressure. Paint application
@@ -621,7 +704,6 @@ represents the relative intensity of the paint application. High
 pressure results in a thicker layer of paint while low pressure
 results in a thinner layer.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -658,13 +740,15 @@ results in a thinner layer.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-airbrush-default"></a><h3>gimp_airbrush_default ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_airbrush_default               (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_airbrush_default               (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Paint in the current brush with varying pressure. Paint application
@@ -676,7 +760,6 @@ This tool simulates the use of an airbrush. It is similar to
 airbrush tools options box. It the option has not been set the
 default for the option will be used.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -708,28 +791,30 @@ default for the option will be used.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-by-color-select"></a><h3>gimp_by_color_select ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_by_color_select                (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_by_color_select                (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged);</pre>
 <p>
 Create a selection by selecting all pixels (in the specified
@@ -750,7 +835,6 @@ will be used instead of that for the specified drawable. This is
 equivalent to sampling for colors after merging all visible layers.
 In the case of a merged sampling, the supplied drawable is ignored.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -807,34 +891,36 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-by-color-select-full"></a><h3>gimp_by_color_select_full ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_by_color_select_full           (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_by_color_select_full           (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> select_transparent,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion" title="enum GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);</pre>
 <p>
@@ -857,7 +943,6 @@ will be used instead of that for the specified drawable. This is
 equivalent to sampling for colors after merging all visible layers.
 In the case of a merged sampling, the supplied drawable is ignored.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -925,30 +1010,33 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-clone"></a><h3>gimp_clone ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_clone                          (gint32 drawable_ID,
-                                                         gint32 src_drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_clone                          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> src_drawable_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCloneType"
 >GimpCloneType</a> clone_type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> src_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> src_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Clone from the source to the dest drawable using the current brush
@@ -967,7 +1055,6 @@ capable of transforming between any image types including
 RGB-&gt;Indexed--although converting from any type to indexed is
 significantly slower.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1019,13 +1106,15 @@ significantly slower.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-clone-default"></a><h3>gimp_clone_default ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_clone_default                  (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_clone_default                  (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Clone from the source to the dest drawable using the current brush
@@ -1038,7 +1127,6 @@ the tools arguments are obtained from the clones option dialog. It
 this dialog has not been activated then the dialogs default values
 will be used.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1070,17 +1158,19 @@ will be used.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-convolve"></a><h3>gimp_convolve ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_convolve                       (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_convolve                       (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> pressure,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpConvolveType" title="enum GimpConvolveType">GimpConvolveType</a> convolve_type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Convolve (Blur, Sharpen) using the current brush.
@@ -1091,7 +1181,6 @@ or blurring kernel. The pressure parameter controls the magnitude of
 the operation. Like the paintbrush, this tool linearly interpolates
 between the specified stroke coordinates.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1133,13 +1222,15 @@ between the specified stroke coordinates.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-convolve-default"></a><h3>gimp_convolve_default ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_convolve_default               (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_convolve_default               (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Convolve (Blur, Sharpen) using the current brush.
@@ -1151,7 +1242,6 @@ or blurring kernel. This function performs exactly the same as the
 obtained from the convolve option dialog. It this dialog has not
 been activated then the dialogs default values will be used.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1183,10 +1273,12 @@ been activated then the dialogs default values will be used.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-dodgeburn"></a><h3>gimp_dodgeburn ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_dodgeburn                      (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_dodgeburn                      (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> exposure,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"
@@ -1195,10 +1287,10 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"
 >GimpTransferMode</a> dodgeburn_mode,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Dodgeburn image with varying exposure.
@@ -1206,7 +1298,6 @@ Dodgeburn image with varying exposure.
 <p>
 Dodgeburn. More details here later.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1253,13 +1344,15 @@ Dodgeburn. More details here later.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-dodgeburn-default"></a><h3>gimp_dodgeburn_default ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_dodgeburn_default              (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_dodgeburn_default              (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Dodgeburn image with varying exposure. This is the same as the
@@ -1270,7 +1363,6 @@ activated then the defaults as used by the dialog will be used.
 <p>
 Dodgeburn. More details here later.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1302,30 +1394,32 @@ Dodgeburn. More details here later.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-edit-bucket-fill-full"></a><h3>gimp_edit_bucket_fill_full ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_edit_bucket_fill_full          (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_edit_bucket_fill_full          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> threshold,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> fill_transparent,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion" title="enum GimpSelectCriterion">GimpSelectCriterion</a> select_criterion,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y);</pre>
 <p>
 Fill the area specified either by the current selection if there is
@@ -1345,7 +1439,6 @@ all visible layers. In the case of merged sampling, the x and y
 coordinates are relative to the image's origin; otherwise, they are
 relative to the drawable's origin.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1408,38 +1501,39 @@ relative to the drawable's origin.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-ellipse-select"></a><h3>gimp_ellipse_select ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_ellipse_select                 (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_ellipse_select                 (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> width,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius);</pre>
 <p>
 Create an elliptical selection over the specified image.
@@ -1455,7 +1549,6 @@ feather option is enabled, the resulting selection is blurred before
 combining. The blur is a gaussian blur with the specified feather
 radius.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1517,13 +1610,15 @@ radius.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-eraser"></a><h3>gimp_eraser ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_eraser                         (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_eraser                         (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpBrushApplicationMode" title="enum GimpBrushApplicationMode">GimpBrushApplicationMode</a> hardness,
                                                          <a
@@ -1539,7 +1634,6 @@ become transparent. Otherwise, the eraser tool replaces the contents
 of the drawable with the background color. Like paintbrush, this
 tool linearly interpolates between the specified stroke coordinates.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1581,13 +1675,15 @@ tool linearly interpolates between the specified stroke coordinates.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-eraser-default"></a><h3>gimp_eraser_default ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_eraser_default                 (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_eraser_default                 (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Erase using the current brush.
@@ -1599,7 +1695,6 @@ the tools arguments are obtained from the eraser option dialog. It
 this dialog has not been activated then the dialogs default values
 will be used.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1630,7 +1725,11 @@ will be used.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-flip"></a><h3>gimp_flip ()</h3>
-<pre class="programlisting">gint32              gimp_flip                           (gint32 drawable_ID,
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_flip                           (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpOrientationType" title="enum GimpOrientationType">GimpOrientationType</a> flip_type);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1640,7 +1739,6 @@ will be used.</p>
 This procedure is deprecated! Use
 <a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip-simple" title="gimp_drawable_transform_flip_simple ()"><code class="function">gimp_drawable_transform_flip_simple()</code></a> instead.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1667,25 +1765,27 @@ This procedure is deprecated! Use
 <div class="refsect2" lang="en">
 <a name="gimp-free-select"></a><h3>gimp_free_select ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_free_select                    (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_free_select                    (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_segs,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *segs,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius);</pre>
 <p>
 Create a polygonal selection over the specified image.
@@ -1703,7 +1803,6 @@ feather option is enabled, the resulting selection is blurred before
 combining. The blur is a gaussian blur with the specified feather
 radius.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1755,31 +1854,33 @@ radius.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-fuzzy-select"></a><h3>gimp_fuzzy_select ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_fuzzy_select                   (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_fuzzy_select                   (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged);</pre>
 <p>
 Create a fuzzy selection starting at the specified coordinates on
@@ -1805,7 +1906,6 @@ ignored. If the sample is merged, the specified coordinates are
 relative to the image origin; otherwise, they are relative to the
 drawable's origin.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1867,37 +1967,39 @@ drawable's origin.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-fuzzy-select-full"></a><h3>gimp_fuzzy_select_full ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_fuzzy_select_full              (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_fuzzy_select_full              (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> select_transparent,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion" title="enum GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);</pre>
 <p>
@@ -1924,7 +2026,6 @@ ignored. If the sample is merged, the specified coordinates are
 relative to the image origin; otherwise, they are relative to the
 drawable's origin.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1997,27 +2098,30 @@ drawable's origin.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-heal"></a><h3>gimp_heal ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_heal                           (gint32 drawable_ID,
-                                                         gint32 src_drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_heal                           (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> src_drawable_ID,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> src_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> src_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Heal from the source to the dest drawable using the current brush
@@ -2030,7 +2134,6 @@ extents of the src drawable, then no paint is transferred. The
 healing tool is capable of transforming between any image types
 except RGB-&gt;Indexed.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2073,20 +2176,21 @@ except RGB-&gt;Indexed.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-heal-default"></a><h3>gimp_heal_default ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_heal_default                   (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_heal_default                   (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Heal from the source to the dest drawable using the current brush
@@ -2099,7 +2203,6 @@ arguments are obtained from the healing option dialog. It this
 dialog has not been activated then the dialogs default values will
 be used.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2127,29 +2230,30 @@ be used.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-paintbrush"></a><h3>gimp_paintbrush ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_paintbrush                     (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_paintbrush                     (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> fade_out,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"
 >GimpPaintApplicationMode</a> method,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> gradient_length);</pre>
 <p>
 Paint in the current brush with optional fade out parameter and pull
@@ -2166,7 +2270,6 @@ fade-out value, the pressure will approach zero. The gradient-length
 is the distance to spread the gradient over. It is measured in
 pixels. If the gradient-length is 0, no gradient is used.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2213,13 +2316,15 @@ pixels. If the gradient-length is 0, no gradient is used.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-paintbrush-default"></a><h3>gimp_paintbrush_default ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_paintbrush_default             (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_paintbrush_default             (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Paint in the current brush. The fade out parameter and pull colors
@@ -2240,7 +2345,6 @@ fade-out value, the pressure will approach zero. The gradient-length
 the gradient over. It is measured in pixels. If the gradient-length
 is 0, no gradient is used.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2272,13 +2376,15 @@ is 0, no gradient is used.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-pencil"></a><h3>gimp_pencil ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_pencil                         (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_pencil                         (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Paint in the current brush without sub-pixel sampling.
@@ -2291,7 +2397,6 @@ The brush mask is treated as though it contains only black and white
 values. Any value below half is treated as black; any above half, as
 white.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2322,33 +2427,37 @@ white.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-perspective"></a><h3>gimp_perspective ()</h3>
-<pre class="programlisting">gint32              gimp_perspective                    (gint32 drawable_ID,
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_perspective                    (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x0,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y0,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x1,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y1,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x2,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y2,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x3,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y3);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -2358,7 +2467,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 This procedure is deprecated! Use
 <a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-perspective-default" title="gimp_drawable_transform_perspective_default ()"><code class="function">gimp_drawable_transform_perspective_default()</code></a> instead.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2425,28 +2533,30 @@ This procedure is deprecated! Use
 <div class="refsect2" lang="en">
 <a name="gimp-rect-select"></a><h3>gimp_rect_select ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_rect_select                    (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_rect_select                    (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> width,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius);</pre>
 <p>
 Create a rectangular selection over the specified image;
@@ -2459,7 +2569,6 @@ option is enabled, the resulting selection is blurred before
 combining. The blur is a gaussian blur with the specified feather
 radius.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2516,40 +2625,42 @@ radius.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-round-rect-select"></a><h3>gimp_round_rect_select ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_round_rect_select              (gint32 image_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_round_rect_select              (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> width,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> height,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> corner_radius_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> corner_radius_y,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> antialias,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> feather,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> feather_radius_y);</pre>
 <p>
 Create a rectangular selection with round corners over the specified
@@ -2563,7 +2674,6 @@ mask. If the feather option is enabled, the resulting selection is
 blurred before combining. The blur is a gaussian blur with the
 specified feather radius.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2636,18 +2746,21 @@ specified feather radius.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-rotate"></a><h3>gimp_rotate ()</h3>
-<pre class="programlisting">gint32              gimp_rotate                         (gint32 drawable_ID,
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_rotate                         (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> angle);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -2657,7 +2770,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 This procedure is deprecated! Use
 <a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-rotate-default" title="gimp_drawable_transform_rotate_default ()"><code class="function">gimp_drawable_transform_rotate_default()</code></a> instead.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2688,21 +2800,25 @@ This procedure is deprecated! Use
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-scale"></a><h3>gimp_scale ()</h3>
-<pre class="programlisting">gint32              gimp_scale                          (gint32 drawable_ID,
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_scale                          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x0,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y0,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> x1,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> y1);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -2712,7 +2828,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 This procedure is deprecated! Use
 <a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-scale-default" title="gimp_drawable_transform_scale_default ()"><code class="function">gimp_drawable_transform_scale_default()</code></a> instead.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2758,13 +2873,17 @@ This procedure is deprecated! Use
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-shear"></a><h3>gimp_shear ()</h3>
-<pre class="programlisting">gint32              gimp_shear                          (gint32 drawable_ID,
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_shear                          (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpOrientationType" title="enum GimpOrientationType">GimpOrientationType</a> shear_type,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> magnitude);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -2774,7 +2893,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 This procedure is deprecated! Use
 <a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-shear-default" title="gimp_drawable_transform_shear_default ()"><code class="function">gimp_drawable_transform_shear_default()</code></a> instead.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2811,16 +2929,18 @@ This procedure is deprecated! Use
 <div class="refsect2" lang="en">
 <a name="gimp-smudge"></a><h3>gimp_smudge ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_smudge                         (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_smudge                         (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> pressure,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Smudge image with varying pressure.
@@ -2830,7 +2950,6 @@ This tool simulates a smudge using the current brush. High pressure
 results in a greater smudge of paint while low pressure results in a
 lesser smudge.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2867,13 +2986,15 @@ lesser smudge.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-smudge-default"></a><h3>gimp_smudge_default ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_smudge_default                 (gint32 drawable_ID,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_smudge_default                 (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> num_strokes,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> *strokes);</pre>
 <p>
 Smudge image with varying pressure.
@@ -2884,7 +3005,6 @@ exactly the same as <a class="link" href="libgimp-gimptools.html#gimp-smudge" ti
 taken from the smudge tool options or the options default if the
 tools option dialog has not been activated.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2915,30 +3035,34 @@ tools option dialog has not been activated.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-transform-2d"></a><h3>gimp_transform_2d ()</h3>
-<pre class="programlisting">gint32              gimp_transform_2d                   (gint32 drawable_ID,
+<pre class="programlisting"><a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_transform_2d                   (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> drawable_ID,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> interpolation,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> source_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> source_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> scale_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> scale_y,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> angle,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> dest_x,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> dest_y);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -2948,7 +3072,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 This procedure is deprecated! Use
 <a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-2d-default" title="gimp_drawable_transform_2d_default ()"><code class="function">gimp_drawable_transform_2d_default()</code></a> instead.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -3010,6 +3133,6 @@ This procedure is deprecated! Use
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

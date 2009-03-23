@@ -1,3 +1,11 @@
+gimp (2.6.6-1) unstable; urgency=low
+
+  * New upstream release
+    - Save two-color PBMs properly, and don't invert the colors
+      (Closes: #517502)
+
+ -- Ari Pollak <ari@debian.org>  Sun, 22 Mar 2009 21:39:55 -0400
+
 gimp (2.6.5-2) unstable; urgency=low
 
   * Bump build-dep on intltool (Closes: #518373)

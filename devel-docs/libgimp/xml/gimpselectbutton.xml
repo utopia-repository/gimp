@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>GimpSelectButton</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="GimpSelectButton.synopsis" role="synopsis">
@@ -41,7 +40,6 @@
                                              +----<link linkend="GimpPaletteSelectButton">GimpPaletteSelectButton</link>
                                              +----<link linkend="GimpPatternSelectButton">GimpPatternSelectButton</link>
 </synopsis>
-
 </refsect1>
 
 
@@ -51,7 +49,6 @@
 <para>
 GimpSelectButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
-
 </refsect1>
 
 
@@ -61,7 +58,6 @@ GimpSelectButton implements
 <refsect1 id="GimpSelectButton.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -69,23 +65,20 @@ GimpSelectButton implements
 <title role="details.title">Details</title>
 <refsect2 id="GimpSelectButton-struct" role="struct">
 <title>GimpSelectButton</title>
-<indexterm zone="GimpSelectButton-struct"><primary>GimpSelectButton</primary></indexterm><programlisting>typedef struct _GimpSelectButton GimpSelectButton;</programlisting>
+<indexterm zone="GimpSelectButton-struct"><primary sortas="GimpSelectButton">GimpSelectButton</primary></indexterm><programlisting>typedef struct _GimpSelectButton GimpSelectButton;</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-select-button-close-popup" role="function" condition="since:GIMP 2.4">
 <title>gimp_select_button_close_popup ()</title>
-<indexterm zone="gimp-select-button-close-popup" role="GIMP 2.4"><primary>gimp_select_button_close_popup</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_select_button_close_popup      (<link linkend="GimpSelectButton">GimpSelectButton</link> *button);</programlisting>
+<indexterm zone="gimp-select-button-close-popup" role="GIMP 2.4"><primary sortas="gimp_select_button_close_popup">gimp_select_button_close_popup</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_select_button_close_popup      (<link linkend="GimpSelectButton">GimpSelectButton</link> *button);</programlisting>
 <para>
 Closes the popup window associated with <parameter>button</parameter>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>button</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>button</parameter>&#160;:</term>
 <listitem><simpara> A <link linkend="GimpSelectButton"><type>GimpSelectButton</type></link>
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 
 </refsect1>
 

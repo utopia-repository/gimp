@@ -85,7 +85,7 @@ typedef struct _PNMInfo
   gint       maxval;            /* For ascii image files, the max value
                                  * which we need to normalize to */
   gint       np;                /* Number of image planes (0 for pbm) */
-  gint       asciibody;         /* 1 if ascii body, 0 if raw body */
+  gboolean   asciibody;         /* 1 if ascii body, 0 if raw body */
   jmp_buf    jmpbuf;            /* Where to jump to on an error loading */
   /* Routine to use to load the pnm body */
   void    (* loader) (PNMScanner *, struct _PNMInfo *, GimpPixelRgn *);
@@ -94,13 +94,14 @@ typedef struct _PNMInfo
 /* Contains the information needed to write out PNM rows */
 typedef struct _PNMRowInfo
 {
-  gint    fd;           /* File descriptor */
-  gchar  *rowbuf;       /* Buffer for writing out rows */
-  gint    xres;         /* X resolution */
-  gint    np;           /* Number of planes */
-  guchar *red;          /* Colormap red */
-  guchar *grn;          /* Colormap green */
-  guchar *blu;          /* Colormap blue */
+  gint      fd;            /* File descriptor             */
+  gchar    *rowbuf;        /* Buffer for writing out rows */
+  gint      xres;          /* X resolution                */
+  gint      np;            /* Number of planes            */
+  guchar   *red;           /* Colormap red                */
+  guchar   *grn;           /* Colormap green              */
+  guchar   *blu;           /* Colormap blue               */
+  gboolean  zero_is_black; /* index zero is black (PBM only) */
 } PNMRowInfo;
 
 /* Save info  */
@@ -808,20 +809,23 @@ static void
 pnmsaverow_raw_pbm (PNMRowInfo   *ri,
                     const guchar *data)
 {
-  gint    b, i, p = 0;
-  gchar  *rbcur   = ri->rowbuf;
-  gint32  len     = (gint) ceil ((gdouble) (ri->xres) / 8.0);
+  gint    b, p  = 0;
+  gchar  *rbcur = ri->rowbuf;
+  gint32  len   = (gint) ceil ((gdouble) (ri->xres) / 8.0);
 
   for (b = 0; b < len; b++) /* each output byte */
     {
-      *(rbcur+b) = 0;
+      gint i;
+
+      rbcur[b] = 0;
+
       for (i = 0; i < 8; i++) /* each bit in this byte */
         {
           if (p >= ri->xres)
-              break;
+            break;
 
-          if (*(data+p) == 0)
-              *(rbcur+b) |= (char) (1 << (7 - i));
+          if (data[p] != ri->zero_is_black)
+            rbcur[b] |= (char) (1 << (7 - i));
 
           p++;
         }
@@ -844,16 +848,16 @@ pnmsaverow_ascii_pbm (PNMRowInfo   *ri,
     {
       if (line_len > 69)
         {
-          *(rbcur+i) = '\n';
+          rbcur[i] = '\n';
           line_len = 0;
           len++;
           rbcur++;
         }
 
-      if (*(data+i) == 0)
-        *(rbcur+i) = '1';
+      if (data[i] == ri->zero_is_black)
+        rbcur[i] = '0';
       else
-        *(rbcur+i) = '0';
+        rbcur[i] = '1';
 
       line_len++;
       len++;
@@ -917,11 +921,11 @@ pnmsaverow_ascii_indexed (PNMRowInfo   *ri,
 
   for (i = 0; i < ri->xres; i++)
     {
-      sprintf ((char *) rbcur,"%d\n", 0xff & ri->red[*(data)]);
+      sprintf (rbcur, "%d\n", 0xff & ri->red[*(data)]);
       rbcur += strlen (rbcur);
-      sprintf ((char *) rbcur,"%d\n", 0xff & ri->grn[*(data)]);
+      sprintf (rbcur, "%d\n", 0xff & ri->grn[*(data)]);
       rbcur += strlen (rbcur);
-      sprintf ((char *) rbcur,"%d\n", 0xff & ri->blu[*(data++)]);
+      sprintf (rbcur, "%d\n", 0xff & ri->blu[*(data++)]);
       rbcur += strlen (rbcur);
     }
 
@@ -1063,24 +1067,57 @@ save_image (const gchar  *filename,
         }
     }
 
-  if (drawable_type == GIMP_INDEXED_IMAGE && !pbm)
+  rowinfo.zero_is_black = FALSE;
+
+  if (drawable_type == GIMP_INDEXED_IMAGE)
     {
       guchar *cmap;
-      gint    colors;
-      gint    i;
+      gint    num_colors;
 
-      cmap = gimp_image_get_colormap (image_ID, &colors);
+      cmap = gimp_image_get_colormap (image_ID, &num_colors);
 
-      for (i = 0; i < colors; i++)
+      if (pbm)
         {
-          red[i] = *cmap++;
-          grn[i] = *cmap++;
-          blu[i] = *cmap++;
+          /*  Test which of the two colors is white and which is black  */
+          switch (num_colors)
+            {
+            case 1:
+              rowinfo.zero_is_black = (GIMP_RGB_LUMINANCE (cmap[0],
+                                                           cmap[1],
+                                                           cmap[2]) < 128);
+              break;
+
+            case 2:
+              rowinfo.zero_is_black = (GIMP_RGB_LUMINANCE (cmap[0],
+                                                           cmap[1],
+                                                           cmap[2]) <
+                                       GIMP_RGB_LUMINANCE (cmap[3],
+                                                           cmap[4],
+                                                           cmap[5]));
+              break;
+
+            default:
+              g_warning ("images saved as PBM should be black/white");
+              break;
+            }
+        }
+      else
+        {
+          gint i;
+
+          for (i = 0; i < num_colors; i++)
+            {
+              red[i] = *cmap++;
+              grn[i] = *cmap++;
+              blu[i] = *cmap++;
+            }
+
+          rowinfo.red = red;
+          rowinfo.grn = grn;
+          rowinfo.blu = blu;
         }
 
-      rowinfo.red = red;
-      rowinfo.grn = grn;
-      rowinfo.blu = blu;
+      g_free (cmap);
     }
 
   /* allocate a buffer for retrieving information from the pixel region  */

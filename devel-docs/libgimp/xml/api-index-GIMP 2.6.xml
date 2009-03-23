@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="gimp-drawable-free-shadow"><link linkend="gimp-drawable-free-shadow">gimp_drawable_free_shadow</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-drawable-is-text-layer"><link linkend="gimp-drawable-is-text-layer">gimp_drawable_is_text_layer</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-get-pdb-error"><link linkend="gimp-get-pdb-error">gimp_get_pdb_error</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradient-get-number-of-segments"><link linkend="gimp-gradient-get-number-of-segments">gimp_gradient_get_number_of_segments</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-image-get-vectors-by-tattoo"><link linkend="gimp-image-get-vectors-by-tattoo">gimp_image_get_vectors_by_tattoo</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-image-scale-full"><link linkend="gimp-image-scale-full">gimp_image_scale_full</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-layer-new-from-visible"><link linkend="gimp-layer-new-from-visible">gimp_layer_new_from_visible</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-layer-scale-full"><link linkend="gimp-layer-scale-full">gimp_layer_scale_full</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-get-colors"><link linkend="gimp-palette-get-colors">gimp_palette_get_colors</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-plugin-get-pdb-error-handler"><link linkend="gimp-plugin-get-pdb-error-handler">gimp_plugin_get_pdb_error_handler</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-plugin-set-pdb-error-handler"><link linkend="gimp-plugin-set-pdb-error-handler">gimp_plugin_set_pdb_error_handler</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-procedural-db-proc-exists"><link linkend="gimp-procedural-db-proc-exists">gimp_procedural_db_proc_exists</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-antialias"><link linkend="gimp-text-layer-get-antialias">gimp_text_layer_get_antialias</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-base-direction"><link linkend="gimp-text-layer-get-base-direction">gimp_text_layer_get_base_direction</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-color"><link linkend="gimp-text-layer-get-color">gimp_text_layer_get_color</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-font"><link linkend="gimp-text-layer-get-font">gimp_text_layer_get_font</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-font-size"><link linkend="gimp-text-layer-get-font-size">gimp_text_layer_get_font_size</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-hinting"><link linkend="gimp-text-layer-get-hinting">gimp_text_layer_get_hinting</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-indent"><link linkend="gimp-text-layer-get-indent">gimp_text_layer_get_indent</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-justification"><link linkend="gimp-text-layer-get-justification">gimp_text_layer_get_justification</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-kerning"><link linkend="gimp-text-layer-get-kerning">gimp_text_layer_get_kerning</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-language"><link linkend="gimp-text-layer-get-language">gimp_text_layer_get_language</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-letter-spacing"><link linkend="gimp-text-layer-get-letter-spacing">gimp_text_layer_get_letter_spacing</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-line-spacing"><link linkend="gimp-text-layer-get-line-spacing">gimp_text_layer_get_line_spacing</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-get-text"><link linkend="gimp-text-layer-get-text">gimp_text_layer_get_text</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-new"><link linkend="gimp-text-layer-new">gimp_text_layer_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-antialias"><link linkend="gimp-text-layer-set-antialias">gimp_text_layer_set_antialias</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-base-direction"><link linkend="gimp-text-layer-set-base-direction">gimp_text_layer_set_base_direction</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-color"><link linkend="gimp-text-layer-set-color">gimp_text_layer_set_color</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-font"><link linkend="gimp-text-layer-set-font">gimp_text_layer_set_font</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-font-size"><link linkend="gimp-text-layer-set-font-size">gimp_text_layer_set_font_size</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-hinting"><link linkend="gimp-text-layer-set-hinting">gimp_text_layer_set_hinting</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-indent"><link linkend="gimp-text-layer-set-indent">gimp_text_layer_set_indent</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-justification"><link linkend="gimp-text-layer-set-justification">gimp_text_layer_set_justification</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-kerning"><link linkend="gimp-text-layer-set-kerning">gimp_text_layer_set_kerning</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-language"><link linkend="gimp-text-layer-set-language">gimp_text_layer_set_language</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-letter-spacing"><link linkend="gimp-text-layer-set-letter-spacing">gimp_text_layer_set_letter_spacing</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-line-spacing"><link linkend="gimp-text-layer-set-line-spacing">gimp_text_layer_set_line_spacing</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-layer-set-text"><link linkend="gimp-text-layer-set-text">gimp_text_layer_set_text</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-user-time"><link linkend="gimp-user-time">gimp_user_time</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vectors-copy"><link linkend="gimp-vectors-copy">gimp_vectors_copy</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vectors-export-to-file"><link linkend="gimp-vectors-export-to-file">gimp_vectors_export_to_file</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vectors-export-to-string"><link linkend="gimp-vectors-export-to-string">gimp_vectors_export_to_string</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-vectors-new-from-text-layer"><link linkend="gimp-vectors-new-from-text-layer">gimp_vectors_new_from_text_layer</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

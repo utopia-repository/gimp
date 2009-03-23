@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>gimpcpuaccel</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimpbase-gimpcpuaccel.synopsis" role="synopsis">
@@ -36,7 +35,6 @@ enum                <link linkend="GimpCpuAccelFlags">GimpCpuAccelFlags</link>;
 <refsect1 id="libgimpbase-gimpcpuaccel.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -44,7 +42,7 @@ enum                <link linkend="GimpCpuAccelFlags">GimpCpuAccelFlags</link>;
 <title role="details.title">Details</title>
 <refsect2 id="GimpCpuAccelFlags" role="enum">
 <title>enum GimpCpuAccelFlags</title>
-<indexterm zone="GimpCpuAccelFlags"><primary>GimpCpuAccelFlags</primary></indexterm><programlisting>typedef enum
+<indexterm zone="GimpCpuAccelFlags"><primary sortas="GimpCpuAccelFlags">GimpCpuAccelFlags</primary></indexterm><programlisting>typedef enum
 {
   GIMP_CPU_ACCEL_NONE        = 0x0,
 
@@ -61,34 +59,29 @@ enum                <link linkend="GimpCpuAccelFlags">GimpCpuAccelFlags</link>;
 } GimpCpuAccelFlags;
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-cpu-accel-get-support" role="function" condition="since:GIMP 2.4">
 <title>gimp_cpu_accel_get_support ()</title>
-<indexterm zone="gimp-cpu-accel-get-support" role="GIMP 2.4"><primary>gimp_cpu_accel_get_support</primary></indexterm><programlisting><link linkend="GimpCpuAccelFlags">GimpCpuAccelFlags</link>   gimp_cpu_accel_get_support          (void);</programlisting>
+<indexterm zone="gimp-cpu-accel-get-support" role="GIMP 2.4"><primary sortas="gimp_cpu_accel_get_support">gimp_cpu_accel_get_support</primary></indexterm><programlisting><link linkend="GimpCpuAccelFlags">GimpCpuAccelFlags</link>   gimp_cpu_accel_get_support          (void);</programlisting>
 <para>
 Query for CPU acceleration support.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="GimpCpuAccelFlags"><type>GimpCpuAccelFlags</type></link> as supported by the CPU.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <link linkend="GimpCpuAccelFlags"><type>GimpCpuAccelFlags</type></link> as supported by the CPU.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-cpu-accel-set-use" role="function" condition="since:GIMP 2.4">
 <title>gimp_cpu_accel_set_use ()</title>
-<indexterm zone="gimp-cpu-accel-set-use" role="GIMP 2.4"><primary>gimp_cpu_accel_set_use</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cpu_accel_set_use              (<link linkend="gboolean">gboolean</link> use);</programlisting>
+<indexterm zone="gimp-cpu-accel-set-use" role="GIMP 2.4"><primary sortas="gimp_cpu_accel_set_use">gimp_cpu_accel_set_use</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cpu_accel_set_use              (<link linkend="gboolean">gboolean</link> use);</programlisting>
 <para>
 This function is for internal use only.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>use</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>use</parameter>&#160;:</term>
 <listitem><simpara>  whether to use CPU acceleration features or not
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 
 </refsect1>
 

@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpui.html" title="gimpui">
 <link rel="next" href="GimpDrawablePreview.html" title="GimpDrawablePreview">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -32,9 +32,11 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpDrawablePreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpexport.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimp-gimpexport.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimp-gimpexport.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimp-gimpexport.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpexport"></a><div class="titlepage"></div>
@@ -50,10 +52,14 @@
 <pre class="synopsis">
 enum                <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities">GimpExportCapabilities</a>;
 enum                <a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>;
-<a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    <a class="link" href="libgimp-gimpexport.html#gimp-export-image" title="gimp_export_image ()">gimp_export_image</a>                   (gint32 *image_ID,
-                                                         gint32 *drawable_ID,
+<a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    <a class="link" href="libgimp-gimpexport.html#gimp-export-image" title="gimp_export_image ()">gimp_export_image</a>                   (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> *image_ID,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> *drawable_ID,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *format_name,
                                                          <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities">GimpExportCapabilities</a> capabilities);
 </pre>
@@ -65,14 +71,12 @@ This function should be called by all save_plugins unless they are
 able to save all image formats GIMP knows about. It takes care
 of asking the user if she wishes to export the image to a format the
 save_plugin can handle. It then performs the necessary conversions
-(e.g. Flatten) on a copy of the image so that the image can be saved 
+(e.g. Flatten) on a copy of the image so that the image can be saved
 without changing the original image.
-
 The capabilities of the save_plugin are specified by combining
-<a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities"><span class="type">GimpExportCapabilities</span></a> using a bitwise OR. 
-
+<a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities"><span class="type">GimpExportCapabilities</span></a> using a bitwise OR.
 Make sure you have initialized GTK+ before you call this function
-as it will most probably have to open a dialog. 
+as it will most probably have to open a dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
@@ -93,7 +97,6 @@ as it will most probably have to open a dialog.
 } GimpExportCapabilities;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -107,16 +110,19 @@ as it will most probably have to open a dialog.
 } GimpExportReturn;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-export-image"></a><h3>gimp_export_image ()</h3>
-<pre class="programlisting"><a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (gint32 *image_ID,
-                                                         gint32 *drawable_ID,
+<pre class="programlisting"><a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> *image_ID,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> *drawable_ID,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *format_name,
                                                          <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities">GimpExportCapabilities</a> capabilities);</pre>
 <p>
@@ -140,7 +146,6 @@ the save_plugin should try to save the original image. If the
 user chooses Cancel, GIMP_EXPORT_CANCEL is returned and the
 save_plugin should quit itself with status <span class="type">GIMP_PDB_CANCEL</span>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -177,6 +182,6 @@ save_plugin should quit itself with status <span class="type">GIMP_PDB_CANCEL</s
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

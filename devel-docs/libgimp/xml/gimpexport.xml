@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>gimpexport</refname>
 <refpurpose>Export an image before it is saved.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimp-gimpexport.synopsis" role="synopsis">
@@ -43,14 +42,12 @@ This function should be called by all save_plugins unless they are
 able to save all image formats GIMP knows about. It takes care
 of asking the user if she wishes to export the image to a format the
 save_plugin can handle. It then performs the necessary conversions
-(e.g. Flatten) on a copy of the image so that the image can be saved 
+(e.g. Flatten) on a copy of the image so that the image can be saved
 without changing the original image.
-
 The capabilities of the save_plugin are specified by combining
-<link linkend="GimpExportCapabilities"><type>GimpExportCapabilities</type></link> using a bitwise OR. 
-
+<link linkend="GimpExportCapabilities"><type>GimpExportCapabilities</type></link> using a bitwise OR.
 Make sure you have initialized GTK+ before you call this function
-as it will most probably have to open a dialog. 
+as it will most probably have to open a dialog.
 </para>
 </refsect1>
 
@@ -58,7 +55,7 @@ as it will most probably have to open a dialog.
 <title role="details.title">Details</title>
 <refsect2 id="GimpExportCapabilities" role="enum">
 <title>enum GimpExportCapabilities</title>
-<indexterm zone="GimpExportCapabilities"><primary>GimpExportCapabilities</primary></indexterm><programlisting>typedef enum
+<indexterm zone="GimpExportCapabilities"><primary sortas="GimpExportCapabilities">GimpExportCapabilities</primary></indexterm><programlisting>typedef enum
 {
   GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 &lt;&lt; 0,
   GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 &lt;&lt; 1,
@@ -72,11 +69,10 @@ as it will most probably have to open a dialog.
 } GimpExportCapabilities;
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="GimpExportReturn" role="enum">
 <title>enum GimpExportReturn</title>
-<indexterm zone="GimpExportReturn"><primary>GimpExportReturn</primary></indexterm><programlisting>typedef enum
+<indexterm zone="GimpExportReturn"><primary sortas="GimpExportReturn">GimpExportReturn</primary></indexterm><programlisting>typedef enum
 {
   GIMP_EXPORT_CANCEL,
   GIMP_EXPORT_IGNORE,
@@ -84,11 +80,10 @@ as it will most probably have to open a dialog.
 } GimpExportReturn;
 </programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-export-image" role="function">
 <title>gimp_export_image ()</title>
-<indexterm zone="gimp-export-image"><primary>gimp_export_image</primary></indexterm><programlisting><link linkend="GimpExportReturn">GimpExportReturn</link>    gimp_export_image                   (<link linkend="gint32">gint32</link> *image_ID,
+<indexterm zone="gimp-export-image"><primary sortas="gimp_export_image">gimp_export_image</primary></indexterm><programlisting><link linkend="GimpExportReturn">GimpExportReturn</link>    gimp_export_image                   (<link linkend="gint32">gint32</link> *image_ID,
                                                          <link linkend="gint32">gint32</link> *drawable_ID,
                                                          const <link linkend="gchar">gchar</link> *format_name,
                                                          <link linkend="GimpExportCapabilities">GimpExportCapabilities</link> capabilities);</programlisting>
@@ -111,23 +106,22 @@ If the user chooses to Ignore the export problem, the image_ID
 and drawable_ID is not altered, GIMP_EXPORT_IGNORE is returned and
 the save_plugin should try to save the original image. If the
 user chooses Cancel, GIMP_EXPORT_CANCEL is returned and the
-save_plugin should quit itself with status <link linkend="GIMP-PDB-CANCEL:CAPS"><type>GIMP_PDB_CANCEL</type></link>.</para>
+save_plugin should quit itself with status <link linkend="GIMP-PDB-CANCEL--CAPS"><type>GIMP_PDB_CANCEL</type></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> Pointer to the image_ID.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>drawable_ID</parameter>&#160;:</term>
 <listitem><simpara> Pointer to the drawable_ID.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>format_name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>format_name</parameter>&#160;:</term>
 <listitem><simpara> The (short) name of the image_format (e.g. JPEG or GIF).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>capabilities</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>capabilities</parameter>&#160;:</term>
 <listitem><simpara> What can the image_format do?
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> An enum of <link linkend="GimpExportReturn"><type>GimpExportReturn</type></link> describing the user_action.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> An enum of <link linkend="GimpExportReturn"><type>GimpExportReturn</type></link> describing the user_action.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

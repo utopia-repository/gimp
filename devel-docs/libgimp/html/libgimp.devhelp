@@ -107,7 +107,7 @@
     <function name="GimpParamRegion" link="libgimp-gimp.html#GimpParamRegion"/>
     <function name="union GimpParamData" link="libgimp-gimp.html#GimpParamData"/>
     <function name="GimpParam" link="libgimp-gimp.html#GimpParam"/>
-    <function name="MAIN()" link="libgimp-gimp.html#MAIN:CAPS"/>
+    <function name="MAIN()" link="libgimp-gimp.html#MAIN--CAPS"/>
     <function name="gimp_main ()" link="libgimp-gimp.html#gimp-main"/>
     <function name="gimp_quit ()" link="libgimp-gimp.html#gimp-quit"/>
     <function name="gimp_install_procedure ()" link="libgimp-gimp.html#gimp-install-procedure"/>

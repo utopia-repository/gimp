@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="GimpZoomPreview.html" title="GimpZoomPreview">
 <link rel="next" href="GimpImageComboBox.html" title="gimpimagecombobox">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -32,13 +32,15 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpImageComboBox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-GimpItemComboBox.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimp-GimpItemComboBox.description" class="shortcut">Description</a>
-                   | 
-                  <a href="#libgimp-GimpItemComboBox.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                   | 
-                  <a href="#libgimp-GimpItemComboBox.implemented-interfaces" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimp-GimpItemComboBox.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimp-GimpItemComboBox.description" class="shortcut">Description</a>
+                 | 
+                <a href="#libgimp-GimpItemComboBox.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                 | 
+                <a href="#libgimp-GimpItemComboBox.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-GimpItemComboBox"></a><div class="titlepage"></div>
@@ -53,41 +55,45 @@
 <a name="libgimp-GimpItemComboBox.synopsis"></a><h2>Synopsis</h2>
 <a name="GimpDrawableComboBox"></a><a name="GimpChannelComboBox"></a><a name="GimpLayerComboBox"></a><a name="GimpVectorsComboBox"></a><pre class="synopsis">
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            (<a class="link" href="libgimp-GimpItemComboBox.html#GimpItemConstraintFunc" title="GimpItemConstraintFunc ()">*GimpItemConstraintFunc</a>)           (gint32 image_id,
-                                                         gint32 item_id,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            (<a class="link" href="libgimp-GimpItemComboBox.html#GimpItemConstraintFunc" title="GimpItemConstraintFunc ()">*GimpItemConstraintFunc</a>)           (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_id,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> item_id,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
                     <a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableComboBox-struct" title="GimpDrawableComboBox">GimpDrawableComboBox</a>;
 typedef             <a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a>;
 <a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new" title="gimp_drawable_combo_box_new ()">gimp_drawable_combo_box_new</a>         (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+>GtkWidget</a> *         <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new" title="gimp_drawable_combo_box_new ()">gimp_drawable_combo_box_new</a>         (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
                     <a class="link" href="libgimp-GimpItemComboBox.html#GimpChannelComboBox-struct" title="GimpChannelComboBox">GimpChannelComboBox</a>;
 <a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimp-GimpItemComboBox.html#gimp-channel-combo-box-new" title="gimp_channel_combo_box_new ()">gimp_channel_combo_box_new</a>          (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+>GtkWidget</a> *         <a class="link" href="libgimp-GimpItemComboBox.html#gimp-channel-combo-box-new" title="gimp_channel_combo_box_new ()">gimp_channel_combo_box_new</a>          (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
                     <a class="link" href="libgimp-GimpItemComboBox.html#GimpLayerComboBox-struct" title="GimpLayerComboBox">GimpLayerComboBox</a>;
 <a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimp-GimpItemComboBox.html#gimp-layer-combo-box-new" title="gimp_layer_combo_box_new ()">gimp_layer_combo_box_new</a>            (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+>GtkWidget</a> *         <a class="link" href="libgimp-GimpItemComboBox.html#gimp-layer-combo-box-new" title="gimp_layer_combo_box_new ()">gimp_layer_combo_box_new</a>            (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
                     <a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsComboBox-struct" title="GimpVectorsComboBox">GimpVectorsComboBox</a>;
 typedef             <a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsConstraintFunc" title="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</a>;
 <a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimp-GimpItemComboBox.html#gimp-vectors-combo-box-new" title="gimp_vectors_combo_box_new ()">gimp_vectors_combo_box_new</a>          (<a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsConstraintFunc" title="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</a> constraint,
+>GtkWidget</a> *         <a class="link" href="libgimp-GimpItemComboBox.html#gimp-vectors-combo-box-new" title="gimp_vectors_combo_box_new ()">gimp_vectors_combo_box_new</a>          (<a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsConstraintFunc" title="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</a> constraint,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 </pre>
 </div>
@@ -95,10 +101,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="libgimp-GimpItemComboBox.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
 href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
@@ -122,10 +128,10 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </pre>
 <pre class="synopsis">
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
 href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
@@ -149,10 +155,10 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </pre>
 <pre class="synopsis">
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
 href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
@@ -176,10 +182,10 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </pre>
 <pre class="synopsis">
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
 href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
@@ -244,7 +250,6 @@ href="/usr/share/gtk-doc/html/gtk/GtkCellEditable.html"
 <div class="refsect1" lang="en">
 <a name="libgimp-GimpItemComboBox.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
 <div class="refsect1" lang="en">
@@ -252,14 +257,17 @@ href="/usr/share/gtk-doc/html/gtk/GtkCellEditable.html"
 <div class="refsect2" lang="en">
 <a name="GimpItemConstraintFunc"></a><h3>GimpItemConstraintFunc ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            (*GimpItemConstraintFunc)           (gint32 image_id,
-                                                         gint32 item_id,
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
+>gboolean</a>            (*GimpItemConstraintFunc)           (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> image_id,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
+>gint32</a> item_id,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -282,8 +290,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -294,7 +300,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="GimpDrawableComboBox-struct"></a><h3>GimpDrawableComboBox</h3>
 <pre class="programlisting">typedef struct _GimpDrawableComboBox GimpDrawableComboBox;</pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -303,7 +308,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <pre class="programlisting">typedef GimpItemConstraintFunc GimpDrawableConstraintFunc;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -311,9 +315,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="gimp-drawable-combo-box-new"></a><h3>gimp_drawable_combo_box_new ()</h3>
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_drawable_combo_box_new         (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+>GtkWidget</a> *         gimp_drawable_combo_box_new         (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <p>
 Creates a new <a
@@ -321,7 +325,7 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 drawables. If a <em class="parameter"><code>constraint</code></em> function is specified, it is called for
 each drawable and only if the function returns <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a>, the drawable
 is added to the combobox.
 </p>
@@ -337,7 +341,6 @@ href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-get-active"
 ><code class="function">gimp_int_combo_box_get_active()</code></a> to retrieve the ID
 of the selected drawable.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -345,7 +348,7 @@ of the selected drawable.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>constraint</code></em> :</span></p></td>
 <td> a <a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>
 </td>
 </tr>
@@ -364,15 +367,13 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpChannelComboBox-struct"></a><h3>GimpChannelComboBox</h3>
 <pre class="programlisting">typedef struct _GimpChannelComboBox GimpChannelComboBox;</pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -380,9 +381,9 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 <a name="gimp-channel-combo-box-new"></a><h3>gimp_channel_combo_box_new ()</h3>
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_channel_combo_box_new          (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+>GtkWidget</a> *         gimp_channel_combo_box_new          (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <p>
 Creates a new <a
@@ -390,7 +391,6 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 channels. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new" title="gimp_drawable_combo_box_new ()"><code class="function">gimp_drawable_combo_box_new()</code></a> for more information.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -398,7 +398,7 @@ channels. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-
 <tr>
 <td><p><span class="term"><em class="parameter"><code>constraint</code></em> :</span></p></td>
 <td> a <a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>
 </td>
 </tr>
@@ -417,15 +417,13 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpLayerComboBox-struct"></a><h3>GimpLayerComboBox</h3>
 <pre class="programlisting">typedef struct _GimpLayerComboBox GimpLayerComboBox;</pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -433,9 +431,9 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 <a name="gimp-layer-combo-box-new"></a><h3>gimp_layer_combo_box_new ()</h3>
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_layer_combo_box_new            (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
+>GtkWidget</a> *         gimp_layer_combo_box_new            (<a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</a> constraint,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <p>
 Creates a new <a
@@ -443,7 +441,6 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 layers. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-combo-box-new" title="gimp_drawable_combo_box_new ()"><code class="function">gimp_drawable_combo_box_new()</code></a> for more information.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -451,7 +448,7 @@ layers. See <a class="link" href="libgimp-GimpItemComboBox.html#gimp-drawable-co
 <tr>
 <td><p><span class="term"><em class="parameter"><code>constraint</code></em> :</span></p></td>
 <td> a <a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableConstraintFunc" title="GimpDrawableConstraintFunc"><span class="type">GimpDrawableConstraintFunc</span></a> or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>
 </td>
 </tr>
@@ -470,15 +467,13 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpVectorsComboBox-struct"></a><h3>GimpVectorsComboBox</h3>
 <pre class="programlisting">typedef struct _GimpVectorsComboBox GimpVectorsComboBox;</pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -487,7 +482,6 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 <pre class="programlisting">typedef GimpItemConstraintFunc GimpVectorsConstraintFunc;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -495,9 +489,9 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 <a name="gimp-vectors-combo-box-new"></a><h3>gimp_vectors_combo_box_new ()</h3>
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_vectors_combo_box_new          (<a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsConstraintFunc" title="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</a> constraint,
+>GtkWidget</a> *         gimp_vectors_combo_box_new          (<a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsConstraintFunc" title="GimpVectorsConstraintFunc">GimpVectorsConstraintFunc</a> constraint,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <p>
 Creates a new <a
@@ -505,7 +499,7 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 ><span class="type">GimpIntComboBox</span></a> filled with all currently opened
 vectors objects. If a <em class="parameter"><code>constraint</code></em> function is specified, it is called for
 each vectors object and only if the function returns <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a>, the vectors
 object is added to the combobox.
 </p>
@@ -521,7 +515,6 @@ href="../libgimpwidgets/GimpIntComboBox.html#gimp-int-combo-box-get-active"
 ><code class="function">gimp_int_combo_box_get_active()</code></a> to retrieve the ID
 of the selected vectors object.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -529,7 +522,7 @@ of the selected vectors object.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>constraint</code></em> :</span></p></td>
 <td> a <a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsConstraintFunc" title="GimpVectorsConstraintFunc"><span class="type">GimpVectorsConstraintFunc</span></a> or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>
 </td>
 </tr>
@@ -548,13 +541,12 @@ href="../libgimpwidgets/GimpIntComboBox.html"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.4
-</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

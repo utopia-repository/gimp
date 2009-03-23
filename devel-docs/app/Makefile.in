@@ -367,6 +367,7 @@ sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
@@ -483,6 +484,8 @@ GTKDOC_LIBS = \
 @ENABLE_GTK_DOC_APP_TRUE@@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_CC = $(LIBTOOL) --mode=compile $(CC) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 @ENABLE_GTK_DOC_APP_TRUE@@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_LD = $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
 @ENABLE_GTK_DOC_APP_TRUE@@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_LD = $(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+@ENABLE_GTK_DOC_APP_TRUE@@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_RUN = sh -c
+@ENABLE_GTK_DOC_APP_TRUE@@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_RUN = $(LIBTOOL) --mode=execute
 
 # We set GPATH here; this gives us semantics for GNU make
 # which are more like other make's VPATH, when it comes to
@@ -709,6 +712,8 @@ uninstall-am: uninstall-local
 
 @ENABLE_GTK_DOC_APP_TRUE@docs: html-build.stamp
 
+@ENABLE_GTK_DOC_APP_TRUE@$(REPORT_FILES): sgml-build.stamp
+
 #### scan ####
 
 @ENABLE_GTK_DOC_APP_TRUE@scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
@@ -717,7 +722,7 @@ uninstall-am: uninstall-local
 @ENABLE_GTK_DOC_APP_TRUE@	cd $(srcdir) && \
 @ENABLE_GTK_DOC_APP_TRUE@	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
 @ENABLE_GTK_DOC_APP_TRUE@	if grep -l '^..*$$' $(srcdir)/$(DOC_MODULE).types > /dev/null 2>&1 ; then \
-@ENABLE_GTK_DOC_APP_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj $(SCANGOBJ_OPTIONS) --module=$(DOC_MODULE) --output-dir=$(srcdir) ; \
+@ENABLE_GTK_DOC_APP_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" RUN="$(GTKDOC_RUN)" CFLAGS="$(GTKDOC_CFLAGS) $(CFLAGS)" LDFLAGS="$(GTKDOC_LIBS) $(LDFLAGS)" gtkdoc-scangobj $(SCANGOBJ_OPTIONS) --module=$(DOC_MODULE) --output-dir=$(srcdir) ; \
 @ENABLE_GTK_DOC_APP_TRUE@	else \
 @ENABLE_GTK_DOC_APP_TRUE@	    cd $(srcdir) ; \
 @ENABLE_GTK_DOC_APP_TRUE@	    for i in $(SCANOBJ_FILES) ; do \
@@ -762,7 +767,12 @@ uninstall-am: uninstall-local
 @ENABLE_GTK_DOC_APP_TRUE@	@-chmod -R u+w $(srcdir)
 @ENABLE_GTK_DOC_APP_TRUE@	rm -rf $(srcdir)/html
 @ENABLE_GTK_DOC_APP_TRUE@	mkdir $(srcdir)/html
-@ENABLE_GTK_DOC_APP_TRUE@	cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+@ENABLE_GTK_DOC_APP_TRUE@	mkhtml_options=""; \
+@ENABLE_GTK_DOC_APP_TRUE@	gtkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-path"; \
+@ENABLE_GTK_DOC_APP_TRUE@	if test "$(?)" = "0"; then \
+@ENABLE_GTK_DOC_APP_TRUE@	  mkhtml_options=--path="$(srcdir)"; \
+@ENABLE_GTK_DOC_APP_TRUE@	fi
+@ENABLE_GTK_DOC_APP_TRUE@	cd $(srcdir)/html && gtkdoc-mkhtml $(mkhtml_options) $(MKHTML_OPTIONS) $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 @ENABLE_GTK_DOC_APP_TRUE@	test "x$(HTML_IMAGES)" = "x" || ( cd $(srcdir) && cp $(HTML_IMAGES) html )
 @ENABLE_GTK_DOC_APP_TRUE@	@echo 'gtk-doc: Fixing cross-references'
 @ENABLE_GTK_DOC_APP_TRUE@	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
@@ -783,23 +793,37 @@ uninstall-am: uninstall-local
 @ENABLE_GTK_DOC_APP_TRUE@	cd $(srcdir) && rm -rf xml html
 
 @ENABLE_GTK_DOC_APP_TRUE@install-data-local:
-@ENABLE_GTK_DOC_APP_TRUE@	-installfiles=`echo $(srcdir)/html/*`; \
+@ENABLE_GTK_DOC_APP_TRUE@	installfiles=`echo $(srcdir)/html/*`; \
 @ENABLE_GTK_DOC_APP_TRUE@	if test "$$installfiles" = '$(srcdir)/html/*'; \
 @ENABLE_GTK_DOC_APP_TRUE@	then echo '-- Nothing to install' ; \
 @ENABLE_GTK_DOC_APP_TRUE@	else \
-@ENABLE_GTK_DOC_APP_TRUE@	  $(mkinstalldirs) $(DESTDIR)$(TARGET_DIR); \
+@ENABLE_GTK_DOC_APP_TRUE@	  if test -n "$(DOC_MODULE_VERSION)"; then \
+@ENABLE_GTK_DOC_APP_TRUE@	    installdir="$(DESTDIR)$(TARGET_DIR)-$(DOC_MODULE_VERSION)"; \
+@ENABLE_GTK_DOC_APP_TRUE@	  else \
+@ENABLE_GTK_DOC_APP_TRUE@	    installdir="$(DESTDIR)$(TARGET_DIR)"; \
+@ENABLE_GTK_DOC_APP_TRUE@	  fi; \
+@ENABLE_GTK_DOC_APP_TRUE@	  $(mkinstalldirs) $${installdir} ; \
 @ENABLE_GTK_DOC_APP_TRUE@	  for i in $$installfiles; do \
 @ENABLE_GTK_DOC_APP_TRUE@	    echo '-- Installing '$$i ; \
-@ENABLE_GTK_DOC_APP_TRUE@	    $(INSTALL_DATA) $$i $(DESTDIR)$(TARGET_DIR); \
+@ENABLE_GTK_DOC_APP_TRUE@	    $(INSTALL_DATA) $$i $${installdir}; \
 @ENABLE_GTK_DOC_APP_TRUE@	  done; \
-@ENABLE_GTK_DOC_APP_TRUE@	  echo '-- Installing $(srcdir)/html/index.sgml' ; \
-@ENABLE_GTK_DOC_APP_TRUE@	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR) || :; \
-@ENABLE_GTK_DOC_APP_TRUE@	  which gtkdoc-rebase >/dev/null && \
-@ENABLE_GTK_DOC_APP_TRUE@	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) ; \
+@ENABLE_GTK_DOC_APP_TRUE@	  if test -n "$(DOC_MODULE_VERSION)"; then \
+@ENABLE_GTK_DOC_APP_TRUE@	    mv -f $${installdir}/$(DOC_MODULE).devhelp2 \
+@ENABLE_GTK_DOC_APP_TRUE@	      $${installdir}/$(DOC_MODULE)-$(DOC_MODULE_VERSION).devhelp2; \
+@ENABLE_GTK_DOC_APP_TRUE@	    mv -f $${installdir}/$(DOC_MODULE).devhelp \
+@ENABLE_GTK_DOC_APP_TRUE@	      $${installdir}/$(DOC_MODULE)-$(DOC_MODULE_VERSION).devhelp; \
+@ENABLE_GTK_DOC_APP_TRUE@	  fi; \
+@ENABLE_GTK_DOC_APP_TRUE@	  ! which gtkdoc-rebase >/dev/null 2>&1 || \
+@ENABLE_GTK_DOC_APP_TRUE@	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$${installdir} ; \
 @ENABLE_GTK_DOC_APP_TRUE@	fi
 
 @ENABLE_GTK_DOC_APP_TRUE@uninstall-local:
-@ENABLE_GTK_DOC_APP_TRUE@	rm -f $(DESTDIR)$(TARGET_DIR)/*
+@ENABLE_GTK_DOC_APP_TRUE@	if test -n "$(DOC_MODULE_VERSION)"; then \
+@ENABLE_GTK_DOC_APP_TRUE@	  installdir="$(DESTDIR)$(TARGET_DIR)-$(DOC_MODULE_VERSION)"; \
+@ENABLE_GTK_DOC_APP_TRUE@	else \
+@ENABLE_GTK_DOC_APP_TRUE@	  installdir="$(DESTDIR)$(TARGET_DIR)"; \
+@ENABLE_GTK_DOC_APP_TRUE@	fi; \
+@ENABLE_GTK_DOC_APP_TRUE@	rm -rf $${installdir}
 
 #
 # Require gtk-doc when making dist
@@ -819,7 +843,8 @@ uninstall-am: uninstall-local
 @ENABLE_GTK_DOC_APP_TRUE@	-cp $(srcdir)/$(DOC_MODULE).types $(distdir)/
 @ENABLE_GTK_DOC_APP_TRUE@	-cp $(srcdir)/$(DOC_MODULE)-sections.txt $(distdir)/
 @ENABLE_GTK_DOC_APP_TRUE@	cd $(distdir) && rm -f $(DISTCLEANFILES)
-@ENABLE_GTK_DOC_APP_TRUE@	-gtkdoc-rebase --online --relative --html-dir=$(distdir)/html
+@ENABLE_GTK_DOC_APP_TRUE@	! which gtkdoc-rebase >/dev/null 2>&1 || \
+@ENABLE_GTK_DOC_APP_TRUE@	  gtkdoc-rebase --online --relative --html-dir=$(distdir)/html
 
 @ENABLE_GTK_DOC_APP_TRUE@.PHONY : dist-hook-local docs
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

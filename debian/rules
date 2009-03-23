@@ -20,7 +20,7 @@ DEB_CONFIGURE_EXTRA_FLAGS := --enable-python --enable-default-binary
 DEB_BUILDDIR := $(DEB_SRCDIR)/build
 
 DEB_DH_SHLIBDEPS_ARGS_ALL := -Llibgimp2.0 -l$(CURDIR)/debian/libgimp2.0/usr/lib
-DEB_DH_SHLIBDEPS_ARGS_gimp := -Xlibcontroller_midi.so
+DEB_DH_SHLIBDEPS_ARGS_gimp := -Xlibcontroller-midi.so
 
 clean::
 	rm -rf build

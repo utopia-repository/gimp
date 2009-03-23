@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpparasite.html" title="gimpparasite">
 <link rel="next" href="libgimpbase-gimpsignal.html" title="gimpsignal">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="index" href="libgimpbase-index.html" title="Index">
@@ -26,9 +26,11 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpsignal.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpbase-gimpparasiteio.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpbase-gimpparasiteio.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpbase-gimpparasiteio.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpbase-gimpparasiteio.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpparasiteio"></a><div class="titlepage"></div>
@@ -42,32 +44,30 @@
 <div class="refsynopsisdiv">
 <a name="libgimpbase-gimpparasiteio.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-#define             <a class="link" href="libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS" title="GIMP_PIXPIPE_MAXDIM">GIMP_PIXPIPE_MAXDIM</a>
+#define             <a class="link" href="libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM--CAPS" title="GIMP_PIXPIPE_MAXDIM">GIMP_PIXPIPE_MAXDIM</a>
 void                <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init" title="gimp_pixpipe_params_init ()">gimp_pixpipe_params_init</a>            (GimpPixPipeParams *params);
 void                <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse" title="gimp_pixpipe_params_parse ()">gimp_pixpipe_params_parse</a>           (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *parameters,
                                                          GimpPixPipeParams *params);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build" title="gimp_pixpipe_params_build ()">gimp_pixpipe_params_build</a>           (GimpPixPipeParams *params);
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *             <a class="link" href="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-build" title="gimp_pixpipe_params_build ()">gimp_pixpipe_params_build</a>           (GimpPixPipeParams *params);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="libgimpbase-gimpparasiteio.description"></a><h2>Description</h2>
 <p>
 Utility functions to (de)serialize certain C structures to/from <a class="link" href="libgimpbase-gimpparasite.html#GimpParasite" title="GimpParasite"><span class="type">GimpParasite</span></a>'s.
-
 </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="libgimpbase-gimpparasiteio.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="GIMP-PIXPIPE-MAXDIM:CAPS"></a><h3>GIMP_PIXPIPE_MAXDIM</h3>
+<a name="GIMP-PIXPIPE-MAXDIM--CAPS"></a><h3>GIMP_PIXPIPE_MAXDIM</h3>
 <pre class="programlisting">#define GIMP_PIXPIPE_MAXDIM 4
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -75,15 +75,12 @@ Utility functions to (de)serialize certain C structures to/from <a class="link" 
 <a name="gimp-pixpipe-params-init"></a><h3>gimp_pixpipe_params_init ()</h3>
 <pre class="programlisting">void                gimp_pixpipe_params_init            (GimpPixPipeParams *params);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>params</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr></tbody>
 </table></div>
@@ -92,11 +89,10 @@ Utility functions to (de)serialize certain C structures to/from <a class="link" 
 <div class="refsect2" lang="en">
 <a name="gimp-pixpipe-params-parse"></a><h3>gimp_pixpipe_params_parse ()</h3>
 <pre class="programlisting">void                gimp_pixpipe_params_parse           (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *parameters,
                                                          GimpPixPipeParams *params);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -109,8 +105,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>params</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -120,10 +114,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <div class="refsect2" lang="en">
 <a name="gimp-pixpipe-params-build"></a><h3>gimp_pixpipe_params_build ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_pixpipe_params_build           (GimpPixPipeParams *params);</pre>
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
+>gchar</a> *             gimp_pixpipe_params_build           (GimpPixPipeParams *params);</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -136,8 +129,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -153,6 +144,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

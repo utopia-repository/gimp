@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>gimpgrid</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimp-gimpgrid.synopsis" role="synopsis">
@@ -60,7 +59,6 @@
 <refsect1 id="libgimp-gimpgrid.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -68,7 +66,7 @@
 <title role="details.title">Details</title>
 <refsect2 id="gimp-image-grid-get-spacing" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_get_spacing ()</title>
-<indexterm zone="gimp-image-grid-get-spacing" role="GIMP 2.4"><primary>gimp_image_grid_get_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_get_spacing         (<link linkend="gint32">gint32</link> image_ID,
+<indexterm zone="gimp-image-grid-get-spacing" role="GIMP 2.4"><primary sortas="gimp_image_grid_get_spacing">gimp_image_grid_get_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_get_spacing         (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> *xspacing,
                                                          <link linkend="gdouble">gdouble</link> *yspacing);</programlisting>
 <para>
@@ -78,25 +76,23 @@ Gets the spacing of an image's grid.
 This procedure retrieves the horizontal and vertical spacing of an
 image's grid. It takes the image as parameter.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xspacing</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>xspacing</parameter>&#160;:</term>
 <listitem><simpara> The image's grid horizontal spacing.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yspacing</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yspacing</parameter>&#160;:</term>
 <listitem><simpara> The image's grid vertical spacing.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-set-spacing" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_set_spacing ()</title>
-<indexterm zone="gimp-image-grid-set-spacing" role="GIMP 2.4"><primary>gimp_image_grid_set_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_spacing         (<link linkend="gint32">gint32</link> image_ID,
+<indexterm zone="gimp-image-grid-set-spacing" role="GIMP 2.4"><primary sortas="gimp_image_grid_set_spacing">gimp_image_grid_set_spacing</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_spacing         (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> xspacing,
                                                          <link linkend="gdouble">gdouble</link> yspacing);</programlisting>
 <para>
@@ -106,25 +102,23 @@ Sets the spacing of an image's grid.
 This procedure sets the horizontal and vertical spacing of an
 image's grid.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xspacing</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>xspacing</parameter>&#160;:</term>
 <listitem><simpara> The image's grid horizontal spacing.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yspacing</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yspacing</parameter>&#160;:</term>
 <listitem><simpara> The image's grid vertical spacing.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-get-offset" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_get_offset ()</title>
-<indexterm zone="gimp-image-grid-get-offset" role="GIMP 2.4"><primary>gimp_image_grid_get_offset</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_get_offset          (<link linkend="gint32">gint32</link> image_ID,
+<indexterm zone="gimp-image-grid-get-offset" role="GIMP 2.4"><primary sortas="gimp_image_grid_get_offset">gimp_image_grid_get_offset</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_get_offset          (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> *xoffset,
                                                          <link linkend="gdouble">gdouble</link> *yoffset);</programlisting>
 <para>
@@ -134,25 +128,23 @@ Gets the offset of an image's grid.
 This procedure retrieves the horizontal and vertical offset of an
 image's grid. It takes the image as parameter.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xoffset</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>xoffset</parameter>&#160;:</term>
 <listitem><simpara> The image's grid horizontal offset.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yoffset</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yoffset</parameter>&#160;:</term>
 <listitem><simpara> The image's grid vertical offset.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-set-offset" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_set_offset ()</title>
-<indexterm zone="gimp-image-grid-set-offset" role="GIMP 2.4"><primary>gimp_image_grid_set_offset</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_offset          (<link linkend="gint32">gint32</link> image_ID,
+<indexterm zone="gimp-image-grid-set-offset" role="GIMP 2.4"><primary sortas="gimp_image_grid_set_offset">gimp_image_grid_set_offset</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_offset          (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> xoffset,
                                                          <link linkend="gdouble">gdouble</link> yoffset);</programlisting>
 <para>
@@ -162,25 +154,23 @@ Sets the offset of an image's grid.
 This procedure sets the horizontal and vertical offset of an image's
 grid.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xoffset</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>xoffset</parameter>&#160;:</term>
 <listitem><simpara> The image's grid horizontal offset.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>yoffset</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>yoffset</parameter>&#160;:</term>
 <listitem><simpara> The image's grid vertical offset.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-get-foreground-color" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_get_foreground_color ()</title>
-<indexterm zone="gimp-image-grid-get-foreground-color" role="GIMP 2.4"><primary>gimp_image_grid_get_foreground_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_get_foreground_color
+<indexterm zone="gimp-image-grid-get-foreground-color" role="GIMP 2.4"><primary sortas="gimp_image_grid_get_foreground_color">gimp_image_grid_get_foreground_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_get_foreground_color
                                                         (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="GimpRGB">GimpRGB</link> *fgcolor);</programlisting>
 <para>
@@ -189,22 +179,20 @@ Sets the foreground color of an image's grid.
 <para>
 This procedure gets the foreground color of an image's grid.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>fgcolor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>fgcolor</parameter>&#160;:</term>
 <listitem><simpara> The image's grid foreground color.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-set-foreground-color" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_set_foreground_color ()</title>
-<indexterm zone="gimp-image-grid-set-foreground-color" role="GIMP 2.4"><primary>gimp_image_grid_set_foreground_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_foreground_color
+<indexterm zone="gimp-image-grid-set-foreground-color" role="GIMP 2.4"><primary sortas="gimp_image_grid_set_foreground_color">gimp_image_grid_set_foreground_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_foreground_color
                                                         (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="GimpRGB">GimpRGB</link> *fgcolor);</programlisting>
 <para>
@@ -213,22 +201,20 @@ Gets the foreground color of an image's grid.
 <para>
 This procedure sets the foreground color of an image's grid.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>fgcolor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>fgcolor</parameter>&#160;:</term>
 <listitem><simpara> The new foreground color.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-get-background-color" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_get_background_color ()</title>
-<indexterm zone="gimp-image-grid-get-background-color" role="GIMP 2.4"><primary>gimp_image_grid_get_background_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_get_background_color
+<indexterm zone="gimp-image-grid-get-background-color" role="GIMP 2.4"><primary sortas="gimp_image_grid_get_background_color">gimp_image_grid_get_background_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_get_background_color
                                                         (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="GimpRGB">GimpRGB</link> *bgcolor);</programlisting>
 <para>
@@ -237,22 +223,20 @@ Sets the background color of an image's grid.
 <para>
 This procedure gets the background color of an image's grid.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bgcolor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>bgcolor</parameter>&#160;:</term>
 <listitem><simpara> The image's grid background color.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-set-background-color" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_set_background_color ()</title>
-<indexterm zone="gimp-image-grid-set-background-color" role="GIMP 2.4"><primary>gimp_image_grid_set_background_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_background_color
+<indexterm zone="gimp-image-grid-set-background-color" role="GIMP 2.4"><primary sortas="gimp_image_grid_set_background_color">gimp_image_grid_set_background_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_background_color
                                                         (<link linkend="gint32">gint32</link> image_ID,
                                                          const <link linkend="GimpRGB">GimpRGB</link> *bgcolor);</programlisting>
 <para>
@@ -261,41 +245,37 @@ Gets the background color of an image's grid.
 <para>
 This procedure sets the background color of an image's grid.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bgcolor</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>bgcolor</parameter>&#160;:</term>
 <listitem><simpara> The new background color.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-get-style" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_get_style ()</title>
-<indexterm zone="gimp-image-grid-get-style" role="GIMP 2.4"><primary>gimp_image_grid_get_style</primary></indexterm><programlisting><link linkend="GimpGridStyle">GimpGridStyle</link>       gimp_image_grid_get_style           (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<indexterm zone="gimp-image-grid-get-style" role="GIMP 2.4"><primary sortas="gimp_image_grid_get_style">gimp_image_grid_get_style</primary></indexterm><programlisting><link linkend="GimpGridStyle">GimpGridStyle</link>       gimp_image_grid_get_style           (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Gets the style of an image's grid.
 </para>
 <para>
 This procedure retrieves the style of an image's grid.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The image's grid style.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The image's grid style.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 <refsect2 id="gimp-image-grid-set-style" role="function" condition="since:GIMP 2.4">
 <title>gimp_image_grid_set_style ()</title>
-<indexterm zone="gimp-image-grid-set-style" role="GIMP 2.4"><primary>gimp_image_grid_set_style</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_style           (<link linkend="gint32">gint32</link> image_ID,
+<indexterm zone="gimp-image-grid-set-style" role="GIMP 2.4"><primary sortas="gimp_image_grid_set_style">gimp_image_grid_set_style</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_grid_set_style           (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="GimpGridStyle">GimpGridStyle</link> style);</programlisting>
 <para>
 Sets the style unit of an image's grid.
@@ -304,19 +284,17 @@ Sets the style unit of an image's grid.
 This procedure sets the style of an image's grid. It takes the image
 and the new style as parameters.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>image_ID</parameter>&#160;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>style</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>style</parameter>&#160;:</term>
 <listitem><simpara> The image's grid style.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE on success.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.4
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.4</para></refsect2>
 
 </refsect1>
 

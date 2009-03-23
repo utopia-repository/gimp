@@ -397,6 +397,7 @@ sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = \
@@ -413,7 +414,7 @@ INCLUDES = \
 
 noinst_LIBRARIES = libappgegl.a
 libappgegl_a_SOURCES = \
-	gegl-types.h			\
+	gimp-gegl-types.h		\
 	gimp-gegl.c			\
 	gimp-gegl.h			\
 	gimp-gegl-utils.c		\

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="GimpConstraintFunc"><link linkend="GimpConstraintFunc">GimpConstraintFunc</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpMenuCallback"><link linkend="GimpMenuCallback">GimpMenuCallback</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpProgressEndCallback"><link linkend="GimpProgressEndCallback">GimpProgressEndCallback</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpProgressStartCallback"><link linkend="GimpProgressStartCallback">GimpProgressStartCallback</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpProgressTextCallback"><link linkend="GimpProgressTextCallback">GimpProgressTextCallback</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpProgressValueCallback"><link linkend="GimpProgressValueCallback">GimpProgressValueCallback</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-get-brush"><link linkend="gimp-brushes-get-brush">gimp_brushes_get_brush</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-get-brush-data"><link linkend="gimp-brushes-get-brush-data">gimp_brushes_get_brush_data</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-get-opacity"><link linkend="gimp-brushes-get-opacity">gimp_brushes_get_opacity</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-get-paint-mode"><link linkend="gimp-brushes-get-paint-mode">gimp_brushes_get_paint_mode</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-get-spacing"><link linkend="gimp-brushes-get-spacing">gimp_brushes_get_spacing</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-set-brush"><link linkend="gimp-brushes-set-brush">gimp_brushes_set_brush</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-set-opacity"><link linkend="gimp-brushes-set-opacity">gimp_brushes_set_opacity</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-set-paint-mode"><link linkend="gimp-brushes-set-paint-mode">gimp_brushes_set_paint_mode</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brushes-set-spacing"><link linkend="gimp-brushes-set-spacing">gimp_brushes_set_spacing</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brush-select-widget-close"><link linkend="gimp-brush-select-widget-close">gimp_brush_select_widget_close</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brush-select-widget-new"><link linkend="gimp-brush-select-widget-new">gimp_brush_select_widget_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-brush-select-widget-set"><link linkend="gimp-brush-select-widget-set">gimp_brush_select_widget_set</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-channel-menu-new"><link linkend="gimp-channel-menu-new">gimp_channel_menu_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-drawable-menu-new"><link linkend="gimp-drawable-menu-new">gimp_drawable_menu_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-drawable-set-image"><link linkend="gimp-drawable-set-image">gimp_drawable_set_image</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-flip"><link linkend="gimp-flip">gimp_flip</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-font-select-widget-close"><link linkend="gimp-font-select-widget-close">gimp_font_select_widget_close</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-font-select-widget-new"><link linkend="gimp-font-select-widget-new">gimp_font_select_widget_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-font-select-widget-set"><link linkend="gimp-font-select-widget-set">gimp_font_select_widget_set</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-get-path-by-tattoo"><link linkend="gimp-get-path-by-tattoo">gimp_get_path_by_tattoo</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradients-get-gradient"><link linkend="gimp-gradients-get-gradient">gimp_gradients_get_gradient</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradients-get-gradient-data"><link linkend="gimp-gradients-get-gradient-data">gimp_gradients_get_gradient_data</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradients-sample-custom"><link linkend="gimp-gradients-sample-custom">gimp_gradients_sample_custom</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradients-sample-uniform"><link linkend="gimp-gradients-sample-uniform">gimp_gradients_sample_uniform</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradients-set-gradient"><link linkend="gimp-gradients-set-gradient">gimp_gradients_set_gradient</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradient-select-widget-close"><link linkend="gimp-gradient-select-widget-close">gimp_gradient_select_widget_close</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradient-select-widget-new"><link linkend="gimp-gradient-select-widget-new">gimp_gradient_select_widget_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-gradient-select-widget-set"><link linkend="gimp-gradient-select-widget-set">gimp_gradient_select_widget_set</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-image-free-shadow"><link linkend="gimp-image-free-shadow">gimp_image_free_shadow</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-image-get-cmap"><link linkend="gimp-image-get-cmap">gimp_image_get_cmap</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-image-menu-new"><link linkend="gimp-image-menu-new">gimp_image_menu_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-image-set-cmap"><link linkend="gimp-image-set-cmap">gimp_image_set_cmap</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-layer-get-preserve-trans"><link linkend="gimp-layer-get-preserve-trans">gimp_layer_get_preserve_trans</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-layer-menu-new"><link linkend="gimp-layer-menu-new">gimp_layer_menu_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-layer-set-preserve-trans"><link linkend="gimp-layer-set-preserve-trans">gimp_layer_set_preserve_trans</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-levels-auto"><link linkend="gimp-levels-auto">gimp_levels_auto</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palettes-get-palette"><link linkend="gimp-palettes-get-palette">gimp_palettes_get_palette</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palettes-get-palette-entry"><link linkend="gimp-palettes-get-palette-entry">gimp_palettes_get_palette_entry</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palettes-set-palette"><link linkend="gimp-palettes-set-palette">gimp_palettes_set_palette</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-get-background"><link linkend="gimp-palette-get-background">gimp_palette_get_background</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-get-foreground"><link linkend="gimp-palette-get-foreground">gimp_palette_get_foreground</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-select-widget-close"><link linkend="gimp-palette-select-widget-close">gimp_palette_select_widget_close</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-select-widget-new"><link linkend="gimp-palette-select-widget-new">gimp_palette_select_widget_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-select-widget-set"><link linkend="gimp-palette-select-widget-set">gimp_palette_select_widget_set</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-set-background"><link linkend="gimp-palette-set-background">gimp_palette_set_background</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-set-default-colors"><link linkend="gimp-palette-set-default-colors">gimp_palette_set_default_colors</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-set-foreground"><link linkend="gimp-palette-set-foreground">gimp_palette_set_foreground</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-palette-swap-colors"><link linkend="gimp-palette-swap-colors">gimp_palette_swap_colors</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-delete"><link linkend="gimp-path-delete">gimp_path_delete</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-get-current"><link linkend="gimp-path-get-current">gimp_path_get_current</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-get-locked"><link linkend="gimp-path-get-locked">gimp_path_get_locked</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-get-points"><link linkend="gimp-path-get-points">gimp_path_get_points</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-get-point-at-dist"><link linkend="gimp-path-get-point-at-dist">gimp_path_get_point_at_dist</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-get-tattoo"><link linkend="gimp-path-get-tattoo">gimp_path_get_tattoo</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-import"><link linkend="gimp-path-import">gimp_path_import</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-list"><link linkend="gimp-path-list">gimp_path_list</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-set-current"><link linkend="gimp-path-set-current">gimp_path_set_current</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-set-locked"><link linkend="gimp-path-set-locked">gimp_path_set_locked</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-set-points"><link linkend="gimp-path-set-points">gimp_path_set_points</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-set-tattoo"><link linkend="gimp-path-set-tattoo">gimp_path_set_tattoo</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-stroke-current"><link linkend="gimp-path-stroke-current">gimp_path_stroke_current</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-path-to-selection"><link linkend="gimp-path-to-selection">gimp_path_to_selection</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-patterns-get-pattern"><link linkend="gimp-patterns-get-pattern">gimp_patterns_get_pattern</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-patterns-get-pattern-data"><link linkend="gimp-patterns-get-pattern-data">gimp_patterns_get_pattern_data</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-patterns-set-pattern"><link linkend="gimp-patterns-set-pattern">gimp_patterns_set_pattern</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-pattern-select-widget-close"><link linkend="gimp-pattern-select-widget-close">gimp_pattern_select_widget_close</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-pattern-select-widget-new"><link linkend="gimp-pattern-select-widget-new">gimp_pattern_select_widget_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-pattern-select-widget-set"><link linkend="gimp-pattern-select-widget-set">gimp_pattern_select_widget_set</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-perspective"><link linkend="gimp-perspective">gimp_perspective</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-progress-install"><link linkend="gimp-progress-install">gimp_progress_install</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-rotate"><link linkend="gimp-rotate">gimp_rotate</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-scale"><link linkend="gimp-scale">gimp_scale</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-selection-clear"><link linkend="gimp-selection-clear">gimp_selection_clear</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-shear"><link linkend="gimp-shear">gimp_shear</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text"><link linkend="gimp-text">gimp_text</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-text-get-extents"><link linkend="gimp-text-get-extents">gimp_text_get_extents</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-transform-2d"><link linkend="gimp-transform-2d">gimp_transform_2d</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

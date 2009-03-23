@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpbasetypes.html" title="gimpbasetypes">
 <link rel="next" href="libgimpbase-gimplimits.html" title="gimplimits">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="index" href="libgimpbase-index.html" title="Index">
@@ -26,9 +26,11 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimplimits.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpbase-gimpversion.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpbase-gimpversion.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpbase-gimpversion.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpbase-gimpversion.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpversion"></a><div class="titlepage"></div>
@@ -43,13 +45,13 @@ capabilities.</p>
 <div class="refsynopsisdiv">
 <a name="libgimpbase-gimpversion.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-MAJOR-VERSION:CAPS" title="GIMP_MAJOR_VERSION">GIMP_MAJOR_VERSION</a>
-#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-MINOR-VERSION:CAPS" title="GIMP_MINOR_VERSION">GIMP_MINOR_VERSION</a>
-#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-MICRO-VERSION:CAPS" title="GIMP_MICRO_VERSION">GIMP_MICRO_VERSION</a>
-#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-VERSION:CAPS" title="GIMP_VERSION">GIMP_VERSION</a>
-#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-API-VERSION:CAPS" title="GIMP_API_VERSION">GIMP_API_VERSION</a>
-#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-CHECK-VERSION:CAPS" title="GIMP_CHECK_VERSION()">GIMP_CHECK_VERSION</a>                  (major, minor, micro)
-#define             <a class="link" href="libgimpbase-gimpversion.html#GIMPVAR:CAPS" title="GIMPVAR">GIMPVAR</a>
+#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-MAJOR-VERSION--CAPS" title="GIMP_MAJOR_VERSION">GIMP_MAJOR_VERSION</a>
+#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-MINOR-VERSION--CAPS" title="GIMP_MINOR_VERSION">GIMP_MINOR_VERSION</a>
+#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-MICRO-VERSION--CAPS" title="GIMP_MICRO_VERSION">GIMP_MICRO_VERSION</a>
+#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-VERSION--CAPS" title="GIMP_VERSION">GIMP_VERSION</a>
+#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-API-VERSION--CAPS" title="GIMP_API_VERSION">GIMP_API_VERSION</a>
+#define             <a class="link" href="libgimpbase-gimpversion.html#GIMP-CHECK-VERSION--CAPS" title="GIMP_CHECK_VERSION()">GIMP_CHECK_VERSION</a>                  (major, minor, micro)
+#define             <a class="link" href="libgimpbase-gimpversion.html#GIMPVAR--CAPS" title="GIMPVAR">GIMPVAR</a>
 extern              const guint <a class="link" href="libgimpbase-gimpversion.html#gimp-major-version" title="gimp_major_version">gimp_major_version</a>;
 extern              const guint <a class="link" href="libgimpbase-gimpversion.html#gimp-minor-version" title="gimp_minor_version">gimp_minor_version</a>;
 extern              const guint <a class="link" href="libgimpbase-gimpversion.html#gimp-micro-version" title="gimp_micro_version">gimp_micro_version</a>;
@@ -60,49 +62,44 @@ extern              const guint <a class="link" href="libgimpbase-gimpversion.ht
 <p>
 Macros and constants useful for determining GIMP's version number and
 capabilities.
-
 </p>
 </div>
 <div class="refsect1" lang="en">
 <a name="libgimpbase-gimpversion.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="GIMP-MAJOR-VERSION:CAPS"></a><h3>GIMP_MAJOR_VERSION</h3>
+<a name="GIMP-MAJOR-VERSION--CAPS"></a><h3>GIMP_MAJOR_VERSION</h3>
 <pre class="programlisting">#define GIMP_MAJOR_VERSION                              (2)
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMP-MINOR-VERSION:CAPS"></a><h3>GIMP_MINOR_VERSION</h3>
+<a name="GIMP-MINOR-VERSION--CAPS"></a><h3>GIMP_MINOR_VERSION</h3>
 <pre class="programlisting">#define GIMP_MINOR_VERSION                              (6)
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMP-MICRO-VERSION:CAPS"></a><h3>GIMP_MICRO_VERSION</h3>
-<pre class="programlisting">#define GIMP_MICRO_VERSION                              (5)
+<a name="GIMP-MICRO-VERSION--CAPS"></a><h3>GIMP_MICRO_VERSION</h3>
+<pre class="programlisting">#define GIMP_MICRO_VERSION                              (6)
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMP-VERSION:CAPS"></a><h3>GIMP_VERSION</h3>
-<pre class="programlisting">#define GIMP_VERSION                                    "2.6.5"
+<a name="GIMP-VERSION--CAPS"></a><h3>GIMP_VERSION</h3>
+<pre class="programlisting">#define GIMP_VERSION                                    "2.6.6"
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMP-API-VERSION:CAPS"></a><h3>GIMP_API_VERSION</h3>
+<a name="GIMP-API-VERSION--CAPS"></a><h3>GIMP_API_VERSION</h3>
 <pre class="programlisting">#define GIMP_API_VERSION                                "2.0"
 </pre>
 <p>
@@ -111,10 +108,9 @@ Since: GIMP 2.2
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMP-CHECK-VERSION:CAPS"></a><h3>GIMP_CHECK_VERSION()</h3>
+<a name="GIMP-CHECK-VERSION--CAPS"></a><h3>GIMP_CHECK_VERSION()</h3>
 <pre class="programlisting">#define             GIMP_CHECK_VERSION(major, minor, micro)</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -132,8 +128,6 @@ Since: GIMP 2.2
 <tr>
 <td><p><span class="term"><em class="parameter"><code>micro</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr>
 </tbody>
@@ -141,10 +135,9 @@ Since: GIMP 2.2
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="GIMPVAR:CAPS"></a><h3>GIMPVAR</h3>
+<a name="GIMPVAR--CAPS"></a><h3>GIMPVAR</h3>
 <pre class="programlisting">#define             GIMPVAR</pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -153,7 +146,6 @@ Since: GIMP 2.2
 <pre class="programlisting">extern const guint gimp_major_version;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -162,7 +154,6 @@ Since: GIMP 2.2
 <pre class="programlisting">extern const guint gimp_minor_version;
 </pre>
 <p>
-
 </p>
 </div>
 <hr>
@@ -171,13 +162,12 @@ Since: GIMP 2.2
 <pre class="programlisting">extern const guint gimp_micro_version;
 </pre>
 <p>
-
 </p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

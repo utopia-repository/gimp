@@ -8,7 +8,7 @@
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpbrushmenu.html" title="gimpbrushmenu">
 <link rel="next" href="libgimp-gimpgradientmenu.html" title="gimpgradientmenu">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
@@ -32,9 +32,11 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradientmenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpfontmenu.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimp-gimpfontmenu.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimp-gimpfontmenu.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimp-gimpfontmenu.description" class="shortcut">Description</a>
+</td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfontmenu"></a><div class="titlepage"></div>
@@ -50,15 +52,15 @@
 <pre class="synopsis">
 <a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimp-gimpfontmenu.html#gimp-font-select-widget-new" title="gimp_font_select_widget_new ()">gimp_font_select_widget_new</a>         (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>GtkWidget</a> *         <a class="link" href="libgimp-gimpfontmenu.html#gimp-font-select-widget-new" title="gimp_font_select_widget_new ()">gimp_font_select_widget_new</a>         (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *title,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *font_name,
                                                          <a class="link" href="libgimp-gimpfontselect.html#GimpRunFontCallback" title="GimpRunFontCallback ()">GimpRunFontCallback</a> callback,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 void                <a class="link" href="libgimp-gimpfontmenu.html#gimp-font-select-widget-close" title="gimp_font_select_widget_close ()">gimp_font_select_widget_close</a>       (<a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
@@ -67,7 +69,7 @@ void                <a class="link" href="libgimp-gimpfontmenu.html#gimp-font-se
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *font_name);
 </pre>
 </div>
@@ -83,15 +85,15 @@ A widget for selecting fonts.
 <a name="gimp-font-select-widget-new"></a><h3>gimp_font_select_widget_new ()</h3>
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_font_select_widget_new         (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>GtkWidget</a> *         gimp_font_select_widget_new         (const <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *title,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *font_name,
                                                          <a class="link" href="libgimp-gimpfontselect.html#GimpRunFontCallback" title="GimpRunFontCallback ()">GimpRunFontCallback</a> callback,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -104,7 +106,6 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 a font.  This widget is suitable for placement in a table in a
 plug-in dialog.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -112,7 +113,7 @@ plug-in dialog.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
 <td>     Title of the dialog to use or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> to use the default title.
 </td>
 </tr>
@@ -154,7 +155,6 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 <p>
 Closes the popup window associated with <em class="parameter"><code>widget</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -172,7 +172,7 @@ Closes the popup window associated with <em class="parameter"><code>widget</code
 href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *font_name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -183,7 +183,6 @@ Sets the current font for the font select widget.  Calls the
 callback function if one was supplied in the call to
 <a class="link" href="libgimp-gimpfontmenu.html#gimp-font-select-widget-new" title="gimp_font_select_widget_new ()"><code class="function">gimp_font_select_widget_new()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -196,7 +195,7 @@ callback function if one was supplied in the call to
 <tr>
 <td><p><span class="term"><em class="parameter"><code>font_name</code></em> :</span></p></td>
 <td> Font name to set; <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> means no change.
 </td>
 </tr>
@@ -207,6 +206,6 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

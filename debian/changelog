@@ -1,3 +1,11 @@
+gimp (2.6.6-2) unstable; urgency=low
+
+  * Add Build-Depends-Package to libgimp2.0.symbols
+  * Use gnome.mk for dh_icons and dh_desktop
+  * Fix missing comma in debian/control (Closes: #535643)
+
+ -- Ari Pollak <ari@debian.org>  Fri, 10 Jul 2009 19:36:16 -0400
+
 gimp (2.6.6-1) unstable; urgency=low
 
   * New upstream release

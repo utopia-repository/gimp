@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpchannel</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="next" href="libgimp-gimpcolor.html" title="gimpcolor">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpchannel.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpchannel">
 <a name="libgimp-gimpchannel"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpchannel.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -147,15 +147,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> offy);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpchannel.description"></a><h2>Description</h2>
 <p>
 Functions for manipulating channels.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpchannel.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_new ()">
 <a name="gimp-channel-new"></a><h3>gimp_channel_new ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -232,7 +232,7 @@ initially.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_new_from_component ()">
 <a name="gimp-channel-new-from-component"></a><h3>gimp_channel_new_from_component ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -281,7 +281,7 @@ This procedure creates a new channel from a color component.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_copy ()">
 <a name="gimp-channel-copy"></a><h3>gimp_channel_copy ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -312,7 +312,7 @@ This procedure copies the specified channel and returns the copy.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_get_show_masked ()">
 <a name="gimp-channel-get-show-masked"></a><h3>gimp_channel_get_show_masked ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -345,7 +345,7 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_set_show_masked ()">
 <a name="gimp-channel-set-show-masked"></a><h3>gimp_channel_set_show_masked ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -386,7 +386,7 @@ masked regions are shown. Otherwise, selected regions are shown.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_get_opacity ()">
 <a name="gimp-channel-get-opacity"></a><h3>gimp_channel_get_opacity ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -417,7 +417,7 @@ This procedure returns the specified channel's opacity.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_set_opacity ()">
 <a name="gimp-channel-set-opacity"></a><h3>gimp_channel_set_opacity ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -456,7 +456,7 @@ This procedure sets the specified channel's opacity.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_get_color ()">
 <a name="gimp-channel-get-color"></a><h3>gimp_channel_get_color ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -495,7 +495,7 @@ This procedure returns the specified channel's compositing color.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_set_color ()">
 <a name="gimp-channel-set-color"></a><h3>gimp_channel_set_color ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -534,7 +534,7 @@ This procedure sets the specified channel's compositing color.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_channel_combine_masks ()">
 <a name="gimp-channel-combine-masks"></a><h3>gimp_channel_combine_masks ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

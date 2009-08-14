@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="gimp-thumbnail-check-thumb"><link linkend="gimp-thumbnail-check-thumb">gimp_thumbnail_check_thumb</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumbnail-delete-failure"><link linkend="gimp-thumbnail-delete-failure">gimp_thumbnail_delete_failure</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumbnail-delete-others"><link linkend="gimp-thumbnail-delete-others">gimp_thumbnail_delete_others</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumbnail-has-failed"><link linkend="gimp-thumbnail-has-failed">gimp_thumbnail_has_failed</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumbnail-save-thumb-local"><link linkend="gimp-thumbnail-save-thumb-local">gimp_thumbnail_save_thumb_local</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumbs-delete-for-uri"><link linkend="gimp-thumbs-delete-for-uri">gimp_thumbs_delete_for_uri</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumbs-delete-for-uri-local"><link linkend="gimp-thumbs-delete-for-uri-local">gimp_thumbs_delete_for_uri_local</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumb-ensure-thumb-dir-local"><link linkend="gimp-thumb-ensure-thumb-dir-local">gimp_thumb_ensure_thumb_dir_local</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumb-get-thumb-dir-local"><link linkend="gimp-thumb-get-thumb-dir-local">gimp_thumb_get_thumb_dir_local</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-thumb-name-from-uri-local"><link linkend="gimp-thumb-name-from-uri-local">gimp_thumb_name_from_uri_local</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

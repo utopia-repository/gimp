@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpthumb-utils</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Thumbnail Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Thumbnail Library Reference Manual">
 <link rel="up" href="libgimpthumb.html" title="Part I. GIMP Thumbnail Library">
 <link rel="prev" href="GimpThumbnail.html" title="GimpThumbnail">
 <link rel="next" href="libgimpthumb-gimpthumb-enums.html" title="gimpthumb-enums">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpthumb.html" title="Part I. GIMP Thumbnail Library">
 <link rel="index" href="libgimpthumb-index.html" title="Index">
@@ -26,11 +26,13 @@
 <th width="100%" align="center">GIMP Thumbnail Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpthumb-gimpthumb-enums.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpthumb-gimpthumb-utils.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpthumb-gimpthumb-utils.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpthumb-gimpthumb-utils.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpthumb-gimpthumb-utils.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpthumb-utils">
 <a name="libgimpthumb-gimpthumb-utils"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,7 +41,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpthumb-gimpthumb-utils.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -52,21 +54,25 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *thumb_basedir);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-find-thumb" title="gimp_thumb_find_thumb ()">gimp_thumb_find_thumb</a>               (const <a
+>gchar</a> *             <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-find-thumb" title="gimp_thumb_find_thumb ()">gimp_thumb_find_thumb</a>               (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *uri,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> *size);
 <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType" title="enum GimpThumbFileType">GimpThumbFileType</a>   <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-file-test" title="gimp_thumb_file_test ()">gimp_thumb_file_test</a>                (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
-                                                         gint64 *mtime,
-                                                         gint64 *size,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"
+>gint64</a> *mtime,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"
+>gint64</a> *size,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> *err_no);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-name-from-uri" title="gimp_thumb_name_from_uri ()">gimp_thumb_name_from_uri</a>            (const <a
+>gchar</a> *             <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-name-from-uri" title="gimp_thumb_name_from_uri ()">gimp_thumb_name_from_uri</a>            (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *uri,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);
@@ -78,13 +84,13 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GEr
 >GError</a> **error);
 const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*        <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir" title="gimp_thumb_get_thumb_dir ()">gimp_thumb_get_thumb_dir</a>            (<a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);
+>gchar</a> *       <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir" title="gimp_thumb_get_thumb_dir ()">gimp_thumb_get_thumb_dir</a>            (<a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);
 void                <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumbs-delete-for-uri" title="gimp_thumbs_delete_for_uri ()">gimp_thumbs_delete_for_uri</a>          (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *uri);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-name-from-uri-local" title="gimp_thumb_name_from_uri_local ()">gimp_thumb_name_from_uri_local</a>      (const <a
+>gchar</a> *             <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-name-from-uri-local" title="gimp_thumb_name_from_uri_local ()">gimp_thumb_name_from_uri_local</a>      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *uri,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);
@@ -99,7 +105,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GEr
 >GError</a> **error);
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir-local" title="gimp_thumb_get_thumb_dir_local ()">gimp_thumb_get_thumb_dir_local</a>      (const <a
+>gchar</a> *             <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir-local" title="gimp_thumb_get_thumb_dir_local ()">gimp_thumb_get_thumb_dir_local</a>      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *dirname,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);
@@ -108,15 +114,14 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *uri);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpthumb-gimpthumb-utils.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpthumb-gimpthumb-utils.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_init ()">
 <a name="gimp-thumb-init"></a><h3>gimp_thumb_init ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -141,14 +146,13 @@ thumbnail creation failures. See the spec for more details.
 </p>
 <p>
 Usually you will pass <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> for <em class="parameter"><code>thumb_basedir</code></em>. Thumbnails will
 then be stored in the user's personal thumbnail directory as
 defined in the spec. If you wish to use libgimpthumb to store
 application-specific thumbnails, you can specify a different base
 directory here.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -161,14 +165,14 @@ directory here.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>thumb_basedir</code></em> :</span></p></td>
 <td> an absolute path or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> to use the default
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the library was successfully initialized.
 </td>
 </tr>
@@ -176,11 +180,11 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRU
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_find_thumb ()">
 <a name="gimp-thumb-find-thumb"></a><h3>gimp_thumb_find_thumb ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_thumb_find_thumb               (const <a
+>gchar</a> *             gimp_thumb_find_thumb               (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *uri,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> *size);</pre>
@@ -200,7 +204,6 @@ there are any).
 If a thumbnail is found, it's size is written to the variable
 pointer to by <em class="parameter"><code>size</code></em> and the file location is returned.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -219,7 +222,7 @@ pointer to by <em class="parameter"><code>size</code></em> and the file location
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a newly allocated string in the encoding of the
               filesystem or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> if no thumbnail for <em class="parameter"><code>uri</code></em> was found
 </td>
 </tr>
@@ -227,13 +230,17 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_file_test ()">
 <a name="gimp-thumb-file-test"></a><h3>gimp_thumb_file_test ()</h3>
 <pre class="programlisting"><a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType" title="enum GimpThumbFileType">GimpThumbFileType</a>   gimp_thumb_file_test                (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *filename,
-                                                         gint64 *mtime,
-                                                         gint64 *size,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"
+>gint64</a> *mtime,
+                                                         <a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"
+>gint64</a> *size,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> *err_no);</pre>
@@ -242,7 +249,6 @@ This is a convenience and portability wrapper around <code class="function">stat
 checks if the given <em class="parameter"><code>filename</code></em> exists and returns modification time
 and file size in 64bit integer values.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -269,7 +275,7 @@ and file size in 64bit integer values.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The type of the file, or <a class="link" href="libgimpthumb-gimpthumb-enums.html#GIMP-THUMB-FILE-TYPE-NONE:CAPS"><span class="type">GIMP_THUMB_FILE_TYPE_NONE</span></a> if
+<td> The type of the file, or <a class="link" href="libgimpthumb-gimpthumb-enums.html#GIMP-THUMB-FILE-TYPE-NONE--CAPS"><span class="type">GIMP_THUMB_FILE_TYPE_NONE</span></a> if
               the file doesn't exist.
 </td>
 </tr>
@@ -277,11 +283,11 @@ and file size in 64bit integer values.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_name_from_uri ()">
 <a name="gimp-thumb-name-from-uri"></a><h3>gimp_thumb_name_from_uri ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_thumb_name_from_uri            (const <a
+>gchar</a> *             gimp_thumb_name_from_uri            (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *uri,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);</pre>
@@ -289,7 +295,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 Creates the name of the thumbnail file of the specified <em class="parameter"><code>size</code></em> that
 belongs to an image file located at the given <em class="parameter"><code>uri</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -308,7 +313,7 @@ belongs to an image file located at the given <em class="parameter"><code>uri</c
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a newly allocated filename in the encoding of the
               filesystem or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> if <em class="parameter"><code>uri</code></em> points to the user's
               thumbnail repository.
 </td>
@@ -317,7 +322,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_ensure_thumb_dir ()">
 <a name="gimp-thumb-ensure-thumb-dir"></a><h3>gimp_thumb_ensure_thumb_dir ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -335,7 +340,6 @@ You shouldn't have to call this function directly since
 <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb" title="gimp_thumbnail_save_thumb ()"><code class="function">gimp_thumbnail_save_thumb()</code></a> and <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-failure" title="gimp_thumbnail_save_failure ()"><code class="function">gimp_thumbnail_save_failure()</code></a> will
 do this for you.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -353,9 +357,9 @@ do this for you.</p>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> is the directory exists, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a> if it could not
               be created
 </td>
@@ -364,17 +368,16 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FAL
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_get_thumb_dir ()">
 <a name="gimp-thumb-get-thumb-dir"></a><h3>gimp_thumb_get_thumb_dir ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*        gimp_thumb_get_thumb_dir            (<a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);</pre>
+>gchar</a> *       gimp_thumb_get_thumb_dir            (<a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);</pre>
 <p>
 Retrieve the name of the thumbnail folder for a specific size. The
 returned pointer will become invalid if <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-init" title="gimp_thumb_init ()"><code class="function">gimp_thumb_init()</code></a> is used
 again. It must not be changed or freed.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -393,7 +396,7 @@ again. It must not be changed or freed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumbs_delete_for_uri ()">
 <a name="gimp-thumbs-delete-for-uri"></a><h3>gimp_thumbs_delete_for_uri ()</h3>
 <pre class="programlisting">void                gimp_thumbs_delete_for_uri          (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -402,7 +405,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 Deletes all thumbnails for the image file specified by <em class="parameter"><code>uri</code></em> from the
 user's thumbnail repository.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -412,15 +414,14 @@ user's thumbnail repository.</p>
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_name_from_uri_local ()">
 <a name="gimp-thumb-name-from-uri-local"></a><h3>gimp_thumb_name_from_uri_local ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_thumb_name_from_uri_local      (const <a
+>gchar</a> *             gimp_thumb_name_from_uri_local      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *uri,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);</pre>
@@ -429,7 +430,6 @@ Creates the name of a local thumbnail file of the specified <em class="parameter
 that belongs to an image file located at the given <em class="parameter"><code>uri</code></em>. Local
 thumbnails have been introduced with version 0.7 of the spec.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -448,7 +448,7 @@ thumbnails have been introduced with version 0.7 of the spec.</p>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> a newly allocated filename in the encoding of the
               filesystem or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> if <em class="parameter"><code>uri</code></em> is a remote file or
               points to the user's thumbnail repository.
 
@@ -456,11 +456,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_ensure_thumb_dir_local ()">
 <a name="gimp-thumb-ensure-thumb-dir-local"></a><h3>gimp_thumb_ensure_thumb_dir_local ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -480,7 +479,6 @@ create it if necessary.
 You shouldn't have to call this function directly since
 <a class="link" href="GimpThumbnail.html#gimp-thumbnail-save-thumb-local" title="gimp_thumbnail_save_thumb_local ()"><code class="function">gimp_thumbnail_save_thumb_local()</code></a> will do this for you.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -503,9 +501,9 @@ You shouldn't have to call this function directly since
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> is the directory exists, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a> if it could not
               be created
 
@@ -513,15 +511,14 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FAL
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumb_get_thumb_dir_local ()">
 <a name="gimp-thumb-get-thumb-dir-local"></a><h3>gimp_thumb_get_thumb_dir_local ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_thumb_get_thumb_dir_local      (const <a
+>gchar</a> *             gimp_thumb_get_thumb_dir_local      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *dirname,
                                                          <a class="link" href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize" title="enum GimpThumbSize">GimpThumbSize</a> size);</pre>
@@ -530,7 +527,6 @@ Retrieve the name of the local thumbnail folder for a specific
 size.  Unlike <a class="link" href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir" title="gimp_thumb_get_thumb_dir ()"><code class="function">gimp_thumb_get_thumb_dir()</code></a> the returned string is not
 constant and should be free'd when it is not any longer needed.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -553,11 +549,10 @@ constant and should be free'd when it is not any longer needed.</p>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_thumbs_delete_for_uri_local ()">
 <a name="gimp-thumbs-delete-for-uri-local"></a><h3>gimp_thumbs_delete_for_uri_local ()</h3>
 <pre class="programlisting">void                gimp_thumbs_delete_for_uri_local    (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -566,7 +561,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 Deletes all thumbnails for the image file specified by <em class="parameter"><code>uri</code></em> from
 the local thumbnail repository.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -576,13 +570,12 @@ the local thumbnail repository.</p>
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

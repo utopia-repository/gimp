@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="gimp-rgb-intensity"><link linkend="gimp-rgb-intensity">gimp_rgb_intensity</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-RGB-INTENSITY--CAPS"><link linkend="GIMP-RGB-INTENSITY--CAPS">GIMP_RGB_INTENSITY</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-RGB-INTENSITY-BLUE--CAPS"><link linkend="GIMP-RGB-INTENSITY-BLUE--CAPS">GIMP_RGB_INTENSITY_BLUE</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-RGB-INTENSITY-GREEN--CAPS"><link linkend="GIMP-RGB-INTENSITY-GREEN--CAPS">GIMP_RGB_INTENSITY_GREEN</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-RGB-INTENSITY-RED--CAPS"><link linkend="GIMP-RGB-INTENSITY-RED--CAPS">GIMP_RGB_INTENSITY_RED</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-rgb-intensity-uchar"><link linkend="gimp-rgb-intensity-uchar">gimp_rgb_intensity_uchar</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

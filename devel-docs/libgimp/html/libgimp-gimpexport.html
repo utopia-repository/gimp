@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpexport</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpui.html" title="gimpui">
 <link rel="next" href="GimpDrawablePreview.html" title="GimpDrawablePreview">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpexport.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpexport">
 <a name="libgimp-gimpexport"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpexport.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 enum                <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities">GimpExportCapabilities</a>;
@@ -64,7 +64,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
                                                          <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities">GimpExportCapabilities</a> capabilities);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpexport.description"></a><h2>Description</h2>
 <p>
 This function should be called by all save_plugins unless they are
@@ -79,9 +79,9 @@ Make sure you have initialized GTK+ before you call this function
 as it will most probably have to open a dialog.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpexport.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="enum GimpExportCapabilities">
 <a name="GimpExportCapabilities"></a><h3>enum GimpExportCapabilities</h3>
 <pre class="programlisting">typedef enum
 {
@@ -100,7 +100,7 @@ as it will most probably have to open a dialog.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="enum GimpExportReturn">
 <a name="GimpExportReturn"></a><h3>enum GimpExportReturn</h3>
 <pre class="programlisting">typedef enum
 {
@@ -113,7 +113,7 @@ as it will most probably have to open a dialog.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_export_image ()">
 <a name="gimp-export-image"></a><h3>gimp_export_image ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"

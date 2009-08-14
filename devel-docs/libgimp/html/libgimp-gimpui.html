@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpui</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="prev" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="next" href="libgimp-gimpexport.html" title="gimpexport">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpui.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpui">
 <a name="libgimp-gimpui"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -48,7 +48,7 @@ Interface Library headers.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpui.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 void                <a class="link" href="libgimp-gimpui.html#gimp-ui-init" title="gimp_ui_init ()">gimp_ui_init</a>                        (const <a
@@ -58,35 +58,35 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> preview);
 <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkWindow"
 >GdkWindow</a> *         <a class="link" href="libgimp-gimpui.html#gimp-ui-get-display-window" title="gimp_ui_get_display_window ()">gimp_ui_get_display_window</a>          (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"
 >guint32</a> gdisp_ID);
 <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkWindow"
 >GdkWindow</a> *         <a class="link" href="libgimp-gimpui.html#gimp-ui-get-progress-window" title="gimp_ui_get_progress_window ()">gimp_ui_get_progress_window</a>         (void);
 void                <a class="link" href="libgimp-gimpui.html#gimp-window-set-transient" title="gimp_window_set_transient ()">gimp_window_set_transient</a>           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWindow.html"
 >GtkWindow</a> *window);
 void                <a class="link" href="libgimp-gimpui.html#gimp-window-set-transient-for-display" title="gimp_window_set_transient_for_display ()">gimp_window_set_transient_for_display</a>
                                                         (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWindow.html"
 >GtkWindow</a> *window,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"
 >guint32</a> gdisp_ID);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpui.description"></a><h2>Description</h2>
 <p>
 Common user interface functions. This header includes all other GIMP User
 Interface Library headers.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpui.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_ui_init ()">
 <a name="gimp-ui-init"></a><h3>gimp_ui_init ()</h3>
 <pre class="programlisting">void                gimp_ui_init                        (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -96,7 +96,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 >gboolean</a> preview);</pre>
 <p>
 This function initializes GTK+ with <a
-href="/usr/share/gtk-doc/html/gtk/gtk-General.html#gtk-init"
+href="http://library.gnome.org/devel/gtk/unstable/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a> and initializes GDK's
 image rendering subsystem (GdkRGB) to follow the GIMP main program's
 colormap allocation/installation policy.
@@ -116,7 +116,7 @@ this function.</p>
 <td><p><span class="term"><em class="parameter"><code>prog_name</code></em> :</span></p></td>
 <td> The name of the plug-in which will be passed as argv[0] to
             <a
-href="/usr/share/gtk-doc/html/gtk/gtk-General.html#gtk-init"
+href="http://library.gnome.org/devel/gtk/unstable/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a>. It's a convention to use the name of the
             executable and _not_ the PDB procedure name.
 </td>
@@ -131,20 +131,20 @@ href="/usr/share/gtk-doc/html/gtk/gtk-General.html#gtk-init"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_ui_get_display_window ()">
 <a name="gimp-ui-get-display-window"></a><h3>gimp_ui_get_display_window ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkWindow"
 >GdkWindow</a> *         gimp_ui_get_display_window          (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"
 >guint32</a> gdisp_ID);</pre>
 <p>
 Returns the <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkWindow"
 ><span class="type">GdkWindow</span></a> of a display window. The purpose is to allow
 to make plug-in dialogs transient to the image display as explained
 with <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#gdk-window-set-transient-for"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#gdk-window-set-transient-for"
 ><code class="function">gdk_window_set_transient_for()</code></a>.
 </p>
 <p>
@@ -163,7 +163,7 @@ You shouldn't have to call this function directly. Use
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A reference to a <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkWindow"
 ><span class="type">GdkWindow</span></a> or <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>. You should
@@ -179,18 +179,18 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_ui_get_progress_window ()">
 <a name="gimp-ui-get-progress-window"></a><h3>gimp_ui_get_progress_window ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkWindow"
 >GdkWindow</a> *         gimp_ui_get_progress_window         (void);</pre>
 <p>
 Returns the <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkWindow"
 ><span class="type">GdkWindow</span></a> of the window this plug-in's progress bar is
 shown in. Use it to make plug-in dialogs transient to this window
 as explained with <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#gdk-window-set-transient-for"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#gdk-window-set-transient-for"
 ><code class="function">gdk_window_set_transient_for()</code></a>.
 </p>
 <p>
@@ -203,7 +203,7 @@ You shouldn't have to call this function directly. Use
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A reference to a <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkWindow"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#GdkWindow"
 ><span class="type">GdkWindow</span></a> or <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>. You should
@@ -218,10 +218,10 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_window_set_transient ()">
 <a name="gimp-window-set-transient"></a><h3>gimp_window_set_transient ()</h3>
 <pre class="programlisting">void                gimp_window_set_transient           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWindow.html"
 >GtkWindow</a> *window);</pre>
 <p>
 Indicates to the window manager that <em class="parameter"><code>window</code></em> is a transient dialog
@@ -234,7 +234,7 @@ started from. See also <a class="link" href="libgimp-gimpui.html#gimp-window-set
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>window</code></em> :</span></p></td>
 <td> the <a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWindow.html"
 ><span class="type">GtkWindow</span></a> that should become transient
 </td>
 </tr></tbody>
@@ -242,11 +242,11 @@ href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_window_set_transient_for_display ()">
 <a name="gimp-window-set-transient-for-display"></a><h3>gimp_window_set_transient_for_display ()</h3>
 <pre class="programlisting">void                gimp_window_set_transient_for_display
                                                         (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWindow.html"
 >GtkWindow</a> *window,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"
@@ -255,7 +255,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32
 Indicates to the window manager that <em class="parameter"><code>window</code></em> is a transient dialog
 associated with the GIMP image window that is identified by it's
 display ID.  See <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#gdk-window-set-transient-for"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-Windows.html#gdk-window-set-transient-for"
 ><code class="function">gdk_window_set_transient_for()</code></a> for more information.
 </p>
 <p>
@@ -269,7 +269,7 @@ Most of the time you will want to use the convenience function
 <tr>
 <td><p><span class="term"><em class="parameter"><code>window</code></em> :</span></p></td>
 <td>   the <a
-href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWindow.html"
 ><span class="type">GtkWindow</span></a> that should become transient
 </td>
 </tr>
@@ -283,30 +283,30 @@ href="/usr/share/gtk-doc/html/gtk/GtkWindow.html"
 <p class="since">Since GIMP 2.4</p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="libgimp-gimpui.see-also"></a><h2>See Also</h2>
 <p>
 <a
-href="/usr/share/gtk-doc/html/gtk/gtk-General.html#gtk-init"
+href="http://library.gnome.org/devel/gtk/unstable/gtk-General.html#gtk-init"
 ><code class="function">gtk_init()</code></a>, <a
-href="/usr/share/gtk-doc/html/gdk/gdk-General.html#gdk-set-use-xshm"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-General.html#gdk-set-use-xshm"
 ><code class="function">gdk_set_use_xshm()</code></a>, <a
-href="/usr/share/gtk-doc/html/gdk/gdk-GdkRGB.html#gdk-rgb-set-min-colors"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-GdkRGB.html#gdk-rgb-set-min-colors"
 ><code class="function">gdk_rgb_set_min_colors()</code></a>,
 <a
-href="/usr/share/gtk-doc/html/gdk/gdk-GdkRGB.html#gdk-rgb-set-install"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-GdkRGB.html#gdk-rgb-set-install"
 ><code class="function">gdk_rgb_set_install()</code></a>, <a
-href="/usr/share/gtk-doc/html/gdk/gdk-GdkRGB.html#gdk-rgb-get-visual"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-GdkRGB.html#gdk-rgb-get-visual"
 ><code class="function">gdk_rgb_get_visual()</code></a>, <a
-href="/usr/share/gtk-doc/html/gdk/gdk-GdkRGB.html#gdk-rgb-get-cmap"
+href="http://library.gnome.org/devel/gdk/unstable/gdk-GdkRGB.html#gdk-rgb-get-cmap"
 ><code class="function">gdk_rgb_get_cmap()</code></a>,
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html#gtk-widget-set-default-visual"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html#gtk-widget-set-default-visual"
 ><code class="function">gtk_widget_set_default_visual()</code></a>, <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html#gtk-widget-set-default-colormap"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html#gtk-widget-set-default-colormap"
 ><code class="function">gtk_widget_set_default_colormap()</code></a>,
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkPreview.html#gtk-preview-set-gamma"
+href="http://library.gnome.org/devel/gtk/unstable/GtkPreview.html#gtk-preview-set-gamma"
 ><code class="function">gtk_preview_set_gamma()</code></a>.
 </p>
 </div>

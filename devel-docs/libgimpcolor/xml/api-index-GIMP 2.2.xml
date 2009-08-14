@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="gimp-rgba-parse-css"><link linkend="gimp-rgba-parse-css">gimp_rgba_parse_css</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-rgb-list-names"><link linkend="gimp-rgb-list-names">gimp_rgb_list_names</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-rgb-parse-css"><link linkend="gimp-rgb-parse-css">gimp_rgb_parse_css</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-rgb-parse-hex"><link linkend="gimp-rgb-parse-hex">gimp_rgb_parse_hex</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-rgb-parse-name"><link linkend="gimp-rgb-parse-name">gimp_rgb_parse_name</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

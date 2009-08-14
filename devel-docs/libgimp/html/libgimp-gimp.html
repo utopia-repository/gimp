@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimp</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="next" href="libgimp-gimpenums.html" title="gimpenums">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimp.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimp">
 <a name="libgimp-gimp"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -48,7 +48,7 @@ all other GIMP Library headers.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimp.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -287,16 +287,16 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstp
 >gconstpointer</a> data);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimp.description"></a><h2>Description</h2>
 <p>
 Main functions needed for building a GIMP plug-in. This header includes
 all other GIMP Library headers.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimp.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_version ()">
 <a name="gimp-version"></a><h3>gimp_version ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -319,7 +319,7 @@ GIMP.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_getpid ()">
 <a name="gimp-getpid"></a><h3>gimp_getpid ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -343,7 +343,7 @@ This procedure returns the process ID of the currently running GIMP.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_get_data">
 <a name="gimp-get-data"></a><h3>gimp_get_data</h3>
 <pre class="programlisting">#define gimp_get_data         gimp_procedural_db_get_data
 </pre>
@@ -351,7 +351,7 @@ This procedure returns the process ID of the currently running GIMP.</p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_get_data_size">
 <a name="gimp-get-data-size"></a><h3>gimp_get_data_size</h3>
 <pre class="programlisting">#define gimp_get_data_size    gimp_procedural_db_get_data_size
 </pre>
@@ -367,7 +367,7 @@ This procedure returns the process ID of the currently running GIMP.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_set_data">
 <a name="gimp-set-data"></a><h3>gimp_set_data</h3>
 <pre class="programlisting">#define gimp_set_data         gimp_procedural_db_set_data
 </pre>
@@ -375,28 +375,28 @@ This procedure returns the process ID of the currently running GIMP.</p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpInitProc ()">
 <a name="GimpInitProc"></a><h3>GimpInitProc ()</h3>
 <pre class="programlisting">void                (*GimpInitProc)                     (void);</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpQuitProc ()">
 <a name="GimpQuitProc"></a><h3>GimpQuitProc ()</h3>
 <pre class="programlisting">void                (*GimpQuitProc)                     (void);</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpQueryProc ()">
 <a name="GimpQueryProc"></a><h3>GimpQueryProc ()</h3>
 <pre class="programlisting">void                (*GimpQueryProc)                    (void);</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpRunProc ()">
 <a name="GimpRunProc"></a><h3>GimpRunProc ()</h3>
 <pre class="programlisting">void                (*GimpRunProc)                      (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -443,7 +443,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpPlugInInfo">
 <a name="GimpPlugInInfo"></a><h3>GimpPlugInInfo</h3>
 <pre class="programlisting">typedef struct {
   /* called when the gimp application initially starts up */
@@ -468,7 +468,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpParamDef">
 <a name="GimpParamDef"></a><h3>GimpParamDef</h3>
 <pre class="programlisting">typedef struct {
   GimpPDBArgType  type;
@@ -480,7 +480,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpParamRegion">
 <a name="GimpParamRegion"></a><h3>GimpParamRegion</h3>
 <pre class="programlisting">typedef struct {
   gint32 x;
@@ -493,7 +493,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="union GimpParamData">
 <a name="GimpParamData"></a><h3>union GimpParamData</h3>
 <pre class="programlisting">union GimpParamData
 {
@@ -530,7 +530,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpParam">
 <a name="GimpParam"></a><h3>GimpParam</h3>
 <pre class="programlisting">typedef struct {
   GimpPDBArgType type;
@@ -541,7 +541,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="MAIN()">
 <a name="MAIN--CAPS"></a><h3>MAIN()</h3>
 <pre class="programlisting">#define             MAIN()</pre>
 <p>
@@ -555,7 +555,7 @@ To use this macro, simply place a line that contains just the code
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_main ()">
 <a name="gimp-main"></a><h3>gimp_main ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -598,7 +598,7 @@ and the 'argc' and 'argv' that are passed to "main".</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_quit ()">
 <a name="gimp-quit"></a><h3>gimp_quit ()</h3>
 <pre class="programlisting">void                gimp_quit                           (void);</pre>
 <p>
@@ -608,7 +608,7 @@ connection to main gimp application. This function never returns.</p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_install_procedure ()">
 <a name="gimp-install-procedure"></a><h3>gimp_install_procedure ()</h3>
 <pre class="programlisting">void                gimp_install_procedure              (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -787,7 +787,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_install_temp_proc ()">
 <a name="gimp-install-temp-proc"></a><h3>gimp_install_temp_proc ()</h3>
 <pre class="programlisting">void                gimp_install_temp_proc              (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -933,7 +933,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_uninstall_temp_proc ()">
 <a name="gimp-uninstall-temp-proc"></a><h3>gimp_uninstall_temp_proc ()</h3>
 <pre class="programlisting">void                gimp_uninstall_temp_proc            (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -953,7 +953,7 @@ installed using <a class="link" href="libgimp-gimp.html#gimp-install-temp-proc" 
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_run_procedure ()">
 <a name="gimp-run-procedure"></a><h3>gimp_run_procedure ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimp.html#GimpParam" title="GimpParam">GimpParam</a> *         gimp_run_procedure                  (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -1002,7 +1002,7 @@ information.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_run_procedure2 ()">
 <a name="gimp-run-procedure2"></a><h3>gimp_run_procedure2 ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimp.html#GimpParam" title="GimpParam">GimpParam</a> *         gimp_run_procedure2                 (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -1057,7 +1057,7 @@ free them using <a class="link" href="libgimp-gimp.html#gimp-destroy-params" tit
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_destroy_params ()">
 <a name="gimp-destroy-params"></a><h3>gimp_destroy_params ()</h3>
 <pre class="programlisting">void                gimp_destroy_params                 (<a class="link" href="libgimp-gimp.html#GimpParam" title="GimpParam">GimpParam</a> *params,
                                                          <a
@@ -1085,7 +1085,7 @@ Destroys a <a class="link" href="libgimp-gimp.html#GimpParam" title="GimpParam">
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_destroy_paramdefs ()">
 <a name="gimp-destroy-paramdefs"></a><h3>gimp_destroy_paramdefs ()</h3>
 <pre class="programlisting">void                gimp_destroy_paramdefs              (<a class="link" href="libgimp-gimp.html#GimpParamDef" title="GimpParamDef">GimpParamDef</a> *paramdefs,
                                                          <a
@@ -1113,7 +1113,7 @@ Destroys a <a class="link" href="libgimp-gimp.html#GimpParamDef" title="GimpPara
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_get_pdb_error ()">
 <a name="gimp-get-pdb-error"></a><h3>gimp_get_pdb_error ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -1145,7 +1145,7 @@ modified.</p>
 <p class="since">Since GIMP 2.6</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_tile_width ()">
 <a name="gimp-tile-width"></a><h3>gimp_tile_width ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
@@ -1167,7 +1167,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_tile_height ()">
 <a name="gimp-tile-height"></a><h3>gimp_tile_height ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
@@ -1189,7 +1189,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_shm_ID ()">
 <a name="gimp-shm-ID"></a><h3>gimp_shm_ID ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1212,7 +1212,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_shm_addr ()">
 <a name="gimp-shm-addr"></a><h3>gimp_shm_addr ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
@@ -1235,7 +1235,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_gamma ()">
 <a name="gimp-gamma"></a><h3>gimp_gamma ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -1263,7 +1263,7 @@ should assume that pixel data is in the sRGB colorspace.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_install_cmap ()">
 <a name="gimp-install-cmap"></a><h3>gimp_install_cmap ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1286,7 +1286,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_min_colors ()">
 <a name="gimp-min-colors"></a><h3>gimp_min_colors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1312,7 +1312,7 @@ See also: <a class="link" href="libgimp-gimp.html#gimp-install-cmap" title="gimp
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_show_tool_tips ()">
 <a name="gimp-show-tool-tips"></a><h3>gimp_show_tool_tips ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1334,7 +1334,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_show_help_button ()">
 <a name="gimp-show-help-button"></a><h3>gimp_show_help_button ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1359,7 +1359,7 @@ This is a constant value given at plug-in configuration time.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_check_size ()">
 <a name="gimp-check-size"></a><h3>gimp_check_size ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"
@@ -1383,7 +1383,7 @@ This is a constant value given at plug-in configuration time.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_check_type ()">
 <a name="gimp-check-type"></a><h3>gimp_check_type ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"
@@ -1407,7 +1407,7 @@ This is a constant value given at plug-in configuration time.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_default_display ()">
 <a name="gimp-default-display"></a><h3>gimp_default_display ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -1430,7 +1430,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_wm_class ()">
 <a name="gimp-wm-class"></a><h3>gimp_wm_class ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -1452,7 +1452,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_display_name ()">
 <a name="gimp-display-name"></a><h3>gimp_display_name ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -1474,7 +1474,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_monitor_number ()">
 <a name="gimp-monitor-number"></a><h3>gimp_monitor_number ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1496,7 +1496,7 @@ This is a constant value given at plug-in configuration time.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_user_time ()">
 <a name="gimp-user-time"></a><h3>gimp_user_time ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"
@@ -1522,7 +1522,7 @@ This is a constant value given at plug-in configuration time.</p>
 <p class="since">Since GIMP 2.6</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_get_progname ()">
 <a name="gimp-get-progname"></a><h3>gimp_get_progname ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -1541,7 +1541,7 @@ Returns the plug-in's executable name.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_extension_enable ()">
 <a name="gimp-extension-enable"></a><h3>gimp_extension_enable ()</h3>
 <pre class="programlisting">void                gimp_extension_enable               (void);</pre>
 <p>
@@ -1577,7 +1577,7 @@ See also: <a class="link" href="libgimp-gimp.html#gimp-install-procedure" title=
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_extension_ack ()">
 <a name="gimp-extension-ack"></a><h3>gimp_extension_ack ()</h3>
 <pre class="programlisting">void                gimp_extension_ack                  (void);</pre>
 <p>
@@ -1599,7 +1599,7 @@ See also: <a class="link" href="libgimp-gimp.html#gimp-install-procedure" title=
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_extension_process ()">
 <a name="gimp-extension-process"></a><h3>gimp_extension_process ()</h3>
 <pre class="programlisting">void                gimp_extension_process              (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
@@ -1630,7 +1630,7 @@ See also: <a class="link" href="libgimp-gimp.html#gimp-install-procedure" title=
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_find ()">
 <a name="gimp-parasite-find"></a><h3>gimp_parasite_find ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
@@ -1661,7 +1661,7 @@ Finds and returns the global parasite that was previously attached.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_list ()">
 <a name="gimp-parasite-list"></a><h3>gimp_parasite_list ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1700,7 +1700,7 @@ Returns a list of all currently attached global parasites.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_attach ()">
 <a name="gimp-parasite-attach"></a><h3>gimp_parasite_attach ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1731,7 +1731,7 @@ This procedure attaches a global parasite. It has no return values.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_parasite_detach ()">
 <a name="gimp-parasite-detach"></a><h3>gimp_parasite_detach ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1763,7 +1763,7 @@ values.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_attach_new_parasite ()">
 <a name="gimp-attach-new-parasite"></a><h3>gimp_attach_new_parasite ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

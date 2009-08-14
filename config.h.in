@@ -81,6 +81,9 @@
 /* Define to 1 if you have the `finite' function. */
 #undef HAVE_FINITE
 
+/* Define to 1 if you have the `fsync' function. */
+#undef HAVE_FSYNC
+
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
 
@@ -192,9 +195,6 @@
 /* Define to 1 if you have the `vprintf' function. */
 #undef HAVE_VPRINTF
 
-/* Define to 1 if webkit has zoom API */
-#undef HAVE_WEBKIT_ZOOM_API
-
 /* Define to 1 if you have the <X11/extensions/shape.h> header file. */
 #undef HAVE_X11_EXTENSIONS_SHAPE_H
 
@@ -209,6 +209,10 @@
 
 /* Define to 1 if shared memory segments are released deferred. */
 #undef IPC_RMID_DEFERRED_RELEASE
+
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#undef LT_OBJDIR
 
 /* Define to 1 if you don't have the fd_set typedef. */
 #undef NO_FD_SET
@@ -227,6 +231,9 @@
 
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<indexdiv>
+<indexdiv><title>G</title>
+<indexentry><primaryie linkends="GimpFileEntry-struct"><link linkend="GimpFileEntry">GimpFileEntry</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpIntOptionMenuSensitivityCallback"><link linkend="GimpIntOptionMenuSensitivityCallback">GimpIntOptionMenuSensitivityCallback</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpOptionMenuSensitivityCallback"><link linkend="GimpOptionMenuSensitivityCallback">GimpOptionMenuSensitivityCallback</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GimpPixmap-struct"><link linkend="GimpPixmap">GimpPixmap</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-color-display-new"><link linkend="gimp-color-display-new">gimp_color_display_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-file-entry-get-filename"><link linkend="gimp-file-entry-get-filename">gimp_file_entry_get_filename</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-file-entry-new"><link linkend="gimp-file-entry-new">gimp_file_entry_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-file-entry-set-filename"><link linkend="gimp-file-entry-set-filename">gimp_file_entry_set_filename</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-option-menu-new"><link linkend="gimp-int-option-menu-new">gimp_int_option_menu_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-option-menu-set-history"><link linkend="gimp-int-option-menu-set-history">gimp_int_option_menu_set_history</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-int-option-menu-set-sensitive"><link linkend="gimp-int-option-menu-set-sensitive">gimp_int_option_menu_set_sensitive</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-menu-item-update"><link linkend="gimp-menu-item-update">gimp_menu_item_update</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-option-menu-new"><link linkend="gimp-option-menu-new">gimp_option_menu_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-option-menu-new2"><link linkend="gimp-option-menu-new2">gimp_option_menu_new2</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-option-menu-set-history"><link linkend="gimp-option-menu-set-history">gimp_option_menu_set_history</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-option-menu-set-sensitive"><link linkend="gimp-option-menu-set-sensitive">gimp_option_menu_set_sensitive</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-pixmap-button-new"><link linkend="gimp-pixmap-button-new">gimp_pixmap_button_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-pixmap-new"><link linkend="gimp-pixmap-new">gimp_pixmap_new</link></primaryie></indexentry>
+<indexentry><primaryie linkends="gimp-pixmap-set"><link linkend="gimp-pixmap-set">gimp_pixmap_set</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-STOCK-INDEXED-PALETTE--CAPS"><link linkend="GIMP-STOCK-INDEXED-PALETTE--CAPS">GIMP_STOCK_INDEXED_PALETTE</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-STOCK-QMASK-OFF--CAPS"><link linkend="GIMP-STOCK-QMASK-OFF--CAPS">GIMP_STOCK_QMASK_OFF</link></primaryie></indexentry>
+<indexentry><primaryie linkends="GIMP-STOCK-QMASK-ON--CAPS"><link linkend="GIMP-STOCK-QMASK-ON--CAPS">GIMP_STOCK_QMASK_ON</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

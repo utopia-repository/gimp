@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpdrawable</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdisplay.html" title="gimpdisplay">
 <link rel="next" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpdrawable.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpdrawable">
 <a name="libgimp-gimpdrawable"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpdrawable.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a>;
@@ -458,15 +458,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstp
 >gconstpointer</a> data);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpdrawable.description"></a><h2>Description</h2>
 <p>
 Functions to manipulate drawables.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpdrawable.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpDrawable">
 <a name="GimpDrawable"></a><h3>GimpDrawable</h3>
 <pre class="programlisting">typedef struct {
   gint32    drawable_id;   /* drawable ID */
@@ -483,7 +483,7 @@ Functions to manipulate drawables.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get ()">
 <a name="gimp-drawable-get"></a><h3>gimp_drawable_get ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *      gimp_drawable_get                   (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -523,7 +523,7 @@ transferred back to the core.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_detach ()">
 <a name="gimp-drawable-detach"></a><h3>gimp_drawable_detach ()</h3>
 <pre class="programlisting">void                gimp_drawable_detach                (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable);</pre>
 <p>
@@ -544,7 +544,7 @@ then frees all associated memory. You must not access the
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_flush ()">
 <a name="gimp-drawable-flush"></a><h3>gimp_drawable_flush ()</h3>
 <pre class="programlisting">void                gimp_drawable_flush                 (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable);</pre>
 <p>
@@ -566,7 +566,7 @@ to the core.
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_delete ()">
 <a name="gimp-drawable-delete"></a><h3>gimp_drawable_delete ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -601,7 +601,7 @@ which has not yet been added to an image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_is_valid ()">
 <a name="gimp-drawable-is-valid"></a><h3>gimp_drawable_is_valid ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -635,7 +635,7 @@ to an existing drawable.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_name ()">
 <a name="gimp-drawable-get-name"></a><h3>gimp_drawable_get_name ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -666,7 +666,7 @@ This procedure returns the specified drawable's name.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_set_name ()">
 <a name="gimp-drawable-set-name"></a><h3>gimp_drawable_set_name ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -705,7 +705,7 @@ This procedure sets the specified drawable's name.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_visible ()">
 <a name="gimp-drawable-get-visible"></a><h3>gimp_drawable_get_visible ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -736,7 +736,7 @@ This procedure returns the specified drawable's visibility.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_set_visible ()">
 <a name="gimp-drawable-set-visible"></a><h3>gimp_drawable_set_visible ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -775,7 +775,7 @@ This procedure sets the specified drawable's visibility.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_linked ()">
 <a name="gimp-drawable-get-linked"></a><h3>gimp_drawable_get_linked ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -806,7 +806,7 @@ This procedure returns the specified drawable's linked state.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_set_linked ()">
 <a name="gimp-drawable-set-linked"></a><h3>gimp_drawable_set_linked ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -845,7 +845,7 @@ This procedure sets the specified drawable's linked state.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_tattoo ()">
 <a name="gimp-drawable-get-tattoo"></a><h3>gimp_drawable_get_tattoo ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -879,7 +879,7 @@ sessions.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_set_tattoo ()">
 <a name="gimp-drawable-set-tattoo"></a><h3>gimp_drawable_set_tattoo ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -921,7 +921,7 @@ sessions.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_pixel ()">
 <a name="gimp-drawable-get-pixel"></a><h3>gimp_drawable_get_pixel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
@@ -978,7 +978,7 @@ bytes-per-pixel value for the specified drawable.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_set_pixel ()">
 <a name="gimp-drawable-set-pixel"></a><h3>gimp_drawable_set_pixel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1045,7 +1045,7 @@ just created yourself.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_tile ()">
 <a name="gimp-drawable-get-tile"></a><h3>gimp_drawable_get_tile ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *          gimp_drawable_get_tile              (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
@@ -1091,7 +1091,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_tile2 ()">
 <a name="gimp-drawable-get-tile2"></a><h3>gimp_drawable_get_tile2 ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *          gimp_drawable_get_tile2             (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
@@ -1137,7 +1137,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_thumbnail_data ()">
 <a name="gimp-drawable-get-thumbnail-data"></a><h3>gimp_drawable_get_thumbnail_data ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
@@ -1187,7 +1187,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_sub_thumbnail_data ()">
 <a name="gimp-drawable-get-sub-thumbnail-data"></a><h3>gimp_drawable_get_sub_thumbnail_data ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
@@ -1270,7 +1270,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_color_uchar ()">
 <a name="gimp-drawable-get-color-uchar"></a><h3>gimp_drawable_get_color_uchar ()</h3>
 <pre class="programlisting">void                gimp_drawable_get_color_uchar       (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -1305,7 +1305,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_merge_shadow ()">
 <a name="gimp-drawable-merge-shadow"></a><h3>gimp_drawable_merge_shadow ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1347,7 +1347,7 @@ Requesting no undo is useful for such applications as 'auto-apply'.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_free_shadow ()">
 <a name="gimp-drawable-free-shadow"></a><h3>gimp_drawable_free_shadow ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1383,7 +1383,7 @@ which allocated it returns.</p>
 <p class="since">Since GIMP 2.6</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_fill ()">
 <a name="gimp-drawable-fill"></a><h3>gimp_drawable_fill ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1429,7 +1429,7 @@ before adding it to the image. This operation cannot be undone.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_update ()">
 <a name="gimp-drawable-update"></a><h3>gimp_drawable_update ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1495,7 +1495,7 @@ image origin. Therefore, the entire drawable can be updated using
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_mask_bounds ()">
 <a name="gimp-drawable-mask-bounds"></a><h3>gimp_drawable_mask_bounds ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1570,7 +1570,7 @@ return value which is more useful in most cases.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_mask_intersect ()">
 <a name="gimp-drawable-mask-intersect"></a><h3>gimp_drawable_mask_intersect ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1640,7 +1640,7 @@ are the extents of the whole drawable.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_get_image ()">
 <a name="gimp-drawable-get-image"></a><h3>gimp_drawable_get_image ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -1671,7 +1671,7 @@ This procedure returns the drawable's image.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_set_image ()">
 <a name="gimp-drawable-set-image"></a><h3>gimp_drawable_set_image ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1681,7 +1681,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_drawable_set_image</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -1711,7 +1711,7 @@ This procedure is deprecated!</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_has_alpha ()">
 <a name="gimp-drawable-has-alpha"></a><h3>gimp_drawable_has_alpha ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1744,7 +1744,7 @@ will be one of: { RGBA , GRAYA, INDEXEDA }.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_type_with_alpha ()">
 <a name="gimp-drawable-type-with-alpha"></a><h3>gimp_drawable_type_with_alpha ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
@@ -1778,7 +1778,7 @@ the drawable's type is simply returned.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_type ()">
 <a name="gimp-drawable-type"></a><h3>gimp_drawable_type ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
@@ -1809,7 +1809,7 @@ This procedure returns the drawable's type.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_is_rgb ()">
 <a name="gimp-drawable-is-rgb"></a><h3>gimp_drawable_is_rgb ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1841,7 +1841,7 @@ RGB, RGBA }.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_is_gray ()">
 <a name="gimp-drawable-is-gray"></a><h3>gimp_drawable_is_gray ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1873,7 +1873,7 @@ Gray, GrayA }.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_is_indexed ()">
 <a name="gimp-drawable-is-indexed"></a><h3>gimp_drawable_is_indexed ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1905,7 +1905,7 @@ Indexed, IndexedA }.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_bpp ()">
 <a name="gimp-drawable-bpp"></a><h3>gimp_drawable_bpp ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1937,7 +1937,7 @@ of channels) for the specified drawable.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_width ()">
 <a name="gimp-drawable-width"></a><h3>gimp_drawable_width ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1968,7 +1968,7 @@ This procedure returns the specified drawable's width in pixels.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_height ()">
 <a name="gimp-drawable-height"></a><h3>gimp_drawable_height ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1999,7 +1999,7 @@ This procedure returns the specified drawable's height in pixels.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_offsets ()">
 <a name="gimp-drawable-offsets"></a><h3>gimp_drawable_offsets ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2048,7 +2048,7 @@ The offsets of a channel will be returned as 0.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_is_channel ()">
 <a name="gimp-drawable-is-channel"></a><h3>gimp_drawable_is_channel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2079,7 +2079,7 @@ This procedure returns TRUE if the specified drawable is a channel.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_is_layer ()">
 <a name="gimp-drawable-is-layer"></a><h3>gimp_drawable_is_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2110,7 +2110,7 @@ This procedure returns TRUE if the specified drawable is a layer.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_is_layer_mask ()">
 <a name="gimp-drawable-is-layer-mask"></a><h3>gimp_drawable_is_layer_mask ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2142,7 +2142,7 @@ mask.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_is_text_layer ()">
 <a name="gimp-drawable-is-text-layer"></a><h3>gimp_drawable_is_text_layer ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2176,7 +2176,7 @@ layer.</p>
 <p class="since">Since GIMP 2.6</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_offset ()">
 <a name="gimp-drawable-offset"></a><h3>gimp_drawable_offset ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2243,7 +2243,7 @@ specified by the 'fill-type' parameter.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_foreground_extract ()">
 <a name="gimp-drawable-foreground-extract"></a><h3>gimp_drawable_foreground_extract ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2293,7 +2293,7 @@ http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_parasite_find ()">
 <a name="gimp-drawable-parasite-find"></a><h3>gimp_drawable_parasite_find ()</h3>
 <pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
@@ -2333,7 +2333,7 @@ drawable.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_parasite_list ()">
 <a name="gimp-drawable-parasite-list"></a><h3>gimp_drawable_parasite_list ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2380,7 +2380,7 @@ Returns a list of all currently attached parasites.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_parasite_attach ()">
 <a name="gimp-drawable-parasite-attach"></a><h3>gimp_drawable_parasite_attach ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2420,7 +2420,7 @@ values.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_parasite_detach ()">
 <a name="gimp-drawable-parasite-detach"></a><h3>gimp_drawable_parasite_detach ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -2460,7 +2460,7 @@ values.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_drawable_attach_new_parasite ()">
 <a name="gimp-drawable-attach-new-parasite"></a><h3>gimp_drawable_attach_new_parasite ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

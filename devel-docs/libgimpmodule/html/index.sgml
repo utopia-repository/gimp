@@ -10,8 +10,8 @@
 <ANCHOR id="GimpModuleState" href="libgimpmodule/GimpModule.html#GimpModuleState">
 <ANCHOR id="GimpModuleQueryFunc" href="libgimpmodule/GimpModule.html#GimpModuleQueryFunc">
 <ANCHOR id="GimpModuleRegisterFunc" href="libgimpmodule/GimpModule.html#GimpModuleRegisterFunc">
-<ANCHOR id="GIMP-MODULE-ABI-VERSION:CAPS" href="libgimpmodule/GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS">
-<ANCHOR id="GIMP-MODULE-PARAM-SERIALIZE:CAPS" href="libgimpmodule/GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS">
+<ANCHOR id="GIMP-MODULE-ABI-VERSION--CAPS" href="libgimpmodule/GimpModule.html#GIMP-MODULE-ABI-VERSION--CAPS">
+<ANCHOR id="GIMP-MODULE-PARAM-SERIALIZE--CAPS" href="libgimpmodule/GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE--CAPS">
 <ANCHOR id="gimp-module-new" href="libgimpmodule/GimpModule.html#gimp-module-new">
 <ANCHOR id="gimp-module-modified" href="libgimpmodule/GimpModule.html#gimp-module-modified">
 <ANCHOR id="gimp-module-query-module" href="libgimpmodule/GimpModule.html#gimp-module-query-module">

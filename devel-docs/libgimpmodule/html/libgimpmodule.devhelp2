@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
-<book xmlns="http://www.devhelp.net/book" title="GIMP Module Library Reference Manual" link="index.html" author="" name="libgimpmodule" version="2">
+<book xmlns="http://www.devhelp.net/book" title="GIMP Module Library Reference Manual" link="index.html" author="" name="libgimpmodule" version="2" language="c">
   <chapters>
     <sub name="GIMP Module Library" link="libgimpmodule.html">
       <sub name="GimpModule" link="GimpModule.html"/>
@@ -18,8 +18,8 @@
     <keyword type="enum" name="enum GimpModuleState" link="GimpModule.html#GimpModuleState"/>
     <keyword type="function" name="GimpModuleQueryFunc ()" link="GimpModule.html#GimpModuleQueryFunc"/>
     <keyword type="function" name="GimpModuleRegisterFunc ()" link="GimpModule.html#GimpModuleRegisterFunc"/>
-    <keyword type="macro" name="GIMP_MODULE_ABI_VERSION" link="GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS"/>
-    <keyword type="macro" name="GIMP_MODULE_PARAM_SERIALIZE" link="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS" deprecated=""/>
+    <keyword type="macro" name="GIMP_MODULE_ABI_VERSION" link="GimpModule.html#GIMP-MODULE-ABI-VERSION--CAPS"/>
+    <keyword type="macro" name="GIMP_MODULE_PARAM_SERIALIZE" link="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE--CAPS" deprecated=""/>
     <keyword type="function" name="gimp_module_new ()" link="GimpModule.html#gimp-module-new"/>
     <keyword type="function" name="gimp_module_modified ()" link="GimpModule.html#gimp-module-modified"/>
     <keyword type="function" name="gimp_module_query_module ()" link="GimpModule.html#gimp-module-query-module"/>
@@ -29,15 +29,19 @@
     <keyword type="function" name="gimp_module_info_new ()" link="GimpModule.html#gimp-module-info-new"/>
     <keyword type="function" name="gimp_module_info_copy ()" link="GimpModule.html#gimp-module-info-copy"/>
     <keyword type="function" name="gimp_module_info_free ()" link="GimpModule.html#gimp-module-info-free"/>
-    <keyword type="" name="The &quot;modified&quot; signal" link="GimpModule.html#GimpModule-modified"/>
+    <keyword type="signal" name="The &quot;modified&quot; signal" link="GimpModule.html#GimpModule-modified"/>
     <keyword type="struct" name="GimpModuleDB" link="GimpModuleDB.html#GimpModuleDB-struct"/>
     <keyword type="function" name="gimp_module_db_new ()" link="GimpModuleDB.html#gimp-module-db-new"/>
     <keyword type="function" name="gimp_module_db_set_load_inhibit ()" link="GimpModuleDB.html#gimp-module-db-set-load-inhibit"/>
     <keyword type="function" name="gimp_module_db_get_load_inhibit ()" link="GimpModuleDB.html#gimp-module-db-get-load-inhibit"/>
     <keyword type="function" name="gimp_module_db_load ()" link="GimpModuleDB.html#gimp-module-db-load"/>
     <keyword type="function" name="gimp_module_db_refresh ()" link="GimpModuleDB.html#gimp-module-db-refresh"/>
-    <keyword type="" name="The &quot;add&quot; signal" link="GimpModuleDB.html#GimpModuleDB-add"/>
-    <keyword type="" name="The &quot;module-modified&quot; signal" link="GimpModuleDB.html#GimpModuleDB-module-modified"/>
-    <keyword type="" name="The &quot;remove&quot; signal" link="GimpModuleDB.html#GimpModuleDB-remove"/>
+    <keyword type="signal" name="The &quot;add&quot; signal" link="GimpModuleDB.html#GimpModuleDB-add"/>
+    <keyword type="signal" name="The &quot;module-modified&quot; signal" link="GimpModuleDB.html#GimpModuleDB-module-modified"/>
+    <keyword type="signal" name="The &quot;remove&quot; signal" link="GimpModuleDB.html#GimpModuleDB-remove"/>
+    <keyword type="constant" name="GIMP_MODULE_STATE_ERROR" link="GimpModule.html#GIMP-MODULE-STATE-ERROR--CAPS"/>
+    <keyword type="constant" name="GIMP_MODULE_STATE_LOADED" link="GimpModule.html#GIMP-MODULE-STATE-LOADED--CAPS"/>
+    <keyword type="constant" name="GIMP_MODULE_STATE_LOAD_FAILED" link="GimpModule.html#GIMP-MODULE-STATE-LOAD-FAILED--CAPS"/>
+    <keyword type="constant" name="GIMP_MODULE_STATE_NOT_LOADED" link="GimpModule.html#GIMP-MODULE-STATE-NOT-LOADED--CAPS"/>
   </functions>
 </book>

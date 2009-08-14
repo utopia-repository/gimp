@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimppixelfetcher</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimppaths.html" title="gimppaths">
 <link rel="next" href="libgimp-gimppixelrgn.html" title="gimppixelrgn">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimppixelfetcher.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimppixelfetcher">
 <a name="libgimp-gimppixelfetcher"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimppixelfetcher.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 enum                <a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode" title="enum GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</a>;
@@ -85,7 +85,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
 void                <a class="link" href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-destroy" title="gimp_pixel_fetcher_destroy ()">gimp_pixel_fetcher_destroy</a>          (<a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcher" title="GimpPixelFetcher">GimpPixelFetcher</a> *pf);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimppixelfetcher.description"></a><h2>Description</h2>
 <p>
 These functions provide neighbourhood-based algorithms which get
@@ -95,9 +95,9 @@ called for.  It hides the special treatment of tile borders, making
 plug-in code more readable and shorter.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimppixelfetcher.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="enum GimpPixelFetcherEdgeMode">
 <a name="GimpPixelFetcherEdgeMode"></a><h3>enum GimpPixelFetcherEdgeMode</h3>
 <pre class="programlisting">typedef enum
 {
@@ -112,14 +112,14 @@ plug-in code more readable and shorter.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpPixelFetcher">
 <a name="GimpPixelFetcher"></a><h3>GimpPixelFetcher</h3>
 <pre class="programlisting">typedef struct _GimpPixelFetcher GimpPixelFetcher;</pre>
 <p>
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pixel_fetcher_new ()">
 <a name="gimp-pixel-fetcher-new"></a><h3>gimp_pixel_fetcher_new ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcher" title="GimpPixelFetcher">GimpPixelFetcher</a> *  gimp_pixel_fetcher_new              (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
@@ -154,7 +154,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pixel_fetcher_set_edge_mode ()">
 <a name="gimp-pixel-fetcher-set-edge-mode"></a><h3>gimp_pixel_fetcher_set_edge_mode ()</h3>
 <pre class="programlisting">void                gimp_pixel_fetcher_set_edge_mode    (<a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcher" title="GimpPixelFetcher">GimpPixelFetcher</a> *pf,
                                                          <a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode" title="enum GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</a> mode);</pre>
@@ -179,7 +179,7 @@ Change the edage mode of a previously initialized pixel region.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pixel_fetcher_set_bg_color ()">
 <a name="gimp-pixel-fetcher-set-bg-color"></a><h3>gimp_pixel_fetcher_set_bg_color ()</h3>
 <pre class="programlisting">void                gimp_pixel_fetcher_set_bg_color     (<a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcher" title="GimpPixelFetcher">GimpPixelFetcher</a> *pf,
                                                          const <a
@@ -206,7 +206,7 @@ Change the background color of a previously initialized pixel region.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pixel_fetcher_get_pixel ()">
 <a name="gimp-pixel-fetcher-get-pixel"></a><h3>gimp_pixel_fetcher_get_pixel ()</h3>
 <pre class="programlisting">void                gimp_pixel_fetcher_get_pixel        (<a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcher" title="GimpPixelFetcher">GimpPixelFetcher</a> *pf,
                                                          <a
@@ -249,7 +249,7 @@ Get a pixel from the pixel region.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pixel_fetcher_put_pixel ()">
 <a name="gimp-pixel-fetcher-put-pixel"></a><h3>gimp_pixel_fetcher_put_pixel ()</h3>
 <pre class="programlisting">void                gimp_pixel_fetcher_put_pixel        (<a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcher" title="GimpPixelFetcher">GimpPixelFetcher</a> *pf,
                                                          <a
@@ -292,7 +292,7 @@ Set a pixel in the pixel region.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pixel_fetcher_destroy ()">
 <a name="gimp-pixel-fetcher-destroy"></a><h3>gimp_pixel_fetcher_destroy ()</h3>
 <pre class="programlisting">void                gimp_pixel_fetcher_destroy          (<a class="link" href="libgimp-gimppixelfetcher.html#GimpPixelFetcher" title="GimpPixelFetcher">GimpPixelFetcher</a> *pf);</pre>
 <p>

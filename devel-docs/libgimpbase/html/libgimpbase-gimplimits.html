@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimplimits</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Base Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Base Library Reference Manual">
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpversion.html" title="gimpversion">
 <link rel="next" href="libgimpbase-gimpparam.html" title="gimpparam">
@@ -32,7 +32,7 @@
                 <a href="#libgimpbase-gimplimits.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimplimits">
 <a name="libgimpbase-gimplimits"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -41,7 +41,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpbase-gimplimits.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 #define             <a class="link" href="libgimpbase-gimplimits.html#GIMP-MIN-IMAGE-SIZE--CAPS" title="GIMP_MIN_IMAGE_SIZE">GIMP_MIN_IMAGE_SIZE</a>
@@ -51,15 +51,15 @@
 #define             <a class="link" href="libgimpbase-gimplimits.html#GIMP-MAX-MEMSIZE--CAPS" title="GIMP_MAX_MEMSIZE">GIMP_MAX_MEMSIZE</a>
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpbase-gimplimits.description"></a><h2>Description</h2>
 <p>
 Boundaries of some GIMP data types and some global constants.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpbase-gimplimits.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_MIN_IMAGE_SIZE">
 <a name="GIMP-MIN-IMAGE-SIZE--CAPS"></a><h3>GIMP_MIN_IMAGE_SIZE</h3>
 <pre class="programlisting">#define GIMP_MIN_IMAGE_SIZE  1
 </pre>
@@ -68,7 +68,7 @@ The minimum width and height of a GIMP image in pixels.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_MAX_IMAGE_SIZE">
 <a name="GIMP-MAX-IMAGE-SIZE--CAPS"></a><h3>GIMP_MAX_IMAGE_SIZE</h3>
 <pre class="programlisting">#define GIMP_MAX_IMAGE_SIZE  262144    /*  2^18  */
 </pre>
@@ -79,7 +79,7 @@ sizes is needed; for example to give a spin button an upper limit.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_MIN_RESOLUTION">
 <a name="GIMP-MIN-RESOLUTION--CAPS"></a><h3>GIMP_MIN_RESOLUTION</h3>
 <pre class="programlisting">#define GIMP_MIN_RESOLUTION  5e-3      /*  shouldn't display as 0.000  */
 </pre>
@@ -91,7 +91,7 @@ this value.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_MAX_RESOLUTION">
 <a name="GIMP-MAX-RESOLUTION--CAPS"></a><h3>GIMP_MAX_RESOLUTION</h3>
 <pre class="programlisting">#define GIMP_MAX_RESOLUTION  65536.0
 </pre>
@@ -103,7 +103,7 @@ this value.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GIMP_MAX_MEMSIZE">
 <a name="GIMP-MAX-MEMSIZE--CAPS"></a><h3>GIMP_MAX_MEMSIZE</h3>
 <pre class="programlisting">#define GIMP_MAX_MEMSIZE     ((guint64) 1 &lt;&lt; 42) /*  4 terabyte;
 </pre>

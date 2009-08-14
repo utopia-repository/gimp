@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>GimpMemsizeEntry</refname>
 <refpurpose>A composite widget that allows to enter a memory size.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="GimpMemsizeEntry.synopsis" role="synopsis">
@@ -20,7 +19,7 @@
 
 <synopsis>
                     <link linkend="GimpMemsizeEntry-struct">GimpMemsizeEntry</link>;
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-memsize-entry-new">gimp_memsize_entry_new</link>              (<link linkend="guint64">guint64</link> value,
+<link linkend="GtkWidget">GtkWidget</link> *         <link linkend="gimp-memsize-entry-new">gimp_memsize_entry_new</link>              (<link linkend="guint64">guint64</link> value,
                                                          <link linkend="guint64">guint64</link> lower,
                                                          <link linkend="guint64">guint64</link> upper);
 <link linkend="void">void</link>                <link linkend="gimp-memsize-entry-set-value">gimp_memsize_entry_set_value</link>        (<link linkend="GimpMemsizeEntry">GimpMemsizeEntry</link> *entry,
@@ -41,7 +40,6 @@
                                  +----<link linkend="GtkHBox">GtkHBox</link>
                                        +----GimpMemsizeEntry
 </synopsis>
-
 </refsect1>
 
 
@@ -50,8 +48,7 @@
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpMemsizeEntry implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
-
+ <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkOrientable">GtkOrientable</link>.</para>
 </refsect1>
 
 
@@ -77,62 +74,59 @@ Kilobytes, Megabytes and Gigabytes. Used in the GIMP preferences dialog.
 <title role="details.title">Details</title>
 <refsect2 id="GimpMemsizeEntry-struct" role="struct">
 <title>GimpMemsizeEntry</title>
-<indexterm zone="GimpMemsizeEntry-struct"><primary>GimpMemsizeEntry</primary></indexterm><programlisting>typedef struct _GimpMemsizeEntry GimpMemsizeEntry;</programlisting>
+<indexterm zone="GimpMemsizeEntry-struct"><primary sortas="GimpMemsizeEntry">GimpMemsizeEntry</primary></indexterm><programlisting>typedef struct _GimpMemsizeEntry GimpMemsizeEntry;</programlisting>
 <para>
 The <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link> struct is considered private.
 </para></refsect2>
 <refsect2 id="gimp-memsize-entry-new" role="function">
 <title>gimp_memsize_entry_new ()</title>
-<indexterm zone="gimp-memsize-entry-new"><primary>gimp_memsize_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_memsize_entry_new              (<link linkend="guint64">guint64</link> value,
+<indexterm zone="gimp-memsize-entry-new"><primary sortas="gimp_memsize_entry_new">gimp_memsize_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link> *         gimp_memsize_entry_new              (<link linkend="guint64">guint64</link> value,
                                                          <link linkend="guint64">guint64</link> lower,
                                                          <link linkend="guint64">guint64</link> upper);</programlisting>
 <para>
 Creates a new <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link> which is a <link linkend="GtkHBox"><type>GtkHBox</type></link> with a <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link>
 and a <link linkend="GtkOptionMenu"><type>GtkOptionMenu</type></link> all setup to allow the user to enter memory sizes.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> the initial value (in Bytes)
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>lower</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>lower</parameter>&#160;:</term>
 <listitem><simpara> the lower limit for the value (in Bytes)
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>upper</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>upper</parameter>&#160;:</term>
 <listitem><simpara> the upper limit for the value (in Bytes)
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Pointer to the new <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Pointer to the new <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-memsize-entry-set-value" role="function">
 <title>gimp_memsize_entry_set_value ()</title>
-<indexterm zone="gimp-memsize-entry-set-value"><primary>gimp_memsize_entry_set_value</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_memsize_entry_set_value        (<link linkend="GimpMemsizeEntry">GimpMemsizeEntry</link> *entry,
+<indexterm zone="gimp-memsize-entry-set-value"><primary sortas="gimp_memsize_entry_set_value">gimp_memsize_entry_set_value</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_memsize_entry_set_value        (<link linkend="GimpMemsizeEntry">GimpMemsizeEntry</link> *entry,
                                                          <link linkend="guint64">guint64</link> value);</programlisting>
 <para>
 Sets the <parameter>entry</parameter>'s value. Please note that the <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link> rounds
 the value to full Kilobytes.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>entry</parameter>&#160;:</term>
 <listitem><simpara> a <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
 <listitem><simpara> the new value (in Bytes)
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-memsize-entry-get-value" role="function">
 <title>gimp_memsize_entry_get_value ()</title>
-<indexterm zone="gimp-memsize-entry-get-value"><primary>gimp_memsize_entry_get_value</primary></indexterm><programlisting><link linkend="guint64">guint64</link>             gimp_memsize_entry_get_value        (<link linkend="GimpMemsizeEntry">GimpMemsizeEntry</link> *entry);</programlisting>
+<indexterm zone="gimp-memsize-entry-get-value"><primary sortas="gimp_memsize_entry_get_value">gimp_memsize_entry_get_value</primary></indexterm><programlisting><link linkend="guint64">guint64</link>             gimp_memsize_entry_get_value        (<link linkend="GimpMemsizeEntry">GimpMemsizeEntry</link> *entry);</programlisting>
 <para>
 Retrieves the current value from a <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>entry</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>entry</parameter>&#160;:</term>
 <listitem><simpara> a <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the current value of <parameter>entry</parameter> (in Bytes).
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the current value of <parameter>entry</parameter> (in Bytes).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
@@ -140,17 +134,15 @@ Retrieves the current value from a <link linkend="GimpMemsizeEntry"><type>GimpMe
 
 <refsect1 id="GimpMemsizeEntry.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2 id="GimpMemsizeEntry-value-changed"><title>The <literal>&quot;value-changed&quot;</literal> signal</title>
-<indexterm zone="GimpMemsizeEntry-value-changed"><primary>GimpMemsizeEntry::value-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpMemsizeEntry">GimpMemsizeEntry</link> *gimpmemsizeentry,
+<refsect2 id="GimpMemsizeEntry-value-changed" role="signal"><title>The <literal>&quot;value-changed&quot;</literal> signal</title>
+<indexterm zone="GimpMemsizeEntry-value-changed"><primary sortas="GimpMemsizeEntry::value-changed">GimpMemsizeEntry::value-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpMemsizeEntry">GimpMemsizeEntry</link> *gimpmemsizeentry,
                                                         <link linkend="gpointer">gpointer</link>          user_data)             : Run First</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>gimpmemsizeentry</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>gimpmemsizeentry</parameter>&#160;:</term>
 <listitem><simpara>the object which received the signal.
-
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>user_data</parameter>&#160;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2>
 </refsect1>

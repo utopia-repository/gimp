@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpedit</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
 <link rel="next" href="libgimp-gimpfileops.html" title="gimpfileops">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpedit.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpedit">
 <a name="libgimp-gimpedit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpedit.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
@@ -214,15 +214,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
 >gint32</a> vectors_ID);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpedit.description"></a><h2>Description</h2>
 <p>
 Edit menu functions (cut, copy, paste, clear, etc.)
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpedit.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_cut ()">
 <a name="gimp-edit-cut"></a><h3>gimp_edit_cut ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -260,7 +260,7 @@ there is nothing to copy from.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_copy ()">
 <a name="gimp-edit-copy"></a><h3>gimp_edit_copy ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -298,7 +298,7 @@ nothing to copy from.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_copy_visible ()">
 <a name="gimp-edit-copy-visible"></a><h3>gimp_edit_copy_visible ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -336,7 +336,7 @@ buffer.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_paste ()">
 <a name="gimp-edit-paste"></a><h3>gimp_edit_paste ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -389,7 +389,7 @@ not needed.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_paste_as_new ()">
 <a name="gimp-edit-paste-as-new"></a><h3>gimp_edit_paste_as_new ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -416,7 +416,7 @@ procedure returns the new image or -1 if the edit buffer was empty.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_named_cut ()">
 <a name="gimp-edit-named-cut"></a><h3>gimp_edit_named_cut ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -460,7 +460,7 @@ operations.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_named_copy ()">
 <a name="gimp-edit-named-copy"></a><h3>gimp_edit_named_copy ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -504,7 +504,7 @@ operations.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_named_copy_visible ()">
 <a name="gimp-edit-named-copy-visible"></a><h3>gimp_edit_named_copy_visible ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -548,7 +548,7 @@ cut operations.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_named_paste ()">
 <a name="gimp-edit-named-paste"></a><h3>gimp_edit_named_paste ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -598,7 +598,7 @@ buffer instead of the global buffer.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_named_paste_as_new ()">
 <a name="gimp-edit-named-paste-as-new"></a><h3>gimp_edit_named_paste_as_new ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
@@ -632,7 +632,7 @@ named buffer instead of the global buffer.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_clear ()">
 <a name="gimp-edit-clear"></a><h3>gimp_edit_clear ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -667,7 +667,7 @@ a selection if there is a selection active.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_fill ()">
 <a name="gimp-edit-fill"></a><h3>gimp_edit_fill ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -710,7 +710,7 @@ use <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill" title="g
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_bucket_fill ()">
 <a name="gimp-edit-bucket-fill"></a><h3>gimp_edit_bucket_fill ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -807,7 +807,7 @@ relative to the drawable's origin.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_blend ()">
 <a name="gimp-edit-blend"></a><h3>gimp_edit_blend ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -960,7 +960,7 @@ each gradient type.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_stroke ()">
 <a name="gimp-edit-stroke"></a><h3>gimp_edit_stroke ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -994,7 +994,7 @@ selection.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_edit_stroke_vectors ()">
 <a name="gimp-edit-stroke-vectors"></a><h3>gimp_edit_stroke_vectors ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

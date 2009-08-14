@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpWidgets</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpPropWidgets.html" title="GimpPropWidgets">
 <link rel="next" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -34,11 +34,13 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-deprecated.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpwidgets-GimpWidgets.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpwidgets-GimpWidgets.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpwidgets-GimpWidgets.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpwidgets-GimpWidgets.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpWidgets">
 <a name="libgimpwidgets-GimpWidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -48,12 +50,12 @@ helper functions.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpwidgets-GimpWidgets.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new" title="gimp_radio_group_new ()">gimp_radio_group_new</a>                (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new" title="gimp_radio_group_new ()">gimp_radio_group_new</a>                (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> in_frame,
                                                          const <a
@@ -61,8 +63,8 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *frame_title,
                                                          ...);
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2" title="gimp_radio_group_new2 ()">gimp_radio_group_new2</a>               (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2" title="gimp_radio_group_new2 ()">gimp_radio_group_new2</a>               (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> in_frame,
                                                          const <a
@@ -79,14 +81,14 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 >gpointer</a> initial,
                                                          ...);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active" title="gimp_radio_group_set_active ()">gimp_radio_group_set_active</a>         (<a
-href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkRadioButton.html"
 >GtkRadioButton</a> *radio_button,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> item_data);
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-new" title="gimp_int_radio_group_new ()">gimp_int_radio_group_new</a>            (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-new" title="gimp_int_radio_group_new ()">gimp_int_radio_group_new</a>            (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> in_frame,
                                                          const <a
@@ -103,15 +105,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> initial,
                                                          ...);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-int-radio-group-set-active" title="gimp_int_radio_group_set_active ()">gimp_int_radio_group_set_active</a>     (<a
-href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkRadioButton.html"
 >GtkRadioButton</a> *radio_button,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> item_data);
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-spin-button-new" title="gimp_spin_button_new ()">gimp_spin_button_new</a>                (<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-spin-button-new" title="gimp_spin_button_new ()">gimp_spin_button_new</a>                (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a> **adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -137,15 +139,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 >guint</a> digits);
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-LABEL:CAPS" title="GIMP_SCALE_ENTRY_LABEL()">GIMP_SCALE_ENTRY_LABEL</a>              (adj)
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE:CAPS" title="GIMP_SCALE_ENTRY_SCALE()">GIMP_SCALE_ENTRY_SCALE</a>              (adj)
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE-ADJ:CAPS" title="GIMP_SCALE_ENTRY_SCALE_ADJ()">GIMP_SCALE_ENTRY_SCALE_ADJ</a>          (adj)
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON:CAPS" title="GIMP_SCALE_ENTRY_SPINBUTTON()">GIMP_SCALE_ENTRY_SPINBUTTON</a>         (adj)
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON-ADJ:CAPS" title="GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()">GIMP_SCALE_ENTRY_SPINBUTTON_ADJ</a>     (adj)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-LABEL--CAPS" title="GIMP_SCALE_ENTRY_LABEL()">GIMP_SCALE_ENTRY_LABEL</a>              (adj)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE--CAPS" title="GIMP_SCALE_ENTRY_SCALE()">GIMP_SCALE_ENTRY_SCALE</a>              (adj)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SCALE-ADJ--CAPS" title="GIMP_SCALE_ENTRY_SCALE_ADJ()">GIMP_SCALE_ENTRY_SCALE_ADJ</a>          (adj)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON--CAPS" title="GIMP_SCALE_ENTRY_SPINBUTTON()">GIMP_SCALE_ENTRY_SPINBUTTON</a>         (adj)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-SCALE-ENTRY-SPINBUTTON-ADJ--CAPS" title="GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()">GIMP_SCALE_ENTRY_SPINBUTTON_ADJ</a>     (adj)
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()">gimp_scale_entry_new</a>                (<a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
+>GtkObject</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()">gimp_scale_entry_new</a>                (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 >GtkTable</a> *table,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -196,13 +198,13 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *help_id);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-set-sensitive" title="gimp_scale_entry_set_sensitive ()">gimp_scale_entry_set_sensitive</a>      (<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sensitive);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-set-logarithmic" title="gimp_scale_entry_set_logarithmic ()">gimp_scale_entry_set_logarithmic</a>    (<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -210,12 +212,12 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-get-logarithmic" title="gimp_scale_entry_get_logarithmic ()">gimp_scale_entry_get_logarithmic</a>    (<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a> *adjustment);
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-color-scale-entry-new" title="gimp_color_scale_entry_new ()">gimp_color_scale_entry_new</a>          (<a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
+>GtkObject</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-color-scale-entry-new" title="gimp_color_scale_entry_new ()">gimp_color_scale_entry_new</a>          (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 >GtkTable</a> *table,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -256,19 +258,21 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *help_id);
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON:CAPS" title="GIMP_RANDOM_SEED_SPINBUTTON()">GIMP_RANDOM_SEED_SPINBUTTON</a>         (hbox)
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON-ADJ:CAPS" title="GIMP_RANDOM_SEED_SPINBUTTON_ADJ()">GIMP_RANDOM_SEED_SPINBUTTON_ADJ</a>     (hbox)
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-TOGGLE:CAPS" title="GIMP_RANDOM_SEED_TOGGLE()">GIMP_RANDOM_SEED_TOGGLE</a>             (hbox)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON--CAPS" title="GIMP_RANDOM_SEED_SPINBUTTON()">GIMP_RANDOM_SEED_SPINBUTTON</a>         (hbox)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-SPINBUTTON-ADJ--CAPS" title="GIMP_RANDOM_SEED_SPINBUTTON_ADJ()">GIMP_RANDOM_SEED_SPINBUTTON_ADJ</a>     (hbox)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-RANDOM-SEED-TOGGLE--CAPS" title="GIMP_RANDOM_SEED_TOGGLE()">GIMP_RANDOM_SEED_TOGGLE</a>             (hbox)
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new" title="gimp_random_seed_new ()">gimp_random_seed_new</a>                (guint32 *seed,
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new" title="gimp_random_seed_new ()">gimp_random_seed_new</a>                (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"
+>guint32</a> *seed,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> *random_seed);
-#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-COORDINATES-CHAINBUTTON:CAPS" title="GIMP_COORDINATES_CHAINBUTTON()">GIMP_COORDINATES_CHAINBUTTON</a>        (sizeentry)
+#define             <a class="link" href="libgimpwidgets-GimpWidgets.html#GIMP-COORDINATES-CHAINBUTTON--CAPS" title="GIMP_COORDINATES_CHAINBUTTON()">GIMP_COORDINATES_CHAINBUTTON</a>        (sizeentry)
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new" title="gimp_coordinates_new ()">gimp_coordinates_new</a>                (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new" title="gimp_coordinates_new ()">gimp_coordinates_new</a>                (<a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
                                                          const <a
@@ -333,62 +337,62 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 >gdouble</a> ysize_100);
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-pixmap-button-new" title="gimp_pixmap_button_new ()">gimp_pixmap_button_new</a>              (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-pixmap-button-new" title="gimp_pixmap_button_new ()">gimp_pixmap_button_new</a>              (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> **xpm_data,
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *text);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update" title="gimp_toggle_button_sensitive_update ()">gimp_toggle_button_sensitive_update</a> (<a
-href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkToggleButton.html"
 >GtkToggleButton</a> *toggle_button);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-update" title="gimp_toggle_button_update ()">gimp_toggle_button_update</a>           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-radio-button-update" title="gimp_radio_button_update ()">gimp_radio_button_update</a>            (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-int-adjustment-update" title="gimp_int_adjustment_update ()">gimp_int_adjustment_update</a>          (<a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 >GtkAdjustment</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-uint-adjustment-update" title="gimp_uint_adjustment_update ()">gimp_uint_adjustment_update</a>         (<a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 >GtkAdjustment</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-float-adjustment-update" title="gimp_float_adjustment_update ()">gimp_float_adjustment_update</a>        (<a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 >GtkAdjustment</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-double-adjustment-update" title="gimp_double_adjustment_update ()">gimp_double_adjustment_update</a>       (<a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 >GtkAdjustment</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-unit-menu-update" title="gimp_unit_menu_update ()">gimp_unit_menu_update</a>               (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-table-attach-aligned" title="gimp_table_attach_aligned ()">gimp_table_attach_aligned</a>           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-table-attach-aligned" title="gimp_table_attach_aligned ()">gimp_table_attach_aligned</a>           (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 >GtkTable</a> *table,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -406,7 +410,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"
 >gfloat</a> yalign,
                                                          <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -415,24 +419,23 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> left_align);
 void                <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-label-set-attributes" title="gimp_label_set_attributes ()">gimp_label_set_attributes</a>           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 >GtkLabel</a> *label,
                                                          ...);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpwidgets-GimpWidgets.description"></a><h2>Description</h2>
 <p>
-
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpwidgets-GimpWidgets.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_radio_group_new ()">
 <a name="gimp-radio-group-new"></a><h3>gimp_radio_group_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_radio_group_new                (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_radio_group_new                (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> in_frame,
                                                          const <a
@@ -442,10 +445,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <p>
 Convenience function to create a group of radio buttons embedded into
 a <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -453,30 +455,30 @@ href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in_frame</code></em> :</span></p></td>
 <td>    <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if you want a <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> around the radio button group.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame_title</code></em> :</span></p></td>
 <td> The title of the Frame or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> if you don't want a title.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
 <td>         A <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>-terminated <em class="parameter"><code>va_list</code></em> describing the radio buttons.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
 </td>
 </tr>
@@ -484,11 +486,11 @@ href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_radio_group_new2 ()">
 <a name="gimp-radio-group-new2"></a><h3>gimp_radio_group_new2 ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_radio_group_new2               (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_radio_group_new2               (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> in_frame,
                                                          const <a
@@ -507,10 +509,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>
 Convenience function to create a group of radio buttons embedded into
 a <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -518,9 +519,9 @@ href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in_frame</code></em> :</span></p></td>
 <td>              <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if you want a <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> around the
                         radio button group.
 </td>
@@ -528,7 +529,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame_title</code></em> :</span></p></td>
 <td>           The title of the Frame or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> if you don't want
                         a title.
 </td>
@@ -555,7 +556,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-sig
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
 <td>                   A <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>-terminated <em class="parameter"><code>va_list</code></em> describing
                         the radio buttons.
 </td>
@@ -563,7 +564,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
 </td>
 </tr>
@@ -571,21 +572,20 @@ href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_radio_group_set_active ()">
 <a name="gimp-radio-group-set-active"></a><h3>gimp_radio_group_set_active ()</h3>
 <pre class="programlisting">void                gimp_radio_group_set_active         (<a
-href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkRadioButton.html"
 >GtkRadioButton</a> *radio_button,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> item_data);</pre>
 <p>
 Calls <a
-href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html#gtk-toggle-button-set-active"
+href="http://library.gnome.org/devel/gtk/unstable/GtkToggleButton.html#gtk-toggle-button-set-active"
 ><code class="function">gtk_toggle_button_set_active()</code></a> with the radio button that was
 created with a matching <em class="parameter"><code>item_data</code></em>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -593,7 +593,7 @@ created with a matching <em class="parameter"><code>item_data</code></em>.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>radio_button</code></em> :</span></p></td>
 <td> Pointer to a <a
-href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkRadioButton.html"
 ><span class="type">GtkRadioButton</span></a>.
 </td>
 </tr>
@@ -606,11 +606,11 @@ href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_int_radio_group_new ()">
 <a name="gimp-int-radio-group-new"></a><h3>gimp_int_radio_group_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_int_radio_group_new            (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_int_radio_group_new            (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> in_frame,
                                                          const <a
@@ -629,13 +629,12 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 <p>
 Convenience function to create a group of radio buttons embedded into
 a <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span>. This function does the same thing as
 <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2" title="gimp_radio_group_new2 ()"><code class="function">gimp_radio_group_new2()</code></a>, but it takes integers as <em class="parameter"><code>item_data</code></em> instead of
 pointers, since that is a very common case (mapping an enum to a radio
 group).</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -643,9 +642,9 @@ group).</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>in_frame</code></em> :</span></p></td>
 <td>              <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if you want a <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> around the
                         radio button group.
 </td>
@@ -653,7 +652,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>frame_title</code></em> :</span></p></td>
 <td>           The title of the Frame or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> if you don't want
                         a title.
 </td>
@@ -680,7 +679,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Signals.html#g-sig
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
 <td>                   A <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a>-terminated <em class="parameter"><code>va_list</code></em> describing
                         the radio buttons.
 </td>
@@ -688,7 +687,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NUL
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkFrame.html"
 ><span class="type">GtkFrame</span></a> or <span class="type">GtkVbox</span> (depending on <em class="parameter"><code>in_frame</code></em>).
 </td>
 </tr>
@@ -696,23 +695,22 @@ href="/usr/share/gtk-doc/html/gtk/GtkFrame.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_int_radio_group_set_active ()">
 <a name="gimp-int-radio-group-set-active"></a><h3>gimp_int_radio_group_set_active ()</h3>
 <pre class="programlisting">void                gimp_int_radio_group_set_active     (<a
-href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkRadioButton.html"
 >GtkRadioButton</a> *radio_button,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> item_data);</pre>
 <p>
 Calls <a
-href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html#gtk-toggle-button-set-active"
+href="http://library.gnome.org/devel/gtk/unstable/GtkToggleButton.html#gtk-toggle-button-set-active"
 ><code class="function">gtk_toggle_button_set_active()</code></a> with the radio button that was created
 with a matching <em class="parameter"><code>item_data</code></em>. This function does the same thing as
 <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active" title="gimp_radio_group_set_active ()"><code class="function">gimp_radio_group_set_active()</code></a>, but takes integers as <em class="parameter"><code>item_data</code></em> instead
 of pointers.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -720,7 +718,7 @@ of pointers.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>radio_button</code></em> :</span></p></td>
 <td> Pointer to a <a
-href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkRadioButton.html"
 ><span class="type">GtkRadioButton</span></a>.
 </td>
 </tr>
@@ -733,12 +731,12 @@ href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_spin_button_new ()">
 <a name="gimp-spin-button-new"></a><h3>gimp_spin_button_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_spin_button_new                (<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_spin_button_new                (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a> **adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -766,17 +764,16 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 >guint</a> digits);</pre>
 <p>
 This function is a shortcut for <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html#gtk-adjustment-new"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html#gtk-adjustment-new"
 ><code class="function">gtk_adjustment_new()</code></a> and a
 subsequent <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html#gtk-spin-button-new"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html#gtk-spin-button-new"
 ><code class="function">gtk_spin_button_new()</code></a>. It also calls
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html#gtk-spin-button-set-numeric"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html#gtk-spin-button-set-numeric"
 ><code class="function">gtk_spin_button_set_numeric()</code></a> so that non-numeric text cannot be
 entered.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -784,7 +781,7 @@ entered.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>adjustment</code></em> :</span></p></td>
 <td>     Returns the spinbutton's <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
@@ -831,7 +828,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A <span class="type">GtkSpinbutton</span> and it's <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
@@ -839,12 +836,12 @@ href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-SCALE-ENTRY-LABEL:CAPS"></a><h3>GIMP_SCALE_ENTRY_LABEL()</h3>
+<div class="refsect2" title="GIMP_SCALE_ENTRY_LABEL()">
+<a name="GIMP-SCALE-ENTRY-LABEL--CAPS"></a><h3>GIMP_SCALE_ENTRY_LABEL()</h3>
 <pre class="programlisting">#define             GIMP_SCALE_ENTRY_LABEL(adj)</pre>
 <p>
 Returns the scale_entry's <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -852,21 +849,19 @@ href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>adj</code></em> :</span></p></td>
 <td>The <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a>.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-SCALE-ENTRY-SCALE:CAPS"></a><h3>GIMP_SCALE_ENTRY_SCALE()</h3>
+<div class="refsect2" title="GIMP_SCALE_ENTRY_SCALE()">
+<a name="GIMP-SCALE-ENTRY-SCALE--CAPS"></a><h3>GIMP_SCALE_ENTRY_SCALE()</h3>
 <pre class="programlisting">#define             GIMP_SCALE_ENTRY_SCALE(adj)</pre>
 <p>
 Returns the scale_entry's <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -874,23 +869,21 @@ href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>adj</code></em> :</span></p></td>
 <td>The <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a>.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-SCALE-ENTRY-SCALE-ADJ:CAPS"></a><h3>GIMP_SCALE_ENTRY_SCALE_ADJ()</h3>
+<div class="refsect2" title="GIMP_SCALE_ENTRY_SCALE_ADJ()">
+<a name="GIMP-SCALE-ENTRY-SCALE-ADJ--CAPS"></a><h3>GIMP_SCALE_ENTRY_SCALE_ADJ()</h3>
 <pre class="programlisting">#define             GIMP_SCALE_ENTRY_SCALE_ADJ(adj)</pre>
 <p>
 Returns the <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> of the scale_entry's <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -898,21 +891,19 @@ href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>adj</code></em> :</span></p></td>
 <td>The <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a>.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-SCALE-ENTRY-SPINBUTTON:CAPS"></a><h3>GIMP_SCALE_ENTRY_SPINBUTTON()</h3>
+<div class="refsect2" title="GIMP_SCALE_ENTRY_SPINBUTTON()">
+<a name="GIMP-SCALE-ENTRY-SPINBUTTON--CAPS"></a><h3>GIMP_SCALE_ENTRY_SPINBUTTON()</h3>
 <pre class="programlisting">#define             GIMP_SCALE_ENTRY_SPINBUTTON(adj)</pre>
 <p>
 Returns the scale_entry's <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -920,23 +911,21 @@ href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>adj</code></em> :</span></p></td>
 <td>The <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a>.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-SCALE-ENTRY-SPINBUTTON-ADJ:CAPS"></a><h3>GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()</h3>
+<div class="refsect2" title="GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()">
+<a name="GIMP-SCALE-ENTRY-SPINBUTTON-ADJ--CAPS"></a><h3>GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()</h3>
 <pre class="programlisting">#define             GIMP_SCALE_ENTRY_SPINBUTTON_ADJ(adj)</pre>
 <p>
 Returns the <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> of the scale_entry's <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -944,21 +933,19 @@ href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>adj</code></em> :</span></p></td>
 <td>The <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a>.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scale_entry_new ()">
 <a name="gimp-scale-entry-new"></a><h3>gimp_scale_entry_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>*          gimp_scale_entry_new                (<a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
+>GtkObject</a> *         gimp_scale_entry_new                (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 >GtkTable</a> *table,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1010,17 +997,16 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *help_id);</pre>
 <p>
 This function creates a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>, a <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a> and a <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a> and
 attaches them to a 3-column <a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 ><span class="type">GtkTable</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1028,7 +1014,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>table</code></em> :</span></p></td>
 <td>               The <a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 ><span class="type">GtkTable</span></a> the widgets will be attached to.
 </td>
 </tr>
@@ -1045,24 +1031,24 @@ href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>text</code></em> :</span></p></td>
 <td>                The text for the <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a> which will appear
                       left of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scale_width</code></em> :</span></p></td>
 <td>         The minimum horizontal size of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>spinbutton_width</code></em> :</span></p></td>
 <td>    The minimum horizontal size of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>.
 </td>
 </tr>
@@ -1099,12 +1085,12 @@ href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>constrain</code></em> :</span></p></td>
 <td>           <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the range of possible values of the
                       <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a> should be the same as of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
@@ -1112,7 +1098,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
 <td><p><span class="term"><em class="parameter"><code>unconstrained_lower</code></em> :</span></p></td>
 <td> The spinbutton's lower boundary
                       if <em class="parameter"><code>constrain</code></em> == <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a>.
 </td>
 </tr>
@@ -1120,7 +1106,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FAL
 <td><p><span class="term"><em class="parameter"><code>unconstrained_upper</code></em> :</span></p></td>
 <td> The spinbutton's upper boundary
                       if <em class="parameter"><code>constrain</code></em> == <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a>.
 </td>
 </tr>
@@ -1137,9 +1123,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FAL
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>'s <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
@@ -1147,23 +1133,22 @@ href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scale_entry_set_sensitive ()">
 <a name="gimp-scale-entry-set-sensitive"></a><h3>gimp_scale_entry_set_sensitive ()</h3>
 <pre class="programlisting">void                gimp_scale_entry_set_sensitive      (<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> sensitive);</pre>
 <p>
 Sets the sensitivity of the scale_entry's <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>, <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a> and
 <span class="type">GtkSpinbutton</span>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1171,7 +1156,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>adjustment</code></em> :</span></p></td>
 <td> a <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a>
 </td>
 </tr>
@@ -1179,7 +1164,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
 <td><p><span class="term"><em class="parameter"><code>sensitive</code></em> :</span></p></td>
 <td>  a boolean value with the same semantics as the <em class="parameter"><code>sensitive</code></em>
              parameter of <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html#gtk-widget-set-sensitive"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html#gtk-widget-set-sensitive"
 ><code class="function">gtk_widget_set_sensitive()</code></a>
 </td>
 </tr>
@@ -1187,10 +1172,10 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html#gtk-widget-set-sensitive"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scale_entry_set_logarithmic ()">
 <a name="gimp-scale-entry-set-logarithmic"></a><h3>gimp_scale_entry_set_logarithmic ()</h3>
 <pre class="programlisting">void                gimp_scale_entry_set_logarithmic    (<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -1201,7 +1186,6 @@ or logharithmic fashion. Useful when an entry has to attend large
 ranges, but smaller selections on that range require a finer
 adjustment.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1209,7 +1193,7 @@ adjustment.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>adjustment</code></em> :</span></p></td>
 <td>  a  <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> as returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a>
 </td>
 </tr>
@@ -1221,21 +1205,19 @@ href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_scale_entry_get_logarithmic ()">
 <a name="gimp-scale-entry-get-logarithmic"></a><h3>gimp_scale_entry_get_logarithmic ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_scale_entry_get_logarithmic    (<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
 >GtkObject</a> *adjustment);</pre>
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1243,33 +1225,32 @@ href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>adjustment</code></em> :</span></p></td>
 <td> a  <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> as returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the the entry's scale widget will behave in
               logharithmic fashion, <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a> for linear behaviour.
 
 </td>
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_color_scale_entry_new ()">
 <a name="gimp-color-scale-entry-new"></a><h3>gimp_color_scale_entry_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>*          gimp_color_scale_entry_new          (<a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
+>GtkObject</a> *         gimp_color_scale_entry_new          (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 >GtkTable</a> *table,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -1312,15 +1293,14 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *help_id);</pre>
 <p>
 This function creates a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>, a <a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> and a
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a> and attaches them to a 3-column <a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 ><span class="type">GtkTable</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1328,7 +1308,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>table</code></em> :</span></p></td>
 <td>               The <a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 ><span class="type">GtkTable</span></a> the widgets will be attached to.
 </td>
 </tr>
@@ -1345,24 +1325,24 @@ href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>text</code></em> :</span></p></td>
 <td>                The text for the <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a> which will appear
                       left of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scale_width</code></em> :</span></p></td>
 <td>         The minimum horizontal size of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
 ><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>spinbutton_width</code></em> :</span></p></td>
 <td>    The minimum horizontal size of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>.
 </td>
 </tr>
@@ -1409,9 +1389,9 @@ href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>'s <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
@@ -1419,12 +1399,12 @@ href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-RANDOM-SEED-SPINBUTTON:CAPS"></a><h3>GIMP_RANDOM_SEED_SPINBUTTON()</h3>
+<div class="refsect2" title="GIMP_RANDOM_SEED_SPINBUTTON()">
+<a name="GIMP-RANDOM-SEED-SPINBUTTON--CAPS"></a><h3>GIMP_RANDOM_SEED_SPINBUTTON()</h3>
 <pre class="programlisting">#define             GIMP_RANDOM_SEED_SPINBUTTON(hbox)</pre>
 <p>
 Returns the random_seed's <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -1432,23 +1412,21 @@ href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>hbox</code></em> :</span></p></td>
 <td>The <a
-href="/usr/share/gtk-doc/html/gtk/GtkHBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHBox.html"
 ><span class="type">GtkHBox</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new" title="gimp_random_seed_new ()"><code class="function">gimp_random_seed_new()</code></a>.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-RANDOM-SEED-SPINBUTTON-ADJ:CAPS"></a><h3>GIMP_RANDOM_SEED_SPINBUTTON_ADJ()</h3>
+<div class="refsect2" title="GIMP_RANDOM_SEED_SPINBUTTON_ADJ()">
+<a name="GIMP-RANDOM-SEED-SPINBUTTON-ADJ--CAPS"></a><h3>GIMP_RANDOM_SEED_SPINBUTTON_ADJ()</h3>
 <pre class="programlisting">#define             GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)</pre>
 <p>
 Returns the <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a> of the random_seed's <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
@@ -1456,38 +1434,35 @@ href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>hbox</code></em> :</span></p></td>
 <td>The <a
-href="/usr/share/gtk-doc/html/gtk/GtkHBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHBox.html"
 ><span class="type">GtkHBox</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-random-seed-new" title="gimp_random_seed_new ()"><code class="function">gimp_random_seed_new()</code></a>.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-RANDOM-SEED-TOGGLE:CAPS"></a><h3>GIMP_RANDOM_SEED_TOGGLE()</h3>
+<div class="refsect2" title="GIMP_RANDOM_SEED_TOGGLE()">
+<a name="GIMP-RANDOM-SEED-TOGGLE--CAPS"></a><h3>GIMP_RANDOM_SEED_TOGGLE()</h3>
 <pre class="programlisting">#define             GIMP_RANDOM_SEED_TOGGLE(hbox)</pre>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>hbox</code></em> :</span></p></td>
 <td>
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_random_seed_new ()">
 <a name="gimp-random-seed-new"></a><h3>gimp_random_seed_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_random_seed_new                (guint32 *seed,
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_random_seed_new                (<a
+href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint32"
+>guint32</a> *seed,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
 >gboolean</a> *random_seed);</pre>
@@ -1495,7 +1470,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 Creates a widget that allows the user to control how the random number
 generator is initialized.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1514,12 +1488,12 @@ generator is initialized.</p>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkHBox.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkHBox.html"
 ><span class="type">GtkHBox</span></a> containing a <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a> for the seed and
          a <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkButton.html"
 ><span class="type">GtkButton</span></a> for setting a random seed.
 </td>
 </tr>
@@ -1527,8 +1501,8 @@ href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="GIMP-COORDINATES-CHAINBUTTON:CAPS"></a><h3>GIMP_COORDINATES_CHAINBUTTON()</h3>
+<div class="refsect2" title="GIMP_COORDINATES_CHAINBUTTON()">
+<a name="GIMP-COORDINATES-CHAINBUTTON--CAPS"></a><h3>GIMP_COORDINATES_CHAINBUTTON()</h3>
 <pre class="programlisting">#define             GIMP_COORDINATES_CHAINBUTTON(sizeentry)</pre>
 <p>
 Returns the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> which is attached to the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
@@ -1538,18 +1512,16 @@ Returns the <a class="link" href="GimpChainButton.html" title="GimpChainButton">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>sizeentry</code></em> :</span></p></td>
 <td>The <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> returned by <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-coordinates-new" title="gimp_coordinates_new ()"><code class="function">gimp_coordinates_new()</code></a>.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_coordinates_new ()">
 <a name="gimp-coordinates-new"></a><h3>gimp_coordinates_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_coordinates_new                (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_coordinates_new                (<a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a> unit,
                                                          const <a
@@ -1618,7 +1590,6 @@ Convenience function that creates a <a class="link" href="GimpSizeEntry.html" ti
 coordinates/sizes with a <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> attached to constrain either the
 two fields' values or the ratio between them.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1637,7 +1608,7 @@ two fields' values or the ratio between them.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>menu_show_pixels</code></em> :</span></p></td>
 <td>       <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> should contain an item
                          for GIMP_UNIT_PIXEL.
 </td>
@@ -1645,7 +1616,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRU
 <tr>
 <td><p><span class="term"><em class="parameter"><code>menu_show_percent</code></em> :</span></p></td>
 <td>      <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> should contain an item
                          for GIMP_UNIT_PERCENT.
 </td>
@@ -1654,7 +1625,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRU
 <td><p><span class="term"><em class="parameter"><code>spinbutton_width</code></em> :</span></p></td>
 <td>       The horizontal size of the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>'s
                           <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>'s.
 </td>
 </tr>
@@ -1666,7 +1637,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>chainbutton_active</code></em> :</span></p></td>
 <td>     <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the attached <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> should be
                          active.
 </td>
@@ -1674,10 +1645,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRU
 <tr>
 <td><p><span class="term"><em class="parameter"><code>chain_constrains_ratio</code></em> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the chainbutton should constrain the
                          fields' aspect ratio. If <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
 ><code class="literal">FALSE</code></a>, the values will
                          be constrained.
 </td>
@@ -1761,29 +1732,28 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FAL
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_pixmap_button_new ()">
 <a name="gimp-pixmap-button-new"></a><h3>gimp_pixmap_button_new ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_pixmap_button_new              (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_pixmap_button_new              (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> **xpm_data,
                                                          const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *text);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_pixmap_button_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
 Convenience function that creates a <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkButton.html"
 ><span class="type">GtkButton</span></a> with a <a class="link" href="GimpPixmap.html" title="GimpPixmap"><span class="type">GimpPixmap</span></a>
 and an optional <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1801,7 +1771,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The new <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkButton.html"
 ><span class="type">GtkButton</span></a>.
 </td>
 </tr>
@@ -1809,19 +1779,19 @@ href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_toggle_button_sensitive_update ()">
 <a name="gimp-toggle-button-sensitive-update"></a><h3>gimp_toggle_button_sensitive_update ()</h3>
 <pre class="programlisting">void                gimp_toggle_button_sensitive_update (<a
-href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkToggleButton.html"
 >GtkToggleButton</a> *toggle_button);</pre>
 <p>
 If you attached a pointer to a <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 ><span class="type">GtkWidget</span></a> with <a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-set-data"
 ><code class="function">g_object_set_data()</code></a> and
 the "set_sensitive" key to the <a
-href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkToggleButton.html"
 ><span class="type">GtkToggleButton</span></a>, the sensitive state of
 the attached widget will be set according to the toggle button's
 "active" state.
@@ -1835,14 +1805,13 @@ This function can also set the sensitive state according to the toggle
 button's inverse "active" state by attaching widgets with the
 "inverse_sensitive" key.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>toggle_button</code></em> :</span></p></td>
 <td> The <a
-href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkToggleButton.html"
 ><span class="type">GtkToggleButton</span></a> the "set_sensitive" and
                 "inverse_sensitive" lists are attached to.
 </td>
@@ -1850,10 +1819,10 @@ href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_toggle_button_update ()">
 <a name="gimp-toggle-button-update"></a><h3>gimp_toggle_button_update ()</h3>
 <pre class="programlisting">void                gimp_toggle_button_update           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -1861,7 +1830,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>
 Note that this function calls <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update" title="gimp_toggle_button_sensitive_update ()"><code class="function">gimp_toggle_button_sensitive_update()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1869,7 +1837,7 @@ Note that this function calls <a class="link" href="libgimpwidgets-GimpWidgets.h
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkToggleButton.html"
 ><span class="type">GtkToggleButton</span></a>.
 </td>
 </tr>
@@ -1879,7 +1847,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html"
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 ><span class="type">gint</span></a> variable which will store the value of
          <a
-href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html#gtk-toggle-button-get-active"
+href="http://library.gnome.org/devel/gtk/unstable/GtkToggleButton.html#gtk-toggle-button-get-active"
 ><code class="function">gtk_toggle_button_get_active()</code></a>.
 </td>
 </tr>
@@ -1887,10 +1855,10 @@ href="/usr/share/gtk-doc/html/gtk/GtkToggleButton.html#gtk-toggle-button-get-act
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_radio_button_update ()">
 <a name="gimp-radio-button-update"></a><h3>gimp_radio_button_update ()</h3>
 <pre class="programlisting">void                gimp_radio_button_update            (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -1898,7 +1866,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>
 Note that this function calls <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update" title="gimp_toggle_button_sensitive_update ()"><code class="function">gimp_toggle_button_sensitive_update()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1906,7 +1873,7 @@ Note that this function calls <a class="link" href="libgimpwidgets-GimpWidgets.h
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkRadioButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkRadioButton.html"
 ><span class="type">GtkRadioButton</span></a>.
 </td>
 </tr>
@@ -1922,25 +1889,24 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_int_adjustment_update ()">
 <a name="gimp-int-adjustment-update"></a><h3>gimp_int_adjustment_update ()</h3>
 <pre class="programlisting">void                gimp_int_adjustment_update          (<a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 >GtkAdjustment</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <p>
 Note that the <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>'s value (which is a <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 ><span class="type">gdouble</span></a>) will be
 rounded with <a
-href="../libgimpmath/libgimpmath-GimpMath.html#RINT:CAPS"
+href="../libgimpmath/libgimpmath-GimpMath.html#RINT--CAPS"
 ><code class="function">RINT()</code></a>.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1948,7 +1914,7 @@ href="../libgimpmath/libgimpmath-GimpMath.html#RINT:CAPS"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>adjustment</code></em> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
@@ -1964,17 +1930,17 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_uint_adjustment_update ()">
 <a name="gimp-uint-adjustment-update"></a><h3>gimp_uint_adjustment_update ()</h3>
 <pre class="programlisting">void                gimp_uint_adjustment_update         (<a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 >GtkAdjustment</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> data);</pre>
 <p>
 Note that the <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>'s value (which is a <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
 ><span class="type">gdouble</span></a>) will be rounded
@@ -1982,7 +1948,6 @@ with (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 ><span class="type">guint</span></a>) (value + 0.5).</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1990,7 +1955,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>adjustment</code></em> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
@@ -2006,10 +1971,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_float_adjustment_update ()">
 <a name="gimp-float-adjustment-update"></a><h3>gimp_float_adjustment_update ()</h3>
 <pre class="programlisting">void                gimp_float_adjustment_update        (<a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 >GtkAdjustment</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -2017,7 +1982,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2025,7 +1989,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <tr>
 <td><p><span class="term"><em class="parameter"><code>adjustment</code></em> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
@@ -2041,10 +2005,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_double_adjustment_update ()">
 <a name="gimp-double-adjustment-update"></a><h3>gimp_double_adjustment_update ()</h3>
 <pre class="programlisting">void                gimp_double_adjustment_update       (<a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 >GtkAdjustment</a> *adjustment,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -2052,7 +2016,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>
 </p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2060,7 +2023,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <tr>
 <td><p><span class="term"><em class="parameter"><code>adjustment</code></em> :</span></p></td>
 <td> A <a
-href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
 ><span class="type">GtkAdjustment</span></a>.
 </td>
 </tr>
@@ -2076,10 +2039,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_unit_menu_update ()">
 <a name="gimp-unit-menu-update"></a><h3>gimp_unit_menu_update ()</h3>
 <pre class="programlisting">void                gimp_unit_menu_update               (<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -2087,7 +2050,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p>
 This callback can set the number of decimal digits of an arbitrary number
 of <a
-href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
 ><span class="type">GtkSpinButton</span></a>'s. To use this functionality, attach the spinbuttons
 as list of data pointers attached with <a
 href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#g-object-set-data"
@@ -2098,7 +2061,6 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Ty
 See <a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-toggle-button-sensitive-update" title="gimp_toggle_button_sensitive_update ()"><code class="function">gimp_toggle_button_sensitive_update()</code></a> for a description of how
 to set up the list.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2120,12 +2082,12 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_table_attach_aligned ()">
 <a name="gimp-table-attach-aligned"></a><h3>gimp_table_attach_aligned ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_table_attach_aligned           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
+>GtkWidget</a> *         gimp_table_attach_aligned           (<a
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 >GtkTable</a> *table,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -2143,7 +2105,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gfloat"
 >gfloat</a> yalign,
                                                          <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 >GtkWidget</a> *widget,
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -2153,11 +2115,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 >gboolean</a> left_align);</pre>
 <p>
 Note that the <em class="parameter"><code>label_text</code></em> can be <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
 ><code class="literal">NULL</code></a> and that the widget will be
 attached starting at (<em class="parameter"><code>column</code></em> + 1) in this case, too.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2165,7 +2126,7 @@ attached starting at (<em class="parameter"><code>column</code></em> + 1) in thi
 <tr>
 <td><p><span class="term"><em class="parameter"><code>table</code></em> :</span></p></td>
 <td>      The <a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 ><span class="type">GtkTable</span></a> the widgets will be attached to.
 </td>
 </tr>
@@ -2182,7 +2143,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label_text</code></em> :</span></p></td>
 <td> The text for the <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a> which will be attached left of
              the widget.
 </td>
@@ -2190,21 +2151,21 @@ href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>xalign</code></em> :</span></p></td>
 <td>     The horizontal alignment of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>yalign</code></em> :</span></p></td>
 <td>     The vertival alignment of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
 <td>     The <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
 ><span class="type">GtkWidget</span></a> to attach right of the label.
 </td>
 </tr>
@@ -2216,14 +2177,14 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>left_align</code></em> :</span></p></td>
 <td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"
+href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
 ><code class="literal">TRUE</code></a> if the widget should be left-aligned.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The created <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>.
 </td>
 </tr>
@@ -2231,24 +2192,24 @@ href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_label_set_attributes ()">
 <a name="gimp-label-set-attributes"></a><h3>gimp_label_set_attributes ()</h3>
 <pre class="programlisting">void                gimp_label_set_attributes           (<a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 >GtkLabel</a> *label,
                                                          ...);</pre>
 <p>
 Sets Pango attributes on a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a> in a more convenient way than
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html#gtk-label-set-attributes"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html#gtk-label-set-attributes"
 ><code class="function">gtk_label_set_attributes()</code></a>.
 </p>
 <p>
 This function is useful if you want to change the font attributes
 of a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>. This is an alternative to using PangoMarkup which
 is slow to parse and akward to handle in an i18n-friendly way.
 </p>
@@ -2257,7 +2218,6 @@ The attributes are set on the complete label, from start to end. If
 you need to set attributes on part of the label, you will have to
 use the PangoAttributes API directly.</p>
 <p>
-
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -2265,7 +2225,7 @@ use the PangoAttributes API directly.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label</code></em> :</span></p></td>
 <td> a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>
 </td>
 </tr>
@@ -2276,13 +2236,12 @@ href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
-</p>
+<p class="since">Since GIMP 2.2</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

@@ -1,3 +1,56 @@
+2009-05-26  Manoj Kuamr Giri  <mgiri@redhat.com>
+
+	* or.po: Updated Oriya Translation.
+
+2009-05-25  Manoj Kuamr Giri  <mgiri@redhat.com>
+
+	* LINGUAS: Added or into the List.	
+	* or.po: Updated Oriya Translation.
+
+2009-04-13  Sweta Kothari  <swkothar@redhat.com>
+
+	* gu.po: Committed Gujarati Translation.
+
+2009-04-09  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* nb.po: Updated Norwegian bokmål translation from
+	Sigurd Gartmann <sigurdga at sigurdga no>
+
+2009-04-08  Sandeep Shedmake  <sshedmak@redhat.com>
+
+	* mr.po: Added Marathi Translations.
+	* LINGUAS: Added 'mr'.
+
+2009-03-31  Shankar Prasad  <svenkate@redhat.com>
+
+        * kn.po: Added Kannada(kn) translations.
+        * LINGUAS: Added kn to the list.
+
+2009-03-29  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
+
+	* de.po: Minor fixes in German translation.
+
+2009-03-24  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2009-03-22  Mișu Moldovan  <dumol@gnome.ro>
+
+	* ro.po: updated Romanian translation by Cristian Secară
+
+2009-03-20  Danishka Navin  <danishka@gmail.com>
+
+	* si.po: Added Sinhala (si)
+	* si.po: Added Sinhala translation by Danishka and Srishanu
+		
+2009-03-18  Mișu Moldovan  <dumol@gnome.ro>
+
+	* ro.po: updated Romanian translation by Cristian Secară
+
+2009-03-18  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: small fix italian translation.
+
 2009-03-16  Inaki Larranaga Murgoitio  <dooteo@euskalgnu.org>
 
 	* eu.po: Updated Basque translation.

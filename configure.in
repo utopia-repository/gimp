@@ -8,11 +8,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [6])
-m4_define([gimp_micro_version], [6])
+m4_define([gimp_micro_version], [7])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [6])
+m4_define([gimp_interface_age], [7])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -49,7 +49,7 @@ m4_define([pangoft2_required_version], [1.18.0])
 m4_define([fontconfig_required_version], [2.2.0])
 m4_define([cairo_required_version], [1.4.10])
 m4_define([gtkdoc_required_version], [1.0])
-m4_define([webkit_required_version], [0.1])
+m4_define([webkit_required_version], [1.1.0])
 m4_define([alsa_required_version], [1.0.0])
 m4_define([rsvg_required_version], [2.14.0])
 m4_define([wmf_required_version], [0.2.8])
@@ -389,7 +389,9 @@ AC_FUNC_VPRINTF
 AC_FUNC_ALLOCA
 
 # check some more funcs
+AC_CHECK_FUNCS(fsync)
 AC_CHECK_FUNCS(difftime mmap)
+
 
 AM_BINRELOC
 
@@ -1237,15 +1239,6 @@ if test "x$with_webkit" != xno; then
     have_webkit="no (WebKit not found)")
 else
   have_webkit="no (WebKit support disabled)"
-fi
-
-if test "x$have_webkit" = xyes; then
-  gimp_save_LIBS=$LIBS
-  LIBS="$LIBS $WEBKIT_LIBS"
-  AC_CHECK_LIB(webkit-1.0, webkit_web_view_set_zoom_level,
-               [AC_DEFINE(HAVE_WEBKIT_ZOOM_API, 1,
-	                  [Define to 1 if webkit has zoom API])])
-  LIBS=$gimp_save_LIBS
 fi
 
 AM_CONDITIONAL(BUILD_HELP_BROWSER, test "x$have_webkit" = xyes)

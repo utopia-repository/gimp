@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpMath</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Math Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Math Library Reference Manual">
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="next" href="libgimpmath-GimpMatrix.html" title="GimpMatrix">
-<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="index" href="libgimpmath-index.html" title="Index">
@@ -26,11 +26,13 @@
 <th width="100%" align="center">GIMP Math Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpmath-GimpMatrix.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpmath-GimpMath.synopsis" class="shortcut">Top</a>
-                   | 
-                  <a href="#libgimpmath-GimpMath.description" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libgimpmath-GimpMath.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libgimpmath-GimpMath.description" class="shortcut">Description</a>
+</td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="GimpMath">
 <a name="libgimpmath-GimpMath"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -39,29 +41,29 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpmath-GimpMath.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-#define             <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" title="RINT()">RINT</a>                                (x)
-#define             <a class="link" href="libgimpmath-GimpMath.html#ROUND:CAPS" title="ROUND()">ROUND</a>                               (x)
-#define             <a class="link" href="libgimpmath-GimpMath.html#SQR:CAPS" title="SQR()">SQR</a>                                 (x)
-#define             <a class="link" href="libgimpmath-GimpMath.html#MAX255:CAPS" title="MAX255()">MAX255</a>                              (a)
-#define             <a class="link" href="libgimpmath-GimpMath.html#CLAMP0255:CAPS" title="CLAMP0255()">CLAMP0255</a>                           (a)
+#define             <a class="link" href="libgimpmath-GimpMath.html#RINT--CAPS" title="RINT()">RINT</a>                                (x)
+#define             <a class="link" href="libgimpmath-GimpMath.html#ROUND--CAPS" title="ROUND()">ROUND</a>                               (x)
+#define             <a class="link" href="libgimpmath-GimpMath.html#SQR--CAPS" title="SQR()">SQR</a>                                 (x)
+#define             <a class="link" href="libgimpmath-GimpMath.html#MAX255--CAPS" title="MAX255()">MAX255</a>                              (a)
+#define             <a class="link" href="libgimpmath-GimpMath.html#CLAMP0255--CAPS" title="CLAMP0255()">CLAMP0255</a>                           (a)
 #define             <a class="link" href="libgimpmath-GimpMath.html#gimp-deg-to-rad" title="gimp_deg_to_rad()">gimp_deg_to_rad</a>                     (angle)
 #define             <a class="link" href="libgimpmath-GimpMath.html#gimp-rad-to-deg" title="gimp_rad_to_deg()">gimp_rad_to_deg</a>                     (angle)
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimpmath-GimpMath.description"></a><h2>Description</h2>
 <p>
 Mathematical definitions and macros. These macros should be used
 rather than the ones from math.h for enhanced portability.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimpmath-GimpMath.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
-<a name="RINT:CAPS"></a><h3>RINT()</h3>
+<div class="refsect2" title="RINT()">
+<a name="RINT--CAPS"></a><h3>RINT()</h3>
 <pre class="programlisting">#define             RINT(x)</pre>
 <p>
 This macro rounds its argument <em class="parameter"><code>x</code></em> to an integer value in floating point
@@ -72,15 +74,13 @@ format.
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
 <td>the value to be rounded.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="ROUND:CAPS"></a><h3>ROUND()</h3>
+<div class="refsect2" title="ROUND()">
+<a name="ROUND--CAPS"></a><h3>ROUND()</h3>
 <pre class="programlisting">#define ROUND(x) ((int) ((x) + 0.5))
 </pre>
 <p>
@@ -91,15 +91,13 @@ This macro rounds its argument <em class="parameter"><code>x</code></em> to the 
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
 <td>the value to be rounded.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="SQR:CAPS"></a><h3>SQR()</h3>
+<div class="refsect2" title="SQR()">
+<a name="SQR--CAPS"></a><h3>SQR()</h3>
 <pre class="programlisting">#define SQR(x) ((x) * (x))
 </pre>
 <p>
@@ -110,15 +108,13 @@ This macro squares its argument <em class="parameter"><code>x</code></em>.
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
 <td>the value to be squared.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="MAX255:CAPS"></a><h3>MAX255()</h3>
+<div class="refsect2" title="MAX255()">
+<a name="MAX255--CAPS"></a><h3>MAX255()</h3>
 <pre class="programlisting">#define MAX255(a)  ((a) | (((a) &amp; 256) - (((a) &amp; 256) &gt;&gt; 8)))
 </pre>
 <p>
@@ -129,15 +125,13 @@ This macro limits it argument <em class="parameter"><code>a</code></em>, an (0-5
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
 <td>the value to be limited.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
-<a name="CLAMP0255:CAPS"></a><h3>CLAMP0255()</h3>
+<div class="refsect2" title="CLAMP0255()">
+<a name="CLAMP0255--CAPS"></a><h3>CLAMP0255()</h3>
 <pre class="programlisting">#define CLAMP0255(a)  CLAMP(a,0,255)
 </pre>
 <p>
@@ -149,14 +143,12 @@ This macro clamps its argument <em class="parameter"><code>a</code></em>, an int
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
 <td>the value to be clamped.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_deg_to_rad()">
 <a name="gimp-deg-to-rad"></a><h3>gimp_deg_to_rad()</h3>
 <pre class="programlisting">#define gimp_deg_to_rad(angle) ((angle) * (2.0 * G_PI) / 360.0)
 </pre>
@@ -168,14 +160,12 @@ This macro converts its argument <em class="parameter"><code>angle</code></em> f
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>angle</code></em> :</span></p></td>
 <td>the angle to be converted.
-
-
 </td>
 </tr></tbody>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_rad_to_deg()">
 <a name="gimp-rad-to-deg"></a><h3>gimp_rad_to_deg()</h3>
 <pre class="programlisting">#define gimp_rad_to_deg(angle) ((angle) * 360.0 / (2.0 * G_PI))
 </pre>
@@ -187,8 +177,6 @@ This macro converts its argument <em class="parameter"><code>angle</code></em> f
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>angle</code></em> :</span></p></td>
 <td>the angle to be converted.
-
-
 </td>
 </tr></tbody>
 </table></div>
@@ -197,6 +185,6 @@ This macro converts its argument <em class="parameter"><code>angle</code></em> f
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.10</div>
+          Generated by GTK-Doc V1.11</div>
 </body>
 </html>

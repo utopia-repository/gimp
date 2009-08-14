@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpprogress</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpproceduraldb.html" title="gimpproceduraldb">
 <link rel="next" href="libgimp-image.html" title="Manupulating Images and their Properties">
@@ -38,7 +38,7 @@
                 <a href="#libgimp-gimpprogress.description" class="shortcut">Description</a>
 </td></tr>
 </table>
-<div class="refentry" lang="en">
+<div class="refentry" title="gimpprogress">
 <a name="libgimp-gimpprogress"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
@@ -47,7 +47,7 @@
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsynopsisdiv">
+<div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpprogress.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimp-gimpprogress.html#GimpProgressVtable" title="GimpProgressVtable">GimpProgressVtable</a>;
@@ -138,15 +138,15 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 >gchar</a> *progress_callback);
 </pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="libgimp-gimpprogress.description"></a><h2>Description</h2>
 <p>
 Functions for embedding the progress bar into a plug-in's GUI.
 </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Details">
 <a name="libgimp-gimpprogress.details"></a><h2>Details</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpProgressVtable">
 <a name="GimpProgressVtable"></a><h3>GimpProgressVtable</h3>
 <pre class="programlisting">typedef struct {
   void    (* start)        (const gchar *message,
@@ -176,7 +176,7 @@ Functions for embedding the progress bar into a plug-in's GUI.
 </p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_init ()">
 <a name="gimp-progress-init"></a><h3>gimp_progress_init ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -208,7 +208,7 @@ valid to call this procedure from a plug-in.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_init_printf ()">
 <a name="gimp-progress-init-printf"></a><h3>gimp_progress_init_printf ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -250,7 +250,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRU
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_update ()">
 <a name="gimp-progress-update"></a><h3>gimp_progress_update ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -278,7 +278,7 @@ Updates the progress bar for the current plug-in.</p>
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_pulse ()">
 <a name="gimp-progress-pulse"></a><h3>gimp_progress_pulse ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -306,7 +306,7 @@ mode\", where a block bounces back and forth.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_set_text ()">
 <a name="gimp-progress-set-text"></a><h3>gimp_progress_set_text ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -341,7 +341,7 @@ displayed value.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_set_text_printf ()">
 <a name="gimp-progress-set-text-printf"></a><h3>gimp_progress_set_text_printf ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -384,7 +384,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRU
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_end ()">
 <a name="gimp-progress-end"></a><h3>gimp_progress_end ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
@@ -410,7 +410,7 @@ only valid to call this procedure from a plug-in.</p>
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_get_window_handle ()">
 <a name="gimp-progress-get-window-handle"></a><h3>gimp_progress_get_window_handle ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
@@ -436,7 +436,7 @@ this plug-in\'s progress is displayed in.</p>
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpProgressStartCallback ()">
 <a name="GimpProgressStartCallback"></a><h3>GimpProgressStartCallback ()</h3>
 <pre class="programlisting">void                (*GimpProgressStartCallback)        (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -447,7 +447,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GimpProgressStartCallback</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -475,12 +475,12 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpProgressEndCallback ()">
 <a name="GimpProgressEndCallback"></a><h3>GimpProgressEndCallback ()</h3>
 <pre class="programlisting">void                (*GimpProgressEndCallback)          (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GimpProgressEndCallback</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -496,7 +496,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpProgressTextCallback ()">
 <a name="GimpProgressTextCallback"></a><h3>GimpProgressTextCallback ()</h3>
 <pre class="programlisting">void                (*GimpProgressTextCallback)         (const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -504,7 +504,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GimpProgressTextCallback</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -527,7 +527,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GimpProgressValueCallback ()">
 <a name="GimpProgressValueCallback"></a><h3>GimpProgressValueCallback ()</h3>
 <pre class="programlisting">void                (*GimpProgressValueCallback)        (<a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
@@ -535,7 +535,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GimpProgressValueCallback</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -558,7 +558,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </table></div>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_install_vtable ()">
 <a name="gimp-progress-install-vtable"></a><h3>gimp_progress_install_vtable ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -594,7 +594,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p class="since">Since GIMP 2.4</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_install ()">
 <a name="gimp-progress-install"></a><h3>gimp_progress_install ()</h3>
 <pre class="programlisting">const <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
@@ -605,7 +605,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
                                                          <a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
 >gpointer</a> user_data);</pre>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_progress_install</code> is deprecated and should not be used in newly-written code.</p>
 </div>
@@ -652,7 +652,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_uninstall ()">
 <a name="gimp-progress-uninstall"></a><h3>gimp_progress_uninstall ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
@@ -683,7 +683,7 @@ Uninstalls a temporary progress procedure that was installed using
 <p class="since">Since GIMP 2.2</p>
 </div>
 <hr>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="gimp_progress_cancel ()">
 <a name="gimp-progress-cancel"></a><h3>gimp_progress_cancel ()</h3>
 <pre class="programlisting"><a
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"

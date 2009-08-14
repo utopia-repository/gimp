@@ -12,7 +12,6 @@
 <refnamediv>
 <refname>GimpRuler</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="GimpRuler.synopsis" role="synopsis">
@@ -20,7 +19,7 @@
 
 <synopsis>
                     <link linkend="GimpRuler-struct">GimpRuler</link>;
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-ruler-new">gimp_ruler_new</link>                      (<link linkend="GtkOrientation">GtkOrientation</link> orientation);
+<link linkend="GtkWidget">GtkWidget</link> *         <link linkend="gimp-ruler-new">gimp_ruler_new</link>                      (<link linkend="GtkOrientation">GtkOrientation</link> orientation);
 <link linkend="void">void</link>                <link linkend="gimp-ruler-set-unit">gimp_ruler_set_unit</link>                 (<link linkend="GimpRuler">GimpRuler</link> *ruler,
                                                          <link linkend="GimpUnit">GimpUnit</link> unit);
 <link linkend="GimpUnit">GimpUnit</link>            <link linkend="gimp-ruler-get-unit">gimp_ruler_get_unit</link>                 (<link linkend="GimpRuler">GimpRuler</link> *ruler);
@@ -47,7 +46,6 @@
                +----<link linkend="GtkWidget">GtkWidget</link>
                      +----GimpRuler
 </synopsis>
-
 </refsect1>
 
 
@@ -56,8 +54,7 @@
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpRuler implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
-
+ <link linkend="GtkBuildable">GtkBuildable</link> and  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
 </refsect1>
 
 
@@ -75,7 +72,7 @@ GimpRuler implements
 <refsect1 id="GimpRuler.style-properties" role="style_properties">
 <title role="style_properties.title">Style Properties</title>
 <synopsis>
-  &quot;<link linkend="GimpRuler--font-scale">font-scale</link>&quot;               <link linkend="gdouble">gdouble</link>               : Read
+  &quot;<link linkend="GimpRuler--s-font-scale">font-scale</link>&quot;               <link linkend="gdouble">gdouble</link>               : Read
 </synopsis>
 </refsect1>
 
@@ -84,7 +81,6 @@ GimpRuler implements
 <refsect1 id="GimpRuler.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -92,120 +88,106 @@ GimpRuler implements
 <title role="details.title">Details</title>
 <refsect2 id="GimpRuler-struct" role="struct">
 <title>GimpRuler</title>
-<indexterm zone="GimpRuler-struct"><primary>GimpRuler</primary></indexterm><programlisting>typedef struct _GimpRuler GimpRuler;</programlisting>
+<indexterm zone="GimpRuler-struct"><primary sortas="GimpRuler">GimpRuler</primary></indexterm><programlisting>typedef struct _GimpRuler GimpRuler;</programlisting>
 <para>
-
 </para></refsect2>
 <refsect2 id="gimp-ruler-new" role="function" condition="since:GIMP 2.8">
 <title>gimp_ruler_new ()</title>
-<indexterm zone="gimp-ruler-new" role="GIMP 2.8"><primary>gimp_ruler_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_ruler_new                      (<link linkend="GtkOrientation">GtkOrientation</link> orientation);</programlisting>
+<indexterm zone="gimp-ruler-new" role="GIMP 2.8"><primary sortas="gimp_ruler_new">gimp_ruler_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link> *         gimp_ruler_new                      (<link linkend="GtkOrientation">GtkOrientation</link> orientation);</programlisting>
 <para>
 Creates a new ruler.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>orientation</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>orientation</parameter>&#160;:</term>
 <listitem><simpara> the ruler's orientation.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new <link linkend="GimpRuler"><type>GimpRuler</type></link> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a new <link linkend="GimpRuler"><type>GimpRuler</type></link> widget.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.8
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.8</para></refsect2>
 <refsect2 id="gimp-ruler-set-unit" role="function">
 <title>gimp_ruler_set_unit ()</title>
-<indexterm zone="gimp-ruler-set-unit"><primary>gimp_ruler_set_unit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ruler_set_unit                 (<link linkend="GimpRuler">GimpRuler</link> *ruler,
+<indexterm zone="gimp-ruler-set-unit"><primary sortas="gimp_ruler_set_unit">gimp_ruler_set_unit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ruler_set_unit                 (<link linkend="GimpRuler">GimpRuler</link> *ruler,
                                                          <link linkend="GimpUnit">GimpUnit</link> unit);</programlisting>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>ruler</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ruler</parameter>&#160;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>unit</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>unit</parameter>&#160;:</term>
 <listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-ruler-get-unit" role="function" condition="since:GIMP 2.8">
 <title>gimp_ruler_get_unit ()</title>
-<indexterm zone="gimp-ruler-get-unit" role="GIMP 2.8"><primary>gimp_ruler_get_unit</primary></indexterm><programlisting><link linkend="GimpUnit">GimpUnit</link>            gimp_ruler_get_unit                 (<link linkend="GimpRuler">GimpRuler</link> *ruler);</programlisting>
+<indexterm zone="gimp-ruler-get-unit" role="GIMP 2.8"><primary sortas="gimp_ruler_get_unit">gimp_ruler_get_unit</primary></indexterm><programlisting><link linkend="GimpUnit">GimpUnit</link>            gimp_ruler_get_unit                 (<link linkend="GimpRuler">GimpRuler</link> *ruler);</programlisting>
 <para>
 </para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>ruler</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ruler</parameter>&#160;:</term>
 <listitem><simpara> a <link linkend="GimpRuler"><type>GimpRuler</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the unit currently used in the <parameter>ruler</parameter> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the unit currently used in the <parameter>ruler</parameter> widget.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.8
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.8</para></refsect2>
 <refsect2 id="gimp-ruler-set-position" role="function" condition="since:GIMP 2.8">
 <title>gimp_ruler_set_position ()</title>
-<indexterm zone="gimp-ruler-set-position" role="GIMP 2.8"><primary>gimp_ruler_set_position</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ruler_set_position             (<link linkend="GimpRuler">GimpRuler</link> *ruler,
+<indexterm zone="gimp-ruler-set-position" role="GIMP 2.8"><primary sortas="gimp_ruler_set_position">gimp_ruler_set_position</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ruler_set_position             (<link linkend="GimpRuler">GimpRuler</link> *ruler,
                                                          <link linkend="gdouble">gdouble</link> position);</programlisting>
 <para>
 This sets the position of the ruler.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>ruler</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ruler</parameter>&#160;:</term>
 <listitem><simpara> a <link linkend="GimpRuler"><type>GimpRuler</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>position</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>position</parameter>&#160;:</term>
 <listitem><simpara> the position to set the ruler to
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.8
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.8</para></refsect2>
 <refsect2 id="gimp-ruler-get-position" role="function" condition="since:GIMP 2.8">
 <title>gimp_ruler_get_position ()</title>
-<indexterm zone="gimp-ruler-get-position" role="GIMP 2.8"><primary>gimp_ruler_get_position</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_ruler_get_position             (<link linkend="GimpRuler">GimpRuler</link> *ruler);</programlisting>
+<indexterm zone="gimp-ruler-get-position" role="GIMP 2.8"><primary sortas="gimp_ruler_get_position">gimp_ruler_get_position</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_ruler_get_position             (<link linkend="GimpRuler">GimpRuler</link> *ruler);</programlisting>
 <para>
 </para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>ruler</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ruler</parameter>&#160;:</term>
 <listitem><simpara> a <link linkend="GimpRuler"><type>GimpRuler</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the current position of the <parameter>ruler</parameter> widget.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the current position of the <parameter>ruler</parameter> widget.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.8
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.8</para></refsect2>
 <refsect2 id="gimp-ruler-set-range" role="function" condition="since:GIMP 2.8">
 <title>gimp_ruler_set_range ()</title>
-<indexterm zone="gimp-ruler-set-range" role="GIMP 2.8"><primary>gimp_ruler_set_range</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ruler_set_range                (<link linkend="GimpRuler">GimpRuler</link> *ruler,
+<indexterm zone="gimp-ruler-set-range" role="GIMP 2.8"><primary sortas="gimp_ruler_set_range">gimp_ruler_set_range</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ruler_set_range                (<link linkend="GimpRuler">GimpRuler</link> *ruler,
                                                          <link linkend="gdouble">gdouble</link> lower,
                                                          <link linkend="gdouble">gdouble</link> upper,
                                                          <link linkend="gdouble">gdouble</link> max_size);</programlisting>
 <para>
 This sets the range of the ruler.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>ruler</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ruler</parameter>&#160;:</term>
 <listitem><simpara> a <link linkend="GimpRuler"><type>GimpRuler</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>lower</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>lower</parameter>&#160;:</term>
 <listitem><simpara> the lower limit of the ruler
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>upper</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>upper</parameter>&#160;:</term>
 <listitem><simpara> the upper limit of the ruler
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>max_size</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>max_size</parameter>&#160;:</term>
 <listitem><simpara> the maximum size of the ruler used when calculating the space to
 leave for the text
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.8
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.8</para></refsect2>
 <refsect2 id="gimp-ruler-get-range" role="function" condition="since:GIMP 2.8">
 <title>gimp_ruler_get_range ()</title>
-<indexterm zone="gimp-ruler-get-range" role="GIMP 2.8"><primary>gimp_ruler_get_range</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ruler_get_range                (<link linkend="GimpRuler">GimpRuler</link> *ruler,
+<indexterm zone="gimp-ruler-get-range" role="GIMP 2.8"><primary sortas="gimp_ruler_get_range">gimp_ruler_get_range</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_ruler_get_range                (<link linkend="GimpRuler">GimpRuler</link> *ruler,
                                                          <link linkend="gdouble">gdouble</link> *lower,
                                                          <link linkend="gdouble">gdouble</link> *upper,
                                                          <link linkend="gdouble">gdouble</link> *max_size);</programlisting>
@@ -213,62 +195,58 @@ leave for the text
 Retrieves values indicating the range and current position of a <link linkend="GimpRuler"><type>GimpRuler</type></link>.
 See <link linkend="gimp-ruler-set-range"><function>gimp_ruler_set_range()</function></link>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>ruler</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ruler</parameter>&#160;:</term>
 <listitem><simpara> a <link linkend="GimpRuler"><type>GimpRuler</type></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>lower</parameter>&nbsp;:</term>
-<listitem><simpara> location to store lower limit of the ruler, or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
+<varlistentry><term><parameter>lower</parameter>&#160;:</term>
+<listitem><simpara> location to store lower limit of the ruler, or <link linkend="NULL--CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>upper</parameter>&nbsp;:</term>
-<listitem><simpara> location to store upper limit of the ruler, or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
+<varlistentry><term><parameter>upper</parameter>&#160;:</term>
+<listitem><simpara> location to store upper limit of the ruler, or <link linkend="NULL--CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>max_size</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>max_size</parameter>&#160;:</term>
 <listitem><simpara> location to store the maximum size of the ruler used when
-           calculating the space to leave for the text, or <link linkend="NULL:CAPS"><literal>NULL</literal></link>.
+           calculating the space to leave for the text, or <link linkend="NULL--CAPS"><literal>NULL</literal></link>.
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.8
-</para></refsect2>
+</variablelist><para role="since">Since GIMP 2.8</para></refsect2>
 
 </refsect1>
 <refsect1 id="GimpRuler.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2 id="GimpRuler--lower"><title>The <literal>&quot;lower&quot;</literal> property</title>
-<indexterm zone="GimpRuler--lower"><primary>GimpRuler:lower</primary></indexterm><programlisting>  &quot;lower&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<refsect2 id="GimpRuler--lower" role="property"><title>The <literal>&quot;lower&quot;</literal> property</title>
+<indexterm zone="GimpRuler--lower"><primary sortas="GimpRuler:lower">GimpRuler:lower</primary></indexterm><programlisting>  &quot;lower&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>Lower limit of ruler.</para><para>Default value: 0</para>
 </refsect2>
-<refsect2 id="GimpRuler--max-size"><title>The <literal>&quot;max-size&quot;</literal> property</title>
-<indexterm zone="GimpRuler--max-size"><primary>GimpRuler:max-size</primary></indexterm><programlisting>  &quot;max-size&quot;                 <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<refsect2 id="GimpRuler--max-size" role="property"><title>The <literal>&quot;max-size&quot;</literal> property</title>
+<indexterm zone="GimpRuler--max-size"><primary sortas="GimpRuler:max-size">GimpRuler:max-size</primary></indexterm><programlisting>  &quot;max-size&quot;                 <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>Maximum size of the ruler.</para><para>Default value: 0</para>
 </refsect2>
-<refsect2 id="GimpRuler--orientation"><title>The <literal>&quot;orientation&quot;</literal> property</title>
-<indexterm zone="GimpRuler--orientation"><primary>GimpRuler:orientation</primary></indexterm><programlisting>  &quot;orientation&quot;              <link linkend="GtkOrientation">GtkOrientation</link>        : Read / Write</programlisting>
+<refsect2 id="GimpRuler--orientation" role="property"><title>The <literal>&quot;orientation&quot;</literal> property</title>
+<indexterm zone="GimpRuler--orientation"><primary sortas="GimpRuler:orientation">GimpRuler:orientation</primary></indexterm><programlisting>  &quot;orientation&quot;              <link linkend="GtkOrientation">GtkOrientation</link>        : Read / Write</programlisting>
 <para>The orientation of the ruler.</para><para>Default value: GTK_ORIENTATION_HORIZONTAL</para>
 </refsect2>
-<refsect2 id="GimpRuler--position"><title>The <literal>&quot;position&quot;</literal> property</title>
-<indexterm zone="GimpRuler--position"><primary>GimpRuler:position</primary></indexterm><programlisting>  &quot;position&quot;                 <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<refsect2 id="GimpRuler--position" role="property"><title>The <literal>&quot;position&quot;</literal> property</title>
+<indexterm zone="GimpRuler--position"><primary sortas="GimpRuler:position">GimpRuler:position</primary></indexterm><programlisting>  &quot;position&quot;                 <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>Position of mark on the ruler.</para><para>Default value: 0</para>
 </refsect2>
-<refsect2 id="GimpRuler--unit"><title>The <literal>&quot;unit&quot;</literal> property</title>
-<indexterm zone="GimpRuler--unit"><primary>GimpRuler:unit</primary></indexterm><programlisting>  &quot;unit&quot;                     <link linkend="GimpUnit">GimpUnit</link>              : Read / Write</programlisting>
+<refsect2 id="GimpRuler--unit" role="property"><title>The <literal>&quot;unit&quot;</literal> property</title>
+<indexterm zone="GimpRuler--unit"><primary sortas="GimpRuler:unit">GimpRuler:unit</primary></indexterm><programlisting>  &quot;unit&quot;                     <link linkend="GimpUnit">GimpUnit</link>              : Read / Write</programlisting>
 <para>Unit of ruler.</para><para>Allowed values: [0,65535]</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2 id="GimpRuler--upper"><title>The <literal>&quot;upper&quot;</literal> property</title>
-<indexterm zone="GimpRuler--upper"><primary>GimpRuler:upper</primary></indexterm><programlisting>  &quot;upper&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<refsect2 id="GimpRuler--upper" role="property"><title>The <literal>&quot;upper&quot;</literal> property</title>
+<indexterm zone="GimpRuler--upper"><primary sortas="GimpRuler:upper">GimpRuler:upper</primary></indexterm><programlisting>  &quot;upper&quot;                    <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>Upper limit of ruler.</para><para>Default value: 0</para>
 </refsect2>
-
 </refsect1>
 <refsect1 id="GimpRuler.style-property-details" role="style_properties_details">
 <title role="style_properties_details.title">Style Property Details</title>
-<refsect2 id="GimpRuler--font-scale"><title>The <literal>&quot;font-scale&quot;</literal> style property</title>
-<indexterm zone="GimpRuler--font-scale"><primary>GimpRuler:font-scale</primary></indexterm><programlisting>  &quot;font-scale&quot;               <link linkend="gdouble">gdouble</link>               : Read</programlisting>
+<refsect2 id="GimpRuler--s-font-scale" role="property"><title>The <literal>&quot;font-scale&quot;</literal> style property</title>
+<indexterm zone="GimpRuler--s-font-scale"><primary sortas="GimpRuler:font-scale">GimpRuler:font-scale</primary></indexterm><programlisting>  &quot;font-scale&quot;               <link linkend="gdouble">gdouble</link>               : Read</programlisting>
 <para></para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0.833333</para>
 </refsect2>
-
 </refsect1>
 
 

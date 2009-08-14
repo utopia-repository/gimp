@@ -12,14 +12,13 @@
 <refnamediv>
 <refname>GimpHintBox</refname>
 <refpurpose></refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
 <refsynopsisdiv id="libgimpwidgets-GimpHintBox.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-hint-box-new">gimp_hint_box_new</link>                   (const <link linkend="gchar">gchar</link> *hint);
+<link linkend="GtkWidget">GtkWidget</link> *         <link linkend="gimp-hint-box-new">gimp_hint_box_new</link>                   (const <link linkend="gchar">gchar</link> *hint);
 </synopsis>
 </refsynopsisdiv>
 
@@ -34,7 +33,6 @@
 <refsect1 id="libgimpwidgets-GimpHintBox.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
-
 </para>
 </refsect1>
 
@@ -42,17 +40,16 @@
 <title role="details.title">Details</title>
 <refsect2 id="gimp-hint-box-new" role="function">
 <title>gimp_hint_box_new ()</title>
-<indexterm zone="gimp-hint-box-new"><primary>gimp_hint_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_hint_box_new                   (const <link linkend="gchar">gchar</link> *hint);</programlisting>
+<indexterm zone="gimp-hint-box-new"><primary sortas="gimp_hint_box_new">gimp_hint_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link> *         gimp_hint_box_new                   (const <link linkend="gchar">gchar</link> *hint);</programlisting>
 <para>
 Creates a new widget that shows a text label showing <parameter>hint</parameter>,
 decorated with a GIMP_STOCK_INFO wilber icon.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>hint</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>hint</parameter>&#160;:</term>
 <listitem><simpara> text to display as a user hint
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new widget
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a new widget
 
 Since GIMP 2.4
 </simpara></listitem></varlistentry>

@@ -1,3 +1,15 @@
+gimp (2.6.7-1.1) unstable; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * This update fixes the following security issues:
+    - CVE-2009-3909: integer overflow in PSD file loader leading to
+      a heap-based buffer overflow (Closes: #556750).
+    - CVE-2009-1570: integer overflow in BMP file loader leading to
+      a heap-based buffer overflow (Closes: #555929).
+  * Add ${shlibs: Depends} to depends of libgimp-dev (Closes: #553234).
+
+ -- Nico Golde <nion@debian.org>  Sat, 21 Nov 2009 14:57:51 +0100
+
 gimp (2.6.7-1) unstable; urgency=low
 
   * New upstream release

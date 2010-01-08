@@ -311,7 +311,6 @@ load_image (const gchar  *filename,
   GimpDrawable  *drawable;    /* Drawable for layer */
   GimpPixelRgn   pixel_rgn;   /* Pixel region for layer */
   guchar       **pixels,      /* Pixel rows */
-                *pixel,       /* Pixel data */
                 *pptr;        /* Current pixel */
   gushort      **rows;        /* SGI image data */
 
@@ -334,6 +333,28 @@ load_image (const gchar  *filename,
   /*
    * Get the image dimensions and create the image...
    */
+
+  /* Sanitize dimensions */
+  if (sgip->xsize == 0 || sgip->xsize > GIMP_MAX_IMAGE_SIZE)
+    {
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+              _("Invalid width: %hu"), sgip->xsize);
+      return -1;
+    }
+
+  if (sgip->ysize == 0 || sgip->ysize > GIMP_MAX_IMAGE_SIZE)
+    {
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+              _("Invalid height: %hu"), sgip->ysize);
+      return -1;
+    }
+
+  if (sgip->zsize == 0 || sgip->zsize > GIMP_MAX_IMAGE_SIZE)
+    {
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+              _("Invalid number of channels: %hu"), sgip->zsize);
+      return -1;
+    }
 
   bytes = sgip->zsize;
 
@@ -399,14 +420,14 @@ load_image (const gchar  *filename,
    */
 
   tile_height = gimp_tile_height ();
-  pixel       = g_new (guchar, tile_height * sgip->xsize * bytes);
   pixels      = g_new (guchar *, tile_height);
+  pixels[0]   = g_new (guchar, ((gsize) tile_height) * sgip->xsize * bytes);
 
-  for (i = 0; i < tile_height; i ++)
-    pixels[i] = pixel + sgip->xsize * bytes * i;
+  for (i = 1; i < tile_height; i ++)
+    pixels[i] = pixels[0] + sgip->xsize * bytes * i;
 
   rows    = g_new (unsigned short *, sgip->zsize);
-  rows[0] = g_new (unsigned short, sgip->xsize * sgip->zsize);
+  rows[0] = g_new (unsigned short, ((gsize) sgip->xsize) * sgip->zsize);
 
   for (i = 1; i < sgip->zsize; i ++)
     rows[i] = rows[0] + i * sgip->xsize;
@@ -421,7 +442,7 @@ load_image (const gchar  *filename,
     {
       if (count >= tile_height)
         {
-          gimp_pixel_rgn_set_rect (&pixel_rgn, pixel,
+          gimp_pixel_rgn_set_rect (&pixel_rgn, pixels[0],
                                    0, y - count, drawable->width, count);
           count = 0;
 
@@ -459,7 +480,7 @@ load_image (const gchar  *filename,
    * Do the last n rows (count always > 0)
    */
 
-  gimp_pixel_rgn_set_rect (&pixel_rgn, pixel, 0,
+  gimp_pixel_rgn_set_rect (&pixel_rgn, pixels[0], 0,
                            y - count, drawable->width, count);
 
   /*
@@ -468,7 +489,7 @@ load_image (const gchar  *filename,
 
   sgiClose (sgip);
 
-  g_free (pixel);
+  g_free (pixels[0]);
   g_free (pixels);
   g_free (rows[0]);
   g_free (rows);
@@ -504,7 +525,6 @@ save_image (const gchar  *filename,
   GimpDrawable  *drawable;    /* Drawable for layer */
   GimpPixelRgn   pixel_rgn;   /* Pixel region for layer */
   guchar    **pixels,      /* Pixel rows */
-             *pixel,       /* Pixel data */
              *pptr;        /* Current pixel */
   gushort   **rows;        /* SGI image data */
 
@@ -559,14 +579,14 @@ save_image (const gchar  *filename,
    */
 
   tile_height = gimp_tile_height ();
-  pixel       = g_new (guchar, tile_height * drawable->width * zsize);
   pixels      = g_new (guchar *, tile_height);
+  pixels[0]   = g_new (guchar, ((gsize) tile_height) * drawable->width * zsize);
 
-  for (i = 0; i < tile_height; i ++)
-    pixels[i]= pixel + drawable->width * zsize * i;
+  for (i = 1; i < tile_height; i ++)
+    pixels[i]= pixels[0] + drawable->width * zsize * i;
 
   rows    = g_new (gushort *, sgip->zsize);
-  rows[0] = g_new (gushort, sgip->xsize * sgip->zsize);
+  rows[0] = g_new (gushort, ((gsize) sgip->xsize) * sgip->zsize);
 
   for (i = 1; i < sgip->zsize; i ++)
     rows[i] = rows[0] + i * sgip->xsize;
@@ -586,7 +606,7 @@ save_image (const gchar  *filename,
       else
         count = tile_height;
 
-      gimp_pixel_rgn_get_rect (&pixel_rgn, pixel, 0, y, drawable->width, count);
+      gimp_pixel_rgn_get_rect (&pixel_rgn, pixels[0], 0, y, drawable->width, count);
 
       /*
        * Convert to shorts and write each color plane separately...
@@ -611,7 +631,7 @@ save_image (const gchar  *filename,
 
   sgiClose (sgip);
 
-  g_free (pixel);
+  g_free (pixels[0]);
   g_free (pixels);
   g_free (rows[0]);
   g_free (rows);

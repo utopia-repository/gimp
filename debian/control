@@ -66,7 +66,7 @@ Description: Data files for GIMP
 Package: libgimp2.0-dev
 Architecture: any
 Section: libdevel
-Depends: libgimp2.0 (= ${binary:Version}), libgtk2.0-dev (>= 2.10.0), pkg-config, ${shlibs:Depends}
+Depends: ${shlibs:Depends}, libgimp2.0 (= ${binary:Version}), libglib2.0-dev (>= 2.16.1), pkg-config
 Suggests: libgimp2.0-doc
 Description: Headers and other files for compiling plugins for GIMP
  This package contains the header files for the GNU Image Manipulation
@@ -88,7 +88,7 @@ Package: gimp-dbg
 Priority: extra
 Architecture: any
 Section: debug
-Depends: gimp (= ${binary:Version}) | libgimp2.0 (= ${source:Version}), ${shlibs:Depends}
+Depends: gimp (= ${binary:Version}) | libgimp2.0 (= ${binary:Version}), ${shlibs:Depends}
 Description: Debugging symbols for GIMP
  This package includes the debugging symbols useful for debugging
  GIMP and its libraries, contained in the gimp and libgimp2.0 packages.

@@ -400,8 +400,25 @@ ReadBMP (const gchar  *name,
         }
     }
 
-  /* Valid bitpdepthis 1, 4, 8, 16, 24, 32 */
+  /* Valid bit depth is 1, 4, 8, 16, 24, 32 */
   /* 16 is awful, we should probably shoot whoever invented it */
+
+  switch (Bitmap_Head.biBitCnt)
+    {
+    case 1:
+    case 2:
+    case 4:
+    case 8:
+    case 16:
+    case 24:
+    case 32:
+      break;
+    default:
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("'%s' is not a valid BMP file"),
+                   gimp_filename_to_utf8 (filename));
+      return -1;
+    }
 
   /* There should be some colors used! */
 
@@ -424,7 +441,10 @@ ReadBMP (const gchar  *name,
       return -1;
     }
 
-  if (Bitmap_Head.biWidth < 0)
+  /* biHeight may be negative, but G_MININT32 is dangerous because:
+     G_MININT32 == -(G_MININT32) */
+  if (Bitmap_Head.biWidth < 0 ||
+      Bitmap_Head.biHeight == G_MININT32)
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),
@@ -441,6 +461,18 @@ ReadBMP (const gchar  *name,
     }
 
   if (Bitmap_Head.biClrUsed > 256)
+    {
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("'%s' is not a valid BMP file"),
+                   gimp_filename_to_utf8 (filename));
+      return -1;
+    }
+
+  /* protect against integer overflows caused by malicious BMPs */
+  /* use divisions in comparisons to avoid type overflows */
+
+  if (((guint64) Bitmap_Head.biWidth) > G_MAXINT32 / Bitmap_Head.biBitCnt ||
+      ((guint64) Bitmap_Head.biWidth) > (G_MAXINT32 / ABS (Bitmap_Head.biHeight)) / 4)
     {
       g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                    _("'%s' is not a valid BMP file"),

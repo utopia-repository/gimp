@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 5.0.53), cdbs (>= 0.4.37), autotools-dev,
  patchutils, gettext, intltool (>= 0.36.3), libx11-dev, libice-dev, libsm-dev,
  libxmu-dev, libxpm-dev, libxt-dev,
  libaa1-dev, libgtk2.0-dev (>= 2.10.13), libglib2.0-dev (>= 2.16.0),
- libpango1.0-dev (>= 1.12.2), libwebkit-dev, libjpeg62-dev,
+ libpango1.0-dev (>= 1.12.2), libwebkit-dev, libjpeg-dev,
  libart-2.0-dev, libpng12-dev | libpng-dev,
  zlib1g-dev, libtiff4-dev, python-dev (>= 2.3.5), python-gtk2-dev (>= 2.10.4),
  python-support (>= 0.4), libexif-dev (>= 0.6.15), libmng-dev,
@@ -66,7 +66,7 @@ Description: Data files for GIMP
 Package: libgimp2.0-dev
 Architecture: any
 Section: libdevel
-Depends: ${shlibs:Depends}, libgimp2.0 (= ${binary:Version}), libglib2.0-dev (>= 2.16.1), pkg-config
+Depends: ${shlibs:Depends}, libgimp2.0 (= ${binary:Version}), libgtk2.0-dev (>= 2.12.5), pkg-config
 Suggests: libgimp2.0-doc
 Description: Headers and other files for compiling plugins for GIMP
  This package contains the header files for the GNU Image Manipulation

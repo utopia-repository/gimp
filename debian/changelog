@@ -1,3 +1,10 @@
+gimp (2.6.8-2) unstable; urgency=low
+
+  * Fix dependencies in libgimp2.0-dev (Closes: #569420)
+  * Change libjpeg62-dev build-depend to libjpeg-dev
+
+ -- Ari Pollak <ari@debian.org>  Thu, 25 Feb 2010 10:31:51 -0500
+
 gimp (2.6.8-1) unstable; urgency=low
 
   * New upstream release

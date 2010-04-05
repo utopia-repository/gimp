@@ -6,7 +6,7 @@ Standards-Version: 3.8.2
 Build-Depends: debhelper (>= 5.0.53), cdbs (>= 0.4.37), autotools-dev,
  patchutils, gettext, intltool (>= 0.36.3), libx11-dev, libice-dev, libsm-dev,
  libxmu-dev, libxpm-dev, libxt-dev,
- libaa1-dev, libgtk2.0-dev (>= 2.10.13), libglib2.0-dev (>= 2.16.0),
+ libaa1-dev, libgtk2.0-dev (>= 2.19.1), libglib2.0-dev (>= 2.16.0),
  libpango1.0-dev (>= 1.12.2), libwebkit-dev, libjpeg-dev,
  libart-2.0-dev, libpng12-dev | libpng-dev,
  zlib1g-dev, libtiff4-dev, python-dev (>= 2.3.5), python-gtk2-dev (>= 2.10.4),

@@ -8,22 +8,8 @@
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpButton.html" title="GimpButton">
 <link rel="next" href="GimpColorArea.html" title="GimpColorArea">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
-<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
-<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
-<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
-<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
-<link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
-<link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
-<link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
-<link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
-<link rel="index" href="libgimpwidgets-index.html" title="Index">
-<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpwidgets-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -36,16 +22,16 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#GimpChainButton.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#GimpChainButton.description" class="shortcut">Description</a>
-                 | 
-                <a href="#GimpChainButton.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                 | 
-                <a href="#GimpChainButton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
-                 | 
-                <a href="#GimpChainButton.properties" class="shortcut">Properties</a>
-                 | 
-                <a href="#GimpChainButton.signals" class="shortcut">Signals</a>
+                   | 
+                  <a href="#GimpChainButton.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#GimpChainButton.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#GimpChainButton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#GimpChainButton.properties" class="shortcut">Properties</a>
+                   | 
+                  <a href="#GimpChainButton.signals" class="shortcut">Signals</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpChainButton">
@@ -59,42 +45,23 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpChainButton.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-                    <a class="link" href="GimpChainButton.html#GimpChainButton-struct" title="GimpChainButton">GimpChainButton</a>;
+<pre class="synopsis">                    <a class="link" href="GimpChainButton.html#GimpChainButton-struct" title="GimpChainButton">GimpChainButton</a>;
 enum                <a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a>;
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="GimpChainButton.html#gimp-chain-button-new" title="gimp_chain_button_new ()">gimp_chain_button_new</a>               (<a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a> position);
-void                <a class="link" href="GimpChainButton.html#gimp-chain-button-set-active" title="gimp_chain_button_set_active ()">gimp_chain_button_set_active</a>        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> active);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="GimpChainButton.html#gimp-chain-button-get-active" title="gimp_chain_button_get_active ()">gimp_chain_button_get_active</a>        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpChainButton.html#gimp-chain-button-new" title="gimp_chain_button_new ()">gimp_chain_button_new</a>               (<em class="parameter"><code><a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition"><span class="type">GimpChainPosition</span></a> position</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="GimpChainButton.html#gimp-chain-button-set-active" title="gimp_chain_button_set_active ()">gimp_chain_button_set_active</a>        (<em class="parameter"><code><a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> *button</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> active</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="GimpChainButton.html#gimp-chain-button-get-active" title="gimp_chain_button_get_active ()">gimp_chain_button_get_active</a>        (<em class="parameter"><code><a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> *button</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Object Hierarchy">
 <a name="GimpChainButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
->GtkTable</a>
+  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
+               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
+                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkContainer.html">GtkContainer</a>
+                           +----<a href="/usr/share/gtk-doc/html/gtk/GtkTable.html">GtkTable</a>
                                  +----GimpChainButton
 </pre>
 </div>
@@ -102,14 +69,12 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
 <a name="GimpChainButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpChainButton implements
- <a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a> and  AtkImplementorIface.</p>
+ AtkImplementorIface and  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a>.</p>
 </div>
 <div class="refsect1" title="Properties">
 <a name="GimpChainButton.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpChainButton.html#GimpChainButton--position" title='The "position" property'>position</a>"                 <a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a>     : Read / Write / Construct Only
+  "<a class="link" href="GimpChainButton.html#GimpChainButton--position" title='The "position" property'>position</a>"                 <a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition"><span class="type">GimpChainPosition</span></a>     : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" title="Signals">
@@ -160,9 +125,7 @@ necessary.
 <hr>
 <div class="refsect2" title="gimp_chain_button_new ()">
 <a name="gimp-chain-button-new"></a><h3>gimp_chain_button_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_chain_button_new               (<a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a> position);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_chain_button_new               (<em class="parameter"><code><a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition"><span class="type">GimpChainPosition</span></a> position</code></em>);</pre>
 <p>
 Creates a new <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> widget.
 </p>
@@ -172,15 +135,14 @@ small clamps attached to both sides that visually group the two widgets
 you want to connect. This widget looks best when attached
 to a table taking up two columns (or rows respectively) next
 to the widgets that it is supposed to connect. It may work
-for more than two widgets, but the look is optimized for two.</p>
-<p>
+for more than two widgets, but the look is optimized for two.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>position</code></em> :</span></p></td>
-<td> The position you are going to use for the button
+<td>The position you are going to use for the button
            with respect to the widgets you want to chain.
 </td>
 </tr>
@@ -197,30 +159,23 @@ for more than two widgets, but the look is optimized for two.</p>
 <hr>
 <div class="refsect2" title="gimp_chain_button_set_active ()">
 <a name="gimp-chain-button-set-active"></a><h3>gimp_chain_button_set_active ()</h3>
-<pre class="programlisting">void                gimp_chain_button_set_active        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> active);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_chain_button_set_active        (<em class="parameter"><code><a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> *button</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> active</code></em>);</pre>
 <p>
-Sets the state of the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> to be either locked (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a>) or
-unlocked (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
-><code class="literal">FALSE</code></a>) and changes the showed pixmap to reflect the new state.</p>
-<p>
+Sets the state of the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> to be either locked (<a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>) or
+unlocked (<a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>) and changes the showed pixmap to reflect the new state.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>button</code></em> :</span></p></td>
-<td> Pointer to a <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
+<td>Pointer to a <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>active</code></em> :</span></p></td>
-<td> The new state.
+<td>The new state.
 </td>
 </tr>
 </tbody>
@@ -229,26 +184,21 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FAL
 <hr>
 <div class="refsect2" title="gimp_chain_button_get_active ()">
 <a name="gimp-chain-button-get-active"></a><h3>gimp_chain_button_get_active ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_chain_button_get_active        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_chain_button_get_active        (<em class="parameter"><code><a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> *button</code></em>);</pre>
 <p>
-Checks the state of the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.</p>
-<p>
+Checks the state of the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>button</code></em> :</span></p></td>
-<td> Pointer to a <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
+<td>Pointer to a <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a> if the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> is active (locked).
+<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> is active (locked).
 </td>
 </tr>
 </tbody>
@@ -259,23 +209,20 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRU
 <a name="GimpChainButton.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" title='The "position" property'>
 <a name="GimpChainButton--position"></a><h3>The <code class="literal">"position"</code> property</h3>
-<pre class="programlisting">  "position"                 <a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a>     : Read / Write / Construct Only</pre>
+<pre class="programlisting">  "position"                 <a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition"><span class="type">GimpChainPosition</span></a>     : Read / Write / Construct Only</pre>
 <p>
-The position in which the chain button will be used.</p>
-<p>
+The position in which the chain button will be used.
 </p>
 <p>Default value: GIMP_CHAIN_TOP</p>
-<p>Since GIMP 2.4</p>
+<p class="since">Since GIMP 2.4</p>
 </div>
 </div>
 <div class="refsect1" title="Signal Details">
 <a name="GimpChainButton.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2" title='The "toggled" signal'>
 <a name="GimpChainButton-toggled"></a><h3>The <code class="literal">"toggled"</code> signal</h3>
-<pre class="programlisting">void                user_function                      (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *gimpchainbutton,
-                                                        <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a>         user_data)            : Run First</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                user_function                      (<a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> *gimpchainbutton,
+                                                        <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a>         user_data)            : Run First</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -304,6 +251,6 @@ up two GimpSizeEntries (see <a class="link" href="GimpSizeEntry.html" title="Gim
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

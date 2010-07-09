@@ -8,14 +8,8 @@
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpenv.html" title="gimpenv">
 <link rel="next" href="libgimpbase-gimprectangle.html" title="gimprectangle">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library">
-<link rel="index" href="libgimpbase-index.html" title="Index">
-<link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpbase-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpbase-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpbase-gimpmemsize.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimpbase-gimpmemsize.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimpbase-gimpmemsize.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="gimpmemsize">
@@ -43,52 +37,21 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpbase-gimpmemsize.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize" title="gimp_memsize_serialize ()">gimp_memsize_serialize</a>              (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> memsize);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize" title="gimp_memsize_deserialize ()">gimp_memsize_deserialize</a>            (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *string,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> *memsize);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-to-string" title="gimp_memsize_to_string ()">gimp_memsize_to_string</a>              (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> memsize);
-#define             <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE--CAPS" title="GIMP_TYPE_MEMSIZE">GIMP_TYPE_MEMSIZE</a>
-#define             <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-TYPE-PARAM-MEMSIZE--CAPS" title="GIMP_TYPE_PARAM_MEMSIZE">GIMP_TYPE_PARAM_MEMSIZE</a>
-#define             <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-IS-PARAM-SPEC-MEMSIZE--CAPS" title="GIMP_IS_PARAM_SPEC_MEMSIZE()">GIMP_IS_PARAM_SPEC_MEMSIZE</a>          (pspec)
-<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"
->GParamSpec</a> *        <a class="link" href="libgimpbase-gimpmemsize.html#gimp-param-spec-memsize" title="gimp_param_spec_memsize ()">gimp_param_spec_memsize</a>             (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *nick,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *blurb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> maximum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> default_value,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamFlags"
->GParamFlags</a> flags);
-#define             <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-VALUE-HOLDS-MEMSIZE--CAPS" title="GIMP_VALUE_HOLDS_MEMSIZE()">GIMP_VALUE_HOLDS_MEMSIZE</a>            (value)
+<pre class="synopsis"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize" title="gimp_memsize_serialize ()">gimp_memsize_serialize</a>              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> memsize</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize" title="gimp_memsize_deserialize ()">gimp_memsize_deserialize</a>            (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *string</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> *memsize</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-to-string" title="gimp_memsize_to_string ()">gimp_memsize_to_string</a>              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> memsize</code></em>);
+#define             <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS" title="GIMP_TYPE_MEMSIZE">GIMP_TYPE_MEMSIZE</a>
+#define             <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-TYPE-PARAM-MEMSIZE:CAPS" title="GIMP_TYPE_PARAM_MEMSIZE">GIMP_TYPE_PARAM_MEMSIZE</a>
+#define             <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS" title="GIMP_IS_PARAM_SPEC_MEMSIZE()">GIMP_IS_PARAM_SPEC_MEMSIZE</a>          (pspec)
+<a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"><span class="returnvalue">GParamSpec</span></a> *        <a class="link" href="libgimpbase-gimpmemsize.html#gimp-param-spec-memsize" title="gimp_param_spec_memsize ()">gimp_param_spec_memsize</a>             (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *nick</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *blurb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> maximum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> default_value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a> flags</code></em>);
+#define             <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-VALUE-HOLDS-MEMSIZE:CAPS" title="GIMP_VALUE_HOLDS_MEMSIZE()">GIMP_VALUE_HOLDS_MEMSIZE</a>            (value)
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -101,26 +64,19 @@ Functions to (de)serialize a given memory size.
 <a name="libgimpbase-gimpmemsize.details"></a><h2>Details</h2>
 <div class="refsect2" title="gimp_memsize_serialize ()">
 <a name="gimp-memsize-serialize"></a><h3>gimp_memsize_serialize ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             gimp_memsize_serialize              (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> memsize);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_memsize_serialize              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> memsize</code></em>);</pre>
 <p>
 Creates a string representation of a given memory size. This string
 can be parsed by <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize" title="gimp_memsize_deserialize ()"><code class="function">gimp_memsize_deserialize()</code></a> and can thus be used in
 config files. It should not be displayed to the user. If you need a
-nice human-readable string please use <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Miscellaneous-Utility-Functions.html#g-format-size-for-display"
-><code class="function">g_format_size_for_display()</code></a>.</p>
-<p>
+nice human-readable string please use <a href="/usr/share/gtk-doc/html/glib/glib-Miscellaneous-Utility-Functions.html#g-format-size-for-display"><code class="function">g_format_size_for_display()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>memsize</code></em> :</span></p></td>
-<td> memory size in bytes
+<td>memory size in bytes
 </td>
 </tr>
 <tr>
@@ -136,36 +92,29 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Miscellaneous-Utility-Fu
 <hr>
 <div class="refsect2" title="gimp_memsize_deserialize ()">
 <a name="gimp-memsize-deserialize"></a><h3>gimp_memsize_deserialize ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_memsize_deserialize            (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *string,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> *memsize);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_memsize_deserialize            (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *string</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> *memsize</code></em>);</pre>
 <p>
 Parses a string representation of a memory size as returned by
-<a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize" title="gimp_memsize_serialize ()"><code class="function">gimp_memsize_serialize()</code></a>.</p>
-<p>
+<a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize" title="gimp_memsize_serialize ()"><code class="function">gimp_memsize_serialize()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>string</code></em> :</span></p></td>
-<td>  a string as returned by <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize" title="gimp_memsize_serialize ()"><code class="function">gimp_memsize_serialize()</code></a>
+<td>a string as returned by <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize" title="gimp_memsize_serialize ()"><code class="function">gimp_memsize_serialize()</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>memsize</code></em> :</span></p></td>
-<td> return location for memory size in bytes
+<td>return location for memory size in bytes
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <code class="literal">TRUE</code> if the <em class="parameter"><code>string</code></em> was successfully parsed and
-              <em class="parameter"><code>memsize</code></em> has been set, <code class="literal">FALSE</code> otherwise.
+<td> <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>string</code></em> was successfully parsed and
+              <em class="parameter"><code>memsize</code></em> has been set, <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.
 
 </td>
 </tr>
@@ -176,27 +125,20 @@ Parses a string representation of a memory size as returned by
 <hr>
 <div class="refsect2" title="gimp_memsize_to_string ()">
 <a name="gimp-memsize-to-string"></a><h3>gimp_memsize_to_string ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *             gimp_memsize_to_string              (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> memsize);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             gimp_memsize_to_string              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> memsize</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_memsize_to_string</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-This function is deprecated! Use <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Miscellaneous-Utility-Functions.html#g-format-size-for-display"
-><code class="function">g_format_size_for_display()</code></a> instead.</p>
-<p>
+This function is deprecated! Use <a href="/usr/share/gtk-doc/html/glib/glib-Miscellaneous-Utility-Functions.html#g-format-size-for-display"><code class="function">g_format_size_for_display()</code></a> instead.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>memsize</code></em> :</span></p></td>
-<td> A memory size in bytes.
+<td>A memory size in bytes.
 </td>
 </tr>
 <tr>
@@ -209,18 +151,16 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Miscellaneous-Utility-Fu
 </div>
 <hr>
 <div class="refsect2" title="GIMP_TYPE_MEMSIZE">
-<a name="GIMP-TYPE-MEMSIZE--CAPS"></a><h3>GIMP_TYPE_MEMSIZE</h3>
+<a name="GIMP-TYPE-MEMSIZE:CAPS"></a><h3>GIMP_TYPE_MEMSIZE</h3>
 <pre class="programlisting">#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
 </pre>
 <p>
-<a class="link" href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE--CAPS" title="GIMP_TYPE_MEMSIZE"><span class="type">GIMP_TYPE_MEMSIZE</span></a> is a <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"
-><span class="type">GType</span></a> derived from <span class="type">G_TYPE_UINT64</span>.
+<a class="link" href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS" title="GIMP_TYPE_MEMSIZE"><span class="type">GIMP_TYPE_MEMSIZE</span></a> is a <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> derived from <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#G-TYPE-UINT64:CAPS"><span class="type">G_TYPE_UINT64</span></a>.
 </p>
 </div>
 <hr>
 <div class="refsect2" title="GIMP_TYPE_PARAM_MEMSIZE">
-<a name="GIMP-TYPE-PARAM-MEMSIZE--CAPS"></a><h3>GIMP_TYPE_PARAM_MEMSIZE</h3>
+<a name="GIMP-TYPE-PARAM-MEMSIZE:CAPS"></a><h3>GIMP_TYPE_PARAM_MEMSIZE</h3>
 <pre class="programlisting">#define GIMP_TYPE_PARAM_MEMSIZE           (gimp_param_memsize_get_type ())
 </pre>
 <p>
@@ -228,7 +168,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 </div>
 <hr>
 <div class="refsect2" title="GIMP_IS_PARAM_SPEC_MEMSIZE()">
-<a name="GIMP-IS-PARAM-SPEC-MEMSIZE--CAPS"></a><h3>GIMP_IS_PARAM_SPEC_MEMSIZE()</h3>
+<a name="GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS"></a><h3>GIMP_IS_PARAM_SPEC_MEMSIZE()</h3>
 <pre class="programlisting">#define GIMP_IS_PARAM_SPEC_MEMSIZE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MEMSIZE))
 </pre>
 <p>
@@ -245,81 +185,58 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 <hr>
 <div class="refsect2" title="gimp_param_spec_memsize ()">
 <a name="gimp-param-spec-memsize"></a><h3>gimp_param_spec_memsize ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"
->GParamSpec</a> *        gimp_param_spec_memsize             (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *nick,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *blurb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> maximum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"
->guint64</a> default_value,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamFlags"
->GParamFlags</a> flags);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"><span class="returnvalue">GParamSpec</span></a> *        gimp_param_spec_memsize             (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *nick</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *blurb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> maximum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint64"><span class="type">guint64</span></a> default_value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a> flags</code></em>);</pre>
 <p>
 Creates a param spec to hold a memory size value.
-See <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#g-param-spec-internal"
-><code class="function">g_param_spec_internal()</code></a> for more information.</p>
-<p>
+See <a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#g-param-spec-internal"><code class="function">g_param_spec_internal()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
-<td>          Canonical name of the param
+<td>Canonical name of the param
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>nick</code></em> :</span></p></td>
-<td>          Nickname of the param
+<td>Nickname of the param
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blurb</code></em> :</span></p></td>
-<td>         Brief desciption of param.
+<td>Brief desciption of param.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>minimum</code></em> :</span></p></td>
-<td>       Smallest allowed value of the parameter.
+<td>Smallest allowed value of the parameter.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>maximum</code></em> :</span></p></td>
-<td>       Largest allowed value of the parameter.
+<td>Largest allowed value of the parameter.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>default_value</code></em> :</span></p></td>
-<td> Value to use if none is assigned.
+<td>Value to use if none is assigned.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
-<td>         a combination of <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamFlags"
-><span class="type">GParamFlags</span></a>
+<td>a combination of <a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"><span class="type">GParamFlags</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a newly allocated <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GParamSpec"
-><span class="type">GParamSpec</span></a> instance
+<td> a newly allocated <a href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"><span class="type">GParamSpec</span></a> instance
 
 </td>
 </tr>
@@ -329,7 +246,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 </div>
 <hr>
 <div class="refsect2" title="GIMP_VALUE_HOLDS_MEMSIZE()">
-<a name="GIMP-VALUE-HOLDS-MEMSIZE--CAPS"></a><h3>GIMP_VALUE_HOLDS_MEMSIZE()</h3>
+<a name="GIMP-VALUE-HOLDS-MEMSIZE:CAPS"></a><h3>GIMP_VALUE_HOLDS_MEMSIZE()</h3>
 <pre class="programlisting">#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
 </pre>
 <p>
@@ -347,6 +264,6 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-GParamSpec.html#GP
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

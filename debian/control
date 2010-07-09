@@ -38,7 +38,7 @@ Provides: gimp-helpbrowser, gimp-python
 Depends: libgimp2.0 (>= ${source:Upstream-Version}), libgimp2.0 (<= ${source:Upstream-Version}-z), gimp-data (>= ${source:Upstream-Version}), gimp-data (<= ${source:Upstream-Version}-z), python-gtk2 (>= 2.8.0), ${shlibs:Depends}, ${python:Depends}
 Conflicts: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg, gimp-print (<= 5.0.1-3), gimp-help (<< 2+0.13-1), gimp-helpbrowser, gimp-python (<< 2.6.0), gimp-gnomevfs (<< 2.6.0), gimp-libcurl (<< 2.6.0)
 Replaces: gimp-data (<< 2.3.17-2), gimp-wget (<< 2.3.12-1), libgimp-perl (<= 2.0.dfsg+2.2pre1.dfsg-2), gimp-svg, gimp-print (<= 5.0.1-3), gimp-helpbrowser, gimp-python (<< 2.6.0), gimp-gnomevfs (<< 2.6.0), gimp-libcurl (<< 2.6.0)
-Suggests: gimp-help-en | gimp-help, libgimp-perl, gimp-data-extras, gvfs-backends, libasound2, ghostscript
+Suggests: gimp-help-en | gimp-help, gimp-data-extras, gvfs-backends, libasound2, ghostscript
 Description: The GNU Image Manipulation Program
  GIMP lets you draw, paint, edit images, and much more! GIMP
  includes the functionality and plug-ins of other famous image

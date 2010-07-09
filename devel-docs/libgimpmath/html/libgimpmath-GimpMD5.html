@@ -8,14 +8,8 @@
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath-GimpVector.html" title="GimpVector">
 <link rel="next" href="libgimpmath-index.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpmath.html" title="Part I. GIMP Math Library">
-<link rel="index" href="libgimpmath-index.html" title="Index">
-<link rel="index" href="libgimpmath-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpmath-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpmath-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpmath-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpmath-GimpMD5.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimpmath-GimpMD5.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimpmath-GimpMD5.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpMD5">
@@ -43,16 +37,9 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpmath-GimpMD5.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-void                <a class="link" href="libgimpmath-GimpMD5.html#gimp-md5-get-digest" title="gimp_md5_get_digest ()">gimp_md5_get_digest</a>                 (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *buffer,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> buffer_size,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
->guchar</a> digest[16]);
+<pre class="synopsis"><span class="returnvalue">void</span>                <a class="link" href="libgimpmath-GimpMD5.html#gimp-md5-get-digest" title="gimp_md5_get_digest ()">gimp_md5_get_digest</a>                 (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> buffer_size</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> digest[16]</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -64,41 +51,32 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
 <a name="libgimpmath-GimpMD5.details"></a><h2>Details</h2>
 <div class="refsect2" title="gimp_md5_get_digest ()">
 <a name="gimp-md5-get-digest"></a><h3>gimp_md5_get_digest ()</h3>
-<pre class="programlisting">void                gimp_md5_get_digest                 (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *buffer,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> buffer_size,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
->guchar</a> digest[16]);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_md5_get_digest                 (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> buffer_size</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> digest[16]</code></em>);</pre>
 <p>
-This function is deprecated! Use <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Data-Checksums.html#GChecksum"
-><code class="literal">GChecksum</code></a> from GLib instead.
+This function is deprecated! Use <a href="/usr/share/gtk-doc/html/glib/glib-Data-Checksums.html#GChecksum"><code class="literal">GChecksum</code></a> from GLib instead.
 </p>
 <p>
 Get the md5 hash of a buffer. The result is put in the 16 bytes
-buffer <em class="parameter"><code>digest</code></em>. For more information see RFC 1321.</p>
-<p>
+buffer <em class="parameter"><code>digest</code></em>. For more information see RFC 1321.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
-<td>      byte buffer
+<td>byte buffer
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buffer_size</code></em> :</span></p></td>
-<td> buffer size (in bytes) or -1 if <em class="parameter"><code>buffer</code></em> is nul-terminated.
+<td>buffer size (in bytes) or -1 if <em class="parameter"><code>buffer</code></em> is nul-terminated.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>digest</code></em> :</span></p></td>
-<td>      16 bytes buffer receiving the hash code.
+<td>16 bytes buffer receiving the hash code.
 </td>
 </tr>
 </tbody>
@@ -108,6 +86,6 @@ buffer <em class="parameter"><code>digest</code></em>. For more information see 
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

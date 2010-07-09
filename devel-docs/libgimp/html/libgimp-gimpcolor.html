@@ -8,20 +8,8 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpchannel.html" title="gimpchannel">
 <link rel="next" href="libgimp-gimpconvert.html" title="gimpconvert">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
-<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
-<link rel="chapter" href="libgimp-data.html" title="Data Objects">
-<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
-<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="libgimp-index.html" title="Index">
-<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -34,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimp-gimpcolor.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimp-gimpcolor.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimp-gimpcolor.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="gimpcolor">
@@ -49,197 +37,62 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpcolor.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-brightness-contrast" title="gimp_brightness_contrast ()">gimp_brightness_contrast</a>            (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> brightness,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> contrast);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-levels" title="gimp_levels ()">gimp_levels</a>                         (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> low_input,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> high_input,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> gamma,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> low_output,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> high_output);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-levels-auto" title="gimp_levels_auto ()">gimp_levels_auto</a>                    (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-levels-stretch" title="gimp_levels_stretch ()">gimp_levels_stretch</a>                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-posterize" title="gimp_posterize ()">gimp_posterize</a>                      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> levels);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-desaturate" title="gimp_desaturate ()">gimp_desaturate</a>                     (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-desaturate-full" title="gimp_desaturate_full ()">gimp_desaturate_full</a>                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"
->GimpDesaturateMode</a> desaturate_mode);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-equalize" title="gimp_equalize ()">gimp_equalize</a>                       (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> mask_only);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-invert" title="gimp_invert ()">gimp_invert</a>                         (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-curves-spline" title="gimp_curves_spline ()">gimp_curves_spline</a>                  (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> num_points,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
->guint8</a> *control_pts);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-curves-explicit" title="gimp_curves_explicit ()">gimp_curves_explicit</a>                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> num_bytes,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
->guint8</a> *curve);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-color-balance" title="gimp_color_balance ()">gimp_color_balance</a>                  (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"
->GimpTransferMode</a> transfer_mode,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> preserve_lum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> cyan_red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> magenta_green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> yellow_blue);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-colorize" title="gimp_colorize ()">gimp_colorize</a>                       (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lightness);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-histogram" title="gimp_histogram ()">gimp_histogram</a>                      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> start_range,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> end_range,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *mean,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *std_dev,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *median,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *pixels,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *count,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *percentile);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-hue-saturation" title="gimp_hue_saturation ()">gimp_hue_saturation</a>                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHueRange" title="enum GimpHueRange">GimpHueRange</a> hue_range,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> hue_offset,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lightness,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> saturation);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcolor.html#gimp-threshold" title="gimp_threshold ()">gimp_threshold</a>                      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> low_threshold,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> high_threshold);
+<pre class="synopsis"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-brightness-contrast" title="gimp_brightness_contrast ()">gimp_brightness_contrast</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> brightness</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> contrast</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-levels" title="gimp_levels ()">gimp_levels</a>                         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel"><span class="type">GimpHistogramChannel</span></a> channel</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> low_input</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> high_input</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> gamma</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> low_output</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> high_output</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-levels-auto" title="gimp_levels_auto ()">gimp_levels_auto</a>                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-levels-stretch" title="gimp_levels_stretch ()">gimp_levels_stretch</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-posterize" title="gimp_posterize ()">gimp_posterize</a>                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> levels</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-desaturate" title="gimp_desaturate ()">gimp_desaturate</a>                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-desaturate-full" title="gimp_desaturate_full ()">gimp_desaturate_full</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"><span class="type">GimpDesaturateMode</span></a> desaturate_mode</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-equalize" title="gimp_equalize ()">gimp_equalize</a>                       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> mask_only</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-invert" title="gimp_invert ()">gimp_invert</a>                         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-curves-spline" title="gimp_curves_spline ()">gimp_curves_spline</a>                  (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel"><span class="type">GimpHistogramChannel</span></a> channel</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> num_points</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *control_pts</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-curves-explicit" title="gimp_curves_explicit ()">gimp_curves_explicit</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel"><span class="type">GimpHistogramChannel</span></a> channel</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> num_bytes</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *curve</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-color-balance" title="gimp_color_balance ()">gimp_color_balance</a>                  (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"><span class="type">GimpTransferMode</span></a> transfer_mode</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> preserve_lum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> cyan_red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> magenta_green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yellow_blue</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-colorize" title="gimp_colorize ()">gimp_colorize</a>                       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lightness</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-histogram" title="gimp_histogram ()">gimp_histogram</a>                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel"><span class="type">GimpHistogramChannel</span></a> channel</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start_range</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> end_range</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *mean</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *std_dev</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *median</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *pixels</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *count</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *percentile</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-hue-saturation" title="gimp_hue_saturation ()">gimp_hue_saturation</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHueRange" title="enum GimpHueRange"><span class="type">GimpHueRange</span></a> hue_range</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue_offset</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lightness</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpcolor.html#gimp-threshold" title="gimp_threshold ()">gimp_threshold</a>                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> low_threshold</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> high_threshold</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -252,42 +105,33 @@ Functions for manipulating color, including curves and histograms.
 <a name="libgimp-gimpcolor.details"></a><h2>Details</h2>
 <div class="refsect2" title="gimp_brightness_contrast ()">
 <a name="gimp-brightness-contrast"></a><h3>gimp_brightness_contrast ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_brightness_contrast            (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> brightness,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> contrast);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_brightness_contrast            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> brightness</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> contrast</code></em>);</pre>
 <p>
 Modify brightness/contrast in the specified drawable.
 </p>
 <p>
 This procedures allows the brightness and contrast of the specified
 drawable to be modified. Both 'brightness' and 'contrast' parameters
-are defined between -127 and 127.</p>
-<p>
+are defined between -127 and 127.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>brightness</code></em> :</span></p></td>
-<td> Brightness adjustment.
+<td>Brightness adjustment.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>contrast</code></em> :</span></p></td>
-<td> Contrast adjustment.
+<td>Contrast adjustment.
 </td>
 </tr>
 <tr>
@@ -301,27 +145,13 @@ are defined between -127 and 127.</p>
 <hr>
 <div class="refsect2" title="gimp_levels ()">
 <a name="gimp-levels"></a><h3>gimp_levels ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_levels                         (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> low_input,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> high_input,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> gamma,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> low_output,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> high_output);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_levels                         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel"><span class="type">GimpHistogramChannel</span></a> channel</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> low_input</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> high_input</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> gamma</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> low_output</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> high_output</code></em>);</pre>
 <p>
 Modifies intensity levels in the specified drawable.
 </p>
@@ -337,45 +167,44 @@ intensities. The low/high output levels constrain the final
 intensity mapping--that is, no final intensity will be lower than
 the low output level and no final intensity will be higher than the
 high output level. This tool is only valid on RGB color and
-grayscale images. It will not operate on indexed drawables.</p>
-<p>
+grayscale images. It will not operate on indexed drawables.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>channel</code></em> :</span></p></td>
-<td> The channel to modify.
+<td>The channel to modify.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>low_input</code></em> :</span></p></td>
-<td> Intensity of lowest input.
+<td>Intensity of lowest input.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>high_input</code></em> :</span></p></td>
-<td> Intensity of highest input.
+<td>Intensity of highest input.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>gamma</code></em> :</span></p></td>
-<td> Gamma correction factor.
+<td>Gamma correction factor.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>low_output</code></em> :</span></p></td>
-<td> Intensity of lowest output.
+<td>Intensity of lowest output.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>high_output</code></em> :</span></p></td>
-<td> Intensity of highest output.
+<td>Intensity of highest output.
 </td>
 </tr>
 <tr>
@@ -389,25 +218,20 @@ grayscale images. It will not operate on indexed drawables.</p>
 <hr>
 <div class="refsect2" title="gimp_levels_auto ()">
 <a name="gimp-levels-auto"></a><h3>gimp_levels_auto ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_levels_auto                    (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_levels_auto                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
 <div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_levels_auto</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-This procedure is deprecated! Use <a class="link" href="libgimp-gimpcolor.html#gimp-levels-stretch" title="gimp_levels_stretch ()"><code class="function">gimp_levels_stretch()</code></a> instead.</p>
-<p>
+This procedure is deprecated! Use <a class="link" href="libgimp-gimpcolor.html#gimp-levels-stretch" title="gimp_levels_stretch ()"><code class="function">gimp_levels_stretch()</code></a> instead.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
@@ -421,11 +245,7 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcolor.html#g
 <hr>
 <div class="refsect2" title="gimp_levels_stretch ()">
 <a name="gimp-levels-stretch"></a><h3>gimp_levels_stretch ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_levels_stretch                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_levels_stretch                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
 <p>
 Automatically modifies intensity levels in the specified drawable.
 </p>
@@ -434,15 +254,14 @@ This procedure allows intensity levels in the specified drawable to
 be remapped according to a set of guessed parameters. It is
 equivalent to clicking the \"Auto\" button in the Levels tool. This
 procedure is only valid on RGB color and grayscale images. It will
-not operate on indexed drawables.</p>
-<p>
+not operate on indexed drawables.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
@@ -456,33 +275,26 @@ not operate on indexed drawables.</p>
 <hr>
 <div class="refsect2" title="gimp_posterize ()">
 <a name="gimp-posterize"></a><h3>gimp_posterize ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_posterize                      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> levels);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_posterize                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> levels</code></em>);</pre>
 <p>
 Posterize the specified drawable.
 </p>
 <p>
 This procedures reduces the number of shades allows in each
-intensity channel to the specified 'levels' parameter.</p>
-<p>
+intensity channel to the specified 'levels' parameter.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>levels</code></em> :</span></p></td>
-<td> Levels of posterization.
+<td>Levels of posterization.
 </td>
 </tr>
 <tr>
@@ -496,25 +308,20 @@ intensity channel to the specified 'levels' parameter.</p>
 <hr>
 <div class="refsect2" title="gimp_desaturate ()">
 <a name="gimp-desaturate"></a><h3>gimp_desaturate ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_desaturate                     (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_desaturate                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
 <p>
 Desaturate the contents of the specified drawable.
 </p>
 <p>
 This procedure desaturates the contents of the specified drawable.
-This procedure only works on drawables of type RGB color.</p>
-<p>
+This procedure only works on drawables of type RGB color.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
@@ -528,14 +335,8 @@ This procedure only works on drawables of type RGB color.</p>
 <hr>
 <div class="refsect2" title="gimp_desaturate_full ()">
 <a name="gimp-desaturate-full"></a><h3>gimp_desaturate_full ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_desaturate_full                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"
->GimpDesaturateMode</a> desaturate_mode);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_desaturate_full                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDesaturateMode"><span class="type">GimpDesaturateMode</span></a> desaturate_mode</code></em>);</pre>
 <p>
 Desaturate the contents of the specified drawable, with the
 specified formula.
@@ -543,20 +344,19 @@ specified formula.
 <p>
 This procedure desaturates the contents of the specified drawable,
 with the specified formula. This procedure only works on drawables
-of type RGB color.</p>
-<p>
+of type RGB color.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>desaturate_mode</code></em> :</span></p></td>
-<td> The formula to use to desaturate.
+<td>The formula to use to desaturate.
 </td>
 </tr>
 <tr>
@@ -572,14 +372,8 @@ of type RGB color.</p>
 <hr>
 <div class="refsect2" title="gimp_equalize ()">
 <a name="gimp-equalize"></a><h3>gimp_equalize ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_equalize                       (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> mask_only);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_equalize                       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> mask_only</code></em>);</pre>
 <p>
 Equalize the contents of the specified drawable.
 </p>
@@ -591,20 +385,19 @@ drawables are not valid for this operation. The 'mask_only' option
 specifies whether to adjust only the area of the image within the
 selection bounds, or the entire image based on the histogram of the
 selected area. If there is no selection, the entire image is
-adjusted based on the histogram for the entire image.</p>
-<p>
+adjusted based on the histogram for the entire image.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mask_only</code></em> :</span></p></td>
-<td> Equalization option.
+<td>Equalization option.
 </td>
 </tr>
 <tr>
@@ -618,11 +411,7 @@ adjusted based on the histogram for the entire image.</p>
 <hr>
 <div class="refsect2" title="gimp_invert ()">
 <a name="gimp-invert"></a><h3>gimp_invert ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_invert                         (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_invert                         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>);</pre>
 <p>
 Invert the contents of the specified drawable.
 </p>
@@ -630,15 +419,14 @@ Invert the contents of the specified drawable.
 This procedure inverts the contents of the specified drawable. Each
 intensity channel is inverted independently. The inverted intensity
 is given as inten' = (255 - inten). Indexed color drawables are not
-valid for this operation.</p>
-<p>
+valid for this operation.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
@@ -652,18 +440,10 @@ valid for this operation.</p>
 <hr>
 <div class="refsect2" title="gimp_curves_spline ()">
 <a name="gimp-curves-spline"></a><h3>gimp_curves_spline ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_curves_spline                  (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> num_points,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
->guint8</a> *control_pts);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_curves_spline                  (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel"><span class="type">GimpHistogramChannel</span></a> channel</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> num_points</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *control_pts</code></em>);</pre>
 <p>
 Modifies the intensity curve(s) for specified drawable.
 </p>
@@ -674,30 +454,29 @@ channel can be either an intensity component, or the value. The
 'control_pts' parameter is an array of integers which define a set
 of control points which describe a Catmull Rom spline which yields
 the final intensity curve. Use the <a class="link" href="libgimp-gimpcolor.html#gimp-curves-explicit" title="gimp_curves_explicit ()"><code class="function">gimp_curves_explicit()</code></a> function
-to explicitly modify intensity levels.</p>
-<p>
+to explicitly modify intensity levels.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>channel</code></em> :</span></p></td>
-<td> The channel to modify.
+<td>The channel to modify.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>num_points</code></em> :</span></p></td>
-<td> The number of values in the control point array.
+<td>The number of values in the control point array.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>control_pts</code></em> :</span></p></td>
-<td> The spline control points: { cp1.x, cp1.y, cp2.x, cp2.y, ... }.
+<td>The spline control points: { cp1.x, cp1.y, cp2.x, cp2.y, ... }.
 </td>
 </tr>
 <tr>
@@ -711,18 +490,10 @@ to explicitly modify intensity levels.</p>
 <hr>
 <div class="refsect2" title="gimp_curves_explicit ()">
 <a name="gimp-curves-explicit"></a><h3>gimp_curves_explicit ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_curves_explicit                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> num_bytes,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
->guint8</a> *curve);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_curves_explicit                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel"><span class="type">GimpHistogramChannel</span></a> channel</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> num_bytes</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *curve</code></em>);</pre>
 <p>
 Modifies the intensity curve(s) for specified drawable.
 </p>
@@ -733,30 +504,29 @@ channel can be either an intensity component, or the value. The
 'curve' parameter is an array of bytes which explicitly defines how
 each pixel value in the drawable will be modified. Use the
 <a class="link" href="libgimp-gimpcolor.html#gimp-curves-spline" title="gimp_curves_spline ()"><code class="function">gimp_curves_spline()</code></a> function to modify intensity levels with
-Catmull Rom splines.</p>
-<p>
+Catmull Rom splines.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>channel</code></em> :</span></p></td>
-<td> The channel to modify.
+<td>The channel to modify.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>num_bytes</code></em> :</span></p></td>
-<td> The number of bytes in the new curve (always 256).
+<td>The number of bytes in the new curve (always 256).
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>curve</code></em> :</span></p></td>
-<td> The explicit curve.
+<td>The explicit curve.
 </td>
 </tr>
 <tr>
@@ -770,26 +540,12 @@ Catmull Rom splines.</p>
 <hr>
 <div class="refsect2" title="gimp_color_balance ()">
 <a name="gimp-color-balance"></a><h3>gimp_color_balance ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_color_balance                  (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"
->GimpTransferMode</a> transfer_mode,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> preserve_lum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> cyan_red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> magenta_green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> yellow_blue);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_color_balance                  (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"><span class="type">GimpTransferMode</span></a> transfer_mode</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> preserve_lum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> cyan_red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> magenta_green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yellow_blue</code></em>);</pre>
 <p>
 Modify the color balance of the specified drawable.
 </p>
@@ -801,40 +557,39 @@ positive values increase the amount of the latter. Color balance can
 be controlled with the 'transfer_mode' setting, which allows
 shadows, mid-tones, and highlights in an image to be affected
 differently. The 'preserve-lum' parameter, if TRUE, ensures that the
-luminosity of each pixel remains fixed.</p>
-<p>
+luminosity of each pixel remains fixed.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>transfer_mode</code></em> :</span></p></td>
-<td> Transfer mode.
+<td>Transfer mode.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>preserve_lum</code></em> :</span></p></td>
-<td> Preserve luminosity values at each pixel.
+<td>Preserve luminosity values at each pixel.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cyan_red</code></em> :</span></p></td>
-<td> Cyan-Red color balance.
+<td>Cyan-Red color balance.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>magenta_green</code></em> :</span></p></td>
-<td> Magenta-Green color balance.
+<td>Magenta-Green color balance.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>yellow_blue</code></em> :</span></p></td>
-<td> Yellow-Blue color balance.
+<td>Yellow-Blue color balance.
 </td>
 </tr>
 <tr>
@@ -848,20 +603,10 @@ luminosity of each pixel remains fixed.</p>
 <hr>
 <div class="refsect2" title="gimp_colorize ()">
 <a name="gimp-colorize"></a><h3>gimp_colorize ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_colorize                       (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lightness);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_colorize                       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lightness</code></em>);</pre>
 <p>
 Render the drawable as a grayscale image seen through a colored
 glass.
@@ -869,30 +614,29 @@ glass.
 <p>
 Desaturates the drawable, then tints it with the specified color.
 This tool is only valid on RGB color images. It will not operate on
-grayscale or indexed drawables.</p>
-<p>
+grayscale or indexed drawables.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
-<td> Hue in degrees.
+<td>Hue in degrees.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>saturation</code></em> :</span></p></td>
-<td> Saturation in percent.
+<td>Saturation in percent.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lightness</code></em> :</span></p></td>
-<td> Lightness in percent.
+<td>Lightness in percent.
 </td>
 </tr>
 <tr>
@@ -908,36 +652,16 @@ grayscale or indexed drawables.</p>
 <hr>
 <div class="refsect2" title="gimp_histogram ()">
 <a name="gimp-histogram"></a><h3>gimp_histogram ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_histogram                      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel">GimpHistogramChannel</a> channel,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> start_range,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> end_range,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *mean,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *std_dev,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *median,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *pixels,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *count,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *percentile);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_histogram                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHistogramChannel" title="enum GimpHistogramChannel"><span class="type">GimpHistogramChannel</span></a> channel</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> start_range</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> end_range</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *mean</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *std_dev</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *median</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *pixels</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *count</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *percentile</code></em>);</pre>
 <p>
 Returns information on the intensity histogram for the specified
 drawable.
@@ -955,60 +679,59 @@ returned. Additionally, the total count of pixels in the image is
 returned. Counts of pixels are weighted by any associated alpha
 values and by the current selection mask. That is, pixels that lie
 outside an active selection mask will not be counted. Similarly,
-pixels with transparent alpha values will not be counted.</p>
-<p>
+pixels with transparent alpha values will not be counted.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>channel</code></em> :</span></p></td>
-<td> The channel to modify.
+<td>The channel to modify.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>start_range</code></em> :</span></p></td>
-<td> Start of the intensity measurement range.
+<td>Start of the intensity measurement range.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>end_range</code></em> :</span></p></td>
-<td> End of the intensity measurement range.
+<td>End of the intensity measurement range.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mean</code></em> :</span></p></td>
-<td> Mean intensity value.
+<td>Mean intensity value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>std_dev</code></em> :</span></p></td>
-<td> Standard deviation of intensity values.
+<td>Standard deviation of intensity values.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>median</code></em> :</span></p></td>
-<td> Median intensity value.
+<td>Median intensity value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pixels</code></em> :</span></p></td>
-<td> Alpha-weighted pixel count for entire image.
+<td>Alpha-weighted pixel count for entire image.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
-<td> Alpha-weighted pixel count for range.
+<td>Alpha-weighted pixel count for range.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>percentile</code></em> :</span></p></td>
-<td> Percentile that range falls under.
+<td>Percentile that range falls under.
 </td>
 </tr>
 <tr>
@@ -1022,56 +745,45 @@ pixels with transparent alpha values will not be counted.</p>
 <hr>
 <div class="refsect2" title="gimp_hue_saturation ()">
 <a name="gimp-hue-saturation"></a><h3>gimp_hue_saturation ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_hue_saturation                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpHueRange" title="enum GimpHueRange">GimpHueRange</a> hue_range,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> hue_offset,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lightness,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> saturation);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_hue_saturation                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimp-gimpenums.html#GimpHueRange" title="enum GimpHueRange"><span class="type">GimpHueRange</span></a> hue_range</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue_offset</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lightness</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>);</pre>
 <p>
 Modify hue, lightness, and saturation in the specified drawable.
 </p>
 <p>
 This procedures allows the hue, lightness, and saturation in the
 specified drawable to be modified. The 'hue-range' parameter
-provides the capability to limit range of affected hues.</p>
-<p>
+provides the capability to limit range of affected hues.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue_range</code></em> :</span></p></td>
-<td> Range of affected hues.
+<td>Range of affected hues.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue_offset</code></em> :</span></p></td>
-<td> Hue offset in degrees.
+<td>Hue offset in degrees.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lightness</code></em> :</span></p></td>
-<td> Lightness modification.
+<td>Lightness modification.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>saturation</code></em> :</span></p></td>
-<td> Saturation modification.
+<td>Saturation modification.
 </td>
 </tr>
 <tr>
@@ -1085,17 +797,9 @@ provides the capability to limit range of affected hues.</p>
 <hr>
 <div class="refsect2" title="gimp_threshold ()">
 <a name="gimp-threshold"></a><h3>gimp_threshold ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_threshold                      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> low_threshold,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> high_threshold);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_threshold                      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"><span class="type">gint32</span></a> drawable_ID</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> low_threshold</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> high_threshold</code></em>);</pre>
 <p>
 Threshold the specified drawable.
 </p>
@@ -1103,25 +807,24 @@ Threshold the specified drawable.
 This procedures generates a threshold map of the specified drawable.
 All pixels between the values of 'low_threshold' and
 'high_threshold' are replaced with white, and all other pixels with
-black.</p>
-<p>
+black.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The drawable.
+<td>The drawable.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>low_threshold</code></em> :</span></p></td>
-<td> The low threshold value.
+<td>The low threshold value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>high_threshold</code></em> :</span></p></td>
-<td> The high threshold value.
+<td>The high threshold value.
 </td>
 </tr>
 <tr>
@@ -1136,6 +839,6 @@ black.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

@@ -8,22 +8,8 @@
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpEnumComboBox.html" title="GimpEnumComboBox">
 <link rel="next" href="GimpFileEntry.html" title="GimpFileEntry">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
-<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
-<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
-<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
-<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
-<link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
-<link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
-<link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
-<link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
-<link rel="index" href="libgimpwidgets-index.html" title="Index">
-<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpwidgets-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -36,12 +22,12 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#GimpEnumLabel.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#GimpEnumLabel.description" class="shortcut">Description</a>
-                 | 
-                <a href="#GimpEnumLabel.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                 | 
-                <a href="#GimpEnumLabel.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#GimpEnumLabel.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#GimpEnumLabel.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#GimpEnumLabel.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpEnumLabel">
@@ -55,43 +41,22 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpEnumLabel.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-                    <a class="link" href="GimpEnumLabel.html#GimpEnumLabel-struct" title="GimpEnumLabel">GimpEnumLabel</a>;
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="GimpEnumLabel.html#gimp-enum-label-new" title="gimp_enum_label_new ()">gimp_enum_label_new</a>                 (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"
->GType</a> enum_type,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> value);
-void                <a class="link" href="GimpEnumLabel.html#gimp-enum-label-set-value" title="gimp_enum_label_set_value ()">gimp_enum_label_set_value</a>           (<a class="link" href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> value);
+<pre class="synopsis">                    <a class="link" href="GimpEnumLabel.html#GimpEnumLabel-struct" title="GimpEnumLabel">GimpEnumLabel</a>;
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpEnumLabel.html#gimp-enum-label-new" title="gimp_enum_label_new ()">gimp_enum_label_new</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="GimpEnumLabel.html#gimp-enum-label-set-value" title="gimp_enum_label_set_value ()">gimp_enum_label_set_value</a>           (<em class="parameter"><code><a class="link" href="GimpEnumLabel.html" title="GimpEnumLabel"><span class="type">GimpEnumLabel</span></a> *label</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Object Hierarchy">
 <a name="GimpEnumLabel.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkMisc.html"
->GtkMisc</a>
-                           +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
->GtkLabel</a>
+  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
+               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
+                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkMisc.html">GtkMisc</a>
+                           +----<a href="/usr/share/gtk-doc/html/gtk/GtkLabel.html">GtkLabel</a>
                                  +----GimpEnumLabel
 </pre>
 </div>
@@ -99,9 +64,7 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
 <a name="GimpEnumLabel.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpEnumLabel implements
- <a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a> and  AtkImplementorIface.</p>
+ AtkImplementorIface and  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a>.</p>
 </div>
 <div class="refsect1" title="Description">
 <a name="GimpEnumLabel.description"></a><h2>Description</h2>
@@ -119,31 +82,14 @@ href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuild
 <hr>
 <div class="refsect2" title="gimp_enum_label_new ()">
 <a name="gimp-enum-label-new"></a><h3>gimp_enum_label_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_enum_label_new                 (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"
->GType</a> enum_type,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> value);</pre>
-<p>
-</p>
-<p>
-</p>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_enum_label_new                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> enum_type</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
-<td> the <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"
-><span class="type">GType</span></a> of an enum.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td>
+<td>the <a href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> of an enum.
 </td>
 </tr>
 <tr>
@@ -159,28 +105,15 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 <hr>
 <div class="refsect2" title="gimp_enum_label_set_value ()">
 <a name="gimp-enum-label-set-value"></a><h3>gimp_enum_label_set_value ()</h3>
-<pre class="programlisting">void                gimp_enum_label_set_value           (<a class="link" href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> value);</pre>
-<p>
-</p>
-<p>
-</p>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_enum_label_set_value           (<em class="parameter"><code><a class="link" href="GimpEnumLabel.html" title="GimpEnumLabel"><span class="type">GimpEnumLabel</span></a> *label</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>label</code></em> :</span></p></td>
-<td> a <a class="link" href="GimpEnumLabel.html" title="GimpEnumLabel"><span class="type">GimpEnumLabel</span></a>
+<td>a <a class="link" href="GimpEnumLabel.html" title="GimpEnumLabel"><span class="type">GimpEnumLabel</span></a>
 </td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 <p class="since">Since GIMP 2.4</p>
 </div>
@@ -188,6 +121,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

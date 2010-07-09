@@ -8,20 +8,8 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpgimprc.html" title="gimpgimprc">
 <link rel="next" href="libgimp-gimpmessage.html" title="gimpmessage">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
-<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
-<link rel="chapter" href="libgimp-data.html" title="Data Objects">
-<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
-<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="libgimp-index.html" title="Index">
-<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -34,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimp-gimphelp.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimp-gimphelp.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimp-gimphelp.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="gimphelp">
@@ -49,15 +37,8 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimphelp.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimphelp.html#gimp-help" title="gimp_help ()">gimp_help</a>                           (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_domain,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id);
+<pre class="synopsis"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimphelp.html#gimp-help" title="gimp_help ()">gimp_help</a>                           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_domain</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -70,14 +51,8 @@ Loading help pages using gimp_help.
 <a name="libgimp-gimphelp.details"></a><h2>Details</h2>
 <div class="refsect2" title="gimp_help ()">
 <a name="gimp-help"></a><h3>gimp_help ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_help                           (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_domain,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_help                           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_domain</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>);</pre>
 <p>
 Load a help page.
 </p>
@@ -87,20 +62,19 @@ what ever is configured as help viewer. The help page is identified
 by its domain and ID: if help_domain is NULL, we use the help_domain
 which was registered using the <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-help-register" title="gimp_plugin_help_register ()"><code class="function">gimp_plugin_help_register()</code></a>
 procedure. If help_domain is NULL and no help domain was registered,
-the help domain of the main GIMP installation is used.</p>
-<p>
+the help domain of the main GIMP installation is used.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_domain</code></em> :</span></p></td>
-<td> The help domain in which help_id is registered.
+<td>The help domain in which help_id is registered.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
-<td> The help page's ID.
+<td>The help page's ID.
 </td>
 </tr>
 <tr>
@@ -115,6 +89,6 @@ the help domain of the main GIMP installation is used.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

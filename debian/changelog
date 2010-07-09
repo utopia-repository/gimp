@@ -1,3 +1,17 @@
+gimp (2.6.10-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Ari Pollak <ari@debian.org>  Thu, 08 Jul 2010 21:31:29 -0400
+
+gimp (2.6.9-1) unstable; urgency=low
+
+  * New upstream release
+    - fixes a crash when saving PPM (Closes: #549537)
+  * Drop Suggests: libgimp-perl, since that's pretty poorly maintained
+
+ -- Ari Pollak <ari@debian.org>  Wed, 23 Jun 2010 19:54:11 -0400
+
 gimp (2.6.8-3) unstable; urgency=low
 
   * debian/patches/statusbar-progress-zoom.patch:

@@ -216,7 +216,7 @@ _wrap_gimp_browser_set_widget(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "widget", NULL };
     PyGObject *widget;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpBrowser.set_widget", kwlist, &PyGtkWidget_Type, &widget))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:Gimp.Browser.set_widget", kwlist, &PyGtkWidget_Type, &widget))
         return NULL;
     
     gimp_browser_set_widget(GIMP_BROWSER(self->obj), GTK_WIDGET(widget->obj));
@@ -231,7 +231,7 @@ _wrap_gimp_browser_show_message(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "message", NULL };
     char *message;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpBrowser.show_message", kwlist, &message))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.Browser.show_message", kwlist, &message))
         return NULL;
     
     gimp_browser_show_message(GIMP_BROWSER(self->obj), message);
@@ -326,7 +326,7 @@ _wrap_gimp_button_extended_clicked(PyGObject *self, PyObject *args, PyObject *kw
     PyObject *py_state = NULL;
     GdkModifierType state;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpButton.extended_clicked", kwlist, &py_state))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.Button.extended_clicked", kwlist, &py_state))
         return NULL;
     if (pyg_flags_get_value(GDK_TYPE_MODIFIER_TYPE, py_state, (gpointer)&state))
         return NULL;
@@ -499,7 +499,7 @@ _wrap_gimp_cell_renderer_toggle_clicked(PyGObject *self, PyObject *args, PyObjec
     PyObject *py_state = NULL;
     GdkModifierType state;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sO:GimpCellRendererToggle.clicked", kwlist, &path, &py_state))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sO:Gimp.CellRendererToggle.clicked", kwlist, &path, &py_state))
         return NULL;
     if (pyg_flags_get_value(GDK_TYPE_MODIFIER_TYPE, py_state, (gpointer)&state))
         return NULL;
@@ -601,7 +601,7 @@ _wrap_gimp_chain_button_set_active(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "active", NULL };
     int active;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpChainButton.set_active", kwlist, &active))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.ChainButton.set_active", kwlist, &active))
         return NULL;
     
     gimp_chain_button_set_active(GIMP_CHAIN_BUTTON(self->obj), active);
@@ -716,7 +716,7 @@ _wrap_gimp_color_area_set_color(PyGObject *self, PyObject *args, PyObject *kwarg
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorArea.set_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorArea.set_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -763,7 +763,7 @@ _wrap_gimp_color_area_set_type(PyGObject *self, PyObject *args, PyObject *kwargs
     PyObject *py_type = NULL;
     GimpColorAreaType type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorArea.set_type", kwlist, &py_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorArea.set_type", kwlist, &py_type))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_COLOR_AREA_TYPE, py_type, (gpointer)&type))
         return NULL;
@@ -780,7 +780,7 @@ _wrap_gimp_color_area_set_draw_border(PyGObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "draw_border", NULL };
     int draw_border;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorArea.set_draw_border", kwlist, &draw_border))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.ColorArea.set_draw_border", kwlist, &draw_border))
         return NULL;
     
     gimp_color_area_set_draw_border(GIMP_COLOR_AREA(self->obj), draw_border);
@@ -908,7 +908,7 @@ _wrap_gimp_color_button_set_color(PyGObject *self, PyObject *args, PyObject *kwa
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorButton.set_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorButton.set_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -955,7 +955,7 @@ _wrap_gimp_color_button_set_type(PyGObject *self, PyObject *args, PyObject *kwar
     PyObject *py_type = NULL;
     GimpColorAreaType type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorButton.set_type", kwlist, &py_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorButton.set_type", kwlist, &py_type))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_COLOR_AREA_TYPE, py_type, (gpointer)&type))
         return NULL;
@@ -984,7 +984,7 @@ _wrap_gimp_color_button_set_update(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "continuous", NULL };
     int continuous;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorButton.set_update", kwlist, &continuous))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.ColorButton.set_update", kwlist, &continuous))
         return NULL;
     
     gimp_color_button_set_update(GIMP_COLOR_BUTTON(self->obj), continuous);
@@ -1077,7 +1077,7 @@ _wrap_gimp_color_display_convert(PyGObject *self, PyObject *args, PyObject *kwar
     int buf_len, width, height, bpp, bpl;
     guchar *buf;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#iiii:GimpColorDisplay.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#iiii:Gimp.ColorDisplay.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
         return NULL;
     
     gimp_color_display_convert(GIMP_COLOR_DISPLAY(self->obj), buf, width, height, bpp, bpl);
@@ -1124,7 +1124,7 @@ _wrap_gimp_color_display_set_enabled(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "enabled", NULL };
     int enabled;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorDisplay.set_enabled", kwlist, &enabled))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.ColorDisplay.set_enabled", kwlist, &enabled))
         return NULL;
     
     gimp_color_display_set_enabled(GIMP_COLOR_DISPLAY(self->obj), enabled);
@@ -1260,7 +1260,7 @@ _wrap_gimp_color_display_stack_add(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "display", NULL };
     PyGObject *display;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpColorDisplayStack.add", kwlist, &PyGimpColorDisplay_Type, &display))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:Gimp.ColorDisplayStack.add", kwlist, &PyGimpColorDisplay_Type, &display))
         return NULL;
     
     gimp_color_display_stack_add(GIMP_COLOR_DISPLAY_STACK(self->obj), GIMP_COLOR_DISPLAY(display->obj));
@@ -1275,7 +1275,7 @@ _wrap_gimp_color_display_stack_remove(PyGObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "display", NULL };
     PyGObject *display;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpColorDisplayStack.remove", kwlist, &PyGimpColorDisplay_Type, &display))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:Gimp.ColorDisplayStack.remove", kwlist, &PyGimpColorDisplay_Type, &display))
         return NULL;
     
     gimp_color_display_stack_remove(GIMP_COLOR_DISPLAY_STACK(self->obj), GIMP_COLOR_DISPLAY(display->obj));
@@ -1290,7 +1290,7 @@ _wrap_gimp_color_display_stack_reorder_up(PyGObject *self, PyObject *args, PyObj
     static char *kwlist[] = { "display", NULL };
     PyGObject *display;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpColorDisplayStack.reorder_up", kwlist, &PyGimpColorDisplay_Type, &display))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:Gimp.ColorDisplayStack.reorder_up", kwlist, &PyGimpColorDisplay_Type, &display))
         return NULL;
     
     gimp_color_display_stack_reorder_up(GIMP_COLOR_DISPLAY_STACK(self->obj), GIMP_COLOR_DISPLAY(display->obj));
@@ -1305,7 +1305,7 @@ _wrap_gimp_color_display_stack_reorder_down(PyGObject *self, PyObject *args, PyO
     static char *kwlist[] = { "display", NULL };
     PyGObject *display;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpColorDisplayStack.reorder_down", kwlist, &PyGimpColorDisplay_Type, &display))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:Gimp.ColorDisplayStack.reorder_down", kwlist, &PyGimpColorDisplay_Type, &display))
         return NULL;
     
     gimp_color_display_stack_reorder_down(GIMP_COLOR_DISPLAY_STACK(self->obj), GIMP_COLOR_DISPLAY(display->obj));
@@ -1321,7 +1321,7 @@ _wrap_gimp_color_display_stack_convert(PyGObject *self, PyObject *args, PyObject
     int buf_len, width, height, bpp, bpl;
     guchar *buf;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#iiii:GimpColorDisplayStack.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#iiii:Gimp.ColorDisplayStack.convert", kwlist, &buf, &buf_len, &width, &height, &bpp, &bpl))
         return NULL;
     
     gimp_color_display_stack_convert(GIMP_COLOR_DISPLAY_STACK(self->obj), buf, width, height, bpp, bpl);
@@ -1424,7 +1424,7 @@ _wrap_gimp_color_hex_entry_set_color(PyGObject *self, PyObject *args, PyObject *
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorHexEntry.set_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorHexEntry.set_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -1545,7 +1545,7 @@ _wrap_gimp_color_profile_combo_box_add(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "filename", "label", NULL };
     char *filename, *label;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ss:GimpColorProfileComboBox.add", kwlist, &filename, &label))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ss:Gimp.ColorProfileComboBox.add", kwlist, &filename, &label))
         return NULL;
     
     gimp_color_profile_combo_box_add(GIMP_COLOR_PROFILE_COMBO_BOX(self->obj), filename, label);
@@ -1560,7 +1560,7 @@ _wrap_gimp_color_profile_combo_box_set_active(PyGObject *self, PyObject *args, P
     static char *kwlist[] = { "filename", "label", NULL };
     char *filename, *label;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ss:GimpColorProfileComboBox.set_active", kwlist, &filename, &label))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ss:Gimp.ColorProfileComboBox.set_active", kwlist, &filename, &label))
         return NULL;
     
     gimp_color_profile_combo_box_set_active(GIMP_COLOR_PROFILE_COMBO_BOX(self->obj), filename, label);
@@ -1681,7 +1681,7 @@ _wrap_gimp_color_profile_store_add(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "filename", "label", NULL };
     char *filename, *label;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ss:GimpColorProfileStore.add", kwlist, &filename, &label))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ss:Gimp.ColorProfileStore.add", kwlist, &filename, &label))
         return NULL;
     
     gimp_color_profile_store_add(GIMP_COLOR_PROFILE_STORE(self->obj), filename, label);
@@ -1793,7 +1793,7 @@ _wrap_gimp_color_scale_set_channel(PyGObject *self, PyObject *args, PyObject *kw
     GimpColorSelectorChannel channel;
     PyObject *py_channel = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorScale.set_channel", kwlist, &py_channel))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorScale.set_channel", kwlist, &py_channel))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gpointer)&channel))
         return NULL;
@@ -1812,7 +1812,7 @@ _wrap_gimp_color_scale_set_color(PyGObject *self, PyObject *args, PyObject *kwar
     GimpHSV *hsv = NULL;
     GimpRGB *rgb = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:GimpColorScale.set_color", kwlist, &py_rgb, &py_hsv))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:Gimp.ColorScale.set_color", kwlist, &py_rgb, &py_hsv))
         return NULL;
     if (pyg_boxed_check(py_rgb, GIMP_TYPE_RGB))
         rgb = pyg_boxed_get(py_rgb, GimpRGB);
@@ -1900,7 +1900,7 @@ _wrap_gimp_color_selector_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     GimpColorSelectorChannel channel;
     GimpRGB *rgb = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OOOO:GimpColorSelector.__init__", kwlist, &py_selector_type, &py_rgb, &py_hsv, &py_channel))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OOOO:Gimp.ColorSelector.__init__", kwlist, &py_selector_type, &py_rgb, &py_hsv, &py_channel))
         return -1;
     if ((selector_type = pyg_type_from_object(py_selector_type)) == 0)
         return -1;
@@ -1934,7 +1934,7 @@ _wrap_gimp_color_selector_set_toggles_visible(PyGObject *self, PyObject *args, P
     static char *kwlist[] = { "visible", NULL };
     int visible;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorSelector.set_toggles_visible", kwlist, &visible))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.ColorSelector.set_toggles_visible", kwlist, &visible))
         return NULL;
     
     gimp_color_selector_set_toggles_visible(GIMP_COLOR_SELECTOR(self->obj), visible);
@@ -1949,7 +1949,7 @@ _wrap_gimp_color_selector_set_toggles_sensitive(PyGObject *self, PyObject *args,
     static char *kwlist[] = { "sensitive", NULL };
     int sensitive;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorSelector.set_toggles_sensitive", kwlist, &sensitive))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.ColorSelector.set_toggles_sensitive", kwlist, &sensitive))
         return NULL;
     
     gimp_color_selector_set_toggles_sensitive(GIMP_COLOR_SELECTOR(self->obj), sensitive);
@@ -1964,7 +1964,7 @@ _wrap_gimp_color_selector_set_show_alpha(PyGObject *self, PyObject *args, PyObje
     static char *kwlist[] = { "show_alpha", NULL };
     int show_alpha;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorSelector.set_show_alpha", kwlist, &show_alpha))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.ColorSelector.set_show_alpha", kwlist, &show_alpha))
         return NULL;
     
     gimp_color_selector_set_show_alpha(GIMP_COLOR_SELECTOR(self->obj), show_alpha);
@@ -1981,7 +1981,7 @@ _wrap_gimp_color_selector_set_color(PyGObject *self, PyObject *args, PyObject *k
     GimpHSV *hsv = NULL;
     GimpRGB *rgb = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:GimpColorSelector.set_color", kwlist, &py_rgb, &py_hsv))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:Gimp.ColorSelector.set_color", kwlist, &py_rgb, &py_hsv))
         return NULL;
     if (pyg_boxed_check(py_rgb, GIMP_TYPE_RGB))
         rgb = pyg_boxed_get(py_rgb, GimpRGB);
@@ -2009,7 +2009,7 @@ _wrap_gimp_color_selector_set_channel(PyGObject *self, PyObject *args, PyObject 
     GimpColorSelectorChannel channel;
     PyObject *py_channel = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorSelector.set_channel", kwlist, &py_channel))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorSelector.set_channel", kwlist, &py_channel))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_COLOR_SELECTOR_CHANNEL, py_channel, (gpointer)&channel))
         return NULL;
@@ -2182,7 +2182,7 @@ _wrap_gimp_color_selection_set_show_alpha(PyGObject *self, PyObject *args, PyObj
     static char *kwlist[] = { "show_alpha", NULL };
     int show_alpha;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpColorSelection.set_show_alpha", kwlist, &show_alpha))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.ColorSelection.set_show_alpha", kwlist, &show_alpha))
         return NULL;
     
     gimp_color_selection_set_show_alpha(GIMP_COLOR_SELECTION(self->obj), show_alpha);
@@ -2210,7 +2210,7 @@ _wrap_gimp_color_selection_set_color(PyGObject *self, PyObject *args, PyObject *
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorSelection.set_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorSelection.set_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -2245,7 +2245,7 @@ _wrap_gimp_color_selection_set_old_color(PyGObject *self, PyObject *args, PyObje
     PyObject *py_color;
     GimpRGB *color = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpColorSelection.set_old_color", kwlist, &py_color))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.ColorSelection.set_old_color", kwlist, &py_color))
         return NULL;
     if (pyg_boxed_check(py_color, GIMP_TYPE_RGB))
         color = pyg_boxed_get(py_color, GimpRGB);
@@ -2371,7 +2371,7 @@ _wrap_gimp_color_notebook_set_has_page(PyGObject *self, PyObject *args, PyObject
     GType page_type;
     GtkWidget *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"Oi:GimpColorNotebook.set_has_page", kwlist, &py_page_type, &has_page))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"Oi:Gimp.ColorNotebook.set_has_page", kwlist, &py_page_type, &has_page))
         return NULL;
     if ((page_type = pyg_type_from_object(py_page_type)) == 0)
         return NULL;
@@ -2618,7 +2618,7 @@ _wrap_gimp_dialog_add_button(PyGObject *self, PyObject *args, PyObject *kwargs)
     int response_id;
     GtkWidget *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"si:GimpDialog.add_button", kwlist, &button_text, &response_id))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"si:Gimp.Dialog.add_button", kwlist, &button_text, &response_id))
         return NULL;
     
     ret = gimp_dialog_add_button(GIMP_DIALOG(self->obj), button_text, response_id);
@@ -2748,7 +2748,7 @@ _wrap_gimp_enum_label_set_value(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "value", NULL };
     int value;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpEnumLabel.set_value", kwlist, &value))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.EnumLabel.set_value", kwlist, &value))
         return NULL;
     
     gimp_enum_label_set_value(GIMP_ENUM_LABEL(self->obj), value);
@@ -3551,7 +3551,7 @@ _wrap_gimp_enum_combo_box_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     PyObject *py_enum_type = NULL;
     GType enum_type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpEnumComboBox.__init__", kwlist, &py_enum_type))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.EnumComboBox.__init__", kwlist, &py_enum_type))
         return -1;
     if ((enum_type = pyg_type_from_object(py_enum_type)) == 0)
         return -1;
@@ -3571,7 +3571,7 @@ _wrap_gimp_enum_combo_box_set_stock_prefix(PyGObject *self, PyObject *args, PyOb
     static char *kwlist[] = { "stock_prefix", NULL };
     char *stock_prefix;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpEnumComboBox.set_stock_prefix", kwlist, &stock_prefix))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.EnumComboBox.set_stock_prefix", kwlist, &stock_prefix))
         return NULL;
     
     gimp_enum_combo_box_set_stock_prefix(GIMP_ENUM_COMBO_BOX(self->obj), stock_prefix);
@@ -4173,7 +4173,7 @@ _wrap_gimp_enum_store_set_stock_prefix(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "stock_prefix", NULL };
     char *stock_prefix;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpEnumStore.set_stock_prefix", kwlist, &stock_prefix))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.EnumStore.set_stock_prefix", kwlist, &stock_prefix))
         return NULL;
     
     gimp_enum_store_set_stock_prefix(GIMP_ENUM_STORE(self->obj), stock_prefix);
@@ -4580,7 +4580,7 @@ _wrap_gimp_number_pair_entry_set_default_values(PyGObject *self, PyObject *args,
     static char *kwlist[] = { "left", "right", NULL };
     double left, right;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"dd:GimpNumberPairEntry.set_default_values", kwlist, &left, &right))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"dd:Gimp.NumberPairEntry.set_default_values", kwlist, &left, &right))
         return NULL;
     
     gimp_number_pair_entry_set_default_values(GIMP_NUMBER_PAIR_ENTRY(self->obj), left, right);
@@ -4610,7 +4610,7 @@ _wrap_gimp_number_pair_entry_set_values(PyGObject *self, PyObject *args, PyObjec
     static char *kwlist[] = { "left", "right", NULL };
     double left, right;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"dd:GimpNumberPairEntry.set_values", kwlist, &left, &right))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"dd:Gimp.NumberPairEntry.set_values", kwlist, &left, &right))
         return NULL;
     
     gimp_number_pair_entry_set_values(GIMP_NUMBER_PAIR_ENTRY(self->obj), left, right);
@@ -4639,7 +4639,7 @@ _wrap_gimp_number_pair_entry_set_default_text(PyGObject *self, PyObject *args, P
     static char *kwlist[] = { "string", NULL };
     char *string;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpNumberPairEntry.set_default_text", kwlist, &string))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.NumberPairEntry.set_default_text", kwlist, &string))
         return NULL;
     
     gimp_number_pair_entry_set_default_text(GIMP_NUMBER_PAIR_ENTRY(self->obj), string);
@@ -4668,7 +4668,7 @@ _wrap_gimp_number_pair_entry_set_ratio(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "ratio", NULL };
     double ratio;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"d:GimpNumberPairEntry.set_ratio", kwlist, &ratio))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"d:Gimp.NumberPairEntry.set_ratio", kwlist, &ratio))
         return NULL;
     
     gimp_number_pair_entry_set_ratio(GIMP_NUMBER_PAIR_ENTRY(self->obj), ratio);
@@ -4740,7 +4740,7 @@ _wrap_gimp_number_pair_entry_set_user_override(PyGObject *self, PyObject *args, 
     static char *kwlist[] = { "user_override", NULL };
     int user_override;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpNumberPairEntry.set_user_override", kwlist, &user_override))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.NumberPairEntry.set_user_override", kwlist, &user_override))
         return NULL;
     
     gimp_number_pair_entry_set_user_override(GIMP_NUMBER_PAIR_ENTRY(self->obj), user_override);
@@ -4844,7 +4844,7 @@ _wrap_gimp_offset_area_new(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "orig_width", "orig_height", NULL };
     int orig_width, orig_height;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpOffsetArea.__init__", kwlist, &orig_width, &orig_height))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:Gimp.OffsetArea.__init__", kwlist, &orig_width, &orig_height))
         return -1;
     self->obj = (GObject *)gimp_offset_area_new(orig_width, orig_height);
 
@@ -4862,7 +4862,7 @@ _wrap_gimp_offset_area_set_pixbuf(PyGObject *self, PyObject *args, PyObject *kwa
     static char *kwlist[] = { "pixbuf", NULL };
     PyGObject *pixbuf;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:GimpOffsetArea.set_pixbuf", kwlist, &PyGdkPixbuf_Type, &pixbuf))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!:Gimp.OffsetArea.set_pixbuf", kwlist, &PyGdkPixbuf_Type, &pixbuf))
         return NULL;
     
     gimp_offset_area_set_pixbuf(GIMP_OFFSET_AREA(self->obj), GDK_PIXBUF(pixbuf->obj));
@@ -4877,7 +4877,7 @@ _wrap_gimp_offset_area_set_size(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "width", "height", NULL };
     int width, height;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpOffsetArea.set_size", kwlist, &width, &height))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:Gimp.OffsetArea.set_size", kwlist, &width, &height))
         return NULL;
     
     gimp_offset_area_set_size(GIMP_OFFSET_AREA(self->obj), width, height);
@@ -4892,7 +4892,7 @@ _wrap_gimp_offset_area_set_offsets(PyGObject *self, PyObject *args, PyObject *kw
     static char *kwlist[] = { "offset_x", "offset_y", NULL };
     int offset_x, offset_y;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpOffsetArea.set_offsets", kwlist, &offset_x, &offset_y))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:Gimp.OffsetArea.set_offsets", kwlist, &offset_x, &offset_y))
         return NULL;
     
     gimp_offset_area_set_offsets(GIMP_OFFSET_AREA(self->obj), offset_x, offset_y);
@@ -4986,7 +4986,7 @@ _wrap_gimp_page_selector_set_n_pages(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "n_pages", NULL };
     int n_pages;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.set_n_pages", kwlist, &n_pages))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.PageSelector.set_n_pages", kwlist, &n_pages))
         return NULL;
     
     gimp_page_selector_set_n_pages(GIMP_PAGE_SELECTOR(self->obj), n_pages);
@@ -5013,7 +5013,7 @@ _wrap_gimp_page_selector_set_target(PyGObject *self, PyObject *args, PyObject *k
     GimpPageSelectorTarget target;
     PyObject *py_target = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpPageSelector.set_target", kwlist, &py_target))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.PageSelector.set_target", kwlist, &py_target))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_PAGE_SELECTOR_TARGET, py_target, (gpointer)&target))
         return NULL;
@@ -5042,7 +5042,7 @@ _wrap_gimp_page_selector_set_page_thumbnail(PyGObject *self, PyObject *args, PyO
     int page_no;
     PyGObject *thumbnail;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iO!:GimpPageSelector.set_page_thumbnail", kwlist, &page_no, &PyGdkPixbuf_Type, &thumbnail))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iO!:Gimp.PageSelector.set_page_thumbnail", kwlist, &page_no, &PyGdkPixbuf_Type, &thumbnail))
         return NULL;
     
     gimp_page_selector_set_page_thumbnail(GIMP_PAGE_SELECTOR(self->obj), page_no, GDK_PIXBUF(thumbnail->obj));
@@ -5058,7 +5058,7 @@ _wrap_gimp_page_selector_get_page_thumbnail(PyGObject *self, PyObject *args, PyO
     int page_no;
     GdkPixbuf *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.get_page_thumbnail", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.PageSelector.get_page_thumbnail", kwlist, &page_no))
         return NULL;
     
     ret = gimp_page_selector_get_page_thumbnail(GIMP_PAGE_SELECTOR(self->obj), page_no);
@@ -5074,7 +5074,7 @@ _wrap_gimp_page_selector_set_page_label(PyGObject *self, PyObject *args, PyObjec
     int page_no;
     char *label;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"is:GimpPageSelector.set_page_label", kwlist, &page_no, &label))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"is:Gimp.PageSelector.set_page_label", kwlist, &page_no, &label))
         return NULL;
     
     gimp_page_selector_set_page_label(GIMP_PAGE_SELECTOR(self->obj), page_no, label);
@@ -5090,7 +5090,7 @@ _wrap_gimp_page_selector_get_page_label(PyGObject *self, PyObject *args, PyObjec
     int page_no;
     gchar *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.get_page_label", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.PageSelector.get_page_label", kwlist, &page_no))
         return NULL;
     
     ret = gimp_page_selector_get_page_label(GIMP_PAGE_SELECTOR(self->obj), page_no);
@@ -5130,7 +5130,7 @@ _wrap_gimp_page_selector_select_page(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "page_no", NULL };
     int page_no;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.select_page", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.PageSelector.select_page", kwlist, &page_no))
         return NULL;
     
     gimp_page_selector_select_page(GIMP_PAGE_SELECTOR(self->obj), page_no);
@@ -5145,7 +5145,7 @@ _wrap_gimp_page_selector_unselect_page(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "page_no", NULL };
     int page_no;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.unselect_page", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.PageSelector.unselect_page", kwlist, &page_no))
         return NULL;
     
     gimp_page_selector_unselect_page(GIMP_PAGE_SELECTOR(self->obj), page_no);
@@ -5160,7 +5160,7 @@ _wrap_gimp_page_selector_page_is_selected(PyGObject *self, PyObject *args, PyObj
     static char *kwlist[] = { "page_no", NULL };
     int page_no, ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPageSelector.page_is_selected", kwlist, &page_no))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.PageSelector.page_is_selected", kwlist, &page_no))
         return NULL;
     
     ret = gimp_page_selector_page_is_selected(GIMP_PAGE_SELECTOR(self->obj), page_no);
@@ -5200,7 +5200,7 @@ _wrap_gimp_page_selector_select_range(PyGObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "range", NULL };
     char *range;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPageSelector.select_range", kwlist, &range))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.PageSelector.select_range", kwlist, &range))
         return NULL;
     
     gimp_page_selector_select_range(GIMP_PAGE_SELECTOR(self->obj), range);
@@ -5364,7 +5364,7 @@ _wrap_gimp_path_editor_set_path(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "path", NULL };
     char *path;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPathEditor.set_path", kwlist, &path))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.PathEditor.set_path", kwlist, &path))
         return NULL;
     
     gimp_path_editor_set_path(GIMP_PATH_EDITOR(self->obj), path);
@@ -5396,7 +5396,7 @@ _wrap_gimp_path_editor_set_writable_path(PyGObject *self, PyObject *args, PyObje
     static char *kwlist[] = { "path", NULL };
     char *path;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPathEditor.set_writable_path", kwlist, &path))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.PathEditor.set_writable_path", kwlist, &path))
         return NULL;
     
     gimp_path_editor_set_writable_path(GIMP_PATH_EDITOR(self->obj), path);
@@ -5412,7 +5412,7 @@ _wrap_gimp_path_editor_get_dir_writable(PyGObject *self, PyObject *args, PyObjec
     char *directory;
     int ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPathEditor.get_dir_writable", kwlist, &directory))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.PathEditor.get_dir_writable", kwlist, &directory))
         return NULL;
     
     ret = gimp_path_editor_get_dir_writable(GIMP_PATH_EDITOR(self->obj), directory);
@@ -5428,7 +5428,7 @@ _wrap_gimp_path_editor_set_dir_writable(PyGObject *self, PyObject *args, PyObjec
     char *directory;
     int writable;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"si:GimpPathEditor.set_dir_writable", kwlist, &directory, &writable))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"si:Gimp.PathEditor.set_dir_writable", kwlist, &directory, &writable))
         return NULL;
     
     gimp_path_editor_set_dir_writable(GIMP_PATH_EDITOR(self->obj), directory, writable);
@@ -5577,7 +5577,7 @@ _wrap_gimp_preview_set_update(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "update", NULL };
     int update;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpPreview.set_update", kwlist, &update))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.Preview.set_update", kwlist, &update))
         return NULL;
     
     gimp_preview_set_update(GIMP_PREVIEW(self->obj), update);
@@ -5604,7 +5604,7 @@ _wrap_gimp_preview_set_bounds(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "xmin", "ymin", "xmax", "ymax", NULL };
     int xmin, ymin, xmax, ymax;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iiii:GimpPreview.set_bounds", kwlist, &xmin, &ymin, &xmax, &ymax))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iiii:Gimp.Preview.set_bounds", kwlist, &xmin, &ymin, &xmax, &ymax))
         return NULL;
     
     gimp_preview_set_bounds(GIMP_PREVIEW(self->obj), xmin, ymin, xmax, ymax);
@@ -5718,7 +5718,7 @@ _wrap_gimp_preview_draw_buffer(PyGObject *self, PyObject *args, PyObject *kwargs
     int buffer_len, rowstride;
     guchar *buffer;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#i:GimpPreview.draw_buffer", kwlist, &buffer, &buffer_len, &rowstride))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#i:Gimp.Preview.draw_buffer", kwlist, &buffer, &buffer_len, &rowstride))
         return NULL;
     
     gimp_preview_draw_buffer(GIMP_PREVIEW(self->obj), buffer, rowstride);
@@ -5744,7 +5744,7 @@ _wrap_gimp_preview_set_default_cursor(PyGObject *self, PyObject *args, PyObject 
     PyObject *py_cursor;
     GdkCursor *cursor = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpPreview.set_default_cursor", kwlist, &py_cursor))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.Preview.set_default_cursor", kwlist, &py_cursor))
         return NULL;
     if (pyg_boxed_check(py_cursor, GDK_TYPE_CURSOR))
         cursor = pyg_boxed_get(py_cursor, GdkCursor);
@@ -5953,7 +5953,7 @@ _wrap_gimp_preview_area_fill(PyGObject *self, PyObject *args, PyObject *kwargs)
     int x, y, width, height;
     char red, green, blue;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iiiiccc:GimpPreviewArea.fill", kwlist, &x, &y, &width, &height, &red, &green, &blue))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"iiiiccc:Gimp.PreviewArea.fill", kwlist, &x, &y, &width, &height, &red, &green, &blue))
         return NULL;
     
     gimp_preview_area_fill(GIMP_PREVIEW_AREA(self->obj), x, y, width, height, red, green, blue);
@@ -5968,7 +5968,7 @@ _wrap_gimp_preview_area_set_offsets(PyGObject *self, PyObject *args, PyObject *k
     static char *kwlist[] = { "x", "y", NULL };
     int x, y;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpPreviewArea.set_offsets", kwlist, &x, &y))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:Gimp.PreviewArea.set_offsets", kwlist, &x, &y))
         return NULL;
     
     gimp_preview_area_set_offsets(GIMP_PREVIEW_AREA(self->obj), x, y);
@@ -5984,7 +5984,7 @@ _wrap_gimp_preview_area_set_colormap(PyGObject *self, PyObject *args, PyObject *
     int colormap_len, num_colors;
     guchar *colormap;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#i:GimpPreviewArea.set_colormap", kwlist, &colormap, &colormap_len, &num_colors))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s#i:Gimp.PreviewArea.set_colormap", kwlist, &colormap, &colormap_len, &num_colors))
         return NULL;
     
     gimp_preview_area_set_colormap(GIMP_PREVIEW_AREA(self->obj), colormap, num_colors);
@@ -5999,7 +5999,7 @@ _wrap_gimp_preview_area_set_max_size(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "width", "height", NULL };
     int width, height;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpPreviewArea.set_max_size", kwlist, &width, &height))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:Gimp.PreviewArea.set_max_size", kwlist, &width, &height))
         return NULL;
     
     gimp_preview_area_set_max_size(GIMP_PREVIEW_AREA(self->obj), width, height);
@@ -6015,7 +6015,7 @@ _wrap_gimp_preview_area_menu_popup(PyGObject *self, PyObject *args, PyObject *kw
     GdkEvent *event = NULL;
     PyObject *py_event;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpPreviewArea.menu_popup", kwlist, &py_event))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.PreviewArea.menu_popup", kwlist, &py_event))
         return NULL;
     if (pyg_boxed_check(py_event, GDK_TYPE_EVENT))
         event = pyg_boxed_get(py_event, GdkEvent);
@@ -6347,7 +6347,7 @@ _wrap_gimp_scrolled_preview_set_position(PyGObject *self, PyObject *args, PyObje
     static char *kwlist[] = { "x", "y", NULL };
     int x, y;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpScrolledPreview.set_position", kwlist, &x, &y))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:Gimp.ScrolledPreview.set_position", kwlist, &x, &y))
         return NULL;
     
     gimp_scrolled_preview_set_position(GIMP_SCROLLED_PREVIEW(self->obj), x, y);
@@ -6363,7 +6363,7 @@ _wrap_gimp_scrolled_preview_set_policy(PyGObject *self, PyObject *args, PyObject
     PyObject *py_hscrollbar_policy = NULL, *py_vscrollbar_policy = NULL;
     GtkPolicyType hscrollbar_policy, vscrollbar_policy;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:GimpScrolledPreview.set_policy", kwlist, &py_hscrollbar_policy, &py_vscrollbar_policy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"OO:Gimp.ScrolledPreview.set_policy", kwlist, &py_hscrollbar_policy, &py_vscrollbar_policy))
         return NULL;
     if (pyg_enum_get_value(GTK_TYPE_POLICY_TYPE, py_hscrollbar_policy, (gpointer)&hscrollbar_policy))
         return NULL;
@@ -6696,7 +6696,7 @@ _wrap_gimp_pattern_select_button_set_pattern(PyGObject *self, PyObject *args, Py
     static char *kwlist[] = { "pattern_name", NULL };
     char *pattern_name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPatternSelectButton.set_pattern", kwlist, &pattern_name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.PatternSelectButton.set_pattern", kwlist, &pattern_name))
         return NULL;
     
     gimp_pattern_select_button_set_pattern(GIMP_PATTERN_SELECT_BUTTON(self->obj), pattern_name);
@@ -6812,7 +6812,7 @@ _wrap_gimp_palette_select_button_set_palette(PyGObject *self, PyObject *args, Py
     static char *kwlist[] = { "palette_name", NULL };
     char *palette_name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpPaletteSelectButton.set_palette", kwlist, &palette_name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.PaletteSelectButton.set_palette", kwlist, &palette_name))
         return NULL;
     
     gimp_palette_select_button_set_palette(GIMP_PALETTE_SELECT_BUTTON(self->obj), palette_name);
@@ -6928,7 +6928,7 @@ _wrap_gimp_gradient_select_button_set_gradient(PyGObject *self, PyObject *args, 
     static char *kwlist[] = { "gradient_name", NULL };
     char *gradient_name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpGradientSelectButton.set_gradient", kwlist, &gradient_name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.GradientSelectButton.set_gradient", kwlist, &gradient_name))
         return NULL;
     
     gimp_gradient_select_button_set_gradient(GIMP_GRADIENT_SELECT_BUTTON(self->obj), gradient_name);
@@ -7044,7 +7044,7 @@ _wrap_gimp_font_select_button_set_font(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "font_name", NULL };
     char *font_name;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpFontSelectButton.set_font", kwlist, &font_name))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.FontSelectButton.set_font", kwlist, &font_name))
         return NULL;
     
     gimp_font_select_button_set_font(GIMP_FONT_SELECT_BUTTON(self->obj), font_name);
@@ -7170,7 +7170,7 @@ _wrap_gimp_brush_select_button_set_brush(PyGObject *self, PyObject *args, PyObje
     PyObject *py_paint_mode = NULL;
     GimpLayerModeEffects paint_mode;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sdiO:GimpBrushSelectButton.set_brush", kwlist, &brush_name, &opacity, &spacing, &py_paint_mode))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"sdiO:Gimp.BrushSelectButton.set_brush", kwlist, &brush_name, &opacity, &spacing, &py_paint_mode))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_LAYER_MODE_EFFECTS, py_paint_mode, (gpointer)&paint_mode))
         return NULL;
@@ -7274,7 +7274,7 @@ _wrap_gimp_ruler_set_position(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "position", NULL };
     double position;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"d:GimpRuler.set_position", kwlist, &position))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"d:Gimp.Ruler.set_position", kwlist, &position))
         return NULL;
     
     gimp_ruler_set_position(GIMP_RULER(self->obj), position);
@@ -7300,7 +7300,7 @@ _wrap_gimp_ruler_set_range(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "lower", "upper", "max_size", NULL };
     double lower, upper, max_size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ddd:GimpRuler.set_range", kwlist, &lower, &upper, &max_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ddd:Gimp.Ruler.set_range", kwlist, &lower, &upper, &max_size))
         return NULL;
     
     gimp_ruler_set_range(GIMP_RULER(self->obj), lower, upper, max_size);
@@ -7399,7 +7399,7 @@ _wrap_gimp_size_entry_add_field(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "value_spinbutton", "refval_spinbutton", NULL };
     PyGObject *value_spinbutton, *refval_spinbutton;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!:GimpSizeEntry.add_field", kwlist, &PyGtkSpinButton_Type, &value_spinbutton, &PyGtkSpinButton_Type, &refval_spinbutton))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!:Gimp.SizeEntry.add_field", kwlist, &PyGtkSpinButton_Type, &value_spinbutton, &PyGtkSpinButton_Type, &refval_spinbutton))
         return NULL;
     
     gimp_size_entry_add_field(GIMP_SIZE_ENTRY(self->obj), GTK_SPIN_BUTTON(value_spinbutton->obj), GTK_SPIN_BUTTON(refval_spinbutton->obj));
@@ -7417,7 +7417,7 @@ _wrap_gimp_size_entry_attach_label(PyGObject *self, PyObject *args, PyObject *kw
     GtkWidget *ret;
     double alignment;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"siid:GimpSizeEntry.attach_label", kwlist, &text, &row, &column, &alignment))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"siid:Gimp.SizeEntry.attach_label", kwlist, &text, &row, &column, &alignment))
         return NULL;
     
     ret = gimp_size_entry_attach_label(GIMP_SIZE_ENTRY(self->obj), text, row, column, alignment);
@@ -7433,7 +7433,7 @@ _wrap_gimp_size_entry_set_resolution(PyGObject *self, PyObject *args, PyObject *
     int field, keep_size;
     double resolution;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idi:GimpSizeEntry.set_resolution", kwlist, &field, &resolution, &keep_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idi:Gimp.SizeEntry.set_resolution", kwlist, &field, &resolution, &keep_size))
         return NULL;
     
     gimp_size_entry_set_resolution(GIMP_SIZE_ENTRY(self->obj), field, resolution, keep_size);
@@ -7449,7 +7449,7 @@ _wrap_gimp_size_entry_set_size(PyGObject *self, PyObject *args, PyObject *kwargs
     int field;
     double lower, upper;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:GimpSizeEntry.set_size", kwlist, &field, &lower, &upper))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:Gimp.SizeEntry.set_size", kwlist, &field, &lower, &upper))
         return NULL;
     
     gimp_size_entry_set_size(GIMP_SIZE_ENTRY(self->obj), field, lower, upper);
@@ -7465,7 +7465,7 @@ _wrap_gimp_size_entry_set_value_boundaries(PyGObject *self, PyObject *args, PyOb
     int field;
     double lower, upper;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:GimpSizeEntry.set_value_boundaries", kwlist, &field, &lower, &upper))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:Gimp.SizeEntry.set_value_boundaries", kwlist, &field, &lower, &upper))
         return NULL;
     
     gimp_size_entry_set_value_boundaries(GIMP_SIZE_ENTRY(self->obj), field, lower, upper);
@@ -7481,7 +7481,7 @@ _wrap_gimp_size_entry_get_value(PyGObject *self, PyObject *args, PyObject *kwarg
     int field;
     double ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.get_value", kwlist, &field))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.SizeEntry.get_value", kwlist, &field))
         return NULL;
     
     ret = gimp_size_entry_get_value(GIMP_SIZE_ENTRY(self->obj), field);
@@ -7496,7 +7496,7 @@ _wrap_gimp_size_entry_set_value(PyGObject *self, PyObject *args, PyObject *kwarg
     int field;
     double value;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"id:GimpSizeEntry.set_value", kwlist, &field, &value))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"id:Gimp.SizeEntry.set_value", kwlist, &field, &value))
         return NULL;
     
     gimp_size_entry_set_value(GIMP_SIZE_ENTRY(self->obj), field, value);
@@ -7512,7 +7512,7 @@ _wrap_gimp_size_entry_set_refval_boundaries(PyGObject *self, PyObject *args, PyO
     int field;
     double lower, upper;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:GimpSizeEntry.set_refval_boundaries", kwlist, &field, &lower, &upper))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"idd:Gimp.SizeEntry.set_refval_boundaries", kwlist, &field, &lower, &upper))
         return NULL;
     
     gimp_size_entry_set_refval_boundaries(GIMP_SIZE_ENTRY(self->obj), field, lower, upper);
@@ -7527,7 +7527,7 @@ _wrap_gimp_size_entry_set_refval_digits(PyGObject *self, PyObject *args, PyObjec
     static char *kwlist[] = { "field", "digits", NULL };
     int field, digits;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:GimpSizeEntry.set_refval_digits", kwlist, &field, &digits))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"ii:Gimp.SizeEntry.set_refval_digits", kwlist, &field, &digits))
         return NULL;
     
     gimp_size_entry_set_refval_digits(GIMP_SIZE_ENTRY(self->obj), field, digits);
@@ -7543,7 +7543,7 @@ _wrap_gimp_size_entry_get_refval(PyGObject *self, PyObject *args, PyObject *kwar
     int field;
     double ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.get_refval", kwlist, &field))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.SizeEntry.get_refval", kwlist, &field))
         return NULL;
     
     ret = gimp_size_entry_get_refval(GIMP_SIZE_ENTRY(self->obj), field);
@@ -7558,7 +7558,7 @@ _wrap_gimp_size_entry_set_refval(PyGObject *self, PyObject *args, PyObject *kwar
     int field;
     double refval;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"id:GimpSizeEntry.set_refval", kwlist, &field, &refval))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"id:Gimp.SizeEntry.set_refval", kwlist, &field, &refval))
         return NULL;
     
     gimp_size_entry_set_refval(GIMP_SIZE_ENTRY(self->obj), field, refval);
@@ -7573,7 +7573,7 @@ _wrap_gimp_size_entry_show_unit_menu(PyGObject *self, PyObject *args, PyObject *
     static char *kwlist[] = { "show", NULL };
     int show;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.show_unit_menu", kwlist, &show))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.SizeEntry.show_unit_menu", kwlist, &show))
         return NULL;
     
     gimp_size_entry_show_unit_menu(GIMP_SIZE_ENTRY(self->obj), show);
@@ -7588,7 +7588,7 @@ _wrap_gimp_size_entry_set_pixel_digits(PyGObject *self, PyObject *args, PyObject
     static char *kwlist[] = { "digits", NULL };
     int digits;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.set_pixel_digits", kwlist, &digits))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.SizeEntry.set_pixel_digits", kwlist, &digits))
         return NULL;
     
     gimp_size_entry_set_pixel_digits(GIMP_SIZE_ENTRY(self->obj), digits);
@@ -7613,7 +7613,7 @@ _wrap_gimp_size_entry_set_activates_default(PyGObject *self, PyObject *args, PyO
     static char *kwlist[] = { "setting", NULL };
     int setting;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.set_activates_default", kwlist, &setting))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.SizeEntry.set_activates_default", kwlist, &setting))
         return NULL;
     
     gimp_size_entry_set_activates_default(GIMP_SIZE_ENTRY(self->obj), setting);
@@ -7629,7 +7629,7 @@ _wrap_gimp_size_entry_get_help_widget(PyGObject *self, PyObject *args, PyObject 
     int field;
     GtkWidget *ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpSizeEntry.get_help_widget", kwlist, &field))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.SizeEntry.get_help_widget", kwlist, &field))
         return NULL;
     
     ret = gimp_size_entry_get_help_widget(GIMP_SIZE_ENTRY(self->obj), field);
@@ -7760,7 +7760,7 @@ _wrap_gimp_string_combo_box_set_active(PyGObject *self, PyObject *args, PyObject
     char *id;
     int ret;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpStringComboBox.set_active", kwlist, &id))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.StringComboBox.set_active", kwlist, &id))
         return NULL;
     
     ret = gimp_string_combo_box_set_active(GIMP_STRING_COMBO_BOX(self->obj), id);
@@ -7849,7 +7849,7 @@ _wrap_gimp_unit_menu_set_pixel_digits(PyGObject *self, PyObject *args, PyObject 
     static char *kwlist[] = { "digits", NULL };
     int digits;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:GimpUnitMenu.set_pixel_digits", kwlist, &digits))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"i:Gimp.UnitMenu.set_pixel_digits", kwlist, &digits))
         return NULL;
     
     gimp_unit_menu_set_pixel_digits(GIMP_UNIT_MENU(self->obj), digits);
@@ -8145,7 +8145,7 @@ _wrap_gimp_zoom_model_set_range(PyGObject *self, PyObject *args, PyObject *kwarg
     static char *kwlist[] = { "min", "max", NULL };
     double min, max;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"dd:GimpZoomModel.set_range", kwlist, &min, &max))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"dd:Gimp.ZoomModel.set_range", kwlist, &min, &max))
         return NULL;
     
     gimp_zoom_model_set_range(GIMP_ZOOM_MODEL(self->obj), min, max);
@@ -8162,7 +8162,7 @@ _wrap_gimp_zoom_model_zoom(PyGObject *self, PyObject *args, PyObject *kwargs)
     double scale;
     GimpZoomType zoom_type;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"Od:GimpZoomModel.zoom", kwlist, &py_zoom_type, &scale))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"Od:Gimp.ZoomModel.zoom", kwlist, &py_zoom_type, &scale))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_ZOOM_TYPE, py_zoom_type, (gpointer)&zoom_type))
         return NULL;

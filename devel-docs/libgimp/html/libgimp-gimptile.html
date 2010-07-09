@@ -8,20 +8,8 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimptexttool.html" title="gimptexttool">
 <link rel="next" href="libgimp-gimptools.html" title="gimptools">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
-<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
-<link rel="chapter" href="libgimp-data.html" title="Data Objects">
-<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
-<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="libgimp-index.html" title="Index">
-<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -34,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimp-gimptile.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimp-gimptile.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimp-gimptile.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="gimptile">
@@ -49,21 +37,14 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimptile.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-                    <a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a>;
-void                <a class="link" href="libgimp-gimptile.html#gimp-tile-ref" title="gimp_tile_ref ()">gimp_tile_ref</a>                       (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);
-void                <a class="link" href="libgimp-gimptile.html#gimp-tile-ref-zero" title="gimp_tile_ref_zero ()">gimp_tile_ref_zero</a>                  (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);
-void                <a class="link" href="libgimp-gimptile.html#gimp-tile-unref" title="gimp_tile_unref ()">gimp_tile_unref</a>                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> dirty);
-void                <a class="link" href="libgimp-gimptile.html#gimp-tile-flush" title="gimp_tile_flush ()">gimp_tile_flush</a>                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);
-void                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-size" title="gimp_tile_cache_size ()">gimp_tile_cache_size</a>                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
->gulong</a> kilobytes);
-void                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles" title="gimp_tile_cache_ntiles ()">gimp_tile_cache_ntiles</a>              (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
->gulong</a> ntiles);
+<pre class="synopsis">                    <a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a>;
+<span class="returnvalue">void</span>                <a class="link" href="libgimp-gimptile.html#gimp-tile-ref" title="gimp_tile_ref ()">gimp_tile_ref</a>                       (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimp-gimptile.html#gimp-tile-ref-zero" title="gimp_tile_ref_zero ()">gimp_tile_ref_zero</a>                  (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimp-gimptile.html#gimp-tile-unref" title="gimp_tile_unref ()">gimp_tile_unref</a>                     (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dirty</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimp-gimptile.html#gimp-tile-flush" title="gimp_tile_flush ()">gimp_tile_flush</a>                     (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-size" title="gimp_tile_cache_size ()">gimp_tile_cache_size</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"><span class="type">gulong</span></a> kilobytes</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles" title="gimp_tile_cache_ntiles ()">gimp_tile_cache_ntiles</a>              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"><span class="type">gulong</span></a> ntiles</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -94,7 +75,7 @@ Functions for working with tiles.
 <hr>
 <div class="refsect2" title="gimp_tile_ref ()">
 <a name="gimp-tile-ref"></a><h3>gimp_tile_ref ()</h3>
-<pre class="programlisting">void                gimp_tile_ref                       (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_tile_ref                       (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -109,7 +90,7 @@ Functions for working with tiles.
 <hr>
 <div class="refsect2" title="gimp_tile_ref_zero ()">
 <a name="gimp-tile-ref-zero"></a><h3>gimp_tile_ref_zero ()</h3>
-<pre class="programlisting">void                gimp_tile_ref_zero                  (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_tile_ref_zero                  (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -124,10 +105,8 @@ Functions for working with tiles.
 <hr>
 <div class="refsect2" title="gimp_tile_unref ()">
 <a name="gimp-tile-unref"></a><h3>gimp_tile_unref ()</h3>
-<pre class="programlisting">void                gimp_tile_unref                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> dirty);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_tile_unref                     (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dirty</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -149,7 +128,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <hr>
 <div class="refsect2" title="gimp_tile_flush ()">
 <a name="gimp-tile-flush"></a><h3>gimp_tile_flush ()</h3>
-<pre class="programlisting">void                gimp_tile_flush                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_tile_flush                     (<em class="parameter"><code><a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile"><span class="type">GimpTile</span></a> *tile</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -164,20 +143,17 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolea
 <hr>
 <div class="refsect2" title="gimp_tile_cache_size ()">
 <a name="gimp-tile-cache-size"></a><h3>gimp_tile_cache_size ()</h3>
-<pre class="programlisting">void                gimp_tile_cache_size                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
->gulong</a> kilobytes);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_tile_cache_size                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"><span class="type">gulong</span></a> kilobytes</code></em>);</pre>
 <p>
 Sets the size of the tile cache on the plug-in side. The tile cache
 is used to reduce the number of tiles exchanged between the GIMP core
-and the plug-in. See also <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles" title="gimp_tile_cache_ntiles ()"><code class="function">gimp_tile_cache_ntiles()</code></a>.</p>
-<p>
+and the plug-in. See also <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles" title="gimp_tile_cache_ntiles ()"><code class="function">gimp_tile_cache_ntiles()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>kilobytes</code></em> :</span></p></td>
-<td> new cache size in kilobytes
+<td>new cache size in kilobytes
 </td>
 </tr></tbody>
 </table></div>
@@ -185,9 +161,7 @@ and the plug-in. See also <a class="link" href="libgimp-gimptile.html#gimp-tile-
 <hr>
 <div class="refsect2" title="gimp_tile_cache_ntiles ()">
 <a name="gimp-tile-cache-ntiles"></a><h3>gimp_tile_cache_ntiles ()</h3>
-<pre class="programlisting">void                gimp_tile_cache_ntiles              (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
->gulong</a> ntiles);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_tile_cache_ntiles              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"><span class="type">gulong</span></a> ntiles</code></em>);</pre>
 <p>
 Sets the size of the tile cache on the plug-in side. This function
 is similar to <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-size" title="gimp_tile_cache_size ()"><code class="function">gimp_tile_cache_size()</code></a> but allows to specify the
@@ -198,14 +172,13 @@ If your plug-in access pixels tile-by-tile, it doesn't need a tile
 cache at all. If however the plug-in accesses drawable pixel data
 row-by-row, it should set the tile cache large enough to hold the
 number of tiles per row. Double this size if your plug-in uses
-shadow tiles.</p>
-<p>
+shadow tiles.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>ntiles</code></em> :</span></p></td>
-<td> number of tiles that should fit into the cache
+<td>number of tiles that should fit into the cache
 </td>
 </tr></tbody>
 </table></div>
@@ -214,6 +187,6 @@ shadow tiles.</p>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

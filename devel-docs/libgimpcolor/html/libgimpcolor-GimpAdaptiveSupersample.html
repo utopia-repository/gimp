@@ -8,14 +8,8 @@
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpColorManaged.html" title="GimpColorManaged">
 <link rel="next" href="libgimpcolor-GimpBilinear.html" title="GimpBilinear">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpcolor.html" title="Part I. GIMP Color Library">
-<link rel="index" href="libgimpcolor-index.html" title="Index">
-<link rel="index" href="libgimpcolor-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpcolor-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpcolor-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpcolor-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpcolor-GimpAdaptiveSupersample.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimpcolor-GimpAdaptiveSupersample.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimpcolor-GimpAdaptiveSupersample.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpAdaptiveSupersample">
@@ -43,71 +37,30 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpcolor-GimpAdaptiveSupersample.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-void                (<a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc" title="GimpProgressFunc ()">*GimpProgressFunc</a>)                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> min,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> current,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc" title="GimpPutPixelFunc ()">*GimpPutPixelFunc</a>)                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *color,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc" title="GimpRenderFunc ()">*GimpRenderFunc</a>)                   (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *color,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
->gulong</a>              <a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#gimp-adaptive-supersample-area" title="gimp_adaptive_supersample_area ()">gimp_adaptive_supersample_area</a>      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> x1,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> y1,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> x2,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> y2,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max_depth,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> threshold,
-                                                         <a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc" title="GimpRenderFunc ()">GimpRenderFunc</a> render_func,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> render_data,
-                                                         <a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc" title="GimpPutPixelFunc ()">GimpPutPixelFunc</a> put_pixel_func,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> put_pixel_data,
-                                                         <a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc" title="GimpProgressFunc ()">GimpProgressFunc</a> progress_func,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> progress_data);
+<pre class="synopsis"><span class="returnvalue">void</span>                (<a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc" title="GimpProgressFunc ()">*GimpProgressFunc</a>)                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> min</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> current</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc" title="GimpPutPixelFunc ()">*GimpPutPixelFunc</a>)                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc" title="GimpRenderFunc ()">*GimpRenderFunc</a>)                   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>              <a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#gimp-adaptive-supersample-area" title="gimp_adaptive_supersample_area ()">gimp_adaptive_supersample_area</a>      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_depth</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc" title="GimpRenderFunc ()"><span class="type">GimpRenderFunc</span></a> render_func</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> render_data</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc" title="GimpPutPixelFunc ()"><span class="type">GimpPutPixelFunc</span></a> put_pixel_func</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> put_pixel_data</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc" title="GimpProgressFunc ()"><span class="type">GimpProgressFunc</span></a> progress_func</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> progress_data</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -120,18 +73,10 @@ Functions to perform adaptive supersampling on an area.
 <a name="libgimpcolor-GimpAdaptiveSupersample.details"></a><h2>Details</h2>
 <div class="refsect2" title="GimpProgressFunc ()">
 <a name="GimpProgressFunc"></a><h3>GimpProgressFunc ()</h3>
-<pre class="programlisting">void                (*GimpProgressFunc)                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> min,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> current,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpProgressFunc)                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> min</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> current</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -163,16 +108,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="GimpPutPixelFunc ()">
 <a name="GimpPutPixelFunc"></a><h3>GimpPutPixelFunc ()</h3>
-<pre class="programlisting">void                (*GimpPutPixelFunc)                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *color,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpPutPixelFunc)                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -204,16 +143,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="GimpRenderFunc ()">
 <a name="GimpRenderFunc"></a><h3>GimpRenderFunc ()</h3>
-<pre class="programlisting">void                (*GimpRenderFunc)                   (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *color,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpRenderFunc)                   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *color</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -245,38 +178,18 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="gimp_adaptive_supersample_area ()">
 <a name="gimp-adaptive-supersample-area"></a><h3>gimp_adaptive_supersample_area ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gulong"
->gulong</a>              gimp_adaptive_supersample_area      (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> x1,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> y1,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> x2,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> y2,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max_depth,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> threshold,
-                                                         <a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc" title="GimpRenderFunc ()">GimpRenderFunc</a> render_func,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> render_data,
-                                                         <a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc" title="GimpPutPixelFunc ()">GimpPutPixelFunc</a> put_pixel_func,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> put_pixel_data,
-                                                         <a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc" title="GimpProgressFunc ()">GimpProgressFunc</a> progress_func,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> progress_data);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"><span class="returnvalue">gulong</span></a>              gimp_adaptive_supersample_area      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x1</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y1</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> x2</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> y2</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_depth</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> threshold</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc" title="GimpRenderFunc ()"><span class="type">GimpRenderFunc</span></a> render_func</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> render_data</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc" title="GimpPutPixelFunc ()"><span class="type">GimpPutPixelFunc</span></a> put_pixel_func</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> put_pixel_data</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc" title="GimpProgressFunc ()"><span class="type">GimpProgressFunc</span></a> progress_func</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> progress_data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -354,6 +267,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

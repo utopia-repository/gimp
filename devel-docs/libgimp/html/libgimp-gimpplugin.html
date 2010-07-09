@@ -8,20 +8,8 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpmessage.html" title="gimpmessage">
 <link rel="next" href="libgimp-gimpproceduraldb.html" title="gimpproceduraldb">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
-<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
-<link rel="chapter" href="libgimp-data.html" title="Data Objects">
-<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
-<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="libgimp-index.html" title="Index">
-<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -34,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimp-gimpplugin.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimp-gimpplugin.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimp-gimpplugin.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="gimpplugin">
@@ -49,58 +37,19 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimp-gimpplugin.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-domain-register" title="gimp_plugin_domain_register ()">gimp_plugin_domain_register</a>         (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *domain_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *domain_path);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-help-register" title="gimp_plugin_help_register ()">gimp_plugin_help_register</a>           (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *domain_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *domain_uri);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-icon-register" title="gimp_plugin_icon_register ()">gimp_plugin_icon_register</a>           (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *procedure_name,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
->GimpIconType</a> icon_type,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
->guint8</a> *icon_data);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-menu-register" title="gimp_plugin_menu_register ()">gimp_plugin_menu_register</a>           (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *procedure_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *menu_path);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register" title="gimp_plugin_menu_branch_register ()">gimp_plugin_menu_branch_register</a>    (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *menu_path,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *menu_name);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-set-pdb-error-handler" title="gimp_plugin_set_pdb_error_handler ()">gimp_plugin_set_pdb_error_handler</a>   (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"
->GimpPDBErrorHandler</a> handler);
-<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"
->GimpPDBErrorHandler</a>  <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-get-pdb-error-handler" title="gimp_plugin_get_pdb_error_handler ()">gimp_plugin_get_pdb_error_handler</a>  (void);
+<pre class="synopsis"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-domain-register" title="gimp_plugin_domain_register ()">gimp_plugin_domain_register</a>         (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain_path</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-help-register" title="gimp_plugin_help_register ()">gimp_plugin_help_register</a>           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain_uri</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-icon-register" title="gimp_plugin_icon_register ()">gimp_plugin_icon_register</a>           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *procedure_name</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"><span class="type">GimpIconType</span></a> icon_type</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *icon_data</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-menu-register" title="gimp_plugin_menu_register ()">gimp_plugin_menu_register</a>           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *procedure_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *menu_path</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register" title="gimp_plugin_menu_branch_register ()">gimp_plugin_menu_branch_register</a>    (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *menu_path</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *menu_name</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-set-pdb-error-handler" title="gimp_plugin_set_pdb_error_handler ()">gimp_plugin_set_pdb_error_handler</a>   (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"><span class="type">GimpPDBErrorHandler</span></a> handler</code></em>);
+<a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"><span class="returnvalue">GimpPDBErrorHandler</span></a>  <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-get-pdb-error-handler" title="gimp_plugin_get_pdb_error_handler ()">gimp_plugin_get_pdb_error_handler</a>  (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -113,14 +62,8 @@ Functions useful for plugins, e.g. registration and progress indicators.
 <a name="libgimp-gimpplugin.details"></a><h2>Details</h2>
 <div class="refsect2" title="gimp_plugin_domain_register ()">
 <a name="gimp-plugin-domain-register"></a><h3>gimp_plugin_domain_register ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_plugin_domain_register         (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *domain_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *domain_path);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_plugin_domain_register         (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain_path</code></em>);</pre>
 <p>
 Registers a textdomain for localisation.
 </p>
@@ -132,20 +75,19 @@ included in the gimp-std-plugins domain as that is used by default.
 If the compiled message catalog is not in the standard location, you
 may specify an absolute path to another location. This procedure can
 only be called in the query function of a plug-in and it has to be
-called before any procedure is installed.</p>
-<p>
+called before any procedure is installed.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>domain_name</code></em> :</span></p></td>
-<td> The name of the textdomain (must be unique).
+<td>The name of the textdomain (must be unique).
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>domain_path</code></em> :</span></p></td>
-<td> The absolute path to the compiled message catalog (may be NULL).
+<td>The absolute path to the compiled message catalog (may be NULL).
 </td>
 </tr>
 <tr>
@@ -159,34 +101,27 @@ called before any procedure is installed.</p>
 <hr>
 <div class="refsect2" title="gimp_plugin_help_register ()">
 <a name="gimp-plugin-help-register"></a><h3>gimp_plugin_help_register ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_plugin_help_register           (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *domain_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *domain_uri);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_plugin_help_register           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *domain_uri</code></em>);</pre>
 <p>
 Register a help path for a plug-in.
 </p>
 <p>
 This procedure changes the help rootdir for the plug-in which calls
 it. All subsequent calls of <a class="link" href="libgimp-gimphelp.html#gimp-help" title="gimp_help ()"><code class="function">gimp_help()</code></a> from this plug-in will be
-interpreted relative to this rootdir.</p>
-<p>
+interpreted relative to this rootdir.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>domain_name</code></em> :</span></p></td>
-<td> The XML namespace of the plug-in's help pages.
+<td>The XML namespace of the plug-in's help pages.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>domain_uri</code></em> :</span></p></td>
-<td> The root URI of the plug-in's help pages.
+<td>The root URI of the plug-in's help pages.
 </td>
 </tr>
 <tr>
@@ -200,17 +135,9 @@ interpreted relative to this rootdir.</p>
 <hr>
 <div class="refsect2" title="gimp_plugin_icon_register ()">
 <a name="gimp-plugin-icon-register"></a><h3>gimp_plugin_icon_register ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_plugin_icon_register           (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *procedure_name,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"
->GimpIconType</a> icon_type,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
->guint8</a> *icon_data);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_plugin_icon_register           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *procedure_name</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpIconType"><span class="type">GimpIconType</span></a> icon_type</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *icon_data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -242,33 +169,26 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"
 <hr>
 <div class="refsect2" title="gimp_plugin_menu_register ()">
 <a name="gimp-plugin-menu-register"></a><h3>gimp_plugin_menu_register ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_plugin_menu_register           (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *procedure_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *menu_path);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_plugin_menu_register           (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *procedure_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *menu_path</code></em>);</pre>
 <p>
 Register an additional menu path for a plug-in procedure.
 </p>
 <p>
 This procedure installs an additional menu entry for the given
-procedure.</p>
-<p>
+procedure.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>procedure_name</code></em> :</span></p></td>
-<td> The procedure for which to install the menu path.
+<td>The procedure for which to install the menu path.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>menu_path</code></em> :</span></p></td>
-<td> The procedure's additional menu path.
+<td>The procedure's additional menu path.
 </td>
 </tr>
 <tr>
@@ -284,14 +204,8 @@ procedure.</p>
 <hr>
 <div class="refsect2" title="gimp_plugin_menu_branch_register ()">
 <a name="gimp-plugin-menu-branch-register"></a><h3>gimp_plugin_menu_branch_register ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_plugin_menu_branch_register    (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *menu_path,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *menu_name);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_plugin_menu_branch_register    (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *menu_path</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *menu_name</code></em>);</pre>
 <p>
 Register a sub-menu.
 </p>
@@ -299,20 +213,19 @@ Register a sub-menu.
 This procedure installs a sub-menu which does not belong to any
 procedure. The menu-name should be the untranslated menu label. GIMP
 will look up the translation in the textdomain registered for the
-plug-in.</p>
-<p>
+plug-in.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>menu_path</code></em> :</span></p></td>
-<td> The sub-menu's menu path.
+<td>The sub-menu's menu path.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>menu_name</code></em> :</span></p></td>
-<td> The name of the sub-menu.
+<td>The name of the sub-menu.
 </td>
 </tr>
 <tr>
@@ -328,11 +241,7 @@ plug-in.</p>
 <hr>
 <div class="refsect2" title="gimp_plugin_set_pdb_error_handler ()">
 <a name="gimp-plugin-set-pdb-error-handler"></a><h3>gimp_plugin_set_pdb_error_handler ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_plugin_set_pdb_error_handler   (<a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"
->GimpPDBErrorHandler</a> handler);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_plugin_set_pdb_error_handler   (<em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"><span class="type">GimpPDBErrorHandler</span></a> handler</code></em>);</pre>
 <p>
 Sets an error handler for procedure calls.
 </p>
@@ -344,15 +253,14 @@ change this behavior. If the error handler is set to
 <code class="literal">GIMP_PDB_ERROR_HANDLER_PLUGIN</code>, then the plug-in is responsible for
 calling <a class="link" href="libgimp-gimp.html#gimp-get-pdb-error" title="gimp_get_pdb_error ()"><code class="function">gimp_get_pdb_error()</code></a> and handling the error whenever one if
 its procedure calls fails. It can do this by displaying the error
-message or by forwarding it in its own return values.</p>
-<p>
+message or by forwarding it in its own return values.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>handler</code></em> :</span></p></td>
-<td> Who is responsible for handling procedure call errors.
+<td>Who is responsible for handling procedure call errors.
 </td>
 </tr>
 <tr>
@@ -368,17 +276,14 @@ message or by forwarding it in its own return values.</p>
 <hr>
 <div class="refsect2" title="gimp_plugin_get_pdb_error_handler ()">
 <a name="gimp-plugin-get-pdb-error-handler"></a><h3>gimp_plugin_get_pdb_error_handler ()</h3>
-<pre class="programlisting"><a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"
->GimpPDBErrorHandler</a>  gimp_plugin_get_pdb_error_handler  (void);</pre>
+<pre class="programlisting"><a href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler"><span class="returnvalue">GimpPDBErrorHandler</span></a>  gimp_plugin_get_pdb_error_handler  (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Retrieves the active error handler for procedure calls.
 </p>
 <p>
 This procedure retrieves the currently active error handler for
 procedure calls made by the calling plug-in. See
-<a class="link" href="libgimp-gimpplugin.html#gimp-plugin-set-pdb-error-handler" title="gimp_plugin_set_pdb_error_handler ()"><code class="function">gimp_plugin_set_pdb_error_handler()</code></a> for details.</p>
-<p>
+<a class="link" href="libgimp-gimpplugin.html#gimp-plugin-set-pdb-error-handler" title="gimp_plugin_set_pdb_error_handler ()"><code class="function">gimp_plugin_set_pdb_error_handler()</code></a> for details.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -395,6 +300,6 @@ procedure calls made by the calling plug-in. See
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

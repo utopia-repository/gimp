@@ -8,14 +8,8 @@
 <link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="prev" href="libgimpcolor-GimpCMYK.html" title="GimpCMYK">
 <link rel="next" href="libgimpcolor-GimpColorManaged.html" title="GimpColorManaged">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpcolor.html" title="Part I. GIMP Color Library">
-<link rel="index" href="libgimpcolor-index.html" title="Index">
-<link rel="index" href="libgimpcolor-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpcolor-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpcolor-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpcolor-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpcolor-GimpColorSpace.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimpcolor-GimpColorSpace.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimpcolor-GimpColorSpace.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpColorSpace">
@@ -43,137 +37,58 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpcolor-GimpColorSpace.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv" title="gimp_rgb_to_hsv ()">gimp_rgb_to_hsv</a>                     (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
-                                                         <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV">GimpHSV</a> *hsv);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl" title="gimp_rgb_to_hsl ()">gimp_rgb_to_hsl</a>                     (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
-                                                         <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="GimpHSL">GimpHSL</a> *hsl);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk" title="gimp_rgb_to_cmyk ()">gimp_rgb_to_cmyk</a>                    (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> pullout,
-                                                         <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="GimpCMYK">GimpCMYK</a> *cmyk);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb" title="gimp_hsv_to_rgb ()">gimp_hsv_to_rgb</a>                     (const <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV">GimpHSV</a> *hsv,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsl-to-rgb" title="gimp_hsl_to_rgb ()">gimp_hsl_to_rgb</a>                     (const <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="GimpHSL">GimpHSL</a> *hsl,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-cmyk-to-rgb" title="gimp_cmyk_to_rgb ()">gimp_cmyk_to_rgb</a>                    (const <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="GimpCMYK">GimpCMYK</a> *cmyk,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hwb" title="gimp_rgb_to_hwb ()">gimp_rgb_to_hwb</a>                     (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *whiteness,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *blackness);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hwb-to-rgb" title="gimp_hwb_to_rgb ()">gimp_hwb_to_rgb</a>                     (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> whiteness,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> blackness,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv-int" title="gimp_rgb_to_hsv_int ()">gimp_rgb_to_hsv_int</a>                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *blue);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb-int" title="gimp_hsv_to_rgb_int ()">gimp_hsv_to_rgb_int</a>                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *value);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl-int" title="gimp_rgb_to_hsl_int ()">gimp_rgb_to_hsl_int</a>                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *blue);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk-int" title="gimp_rgb_to_cmyk_int ()">gimp_rgb_to_cmyk_int</a>                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *blue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *pullout);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-cmyk-to-rgb-int" title="gimp_cmyk_to_rgb_int ()">gimp_cmyk_to_rgb_int</a>                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *cyan,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *magenta,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *yellow,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *black);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-l-int" title="gimp_rgb_to_l_int ()">gimp_rgb_to_l_int</a>                   (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> blue);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsl-to-rgb-int" title="gimp_hsl_to_rgb_int ()">gimp_hsl_to_rgb_int</a>                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *lightness);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv4" title="gimp_rgb_to_hsv4 ()">gimp_rgb_to_hsv4</a>                    (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
->guchar</a> *rgb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *value);
-void                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb4" title="gimp_hsv_to_rgb4 ()">gimp_hsv_to_rgb4</a>                    (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
->guchar</a> *rgb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> value);
+<pre class="synopsis"><span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv" title="gimp_rgb_to_hsv ()">gimp_rgb_to_hsv</a>                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl" title="gimp_rgb_to_hsl ()">gimp_rgb_to_hsl</a>                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="GimpHSL"><span class="type">GimpHSL</span></a> *hsl</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk" title="gimp_rgb_to_cmyk ()">gimp_rgb_to_cmyk</a>                    (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> pullout</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyk</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb" title="gimp_hsv_to_rgb ()">gimp_hsv_to_rgb</a>                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsl-to-rgb" title="gimp_hsl_to_rgb ()">gimp_hsl_to_rgb</a>                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="GimpHSL"><span class="type">GimpHSL</span></a> *hsl</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-cmyk-to-rgb" title="gimp_cmyk_to_rgb ()">gimp_cmyk_to_rgb</a>                    (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyk</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hwb" title="gimp_rgb_to_hwb ()">gimp_rgb_to_hwb</a>                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *whiteness</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *blackness</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hwb-to-rgb" title="gimp_hwb_to_rgb ()">gimp_hwb_to_rgb</a>                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> whiteness</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> blackness</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv-int" title="gimp_rgb_to_hsv_int ()">gimp_rgb_to_hsv_int</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *blue</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb-int" title="gimp_hsv_to_rgb_int ()">gimp_hsv_to_rgb_int</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsl-int" title="gimp_rgb_to_hsl_int ()">gimp_rgb_to_hsl_int</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *blue</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-cmyk-int" title="gimp_rgb_to_cmyk_int ()">gimp_rgb_to_cmyk_int</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *blue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *pullout</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-cmyk-to-rgb-int" title="gimp_cmyk_to_rgb_int ()">gimp_cmyk_to_rgb_int</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *cyan</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *magenta</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *yellow</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *black</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-l-int" title="gimp_rgb_to_l_int ()">gimp_rgb_to_l_int</a>                   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> blue</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsl-to-rgb-int" title="gimp_hsl_to_rgb_int ()">gimp_hsl_to_rgb_int</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *lightness</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-rgb-to-hsv4" title="gimp_rgb_to_hsv4 ()">gimp_rgb_to_hsv4</a>                    (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="libgimpcolor-GimpColorSpace.html#gimp-hsv-to-rgb4" title="gimp_hsv_to_rgb4 ()">gimp_hsv_to_rgb4</a>                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -189,24 +104,23 @@ different color spaces.
 <a name="libgimpcolor-GimpColorSpace.details"></a><h2>Details</h2>
 <div class="refsect2" title="gimp_rgb_to_hsv ()">
 <a name="gimp-rgb-to-hsv"></a><h3>gimp_rgb_to_hsv ()</h3>
-<pre class="programlisting">void                gimp_rgb_to_hsv                     (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
-                                                         <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV">GimpHSV</a> *hsv);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_rgb_to_hsv                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>);</pre>
 <p>
 Does a conversion from RGB to HSV (Hue, Saturation,
-Value) colorspace.</p>
-<p>
+Value) colorspace.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> A color value in the RGB colorspace
+<td>A color value in the RGB colorspace
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hsv</code></em> :</span></p></td>
-<td> The value converted to the HSV colorspace
+<td>The value converted to the HSV colorspace
 </td>
 </tr>
 </tbody>
@@ -215,24 +129,23 @@ Value) colorspace.</p>
 <hr>
 <div class="refsect2" title="gimp_rgb_to_hsl ()">
 <a name="gimp-rgb-to-hsl"></a><h3>gimp_rgb_to_hsl ()</h3>
-<pre class="programlisting">void                gimp_rgb_to_hsl                     (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
-                                                         <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="GimpHSL">GimpHSL</a> *hsl);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_rgb_to_hsl                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="GimpHSL"><span class="type">GimpHSL</span></a> *hsl</code></em>);</pre>
 <p>
 Convert an RGB color value to a HSL (Hue, Saturation, Lightness)
-color value.</p>
-<p>
+color value.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> A color value in the RGB colorspace
+<td>A color value in the RGB colorspace
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hsl</code></em> :</span></p></td>
-<td> The value converted to HSL
+<td>The value converted to HSL
 </td>
 </tr>
 </tbody>
@@ -241,36 +154,33 @@ color value.</p>
 <hr>
 <div class="refsect2" title="gimp_rgb_to_cmyk ()">
 <a name="gimp-rgb-to-cmyk"></a><h3>gimp_rgb_to_cmyk ()</h3>
-<pre class="programlisting">void                gimp_rgb_to_cmyk                    (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> pullout,
-                                                         <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="GimpCMYK">GimpCMYK</a> *cmyk);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_rgb_to_cmyk                    (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> pullout</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyk</code></em>);</pre>
 <p>
 Does a naive conversion from RGB to CMYK colorspace. A simple
 formula that doesn't take any color-profiles into account is used.
 The amount of black pullout how can be controlled via the <em class="parameter"><code>pullout</code></em>
 parameter. A <em class="parameter"><code>pullout</code></em> value of 0 makes this a conversion to CMY.
-A value of 1 causes the maximum amount of black to be pulled out.</p>
-<p>
+A value of 1 causes the maximum amount of black to be pulled out.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> A value in the RGB colorspace
+<td>A value in the RGB colorspace
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pullout</code></em> :</span></p></td>
-<td> A scaling value (0-1) indicating how much black should be
+<td>A scaling value (0-1) indicating how much black should be
           pulled out
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cmyk</code></em> :</span></p></td>
-<td> The input value naively converted to the CMYK colorspace
+<td>The input value naively converted to the CMYK colorspace
 </td>
 </tr>
 </tbody>
@@ -279,23 +189,22 @@ A value of 1 causes the maximum amount of black to be pulled out.</p>
 <hr>
 <div class="refsect2" title="gimp_hsv_to_rgb ()">
 <a name="gimp-hsv-to-rgb"></a><h3>gimp_hsv_to_rgb ()</h3>
-<pre class="programlisting">void                gimp_hsv_to_rgb                     (const <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV">GimpHSV</a> *hsv,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_hsv_to_rgb                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSV" title="GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);</pre>
 <p>
-Converts a color value from HSV to RGB colorspace</p>
-<p>
+Converts a color value from HSV to RGB colorspace
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hsv</code></em> :</span></p></td>
-<td> A color value in the HSV colorspace
+<td>A color value in the HSV colorspace
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> The returned RGB value.
+<td>The returned RGB value.
 </td>
 </tr>
 </tbody>
@@ -304,23 +213,22 @@ Converts a color value from HSV to RGB colorspace</p>
 <hr>
 <div class="refsect2" title="gimp_hsl_to_rgb ()">
 <a name="gimp-hsl-to-rgb"></a><h3>gimp_hsl_to_rgb ()</h3>
-<pre class="programlisting">void                gimp_hsl_to_rgb                     (const <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="GimpHSL">GimpHSL</a> *hsl,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_hsl_to_rgb                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpHSV.html#GimpHSL" title="GimpHSL"><span class="type">GimpHSL</span></a> *hsl</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);</pre>
 <p>
-Convert a HSL color value to an RGB color value.</p>
-<p>
+Convert a HSL color value to an RGB color value.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hsl</code></em> :</span></p></td>
-<td> A color value in the HSL colorspace
+<td>A color value in the HSL colorspace
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> The value converted to a value in the RGB colorspace
+<td>The value converted to a value in the RGB colorspace
 </td>
 </tr>
 </tbody>
@@ -329,24 +237,23 @@ Convert a HSL color value to an RGB color value.</p>
 <hr>
 <div class="refsect2" title="gimp_cmyk_to_rgb ()">
 <a name="gimp-cmyk-to-rgb"></a><h3>gimp_cmyk_to_rgb ()</h3>
-<pre class="programlisting">void                gimp_cmyk_to_rgb                    (const <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="GimpCMYK">GimpCMYK</a> *cmyk,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_cmyk_to_rgb                    (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpCMYK.html#GimpCMYK" title="GimpCMYK"><span class="type">GimpCMYK</span></a> *cmyk</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);</pre>
 <p>
 Does a simple transformation from the CMYK colorspace to the RGB
-colorspace, without taking color profiles into account.</p>
-<p>
+colorspace, without taking color profiles into account.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cmyk</code></em> :</span></p></td>
-<td> A color value in the CMYK colorspace
+<td>A color value in the CMYK colorspace
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> The value converted to the RGB colorspace
+<td>The value converted to the RGB colorspace
 </td>
 </tr>
 </tbody>
@@ -355,16 +262,10 @@ colorspace, without taking color profiles into account.</p>
 <hr>
 <div class="refsect2" title="gimp_rgb_to_hwb ()">
 <a name="gimp-rgb-to-hwb"></a><h3>gimp_rgb_to_hwb ()</h3>
-<pre class="programlisting">void                gimp_rgb_to_hwb                     (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *whiteness,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *blackness);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_rgb_to_hwb                     (<em class="parameter"><code>const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *whiteness</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *blackness</code></em>);</pre>
 <p>
 Theoretically, hue 0 (pure red) is identical to hue 6 in these transforms.
 Pure red always maps to 6 in this implementation. Therefore UNDEFINED can
@@ -373,30 +274,29 @@ be defined as 0 in situations where only unsigned numbers are desired.
 <p>
 RGB are each on [0, 1]. Whiteness and Blackness are returned in the
 range [0, 1] and H is returned in the range [0, 6]. If W == 1 - B, H is
-undefined.</p>
-<p>
+undefined.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> A color value in the RGB colorspace
+<td>A color value in the RGB colorspace
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
-<td> The hue value of the above color, in the range 0 to 6
+<td>The hue value of the above color, in the range 0 to 6
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>whiteness</code></em> :</span></p></td>
-<td> The whiteness value of the above color, in the range 0 to 1
+<td>The whiteness value of the above color, in the range 0 to 1
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blackness</code></em> :</span></p></td>
-<td> The blackness value of the above color, in the range 0 to 1
+<td>The blackness value of the above color, in the range 0 to 1
 </td>
 </tr>
 </tbody>
@@ -405,42 +305,35 @@ undefined.</p>
 <hr>
 <div class="refsect2" title="gimp_hwb_to_rgb ()">
 <a name="gimp-hwb-to-rgb"></a><h3>gimp_hwb_to_rgb ()</h3>
-<pre class="programlisting">void                gimp_hwb_to_rgb                     (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> whiteness,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> blackness,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_hwb_to_rgb                     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> whiteness</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> blackness</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>);</pre>
 <p>
 H is defined in the range [0, 6] or UNDEFINED, B and W are both in the
-range [0, 1]. The returned RGB values are all in the range [0, 1].</p>
-<p>
+range [0, 1]. The returned RGB values are all in the range [0, 1].
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
-<td> A hue value, in the range 0 to 6
+<td>A hue value, in the range 0 to 6
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>whiteness</code></em> :</span></p></td>
-<td> A whiteness value, in the range 0 to 1
+<td>A whiteness value, in the range 0 to 1
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blackness</code></em> :</span></p></td>
-<td> A blackness value, in the range 0 to 1
+<td>A blackness value, in the range 0 to 1
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> The above color converted to the RGB colorspace
+<td>The above color converted to the RGB colorspace
 </td>
 </tr>
 </tbody>
@@ -449,15 +342,9 @@ range [0, 1]. The returned RGB values are all in the range [0, 1].</p>
 <hr>
 <div class="refsect2" title="gimp_rgb_to_hsv_int ()">
 <a name="gimp-rgb-to-hsv-int"></a><h3>gimp_rgb_to_hsv_int ()</h3>
-<pre class="programlisting">void                gimp_rgb_to_hsv_int                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *blue);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_rgb_to_hsv_int                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *blue</code></em>);</pre>
 <p>
 The arguments are pointers to int representing channel values in
 the RGB colorspace, and the values pointed to are all in the range
@@ -466,25 +353,24 @@ the RGB colorspace, and the values pointed to are all in the range
 <p>
 The function changes the arguments to point to the HSV value
 corresponding, with the returned values in the following
-ranges: H [0, 359], S [0, 255], V [0, 255].</p>
-<p>
+ranges: H [0, 359], S [0, 255], V [0, 255].
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
-<td> The red channel value, returns the Hue channel
+<td>The red channel value, returns the Hue channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
-<td> The green channel value, returns the Saturation channel
+<td>The green channel value, returns the Saturation channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
-<td> The blue channel value, returns the Value channel
+<td>The blue channel value, returns the Value channel
 </td>
 </tr>
 </tbody>
@@ -493,40 +379,33 @@ ranges: H [0, 359], S [0, 255], V [0, 255].</p>
 <hr>
 <div class="refsect2" title="gimp_hsv_to_rgb_int ()">
 <a name="gimp-hsv-to-rgb-int"></a><h3>gimp_hsv_to_rgb_int ()</h3>
-<pre class="programlisting">void                gimp_hsv_to_rgb_int                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *value);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_hsv_to_rgb_int                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *value</code></em>);</pre>
 <p>
 The arguments are pointers to int, with the values pointed to in the
 following ranges:  H [0, 360], S [0, 255], V [0, 255].
 </p>
 <p>
 The function changes the arguments to point to the RGB value
-corresponding, with the returned values all in the range [0, 255].</p>
-<p>
+corresponding, with the returned values all in the range [0, 255].
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
-<td> The hue channel, returns the red channel
+<td>The hue channel, returns the red channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>saturation</code></em> :</span></p></td>
-<td> The saturation channel, returns the green channel
+<td>The saturation channel, returns the green channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td> The value channel, returns the blue channel
+<td>The value channel, returns the blue channel
 </td>
 </tr>
 </tbody>
@@ -535,15 +414,9 @@ corresponding, with the returned values all in the range [0, 255].</p>
 <hr>
 <div class="refsect2" title="gimp_rgb_to_hsl_int ()">
 <a name="gimp-rgb-to-hsl-int"></a><h3>gimp_rgb_to_hsl_int ()</h3>
-<pre class="programlisting">void                gimp_rgb_to_hsl_int                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *blue);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_rgb_to_hsl_int                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *blue</code></em>);</pre>
 <p>
 The arguments are pointers to int representing channel values in the
 RGB colorspace, and the values pointed to are all in the range [0, 255].
@@ -551,25 +424,24 @@ RGB colorspace, and the values pointed to are all in the range [0, 255].
 <p>
 The function changes the arguments to point to the corresponding HLS
 value with the values pointed to in the following ranges:  H [0, 360],
-L [0, 255], S [0, 255].</p>
-<p>
+L [0, 255], S [0, 255].
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
-<td> Red channel, returns Hue channel
+<td>Red channel, returns Hue channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
-<td> Green channel, returns Lightness channel
+<td>Green channel, returns Lightness channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
-<td> Blue channel, returns Saturation channel
+<td>Blue channel, returns Saturation channel
 </td>
 </tr>
 </tbody>
@@ -578,47 +450,38 @@ L [0, 255], S [0, 255].</p>
 <hr>
 <div class="refsect2" title="gimp_rgb_to_cmyk_int ()">
 <a name="gimp-rgb-to-cmyk-int"></a><h3>gimp_rgb_to_cmyk_int ()</h3>
-<pre class="programlisting">void                gimp_rgb_to_cmyk_int                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *blue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *pullout);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_rgb_to_cmyk_int                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *blue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *pullout</code></em>);</pre>
 <p>
 Does a naive conversion from RGB to CMYK colorspace. A simple
 formula that doesn't take any color-profiles into account is used.
 The amount of black pullout how can be controlled via the <em class="parameter"><code>pullout</code></em>
 parameter. A <em class="parameter"><code>pullout</code></em> value of 0 makes this a conversion to CMY.
-A value of 100 causes the maximum amount of black to be pulled out.</p>
-<p>
+A value of 100 causes the maximum amount of black to be pulled out.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
-<td>     the red channel; returns the cyan value (0-255)
+<td>the red channel; returns the cyan value (0-255)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
-<td>   the green channel; returns the magenta value (0-255)
+<td>the green channel; returns the magenta value (0-255)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
-<td>    the blue channel; returns the yellow value (0-255)
+<td>the blue channel; returns the yellow value (0-255)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>pullout</code></em> :</span></p></td>
-<td> the percentage of black to pull out (0-100); returns
+<td>the percentage of black to pull out (0-100); returns
           the black value (0-255)
 </td>
 </tr>
@@ -628,44 +491,35 @@ A value of 100 causes the maximum amount of black to be pulled out.</p>
 <hr>
 <div class="refsect2" title="gimp_cmyk_to_rgb_int ()">
 <a name="gimp-cmyk-to-rgb-int"></a><h3>gimp_cmyk_to_rgb_int ()</h3>
-<pre class="programlisting">void                gimp_cmyk_to_rgb_int                (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *cyan,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *magenta,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *yellow,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *black);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_cmyk_to_rgb_int                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *cyan</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *magenta</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *yellow</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *black</code></em>);</pre>
 <p>
 Does a naive conversion from CMYK to RGB colorspace. A simple
-formula that doesn't take any color-profiles into account is used.</p>
-<p>
+formula that doesn't take any color-profiles into account is used.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cyan</code></em> :</span></p></td>
-<td>    the cyan channel; returns the red value (0-255)
+<td>the cyan channel; returns the red value (0-255)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>magenta</code></em> :</span></p></td>
-<td> the magenta channel; returns the green value (0-255)
+<td>the magenta channel; returns the green value (0-255)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>yellow</code></em> :</span></p></td>
-<td>  the yellow channel; returns the blue value (0-255)
+<td>the yellow channel; returns the blue value (0-255)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>black</code></em> :</span></p></td>
-<td>   the black channel (0-255); doesn't change
+<td>the black channel (0-255); doesn't change
 </td>
 </tr>
 </tbody>
@@ -674,38 +528,29 @@ formula that doesn't take any color-profiles into account is used.</p>
 <hr>
 <div class="refsect2" title="gimp_rgb_to_l_int ()">
 <a name="gimp-rgb-to-l-int"></a><h3>gimp_rgb_to_l_int ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a>                gimp_rgb_to_l_int                   (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> red,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> green,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> blue);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>                gimp_rgb_to_l_int                   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> red</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> green</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> blue</code></em>);</pre>
 <p>
 Calculates the lightness value of an RGB triplet with the formula
-L = (max(R, G, B) + min (R, G, B)) / 2</p>
-<p>
+L = (max(R, G, B) + min (R, G, B)) / 2
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
-<td> Red channel
+<td>Red channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
-<td> Green channel
+<td>Green channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
-<td> Blue channel
+<td>Blue channel
 </td>
 </tr>
 <tr>
@@ -719,40 +564,33 @@ L = (max(R, G, B) + min (R, G, B)) / 2</p>
 <hr>
 <div class="refsect2" title="gimp_hsl_to_rgb_int ()">
 <a name="gimp-hsl-to-rgb-int"></a><h3>gimp_hsl_to_rgb_int ()</h3>
-<pre class="programlisting">void                gimp_hsl_to_rgb_int                 (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> *lightness);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_hsl_to_rgb_int                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> *lightness</code></em>);</pre>
 <p>
 The arguments are pointers to int, with the values pointed to in the
 following ranges:  H [0, 360], L [0, 255], S [0, 255].
 </p>
 <p>
 The function changes the arguments to point to the RGB value
-corresponding, with the returned values all in the range [0, 255].</p>
-<p>
+corresponding, with the returned values all in the range [0, 255].
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
-<td> Hue channel, returns Red channel
+<td>Hue channel, returns Red channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>saturation</code></em> :</span></p></td>
-<td> Saturation channel, returns Green channel
+<td>Saturation channel, returns Green channel
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lightness</code></em> :</span></p></td>
-<td> Lightness channel, returns Blue channel
+<td>Lightness channel, returns Blue channel
 </td>
 </tr>
 </tbody>
@@ -761,44 +599,32 @@ corresponding, with the returned values all in the range [0, 255].</p>
 <hr>
 <div class="refsect2" title="gimp_rgb_to_hsv4 ()">
 <a name="gimp-rgb-to-hsv4"></a><h3>gimp_rgb_to_hsv4 ()</h3>
-<pre class="programlisting">void                gimp_rgb_to_hsv4                    (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
->guchar</a> *rgb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> *value);</pre>
-<p>
-</p>
-<p>
-</p>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_rgb_to_hsv4                    (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> *value</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td>        RGB triplet, rgb[0] is red channel, rgb[1] is green,
+<td>RGB triplet, rgb[0] is red channel, rgb[1] is green,
              rgb[2] is blue (0..255)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
-<td>        Pointer to hue channel (0..1)
+<td>Pointer to hue channel (0..1)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>saturation</code></em> :</span></p></td>
-<td> Pointer to saturation channel (0..1)
+<td>Pointer to saturation channel (0..1)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td>      Pointer to value channel (0..1)
+<td>Pointer to value channel (0..1)
 </td>
 </tr>
 </tbody>
@@ -807,44 +633,32 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <hr>
 <div class="refsect2" title="gimp_hsv_to_rgb4 ()">
 <a name="gimp-hsv-to-rgb4"></a><h3>gimp_hsv_to_rgb4 ()</h3>
-<pre class="programlisting">void                gimp_hsv_to_rgb4                    (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guchar"
->guchar</a> *rgb,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> hue,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> saturation,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> value);</pre>
-<p>
-</p>
-<p>
-</p>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_hsv_to_rgb4                    (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"><span class="type">guchar</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> hue</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> saturation</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td>        RGB triplet, rgb[0] is red channel, rgb[1] is green,
+<td>RGB triplet, rgb[0] is red channel, rgb[1] is green,
              rgb[2] is blue (0..255)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hue</code></em> :</span></p></td>
-<td>        Hue channel (0..1)
+<td>Hue channel (0..1)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>saturation</code></em> :</span></p></td>
-<td> Saturation channel (0..1)
+<td>Saturation channel (0..1)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
-<td>      Value channel (0..1)
+<td>Value channel (0..1)
 </td>
 </tr>
 </tbody>
@@ -854,6 +668,6 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

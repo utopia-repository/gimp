@@ -1,6 +1,7 @@
 # please keep this list sorted alphabetically
 #
 ar
+ast
 az
 be
 bg
@@ -36,6 +37,7 @@ lt
 mk
 mr
 ms
+my
 nb
 ne
 nl
@@ -59,4 +61,5 @@ vi
 xh
 yi
 zh_CN
+zh_HK
 zh_TW

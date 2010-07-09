@@ -1,4 +1,1503 @@
-commit 31b47c749ac4097be3c496bb860889fbece92b23
+commit c2a0c39c298e2c2b892ada59831d55679a3a8e9c
+Author: Sven Neumann <s.neumann@raumfeld.com>
+Date:   Wed Jul 7 21:45:16 2010 +0200
+
+    NEWS: update for the upcoming 2.6.10 release
+
+ NEWS |   21 +++++++++++++++++++++
+ 1 files changed, 21 insertions(+), 0 deletions(-)
+
+commit 8426f36e5a6cca6963323441c6a56f32a77136b2
+Author: Andrew Wyatt <andywyatt@onetel.com>
+Date:   Wed Jul 7 20:38:53 2010 +0200
+
+    Bug 613328 - TGA files saved with incorrect header yOrigin data
+
+    Fix header for TGA files saved with save option 'Origin=Top Left'.
+    (cherry picked from commit 4a1078796ba2d7b03567760f806ded060bd87e61)
+
+ plug-ins/common/file-tga.c |    8 +++++---
+ 1 files changed, 5 insertions(+), 3 deletions(-)
+
+commit fcfc9197c3322ce5245e4bb605db8c9cc8bc5d9c
+Author: Massimo Valentini <sixtysix@inwind.it>
+Date:   Wed Jul 7 20:29:06 2010 +0200
+
+    Bug 623290 - Save As... does not save Windows Bitmap as default
+    in dialog
+
+    Connect to "toggled" signal of radio buttons.
+    (cherry picked from commit ca43054f084fa81f5b40f29739cdb9611d012ccb)
+
+ plug-ins/file-bmp/bmp-write.c |   27 ++++++++++++++-------------
+ 1 files changed, 14 insertions(+), 13 deletions(-)
+
+commit 3133d68d5d8502453169899bfbc8960c745c5d70
+Author: Rupert Weber <rpwh@gmx.de>
+Date:   Sat Jul 3 12:57:41 2010 +0200
+
+    Bug 621363 - CMYK decompose broken
+
+    The CMYK Decompose/Recompose plugin used its own (faulty) algorithm
+    for RGB<->CMYK conversions. This fix changes the plugin to use the
+    conversion routines provided by libgimpcolorspace.
+
+ plug-ins/common/compose.c   |   47 ++++++++-----------
+ plug-ins/common/decompose.c |  101
+ +++++++++++++++++++++++--------------------
+ 2 files changed, 74 insertions(+), 74 deletions(-)
+
+commit 66846857e551f77471ba53cc76aa9df4056d038c
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Sun Jul 4 00:48:13 2010 +0300
+
+    po-tips: Updated Romanian translation
+
+ po-tips/ro.po |   18 ++++--------------
+ 1 files changed, 4 insertions(+), 14 deletions(-)
+
+commit 7f16a8085f0265b7e082127837119eee28082ff5
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Sun Jul 4 00:46:43 2010 +0300
+
+    po: Updated Romanian translation
+
+ po/ro.po |  253
+ +++-----------------------------------------------------------
+ 1 files changed, 12 insertions(+), 241 deletions(-)
+
+commit ed1395ef7a1a59851a772ae52e364a7b3f25eac3
+Author: Ulf-D. Ehlert <ulfehlert@svn.gnome.org>
+Date:   Tue Jun 29 18:19:08 2010 +0200
+
+    po: Minor fixes to German translations
+
+ po-plug-ins/de.po |   11 ++++++-----
+ 1 files changed, 6 insertions(+), 5 deletions(-)
+
+commit 821ebccaed6dc16fe1aae0ce618979b17f215968
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue Jun 29 18:07:29 2010 +0200
+
+    Little fix in italian translation.
+
+ po-libgimp/it.po |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit d6c5d98062111ee4da29f98cf96b938bdd3ce166
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue Jun 29 12:03:28 2010 +0200
+
+    Small fix in italian translation.
+
+ po/it.po |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 8deda13e5f9b5611387dcd1724bfdcac83f07255
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon Jun 28 12:23:31 2010 +0200
+
+    Make cairo code work with newer cairo backends that actually use
+    caching
+
+    Call cairo_surface_flush() before reading or writing a surface's
+    pixels directly, and use cairo_surface_mark_dirty() after writing
+    pixels directly, so we don't read old pixels, and our written pixels
+    get actually used.
+    (manually cherry-picked from fad6053643482e222e246c2db828182b4f2a8c7f)
+
+ app/widgets/gimpviewrenderer.c         |   12 ++++++++++++
+ app/widgets/gimpviewrenderergradient.c |    4 ++++
+ app/widgets/gimpviewrendererpalette.c  |    4 ++++
+ libgimpwidgets/gimpcairo-utils.c       |    4 ++++
+ 4 files changed, 24 insertions(+), 0 deletions(-)
+
+commit bd62d6c13b356c613a85df4bdc20950b42202a3e
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Sun Jun 27 18:21:48 2010 +0200
+
+    Updated italian translation.
+
+ po-plug-ins/it.po |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit f7aab7eaa002a6a8195b6d966b282b0c3bd67548
+Author: Fernando Correia <fcorreia.mail@gmail.com>
+Date:   Sun Jun 27 15:13:45 2010 +0100
+
+    Updated Portuguese translation
+
+ po-libgimp/pt.po | 1806
+ ++++++++++++++++++++++++++++++++++++++----------------
+ 1 files changed, 1267 insertions(+), 539 deletions(-)
+
+commit 896a87bc2acb7de632260967e71aea8c81baef49
+Author: Fernando Correia <fcorreia.mail@gmail.com>
+Date:   Sun Jun 27 14:51:03 2010 +0100
+
+    Updated Portuguese translation
+
+ po-python/pt.po |  144
+ +++++++++++++++++++++++++++---------------------------
+ 1 files changed, 72 insertions(+), 72 deletions(-)
+
+commit 05f3a559b6e0c2b05f29e64800323d4327f4c6a0
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Jun 27 01:55:21 2010 +0200
+
+    Bug 595170 - brush - color from gradient works wrong in greyscale
+
+    Convert the gradient color to the drawable's type before using it.
+    (manually cherry-picked from 15fd08747de7bfac29dd13550109c58f484bdb7a)
+
+ app/paint/gimppaintbrush.c |   11 +++++++++--
+ 1 files changed, 9 insertions(+), 2 deletions(-)
+
+commit d75e1a94889edfed82a9b4058ede407522ecdc77
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Jun 27 01:15:46 2010 +0200
+
+    Bug 613838 - Error in gimp-hue-saturation PDB call
+
+    The "hue" parameter from the PDB is in a [-180..180] range, not in
+    [-100..100]. Note that unlike stated in the bug, this is not an
+    incompatible change, because it simply got broken between 2.4 and
+    2.6.
+    (cherry picked from commit 2813fce0b8fffee97fff038760aa7a66b1d9d9ec)
+
+ app/core/gimpdrawable-hue-saturation.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 4d7a9a87416ce3189c87b258427757935dabdf1b
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Fri Jun 25 00:09:17 2010 +0200
+
+    Small fix in italian translation.
+
+ po/it.po |   18 +++++++++---------
+ 1 files changed, 9 insertions(+), 9 deletions(-)
+
+commit f216c6d3cf686f9de1414dc339a11e3151987043
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Fri Jun 25 00:04:22 2010 +0200
+
+    Updated italian translation.
+
+ po/it.po |   24 ++++++++++++------------
+ 1 files changed, 12 insertions(+), 12 deletions(-)
+
+commit d2fb21f664a3fd4ca04816ce1916081b3b1cd6d2
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Thu Jun 24 21:56:41 2010 +0200
+
+    Bug 622608 - GIMP crashes when clicking any scroll bar from combo
+    boxes
+
+    Don't cancel the popup in grab_notify() if the popup's grab was
+    shadowed by one of the widgets in the popup, like the scrollbar.
+    (cherry picked from commit 991210c0f94ed8e88eab7ebf19438bad85931930)
+
+ app/widgets/gimpcontainerpopup.c |   10 ++++++++--
+ 1 files changed, 8 insertions(+), 2 deletions(-)
+
+commit a0ce1c916ec0fe514a50cb70780685024cb3a762
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Thu Jun 24 03:26:08 2010 +0300
+
+    po-tips: Updated Romanian translation
+
+ po-tips/ro.po |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 3787c8a0946f4ce737cc7dd911e7784c5332c318
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Thu Jun 24 03:25:14 2010 +0300
+
+    po-script-fu: Updated Romanian translation
+
+ po-script-fu/ro.po |   17 ++++++++---------
+ 1 files changed, 8 insertions(+), 9 deletions(-)
+
+commit c15e0ebc94cac1508884c2db062554e6afe4011c
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Thu Jun 24 03:21:10 2010 +0300
+
+    po-plug-ins: Updated Romanian translation
+
+ po-plug-ins/ro.po |   65
+ +++++++++++++++++++++++++++--------------------------
+ 1 files changed, 33 insertions(+), 32 deletions(-)
+
+commit 0591ae50b2c84ea58a1757f10010b539fbd5e073
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Thu Jun 24 03:15:12 2010 +0300
+
+    po-libgimp: Updated Romanian translation
+
+ po-libgimp/ro.po |   18 +++++++++---------
+ 1 files changed, 9 insertions(+), 9 deletions(-)
+
+commit 65146ab47cf595d3901c67d7c1f6586bc531e86e
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Thu Jun 24 02:57:25 2010 +0300
+
+    po: Updated Romanian translation
+
+ po/ro.po |  223
+ ++++++++++++++++++++++++++++++++-----------------------------
+ 1 files changed, 117 insertions(+), 106 deletions(-)
+
+commit 3222c3df322b8f892f6ae3758ba7d7e9e996c8fb
+Author: Martin Nordholts <martinn@src.gnome.org>
+Date:   Wed Jun 23 20:17:37 2010 +0200
+
+    Bug 565459 - newly opened images are put into the background
+
+    When we are going to open new image windows, unset the transient
+    window. We don't need it since we will use gdk_window_raise() to
+    keep the dialog on top. And if we don't do it, then the dialog
+    will pull the image window it was invoked from on top of all the
+    new opened image windows, and we don't want that to happen.
+
+    Patch heavily inspiried by hack from Massimo Valentini.
+
+ app/dialogs/file-open-dialog.c |    9 +++++++++
+ 1 files changed, 9 insertions(+), 0 deletions(-)
+
+commit 4fe6a05a7fcbaf7a1235b3224762728d71dedf49
+Author: Martin Nordholts <martinn@src.gnome.org>
+Date:   Wed Jun 23 20:22:02 2010 +0200
+
+    NEWS: Remove duplicate 2.6.9 entry
+
+ NEWS |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 942bcfaa27080aea080971a6b3e47cd8d7dd8e7c
+Author: Sven Neumann <sven@gimp.org>
+Date:   Tue Jun 22 23:44:16 2010 +0200
+
+    Fix language name
+
+ NEWS |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit f250054cc68339929b11b553685fc3567f7ffd96
+Author: Sven Neumann <sven@gimp.org>
+Date:   Tue Jun 22 21:20:35 2010 +0200
+
+    Bump version to 2.6.10 (interface age 10)
+
+ configure.in |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 03afb4ac7c91b3c7988aab7bf4c67d1ae9f9d71c
+Author: Sven Neumann <sven@gimp.org>
+Date:   Tue Jun 22 20:42:29 2010 +0200
+
+    Update NEWS for upcoming release
+
+ NEWS |   48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 48 insertions(+), 0 deletions(-)
+
+commit 6cadb69d008812fa11fee2cd76ee4efc1141edde
+Author: Sven Neumann <sven@gimp.org>
+Date:   Tue Jun 22 20:42:06 2010 +0200
+
+    Regenerated template files with gtk-doc 1.15
+
+ devel-docs/libgimp/tmpl/gimp.sgml                  |   29
+ ++++++++++++++++++++
+ devel-docs/libgimp/tmpl/gimpaspectpreview.sgml     |    3 ++
+ devel-docs/libgimp/tmpl/gimpbrush.sgml             |    3 ++
+ devel-docs/libgimp/tmpl/gimpbrushes.sgml           |    7 +++++
+ devel-docs/libgimp/tmpl/gimpbrushmenu.sgml         |    3 ++
+ devel-docs/libgimp/tmpl/gimpbrushselect.sgml       |    3 ++
+ devel-docs/libgimp/tmpl/gimpbrushselectbutton.sgml |    3 ++
+ devel-docs/libgimp/tmpl/gimpbuffer.sgml            |    3 ++
+ devel-docs/libgimp/tmpl/gimpchannel.sgml           |    3 ++
+ devel-docs/libgimp/tmpl/gimpcolor.sgml             |    3 ++
+ devel-docs/libgimp/tmpl/gimpcontext.sgml           |   15 ++++++++++
+ devel-docs/libgimp/tmpl/gimpconvert.sgml           |    3 ++
+ devel-docs/libgimp/tmpl/gimpdisplay.sgml           |    4 +++
+ devel-docs/libgimp/tmpl/gimpdrawable.sgml          |    3 ++
+ devel-docs/libgimp/tmpl/gimpdrawablepreview.sgml   |    3 ++
+ devel-docs/libgimp/tmpl/gimpdrawabletransform.sgml |    3 ++
+ devel-docs/libgimp/tmpl/gimpedit.sgml              |    4 +++
+ devel-docs/libgimp/tmpl/gimpenums.sgml             |    4 +++
+ devel-docs/libgimp/tmpl/gimpexport.sgml            |    3 ++
+ devel-docs/libgimp/tmpl/gimpfileops.sgml           |    3 ++
+ devel-docs/libgimp/tmpl/gimpfloatingsel.sgml       |    3 ++
+ devel-docs/libgimp/tmpl/gimpfontmenu.sgml          |    3 ++
+ devel-docs/libgimp/tmpl/gimpfonts.sgml             |    4 +++
+ devel-docs/libgimp/tmpl/gimpfontselect.sgml        |    3 ++
+ devel-docs/libgimp/tmpl/gimpfontselectbutton.sgml  |    3 ++
+ devel-docs/libgimp/tmpl/gimpgimprc.sgml            |    8 +++++
+ devel-docs/libgimp/tmpl/gimpgradient.sgml          |    3 ++
+ devel-docs/libgimp/tmpl/gimpgradientmenu.sgml      |    3 ++
+ devel-docs/libgimp/tmpl/gimpgradients.sgml         |    5 +++
+ devel-docs/libgimp/tmpl/gimpgradientselect.sgml    |    3 ++
+ .../libgimp/tmpl/gimpgradientselectbutton.sgml     |    3 ++
+ devel-docs/libgimp/tmpl/gimpgrid.sgml              |    3 ++
+ devel-docs/libgimp/tmpl/gimpguides.sgml            |    3 ++
+ devel-docs/libgimp/tmpl/gimphelp.sgml              |    3 ++
+ devel-docs/libgimp/tmpl/gimpimage.sgml             |    3 ++
+ devel-docs/libgimp/tmpl/gimpimagecombobox.sgml     |    3 ++
+ devel-docs/libgimp/tmpl/gimpitemcombobox.sgml      |    3 ++
+ devel-docs/libgimp/tmpl/gimplayer.sgml             |    3 ++
+ devel-docs/libgimp/tmpl/gimpmenu.sgml              |    3 ++
+ devel-docs/libgimp/tmpl/gimpmessage.sgml           |    4 +++
+ devel-docs/libgimp/tmpl/gimppalette.sgml           |    5 +++
+ devel-docs/libgimp/tmpl/gimppalettemenu.sgml       |    3 ++
+ devel-docs/libgimp/tmpl/gimppalettes.sgml          |    4 +++
+ devel-docs/libgimp/tmpl/gimppaletteselect.sgml     |    3 ++
+ .../libgimp/tmpl/gimppaletteselectbutton.sgml      |    3 ++
+ devel-docs/libgimp/tmpl/gimppaths.sgml             |    3 ++
+ devel-docs/libgimp/tmpl/gimppattern.sgml           |    3 ++
+ devel-docs/libgimp/tmpl/gimppatternmenu.sgml       |    3 ++
+ devel-docs/libgimp/tmpl/gimppatterns.sgml          |    4 +++
+ devel-docs/libgimp/tmpl/gimppatternselect.sgml     |    3 ++
+ .../libgimp/tmpl/gimppatternselectbutton.sgml      |    3 ++
+ devel-docs/libgimp/tmpl/gimppixbuf.sgml            |    3 ++
+ devel-docs/libgimp/tmpl/gimppixelfetcher.sgml      |    3 ++
+ devel-docs/libgimp/tmpl/gimppixelrgn.sgml          |    3 ++
+ devel-docs/libgimp/tmpl/gimpplugin.sgml            |    4 +++
+ devel-docs/libgimp/tmpl/gimpprocbrowserdialog.sgml |    3 ++
+ devel-docs/libgimp/tmpl/gimpproceduraldb.sgml      |    4 +++
+ devel-docs/libgimp/tmpl/gimpprocview.sgml          |    3 ++
+ devel-docs/libgimp/tmpl/gimpprogress.sgml          |    6 ++++
+ devel-docs/libgimp/tmpl/gimpprogressbar.sgml       |    4 +++
+ devel-docs/libgimp/tmpl/gimpregioniterator.sgml    |    3 ++
+ devel-docs/libgimp/tmpl/gimpselectbutton.sgml      |    3 ++
+ devel-docs/libgimp/tmpl/gimpselection.sgml         |    3 ++
+ devel-docs/libgimp/tmpl/gimptextlayer.sgml         |    3 ++
+ devel-docs/libgimp/tmpl/gimptexttool.sgml          |    3 ++
+ devel-docs/libgimp/tmpl/gimptile.sgml              |    3 ++
+ devel-docs/libgimp/tmpl/gimptools.sgml             |    3 ++
+ devel-docs/libgimp/tmpl/gimpui.sgml                |    4 +++
+ devel-docs/libgimp/tmpl/gimpundo.sgml              |    3 ++
+ devel-docs/libgimp/tmpl/gimpvectors.sgml           |    3 ++
+ devel-docs/libgimp/tmpl/gimpzoompreview.sgml       |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpbaseenums.sgml     |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpbasetypes.sgml     |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpchecks.sgml        |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpcpuaccel.sgml      |    4 +++
+ devel-docs/libgimpbase/tmpl/gimpdatafiles.sgml     |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpenv.sgml           |    9 ++++++
+ devel-docs/libgimpbase/tmpl/gimplimits.sgml        |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpmemsize.sgml       |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpparam.sgml         |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpparasite.sgml      |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpparasiteio.sgml    |    3 ++
+ devel-docs/libgimpbase/tmpl/gimprectangle.sgml     |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpsignal.sgml        |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpunit.sgml          |    5 +++
+ devel-docs/libgimpbase/tmpl/gimputils.sgml         |    3 ++
+ devel-docs/libgimpbase/tmpl/gimpversion.sgml       |    3 ++
+ .../libgimpcolor/tmpl/gimpadaptivesupersample.sgml |    3 ++
+ devel-docs/libgimpcolor/tmpl/gimpbilinear.sgml     |    3 ++
+ devel-docs/libgimpcolor/tmpl/gimpcmyk.sgml         |    3 ++
+ devel-docs/libgimpcolor/tmpl/gimpcolormanaged.sgml |    3 ++
+ devel-docs/libgimpcolor/tmpl/gimpcolorspace.sgml   |    3 ++
+ devel-docs/libgimpcolor/tmpl/gimphsv.sgml          |    3 ++
+ devel-docs/libgimpcolor/tmpl/gimprgb.sgml          |    3 ++
+ devel-docs/libgimpconfig/tmpl/gimpcolorconfig.sgml |    3 ++
+ .../libgimpconfig/tmpl/gimpconfig-deserialize.sgml |    3 ++
+ .../libgimpconfig/tmpl/gimpconfig-error.sgml       |    4 +++
+ .../libgimpconfig/tmpl/gimpconfig-iface.sgml       |    3 ++
+ .../libgimpconfig/tmpl/gimpconfig-params.sgml      |    3 ++
+ devel-docs/libgimpconfig/tmpl/gimpconfig-path.sgml |    3 ++
+ .../libgimpconfig/tmpl/gimpconfig-serialize.sgml   |    3 ++
+ .../libgimpconfig/tmpl/gimpconfig-utils.sgml       |    3 ++
+ .../libgimpconfig/tmpl/gimpconfigwriter.sgml       |    3 ++
+ devel-docs/libgimpconfig/tmpl/gimpscanner.sgml     |    3 ++
+ devel-docs/libgimpmath/tmpl/gimpmath.sgml          |    3 ++
+ devel-docs/libgimpmath/tmpl/gimpmatrix.sgml        |    3 ++
+ devel-docs/libgimpmath/tmpl/gimpmd5.sgml           |    3 ++
+ devel-docs/libgimpmath/tmpl/gimpvector.sgml        |    3 ++
+ devel-docs/libgimpmodule/tmpl/gimpmodule.sgml      |    3 ++
+ devel-docs/libgimpmodule/tmpl/gimpmoduledb.sgml    |    3 ++
+ devel-docs/libgimpthumb/tmpl/gimpthumb-enums.sgml  |    3 ++
+ devel-docs/libgimpthumb/tmpl/gimpthumb-error.sgml  |    4 +++
+ devel-docs/libgimpthumb/tmpl/gimpthumb-utils.sgml  |    3 ++
+ devel-docs/libgimpthumb/tmpl/gimpthumbnail.sgml    |    4 +++
+ devel-docs/libgimpwidgets/tmpl/gimpbrowser.sgml    |    4 +++
+ devel-docs/libgimpwidgets/tmpl/gimpbutton.sgml     |    4 +++
+ .../libgimpwidgets/tmpl/gimpcairo-utils.sgml       |    3 ++
+ .../libgimpwidgets/tmpl/gimpcellrenderercolor.sgml |    4 +++
+ .../tmpl/gimpcellrenderertoggle.sgml               |    3 ++
+ .../libgimpwidgets/tmpl/gimpchainbutton.sgml       |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpcolorarea.sgml  |    3 ++
+ .../libgimpwidgets/tmpl/gimpcolorbutton.sgml       |    3 ++
+ .../libgimpwidgets/tmpl/gimpcolordisplay.sgml      |    3 ++
+ .../libgimpwidgets/tmpl/gimpcolordisplaystack.sgml |    4 +++
+ .../libgimpwidgets/tmpl/gimpcolorhexentry.sgml     |    4 +++
+ .../libgimpwidgets/tmpl/gimpcolornotebook.sgml     |    3 ++
+ .../tmpl/gimpcolorprofilecombobox.sgml             |    3 ++
+ .../libgimpwidgets/tmpl/gimpcolorprofilestore.sgml |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpcolorscale.sgml |    3 ++
+ .../libgimpwidgets/tmpl/gimpcolorscales.sgml       |    3 ++
+ .../libgimpwidgets/tmpl/gimpcolorselect.sgml       |    3 ++
+ .../libgimpwidgets/tmpl/gimpcolorselection.sgml    |    4 +++
+ .../libgimpwidgets/tmpl/gimpcolorselector.sgml     |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpcontroller.sgml |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpdialog.sgml     |    3 ++
+ .../libgimpwidgets/tmpl/gimpenumcombobox.sgml      |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpenumlabel.sgml  |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpenumstore.sgml  |    3 ++
+ .../libgimpwidgets/tmpl/gimpenumwidgets.sgml       |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpfileentry.sgml  |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpframe.sgml      |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimphelpui.sgml     |    5 +++
+ devel-docs/libgimpwidgets/tmpl/gimphintbox.sgml    |    3 ++
+ .../libgimpwidgets/tmpl/gimpintcombobox.sgml       |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpintstore.sgml   |    4 +++
+ .../libgimpwidgets/tmpl/gimpmemsizeentry.sgml      |    3 ++
+ .../libgimpwidgets/tmpl/gimpnumberpairentry.sgml   |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpoffsetarea.sgml |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpoldwidgets.sgml |    3 ++
+ .../libgimpwidgets/tmpl/gimppageselector.sgml      |    4 +++
+ devel-docs/libgimpwidgets/tmpl/gimppatheditor.sgml |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimppickbutton.sgml |    4 +++
+ devel-docs/libgimpwidgets/tmpl/gimppixmap.sgml     |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimppreview.sgml    |    3 ++
+ .../libgimpwidgets/tmpl/gimppreviewarea.sgml       |    4 +++
+ .../libgimpwidgets/tmpl/gimppropwidgets.sgml       |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpquerybox.sgml   |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpruler.sgml      |    3 ++
+ .../libgimpwidgets/tmpl/gimpscrolledpreview.sgml   |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpsizeentry.sgml  |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpstock.sgml      |    4 +++
+ .../libgimpwidgets/tmpl/gimpstringcombobox.sgml    |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpunitmenu.sgml   |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpwidgets.sgml    |    3 ++
+ devel-docs/libgimpwidgets/tmpl/gimpzoommodel.sgml  |    4 +++
+ 165 files changed, 586 insertions(+), 0 deletions(-)
+
+commit 0647e6ae85bf4148fd2eb0bee461287a01c6259c
+Author: Sven Neumann <sven@gimp.org>
+Date:   Tue Jun 22 20:41:28 2010 +0200
+
+    Update gtk-doc.m4 with a newer version
+
+    Actually it shouldn't even be in git and in trunk this file has
+    been removed.
+
+ m4macros/gtk-doc.m4 |   74
+ ++++++++++++++++++++++++++++----------------------
+ 1 files changed, 41 insertions(+), 33 deletions(-)
+
+commit c36bafdd7a32cdb1fea211295ffa1f8d0e8743ec
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Jun 22 20:07:50 2010 +0200
+
+    Bug 612618 - Font selection remains visible
+
+    Connect to "grab-notify" and "grab-broken-event" and close the popup
+    when the grab is lost.
+    (cherry picked from commit 2a984ef51f1679acd7c73163c633fdc8470058f2)
+
+ app/widgets/gimpcontainerpopup.c |   25 +++++++++++++++++++++++++
+ 1 files changed, 25 insertions(+), 0 deletions(-)
+
+commit ed1cb47428398bcdec51e088afa142ee8711641a
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Jun 20 23:53:43 2010 +0200
+
+    Bug 622234 - gimp.desktop: image/x-psd in MimeTypes twice
+
+    Fix the typo: the second x-psd should be x-psp
+    (cherry picked from commit d04051bcad1d57319f9c278be30f43ee41a73e78)
+
+ configure.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit effc864b3b23195c0cf2bd9bf53cb568204a5910
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sun Jun 20 18:37:53 2010 +0200
+
+    Bug 622196 - Unportable test(1) construct in configure script
+
+    Use of '==' as comparison operator is a bashism.
+    (cherry picked from commit 9275404452e233e38c6cc438beaccab92278631f)
+
+ configure.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 552158a7a7eb008637545f31da4753ac584d00b4
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Tue Jun 15 00:40:42 2010 +0200
+
+    Updated italian translation.
+
+ po-plug-ins/it.po |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
+
+commit f08ed1ae72b808c27587271a8aa727f8f0f6d686
+Author: Ulf-D. Ehlert <ulfehlert@svn.gnome.org>
+Date:   Sun Jun 13 18:47:11 2010 +0200
+
+    po: Minor fixes to German translations
+
+ po-plug-ins/de.po |    7 ++++---
+ po/de.po          |    6 +++---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+commit 1c91f68f39c43906eeba9d582aff3214e2d4fea0
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Fri Jun 11 01:41:09 2010 +0200
+
+    Little fix to a main menu hotkey.
+
+ po/it.po |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 1cb13d2c7ce02cdc3e3c90d432f1df222fc5ad4f
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:20:29 2010 +0200
+
+    Updated asturian translation
+
+ po/ast.po |12895
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 12895 insertions(+), 0 deletions(-)
+
+commit f18c43a1f8f02c0f51b8b32aa28647123cf52447
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:20:23 2010 +0200
+
+    Updated asturian translation
+
+ po-script-fu/ast.po | 2821
+ +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 2821 insertions(+), 0 deletions(-)
+
+commit 3e677bbd0dc36b1dd23ace9b14219e4c6a28cc5d
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:20:11 2010 +0200
+
+    Updated asturian translation
+
+ po-plug-ins/ast.po |12534
+ ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 12534 insertions(+), 0 deletions(-)
+
+commit b5b2708f353e001e5fece70b58fbc73f103b97c1
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:19:16 2010 +0200
+
+    Added asturian language
+
+ po/LINGUAS |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 60a72a7fa2e3b6915e52aeab6f87a633d1cbb4d6
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:19:08 2010 +0200
+
+    Added asturian language
+
+ po-script-fu/LINGUAS |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 8e99d9a7470629cbf54aff1a767e5e3db95cc3bd
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:18:57 2010 +0200
+
+    Added asturian language
+
+ po-plug-ins/LINGUAS |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit f0e5143339949511df3b1940ef6a71214d710e70
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:18:45 2010 +0200
+
+    Added asturian language
+
+ po-libgimp/LINGUAS |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit b7e9fc1b473a397dc1ebd92fce47370779d6d116
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:16:58 2010 +0200
+
+    Updated asturian translation
+
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+
+commit e1578b4730f9b3614f060f17947949b31c47b488
+Author: Xandru Armesto <xandru@softastur.org>
+Date:   Sun Jun 6 17:14:38 2010 +0200
+
+    Updated asturian translation
+
+ po-libgimp/ast.po | 1862
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 1862 insertions(+), 0 deletions(-)
+
+commit 9f98dedd45fa4ddc1d58519b043fcf3ea4eae04a
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat Jun 5 19:26:06 2010 +0200
+
+    Bug 620604 - Description of "histogram" procedure is slightly
+    inaccurate
+
+    Fix totally broken value ranges of integer PDB parameters. Magically,
+    the bug was affecting only exactly the two cases mentioned in above
+    bug report.
+
+    * tools/pdbgen/pdb.pl (arg_parse): return <, <=, > and >= literally
+      instead of applying a mapping that was originally meant for
+      generated C code that would e.g. transform "0 <= int32 < 10" into
+      "if (value < 0 || value >= 10) fail". This inversion of all
+      operators is now wrong because PDB parameters have been turned into
+      GParamSpecs which always need inclusive ranges as min and max
+      values.
+
+    * tools/pdbgen/pdbgen.pl (arrayexpand): generated array length type
+      specs must be "0 <= int32", not "0 < int32".
+
+    * tools/pdbgen/app.pl: when generating integer param specs, check if
+      the value range is specified in terms of < instead of <=, and
+      add/subtract 1, resuting in the inclusive range needed for integer
+      GParamSpecs.
+
+    * app/pdb/color-cmds.c: regenerated, fixing the two broken ranges
+      mentioned in the bug report.
+    (cherry picked from commit 9dd373d86e71ac69301e4cbfaaeb4bee0eb5be6a)
+
+ app/pdb/color-cmds.c   |    4 ++--
+ tools/pdbgen/app.pl    |   42 ++++++++++++++++++++++++++++++++++++------
+ tools/pdbgen/pdb.pl    |   16 +---------------
+ tools/pdbgen/pdbgen.pl |    4 ++--
+ 4 files changed, 41 insertions(+), 25 deletions(-)
+
+commit d3adca9f8a4d4f92392359d5d53f6604340f9d75
+Author: Ulf-D. Ehlert <ulfehlert@svn.gnome.org>
+Date:   Wed Jun 2 14:01:37 2010 +0200
+
+    po: Minor fixes to German translations
+
+ po-plug-ins/de.po  |   47 +++++++++++++++++++++++++++++------------------
+ po-script-fu/de.po |   11 +++++++----
+ po/de.po           |    6 +++---
+ 3 files changed, 39 insertions(+), 25 deletions(-)
+
+commit 8d93ae092bf4181964a049d4e3d70351be299844
+Author: Kevin Cozens <kcozens@cvs.gnome.org>
+Date:   Tue Jun 1 17:10:57 2010 -0400
+
+    Fixed issue with list length mentioned in comment 18 of bug #499443.
+
+    Applied changes from CVS version 1.24 of official version of
+    TinyScheme.
+    Merged redundant list_length, is_list, OP_LISTP code.
+    (backport of commit 4c862bf6787986d30d1cd83c3acd9df9e07cbe57)
+
+ plug-ins/script-fu/tinyscheme/scheme.c |   46
+ ++++++++++---------------------
+ 1 files changed, 15 insertions(+), 31 deletions(-)
+
+commit 47d0eb7d01d3b8190458cab2fbe1ec05adb89f4d
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Mon May 10 08:48:19 2010 +0200
+
+    Little fix in italian translation.
+
+ po-plug-ins/it.po |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 8460f23d351d733b03ab0824d8f1d12d93536b49
+Author: Nishibori Kiyotaka <ml.nishibori.kiyotaka@gmail.com>
+Date:   Tue May 4 13:32:18 2010 +0900
+
+    Updated Japanese translation.
+
+ po-script-fu/ja.po |   26 +++++++++++++-------------
+ 1 files changed, 13 insertions(+), 13 deletions(-)
+
+commit c4da35c8918c6b754142a39b7dc387aa989b976c
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Sun May 2 02:11:19 2010 +0200
+
+    Updated italian translation.
+
+ po-script-fu/it.po |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit a11a20fa913ecd867806e36482a885e84c06afd2
+Author: Ulf-D. Ehlert <ulfehlert@svn.gnome.org>
+Date:   Tue Apr 27 14:33:51 2010 +0200
+
+    po: Fix German translation
+    (cherry picked from commit 9eac51989a49c0b03993bee8d46ef7763152902f)
+
+ po-plug-ins/de.po  |    4 +++-
+ po-script-fu/de.po |    4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+commit 69cde30cca3093ab125cd4267922ac0763b0ee05
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Fri Apr 23 12:43:04 2010 +0200
+
+    Little fix in italian translatio.
+
+ po-script-fu/it.po |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 713a98da3dc485eed6e0524e0ff6ded4cf244da5
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Apr 18 12:47:18 2010 +0200
+
+    Bug 541586 - Tool options not saved/loaded correctly?
+
+    Don't overwrite the entire context part of all tool options with
+    values from contextrc, or we will end up with one tool option set to a
+    non-default values affecting all other tool options that were at their
+    default value in the next gimp session.
+    (cherry picked from commit 547c92d0f646710887890621615f4b2777657955)
+
+ app/tools/gimp-tools.c |   10 +++++++++-
+ 1 files changed, 9 insertions(+), 1 deletions(-)
+
+commit b17d09f095641cf0749583d3da5e65bfc7ec3d1a
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Wed Apr 14 18:06:39 2010 +0200
+
+    Updated italian translation
+
+ po-plug-ins/it.po  |   22 ++++++------
+ po-script-fu/it.po |   10 +++---
+ po/it.po           |   87
+ ++++++++++++++++++++++++++-------------------------
+ 3 files changed, 60 insertions(+), 59 deletions(-)
+
+commit 57588a79abaec08312f160c558f62d034d3efa2a
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:   Sat Apr 3 16:40:35 2010 +0300
+
+    Updated Ukrainian translation
+
+ po-plug-ins/uk.po |12560
+ +++++++++++++++++++++++++++--------------------------
+ 1 files changed, 6404 insertions(+), 6156 deletions(-)
+
+commit 6161db1b2310570da589856f3fb84fc63046bb81
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:   Sat Apr 3 01:38:06 2010 +0300
+
+    Updated Ukrainian translation
+
+ po/uk.po |  249
+ --------------------------------------------------------------
+ 1 files changed, 0 insertions(+), 249 deletions(-)
+
+commit 5900f94791262c19ab1d11ed5f88dd74c27440a1
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:   Sat Apr 3 01:37:55 2010 +0300
+
+    Updated Ukrainian translation
+
+ po/uk.po | 5159
+ +++++++++++++++++++++++++++++++++++---------------------------
+ 1 files changed, 2936 insertions(+), 2223 deletions(-)
+
+commit b4ea2a263549369e2cf1cf70622e2a9d5b742719
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:   Fri Apr 2 18:11:19 2010 +0300
+
+    Updated Ukrainian translation
+
+ po-script-fu/uk.po |  462
+ +++++++++++++++++++++++++++-------------------------
+ 1 files changed, 243 insertions(+), 219 deletions(-)
+
+commit 2f101d78e32601bbdc25546737c6671c5531ffd8
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:   Fri Apr 2 18:09:44 2010 +0300
+
+    Updated Ukrainian translation
+
+ po-python/uk.po |  137
+ ++++++++++++++++++++++++++++---------------------------
+ 1 files changed, 69 insertions(+), 68 deletions(-)
+
+commit fb4349533303957344bbaa11ba51093ca271bbb2
+Author: Maxim V. Dziumanenko <dziumanenko@gmail.com>
+Date:   Fri Apr 2 18:05:15 2010 +0300
+
+    Updated Ukrainian translation
+
+ po-libgimp/uk.po |  717
+ +++++++++++++++++++++++++++++-------------------------
+ 1 files changed, 383 insertions(+), 334 deletions(-)
+
+commit 8c07af31c0c48733d933d43ecd3117a4b63eb5c6
+Author: Pau Iranzo <pau@somgnu.cat>
+Date:   Wed Mar 31 10:00:41 2010 +0200
+
+    Updated Catalan (Valencian) translation
+
+ po-plug-ins/ca@valencia.po |12483
+ +++++++++++++++++++++++---------------------
+ 1 files changed, 6394 insertions(+), 6089 deletions(-)
+
+commit 996b8fe29a739a04f05cdd8dccf94e1d876f3a46
+Author: Pau Iranzo <pau@somgnu.cat>
+Date:   Tue Mar 30 19:50:39 2010 +0200
+
+    Updated Catalan (Valencian) translation
+
+ po-libgimp/ca@valencia.po   |  549 +++---
+ po-python/ca@valencia.po    |  143 +-
+ po-script-fu/ca@valencia.po |  431 ++---
+ po-tips/ca@valencia.po      |  116 +-
+ po/ca@valencia.po           | 4659
+ +++++++++++++++++++++++--------------------
+ 5 files changed, 3005 insertions(+), 2893 deletions(-)
+
+commit 71fb5c4e18569f122547306550d22493a74a3baf
+Author: David Planella <david.planella@gmail.com>
+Date:   Tue Mar 30 18:54:51 2010 +0200
+
+    Updated Catalan translation
+
+ po-plug-ins/ca.po |  977
+ ++++++++++++++++++++++++++++-------------------------
+ po/ca.po          |  829 +++++++++++++++++++++++----------------------
+ 2 files changed, 935 insertions(+), 871 deletions(-)
+
+commit d9687271c48c69787dfdb56999b0ee56d9c72821
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:   Mon Mar 29 18:52:02 2010 +0200
+
+    Updated Basque language
+
+ po-script-fu/eu.po |   46 +++++++++++++++++++++++-----------------------
+ 1 files changed, 23 insertions(+), 23 deletions(-)
+
+commit ddabb59e945b5654d7f291ded6f0242b2b8a25ff
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:   Mon Mar 29 18:43:12 2010 +0200
+
+    Updated Basque language
+
+ po-plug-ins/eu.po |  165
+ ++++++++++++++++++++++------------------------------
+ 1 files changed, 70 insertions(+), 95 deletions(-)
+
+commit e9b36d3d0a1511949afd0f73e3701927ce96e4f8
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:   Mon Mar 29 18:23:32 2010 +0200
+
+    Updated Basque language
+
+ po-tips/eu.po |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+commit 856f28c6e52e55cedcfd73d3830c2abcea9cbc47
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:   Mon Mar 29 18:18:32 2010 +0200
+
+    Updated Basque language
+
+ po-libgimp/eu.po |   50
+ +++++++++++++++++++++++++-------------------------
+ 1 files changed, 25 insertions(+), 25 deletions(-)
+
+commit e73c9deefe14a4e0db308cadf55dd6c099023fc8
+Author: Inaki Larranaga Murgoitio <dooteo@zundan.com>
+Date:   Mon Mar 29 18:14:15 2010 +0200
+
+    Updated Basque language
+
+ po/eu.po |  120
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 files changed, 60 insertions(+), 60 deletions(-)
+
+commit 21812c57ce2299ba561870113f4bcb8785e4b817
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sun Mar 28 12:34:38 2010 +0200
+
+    Bug 614153 - Importing PDF files with long titles
+
+    Ellipsize the title label.
+    (cherry picked from commit b55591ca04cf5ae3376fb204cb7b397f7deb7fd9)
+
+ plug-ins/common/file-pdf.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 501c4f65f08c111df0654cb887d95c2c06e82710
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Wed Mar 24 18:08:01 2010 +0100
+
+    backport statusbar code needed for GTK+ >= 2.19.1
+
+    Use the hbox that is provided via gtk_statusbar_get_message_area()
+    since GTK+ 2.19.1.
+
+ app/display/gimpstatusbar.c |   32 +++++++++++++++++++++++++-------
+ 1 files changed, 25 insertions(+), 7 deletions(-)
+
+commit f63251c783d0909f787f88a3028ad9744f59bdf4
+Author: Russell Kyaw <Russell.Kyaw@gmail.com>
+Date:   Thu Mar 18 01:15:52 2010 +0200
+
+    Updated Burmese translation for GIMP
+
+ po/my.po | 3027
+ +++++++++++++++++++++-----------------------------------------
+ 1 files changed, 1036 insertions(+), 1991 deletions(-)
+
+commit d92271418c5c677fd4f48df817a113dac64c9e83
+Author: Ulf-D. Ehlert <ulfehlert@svn.gnome.org>
+Date:   Wed Mar 17 18:09:00 2010 +0100
+
+    po: Minor fixes to German translations
+
+ po-plug-ins/de.po |   19 +++++++++++--------
+ po-python/de.po   |    2 +-
+ po-tips/de.po     |    7 +++++--
+ po/de.po          |   19 +++++++++++--------
+ 4 files changed, 28 insertions(+), 19 deletions(-)
+
+commit 72d08f52c0095c543db2088c52c6079848f5b7ff
+Author: Christian.Kirbach <Christian.Kirbach@googlemail.com>
+Date:   Wed Mar 17 10:31:29 2010 +0100
+
+    Updated German translation
+
+ po/de.po |  114
+ ++++++++++++++++++++++++++++++-------------------------------
+ 1 files changed, 56 insertions(+), 58 deletions(-)
+
+commit 69f7d88a80263267131a4b4953716c224323e691
+Author: Inaki Larranaga <dooteo@zundan.com>
+Date:   Tue Mar 16 17:56:13 2010 +0100
+
+    Updated Basque translation
+
+ po-plug-ins/eu.po | 1041
+ +++++++++++++++++++++++++++++------------------------
+ 1 files changed, 561 insertions(+), 480 deletions(-)
+
+commit f395196abee93f8861262409eba9babd469bee6b
+Author: Matej Urbančič <mateju@svn.gnome.org>
+Date:   Mon Mar 15 11:49:13 2010 +0100
+
+    Updated Slovenian translation
+
+ po-python/sl.po |   90
+ ++++++++++++++++++++++++++++---------------------------
+ 1 files changed, 46 insertions(+), 44 deletions(-)
+
+commit d74b56e801d01a1c4344ed388640fff8b4079ac8
+Author: Matej Urbančič <mateju@svn.gnome.org>
+Date:   Mon Mar 15 11:48:24 2010 +0100
+
+    Updated Slovenian translation
+
+ po-tips/sl.po |  335
+ ++++++++++++++++++++++++++++++++++++++++++++------------
+ 1 files changed, 263 insertions(+), 72 deletions(-)
+
+commit 20a50f42665184031e1cf47bd46263ff0cf5a8e6
+Author: Matej Urbančič <mateju@svn.gnome.org>
+Date:   Mon Mar 15 11:32:15 2010 +0100
+
+    Updated Slovenian translation
+
+ po-plug-ins/sl.po | 1078
+ ++++++++++++++++++++++++++++-------------------------
+ 1 files changed, 568 insertions(+), 510 deletions(-)
+
+commit 5c520cf3466a0185e7941f756d339023b0f1e629
+Author: Matej Urbančič <mateju@svn.gnome.org>
+Date:   Mon Mar 15 11:31:10 2010 +0100
+
+    Updated Slovenian translation
+
+ po/sl.po |  905
+ +++++++++++++++++++++++++++++++-------------------------------
+ 1 files changed, 455 insertions(+), 450 deletions(-)
+
+commit da9b8794a80e8694c6ea312362a029c99d4b578c
+Author: Massimo Valentini <sixtysix@inwind.it>
+Date:   Fri Mar 12 20:58:45 2010 +0100
+
+    Bug 600112 - blur-gauss-selective.exe crashes
+
+    Allocate buffers with some extra padding as the MMX instructions
+    used in matrixmult_mmx() may read more than strictly necessary.
+    (cherry picked from commit cbb815c20303c94fcfea221a55d528ba93ac7d90)
+
+ plug-ins/common/blur-gauss-selective.c |    8 ++++++--
+ 1 files changed, 6 insertions(+), 2 deletions(-)
+
+commit a67da1e59123519fdf39fbefd53f83c37c49c1da
+Author: Massimo Valentini <sixtysix@inwind.it>
+Date:   Thu Mar 11 08:42:19 2010 +0100
+
+    Bug 599233 - Dialog of "Save as BMP" ignores changes which are not
+    made with a mouse
+
+    Connect to GtkButton::clicked instead of GtkButton::pressed.
+    (cherry picked from commit bc02c2f51ee31588ceb8b9d9aebaf1557fe4119c)
+
+ plug-ins/file-bmp/bmp-write.c |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
+
+commit a9e4044116ee0269a6cb11a00d178bb901796653
+Author: Christian.Kirbach <Christian.Kirbach@googlemail.com>
+Date:   Wed Mar 10 11:16:38 2010 +0100
+
+    Updated German translation
+
+ po-plug-ins/de.po |  435
+ ++++++++++++++++++++++++++++++-----------------------
+ 1 files changed, 245 insertions(+), 190 deletions(-)
+
+commit eca2cbf210600e7b45219c41835e416c21f79ff3
+Author: Nils-Christoph Fiedler <fiedler@medienkompanie.de>
+Date:   Thu Mar 4 01:15:14 2010 +0100
+
+    Added LowGerman translation
+
+ po/nds.po |13119
+ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 13119 insertions(+), 0 deletions(-)
+
+commit 5a004f6b86754fb91a8f9d97de3091a39b2b80bf
+Author: Nils-Christoph Fiedler <fiedler@medienkompanie.de>
+Date:   Thu Mar 4 01:15:07 2010 +0100
+
+    Added LowGerman translation
+
+ po/LINGUAS |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 13defe5926251854f58aceef0af23d95936d30d7
+Author: Daniel Nylander <po@danielnylander.se>
+Date:   Tue Mar 2 18:57:51 2010 +0100
+
+    Updated Swedish translation
+
+ po-plug-ins/sv.po |  465
+ ++++++++++++++++++++++++++++++-----------------------
+ 1 files changed, 262 insertions(+), 203 deletions(-)
+
+commit 6d7b8469fa77a9f2542b059defcffcc81356683b
+Author: Claude Paroz <claude@2xlibre.net>
+Date:   Tue Mar 2 18:46:27 2010 +0100
+
+    Updated French translation
+
+ po-plug-ins/fr.po |  251
+ ++++++++++++++++++++++++++++++++--------------------
+ 1 files changed, 154 insertions(+), 97 deletions(-)
+
+commit 18e3c7240bae097b96c50a09876e1e2f5042637b
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Mar 2 15:08:37 2010 +0100
+
+    Bug 565001 - Text-Tool crashes when edit a 2.4.2 version xcf
+
+    Need to convert to text->box_unit, not text->unit.
+
+ app/tools/gimptexttool.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit f85cac770b7c617b29d33dc6bd9eed5c3d8877f0
+Author: Rudolfs Mazurs <rudolfs.mazurs@gmail.com>
+Date:   Sat Feb 27 13:16:33 2010 +0200
+
+    Updated Latvian translation.
+
+ po-libgimp/lv.po | 3131
+ ++++++++++++++++++++++++++++++++++--------------------
+ 1 files changed, 1984 insertions(+), 1147 deletions(-)
+
+commit 6db0e83e8946be43b088c42f19467d31ec83b2f3
+Author: Rudolfs Mazurs <rudolfs.mazurs@gmail.com>
+Date:   Sat Feb 27 13:15:13 2010 +0200
+
+    Updated Latvian translation.
+
+ po/lv.po | 9899
+ ++++++++++++++++++++++++++++++++------------------------------
+ 1 files changed, 5189 insertions(+), 4710 deletions(-)
+
+commit ded453fc885bd58e2d2f2d2c15eb14d27d7bc338
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Feb 21 14:31:15 2010 +0100
+
+    Bug 565001 - Text-Tool crashes when edit a 2.4.2 version xcf
+
+    Convert the rectangle size from pixels to units before setting it as
+    box-width and box-height on the text object.
+
+ app/tools/gimptexttool.c |   49
+ ++++++++++++++++++++++++++++++++++++++++++---
+ 1 files changed, 45 insertions(+), 4 deletions(-)
+
+commit d4b7b0d83fe7423ef2979b76c33291f8e8c495e4
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Fri Feb 19 20:59:25 2010 +0100
+
+    Bug 610478 - Layer preview suddenly stops getting updated
+
+    gimp_paint_core_finish(): when bailing out early because nothing was
+    painted (e.g. because we repeatedly shift-click on the same pixel,
+    which doesn't advance the interpolation distance), don't forget to
+    call gimp_viewable_preview_thaw() or the drawable preview will be
+    frozen forever.
+    (cherry picked from commit c55753f2ad387ead2edbbfce8cd8f7f3751455b4)
+
+ app/paint/gimppaintcore.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+commit ca7517044bbcf5eeb8a5b6241f6346eaf3fc34ed
+Author: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>
+Date:   Fri Feb 19 19:26:57 2010 +0800
+
+    Added zh_HK to LINGUAS
+
+ po-plug-ins/LINGUAS  |    1 +
+ po-script-fu/LINGUAS |    1 +
+ po-tips/LINGUAS      |    1 +
+ 3 files changed, 3 insertions(+), 0 deletions(-)
+
+commit fd47c8375f58eecc00fa7b6f675a917fc27eb25f
+Author: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>
+Date:   Fri Feb 19 19:19:13 2010 +0800
+
+    Updated Traditional Chinese translation (Hong Kong and Taiwan)
+
+ po-plug-ins/zh_HK.po  |12338 ++++++++++++++++++++++++++++++++++++
+ po-plug-ins/zh_TW.po  |16555
+ +++++++++++++++++++++++--------------------------
+ po-script-fu/zh_HK.po | 2725 ++++++++
+ po-script-fu/zh_TW.po | 3253 +++++------
+ po-tips/zh_HK.po      |  216 +
+ po-tips/zh_TW.po      |  322 +-
+ po/zh_HK.po           |   88 +-
+ po/zh_TW.po           |   86 +-
+ 8 files changed, 24813 insertions(+), 10770 deletions(-)
+
+commit 387300bce37a74ca296ad0c75ed065bf2cc33e74
+Author: Sven Neumann <sven@gimp.org>
+Date:   Fri Feb 12 21:36:22 2010 +0100
+
+    Revert "Bug 609697 - Spelling error - Plase"
+
+    String changes must not be done in the stable branch as they
+    invalidate all translations.
+
+    This reverts commit 736e6ca1d0e5bddd4c49f62963b15da86b40370a.
+
+ app/widgets/gimpuimanager.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 736e6ca1d0e5bddd4c49f62963b15da86b40370a
+Author: Martin Nordholts <martinn@src.gnome.org>
+Date:   Fri Feb 12 07:40:27 2010 +0100
+
+    Bug 609697 - Spelling error - Plase
+
+ app/widgets/gimpuimanager.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit cb41897d21161687c7003d021ddcd4218e57609a
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed Feb 10 19:37:46 2010 +0100
+
+    Bug 609026 - leaks shared memory
+
+    Move calling gimp_plug_in_shm_free() from
+    gimp_plug_in_manager_finalize()
+    to gimp_plug_in_manager_exit() so it's also called in stable GIMP
+    releases which simply call exit() at some point instead of taking the
+    time to shut down everything completely.
+    (cherry picked from commit 9a4bf10d30d3ace506caa2196e8f56b369bfab86)
+
+ app/plug-in/gimppluginmanager.c |   15 +++++++++------
+ 1 files changed, 9 insertions(+), 6 deletions(-)
+
+commit 5f50e1be7b19f75b216f209c862f03b7ca4b69f9
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Wed Feb 10 20:08:04 2010 +0200
+
+    Updated Romanian translations
+
+ po-plug-ins/ro.po |    5 +-
+ po-tips/ro.po     |  311
+ ++++++++++++++++++++++++++++++++++++++++++-----------
+ po/ro.po          |    4 +-
+ 3 files changed, 255 insertions(+), 65 deletions(-)
+
+commit 02c395597d6eaa696a17bfe5f3e9b2f7aa7b893d
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Wed Feb 10 12:51:46 2010 +0100
+
+    Bug 609056 - Exporting to Alias PIX format fails
+
+    Apply patch from Saul Goode which fixes a typo that made exporting to
+    PIX impossible.
+    (cherry picked from commit 034bd0427f17a8a8f594f6901e837a13fc231331)
+
+ plug-ins/common/file-pix.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 9f86bcbb586e0545ed4cb17ad695e080d0b92d6a
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Mon Feb 8 23:11:11 2010 +0200
+
+    Updated Romanian translations
+
+ po-libgimp/ro.po   |   64 +-
+ po-plug-ins/ro.po  | 2546
+ +++++++++++++++++++++++++++++-----------------------
+ po-script-fu/ro.po |  495 ++++++-----
+ po/ro.po           |  776 +++++++++--------
+ 4 files changed, 2167 insertions(+), 1714 deletions(-)
+
+commit b46970bd08297bfa73a4b6f05477a470eccffe96
+Author: Nishibori Kiyotaka <ml.nishibori.kiyotaka@gmail.com>
+Date:   Sun Feb 7 19:08:02 2010 +0900
+
+    Updated Japanese translation.
+    see <http://l10n.gnome.org/vertimus/diff/36101/0/0/>
+
+ po-libgimp/ja.po |   20 ++++++++++----------
+ 1 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 99709ed86c8eebcd6b1fab30994a14e8ed77dc50
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Sat Feb 6 12:55:53 2010 +0100
+
+    Updated italian translation
+
+ po-plug-ins/it.po |  247
+ ++++++++++++++++++++++++++++++++--------------------
+ 1 files changed, 152 insertions(+), 95 deletions(-)
+
+commit ca342da60b7bde7e623a611444cc1907c336967b
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Sat Feb 6 00:15:28 2010 +0100
+
+    Hungarian translation updated
+
+ po-plug-ins/hu.po |  593
+ +++++++++++++++++++++++++++++------------------------
+ 1 files changed, 325 insertions(+), 268 deletions(-)
+
+commit 183e088a4bd25bc79e69f0ff4fa323cf5148e114
+Author: Akkana Peck <akkana@git.gnome.org>
+Date:   Thu Feb 4 19:22:14 2010 -0800
+
+    Fix bug 590418: make chalk script-fu work
+
+    Sobel doesn't work on layers with transparency, like text layers, so
+    the text layer in the chalk script needed to be merged with the
+    background layer beneath it.
+
+ plug-ins/script-fu/scripts/chalk.scm |   20 +++++++++++++-------
+ 1 files changed, 13 insertions(+), 7 deletions(-)
+
+commit 1def8e273477425791c6ec6f7e0a8c397834e93b
+Author: Kevin Cozens <kcozens@cvs.gnome.org>
+Date:   Sun Jan 31 17:54:21 2010 -0500
+
+    Applied patch from Saul Goode which mostly fixes bug #604587
+
+    Fixes delq when using numeric values. Fixes two bad let block
+    declarations.
+    (cherry picked from commit cc6427e5d5ee11340820e4151bd3936c7b5e9a38)
+
+ plug-ins/script-fu/scripts/script-fu-compat.init |   21
+ ++++++++-------------
+ 1 files changed, 8 insertions(+), 13 deletions(-)
+
+commit cb68d6508d316abcd789212a3a8a906141c86131
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sun Jan 31 21:11:11 2010 +0100
+
+    Bug 608188 - a few strings in Save as... > Raw image data dialog
+    are always in English
+
+    Add missing call to INIT_18N().
+    (cherry picked from commit b499d01a71adaf78905433e52b2087dcb55c7c21)
+
+ plug-ins/common/file-raw.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit 9c135ab33361aa04182735ef0d16e37074caaf32
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Jan 31 17:34:48 2010 +0100
+
+    Bug 604820 - GEGL Operation "path" crashes GIMP
+
+    Blacklist "gegl:path".
+
+ app/tools/gimpgegltool.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 353ef2037dfbcda8aec8507f8aa7ce5619d3fed0
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Jan 31 17:19:51 2010 +0100
+
+    Bug 603711 - Crashes when using path tool
+
+    gimp_display_shell_get_*_coord(): initialize the coords with
+    GIMP_COORDS_DEFAULT_VALUES allGimpCoords members get initialized.
+    (cherry-picked from 74bf91cb63ec9ee64d7f2ab2c1b58f118b0f61e1)
+
+ app/display/gimpdisplayshell-coords.c |   47
+ +++++++++++---------------------
+ 1 files changed, 16 insertions(+), 31 deletions(-)
+
+commit b22eb0a8271a99257fe214cbf0adda29cf9a39dd
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Jan 31 12:28:02 2010 +0100
+
+    Bug 607242 - GIMP 2.7.0 fails to build against libpng 1.4.0
+
+    Use png_set_expand_gray_1_2_4_to_8() instead of the deprecated
+    png_set_gray_1_2_4_to_8() if libpng is at least 1.2.27 (which is in
+    debian stable), so plug-ins built against old versions contine to work
+    when libpng 1.4 gets installed.
+
+ plug-ins/file-ico/ico-load.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
+commit 3572522f0317ca2f644a5b85f6c76d2b7b519000
+Author: Russell Kyaw <rkyaw@yahoo.com>
+Date:   Fri Jan 29 18:43:04 2010 +0200
+
+    Added Burmese (Myanmar) translation
+
+ po-libgimp/LINGUAS   |    1 +
+ po-libgimp/my.po     | 2031 +++++++
+ po-plug-ins/LINGUAS  |    1 +
+ po-plug-ins/my.po    |12685 +++++++++++++++++++++++++++++++++++++++++++
+ po-python/LINGUAS    |    1 +
+ po-python/my.po      |  315 ++
+ po-script-fu/LINGUAS |    1 +
+ po-script-fu/my.po   | 2804 ++++++++++
+ po-tips/LINGUAS      |    1 +
+ po-tips/my.po        |  311 ++
+ po/LINGUAS           |    1 +
+ po/my.po             |14588
+ ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 12 files changed, 32740 insertions(+), 0 deletions(-)
+
+commit a5f25708524f433f2b0f02dc72510dcb20aa9669
+Author: Petr Kovar <pknbe@volny.cz>
+Date:   Sun Jan 17 22:02:19 2010 +0100
+
+    Updated Czech translation by Marek Cernocky
+
+    Reviewed by: Lucas Lommer.
+
+ po-plug-ins/cs.po |   30 +++++++++++++++---------------
+ 1 files changed, 15 insertions(+), 15 deletions(-)
+
+commit 26b185c31ebddb1a9c3a30eb6b60a15a5e3ed854
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sat Jan 9 12:12:12 2010 +0100
+
+    Bug 606372 - Saving to .ppm fails on indexed colorspace
+
+    Don't change the pointer to the colormap and then attempt to free it.
+    (cherry picked from commit b883d59411dfde28fb0704fa2790e602999f7f6f)
+
+ plug-ins/common/file-pnm.c |   11 ++++++-----
+ 1 files changed, 6 insertions(+), 5 deletions(-)
+
+commit 936b093438ef2258317279b70b511ab4cb67d676
+Author: Petr Kovar <pknbe@volny.cz>
+Date:   Mon Jan 4 20:48:55 2010 +0100
+
+    Updated Czech translation by Marek Cernocky
+
+ po-plug-ins/cs.po |  172
+ +++++++++++++++++++++++++++++++++++------------------
+ 1 files changed, 114 insertions(+), 58 deletions(-)
+
+commit 0a7807b3060c7f573d39e67d0780546b67d52e85
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sun Jan 3 00:51:47 2010 +0100
+
+    docs: remove use of undefined macro in man pages
+    (cherry picked from commit b6f322d8fce8f4e985b1af8806d7700df621372a)
+
+ docs/gimp-remote.1.in |    1 -
+ docs/gimp.1.in        |    1 -
+ docs/gimptool.1.in    |    1 -
+ 3 files changed, 0 insertions(+), 3 deletions(-)
+
+commit c76fd3d443fb69b771781cfff05e590f64fda81f
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sat Dec 26 14:10:31 2009 +0100
+
+    app: fix mapping for CURVE_BLUE (use the blue, not the green curve)
+    (cherry picked from commit 105b7c5afaa851461276d3c92c6fe50fffc17515)
+
+ app/core/gimpcurve-map.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 6ca5f30637024d56d11105c1ac0d1637592c2219
+Author: Sven Neumann <sven@gimp.org>
+Date:   Wed Dec 23 23:56:45 2009 +0100
+
+    Bug 605237 -  the "Antialiasing..." message in the progress bar does
+    not show translated
+
+    Add missing call to INIT_I18N().
+    (cherry picked from commit e8ff034ab5d1556d93125ab59eec037691c28b3a)
+
+ plug-ins/common/antialias.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit 1fa837242c1180472c17434b039286f2f017d58b
+Author: Lucian Grijincu <lucian.grijincu@gmail.com>
+Date:   Sat Dec 19 19:01:40 2009 +0200
+
+    Updated Romanian translation
+
+ po/ro.po |  273
+ +++++++++++++++++++++++++++++++++----------------------------
+ 1 files changed, 148 insertions(+), 125 deletions(-)
+
+commit 7ea76a515df94ff00d000bc3b38aab665bdef581
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Sat Dec 19 13:41:30 2009 +0100
+
+    Updated italian translation.
+
+ po-libgimp/it.po |   18 +++++++++---------
+ 1 files changed, 9 insertions(+), 9 deletions(-)
+
+commit a569d60d89de2f9f7fbfd3084cd4b8f466ba9d9e
+Author: Massimo Valentini <sixtysix@inwind.it>
+Date:   Mon Dec 14 20:32:42 2009 +0100
+
+    initialize all fields of GimpCoords
+
+ app/text/gimptext-vectors.c |   11 +++++------
+ 1 files changed, 5 insertions(+), 6 deletions(-)
+
+commit 0c678d0e7aab2ac029a4e95dd191100741a1b9bb
+Author: Sven Neumann <sven@gimp.org>
+Date:   Mon Dec 14 19:32:01 2009 +0100
+
+    bumped version to 2.6.9 (interface age 9)
+
+ configure.in |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit b2779443b948fe61cd10faafe0dee7c998ac12eb
 Author: Sven Neumann <sven@gimp.org>
 Date:   Thu Dec 10 22:15:56 2009 +0100
 
@@ -6,6 +1505,53 @@ Date:   Thu Dec 10 22:15:56 2009 +0100
 
  configure.in |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 86f299bacd80cceb91023a124cd78c255853443f
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon Dec 14 14:19:10 2009 +0100
+
+    Bug 604508 - gimp-layer-new-from-visible should work from updated
+    projection
+
+    Call gimp_pickable_flush(projection) before creating a new layer
+    from it.
+    (cherry picked and modified from commit
+    335597ce7d92c22e9ecb90c21176b6b43dae5459)
+
+ app/actions/layers-commands.c |    3 +++
+ app/pdb/layer-cmds.c          |    3 +++
+ tools/pdbgen/pdb/layer.pdb    |    3 +++
+ 3 files changed, 9 insertions(+), 0 deletions(-)
+
+commit 9dc470896e26e2902aef6236d14acf903d99391a
+Author: 神州散人 <kappa8086@gmail.com>
+Date:   Mon Dec 14 11:36:34 2009 +0800
+
+    Updated Simplified Chinese translation.
+
+ po-libgimp/zh_CN.po  |   27 +-
+ po-plug-ins/zh_CN.po |  332 +++++++-------------
+ po/zh_CN.po          |  836
+ +------------------------------------------------
+ 3 files changed, 150 insertions(+), 1045 deletions(-)
+
+commit bfba5fcbb1a88774c3637ac97188dbe59fbab825
+Author: David Planella <david.planella@gmail.com>
+Date:   Thu Dec 10 22:19:25 2009 +0100
+
+    Fixed some typos in Catalan
+
+ po-plug-ins/ca.po |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 9285ca219cd9cbd3b8e9f6ad804d840209ed2c82
+Author: David Planella <david.planella@gmail.com>
+Date:   Thu Dec 10 22:18:02 2009 +0100
+
+    Fixed some typos in Catalan
+
+ po-script-fu/ca.po |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
 commit c54b53da5589a0eadf5fd2c8d95bf9d01ad77d34
 Author: Nils Philippsen <nils@redhat.com>

@@ -5,7 +5,7 @@
  *  The code for this filter is based on "pgmedge", a program
  *  that is part of the netpbm package.
  *
- * The GIMP -- an image manipulation program
+ * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -57,7 +57,7 @@
 
 
 #ifdef RCSID
-static gchar rcsid[] = "$Id: edge.c,v 1.75 2006/05/16 12:26:06 neo Exp $";
+static gchar rcsid[] = "$Id: edge.c 21494 2006-12-09 21:33:38Z neo $";
 #endif
 
 /* Some useful macros */

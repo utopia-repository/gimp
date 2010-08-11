@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -123,7 +123,7 @@ gimp_image_item_list_transform (GimpImage              *image,
                                 GimpInterpolationType   interpolation_type,
                                 gboolean                supersample,
                                 gint                    recursion_level,
-                                gboolean                clip_result,
+                                GimpTransformResize     clip_result,
                                 GimpProgress           *progress)
 {
   g_return_if_fail (GIMP_IS_IMAGE (image));

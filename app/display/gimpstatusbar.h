@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -85,12 +85,14 @@ void        gimp_statusbar_push_coords      (GimpStatusbar       *statusbar,
                                              const gchar         *title,
                                              gdouble              x,
                                              const gchar         *separator,
-                                             gdouble              y);
+                                             gdouble              y,
+                                             const gchar         *help);
 void        gimp_statusbar_push_length      (GimpStatusbar       *statusbar,
                                              const gchar         *context,
                                              const gchar         *title,
                                              GimpOrientationType  axis,
-                                             gdouble              value);
+                                             gdouble              value,
+                                             const gchar         *help);
 void        gimp_statusbar_replace          (GimpStatusbar       *statusbar,
                                              const gchar         *context,
                                              const gchar         *format,

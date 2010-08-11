@@ -30,8 +30,9 @@
       <sub name="GimpPixmap" link="GimpPixmap.html"/>
       <sub name="GimpPreviewArea" link="GimpPreviewArea.html"/>
       <sub name="GimpPreview" link="GimpPreview.html"/>
-      <sub name="GimpPropWidgets" link="libgimpwidgets-GimpPropWidgets.html"/>
+      <sub name="GimpRatioEntry" link="GimpRatioEntry.html"/>
       <sub name="GimpScrolledPreview" link="GimpScrolledPreview.html"/>
+      <sub name="GimpSizeEntry" link="GimpSizeEntry.html"/>
       <sub name="GimpUnitMenu" link="GimpUnitMenu.html"/>
     </sub>
     <sub name="Cell Renderers for GtkTreeView" link="libgimpwidgets-cell-renderers.html">
@@ -54,9 +55,9 @@
     <sub name="GIMP Widgets Utilities" link="libgimpwidgets-utils.html">
       <sub name="GimpHelpUI" link="libgimpwidgets-GimpHelpUI.html"/>
       <sub name="GimpQueryBox" link="libgimpwidgets-GimpQueryBox.html"/>
-      <sub name="GimpSizeEntry" link="GimpSizeEntry.html"/>
       <sub name="GimpStock" link="libgimpwidgets-GimpStock.html"/>
       <sub name="GimpEnumWidgets" link="libgimpwidgets-GimpEnumWidgets.html"/>
+      <sub name="GimpPropWidgets" link="libgimpwidgets-GimpPropWidgets.html"/>
       <sub name="GimpWidgets" link="libgimpwidgets-GimpWidgets.html"/>
     </sub>
     <sub name="Deprecated API" link="libgimpwidgets-deprecated.html">
@@ -149,6 +150,7 @@
     <function name="gimp_enum_store_new_with_values ()" link="GimpEnumStore.html#gimp-enum-store-new-with-values"/>
     <function name="gimp_enum_store_new_with_values_valist ()" link="GimpEnumStore.html#gimp-enum-store-new-with-values-valist"/>
     <function name="gimp_enum_store_set_stock_prefix ()" link="GimpEnumStore.html#gimp-enum-store-set-stock-prefix"/>
+    <function name="The &quot;enum-type&quot; property" link="GimpEnumStore.html#GimpEnumStore--enum-type"/>
     <function name="GimpEnumComboBox" link="GimpEnumComboBox.html#GimpEnumComboBox-struct"/>
     <function name="gimp_enum_combo_box_new ()" link="GimpEnumComboBox.html#gimp-enum-combo-box-new"/>
     <function name="gimp_enum_combo_box_new_with_model ()" link="GimpEnumComboBox.html#gimp-enum-combo-box-new-with-model"/>
@@ -183,6 +185,7 @@
     <function name="enum GimpIntStoreColumns" link="GimpIntStore.html#GimpIntStoreColumns"/>
     <function name="gimp_int_store_new ()" link="GimpIntStore.html#gimp-int-store-new"/>
     <function name="gimp_int_store_lookup_by_value ()" link="GimpIntStore.html#gimp-int-store-lookup-by-value"/>
+    <function name="The &quot;user-data-type&quot; property" link="GimpIntStore.html#GimpIntStore--user-data-type"/>
     <function name="GimpMemsizeEntry" link="GimpMemsizeEntry.html#GimpMemsizeEntry-struct"/>
     <function name="gimp_memsize_entry_new ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-new"/>
     <function name="gimp_memsize_entry_set_value ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-set-value"/>
@@ -251,6 +254,8 @@
     <function name="gimp_preview_set_bounds ()" link="GimpPreview.html#gimp-preview-set-bounds"/>
     <function name="gimp_preview_get_size ()" link="GimpPreview.html#gimp-preview-get-size"/>
     <function name="gimp_preview_get_position ()" link="GimpPreview.html#gimp-preview-get-position"/>
+    <function name="gimp_preview_transform ()" link="GimpPreview.html#gimp-preview-transform"/>
+    <function name="gimp_preview_untransform ()" link="GimpPreview.html#gimp-preview-untransform"/>
     <function name="gimp_preview_get_area ()" link="GimpPreview.html#gimp-preview-get-area"/>
     <function name="gimp_preview_draw ()" link="GimpPreview.html#gimp-preview-draw"/>
     <function name="gimp_preview_draw_buffer ()" link="GimpPreview.html#gimp-preview-draw-buffer"/>
@@ -260,38 +265,46 @@
     <function name="The &quot;update&quot; property" link="GimpPreview.html#GimpPreview--update"/>
     <function name="The &quot;size&quot; style property" link="GimpPreview.html#GimpPreview--size"/>
     <function name="The &quot;invalidated&quot; signal" link="GimpPreview.html#GimpPreview-invalidated"/>
-    <function name="gimp_prop_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-check-button-new"/>
-    <function name="gimp_prop_boolean_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-combo-box-new"/>
-    <function name="gimp_prop_boolean_radio_frame_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-radio-frame-new"/>
-    <function name="gimp_prop_expander_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-expander-new"/>
-    <function name="gimp_prop_hscale_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-hscale-new"/>
-    <function name="gimp_prop_int_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-int-combo-box-new"/>
-    <function name="gimp_prop_enum_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-combo-box-new"/>
-    <function name="gimp_prop_enum_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-check-button-new"/>
-    <function name="gimp_prop_enum_label_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-label-new"/>
-    <function name="gimp_prop_enum_radio_frame_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-frame-new"/>
-    <function name="gimp_prop_enum_radio_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-box-new"/>
-    <function name="gimp_prop_enum_stock_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-stock-box-new"/>
-    <function name="gimp_prop_spin_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-spin-button-new"/>
-    <function name="gimp_prop_scale_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-scale-entry-new"/>
-    <function name="gimp_prop_opacity_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-opacity-entry-new"/>
-    <function name="gimp_prop_memsize_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-memsize-entry-new"/>
-    <function name="gimp_prop_label_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-label-new"/>
-    <function name="gimp_prop_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new"/>
-    <function name="gimp_prop_text_buffer_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new"/>
-    <function name="gimp_prop_file_chooser_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new"/>
-    <function name="gimp_prop_path_editor_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-path-editor-new"/>
-    <function name="gimp_prop_size_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-size-entry-new"/>
-    <function name="gimp_prop_coordinates_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new"/>
-    <function name="gimp_prop_coordinates_connect ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-connect"/>
-    <function name="gimp_prop_color_area_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-color-area-new"/>
-    <function name="gimp_prop_unit_menu_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-unit-menu-new"/>
-    <function name="gimp_prop_stock_image_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-stock-image-new"/>
+    <function name="GimpRatioEntry" link="GimpRatioEntry.html#GimpRatioEntry-struct"/>
+    <function name="gimp_ratio_entry_new ()" link="GimpRatioEntry.html#gimp-ratio-entry-new"/>
+    <function name="gimp_ratio_entry_set_fraction ()" link="GimpRatioEntry.html#gimp-ratio-entry-set-fraction"/>
+    <function name="gimp_ratio_entry_get_fraction ()" link="GimpRatioEntry.html#gimp-ratio-entry-get-fraction"/>
+    <function name="gimp_ratio_entry_set_ratio ()" link="GimpRatioEntry.html#gimp-ratio-entry-set-ratio"/>
+    <function name="gimp_ratio_entry_get_ratio ()" link="GimpRatioEntry.html#gimp-ratio-entry-get-ratio"/>
+    <function name="The &quot;denominator&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--denominator"/>
+    <function name="The &quot;numerator&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--numerator"/>
+    <function name="The &quot;ratio&quot; property" link="GimpRatioEntry.html#GimpRatioEntry--ratio"/>
+    <function name="The &quot;ratio-changed&quot; signal" link="GimpRatioEntry.html#GimpRatioEntry-ratio-changed"/>
     <function name="GimpScrolledPreview" link="GimpScrolledPreview.html#GimpScrolledPreview-struct"/>
     <function name="gimp_scrolled_preview_set_position ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-position"/>
     <function name="gimp_scrolled_preview_set_policy ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-policy"/>
     <function name="gimp_scrolled_preview_freeze ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-freeze"/>
     <function name="gimp_scrolled_preview_thaw ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-thaw"/>
+    <function name="GimpSizeEntry" link="GimpSizeEntry.html#GimpSizeEntry-struct"/>
+    <function name="GimpSizeEntryField" link="GimpSizeEntry.html#GimpSizeEntryField"/>
+    <function name="enum GimpSizeEntryUpdatePolicy" link="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy"/>
+    <function name="gimp_size_entry_new ()" link="GimpSizeEntry.html#gimp-size-entry-new"/>
+    <function name="gimp_size_entry_add_field ()" link="GimpSizeEntry.html#gimp-size-entry-add-field"/>
+    <function name="gimp_size_entry_attach_label ()" link="GimpSizeEntry.html#gimp-size-entry-attach-label"/>
+    <function name="gimp_size_entry_set_resolution ()" link="GimpSizeEntry.html#gimp-size-entry-set-resolution"/>
+    <function name="gimp_size_entry_set_size ()" link="GimpSizeEntry.html#gimp-size-entry-set-size"/>
+    <function name="gimp_size_entry_set_value_boundaries ()" link="GimpSizeEntry.html#gimp-size-entry-set-value-boundaries"/>
+    <function name="gimp_size_entry_get_value ()" link="GimpSizeEntry.html#gimp-size-entry-get-value"/>
+    <function name="gimp_size_entry_set_value ()" link="GimpSizeEntry.html#gimp-size-entry-set-value"/>
+    <function name="gimp_size_entry_set_refval_boundaries ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval-boundaries"/>
+    <function name="gimp_size_entry_set_refval_digits ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval-digits"/>
+    <function name="gimp_size_entry_get_refval ()" link="GimpSizeEntry.html#gimp-size-entry-get-refval"/>
+    <function name="gimp_size_entry_set_refval ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval"/>
+    <function name="gimp_size_entry_get_unit ()" link="GimpSizeEntry.html#gimp-size-entry-get-unit"/>
+    <function name="gimp_size_entry_set_unit ()" link="GimpSizeEntry.html#gimp-size-entry-set-unit"/>
+    <function name="gimp_size_entry_set_pixel_digits ()" link="GimpSizeEntry.html#gimp-size-entry-set-pixel-digits"/>
+    <function name="gimp_size_entry_show_unit_menu ()" link="GimpSizeEntry.html#gimp-size-entry-show-unit-menu"/>
+    <function name="gimp_size_entry_grab_focus ()" link="GimpSizeEntry.html#gimp-size-entry-grab-focus"/>
+    <function name="gimp_size_entry_set_activates_default ()" link="GimpSizeEntry.html#gimp-size-entry-set-activates-default"/>
+    <function name="gimp_size_entry_get_help_widget ()" link="GimpSizeEntry.html#gimp-size-entry-get-help-widget"/>
+    <function name="The &quot;refval-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-refval-changed"/>
+    <function name="The &quot;unit-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-unit-changed"/>
+    <function name="The &quot;value-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-value-changed"/>
     <function name="GimpUnitMenu" link="GimpUnitMenu.html#GimpUnitMenu-struct"/>
     <function name="gimp_unit_menu_new ()" link="GimpUnitMenu.html#gimp-unit-menu-new"/>
     <function name="gimp_unit_menu_set_unit ()" link="GimpUnitMenu.html#gimp-unit-menu-set-unit"/>
@@ -390,31 +403,6 @@
     <function name="gimp_query_size_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-size-box"/>
     <function name="gimp_query_boolean_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-boolean-box"/>
     <function name="GIMP_QUERY_BOX_VBOX()" link="libgimpwidgets-GimpQueryBox.html#GIMP-QUERY-BOX-VBOX:CAPS"/>
-    <function name="GimpSizeEntry" link="GimpSizeEntry.html#GimpSizeEntry-struct"/>
-    <function name="GimpSizeEntryField" link="GimpSizeEntry.html#GimpSizeEntryField"/>
-    <function name="enum GimpSizeEntryUpdatePolicy" link="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy"/>
-    <function name="gimp_size_entry_new ()" link="GimpSizeEntry.html#gimp-size-entry-new"/>
-    <function name="gimp_size_entry_add_field ()" link="GimpSizeEntry.html#gimp-size-entry-add-field"/>
-    <function name="gimp_size_entry_attach_label ()" link="GimpSizeEntry.html#gimp-size-entry-attach-label"/>
-    <function name="gimp_size_entry_set_resolution ()" link="GimpSizeEntry.html#gimp-size-entry-set-resolution"/>
-    <function name="gimp_size_entry_set_size ()" link="GimpSizeEntry.html#gimp-size-entry-set-size"/>
-    <function name="gimp_size_entry_set_value_boundaries ()" link="GimpSizeEntry.html#gimp-size-entry-set-value-boundaries"/>
-    <function name="gimp_size_entry_get_value ()" link="GimpSizeEntry.html#gimp-size-entry-get-value"/>
-    <function name="gimp_size_entry_set_value ()" link="GimpSizeEntry.html#gimp-size-entry-set-value"/>
-    <function name="gimp_size_entry_set_refval_boundaries ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval-boundaries"/>
-    <function name="gimp_size_entry_set_refval_digits ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval-digits"/>
-    <function name="gimp_size_entry_get_refval ()" link="GimpSizeEntry.html#gimp-size-entry-get-refval"/>
-    <function name="gimp_size_entry_set_refval ()" link="GimpSizeEntry.html#gimp-size-entry-set-refval"/>
-    <function name="gimp_size_entry_get_unit ()" link="GimpSizeEntry.html#gimp-size-entry-get-unit"/>
-    <function name="gimp_size_entry_set_unit ()" link="GimpSizeEntry.html#gimp-size-entry-set-unit"/>
-    <function name="gimp_size_entry_set_pixel_digits ()" link="GimpSizeEntry.html#gimp-size-entry-set-pixel-digits"/>
-    <function name="gimp_size_entry_show_unit_menu ()" link="GimpSizeEntry.html#gimp-size-entry-show-unit-menu"/>
-    <function name="gimp_size_entry_grab_focus ()" link="GimpSizeEntry.html#gimp-size-entry-grab-focus"/>
-    <function name="gimp_size_entry_set_activates_default ()" link="GimpSizeEntry.html#gimp-size-entry-set-activates-default"/>
-    <function name="gimp_size_entry_get_help_widget ()" link="GimpSizeEntry.html#gimp-size-entry-get-help-widget"/>
-    <function name="The &quot;refval-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-refval-changed"/>
-    <function name="The &quot;unit-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-unit-changed"/>
-    <function name="The &quot;value-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-value-changed"/>
     <function name="gimp_stock_init ()" link="libgimpwidgets-GimpStock.html#gimp-stock-init"/>
     <function name="GIMP_STOCK_ANCHOR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ANCHOR:CAPS"/>
     <function name="GIMP_STOCK_CENTER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CENTER:CAPS"/>
@@ -623,6 +611,34 @@
     <function name="gimp_enum_stock_box_new ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new"/>
     <function name="gimp_enum_stock_box_new_with_range ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new-with-range"/>
     <function name="gimp_enum_stock_box_set_child_padding ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-set-child-padding"/>
+    <function name="gimp_prop_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-check-button-new"/>
+    <function name="gimp_prop_boolean_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-combo-box-new"/>
+    <function name="gimp_prop_boolean_radio_frame_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-radio-frame-new"/>
+    <function name="gimp_prop_expander_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-expander-new"/>
+    <function name="gimp_prop_hscale_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-hscale-new"/>
+    <function name="gimp_prop_int_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-int-combo-box-new"/>
+    <function name="gimp_prop_enum_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-combo-box-new"/>
+    <function name="gimp_prop_enum_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-check-button-new"/>
+    <function name="gimp_prop_enum_label_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-label-new"/>
+    <function name="gimp_prop_enum_radio_frame_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-frame-new"/>
+    <function name="gimp_prop_enum_radio_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-box-new"/>
+    <function name="gimp_prop_enum_stock_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-stock-box-new"/>
+    <function name="gimp_prop_spin_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-spin-button-new"/>
+    <function name="gimp_prop_scale_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-scale-entry-new"/>
+    <function name="gimp_prop_opacity_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-opacity-entry-new"/>
+    <function name="gimp_prop_memsize_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-memsize-entry-new"/>
+    <function name="gimp_prop_label_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-label-new"/>
+    <function name="gimp_prop_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new"/>
+    <function name="gimp_prop_text_buffer_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new"/>
+    <function name="gimp_prop_file_chooser_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new"/>
+    <function name="gimp_prop_file_chooser_button_new_with_dialog ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new-with-dialog"/>
+    <function name="gimp_prop_path_editor_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-path-editor-new"/>
+    <function name="gimp_prop_size_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-size-entry-new"/>
+    <function name="gimp_prop_coordinates_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new"/>
+    <function name="gimp_prop_coordinates_connect ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-connect"/>
+    <function name="gimp_prop_color_area_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-color-area-new"/>
+    <function name="gimp_prop_unit_menu_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-unit-menu-new"/>
+    <function name="gimp_prop_stock_image_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-stock-image-new"/>
     <function name="gimp_radio_group_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new"/>
     <function name="gimp_radio_group_new2 ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2"/>
     <function name="gimp_radio_group_set_active ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active"/>

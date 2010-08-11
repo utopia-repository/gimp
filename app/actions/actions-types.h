@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -38,6 +38,14 @@ typedef enum
   GIMP_ACTION_SELECT_PERCENT_PREVIOUS = -9,
   GIMP_ACTION_SELECT_PERCENT_NEXT     = -10
 } GimpActionSelectType;
+
+typedef enum
+{
+  GIMP_SAVE_MODE_SAVE,
+  GIMP_SAVE_MODE_SAVE_AS,
+  GIMP_SAVE_MODE_SAVE_A_COPY,
+  GIMP_SAVE_MODE_SAVE_AND_CLOSE
+} GimpSaveMode;
 
 
 #endif /* __ACTIONS_TYPES_H__ */

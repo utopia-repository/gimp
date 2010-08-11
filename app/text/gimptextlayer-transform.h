@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * GimpTextLayer
@@ -48,7 +48,7 @@ void  gimp_text_layer_transform (GimpItem               *item,
                                  GimpInterpolationType   interpolation_type,
                                  gboolean                supersample,
                                  gint                    recursion_level,
-                                 gboolean                clip_result,
+                                 GimpTransformResize     clip_result,
                                  GimpProgress           *progress);
 
 

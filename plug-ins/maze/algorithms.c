@@ -1,4 +1,4 @@
-/* $Id: algorithms.c,v 1.13 2005/09/30 08:16:06 mitch Exp $
+/* $Id: algorithms.c 21431 2006-11-24 11:10:10Z neo $
  * Contains routines for generating mazes, somewhat intertwined with
  * Gimp plug-in-maze specific stuff.
  *
@@ -37,15 +37,17 @@
  *
  */
 
-#ifndef SOLO_COMPILE
 #include "config.h"
-#endif
 
 #include <stdlib.h>
-#include "maze.h"
+
 #include "libgimp/gimp.h"
 #include "libgimp/gimpui.h"
+
 #include "libgimp/stdplugins-intl.h"
+
+#include "maze.h"
+
 
 extern MazeValues mvals;
 extern GRand     *gr;

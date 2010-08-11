@@ -1,7 +1,7 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * $Id: tga.c,v 1.64 2006/09/12 11:45:58 neo Exp $
+ * $Id: tga.c 21497 2006-12-09 22:12:23Z neo $
  * TrueVision Targa loading and saving file filter for the Gimp.
  * Targa code Copyright (C) 1997 Raphael FRANCOIS and Gordon Matzigkeit
  *
@@ -56,7 +56,7 @@
  *
  *
  * TODO:
- *   - The GIMP stores the indexed alpha channel as a separate byte,
+ *   - GIMP stores the indexed alpha channel as a separate byte,
  *     one for each pixel.  The TGA file format spec requires that the
  *     alpha channel be stored as part of the colormap, not with each
  *     individual pixel.  This means that we have no good way of

@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimplimits.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2559792" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581931" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2562726" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2571171" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpversion"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2559792"></a><span class="refentrytitle">gimpversion</span>
+<a name="id2581931"></a><span class="refentrytitle">gimpversion</span>
 </h2>
 <p>gimpversion &#8212; Macros and constants useful for determining GIMP's version number and
 capabilities.</p>
@@ -53,10 +53,14 @@ capabilities.</p>
 #define     <a href="libgimpbase-gimpversion.html#GIMP-VERSION:CAPS">GIMP_VERSION</a>
 #define     <a href="libgimpbase-gimpversion.html#GIMP-API-VERSION:CAPS">GIMP_API_VERSION</a>
 #define     <a href="libgimpbase-gimpversion.html#GIMP-CHECK-VERSION:CAPS">GIMP_CHECK_VERSION</a>              (major, minor, micro)
+#define     <a href="libgimpbase-gimpversion.html#GIMPVAR:CAPS">GIMPVAR</a>
+extern      const guint <a href="libgimpbase-gimpversion.html#gimp-major-version">gimp_major_version</a>;
+extern      const guint <a href="libgimpbase-gimpversion.html#gimp-minor-version">gimp_minor_version</a>;
+extern      const guint <a href="libgimpbase-gimpversion.html#gimp-micro-version">gimp_micro_version</a>;
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2562726"></a><h2>Description</h2>
+<a name="id2571171"></a><h2>Description</h2>
 <p>
 Macros and constants useful for determining GIMP's version number and
 capabilities.
@@ -64,11 +68,11 @@ capabilities.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578176"></a><h2>Details</h2>
+<a name="id2571188"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2578187"></a><h3>
+<a name="id2571199"></a><h3>
 <a name="GIMP-MAJOR-VERSION:CAPS"></a>GIMP_MAJOR_VERSION</h3>
-<a class="indexterm" name="id2578199"></a><pre class="programlisting">#define GIMP_MAJOR_VERSION                              (2)
+<a class="indexterm" name="id2571210"></a><pre class="programlisting">#define GIMP_MAJOR_VERSION                              (2)
 </pre>
 <p>
 
@@ -76,9 +80,9 @@ capabilities.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578215"></a><h3>
+<a name="id2571226"></a><h3>
 <a name="GIMP-MINOR-VERSION:CAPS"></a>GIMP_MINOR_VERSION</h3>
-<a class="indexterm" name="id2578227"></a><pre class="programlisting">#define GIMP_MINOR_VERSION                              (3)
+<a class="indexterm" name="id2571238"></a><pre class="programlisting">#define GIMP_MINOR_VERSION                              (3)
 </pre>
 <p>
 
@@ -86,9 +90,9 @@ capabilities.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578244"></a><h3>
+<a name="id2571254"></a><h3>
 <a name="GIMP-MICRO-VERSION:CAPS"></a>GIMP_MICRO_VERSION</h3>
-<a class="indexterm" name="id2578255"></a><pre class="programlisting">#define GIMP_MICRO_VERSION                              (13)
+<a class="indexterm" name="id2571266"></a><pre class="programlisting">#define GIMP_MICRO_VERSION                              (14)
 </pre>
 <p>
 
@@ -96,9 +100,9 @@ capabilities.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578272"></a><h3>
+<a name="id2557675"></a><h3>
 <a name="GIMP-VERSION:CAPS"></a>GIMP_VERSION</h3>
-<a class="indexterm" name="id2578284"></a><pre class="programlisting">#define GIMP_VERSION                                    "2.3.13"
+<a class="indexterm" name="id2557686"></a><pre class="programlisting">#define GIMP_VERSION                                    "2.3.14"
 </pre>
 <p>
 
@@ -106,9 +110,9 @@ capabilities.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578301"></a><h3>
+<a name="id2557703"></a><h3>
 <a name="GIMP-API-VERSION:CAPS"></a>GIMP_API_VERSION</h3>
-<a class="indexterm" name="id2572674"></a><pre class="programlisting">#define GIMP_API_VERSION                                "2.0"
+<a class="indexterm" name="id2557714"></a><pre class="programlisting">#define GIMP_API_VERSION                                "2.0"
 </pre>
 <p>
 Since: GIMP 2.2
@@ -116,9 +120,9 @@ Since: GIMP 2.2
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572691"></a><h3>
+<a name="id2557731"></a><h3>
 <a name="GIMP-CHECK-VERSION:CAPS"></a>GIMP_CHECK_VERSION()</h3>
-<a class="indexterm" name="id2572702"></a><pre class="programlisting">#define     GIMP_CHECK_VERSION(major, minor, micro)</pre>
+<a class="indexterm" name="id2557742"></a><pre class="programlisting">#define     GIMP_CHECK_VERSION(major, minor, micro)</pre>
 <p>
 
 </p>
@@ -144,6 +148,45 @@ Since: GIMP 2.2
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2557806"></a><h3>
+<a name="GIMPVAR:CAPS"></a>GIMPVAR</h3>
+<a class="indexterm" name="id2589179"></a><pre class="programlisting">#define     GIMPVAR</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2589194"></a><h3>
+<a name="gimp-major-version"></a>gimp_major_version</h3>
+<a class="indexterm" name="id2589207"></a><pre class="programlisting">extern const guint gimp_major_version;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2589222"></a><h3>
+<a name="gimp-minor-version"></a>gimp_minor_version</h3>
+<a class="indexterm" name="id2589234"></a><pre class="programlisting">extern const guint gimp_minor_version;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2589250"></a><h3>
+<a name="gimp-micro-version"></a>gimp_micro_version</h3>
+<a class="indexterm" name="id2589262"></a><pre class="programlisting">extern const guint gimp_micro_version;
+</pre>
+<p>
+
+</p>
 </div>
 </div>
 </div>

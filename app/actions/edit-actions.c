@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -64,7 +64,7 @@ static const GimpActionEntry edit_actions[] =
   { "edit-paste-as-menu", NULL, N_("_Paste as") },
   { "edit-buffer-menu",   NULL, N_("_Buffer")   },
 
-  { "undo-editor-popup",
+  { "undo-popup",
     GTK_STOCK_UNDO, N_("Undo History Menu"), NULL, NULL, NULL,
     GIMP_HELP_UNDO_DIALOG },
 
@@ -307,6 +307,7 @@ edit_actions_update (GimpActionGroup *group,
 
   g_free (undo_name);
   g_free (redo_name);
+  g_free (fade_name);
 
   SET_SENSITIVE ("edit-cut",          drawable);
   SET_SENSITIVE ("edit-copy",         drawable);

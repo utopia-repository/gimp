@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -266,7 +266,8 @@ gimp_move_tool_button_press (GimpTool        *tool,
               gimp_tool_push_status_length (tool, display,
                                             _("Move Guide: "),
                                             SWAP_ORIENT (move->guide_orientation),
-                                            move->guide_position);
+                                            move->guide_position,
+                                            NULL);
 
               return;
             }
@@ -543,7 +544,8 @@ gimp_move_tool_motion (GimpTool        *tool,
                                         move->guide ?
                                         _("Move Guide: ") : _("Add Guide: "),
                                         SWAP_ORIENT (move->guide_orientation),
-                                        move->guide_position);
+                                        move->guide_position,
+                                        NULL);
         }
     }
 }

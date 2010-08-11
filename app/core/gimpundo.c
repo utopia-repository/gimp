@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -245,7 +245,7 @@ gimp_undo_set_property (GObject      *object,
     {
     case PROP_IMAGE:
       /* don't ref */
-      undo->image = (GimpImage *) g_value_get_object (value);
+      undo->image = g_value_get_object (value);
       break;
     case PROP_UNDO_TYPE:
       undo->undo_type = g_value_get_enum (value);

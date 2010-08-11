@@ -36,8 +36,8 @@
     <keyword type="function" name="gimp_rgb_gamma ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-gamma"/>
     <keyword type="function" name="gimp_rgb_luminance ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-luminance" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_rgb_luminance_uchar ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-luminance-uchar" since="GIMP 2.4"/>
-    <keyword type="function" name="gimp_rgb_intensity ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-intensity"/>
-    <keyword type="function" name="gimp_rgb_intensity_uchar ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-intensity-uchar"/>
+    <keyword type="function" name="gimp_rgb_intensity ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-intensity" deprecated=""/>
+    <keyword type="function" name="gimp_rgb_intensity_uchar ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-intensity-uchar" deprecated=""/>
     <keyword type="function" name="gimp_rgb_composite ()" link="libgimpcolor-GimpRGB.html#gimp-rgb-composite"/>
     <keyword type="function" name="gimp_rgba_set ()" link="libgimpcolor-GimpRGB.html#gimp-rgba-set"/>
     <keyword type="function" name="gimp_rgba_set_uchar ()" link="libgimpcolor-GimpRGB.html#gimp-rgba-set-uchar"/>
@@ -51,10 +51,10 @@
     <keyword type="macro" name="GIMP_RGB_LUMINANCE_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-RED:CAPS"/>
     <keyword type="macro" name="GIMP_RGB_LUMINANCE_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-GREEN:CAPS"/>
     <keyword type="macro" name="GIMP_RGB_LUMINANCE_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-BLUE:CAPS"/>
-    <keyword type="macro" name="GIMP_RGB_INTENSITY()" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY:CAPS"/>
-    <keyword type="macro" name="GIMP_RGB_INTENSITY_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-RED:CAPS"/>
-    <keyword type="macro" name="GIMP_RGB_INTENSITY_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-GREEN:CAPS"/>
-    <keyword type="macro" name="GIMP_RGB_INTENSITY_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-BLUE:CAPS"/>
+    <keyword type="macro" name="GIMP_RGB_INTENSITY()" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY:CAPS" deprecated=""/>
+    <keyword type="macro" name="GIMP_RGB_INTENSITY_RED" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-RED:CAPS" deprecated=""/>
+    <keyword type="macro" name="GIMP_RGB_INTENSITY_GREEN" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-GREEN:CAPS" deprecated=""/>
+    <keyword type="macro" name="GIMP_RGB_INTENSITY_BLUE" link="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-BLUE:CAPS" deprecated=""/>
     <keyword type="macro" name="GIMP_TYPE_RGB" link="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS"/>
     <keyword type="macro" name="GIMP_TYPE_PARAM_RGB" link="libgimpcolor-GimpRGB.html#GIMP-TYPE-PARAM-RGB:CAPS"/>
     <keyword type="function" name="gimp_param_spec_rgb ()" link="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb" since="GIMP 2.4"/>

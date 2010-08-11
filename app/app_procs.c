@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -44,10 +44,7 @@
 #include "core/gimp.h"
 #include "core/gimp-user-install.h"
 
-#include "plug-in/gimppluginmanager.h"
-
 #include "file/file-open.h"
-#include "file/file-utils.h"
 
 #ifndef GIMP_CONSOLE_COMPILATION
 #include "dialogs/user-install-dialog.h"
@@ -83,11 +80,6 @@ void
 app_libs_init (GOptionContext *context,
                gboolean        no_interface)
 {
-#ifdef ENABLE_MP
-  if (! g_thread_supported ())
-    g_thread_init (NULL);
-#endif
-
   if (no_interface)
     {
       g_type_init ();
@@ -261,59 +253,7 @@ app_run (const gchar         *full_prog_name,
   /*  Load the images given on the command-line.
    */
   if (filenames)
-    {
-      for (i = 0; filenames[i]; i++)
-        {
-          GError *error = NULL;
-          gchar  *uri;
-
-          /*  first try if we got a file uri  */
-          uri = g_filename_from_uri (filenames[i], NULL, NULL);
-
-          if (uri)
-            {
-              g_free (uri);
-              uri = g_strdup (filenames[i]);
-            }
-          else
-            {
-              uri =
-                file_utils_filename_to_uri (gimp->plug_in_manager->load_procs,
-                                            filenames[i], &error);
-            }
-
-          if (! uri)
-            {
-              g_printerr ("conversion filename -> uri failed: %s\n",
-                          error->message);
-              g_clear_error (&error);
-            }
-          else
-            {
-              GimpImage         *image;
-              GimpPDBStatusType  status;
-
-              image = file_open_with_display (gimp,
-                                              gimp_get_user_context (gimp),
-                                              NULL,
-                                              uri,
-                                              &status, &error);
-
-              if (! image && status != GIMP_PDB_CANCEL)
-                {
-                  gchar *filename = file_utils_uri_to_utf8_filename (uri);
-
-                  g_message (_("Opening '%s' failed: %s"),
-                             filename, error->message);
-                  g_clear_error (&error);
-
-                  g_free (filename);
-                }
-
-              g_free (uri);
-            }
-        }
-    }
+    file_open_from_command_line (gimp, filenames);
 
 #ifndef GIMP_CONSOLE_COMPILATION
   if (! no_interface)

@@ -18,13 +18,13 @@
     <keyword type="function" name="GimpModuleQueryFunc ()" link="GimpModule.html#GimpModuleQueryFunc"/>
     <keyword type="function" name="GimpModuleRegisterFunc ()" link="GimpModule.html#GimpModuleRegisterFunc"/>
     <keyword type="macro" name="GIMP_MODULE_ABI_VERSION" link="GimpModule.html#GIMP-MODULE-ABI-VERSION:CAPS"/>
-    <keyword type="macro" name="GIMP_MODULE_PARAM_SERIALIZE" link="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS"/>
+    <keyword type="macro" name="GIMP_MODULE_PARAM_SERIALIZE" link="GimpModule.html#GIMP-MODULE-PARAM-SERIALIZE:CAPS" deprecated=""/>
     <keyword type="function" name="gimp_module_new ()" link="GimpModule.html#gimp-module-new"/>
     <keyword type="function" name="gimp_module_modified ()" link="GimpModule.html#gimp-module-modified"/>
     <keyword type="function" name="gimp_module_query_module ()" link="GimpModule.html#gimp-module-query-module"/>
     <keyword type="function" name="gimp_module_set_load_inhibit ()" link="GimpModule.html#gimp-module-set-load-inhibit"/>
     <keyword type="function" name="gimp_module_state_name ()" link="GimpModule.html#gimp-module-state-name"/>
-    <keyword type="function" name="gimp_module_register_enum ()" link="GimpModule.html#gimp-module-register-enum"/>
+    <keyword type="function" name="gimp_module_register_enum ()" link="GimpModule.html#gimp-module-register-enum" deprecated=""/>
     <keyword type="function" name="gimp_module_info_new ()" link="GimpModule.html#gimp-module-info-new"/>
     <keyword type="function" name="gimp_module_info_copy ()" link="GimpModule.html#gimp-module-info-copy"/>
     <keyword type="function" name="gimp_module_info_free ()" link="GimpModule.html#gimp-module-info-free"/>

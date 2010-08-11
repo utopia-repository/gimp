@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,6 +30,8 @@
 
 #include "scale-funcs.h"
 
+
+#define EPSILON          (0.0001)  /* arbitary small number for avoiding zero */
 
 static void  scale_region_no_resample (PixelRegion           *srcPR,
                                        PixelRegion           *destPR);

@@ -109,6 +109,10 @@
                                              const <link linkend="gchar">gchar</link> *property_name,
                                              const <link linkend="gchar">gchar</link> *title,
                                              <link linkend="GtkFileChooserAction">GtkFileChooserAction</link> action);
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-prop-file-chooser-button-new-with-dialog">gimp_prop_file_chooser_button_new_with_dialog</link>
+                                            (<link linkend="GObject">GObject</link> *config,
+                                             const <link linkend="gchar">gchar</link> *property_name,
+                                             <link linkend="GtkWidget">GtkWidget</link> *dialog);
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-prop-path-editor-new">gimp_prop_path_editor_new</link>       (<link linkend="GObject">GObject</link> *config,
                                              const <link linkend="gchar">gchar</link> *path_property_name,
                                              const <link linkend="gchar">gchar</link> *writable_property_name,
@@ -801,6 +805,40 @@ interface; you can use the <link linkend="GtkFileChooser"><type>GtkFileChooser</
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>action</parameter>&nbsp;:</term>
 <listitem><simpara>        the open mode for the widget.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>  A new <link linkend="GtkFileChooserButton"><type>GtkFileChooserButton</type></link>.
+
+Since GIMP 2.4
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-prop-file-chooser-button-new-with-dialog" role="function"/>gimp_prop_file_chooser_button_new_with_dialog ()</title>
+<indexterm><primary>gimp_prop_file_chooser_button_new_with_dialog</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_prop_file_chooser_button_new_with_dialog
+                                            (<link linkend="GObject">GObject</link> *config,
+                                             const <link linkend="gchar">gchar</link> *property_name,
+                                             <link linkend="GtkWidget">GtkWidget</link> *dialog);</programlisting>
+<para>
+Creates a <link linkend="GtkFileChooserButton"><type>GtkFileChooserButton</type></link> to edit the specified path property.
+</para>
+<para>
+The button uses <parameter>dialog</parameter> as it's file-picking window. Note that <parameter>dialog</parameter>
+must be a <link linkend="GtkFileChooserDialog"><type>GtkFileChooserDialog</type></link> (or subclass) and must not have
+<link linkend="GTK-DIALOG-DESTROY-WITH-PARENT:CAPS"><literal>GTK_DIALOG_DESTROY_WITH_PARENT</literal></link> set.
+</para>
+<para>
+Note that <link linkend="GtkFileChooserButton"><type>GtkFileChooserButton</type></link> implements the <link linkend="GtkFileChooser"><type>GtkFileChooser</type></link>
+interface; you can use the <link linkend="GtkFileChooser"><type>GtkFileChooser</type></link> API with it.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
+<listitem><simpara>        object to which property is attached.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>property_name</parameter>&nbsp;:</term>
+<listitem><simpara> name of path property.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dialog</parameter>&nbsp;:</term>
+<listitem><simpara>        the <link linkend="GtkFileChooserDialog"><type>GtkFileChooserDialog</type></link> widget to use.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>  A new <link linkend="GtkFileChooserButton"><type>GtkFileChooserButton</type></link>.
 

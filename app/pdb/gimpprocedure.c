@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -564,7 +564,7 @@ gimp_procedure_validate_args (GimpProcedure  *procedure,
                       gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
                                     _("Procedure '%s' has been called with an "
                                       "invalid ID for argument '%s'. "
-                                      "Most likely a plug-in is trying"
+                                      "Most likely a plug-in is trying "
                                       "to work on a layer that doesn't "
                                       "exist any longer."),
                                     gimp_object_get_name (GIMP_OBJECT (procedure)),

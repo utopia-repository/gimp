@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -107,7 +107,7 @@ struct _GimpItemClass
                                GimpInterpolationType   interpolation_type,
                                gboolean                supersample,
                                gint                    recursion_level,
-                               gboolean                clip_result,
+                               GimpTransformResize     clip_result,
                                GimpProgress           *progress);
   gboolean   (* stroke)       (GimpItem               *item,
                                GimpDrawable           *drawable,
@@ -208,7 +208,7 @@ void            gimp_item_transform        (GimpItem           *item,
                                             GimpInterpolationType interpolation_type,
                                             gboolean            supersample,
                                             gint                recursion_level,
-                                            gboolean            clip_result,
+                                            GimpTransformResize clip_result,
                                             GimpProgress       *progress);
 
 gboolean        gimp_item_stroke           (GimpItem           *item,

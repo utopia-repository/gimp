@@ -79,10 +79,10 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpcontrollerkeyboard.$(OBJEXT) gimpcontrollerwheel.$(OBJEXT) \
 	gimpcursor.$(OBJEXT) gimpcursorview.$(OBJEXT) \
 	gimpdasheditor.$(OBJEXT) gimpdataeditor.$(OBJEXT) \
-	gimpdatafactoryview.$(OBJEXT) gimpdeviceinfo.$(OBJEXT) \
-	gimpdevices.$(OBJEXT) gimpdevicestatus.$(OBJEXT) \
-	gimpdialogfactory.$(OBJEXT) gimpdnd.$(OBJEXT) \
-	gimpdnd-xds.$(OBJEXT) gimpdock.$(OBJEXT) \
+	gimpdatafactoryview.$(OBJEXT) gimpdbusservice.$(OBJEXT) \
+	gimpdeviceinfo.$(OBJEXT) gimpdevices.$(OBJEXT) \
+	gimpdevicestatus.$(OBJEXT) gimpdialogfactory.$(OBJEXT) \
+	gimpdnd.$(OBJEXT) gimpdnd-xds.$(OBJEXT) gimpdock.$(OBJEXT) \
 	gimpdockable.$(OBJEXT) gimpdockbook.$(OBJEXT) \
 	gimpdocked.$(OBJEXT) gimpdockseparator.$(OBJEXT) \
 	gimpdocumentview.$(OBJEXT) gimpdrawabletreeview.$(OBJEXT) \
@@ -105,16 +105,16 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimppaletteview.$(OBJEXT) gimppatternfactoryview.$(OBJEXT) \
 	gimppatternselect.$(OBJEXT) gimppdbdialog.$(OBJEXT) \
 	gimppixbuf.$(OBJEXT) gimppluginaction.$(OBJEXT) \
-	gimpprogressbox.$(OBJEXT) gimpprogressdialog.$(OBJEXT) \
-	gimppropwidgets.$(OBJEXT) gimprender.$(OBJEXT) \
-	gimpsamplepointeditor.$(OBJEXT) gimpselectiondata.$(OBJEXT) \
-	gimpselectioneditor.$(OBJEXT) gimpsessioninfo.$(OBJEXT) \
-	gimpsizebox.$(OBJEXT) gimpstringaction.$(OBJEXT) \
-	gimpstrokeeditor.$(OBJEXT) gimptemplateeditor.$(OBJEXT) \
-	gimptemplateview.$(OBJEXT) gimptexteditor.$(OBJEXT) \
-	gimpthumbbox.$(OBJEXT) gimptoolbox.$(OBJEXT) \
-	gimptoolbox-color-area.$(OBJEXT) gimptoolbox-dnd.$(OBJEXT) \
-	gimptoolbox-image-area.$(OBJEXT) \
+	gimpprofilechooserdialog.$(OBJEXT) gimpprogressbox.$(OBJEXT) \
+	gimpprogressdialog.$(OBJEXT) gimppropwidgets.$(OBJEXT) \
+	gimprender.$(OBJEXT) gimpsamplepointeditor.$(OBJEXT) \
+	gimpselectiondata.$(OBJEXT) gimpselectioneditor.$(OBJEXT) \
+	gimpsessioninfo.$(OBJEXT) gimpsizebox.$(OBJEXT) \
+	gimpstringaction.$(OBJEXT) gimpstrokeeditor.$(OBJEXT) \
+	gimptemplateeditor.$(OBJEXT) gimptemplateview.$(OBJEXT) \
+	gimptexteditor.$(OBJEXT) gimpthumbbox.$(OBJEXT) \
+	gimptoolbox.$(OBJEXT) gimptoolbox-color-area.$(OBJEXT) \
+	gimptoolbox-dnd.$(OBJEXT) gimptoolbox-image-area.$(OBJEXT) \
 	gimptoolbox-indicator-area.$(OBJEXT) gimptooldialog.$(OBJEXT) \
 	gimptooloptionseditor.$(OBJEXT) gimptoolview.$(OBJEXT) \
 	gimpuimanager.$(OBJEXT) gimpundoeditor.$(OBJEXT) \
@@ -197,6 +197,9 @@ CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
+DBUS_BINDING_TOOL = @DBUS_BINDING_TOOL@
+DBUS_GLIB_CFLAGS = @DBUS_GLIB_CFLAGS@
+DBUS_GLIB_LIBS = @DBUS_GLIB_LIBS@
 DEFAULT_BINARY_FALSE = @DEFAULT_BINARY_FALSE@
 DEFAULT_BINARY_TRUE = @DEFAULT_BINARY_TRUE@
 DEFS = @DEFS@
@@ -234,6 +237,7 @@ GIMPINSTALL = @GIMPINSTALL@
 GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
+GIMP_COMMAND = @GIMP_COMMAND@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
@@ -524,6 +528,7 @@ INCLUDES = \
 	-I$(top_srcdir)/app	\
 	$(GTK_CFLAGS)		\
 	$(PANGOFT2_CFLAGS)	\
+	$(DBUS_GLIB_CFLAGS)	\
 	-I$(includedir)
 
 noinst_LIBRARIES = libappwidgets.a
@@ -618,6 +623,8 @@ libappwidgets_a_sources = \
 	gimpdataeditor.h		\
 	gimpdatafactoryview.c		\
 	gimpdatafactoryview.h		\
+	gimpdbusservice.c		\
+	gimpdbusservice.h		\
 	gimpdeviceinfo.c		\
 	gimpdeviceinfo.h		\
 	gimpdevices.c			\
@@ -721,6 +728,8 @@ libappwidgets_a_sources = \
 	gimppixbuf.h			\
 	gimppluginaction.c		\
 	gimppluginaction.h		\
+	gimpprofilechooserdialog.c	\
+	gimpprofilechooserdialog.h	\
 	gimpprogressbox.c		\
 	gimpprogressbox.h		\
 	gimpprogressdialog.c		\
@@ -822,17 +831,20 @@ libappwidgets_a_sources = \
 	gtkvwrapbox.c			\
 	gtkvwrapbox.h
 
-libappwidgets_a_built_sources = widgets-enums.c
+libappwidgets_a_built_sources = gimpdbusservice-glue.h widgets-enums.c
 libappwidgets_a_SOURCES = \
 	$(libappwidgets_a_built_sources) $(libappwidgets_a_sources)
 
-EXTRA_DIST = makefile.msc
+EXTRA_DIST = \
+	dbus-service.xml	\
+	makefile.msc
+
 
 #
 # rules to generate built sources
 #
 # setup autogeneration dependencies
-gen_sources = xgen-wec
+gen_sources = xgen-wec gimpdbusservice-glue.h
 CLEANFILES = $(gen_sources)
 all: all-am
 
@@ -925,6 +937,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdasheditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdataeditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdatafactoryview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdbusservice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdeviceinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdevices.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdevicestatus.Po@am__quote@
@@ -976,6 +989,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdbdialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppixbuf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginaction.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprofilechooserdialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprogressbox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprogressdialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropwidgets.Po@am__quote@
@@ -1226,6 +1240,11 @@ uninstall-am: uninstall-info-am
 	pdf pdf-am ps ps-am tags uninstall uninstall-am \
 	uninstall-info-am
 
+
+$(srcdir)/gimpdbusservice.c: gimpdbusservice-glue.h
+
+gimpdbusservice-glue.h: $(srcdir)/dbus-service.xml
+	$(DBUS_BINDING_TOOL) --mode=glib-server --prefix=gimp $< > $(@F)
 
 $(srcdir)/widgets-enums.c: $(srcdir)/widgets-enums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \

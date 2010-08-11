@@ -55,6 +55,7 @@
     <function name="enum GimpStackTraceMode" link="libgimpbase-gimpbaseenums.html#GimpStackTraceMode"/>
     <function name="enum GimpTransferMode" link="libgimpbase-gimpbaseenums.html#GimpTransferMode"/>
     <function name="enum GimpTransformDirection" link="libgimpbase-gimpbaseenums.html#GimpTransformDirection"/>
+    <function name="enum GimpTransformResize" link="libgimpbase-gimpbaseenums.html#GimpTransformResize"/>
     <function name="enum GimpVectorsStrokeType" link="libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"/>
     <function name="GimpEnumDesc" link="libgimpbase-gimpbasetypes.html#GimpEnumDesc"/>
     <function name="GimpFlagsDesc" link="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"/>
@@ -70,6 +71,10 @@
     <function name="GIMP_VERSION" link="libgimpbase-gimpversion.html#GIMP-VERSION:CAPS"/>
     <function name="GIMP_API_VERSION" link="libgimpbase-gimpversion.html#GIMP-API-VERSION:CAPS"/>
     <function name="GIMP_CHECK_VERSION()" link="libgimpbase-gimpversion.html#GIMP-CHECK-VERSION:CAPS"/>
+    <function name="GIMPVAR" link="libgimpbase-gimpversion.html#GIMPVAR:CAPS"/>
+    <function name="gimp_major_version" link="libgimpbase-gimpversion.html#gimp-major-version"/>
+    <function name="gimp_minor_version" link="libgimpbase-gimpversion.html#gimp-minor-version"/>
+    <function name="gimp_micro_version" link="libgimpbase-gimpversion.html#gimp-micro-version"/>
     <function name="GIMP_MIN_IMAGE_SIZE" link="libgimpbase-gimplimits.html#GIMP-MIN-IMAGE-SIZE:CAPS"/>
     <function name="GIMP_MAX_IMAGE_SIZE" link="libgimpbase-gimplimits.html#GIMP-MAX-IMAGE-SIZE:CAPS"/>
     <function name="GIMP_MIN_RESOLUTION" link="libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS"/>

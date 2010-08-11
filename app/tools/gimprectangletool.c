@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -216,10 +216,9 @@ gimp_rectangle_tool_iface_base_init (GimpRectangleToolInterface *iface)
                                                              GIMP_PARAM_READWRITE));
 
       g_object_interface_install_property (iface,
-                                           g_param_spec_uint ("constraint",
+                                           g_param_spec_enum ("constraint",
                                                               NULL, NULL,
-                                                              GIMP_RECTANGLE_CONSTRAIN_NONE,
-                                                              GIMP_RECTANGLE_CONSTRAIN_DRAWABLE,
+                                                              GIMP_TYPE_RECTANGLE_CONSTRAINT,
                                                               GIMP_RECTANGLE_CONSTRAIN_NONE,
                                                               GIMP_PARAM_READWRITE));
 
@@ -358,7 +357,7 @@ gimp_rectangle_tool_set_property (GObject      *object,
       private->y2 = g_value_get_int (value);
       break;
     case GIMP_RECTANGLE_TOOL_PROP_CONSTRAINT:
-      gimp_rectangle_tool_set_constraint (rectangle, g_value_get_uint (value));
+      gimp_rectangle_tool_set_constraint (rectangle, g_value_get_enum (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -392,7 +391,7 @@ gimp_rectangle_tool_get_property (GObject      *object,
       g_value_set_int (value, private->y2);
       break;
     case GIMP_RECTANGLE_TOOL_PROP_CONSTRAINT:
-      g_value_set_uint (value, gimp_rectangle_tool_get_constraint (rectangle));
+      g_value_set_enum (value, gimp_rectangle_tool_get_constraint (rectangle));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -1050,7 +1049,7 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
 
       if (w > 0 && h > 0)
         gimp_tool_push_status_coords (tool, display,
-                                      _("Rectangle: "), w, " × ", h);
+                                      _("Rectangle: "), w, " × ", h, NULL);
     }
 
   if (private->function == RECT_CREATING)
@@ -1694,7 +1693,7 @@ gimp_rectangle_tool_start (GimpRectangleTool *rectangle)
 
   /* initialize the statusbar display */
   gimp_tool_push_status_coords (tool, tool->display,
-                                _("Rectangle: "), 0, " x ", 0);
+                                _("Rectangle: "), 0, " x ", 0, NULL);
 
   gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), tool->display);
 }
@@ -1827,15 +1826,22 @@ gimp_rectangle_tool_synthesize_motion (GimpTool   *tool,
                                        GimpCoords *coords)
 {
   GimpRectangleToolPrivate *private;
+  GimpRectangleFunction     old_function;
 
   private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (tool);
 
   private->startx = startx;
   private->starty = starty;
 
-  gimp_rectangle_tool_set_function (GIMP_RECTANGLE_TOOL (tool), function);
+  old_function = private->function;
 
+  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+
+  gimp_rectangle_tool_set_function (GIMP_RECTANGLE_TOOL (tool), function);
   gimp_rectangle_tool_motion (tool, coords, 0, 0, tool->display);
+  gimp_rectangle_tool_set_function (GIMP_RECTANGLE_TOOL (tool), old_function);
+
+  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 
   g_signal_emit_by_name (tool, "rectangle-changed", NULL);
 }

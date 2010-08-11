@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
  * This program is free software; you can redistribute it and/or modify
@@ -175,6 +175,7 @@ gimp_transform_tool_class_init (GimpTransformToolClass *klass)
   tool_class->motion         = gimp_transform_tool_motion;
   tool_class->key_press      = gimp_transform_tool_key_press;
   tool_class->modifier_key   = gimp_transform_tool_modifier_key;
+  tool_class->active_modifier_key = gimp_transform_tool_modifier_key;
   tool_class->oper_update    = gimp_transform_tool_oper_update;
   tool_class->cursor_update  = gimp_transform_tool_cursor_update;
 
@@ -1095,7 +1096,7 @@ gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
     case GIMP_TRANSFORM_TYPE_LAYER:
     case GIMP_TRANSFORM_TYPE_SELECTION:
       {
-        gboolean clip_result = options->clip;
+        GimpTransformResize clip_result = options->clip;
 
         /*  always clip the selction and unfloated channels
          *  so they keep their size
@@ -1104,7 +1105,7 @@ gimp_transform_tool_real_transform (GimpTransformTool *tr_tool,
           {
             if (GIMP_IS_CHANNEL (active_item) &&
                 tile_manager_bpp (tr_tool->original) == 1)
-              clip_result = TRUE;
+              clip_result = GIMP_TRANSFORM_RESIZE_CLIP;
 
             ret =
               gimp_drawable_transform_tiles_affine (GIMP_DRAWABLE (active_item),
@@ -1511,6 +1512,9 @@ gimp_transform_tool_bounds (GimpTransformTool *tr_tool,
 
   tr_tool->cx = (gdouble) (tr_tool->x1 + tr_tool->x2) / 2.0;
   tr_tool->cy = (gdouble) (tr_tool->y1 + tr_tool->y2) / 2.0;
+
+  tr_tool->aspect = ((gdouble) (tr_tool->x2 - tr_tool->x1) /
+                     (gdouble) (tr_tool->y2 - tr_tool->y1));
 
   /*  changing the bounds invalidates any grid we may have  */
   if (tr_tool->use_grid)

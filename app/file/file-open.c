@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995, 1996, 1997 Spencer Kimball and Peter Mattis
  * Copyright (C) 1997 Josh MacDonald
  *
@@ -409,6 +409,8 @@ file_open_layers (Gimp                *gimp,
 
       if (layers)
         {
+          gchar *basename = file_utils_uri_display_basename (uri);
+
           for (list = layers; list; list = g_list_next (list))
             {
               GimpLayer *layer = list->data;
@@ -418,12 +420,22 @@ file_open_layers (Gimp                *gimp,
                                         G_TYPE_FROM_INSTANCE (layer),
                                         TRUE);
 
-              if (merge_visible)
-                gimp_object_take_name (GIMP_OBJECT (item),
-                                       file_utils_uri_display_basename (uri));
+              if (layers->next == NULL)
+                {
+                  gimp_object_set_name (GIMP_OBJECT (item), basename);
+                }
+              else
+                {
+                  gchar *name = g_strdup_printf ("%s - %s", basename,
+                                                 gimp_object_get_name (GIMP_OBJECT (layer)));
+
+                  gimp_object_take_name (GIMP_OBJECT (item), name);
+                }
 
               list->data = item;
             }
+
+          g_free (basename);
 
           gimp_document_list_add_uri (GIMP_DOCUMENT_LIST (gimp->documents),
                                       uri, mime_type);
@@ -442,6 +454,60 @@ file_open_layers (Gimp                *gimp,
     }
 
   return g_list_reverse (layers);
+}
+
+
+/*  This function is called for filenames passed on the command-line
+ *  or from the D-Bus service.
+ */
+void
+file_open_from_command_line (Gimp         *gimp,
+                             const gchar **uris)
+{
+  gint i;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (uris != NULL);
+
+  for (i = 0; uris[i]; i++)
+    {
+      GError *error = NULL;
+      gchar  *uri;
+
+      /* we accept URIs and filenames */
+      uri = file_utils_any_to_uri (gimp, uris[i], &error);
+
+      if (uri)
+        {
+          GimpImage         *image;
+          GimpPDBStatusType  status;
+
+          image = file_open_with_display (gimp,
+                                          gimp_get_user_context (gimp),
+                                          NULL,
+                                          uri,
+                                          &status, &error);
+
+          if (! image && status != GIMP_PDB_CANCEL)
+            {
+              gchar *filename = file_utils_uri_to_utf8_filename (uri);
+
+              g_message (_("Opening '%s' failed: %s"),
+                         filename, error->message);
+              g_clear_error (&error);
+
+              g_free (filename);
+            }
+
+          g_free (uri);
+        }
+      else
+        {
+          g_printerr ("conversion filename -> uri failed: %s\n",
+                      error->message);
+          g_clear_error (&error);
+        }
+    }
 }
 
 

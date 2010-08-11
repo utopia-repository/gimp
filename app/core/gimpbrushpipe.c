@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * Copyright (C) 1999 Adrian Likins and Tor Lillqvist
  *
@@ -175,7 +175,7 @@ gimp_brush_pipe_select_brush (GimpBrush  *brush,
 
 
   /* calculates brush native spacing in pixels, based on it's width)*/
-  spacing = ((gdouble) pipe->current->spacing / 100) *
+  spacing = ((gdouble) gimp_brush_get_spacing (pipe->current) / 100) *
              MAX (brush->mask->width, brush->mask->height);
 
   brushix = 0;

@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995-2001 Spencer Kimball, Peter Mattis, and others
  *
  * This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,7 @@ TileManager * gimp_drawable_transform_tiles_affine (GimpDrawable           *draw
                                                     GimpInterpolationType   interpolation_type,
                                                     gboolean                supersample,
                                                     gint                    recursion_level,
-                                                    gboolean                clip_result,
+                                                    GimpTransformResize     clip_result,
                                                     GimpProgress           *progress);
 TileManager * gimp_drawable_transform_tiles_flip   (GimpDrawable           *drawable,
                                                     GimpContext            *context,
@@ -65,7 +65,7 @@ gboolean      gimp_drawable_transform_affine       (GimpDrawable           *draw
                                                     GimpInterpolationType   interpolation_type,
                                                     gboolean                supersample,
                                                     gint                    recursion_level,
-                                                    gboolean                clip_result,
+                                                    GimpTransformResize     clip_result,
                                                     GimpProgress           *progress);
 
 gboolean      gimp_drawable_transform_flip         (GimpDrawable           *drawable,

@@ -61,9 +61,9 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimp-gradients.$(OBJEXT) gimp-gui.$(OBJEXT) \
 	gimp-modules.$(OBJEXT) gimp-parasites.$(OBJEXT) \
 	gimp-templates.$(OBJEXT) gimp-transform-region.$(OBJEXT) \
-	gimp-transform-utils.$(OBJEXT) gimp-units.$(OBJEXT) \
-	gimp-user-install.$(OBJEXT) gimp-utils.$(OBJEXT) \
-	gimparea.$(OBJEXT) gimpbrush.$(OBJEXT) \
+	gimp-transform-resize.$(OBJEXT) gimp-transform-utils.$(OBJEXT) \
+	gimp-units.$(OBJEXT) gimp-user-install.$(OBJEXT) \
+	gimp-utils.$(OBJEXT) gimparea.$(OBJEXT) gimpbrush.$(OBJEXT) \
 	gimpbrush-load.$(OBJEXT) gimpbrushclipboard.$(OBJEXT) \
 	gimpbrushgenerated.$(OBJEXT) gimpbrushgenerated-load.$(OBJEXT) \
 	gimpbrushgenerated-save.$(OBJEXT) gimpbrushpipe.$(OBJEXT) \
@@ -117,7 +117,8 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimpselection.$(OBJEXT) gimpstrokedesc.$(OBJEXT) \
 	gimpstrokeoptions.$(OBJEXT) gimptemplate.$(OBJEXT) \
 	gimptoolinfo.$(OBJEXT) gimptooloptions.$(OBJEXT) \
-	gimpunit.$(OBJEXT) gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
+	gimptoolpresets.$(OBJEXT) gimpunit.$(OBJEXT) \
+	gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
 	gimpviewable.$(OBJEXT)
 am_libappcore_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libappcore_a_OBJECTS = $(am_libappcore_a_OBJECTS)
@@ -180,6 +181,9 @@ CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DATADIRNAME = @DATADIRNAME@
+DBUS_BINDING_TOOL = @DBUS_BINDING_TOOL@
+DBUS_GLIB_CFLAGS = @DBUS_GLIB_CFLAGS@
+DBUS_GLIB_LIBS = @DBUS_GLIB_LIBS@
 DEFAULT_BINARY_FALSE = @DEFAULT_BINARY_FALSE@
 DEFAULT_BINARY_TRUE = @DEFAULT_BINARY_TRUE@
 DEFS = @DEFS@
@@ -217,6 +221,7 @@ GIMPINSTALL = @GIMPINSTALL@
 GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
+GIMP_COMMAND = @GIMP_COMMAND@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
@@ -534,6 +539,8 @@ libappcore_a_sources = \
 	gimp-templates.h		\
 	gimp-transform-region.c		\
 	gimp-transform-region.h		\
+	gimp-transform-resize.c		\
+	gimp-transform-resize.h		\
 	gimp-transform-utils.c		\
 	gimp-transform-utils.h		\
 	gimp-units.c			\
@@ -748,6 +755,8 @@ libappcore_a_sources = \
 	gimptoolinfo.h			\
 	gimptooloptions.c		\
 	gimptooloptions.h		\
+	gimptoolpresets.c		\
+	gimptoolpresets.h		\
 	gimpunit.c			\
 	gimpunit.h			\
 	gimpundo.c			\
@@ -834,6 +843,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-parasites.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-templates.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-transform-region.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-transform-resize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-transform-utils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-units.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-user-install.Po@am__quote@
@@ -941,6 +951,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemplate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptoolinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptooloptions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptoolpresets.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpundo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpundostack.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunit.Po@am__quote@

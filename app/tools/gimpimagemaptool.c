@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -598,7 +598,17 @@ gimp_image_map_tool_load_save (GimpImageMapTool *tool,
 
   if (save)
     {
-      gimp_image_map_tool_settings_save (tool, file);
+      if (gimp_image_map_tool_settings_save (tool, file))
+        {
+          gchar *name = g_filename_display_name (filename);
+
+          gimp_message (GIMP_TOOL (tool)->tool_info->gimp,
+                        G_OBJECT (GIMP_TOOL (tool)->display),
+                        GIMP_MESSAGE_INFO,
+                        _("Settings saved to '%s'"),
+                        name);
+          g_free (name);
+        }
     }
   else if (! gimp_image_map_tool_settings_load (tool, file, &error))
     {

@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * plug-in-icc-profile.h
@@ -32,6 +32,15 @@ gboolean  plug_in_icc_profile_apply_rgb (GimpImage     *image,
 gboolean  plug_in_icc_profile_info      (GimpImage     *image,
                                          GimpContext   *context,
                                          GimpProgress  *progress,
+                                         gchar        **name,
+                                         gchar        **desc,
+                                         gchar        **info,
+                                         GError       **error);
+
+gboolean  plug_in_icc_profile_file_info (Gimp          *gimp,
+                                         GimpContext   *context,
+                                         GimpProgress  *progress,
+                                         const gchar   *filename,
                                          gchar        **name,
                                          gchar        **desc,
                                          gchar        **info,

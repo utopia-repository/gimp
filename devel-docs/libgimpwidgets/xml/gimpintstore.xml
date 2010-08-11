@@ -55,6 +55,13 @@ GimpIntStore implements
 </refsect1>
 
 
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
+<synopsis>
+
+  &quot;<link linkend="GimpIntStore--user-data-type">user-data-type</link>&quot;       <link linkend="GType">GType</link>                 : Read / Write / Construct Only
+</synopsis>
+</refsect1>
 
 
 
@@ -128,6 +135,24 @@ Iterate over the <parameter>model</parameter> looking for <parameter>value</para
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
+
+</refsect1>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
+<refsect2><title><anchor id="GimpIntStore--user-data-type"/>The &quot;<literal>user-data-type</literal>&quot; property</title>
+<indexterm role="GIMP 2.4"><primary>GimpIntStore:user-data-type</primary></indexterm><programlisting>  &quot;user-data-type&quot;       <link linkend="GType">GType</link>                 : Read / Write / Construct Only</programlisting>
+<para>
+Allows to set the <link linkend="GType"><type>GType</type></link> for the GIMP_INT_STORE_USER_DATA column.
+</para>
+<para>
+You need to set this property when constructing the store if you want
+to use the GIMP_INT_STORE_USER_DATA column and want to have the store
+handle ref-counting of your user data.</para>
+<para>
+
+</para><para>Since  GIMP 2.4
+</para>
+</refsect2>
 
 </refsect1>
 

@@ -84,10 +84,26 @@ static const LinuxInputEvent key_events[] =
 
 static const LinuxInputEvent rel_events[] =
 {
-  { REL_WHEEL,     "wheel-turn-left",  N_("Wheel Turn Left")  },
-  { REL_WHEEL,     "wheel-turn-right", N_("Wheel Turn Right") },
-  { REL_DIAL,      "dial-turn-left",   N_("Dial Turn Left")   },
-  { REL_DIAL,      "dial-turn-right",  N_("Dial Turn Right")  },
+  { REL_X,      "x-move-left",                   N_("X Move Left")               },
+  { REL_X,      "x-move-right",                  N_("X Move Right")              },
+  { REL_Y,      "y-move-away",                   N_("Y Move Away")               },
+  { REL_Y,      "y-move-near",                   N_("Y Move Near")               },
+  { REL_Z,      "z-move-up",                     N_("Z Move Up")                 },
+  { REL_Z,      "z-move-down",                   N_("Z Move Down")               },
+#ifdef REL_RX
+  { REL_RX,     "x-axis-tilt-away",              N_("X Axis Tilt Away")          },
+  { REL_RX,     "x-axis-tilt-near",              N_("X Axis Tilt Near")          },
+  { REL_RY,     "y-axis-tilt-right",             N_("Y Axis Tilt Right")         },
+  { REL_RY,     "y-axis-tilt-left",              N_("Y Axis Tilt Left")          },
+  { REL_RZ,     "z-axis-turn-left",              N_("Z Axis Turn Left")          },
+  { REL_RZ,     "z-axis-turn-right",             N_("Z Axis Turn Right")         },
+#endif  /* REL_RX */
+  { REL_HWHEEL, "horizontal-wheel-turn-back",    N_("Horiz. Wheel Turn Back")    },
+  { REL_HWHEEL, "horizontal-wheel-turn-forward", N_("Horiz. Wheel Turn Forward") },
+  { REL_DIAL,   "dial-turn-left",                N_("Dial Turn Left")            },
+  { REL_DIAL,   "dial-turn-right",               N_("Dial Turn Right")           },
+  { REL_WHEEL,  "wheel-turn-left",               N_("Wheel Turn Left")           },
+  { REL_WHEEL,  "wheel-turn-right",              N_("Wheel Turn Right")          },
 };
 
 

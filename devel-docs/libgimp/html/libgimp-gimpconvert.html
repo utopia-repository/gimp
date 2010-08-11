@@ -5,18 +5,17 @@
 <title>gimpconvert</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
-<link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpcolor.html" title="gimpcolor">
 <link rel="next" href="libgimp-gimpdisplay.html" title="gimpdisplay">
 <meta name="generator" content="GTK-Doc V1.7 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
-<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -32,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpdisplay.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2579643" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2579009" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2608791" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2606744" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpconvert"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2579643"></a><span class="refentrytitle">gimpconvert</span>
+<a name="id2579009"></a><span class="refentrytitle">gimpconvert</span>
 </h2>
 <p>gimpconvert &#8212; Conversions between RGB, indexed, and grayscale modes.</p>
 </td>
@@ -70,18 +69,18 @@ gboolean    <a href="libgimp-gimpconvert.html#gimp-image-convert-set-dither-matr
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608791"></a><h2>Description</h2>
+<a name="id2606744"></a><h2>Description</h2>
 <p>
 Conversions between RGB, indexed, and grayscale modes.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608808"></a><h2>Details</h2>
+<a name="id2606761"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2608818"></a><h3>
+<a name="id2606771"></a><h3>
 <a name="gimp-image-convert-rgb"></a>gimp_image_convert_rgb ()</h3>
-<a class="indexterm" name="id2608830"></a><pre class="programlisting">gboolean    gimp_image_convert_rgb          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2606782"></a><pre class="programlisting">gboolean    gimp_image_convert_rgb          (gint32 image_ID);</pre>
 <p>
 Convert specified image to RGB color
 </p>
@@ -111,9 +110,9 @@ indexed image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607619"></a><h3>
+<a name="id2607684"></a><h3>
 <a name="gimp-image-convert-grayscale"></a>gimp_image_convert_grayscale ()</h3>
-<a class="indexterm" name="id2607630"></a><pre class="programlisting">gboolean    gimp_image_convert_grayscale    (gint32 image_ID);</pre>
+<a class="indexterm" name="id2607695"></a><pre class="programlisting">gboolean    gimp_image_convert_grayscale    (gint32 image_ID);</pre>
 <p>
 Convert specified image to grayscale (256 intensity levels)
 </p>
@@ -142,9 +141,9 @@ RGB or Indexed color mode.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607697"></a><h3>
+<a name="id2607761"></a><h3>
 <a name="gimp-image-convert-indexed"></a>gimp_image_convert_indexed ()</h3>
-<a class="indexterm" name="id2607708"></a><pre class="programlisting">gboolean    gimp_image_convert_indexed      (gint32 image_ID,
+<a class="indexterm" name="id2607772"></a><pre class="programlisting">gboolean    gimp_image_convert_indexed      (gint32 image_ID,
                                              <a href="libgimp-gimpenums.html#GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
                                              <a href="libgimp-gimpenums.html#GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
                                              gint num_cols,
@@ -219,9 +218,9 @@ location ('Fixed' dithering).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2605332"></a><h3>
+<a name="id2605237"></a><h3>
 <a name="gimp-image-convert-set-dither-matrix"></a>gimp_image_convert_set_dither_matrix ()</h3>
-<a class="indexterm" name="id2605346"></a><pre class="programlisting">gboolean    gimp_image_convert_set_dither_matrix
+<a class="indexterm" name="id2605251"></a><pre class="programlisting">gboolean    gimp_image_convert_set_dither_matrix
                                             (gint width,
                                              gint height,
                                              gint matrix_length,

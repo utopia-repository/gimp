@@ -74,23 +74,8 @@
 
 #include <string.h>
 #include <stdlib.h>
+#define stricmp g_ascii_strcasecmp
 
-#define stricmp utf8_stricmp
-
-static int utf8_stricmp(const char *s1, const char *s2)
-{
-  char *s1a, *s2a;
-  int result;
-
-  s1a = g_utf8_casefold(s1, -1);
-  s2a = g_utf8_casefold(s2, -1);
-
-  result = g_utf8_collate(s1a, s2a);
-
-  g_free(s1a);
-  g_free(s2a);
-  return result;
-}
 
 #define min(a, b)  ((a <= b) ? a : b)
 
@@ -144,7 +129,7 @@ enum scheme_types {
 #define MARK         32768    /* 1000000000000000 */
 #define UNMARK       32767    /* 0111111111111111 */
 
-void (*ts_output_routine) (FILE *, char *, int);
+SCHEME_EXPORT void (*ts_output_routine) (FILE *, char *, int);
 
 static num num_add(num a, num b);
 static num num_mul(num a, num b);
@@ -173,6 +158,7 @@ static num num_one;
 
 INTERFACE INLINE int is_string(pointer p)     { return (type(p)==T_STRING); }
 #define strvalue(p)      ((p)->_object._string._svalue)
+#define strkey(p)        ((p)->_object._string._skey)
 #define strlength(p)     ((p)->_object._string._length)
 
 INTERFACE static int is_list(scheme *sc, pointer p);
@@ -214,6 +200,8 @@ INTERFACE pointer set_cdr(pointer p, pointer q) { return cdr(p)=q; }
 
 INTERFACE INLINE int is_symbol(pointer p)   { return (type(p)==T_SYMBOL); }
 INTERFACE INLINE char *symname(pointer p)   { return strvalue(car(p)); }
+/* For now, we don't want foreign functions to access a strings key */
+INLINE           char *symkey(pointer p)    { return strkey(car(p)); }
 #if USE_PLIST
 SCHEME_EXPORT INLINE int hasprop(pointer p)     { return (typeflag(p)&T_SYMBOL); }
 #define symprop(p)       cdr(p)
@@ -382,7 +370,7 @@ static pointer reverse_in_place(scheme *sc, pointer term, pointer list);
 static pointer append(scheme *sc, pointer a, pointer b);
 static int list_length(scheme *sc, pointer a);
 static int eqv(pointer a, pointer b);
-static void dump_stack_mark(scheme *);
+static INLINE void dump_stack_mark(scheme *);
 static pointer opexe_0(scheme *sc, enum scheme_opcodes op);
 static pointer opexe_1(scheme *sc, enum scheme_opcodes op);
 static pointer opexe_2(scheme *sc, enum scheme_opcodes op);
@@ -394,6 +382,10 @@ static void Eval_Cycle(scheme *sc, enum scheme_opcodes op);
 static void assign_syntax(scheme *sc, char *name);
 static int syntaxnum(pointer p);
 static void assign_proc(scheme *sc, enum scheme_opcodes, char *name);
+scheme *scheme_init_new(void);
+#if !STANDALONE
+void scheme_call(scheme *sc, pointer func, pointer args);
+#endif
 
 #define num_ivalue(n)       (n.is_fixnum?(n).value.ivalue:(long)(n).value.rvalue)
 #define num_rvalue(n)       (!n.is_fixnum?(n).value.rvalue:(double)(n).value.ivalue)
@@ -793,15 +785,22 @@ static INLINE pointer oblist_find_by_name(scheme *sc, const char *name)
   int location;
   pointer x;
   char *s;
+  char *key;
+
+  /* case-insensitive, per R5RS section 2. */
+  s = g_utf8_casefold(name, -1);
+  key = g_utf8_collate_key(s, -1);
+  g_free(s);
 
   location = hash_fn(name, ivalue_unchecked(sc->oblist));
   for (x = vector_elem(sc->oblist, location); x != sc->NIL; x = cdr(x)) {
-    s = symname(car(x));
-    /* case-insensitive, per R5RS section 2. */
-    if(stricmp(name, s) == 0) {
+    s = symkey(car(x));
+    if(strcmp(key, s) == 0) {
+      g_free(key);
       return car(x);
     }
   }
+  g_free(key);
   return sc->NIL;
 }
 
@@ -830,14 +829,21 @@ static INLINE pointer oblist_find_by_name(scheme *sc, const char *name)
 {
      pointer x;
      char    *s;
+     char    *key;
+
+     /* case-insensitive, per R5RS section 2. */
+     s = g_utf8_casefold(name, -1);
+     key = g_utf8_collate_key(s, -1);
+     g_free(s);
 
      for (x = sc->oblist; x != sc->NIL; x = cdr(x)) {
-        s = symname(car(x));
-        /* case-insensitive, per R5RS section 2. */
-        if(stricmp(name, s) == 0) {
+        s = symkey(car(x));
+        if(strcmp(key, s) == 0) {
+          g_free(key);
           return car(x);
         }
      }
+     g_free(key);
      return sc->NIL;
 }
 
@@ -972,19 +978,27 @@ INTERFACE pointer mk_string(scheme *sc, const char *str) {
 /* len is the length of str in characters */
 INTERFACE pointer mk_counted_string(scheme *sc, const char *str, int len) {
      pointer x = get_cell(sc, sc->NIL, sc->NIL);
+     char   *s;
 
      strvalue(x) = store_string(sc,len,str,0);
+     s = g_utf8_casefold(strvalue(x), -1);
+     strkey(x) = g_utf8_collate_key(s, -1);
      typeflag(x) = (T_STRING | T_ATOM);
      strlength(x) = len;
+     g_free(s);
      return (x);
 }
 
 static pointer mk_empty_string(scheme *sc, int len, gunichar fill) {
      pointer x = get_cell(sc, sc->NIL, sc->NIL);
+     char   *s;
 
      strvalue(x) = store_string(sc,len,0,fill);
+     s = g_utf8_casefold(strvalue(x), -1);
+     strkey(x) = g_utf8_collate_key(s, -1);
      typeflag(x) = (T_STRING | T_ATOM);
      strlength(x) = len;
+     g_free(s);
      return (x);
 }
 
@@ -1305,6 +1319,7 @@ static void gc(scheme *sc, pointer a, pointer b) {
 static void finalize_cell(scheme *sc, pointer a) {
   if(is_string(a)) {
     sc->free(strvalue(a));
+    g_free(strkey(a)); /* mem was allocated via glib */
   } else if(is_port(a)) {
     if(a->_object._port->kind&port_file
        && a->_object._port->rep.stdio.closeit) {
@@ -1493,6 +1508,8 @@ static gunichar inchar(scheme *sc) {
     file_pop(sc);
     if(sc->nesting!=0) {
       return EOF;
+    } else {
+      return '\n';
     }
     goto again;
   }
@@ -2075,8 +2092,10 @@ static int eqv(pointer a, pointer b) {
 /* ========== Environment implementation  ========== */
 
 #if !defined(USE_ALIST_ENV) || !defined(USE_OBJECT_LIST)
-//#warning FIXME: Update hash_fn() to handle UTF-8 coded keys
 
+#ifdef __GNUC__
+#warning FIXME: Update hash_fn() to handle UTF-8 coded keys
+#endif
 static int hash_fn(const char *key, int table_size)
 {
   unsigned int hashed = 0;
@@ -3278,7 +3297,11 @@ static pointer opexe_2(scheme *sc, enum scheme_opcodes op) {
           newstr[newlen] = '\0';
 
           free(strvalue(a));
+          g_free(strkey(a)); /* mem was allocated via glib */
           strvalue(a)=newstr;
+          p1 = g_utf8_casefold(strvalue(a), -1);
+          strkey(a) = g_utf8_collate_key(p1, -1);
+          g_free(p1);
           strlength(a)=newlen;
 
           s_return(sc,a);
@@ -4432,7 +4455,7 @@ static struct scheme_interface vtbl ={
 };
 #endif
 
-scheme *scheme_init_new() {
+scheme *scheme_init_new(void) {
   scheme *sc=(scheme*)malloc(sizeof(scheme));
   if(!scheme_init(sc)) {
     free(sc);
@@ -4683,8 +4706,8 @@ void scheme_call(scheme *sc, pointer func, pointer args) {
 
 #if STANDALONE
 
-#if defined(macintosh) && !defined (OSX)
-int main()
+#if defined(__APPLE__) && !defined (OSX)
+int main(int argc, char **argv)
 {
      extern MacTS_main(int argc, char **argv);
      char**    argv;

@@ -55,6 +55,7 @@
     <keyword type="enum" name="enum GimpStackTraceMode" link="libgimpbase-gimpbaseenums.html#GimpStackTraceMode"/>
     <keyword type="enum" name="enum GimpTransferMode" link="libgimpbase-gimpbaseenums.html#GimpTransferMode"/>
     <keyword type="enum" name="enum GimpTransformDirection" link="libgimpbase-gimpbaseenums.html#GimpTransformDirection"/>
+    <keyword type="enum" name="enum GimpTransformResize" link="libgimpbase-gimpbaseenums.html#GimpTransformResize"/>
     <keyword type="enum" name="enum GimpVectorsStrokeType" link="libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"/>
     <keyword type="struct" name="GimpEnumDesc" link="libgimpbase-gimpbasetypes.html#GimpEnumDesc"/>
     <keyword type="struct" name="GimpFlagsDesc" link="libgimpbase-gimpbasetypes.html#GimpFlagsDesc"/>
@@ -70,6 +71,10 @@
     <keyword type="macro" name="GIMP_VERSION" link="libgimpbase-gimpversion.html#GIMP-VERSION:CAPS"/>
     <keyword type="macro" name="GIMP_API_VERSION" link="libgimpbase-gimpversion.html#GIMP-API-VERSION:CAPS"/>
     <keyword type="macro" name="GIMP_CHECK_VERSION()" link="libgimpbase-gimpversion.html#GIMP-CHECK-VERSION:CAPS"/>
+    <keyword type="macro" name="GIMPVAR" link="libgimpbase-gimpversion.html#GIMPVAR:CAPS"/>
+    <keyword type="variable" name="gimp_major_version" link="libgimpbase-gimpversion.html#gimp-major-version"/>
+    <keyword type="variable" name="gimp_minor_version" link="libgimpbase-gimpversion.html#gimp-minor-version"/>
+    <keyword type="variable" name="gimp_micro_version" link="libgimpbase-gimpversion.html#gimp-micro-version"/>
     <keyword type="macro" name="GIMP_MIN_IMAGE_SIZE" link="libgimpbase-gimplimits.html#GIMP-MIN-IMAGE-SIZE:CAPS"/>
     <keyword type="macro" name="GIMP_MAX_IMAGE_SIZE" link="libgimpbase-gimplimits.html#GIMP-MAX-IMAGE-SIZE:CAPS"/>
     <keyword type="macro" name="GIMP_MIN_RESOLUTION" link="libgimpbase-gimplimits.html#GIMP-MIN-RESOLUTION:CAPS"/>

@@ -35,7 +35,7 @@
  *
  * Revision History:
  *
- *   $Log: sgilib.c,v $
+ *   $Log$
  *   Revision 1.9  2005/03/04 13:23:31  neo
  *   2005-03-04  Sven Neumann  <sven@gimp.org>
  *
@@ -932,5 +932,5 @@ write_rle16(sgi_t *sgip,	/* I - SGI image to write to */
 
 
 /*
- * End of "$Id: sgilib.c,v 1.9 2005/03/04 13:23:31 neo Exp $".
+ * End of "$Id: sgilib.c 16773 2005-03-04 13:23:32Z neo $".
  */

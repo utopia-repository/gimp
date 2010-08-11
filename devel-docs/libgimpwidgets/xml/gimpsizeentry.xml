@@ -412,7 +412,7 @@ The current value of the <parameter>field</parameter> will be clamped to fit in 
 new boundaries.
 </para>
 <para>
-NOTE: In most cases you won't be interested in these values because the
+NOTE: In most cases you won't be interested in this function because the
       <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link>'s purpose is to shield the programmer from unit
       calculations. Use <link linkend="gimp-size-entry-set-refval-boundaries"><function>gimp_size_entry_set_refval_boundaries()</function></link> instead.
       Whatever you do, don't mix these calls. A size entry should either

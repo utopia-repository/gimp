@@ -66,6 +66,13 @@ GimpEnumStore implements
 </refsect1>
 
 
+<refsect1 role="properties">
+<title role="properties.title">Properties</title>
+<synopsis>
+
+  &quot;<link linkend="GimpEnumStore--enum-type">enum-type</link>&quot;            <link linkend="GType">GType</link>                 : Read / Write / Construct Only
+</synopsis>
+</refsect1>
 
 
 
@@ -203,6 +210,19 @@ See also: <link linkend="gimp-enum-combo-box-set-stock-prefix"><function>gimp_en
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
+
+</refsect1>
+<refsect1 role="property_details">
+<title role="property_details.title">Property Details</title>
+<refsect2><title><anchor id="GimpEnumStore--enum-type"/>The &quot;<literal>enum-type</literal>&quot; property</title>
+<indexterm role="GIMP 2.4"><primary>GimpEnumStore:enum-type</primary></indexterm><programlisting>  &quot;enum-type&quot;            <link linkend="GType">GType</link>                 : Read / Write / Construct Only</programlisting>
+<para>
+Sets the <link linkend="GType"><type>GType</type></link> of the enum to be used in the store.</para>
+<para>
+
+</para><para>Since  GIMP 2.4
+</para>
+</refsect2>
 
 </refsect1>
 

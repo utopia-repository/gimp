@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program Copyright (C) 1995
+/* GIMP - The GNU Image Manipulation Program Copyright (C) 1995
  * Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -44,6 +44,14 @@
 #include "gimp-intl.h"
 
 
+/* maximal width of the string holding the cursor-coordinates for
+ * the status line
+ */
+#define CURSOR_LEN       256
+
+#define MESSAGE_TIMEOUT  5000
+
+
 typedef struct _GimpStatusbarMsg GimpStatusbarMsg;
 
 struct _GimpStatusbarMsg
@@ -52,11 +60,6 @@ struct _GimpStatusbarMsg
   gchar *stock_id;
   gchar *text;
 };
-
-/* maximal width of the string holding the cursor-coordinates for
- * the status line
- */
-#define CURSOR_LEN 256
 
 
 static void     gimp_statusbar_progress_iface_init (GimpProgressInterface *iface);
@@ -216,22 +219,10 @@ gimp_statusbar_init (GimpStatusbar *statusbar)
   gtk_widget_set_sensitive (statusbar->cancel_button, FALSE);
   gtk_box_pack_start (box, statusbar->cancel_button, FALSE, FALSE, 0);
   GTK_WIDGET_UNSET_FLAGS (statusbar->cancel_button, GTK_CAN_FOCUS);
-  gtk_widget_show (statusbar->cancel_button);
 
   g_signal_connect (statusbar->cancel_button, "clicked",
                     G_CALLBACK (gimp_statusbar_progress_canceled),
                     statusbar);
-
-  /* Update the statusbar once to work around a canvas size problem:
-   *
-   *  The first update of the statusbar used to queue a resize which
-   *  in term caused the canvas to be resized. That made it shrink by
-   *  one pixel in height resulting in the last row not being displayed.
-   *  Shrink-wrapping the display used to fix this reliably. With the
-   *  next call the resize doesn't seem to happen any longer.
-   */
-
-  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (statusbar->progressbar), "GIMP");
 }
 
 static void
@@ -281,6 +272,9 @@ gimp_statusbar_progress_start (GimpProgress *progress,
       gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (bar), 0.0);
       gtk_widget_set_sensitive (statusbar->cancel_button, cancelable);
 
+      if (cancelable)
+        gtk_widget_show (statusbar->cancel_button);
+
       statusbar->progress_active = TRUE;
 
       if (GTK_WIDGET_DRAWABLE (bar))
@@ -304,6 +298,7 @@ gimp_statusbar_progress_end (GimpProgress *progress)
       gimp_statusbar_pop (statusbar, "progress");
       gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (bar), 0.0);
       gtk_widget_set_sensitive (statusbar->cancel_button, FALSE);
+      gtk_widget_hide (statusbar->cancel_button);
 
       statusbar->progress_active = FALSE;
     }
@@ -546,13 +541,18 @@ gimp_statusbar_push_coords (GimpStatusbar *statusbar,
                             const gchar   *title,
                             gdouble        x,
                             const gchar   *separator,
-                            gdouble        y)
+                            gdouble        y,
+                            const gchar   *help)
 {
   GimpDisplayShell *shell;
 
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
   g_return_if_fail (title != NULL);
   g_return_if_fail (separator != NULL);
+  if (help == NULL)
+    {
+      help = "";
+    }
 
   shell = statusbar->shell;
 
@@ -563,7 +563,8 @@ gimp_statusbar_push_coords (GimpStatusbar *statusbar,
                            title,
                            (gint) RINT (x),
                            separator,
-                           (gint) RINT (y));
+                           (gint) RINT (y),
+                           help);
     }
   else /* show real world units */
     {
@@ -576,7 +577,8 @@ gimp_statusbar_push_coords (GimpStatusbar *statusbar,
                            title,
                            x * unit_factor / image->xresolution,
                            separator,
-                           y * unit_factor / image->yresolution);
+                           y * unit_factor / image->yresolution,
+                           help);
     }
 }
 
@@ -585,12 +587,17 @@ gimp_statusbar_push_length (GimpStatusbar       *statusbar,
                             const gchar         *context,
                             const gchar         *title,
                             GimpOrientationType  axis,
-                            gdouble              value)
+                            gdouble              value,
+                            const gchar         *help)
 {
   GimpDisplayShell *shell;
 
   g_return_if_fail (GIMP_IS_STATUSBAR (statusbar));
   g_return_if_fail (title != NULL);
+  if (help == NULL)
+    {
+      help = "";
+    }
 
   shell = statusbar->shell;
 
@@ -599,7 +606,8 @@ gimp_statusbar_push_length (GimpStatusbar       *statusbar,
       gimp_statusbar_push (statusbar, context,
                            statusbar->length_format_str,
                            title,
-                           (gint) RINT (value));
+                           (gint) RINT (value),
+                           help);
     }
   else /* show real world units */
     {
@@ -626,7 +634,8 @@ gimp_statusbar_push_length (GimpStatusbar       *statusbar,
       gimp_statusbar_push (statusbar, context,
                            statusbar->length_format_str,
                            title,
-                           value * unit_factor / resolution);
+                           value * unit_factor / resolution,
+                           help);
     }
 }
 
@@ -757,7 +766,8 @@ gimp_statusbar_push_temp_valist (GimpStatusbar *statusbar,
     g_source_remove (statusbar->temp_timeout_id);
 
   statusbar->temp_timeout_id =
-    g_timeout_add (3000, (GSourceFunc) gimp_statusbar_temp_timeout, statusbar);
+    g_timeout_add (MESSAGE_TIMEOUT,
+                   (GSourceFunc) gimp_statusbar_temp_timeout, statusbar);
 
   if (statusbar->messages)
     {
@@ -853,7 +863,7 @@ gimp_statusbar_set_cursor (GimpStatusbar *statusbar,
     {
       g_snprintf (buffer, sizeof (buffer),
                   statusbar->cursor_format_str,
-                  "", (gint) RINT (x), ", ", (gint) RINT (y));
+                  "", (gint) RINT (x), ", ", (gint) RINT (y), "");
     }
   else /* show real world units */
     {
@@ -861,7 +871,7 @@ gimp_statusbar_set_cursor (GimpStatusbar *statusbar,
 
       g_snprintf (buffer, sizeof (buffer),
                   statusbar->cursor_format_str,
-                  "", x, ", ", y);
+                  "", x, ", ", y, "");
     }
 
   gtk_label_set_text (GTK_LABEL (statusbar->cursor_label), buffer);
@@ -992,21 +1002,21 @@ gimp_statusbar_shell_scaled (GimpDisplayShell *shell,
     {
       g_snprintf (statusbar->cursor_format_str,
                   sizeof (statusbar->cursor_format_str),
-                  "%%s%%d%%s%%d");
+                  "%%s%%d%%s%%d%%s");
       g_snprintf (statusbar->length_format_str,
                   sizeof (statusbar->length_format_str),
-                  "%%s%%d");
+                  "%%s%%d%%s");
     }
   else /* show real world units */
     {
       g_snprintf (statusbar->cursor_format_str,
                   sizeof (statusbar->cursor_format_str),
-                  "%%s%%.%df%%s%%.%df",
+                  "%%s%%.%df%%s%%.%df%%s",
                   _gimp_unit_get_digits (image->gimp, shell->unit),
                   _gimp_unit_get_digits (image->gimp, shell->unit));
       g_snprintf (statusbar->length_format_str,
                   sizeof (statusbar->length_format_str),
-                  "%%s%%.%df",
+                  "%%s%%.%df%%s",
                   _gimp_unit_get_digits (image->gimp, shell->unit));
     }
 

@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpdatafactoryview.c
@@ -173,15 +173,6 @@ gimp_data_factory_view_construct (GimpDataFactoryView *factory_view,
   factory_view->edit_button =
     gimp_editor_add_action_button (GIMP_EDITOR (editor->view), action_group,
                                    str, NULL);
-  g_free (str);
-
-  str = g_strdup_printf ("%s-open-as-image", action_group);
-  if (gimp_ui_manager_find_action (GIMP_EDITOR (editor->view)->ui_manager,
-                                   action_group, str))
-    {
-      gimp_editor_add_action_button (GIMP_EDITOR (editor->view), action_group,
-                                     str, NULL);
-    }
   g_free (str);
 
   if (factory_view->factory->data_new_func)

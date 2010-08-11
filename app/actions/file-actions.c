@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -70,11 +70,6 @@ static const GimpActionEntry file_actions[] =
     G_CALLBACK (file_open_cmd_callback),
     GIMP_HELP_FILE_OPEN },
 
-  { "file-open-from-image", GTK_STOCK_OPEN,
-    N_("_Open..."), NULL, NULL,
-    G_CALLBACK (file_open_from_image_cmd_callback),
-    GIMP_HELP_FILE_OPEN },
-
   { "file-open-as-layers", GIMP_STOCK_LAYER,
     N_("Op_en as Layers..."), "<control><alt>O", NULL,
     G_CALLBACK (file_open_as_layers_cmd_callback),
@@ -84,21 +79,6 @@ static const GimpActionEntry file_actions[] =
     N_("Open _Location..."), NULL, NULL,
     G_CALLBACK (file_open_location_cmd_callback),
     GIMP_HELP_FILE_OPEN_LOCATION },
-
-  { "file-save", GTK_STOCK_SAVE,
-    N_("_Save"), "<control>S", NULL,
-    G_CALLBACK (file_save_cmd_callback),
-    GIMP_HELP_FILE_SAVE },
-
-  { "file-save-as", GTK_STOCK_SAVE_AS,
-    N_("Save _As..."), "<control><shift>S", NULL,
-    G_CALLBACK (file_save_as_cmd_callback),
-    GIMP_HELP_FILE_SAVE_AS },
-
-  { "file-save-a-copy", NULL,
-    N_("Save a Cop_y..."), NULL, NULL,
-    G_CALLBACK (file_save_a_copy_cmd_callback),
-    GIMP_HELP_FILE_SAVE_A_COPY },
 
   { "file-save-as-template", NULL,
     N_("Save as _Template..."), NULL,
@@ -125,11 +105,32 @@ static const GimpActionEntry file_actions[] =
     GIMP_HELP_FILE_QUIT }
 };
 
+static const GimpEnumActionEntry file_save_actions[] =
+{
+  { "file-save", GTK_STOCK_SAVE,
+    N_("_Save"), "<control>S", NULL,
+    GIMP_SAVE_MODE_SAVE, FALSE,
+    GIMP_HELP_FILE_SAVE },
+
+  { "file-save-as", GTK_STOCK_SAVE_AS,
+    N_("Save _As..."), "<control><shift>S", NULL,
+    GIMP_SAVE_MODE_SAVE_AS, FALSE,
+    GIMP_HELP_FILE_SAVE_AS },
+
+  { "file-save-a-copy", NULL,
+    N_("Save a Cop_y..."), NULL, NULL,
+    GIMP_SAVE_MODE_SAVE_A_COPY, FALSE,
+    GIMP_HELP_FILE_SAVE_A_COPY },
+
+  { "file-save-and-close", NULL,
+    N_("Save and Close..."), NULL, NULL,
+    GIMP_SAVE_MODE_SAVE_AND_CLOSE, FALSE,
+    GIMP_HELP_FILE_SAVE }
+};
 
 void
 file_actions_setup (GimpActionGroup *group)
 {
-  GtkAction           *action;
   GimpEnumActionEntry *entries;
   gint                 n_entries;
   gint                 i;
@@ -138,9 +139,10 @@ file_actions_setup (GimpActionGroup *group)
                                  file_actions,
                                  G_N_ELEMENTS (file_actions));
 
-  action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
-                                        "file-open-from-image");
-  gtk_action_set_accel_path (action, "<Actions>/file/file-open");
+  gimp_action_group_add_enum_actions (group,
+                                      file_save_actions,
+                                      G_N_ELEMENTS (file_save_actions),
+                                      G_CALLBACK (file_save_cmd_callback));
 
   n_entries = GIMP_GUI_CONFIG (group->gimp->config)->last_opened_size;
 

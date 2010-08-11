@@ -51,6 +51,7 @@ enum        <link linkend="GimpSizeType">GimpSizeType</link>;
 enum        <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
 enum        <link linkend="GimpTransferMode">GimpTransferMode</link>;
 enum        <link linkend="GimpTransformDirection">GimpTransformDirection</link>;
+enum        <link linkend="GimpTransformResize">GimpTransformResize</link>;
 enum        <link linkend="GimpVectorsStrokeType">GimpVectorsStrokeType</link>;
 
 </synopsis>
@@ -464,6 +465,19 @@ Basic GIMP enumeration data types.
   GIMP_TRANSFORM_FORWARD,   /*&lt; desc="Forward" &gt;*/
   GIMP_TRANSFORM_BACKWARD   /*&lt; desc="Backward" &gt;*/
 } GimpTransformDirection;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpTransformResize" role="enum"/>enum GimpTransformResize</title>
+<indexterm><primary>GimpTransformResize</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_TRANSFORM_RESIZE_ADJUST           = 0, /*&lt; desc="Adjust" &gt;*/
+  GIMP_TRANSFORM_RESIZE_CLIP             = 1, /*&lt; desc="Clip" &gt;*/
+  GIMP_TRANSFORM_RESIZE_CROP,                 /*&lt; desc="Crop to result" &gt;*/
+  GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT,     /*&lt; desc="Crop with aspect" &gt;*/
+} GimpTransformResize;
 </programlisting>
 <para>
 

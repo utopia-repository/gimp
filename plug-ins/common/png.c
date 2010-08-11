@@ -1,8 +1,7 @@
-/*
- * "$Id: png.c,v 1.145 2006/09/19 14:26:48 neo Exp $"
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- *   Portable Network Graphics (PNG) plug-in for The GIMP -- an image
- *   manipulation program
+ *   Portable Network Graphics (PNG) plug-in
  *
  *   Copyright 1997-1998 Michael Sweet (mike@easysw.com) and
  *   Daniel Skarda (0rfelyus@atrey.karlin.mff.cuni.cz).
@@ -144,7 +143,7 @@ static gboolean  ia_has_transparent_pixels (GimpDrawable     *drawable);
 static gint      find_unused_ia_color      (GimpDrawable     *drawable,
                                             gint             *colors);
 
-static gboolean  load_defaults             (void);
+static void      load_defaults             (void);
 static void      save_defaults             (void);
 static void      load_gui_defaults         (PngSaveGui       *pg);
 
@@ -160,7 +159,7 @@ const GimpPlugInInfo PLUG_IN_INFO =
   run
 };
 
-PngSaveVals pngvals =
+static const PngSaveVals defaults =
 {
   FALSE,
   TRUE,
@@ -172,6 +171,9 @@ PngSaveVals pngvals =
   TRUE,
   9
 };
+
+static PngSaveVals pngvals;
+
 
 /*
  * 'main()' - Main entry - just call gimp_main()...
@@ -1853,46 +1855,45 @@ save_dialog_response (GtkWidget *widget,
     }
 }
 
-static gboolean
+static void
 load_defaults (void)
 {
   GimpParasite *parasite;
-  gchar        *def_str;
-  PngSaveVals   tmpvals;
-  gint          num_fields;
 
   parasite = gimp_parasite_find (PNG_DEFAULTS_PARASITE);
 
-  if (! parasite)
-    return FALSE;
-
-  def_str = g_strndup (gimp_parasite_data (parasite),
-                       gimp_parasite_data_size (parasite));
-
-  gimp_parasite_free (parasite);
-
-  num_fields = sscanf (def_str, "%d %d %d %d %d %d %d %d %d",
-                       &tmpvals.interlaced,
-                       &tmpvals.bkgd,
-                       &tmpvals.gama,
-                       &tmpvals.offs,
-                       &tmpvals.phys,
-                       &tmpvals.time,
-                       &tmpvals.comment,
-                       &tmpvals.save_transp_pixels,
-                       &tmpvals.compression_level);
-
-  g_free (def_str);
-
-  if (num_fields == 9)
+  if (parasite)
     {
-      memcpy (&pngvals, &tmpvals, sizeof (tmpvals));
-      return TRUE;
+      gchar        *def_str;
+      PngSaveVals   tmpvals;
+      gint          num_fields;
+
+      def_str = g_strndup (gimp_parasite_data (parasite),
+                           gimp_parasite_data_size (parasite));
+
+      gimp_parasite_free (parasite);
+
+      num_fields = sscanf (def_str, "%d %d %d %d %d %d %d %d %d",
+                           &tmpvals.interlaced,
+                           &tmpvals.bkgd,
+                           &tmpvals.gama,
+                           &tmpvals.offs,
+                           &tmpvals.phys,
+                           &tmpvals.time,
+                           &tmpvals.comment,
+                           &tmpvals.save_transp_pixels,
+                           &tmpvals.compression_level);
+
+      g_free (def_str);
+
+      if (num_fields == 9)
+        {
+          memcpy (&pngvals, &tmpvals, sizeof (tmpvals));
+          return;
+        }
     }
-  else
-    {
-      return FALSE;
-    }
+
+  memcpy (&pngvals, &defaults, sizeof (defaults));
 }
 
 static void
@@ -1925,14 +1926,11 @@ save_defaults (void)
 static void
 load_gui_defaults (PngSaveGui *pg)
 {
-  if (! load_defaults ())
-    {
-      g_message (_("Could not load PNG defaults"));
-      return;
-    }
+  load_defaults ();
 
 #define SET_ACTIVE(field) \
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pg->field), pngvals.field)
+  if (GTK_WIDGET_IS_SENSITIVE (pg->field)) \
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pg->field), pngvals.field)
 
   SET_ACTIVE (interlaced);
   SET_ACTIVE (bkgd);

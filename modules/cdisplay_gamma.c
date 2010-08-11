@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1999 Manish Singh <yosh@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -121,14 +121,14 @@ cdisplay_gamma_get_type (GTypeModule *module)
       const GTypeInfo display_info =
       {
         sizeof (CdisplayGammaClass),
-	(GBaseInitFunc)     NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc)    cdisplay_gamma_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (CdisplayGamma),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
+        (GBaseInitFunc)     NULL,
+        (GBaseFinalizeFunc) NULL,
+        (GClassInitFunc)    cdisplay_gamma_class_init,
+        NULL,           /* class_finalize */
+        NULL,           /* class_data     */
+        sizeof (CdisplayGamma),
+        0,              /* n_preallocs    */
+        NULL            /* instance_init  */
       };
 
       cdisplay_gamma_type =
@@ -232,10 +232,10 @@ cdisplay_gamma_convert (GimpColorDisplay *display,
     {
       i = width;
       while (i--)
-	{
-	  *buf = gamma->lookup[*buf];
-	  buf++;
-	}
+        {
+          *buf = gamma->lookup[*buf];
+          buf++;
+        }
       buf += bpl;
     }
 }

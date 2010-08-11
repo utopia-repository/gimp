@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,8 +22,6 @@
 
 void   file_open_cmd_callback            (GtkAction   *action,
                                           gpointer     data);
-void   file_open_from_image_cmd_callback (GtkAction   *action,
-                                          gpointer     data);
 void   file_open_as_layers_cmd_callback  (GtkAction   *action,
                                           gpointer     data);
 void   file_open_location_cmd_callback   (GtkAction   *action,
@@ -33,10 +31,7 @@ void   file_last_opened_cmd_callback     (GtkAction   *action,
                                           gpointer     data);
 
 void   file_save_cmd_callback            (GtkAction   *action,
-                                          gpointer     data);
-void   file_save_as_cmd_callback         (GtkAction   *action,
-                                          gpointer     data);
-void   file_save_a_copy_cmd_callback     (GtkAction   *action,
+                                          gint         value,
                                           gpointer     data);
 void   file_save_template_cmd_callback   (GtkAction   *action,
                                           gpointer     data);

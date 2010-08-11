@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -250,31 +250,34 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
       return;
     }
 
+  *x1 += diff_x;
+  *y1 += diff_y;
+
   /*  if control is being held, constrain the aspect ratio  */
   if (options->constrain)
     {
-      gdouble mag;
-      gdouble dot;
+      /*  FIXME: improve this  */
+      gdouble w = tr_tool->trans_info[X1] - tr_tool->trans_info[X0];
+      gdouble h = tr_tool->trans_info[Y1] - tr_tool->trans_info[Y0];
 
-      mag = hypot ((gdouble) (tr_tool->x2 - tr_tool->x1),
-                   (gdouble) (tr_tool->y2 - tr_tool->y1));
-
-      dot = (dir_x * diff_x * (tr_tool->x2 - tr_tool->x1) +
-             dir_y * diff_y * (tr_tool->y2 - tr_tool->y1));
-
-      if (mag > 0.0)
+      switch (tr_tool->function)
         {
-          diff_x = dir_x * (tr_tool->x2 - tr_tool->x1) * dot / (mag * mag);
-          diff_y = dir_y * (tr_tool->y2 - tr_tool->y1) * dot / (mag * mag);
-        }
-      else
-        {
-          diff_x = diff_y = 0;
+        case TRANSFORM_HANDLE_NW:
+        case TRANSFORM_HANDLE_SW:
+          tr_tool->trans_info[X0] =
+            tr_tool->trans_info[X1] - tr_tool->aspect * h;
+          break;
+
+        case TRANSFORM_HANDLE_NE:
+        case TRANSFORM_HANDLE_SE:
+          tr_tool->trans_info[X1] =
+            tr_tool->trans_info[X0] + tr_tool->aspect * h;
+          break;
+
+        default:
+          break;
         }
     }
-
-  *x1 += diff_x;
-  *y1 += diff_y;
 
   if (dir_x > 0)
     {
@@ -362,6 +365,19 @@ gimp_scale_tool_size_notify (GtkWidget         *box,
 
       if (constrain != options->constrain)
         {
+          gint width;
+          gint height;
+
+          g_object_get (box,
+                        "width",  &width,
+                        "height", &height,
+                        NULL);
+
+          /*  Take the aspect ratio from the size box when the user
+           *  activates the constraint by pressing the chain button.
+           */
+          tr_tool->aspect = (gdouble) width / (gdouble) height;
+
           g_object_set (options,
                         "constrain", constrain,
                         NULL);

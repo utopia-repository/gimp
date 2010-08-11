@@ -1,4 +1,4 @@
-/* $Id: handy.c,v 1.14 2005/08/03 00:36:40 neo Exp $
+/* $Id: handy.c 21431 2006-11-24 11:10:10Z neo $
  * These routines are useful for working with the GIMP and need not be
  * specific to plug-in-maze.
  *
@@ -28,6 +28,9 @@
 #include <string.h>
 
 #include "libgimp/gimp.h"
+
+#include "maze.h"
+
 
 /* get_colors Returns the current foreground and background colors in
    nice little arrays.  It works nicely for RGB and grayscale images,
@@ -102,6 +105,15 @@ get_colors (GimpDrawable *drawable,
  *  for the most part, have rows of the same size with every call.
  *  We could keep a row of each color on hand so we wouldn't have to
  *  re-fill it every time...  */
+
+#include "config.h"
+
+#include <stdlib.h>
+
+#include "libgimp/gimp.h"
+
+#include "maze.h"
+
 
 void
 drawbox( GimpPixelRgn *dest_rgn,

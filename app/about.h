@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@
   _("GNU Image Manipulation Program")
 
 #define GIMP_COPYRIGHT \
-  _("Copyright © 1995-2006\n" \
+  _("Copyright © 1995-2007\n" \
     "Spencer Kimball, Peter Mattis and the GIMP Development Team")
 
 #define GIMP_LICENSE \

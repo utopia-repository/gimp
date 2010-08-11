@@ -1,3 +1,87 @@
+2007-01-22  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-01-11  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-01-11 Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2007-01-09 Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2007-01-09  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-01-07 Marco Ciampa <ciampix@libero.it>
+
+	* eo.po: added Esperanto partial translation.
+
+2007-01-07  Jordi Mas <jmas@softcatala.org>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2007-01-07  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: italian update.
+
+2007-01-05  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-01-04  Sven Neumann  <sven@gimp.org>
+
+	* Makefile.in.in: synced with po-plug-ins/Makefile.in.in.
+
+2007-01-04  Michael Natterer  <mitch@gimp.org>
+
+	* POTFILES.in: specify encoding (bug #389201).
+
+2007-01-03  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
+2007-01-03  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: added missing files.
+
+	* de.po: minor update.
+
+2006-12-27  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2006-12-23  Josep Puigdemont i Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation by
+	Joaquim Perez <noguer@gmail.com>.
+
+2006-12-21  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: minor italian update.
+
+2006-12-20  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
+2006-12-19  Adam Weinberger  <adamw@gnome.org>
+
+	* en_CA.po: Updated Canadian English translation.
+
+2006-12-13  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2006-12-11  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
 2006-11-18  Djihed Afifi <djihed@gmail.com> 
 
 	* ar.po: Added Arabic Translation.

@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * file-utils.h
@@ -25,8 +25,11 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 
-gchar               * file_utils_filename_to_uri        (GSList        *procs,
+gchar               * file_utils_filename_to_uri        (Gimp          *gimp,
                                                          const gchar   *filename,
+                                                         GError       **error);
+gchar               * file_utils_any_to_uri             (Gimp          *gimp,
+                                                         const gchar   *filename_or_uri,
                                                          GError       **error);
 gchar               * file_utils_filename_from_uri      (const gchar   *uri);
 

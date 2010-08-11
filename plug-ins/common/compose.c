@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * Compose plug-in (C) 1997,1999 Peter Kirchgessner
@@ -89,6 +89,11 @@ static void      compose_rgba        (guchar         **src,
                                       guchar          *dst,
                                       gboolean         dst_has_alpha);
 static void      compose_hsv         (guchar         **src,
+                                      gint            *incr,
+                                      gint             numpix,
+                                      guchar          *dst,
+                                      gboolean         dst_has_alpha);
+static void      compose_hsl         (guchar         **src,
                                       gint            *incr,
                                       gint             numpix,
                                       guchar          *dst,
@@ -210,6 +215,14 @@ static COMPOSE_DSC compose_dsc[] =
       NULL },
     { NULL, NULL, NULL, NULL },
     "hsv-compose",  compose_hsv },
+
+  { N_("HSL"), 3,
+    { N_("_Hue:"),
+      N_("_Saturation:"),
+      N_("_Lightness:"),
+      NULL },
+    { NULL, NULL, NULL, NULL },
+    "hsl-compose",  compose_hsl },
 
   { N_("CMY"), 3,
     { N_("_Cyan:"),
@@ -337,7 +350,7 @@ query (void)
     { GIMP_PDB_IMAGE,    "image2",       "Second input image" },
     { GIMP_PDB_IMAGE,    "image3",       "Third input image" },
     { GIMP_PDB_IMAGE,    "image4",       "Fourth input image" },
-    { GIMP_PDB_STRING,   "compose-type", "What to compose: RGB, RGBA, HSV, CMY, CMYK" },
+    { GIMP_PDB_STRING,   "compose-type", "What to compose: RGB, RGBA, HSV, HSL, CMY, CMYK" },
     { GIMP_PDB_INT8,     "value1",       "Mask value if image 1 is -1" },
     { GIMP_PDB_INT8,     "value2",       "Mask value if image 2 is -1" },
     { GIMP_PDB_INT8,     "value3",       "Mask value if image 3 is -1" },
@@ -357,7 +370,7 @@ query (void)
     { GIMP_PDB_DRAWABLE, "drawable2",    "Second input drawable" },
     { GIMP_PDB_DRAWABLE, "drawable3",    "Third input drawable" },
     { GIMP_PDB_DRAWABLE, "drawable4",    "Fourth input drawable" },
-    { GIMP_PDB_STRING,   "compose-type", "What to compose: RGB, RGBA, HSV, CMY, CMYK" },
+    { GIMP_PDB_STRING,   "compose-type", "What to compose: RGB, RGBA, HSV, HSL, CMY, CMYK" },
     { GIMP_PDB_INT8,     "value1",       "Mask value if image 1 is -1" },
     { GIMP_PDB_INT8,     "value2",       "Mask value if image 2 is -1" },
     { GIMP_PDB_INT8,     "value3",       "Mask value if image 3 is -1" },
@@ -1027,6 +1040,44 @@ compose_hsv (guchar **src,
       hue_src += hue_incr;
       sat_src += sat_incr;
       val_src += val_incr;
+
+      if (dst_has_alpha)
+        rgb_dst++;
+    }
+}
+
+
+static void
+compose_hsl (guchar **src,
+             gint    *incr_src,
+             gint     numpix,
+             guchar  *dst,
+             gboolean dst_has_alpha)
+{
+  register const guchar *hue_src = src[0];
+  register const guchar *sat_src = src[1];
+  register const guchar *lum_src = src[2];
+  register       guchar *rgb_dst = dst;
+  register       gint    count   = numpix;
+  gint    hue_incr = incr_src[0];
+  gint    sat_incr = incr_src[1];
+  gint    lum_incr = incr_src[2];
+  GimpHSL hsl;
+  GimpRGB rgb;
+
+  while (count-- > 0)
+    {
+      hsl.h = (gdouble) *hue_src / 255.0;
+      hsl.s = (gdouble) *sat_src / 255.0;
+      hsl.l = (gdouble) *lum_src / 255.0;
+
+      gimp_hsl_to_rgb (&hsl, &rgb);
+      gimp_rgb_get_uchar (&rgb, &(rgb_dst[0]), &(rgb_dst[1]), &(rgb_dst[2]));
+
+      rgb_dst += 3;
+      hue_src += hue_incr;
+      sat_src += sat_incr;
+      lum_src += lum_incr;
 
       if (dst_has_alpha)
         rgb_dst++;
@@ -1725,29 +1776,34 @@ type_combo_callback (GimpIntComboBox *combo,
 {
   if (gimp_int_combo_box_get_active (combo, &composeint.compose_idx))
     {
-      const gchar *text;
-      gboolean     combo4;
-      gboolean     scale4;
-      gint         compose_idx, j;
+      gboolean combo4;
+      gboolean scale4;
+      gint     compose_idx;
+      gint     j;
 
       compose_idx = composeint.compose_idx;
 
       for (j = 0; j < MAX_COMPOSE_IMAGES; j++)
         {
-          text = (compose_dsc[compose_idx].channel_name[j] ?
-                  gettext (compose_dsc[compose_idx].channel_name[j]) : "");
+          GtkWidget   *label = composeint.channel_label[j];
+          GtkWidget   *image = composeint.channel_icon[j];
+          const gchar *text  = compose_dsc[compose_idx].channel_name[j];
+          const gchar *icon  = compose_dsc[compose_idx].channel_icon[j];
 
-          gtk_label_set_text_with_mnemonic
-            (GTK_LABEL (composeint.channel_label[j]), text);
+          gtk_label_set_text_with_mnemonic (GTK_LABEL (label),
+                                            text ? gettext (text) : "");
 
-          gtk_image_set_from_stock (GTK_IMAGE (composeint.channel_icon[j]),
-                                    compose_dsc[compose_idx].channel_icon[j],
-                                    GTK_ICON_SIZE_BUTTON);
-
-          if (compose_dsc[compose_idx].channel_icon[j])
-            gtk_widget_show (composeint.channel_icon[j]);
+          if (icon)
+            {
+              gtk_image_set_from_stock (GTK_IMAGE (image),
+                                        icon, GTK_ICON_SIZE_BUTTON);
+              gtk_widget_show (image);
+            }
           else
-            gtk_widget_hide (composeint.channel_icon[j]);
+            {
+              gtk_image_clear (GTK_IMAGE (image));
+              gtk_widget_hide (image);
+            }
         }
 
       /* Set sensitivity of last menu */

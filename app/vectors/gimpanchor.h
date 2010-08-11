@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpanchor.h
@@ -39,10 +39,11 @@ struct _GimpAnchor
 };
 
 
-GimpAnchor  * gimp_anchor_new       (GimpAnchorType    type,
-                                     const GimpCoords *position);
-void          gimp_anchor_free      (GimpAnchor       *anchor);
-GimpAnchor  * gimp_anchor_duplicate (const GimpAnchor *anchor);
+GimpAnchor  * gimp_anchor_new  (GimpAnchorType    type,
+                                const GimpCoords *position);
+
+GimpAnchor  * gimp_anchor_copy (const GimpAnchor *anchor);
+void          gimp_anchor_free (GimpAnchor       *anchor);
 
 
 #endif /* __GIMP_ANCHOR_H__ */

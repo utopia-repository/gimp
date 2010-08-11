@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpstroke.c
@@ -994,7 +994,7 @@ gimp_stroke_real_duplicate (const GimpStroke *stroke)
 
   for (list = new_stroke->anchors; list; list = g_list_next (list))
     {
-      list->data = gimp_anchor_duplicate (GIMP_ANCHOR (list->data));
+      list->data = gimp_anchor_copy (GIMP_ANCHOR (list->data));
     }
 
   new_stroke->closed = stroke->closed;

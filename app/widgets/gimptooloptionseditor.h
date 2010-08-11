@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimptooloptionseditor.h
@@ -51,6 +51,9 @@ struct _GimpToolOptionsEditor
   GtkWidget       *reset_button;
 
   GimpToolOptions *visible_tool_options;
+
+  GList           *save_queue;
+  guint            save_idle_id;
 };
 
 struct _GimpToolOptionsEditorClass

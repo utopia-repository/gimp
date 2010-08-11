@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * Supernova plug-in
@@ -174,7 +174,7 @@ query (void)
                           "Eiichi Takamori",
                           "Eiichi Takamori",
                           "May 2000",
-                          N_("Su_pernova..."),
+                          N_("Super_nova..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
@@ -469,7 +469,7 @@ nova_center_create (GimpDrawable *drawable,
                                          2 * drawable->height,
                                          0, drawable->height);
 
-  gtk_table_set_row_spacing (GTK_TABLE (center->coords), 1, 12);
+  gtk_table_set_row_spacing (GTK_TABLE (center->coords), 1, 6);
   gtk_box_pack_start (GTK_BOX (hbox), center->coords, FALSE, FALSE, 0);
   gtk_widget_show (center->coords);
 
@@ -574,27 +574,14 @@ nova_center_coords_update (GimpSizeEntry *coords,
 
 /*
  *  Update the cross cursor's  coordinates accoding to pvals.[xy]center
- *  but not redraw it
+ *  but do not redraw it.
  */
 static void
 nova_center_cursor_update (NovaCenter *center)
 {
-  gint    width, height;
-  gdouble xoff, yoff;
-  gdouble zoom;
-
-  gimp_preview_get_size (center->preview, &width, &height);
-  xoff = center->preview->xoff;
-  yoff = center->preview->yoff;
-  zoom = gimp_zoom_preview_get_factor (GIMP_ZOOM_PREVIEW (center->preview));
-
-  center->curx = pvals.xcenter * width  / center->drawable->width * zoom -
-                 xoff;
-  center->cury = pvals.ycenter * height / center->drawable->height * zoom -
-                 yoff;
-
-  center->curx = CLAMP (center->curx, 0, width - 1);
-  center->cury = CLAMP (center->cury, 0, height - 1);
+  gimp_preview_transform (center->preview,
+                          pvals.xcenter, pvals.ycenter,
+                          &center->curx, &center->cury);
 }
 
 /*
@@ -630,50 +617,58 @@ nova_center_preview_expose (GtkWidget  *widget,
 /*
  *    Handle other events on the preview
  */
+
+static gboolean
+nova_center_update (GtkWidget  *widget,
+                    NovaCenter *center,
+                    gint        x,
+                    gint        y)
+{
+  gint tx, ty;
+
+  gimp_preview_untransform (center->preview, x, y, &tx, &ty);
+
+  nova_center_cursor_draw (center);
+
+  g_signal_handlers_block_by_func (center->coords,
+                                   nova_center_coords_update,
+                                   center);
+
+  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (center->coords), 0, tx);
+  gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (center->coords), 1, ty);
+
+  g_signal_handlers_unblock_by_func (center->coords,
+                                     nova_center_coords_update,
+                                     center);
+
+  nova_center_coords_update (GIMP_SIZE_ENTRY (center->coords), center);
+
+  return TRUE;
+}
+
 static gboolean
 nova_center_preview_events (GtkWidget  *widget,
                             GdkEvent   *event,
                             NovaCenter *center)
 {
-  gint    width, height;
-  gint    curx, cury;
-  gdouble zoom;
-
-  gimp_preview_get_size (center->preview, &width, &height);
-
   switch (event->type)
     {
     case GDK_MOTION_NOTIFY:
-      if (! (((GdkEventMotion *) event)->state & GDK_BUTTON2_MASK))
-        break;
+      {
+        GdkEventMotion *mevent = (GdkEventMotion *) event;
+
+        if (mevent->state & GDK_BUTTON2_MASK)
+          return nova_center_update (widget, center, mevent->x, mevent->y);
+      }
+      break;
 
     case GDK_BUTTON_PRESS:
-      if (((GdkEventButton *) event)->button != 2)
-        break;
-      gtk_widget_get_pointer (widget, &curx, &cury);
+      {
+        GdkEventButton *bevent = (GdkEventButton *) event;
 
-      zoom = gimp_zoom_preview_get_factor (GIMP_ZOOM_PREVIEW (center->preview));
-      center->curx = (curx + center->preview->xoff) / zoom;
-      center->cury = (cury + center->preview->yoff) / zoom;
-
-      nova_center_cursor_draw (center);
-
-      g_signal_handlers_block_by_func (center->coords,
-                                       nova_center_coords_update,
-                                       center);
-
-      gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (center->coords), 0,
-                                  center->curx * center->drawable->width /
-                                  width);
-      gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (center->coords), 1,
-                                  center->cury * center->drawable->height /
-                                  height);
-
-      g_signal_handlers_unblock_by_func (center->coords,
-                                         nova_center_coords_update,
-                                         center);
-
-      nova_center_coords_update (GIMP_SIZE_ENTRY (center->coords), center);
+        if (bevent->button == 2)
+          return nova_center_update (widget, center, bevent->x, bevent->y);
+      }
       break;
 
     default:
@@ -695,10 +690,10 @@ static gdouble
 gauss (GRand *gr)
 {
   gdouble sum = 0.0;
-  gint i;
+  gint    i;
 
   for (i = 0; i < 6; i++)
-    sum += (gdouble) g_rand_double (gr);
+    sum += g_rand_double (gr);
 
   return sum / 6.0;
 }
@@ -749,6 +744,7 @@ nova (GimpDrawable *drawable,
 
        hsv.h += ((gdouble) pvals.randomhue / 360.0) *
                 g_rand_double_range (gr, -0.5, 0.5);
+
        if (hsv.h < 0)
          hsv.h += 1.0;
        else if (hsv.h >= 1.0)
@@ -761,13 +757,14 @@ nova (GimpDrawable *drawable,
      {
        cache = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
                                              &width, &height, &bpp);
-       zoom = gimp_zoom_preview_get_factor (GIMP_ZOOM_PREVIEW (preview));
-       xc = (gdouble) pvals.xcenter * width  / drawable->width * zoom -
-            preview->xoff;
-       yc = (gdouble) pvals.ycenter * height / drawable->height * zoom -
-            preview->yoff;
 
-       x1 = y1 = 0;
+       zoom = gimp_zoom_preview_get_factor (GIMP_ZOOM_PREVIEW (preview));
+
+       gimp_preview_transform (preview,
+                               pvals.xcenter, pvals.ycenter, &xc, &yc);
+
+       x1 = 0;
+       y1 = 0;
        x2 = width;
        y2 = height;
      }
@@ -783,6 +780,7 @@ nova (GimpDrawable *drawable,
        gimp_pixel_rgn_init (&dest_rgn, drawable,
                             x1, y1, x2-x1, y2-y1, TRUE, TRUE);
      }
+
    alpha = (has_alpha) ? bpp - 1 : bpp;
 
    /* Initialize progress */
@@ -803,13 +801,14 @@ nova (GimpDrawable *drawable,
 
            for (col = 0, x = 0; col < x2; col++, x++)
              {
-               u = (gdouble) (x - xc) /
-                          ((gdouble) pvals.radius * width /
-                              drawable->width * zoom);
-               v = (gdouble) (y - yc) /
-                          ((gdouble) pvals.radius * height /
-                              drawable->height * zoom);
-               l = sqrt (u * u + v * v);
+               u = ((gdouble) (x - xc) /
+                    ((gdouble) pvals.radius * width /
+                     drawable->width * zoom));
+               v = ((gdouble) (y - yc) /
+                    ((gdouble) pvals.radius * height /
+                     drawable->height * zoom));
+
+               l = sqrt (SQR (u) + SQR (v));
 
                /* This algorithm is still under construction. */
                t = (atan2 (u, v) / (2 * G_PI) + .51) * pvals.nspoke;
@@ -884,7 +883,9 @@ nova (GimpDrawable *drawable,
                dest += bpp;
              }
          }
+
        gimp_preview_draw_buffer (preview, dest_row, bpp * width);
+
        g_free (cache);
        g_free (save_src);
        g_free (dest_row);
@@ -951,6 +952,7 @@ nova (GimpDrawable *drawable,
                        color.r += c;
                        dest[0] = CLAMP (color.r*255.0, 0, 255);
                        break;
+
                      case 3:
                      case 4:
                        /* red */
@@ -992,6 +994,7 @@ nova (GimpDrawable *drawable,
                    src += src_rgn.bpp;
                    dest += dest_rgn.bpp;
                  }
+
                src_row += src_rgn.rowstride;
                dest_row += dest_rgn.rowstride;
              }

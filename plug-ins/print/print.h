@@ -1,4 +1,4 @@
-/* The GIMP -- an image manipulation program
+/* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,11 +25,8 @@ typedef struct
   gboolean           show_info_header;
   GtkPrintOperation *operation;
   GtkWidget         *layout_preview_image;
-  GtkTextBuffer     *caption_buffer;
-  guchar            *caption;
   gdouble            xres;
   gdouble            yres;
-  gboolean           print_size_changed;
   GtkPageOrientation orientation;
 } PrintData;
 

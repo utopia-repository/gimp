@@ -2,7 +2,7 @@
 /* Alexander.Schulz@stud.uni-karlsruhe.de                */
 
 /*
- * The GIMP -- an image manipulation program
+ * GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * This program is free software; you can redistribute it and/or modify
@@ -587,6 +587,42 @@ ReadImage (FILE     *fd,
               gimp_progress_update ((gdouble) cur_progress /
                                     (gdouble) max_progress);
           }
+
+	if (channels == 4)
+	  {
+	    gboolean  has_alpha = FALSE;
+
+	    /* at least one pixel should have nonzero alpha */
+	    for (ypos = 0; ypos < height; ypos++)
+	      {
+		temp = dest + (ypos * rowstride);
+		for (xpos = 0; xpos < width; xpos++)
+		  {
+		    if (temp[3])
+		      {
+			has_alpha = TRUE;
+			break;
+		      }
+		    temp += 4;
+		  }
+		if (has_alpha)
+		  break;
+	      }
+
+	    /* workaround unwanted behaviour when all alpha pixels are zero */
+	    if (!has_alpha)
+	      {
+		for (ypos = 0; ypos < height; ypos++)
+		  {
+		    temp = dest + (ypos * rowstride);
+		    for (xpos = 0; xpos < width; xpos++)
+		      {
+			temp[3] = 255;
+			temp += 4;
+		      }
+		  }
+	      }
+	  }
       }
       break;
 

@@ -31,11 +31,12 @@
 
 #include "core/gimp.h"
 #include "core/gimpimage.h"
+#include "core/gimpparamspecs.h"
 
-#include "pdb/procedural_db.h"
+#include "pdb/gimp-pdb.h"
+#include "pdb/gimppluginprocedure.h"
 
 #include "plug-in/plug-ins.h"
-#include "plug-in/plug-in-proc-def.h"
 
 #include "xcf.h"
 #include "xcf-private.h"
@@ -47,39 +48,22 @@
 
 
 typedef GimpImage * GimpXcfLoaderFunc (Gimp    *gimp,
-				       XcfInfo *info);
+                                       XcfInfo *info);
 
 
-static Argument * xcf_load_invoker (Gimp         *gimp,
-                                    GimpContext  *context,
-                                    GimpProgress *progress,
-				    Argument     *args);
-static Argument * xcf_save_invoker (Gimp         *gimp,
-                                    GimpContext  *context,
-                                    GimpProgress *progress,
-				    Argument     *args);
+static GValueArray * xcf_load_invoker (GimpProcedure     *procedure,
+                                       Gimp              *gimp,
+                                       GimpContext       *context,
+                                       GimpProgress      *progress,
+                                       const GValueArray *args);
+static GValueArray * xcf_save_invoker (GimpProcedure     *procedure,
+                                       Gimp              *gimp,
+                                       GimpContext       *context,
+                                       GimpProgress      *progress,
+                                       const GValueArray *args);
 
 
-static ProcArg xcf_load_args[] =
-{
-  { GIMP_PDB_INT32,
-    "dummy-param",
-    "dummy parameter" },
-  { GIMP_PDB_STRING,
-    "filename",
-    "The name of the file to load, in the on-disk character set and encoding" },
-  { GIMP_PDB_STRING,
-    "raw-filename",
-    "The basename of the file, in UTF-8" }
-};
-
-static ProcArg xcf_load_return_vals[] =
-{
-  { GIMP_PDB_IMAGE,
-    "image",
-    "Output image" }
-};
-
+#if 0
 static PlugInProcDef xcf_plug_in_load_proc =
 {
   "gimp-xcf-load",
@@ -87,29 +71,12 @@ static PlugInProcDef xcf_plug_in_load_proc =
   NULL,
   GIMP_ICON_TYPE_STOCK_ID,
   -1,
-  "gimp-wilber",
+  (guint8 *) "gimp-wilber",
   NULL, /* ignored for load */
   0,    /* ignored for load */
   0,
   FALSE,
-  {
-    "gimp-xcf-load",
-    "gimp-xcf-load",
-    "loads file saved in the .xcf file format",
-    "The xcf file format has been designed specifically for loading and "
-    "saving tiled and layered images in the GIMP. This procedure will load "
-    "the specified file.",
-    "Spencer Kimball & Peter Mattis",
-    "Spencer Kimball & Peter Mattis",
-    "1995-1996",
-    NULL,
-    GIMP_INTERNAL,
-    3,
-    xcf_load_args,
-    1,
-    xcf_load_return_vals,
-    { { xcf_load_invoker } },
-  },
+  NULL,
   TRUE,
   "xcf",
   "",
@@ -120,25 +87,6 @@ static PlugInProcDef xcf_plug_in_load_proc =
   NULL  /* fill me in at runtime */
 };
 
-static ProcArg xcf_save_args[] =
-{
-  { GIMP_PDB_INT32,
-    "dummy-param",
-    "dummy parameter" },
-  { GIMP_PDB_IMAGE,
-    "image",
-    "Input image" },
-  { GIMP_PDB_DRAWABLE,
-    "drawable",
-    "Active drawable of input image" },
-  { GIMP_PDB_STRING,
-    "filename",
-    "The name of the file to save the image in, in the on-disk character set and encoding" },
-  { GIMP_PDB_STRING,
-    "raw_filename",
-    "The basename of the file, in UTF-8" }
-};
-
 static PlugInProcDef xcf_plug_in_save_proc =
 {
   "gimp-xcf-save",
@@ -146,29 +94,12 @@ static PlugInProcDef xcf_plug_in_save_proc =
   NULL,
   GIMP_ICON_TYPE_STOCK_ID,
   -1,
-  "gimp-wilber",
+  (guint8 *) "gimp-wilber",
   "RGB*, GRAY*, INDEXED*",
   0, /* fill me in at runtime */
   0,
   FALSE,
-  {
-    "gimp-xcf-save",
-    "gimp-xcf-save",
-    "saves file in the .xcf file format",
-    "The xcf file format has been designed specifically for loading and "
-    "saving tiled and layered images in the GIMP. This procedure will save "
-    "the specified image in the xcf file format.",
-    "Spencer Kimball & Peter Mattis",
-    "Spencer Kimball & Peter Mattis",
-    "1995-1996",
-    NULL,
-    GIMP_INTERNAL,
-    5,
-    xcf_save_args,
-    0,
-    NULL,
-    { { xcf_save_invoker } },
-  },
+  NULL,
   TRUE,
   "xcf",
   "",
@@ -178,9 +109,10 @@ static PlugInProcDef xcf_plug_in_save_proc =
   NULL, /* fill me in at runtime */
   NULL  /* fill me in at runtime */
 };
+#endif
 
 
-static GimpXcfLoaderFunc *xcf_loaders[] =
+static GimpXcfLoaderFunc * const xcf_loaders[] =
 {
   xcf_load_image,   /* version 0 */
   xcf_load_image,   /* version 1 */
@@ -191,6 +123,9 @@ static GimpXcfLoaderFunc *xcf_loaders[] =
 void
 xcf_init (Gimp *gimp)
 {
+  GimpPlugInProcedure *proc;
+  GimpProcedure       *procedure;
+
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
   /* So this is sort of a hack, but its better than it was before.  To
@@ -201,15 +136,133 @@ xcf_init (Gimp *gimp)
    * though they are internal.  The only thing it requires is using a
    * PlugInProcDef struct.  -josh
    */
-  procedural_db_register (gimp, &xcf_plug_in_save_proc.db_info);
-  xcf_plug_in_save_proc.image_types_val =
-    plug_ins_image_types_parse (xcf_plug_in_save_proc.image_types);
-  plug_ins_add_internal (gimp, &xcf_plug_in_save_proc);
 
-  procedural_db_register (gimp, &xcf_plug_in_load_proc.db_info);
-  xcf_plug_in_load_proc.image_types_val =
-    plug_ins_image_types_parse (xcf_plug_in_load_proc.image_types);
-  plug_ins_add_internal (gimp, &xcf_plug_in_load_proc);
+  /*  gimp-xcf-save  */
+  procedure = gimp_plug_in_procedure_new (GIMP_PLUGIN, "gimp-xcf-save");
+  procedure->proc_type    = GIMP_INTERNAL;
+  procedure->marshal_func = xcf_save_invoker;
+
+  proc = GIMP_PLUG_IN_PROCEDURE (procedure);
+  proc->menu_label = g_strdup (N_("GIMP XCF image"));
+  gimp_plug_in_procedure_set_icon (proc, GIMP_ICON_TYPE_STOCK_ID,
+                                   (const guint8 *) "gimp-wilber",
+                                   strlen ("gimp-wilber") + 1);
+  gimp_plug_in_procedure_set_image_types (proc, "RGB*, GRAY*, INDEXED*");
+  gimp_plug_in_procedure_set_file_proc (proc, "xcf", "", NULL);
+  gimp_plug_in_procedure_set_mime_type (proc, "image/xcf");
+
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-xcf-save");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-xcf-save",
+                                     "saves file in the .xcf file format",
+                                     "The xcf file format has been designed "
+                                     "specifically for loading and saving "
+                                     "tiled and layered images in the GIMP. "
+                                     "This procedure will save the specified "
+                                     "image in the xcf file format.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("dummy-param",
+                                                      "Dummy Param",
+                                                      "Dummy parameter",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "Image",
+                                                         "Input image",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "Drawable",
+                                                            "Active drawable of input image",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filename",
+                                                       "Filename",
+                                                       "The name of the file "
+                                                       "to save the image in, "
+                                                       "in the on-disk "
+                                                       "character set and "
+                                                       "encoding",
+                                                       TRUE, FALSE, NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("raw-filename",
+                                                       "Raw filename",
+                                                       "The basename of the "
+                                                       "file, in UTF-8",
+                                                       FALSE, FALSE, NULL,
+                                                       GIMP_PARAM_READWRITE));
+  plug_ins_procedure_add (gimp, proc);
+  g_object_unref (procedure);
+
+  /*  gimp-xcf-load  */
+  procedure = gimp_plug_in_procedure_new (GIMP_PLUGIN, "gimp-xcf-load");
+  procedure->proc_type    = GIMP_INTERNAL;
+  procedure->marshal_func = xcf_load_invoker;
+
+  proc = GIMP_PLUG_IN_PROCEDURE (procedure);
+  proc->menu_label = g_strdup (N_("GIMP XCF image"));
+  gimp_plug_in_procedure_set_icon (proc, GIMP_ICON_TYPE_STOCK_ID,
+                                   (const guint8 *) "gimp-wilber",
+                                   strlen ("gimp-wilber") + 1);
+  gimp_plug_in_procedure_set_image_types (proc, NULL);
+  gimp_plug_in_procedure_set_file_proc (proc, "xcf", "",
+                                        "0,string,gimp\\040xcf\\040");
+  gimp_plug_in_procedure_set_mime_type (proc, "image/xcf");
+
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-xcf-load");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-xcf-load",
+                                     "loads file saved in the .xcf file format",
+                                     "The xcf file format has been designed "
+                                     "specifically for loading and saving "
+                                     "tiled and layered images in the GIMP. "
+                                     "This procedure will load the specified "
+                                     "file.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("dummy-param",
+                                                      "Dummy Param",
+                                                      "Dummy parameter",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filename",
+                                                       "Filename",
+                                                       "The name of the file "
+                                                       "to load, in the "
+                                                       "on-disk character "
+                                                       "set and encoding",
+                                                       TRUE, FALSE, NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("raw-filename",
+                                                       "Raw filename",
+                                                       "The basename of the "
+                                                       "file, in UTF-8",
+                                                       FALSE, FALSE, NULL,
+                                                       GIMP_PARAM_READWRITE));
+
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_image_id ("image",
+                                                             "Image",
+                                                             "Output image",
+                                                             gimp,
+                                                             GIMP_PARAM_READWRITE));
+  plug_ins_procedure_add (gimp, proc);
+  g_object_unref (procedure);
 }
 
 void
@@ -218,22 +271,23 @@ xcf_exit (Gimp *gimp)
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 }
 
-static Argument*
-xcf_load_invoker (Gimp         *gimp,
-                  GimpContext  *context,
-                  GimpProgress *progress,
-		  Argument     *args)
+static GValueArray *
+xcf_load_invoker (GimpProcedure     *procedure,
+                  Gimp              *gimp,
+                  GimpContext       *context,
+                  GimpProgress      *progress,
+                  const GValueArray *args)
 {
   XcfInfo      info;
-  Argument    *return_args;
-  GimpImage   *gimage   = NULL;
+  GValueArray *return_vals;
+  GimpImage   *image   = NULL;
   const gchar *filename;
-  gboolean     success  = FALSE;
+  gboolean     success = FALSE;
   gchar        id[14];
 
   gimp_set_busy (gimp);
 
-  filename = args[1].value.pdb_pointer;
+  filename = g_value_get_string (&args->values[1]);
 
   info.fp = g_fopen (filename, "rb");
 
@@ -256,72 +310,72 @@ xcf_load_invoker (Gimp         *gimp,
       info.cp += xcf_read_int8 (info.fp, (guint8*) id, 14);
 
       if (strncmp (id, "gimp xcf ", 9) != 0)
-	{
-	  success = FALSE;
-	}
+        {
+          success = FALSE;
+        }
       else if (strcmp (id+9, "file") == 0)
-	{
-	  info.file_version = 0;
-	}
+        {
+          info.file_version = 0;
+        }
       else if (id[9] == 'v')
-	{
-	  info.file_version = atoi (id + 10);
-	}
+        {
+          info.file_version = atoi (id + 10);
+        }
       else
-	{
-	  success = FALSE;
-	}
+        {
+          success = FALSE;
+        }
 
       if (success)
-	{
-	  if (info.file_version < G_N_ELEMENTS (xcf_loaders))
-	    {
-	      gimage = (*(xcf_loaders[info.file_version])) (gimp, &info);
+        {
+          if (info.file_version < G_N_ELEMENTS (xcf_loaders))
+            {
+              image = (*(xcf_loaders[info.file_version])) (gimp, &info);
 
-	      if (! gimage)
-		success = FALSE;
-	    }
-	  else
-	    {
-	      g_message (_("XCF error: unsupported XCF file version %d "
-			   "encountered"), info.file_version);
-	      success = FALSE;
-	    }
-	}
+              if (! image)
+                success = FALSE;
+            }
+          else
+            {
+              g_message (_("XCF error: unsupported XCF file version %d "
+                           "encountered"), info.file_version);
+              success = FALSE;
+            }
+        }
 
       fclose (info.fp);
     }
   else
     g_message (_("Could not open '%s' for reading: %s"),
-	       gimp_filename_to_utf8 (filename), g_strerror (errno));
+               gimp_filename_to_utf8 (filename), g_strerror (errno));
 
-  return_args = procedural_db_return_args (&xcf_plug_in_load_proc.db_info,
-					   success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_image_get_ID (gimage);
+    gimp_value_set_image (&return_vals->values[1], image);
 
   gimp_unset_busy (gimp);
 
-  return return_args;
+  return return_vals;
 }
 
-static Argument *
-xcf_save_invoker (Gimp         *gimp,
-                  GimpContext  *context,
-                  GimpProgress *progress,
-		  Argument     *args)
+static GValueArray *
+xcf_save_invoker (GimpProcedure     *procedure,
+                  Gimp              *gimp,
+                  GimpContext       *context,
+                  GimpProgress      *progress,
+                  const GValueArray *args)
 {
   XcfInfo      info;
-  Argument    *return_args;
-  GimpImage   *gimage;
+  GValueArray *return_vals;
+  GimpImage   *image;
   const gchar *filename;
-  gboolean     success  = FALSE;
+  gboolean     success = FALSE;
 
   gimp_set_busy (gimp);
 
-  gimage   = gimp_image_get_by_ID (gimp, args[1].value.pdb_int);
-  filename = args[3].value.pdb_pointer;
+  image    = gimp_value_get_image (&args->values[1], gimp);
+  filename = g_value_get_string (&args->values[3]);
 
   info.fp = g_fopen (filename, "wb");
 
@@ -338,9 +392,9 @@ xcf_save_invoker (Gimp         *gimp,
       info.ref_count             = NULL;
       info.compression           = COMPRESS_RLE;
 
-      xcf_save_choose_format (&info, gimage);
+      xcf_save_choose_format (&info, image);
 
-      success = xcf_save_image (&info, gimage);
+      success = xcf_save_image (&info, image);
       if (fclose (info.fp) == EOF)
         {
           g_message (_("Error saving XCF file: %s"), g_strerror (errno));
@@ -350,12 +404,11 @@ xcf_save_invoker (Gimp         *gimp,
     }
   else
     g_message (_("Could not open '%s' for writing: %s"),
-	       gimp_filename_to_utf8 (filename), g_strerror (errno));
+               gimp_filename_to_utf8 (filename), g_strerror (errno));
 
-  return_args = procedural_db_return_args (&xcf_plug_in_save_proc.db_info,
-					   success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   gimp_unset_busy (gimp);
 
-  return return_args;
+  return return_vals;
 }

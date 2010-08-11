@@ -81,10 +81,10 @@ icon_set_from_inline (GtkIconSet       *set,
 
 static void
 add_sized_with_same_fallback (GtkIconFactory *factory,
-			      const guchar   *inline_data,
-			      const guchar   *inline_data_rtl,
-			      GtkIconSize     size,
-			      const gchar    *stock_id)
+                              const guchar   *inline_data,
+                              const guchar   *inline_data_rtl,
+                              GtkIconSize     size,
+                              const gchar    *stock_id)
 {
   GtkIconSet *set;
   gboolean    fallback = FALSE;
@@ -108,7 +108,7 @@ add_sized_with_same_fallback (GtkIconFactory *factory,
 }
 
 
-static GtkStockItem gimp_stock_items[] =
+static const GtkStockItem gimp_stock_items[] =
 {
   { GIMP_STOCK_ANCHOR,         N_("Anchor"),          0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_CENTER,         N_("C_enter"),         0, 0, LIBGIMP_DOMAIN },
@@ -305,7 +305,7 @@ static GtkStockItem gimp_stock_items[] =
   { GIMP_STOCK_TOOL_ZOOM,                NULL,        0, 0, LIBGIMP_DOMAIN }
 };
 
-static struct
+static const struct
 {
   const gchar   *stock_id;
   gconstpointer  inline_data;
@@ -445,7 +445,7 @@ gimp_stock_button_pixbufs[] =
   { GIMP_STOCK_VIDEO,                    stock_video_24                    }
 };
 
-static struct
+static const struct
 {
   const gchar   *stock_id;
   gconstpointer  inline_data;
@@ -600,7 +600,7 @@ gimp_stock_menu_pixbufs[] =
   { GIMP_STOCK_JOIN_BEVEL,               stock_join_bevel_16               }
 };
 
-static struct
+static const struct
 {
   const gchar   *stock_id;
   gconstpointer  inline_data;
@@ -621,7 +621,7 @@ gimp_stock_dnd_pixbufs[] =
   { GIMP_STOCK_FLOATING_SELECTION,   stock_floating_selection_32   }
 };
 
-static struct
+static const struct
 {
   const gchar   *stock_id;
   gconstpointer  inline_data;
@@ -652,7 +652,7 @@ gimp_stock_dialog_pixbufs[] =
   { GIMP_STOCK_TEXTURE,              stock_texture_64              }
 };
 
-static struct
+static const struct
 {
   const gchar   *stock_id;
   gconstpointer  inline_data_ltr;
@@ -688,37 +688,37 @@ gimp_stock_init (void)
   for (i = 0; i < G_N_ELEMENTS (gimp_stock_dialog_pixbufs); i++)
     {
       add_sized_with_same_fallback (gimp_stock_factory,
-				    gimp_stock_dialog_pixbufs[i].inline_data,
+                                    gimp_stock_dialog_pixbufs[i].inline_data,
                                     NULL,
-				    GTK_ICON_SIZE_DIALOG,
-				    gimp_stock_dialog_pixbufs[i].stock_id);
+                                    GTK_ICON_SIZE_DIALOG,
+                                    gimp_stock_dialog_pixbufs[i].stock_id);
     }
 
   for (i = 0; i < G_N_ELEMENTS (gimp_stock_dnd_pixbufs); i++)
     {
       add_sized_with_same_fallback (gimp_stock_factory,
-				    gimp_stock_dnd_pixbufs[i].inline_data,
+                                    gimp_stock_dnd_pixbufs[i].inline_data,
                                     NULL,
-				    GTK_ICON_SIZE_DND,
-				    gimp_stock_dnd_pixbufs[i].stock_id);
+                                    GTK_ICON_SIZE_DND,
+                                    gimp_stock_dnd_pixbufs[i].stock_id);
     }
 
   for (i = 0; i < G_N_ELEMENTS (gimp_stock_button_pixbufs); i++)
     {
       add_sized_with_same_fallback (gimp_stock_factory,
-				    gimp_stock_button_pixbufs[i].inline_data,
+                                    gimp_stock_button_pixbufs[i].inline_data,
                                     NULL,
-				    GTK_ICON_SIZE_BUTTON,
-				    gimp_stock_button_pixbufs[i].stock_id);
+                                    GTK_ICON_SIZE_BUTTON,
+                                    gimp_stock_button_pixbufs[i].stock_id);
     }
 
   for (i = 0; i < G_N_ELEMENTS (gimp_stock_menu_pixbufs); i++)
     {
       add_sized_with_same_fallback (gimp_stock_factory,
-				    gimp_stock_menu_pixbufs[i].inline_data,
+                                    gimp_stock_menu_pixbufs[i].inline_data,
                                     NULL,
-				    GTK_ICON_SIZE_MENU,
-				    gimp_stock_menu_pixbufs[i].stock_id);
+                                    GTK_ICON_SIZE_MENU,
+                                    gimp_stock_menu_pixbufs[i].stock_id);
     }
 
   for (i = 0; i < G_N_ELEMENTS (gimp_stock_direction_pixbufs); i++)

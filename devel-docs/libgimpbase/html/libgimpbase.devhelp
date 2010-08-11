@@ -47,6 +47,7 @@
     <function name="enum GimpPDBStatusType" link="libgimpbase-gimpbaseenums.html#GimpPDBStatusType"/>
     <function name="enum GimpProgressCommand" link="libgimpbase-gimpbaseenums.html#GimpProgressCommand"/>
     <function name="enum GimpRepeatMode" link="libgimpbase-gimpbaseenums.html#GimpRepeatMode"/>
+    <function name="enum GimpRunMode" link="libgimpbase-gimpbaseenums.html#GimpRunMode"/>
     <function name="enum GimpSizeType" link="libgimpbase-gimpbaseenums.html#GimpSizeType"/>
     <function name="enum GimpStackTraceMode" link="libgimpbase-gimpbaseenums.html#GimpStackTraceMode"/>
     <function name="enum GimpTransferMode" link="libgimpbase-gimpbaseenums.html#GimpTransferMode"/>
@@ -124,6 +125,11 @@
     <function name="GIMP_PARASITE_ATTACH_GRANDPARENT" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-ATTACH-GRANDPARENT:CAPS"/>
     <function name="GIMP_PARASITE_GRANDPARENT_PERSISTENT" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-GRANDPARENT-PERSISTENT:CAPS"/>
     <function name="GIMP_PARASITE_GRANDPARENT_UNDOABLE" link="libgimpbase-gimpparasite.html#GIMP-PARASITE-GRANDPARENT-UNDOABLE:CAPS"/>
+    <function name="GIMP_TYPE_PARASITE" link="libgimpbase-gimpparasite.html#GIMP-TYPE-PARASITE:CAPS"/>
+    <function name="GIMP_TYPE_PARAM_PARASITE" link="libgimpbase-gimpparasite.html#GIMP-TYPE-PARAM-PARASITE:CAPS"/>
+    <function name="GIMP_IS_PARAM_SPEC_PARASITE()" link="libgimpbase-gimpparasite.html#GIMP-IS-PARAM-SPEC-PARASITE:CAPS"/>
+    <function name="gimp_param_spec_parasite ()" link="libgimpbase-gimpparasite.html#gimp-param-spec-parasite"/>
+    <function name="GIMP_VALUE_HOLDS_PARASITE()" link="libgimpbase-gimpparasite.html#GIMP-VALUE-HOLDS-PARASITE:CAPS"/>
     <function name="GIMP_PIXPIPE_MAXDIM" link="libgimpbase-gimpparasiteio.html#GIMP-PIXPIPE-MAXDIM:CAPS"/>
     <function name="gimp_pixpipe_params_init ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-init"/>
     <function name="gimp_pixpipe_params_parse ()" link="libgimpbase-gimpparasiteio.html#gimp-pixpipe-params-parse"/>

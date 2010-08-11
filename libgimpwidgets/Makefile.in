@@ -283,6 +283,7 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
+INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -376,7 +377,6 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
-SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -392,6 +392,8 @@ SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
 URI_CFLAGS = @URI_CFLAGS@
 URI_LIBS = @URI_LIBS@
+USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
+USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@
@@ -586,14 +588,10 @@ libgimpwidgets_2_0_la_sources = \
 libgimpwidgets_2_0_la_built_sources = \
 	gimpwidgetsenums.c	\
 	gimpwidgetsmarshal.c	\
-	gimpwidgetsmarshal.h
+	gimpwidgetsmarshal.h	\
+	gimp-wilber-pixbufs.h	
 
 libgimpwidgets_2_0_la_extra_sources = gimpwidgetsmarshal.list
-EXTRA_DIST = \
-	makefile.msc				\
-	gimpwidgets.def				\
-	$(libgimpwidgets_2_0_la_extra_sources)
-
 libgimpwidgets_2_0_la_SOURCES = \
 	$(libgimpwidgets_2_0_la_built_sources)	\
 	$(libgimpwidgets_2_0_la_sources)
@@ -660,12 +658,30 @@ libgimpwidgets_2_0_la_LIBADD = \
 	$(libm)
 
 libgimpwidgets_2_0_la_DEPENDENCIES = $(gimpwidgets_def)
+WILBER_IMAGES = \
+	wilber-16.png	\
+	wilber-32.png	\
+	wilber-48.png	\
+	wilber-64.png
+
+WILBER_VARIABLES = \
+	wilber_16  $(srcdir)/wilber-16.png	\
+	wilber_32  $(srcdir)/wilber-32.png	\
+	wilber_48  $(srcdir)/wilber-48.png	\
+	wilber_64  $(srcdir)/wilber-64.png
+
+EXTRA_DIST = \
+	makefile.msc				\
+	gimpwidgets.def				\
+	$(libgimpwidgets_2_0_la_extra_sources)	\
+	$(WILBER_IMAGES)
+
 
 #
 # rules to generate built sources
 #
 # setup autogeneration dependancies
-gen_sources = xgen-wec xgen-wmh xgen-wmc
+gen_sources = xgen-wec xgen-wmh xgen-wmc gimp-wilber-pixbufs.h
 CLEANFILES = $(gen_sources)
 test_preview_area_SOURCES = test-preview-area.c 
 test_preview_area_DEPENDENCIES = \
@@ -1044,6 +1060,8 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 @MS_LIB_AVAILABLE_FALSE@install-ms-lib:
 @MS_LIB_AVAILABLE_FALSE@uninstall-ms-lib:
 
+gimpwidgets-private.c: gimp-wilber-pixbufs.h
+
 $(srcdir)/gimpwidgetsenums.c: $(srcdir)/gimpwidgetsenums.h $(GIMP_MKENUMS)
 	$(GIMP_MKENUMS) \
 		--fhead "#include \"config.h\"\n#include <glib-object.h>\n#include \"libgimpbase/gimpbase.h\"\n#include \"gimpwidgetsenums.h\"\n#include \"libgimp/libgimp-intl.h\"" \
@@ -1068,6 +1086,9 @@ $(srcdir)/gimpwidgetsmarshal.c: $(srcdir)/gimpwidgetsmarshal.h
 	&& $(GLIB_GENMARSHAL) --prefix=_gimp_widgets_marshal $(srcdir)/gimpwidgetsmarshal.list --body >> xgen-wmc \
 	&& cp xgen-wmc $(@F) \
 	&& rm -f xgen-wmc xgen-wmc~
+
+$(srcdir)/gimp-wilber-pixbufs.h: $(WILBER_IMAGES) Makefile.am
+	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(WILBER_VARIABLES) > $(@F)
 
 install-data-local: install-ms-lib install-libtool-import-lib
 

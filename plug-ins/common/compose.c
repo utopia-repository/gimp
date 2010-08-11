@@ -377,7 +377,7 @@ query (void)
   };
 
   gimp_install_procedure (COMPOSE_PROC,
-			  "Compose an image from multiple gray images",
+			  N_("Create an image using multiple gray images as color channels"),
 			  "This function creates a new image from "
 			  "multiple gray images",
 			  "Peter Kirchgessner",
@@ -407,7 +407,7 @@ query (void)
 			  drw_args, drw_return_vals);
 
   gimp_install_procedure (RECOMPOSE_PROC,
-			  "Recompose a layer from multiple drawables of gray images",
+			  N_("Recompose an image that was previously decomposed"),
 			  "This function recombines the grayscale layers produced "
 			  "by Decompose into a single RGB or RGBA layer, and "
                           "replaces the originally decomposed layer with the "
@@ -1477,6 +1477,7 @@ compose_dialog (const gchar *compose_type,
                                  -1);
       g_free (label);
     }
+
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
   gtk_widget_show (combo);
 
@@ -1524,10 +1525,17 @@ compose_dialog (const gchar *compose_type,
       gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
       gtk_widget_show (label);
 
-      if (nlayers >= compose_dsc[composeint.compose_idx].num_images)
-        composeint.selected[j].comp.ID = layer_list[nlayers - (j + 1)];
+      if (composeint.compose_idx >= 0 &&
+          nlayers >= compose_dsc[composeint.compose_idx].num_images &&
+          j < nlayers)
+        {
+          composeint.selected[j].comp.ID = layer_list[j];
+        }
       else
-        composeint.selected[j].comp.ID = drawable_ID;
+        {
+          composeint.selected[j].comp.ID = drawable_ID;
+        }
+
       composeint.selected[j].is_ID = TRUE;
 
       combo = gimp_drawable_combo_box_new (check_gray, NULL);

@@ -23,56 +23,15 @@
 
 # shortcuts
 
-sub joao_pdb_misc {
-    $author = $copyright = 'Jo\xc3\xa3o S. O. Bueno Calligaris';
-    $date   = '2004';
-    $since  = '2.2';
-}
-
-sub drawable_arg () {{
-    name => 'drawable',
-    type => 'drawable',
-    desc => 'The affected drawable'
-}}
-
-sub transform_options_args () {
-    { name => 'transform_direction', type => 'enum GimpTransformDirection',
-      desc => 'Direction of Transformation: { %%desc%% }' },
-    { name => 'interpolation', type => 'enum GimpInterpolationType',
-      desc => 'Type of interpolation: { %%desc%% }' },
-    { name => 'supersample', type => 'boolean',
-      desc => 'Whether to perform supersample' },
-    { name => 'recursion_level', type => '0 < int32',
-      desc => 'Level of recursion (3 is a nice default)' },
-    { name => 'clip_result', type => 'boolean',
-      desc => 'Whether to clip results' }
-}
-
-sub transform_options_default_args () {
-    { name => 'interpolate', type => 'boolean',
-      desc => 'Whether to use interpolation and supersampling' },
-    { name => 'clip_result', type => 'boolean',
-      desc => 'Whether to clip results' }
-}
-
-sub drawable_out_arg {
-    my $type = shift;
-    my $arg = &drawable_arg;
-    $arg->{desc} = "The $type drawable";
-    $arg->{no_declare} = 1;
-    $arg;
-}
-
 sub transform_invoke {
-    my ($progress_text, $assemble_matrix, $variables, $check) = @_;
+    my ($progress_text, $assemble_matrix, $check) = @_;
     my $success_check = 'gimp_item_is_attached (GIMP_ITEM (drawable));';
 
     if ($check) {
-        $success_check = "(gimp_item_is_attached (GIMP_ITEM (drawable)) &&\n" . $check;
+        $success_check = "(gimp_item_is_attached (GIMP_ITEM (drawable)) && " . $check . ");";
     }
 
     %invoke = (
-        vars => $variables,
         code => <<"CODE"
 {
   gint x, y, width, height;
@@ -106,15 +65,14 @@ CODE
 }
 
 sub transform_default_invoke {
-    my ($progress_text, $assemble_matrix, $variables, $check) = @_;
+    my ($progress_text, $assemble_matrix, $check) = @_;
     my $success_check = 'gimp_item_is_attached (GIMP_ITEM (drawable));';
 
     if ($check) {
-        $success_check = "(gimp_item_is_attached (GIMP_ITEM (drawable)) &&\n" . $check;
+        $success_check = "(gimp_item_is_attached (GIMP_ITEM (drawable)) && " . $check . ");";
     }
 
     %invoke = (
-        vars => $variables,
         code => <<"CODE"
 {
   gint x, y, width, height;
@@ -163,7 +121,7 @@ BLURB
 This procedure flips the specified drawable if no selection exists. If
 a selection exists, the portion of the drawable which lies under the
 selection is cut from the drawable and made into a floating selection
-which is then flipped.  If auto_center is set to true, the flip is
+which is then flipped.  If auto_center is set to TRUE, the flip is
 around the selection's center. Otherwise, the coordinate of the axis
 needs to be specified.
 
@@ -172,11 +130,13 @@ selection, this will be equal to the drawable ID supplied as input.
 Otherwise, this will be the newly created and flipped drawable.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
-        { name => 'flip_type', type => &std_orientation_enum,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
+        { name => 'flip_type',
+	  type => 'enum GimpOrientationType (no GIMP_ORIENTATION_UNKNOWN)',
           desc => 'Type of flip: %%desc%%' },
         { name => 'auto_center', type => 'boolean',
           desc => 'Whether to automatically position the axis in the selection center' },
@@ -186,7 +146,10 @@ HELP
           desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('flipped') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The flipped drawable' }
+    );
 
     %invoke = (
         code => <<'CODE'
@@ -227,10 +190,11 @@ Otherwise, this will be the newly created and flipped drawable. The clip
 results parameter specifies wheter current selection will affect the transform.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'x0', type => 'float',
           desc => 'horz. coord. of one end of axis' },
         { name => 'y0', type => 'float',
@@ -239,10 +203,22 @@ HELP
           desc => 'horz. coord. of other end of axis' },
         { name => 'y1', type => 'float',
           desc => 'vert. coord. of other end of axis' },
-        &transform_options_args
+	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
+	  desc => 'Direction of Transformation: %%desc%%' },
+	{ name => 'interpolation', type => 'enum GimpInterpolationType',
+	  desc => 'Type of interpolation: %%desc%%' },
+	{ name => 'supersample', type => 'boolean',
+	  desc => 'Whether to perform supersample' },
+	{ name => 'recursion_level', type => '1 <= int32',
+	  desc => 'Level of recursion (3 is a nice default)' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('flipped') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The flipped drawable' }
+    );
 
     transform_invoke ("Flipping", <<CODE);
       gimp_matrix3_identity (&matrix);
@@ -263,10 +239,11 @@ uses no interpolation/supersampling at all, or default values
 (depending on the 'interpolate' parameter).
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'x0', type => 'float',
           desc => 'horz. coord. of one end of axis' },
         { name => 'y0', type => 'float',
@@ -275,10 +252,16 @@ HELP
           desc => 'horz. coord. of other end of axis' },
         { name => 'y1', type => 'float',
           desc => 'vert. coord. of other end of axis' },
-        &transform_options_default_args
+	{ name => 'interpolate', type => 'boolean',
+	  desc => 'Whether to use interpolation and supersampling' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('flipped') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The flipped drawable' }
+    );
 
     transform_default_invoke ("Flipping", <<CODE);
       gimp_matrix3_identity (&matrix);
@@ -311,37 +294,60 @@ resulting transformed drawable will appear to have been projected via
 a perspective transform.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
+	{ name => 'x0', type => 'float',
+	  desc => 'The new x coordinate of upper-left corner of original
+		   bounding box' },
+	{ name => 'y0', type => 'float',
+	  desc => 'The new y coordinate of upper-left corner of original
+		   bounding box' },
+	{ name => 'x1', type => 'float',
+	  desc => 'The new x coordinate of upper-right corner of original
+		   bounding box' },
+	{ name => 'y1', type => 'float',
+	  desc => 'The new y coordinate of upper-right corner of original
+		   bounding box' },
+	{ name => 'x2', type => 'float',
+	  desc => 'The new x coordinate of lower-left corner of original
+		   bounding box' },
+	{ name => 'y2', type => 'float',
+	  desc => 'The new y coordinate of lower-left corner of original
+		   bounding box' },
+	{ name => 'x3', type => 'float',
+	  desc => 'The new x coordinate of lower-right corner of original
+		   bounding box' },
+	{ name => 'y3', type => 'float',
+	  desc => 'The new y coordinate of lower-right corner of original
+		   bounding box' },
+	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
+	  desc => 'Direction of Transformation: %%desc%%' },
+	{ name => 'interpolation', type => 'enum GimpInterpolationType',
+	  desc => 'Type of interpolation: %%desc%%' },
+	{ name => 'supersample', type => 'boolean',
+	  desc => 'Whether to perform supersample' },
+	{ name => 'recursion_level', type => '1 <= int32',
+	  desc => 'Level of recursion (3 is a nice default)' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    my $pos = 0;
-    foreach $where (qw(upper-left upper-right lower-left lower-right)) {
-        foreach (qw(x y)) {
-            push @inargs,
-                 { name => "$_$pos", type => 'float',
-                   desc => "The new $_ coordinate of $where corner of original
-                            bounding box",
-                   alias => "trans_info[\U$_\E$pos]", no_declare => 1 }
-        }
-        $pos++;
-    }
-    @inargs = (@inargs,
-        &transform_options_args
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The newly mapped drawable' }
     );
 
-    @outargs = ( &drawable_out_arg('newly mapped') );
-
-    transform_invoke ("Perspective", <<CODE, [ 'gdouble trans_info[8]' ]);
+    transform_invoke ("Perspective", <<CODE);
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_perspective (&matrix,
                                          x, y, width, height,
-                                         trans_info[X0], trans_info[Y0],
-                                         trans_info[X1], trans_info[Y1],
-                                         trans_info[X2], trans_info[Y2],
-                                         trans_info[X3], trans_info[Y3]);
+                                         x0, y0,
+                                         x1, y1,
+                                         x2, y2,
+                                         x3, y3);
 CODE
 }
 
@@ -357,37 +363,54 @@ uses no interpolation/supersampling at all, or default values
 (depending on the 'interpolate' parameter).
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
+	{ name => 'x0', type => 'float',
+	  desc => 'The new x coordinate of upper-left corner of original
+		   bounding box' },
+	{ name => 'y0', type => 'float',
+	  desc => 'The new y coordinate of upper-left corner of original
+		   bounding box' },
+	{ name => 'x1', type => 'float',
+	  desc => 'The new x coordinate of upper-right corner of original
+		   bounding box' },
+	{ name => 'y1', type => 'float',
+	  desc => 'The new y coordinate of upper-right corner of original
+		   bounding box' },
+	{ name => 'x2', type => 'float',
+	  desc => 'The new x coordinate of lower-left corner of original
+		   bounding box' },
+	{ name => 'y2', type => 'float',
+	  desc => 'The new y coordinate of lower-left corner of original
+		   bounding box' },
+	{ name => 'x3', type => 'float',
+	  desc => 'The new x coordinate of lower-right corner of original
+		   bounding box' },
+	{ name => 'y3', type => 'float',
+	  desc => 'The new y coordinate of lower-right corner of original
+		   bounding box' },
+	{ name => 'interpolate', type => 'boolean',
+	  desc => 'Whether to use interpolation and supersampling' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    my $pos = 0;
-    foreach $where (qw(upper-left upper-right lower-left lower-right)) {
-        foreach (qw(x y)) {
-            push @inargs,
-                 { name => "$_$pos", type => 'float',
-                   desc => "The new $_ coordinate of $where corner of original
-                            bounding box",
-                   alias => "trans_info[\U$_\E$pos]", no_declare => 1 }
-        }
-        $pos++;
-    }
-    @inargs = (@inargs,
-        &transform_options_default_args
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The newly mapped drawable' }
     );
 
-    @outargs = ( &drawable_out_arg('newly mapped') );
-
-    transform_default_invoke ("Perspective", <<CODE, [ 'gdouble trans_info[8]' ]);
+    transform_default_invoke ("Perspective", <<CODE);
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_perspective (&matrix,
                                          x, y, width, height,
-                                         trans_info[X0], trans_info[Y0],
-                                         trans_info[X1], trans_info[Y1],
-                                         trans_info[X2], trans_info[Y2],
-                                         trans_info[X3], trans_info[Y3]);
+                                         x0, y0,
+                                         x1, y1,
+                                         x2, y2,
+                                         x3, y3);
 CODE
 }
 
@@ -407,10 +430,11 @@ this will be equal to the drawable ID supplied as input. Otherwise,
 this will be the newly created and rotated drawable.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'rotate_type', type => 'enum GimpRotationType',
           desc => 'Type of rotation: %%desc%%' },
         { name => 'auto_center', type => 'boolean',
@@ -423,7 +447,10 @@ HELP
           desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('rotated') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The rotated drawable' }
+    );
 
     %invoke = (
         code => <<'CODE'
@@ -460,10 +487,11 @@ this will be equal to the drawable ID supplied as input. Otherwise,
 this will be the newly created and rotated drawable.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'angle', type => 'float',
           desc => 'The angle of rotation (radians)' },
         { name => 'auto_center', type => 'boolean',
@@ -472,10 +500,22 @@ HELP
           desc => 'The hor. coordinate of the center of rotation' },
         { name => 'center_y', type => 'int32',
           desc => 'The vert. coordinate of the center of rotation' },
-        &transform_options_args
+	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
+	  desc => 'Direction of Transformation: %%desc%%' },
+	{ name => 'interpolation', type => 'enum GimpInterpolationType',
+	  desc => 'Type of interpolation: %%desc%%' },
+	{ name => 'supersample', type => 'boolean',
+	  desc => 'Whether to perform supersample' },
+	{ name => 'recursion_level', type => '1 <= int32',
+	  desc => 'Level of recursion (3 is a nice default)' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('rotated') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The rotated drawable' }
+    );
 
     transform_invoke ("Rotating", <<CODE);
       gimp_matrix3_identity (&matrix);
@@ -499,10 +539,11 @@ uses no interpolation/supersampling at all, or default values
 (depending on the 'interpolate' parameter).
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'angle', type => 'float',
           desc => 'The angle of rotation (radians)' },
         { name => 'auto_center', type => 'boolean',
@@ -511,10 +552,16 @@ HELP
           desc => 'The hor. coordinate of the center of rotation' },
         { name => 'center_y', type => 'int32',
           desc => 'The vert. coordinate of the center of rotation' },
-        &transform_options_default_args
+	{ name => 'interpolate', type => 'boolean',
+	  desc => 'Whether to use interpolation and supersampling' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('rotated') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The rotated drawable' }
+    );
 
     transform_default_invoke ("Rotating", <<CODE);
       gimp_matrix3_identity (&matrix);
@@ -540,42 +587,48 @@ this will be equal to the drawable ID supplied as input. Otherwise,
 this will be the newly created and scaled drawable.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
+	{ name => 'x0', type => 'float',
+	  desc => 'The new x coordinate of the upper-left corner of the
+		    scaled region' },
+	{ name => 'y0', type => 'float',
+	  desc => 'The new y coordinate of the upper-left corner of the
+		    scaled region' },
+	{ name => 'x1', type => 'float',
+	  desc => 'The new x coordinate of the lower-right corner of the
+		    scaled region' },
+	{ name => 'y1', type => 'float',
+	  desc => 'The new y coordinate of the lower-right corner of the
+		    scaled region' },
+	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
+	  desc => 'Direction of Transformation: %%desc%%' },
+	{ name => 'interpolation', type => 'enum GimpInterpolationType',
+	  desc => 'Type of interpolation: %%desc%%' },
+	{ name => 'supersample', type => 'boolean',
+	  desc => 'Whether to perform supersample' },
+	{ name => 'recursion_level', type => '1 <= int32',
+	  desc => 'Level of recursion (3 is a nice default)' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    my $pos = 0;
-    foreach $where (qw(upper-left lower-right)) {
-        foreach (qw(x y)) {
-            push @inargs,
-                 { name => "$_$pos", type => 'float',
-                   desc => "The new $_ coordinate of $where corner of newly
-                            scaled region",
-                   alias => "trans_info[\U$_\E$pos]", no_declare => 1 }
-        }
-        $pos++;
-    }
-
-    @inargs = (@inargs,
-        &transform_options_args
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The scaled drawable' }
     );
 
-    @outargs = ( &drawable_out_arg('scaled') );
-
-    transform_invoke ("Scaling", <<CODE, [ 'gdouble trans_info[4]' ], <<CODE2);
+    transform_invoke ("Scaling", <<CODE, 'x0 < x1 && y0 < y1');
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_scale (&matrix,
                                    x, y, width, height,
-                                   trans_info[X0],
-                                   trans_info[Y0],
-                                   trans_info[X1] - trans_info[X0],
-                                   trans_info[Y1] - trans_info[Y0]);
+                                   x0, y0,
+                                   x1 - x0,
+                                   y1 - y0);
 CODE
-             trans_info[X0] < trans_info[X1] &&
-             trans_info[Y0] < trans_info[Y1]);
-CODE2
 }
 
 
@@ -588,42 +641,42 @@ uses no interpolation/supersampling at all, or default values
 (depending on the 'interpolate' parameter).
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
+	{ name => 'x0', type => 'float',
+	  desc => 'The new x coordinate of the upper-left corner of the
+		    scaled region' },
+	{ name => 'y0', type => 'float',
+	  desc => 'The new y coordinate of the upper-left corner of the
+		    scaled region' },
+	{ name => 'x1', type => 'float',
+	  desc => 'The new x coordinate of the lower-right corner of the
+		    scaled region' },
+	{ name => 'y1', type => 'float',
+	  desc => 'The new y coordinate of the lower-right corner of the
+		    scaled region' },
+	{ name => 'interpolate', type => 'boolean',
+	  desc => 'Whether to use interpolation and supersampling' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
+     );
+
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The scaled drawable' }
     );
 
-    my $pos = 0;
-    foreach $where (qw(upper-left lower-right)) {
-        foreach (qw(x y)) {
-            push @inargs,
-                 { name => "$_$pos", type => 'float',
-                   desc => "The new $_ coordinate of $where corner of newly
-                            scaled region",
-                   alias => "trans_info[\U$_\E$pos]", no_declare => 1 }
-        }
-        $pos++;
-    }
-
-    @inargs = (@inargs,
-        &transform_options_default_args
-    );
-
-    @outargs = ( &drawable_out_arg('scaled') );
-
-    transform_default_invoke ("Scaling", <<CODE, [ 'gdouble trans_info[4]' ], <<CODE2);
+    transform_default_invoke ("Scaling", <<CODE, 'x0 < x1 && y0 < y1');
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_scale (&matrix,
                                    x, y, width, height,
-                                   trans_info[X0],
-                                   trans_info[Y0],
-                                   trans_info[X1] - trans_info[X0],
-                                   trans_info[Y1] - trans_info[Y0]);
+                                   x0, y0,
+                                   x1 - x0,
+                                   y1 - y0);
 CODE
-             trans_info[X0] < trans_info[X1] &&
-             trans_info[Y0] < trans_info[Y1]);
-CODE2
 }
 
 
@@ -645,18 +698,32 @@ vertically. The magnitude can be either positive or negative and
 indicates the extent (in pixels) to shear by.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
-        { name => 'shear_type', type => &std_orientation_enum,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
+        { name => 'shear_type',
+	  type => 'enum GimpOrientationType (no GIMP_ORIENTATION_UNKNOWN)',
           desc => 'Type of shear: %%desc%%' },
         { name => 'magnitude', type => 'float',
           desc => 'The magnitude of the shear' },
-        &transform_options_args
+	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
+	  desc => 'Direction of Transformation: %%desc%%' },
+	{ name => 'interpolation', type => 'enum GimpInterpolationType',
+	  desc => 'Type of interpolation: %%desc%%' },
+	{ name => 'supersample', type => 'boolean',
+	  desc => 'Whether to perform supersample' },
+	{ name => 'recursion_level', type => '1 <= int32',
+	  desc => 'Level of recursion (3 is a nice default)' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('sheared') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The sheared drawable' }
+    );
 
     transform_invoke ("Shearing", <<CODE);
       gimp_matrix3_identity (&matrix);
@@ -678,18 +745,26 @@ uses no interpolation/supersampling at all, or default values
 (depending on the 'interpolate' parameter).
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
-        { name => 'shear_type', type => &std_orientation_enum,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
+        { name => 'shear_type',
+	  type => 'enum GimpOrientationType (no GIMP_ORIENTATION_UNKNOWN)',
           desc => 'Type of shear: %%desc%%' },
         { name => 'magnitude', type => 'float',
           desc => 'The magnitude of the shear' },
-        &transform_options_default_args
+	{ name => 'interpolate', type => 'boolean',
+	  desc => 'Whether to use interpolation and supersampling' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('sheared') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The sheared drawable' }
+    );
 
     transform_default_invoke ("Shearing", <<CODE);
       gimp_matrix3_identity (&matrix);
@@ -719,10 +794,11 @@ input. Otherwise, this will be the newly created and transformed
 drawable.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'source_x', type => 'float',
           desc => 'X coordinate of the transformation center' },
         { name => 'source_y', type => 'float',
@@ -737,10 +813,22 @@ HELP
           desc => 'X coordinate of where the center goes' },
         { name => 'dest_y', type => 'float',
           desc => 'Y coordinate of where the center goes' },
-        &transform_options_args
+	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
+	  desc => 'Direction of Transformation: %%desc%%' },
+	{ name => 'interpolation', type => 'enum GimpInterpolationType',
+	  desc => 'Type of interpolation: %%desc%%' },
+	{ name => 'supersample', type => 'boolean',
+	  desc => 'Whether to perform supersample' },
+	{ name => 'recursion_level', type => '1 <= int32',
+	  desc => 'Level of recursion (3 is a nice default)' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('transformed') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The transformed drawable' }
+    );
 
     transform_invoke ("2D Transform", <<CODE);
       gimp_matrix3_identity  (&matrix);
@@ -763,10 +851,11 @@ uses no interpolation/supersampling at all, or default values
 (depending on the 'interpolate' parameter).
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'source_x', type => 'float',
           desc => 'X coordinate of the transformation center' },
         { name => 'source_y', type => 'float',
@@ -781,10 +870,16 @@ HELP
           desc => 'X coordinate of where the center goes' },
         { name => 'dest_y', type => 'float',
           desc => 'Y coordinate of where the center goes' },
-        &transform_options_default_args
+	{ name => 'interpolate', type => 'boolean',
+	  desc => 'Whether to use interpolation and supersampling' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('transformed') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The transformed drawable' }
+    );
 
     transform_default_invoke ("2D Transforming", <<CODE);
       gimp_matrix3_identity  (&matrix);
@@ -812,10 +907,11 @@ this will be equal to the drawable ID supplied as input. Otherwise,
 this will be the newly created and transformed drawable.
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'coeff_0_0', type => 'float',
           desc => 'coefficient (0,0) of the transformation matrix' },
         { name => 'coeff_0_1', type => 'float',
@@ -834,10 +930,22 @@ HELP
           desc => 'coefficient (2,1) of the transformation matrix' },
         { name => 'coeff_2_2', type => 'float',
           desc => 'coefficient (2,2) of the transformation matrix' },
-        &transform_options_args
+	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
+	  desc => 'Direction of Transformation: %%desc%%' },
+	{ name => 'interpolation', type => 'enum GimpInterpolationType',
+	  desc => 'Type of interpolation: %%desc%%' },
+	{ name => 'supersample', type => 'boolean',
+	  desc => 'Whether to perform supersample' },
+	{ name => 'recursion_level', type => '1 <= int32',
+	  desc => 'Level of recursion (3 is a nice default)' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('transformed') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The transformed drawable' }
+    );
 
     transform_invoke ("2D Transforming", <<CODE);
       matrix.coeff[0][0] = coeff_0_0;
@@ -864,10 +972,11 @@ uses no interpolation/supersampling at all, or default values
 (depending on the 'interpolate' parameter).
 HELP
 
-    &joao_pdb_misc;
+    &joao_pdb_misc('2004', '2.2');
 
     @inargs = (
-        &drawable_arg,
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The affected drawable' },
         { name => 'coeff_0_0', type => 'float',
           desc => 'coefficient (0,0) of the transformation matrix' },
         { name => 'coeff_0_1', type => 'float',
@@ -886,10 +995,16 @@ HELP
           desc => 'coefficient (2,1) of the transformation matrix' },
         { name => 'coeff_2_2', type => 'float',
           desc => 'coefficient (2,2) of the transformation matrix' },
-        &transform_options_default_args
+	{ name => 'interpolate', type => 'boolean',
+	  desc => 'Whether to use interpolation and supersampling' },
+	{ name => 'clip_result', type => 'boolean',
+	  desc => 'Whether to clip results' }
     );
 
-    @outargs = ( &drawable_out_arg('transformed') );
+    @outargs = (
+	{ name => 'drawable', type => 'drawable', no_declare => 1,
+	  desc => 'The transformed drawable' }
+    );
 
     transform_default_invoke ("2D Transforming", <<CODE);
       matrix.coeff[0][0] = coeff_0_0;

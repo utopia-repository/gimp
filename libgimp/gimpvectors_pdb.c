@@ -32,8 +32,7 @@
  * @image_ID: The image.
  * @name: the name of the new vector object.
  *
- * Creates a new empty vectors object. Needs to be added to an image
- * using gimp_image_add_vectors.
+ * Creates a new empty vectors object.
  *
  * Creates a new empty vectors object. Needs to be added to an image
  * using gimp_image_add_vectors.
@@ -44,17 +43,17 @@
  */
 gint32
 gimp_vectors_new (gint32       image_ID,
-		  const gchar *name)
+                  const gchar *name)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gint32 vectors_ID = -1;
 
   return_vals = gimp_run_procedure ("gimp-vectors-new",
-				    &nreturn_vals,
-				    GIMP_PDB_IMAGE, image_ID,
-				    GIMP_PDB_STRING, name,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_STRING, name,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     vectors_ID = return_vals[1].data.d_vectors;
@@ -62,48 +61,6 @@ gimp_vectors_new (gint32       image_ID,
   gimp_destroy_params (return_vals, nreturn_vals);
 
   return vectors_ID;
-}
-
-/**
- * gimp_vectors_get_strokes:
- * @vectors_ID: The vectors object.
- * @num_strokes: The number of strokes returned.
- *
- * List the strokes associated with the passed path.
- *
- * Returns an Array with the stroke-IDs associated with the passed
- * path.
- *
- * Returns: List of the strokes belonging to the path.
- *
- * Since: GIMP 2.4
- */
-gint *
-gimp_vectors_get_strokes (gint32  vectors_ID,
-			  gint   *num_strokes)
-{
-  GimpParam *return_vals;
-  gint nreturn_vals;
-  gint *stroke_ids = NULL;
-
-  return_vals = gimp_run_procedure ("gimp-vectors-get-strokes",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_END);
-
-  *num_strokes = 0;
-
-  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
-    {
-      *num_strokes = return_vals[1].data.d_int32;
-      stroke_ids = g_new (gint32, *num_strokes);
-      memcpy (stroke_ids, return_vals[2].data.d_int32array,
-	      *num_strokes * sizeof (gint32));
-    }
-
-  gimp_destroy_params (return_vals, nreturn_vals);
-
-  return stroke_ids;
 }
 
 /**
@@ -126,9 +83,9 @@ gimp_vectors_get_image (gint32 vectors_ID)
   gint32 image_ID = -1;
 
   return_vals = gimp_run_procedure ("gimp-vectors-get-image",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     image_ID = return_vals[1].data.d_image;
@@ -139,63 +96,63 @@ gimp_vectors_get_image (gint32 vectors_ID)
 }
 
 /**
- * gimp_vectors_get_linked:
+ * gimp_vectors_get_name:
  * @vectors_ID: The vectors object.
  *
- * Gets the linked state of the vectors object.
+ * Gets the name of the vectors object.
  *
- * Gets the linked state of the vectors object.
+ * Gets the name of the vectors object.
  *
- * Returns: TRUE if the path is linked, FALSE otherwise.
+ * Returns: The name of the vectors object.
  *
  * Since: GIMP 2.4
  */
-gboolean
-gimp_vectors_get_linked (gint32 vectors_ID)
+gchar *
+gimp_vectors_get_name (gint32 vectors_ID)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  gboolean linked = FALSE;
+  gchar *name = NULL;
 
-  return_vals = gimp_run_procedure ("gimp-vectors-get-linked",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_END);
+  return_vals = gimp_run_procedure ("gimp-vectors-get-name",
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
-    linked = return_vals[1].data.d_int32;
+    name = g_strdup (return_vals[1].data.d_string);
 
   gimp_destroy_params (return_vals, nreturn_vals);
 
-  return linked;
+  return name;
 }
 
 /**
- * gimp_vectors_set_linked:
+ * gimp_vectors_set_name:
  * @vectors_ID: The vectors object.
- * @linked: Whether the path is linked.
+ * @name: the new name of the path.
  *
- * Sets the linked state of the vectors object.
+ * Sets the name of the vectors object.
  *
- * Sets the linked state of the vectors object.
+ * Sets the name of the vectors object.
  *
  * Returns: TRUE on success.
  *
  * Since: GIMP 2.4
  */
 gboolean
-gimp_vectors_set_linked (gint32   vectors_ID,
-			 gboolean linked)
+gimp_vectors_set_name (gint32       vectors_ID,
+                       const gchar *name)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp-vectors-set-linked",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, linked,
-				    GIMP_PDB_END);
+  return_vals = gimp_run_procedure ("gimp-vectors-set-name",
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_STRING, name,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -224,9 +181,9 @@ gimp_vectors_get_visible (gint32 vectors_ID)
   gboolean visible = FALSE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-get-visible",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     visible = return_vals[1].data.d_int32;
@@ -251,17 +208,17 @@ gimp_vectors_get_visible (gint32 vectors_ID)
  */
 gboolean
 gimp_vectors_set_visible (gint32   vectors_ID,
-			  gboolean visible)
+                          gboolean visible)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-set-visible",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, visible,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, visible,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -271,63 +228,63 @@ gimp_vectors_set_visible (gint32   vectors_ID,
 }
 
 /**
- * gimp_vectors_get_name:
+ * gimp_vectors_get_linked:
  * @vectors_ID: The vectors object.
  *
- * Gets the name of the vectors object.
+ * Gets the linked state of the vectors object.
  *
- * Gets the name of the vectors object.
+ * Gets the linked state of the vectors object.
  *
- * Returns: The name of the vectors object.
+ * Returns: TRUE if the path is linked, FALSE otherwise.
  *
  * Since: GIMP 2.4
  */
-gchar *
-gimp_vectors_get_name (gint32 vectors_ID)
+gboolean
+gimp_vectors_get_linked (gint32 vectors_ID)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  gchar *name = NULL;
+  gboolean linked = FALSE;
 
-  return_vals = gimp_run_procedure ("gimp-vectors-get-name",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_END);
+  return_vals = gimp_run_procedure ("gimp-vectors-get-linked",
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
-    name = g_strdup (return_vals[1].data.d_string);
+    linked = return_vals[1].data.d_int32;
 
   gimp_destroy_params (return_vals, nreturn_vals);
 
-  return name;
+  return linked;
 }
 
 /**
- * gimp_vectors_set_name:
+ * gimp_vectors_set_linked:
  * @vectors_ID: The vectors object.
- * @name: the new name of the path.
+ * @linked: Whether the path is linked.
  *
- * Sets the name of the vectors object.
+ * Sets the linked state of the vectors object.
  *
- * Sets the name of the vectors object.
+ * Sets the linked state of the vectors object.
  *
  * Returns: TRUE on success.
  *
  * Since: GIMP 2.4
  */
 gboolean
-gimp_vectors_set_name (gint32       vectors_ID,
-		       const gchar *name)
+gimp_vectors_set_linked (gint32   vectors_ID,
+                         gboolean linked)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp-vectors-set-name",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_STRING, name,
-				    GIMP_PDB_END);
+  return_vals = gimp_run_procedure ("gimp-vectors-set-linked",
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, linked,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -356,9 +313,9 @@ gimp_vectors_get_tattoo (gint32 vectors_ID)
   gint tattoo = 0;
 
   return_vals = gimp_run_procedure ("gimp-vectors-get-tattoo",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     tattoo = return_vals[1].data.d_int32;
@@ -383,17 +340,17 @@ gimp_vectors_get_tattoo (gint32 vectors_ID)
  */
 gboolean
 gimp_vectors_set_tattoo (gint32 vectors_ID,
-			 gint   tattoo)
+                         gint   tattoo)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-set-tattoo",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, tattoo,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, tattoo,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -403,12 +360,55 @@ gimp_vectors_set_tattoo (gint32 vectors_ID,
 }
 
 /**
+ * gimp_vectors_get_strokes:
+ * @vectors_ID: The vectors object.
+ * @num_strokes: The number of strokes returned.
+ *
+ * List the strokes associated with the passed path.
+ *
+ * Returns an Array with the stroke-IDs associated with the passed
+ * path.
+ *
+ * Returns: List of the strokes belonging to the path.
+ *
+ * Since: GIMP 2.4
+ */
+gint *
+gimp_vectors_get_strokes (gint32  vectors_ID,
+                          gint   *num_strokes)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gint *stroke_ids = NULL;
+
+  return_vals = gimp_run_procedure ("gimp-vectors-get-strokes",
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_END);
+
+  *num_strokes = 0;
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    {
+      *num_strokes = return_vals[1].data.d_int32;
+      stroke_ids = g_new (gint32, *num_strokes);
+      memcpy (stroke_ids,
+              return_vals[2].data.d_int32array,
+              *num_strokes * sizeof (gint32));
+    }
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return stroke_ids;
+}
+
+/**
  * gimp_vectors_stroke_get_length:
  * @vectors_ID: The vectors object.
  * @stroke_id: The stroke ID.
  * @prescision: The prescision used for the approximation.
  *
- * measures the length of the given stroke.
+ * Measure the length of the given stroke.
  *
  * Measure the length of the given stroke.
  *
@@ -418,19 +418,19 @@ gimp_vectors_set_tattoo (gint32 vectors_ID,
  */
 gdouble
 gimp_vectors_stroke_get_length (gint32  vectors_ID,
-				gint    stroke_id,
-				gdouble prescision)
+                                gint    stroke_id,
+                                gdouble prescision)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  gdouble length = 0;
+  gdouble length = 0.0;
 
   return_vals = gimp_run_procedure ("gimp-vectors-stroke-get-length",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_FLOAT, prescision,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_FLOAT, prescision,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     length = return_vals[1].data.d_float;
@@ -465,24 +465,24 @@ gimp_vectors_stroke_get_length (gint32  vectors_ID,
  */
 gdouble
 gimp_vectors_stroke_get_point_at_dist (gint32    vectors_ID,
-				       gint      stroke_id,
-				       gdouble   dist,
-				       gdouble   prescision,
-				       gdouble  *y_point,
-				       gdouble  *slope,
-				       gboolean *valid)
+                                       gint      stroke_id,
+                                       gdouble   dist,
+                                       gdouble   prescision,
+                                       gdouble  *y_point,
+                                       gdouble  *slope,
+                                       gboolean *valid)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  gdouble x_point = 0;
+  gdouble x_point = 0.0;
 
   return_vals = gimp_run_procedure ("gimp-vectors-stroke-get-point-at-dist",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_FLOAT, dist,
-				    GIMP_PDB_FLOAT, prescision,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_FLOAT, dist,
+                                    GIMP_PDB_FLOAT, prescision,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     {
@@ -512,17 +512,17 @@ gimp_vectors_stroke_get_point_at_dist (gint32    vectors_ID,
  */
 gboolean
 gimp_vectors_stroke_remove (gint32 vectors_ID,
-			    gint   stroke_id)
+                            gint   stroke_id)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-stroke-remove",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -546,17 +546,17 @@ gimp_vectors_stroke_remove (gint32 vectors_ID,
  */
 gboolean
 gimp_vectors_stroke_close (gint32 vectors_ID,
-			   gint   stroke_id)
+                           gint   stroke_id)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-stroke-close",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -582,21 +582,21 @@ gimp_vectors_stroke_close (gint32 vectors_ID,
  */
 gboolean
 gimp_vectors_stroke_translate (gint32 vectors_ID,
-			       gint   stroke_id,
-			       gint   off_x,
-			       gint   off_y)
+                               gint   stroke_id,
+                               gint   off_x,
+                               gint   off_y)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-stroke-translate",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_INT32, off_x,
-				    GIMP_PDB_INT32, off_y,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_INT32, off_x,
+                                    GIMP_PDB_INT32, off_y,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -622,21 +622,21 @@ gimp_vectors_stroke_translate (gint32 vectors_ID,
  */
 gboolean
 gimp_vectors_stroke_scale (gint32  vectors_ID,
-			   gint    stroke_id,
-			   gdouble scale_x,
-			   gdouble scale_y)
+                           gint    stroke_id,
+                           gdouble scale_x,
+                           gdouble scale_y)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-stroke-scale",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_FLOAT, scale_x,
-				    GIMP_PDB_FLOAT, scale_y,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_FLOAT, scale_x,
+                                    GIMP_PDB_FLOAT, scale_y,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -663,21 +663,21 @@ gimp_vectors_stroke_scale (gint32  vectors_ID,
  */
 gboolean
 gimp_vectors_stroke_interpolate (gint32    vectors_ID,
-				 gint      stroke_id,
-				 gdouble   prescision,
-				 gint     *num_coords,
-				 gdouble **coords)
+                                 gint      stroke_id,
+                                 gdouble   prescision,
+                                 gint     *num_coords,
+                                 gdouble **coords)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean closed = FALSE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-stroke-interpolate",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_FLOAT, prescision,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_FLOAT, prescision,
+                                    GIMP_PDB_END);
 
   *num_coords = 0;
 
@@ -686,8 +686,9 @@ gimp_vectors_stroke_interpolate (gint32    vectors_ID,
       closed = return_vals[1].data.d_int32;
       *num_coords = return_vals[2].data.d_int32;
       *coords = g_new (gdouble, *num_coords);
-      memcpy (*coords, return_vals[3].data.d_floatarray,
-	      *num_coords * sizeof (gdouble));
+      memcpy (*coords,
+              return_vals[3].data.d_floatarray,
+              *num_coords * sizeof (gdouble));
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);
@@ -711,19 +712,19 @@ gimp_vectors_stroke_interpolate (gint32    vectors_ID,
  */
 gint
 gimp_vectors_bezier_stroke_new_moveto (gint32  vectors_ID,
-				       gdouble x0,
-				       gdouble y0)
+                                       gdouble x0,
+                                       gdouble y0)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gint stroke_id = 0;
 
   return_vals = gimp_run_procedure ("gimp-vectors-bezier-stroke-new-moveto",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_FLOAT, x0,
-				    GIMP_PDB_FLOAT, y0,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_FLOAT, x0,
+                                    GIMP_PDB_FLOAT, y0,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     stroke_id = return_vals[1].data.d_int32;
@@ -750,21 +751,21 @@ gimp_vectors_bezier_stroke_new_moveto (gint32  vectors_ID,
  */
 gboolean
 gimp_vectors_bezier_stroke_lineto (gint32  vectors_ID,
-				   gint    stroke_id,
-				   gdouble x0,
-				   gdouble y0)
+                                   gint    stroke_id,
+                                   gdouble x0,
+                                   gdouble y0)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-bezier-stroke-lineto",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_FLOAT, x0,
-				    GIMP_PDB_FLOAT, y0,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_FLOAT, x0,
+                                    GIMP_PDB_FLOAT, y0,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -794,25 +795,25 @@ gimp_vectors_bezier_stroke_lineto (gint32  vectors_ID,
  */
 gboolean
 gimp_vectors_bezier_stroke_conicto (gint32  vectors_ID,
-				    gint    stroke_id,
-				    gdouble x0,
-				    gdouble y0,
-				    gdouble x1,
-				    gdouble y1)
+                                    gint    stroke_id,
+                                    gdouble x0,
+                                    gdouble y0,
+                                    gdouble x1,
+                                    gdouble y1)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-bezier-stroke-conicto",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_FLOAT, x0,
-				    GIMP_PDB_FLOAT, y0,
-				    GIMP_PDB_FLOAT, x1,
-				    GIMP_PDB_FLOAT, y1,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_FLOAT, x0,
+                                    GIMP_PDB_FLOAT, y0,
+                                    GIMP_PDB_FLOAT, x1,
+                                    GIMP_PDB_FLOAT, y1,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -842,29 +843,29 @@ gimp_vectors_bezier_stroke_conicto (gint32  vectors_ID,
  */
 gboolean
 gimp_vectors_bezier_stroke_cubicto (gint32  vectors_ID,
-				    gint    stroke_id,
-				    gdouble x0,
-				    gdouble y0,
-				    gdouble x1,
-				    gdouble y1,
-				    gdouble x2,
-				    gdouble y2)
+                                    gint    stroke_id,
+                                    gdouble x0,
+                                    gdouble y0,
+                                    gdouble x1,
+                                    gdouble y1,
+                                    gdouble x2,
+                                    gdouble y2)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-vectors-bezier-stroke-cubicto",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_INT32, stroke_id,
-				    GIMP_PDB_FLOAT, x0,
-				    GIMP_PDB_FLOAT, y0,
-				    GIMP_PDB_FLOAT, x1,
-				    GIMP_PDB_FLOAT, y1,
-				    GIMP_PDB_FLOAT, x2,
-				    GIMP_PDB_FLOAT, y2,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_INT32, stroke_id,
+                                    GIMP_PDB_FLOAT, x0,
+                                    GIMP_PDB_FLOAT, y0,
+                                    GIMP_PDB_FLOAT, x1,
+                                    GIMP_PDB_FLOAT, y1,
+                                    GIMP_PDB_FLOAT, x2,
+                                    GIMP_PDB_FLOAT, y2,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -892,25 +893,25 @@ gimp_vectors_bezier_stroke_cubicto (gint32  vectors_ID,
  */
 gint
 gimp_vectors_bezier_stroke_new_ellipse (gint32  vectors_ID,
-					gdouble x0,
-					gdouble y0,
-					gdouble radius_x,
-					gdouble radius_y,
-					gdouble angle)
+                                        gdouble x0,
+                                        gdouble y0,
+                                        gdouble radius_x,
+                                        gdouble radius_y,
+                                        gdouble angle)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gint stroke_id = 0;
 
   return_vals = gimp_run_procedure ("gimp-vectors-bezier-stroke-new-ellipse",
-				    &nreturn_vals,
-				    GIMP_PDB_VECTORS, vectors_ID,
-				    GIMP_PDB_FLOAT, x0,
-				    GIMP_PDB_FLOAT, y0,
-				    GIMP_PDB_FLOAT, radius_x,
-				    GIMP_PDB_FLOAT, radius_y,
-				    GIMP_PDB_FLOAT, angle,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_VECTORS, vectors_ID,
+                                    GIMP_PDB_FLOAT, x0,
+                                    GIMP_PDB_FLOAT, y0,
+                                    GIMP_PDB_FLOAT, radius_x,
+                                    GIMP_PDB_FLOAT, radius_y,
+                                    GIMP_PDB_FLOAT, angle,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     stroke_id = return_vals[1].data.d_int32;

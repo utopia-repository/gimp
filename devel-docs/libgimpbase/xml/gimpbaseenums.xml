@@ -43,6 +43,7 @@ enum        <link linkend="GimpPDBProcType">GimpPDBProcType</link>;
 enum        <link linkend="GimpPDBStatusType">GimpPDBStatusType</link>;
 enum        <link linkend="GimpProgressCommand">GimpProgressCommand</link>;
 enum        <link linkend="GimpRepeatMode">GimpRepeatMode</link>;
+enum        <link linkend="GimpRunMode">GimpRunMode</link>;
 enum        <link linkend="GimpSizeType">GimpSizeType</link>;
 enum        <link linkend="GimpStackTraceMode">GimpStackTraceMode</link>;
 enum        <link linkend="GimpTransferMode">GimpTransferMode</link>;
@@ -400,6 +401,18 @@ Basic GIMP enumeration data types.
   GIMP_REPEAT_SAWTOOTH,   /*&lt; desc="Sawtooth wave"   &gt;*/
   GIMP_REPEAT_TRIANGULAR  /*&lt; desc="Triangular wave" &gt;*/
 } GimpRepeatMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpRunMode"/>enum GimpRunMode</title>
+<indexterm><primary>GimpRunMode</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_RUN_INTERACTIVE,     /*&lt; desc="Run interactively"         &gt;*/
+  GIMP_RUN_NONINTERACTIVE,  /*&lt; desc="Run non-interactively"     &gt;*/
+  GIMP_RUN_WITH_LAST_VALS   /*&lt; desc="Run with last used values" &gt;*/
+} GimpRunMode;
 </programlisting>
 <para>
 

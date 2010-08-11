@@ -38,12 +38,13 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkPaned">GtkPaned</link>
-                           +----<link linkend="GtkHPaned">GtkHPaned</link>
-                                 +----GimpBrowser
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkPaned">GtkPaned</link>
+                                 +----<link linkend="GtkHPaned">GtkHPaned</link>
+                                       +----GimpBrowser
 </synopsis>
 
 </refsect1>

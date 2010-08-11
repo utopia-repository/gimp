@@ -74,21 +74,21 @@ gimp_object_class_init (GimpObjectClass *klass)
 
   object_signals[DISCONNECT] =
     g_signal_new ("disconnect",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GimpObjectClass, disconnect),
-		  NULL, NULL,
-		  gimp_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpObjectClass, disconnect),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   object_signals[NAME_CHANGED] =
     g_signal_new ("name-changed",
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GimpObjectClass, name_changed),
-		  NULL, NULL,
-		  gimp_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpObjectClass, name_changed),
+                  NULL, NULL,
+                  gimp_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   object_class->dispose      = gimp_object_dispose;
   object_class->finalize     = gimp_object_finalize;
@@ -100,10 +100,10 @@ gimp_object_class_init (GimpObjectClass *klass)
   klass->get_memsize         = gimp_object_real_get_memsize;
 
   g_object_class_install_property (object_class, PROP_NAME,
-				   g_param_spec_string ("name",
-							NULL, NULL,
-							NULL,
-							GIMP_PARAM_READWRITE |
+                                   g_param_spec_string ("name",
+                                                        NULL, NULL,
+                                                        NULL,
+                                                        GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
 }
 
@@ -117,15 +117,13 @@ gimp_object_init (GimpObject *object)
 static void
 gimp_object_dispose (GObject *object)
 {
-  gboolean disconnected;
+  GimpObject *gimp_object = GIMP_OBJECT (object);
 
-  disconnected = GPOINTER_TO_INT (g_object_get_data (object, "disconnected"));
-
-  if (! disconnected)
+  if (! gimp_object->disconnected)
     {
       g_signal_emit (object, object_signals[DISCONNECT], 0);
 
-      g_object_set_data (object, "disconnected", GINT_TO_POINTER (TRUE));
+      gimp_object->disconnected = TRUE;
     }
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
@@ -141,9 +139,9 @@ gimp_object_finalize (GObject *object)
 
 static void
 gimp_object_set_property (GObject      *object,
-			  guint         property_id,
-			  const GValue *value,
-			  GParamSpec   *pspec)
+                          guint         property_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
 {
   GimpObject *gimp_object = GIMP_OBJECT (object);
 
@@ -160,16 +158,19 @@ gimp_object_set_property (GObject      *object,
 
 static void
 gimp_object_get_property (GObject    *object,
-			  guint       property_id,
-			  GValue     *value,
-			  GParamSpec *pspec)
+                          guint       property_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
 {
   GimpObject *gimp_object = GIMP_OBJECT (object);
 
   switch (property_id)
     {
     case PROP_NAME:
-      g_value_set_string (value, gimp_object->name);
+      if (gimp_object->static_name)
+        g_value_set_static_string (value, gimp_object->name);
+      else
+        g_value_set_string (value, gimp_object->name);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -187,7 +188,7 @@ gimp_object_get_property (GObject    *object,
  **/
 void
 gimp_object_set_name (GimpObject  *object,
-		      const gchar *name)
+                      const gchar *name)
 {
   g_return_if_fail (GIMP_IS_OBJECT (object));
 
@@ -198,6 +199,7 @@ gimp_object_set_name (GimpObject  *object,
   gimp_object_name_free (object);
 
   object->name = g_strdup (name);
+  object->static_name = FALSE;
 
   gimp_object_name_changed (object);
   g_object_notify (G_OBJECT (object), "name");
@@ -225,6 +227,37 @@ gimp_object_set_name_safe (GimpObject  *object,
   gimp_object_name_free (object);
 
   object->name = gimp_utf8_strtrim (name, 30);
+  object->static_name = FALSE;
+
+  gimp_object_name_changed (object);
+  g_object_notify (G_OBJECT (object), "name");
+}
+
+void
+gimp_object_set_static_name (GimpObject  *object,
+                             const gchar *name)
+{
+  g_return_if_fail (GIMP_IS_OBJECT (object));
+
+  gimp_object_name_free (object);
+
+  object->name = (gchar *) name;
+  object->static_name = TRUE;
+
+  gimp_object_name_changed (object);
+  g_object_notify (G_OBJECT (object), "name");
+}
+
+void
+gimp_object_take_name (GimpObject *object,
+                       gchar      *name)
+{
+  g_return_if_fail (GIMP_IS_OBJECT (object));
+
+  gimp_object_name_free (object);
+
+  object->name = name;
+  object->static_name = FALSE;
 
   gimp_object_name_changed (object);
   g_object_notify (G_OBJECT (object), "name");
@@ -286,8 +319,11 @@ gimp_object_name_free (GimpObject *object)
 
   if (object->name)
     {
-      g_free (object->name);
+      if (! object->static_name)
+        g_free (object->name);
+
       object->name = NULL;
+      object->static_name = FALSE;
     }
 }
 
@@ -386,7 +422,7 @@ gimp_object_get_memsize (GimpObject *object,
                                      "(%" G_GINT64_FORMAT ")\n",
                                      indent_buf,
                                      g_type_name (G_TYPE_FROM_INSTANCE (object)),
-                                     object->name,
+                                     object->name ? object->name : "anonymous",
                                      memsize,
                                      gui_memsize);
 
@@ -420,7 +456,7 @@ gimp_object_real_get_memsize (GimpObject *object,
 {
   gint64 memsize = 0;
 
-  if (object->name)
+  if (object->name && ! object->static_name)
     memsize += strlen (object->name) + 1;
 
   return memsize + gimp_g_object_get_memsize ((GObject *) object);

@@ -1,3 +1,3378 @@
+2006-04-12  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.3.8 development release.
+
+2006-04-12  Sven Neumann  <sven@gimp.org>
+
+	* app/*.[ch]
+	* app/*/*.[ch]: converted tabs to spaces.
+
+2006-04-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimp*/gimp*.[ch]: converted tabs to spaces.
+
+2006-04-12  Sven Neumann  <sven@gimp.org>
+
+	* tools/pdbgen/lib.pl: create code with spaces instead of tabs.
+
+	* libgimp/gimp*_pdb.[ch]: regenerated.
+
+2006-04-12  Sven Neumann  <sven@gimp.org>
+
+	* tools/gimp-remote.c
+	* tools/kernelgen.c: converted tabs to spaces.
+
+2006-04-12  Sven Neumann  <sven@gimp.org>
+
+	* app/pdb/gimp-pdb.c (gimp_pdb_init_procs): removed profiling code.
+
+2006-04-11  Carol Spears  <carol@gimp.org>
+
+	* data/images/gimp-splash.png: new splash, nicknamed "Where's bolsh?".
+
+2006-04-11  Manish Singh  <yosh@gimp.org>
+
+	* desktop/Makefile.am: honor $(DESTDIR). Fixes bug #338147. Also
+	some minor cleanups.
+
+2006-04-11  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpdrawablepreview.c: increased SELECTION_BORDER to 8.
+
+2006-04-11  Kevin Cozens  <kcozens@cvs.gnome.org>
+
+	* app/pdb/gimp-pdb-query.c: Changed formatting of output from
+	gimp-procedural-db-dump to make it more easily human (and machine)
+	readable. Fixes bug #337843.
+
+2006-04-11  Sven Neumann  <sven@gimp.org>
+
+	* app/units.c
+	* app/core/gimp-contexts.c: converted tabs to spaces.
+
+2006-04-11  Michael Natterer  <mitch@gimp.org>
+
+	* app/file/file-utils.[ch]
+	* tools/pdbgen/pdb/fileops.pdb: fix typo: s/thumnail/thumbnail/
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2006-04-11  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpcontext.[ch]: removed antique
+	gimp_context_get_name() and _set_name().
+
+	* app/actions/vectors-commands.c: #include "gimp-utils.h"
+
+2006-04-10  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-ins.c (plug_ins_add_to_db): don't iterate the
+	list of plug-in procedures here, take a GimpPlugInProcedure
+	argument instead.
+
+	(plug_ins_init): iterate the list here, just as all other lists
+	too. Renamed local "filename" variable to "pluginrc". Moved
+	"basename" to local scopes.
+
+	* tools/pdbgen/pdb/procedural_db.pdb: minor cleanup.
+
+	* app/pdb/procedural_db_cmds.c: regenerated.
+
+2006-04-10  Sven Neumann  <sven@gimp.org>
+
+	* libgimpmodule/gimpmoduledb.c (gimp_module_db_module_remove_func):
+	don't ignore the return value of g_list_remove().
+
+2006-04-10  Michael Natterer  <mitch@gimp.org>
+
+	* app/file/file-utils.[ch]: added file_utils_load_thumbnail() and
+	file_utils_save_thumbnail().
+
+	* tools/pdbgen/pdb/fileops.pdb: remove lots of code and includes
+	and use the new functions.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2006-04-10  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-file.c: some cleanup.
+
+	(plug_in_file_register_load_handler)
+	(plug_in_file_register_save_handler): first check if we have the
+	procedure, then check its arguments, not the other way around
+	(using an additional lookup). Old weird code was needed because
+	these functions were split between app/plug-in and app/pdb.
+
+	* app/plug-in/plug-in-file.h: whitespace.
+
+2006-04-10  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimpzoommodel.c (gimp_zoom_model_zoom_step):
+	declared the array of zoom factors as const.
+
+2006-04-10  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimpactiongroup.[ch]: take const arrays of action
+	entries.
+
+	* app/actions/*-actions.c: declare action arrays as const.
+
+2006-04-10  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-ins.[ch]: removed the plug_ins_file_foo()
+	functions.
+
+	* tools/pdbgen/pdb/fileops.pdb: removed lots of load and save
+	handler register code.
+
+	* app/plug-in/Makefile.am
+	* app/plug-in/plug-in-file.[ch]: added everything in these new
+	files. Load and save handlers are installed with
+	plug_in_file_register_load_handler() and _save_handler() which
+	also check the passed file procedure's parameters.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2006-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/Makefile.am
+	* app/plug-in/plug-ins-help.[ch]
+	* app/plug-in/plug-ins-locale.[ch]: remove these files again...
+
+	* app/plug-in/plug-in-help-domain.[ch]
+	* app/plug-in/plug-in-locale-domain.[ch]: ... and add them here
+	with changed namespace.
+
+	* app/plug-in/plug-in-menu-branch.[ch]: new files keeping menu
+	branches registered by plug-ins.
+
+	* app/plug-in/plug-ins.[ch]: removed the menu branch stuff here.
+
+	* app/actions/plug-in-actions.c
+	* app/menus/plug-in-menus.c
+	* app/plug-in/plug-in.c
+	* app/widgets/gimpfiledialog.c
+	* app/widgets/gimpfileprocview.c
+	* app/widgets/gimphelp.c
+	* tools/pdbgen/pdb/help.pdb
+	* tools/pdbgen/pdb/plug_in.pdb: changed accordingly.
+
+	* app/pdb/help_cmds.c
+	* app/pdb/plug_in_cmds.c: regenerated.
+
+2006-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-ins.[ch]: remove plug_ins_add_internal() and
+	made plug_ins_procedure_insert() public as plug_ins_procedure_add().
+	There's no reason internal plug-ins should be treated differently.
+
+	* app/xcf/xcf.c: use plug_ins_procedure_add().
+
+	* app/plug-in/plug-ins-help.c: fix comment.
+
+2006-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-params.[ch] (plug_in_params_destroy):
+	removed this function. We only have shallow GPParam arrays in the
+	core that can be freed with g_free(), and gp_params_destroy()
+	could always be used for freeing deep copies.
+
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-run.c: simply g_free() the GPParam arrays.
+
+2006-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-params.[ch]: removed function
+	plug_in_proc_args_check().
+
+	* app/pdb/gimppluginprocedure.[ch]: added new function
+	gimp_plug_in_procedure_add_menu_path() which performs all menu
+	path checks that were in the function above and adds the new
+	menu_path to the procedure's list of menu_paths.
+
+	* app/plug-in/plug-in-message.c (plug_in_handle_proc_install)
+	* app/plug-in/plug-in.c (plug_in_menu_register): use the new
+	function and removed manual adding of the menu path to
+	proc->menu_paths.
+
+2006-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/Makefile.am
+	* app/plug-in/plug-ins-help.[ch]
+	* app/plug-in/plug-ins-locale.[ch]: new files managing plug-in
+	help domains and locale domains.
+
+	* app/plug-in/plug-ins.[ch]: removed the functions here. Minor
+	unrelated cleanups.
+
+	* app/plug-in/plug-in.c
+	* app/actions/plug-in-actions.c
+	* app/menus/plug-in-menus.c
+	* app/widgets/gimpfiledialog.c
+	* app/widgets/gimpfileprocview.c
+	* app/widgets/gimphelp.c
+	* tools/pdbgen/pdb/help.pdb
+	* tools/pdbgen/pdb/plug_in.pdb: changed includes accordingly.
+
+	* app/pdb/help_cmds.c
+	* app/pdb/plug_in_cmds.c: regenerated.
+
+2006-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-rc.[ch] (plug_in_rc_parse): return a GSList*
+	of PlugInDefs instead of a boolean. Don't return anything if any
+	parse error occurs (before, we trusted PlugInDefs from partially
+	broken files). Don't call plug_ins_def_add_from_rc() and don't
+	#include "plug-ins.h".
+
+	* app/plug-in/plug-ins.[ch]: made plug_ins_def_add_from_rc()
+	private and call it on all PlugInDefs returned by plug_in_rc_parse().
+	Renamed plug_ins_init_file() to plug_ins_add_from_file()
+
+	(plug_ins_init): remove code that checks for duplicate plug-in
+	procedures...
+
+	(plug_ins_procedure_insert): ... and add it where it belongs.
+
+2006-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/xcf/xcf.c (xcf_init): don't register the XCF procedures
+	with the PDB here...
+
+	* app/plug-in/plug-ins.c (plug_ins_add_to_db): ... instead, don't
+	special case internal procedures here so they get registered along
+	with all other plug-in procedures.
+
+2006-04-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-def.c (plug_in_def_set_mtime): set the mtime
+	of all the plug_in_def's procedures too.
+
+	* app/plug-in/plug-in-params.c: don't include "plug-in.h"
+
+	* app/plug-in/plug-in-rc.c: minor cleanup. Fixed one error
+	return value.
+
+	* app/plug-in/plug-in.c (plug_in_push): simply use g_slist_remove();
+	fiddling with list nodes manually is a questionable "optimization"
+	for removing the first list element.
+
+	* app/plug-in/plug-ins.c (plug_ins_init): some cleanup.
+
+2006-04-08  Karine Delvare  <edhel@gimp.org>
+
+	* app/tools/gimprectangletool.c: center constraint with control
+	key.
+
+2006-04-07  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-message.c (plug_in_handle_proc_run)
+	(plug_in_handle_proc_return_priv): removed PlugInBlocked cruft,
+	it was probably unused since ages.
+
+	(plug_in_handle_proc_return_priv): removed...
+
+	(plug_in_handle_proc_return)
+	(plug_in_handle_temp_proc_return): ...and added its only remaining
+	function call here.
+
+	(plug_in_handle_tile_req): check if the requested drawable ID
+	is really a drawable (not a vectors or...)
+
+	(plug_in_handle_proc_install): cleanup.
+
+2006-04-07  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-run.[ch]: made plug_in_run_temp() public and
+	changed its parameters to match the ones of plug_in_run().
+
+	* app/pdb/gimpprocedure.[ch]: added GimpProcedure::execute_async()
+	which takes an additional display_ID parameter and returns nothing.
+
+	* app/pdb/gimppluginprocedure.c
+	* app/pdb/gimptemporaryprocedure.c: implement it, using
+	plug_in_run() and plug_in_run_temp().
+
+	* app/core/gimp-utils.[ch]: added gimp_value_array_truncate()
+	which takes a GValueArray and the number of values to truncate the
+	array to.
+
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/pdb/gimp-pdb.c
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimphelp.c: use gimp_procedure_execute_async()
+	instead of plug_in_run() and don't #include "plug-in-run.h".
+	Truncate GValueArray passed to plug-ins again, and don't just pass
+	some default values to the noninteractive args.
+
+	Unrelated:
+
+	* tools/pdbgen/pdb/plug_in.pdb: don't call
+	gimp_menus_create_branch() here.
+
+	* app/plug-in/plug-ins.c (plug_ins_menu_branch_add): call it here
+	instead.
+
+	* app/pdb/plug_in_cmds.c: regenerated.
+
+2006-04-07  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpobject.h: added "guint disconnected : 1", we
+	have enough space for flags now.
+
+	* app/core/gimpobject.c (gimp_object_dispose): use the new
+	object->disconnected flag instead of attaching that boolean to the
+	object.
+
+2006-04-07  Sven Neumann  <sven@gimp.org>
+
+	* app/xcf/xcf.c (xcf_loaders): declared the array as const.
+
+2006-04-07  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/tool-options-commands.c
+	* app/core/gimp.c
+	* app/core/gimpbrushpipe.c
+	* app/core/gimpbuffer.c
+	* app/core/gimpcontext.c
+	* app/core/gimpdatafactory.c
+	* app/core/gimpgradient-load.c
+	* app/core/gimpimage-merge.c
+	* app/core/gimpimage-undo-push.c
+	* app/core/gimpitem.c
+	* app/core/gimplayer.c
+	* app/core/gimplayermask.c
+	* app/core/gimplist.c
+	* app/core/gimppalette.c
+	* app/dialogs/template-options-dialog.c
+	* app/display/gimpdisplayshell-dnd.c
+	* app/file/file-open.c
+	* app/paint/gimp-paint.c
+	* app/widgets/gimpdataeditor.c
+	* app/widgets/gimpdatafactoryview.c
+	* app/widgets/gimplayertreeview.c
+	* app/widgets/gimptemplateview.c
+	* app/widgets/gimptoolbox-dnd.c: use gimp_object_set_static_name()
+	and gimp_object_take_name() where appropriate.
+
+2006-04-07  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpobject.[ch]: added flag "guint static_name : 1" and
+	new APIs gimp_object_set_static_name() and _take_name().
+
+	* app/pdb/gimpprocedure.[ch]: removed member "name". Use
+	GimpObject's name instead.
+
+	* app/actions/plug-in-actions.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/menus/plug-in-menus.c
+	* app/pdb/gimp-pdb-query.c
+	* app/pdb/gimp-pdb.c
+	* app/pdb/gimppluginprocedure.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-ins-query.c
+	* app/plug-in/plug-ins.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb/fileops.pdb: use GimpObject API to set/get
+	a procedure's name.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-04-07  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpdrawable.[ch]: renamed gimp_drawable_shadow() to
+	gimp_drawable_get_shadow_tiles().
+
+	* app/core/gimpimage.[ch]: renamed gimp_image_shadow() to
+	gimp_image_get_shadow_tiles() and gimp_image_free_shadow() to
+	gimp_image_free_shadow_tiles().
+
+	* app/core/gimpdrawable-desaturate.c
+	* app/core/gimpdrawable-equalize.c
+	* app/core/gimpdrawable-invert.c
+	* app/core/gimpdrawable-levels.c
+	* app/core/gimpimagemap.c
+	* app/plug-in/plug-in-message.c
+	* tools/pdbgen/pdb/color.pdb
+	* tools/pdbgen/pdb/image.pdb: changed accordingly.
+
+	* app/pdb/color_cmds.c
+	* app/pdb/image_cmds.c: regenerated.
+
+2006-04-07  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpdrawable.[ch]: renamed gimp_drawable_cmap() to
+	gimp_drawable_get_colormap() and let it return a const array.
+
+	* app/core/gimpdrawable-convert.c
+	* app/core/gimpimage-convert.c
+	* app/core/gimpselection.c
+	* app/display/gimpdisplayshell-preview.c: changed accordingly.
+
+2006-04-07  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpdrawable.[ch]: renamed gimp_drawable_data() to
+	gimp_drawable_get_tiles().
+
+	* app/[lots of files]: changed accordingly.
+
+2006-04-07  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/gimp-pdb.c (gimp_pdb_register)
+	(gimp_pdb_unregister): ref all registered procedures.
+
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl: unref newly created procedures after
+	registering them.
+
+	* app/core/gimp.[ch]: renamed member "plug_in_proc_defs" to
+	"plug_in_procedures". Renamed "proc_def" variables to "procedure".
+
+	* app/actions/plug-in-actions.c
+	* app/menus/plug-in-menus.c: changed accordingly.
+
+	* app/plug-in/plug-ins.[ch]: keep a reference to all procs which
+	are in gimp->plug_in_procedures.
+
+	(plug_ins_exit): unref them all and free the list. Apparently we
+	were leaking them before on exit.
+
+	* app/plug-in/plug-in-def.[ch]: s/proc_defs/procedures/. Ref
+	procedures added with plug_in_def_add_procedure(). Added
+	plug_in_def_remove_procedure() which unrefs them again. Removed
+	"free_proc_defs" parameter from plug_in_def_free() and always
+	unref the procedures.
+
+	* app/plug-in/plug-in.[ch]: added plug_in_add_temp_proc() and
+	plug_in_remove_temp() proc. Ref the added procedures.
+
+	* app/plug-in/plug-in-message.c: use the new APIs instead of
+	adding/removing procs and temp procs from their lists manually.
+	Unref the newly created procedure after adding them to the
+	plug_in_def or plug_in.
+
+	* app/plug-in/plug-in-rc.[ch]
+	* app/plug-in/plug-ins-query.c
+	* tools/pdbgen/pdb/plug_in.pdb: changed accordingly.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-04-07  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimage-merge.[ch] (gimp_image_merge_visible_layers):
+	allow to discard invisible layers as suggested in bug #337557.
+
+	* app/actions/image-commands.c
+	* app/dialogs/image-merge-layers-dialog.[ch]: added a check button
+	to the Merge Visible Layers dialog to control the new feature.
+
+	* app/file/file-open.c
+	* tools/pdbgen/pdb/image.pdb: pass FALSE for the new parameter.
+
+	* app/pdb/image_cmds.c: regenerated.
+
+2006-04-06  Sven Neumann  <sven@gimp.org>
+
+	* app/composite/gimp-composite.c: removed unused global arrays.
+
+2006-04-06  Sven Neumann  <sven@gimp.org>
+
+	* tools/pdbgen/enumcode.pl: generate a const arrays of const strings.
+
+	* libgimp/gimpenums.c.tail: regenerated.
+
+2006-04-06  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/authors.xsl: generate const arrays of const strings.
+
+	* app/dialogs/authors.h: regenerated.
+
+2006-04-06  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpcontext.c
+	* app/core/gimpimage.c
+	* app/paint-funcs/paint-funcs.c
+	* app/widgets/gimpcontrollerkeyboard.c
+	* app/widgets/gimpcontrollerwheel.c
+	* app/widgets/gimpcursor.c
+	* app/widgets/gimpdockable.c
+	* app/widgets/gimpdockbook.c
+	* app/widgets/gimpdockseparator.c
+	* libgimp/gimpbrushselect.c
+	* libgimp/gimpfontselect.c
+	* libgimp/gimpgradientselect.c
+	* libgimp/gimppaletteselect.c
+	* libgimp/gimppatternselect.c
+	* libgimpwidgets/gimpchainbutton.c
+	* libgimpwidgets/gimpcolorscales.c
+	* libgimpwidgets/gimpcolorselect.c
+	* libgimpwidgets/gimppickbutton.c
+	* libgimpwidgets/gimpstock.c: sprinkled some const qualifiers.
+
+2006-04-06  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpdata.c (gimp_data_error_quark)
+	* libgimpconfig/gimpconfig-error.c (gimp_config_error_quark)
+	* libgimpthumb/gimpthumb-error.c (gimp_thumb_error_quark):
+	g_quark_from_static_string() is already reasonably fast, not much
+	point in caching the result.
+
+2006-04-06  DindinX  <dindinx@gimp.org>
+
+	* libgimp/gimpzoompreview.c: added some documentation.
+
+2006-04-06  Sven Neumann  <sven@gimp.org>
+
+	* app/plug-in/plug-in-enums.h
+	* libgimpbase/gimpbaseenums.h: moved GimpRunMode enum to libgimpbase.
+
+	* app/plug-in/plug-in-enums.c
+	* libgimp/gimpenums.h
+	* libgimpbase/gimpbaseenums.c
+	* tools/pdbgen/enums.pl: regenerated.
+
+	* libgimpbase/gimpbase.def: updated.
+
+2006-04-06  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/Makefile.am
+	* app/plug-in/plug-in-types.h
+	* app/plug-in/plug-in-proc-def.[ch]: removed...
+
+	* app/pdb/Makefile.am
+	* app/pdb/pdb-types.h
+	* app/pdb/gimppluginprocedure.[ch]: ...and added here. Virtualized
+	get_progname().
+
+	* app/pdb/gimptemporaryprocedure.[ch]: new class derived from
+	GimpPlugInProcedure.
+
+	* app/pdb/gimpprocedure.[ch] (struct GimpProcedure): remove union
+	exec_method and all the structs it needed. Procedure execution is
+	properly virtualized now. Removed gimp_procedure_initialize() and
+	grow the args and values arrays dynamically in
+	gimp_procedure_add_argument()/return_value(). Added marshal_func
+	parameter to gimp_procedure_new().
+
+	* app/actions/plug-in-actions.c
+	* app/actions/plug-in-commands.c
+	* app/core/gimp-gui.c
+	* app/dialogs/file-save-dialog.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/file/file-utils.c
+	* app/gui/gui-vtable.c
+	* app/menus/plug-in-menus.c
+	* app/plug-in/plug-in-def.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-in-run.c
+	* app/plug-in/plug-in.c
+	* app/plug-in/plug-ins-query.c
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimpfiledialog.c
+	* app/widgets/gimpfileprocview.c
+	* app/widgets/gimppluginaction.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/plug_in.pdb
+	* tools/pdbgen/app.pl: changed accordingly.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+	* app/pdb/gimp-pdb.c: added uglyness to make the app link again.
+
+2006-04-06  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/compose.c: add layers in the expected order.
+
+	* plug-ins/common/decompose.c: fixed out-of-bounds access to layer
+	array (bug #322310).
+
+2006-04-06  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-run.[ch]: removed plug_in_repeat()...
+
+	* app/actions/plug-in-commands.c: ...and merged it into
+	plug_in_repeat_cmd_callback(). It's essentially the same code as
+	plug_in_run_cmd_callback() and there's no reason (except
+	historical ones) to keep its implementation separate.
+
+2006-04-06  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* plug-ins/common/mkgen.pl
+	* plug-ins/common/plugin-defs.pl: introduced a new parameter
+	'extralibs' and changed mkgen.pl to treat this equally to
+	'optional' for non-optional plug-ins that needs different libs on
+	different platforms 
+
+	* plug-ins/common/Makefile.am: regenerated
+
+2006-04-05  Michael Schumacher  <schumaml@cvs.gnome.org>
+
+	* configure.in: don't exclude the screenshot plug-in on os_win32
+
+	* plug-ins/common/Makefile.am: change $(SCREENSHOT) into screenshot
+	to make the screenshot plug-in build and install on the Microsoft
+	Windows platform.
+
+2006-04-05  Sven Neumann  <sven@gimp.org>
+
+	* app/base/lut-funcs.[ch]: minor code cleanup, renamed a function,
+	declared some functions as static.
+
+	* app/core/gimpdrawable-equalize.c: changed accordingly.
+
+2006-04-05   Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/preferences-dialog.c
+	* app/widgets/gimpimagepropview.c
+	* app/widgets/gimpsizebox.c
+	* app/widgets/gimptemplateeditor.c: replaced "dpi" with "ppi"
+	(bug #326718).
+
+2006-04-05  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-proc-frame.[ch]: added
+	plug_in_proc_frame_get_return_vals().
+
+	* app/plug-in/plug-in-run.c: removed plug_in_get_return_vals()
+	and call plug_in_proc_frame_get_return_vals() instead.
+	Don't leak stuff in case calling the plug-in fails.
+
+2006-04-05  Tor Lillqvist  <tml@novell.com>
+
+	* app/core/gimpobject.c (gimp_object_get_memsize): Check if
+	object->name is NULL before attempting to pass it to
+	g_strdup_printf(). Use "anonymous" for unnamed objects.
+
+2006-04-05  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/gifload.c: pulse the progress when loading an
+	animation because we cannot tell beforehand how many frames are to
+	be loaded.
+
+2006-04-05  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-message.c (plug_in_handle_proc_install):
+	don't canonicalize names of GParamSpecs, they do this themselves.
+
+2006-04-05  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-types.h
+	* app/plug-in/plug-in-proc-def.[ch]: renamed to GimpPlugInProcedure
+	and made a GObject derived from GimpProcedure (instead of having
+	a pointer to a GimpProcedure). Added image_types and file_magic
+	utility functions taken from plug-ins.[ch]. Still lives in the
+	same crappy files because I am undecided where to put it...
+
+	* app/pdb/gimpprocedure.c (gimp_procedure_real_execute): removed
+	switch() statement and always call the internal marshaller because
+	GimpProcedure::execute() is properly overridden by
+	GimpPlugInProcedure now.
+
+	* app/plug-in/plug-ins.[ch]: removed the mime_type and file_magic
+	utilities added to GimpPlugInProcedure.
+
+	* app/actions/file-commands.c
+	* app/actions/plug-in-actions.[ch]
+	* app/actions/plug-in-commands.[ch]
+	* app/core/gimp-gui.[ch]
+	* app/core/gimp.[ch]
+	* app/core/gimpimage.[ch]
+	* app/dialogs/file-open-dialog.c
+	* app/dialogs/file-save-dialog.c
+	* app/dialogs/print-size-dialog.c
+	* app/file/file-open.[ch]
+	* app/file/file-save.[ch]
+	* app/file/file-utils.[ch]
+	* app/gui/gui-vtable.c
+	* app/menus/plug-in-menus.[ch]
+	* app/plug-in/plug-in-def.[ch]
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-in-run.c
+	* app/plug-in/plug-in.c
+	* app/plug-in/plug-ins-query.c
+	* app/widgets/gimpactiongroup.[ch]
+	* app/widgets/gimpdnd-xds.c
+	* app/widgets/gimpfiledialog.[ch]
+	* app/widgets/gimpfileprocview.[ch]
+	* app/widgets/gimppluginaction.[ch]
+	* app/xcf/xcf.c
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/plug_in.pdb: changed accordingly.
+
+	* app/pdb/fileops_cmds.c
+	* app/pdb/plug_in_cmds.c: regenerated.
+
+2006-04-04  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/gimpprocedure.[ch]: made it a GObject. Removed member
+	"static_proc". Renamed gimp_procedure_init() to
+	gimp_procedure_initialize().
+
+	* app/pdb/gimp-pdb.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-proc-def.c
+	* app/plug-in/plug-in-rc.c
+	* app/xcf/xcf.c: changed accordingly.
+
+	* tools/pdbgen/app.pl: register all internal procs
+	dynamically. The static proc structs are gone.
+
+	* tools/pdbgen/pdb/fileops.pdb: cosmetic change.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-04-04  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/Makefile.am
+	* app/pdb/procedural_db.[ch]
+	* app/pdb/procedural-db-query.[ch]: removed...
+
+	* app/pdb/gimp-pdb.[ch]
+	* app/pdb/gimp-pdb-query.[ch]: ...and added namespacefied.
+
+	* app/batch.c
+	* app/actions/vectors-commands.c
+	* app/core/gimp.c
+	* app/core/gimppdbprogress.c
+	* app/dialogs/about-dialog.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/file/file-utils.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-params.c
+	* app/plug-in/plug-in-proc-def.c
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-ins-query.c
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimpbrushselect.c
+	* app/widgets/gimpfiledialog.c
+	* app/widgets/gimpfontselect.c
+	* app/widgets/gimpgradientselect.c
+	* app/widgets/gimphelp.c
+	* app/widgets/gimppaletteselect.c
+	* app/widgets/gimppatternselect.c
+	* app/widgets/gimppdbdialog.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb/brush_select.pdb
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/font_select.pdb
+	* tools/pdbgen/pdb/gradient_select.pdb
+	* tools/pdbgen/pdb/palette_select.pdb
+	* tools/pdbgen/pdb/pattern_select.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb: changed accordingly.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-04-04  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/Makefile.am
+	* app/pdb/gimpargument.[ch]: removed...
+
+	* app/pdb/gimp-pdb-compat.[ch]: ...and added with renamed functions.
+	Added gimp_pdb_compat_param_spec().
+
+	* app/pdb/gimpprocedure.[ch]: removed gimp_procedure_add_compat_arg()
+	and _add_compat_value(). Use gimp_pdb_compat_param_spec() plus
+	gimp_procedure_add_argument()/return_value() instead.
+
+	* app/pdb/procedural-db-query.c
+	* app/pdb/procedural_db.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-params.c
+	* app/plug-in/plug-in-rc.c
+	* tools/pdbgen/pdb/procedural_db.pdb: changed accordingly.
+
+	* app/xcf/xcf.c: no need to use compat functions here.
+
+	* app/pdb/procedural_db_cmds.c: regnerated.
+
+2006-04-04  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpcontainertreeview-dnd.c
+	(gimp_container_tree_view_drag_leave)
+	(gimp_container_tree_view_drag_motion): use the correct API to
+	unset the tree view's drop indicator. Apparently using the wrong
+	API has stopped working due to changes in GtkTreeView...
+
+2006-04-04  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/gif.c (save_image): nicer progress update when
+	saving GIF animations.
+
+2006-04-04  Michael Natterer  <mitch@gimp.org>
+
+	* plug-ins/common/gifload.c (ReadImage): update the progress text
+	to show the frame number when loading multi-frame GIFs.
+
+2006-04-04  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/pdb-types.h
+	* app/pdb/gimpargument.[ch]: removed struct GimpArgument, struct
+	GimpArgumentSpec, gimp_argument_init() and
+	gimp_arguments_destroy().
+
+	* app/pdb/gimpprocedure.h (struct GimpProcedure): use arrays of
+	GParamSpec* for kepping proc inargs/outargs.
+
+	* app/pdb/gimpprocedure.[ch]
+	* app/pdb/procedural_db.[ch]
+	* app/plug-in/plug-in-params.[ch]
+	* app/plug-in/plug-in-proc-frame.[ch]
+	* app/plug-in/plug-in-run.[ch]: use GValueArrays for procedure
+	arguments and return values. Removed all n_args and n_return_vals
+	parameters because GValueArrays know their length.
+
+	* app/batch.c
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/core/gimppdbprogress.c
+	* app/dialogs/about-dialog.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/pdb/procedural-db-query.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimpbrushselect.c
+	* app/widgets/gimpfontselect.c
+	* app/widgets/gimpgradientselect.c
+	* app/widgets/gimphelp.c
+	* app/widgets/gimppaletteselect.c
+	* app/widgets/gimppatternselect.c
+	* app/widgets/gimppdbdialog.[ch]
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb: changed accordingly. Also
+	removed #include "gimpargument.h" from most files.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-04-04  Sven Neumann  <sven@gimp.org>
+
+	* app/text/gimpfont.c: moved new code to a utility function. Avoid
+	use of deprecated Pango API. Removed tabs and trailing whitespace.
+
+2006-04-04  Tor Lillqvist  <tml@novell.com>
+
+	* app/text/gimpfont.c (gimp_font_get_new_preview): Provide
+	script-specific short sample strings instead of "Aa" for fonts
+	that seem to be designed for some specific non-Latin
+	script. Pending a complete redesign and reimplementation of font
+	selection, this is at least an improvement, and a partial solution
+	to #137624.
+
+2006-04-04  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-params.c (plug_in_params_to_args): don't
+	compare GType with GimpPDBArgType (never "clean up" before
+	committing ;)
+
+2006-04-03  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpparamspecs.[ch]: added a shitload of new GTypes and
+	corresponding GParamSpecs to use them as PDB arguments.
+	Each GimpPDBArgType has one or more corresponding GTypes in the
+	core now.
+
+	* app/pdb/gimpargument.[ch] (struct GimpArgument)
+	(struct GimpArgumentSpec): removed "type" member because the
+	GValue's/GParamSpec's GType carries just as much information now.
+
+	(gimp_argument_type_to_pdb_arg_type): new function which maps
+	GTypes to GimpPDBArgType.
+
+	(gimp_pdb_arg_type_to_string): formerly known as
+	procedural_db_type_name().
+
+	* app/pdb/gimpprocedure.[ch]
+	* app/pdb/procedural_db.[ch]: completely switch to GValue. Use the
+	new GParamSpecs for procedure arguments. GimpPDBArgType is only
+	used for adding compat args/values of plug-in procedures.
+
+	(procedural_db_run_proc): the va_list expects a sequence of
+	(GType, value, GType, value, ..., G_TYPE_NONE) now.
+
+	* app/plug-in/plug-in-params.[ch]: changed accordingly.
+
+	(plug_in_param_defs_check): removed this function.
+
+	* app/plug-in/plug-in-message.c (plug_in_handle_proc_install): use
+	plug_in_proc_args_check() instead and initialize the GimpProcedure
+	before doing so.
+
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb.pl: use the new param spec types and their
+	utility functions. Changed argument/value registration
+	accordingly.
+
+	* app/pdb/procedural-db-query.c
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/core/gimppdbprogress.c
+	* app/dialogs/about-dialog.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimpbrushselect.c
+	* app/widgets/gimpfontselect.c
+	* app/widgets/gimpgradientselect.c
+	* app/widgets/gimphelp.c
+	* app/widgets/gimppaletteselect.c
+	* app/widgets/gimppatternselect.c
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/image.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb: changed accordingly.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-04-03  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/app.pl: remove newline flood.
+
+	* app/pdb/internal_procs.c: regenerated shorter.
+
+2006-04-03  Sven Neumann  <sven@gimp.org>
+
+	* tools/pdbgen/pdb/drawable.pdb: improved API documentation for
+	gimp-drawable-fill (bug #336864).
+
+	* app/pdb/drawable_cmds.c
+	* libgimp/gimpdrawable_pdb.c: regenerated.
+
+2006-04-03  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell-close.c: reduced precision of the
+	display of time since the last change.
+
+2006-04-03  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpscaletool.c: added a GimpSizeBox as a replacement
+	for the InfoDialog widgets. Needs more work ...
+
+2006-04-03  Sven Neumann  <sven@gimp.org>
+
+	* desktop/Makefile.am: added an install hook that touches the
+	toplevel icon theme directory as required by the spec.
+
+2006-04-02  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-params.c: handle storage of GIMP_PDB_INT32
+	plug-in params in GValues of type G_TYPE_UINT, they are used for
+	guides and tattoos.
+
+	* tools/pdbgen/pdb/guides.pdb (image_find_next_guide): don't
+	validate the "guide" parameter, because 0 is an allowed value
+	here.
+
+	* app/pdb/guides_cmds.c: regenerated.
+
+2006-04-02  Karine Delvare  <edhel@gimp.org>
+
+	* app/tools/gimprectangletool.c: square constraint with shift key.
+
+2006-04-02  Michael Natterer  <mitch@gimp.org>
+
+	Silence compiler warnings about...
+
+	* app/config/gimprc-unknown.c: ...unused return value of
+	g_slist_concat().
+
+	* app/tools/gimpdrawtool.c: ...uninitialized variabe.
+
+	* app/xcf/xcf-save.c: ...pointer signedness.
+
+2006-04-02  Michael Natterer  <mitch@gimp.org>
+
+	* libgimp/gimptile.c (gimp_tile_cache_insert): silence warning
+	about unused return value of g_list_concat().
+
+2006-04-02  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb.pl: added a const_type member to all PDB types.
+	Removed casts from all get_value_funcs which return const
+	pointers, they can stay const now.
+
+	* tools/pdbgen/app.pl: use the const_type to declare input args.
+
+	* app/pdb/gimpprocedure.h: pass const arguments to the internal
+	marshallers.
+
+	* app/xcf/xcf.c: changed accordingly.
+
+	* tools/pdbgen/pdb/paint_tools.pdb
+	* tools/pdbgen/pdb/paths.pdb: added some const qualifiers.
+
+	* tools/pdbgen/lib.pl: use the const_type for input args instead
+	of adding the const qualifier based on the type.
+
+	* app/pdb/_cmds.c
+	* libgimp/gimpparasite_pdb.[ch]: regenerated.
+
+	Unrelated:
+
+	* app/pdb/gimpargument.c (gimp_arguments_destroy): no need any
+	more to destroy the argument array in reverse order (we don't need
+	access to the previous element because arrays in GValues memory
+	manage themselves now).
+
+2006-04-02  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpparasitelist.[ch] (gimp_parasite_list_add): removed
+	the return value again.
+
+	(gimp_parasite_list_find): return a const parasite.
+
+	* app/core/gimp-parasites.[ch]
+	* app/core/gimpimage.[ch]
+	* app/core/gimpitem.[ch] (*_parasite_attach): take a const
+	parasite. Make a local copy of the parasite struct because
+	gimp_parasite_shift_parent() changes it.
+
+	(*_parasite_find): return a const parasite.
+
+	* app/core/gimptemplate.c
+	* app/text/gimptextlayer-xcf.c
+	* app/xcf/xcf-load.c: changed accordingly.
+
+2006-04-02  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpimage-undo-push.[ch]
+	(gimp_image_undo_push_image,item_parasite): use "const GimpParasite*"
+	instead of gpointer for the parasite parameter.
+
+	* app/core/gimpparasitelist.[ch] (gimp_parasite_list_add): added
+	const to the parasite parameter, return the actually added
+	parasite (which is a copy).
+
+	* app/core/gimpunit.[ch] (_gimp_unit_new): added const to all
+	string parameters.
+
+2006-04-02  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/lib.pl: use the variable initializer defined with
+	the PDB type instead of figuring it manually. Removed a line of
+	code that checked for enums without "Gimp" prefix.
+
+	* libgimp/gimpbrush_pdb.c
+	* libgimp/gimpchannel_pdb.c
+	* libgimp/gimpcontext_pdb.c
+	* libgimp/gimpgradient_pdb.c
+	* libgimp/gimplayer_pdb.c
+	* libgimp/gimpunit_pdb.c
+	* libgimp/gimpvectors_pdb.c: all doubles are initialized with 0.0
+	instead of 0 now.
+
+2006-04-02  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpparamspecs.[ch]: removed GIMP_TYPE_PARASITE,
+	GIMP_TYPE_PARAM_PARASITE and the GimpRGB utility functions. Some
+	fixes/cleanup in the new array and string array code.
+
+	* libgimpbase/gimpbase.def
+	* libgimpbase/gimpparasite.[ch]
+	* libgimpcolor/gimpcolor.def
+	* libgimpcolor/gimprgb.[ch]: added the parasite and rgb stuff here.
+
+	* app/pdb/gimpargument.c: #include "libgimpbase/gimpbase.h"
+
+	* app/pdb/procedural_db.c: removed unused variable.
+
+2006-04-01  Karine Delvare  <edhel@gimp.org>
+
+	* app/tools/gimpnewrectselecttool.c: don't automatically
+	auto-shrink.
+
+2006-04-01  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpparamspecs.[ch]: added struct GimpArray which can
+	keep static or allocated data. Added boxed types GIMP_TYPE_ARRAY
+	and GIMP_TYPE_STRING_ARRAY. Added GParamSpecs for PDB int32,
+	int16, int8, float and string arrays. Added functions to get, dup,
+	set and set_static the various arrays from/to GValues.
+
+	* app/pdb/gimpprocedure.c
+	* app/pdb/procedural_db.c
+	* app/plug-in/plug-in-params.c
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb.pl: use the new param pspecs and gimp_value
+	functions to keep arrays in GimpArguments.
+
+	* app/pdb/gimpargument.[ch] (gimp_arguments_destroy): removed
+	parameter "gboolean full_destroy". It's not needed any longer
+	because the GValues fully memory-manage all their data now.
+
+	* app/batch.c
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/core/gimppdbprogress.c
+	* app/dialogs/about-dialog.c
+	* app/dialogs/print-size-dialog.c
+	* app/dialogs/resize-dialog.c
+	* app/display/gimpdisplayshell-handlers.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-run.c
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimphelp.c
+	* app/widgets/gimppdbdialog.c
+	* tools/pdbgen/pdb/fileops.pdb: changed accordingly.
+
+	* app/pdb/brush_cmds.c
+	* app/pdb/brushes_cmds.c
+	* app/pdb/buffer_cmds.c
+	* app/pdb/color_cmds.c
+	* app/pdb/drawable_cmds.c
+	* app/pdb/fileops_cmds.c
+	* app/pdb/fonts_cmds.c
+	* app/pdb/gimpargument.c
+	* app/pdb/gimpargument.h
+	* app/pdb/gimpprocedure.c
+	* app/pdb/gradient_cmds.c
+	* app/pdb/gradients_cmds.c
+	* app/pdb/image_cmds.c
+	* app/pdb/paint_tools_cmds.c
+	* app/pdb/palettes_cmds.c
+	* app/pdb/parasite_cmds.c
+	* app/pdb/paths_cmds.c
+	* app/pdb/pattern_cmds.c
+	* app/pdb/patterns_cmds.c
+	* app/pdb/plug_in_cmds.c
+	* app/pdb/procedural_db.c
+	* app/pdb/procedural_db_cmds.c
+	* app/pdb/selection_tools_cmds.c
+	* app/pdb/vectors_cmds.c: regenerated.
+
+	... and ported everything to perl btw...
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/pdb-types.h
+	* app/pdb/gimpargument.h: renamed struct Argument to GimpArgument
+	and struct ProcArg to GimpArgumentSpec.
+
+	* app/batch.c
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/core/gimppdbprogress.c
+	* app/dialogs/about-dialog.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/pdb/gimpargument.c
+	* app/pdb/gimpprocedure.[ch]
+	* app/pdb/procedural-db-query.c
+	* app/pdb/procedural_db.[ch]
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-params.[ch]
+	* app/plug-in/plug-in-proc-frame.h
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-in-run.[ch]
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimpbrushselect.c
+	* app/widgets/gimpfontselect.c
+	* app/widgets/gimpgradientselect.c
+	* app/widgets/gimphelp.c
+	* app/widgets/gimppaletteselect.c
+	* app/widgets/gimppatternselect.c
+	* app/widgets/gimppdbdialog.[ch]
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb: changed accordingly.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/Makefile.am
+	* app/pdb/gimpargument.[ch]: moved Argument and ProcArg structs
+	and functions to these new files. Renamed functions to
+	gimp_argument_foo().
+
+	* app/pdb/procedural_db.[ch]: removed them here.
+
+	* app/batch.c
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/core/gimppdbprogress.c
+	* app/dialogs/about-dialog.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/pdb/gimpprocedure.c
+	* app/pdb/procedural_db_cmds.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-params.c
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-in-run.c
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimphelp.c
+	* app/widgets/gimppdbdialog.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb/fileops.pdb: changed #includes and function
+	calls accordingly.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/pdb-types.h
+	* app/pdb/gimpprocedure.h: renamed struct ProcRecord to
+	GimpProcedure. Added GIMP_IS_PROCEDURE() which checks for != NULL.
+
+	* app/pdb/gimpprocedure.c
+	* app/pdb/procedural-db-query.c
+	* app/pdb/procedural_db.[ch]
+	* app/batch.c
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/file/file-open.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-proc-def.h
+	* app/plug-in/plug-in-proc-frame.[ch]
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-in-run.[ch]
+	* app/plug-in/plug-in.[ch]
+	* app/plug-in/plug-ins-query.c
+	* app/plug-in/plug-ins.[ch]
+	* app/widgets/gimphelp.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/app.pl: changed accordingly. Renamed 'proc_rec' and
+	similarily named variables and parameters to 'procedure'.
+
+	* tools/pdbgen/pdb/procedural_db.pdb: changed 'procedure'
+	parameters to 'procedure_name'.
+
+	* app/pdb/*_cmds.c
+	* libgimp/gimpproceduraldb_pdb.[ch]: regenerated.
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/gimpprocedure.h (struct ProcRecord): added new member
+	"gboolean static_strings", so the ProcRecord struct and its
+	strings can be marked as static separately.
+
+	* app/pdb/gimpprocedure.[ch] (gimp_procedure_dispose): removed.
+
+	(gimp_procedure_free): don't free the struct if it's static.
+
+	(gimp_procedure_set_strings)
+	(gimp_procedure_set_static_strings)
+	(gimp_procedure_take_strings): new functions to set a procedure's
+	strings.
+
+	* app/pdb/procedural_db.c (procedural_db_free_entry): simply call
+	gimp_procedure_free() on all procedures, the memory-manage
+	themselves now.
+
+	* app/plug-in/plug-in-message.c (plug_in_handle_proc_install): use
+	gimp_procedure_set_strings() instead of setting them manually.
+
+	* app/xcf/xcf.c: register gimp-xcf-load and gimp-xcf-save
+	dynamically so further ProcRecord struct changes don't affect this
+	file.
+
+	* tools/pdbgen/app.pl: set "static_proc" to TRUE for static procs.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-proc-def.h (struct PlugInProcDef)
+	(plug_in_proc_def_set_icon): changed "icon_data" from gchar* to
+	guint8*.
+
+	* app/plug-in/plug-in-proc-def.c
+	* app/plug-in/plug-in-rc.c
+	* app/xcf/xcf.c: cast a bit to the fix resulting warnings. There
+	are less casts needed than before.
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/gimpprocedure.[ch] (struct ProcRecord): added new member
+	"gboolean static_proc" which indicates whether a ProcRecord struct
+	and its strings are static.
+
+	(gimp_procedure_dispose): new function which frees the procedure's
+	args and values, and its strings if it is not static.
+
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl: set "static_proc" to TRUE for static procs.
+
+	* app/pdb/procedural_db.c (procedural_db_free): call
+	gimp_procedure_free() or gimp_procedure_dispose(), depending on
+	procedure->static_proc.
+
+	* app/pdb/procedural_db.h: removed #if 0'ed cruft.
+
+	* app/plug-in/plug-in-proc-def.[ch]: removed
+	plug_in_proc_def_get_proc().
+
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* tools/pdbgen/pdb/fileops.pdb: access proc_def->procedure directly.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-31  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/Makefile.am
+	* app/dialogs/dialogs-types.h
+	* app/dialogs/dialogs.c
+	* app/dialogs/info-dialog.[ch]: good bye InfoDialog.
+
+	* app/tools/gimpperspectivetool.[ch]
+	* app/tools/gimprotatetool.[ch]
+	* app/tools/gimpsheartool.[ch]
+	* app/tools/gimptransformtool.[ch]: use GimpToolDialog instead of
+	InfoDialog and add the widgets manually.
+
+	* app/tools/gimpscaletool.c: commented out use of InfoDialog. This
+	tools still needs to be ported to GimpToolDialog.
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/gimpprocedure.[ch]: added gimp_procedure_new() and
+	gimp_procedure_free() functions.
+
+	* app/plug-in/plug-in-proc-def.h (struct PlugInProcDef): use a
+	ProcRecord pointer instead of including the entire struct.
+
+	* app/plug-in/plug-in-proc-def.c: use the new() and free()
+	functions above to allocate/free the ProcRecord.
+
+	* app/actions/plug-in-actions.c
+	* app/actions/plug-in-commands.c
+	* app/menus/plug-in-menus.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-in-run.c
+	* app/plug-in/plug-in.c
+	* app/plug-in/plug-ins-query.c
+	* app/plug-in/plug-ins.c
+	* app/xcf/xcf.c: changed accordingly.
+
+	Unrelated:
+
+	* app/pdb/gimpprocedure.c (gimp_procedure_execute): be more verbose
+	when warning about out-of-bounds parameter values.
+
+	* tools/pdbgen/pdb/fileops.pdb: allow GIMP_RUN_WITH_LAST_VALS for
+	file_save because indirect saving (e.g. remote or compressed)
+	needs it.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2006-03-31  Sven Neumann  <sven@gimp.org>
+
+	* app/paint-funcs/scale-funcs.c: fixed compiler warning and
+	sprinkled some empty lines for readability.
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpdockable.c (gimp_dockable_destroy): always set
+	dockable->blurb to NULL, also if its memory is shared with
+	dockable->name.
+
+2006-03-31  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimagefile.c (gimp_imagefile_get_new_pixbuf): use
+	"gtk-dialog-question" instead of "gimp-wilber-eek" to indicate a
+	missing thumbnail.
+
+2006-03-31  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/Makefile.am
+	* app/pdb/gimpprocedure.[ch]: new files containing the functions
+	operating on *one* procedure. Factored out of procedural_db.[ch]
+	and renamed to gimp_procedure_foo().
+
+	* app/pdb/procedural_db.[ch]: removed them here.
+
+	* app/pdb/procedural-db-query.c
+	* app/batch.c
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/core/gimppdbprogress.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-proc-def.[ch]
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-rc.c
+	* app/plug-in/plug-in-run.c
+	* app/plug-in/plug-ins.c
+	* app/widgets/gimpfiledialog.c
+	* app/widgets/gimphelp.c
+	* app/widgets/gimppdbdialog.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/app.pl: changed #includes and function calls
+	accordingly. No logic changed.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-31  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/psd_save.c: applied a patch from Guillermo
+	S. Romero that adds basic support for saving layer masks.
+
+2006-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/paint/gimpclone.[ch]: use doubles for src coordinates. Added
+	properties for "src-drawable", "src-x" and "src-y".
+
+	* tools/pdbgen/pdb/paint_tools.pdb: resurrected cloning from
+	drawables over the PDB. This used to be broken for quite a while.
+
+	* app/pdb/paint_tools_cmds.c: regenerated.
+
+2006-03-30  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.c (procedural_db_execute_proc): don't
+	memset(0) the array of return values if the procedure didn't
+	succeed. GValues don't like to be treated like that and I don't
+	understand what the memsetting is good for. It just looks like a
+	very bad hack.
+
+	* app/file/file-open.c: additionally, don't access return_vals[>0]
+	unless the procedure returned successfully.
+
+	* app/core/gimppdbprogress.c
+	* app/widgets/gimppdbdialog.c: procedural_db_run_proc() always
+	returns non-NULL, no need to check for it.
+
+2006-03-30  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/procedural_db.pdb: got rid of one more (the
+	last?) perl utility function.
+
+2006-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimp-utils.[ch]: added gimp_get_temp_filename().
+
+	* tools/pdbgen/pdb/fileops.pdb (temp_name): removed the
+	implementation here and call gimp_get_temp_filename() instead.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2006-03-30  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.h (structs Argument and ProcArg): renamed
+	member "arg_type" to "type".
+
+	* app/pdb/procedural_db.c
+	* app/pdb/procedural-db-query.c
+	* app/actions/plug-in-commands.c
+	* app/core/gimppdbprogress.c
+	* app/plug-in/plug-in-params.c
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-rc.c
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb: changed accordingly.
+
+	* app/pdb/fileops_cmds.c
+	* app/pdb/procedural_db_cmds.c: regenerated.
+
+2006-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/base/siox.c (siox_foreground_extract): actually increment
+	the tile counter used to limit the number of progress updates.
+
+2006-03-30  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.c (procedural_db_free_entry): also
+	unref the ProcRecord's GParamSpecs.
+
+2006-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpparamspecs.c (gimp_param_parasite_validate): return
+	FALSE in case of a valid parasite.
+
+2006-03-30  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/gimpwire.c (gimp_wire_read, gimp_wire_write):
+	sprinkled a few G_UNLIKELY() macros to help the compiler.
+
+2006-03-30  Sven Neumann  <sven@gimp.org>
+
+	* app/pdb/procedural_db.c (procedural_db_free_entry): actually
+	free the memory allocated for the procedure entry.
+
+2006-03-30  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.[ch] (struct Argument): replace the value
+	union by a GValue.
+
+	(procedural_db_argument_init)
+	(procedural_db_compat_arg_init): new functions to initialize
+	an Argument. They call g_value_init() on the Argument's value.
+
+	(procedural_db_arguments)
+	(procedural_db_return_values): initialize the returned Argument
+	arrays so their GValues are ready to use. Allow to get the
+	(unsuccessful) return values of a NULL ProcRecord.
+
+	(procedural_db_destroy_args): g_value_unset() the values. Added a
+	"gboolean full_destroy" parameter. Its only effect is to destroy
+	PDB arrays, everything else is nicely memory managed by GValue.
+
+	(procedural_db_execute)
+	(procedural_db_run_proc): do GValue stuff. Added n_args and
+	n_return_vals parameters to execute().
+
+	(procedural_db_execute_proc): private function to execute a
+	procedure. Validates the passed in arguments using the registered
+	GParamSpecs before passing them to the resp. exec method.
+
+	* app/plug-in/plug-in-params.[ch] (plug_in_params_to_args): needs
+	an array of ProcArgs now in order to initialize the Arguments'
+	GValues correctly. Passing NULL ProcArgs uses
+	procedural_db_compat_arg_init(), so procedures (plug-ins)
+	returning more values than expected work.
+
+	(plug_in_args_to_params): do GValue stuff here too.
+
+	(plug_in_args_destroy): removed this function,
+	procedural_db_destroy_args() does the same now.
+
+	* app/plug-in/plug-in-message.c (plug_in_handle_proc_run):
+	simplified quite a bit because everything returns n_return_values
+	now. Call plug_in_params_to_args() only of the procedure was found.
+
+	(plug_in_handle_proc_return_priv): pass ProcRecs to
+	plug_in_params_to_args().
+
+	* app/batch.c
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/core/gimppdbprogress.c
+	* app/dialogs/about-dialog.c
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/plug-in/plug-ins.c
+	* app/plug-in/plug-in-progress.c
+	* app/plug-in/plug-in-run.[ch]
+	* app/widgets/gimphelp.c
+	* app/widgets/gimppdbdialog.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/pdb/fileops.pdb: changed accordingly: don't
+	g_new/g_free Argument arrays, always use procedural_db_foo()
+	functions. Use GValue functions to get/set Arguments.
+
+	* tools/pdbgen/pdb.pl: added get_value_func and set_value_func to
+	all PDB types. Removed id_func, id_ret_func and check_func. Added
+	flags which indicated that a type is an ID. Removed unused utility
+	functions.
+
+	* tools/pdbgen/lib.pl: use the flag instead of looking at
+	functions and value types.
+
+	* tools/pdbgen/app.pl: use the get_value_func and set_value_func
+	to marshal inargs and outargs. Removed all checks performed on
+	inargs because that's done by GParamSpec validation now. Added the
+	missing bits to register excluded values with GimpParamSpecEnum.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-30  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/plug-in-params.c (plug_in_param_defs_check): can't
+	just cast the GPParamDefs to ProcArgs any more, their struct
+	layouts are different now. Convert them into temporary ProcArgs
+	before calling plug_in_proc_args_check()
+
+2006-03-29  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpparamspecs.[ch]: added GimpParamSpecEnum, which is
+	a GParamSpecEnum plus the possibility to exclude values.
+	Fixed lots of validation functions.
+	Made all structs and macros public.
+
+2006-03-29  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.c (procedural_db_init_proc): switch to
+	g_return_val_if_fail() because it got a return value.
+
+2006-03-29  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/fileops.pdb (file_save): pass the filename, not
+	a GimpImage to file_utils_filename_to_uri(). Fixes bug #336527.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2006-03-29  Sven Neumann  <sven@gimp.org>
+
+	* desktop/gimp.desktop.in.in: dropped the extension from the icon
+	name (bug #336498).
+
+2006-03-29  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/drawable.pdb (drawable_type_with_alpha): fixed
+	forgotten antique enum values (RGBA_GIMAGE -> GIMP_RGB_IMAGE etc.)
+
+	* app/pdb/drawable_cmds.c: regenerated.
+
+2006-03-29  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.[ch] (procedural_db_init_proc): return the
+	procedure.
+
+	* tools/pdbgen/app.pl: use a local ProcRecord* variable so the
+	generated code becomes more readable.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-29  Michael Natterer  <mitch@gimp.org>
+
+	* libgimp/gimp.c (gimp_run_procedure2): add newline to g_printerr().
+
+2006-03-29  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/Makefile.am: added an explicit dependency to
+	force creation of gimp-wilber-pixbufs.h.
+
+2006-03-29  Sven Neumann  <sven@gimp.org>
+
+	* desktop/Makefile.am
+	* desktop/gimp.png: removed.
+
+	* desktop/16x16/gimp.png
+	* desktop/22x22/gimp.png
+	* desktop/24x24/gimp.png
+	* desktop/32x32/gimp.png
+	* desktop/48x48/gimp.png
+	* desktop/64x64/gimp.png
+	* desktop/scalable/gimp.svg: new application icons in different
+	sizes, contributed by Jakub Steiner.
+
+	* themes/Default/images/Makefile.am
+	* themes/Default/images/stock-wilber-32.png
+	* themes/Default/images/stock-wilber-48.png: removed.
+
+	* libgimpwidgets/Makefile.am
+	* libgimpwidgets/wilber-16.png
+	* libgimpwidgets/wilber-32.png
+	* libgimpwidgets/wilber-48.png
+	* libgimpwidgets/wilber-64.png: new window icons, identical to the
+	new application icons.
+
+	* libgimpwidgets/gimpwidgets-private.c: use the new window icons.
+
+2006-03-29  Sven Neumann  <sven@gimp.org>
+
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-params.c
+	* app/plug-in/plug-in.c: string review.
+
+2006-03-29  Tor Lillqvist  <tml@novell.com>
+
+	* plug-ins/common/winprint.c (query): Make it compile again, add
+	missing parameter to gimp_install_procedure().
+
+2006-03-28  Sven Neumann  <sven@gimp.org>
+
+        * configure.in (ALL_LINGUAS): removed "ka" until all po files have
+	been added.
+
+2006-03-28 Vladimer Sichinava  <vlsichinava@gmail.com>
+
+        * configure.in: Added "ka" (Georgian) to ALL_LINGUAS
+
+2006-03-28  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.[ch] (struct ProcArg): replace "name"
+	and "description" by a GParamSpec.
+
+	(procedural_db_init_proc)
+	(procedural_db_add_argument)
+	(procedural_db_add_return_value)
+	(procedural_db_add_compat_arg)
+	(procedural_db_add_compat_val): new functions which dynamically
+	allocate and register arguments and return value arrays based on
+	GParamSpecs.
+
+	* app/pdb/procedural-db-query.c
+	* app/plug-in/plug-in-message.c
+	* app/plug-in/plug-in-proc-def.c
+	* app/plug-in/plug-in-rc.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/pdb/procedural_db.pdb: changed accordingly.
+
+	* tools/pdbgen/app.pl: get rid of all ProcArg arrays and generate
+	code that registers args and values with the procedures.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-28  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimpdockbook.c (gimp_dockbook_drop_dockable): allow
+	dropping of dockables from the same dockbook to the empty space
+	next to the notebook tabs. This moves the dockable to the end.
+
+2006-03-28  Sven Neumann  <sven@gimp.org>
+
+	* app/*: did a global gdisp -> display substitution.
+
+2006-03-28  Sven Neumann  <sven@gimp.org>
+
+	* app/*
+	* plug-ins/common/psd.c
+	* plug-ins/rcm/rcm_misc.c: did a global gimage -> image substitution.
+
+2006-03-28  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpparamspecs.[ch] (gimp_param_spec_string): reordered
+	params to be consistent with other param specs.
+
+	(gimp_value_get_rgb): utility function which reads the value
+	into a GimpRGB struct, instead of returning a pointer.
+
+	(gimp_value_set_rgb): added for symmetry. Just calls
+	g_value_set_boxed().
+
+2006-03-28  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/jpeg/jpeg-exif.c
+	* plug-ins/jpeg/jpeg-load.c
+	* plug-ins/jpeg/jpeg.h: added a utility function to work around
+	filename encoding problems when reading EXIF data (bug #335391).
+
+2006-03-28  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/flame/flame.c
+	* plug-ins/gfig/gfig.c
+	* plug-ins/gflare/gflare.c
+	* plug-ins/gimpressionist/gimp.c
+	* plug-ins/ifscompose/ifscompose.c
+	* plug-ins/imagemap/imap_main.c
+	* plug-ins/maze/maze.c
+	* plug-ins/metadata/metadata.c
+	* plug-ins/pagecurl/pagecurl.c
+	* plug-ins/print/print.c
+	* plug-ins/rcm/rcm.c
+	* plug-ins/winsnap/winsnap.c: reviewed blurbs and marked them for
+	translation.
+
+2006-03-28  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.c (procedural_db_arguments): argh, get
+	types from procedure->args, not procedure->values.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.[ch]: renamed procedural_db_return_args()
+	to procedural_db_return_values() and added
+	procedural_db_arguments(), which returns a newly allocated,
+	initialized array of the procedure's arguments.
+
+	* app/actions/plug-in-commands.c
+	* app/actions/vectors-commands.c
+	* app/plug-in/plug-in-run.c
+	* app/widgets/gimphelp.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb/fileops.pdb: changed accordingly, some cleanup.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.h (ArgMarshal): pass the ProcRecord as
+	first parameter, so marshallers have access to their ProcRecord
+	without the need for global variables.
+
+	* app/pdb/procedural_db.c
+	* app/xcf/xcf.c
+	* tools/pdbgen/app.pl: changed addordingly.
+
+	* tools/pdbgen/app.pl: removed support for invoke->proc. Introduce
+	invoke->no_marshalling instead which indicates that invoke->code
+	should be used literally as marshaller code, without any
+	substitutions or generated variables.
+
+	* tools/pdbgen/pdb/fileops.pdb: changed accordingly.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-27  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpforegroundselectoptions.c
+	* app/tools/gimpforegroundselecttool.c: use Ctrl to switch between
+	foreground and background refinement.
+
+2006-03-27  Karine Delvare  <edhel@gimp.org>
+
+	* app/tools/gimpnewrectselecttool.c: allow modifier keys to work.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/Makefile.am
+	* app/core/gimpparamspecs.[ch]: new unused files. Checked in so
+	they can be easily reviewed.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* app/paint/paint-enums.h: register GimpBrushApplicationMode.
+
+	* app/paint/paint-enums.c
+	* tools/pdbgen/enums.pl: regenerated.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/enums.pl: was reordered by the commit below.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* app/base/base-enums.h
+	* app/core/core-enums.h
+	* app/plug-in/plug-in-enums.h: register some more enums.
+
+	* app/plug-in/Makefile.am: added rules to generate plug-in-enums.c
+
+	* app/base/base-enums.c
+	* app/core/core-enums.c
+	* app/plug-in/plug-in-enums.c: (re)generated.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* app/file/file-open.c
+	* app/file/file-save.c
+	* app/plug-in/plug-ins.c: use procedural_db_run_proc() instead of
+	procedural_db_execute(). execute() should be avoided for anything
+	but PDB-internal calls.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.c (procedural_db_run_proc): some fixes and
+	more robustness:
+
+	- Procedures return proc->num_values + 1 return values, not only
+	  proc->num_values.
+	- Allocate the Argment array with g_new0 and initialize all its
+	  types before parsing the va_list.
+	- Stop parsing the va_list on GIMP_PDB_END, so passing less
+	  parameters is possible.
+	- Cleanup switch() cases.
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpcolor/gimprgb.c (gimp_param_rgb_init): default to fully
+	opaque black instead of fully transparent.
+
+	(gimp_param_spec_rgb): allow a NULL default value. Simply use the
+	opaque black set in init().
+
+2006-03-27  Michael Natterer  <mitch@gimp.org>
+
+	* app/pdb/procedural_db.c (procedural_db_run_proc): return a
+	proper CALLING_ERROR on parameter type mispatch, not just NULL.
+
+	* app/pdb/procedural_db.h: removed unused struct NetExec.
+
+2006-03-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/script-fu/scripts/fade-outline.scm: simplified blurb.
+
+2006-03-27  Sven Neumann  <sven@gimp.org>
+
+	* app/base/siox.c: applied changes from Kristian Jantz that
+	improve the progress update from the SIOX routine.
+
+2006-03-26  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/lib.pl: removed support for arg->implicit_fill.
+
+	* tools/pdbgen/pdb/progress.pdb (progress_init): remove it without
+	replacement, the generated function on the libgimp side is
+	internal anyway.
+	
+	* libgimp/gimpprogress_pdb.[ch] (_gimp_progress_init): regenerated
+	with a display_ID parameter.
+
+	* libgimp/gimpprogress.c (gimp_progress_init): pass
+	gimp_default_display() to _gimp_progress_init().
+
+2006-03-26  Karine Delvare  <edhel@gimp.org>
+
+	* app/tools/gimpcropoptions.c
+	* app/tools/gimprectangleoptions.[ch]
+	* app/tools/gimprectangletool.[ch]: moved options gui creation
+	from the tool to the options.
+
+	* app/tools/gimpselectionoptions.c
+	* app/tools/gimpnewrectselecttool.[ch]
+	* app/tools/gimpellipseselecttool.[ch]: ported ellipse selection
+	tool to the new rectangle interface.
+
+2006-03-25  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimptool.[ch]
+	* app/tools/tool_manager.[ch]: add "gboolean proximity" parameter
+	to GimpTool::oper_update() in order to emphasize its importance
+	and to avoid peeking around in the GimpDisplayShell struct.
+
+	* app/tools/gimpbycolorselecttool.c
+	* app/tools/gimpclonetool.c
+	* app/tools/gimpcolorpickertool.c
+	* app/tools/gimpcolortool.c
+	* app/tools/gimpcurvestool.c
+	* app/tools/gimpforegroundselecttool.c
+	* app/tools/gimpiscissorstool.c
+	* app/tools/gimpmovetool.c
+	* app/tools/gimpnewrectselecttool.c
+	* app/tools/gimppainttool.c
+	* app/tools/gimprectangletool.[ch]
+	* app/tools/gimpselectiontool.c
+	* app/tools/gimptransformtool.c
+	* app/tools/gimpvectortool.c: changed accordingly. Got rid of
+	quite some "display/gimpdisplayshell.h" includes.
+
+	* app/display/gimpdisplayshell-callbacks.c
+	(gimp_display_shell_canvas_tool_events): pass shell->proximity to
+	tool_manager_oper_update_active().
+
+2006-03-25  Michael Natterer  <mitch@gimp.org>
+
+	* app/tools/gimpclonetool.c
+	* app/tools/gimpcurvestool.c
+	* app/tools/gimpforegroundselecttool.c
+	* app/tools/gimpselectiontool.c
+	* app/tools/gimpvectortool.c (GimpTool::oper_update): don't push
+	status messages when shell->proximity is FALSE. Make sure the old
+	status message gets popped regardless of shell->proximity's
+	value. Fixes stuck status bar messages.
+
+2006-03-25  Karine Delvare  <edhel@gimp.org>
+
+	* app/tools/gimprectangletool.c: react to highlight notification.
+	Fixes bug #335652.
+
+2006-03-25  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/app.pl: factored out a utility function. I need it
+	in another pretty messed up tree ;)
+
+2006-03-25  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/brush.pdb
+	* tools/pdbgen/pdb/brushes.pdb
+	* tools/pdbgen/pdb/channel.pdb
+	* tools/pdbgen/pdb/color.pdb
+	* tools/pdbgen/pdb/context.pdb
+	* tools/pdbgen/pdb/edit.pdb
+	* tools/pdbgen/pdb/gradient.pdb
+	* tools/pdbgen/pdb/gradient_select.pdb
+	* tools/pdbgen/pdb/gradients.pdb
+	* tools/pdbgen/pdb/image.pdb
+	* tools/pdbgen/pdb/layer.pdb
+	* tools/pdbgen/pdb/paint_tools.pdb
+	* tools/pdbgen/pdb/plug_in.pdb
+	* tools/pdbgen/pdb/selection.pdb
+	* tools/pdbgen/pdb/selection_tools.pdb
+	* tools/pdbgen/pdb/text_tool.pdb: removed all ':' before and all
+	'()' around %%desc%%.
+
+	* tools/pdbgen/app.pl: add () to int32, float and boolean
+	descriptions automatically. They all look the same now.
+
+	* tools/pdbgen/lib.pl: tweaked regex so %%desc%% doesn't appear in
+	libgimp API docs.
+
+	* app/pdb/brush_cmds.c
+	* app/pdb/brushes_cmds.c
+	* app/pdb/channel_cmds.c
+	* app/pdb/color_cmds.c
+	* app/pdb/context_cmds.c
+	* app/pdb/floating_sel_cmds.c
+	* app/pdb/image_cmds.c
+	* app/pdb/layer_cmds.c
+	* app/pdb/paint_tools_cmds.c
+	* app/pdb/plug_in_cmds.c
+	* app/pdb/selection_cmds.c
+	* app/pdb/selection_tools_cmds.c
+	* app/pdb/text_tool_cmds.c
+	* libgimp/gimpedit_pdb.c
+	* libgimp/gimpplugin_pdb.c: regenerated.
+
+2006-03-24  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/channel.pdb
+	* tools/pdbgen/pdb/color.pdb
+	* tools/pdbgen/pdb/drawable.pdb
+	* tools/pdbgen/pdb/drawable_transform.pdb
+	* tools/pdbgen/pdb/image.pdb
+	* tools/pdbgen/pdb/layer.pdb
+	* tools/pdbgen/pdb/plug_in.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb: replace '<' by '<=' in all
+	int32 ranges so they specify min and max values.
+
+	* app/pdb/channel_cmds.c
+	* app/pdb/color_cmds.c
+	* app/pdb/drawable_cmds.c
+	* app/pdb/drawable_transform_cmds.c
+	* app/pdb/image_cmds.c
+	* app/pdb/layer_cmds.c
+	* app/pdb/plug_in_cmds.c
+	* app/pdb/procedural_db_cmds.c: regenerated.
+
+2006-03-24  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/brush.pdb
+	* tools/pdbgen/pdb/brushes.pdb
+	* tools/pdbgen/pdb/channel.pdb
+	* tools/pdbgen/pdb/color.pdb
+	* tools/pdbgen/pdb/display.pdb
+	* tools/pdbgen/pdb/drawable.pdb
+	* tools/pdbgen/pdb/drawable_transform.pdb
+	* tools/pdbgen/pdb/edit.pdb
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/floating_sel.pdb
+	* tools/pdbgen/pdb/gradient.pdb
+	* tools/pdbgen/pdb/gradient_select.pdb
+	* tools/pdbgen/pdb/gradients.pdb
+	* tools/pdbgen/pdb/image.pdb
+	* tools/pdbgen/pdb/layer.pdb
+	* tools/pdbgen/pdb/paint_tools.pdb
+	* tools/pdbgen/pdb/palette.pdb
+	* tools/pdbgen/pdb/palettes.pdb
+	* tools/pdbgen/pdb/patterns.pdb
+	* tools/pdbgen/pdb/plug_in.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb
+	* tools/pdbgen/pdb/selection.pdb
+	* tools/pdbgen/pdb/selection_tools.pdb
+	* tools/pdbgen/pdb/text_tool.pdb
+	* tools/pdbgen/pdb/transform_tools.pdb
+	* tools/pdbgen/pdb/undo.pdb
+	* tools/pdbgen/pdb/vectors.pdb: replaced 'True', 'true' and
+	'non-zero' by 'TRUE' where appropriate. Added %%desc%% to enum arg
+	descriptions where missing. Get object names using
+	gimp_object_get_name(). Set 'success' more consistently. Removed
+	{ } from all enum arg descriptions...
+
+	* tools/pdbgen/app.pl (make_arg_recs): ...and add the { }
+	generically here. Removed some code that replaced the ',' by 'or'
+	for enums without { } so all enums are now documented the same.
+
+	* app/pdb/<some>_cmds.c
+	* libgimp/<some>_pdb.c: regenerated.
+
+2006-03-24  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/jpeg/jpeg-load.c (load_thumbnail_image): close the file
+	descriptor.
+
+2006-03-24  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/mapcolor.c
+	* plug-ins/common/warp.c: avoid using FG and BG.
+
+2006-03-24  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/colormap-editor-actions.c
+	* app/actions/gradient-editor-actions.c
+	* app/actions/palette-editor-actions.c
+	* app/core/gimp-edit.c
+	* app/core/gimpchannel-select.c: some more string changes, mainly
+	avoiding the use of FG and BG in labels where there's no need for
+	being concise.
+
+2006-03-24  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimprectselecttool.c: renamed from "Rect Select" to
+	"Rectangle Select" (bug #335715).
+
+	* app/core/gimpchannel-select.c (gimp_channel_select_rectangle):
+	string change (bug #335715).
+
+	* plug-ins/common/svg.c: follow the change to the file format
+	label done in the shared-mime-info package (bug #335716).
+
+	* configure.in: fixed the --without-libtiff case in the summary
+	(bug #335764).
+
+2006-03-23  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimp-gui.[ch]
+	* app/gui/gui-vtable.c
+	* app/plug-in/plug-in-progress.[ch]: pass displays around as
+	GimpObject, not as integer IDs.
+
+	* tools/pdbgen/pdb/progress.pdb: changed accordingly.
+
+	* app/pdb/progress_cmds.c
+	* libgimp/gimpprogress_pdb.c: regenerated.
+
+2006-03-23  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/stddefs.pdb: removed std_image_arg(),
+	std_antialias_arg() and std_orientation_enum().
+
+	* tools/pdbgen/pdb/*.pdb: changed accordingly. Did a global
+	s/gimage/image/. Some more cleanup.
+
+	* tools/pdbgen/pdb/grid.pdb
+	* tools/pdbgen/pdb/guides.pdb: removed utility functions.
+
+	* tools/pdbgen/pdb/vectors.pdb: reordered procedures. Removed
+	obsolete procedure.
+
+	* app/pdb/channel_cmds.c
+	* app/pdb/convert_cmds.c
+	* app/pdb/display_cmds.c
+	* app/pdb/drawable_cmds.c
+	* app/pdb/fileops_cmds.c
+	* app/pdb/grid_cmds.c
+	* app/pdb/guides_cmds.c
+	* app/pdb/image_cmds.c
+	* app/pdb/layer_cmds.c
+	* app/pdb/parasite_cmds.c
+	* app/pdb/paths_cmds.c
+	* app/pdb/selection_cmds.c
+	* app/pdb/selection_tools_cmds.c
+	* app/pdb/text_tool_cmds.c
+	* app/pdb/undo_cmds.c
+	* app/pdb/vectors_cmds.c
+	* libgimp/gimpdrawable_pdb.c
+	* libgimp/gimpimage_pdb.[ch]
+	* libgimp/gimpvectors_pdb.[ch]: regenerated.
+
+2006-03-23  Sven Neumann  <sven@gimp.org>
+
+	* themes/Small/gtkrc: commented out the hardcoded font setting.
+	It's just wrong to do this until bug #325767 has been addressed.
+
+2006-03-23  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayoptions.c: avoid code duplication by
+	using a #define.
+
+	* app/config/gimpdisplayconfig.c: for fullscreen mode, default to
+	the same settings as we do for normal editing mode.
+
+2006-03-23  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/psd.c
+	* plug-ins/common/psd_save.c: converted shorts to gint16 and longs
+	to gint32 to fix 64bit problems as reported in bug #335130.
+
+2006-03-23  Sven Neumann  <sven@gimp.org>
+
+	* app/base/siox.c (siox_foreground_extract): fixed the potential
+	problem that the cache wouldn't have been cleared correctly if
+	both background and foreground areas are added at the same time.
+
+2006-03-23  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/randomize.c: removed version number from dialog
+	title, improved progress update.
+
+2006-03-22  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/app.pl: removed support for invoke->pass_through.
+
+	* tools/pdbgen/pdb/fileops.pdb: added a C utility function and
+	call it from both register_load_handler() and
+	register_magic_load_handler() instead of letting the generated
+	invokers call each other.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2006-03-22  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/buffer.pdb
+	* tools/pdbgen/pdb/color.pdb
+	* tools/pdbgen/pdb/display.pdb
+	* tools/pdbgen/pdb/drawable.pdb
+	* tools/pdbgen/pdb/drawable_transform.pdb
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/font_select.pdb
+	* tools/pdbgen/pdb/gimprc.pdb
+	* tools/pdbgen/pdb/layer.pdb
+	* tools/pdbgen/pdb/selection.pdb
+	* tools/pdbgen/pdb/text_tool.pdb
+	* tools/pdbgen/pdb/transform_tools.pdb: more perl stuff flattened,
+	cleanup, nitpickyness.
+
+	* app/pdb/buffer_cmds.c
+	* app/pdb/color_cmds.c
+	* app/pdb/display_cmds.c
+	* app/pdb/drawable_cmds.c
+	* app/pdb/layer_cmds.c
+	* app/pdb/selection_cmds.c
+	* libgimp/gimpselection_pdb.[ch]: regenerated.
+
+2006-03-22  Sven Neumann  <sven@gimp.org>
+
+	* app/base/siox.c (siox_foreground_extract): fixed assertions and
+	progress calculation.
+
+2006-03-22  Simon Budig  <simon@gimp.org>
+
+	* tools/pdbgen/pdb/paths.pdb: deprecated path_get_point_at_dist()
+
+	* app/pdb/paths_cmds.c
+	* libgimp/gimppaths_pdb.[ch]: regenerated.
+
+2006-03-22  Sven Neumann  <sven@gimp.org>
+
+	* app/base/siox.[ch] (siox_foreground_extract): let the caller
+	specify a region of interest. Call the progress function more often.
+
+	* app/core/gimpdrawable-foreground-extract.c
+	(gimp_drawable_foreground_extract_siox): pass a region of interest
+	to siox_foreground_extract() to speed up the SIOX tool.
+
+2006-03-22  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/image.pdb: reordered vectors procedures.
+
+	* tools/pdbgen/pdb/parasite.pdb: removed all utility functions
+	and added parasite procedures for vectors.
+
+	* tools/pdbgen/pdb/paths.pdb: removed get_visible() and
+	set_visible(), deprecated all procedures that are already
+	implemented in the vectors namespace.
+
+	* tools/pdbgen/pdb/channel.pdb
+	* tools/pdbgen/pdb/vectors.pdb: minor cleanup.
+
+	* libgimp/gimp.def: changed accordingly.
+
+	* app/pdb/channel_cmds.c
+	* app/pdb/image_cmds.c
+	* app/pdb/internal_procs.c
+	* app/pdb/parasite_cmds.c
+	* app/pdb/paths_cmds.c
+	* app/pdb/vectors_cmds.c
+	* libgimp/gimpimage_pdb.[ch]
+	* libgimp/gimpparasite_pdb.[ch]
+	* libgimp/gimppaths_pdb.[ch]
+	* libgimp/gimpvectors_pdb.c: regenerated.
+
+2006-03-22  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/core-enums.h: export GimpBrushGeneratedShape to the PDB.
+
+	* tools/pdbgen/pdb/brush.pdb: use it instead of int32.
+
+	* libgimp/gimp.def: add gimp_brush_generated_shape_get_type().
+
+	* tools/pdbgen/pdb/brush_select.pdb
+	* tools/pdbgen/pdb/brushes.pdb
+	* tools/pdbgen/pdb/display.pdb
+	* tools/pdbgen/pdb/drawable.pdb
+	* tools/pdbgen/pdb/edit.pdb
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/floating_sel.pdb
+	* tools/pdbgen/pdb/font_select.pdb
+	* tools/pdbgen/pdb/fonts.pdb
+	* tools/pdbgen/pdb/gimprc.pdb
+	* tools/pdbgen/pdb/gradients.pdb
+	* tools/pdbgen/pdb/help.pdb
+	* tools/pdbgen/pdb/image.pdb
+	* tools/pdbgen/pdb/layer.pdb
+	* tools/pdbgen/pdb/message.pdb
+	* tools/pdbgen/pdb/misc.pdb
+	* tools/pdbgen/pdb/paint_tools.pdb
+	* tools/pdbgen/pdb/palette.pdb
+	* tools/pdbgen/pdb/palette_select.pdb
+	* tools/pdbgen/pdb/palettes.pdb
+	* tools/pdbgen/pdb/paths.pdb
+	* tools/pdbgen/pdb/pattern_select.pdb
+	* tools/pdbgen/pdb/patterns.pdb
+	* tools/pdbgen/pdb/plug_in.pdb
+	* tools/pdbgen/pdb/text_tool.pdb: more perl/C code separation,
+	removed some more utility functions, cleanup.
+
+	* app/pdb/brush_cmds.c
+	* app/pdb/brushes_cmds.c
+	* app/pdb/display_cmds.c
+	* app/pdb/drawable_cmds.c
+	* app/pdb/fonts_cmds.c
+	* app/pdb/gimprc_cmds.c
+	* app/pdb/gradients_cmds.c
+	* app/pdb/layer_cmds.c
+	* app/pdb/palettes_cmds.c
+	* app/pdb/paths_cmds.c
+	* app/pdb/patterns_cmds.c
+	* tools/pdbgen/enums.pl
+	* libgimp/gimpbrush_pdb.[ch]
+	* libgimp/gimpenums.c.tail
+	* libgimp/gimpenums.h: regenerated.
+
+2006-03-21  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/gradient.pdb: removed all perl utility
+	functions. Added some C ones instead. Doc fixes.
+
+	* app/pdb/gradient_cmds.c
+	* libgimp/gimpgradient_pdb.c: regenerated.
+
+2006-03-21  Karine Delvare  <kdelvare@nerim.net>
+
+	* app/tools/gimprectangletool.c: removed properties that are
+	rather internal states.
+
+2006-03-21  Karine Delvare  <kdelvare@nerim.net>
+
+	* app/tools/gimpnewrectselecttool.c
+	* app/tools/gimprectangleoptions.[ch]
+	* app/tools/gimprectangletool.[ch]: hide properties accessors.
+
+2006-03-21  Karine Delvare  <kdelvare@nerim.net>
+
+	* app/tools/gimpcropoptions.c: use GIMP_RECTANGLE_OPTIONS_PROP_LAST
+	instead of duplicating properties.
+
+2006-03-21  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/app.pl: removed support for arg->cond.
+
+	* tools/pdbgen/edit.pdb
+	* tools/pdbgen/image.pdb: move its logic into the C code.
+
+	* app/pdb/edit_cmds.c
+	* app/pdb/image_cmds.c: regenerated.
+
+2006-03-19  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/core-types.h: define GIMP_COORDS_DEFAULT_VALUES, a
+	struct initializer for GimpCoords.
+
+	* app/core/gimpimage-snap.c
+	* app/paint/gimppaintcore-stroke.c
+	* app/vectors/gimpbezierstroke.c
+	* app/vectors/gimpvectors-compat.c
+	* tools/pdbgen/pdb/paint_tools.pdb
+	* tools/pdbgen/pdb/vectors.pdb: use it here.
+
+	* app/pdb/paint_tools_cmds.c
+	* app/pdb/vectors_cmds.c: regenerated.
+
+2006-03-19  DindinX  <dindinx@gimp.org>
+
+	* libgimp/gimpzoompreview.c: untabbified.
+
+2006-03-19  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/app.pl: remove some code that has no effect on the
+	generated code any more.
+
+2006-03-18  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/context-actions.c: added more action blurbs.
+
+	* menus/image-menu.xml.in: moved toolbox and fg/bg color actions
+	to the bottom of the Tools menu.
+
+2006-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/app.pl
+	* tools/pdbgen/pdb/progress.pdb: got rid of the unused
+	arg->no_id_lookup.
+
+	* tools/pdbgen/pdb/plug_in.pdb: flattened a forgotten foreach().
+
+2006-03-18  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/plug-in-actions.c
+	* app/actions/select-actions.c
+	* app/actions/view-actions.c: added more action blurbs.
+
+2006-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/unit.pdb: got rid of all perl utility
+	functions.
+
+	* app/pdb/unit_cmds.c: regenerated.
+
+2006-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/drawable.pdb: got rid of all perl utility
+	functions.
+
+	* app/pdb/drawable_cmds.c
+	* libgimp/gimpdrawable_pdb.c: regenerated.
+
+2006-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/app.pl: removed support for arg->on_success and
+	arg->on_fail.
+
+	* tools/pdbgen/pdb/gradient_select.pdb
+	* tools/pdbgen/pdb/gradients.pdb
+	* tools/pdbgen/pdb/paint_tools.pdb
+	* tools/pdbgen/pdb/selection_tools.pdb: moved their logic to the C
+	code.
+
+	* app/pdb/gradient_select_cmds.c
+	* app/pdb/gradients_cmds.c
+	* app/pdb/paint_tools_cmds.c
+	* app/pdb/selection_tools_cmds.c: regenerated.
+
+2006-03-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/lic.c: applied a patch from Karine Delvare that
+	fixes a performance problem in the Van Gogh plug-in (bug #113615).
+
+2006-03-17  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/pygimp/gimpplugin.py: _run should pass on the return
+	value. Fixes bug #334874.
+
+2006-03-17  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb.pl: generically map NULL to -1 when returning
+	object IDs.
+
+	* tools/pdbgen/app.pl: remove support for "return_fail => foo"
+	which did the same on a per-return-value basis. Removed some more
+	obscure perl without any effect on the generated code.
+
+	* tools/pdbgen/pdb/image.pdb
+	* tools/pdbgen/pdb/text_tool.pdb: don't use "return_fail => foo".
+
+	* app/pdb/channel_cmds.c
+	* app/pdb/display_cmds.c
+	* app/pdb/drawable_cmds.c
+	* app/pdb/drawable_transform_cmds.c
+	* app/pdb/edit_cmds.c
+	* app/pdb/fileops_cmds.c
+	* app/pdb/image_cmds.c
+	* app/pdb/layer_cmds.c
+	* app/pdb/selection_cmds.c
+	* app/pdb/transform_tools_cmds.c
+	* app/pdb/vectors_cmds.c: regenerated.
+
+2006-03-17  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/image.pdb: removed all remaining utility
+	functions, some cleanup and doc fixes.
+
+	* app/pdb/image_cmds.c
+	* libgimp/gimpimage_pdb.c: regenerated.
+
+2006-03-17  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplayshell-render.c
+	* app/display/gimpdisplayshell.[ch]
+	* app/tools/gimpforegroundselectoptions.[ch]
+	* app/tools/gimpforegroundselecttool.c: allow to use red, green or
+	blue for the selection preview used by the foreground selection tool.
+
+2006-03-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/*.c: removed trailing period from procedure blurbs.
+
+2006-03-16  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/image.pdb: replaced code generated by now gone
+	utility functions list_proc() and type_move() by pdbgen
+	boilerplate code. Fixed wrapper of gimp_image_lower_channel() to
+	actually lower the channel (it was lowering the active layer).
+
+	* app/pdb/image_cmds.c
+	* libgimp/gimpimage_pdb.[ch]: regenerated.
+
+2006-03-15  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* plug-ins/common/AlienMap2.c
+	* plug-ins/common/CML_explorer.c
+	* plug-ins/common/align_layers.c
+	* plug-ins/common/animationplay.c
+	* plug-ins/common/animoptimize.c
+	* plug-ins/common/apply_lens.c
+	* plug-ins/common/autocrop.c
+	* plug-ins/common/autostretch_hsv.c
+	* plug-ins/common/blinds.c
+	* plug-ins/common/blur.c
+	* plug-ins/common/borderaverage.c
+	* plug-ins/common/bumpmap.c
+	* plug-ins/common/c_astretch.c
+	* plug-ins/common/cartoon.c
+	* plug-ins/common/ccanalyze.c
+	* plug-ins/common/channel_mixer.c
+	* plug-ins/common/checkerboard.c
+	* plug-ins/common/color_enhance.c
+	* plug-ins/common/colorify.c
+	* plug-ins/common/colortoalpha.c
+	* plug-ins/common/compose.c
+	* plug-ins/common/convmatrix.c
+	* plug-ins/common/cubism.c
+	* plug-ins/common/curve_bend.c
+	* plug-ins/common/decompose.c
+	* plug-ins/common/deinterlace.c
+	* plug-ins/common/depthmerge.c
+	* plug-ins/common/despeckle.c
+	* plug-ins/common/destripe.c
+	* plug-ins/common/diffraction.c
+	* plug-ins/common/displace.c
+	* plug-ins/common/dog.c
+	* plug-ins/common/edge.c
+	* plug-ins/common/emboss.c
+	* plug-ins/common/engrave.c
+	* plug-ins/common/exchange.c
+	* plug-ins/common/film.c
+	* plug-ins/common/flarefx.c
+	* plug-ins/common/fp.c
+	* plug-ins/common/fractaltrace.c
+	* plug-ins/common/gauss.c
+	* plug-ins/common/gee.c
+	* plug-ins/common/gee_zoom.c
+	* plug-ins/common/glasstile.c
+	* plug-ins/common/gnomeprint.c
+	* plug-ins/common/gqbist.c
+	* plug-ins/common/gradmap.c
+	* plug-ins/common/grid.c
+	* plug-ins/common/guillotine.c
+	* plug-ins/common/hot.c
+	* plug-ins/common/illusion.c
+	* plug-ins/common/iwarp.c
+	* plug-ins/common/jigsaw.c
+	* plug-ins/common/laplace.c
+	* plug-ins/common/lic.c
+	* plug-ins/common/mail.c
+	* plug-ins/common/mapcolor.c
+	* plug-ins/common/max_rgb.c
+	* plug-ins/common/mblur.c
+	* plug-ins/common/mosaic.c
+	* plug-ins/common/neon.c
+	* plug-ins/common/newsprint.c
+	* plug-ins/common/nlfilt.c
+	* plug-ins/common/noisify.c
+	* plug-ins/common/normalize.c
+	* plug-ins/common/nova.c
+	* plug-ins/common/oilify.c
+	* plug-ins/common/papertile.c
+	* plug-ins/common/photocopy.c
+	* plug-ins/common/pixelize.c
+	* plug-ins/common/plasma.c
+	* plug-ins/common/plugin-browser.c
+	* plug-ins/common/polar.c
+	* plug-ins/common/procedure-browser.c
+	* plug-ins/common/randomize.c
+	* plug-ins/common/retinex.c
+	* plug-ins/common/ripple.c
+	* plug-ins/common/sample_colorize.c
+	* plug-ins/common/scatter_hsv.c
+	* plug-ins/common/screenshot.c
+	* plug-ins/common/sel_gauss.c
+	* plug-ins/common/semiflatten.c
+	* plug-ins/common/sharpen.c
+	* plug-ins/common/shift.c
+	* plug-ins/common/sinus.c
+	* plug-ins/common/smooth_palette.c
+	* plug-ins/common/snoise.c
+	* plug-ins/common/sobel.c
+	* plug-ins/common/softglow.c
+	* plug-ins/common/sparkle.c
+	* plug-ins/common/spheredesigner.c
+	* plug-ins/common/spread.c
+	* plug-ins/common/struc.c
+	* plug-ins/common/threshold_alpha.c
+	* plug-ins/common/tile.c
+	* plug-ins/common/tileit.c
+	* plug-ins/common/tiler.c
+	* plug-ins/common/uniteditor.c
+	* plug-ins/common/unsharp.c
+	* plug-ins/common/video.c
+	* plug-ins/common/vinvert.c
+	* plug-ins/common/vpropagate.c
+	* plug-ins/common/warp.c
+	* plug-ins/common/waves.c
+	* plug-ins/common/whirlpinch.c
+	* plug-ins/common/wind.c
+	* plug-ins/common/winprint.c
+	* plug-ins/common/zealouscrop.c: Give "helpful" blurbs to menu-
+	accessible plugins, and mark them for translation.  Probably there
+	is room for improvement in some of them.  Still needs to be done for
+	plug-ins not in "common".
+	
+2006-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/channel.pdb
+	* tools/pdbgen/pdb/layer.pdb: removed dim(), accessors(),
+	get_prop() and set_prop() utility functions and expand everything
+	to pdbgen boilerplate code. Use the real layer mask API instead of
+	the crap from pdb_glue.h. Fixed some API docs.
+
+	* app/pdb/channel_cmds.c
+	* app/pdb/layer_cmds.c
+	* libgimp/gimplayer_pdb.c: regenerated.
+
+	* app/pdb/Makefile.am
+	* app/pdb/pdb_glue.h: bye bye uglyness.
+
+2006-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb.pl: define init values for all pdb types.
+
+	* tools/pdbgen/app.pl: unconditionally initialize all return
+	values, and don't initialize any parameter.
+
+	* tools/pdbgen/pdb/*.pdb: removed init => 1 from all arguments
+	and return values.
+
+	* app/pdb/*_cmds.c: regenerated.
+
+2006-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/context.pdb
+	* tools/pdbgen/pdb/convert.pdb
+	* tools/pdbgen/pdb/drawable.pdb
+	* tools/pdbgen/pdb/edit.pdb
+	* tools/pdbgen/pdb/fileops.pdb
+	* tools/pdbgen/pdb/gimprc.pdb
+	* tools/pdbgen/pdb/gradient.pdb
+	* tools/pdbgen/pdb/gradients.pdb
+	* tools/pdbgen/pdb/guides.pdb
+	* tools/pdbgen/pdb/image.pdb
+	* tools/pdbgen/pdb/layer.pdb
+	* tools/pdbgen/pdb/message.pdb
+	* tools/pdbgen/pdb/misc.pdb
+	* tools/pdbgen/pdb/paths.pdb
+	* tools/pdbgen/pdb/plug_in.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb
+	* tools/pdbgen/pdb/selection.pdb
+	* tools/pdbgen/pdb/undo.pdb
+	* tools/pdbgen/pdb/unit.pdb: get rid of much more alias => 'foo'.
+	Even more cleanup.
+
+	* app/pdb/context_cmds.c
+	* app/pdb/convert_cmds.c
+	* app/pdb/drawable_cmds.c
+	* app/pdb/edit_cmds.c
+	* app/pdb/fileops_cmds.c
+	* app/pdb/gradient_cmds.c
+	* app/pdb/gradients_cmds.c
+	* app/pdb/guides_cmds.c
+	* app/pdb/image_cmds.c
+	* app/pdb/layer_cmds.c
+	* app/pdb/message_cmds.c
+	* app/pdb/misc_cmds.c
+	* app/pdb/paths_cmds.c
+	* app/pdb/plug_in_cmds.c
+	* app/pdb/procedural_db_cmds.c
+	* app/pdb/selection_cmds.c
+	* app/pdb/undo_cmds.c
+	* app/pdb/unit_cmds.c
+	* libgimp/gimpdrawable_pdb.[ch]
+	* libgimp/gimpimage_pdb.[ch]: regenerated.
+
+2006-03-15  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/brush.pdb
+	* tools/pdbgen/pdb/brushes.pdb
+	* tools/pdbgen/pdb/context.pdb
+	* tools/pdbgen/pdb/drawable.pdb
+	* tools/pdbgen/pdb/drawable_transform.pdb
+	* tools/pdbgen/pdb/gradient.pdb
+	* tools/pdbgen/pdb/gradients.pdb
+	* tools/pdbgen/pdb/image.pdb
+	* tools/pdbgen/pdb/palette.pdb
+	* tools/pdbgen/pdb/palettes.pdb
+	* tools/pdbgen/pdb/paths.pdb
+	* tools/pdbgen/pdb/pattern.pdb
+	* tools/pdbgen/pdb/patterns.pdb
+	* tools/pdbgen/pdb/procedural_db.pdb
+	* tools/pdbgen/pdb/transform_tools.pdb: let pdbgen handle *only*
+	variables for arguments and return values and declare all local
+	variables inside the C code. Removed lots of alias => '<expression>'
+	and no_declare => 1 stuff from return values, instead let pdbgen
+	declare the variables and assign them manually in the C code.
+	More cleanup.
+
+	* tools/pdbgen/app.pl: removed support for proc->vars.
+
+	* app/pdb/brush_cmds.c
+	* app/pdb/brushes_cmds.c
+	* app/pdb/context_cmds.c
+	* app/pdb/drawable_cmds.c
+	* app/pdb/drawable_transform_cmds.c
+	* app/pdb/gradient_cmds.c
+	* app/pdb/gradients_cmds.c
+	* app/pdb/image_cmds.c
+	* app/pdb/palette_cmds.c
+	* app/pdb/palettes_cmds.c
+	* app/pdb/paths_cmds.c
+	* app/pdb/pattern_cmds.c
+	* app/pdb/patterns_cmds.c
+	* app/pdb/procedural_db_cmds.c
+	* app/pdb/transform_tools_cmds.c
+	* libgimp/gimpbrush_pdb.c
+	* libgimp/gimpbrushes_pdb.c
+	* libgimp/gimpgradient_pdb.c
+	* libgimp/gimpgradients_pdb.c
+	* libgimp/gimppalette_pdb.c
+	* libgimp/gimppalettes_pdb.c
+	* libgimp/gimppatterns_pdb.c: regenerated.
+
+2006-03-15  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/channels-actions.c
+	* app/actions/edit-actions.c
+	* app/actions/file-actions.c
+	* app/actions/image-actions.c
+	* app/actions/layers-actions.c
+	* app/actions/view-actions.c: added more action blurbs.
+
+2006-03-15  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimpaction.c (gimp_action_set_proxy): enabled
+	tooltips on all menu items for easier review of the action blurbs.
+	This should be made configurable.
+
+2006-03-15  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/image-actions.c
+	* app/actions/layers-actions.c: added more tooltips, please review.
+
+2006-03-14  Michael Natterer  <mitch@gimp.org>
+
+	* tools/pdbgen/pdb/*.pdb: remove lots of perl crack:
+	- create almost	all parameter arrays manually instead of
+	  generating them from utility functions
+	- removed lots of other utility functions
+	- moved variable declarations into the enclosed code snippets
+	  where possible
+	- some cleanup and API doc fixes
+
+	* tools/pdbgen/stddefs.pdb: added some perl crack:
+	define utility functions for all contributors which own more than
+	some functions, so they can change their names and email addresses
+	at a central place.
+
+	* app/pdb/[many].c: regenerated.
+
+	* libgimp/gimpcolor_pdb.c
+	* libgimp/gimpdrawabletransform_pdb.c
+	* libgimp/gimptransformtools_pdb.c
+	* libgimp/gimpvectors_pdb.c: ditto. Changed affect only API docs.
+
+2006-03-13  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpimage-guides.[ch]: added gimp_image_get_guide() and
+	gimp_image_get_next_guide(), which take a guide_ID and return the
+	image's GimpGuide with that ID (the one after that for next_guide())
+
+	* tools/pdbgen/pdb/guides.pdb: use them instead of having this
+	code here.
+
+	* app/pdb/guides_cmds.c: regenerated.
+
+2006-03-13  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimage.c (gimp_image_raise_layer_to_top,
+	gimp_image_lower_layer_to_bottom): silently return TRUE if the
+	layer is already at the top (or the bottom respectively).
+
+2006-03-11  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/gimpwire.h: added a const qualifier to the
+	GimpWireIOFunc signature.
+
+	* libgimp/gimp.c (gimp_write)
+	* app/plug-in/plug-in.c (plug_in_write): changed accordingly.
+
+2006-03-10  Sven Neumann  <ven@gimp.org>
+
+	* app/widgets/gimpaction.c: factored out some code to a utility
+	function.
+
+	* app/config/gimpguiconfig.[ch]
+	* app/config/gimprc-blurbs.h
+	* app/dialogs/preferences-dialog.c
+	* app/gui/gui.c
+	* app/plug-in/plug-in-run.c
+	* libgimp/gimp.c
+	* libgimpbase/gimpprotocol.[ch]: renamed tool_tips to tooltips in
+	variables and in the gimprc.
+
+	* app/config/gimpbaseconfig.[ch]: removed stingy_memory_use from
+	the GimpBaseConfig struct.
+
+2006-03-10  Sven Neumann  <sven@gimp.org>
+
+	* modules/colorsel_water.c: remove color if Shift is pressed.
+
+2006-03-10  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/drawable-actions.c
+	* app/actions/image-actions.c
+	* app/actions/layers-actions.c: added tooltips, more to come here.
+
+2006-03-10  Sven Neumann  <sven@gimp.org>
+
+	* app/actions/plug-in-actions.c (plug_in_actions_add_proc): use
+	the procedure blurb as tooltip.
+
+	* plug-ins/common/blur.c
+	* plug-ins/common/gauss.c
+	* plug-ins/common/mblur.c: rephrased some blurbs and marked them
+	for translation.
+
+	* app/pdb/procedural-db-query.c: formatting.
+
+2006-03-10  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpuimanager.c: connect to the menu items' "select"
+	and "deselect" signals instead of "enter-notify-event" and
+	"leave-notify-event", so tooltips work with keynav.
+
+2006-03-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/gui/gui.c: show tooltps from the global image popup menu too.
+
+2006-03-09  Michael Natterer  <mitch@gimp.org>
+
+	* app/widgets/gimpuimanager.[ch]: added "show-tooltip" and
+	"hide-tooltip" signals. Connect to each menu item's
+	enter-notify-event and leave-notify-event. On enter, emit
+	show-tooltip, on leave emit hide-tooltip.
+
+	* app/display/gimpdisplayshell.c: connect to the menubar ui
+	manager's show-tooltip and hide-tooltip signals and show the tip
+	in the display's status bar.
+
+2006-03-09  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/psd.c: create empty layers of image size instead
+	of skipping empty layers in PSD files (bug #317044).
+
+2006-03-09  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpexport.c (gimp_export_image): offer the choice to
+	Flatten or Merge Visible Layers (bug #332336).
+
+2006-03-09  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c: added accelerators for "close"
+	and "quit" actions.
+
+	* plug-ins/helpbrowser/dialog.c: added "close" to the popup menu.
+
+2006-03-09  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/imagemap/imap_main.c (button_press): do not attempt to
+	use a NULL function pointer.
+
+	* plug-ins/imagemap/imap_preview.c: added some sanity checks.
+
+2006-03-09  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c: also add the popup menu to the
+	standard playback window, not only to the detached one.
+
+2006-03-09  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c: register an icon, improved
+	tooltips, some minor cleanups.
+
+2006-03-08  Sven Neumann  <sven@gimp.org>
+
+	* app/base/siox.c (find_max_blob): free the whole list instead of
+	deleting it one element at a time.
+
+2006-03-06  Sven Neumann  <sven@gimp.org>
+
+	* app/display/gimpdisplay.c (gimp_display_reconnect): keep a
+	reference on the old image until the display is connected to the
+	new one. Fixes bug #333568.
+
+	* app/display/gimpdisplay-handlers.c: fixed typo in comment.
+
+	* app/actions/file-commands.c: cosmetics.
+
+2006-03-05  DindinX  <dindinx@gimp.org>
+
+	* app/core/gimpimage-merge.c: fixed merge down (previously broken by a
+	not that purely cosmetic change). Spotted by Amar Takhar.
+
+2006-03-04  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/file-save-dialog.c (file_save_dialog_use_extension):
+	use descriptive verbs in action buttons instead of Yes and No.
+
+2006-03-04  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimpcolordisplayeditor.c
+	* app/widgets/gimpcontrollereditor.c
+	* app/widgets/gimpcontrollerlist.c: set tooltips dynamically.
+
+2006-03-03  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/vectors-import-dialog.c (vectors_import_dialog_new)
+	* app/widgets/gimpfiledialog.c (gimp_file_dialog_add_filters):
+	fixed capitalization of filter names.
+
+2006-03-03  Sven Neumann  <sven@gimp.org>
+
+	* tools/pdbgen/pdb/fileops.pdb: 
+	* app/dialogs/file-open-dialog.c
+	* app/display/gimpdisplayshell-dnd.c
+	* app/file/file-open.[ch]
+	* app/widgets/gimplayertreeview.c: pass the selected load procedure
+	to file_open_layer() or NULL if none is selected. Fixes bug #333207.
+
+	* app/pdb/fileops_cmds.c: regenerated.
+
+2006-03-02  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/jpeg/jpeg-exif.c (jpeg_query): use proper sentinel type
+	for gtk_dialog_set_alternative_button_order. Fixes bug #330800.
+
+2006-03-02  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimpimage.c (gimp_image_real_flush): made it a static
+	function (was accidentially non-static).
+
+2006-03-02  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimppickable.[ch]: added new methods ::get_bytes() and
+	::flush()
+
+	* app/core/gimpchannel.c
+	* app/core/gimpdrawable.c
+	* app/core/gimpimagemap.c
+	* app/core/gimpprojection.c: implement ::get_bytes()
+
+	* app/core/gimpprojection.c: implement ::flush() (immediately
+	process both the idle renderer's queue and the unflushed update
+	areas, to make sure that any reading from the projection will
+	re-construct it).
+
+	* app/core/gimp-edit.c
+	* app/core/gimpchannel.c
+	* app/core/gimpimage-contiguous-region.c
+	* app/core/gimpimage-crop.c
+	* app/core/gimppalette-import.c
+	* app/paint/gimpclone.c
+	* app/tools/gimpbycolorselecttool.c
+	* app/tools/gimpiscissorstool.c
+	* tools/pdbgen/pdb/image.pdb: use the pickable interface more
+	consistently when reading from any drawable or the projection, and
+	call gimp_pickable_flush() before doing so. Fixes bug #332933.
+
+	* app/core/gimpimage-pick-color.c: added comment why the we don't
+	call gimp_pickable_flush() here.
+
+	* app/pdb/image_cmds.c
+	* libgimp/gimpimage_pdb.c: regenerated.
+
+2006-03-02  Sven Neumann  <sven@gimp.org>
+
+	* tools/pdbgen/pdb/image.pdb: corrected documentation for
+	gimp_image_[lower|raise]_layer(). We do not any longer refuse to
+	raise and lower based on a missing alpha channel.
+
+	* app/pdb/image_cmds.c
+	* libgimp/gimpimage_pdb.c: regenerated.
+
+2006-03-02  Sven Neumann  <sven@gimp.org>
+
+	* autogen.sh: readded version check for glib-gettextize.
+
+2005-03-02  Øyvind Kolås  <pippin@gimp.org>
+
+	* autogen.sh: added improved check_version() function that handles
+	multiple digits in major/minor/micro.
+
+2006-03-02  Sven Neumann  <sven@gimp.org>
+
+	* autogen.sh: removed version check for glib-gettextize. It didn't
+	work with glib 2.10.x.
+
+2006-03-01  Sven Neumann  <sven@gimp.org>
+
+	* app/about.h: use U+00A9 COPYRIGHT SIGN.
+
+2006-02-28  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/pygimp/Makefile.am
+	* plug-ins/pygimp/pygimp-util.h: New file, provides only an
+	initialization wrapper for now (pygimp_init_pygobject).
+
+	* plug-ins/pygimp/gimpcolormodule.c
+	* plug-ins/pygimp/gimpenumsmodule.c: Use pygimp_init_pygobject here.
+	Closes bug #332622.
+
+2006-02-28  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpbrush.c
+	* app/core/gimpbuffer.c
+	* app/core/gimpimagefile.c
+	* app/core/gimppattern.c
+	* app/dialogs/preferences-dialog.c
+	* app/tools/gimpmeasuretool.c
+	* app/tools/gimprectangletool.c
+	* app/tools/gimprectselecttool.c
+	* app/widgets/gimpimagepropview.c
+	* app/widgets/gimpsizebox.c
+	* app/widgets/gimptemplateeditor.c
+	* plug-ins/common/ccanalyze.c
+	* plug-ins/common/svg.c
+	* plug-ins/common/wmf.c
+	* plug-ins/imagemap/imap_cmd_guides.c
+	* plug-ins/imagemap/imap_statusbar.c: use U+00D7 MULTIPLICATION SIGN
+	instead of x when displaying sizes.
+
+2006-02-28  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c: coding style cleanup.
+
+2006-02-27  Manish Singh  <yosh@gimp.org>
+
+	* app/base/cpu-accel.c
+	* app/composite/gimp-composite-3dnow.h
+	* app/composite/gimp-composite-mmx.h
+	* app/composite/gimp-composite-sse.h
+	* app/composite/gimp-composite-sse2.h: check for __PIC__ in addition
+	to PIC.
+
+2006-02-27  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimage-merge.c: purely cosmetic change.
+
+2006-02-27  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c (detach_callback): show the
+	shape window with a small offset.
+
+2006-02-26  Simon Budig  <simon@gimp.org>
+
+	* plug-ins/bmp/bmpwrite.c: properly round the resolution entry.
+	Fixes bug #332501.
+
+2005-06-26  Hans Breuer  <hans@breuer.org>
+
+	* **/makefile.msc app/gimpcore.def : updated
+	
+2006-02-26  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpzoompreview.c: added "drawable" as construct-only
+	property so that the widget can be constructed using g_object_new().
+
+2006-02-26  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpaspectpreview.c: added "drawable" as construct-only
+	property so that the widget can be constructed using g_object_new().
+
+2006-02-26  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpdrawablepreview.c: added "drawable" as construct-only
+	property so that the widget can be constructed using g_object_new().
+
+2006-02-25  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c: use a normal toplevel window for
+	the plug-in dialog. Moved the Help button to the toolbar. Use a
+	toggle action for Play.
+
+2006-02-25  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/gimpstock.h: added a define for GIMP_STOCK_DETACH
+	to the list of missing icons.
+
+	* app/actions/dockable-actions.c: use GIMP_STOCK_DETACH instead of
+	GTK_STOCK_CONVERT.
+
+	* plug-ins/common/animationplay.c: unveiled a long-standing secret
+	feature of the Animation Playback plug-in by. Needs more love.
+
+2006-02-25  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/quit-dialog.c (quit_close_all_dialog_container_changed):
+	default to GTK_RESPONSE_CANCEL.
+
+2006-02-25  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimage-convert.c (remap_indexed_layer): fixed bug
+	introduced by optimization (bug #332324).
+
+2006-02-25  Sven Neumann  <sven@gimp.org>
+
+	* app/core/gimpimage-convert.c (generate_histogram_gray): only
+	count pixels with an alpha value > 127.
+
+2006-02-24  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimprc.c (gimp_rc_save)
+	* app/gui/session.c (session_save): s/The GIMP/GIMP/
+
+2006-02-24  Simon Budig  <simon@gimp.org>
+
+	* app/base/lut-funcs.c: change the LUT function for the contrast.
+	Fixes the buggy behaviour as described in bug #319872 and
+	bug #332068 and makes the behaviour consistent with the standard
+	contrast formula. However, I am leaving the bug open to discuss
+	further improvements.
+
+	Untabbified.
+
+2006-02-23  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/gimpwire.[ch]: added utility functions to send
+	GimpRGB values over the wire.
+
+	* libgimpbase/gimpprotocol.c: use the new functions.
+
+2006-02-22  Simon Budig  <simon@gimp.org>
+
+	* app/vectors/gimpvectors-import.c: fix the import of svg circles.
+
+2006-02-21  Michael Natterer  <mitch@gimp.org>
+
+	* app/plug-in/Makefile.am
+	* app/plug-in/plug-in-data.[ch]: new files which keep the
+	plug-in data list.
+
+	* app/pdb/procedural_db.[ch]: removed here, it only cluttered the
+	file with unrelated functionality.
+
+	* app/core/gimp.[ch]
+	* app/actions/plug-in-commands.c
+	* tools/pdbgen/pdb/procedural_db.pdb: changed accordingly.
+
+	* app/pdb/procedural_db_cmds.c: regenerated.
+
+2006-02-20  Michael Natterer  <mitch@gimp.org>
+
+	* app/actions/file-actions.c (file_actions_setup)
+	* app/actions/plug-in-actions.c (plug_in_actions_setup): use ""
+	instead of NULL for "no label" on an action (we can't rely on the
+	stock item to provide the label that prevents the gtk warning from
+	firing).
+
+2006-02-20  Karine Delvare  <kdelvare@nerim.net>
+
+	* app/tools/gimprectangletool.c: zero division check should be
+	changed according to the aspect redefinition
+
+2006-02-20  Simon Budig  <simon@gimp.org>
+
+	* app/tools/gimppaintoptions-gui.c: allow maximum jitter of 5.0.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimpcoreconfig.[ch]
+	* app/config/gimprc-blurbs.h
+	* app/core/gimp.[ch]: keep a history of recently used plug-ins.
+
+	* app/plug-in/plug-in-run.[ch] (plug_in_repeat): pass an index
+	into the plug-in history.
+
+	* app/actions/plug-in-actions.c
+	* app/actions/plug-in-commands.c
+	* app/menus/plug-in-menus.c
+	* menus/image-menu.xml.in: added a submenu with recently used
+	plug-ins to the Filters menu. Fixes bug #148855.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpmagnifytool.c: renamed to Zoom tool.
+
+	* menus/image-menu.xml.in: changed accordingly.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimpfgbgview.c (gimp_fg_bg_view_expose): tweaked
+	drawing of shadows.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* etc/sessionrc: set tab-style for dockables.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: updated comments.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/Lighting/lighting_ui.c: use a check button instead of a
+	toggle button.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/mosaic.c: use a combo-box to select the tiling
+	primitives.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* tools/pdbgen/pdb/progress.pdb
+	* libgimp/gimpprogress.[ch]: applied slightly modified patch from
+	Stephane Chauveau.  Wraps the gimp_progress_update() PDB call so
+	that redundant progress updates are suppressed in libgimp.  This
+	gives a noticeable speedup for all plug-ins that update the
+	progress too often (bug #331470).
+
+	* libgimp/gimpprogress_pdb.[ch]: regenerated.
+
+2006-02-20  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/gimpplugin.c (gimp_plugin_icon_register): added a cast to
+	get rid of a compiler warning.
+
+2006-02-19  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Don't think we have Mac OS X TWAIN if on Win32.
+
+2006-02-19  DindinX  <dindinx@gimp.org>
+
+	* plug-ins/common/mosaic.c: applied a (slightly modified) patch from
+	Esben Mose Hansen which add triangles as a tile type.
+
+2006-02-19  Manish Singh  <yosh@gimp.org>
+
+	* m4macros/binreloc.m4: introduce automake conditional USE_BINRELOC.
+
+	* app/Makefile.am: ... and use the above here, so that -rpath is only
+	specified when binreloc functionality is enabled. Fixes bug #331677.
+
+2006-02-19  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/gif.c (save_image): removed warning when reusing
+	a color index for transparency. Shouldn't pose a problem for any
+	GIF viewer and only confuses our users.
+
+2006-02-19  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/gauss.c: added some const qualifiers and other
+	minor cleanups.
+
+2006-02-18  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/gauss.c: applied patch from Stephane Chauveau.
+	Code cleanup and major performance improvements (bug #331569).
+
+2006-02-18  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimpguiconfig.c: as an experiment, removed the color
+	and foo area from the toolbox and added a Colors dock to the
+	default session.
+
+2006-02-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/convmatrix.c (redraw_channels): check if the
+	widget exists before setting its state.
+
+2006-02-17  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/desaturate-dialog.c: applied patch from Alexandre
+	Prokoudine that adds a missing mnemonic (bug #331473).
+
+2006-02-17  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/iwarp.c
+	* plug-ins/ifscompose/ifscompose.c
+	* plug-ins/ifscompose/ifscompose_utils.c: applied patches from
+	Stephane Chauveau. Reduces number of progress updates (bug #331470).
+
+2006-02-17  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/preferences-dialog.c: use a scrolled window as
+	suggested in bug #331436.
+
+2006-02-16  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimpguiconfig.c: as an experiment, changed default
+	window hint for toolbox and docks to utility window.
+
+2006-02-16  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/unsharp.c: applied patch from Stephane Chauveau
+	that corrects the calculation of the tile cache size (bug #331344).
+
+2006-02-15  Carol Spears  <carol@gimp.org>
+
+	* plug-ins/pygimp/gimpfu.py: removed the snake image from the
+        gimp-python dialogs.
+
+2006-02-15  Sven Neumann  <sven@gimp.org>
+
+	* app/widgets/gimptooldialog.c: do not unset focus-on-map for all
+	tool dialogs.
+
+	* app/tools/gimpcolorpickertool.c
+	* app/tools/gimpmeasuretool.c: explicitely do it here instead.
+
+2006-02-15  Sven Neumann  <sven@gimp.org>
+
+	* app/dialogs/info-dialog.c: unset focus-on-map for info dialogs.
+
+2006-02-14  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c (render_frame): applied patch
+	from Michael Schumacher that fixes a potential crash in the
+	plug-in (bug #328919).
+
+2006-02-14  Sven Neumann  <sven@gimp.org>
+
+	Added some tool shortcuts:
+
+	* app/tools/gimpcroptool.c: Shift+C
+	* app/tools/gimpfuzzyselecttool.c: changed from Z to U.
+	* app/tools/gimpmagnifytool.c: Z.
+	* app/tools/gimpmeasuretool.c: Shift+M.
+
+2006-02-14  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/despeckle.c (despeckle_median): fixed incorrect
+	loop boundaries. Should fix bug #331044.
+
+2006-02-14  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/winicon/icoload.c
+	* plug-ins/winicon/icosave.c: applied patches from Felix Pahl.
+	Fixes incorrect bit shifts that caused scrambled transparency
+	(bug #330692).
+
+2006-02-14  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/sparkle.c: renamed parameter from opacity to
+	transparency, since that's how it is being used (bug #331086,
+	spotted by Joao).
+
+	* plug-ins/common/gauss.c (gauss): apply multiply_alpha() on the
+	source buffer, not the destination (bug #331051, spotted by
+	Stephane Chauveau).
+
+2006-02-13  Sven Neumann  <sven@gimp.org>
+
+	* app/config/gimpguiconfig.c: make the internal help browser the
+	default for all platforms (bug #329888).
+
+2006-02-13  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: output a nicer and more complete summary.
+
+2006-02-12  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* app/core/gimplayer.c: remove extra semicolon; fix for
+	bug #330882 from Jens Granseuer.
+
+2006-02-09  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.3.8.
+
 2006-02-08  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.3.7 development release.
@@ -16498,7 +19873,7 @@
 	as described on dev mailing list.
 
 	* plug-ins/common/decompose.c: add "decompose-data" parasite
-	when decoposing, to support Recompose.  Also add missing 
+	when decomposing, to support Recompose.  Also add missing 
 	alpha channels to newly produced layers
 	
 2004-12-28  Sven Neumann  <sven@gimp.org>
@@ -16525,7 +19900,7 @@
 
 	* app/paint/gimpbrushcore.c (gimp_brush_core_subsample_mask):
 	don't set array outside its bounds.  Should fix bug #161323.
-	Credit to Robert Ãgren for figuring out what was wrong.
+	Credit to Robert Ögren for figuring out what was wrong.
 	
 2004-12-27  Sven Neumann  <sven@gimp.org>
 

@@ -17,29 +17,11 @@
 
 # "Perlized" from C source by Manish Singh <yosh@gimp.org>
 
-sub pdb_misc {
-    $author = $copyright = 'Andy Thomas';
-    $date = '1998';
-}
-
-sub brush_args {(
-    { name => 'opacity',
-      type => '0 <= float <= 100',
-      desc => 'The initial opacity of the brush' },
-    { name => 'spacing',
-      type => 'int32 <= 1000',
-      desc => 'The initial spacing of the brush (if < 0 then use brush default
-	       spacing)' },
-    { name => 'paint_mode', type => 'enum GimpLayerModeEffects',
-      desc => 'The initial paint mode: { %%desc%% }'  }
-)}
-
 sub brushes_popup {
     $blurb = 'Invokes the Gimp brush selection.';
+    $help  = 'This procedure popups the brush selection dialog.';
 
-    $help = 'This procedure popups the brush selection dialog.';
-
-    &pdb_misc;
+    &andy_pdb_misc('1998');
 
     @inargs = (
 	{ name => 'brush_callback', type => 'string',
@@ -50,14 +32,20 @@ sub brushes_popup {
 	{ name => 'initial_brush', type => 'string',
 	  desc => 'The name of the brush to set as the first selected',
 	  null_ok => 1 },
-	&brush_args
+	{ name => 'opacity', type => '0 <= float <= 100',
+	  desc => 'The initial opacity of the brush' },
+	{ name => 'spacing', type => 'int32 <= 1000',
+	  desc => 'The initial spacing of the brush (if < 0 then use brush
+                   default spacing)' },
+	{ name => 'paint_mode', type => 'enum GimpLayerModeEffects',
+	  desc => 'The initial paint mode: %%desc%%' }
     );
 
     %invoke = (
 	code => <<'CODE'
 {
   if (gimp->no_interface ||
-      ! procedural_db_lookup (gimp, brush_callback) ||
+      ! gimp_pdb_lookup (gimp, brush_callback) ||
       ! gimp_pdb_dialog_new (gimp, context, gimp->brush_factory->container,
                              popup_title, brush_callback, initial_brush,
                              "opacity",    opacity / 100.0,
@@ -72,10 +60,9 @@ CODE
 
 sub brushes_close_popup {
     $blurb = 'Popdown the Gimp brush selection.';
+    $help  = 'This procedure closes an opened brush selection dialog.';
 
-    $help = 'This procedure closes an opened brush selection dialog.';
-
-    &pdb_misc;
+    &andy_pdb_misc('1998');
 
     @inargs = (
 	{ name => 'brush_callback', type => 'string',
@@ -86,7 +73,7 @@ sub brushes_close_popup {
 	code => <<'CODE'
 {
   if (gimp->no_interface ||
-      ! procedural_db_lookup (gimp, brush_callback) ||
+      ! gimp_pdb_lookup (gimp, brush_callback) ||
       ! gimp_pdb_dialog_close (gimp, gimp->brush_factory->container,
                                brush_callback))
     success = FALSE;
@@ -97,24 +84,29 @@ CODE
 
 sub brushes_set_popup {
     $blurb = 'Sets the current brush selection in a popup.';
+    $help  = $blurb;
 
-    $help = $blurb;
-
-    &pdb_misc;
+    &andy_pdb_misc('1998');
 
     @inargs = (
 	{ name => 'brush_callback', type => 'string',
 	  desc => 'The name of the callback registered for this popup' },
 	{ name => 'brush_name', type => 'string',
 	  desc => 'The name of the brush to set as selected' },
-	&brush_args
+	{ name => 'opacity', type => '0 <= float <= 100',
+	  desc => 'The initial opacity of the brush' },
+	{ name => 'spacing', type => 'int32 <= 1000',
+	  desc => 'The initial spacing of the brush (if < 0 then use brush
+                   default spacing)' },
+	{ name => 'paint_mode', type => 'enum GimpLayerModeEffects',
+	  desc => 'The initial paint mode: %%desc%%' }
     );
 
     %invoke = (
 	code => <<'CODE'
 {
   if (gimp->no_interface ||
-      ! procedural_db_lookup (gimp, brush_callback) ||
+      ! gimp_pdb_lookup (gimp, brush_callback) ||
       ! gimp_pdb_dialog_set (gimp, gimp->brush_factory->container,
                              brush_callback, brush_name,
                              "opacity",    opacity / 100.0,
@@ -127,9 +119,11 @@ CODE
     );
 }
 
+
 @headers = qw("core/gimp.h" "core/gimpdatafactory.h");
 
 @procs = qw(brushes_popup brushes_close_popup brushes_set_popup);
+
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Brush UI';

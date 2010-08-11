@@ -29,7 +29,7 @@
 
 #include "core/gimpcontext.h"
 
-#include "pdb/procedural_db.h"
+#include "pdb/gimp-pdb.h"
 
 #include "about.h"
 
@@ -103,7 +103,7 @@ about_dialog_create (GimpContext *context)
       GList           *children;
       GdkModifierType  mask;
 
-      if (procedural_db_lookup (context->gimp, PDB_URL_LOAD))
+      if (gimp_pdb_lookup (context->gimp, PDB_URL_LOAD))
         gtk_about_dialog_set_url_hook (about_dialog_load_url,
                                        g_object_ref (context),
                                        (GDestroyNotify) g_object_unref);
@@ -215,15 +215,13 @@ about_dialog_load_url (GtkAboutDialog *dialog,
                        gpointer        data)
 {
   GimpContext *context = GIMP_CONTEXT (data);
-  Argument    *return_vals;
-  gint         nreturn_vals;
+  GValueArray *return_vals;
 
-  return_vals = procedural_db_run_proc (context->gimp, context, NULL,
-                                        PDB_URL_LOAD,
-                                        &nreturn_vals,
-                                        GIMP_PDB_STRING, url,
-                                        GIMP_PDB_END);
-  procedural_db_destroy_args (return_vals, nreturn_vals);
+  return_vals = gimp_pdb_run_proc (context->gimp, context, NULL,
+                                   PDB_URL_LOAD,
+                                   G_TYPE_STRING, url,
+                                   G_TYPE_NONE);
+  g_value_array_free (return_vals);
 }
 
 

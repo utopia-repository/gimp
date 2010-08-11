@@ -36,11 +36,12 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkRange">GtkRange</link>
-                     +----<link linkend="GtkScale">GtkScale</link>
-                           +----GimpColorScale
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkRange">GtkRange</link>
+                           +----<link linkend="GtkScale">GtkScale</link>
+                                 +----GimpColorScale
 </synopsis>
 
 </refsect1>

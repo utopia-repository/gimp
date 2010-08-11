@@ -25,10 +25,12 @@
 #include "plug-in-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpparamspecs.h"
 #include "core/gimppdbprogress.h"
 #include "core/gimpprogress.h"
 
-#include "pdb/procedural_db.h"
+#include "pdb/gimp-pdb.h"
+#include "pdb/gimptemporaryprocedure.h"
 
 #include "plug-in.h"
 #include "plug-in-progress.h"
@@ -45,17 +47,18 @@ static void   plug_in_progress_cancel_callback (GimpProgress *progress,
 void
 plug_in_progress_start (PlugIn      *plug_in,
                         const gchar *message,
-                        gint         display_ID)
+                        GimpObject  *display)
 {
   PlugInProcFrame *proc_frame;
 
   g_return_if_fail (plug_in != NULL);
+  g_return_if_fail (display == NULL || GIMP_IS_OBJECT (display));
 
   proc_frame = plug_in_get_proc_frame (plug_in);
 
   if (! proc_frame->progress)
     {
-      proc_frame->progress = gimp_new_progress (plug_in->gimp, display_ID);
+      proc_frame->progress = gimp_new_progress (plug_in->gimp, display);
 
       if (proc_frame->progress)
         {
@@ -148,7 +151,7 @@ plug_in_progress_set_value (PlugIn  *plug_in,
       ! gimp_progress_is_active (proc_frame->progress) ||
       ! proc_frame->progress_cancel_id)
     {
-      plug_in_progress_start (plug_in, NULL, -1);
+      plug_in_progress_start (plug_in, NULL, NULL);
     }
 
   if (proc_frame->progress && gimp_progress_is_active (proc_frame->progress))
@@ -168,7 +171,7 @@ plug_in_progress_pulse (PlugIn  *plug_in)
       ! gimp_progress_is_active (proc_frame->progress) ||
       ! proc_frame->progress_cancel_id)
     {
-      plug_in_progress_start (plug_in, NULL, -1);
+      plug_in_progress_start (plug_in, NULL, NULL);
     }
 
   if (proc_frame->progress && gimp_progress_is_active (proc_frame->progress))
@@ -195,20 +198,19 @@ plug_in_progress_install (PlugIn      *plug_in,
                           const gchar *progress_callback)
 {
   PlugInProcFrame *proc_frame;
-  ProcRecord      *proc_rec;
+  GimpProcedure   *procedure;
 
   g_return_val_if_fail (plug_in != NULL, FALSE);
   g_return_val_if_fail (progress_callback != NULL, FALSE);
 
-  proc_rec = procedural_db_lookup (plug_in->gimp, progress_callback);
+  procedure = gimp_pdb_lookup (plug_in->gimp, progress_callback);
 
-  if (! proc_rec                                    ||
-      proc_rec->num_args != 3                       ||
-      proc_rec->args[0].arg_type != GIMP_PDB_INT32  ||
-      proc_rec->args[1].arg_type != GIMP_PDB_STRING ||
-      proc_rec->args[2].arg_type != GIMP_PDB_FLOAT  ||
-      proc_rec->proc_type        != GIMP_TEMPORARY  ||
-      proc_rec->exec_method.temporary.plug_in != plug_in)
+  if (! GIMP_IS_TEMPORARY_PROCEDURE (procedure)                ||
+      GIMP_TEMPORARY_PROCEDURE (procedure)->plug_in != plug_in ||
+      procedure->num_args                           != 3       ||
+      ! GIMP_IS_PARAM_SPEC_INT32 (procedure->args[0])          ||
+      ! G_IS_PARAM_SPEC_STRING   (procedure->args[1])          ||
+      ! G_IS_PARAM_SPEC_DOUBLE   (procedure->args[2]))
     {
       return FALSE;
     }
@@ -306,11 +308,10 @@ plug_in_progress_cancel_callback (GimpProgress *progress,
 
   if (proc_frame->main_loop)
     {
-      proc_frame->return_vals   = g_new (Argument, 1);
-      proc_frame->n_return_vals = 1;
+      proc_frame->return_vals = gimp_procedure_get_return_values (NULL,
+                                                                  FALSE);
 
-      proc_frame->return_vals->arg_type      = GIMP_PDB_STATUS;
-      proc_frame->return_vals->value.pdb_int = GIMP_PDB_CANCEL;
+      g_value_set_enum (proc_frame->return_vals->values, GIMP_PDB_CANCEL);
     }
 
   for (list = plug_in->temp_proc_frames; list; list = g_list_next (list))
@@ -319,11 +320,10 @@ plug_in_progress_cancel_callback (GimpProgress *progress,
 
       if (proc_frame->main_loop)
         {
-          proc_frame->return_vals   = g_new (Argument, 1);
-          proc_frame->n_return_vals = 1;
+          proc_frame->return_vals = gimp_procedure_get_return_values (NULL,
+                                                                      FALSE);
 
-          proc_frame->return_vals->arg_type      = GIMP_PDB_STATUS;
-          proc_frame->return_vals->value.pdb_int = GIMP_PDB_CANCEL;
+          g_value_set_enum (proc_frame->return_vals->values, GIMP_PDB_CANCEL);
         }
     }
 

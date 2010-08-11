@@ -42,9 +42,9 @@
 
 void
 floating_sel_attach (GimpLayer    *layer,
-		     GimpDrawable *drawable)
+                     GimpDrawable *drawable)
 {
-  GimpImage *gimage;
+  GimpImage *image;
   GimpLayer *floating_sel;
 
   g_return_if_fail (GIMP_IS_LAYER (layer));
@@ -54,9 +54,9 @@ floating_sel_attach (GimpLayer    *layer,
   g_return_if_fail (gimp_item_get_image (GIMP_ITEM (layer)) ==
                     gimp_item_get_image (GIMP_ITEM (drawable)));
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-  floating_sel = gimp_image_floating_sel (gimage);
+  floating_sel = gimp_image_floating_sel (image);
 
   /*  If there is already a floating selection, anchor it  */
   if (floating_sel)
@@ -67,7 +67,7 @@ floating_sel_attach (GimpLayer    *layer,
        *  to the drawable
        */
       if (drawable == (GimpDrawable *) floating_sel)
-	drawable = gimp_image_active_drawable (gimage);
+        drawable = gimp_image_active_drawable (image);
     }
 
   /*  set the drawable and allocate a backing store  */
@@ -77,8 +77,8 @@ floating_sel_attach (GimpLayer    *layer,
                                               GIMP_ITEM (layer)->height,
                                               gimp_drawable_bytes (drawable));
 
-  /*  add the layer to the gimage  */
-  gimp_image_add_layer (gimage, layer, 0);
+  /*  add the layer to the image  */
+  gimp_image_add_layer (image, layer, 0);
 
   /*  store the affected area from the drawable in the backing store  */
   floating_sel_rigor (layer, TRUE);
@@ -87,14 +87,14 @@ floating_sel_attach (GimpLayer    *layer,
 void
 floating_sel_remove (GimpLayer *layer)
 {
-  GimpImage *gimage;
+  GimpImage *image;
 
   g_return_if_fail (GIMP_IS_LAYER (layer));
   g_return_if_fail (gimp_layer_is_floating_sel (layer));
 
-  gimage = gimp_item_get_image (GIMP_ITEM (layer->fs.drawable));
+  image = gimp_item_get_image (GIMP_ITEM (layer->fs.drawable));
 
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_FS_REMOVE,
+  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_FS_REMOVE,
                                _("Remove Floating Selection"));
 
   /*  store the affected area from the drawable in the backing store  */
@@ -107,32 +107,32 @@ floating_sel_remove (GimpLayer *layer)
    */
   gimp_viewable_invalidate_preview (GIMP_VIEWABLE (layer));
 
-  /*  remove the layer from the gimage  */
-  gimp_image_remove_layer (gimage, layer);
+  /*  remove the layer from the image  */
+  gimp_image_remove_layer (image, layer);
 
-  gimp_image_undo_group_end (gimage);
+  gimp_image_undo_group_end (image);
 }
 
 void
 floating_sel_anchor (GimpLayer *layer)
 {
-  GimpImage    *gimage;
+  GimpImage    *image;
   GimpDrawable *drawable;
 
   g_return_if_fail (GIMP_IS_LAYER (layer));
   g_return_if_fail (gimp_layer_is_floating_sel (layer));
 
-  gimage = gimp_item_get_image (GIMP_ITEM (layer));
+  image = gimp_item_get_image (GIMP_ITEM (layer));
 
   if (! gimp_layer_is_floating_sel (layer))
     {
       g_message (_("Cannot anchor this layer because "
-		   "it is not a floating selection."));
+                   "it is not a floating selection."));
       return;
     }
 
   /*  Start a floating selection anchoring undo  */
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_FS_ANCHOR,
+  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_FS_ANCHOR,
                                _("Anchor Floating Selection"));
 
   /* Invalidate the previews of the layer that will be composited
@@ -145,47 +145,47 @@ floating_sel_anchor (GimpLayer *layer)
 
   /*  Composite the floating selection contents  */
   floating_sel_composite (layer,
-			  GIMP_ITEM (layer)->offset_x,
-			  GIMP_ITEM (layer)->offset_y,
-			  GIMP_ITEM (layer)->width,
-			  GIMP_ITEM (layer)->height, TRUE);
+                          GIMP_ITEM (layer)->offset_x,
+                          GIMP_ITEM (layer)->offset_y,
+                          GIMP_ITEM (layer)->width,
+                          GIMP_ITEM (layer)->height, TRUE);
 
   drawable = layer->fs.drawable;
 
   /*  remove the floating selection  */
-  gimp_image_remove_layer (gimage, layer);
+  gimp_image_remove_layer (image, layer);
 
   /*  end the group undo  */
-  gimp_image_undo_group_end (gimage);
+  gimp_image_undo_group_end (image);
 
   /*  invalidate the boundaries  */
-  gimp_drawable_invalidate_boundary (GIMP_DRAWABLE (gimp_image_get_mask (gimage)));
+  gimp_drawable_invalidate_boundary (GIMP_DRAWABLE (gimp_image_get_mask (image)));
 }
 
 void
 floating_sel_activate_drawable (GimpLayer *layer)
 {
-  GimpImage *gimage;
+  GimpImage *image;
 
   g_return_if_fail (GIMP_IS_LAYER (layer));
   g_return_if_fail (gimp_layer_is_floating_sel (layer));
 
-  gimage = gimp_item_get_image (GIMP_ITEM (layer));
+  image = gimp_item_get_image (GIMP_ITEM (layer));
 
   /*  set the underlying drawable to active  */
   if (GIMP_IS_LAYER_MASK (layer->fs.drawable))
     {
       GimpLayerMask *mask = GIMP_LAYER_MASK (layer->fs.drawable);
 
-      gimp_image_set_active_layer (gimage, gimp_layer_mask_get_layer (mask));
+      gimp_image_set_active_layer (image, gimp_layer_mask_get_layer (mask));
     }
   else if (GIMP_IS_CHANNEL (layer->fs.drawable))
     {
-      gimp_image_set_active_channel (gimage, GIMP_CHANNEL (layer->fs.drawable));
+      gimp_image_set_active_channel (image, GIMP_CHANNEL (layer->fs.drawable));
     }
   else
     {
-      gimp_image_set_active_layer (gimage, GIMP_LAYER (layer->fs.drawable));
+      gimp_image_set_active_layer (image, GIMP_LAYER (layer->fs.drawable));
     }
 }
 
@@ -193,35 +193,35 @@ void
 floating_sel_to_layer (GimpLayer *layer)
 {
   GimpItem  *item;
-  GimpImage *gimage;
+  GimpImage *image;
 
   g_return_if_fail (GIMP_IS_LAYER (layer));
   g_return_if_fail (gimp_layer_is_floating_sel (layer));
 
   item = GIMP_ITEM (layer);
 
-  if (! (gimage = gimp_item_get_image (item)))
+  if (! (image = gimp_item_get_image (item)))
     return;
 
   /*  Check if the floating layer belongs to a channel...  */
   if (GIMP_IS_CHANNEL (layer->fs.drawable))
     {
       g_message (_("Cannot create a new layer from the floating selection "
-		   "because it belongs to a layer mask or channel."));
+                   "because it belongs to a layer mask or channel."));
       return;
     }
 
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_FS_TO_LAYER,
+  gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_FS_TO_LAYER,
                                _("Floating Selection to Layer"));
 
   /*  restore the contents of the drawable  */
   floating_sel_restore (layer,
-			item->offset_x,
-			item->offset_y,
-			item->width,
-			item->height);
+                        item->offset_x,
+                        item->offset_y,
+                        item->width,
+                        item->height);
 
-  gimp_image_undo_push_fs_to_layer (gimage, NULL,
+  gimp_image_undo_push_fs_to_layer (image, NULL,
                                     layer, layer->fs.drawable);
 
   /*  clear the selection  */
@@ -229,27 +229,27 @@ floating_sel_to_layer (GimpLayer *layer)
 
   /*  Set pointers  */
   layer->fs.drawable   = NULL;
-  gimage->floating_sel = NULL;
+  image->floating_sel = NULL;
   gimp_item_set_visible (GIMP_ITEM (layer), TRUE, TRUE);
 
-  gimp_image_undo_group_end (gimage);
+  gimp_image_undo_group_end (image);
 
   gimp_object_name_changed (GIMP_OBJECT (layer));
 
   gimp_drawable_update (GIMP_DRAWABLE (layer),
-			0, 0,
-			GIMP_ITEM (layer)->width,
-			GIMP_ITEM (layer)->height);
+                        0, 0,
+                        GIMP_ITEM (layer)->width,
+                        GIMP_ITEM (layer)->height);
 
-  gimp_image_floating_selection_changed (gimage);
+  gimp_image_floating_selection_changed (image);
 }
 
 void
 floating_sel_store (GimpLayer *layer,
-		    gint       x,
-		    gint       y,
-		    gint       w,
-		    gint       h)
+                    gint       x,
+                    gint       y,
+                    gint       w,
+                    gint       h)
 {
   PixelRegion srcPR, destPR;
   gint        offx, offy;
@@ -270,9 +270,9 @@ floating_sel_store (GimpLayer *layer,
       tile_manager_unref (layer->fs.backing_store);
 
       layer->fs.backing_store =
-	tile_manager_new (GIMP_ITEM (layer)->width,
-			  GIMP_ITEM (layer)->height,
-			  gimp_drawable_bytes (layer->fs.drawable));
+        tile_manager_new (GIMP_ITEM (layer)->width,
+                          GIMP_ITEM (layer)->height,
+                          gimp_drawable_bytes (layer->fs.drawable));
     }
 
   /*  What this function does is save the specified area of the
@@ -281,13 +281,13 @@ floating_sel_store (GimpLayer *layer,
    */
   gimp_item_offsets (GIMP_ITEM (layer->fs.drawable), &offx, &offy);
 
-  /*  Find the minimum area we need to uncover -- in gimage space  */
+  /*  Find the minimum area we need to uncover -- in image space  */
   x1 = MAX (GIMP_ITEM (layer)->offset_x, offx);
   y1 = MAX (GIMP_ITEM (layer)->offset_y, offy);
   x2 = MIN (GIMP_ITEM (layer)->offset_x + GIMP_ITEM (layer)->width,
-	    offx + gimp_item_width (GIMP_ITEM (layer->fs.drawable)));
+            offx + gimp_item_width (GIMP_ITEM (layer->fs.drawable)));
   y2 = MIN (GIMP_ITEM (layer)->offset_y + GIMP_ITEM (layer)->height,
-	    offy + gimp_item_height (GIMP_ITEM (layer->fs.drawable)));
+            offy + gimp_item_height (GIMP_ITEM (layer->fs.drawable)));
 
   x1 = CLAMP (x, x1, x2);
   y1 = CLAMP (y, y1, y2);
@@ -297,12 +297,12 @@ floating_sel_store (GimpLayer *layer,
   if ((x2 - x1) > 0 && (y2 - y1) > 0)
     {
       /*  Copy the area from the drawable to the backing store  */
-      pixel_region_init (&srcPR, gimp_drawable_data (layer->fs.drawable),
-			 (x1 - offx), (y1 - offy), (x2 - x1), (y2 - y1), FALSE);
+      pixel_region_init (&srcPR, gimp_drawable_get_tiles (layer->fs.drawable),
+                         (x1 - offx), (y1 - offy), (x2 - x1), (y2 - y1), FALSE);
       pixel_region_init (&destPR, layer->fs.backing_store,
-			 (x1 - GIMP_ITEM (layer)->offset_x),
-			 (y1 - GIMP_ITEM (layer)->offset_y),
-			 (x2 - x1), (y2 - y1), TRUE);
+                         (x1 - GIMP_ITEM (layer)->offset_x),
+                         (y1 - GIMP_ITEM (layer)->offset_y),
+                         (x2 - x1), (y2 - y1), TRUE);
 
       copy_region (&srcPR, &destPR);
     }
@@ -310,10 +310,10 @@ floating_sel_store (GimpLayer *layer,
 
 void
 floating_sel_restore (GimpLayer *layer,
-		      gint       x,
-		      gint       y,
-		      gint       w,
-		      gint       h)
+                      gint       x,
+                      gint       y,
+                      gint       w,
+                      gint       h)
 {
   PixelRegion srcPR, destPR;
   gint        offx, offy;
@@ -328,15 +328,15 @@ floating_sel_restore (GimpLayer *layer,
    *  translated
    */
 
-  /*  Find the minimum area we need to uncover -- in gimage space  */
+  /*  Find the minimum area we need to uncover -- in image space  */
   gimp_item_offsets (GIMP_ITEM (layer->fs.drawable), &offx, &offy);
 
   x1 = MAX (GIMP_ITEM (layer)->offset_x, offx);
   y1 = MAX (GIMP_ITEM (layer)->offset_y, offy);
   x2 = MIN (GIMP_ITEM (layer)->offset_x + GIMP_ITEM (layer)->width,
-	    offx + gimp_item_width  (GIMP_ITEM (layer->fs.drawable)));
+            offx + gimp_item_width  (GIMP_ITEM (layer->fs.drawable)));
   y2 = MIN (GIMP_ITEM(layer)->offset_y + GIMP_ITEM (layer)->height,
-	    offy + gimp_item_height (GIMP_ITEM (layer->fs.drawable)));
+            offy + gimp_item_height (GIMP_ITEM (layer->fs.drawable)));
 
   x1 = CLAMP (x, x1, x2);
   y1 = CLAMP (y, y1, y2);
@@ -347,11 +347,11 @@ floating_sel_restore (GimpLayer *layer,
     {
       /*  Copy the area from the backing store to the drawable  */
       pixel_region_init (&srcPR, layer->fs.backing_store,
-			 (x1 - GIMP_ITEM (layer)->offset_x),
-			 (y1 - GIMP_ITEM (layer)->offset_y),
-			 (x2 - x1), (y2 - y1), FALSE);
-      pixel_region_init (&destPR, gimp_drawable_data (layer->fs.drawable),
-			 (x1 - offx), (y1 - offy), (x2 - x1), (y2 - y1), TRUE);
+                         (x1 - GIMP_ITEM (layer)->offset_x),
+                         (y1 - GIMP_ITEM (layer)->offset_y),
+                         (x2 - x1), (y2 - y1), FALSE);
+      pixel_region_init (&destPR, gimp_drawable_get_tiles (layer->fs.drawable),
+                         (x1 - offx), (y1 - offy), (x2 - x1), (y2 - y1), TRUE);
 
       copy_region (&srcPR, &destPR);
     }
@@ -359,17 +359,17 @@ floating_sel_restore (GimpLayer *layer,
 
 void
 floating_sel_rigor (GimpLayer *layer,
-		    gboolean   push_undo)
+                    gboolean   push_undo)
 {
   g_return_if_fail (GIMP_IS_LAYER (layer));
   g_return_if_fail (gimp_layer_is_floating_sel (layer));
 
   /*  store the affected area from the drawable in the backing store  */
   floating_sel_store (layer,
-		      GIMP_ITEM (layer)->offset_x,
-		      GIMP_ITEM (layer)->offset_y,
-		      GIMP_ITEM (layer)->width,
-		      GIMP_ITEM (layer)->height);
+                      GIMP_ITEM (layer)->offset_x,
+                      GIMP_ITEM (layer)->offset_y,
+                      GIMP_ITEM (layer)->width,
+                      GIMP_ITEM (layer)->height);
   layer->fs.initial = TRUE;
 
   if (push_undo)
@@ -380,7 +380,7 @@ floating_sel_rigor (GimpLayer *layer,
 
 void
 floating_sel_relax (GimpLayer *layer,
-		    gboolean   push_undo)
+                    gboolean   push_undo)
 {
   g_return_if_fail (GIMP_IS_LAYER (layer));
   g_return_if_fail (gimp_layer_is_floating_sel (layer));
@@ -388,10 +388,10 @@ floating_sel_relax (GimpLayer *layer,
   /*  restore the contents of drawable the floating layer is attached to  */
   if (layer->fs.initial == FALSE)
     floating_sel_restore (layer,
-			  GIMP_ITEM (layer)->offset_x,
-			  GIMP_ITEM (layer)->offset_y,
-			  GIMP_ITEM (layer)->width,
-			  GIMP_ITEM (layer)->height);
+                          GIMP_ITEM (layer)->offset_x,
+                          GIMP_ITEM (layer)->offset_y,
+                          GIMP_ITEM (layer)->width,
+                          GIMP_ITEM (layer)->height);
   layer->fs.initial = TRUE;
 
   if (push_undo)
@@ -402,14 +402,14 @@ floating_sel_relax (GimpLayer *layer,
 
 void
 floating_sel_composite (GimpLayer *layer,
-			gint       x,
-			gint       y,
-			gint       w,
-			gint       h,
-			gboolean   push_undo)
+                        gint       x,
+                        gint       y,
+                        gint       w,
+                        gint       h,
+                        gboolean   push_undo)
 {
   PixelRegion  fsPR;
-  GimpImage   *gimage;
+  GimpImage   *image;
   GimpLayer   *d_layer = NULL;
   gint         lock_alpha;
   gint         active[MAX_CHANNELS];
@@ -420,11 +420,11 @@ floating_sel_composite (GimpLayer *layer,
   g_return_if_fail (GIMP_IS_LAYER (layer));
   g_return_if_fail (gimp_layer_is_floating_sel (layer));
 
-  if (! (gimage = gimp_item_get_image (GIMP_ITEM (layer))))
+  if (! (image = gimp_item_get_image (GIMP_ITEM (layer))))
     return;
 
   /*  What this function does is composite the specified area of the
-   *  drawble with the floating selection.  We do this when the gimage
+   *  drawble with the floating selection.  We do this when the image
    *  is constructed, before any other composition takes place.
    */
 
@@ -441,17 +441,17 @@ floating_sel_composite (GimpLayer *layer,
    */
   if (gimp_item_get_visible (GIMP_ITEM (layer)))
     {
-      /*  Find the minimum area we need to composite -- in gimage space  */
+      /*  Find the minimum area we need to composite -- in image space  */
       gimp_item_offsets (GIMP_ITEM (layer->fs.drawable), &offx, &offy);
 
       x1 = MAX (GIMP_ITEM (layer)->offset_x, offx);
       y1 = MAX (GIMP_ITEM (layer)->offset_y, offy);
       x2 = MIN (GIMP_ITEM (layer)->offset_x +
-		GIMP_ITEM (layer)->width,
-		offx + gimp_item_width  (GIMP_ITEM (layer->fs.drawable)));
+                GIMP_ITEM (layer)->width,
+                offx + gimp_item_width  (GIMP_ITEM (layer->fs.drawable)));
       y2 = MIN (GIMP_ITEM (layer)->offset_y +
-		GIMP_ITEM (layer)->height,
-		offy + gimp_item_height (GIMP_ITEM (layer->fs.drawable)));
+                GIMP_ITEM (layer)->height,
+                offy + gimp_item_height (GIMP_ITEM (layer->fs.drawable)));
 
       x1 = CLAMP (x, x1, x2);
       y1 = CLAMP (y, y1, y2);
@@ -459,61 +459,61 @@ floating_sel_composite (GimpLayer *layer,
       y2 = CLAMP (y + h, y1, y2);
 
       if ((x2 - x1) > 0 && (y2 - y1) > 0)
-	{
-	  /*  composite the area from the layer to the drawable  */
-	  pixel_region_init (&fsPR, GIMP_DRAWABLE (layer)->tiles,
-			     (x1 - GIMP_ITEM (layer)->offset_x),
-			     (y1 - GIMP_ITEM (layer)->offset_y),
-			     (x2 - x1), (y2 - y1), FALSE);
+        {
+          /*  composite the area from the layer to the drawable  */
+          pixel_region_init (&fsPR, GIMP_DRAWABLE (layer)->tiles,
+                             (x1 - GIMP_ITEM (layer)->offset_x),
+                             (y1 - GIMP_ITEM (layer)->offset_y),
+                             (x2 - x1), (y2 - y1), FALSE);
 
-	  /*  a kludge here to prevent the case of the drawable
-	   *  underneath having lock alpha on, and disallowing
-	   *  the composited floating selection from being shown
-	   */
-	  if (GIMP_IS_LAYER (layer->fs.drawable))
-	    {
-	      d_layer = GIMP_LAYER (layer->fs.drawable);
-	      if ((lock_alpha = gimp_layer_get_lock_alpha (d_layer)))
-		gimp_layer_set_lock_alpha (d_layer, FALSE, FALSE);
-	    }
-	  else
-	    lock_alpha = FALSE;
+          /*  a kludge here to prevent the case of the drawable
+           *  underneath having lock alpha on, and disallowing
+           *  the composited floating selection from being shown
+           */
+          if (GIMP_IS_LAYER (layer->fs.drawable))
+            {
+              d_layer = GIMP_LAYER (layer->fs.drawable);
+              if ((lock_alpha = gimp_layer_get_lock_alpha (d_layer)))
+                gimp_layer_set_lock_alpha (d_layer, FALSE, FALSE);
+            }
+          else
+            lock_alpha = FALSE;
 
-	  /*  We need to set all gimage channels to active to make sure that
-	   *  nothing strange happens while applying the floating selection.
-	   *  It wouldn't make sense for the floating selection to be affected
-	   *  by the active gimage channels.
-	   */
-	  for (i = 0; i < MAX_CHANNELS; i++)
-	    {
-	      active[i] = gimage->active[i];
-	      gimage->active[i] = 1;
-	    }
+          /*  We need to set all image channels to active to make sure that
+           *  nothing strange happens while applying the floating selection.
+           *  It wouldn't make sense for the floating selection to be affected
+           *  by the active image channels.
+           */
+          for (i = 0; i < MAX_CHANNELS; i++)
+            {
+              active[i] = image->active[i];
+              image->active[i] = 1;
+            }
 
-	  /*  apply the fs with the undo specified by the value
-	   *  passed to this function
-	   */
-	  gimp_drawable_apply_region (layer->fs.drawable, &fsPR,
+          /*  apply the fs with the undo specified by the value
+           *  passed to this function
+           */
+          gimp_drawable_apply_region (layer->fs.drawable, &fsPR,
                                       push_undo, NULL,
                                       layer->opacity,
                                       layer->mode,
                                       NULL,
                                       (x1 - offx), (y1 - offy));
 
-	  /*  restore lock alpha  */
-	  if (lock_alpha)
-	    gimp_layer_set_lock_alpha (d_layer, TRUE, FALSE);
+          /*  restore lock alpha  */
+          if (lock_alpha)
+            gimp_layer_set_lock_alpha (d_layer, TRUE, FALSE);
 
-	  /*  restore gimage active channels  */
-	  for (i = 0; i < MAX_CHANNELS; i++)
-	    gimage->active[i] = active[i];
-	}
+          /*  restore image active channels  */
+          for (i = 0; i < MAX_CHANNELS; i++)
+            image->active[i] = active[i];
+        }
     }
 }
 
 const BoundSeg *
 floating_sel_boundary (GimpLayer *layer,
-		       gint      *n_segs)
+                       gint      *n_segs)
 {
   PixelRegion bPR;
   gint        i;
@@ -532,12 +532,13 @@ floating_sel_boundary (GimpLayer *layer,
       gimp_item_offsets (GIMP_ITEM (layer), &off_x, &off_y);
 
       if (layer->fs.segs)
-	g_free (layer->fs.segs);
+        g_free (layer->fs.segs);
 
       if (gimp_drawable_has_alpha (GIMP_DRAWABLE (layer)))
         {
           /*  find the segments  */
-          pixel_region_init (&bPR, gimp_drawable_data (GIMP_DRAWABLE (layer)),
+          pixel_region_init (&bPR,
+                             gimp_drawable_get_tiles (GIMP_DRAWABLE (layer)),
                              0, 0, width, height, FALSE);
           layer->fs.segs = boundary_find (&bPR, BOUNDARY_WITHIN_BOUNDS,
                                           0, 0, width, height,

@@ -56,6 +56,19 @@ gimp_pickable_interface_get_type (void)
   return pickable_iface_type;
 }
 
+void
+gimp_pickable_flush (GimpPickable *pickable)
+{
+  GimpPickableInterface *pickable_iface;
+
+  g_return_if_fail (GIMP_IS_PICKABLE (pickable));
+
+  pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
+
+  if (pickable_iface->flush)
+    return pickable_iface->flush (pickable);
+}
+
 GimpImage *
 gimp_pickable_get_image (GimpPickable *pickable)
 {
@@ -84,6 +97,21 @@ gimp_pickable_get_image_type (GimpPickable *pickable)
     return pickable_iface->get_image_type (pickable);
 
   return -1;
+}
+
+gint
+gimp_pickable_get_bytes (GimpPickable *pickable)
+{
+  GimpPickableInterface *pickable_iface;
+
+  g_return_val_if_fail (GIMP_IS_PICKABLE (pickable), 0);
+
+  pickable_iface = GIMP_PICKABLE_GET_INTERFACE (pickable);
+
+  if (pickable_iface->get_bytes)
+    return pickable_iface->get_bytes (pickable);
+
+  return 0;
 }
 
 TileManager *
@@ -160,18 +188,18 @@ gimp_pickable_pick_color (GimpPickable *pickable,
       gint    radius       = (gint) average_radius;
 
       for (i = x - radius; i <= x + radius; i++)
-	for (j = y - radius; j <= y + radius; j++)
-	  if ((tmp_col = gimp_pickable_get_color_at (pickable, i, j)))
-	    {
-	      count++;
+        for (j = y - radius; j <= y + radius; j++)
+          if ((tmp_col = gimp_pickable_get_color_at (pickable, i, j)))
+            {
+              count++;
 
-	      color_avg[RED_PIX]   += tmp_col[RED_PIX];
-	      color_avg[GREEN_PIX] += tmp_col[GREEN_PIX];
-	      color_avg[BLUE_PIX]  += tmp_col[BLUE_PIX];
+              color_avg[RED_PIX]   += tmp_col[RED_PIX];
+              color_avg[GREEN_PIX] += tmp_col[GREEN_PIX];
+              color_avg[BLUE_PIX]  += tmp_col[BLUE_PIX];
               color_avg[ALPHA_PIX] += tmp_col[ALPHA_PIX];
 
-	      g_free (tmp_col);
-	    }
+              g_free (tmp_col);
+            }
 
       col[RED_PIX]   = (guchar) (color_avg[RED_PIX]   / count);
       col[GREEN_PIX] = (guchar) (color_avg[GREEN_PIX] / count);

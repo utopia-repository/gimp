@@ -24,78 +24,75 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
+#include "plug-in/plug-in-help-domain.h"
 #include "plug-in/plug-in.h"
-#include "plug-in/plug-ins.h"
 
-static ProcRecord help_proc;
 
-void
-register_help_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &help_proc);
-}
-
-static Argument *
-help_invoker (Gimp         *gimp,
-              GimpContext  *context,
-              GimpProgress *progress,
-              Argument     *args)
+static GValueArray *
+help_invoker (GimpProcedure     *procedure,
+              Gimp              *gimp,
+              GimpContext       *context,
+              GimpProgress      *progress,
+              const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *help_domain;
-  gchar *help_id;
+  const gchar *help_domain;
+  const gchar *help_id;
 
-  help_domain = (gchar *) args[0].value.pdb_pointer;
-  if (help_domain && !g_utf8_validate (help_domain, -1, NULL))
-    success = FALSE;
-
-  help_id = (gchar *) args[1].value.pdb_pointer;
-  if (help_id == NULL || !g_utf8_validate (help_id, -1, NULL))
-    success = FALSE;
+  help_domain = g_value_get_string (&args->values[0]);
+  help_id = g_value_get_string (&args->values[1]);
 
   if (success)
     {
       if (! help_domain && gimp->current_plug_in)
         help_domain = (gchar *)
-          plug_ins_help_domain (gimp, gimp->current_plug_in->prog, NULL);
+          plug_in_help_domain (gimp, gimp->current_plug_in->prog, NULL);
 
       gimp_help (gimp, help_domain, help_id);
     }
 
-  return procedural_db_return_args (&help_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg help_inargs[] =
+void
+register_help_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "help-domain",
-    "The help domain in which help_id is registered"
-  },
-  {
-    GIMP_PDB_STRING,
-    "help-id",
-    "The help page's ID"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord help_proc =
-{
-  "gimp-help",
-  "gimp-help",
-  "Load a help page.",
-  "This procedure loads the specified help page into the helpbrowser or what ever is configured as help viewer. The help page is identified by its domain and ID: if help_domain is NULL, we use the help_domain which was registered using the gimp-plugin-help-register procedure. If help_domain is NULL and no help domain was registered, the help domain of the main GIMP installation is used.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2000",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  help_inargs,
-  0,
-  NULL,
-  { { help_invoker } }
-};
+  /*
+   * gimp-help
+   */
+  procedure = gimp_procedure_new (help_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-help");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-help",
+                                     "Load a help page.",
+                                     "This procedure loads the specified help page into the helpbrowser or what ever is configured as help viewer. The help page is identified by its domain and ID: if help_domain is NULL, we use the help_domain which was registered using the gimp-plugin-help-register procedure. If help_domain is NULL and no help domain was registered, the help domain of the main GIMP installation is used.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2000",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("help-domain",
+                                                       "help domain",
+                                                       "The help domain in which help_id is registered",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("help-id",
+                                                       "help id",
+                                                       "The help page's ID",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

@@ -42,9 +42,11 @@
                                              <link linkend="gint">gint</link> *spacing);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-brush-set-spacing">gimp_brush_set_spacing</link>          (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> spacing);
-<link linkend="gint">gint</link>        <link linkend="gimp-brush-get-shape">gimp_brush_get_shape</link>            (const <link linkend="gchar">gchar</link> *name);
-<link linkend="gint">gint</link>        <link linkend="gimp-brush-set-shape">gimp_brush_set_shape</link>            (const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gint">gint</link> shape_in);
+<link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link> <link linkend="gimp-brush-get-shape">gimp_brush_get_shape</link>
+                                            (const <link linkend="gchar">gchar</link> *name);
+<link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link> <link linkend="gimp-brush-set-shape">gimp_brush_set_shape</link>
+                                            (const <link linkend="gchar">gchar</link> *name,
+                                             <link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link> shape_in);
 <link linkend="gint">gint</link>        <link linkend="gimp-brush-get-spikes">gimp_brush_get_spikes</link>           (const <link linkend="gchar">gchar</link> *name);
 <link linkend="gint">gint</link>        <link linkend="gimp-brush-set-spikes">gimp_brush_set_spikes</link>           (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> spikes_in);
@@ -301,7 +303,8 @@ The value should be a integer between 0 and 1000.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-get-shape"/>gimp_brush_get_shape ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_brush_get_shape</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_brush_get_shape            (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_brush_get_shape</primary></indexterm><programlisting><link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link> gimp_brush_get_shape
+                                            (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Get the shape of a generated brush.
 </para>
@@ -318,15 +321,16 @@ in the future.</para>
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
 <listitem><simpara> The brush name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> An enumerated value representing the brush shape.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The brush shape.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-brush-set-shape"/>gimp_brush_set_shape ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_brush_set_shape</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_brush_set_shape            (const <link linkend="gchar">gchar</link> *name,
-                                             <link linkend="gint">gint</link> shape_in);</programlisting>
+<indexterm role="GIMP 2.4"><primary>gimp_brush_set_shape</primary></indexterm><programlisting><link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link> gimp_brush_set_shape
+                                            (const <link linkend="gchar">gchar</link> *name,
+                                             <link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link> shape_in);</programlisting>
 <para>
 Set the shape of a generated brush.
 </para>
@@ -344,7 +348,7 @@ in the future.</para>
 <listitem><simpara> The brush name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>shape_in</parameter>&nbsp;:</term>
-<listitem><simpara> An enumerated value representing the desired brush shape.
+<listitem><simpara> The brush shape.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The brush shape actually assigned.
 
@@ -576,17 +580,17 @@ for any other type of brush, it does not succeed.</para>
 <title><anchor id="gimp-brush-is-generated"/>gimp_brush_is_generated ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_brush_is_generated</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_brush_is_generated         (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
-Tests if generated
+Tests if brush is generated
 </para>
 <para>
-Returns True if this brush is parametric, False for other types</para>
+Returns TRUE if this brush is parametric, FALSE for other types</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
 <listitem><simpara> The brush name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the brush is generated.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the brush is generated.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
@@ -598,14 +602,14 @@ Returns True if this brush is parametric, False for other types</para>
 Tests if brush can be edited
 </para>
 <para>
-Returns True if you have permission to change the brush</para>
+Returns TRUE if you have permission to change the brush</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
 <listitem><simpara> The brush name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the brush can be edited.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the brush can be edited.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4

@@ -66,17 +66,17 @@ gboolean    <a href="libgimp-gimppatternselect.html#gimp-patterns-set-popup">gim
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2651026"></a><h2>Description</h2>
+<a name="id2651238"></a><h2>Description</h2>
 <p>
 Functions providing a pattern selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2651038"></a><h2>Details</h2>
+<a name="id2651250"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2651044"></a><h3>
+<a name="id2651256"></a><h3>
 <a name="GimpRunPatternCallback"></a>GimpRunPatternCallback ()</h3>
-<a class="indexterm" name="id2651053"></a><pre class="programlisting">void        (*GimpRunPatternCallback)       (const gchar *pattern_name,
+<a class="indexterm" name="id2651265"></a><pre class="programlisting">void        (*GimpRunPatternCallback)       (const gchar *pattern_name,
                                              gint width,
                                              gint height,
                                              gint bpp,
@@ -138,9 +138,9 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642989"></a><h3>
+<a name="id2653065"></a><h3>
 <a name="gimp-pattern-select-new"></a>gimp_pattern_select_new ()</h3>
-<a class="indexterm" name="id2653897"></a><pre class="programlisting">const gchar* gimp_pattern_select_new        (const gchar *title,
+<a class="indexterm" name="id2654537"></a><pre class="programlisting">const gchar* gimp_pattern_select_new        (const gchar *title,
                                              const gchar *pattern_name,
                                              <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
                                              gpointer data);</pre>
@@ -187,9 +187,9 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654016"></a><h3>
+<a name="id2654656"></a><h3>
 <a name="gimp-pattern-select-destroy"></a>gimp_pattern_select_destroy ()</h3>
-<a class="indexterm" name="id2654025"></a><pre class="programlisting">void        gimp_pattern_select_destroy     (const gchar *pattern_callback);</pre>
+<a class="indexterm" name="id2654665"></a><pre class="programlisting">void        gimp_pattern_select_destroy     (const gchar *pattern_callback);</pre>
 <p>
 
 </p>
@@ -207,9 +207,9 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654070"></a><h3>
+<a name="id2654710"></a><h3>
 <a name="gimp-patterns-popup"></a>gimp_patterns_popup ()</h3>
-<a class="indexterm" name="id2654079"></a><pre class="programlisting">gboolean    gimp_patterns_popup             (const gchar *pattern_callback,
+<a class="indexterm" name="id2654719"></a><pre class="programlisting">gboolean    gimp_patterns_popup             (const gchar *pattern_callback,
                                              const gchar *popup_title,
                                              const gchar *initial_pattern);</pre>
 <p>
@@ -252,9 +252,9 @@ This procedure popups the pattern selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2655608"></a><h3>
+<a name="id2650257"></a><h3>
 <a name="gimp-patterns-close-popup"></a>gimp_patterns_close_popup ()</h3>
-<a class="indexterm" name="id2655617"></a><pre class="programlisting">gboolean    gimp_patterns_close_popup       (const gchar *pattern_callback);</pre>
+<a class="indexterm" name="id2650266"></a><pre class="programlisting">gboolean    gimp_patterns_close_popup       (const gchar *pattern_callback);</pre>
 <p>
 Popdown the Gimp pattern selection.
 </p>
@@ -283,9 +283,9 @@ This procedure closes an opened pattern selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2655680"></a><h3>
+<a name="id2650329"></a><h3>
 <a name="gimp-patterns-set-popup"></a>gimp_patterns_set_popup ()</h3>
-<a class="indexterm" name="id2655689"></a><pre class="programlisting">gboolean    gimp_patterns_set_popup         (const gchar *pattern_callback,
+<a class="indexterm" name="id2650338"></a><pre class="programlisting">gboolean    gimp_patterns_set_popup         (const gchar *pattern_callback,
                                              const gchar *pattern_name);</pre>
 <p>
 Sets the current pattern selection in a popup.

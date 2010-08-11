@@ -25,10 +25,19 @@ G_BEGIN_DECLS
 /* For information look into the C source or the html documentation */
 
 
+/*
+ * GIMP_TYPE_RGB
+ */
+
 #define GIMP_TYPE_RGB               (gimp_rgb_get_type ())
 #define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))
 
 GType   gimp_rgb_get_type           (void) G_GNUC_CONST;
+
+void    gimp_value_get_rgb          (const GValue  *value,
+                                     GimpRGB       *rgb);
+void    gimp_value_set_rgb          (GValue        *value,
+                                     const GimpRGB *rgb);
 
 
 /*
@@ -97,7 +106,7 @@ gdouble   gimp_rgb_min         (const GimpRGB *rgb);
 void      gimp_rgb_clamp       (GimpRGB       *rgb);
 
 void      gimp_rgb_gamma       (GimpRGB       *rgb,
- 			        gdouble        gamma);
+                                 gdouble        gamma);
 
 gdouble   gimp_rgb_luminance       (const GimpRGB *rgb);
 guchar    gimp_rgb_luminance_uchar (const GimpRGB *rgb);
@@ -145,7 +154,7 @@ void      gimp_rgba_multiply   (GimpRGB       *rgba,
                                 gdouble        factor);
 
 gdouble   gimp_rgba_distance   (const GimpRGB *rgba1,
-			        const GimpRGB *rgba2);
+                                const GimpRGB *rgba2);
 
 
 
@@ -164,8 +173,8 @@ gdouble   gimp_rgba_distance   (const GimpRGB *rgba1,
 #define GIMP_RGB_LUMINANCE_BLUE   (0.0722)
 
 #define GIMP_RGB_LUMINANCE(r,g,b) ((r) * GIMP_RGB_LUMINANCE_RED   + \
-			           (g) * GIMP_RGB_LUMINANCE_GREEN + \
-			           (b) * GIMP_RGB_LUMINANCE_BLUE)
+                                   (g) * GIMP_RGB_LUMINANCE_GREEN + \
+                                   (b) * GIMP_RGB_LUMINANCE_BLUE)
 
 
 #ifndef GIMP_DISABLE_DEPRECATED
@@ -184,8 +193,8 @@ gdouble   gimp_rgba_distance   (const GimpRGB *rgba1,
 #define GIMP_RGB_INTENSITY_BLUE   (0.11)
 
 #define GIMP_RGB_INTENSITY(r,g,b) ((r) * GIMP_RGB_INTENSITY_RED   + \
-			           (g) * GIMP_RGB_INTENSITY_GREEN + \
-			           (b) * GIMP_RGB_INTENSITY_BLUE)
+                                   (g) * GIMP_RGB_INTENSITY_GREEN + \
+                                   (b) * GIMP_RGB_INTENSITY_BLUE)
 
 #endif
 

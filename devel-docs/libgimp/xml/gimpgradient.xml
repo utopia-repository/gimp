@@ -250,14 +250,14 @@ This procedure deletes a gradient</para>
 Tests if gradient can be edited
 </para>
 <para>
-Returns True if you have permission to change the gradient</para>
+Returns TRUE if you have permission to change the gradient</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
 <listitem><simpara> The gradient name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the gradient can be edited.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the gradient can be edited.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
@@ -357,8 +357,7 @@ correspond to the RGBA values for each sample.</para>
                                              <link linkend="GimpRGB">GimpRGB</link> *color,
                                              <link linkend="gdouble">gdouble</link> *opacity);</programlisting>
 <para>
-Retrieves the left endpoint color of the specified gradient and
-segment
+Retrieves the left endpoint color of the specified segment
 </para>
 <para>
 This procedure retrieves the left endpoint color of the specified
@@ -391,8 +390,7 @@ segment of the specified gradient.</para>
                                              const <link linkend="GimpRGB">GimpRGB</link> *color,
                                              <link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <para>
-Retrieves the left endpoint color of the specified gradient and
-segment
+Retrieves the left endpoint color of the specified segment
 </para>
 <para>
 This procedure retrieves the left endpoint color of the specified
@@ -425,8 +423,7 @@ segment of the specified gradient.</para>
                                              <link linkend="GimpRGB">GimpRGB</link> *color,
                                              <link linkend="gdouble">gdouble</link> *opacity);</programlisting>
 <para>
-Retrieves the right endpoint color of the specified gradient and
-segment
+Retrieves the right endpoint color of the specified segment
 </para>
 <para>
 This procedure retrieves the right endpoint color of the specified
@@ -459,8 +456,7 @@ segment of the specified gradient.</para>
                                              const <link linkend="GimpRGB">GimpRGB</link> *color,
                                              <link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <para>
-Retrieves the right endpoint color of the specified gradient and
-segment
+Retrieves the right endpoint color of the specified segment
 </para>
 <para>
 This procedure retrieves the right endpoint color of the specified
@@ -492,8 +488,7 @@ segment of the specified gradient.</para>
                                              <link linkend="gint">gint</link> segment,
                                              <link linkend="gdouble">gdouble</link> *pos);</programlisting>
 <para>
-Retrieves the left endpoint position of the specified gradient and
-segment
+Retrieves the left endpoint position of the specified segment
 </para>
 <para>
 This procedure retrieves the left endpoint position of the specified
@@ -523,8 +518,7 @@ segment of the specified gradient.</para>
                                              <link linkend="gdouble">gdouble</link> pos,
                                              <link linkend="gdouble">gdouble</link> *final_pos);</programlisting>
 <para>
-Sets the left endpoint position of the specified gradient and
-segment
+Sets the left endpoint position of the specified segment
 </para>
 <para>
 This procedure sets the left endpoint position of the specified
@@ -542,7 +536,7 @@ position.</para>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara> The position to set the guidepoint in.
+<listitem><simpara> The position to set the guidepoint to.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>final_pos</parameter>&nbsp;:</term>
 <listitem><simpara> The return position.
@@ -559,8 +553,7 @@ position.</para>
                                              <link linkend="gint">gint</link> segment,
                                              <link linkend="gdouble">gdouble</link> *pos);</programlisting>
 <para>
-Retrieves the middle point position of the specified gradient and
-segment
+Retrieves the middle point position of the specified segment
 </para>
 <para>
 This procedure retrieves the middle point position of the specified
@@ -590,7 +583,7 @@ segment of the specified gradient.</para>
                                              <link linkend="gdouble">gdouble</link> pos,
                                              <link linkend="gdouble">gdouble</link> *final_pos);</programlisting>
 <para>
-Sets the middle point position of the specified gradient and segment
+Sets the middle point position of the specified segment
 </para>
 <para>
 This procedure sets the middle point position of the specified
@@ -607,7 +600,7 @@ final position.</para>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara> The position to set the guidepoint in.
+<listitem><simpara> The position to set the guidepoint to.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>final_pos</parameter>&nbsp;:</term>
 <listitem><simpara> The return position.
@@ -624,8 +617,7 @@ final position.</para>
                                              <link linkend="gint">gint</link> segment,
                                              <link linkend="gdouble">gdouble</link> *pos);</programlisting>
 <para>
-Retrieves the right endpoint position of the specified gradient and
-segment
+Retrieves the right endpoint position of the specified segment
 </para>
 <para>
 This procedure retrieves the right endpoint position of the
@@ -655,8 +647,7 @@ specified segment of the specified gradient.</para>
                                              <link linkend="gdouble">gdouble</link> pos,
                                              <link linkend="gdouble">gdouble</link> *final_pos);</programlisting>
 <para>
-Sets the right endpoint position of the specified gradient and
-segment
+Sets the right endpoint position of the specified segment
 </para>
 <para>
 This procedure sets the right endpoint position of the specified
@@ -674,7 +665,7 @@ the final position.</para>
 <listitem><simpara> The index of the segment within the gradient.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&nbsp;:</term>
-<listitem><simpara> The position to set the guidepoint in.
+<listitem><simpara> The position to set the guidepoint to.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>final_pos</parameter>&nbsp;:</term>
 <listitem><simpara> The return position.

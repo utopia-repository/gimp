@@ -26,9 +26,9 @@
 #include "gimp.h"
 
 /**
- * gimp_progress_init:
+ * _gimp_progress_init:
  * @message: Message to use in the progress dialog.
-
+ * @gdisplay_ID: GimpDisplay to update progressbar in, or -1 for a seperate window.
  *
  * Initializes the progress bar for the current plug-in.
  *
@@ -38,17 +38,18 @@
  * Returns: TRUE on success.
  */
 gboolean
-gimp_progress_init (const gchar *message)
+_gimp_progress_init (const gchar *message,
+                     gint32       gdisplay_ID)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-progress-init",
-				    &nreturn_vals,
-				    GIMP_PDB_STRING, message,
-				    GIMP_PDB_INT32, gimp_default_display (),
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, message,
+                                    GIMP_PDB_DISPLAY, gdisplay_ID,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -58,7 +59,7 @@ gimp_progress_init (const gchar *message)
 }
 
 /**
- * gimp_progress_update:
+ * _gimp_progress_update:
  * @percentage: Percentage of progress completed which must be between 0.0 and 1.0.
  *
  * Updates the progress bar for the current plug-in.
@@ -69,16 +70,16 @@ gimp_progress_init (const gchar *message)
  * Returns: TRUE on success.
  */
 gboolean
-gimp_progress_update (gdouble percentage)
+_gimp_progress_update (gdouble percentage)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-progress-update",
-				    &nreturn_vals,
-				    GIMP_PDB_FLOAT, percentage,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_FLOAT, percentage,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -110,8 +111,8 @@ gimp_progress_pulse (void)
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-progress-pulse",
-				    &nreturn_vals,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -142,9 +143,9 @@ gimp_progress_set_text (const gchar *message)
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-progress-set-text",
-				    &nreturn_vals,
-				    GIMP_PDB_STRING, message,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, message,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -174,8 +175,8 @@ gimp_progress_get_window_handle (void)
   gint window = 0;
 
   return_vals = gimp_run_procedure ("gimp-progress-get-window-handle",
-				    &nreturn_vals,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     window = return_vals[1].data.d_int32;
@@ -208,9 +209,9 @@ _gimp_progress_install (const gchar *progress_callback)
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-progress-install",
-				    &nreturn_vals,
-				    GIMP_PDB_STRING, progress_callback,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, progress_callback,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -240,9 +241,9 @@ _gimp_progress_uninstall (const gchar *progress_callback)
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-progress-uninstall",
-				    &nreturn_vals,
-				    GIMP_PDB_STRING, progress_callback,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, progress_callback,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -271,9 +272,9 @@ gimp_progress_cancel (const gchar *progress_callback)
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-progress-cancel",
-				    &nreturn_vals,
-				    GIMP_PDB_STRING, progress_callback,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, progress_callback,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 

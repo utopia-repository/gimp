@@ -60,61 +60,69 @@ gdouble     <a href="GimpZoomPreview.html#gimp-zoom-preview-get-factor">gimp_zoo
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2658026"></a><h2>Object Hierarchy</h2>
+<a name="id2657042"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
+   +----GInitiallyUnowned
+         +----<a
 href="../gtk/GtkObject.html"
 >GtkObject</a>
-         +----<a
+               +----<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>
-               +----<a
+                     +----<a
 href="../gtk/GtkContainer.html"
 >GtkContainer</a>
-                     +----<a
+                           +----<a
 href="../gtk/GtkBox.html"
 >GtkBox</a>
-                           +----<a
+                                 +----<a
 href="../gtk/GtkVBox.html"
 >GtkVBox</a>
-                                 +----<a
+                                       +----<a
 href="../libgimpwidgets/GimpPreview.html"
 >GimpPreview</a>
-                                       +----<a
+                                             +----<a
 href="../libgimpwidgets/GimpScrolledPreview.html"
 >GimpScrolledPreview</a>
-                                             +----GimpZoomPreview
+                                                   +----GimpZoomPreview
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2658085"></a><h2>Implemented Interfaces</h2>
+<a name="id2657109"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpZoomPreview implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2658101"></a><h2>Description</h2>
+<a name="id2657125"></a><h2>Properties</h2>
+<pre class="synopsis">
+
+  "<a href="GimpZoomPreview.html#GimpZoomPreview--drawable">drawable</a>"             gpointer              : Read / Write / Construct Only
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2657150"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2658112"></a><h2>Details</h2>
+<a name="id2657162"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2658119"></a><h3>
+<a name="id2657168"></a><h3>
 <a name="GimpZoomPreview-struct"></a>GimpZoomPreview</h3>
-<a class="indexterm" name="id2658128"></a><pre class="programlisting">typedef struct _GimpZoomPreview GimpZoomPreview;</pre>
+<a class="indexterm" name="id2656385"></a><pre class="programlisting">typedef struct _GimpZoomPreview GimpZoomPreview;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2658143"></a><h3>
+<a name="id2656400"></a><h3>
 <a name="gimp-zoom-preview-new"></a>gimp_zoom_preview_new ()</h3>
-<a class="indexterm" name="id2656895"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2656409"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_zoom_preview_new           (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable);</pre>
 <p>
@@ -146,14 +154,17 @@ Creates a new <a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2656976"></a><h3>
+<a name="id2656490"></a><h3>
 <a name="gimp-zoom-preview-get-source"></a>gimp_zoom_preview_get_source ()</h3>
-<a class="indexterm" name="id2656985"></a><pre class="programlisting">guchar*     gimp_zoom_preview_get_source    (<a href="GimpZoomPreview.html" title="GimpZoomPreview">GimpZoomPreview</a> *preview,
+<a class="indexterm" name="id2656499"></a><pre class="programlisting">guchar*     gimp_zoom_preview_get_source    (<a href="GimpZoomPreview.html" title="GimpZoomPreview">GimpZoomPreview</a> *preview,
                                              gint *width,
                                              gint *height,
                                              gint *bpp);</pre>
 <p>
-</p>
+Returns the scaled image data of the part of the drawable the
+<a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> is currently showing, as a newly allocated array of guchar.
+This function also allow to get the current width, height and bpp of the
+<a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a>.</p>
 <p>
 
 </p>
@@ -163,25 +174,28 @@ Creates a new <a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>preview</code></em>&#160;:</span></td>
-<td>
+<td> a <a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> widget
 </td>
 </tr>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
-<td>
+<td> a pointer to an int where the current width of the zoom widget
+        will be put.
 </td>
 </tr>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
-<td>
+<td> a pointer to an int where the current width of the zoom widget
+         will be put.
 </td>
 </tr>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
-<td>
+<td> a pointer to an int where the bpp of the current drawable the zoom
+      widget is using will be put.
 </td>
 </tr>
 <tr>
@@ -198,9 +212,9 @@ Creates a new <a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653337"></a><h3>
+<a name="id2658158"></a><h3>
 <a name="gimp-zoom-preview-get-drawable"></a>gimp_zoom_preview_get_drawable ()</h3>
-<a class="indexterm" name="id2653346"></a><pre class="programlisting"><a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>* gimp_zoom_preview_get_drawable
+<a class="indexterm" name="id2658167"></a><pre class="programlisting"><a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a>* gimp_zoom_preview_get_drawable
                                             (<a href="GimpZoomPreview.html" title="GimpZoomPreview">GimpZoomPreview</a> *preview);</pre>
 <p>
 
@@ -227,9 +241,9 @@ Creates a new <a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653401"></a><h3>
+<a name="id2658222"></a><h3>
 <a name="gimp-zoom-preview-get-factor"></a>gimp_zoom_preview_get_factor ()</h3>
-<a class="indexterm" name="id2653410"></a><pre class="programlisting">gdouble     gimp_zoom_preview_get_factor    (<a href="GimpZoomPreview.html" title="GimpZoomPreview">GimpZoomPreview</a> *preview);</pre>
+<a class="indexterm" name="id2658231"></a><pre class="programlisting">gdouble     gimp_zoom_preview_get_factor    (<a href="GimpZoomPreview.html" title="GimpZoomPreview">GimpZoomPreview</a> *preview);</pre>
 <p>
 
 </p>
@@ -252,6 +266,21 @@ Creates a new <a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class
 </tr>
 </tbody>
 </table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2658287"></a><h2>Properties</h2>
+<div class="refsect2" lang="en">
+<a name="id2658293"></a><h3>
+<a name="GimpZoomPreview--drawable"></a>The "<code class="literal">drawable</code>" property</h3>
+<pre class="programlisting">  "drawable"             gpointer              : Read / Write / Construct Only</pre>
+<p>
+The drawable the <a href="GimpZoomPreview.html" title="GimpZoomPreview"><span class="type">GimpZoomPreview</span></a> is currently attached to.</p>
+<p>
+
+</p>
+<p>Since  GIMP 2.4
+</p>
 </div>
 </div>
 </div>

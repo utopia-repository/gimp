@@ -1,5 +1,5 @@
 /*
- * "$Id: sharpen.c,v 1.62 2005/09/30 08:15:59 mitch Exp $"
+ * "$Id: sharpen.c,v 1.64 2006/03/17 10:55:22 neo Exp $"
  *
  *   Sharpen filters for The GIMP -- an image manipulation program
  *
@@ -112,8 +112,8 @@ query (void)
   };
 
   gimp_install_procedure (PLUG_IN_PROC,
-                          "Sharpen filter, typically used to 'sharpen' a "
-                          "photographic image.",
+                          N_("Make image sharper "
+                             "(less powerful than Unsharp Mask)"),
                           "This plug-in selectively performs a convolution "
                           "filter on an image.",
                           "Michael Sweet <mike@easysw.com>",

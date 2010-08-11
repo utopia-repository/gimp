@@ -48,7 +48,7 @@
 /*  local function prototypes  */
 
 static void      gimp_display_shell_close_dialog       (GimpDisplayShell *shell,
-                                                        GimpImage        *gimage);
+                                                        GimpImage        *image);
 static void      gimp_display_shell_close_name_changed (GimpImage        *image,
                                                         GimpMessageBox   *box);
 static gboolean  gimp_display_shell_close_time_changed (GimpMessageBox   *box);
@@ -56,7 +56,9 @@ static void      gimp_display_shell_close_response     (GtkWidget        *widget
                                                         gboolean          close,
                                                         GimpDisplayShell *shell);
 
-static gchar   * gimp_time_since                       (guint             then);
+static void      gimp_time_since                       (guint    then,
+                                                        gchar  **hours,
+                                                        gchar  **minutes);
 
 
 /*  public functions  */
@@ -65,32 +67,32 @@ void
 gimp_display_shell_close (GimpDisplayShell *shell,
                           gboolean          kill_it)
 {
-  GimpImage *gimage;
+  GimpImage *image;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  gimage = shell->gdisp->gimage;
+  image = shell->display->image;
 
   /*  FIXME: gimp_busy HACK not really appropriate here because we only
    *  want to prevent the busy image and display to be closed.  --Mitch
    */
-  if (gimage->gimp->busy)
+  if (image->gimp->busy)
     return;
 
   /*  If the image has been modified, give the user a chance to save
    *  it before nuking it--this only applies if its the last view
-   *  to an image canvas.  (a gimage with disp_count = 1)
+   *  to an image canvas.  (a image with disp_count = 1)
    */
-  if (! kill_it               &&
-      gimage->disp_count == 1 &&
-      gimage->dirty           &&
-      GIMP_DISPLAY_CONFIG (gimage->gimp->config)->confirm_on_close)
+  if (! kill_it              &&
+      image->disp_count == 1 &&
+      image->dirty           &&
+      GIMP_DISPLAY_CONFIG (image->gimp->config)->confirm_on_close)
     {
-      gimp_display_shell_close_dialog (shell, gimage);
+      gimp_display_shell_close_dialog (shell, image);
     }
   else
     {
-      gimp_display_delete (shell->gdisp);
+      gimp_display_delete (shell->display);
     }
 }
 
@@ -102,7 +104,7 @@ gimp_display_shell_close (GimpDisplayShell *shell,
 
 static void
 gimp_display_shell_close_dialog (GimpDisplayShell *shell,
-                                 GimpImage        *gimage)
+                                 GimpImage        *image)
 {
   GtkWidget      *dialog;
   GtkWidget      *button;
@@ -118,7 +120,7 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
       return;
     }
 
-  name = file_utils_uri_display_basename (gimp_image_get_uri (gimage));
+  name = file_utils_uri_display_basename (gimp_image_get_uri (image));
 
   title = g_strdup_printf (_("Close %s"), name);
   g_free (name);
@@ -160,17 +162,18 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
 
   box = GIMP_MESSAGE_DIALOG (dialog)->box;
 
-  g_signal_connect_object (gimage, "name-changed",
+  g_signal_connect_object (image, "name-changed",
                            G_CALLBACK (gimp_display_shell_close_name_changed),
                            box, 0);
 
-  gimp_display_shell_close_name_changed (gimage, box);
+  gimp_display_shell_close_name_changed (image, box);
 
   closure =
     g_cclosure_new_object (G_CALLBACK (gimp_display_shell_close_time_changed),
                            G_OBJECT (box));
 
-  source = g_timeout_source_new (1000);
+  /*  update every 10 seconds  */
+  source = g_timeout_source_new (10 * 1000);
   g_source_set_closure (source, closure);
   g_source_attach (source, NULL);
   g_source_unref (source);
@@ -178,7 +181,7 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
   /*  The dialog is destroyed with the shell, so it should be safe
    *  to hold an image pointer for the lifetime of the dialog.
    */
-  g_object_set_data (G_OBJECT (box), "gimp-image", gimage);
+  g_object_set_data (G_OBJECT (box), "gimp-image", image);
 
   gimp_display_shell_close_time_changed (box);
 
@@ -217,13 +220,26 @@ gimp_display_shell_close_time_changed (GimpMessageBox *box)
 
   if (image->dirty_time)
     {
-      gchar *period = gimp_time_since (image->dirty_time);
+      gchar *hours   = NULL;
+      gchar *minutes = NULL;
 
-      gimp_message_box_set_text (box,
-                                 _("If you don't save the image, "
-                                   "changes from the last %s will be lost."),
-                                 period);
-      g_free (period);
+      gimp_time_since (image->dirty_time, &hours, &minutes);
+
+      if (hours && minutes)
+        /* time period ("... from the last 3 hours and 20 minutes ...") */
+        gimp_message_box_set_text (box,
+                                   _("If you don't save the image, changes "
+                                     "from the last %s and %s will be lost."),
+                                   hours, minutes);
+      else
+        /* time period ("... from the last 20 minutes ...") */
+        gimp_message_box_set_text (box,
+                                   _("If you don't save the image, changes "
+                                     "from the last %s will be lost."),
+                                   hours ? hours : minutes);
+
+      g_free (hours);
+      g_free (minutes);
     }
   else
     {
@@ -243,7 +259,7 @@ gimp_display_shell_close_response (GtkWidget        *widget,
   switch (response_id)
     {
     case GTK_RESPONSE_CLOSE:
-      gimp_display_delete (shell->gdisp);
+      gimp_display_delete (shell->display);
       break;
 
     case RESPONSE_SAVE:
@@ -257,8 +273,8 @@ gimp_display_shell_close_response (GtkWidget        *widget,
 
         gtk_action_activate (action);
 
-        if (! shell->gdisp->gimage->dirty)
-          gimp_display_delete (shell->gdisp);
+        if (! shell->display->image->dirty)
+          gimp_display_delete (shell->display);
       }
       break;
 
@@ -267,20 +283,35 @@ gimp_display_shell_close_response (GtkWidget        *widget,
     }
 }
 
-static gchar *
-gimp_time_since (guint  then)
+static void
+gimp_time_since (guint   then,
+                 gchar **hours,
+                 gchar **minutes)
 {
-  guint  now  = time (NULL);
-  guint  diff = 1 + now - then;
+  guint now  = time (NULL);
+  guint diff = 1 + now - then;
 
-  g_return_val_if_fail (now >= then, NULL);
+  *minutes = NULL;
+  *hours   = NULL;
 
-  /* one second, the time period  */
-  if (diff < 60)
-    return g_strdup_printf (ngettext ("second", "%d seconds", diff), diff);
+  g_return_if_fail (now >= then);
 
-  /*  round to the nearest minute  */
-  diff = (diff + 30) / 60;
+  /*  first round up to the nearest minute  */
+  diff = (diff + 59) / 60;
 
-  return g_strdup_printf (ngettext ("minute", "%d minutes", diff), diff);
+  /*  then optionally round minutes to multiples of 5 or 10  */
+  if (diff > 50)
+    diff = ((diff + 8) / 10) * 10;
+  else if (diff > 20)
+    diff = ((diff + 3) / 5) * 5;
+
+  if (diff >= 120)
+    {
+      *hours = g_strdup_printf (ngettext ("%d hour", "%d hours",
+                                          diff / 60), diff / 60);
+      diff = (diff % 60);
+    }
+
+  if (diff > 0)
+    *minutes = g_strdup_printf (ngettext ("minute", "%d minutes", diff), diff);
 }

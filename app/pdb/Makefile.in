@@ -55,30 +55,32 @@ LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
 libapppdb_a_AR = $(AR) $(ARFLAGS)
 libapppdb_a_LIBADD =
-am_libapppdb_a_OBJECTS = procedural_db.$(OBJEXT) \
-	procedural-db-query.$(OBJEXT) internal_procs.$(OBJEXT) \
-	brush_cmds.$(OBJEXT) brush_select_cmds.$(OBJEXT) \
-	brushes_cmds.$(OBJEXT) buffer_cmds.$(OBJEXT) \
-	channel_cmds.$(OBJEXT) color_cmds.$(OBJEXT) \
-	context_cmds.$(OBJEXT) convert_cmds.$(OBJEXT) \
-	display_cmds.$(OBJEXT) drawable_cmds.$(OBJEXT) \
-	drawable_transform_cmds.$(OBJEXT) edit_cmds.$(OBJEXT) \
-	fileops_cmds.$(OBJEXT) floating_sel_cmds.$(OBJEXT) \
-	font_select_cmds.$(OBJEXT) fonts_cmds.$(OBJEXT) \
-	gimprc_cmds.$(OBJEXT) gradient_cmds.$(OBJEXT) \
-	gradient_select_cmds.$(OBJEXT) gradients_cmds.$(OBJEXT) \
-	grid_cmds.$(OBJEXT) guides_cmds.$(OBJEXT) help_cmds.$(OBJEXT) \
-	image_cmds.$(OBJEXT) layer_cmds.$(OBJEXT) \
-	message_cmds.$(OBJEXT) misc_cmds.$(OBJEXT) \
-	paint_tools_cmds.$(OBJEXT) palette_cmds.$(OBJEXT) \
-	palette_select_cmds.$(OBJEXT) palettes_cmds.$(OBJEXT) \
-	parasite_cmds.$(OBJEXT) paths_cmds.$(OBJEXT) \
-	pattern_cmds.$(OBJEXT) pattern_select_cmds.$(OBJEXT) \
-	patterns_cmds.$(OBJEXT) plug_in_cmds.$(OBJEXT) \
-	procedural_db_cmds.$(OBJEXT) progress_cmds.$(OBJEXT) \
-	selection_cmds.$(OBJEXT) selection_tools_cmds.$(OBJEXT) \
-	text_tool_cmds.$(OBJEXT) transform_tools_cmds.$(OBJEXT) \
-	undo_cmds.$(OBJEXT) unit_cmds.$(OBJEXT) vectors_cmds.$(OBJEXT)
+am_libapppdb_a_OBJECTS = gimp-pdb.$(OBJEXT) gimp-pdb-compat.$(OBJEXT) \
+	gimp-pdb-query.$(OBJEXT) gimpprocedure.$(OBJEXT) \
+	gimppluginprocedure.$(OBJEXT) gimptemporaryprocedure.$(OBJEXT) \
+	internal_procs.$(OBJEXT) brush_cmds.$(OBJEXT) \
+	brush_select_cmds.$(OBJEXT) brushes_cmds.$(OBJEXT) \
+	buffer_cmds.$(OBJEXT) channel_cmds.$(OBJEXT) \
+	color_cmds.$(OBJEXT) context_cmds.$(OBJEXT) \
+	convert_cmds.$(OBJEXT) display_cmds.$(OBJEXT) \
+	drawable_cmds.$(OBJEXT) drawable_transform_cmds.$(OBJEXT) \
+	edit_cmds.$(OBJEXT) fileops_cmds.$(OBJEXT) \
+	floating_sel_cmds.$(OBJEXT) font_select_cmds.$(OBJEXT) \
+	fonts_cmds.$(OBJEXT) gimprc_cmds.$(OBJEXT) \
+	gradient_cmds.$(OBJEXT) gradient_select_cmds.$(OBJEXT) \
+	gradients_cmds.$(OBJEXT) grid_cmds.$(OBJEXT) \
+	guides_cmds.$(OBJEXT) help_cmds.$(OBJEXT) image_cmds.$(OBJEXT) \
+	layer_cmds.$(OBJEXT) message_cmds.$(OBJEXT) \
+	misc_cmds.$(OBJEXT) paint_tools_cmds.$(OBJEXT) \
+	palette_cmds.$(OBJEXT) palette_select_cmds.$(OBJEXT) \
+	palettes_cmds.$(OBJEXT) parasite_cmds.$(OBJEXT) \
+	paths_cmds.$(OBJEXT) pattern_cmds.$(OBJEXT) \
+	pattern_select_cmds.$(OBJEXT) patterns_cmds.$(OBJEXT) \
+	plug_in_cmds.$(OBJEXT) procedural_db_cmds.$(OBJEXT) \
+	progress_cmds.$(OBJEXT) selection_cmds.$(OBJEXT) \
+	selection_tools_cmds.$(OBJEXT) text_tool_cmds.$(OBJEXT) \
+	transform_tools_cmds.$(OBJEXT) undo_cmds.$(OBJEXT) \
+	unit_cmds.$(OBJEXT) vectors_cmds.$(OBJEXT)
 libapppdb_a_OBJECTS = $(am_libapppdb_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -266,6 +268,7 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
+INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -359,7 +362,6 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
-SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -375,6 +377,8 @@ SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
 URI_CFLAGS = @URI_CFLAGS@
 URI_LIBS = @URI_LIBS@
+USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
+USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@
@@ -454,11 +458,19 @@ target_alias = @target_alias@
 noinst_LIBRARIES = libapppdb.a
 libapppdb_a_SOURCES = \
 	pdb-types.h			\
-	pdb_glue.h			\
-	procedural_db.c			\
-	procedural_db.h			\
-	procedural-db-query.c		\
-	procedural-db-query.h		\
+	\
+	gimp-pdb.c			\
+	gimp-pdb.h			\
+	gimp-pdb-compat.c		\
+	gimp-pdb-compat.h		\
+	gimp-pdb-query.c		\
+	gimp-pdb-query.h		\
+	gimpprocedure.c			\
+	gimpprocedure.h			\
+	gimppluginprocedure.c		\
+	gimppluginprocedure.h		\
+	gimptemporaryprocedure.c	\
+	gimptemporaryprocedure.h	\
 	\
 	internal_procs.c		\
 	internal_procs.h		\
@@ -585,7 +597,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/floating_sel_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/font_select_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fonts_cmds.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-pdb-compat.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-pdb-query.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-pdb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginprocedure.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprc_cmds.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemporaryprocedure.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gradient_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gradient_select_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gradients_cmds.Po@am__quote@
@@ -607,8 +625,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pattern_select_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/patterns_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug_in_cmds.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procedural-db-query.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procedural_db.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procedural_db_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progress_cmds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/selection_cmds.Po@am__quote@

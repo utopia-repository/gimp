@@ -25,37 +25,27 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "gimp-intl.h"
 #include "plug-in/plug-in-progress.h"
 #include "plug-in/plug-in.h"
 
-static ProcRecord message_proc;
-static ProcRecord message_get_handler_proc;
-static ProcRecord message_set_handler_proc;
 
-void
-register_message_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &message_proc);
-  procedural_db_register (gimp, &message_get_handler_proc);
-  procedural_db_register (gimp, &message_set_handler_proc);
-}
-
-static Argument *
-message_invoker (Gimp         *gimp,
-                 GimpContext  *context,
-                 GimpProgress *progress,
-                 Argument     *args)
+static GValueArray *
+message_invoker (GimpProcedure     *procedure,
+                 Gimp              *gimp,
+                 GimpContext       *context,
+                 GimpProgress      *progress,
+                 const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *message;
+  const gchar *message;
 
-  message = (gchar *) args[0].value.pdb_pointer;
-  if (message == NULL || !g_utf8_validate (message, -1, NULL))
-    success = FALSE;
+  message = g_value_get_string (&args->values[0]);
 
   if (success)
     {
@@ -65,119 +55,122 @@ message_invoker (Gimp         *gimp,
         gimp_message (gimp, NULL, message);
     }
 
-  return procedural_db_return_args (&message_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg message_inargs[] =
+static GValueArray *
+message_get_handler_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
-  {
-    GIMP_PDB_STRING,
-    "message",
-    "Message to display in the dialog"
-  }
-};
+  GValueArray *return_vals;
+  gint32 handler = 0;
 
-static ProcRecord message_proc =
-{
-  "gimp-message",
-  "gimp-message",
-  "Displays a dialog box with a message.",
-  "Displays a dialog box with a message. Useful for status or error reporting. The message must be in UTF-8 encoding.",
-  "Manish Singh",
-  "Manish Singh",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  message_inargs,
-  0,
-  NULL,
-  { { message_invoker } }
-};
+  handler = gimp->message_handler;
 
-static Argument *
-message_get_handler_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
-{
-  Argument *return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, TRUE);
+  g_value_set_enum (&return_vals->values[1], handler);
 
-  return_args = procedural_db_return_args (&message_get_handler_proc, TRUE);
-  return_args[1].value.pdb_int = gimp->message_handler;
-
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg message_get_handler_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "handler",
-    "The current handler type: { GIMP_MESSAGE_BOX (0), GIMP_CONSOLE (1), GIMP_ERROR_CONSOLE (2) }"
-  }
-};
-
-static ProcRecord message_get_handler_proc =
-{
-  "gimp-message-get-handler",
-  "gimp-message-get-handler",
-  "Returns the current state of where warning messages are displayed.",
-  "This procedure returns the way g_message warnings are displayed. They can be shown in a dialog box or printed on the console where gimp was started.",
-  "Manish Singh",
-  "Manish Singh",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  1,
-  message_get_handler_outargs,
-  { { message_get_handler_invoker } }
-};
-
-static Argument *
-message_set_handler_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+message_set_handler_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
   gint32 handler;
 
-  handler = args[0].value.pdb_int;
-  if (handler < GIMP_MESSAGE_BOX || handler > GIMP_ERROR_CONSOLE)
-    success = FALSE;
+  handler = g_value_get_enum (&args->values[0]);
 
   if (success)
-    gimp->message_handler = handler;
+    {
+      gimp->message_handler = handler;
+    }
 
-  return procedural_db_return_args (&message_set_handler_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg message_set_handler_inargs[] =
+void
+register_message_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_INT32,
-    "handler",
-    "The new handler type: { GIMP_MESSAGE_BOX (0), GIMP_CONSOLE (1), GIMP_ERROR_CONSOLE (2) }"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord message_set_handler_proc =
-{
-  "gimp-message-set-handler",
-  "gimp-message-set-handler",
-  "Controls where warning messages are displayed.",
-  "This procedure controls how g_message warnings are displayed. They can be shown in a dialog box or printed on the console where gimp was started.",
-  "Manish Singh",
-  "Manish Singh",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  message_set_handler_inargs,
-  0,
-  NULL,
-  { { message_set_handler_invoker } }
-};
+  /*
+   * gimp-message
+   */
+  procedure = gimp_procedure_new (message_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-message");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-message",
+                                     "Displays a dialog box with a message.",
+                                     "Displays a dialog box with a message. Useful for status or error reporting. The message must be in UTF-8 encoding.",
+                                     "Manish Singh",
+                                     "Manish Singh",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("message",
+                                                       "message",
+                                                       "Message to display in the dialog",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-message-get-handler
+   */
+  procedure = gimp_procedure_new (message_get_handler_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-message-get-handler");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-message-get-handler",
+                                     "Returns the current state of where warning messages are displayed.",
+                                     "This procedure returns the way g_message warnings are displayed. They can be shown in a dialog box or printed on the console where gimp was started.",
+                                     "Manish Singh",
+                                     "Manish Singh",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_enum ("handler",
+                                                      "handler",
+                                                      "The current handler type: { GIMP_MESSAGE_BOX (0), GIMP_CONSOLE (1), GIMP_ERROR_CONSOLE (2) }",
+                                                      GIMP_TYPE_MESSAGE_HANDLER_TYPE,
+                                                      GIMP_MESSAGE_BOX,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-message-set-handler
+   */
+  procedure = gimp_procedure_new (message_set_handler_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-message-set-handler");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-message-set-handler",
+                                     "Controls where warning messages are displayed.",
+                                     "This procedure controls how g_message warnings are displayed. They can be shown in a dialog box or printed on the console where gimp was started.",
+                                     "Manish Singh",
+                                     "Manish Singh",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("handler",
+                                                  "handler",
+                                                  "The new handler type: { GIMP_MESSAGE_BOX (0), GIMP_CONSOLE (1), GIMP_ERROR_CONSOLE (2) }",
+                                                  GIMP_TYPE_MESSAGE_HANDLER_TYPE,
+                                                  GIMP_MESSAGE_BOX,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

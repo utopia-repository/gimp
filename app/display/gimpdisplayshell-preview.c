@@ -105,7 +105,7 @@ gimp_display_shell_preview_transform (GimpDisplayShell *shell)
       GimpTransformTool *tr_tool;
       gdouble            z1, z2, z3, z4;
 
-      tool = tool_manager_get_active (shell->gdisp->gimage->gimp);
+      tool = tool_manager_get_active (shell->display->image->gimp);
 
       if (! GIMP_IS_TRANSFORM_TOOL (tool) ||
           ! GIMP_IS_DRAWABLE (tool->drawable))
@@ -150,7 +150,7 @@ gimp_display_shell_preview_transform (GimpDisplayShell *shell)
                                          &mask_x1, &mask_y1,
                                          &mask_x2, &mask_y2))
             {
-              mask = gimp_image_get_mask (shell->gdisp->gimage);
+              mask = gimp_image_get_mask (shell->display->image);
 
               gimp_item_offsets (GIMP_ITEM (tool->drawable),
                                  &mask_offx, &mask_offy);
@@ -453,15 +453,15 @@ gimp_display_shell_draw_tri_row (GimpDrawable *texture,
                                  gfloat        v2,
                                  gint          y)
 {
-  TileManager *tiles;
-  guchar      *pptr;
-  guchar       bytes;
-  gfloat       u, v;
-  gfloat       du, dv;
-  gint         dx;
-  guchar       pixel [4];
-  guchar      *cmap;
-  gint         offset;
+  TileManager  *tiles;
+  guchar       *pptr;
+  guchar        bytes;
+  gfloat        u, v;
+  gfloat        du, dv;
+  gint          dx;
+  guchar        pixel [4];
+  const guchar *cmap;
+  gint          offset;
 
   if (! (x2 - x1))
     return;
@@ -476,7 +476,7 @@ gimp_display_shell_draw_tri_row (GimpDrawable *texture,
 
   bytes = gdk_pixbuf_get_n_channels (row);
   pptr  = gdk_pixbuf_get_pixels (row);
-  tiles = gimp_drawable_data (texture);
+  tiles = gimp_drawable_get_tiles (texture);
 
   if (x1 > x2)
     {
@@ -513,7 +513,7 @@ gimp_display_shell_draw_tri_row (GimpDrawable *texture,
   switch (gimp_drawable_type (texture))
     {
     case GIMP_INDEXED_IMAGE:
-      cmap = gimp_drawable_cmap (texture);
+      cmap = gimp_drawable_get_colormap (texture);
 
       while (dx --)
         {
@@ -531,7 +531,7 @@ gimp_display_shell_draw_tri_row (GimpDrawable *texture,
       break;
 
     case GIMP_INDEXEDA_IMAGE:
-      cmap = gimp_drawable_cmap (texture);
+      cmap = gimp_drawable_get_colormap (texture);
 
       while (dx --)
         {
@@ -613,16 +613,16 @@ gimp_display_shell_draw_tri_row_mask (GimpDrawable *texture,
                                       gfloat        v2,
                                       gint          y)
 {
-  TileManager *tiles, *masktiles;
-  guchar      *pptr;
-  guchar       bytes, alpha;
-  gfloat       u, v;
-  gfloat       mu, mv;
-  gfloat       du, dv;
-  gint         dx;
-  guchar       pixel [4], maskval;
-  guchar      *cmap;
-  gint         offset;
+  TileManager  *tiles, *masktiles;
+  guchar       *pptr;
+  guchar        bytes, alpha;
+  gfloat        u, v;
+  gfloat        mu, mv;
+  gfloat        du, dv;
+  gint          dx;
+  guchar        pixel [4], maskval;
+  const guchar *cmap;
+  gint          offset;
 
   if (! (x2 - x1))
     return;
@@ -637,12 +637,12 @@ gimp_display_shell_draw_tri_row_mask (GimpDrawable *texture,
   bytes     = gdk_pixbuf_get_n_channels (row);
   alpha     = bytes - 1;
   pptr      = gdk_pixbuf_get_pixels (row);
-  tiles     = gimp_drawable_data (texture);
-  masktiles = gimp_drawable_data (GIMP_DRAWABLE (mask));
+  tiles     = gimp_drawable_get_tiles (texture);
+  masktiles = gimp_drawable_get_tiles (GIMP_DRAWABLE (mask));
 
   if (x1 > x2)
     {
-      gint tmp;
+      gint   tmp;
       gfloat ftmp;
 
       tmp  = x2;  x2 = x1;  x1 = tmp;
@@ -676,7 +676,7 @@ gimp_display_shell_draw_tri_row_mask (GimpDrawable *texture,
   switch (gimp_drawable_type (texture))
     {
     case GIMP_INDEXED_IMAGE:
-      cmap = gimp_drawable_cmap (texture);
+      cmap = gimp_drawable_get_colormap (texture);
 
       while (dx --)
         {
@@ -698,7 +698,7 @@ gimp_display_shell_draw_tri_row_mask (GimpDrawable *texture,
       break;
 
     case GIMP_INDEXEDA_IMAGE:
-      cmap = gimp_drawable_cmap (texture);
+      cmap = gimp_drawable_get_colormap (texture);
 
       while (dx --)
         {

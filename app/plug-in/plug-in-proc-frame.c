@@ -20,12 +20,16 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <glib-object.h>
 
 #include "plug-in-types.h"
 
 #include "core/gimpcontext.h"
 #include "core/gimpprogress.h"
+
+#include "pdb/gimpprocedure.h"
 
 #include "plug-in-proc-frame.h"
 #include "plug-in-progress.h"
@@ -38,21 +42,21 @@ static void  plug_in_proc_frame_free (PlugInProcFrame *proc_frame,
 /*  publuc functions  */
 
 PlugInProcFrame *
-plug_in_proc_frame_new (GimpContext  *context,
-                        GimpProgress *progress,
-                        ProcRecord   *proc_rec)
+plug_in_proc_frame_new (GimpContext   *context,
+                        GimpProgress  *progress,
+                        GimpProcedure *procedure)
 {
   PlugInProcFrame *proc_frame;
 
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
-  g_return_val_if_fail (proc_rec != NULL, NULL);
+  g_return_val_if_fail (GIMP_IS_PROCEDURE (procedure), NULL);
 
   proc_frame = g_new0 (PlugInProcFrame, 1);
 
   proc_frame->ref_count = 1;
 
-  plug_in_proc_frame_init (proc_frame, context, progress, proc_rec);
+  plug_in_proc_frame_init (proc_frame, context, progress, procedure);
 
   return proc_frame;
 }
@@ -61,7 +65,7 @@ void
 plug_in_proc_frame_init (PlugInProcFrame *proc_frame,
                          GimpContext     *context,
                          GimpProgress    *progress,
-                         ProcRecord      *proc_rec)
+                         GimpProcedure   *procedure)
 {
   g_return_if_fail (proc_frame != NULL);
   g_return_if_fail (GIMP_IS_CONTEXT (context));
@@ -69,10 +73,9 @@ plug_in_proc_frame_init (PlugInProcFrame *proc_frame,
 
   proc_frame->main_context       = g_object_ref (context);
   proc_frame->context_stack      = NULL;
-  proc_frame->proc_rec           = proc_rec;
+  proc_frame->procedure          = procedure;
   proc_frame->main_loop          = NULL;
   proc_frame->return_vals        = NULL;
-  proc_frame->n_return_vals      = 0;
   proc_frame->progress           = progress ? g_object_ref (progress) : NULL;
   proc_frame->progress_created   = FALSE;
   proc_frame->progress_cancel_id = 0;
@@ -143,4 +146,47 @@ plug_in_proc_frame_unref (PlugInProcFrame *proc_frame,
 
   if (proc_frame->ref_count < 1)
     plug_in_proc_frame_free (proc_frame, plug_in);
+}
+
+GValueArray *
+plug_in_proc_frame_get_return_vals (PlugInProcFrame *proc_frame)
+{
+  GValueArray *return_vals;
+
+  g_return_val_if_fail (proc_frame != NULL, NULL);
+
+  if (proc_frame->return_vals &&
+      proc_frame->return_vals->n_values ==
+      proc_frame->procedure->num_values + 1)
+    {
+      return_vals = proc_frame->return_vals;
+    }
+  else if (proc_frame->return_vals)
+    {
+      /* Allocate new return values of the correct size. */
+      return_vals = gimp_procedure_get_return_values (proc_frame->procedure,
+                                                      FALSE);
+
+      /* Copy all of the arguments we can. */
+      memcpy (return_vals->values, proc_frame->return_vals->values,
+              sizeof (GValue) * MIN (proc_frame->return_vals->n_values,
+                                     proc_frame->procedure->num_values + 1));
+
+      /* Free the old argument pointer.  This will cause a memory leak
+       * only if there were more values returned than we need (which
+       * shouldn't ever happen).
+       */
+      g_free (proc_frame->return_vals);
+    }
+  else
+    {
+      /* Just return a dummy set of values. */
+      return_vals = gimp_procedure_get_return_values (proc_frame->procedure,
+                                                      FALSE);
+    }
+
+  /* We have consumed any saved values, so clear them. */
+  proc_frame->return_vals = NULL;
+
+  return return_vals;
 }

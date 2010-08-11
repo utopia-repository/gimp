@@ -28,7 +28,6 @@
 typedef struct _PlugIn           PlugIn;
 typedef struct _PlugInDef        PlugInDef;
 typedef struct _PlugInMenuBranch PlugInMenuBranch;
-typedef struct _PlugInProcDef    PlugInProcDef;
 typedef struct _PlugInProcFrame  PlugInProcFrame;
 typedef struct _PlugInShm        PlugInShm;
 

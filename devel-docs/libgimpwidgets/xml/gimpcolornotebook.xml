@@ -33,13 +33,14 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBox">GtkBox</link>
-                           +----<link linkend="GtkVBox">GtkVBox</link>
-                                 +----<link linkend="GimpColorSelector">GimpColorSelector</link>
-                                       +----GimpColorNotebook
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBox">GtkBox</link>
+                                 +----<link linkend="GtkVBox">GtkVBox</link>
+                                       +----<link linkend="GimpColorSelector">GimpColorSelector</link>
+                                             +----GimpColorNotebook
 </synopsis>
 
 </refsect1>

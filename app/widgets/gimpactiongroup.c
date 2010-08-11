@@ -333,9 +333,9 @@ gimp_action_group_update (GimpActionGroup *group,
 }
 
 void
-gimp_action_group_add_actions (GimpActionGroup *group,
-                               GimpActionEntry *entries,
-                               guint            n_entries)
+gimp_action_group_add_actions (GimpActionGroup       *group,
+                               const GimpActionEntry *entries,
+                               guint                  n_entries)
 {
   gint i;
 
@@ -378,9 +378,9 @@ gimp_action_group_add_actions (GimpActionGroup *group,
 }
 
 void
-gimp_action_group_add_toggle_actions (GimpActionGroup       *group,
-                                      GimpToggleActionEntry *entries,
-                                      guint                  n_entries)
+gimp_action_group_add_toggle_actions (GimpActionGroup             *group,
+                                      const GimpToggleActionEntry *entries,
+                                      guint                        n_entries)
 {
   gint i;
 
@@ -399,7 +399,7 @@ gimp_action_group_add_toggle_actions (GimpActionGroup       *group,
         label = gimp_strip_uline (label);
 
       action = gtk_toggle_action_new (entries[i].name, label, tooltip,
-				      entries[i].stock_id);
+                                      entries[i].stock_id);
 
       if (! group->mnemonics)
         g_free (label);
@@ -425,12 +425,12 @@ gimp_action_group_add_toggle_actions (GimpActionGroup       *group,
 }
 
 GSList *
-gimp_action_group_add_radio_actions (GimpActionGroup      *group,
-                                     GimpRadioActionEntry *entries,
-                                     guint                 n_entries,
-                                     GSList               *radio_group,
-                                     gint                  value,
-                                     GCallback             callback)
+gimp_action_group_add_radio_actions (GimpActionGroup            *group,
+                                     const GimpRadioActionEntry *entries,
+                                     guint                       n_entries,
+                                     GSList                     *radio_group,
+                                     gint                        value,
+                                     GCallback                   callback)
 {
   GtkRadioAction *first_action = NULL;
   gint            i;
@@ -450,20 +450,20 @@ gimp_action_group_add_radio_actions (GimpActionGroup      *group,
         label = gimp_strip_uline (label);
 
       action = gtk_radio_action_new (entries[i].name, label, tooltip,
-				     entries[i].stock_id,
-				     entries[i].value);
+                                     entries[i].stock_id,
+                                     entries[i].value);
 
       if (! group->mnemonics)
         g_free (label);
 
       if (i == 0)
-	first_action = action;
+        first_action = action;
 
       gtk_radio_action_set_group (action, radio_group);
       radio_group = gtk_radio_action_get_group (action);
 
       if (value == entries[i].value)
-	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
+        gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
 
       gtk_action_group_add_action_with_accel (GTK_ACTION_GROUP (group),
                                               GTK_ACTION (action),
@@ -486,10 +486,10 @@ gimp_action_group_add_radio_actions (GimpActionGroup      *group,
 }
 
 void
-gimp_action_group_add_enum_actions (GimpActionGroup     *group,
-                                    GimpEnumActionEntry *entries,
-                                    guint                n_entries,
-                                    GCallback            callback)
+gimp_action_group_add_enum_actions (GimpActionGroup           *group,
+                                    const GimpEnumActionEntry *entries,
+                                    guint                      n_entries,
+                                    GCallback                  callback)
 {
   gint i;
 
@@ -508,8 +508,8 @@ gimp_action_group_add_enum_actions (GimpActionGroup     *group,
         label = gimp_strip_uline (label);
 
       action = gimp_enum_action_new (entries[i].name, label, tooltip,
-				     entries[i].stock_id,
-				     entries[i].value,
+                                     entries[i].stock_id,
+                                     entries[i].value,
                                      entries[i].value_variable);
 
       if (! group->mnemonics)
@@ -534,10 +534,10 @@ gimp_action_group_add_enum_actions (GimpActionGroup     *group,
 }
 
 void
-gimp_action_group_add_string_actions (GimpActionGroup       *group,
-                                      GimpStringActionEntry *entries,
-                                      guint                  n_entries,
-                                      GCallback              callback)
+gimp_action_group_add_string_actions (GimpActionGroup             *group,
+                                      const GimpStringActionEntry *entries,
+                                      guint                        n_entries,
+                                      GCallback                    callback)
 {
   gint i;
 
@@ -581,10 +581,10 @@ gimp_action_group_add_string_actions (GimpActionGroup       *group,
 }
 
 void
-gimp_action_group_add_plug_in_actions (GimpActionGroup       *group,
-                                       GimpPlugInActionEntry *entries,
-                                       guint                  n_entries,
-                                       GCallback              callback)
+gimp_action_group_add_plug_in_actions (GimpActionGroup             *group,
+                                       const GimpPlugInActionEntry *entries,
+                                       guint                        n_entries,
+                                       GCallback                    callback)
 {
   gint i;
 
@@ -604,7 +604,7 @@ gimp_action_group_add_plug_in_actions (GimpActionGroup       *group,
                                         label,
                                         entries[i].tooltip,
                                         entries[i].stock_id,
-                                        entries[i].proc_def);
+                                        entries[i].procedure);
 
       if (! group->mnemonics)
         g_free (label);

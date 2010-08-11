@@ -29,7 +29,7 @@
  * gimp_by_color_select:
  * @drawable_ID: The affected drawable.
  * @color: The color to select.
- * @threshold: Threshold in intensity levels %%desc%%.
+ * @threshold: Threshold in intensity levels.
  * @operation: The selection operation.
  * @antialias: Antialiasing.
  * @feather: Feather option for selections.
@@ -48,7 +48,7 @@
  * mask to contain intermediate values based on close misses to the
  * threshold bar. Feathering can be enabled optionally and is
  * controlled with the \"feather_radius\" parameter. If the
- * sample_merged parameter is non-zero, the data of the composite image
+ * sample_merged parameter is TRUE, the data of the composite image
  * will be used instead of that for the specified drawable. This is
  * equivalent to sampling for colors after merging all visible layers.
  * In the case of a merged sampling, the supplied drawable is ignored.
@@ -57,29 +57,29 @@
  */
 gboolean
 gimp_by_color_select (gint32          drawable_ID,
-		      const GimpRGB  *color,
-		      gint            threshold,
-		      GimpChannelOps  operation,
-		      gboolean        antialias,
-		      gboolean        feather,
-		      gdouble         feather_radius,
-		      gboolean        sample_merged)
+                      const GimpRGB  *color,
+                      gint            threshold,
+                      GimpChannelOps  operation,
+                      gboolean        antialias,
+                      gboolean        feather,
+                      gdouble         feather_radius,
+                      gboolean        sample_merged)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-by-color-select",
-				    &nreturn_vals,
-				    GIMP_PDB_DRAWABLE, drawable_ID,
-				    GIMP_PDB_COLOR, color,
-				    GIMP_PDB_INT32, threshold,
-				    GIMP_PDB_INT32, operation,
-				    GIMP_PDB_INT32, antialias,
-				    GIMP_PDB_INT32, feather,
-				    GIMP_PDB_FLOAT, feather_radius,
-				    GIMP_PDB_INT32, sample_merged,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_DRAWABLE, drawable_ID,
+                                    GIMP_PDB_COLOR, color,
+                                    GIMP_PDB_INT32, threshold,
+                                    GIMP_PDB_INT32, operation,
+                                    GIMP_PDB_INT32, antialias,
+                                    GIMP_PDB_INT32, feather,
+                                    GIMP_PDB_FLOAT, feather_radius,
+                                    GIMP_PDB_INT32, sample_merged,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -116,31 +116,31 @@ gimp_by_color_select (gint32          drawable_ID,
  */
 gboolean
 gimp_ellipse_select (gint32         image_ID,
-		     gdouble        x,
-		     gdouble        y,
-		     gdouble        width,
-		     gdouble        height,
-		     GimpChannelOps operation,
-		     gboolean       antialias,
-		     gboolean       feather,
-		     gdouble        feather_radius)
+                     gdouble        x,
+                     gdouble        y,
+                     gdouble        width,
+                     gdouble        height,
+                     GimpChannelOps operation,
+                     gboolean       antialias,
+                     gboolean       feather,
+                     gdouble        feather_radius)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-ellipse-select",
-				    &nreturn_vals,
-				    GIMP_PDB_IMAGE, image_ID,
-				    GIMP_PDB_FLOAT, x,
-				    GIMP_PDB_FLOAT, y,
-				    GIMP_PDB_FLOAT, width,
-				    GIMP_PDB_FLOAT, height,
-				    GIMP_PDB_INT32, operation,
-				    GIMP_PDB_INT32, antialias,
-				    GIMP_PDB_INT32, feather,
-				    GIMP_PDB_FLOAT, feather_radius,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_FLOAT, x,
+                                    GIMP_PDB_FLOAT, y,
+                                    GIMP_PDB_FLOAT, width,
+                                    GIMP_PDB_FLOAT, height,
+                                    GIMP_PDB_INT32, operation,
+                                    GIMP_PDB_INT32, antialias,
+                                    GIMP_PDB_INT32, feather,
+                                    GIMP_PDB_FLOAT, feather_radius,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -177,27 +177,27 @@ gimp_ellipse_select (gint32         image_ID,
  */
 gboolean
 gimp_free_select (gint32          image_ID,
-		  gint            num_segs,
-		  const gdouble  *segs,
-		  GimpChannelOps  operation,
-		  gboolean        antialias,
-		  gboolean        feather,
-		  gdouble         feather_radius)
+                  gint            num_segs,
+                  const gdouble  *segs,
+                  GimpChannelOps  operation,
+                  gboolean        antialias,
+                  gboolean        feather,
+                  gdouble         feather_radius)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-free-select",
-				    &nreturn_vals,
-				    GIMP_PDB_IMAGE, image_ID,
-				    GIMP_PDB_INT32, num_segs,
-				    GIMP_PDB_FLOATARRAY, segs,
-				    GIMP_PDB_INT32, operation,
-				    GIMP_PDB_INT32, antialias,
-				    GIMP_PDB_INT32, feather,
-				    GIMP_PDB_FLOAT, feather_radius,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_INT32, num_segs,
+                                    GIMP_PDB_FLOATARRAY, segs,
+                                    GIMP_PDB_INT32, operation,
+                                    GIMP_PDB_INT32, antialias,
+                                    GIMP_PDB_INT32, feather,
+                                    GIMP_PDB_FLOAT, feather_radius,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -211,7 +211,7 @@ gimp_free_select (gint32          image_ID,
  * @drawable_ID: The affected drawable.
  * @x: x coordinate of initial seed fill point: (image coordinates).
  * @y: y coordinate of initial seed fill point: (image coordinates).
- * @threshold: Threshold in intensity levels %%desc%%.
+ * @threshold: Threshold in intensity levels.
  * @operation: The selection operation.
  * @antialias: Antialiasing.
  * @feather: Feather option for selections.
@@ -232,43 +232,43 @@ gimp_free_select (gint32          image_ID,
  * intermediate values based on close misses to the threshold bar at
  * pixels along the seed fill boundary. Feathering can be enabled
  * optionally and is controlled with the \"feather_radius\" paramter.
- * If the sample_merged parameter is non-zero, the data of the
- * composite image will be used instead of that for the specified
- * drawable. This is equivalent to sampling for colors after merging
- * all visible layers. In the case of a merged sampling, the supplied
- * drawable is ignored. If the sample is merged, the specified
- * coordinates are relative to the image origin; otherwise, they are
- * relative to the drawable's origin.
+ * If the sample_merged parameter is TRUE, the data of the composite
+ * image will be used instead of that for the specified drawable. This
+ * is equivalent to sampling for colors after merging all visible
+ * layers. In the case of a merged sampling, the supplied drawable is
+ * ignored. If the sample is merged, the specified coordinates are
+ * relative to the image origin; otherwise, they are relative to the
+ * drawable's origin.
  *
  * Returns: TRUE on success.
  */
 gboolean
 gimp_fuzzy_select (gint32         drawable_ID,
-		   gdouble        x,
-		   gdouble        y,
-		   gint           threshold,
-		   GimpChannelOps operation,
-		   gboolean       antialias,
-		   gboolean       feather,
-		   gdouble        feather_radius,
-		   gboolean       sample_merged)
+                   gdouble        x,
+                   gdouble        y,
+                   gint           threshold,
+                   GimpChannelOps operation,
+                   gboolean       antialias,
+                   gboolean       feather,
+                   gdouble        feather_radius,
+                   gboolean       sample_merged)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-fuzzy-select",
-				    &nreturn_vals,
-				    GIMP_PDB_DRAWABLE, drawable_ID,
-				    GIMP_PDB_FLOAT, x,
-				    GIMP_PDB_FLOAT, y,
-				    GIMP_PDB_INT32, threshold,
-				    GIMP_PDB_INT32, operation,
-				    GIMP_PDB_INT32, antialias,
-				    GIMP_PDB_INT32, feather,
-				    GIMP_PDB_FLOAT, feather_radius,
-				    GIMP_PDB_INT32, sample_merged,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_DRAWABLE, drawable_ID,
+                                    GIMP_PDB_FLOAT, x,
+                                    GIMP_PDB_FLOAT, y,
+                                    GIMP_PDB_INT32, threshold,
+                                    GIMP_PDB_INT32, operation,
+                                    GIMP_PDB_INT32, antialias,
+                                    GIMP_PDB_INT32, feather,
+                                    GIMP_PDB_FLOAT, feather_radius,
+                                    GIMP_PDB_INT32, sample_merged,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -301,29 +301,29 @@ gimp_fuzzy_select (gint32         drawable_ID,
  */
 gboolean
 gimp_rect_select (gint32         image_ID,
-		  gdouble        x,
-		  gdouble        y,
-		  gdouble        width,
-		  gdouble        height,
-		  GimpChannelOps operation,
-		  gboolean       feather,
-		  gdouble        feather_radius)
+                  gdouble        x,
+                  gdouble        y,
+                  gdouble        width,
+                  gdouble        height,
+                  GimpChannelOps operation,
+                  gboolean       feather,
+                  gdouble        feather_radius)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-rect-select",
-				    &nreturn_vals,
-				    GIMP_PDB_IMAGE, image_ID,
-				    GIMP_PDB_FLOAT, x,
-				    GIMP_PDB_FLOAT, y,
-				    GIMP_PDB_FLOAT, width,
-				    GIMP_PDB_FLOAT, height,
-				    GIMP_PDB_INT32, operation,
-				    GIMP_PDB_INT32, feather,
-				    GIMP_PDB_FLOAT, feather_radius,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_FLOAT, x,
+                                    GIMP_PDB_FLOAT, y,
+                                    GIMP_PDB_FLOAT, width,
+                                    GIMP_PDB_FLOAT, height,
+                                    GIMP_PDB_INT32, operation,
+                                    GIMP_PDB_INT32, feather,
+                                    GIMP_PDB_FLOAT, feather_radius,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 

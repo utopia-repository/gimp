@@ -174,8 +174,8 @@ before you add the new layer to the image.</para>
 Scale the layer to the specified extents.
 </para>
 <para>
-This procedure scales the layer so that it's new width and height
-are equal to the supplied parameters. The \"local_origin\" parameter
+This procedure scales the layer so that its new width and height are
+equal to the supplied parameters. The \"local_origin\" parameter
 specifies whether to scale from the center of the layer, or from the
 image origin. This operation only works if the layer has been added
 to an image.</para>
@@ -208,7 +208,7 @@ to an image.</para>
 Resize the layer to the specified extents.
 </para>
 <para>
-This procedure resizes the layer so that it's new width and height
+This procedure resizes the layer so that its new width and height
 are equal to the supplied parameters. Offsets are also provided
 which describe the position of the previous layer's content. This
 operation only works if the layer has been added to an image.</para>
@@ -549,11 +549,11 @@ This procedure is deprecated! Use <link linkend="gimp-layer-set-lock-alpha"><fun
 <title><anchor id="gimp-layer-get-apply-mask"/>gimp_layer_get_apply_mask ()</title>
 <indexterm><primary>gimp_layer_get_apply_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_get_apply_mask       (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
-Get the apply mask of the specified layer.
+Get the apply mask setting of the specified layer.
 </para>
 <para>
-This procedure returns the specified layer's apply mask. If the
-value is non-zero, then the layer mask for this layer is currently
+This procedure returns the specified layer's apply mask setting. If
+the value is TRUE, then the layer mask for this layer is currently
 being composited with the layer's alpha channel.</para>
 <para>
 
@@ -561,7 +561,7 @@ being composited with the layer's alpha channel.</para>
 <varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The layer.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The layer apply mask.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The layer's apply mask setting.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -569,12 +569,13 @@ being composited with the layer's alpha channel.</para>
 <indexterm><primary>gimp_layer_set_apply_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_apply_mask       (<link linkend="gint32">gint32</link> layer_ID,
                                              <link linkend="gboolean">gboolean</link> apply_mask);</programlisting>
 <para>
-Set the apply mask of the specified layer.
+Set the apply mask setting of the specified layer.
 </para>
 <para>
-This procedure sets the specified layer's apply mask. This controls
-whether the layer's mask is currently affecting the alpha channel.
-If there is no layer mask, this function will return an error.</para>
+This procedure sets the specified layer's apply mask setting. This
+controls whether the layer's mask is currently affecting the alpha
+channel. If there is no layer mask, this function will return an
+error.</para>
 <para>
 
 </para><variablelist role="params">
@@ -582,7 +583,7 @@ If there is no layer mask, this function will return an error.</para>
 <listitem><simpara> The layer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>apply_mask</parameter>&nbsp;:</term>
-<listitem><simpara> The new layer apply mask.
+<listitem><simpara> The new layer's apply mask setting.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -591,31 +592,11 @@ If there is no layer mask, this function will return an error.</para>
 <title><anchor id="gimp-layer-get-show-mask"/>gimp_layer_get_show_mask ()</title>
 <indexterm><primary>gimp_layer_get_show_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_get_show_mask        (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
-Get the show mask of the specified layer.
+Get the show mask setting of the specified layer.
 </para>
 <para>
-This procedure returns the specified layer's show mask. If the value
-is non-zero, then the layer mask for this layer is currently being
-shown instead of the layer.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
-<listitem><simpara> The layer.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The layer show mask.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-layer-set-show-mask"/>gimp_layer_set_show_mask ()</title>
-<indexterm><primary>gimp_layer_set_show_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_show_mask        (<link linkend="gint32">gint32</link> layer_ID,
-                                             <link linkend="gboolean">gboolean</link> show_mask);</programlisting>
-<para>
-Set the show mask of the specified layer.
-</para>
-<para>
-This procedure sets the specified layer's show mask. This controls
-whether the layer or it's mask is visible. Non-zero values indicate
+This procedure returns the specified layer's show mask setting. This
+controls whether the layer or its mask is visible. TRUE indicates
 that the mask should be visible. If the layer has no mask, then this
 function returns an error.</para>
 <para>
@@ -624,8 +605,29 @@ function returns an error.</para>
 <varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The layer.
 </simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The layer's show mask setting.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-layer-set-show-mask"/>gimp_layer_set_show_mask ()</title>
+<indexterm><primary>gimp_layer_set_show_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_show_mask        (<link linkend="gint32">gint32</link> layer_ID,
+                                             <link linkend="gboolean">gboolean</link> show_mask);</programlisting>
+<para>
+Set the show mask setting of the specified layer.
+</para>
+<para>
+This procedure sets the specified layer's show mask setting. This
+controls whether the layer's mask is currently affecting the alpha
+channel. If there is no layer mask, this function will return an
+error.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The layer.
+</simpara></listitem></varlistentry>
 <varlistentry><term><parameter>show_mask</parameter>&nbsp;:</term>
-<listitem><simpara> The new layer show mask.
+<listitem><simpara> The new layer's show mask setting.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -634,19 +636,19 @@ function returns an error.</para>
 <title><anchor id="gimp-layer-get-edit-mask"/>gimp_layer_get_edit_mask ()</title>
 <indexterm><primary>gimp_layer_get_edit_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_get_edit_mask        (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
 <para>
-Get the edit mask of the specified layer.
+Get the edit mask setting of the specified layer.
 </para>
 <para>
-This procedure returns the specified layer's edit mask. If the value
-is non-zero, then the layer mask for this layer is currently active,
-and not the layer.</para>
+This procedure returns the specified layer's edit mask setting. If
+the value is TRUE, then the layer mask for this layer is currently
+active, and not the layer.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The layer.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The layer edit mask.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The layer's edit mask setting.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -654,13 +656,13 @@ and not the layer.</para>
 <indexterm><primary>gimp_layer_set_edit_mask</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_layer_set_edit_mask        (<link linkend="gint32">gint32</link> layer_ID,
                                              <link linkend="gboolean">gboolean</link> edit_mask);</programlisting>
 <para>
-Set the edit mask of the specified layer.
+Set the edit mask setting of the specified layer.
 </para>
 <para>
-This procedure sets the specified layer's edit mask. This controls
-whether the layer or it's mask is currently active for editing. If
-the specified layer has no layer mask, then this procedure will
-return an error.</para>
+This procedure sets the specified layer's edit mask setting. This
+controls whether the layer or it's mask is currently active for
+editing. If the specified layer has no layer mask, then this
+procedure will return an error.</para>
 <para>
 
 </para><variablelist role="params">
@@ -668,7 +670,7 @@ return an error.</para>
 <listitem><simpara> The layer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>edit_mask</parameter>&nbsp;:</term>
-<listitem><simpara> The new layer edit mask.
+<listitem><simpara> The new layer's edit mask setting.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -765,7 +767,7 @@ to a specific drawable.</para>
 <varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The layer.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Non-zero if the layer is a floating selection.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the layer is a floating selection.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

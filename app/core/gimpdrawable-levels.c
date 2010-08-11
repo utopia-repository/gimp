@@ -97,9 +97,9 @@ gimp_drawable_levels (GimpDrawable   *drawable,
                    &levels,
                    gimp_drawable_bytes (drawable));
 
-  pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                      x, y, width, height, FALSE);
-  pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+  pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                      x, y, width, height, TRUE);
 
   pixel_regions_process_parallel ((PixelProcessorFunc) gimp_lut_process,
@@ -146,9 +146,9 @@ gimp_drawable_levels_stretch (GimpDrawable *drawable,
                   &levels,
                   gimp_drawable_bytes (drawable));
 
-  pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                      x, y, width, height, FALSE);
-  pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+  pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                      x, y, width, height, TRUE);
 
   pixel_regions_process_parallel ((PixelProcessorFunc) gimp_lut_process,

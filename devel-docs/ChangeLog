@@ -1,3 +1,43 @@
+2006-04-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt: added GIMP_STOCK_DETACH.
+
+	* libgimpwidgets/tmpl/gimpstock.sgml: regenerated.
+
+	* tools/shadow.c: converted tabs to spaces.
+
+2006-04-06  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimpbase/libgimpbase-sections.txt: updated.
+
+	* libgimp/tmpl/gimpenums.sgml
+	* libgimpbase/tmpl/gimpbaseenums.sgml: regenerated.
+
+2006-04-02  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimpbase/libgimpbase-sections.txt: updated.
+
+	* libgimp/tmpl/gimpenums.sgml
+	* libgimp/tmpl/gimpproceduraldb.sgml
+	* libgimp/tmpl/gimpvectors.sgml
+	* libgimpbase/tmpl/gimpparasite.sgml: regenerated.
+
+2006-03-27  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/tmpl/gimpselection.sgml: regenerated.
+
+2006-03-17  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/tmpl/gimpimage.sgml: regenerated.
+
+2006-02-28  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/tmpl/gimpaspectpreview.sgml
+	* libgimp/tmpl/gimpdrawablepreview.sgml
+	* libgimp/tmpl/gimpzoompreview.sgml: regenerated.
+
 2006-01-30  Sven Neumann  <sven@gimp.org>
 
 	* libgimpbase/libgimpbase-docs.sgml

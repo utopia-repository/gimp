@@ -59,23 +59,23 @@ static void   gimp_fuzzy_select_tool_button_press   (GimpTool        *tool,
                                                      GimpCoords      *coords,
                                                      guint32          time,
                                                      GdkModifierType  state,
-                                                     GimpDisplay     *gdisp);
+                                                     GimpDisplay     *display);
 static void   gimp_fuzzy_select_tool_button_release (GimpTool        *tool,
                                                      GimpCoords      *coords,
                                                      guint32          time,
                                                      GdkModifierType  state,
-                                                     GimpDisplay     *gdisp);
+                                                     GimpDisplay     *display);
 static void   gimp_fuzzy_select_tool_motion         (GimpTool        *tool,
                                                      GimpCoords      *coords,
                                                      guint32          time,
                                                      GdkModifierType  state,
-                                                     GimpDisplay     *gdisp);
+                                                     GimpDisplay     *display);
 
 static void   gimp_fuzzy_select_tool_draw           (GimpDrawTool    *draw_tool);
 
 static GdkSegment *
                gimp_fuzzy_select_tool_calculate (GimpFuzzySelectTool *fuzzy_sel,
-                                                 GimpDisplay         *gdisp,
+                                                 GimpDisplay         *display,
                                                  gint                *num_segs);
 
 
@@ -96,7 +96,7 @@ gimp_fuzzy_select_tool_register (GimpToolRegisterCallback  callback,
                 "gimp-fuzzy-select-tool",
                 _("Fuzzy Select"),
                 _("Select contiguous regions"),
-                N_("Fu_zzy Select"), "Z",
+                N_("Fu_zzy Select"), "U",
                 NULL, GIMP_HELP_TOOL_FUZZY_SELECT,
                 GIMP_STOCK_TOOL_FUZZY_SELECT,
                 data);
@@ -164,7 +164,7 @@ gimp_fuzzy_select_tool_button_press (GimpTool        *tool,
                                      GimpCoords      *coords,
                                      guint32          time,
                                      GdkModifierType  state,
-                                     GimpDisplay     *gdisp)
+                                     GimpDisplay     *display)
 {
   GimpFuzzySelectTool  *fuzzy_sel = GIMP_FUZZY_SELECT_TOOL (tool);
   GimpSelectionOptions *options;
@@ -178,18 +178,18 @@ gimp_fuzzy_select_tool_button_press (GimpTool        *tool,
   fuzzy_sel->first_threshold = options->threshold;
 
   gimp_tool_control_activate (tool->control);
-  tool->gdisp = gdisp;
+  tool->display = display;
 
   if (gimp_selection_tool_start_edit (GIMP_SELECTION_TOOL (fuzzy_sel), coords))
     return;
 
-  gimp_tool_push_status (tool, gdisp, _("Move the mouse to change threshold."));
+  gimp_tool_push_status (tool, display, _("Move the mouse to change threshold."));
 
   /*  calculate the region boundary  */
-  fuzzy_sel->segs = gimp_fuzzy_select_tool_calculate (fuzzy_sel, gdisp,
+  fuzzy_sel->segs = gimp_fuzzy_select_tool_calculate (fuzzy_sel, display,
                                                       &fuzzy_sel->num_segs);
 
-  gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), gdisp);
+  gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
 }
 
 static void
@@ -197,14 +197,14 @@ gimp_fuzzy_select_tool_button_release (GimpTool        *tool,
                                        GimpCoords      *coords,
                                        guint32          time,
                                        GdkModifierType  state,
-                                       GimpDisplay     *gdisp)
+                                       GimpDisplay     *display)
 {
   GimpFuzzySelectTool  *fuzzy_sel = GIMP_FUZZY_SELECT_TOOL (tool);
   GimpSelectionOptions *options;
 
   options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
 
-  gimp_tool_pop_status (tool, gdisp);
+  gimp_tool_pop_status (tool, display);
 
   gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
@@ -218,14 +218,14 @@ gimp_fuzzy_select_tool_button_release (GimpTool        *tool,
       if (GIMP_SELECTION_TOOL (tool)->op == SELECTION_ANCHOR)
         {
           /*  If there is a floating selection, anchor it  */
-          if (gimp_image_floating_sel (gdisp->gimage))
-            floating_sel_anchor (gimp_image_floating_sel (gdisp->gimage));
+          if (gimp_image_floating_sel (display->image))
+            floating_sel_anchor (gimp_image_floating_sel (display->image));
           /*  Otherwise, clear the selection mask  */
           else
-            gimp_channel_clear (gimp_image_get_mask (gdisp->gimage), NULL,
+            gimp_channel_clear (gimp_image_get_mask (display->image), NULL,
                                 TRUE);
 
-          gimp_image_flush (gdisp->gimage);
+          gimp_image_flush (display->image);
           return;
         }
 
@@ -236,12 +236,12 @@ gimp_fuzzy_select_tool_button_release (GimpTool        *tool,
         }
       else
         {
-          GimpDrawable *drawable = gimp_image_active_drawable (gdisp->gimage);
+          GimpDrawable *drawable = gimp_image_active_drawable (display->image);
 
           gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
         }
 
-      gimp_channel_select_channel (gimp_image_get_mask (gdisp->gimage),
+      gimp_channel_select_channel (gimp_image_get_mask (display->image),
                                    tool->tool_info->blurb,
                                    fuzzy_sel->fuzzy_mask,
                                    off_x,
@@ -254,7 +254,7 @@ gimp_fuzzy_select_tool_button_release (GimpTool        *tool,
       g_object_unref (fuzzy_sel->fuzzy_mask);
       fuzzy_sel->fuzzy_mask = NULL;
 
-      gimp_image_flush (gdisp->gimage);
+      gimp_image_flush (display->image);
     }
 
   /*  If the segment array is allocated, free it  */
@@ -276,7 +276,7 @@ gimp_fuzzy_select_tool_motion (GimpTool        *tool,
                                GimpCoords      *coords,
                                guint32          time,
                                GdkModifierType  state,
-                               GimpDisplay     *gdisp)
+                               GimpDisplay     *display)
 {
   GimpFuzzySelectTool  *fuzzy_sel = GIMP_FUZZY_SELECT_TOOL (tool);
   GimpSelectionOptions *options;
@@ -305,7 +305,7 @@ gimp_fuzzy_select_tool_motion (GimpTool        *tool,
                 NULL);
 
   /*  calculate the new fuzzy boundary  */
-  new_segs = gimp_fuzzy_select_tool_calculate (fuzzy_sel, gdisp, &num_new_segs);
+  new_segs = gimp_fuzzy_select_tool_calculate (fuzzy_sel, display, &num_new_segs);
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
@@ -328,7 +328,7 @@ gimp_fuzzy_select_tool_draw (GimpDrawTool *draw_tool)
     {
       GimpDisplayShell *shell;
 
-      shell = GIMP_DISPLAY_SHELL (GIMP_TOOL (draw_tool)->gdisp->shell);
+      shell = GIMP_DISPLAY_SHELL (GIMP_TOOL (draw_tool)->display->shell);
 
       gimp_canvas_draw_segments (GIMP_CANVAS (shell->canvas),
                                  GIMP_CANVAS_STYLE_XOR,
@@ -338,7 +338,7 @@ gimp_fuzzy_select_tool_draw (GimpDrawTool *draw_tool)
 
 static GdkSegment *
 gimp_fuzzy_select_tool_calculate (GimpFuzzySelectTool *fuzzy_sel,
-                                  GimpDisplay         *gdisp,
+                                  GimpDisplay         *display,
                                   gint                *num_segs)
 {
   GimpTool             *tool = GIMP_TOOL (fuzzy_sel);
@@ -354,9 +354,9 @@ gimp_fuzzy_select_tool_calculate (GimpFuzzySelectTool *fuzzy_sel,
 
   options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
 
-  shell = GIMP_DISPLAY_SHELL (gdisp->shell);
+  shell = GIMP_DISPLAY_SHELL (display->shell);
 
-  drawable = gimp_image_active_drawable (gdisp->gimage);
+  drawable = gimp_image_active_drawable (display->image);
 
   gimp_display_shell_set_override_cursor (shell, GDK_WATCH);
 
@@ -373,7 +373,7 @@ gimp_fuzzy_select_tool_calculate (GimpFuzzySelectTool *fuzzy_sel,
       y -= off_y;
     }
 
-  new = gimp_image_contiguous_region_by_seed (gdisp->gimage, drawable,
+  new = gimp_image_contiguous_region_by_seed (display->image, drawable,
                                               options->sample_merged,
                                               options->antialias,
                                               options->threshold,
@@ -389,7 +389,7 @@ gimp_fuzzy_select_tool_calculate (GimpFuzzySelectTool *fuzzy_sel,
    *  of the color-contiguous region
    */
   pixel_region_init (&maskPR,
-                     gimp_drawable_data (GIMP_DRAWABLE (fuzzy_sel->fuzzy_mask)),
+                     gimp_drawable_get_tiles (GIMP_DRAWABLE (fuzzy_sel->fuzzy_mask)),
                      0, 0,
                      gimp_item_width  (GIMP_ITEM (fuzzy_sel->fuzzy_mask)),
                      gimp_item_height (GIMP_ITEM (fuzzy_sel->fuzzy_mask)),

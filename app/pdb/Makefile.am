@@ -4,11 +4,19 @@ noinst_LIBRARIES = libapppdb.a
 
 libapppdb_a_SOURCES = \
 	pdb-types.h			\
-	pdb_glue.h			\
-	procedural_db.c			\
-	procedural_db.h			\
-	procedural-db-query.c		\
-	procedural-db-query.h		\
+	\
+	gimp-pdb.c			\
+	gimp-pdb.h			\
+	gimp-pdb-compat.c		\
+	gimp-pdb-compat.h		\
+	gimp-pdb-query.c		\
+	gimp-pdb-query.h		\
+	gimpprocedure.c			\
+	gimpprocedure.h			\
+	gimppluginprocedure.c		\
+	gimppluginprocedure.h		\
+	gimptemporaryprocedure.c	\
+	gimptemporaryprocedure.h	\
 	\
 	internal_procs.c		\
 	internal_procs.h		\

@@ -15,16 +15,16 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GIMP HEAD\n"
+"Project-Id-Version: GIMP 2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-08 10:59+0100\n"
-"PO-Revision-Date: 2006-02-08 10:58+0100\n"
+"POT-Creation-Date: 2006-03-12 16:40+0100\n"
+"PO-Revision-Date: 2006-03-12 16:40+0100\n"
 "Last-Translator: Hendrik Brandt <heb@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
 
 #: ../plug-ins/FractalExplorer/Dialogs.c:529
 #: ../plug-ins/gfig/gfig-dialog.c:282 ../plug-ins/gflare/gflare.c:887
@@ -379,7 +379,7 @@ msgid "_Fractals"
 msgstr "_Fraktale"
 
 #: ../plug-ins/FractalExplorer/Dialogs.c:1696
-#: ../plug-ins/Lighting/lighting_ui.c:1160 ../plug-ins/bmp/bmpwrite.c:200
+#: ../plug-ins/Lighting/lighting_ui.c:1161 ../plug-ins/bmp/bmpwrite.c:200
 #: ../plug-ins/common/CEL.c:568 ../plug-ins/common/CML_explorer.c:2013
 #: ../plug-ins/common/channel_mixer.c:1071 ../plug-ins/common/compressor.c:410
 #: ../plug-ins/common/compressor.c:541 ../plug-ins/common/curve_bend.c:839
@@ -396,7 +396,7 @@ msgstr "_Fraktale"
 #: ../plug-ins/common/xbm.c:1002 ../plug-ins/common/xwd.c:565
 #: ../plug-ins/fits/fits.c:454 ../plug-ins/flame/flame.c:442
 #: ../plug-ins/gfig/gfig.c:787 ../plug-ins/gfli/gfli.c:714
-#: ../plug-ins/ifscompose/ifscompose.c:2387 ../plug-ins/jpeg/jpeg-save.c:268
+#: ../plug-ins/ifscompose/ifscompose.c:2379 ../plug-ins/jpeg/jpeg-save.c:268
 #: ../plug-ins/uri/uri-backend-gnomevfs.c:268
 #: ../plug-ins/winicon/icosave.c:244 ../plug-ins/xjt/xjt.c:1272
 #: ../plug-ins/xjt/xjt.c:1706
@@ -421,7 +421,7 @@ msgstr "Fraktalparameter speichern"
 #. stat error (file does not exist)
 #: ../plug-ins/FractalExplorer/Dialogs.c:2005
 #: ../plug-ins/FractalExplorer/FractalExplorer.c:917
-#: ../plug-ins/Lighting/lighting_ui.c:1304 ../plug-ins/bmp/bmpread.c:152
+#: ../plug-ins/Lighting/lighting_ui.c:1305 ../plug-ins/bmp/bmpread.c:152
 #: ../plug-ins/common/CEL.c:299 ../plug-ins/common/CML_explorer.c:2233
 #: ../plug-ins/common/channel_mixer.c:988 ../plug-ins/common/curve_bend.c:891
 #: ../plug-ins/common/dicom.c:295 ../plug-ins/common/gbr.c:348
@@ -517,7 +517,7 @@ msgid "Add FractalExplorer Path"
 msgstr "FractalExplorer-Pfad hinzufügen"
 
 #: ../plug-ins/Lighting/lighting_apply.c:103
-#: ../plug-ins/Lighting/lighting_ui.c:970
+#: ../plug-ins/Lighting/lighting_ui.c:971
 msgid "Lighting Effects"
 msgstr "Lichteffekte"
 
@@ -637,35 +637,35 @@ msgstr "Lichtintensität"
 msgid "Position"
 msgstr "Position"
 
-#: ../plug-ins/Lighting/lighting_ui.c:456 ../plug-ins/common/flarefx.c:760
+#: ../plug-ins/Lighting/lighting_ui.c:457 ../plug-ins/common/flarefx.c:760
 #: ../plug-ins/common/mblur.c:992 ../plug-ins/common/nova.c:456
 #: ../plug-ins/common/papertile.c:273 ../plug-ins/flame/flame.c:1223
 #: ../plug-ins/gflare/gflare.c:2655
 msgid "_X:"
 msgstr "_X:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:462
+#: ../plug-ins/Lighting/lighting_ui.c:463
 #: ../plug-ins/MapObject/mapobject_ui.c:695
 msgid "Light source X position in XYZ space"
 msgstr "X-Koordinate der Lichtquelle im XYZ-Raum"
 
-#: ../plug-ins/Lighting/lighting_ui.c:469 ../plug-ins/common/flarefx.c:765
+#: ../plug-ins/Lighting/lighting_ui.c:470 ../plug-ins/common/flarefx.c:765
 #: ../plug-ins/common/mblur.c:997 ../plug-ins/common/nova.c:461
 #: ../plug-ins/common/papertile.c:282 ../plug-ins/flame/flame.c:1237
 #: ../plug-ins/gflare/gflare.c:2659
 msgid "_Y:"
 msgstr "_Y:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:475
+#: ../plug-ins/Lighting/lighting_ui.c:476
 #: ../plug-ins/MapObject/mapobject_ui.c:709
 msgid "Light source Y position in XYZ space"
 msgstr "Y-Koordinate der Lichtquelle im XYZ-Raum"
 
-#: ../plug-ins/Lighting/lighting_ui.c:482
+#: ../plug-ins/Lighting/lighting_ui.c:483
 msgid "_Z:"
 msgstr "_Z:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:488
+#: ../plug-ins/Lighting/lighting_ui.c:489
 #: ../plug-ins/MapObject/mapobject_ui.c:723
 msgid "Light source Z position in XYZ space"
 msgstr "Z-Koordinate der Lichtquelle im XYZ-Raum"
@@ -673,13 +673,13 @@ msgstr "Z-Koordinate der Lichtquelle im XYZ-Raum"
 #. *****************************************************
 #. radio buttons for choosing LEFT or RIGHT
 #. *************************************************
-#: ../plug-ins/Lighting/lighting_ui.c:491 ../plug-ins/common/struc.c:1294
+#: ../plug-ins/Lighting/lighting_ui.c:492 ../plug-ins/common/struc.c:1294
 #: ../plug-ins/common/wind.c:945
 msgid "Direction"
 msgstr "Richtung"
 
 #. X
-#: ../plug-ins/Lighting/lighting_ui.c:499
+#: ../plug-ins/Lighting/lighting_ui.c:501
 #: ../plug-ins/MapObject/mapobject_ui.c:687
 #: ../plug-ins/MapObject/mapobject_ui.c:741
 #: ../plug-ins/MapObject/mapobject_ui.c:1009
@@ -688,13 +688,13 @@ msgstr "Richtung"
 msgid "X:"
 msgstr "X:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:505
+#: ../plug-ins/Lighting/lighting_ui.c:507
 #: ../plug-ins/MapObject/mapobject_ui.c:749
 msgid "Light source X direction in XYZ space"
 msgstr "X-Komponente des Richtungsvektors der Lichtquelle im XYZ-Raum"
 
 #. Y
-#: ../plug-ins/Lighting/lighting_ui.c:511
+#: ../plug-ins/Lighting/lighting_ui.c:513
 #: ../plug-ins/MapObject/mapobject_ui.c:701
 #: ../plug-ins/MapObject/mapobject_ui.c:754
 #: ../plug-ins/MapObject/mapobject_ui.c:1022
@@ -704,12 +704,12 @@ msgstr "X-Komponente des Richtungsvektors der Lichtquelle im XYZ-Raum"
 msgid "Y:"
 msgstr "Y:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:517
+#: ../plug-ins/Lighting/lighting_ui.c:519
 #: ../plug-ins/MapObject/mapobject_ui.c:762
 msgid "Light source Y direction in XYZ space"
 msgstr "Y-Komponente des Richtungsvektors der Lichtquelle im XYZ-Raum"
 
-#: ../plug-ins/Lighting/lighting_ui.c:523
+#: ../plug-ins/Lighting/lighting_ui.c:525
 #: ../plug-ins/MapObject/mapobject_ui.c:715
 #: ../plug-ins/MapObject/mapobject_ui.c:767
 #: ../plug-ins/MapObject/mapobject_ui.c:1035
@@ -718,173 +718,173 @@ msgstr "Y-Komponente des Richtungsvektors der Lichtquelle im XYZ-Raum"
 msgid "Z:"
 msgstr "Z:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:529
+#: ../plug-ins/Lighting/lighting_ui.c:531
 #: ../plug-ins/MapObject/mapobject_ui.c:775
 msgid "Light source Z direction in XYZ space"
 msgstr "Z-Komponente des Richtungsvektors der Lichtquelle im XYZ-Raum"
 
-#: ../plug-ins/Lighting/lighting_ui.c:532
+#: ../plug-ins/Lighting/lighting_ui.c:534
 msgid "I_solate"
 msgstr "I_solieren"
 
-#: ../plug-ins/Lighting/lighting_ui.c:542
+#: ../plug-ins/Lighting/lighting_ui.c:543
 msgid "Lighting preset:"
 msgstr "Beleuchtungsvorlagen:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:588
+#: ../plug-ins/Lighting/lighting_ui.c:589
 msgid "Material Properties"
 msgstr "Materialeinstellungen"
 
-#: ../plug-ins/Lighting/lighting_ui.c:606
+#: ../plug-ins/Lighting/lighting_ui.c:607
 msgid "_Glowing:"
 msgstr "_Glühen:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:622
+#: ../plug-ins/Lighting/lighting_ui.c:623
 #: ../plug-ins/MapObject/mapobject_ui.c:836
 msgid "Amount of original color to show where no direct light falls"
 msgstr "Anteil der ursprünglichen Farbe, wenn kein direktes Licht einfällt"
 
-#: ../plug-ins/Lighting/lighting_ui.c:635
+#: ../plug-ins/Lighting/lighting_ui.c:636
 msgid "_Bright:"
 msgstr "_Hell:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:651
+#: ../plug-ins/Lighting/lighting_ui.c:652
 #: ../plug-ins/MapObject/mapobject_ui.c:865
 msgid "Intensity of original color when lit by a light source"
 msgstr ""
 "Intensität der ursprünglichen Farbe, wenn das Objekt von einer Lichtquelle "
 "angeleuchtet wird"
 
-#: ../plug-ins/Lighting/lighting_ui.c:664
+#: ../plug-ins/Lighting/lighting_ui.c:665
 msgid "_Shiny:"
 msgstr "_Glanz:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:680
+#: ../plug-ins/Lighting/lighting_ui.c:681
 #: ../plug-ins/MapObject/mapobject_ui.c:937
 msgid "Controls how intense the highlights will be"
 msgstr "Dieser Wert legt fest wie intensiv die Glanzpunkte sind"
 
-#: ../plug-ins/Lighting/lighting_ui.c:692
+#: ../plug-ins/Lighting/lighting_ui.c:693
 msgid "_Polished:"
 msgstr "_Poliert:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:708
+#: ../plug-ins/Lighting/lighting_ui.c:709
 #: ../plug-ins/MapObject/mapobject_ui.c:966
 msgid "Higher values makes the highlights more focused"
 msgstr "Je höher dieser Wert ist, umso konzentrierter werden die Glanzlichter"
 
 #. Metallic
-#: ../plug-ins/Lighting/lighting_ui.c:717
+#: ../plug-ins/Lighting/lighting_ui.c:718
 msgid "_Metallic"
 msgstr "_Metallisch"
 
-#: ../plug-ins/Lighting/lighting_ui.c:753
+#: ../plug-ins/Lighting/lighting_ui.c:754
 msgid "E_nable bump mapping"
 msgstr "Bump-mapping _aktivieren"
 
-#: ../plug-ins/Lighting/lighting_ui.c:767
+#: ../plug-ins/Lighting/lighting_ui.c:768
 msgid "Enable/disable bump-mapping (image depth)"
 msgstr "Bump-mapping (Tiefeneindruck) an/ausschalten"
 
-#: ../plug-ins/Lighting/lighting_ui.c:785
+#: ../plug-ins/Lighting/lighting_ui.c:786
 msgid "Bumpm_ap image:"
 msgstr "Bumpm_ap Bild:"
 
 #. Map type menu
-#: ../plug-ins/Lighting/lighting_ui.c:788 ../plug-ins/common/bumpmap.c:903
+#: ../plug-ins/Lighting/lighting_ui.c:789 ../plug-ins/common/bumpmap.c:903
 #: ../plug-ins/flame/flame.c:742
 msgid "Linear"
 msgstr "Linear"
 
-#: ../plug-ins/Lighting/lighting_ui.c:789
+#: ../plug-ins/Lighting/lighting_ui.c:790
 msgid "Logarithmic"
 msgstr "Logarithmisch"
 
-#: ../plug-ins/Lighting/lighting_ui.c:790 ../plug-ins/common/bumpmap.c:905
+#: ../plug-ins/Lighting/lighting_ui.c:791 ../plug-ins/common/bumpmap.c:905
 #: ../plug-ins/flame/flame.c:743
 msgid "Sinusoidal"
 msgstr "Sinusförmig"
 
-#: ../plug-ins/Lighting/lighting_ui.c:791 ../plug-ins/common/bumpmap.c:904
+#: ../plug-ins/Lighting/lighting_ui.c:792 ../plug-ins/common/bumpmap.c:904
 #: ../plug-ins/flame/flame.c:744
 msgid "Spherical"
 msgstr "Sphärisch"
 
-#: ../plug-ins/Lighting/lighting_ui.c:801
+#: ../plug-ins/Lighting/lighting_ui.c:802
 msgid "Cu_rve:"
 msgstr "Ku_rve:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:806
+#: ../plug-ins/Lighting/lighting_ui.c:807
 msgid "Ma_ximum height:"
 msgstr "Ma_ximale Höhe:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:816
+#: ../plug-ins/Lighting/lighting_ui.c:817
 msgid "Maximum height for bumps"
 msgstr "Maximale Höhe für Bumps:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:841
+#: ../plug-ins/Lighting/lighting_ui.c:842
 msgid "E_nable environment mapping"
 msgstr "Environment-mapping _aktivieren"
 
-#: ../plug-ins/Lighting/lighting_ui.c:855
+#: ../plug-ins/Lighting/lighting_ui.c:856
 msgid "Enable/disable environment-mapping (reflection)"
 msgstr "Environment-mapping (Reflexionen) an/ausschalten"
 
-#: ../plug-ins/Lighting/lighting_ui.c:877
+#: ../plug-ins/Lighting/lighting_ui.c:878
 msgid "En_vironment image:"
 msgstr "_Umgebungsbild:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:879
+#: ../plug-ins/Lighting/lighting_ui.c:880
 msgid "Environment image to use"
 msgstr "Umgebungs-Bild:"
 
-#: ../plug-ins/Lighting/lighting_ui.c:901
+#: ../plug-ins/Lighting/lighting_ui.c:902
 msgid "Op_tions"
 msgstr "_Einstellungen"
 
-#: ../plug-ins/Lighting/lighting_ui.c:905
+#: ../plug-ins/Lighting/lighting_ui.c:906
 #: ../plug-ins/MapObject/mapobject_ui.c:1303
 msgid "_Light"
 msgstr "_Licht"
 
-#: ../plug-ins/Lighting/lighting_ui.c:909
+#: ../plug-ins/Lighting/lighting_ui.c:910
 #: ../plug-ins/MapObject/mapobject_ui.c:1307
 msgid "_Material"
 msgstr "_Material"
 
-#: ../plug-ins/Lighting/lighting_ui.c:913
+#: ../plug-ins/Lighting/lighting_ui.c:914
 msgid "_Bump Map"
 msgstr "_Bumpmap"
 
-#: ../plug-ins/Lighting/lighting_ui.c:917
+#: ../plug-ins/Lighting/lighting_ui.c:918
 msgid "_Environment Map"
 msgstr "_Environmentmapping"
 
-#: ../plug-ins/Lighting/lighting_ui.c:1026
+#: ../plug-ins/Lighting/lighting_ui.c:1027
 #: ../plug-ins/gimpressionist/preview.c:185
 #: ../plug-ins/gimpressionist/repaint.c:1166
 #: ../plug-ins/imagemap/imap_polygon.c:515
 msgid "_Update"
 msgstr "_Neu zeichnen"
 
-#: ../plug-ins/Lighting/lighting_ui.c:1033
+#: ../plug-ins/Lighting/lighting_ui.c:1034
 #: ../plug-ins/MapObject/mapobject_ui.c:1409
 msgid "Recompute preview image"
 msgstr "Vorschau neu errechnen"
 
-#: ../plug-ins/Lighting/lighting_ui.c:1035
+#: ../plug-ins/Lighting/lighting_ui.c:1036
 msgid "I_nteractive"
 msgstr "I_nteraktiv"
 
-#: ../plug-ins/Lighting/lighting_ui.c:1049
+#: ../plug-ins/Lighting/lighting_ui.c:1050
 msgid "Enable/disable real time preview of changes"
 msgstr "Echtzeit-Vorschau an/ausschalten"
 
-#: ../plug-ins/Lighting/lighting_ui.c:1088
+#: ../plug-ins/Lighting/lighting_ui.c:1089
 msgid "Save Lighting Preset"
 msgstr "Beleuchtungsvorlage speichern"
 
-#: ../plug-ins/Lighting/lighting_ui.c:1230
+#: ../plug-ins/Lighting/lighting_ui.c:1231
 msgid "Load Lighting Preset"
 msgstr "Beleuchtungsvorlage laden"
 
@@ -980,7 +980,7 @@ msgstr "_Tiefe:"
 msgid "Antialiasing quality. Higher is better, but slower"
 msgstr "Qualität der Kantenglättung. Höher ist besser, aber langsamer"
 
-#: ../plug-ins/MapObject/mapobject_ui.c:591 ../plug-ins/common/unsharp.c:695
+#: ../plug-ins/MapObject/mapobject_ui.c:591 ../plug-ins/common/unsharp.c:696
 #: ../plug-ins/common/wind.c:1008 ../plug-ins/imagemap/imap_preferences.c:441
 msgid "_Threshold:"
 msgstr "_Schwellwert:"
@@ -1241,7 +1241,7 @@ msgstr "Nicht unterstützte oder ungültige Farbtiefe."
 #: ../plug-ins/common/gifload.c:867 ../plug-ins/common/pcx.c:339
 #: ../plug-ins/common/pcx.c:345 ../plug-ins/common/pix.c:368
 #: ../plug-ins/common/png.c:852 ../plug-ins/common/pnm.c:526
-#: ../plug-ins/common/psd.c:2291 ../plug-ins/common/raw.c:687
+#: ../plug-ins/common/psd.c:2310 ../plug-ins/common/raw.c:687
 #: ../plug-ins/common/smooth_palette.c:257 ../plug-ins/common/sunras.c:917
 #: ../plug-ins/common/tga.c:927 ../plug-ins/common/tiff.c:886
 #: ../plug-ins/common/tile.c:266 ../plug-ins/common/xbm.c:866
@@ -1286,11 +1286,11 @@ msgstr ""
 msgid "Saving '%s'"
 msgstr "»%s« wird gespeichert"
 
-#: ../plug-ins/bmp/bmpwrite.c:583
+#: ../plug-ins/bmp/bmpwrite.c:585
 msgid "Save as BMP"
 msgstr "Als BMP speichern"
 
-#: ../plug-ins/bmp/bmpwrite.c:602
+#: ../plug-ins/bmp/bmpwrite.c:604
 msgid "_Run-Length Encoded"
 msgstr "_RL-kodiert"
 
@@ -1969,34 +1969,51 @@ msgstr "Die unterste Ebene _ignorieren, auch wenn sie sichtbar ist"
 msgid "_Use the (invisible) bottom layer as the base"
 msgstr "Die unterste (unsichtbare) Ebene als Basis _verwenden"
 
-#: ../plug-ins/common/animationplay.c:178
+#: ../plug-ins/common/animationplay.c:160
 msgid "_Playback..."
 msgstr "Animation _abspielen..."
 
-#: ../plug-ins/common/animationplay.c:397
-msgid "Start/Stop playback"
-msgstr "Wiedergabe starten/stoppen"
-
-#: ../plug-ins/common/animationplay.c:401
+#: ../plug-ins/common/animationplay.c:430
 msgid "_Step"
 msgstr "_Schritt"
 
-#: ../plug-ins/common/animationplay.c:401
+#: ../plug-ins/common/animationplay.c:430
 msgid "Step to next frame"
 msgstr "Zum nächsten Einzelbild"
 
-#: ../plug-ins/common/animationplay.c:405
-msgid "Rewind animation"
-msgstr "Animation zurück setzen"
+#: ../plug-ins/common/animationplay.c:434
+msgid "Rewind the animation"
+msgstr "Animation zurückspulen"
 
-#: ../plug-ins/common/animationplay.c:457
+#: ../plug-ins/common/animationplay.c:455
+#: ../plug-ins/common/animationplay.c:1368
+msgid "Start playback"
+msgstr "Wiedergabe starten"
+
+#: ../plug-ins/common/animationplay.c:459
+msgid "Detach"
+msgstr "Trennen"
+
+#: ../plug-ins/common/animationplay.c:460
+msgid "Detach the animation from the dialog window"
+msgstr "Die Animation aus dem Dialogfenster lösen"
+
+#: ../plug-ins/common/animationplay.c:544
 msgid "Animation Playback:"
 msgstr "Animation abspielen:"
 
-#: ../plug-ins/common/animationplay.c:1160
+#: ../plug-ins/common/animationplay.c:727
+msgid "Tried to display an invalid layer."
+msgstr "Es wurde versucht eine ungültige Ebene anzuzeigen."
+
+#: ../plug-ins/common/animationplay.c:1252
 #, c-format
 msgid "Frame %d of %d"
 msgstr "Einzelbild %d von %d"
+
+#: ../plug-ins/common/animationplay.c:1368
+msgid "Stop playback"
+msgstr "Wiedergabe stoppen"
 
 #: ../plug-ins/common/animoptimize.c:145
 msgid "Optimize (for _GIF)"
@@ -2131,11 +2148,15 @@ msgstr "Ver_schiebung:"
 msgid "_Number of segments:"
 msgstr "_Anzahl Segmente:"
 
-#: ../plug-ins/common/blur.c:146
+#: ../plug-ins/common/blur.c:130
+msgid "Apply a 3x3 blurring convolution kernel"
+msgstr "Eine weichzeichnende 3x3 Faltungsmatrix anwenden"
+
+#: ../plug-ins/common/blur.c:139
 msgid "_Blur"
 msgstr "_Weichzeichnen"
 
-#: ../plug-ins/common/blur.c:190 ../plug-ins/common/unsharp.c:429
+#: ../plug-ins/common/blur.c:183 ../plug-ins/common/unsharp.c:430
 msgid "Blurring"
 msgstr "Weichzeichnen"
 
@@ -2247,7 +2268,7 @@ msgid "Ca_rtoon..."
 msgstr "Cartoon..."
 
 #: ../plug-ins/common/cartoon.c:231 ../plug-ins/common/dog.c:249
-#: ../plug-ins/common/gauss.c:435 ../plug-ins/common/neon.c:225
+#: ../plug-ins/common/gauss.c:445 ../plug-ins/common/neon.c:225
 #: ../plug-ins/common/photocopy.c:244 ../plug-ins/common/sel_gauss.c:205
 #: ../plug-ins/common/softglow.c:222 ../plug-ins/gflare/gflare.c:969
 #: ../plug-ins/sgi/sgi.c:520 ../plug-ins/xjt/xjt.c:1680
@@ -2278,8 +2299,8 @@ msgstr "Farbraumanalyse"
 #: ../plug-ins/common/ccanalyze.c:388
 #: ../plug-ins/imagemap/imap_cmd_guides.c:233
 #, c-format
-msgid "Image dimensions: %d x %d"
-msgstr "Bildgröße: %d x %d"
+msgid "Image dimensions: %d × %d"
+msgstr "Bildgröße: %d × %d"
 
 #: ../plug-ins/common/ccanalyze.c:391
 msgid "No colors"
@@ -2785,7 +2806,7 @@ msgstr "_1 Byte Run-Length-Encoding verwenden"
 msgid "Sa_ve alpha channel (RGBA/RGB)"
 msgstr "_Alphakanal (RGBA/RGB) speichern"
 
-#: ../plug-ins/common/csource.c:750 ../plug-ins/common/sparkle.c:455
+#: ../plug-ins/common/csource.c:750
 msgid "Op_acity:"
 msgstr "_Deckkraft:"
 
@@ -2855,10 +2876,9 @@ msgid "Automatic pre_view"
 msgstr "A_utomatische Vorschau"
 
 #. Options area, bottom of column
-#. the vertical box and its toggle buttons
 #. Options section
-#: ../plug-ins/common/curve_bend.c:1301 ../plug-ins/common/mosaic.c:623
-#: ../plug-ins/common/ripple.c:498 ../plug-ins/gfig/gfig-dialog.c:1213
+#: ../plug-ins/common/curve_bend.c:1301 ../plug-ins/common/ripple.c:498
+#: ../plug-ins/gfig/gfig-dialog.c:1213
 msgid "Options"
 msgstr "Einstellungen"
 
@@ -2874,7 +2894,7 @@ msgstr "_Glättung"
 
 #. The antialiasing toggle
 #: ../plug-ins/common/curve_bend.c:1343 ../plug-ins/common/gqbist.c:836
-#: ../plug-ins/common/mosaic.c:629 ../plug-ins/common/ripple.c:507
+#: ../plug-ins/common/mosaic.c:730 ../plug-ins/common/ripple.c:507
 msgid "_Antialiasing"
 msgstr "K_antenglättung"
 
@@ -3170,7 +3190,7 @@ msgstr "Ska_lierung 2:"
 msgid "Des_peckle..."
 msgstr "_Flecken entfernen..."
 
-#: ../plug-ins/common/despeckle.c:393 ../plug-ins/common/despeckle.c:618
+#: ../plug-ins/common/despeckle.c:393 ../plug-ins/common/despeckle.c:613
 msgid "Despeckle"
 msgstr "Flecken entfernen"
 
@@ -3188,7 +3208,7 @@ msgstr "Re_kursiv"
 
 #: ../plug-ins/common/despeckle.c:461 ../plug-ins/common/neon.c:739
 #: ../plug-ins/common/nlfilt.c:1091 ../plug-ins/common/nova.c:364
-#: ../plug-ins/common/unsharp.c:669 ../plug-ins/common/whirlpinch.c:588
+#: ../plug-ins/common/unsharp.c:670 ../plug-ins/common/whirlpinch.c:588
 #: ../plug-ins/gflare/gflare.c:2688 ../plug-ins/imagemap/imap_circle.c:278
 msgid "_Radius:"
 msgstr "_Radius:"
@@ -3532,7 +3552,7 @@ msgid "Composing images"
 msgstr "Bilder werden kombiniert"
 
 #: ../plug-ins/common/film.c:436 ../plug-ins/common/guillotine.c:187
-#: ../plug-ins/helpbrowser/dialog.c:850
+#: ../plug-ins/helpbrowser/dialog.c:852
 msgid "Untitled"
 msgstr "Unbenannt"
 
@@ -3865,39 +3885,45 @@ msgstr "Y_1:"
 msgid "Y_2:"
 msgstr "Y_2:"
 
-#: ../plug-ins/common/gauss.c:162
+#: ../plug-ins/common/gauss.c:159 ../plug-ins/common/gauss.c:179
+#: ../plug-ins/common/gauss.c:199 ../plug-ins/common/gauss.c:219
+#: ../plug-ins/common/gauss.c:239
+msgid "Apply a gaussian blur"
+msgstr "Gaußschen Weichzeichner anwenden"
+
+#: ../plug-ins/common/gauss.c:172
 msgid "_Gaussian Blur..."
 msgstr "_Gaußscher Weichzeichner..."
 
-#: ../plug-ins/common/gauss.c:418 ../plug-ins/common/gauss.c:466
+#: ../plug-ins/common/gauss.c:428 ../plug-ins/common/gauss.c:476
 msgid "Gaussian Blur"
 msgstr "Gaußscher Weichzeichner"
 
 #. parameter settings
-#: ../plug-ins/common/gauss.c:496
+#: ../plug-ins/common/gauss.c:506
 msgid "Blur Radius"
 msgstr "Radius"
 
-#: ../plug-ins/common/gauss.c:510 ../plug-ins/common/jigsaw.c:2458
+#: ../plug-ins/common/gauss.c:520 ../plug-ins/common/jigsaw.c:2458
 #: ../plug-ins/common/spread.c:386
 msgid "_Horizontal:"
 msgstr "_Horizontal"
 
-#: ../plug-ins/common/gauss.c:514 ../plug-ins/common/jigsaw.c:2475
+#: ../plug-ins/common/gauss.c:524 ../plug-ins/common/jigsaw.c:2475
 #: ../plug-ins/common/spread.c:390
 msgid "_Vertical:"
 msgstr "_Vertikal:"
 
 # TODO
-#: ../plug-ins/common/gauss.c:537
+#: ../plug-ins/common/gauss.c:547
 msgid "Blur Method"
 msgstr "Method"
 
-#: ../plug-ins/common/gauss.c:541
+#: ../plug-ins/common/gauss.c:551
 msgid "_IIR"
 msgstr "_IIR"
 
-#: ../plug-ins/common/gauss.c:542
+#: ../plug-ins/common/gauss.c:552
 msgid "_RLE"
 msgstr "_RLE"
 
@@ -3986,26 +4012,15 @@ msgid ""
 "Cannot save RGB color images. Convert to indexed color or grayscale first."
 msgstr "Kann keine RGB-Bilder speichern. Konvertieren Sie zu indiziert."
 
-#: ../plug-ins/common/gif.c:1117
-msgid ""
-"Warning:\n"
-"Transparent color in written file might be incorrect on viewers which don't "
-"support transparency."
-msgstr ""
-"Warnung:\n"
-"Die gerade gespeicherte Datei enthält transparente Farben. Unter Umständen "
-"wird deshalb die Datei in Bildbetrachtern die keine Transparenz unterstützen "
-"nicht richtig angezeigt."
+#: ../plug-ins/common/gif.c:1153
+msgid "Delay inserted to prevent evil CPU-sucking animation."
+msgstr "Pause eingefügt, um unnötige Prozessorbelastung zu verhindern."
 
-#: ../plug-ins/common/gif.c:1156
-msgid "Delay inserted to prevent evil CPU-sucking anim."
-msgstr "Eingefügte verzögern, um unnötige Prozessorbelastung zu verhindern."
-
-#: ../plug-ins/common/gif.c:1198
+#: ../plug-ins/common/gif.c:1195
 msgid "GIF Warning"
 msgstr "GIF Warnung"
 
-#: ../plug-ins/common/gif.c:1222
+#: ../plug-ins/common/gif.c:1219
 msgid ""
 "The image which you are trying to save as a GIF\n"
 "contains layers which extend beyond the actual\n"
@@ -4022,70 +4037,70 @@ msgstr ""
 "Sie können jetzt diese Ebenen entweder auf den Rand\n"
 "zuschneiden, oder das Speichern abbrechen."
 
-#: ../plug-ins/common/gif.c:1266
+#: ../plug-ins/common/gif.c:1263
 msgid "Save as GIF"
 msgstr "Als GIF speichern"
 
 #. regular gif parameter settings
-#: ../plug-ins/common/gif.c:1288
+#: ../plug-ins/common/gif.c:1285
 msgid "GIF Options"
 msgstr "GIF Einstellungen"
 
-#: ../plug-ins/common/gif.c:1294
+#: ../plug-ins/common/gif.c:1291
 msgid "I_nterlace"
 msgstr "I_nterlace"
 
-#: ../plug-ins/common/gif.c:1310
+#: ../plug-ins/common/gif.c:1307
 msgid "_GIF comment:"
 msgstr "_GIF Kommentar:"
 
 #. additional animated gif parameter settings
-#: ../plug-ins/common/gif.c:1367
+#: ../plug-ins/common/gif.c:1364
 msgid "Animated GIF Options"
 msgstr "Einstellungen für Animations-GIF's"
 
-#: ../plug-ins/common/gif.c:1373
+#: ../plug-ins/common/gif.c:1370
 msgid "_Loop forever"
 msgstr "_Unendliche Schleife"
 
-#: ../plug-ins/common/gif.c:1386
+#: ../plug-ins/common/gif.c:1383
 msgid "_Delay between frames where unspecified:"
 msgstr "_Pause zwischen Einzelbildern wenn nicht angegeben:"
 
-#: ../plug-ins/common/gif.c:1401 ../plug-ins/common/mng.c:1542
+#: ../plug-ins/common/gif.c:1398 ../plug-ins/common/mng.c:1542
 msgid "milliseconds"
 msgstr "Millisekunden"
 
-#: ../plug-ins/common/gif.c:1411
+#: ../plug-ins/common/gif.c:1408
 msgid "_Frame disposal where unspecified:"
 msgstr "Einzelbildübergang wenn nicht angegeben:"
 
-#: ../plug-ins/common/gif.c:1415
+#: ../plug-ins/common/gif.c:1412
 msgid "I don't care"
 msgstr "Ist mir egal"
 
-#: ../plug-ins/common/gif.c:1417
+#: ../plug-ins/common/gif.c:1414
 msgid "Cumulative layers (combine)"
 msgstr "Kumulative Ebenen (Kombinieren)"
 
-#: ../plug-ins/common/gif.c:1419
+#: ../plug-ins/common/gif.c:1416
 msgid "One frame per layer (replace)"
 msgstr "Ein Einzelbild pro Ebene (Ersetzen)"
 
 #. The "Always use default values" toggles
-#: ../plug-ins/common/gif.c:1435
+#: ../plug-ins/common/gif.c:1432
 msgid "_Use delay entered above for all frames"
 msgstr "_Unten angegebene Pause bei allen Einzelbildern verwenden"
 
-#: ../plug-ins/common/gif.c:1445
+#: ../plug-ins/common/gif.c:1442
 msgid "U_se disposal entered above for all frames"
 msgstr "_Den oben eingegebenen Übergang für alle Einzelbilder verwenden"
 
-#: ../plug-ins/common/gif.c:2655
+#: ../plug-ins/common/gif.c:2652
 msgid "Error writing output file."
 msgstr "Fehler beim schreiben der Ziel Datei."
 
-#: ../plug-ins/common/gif.c:2725
+#: ../plug-ins/common/gif.c:2722
 #, c-format
 msgid "The default comment is limited to %d characters."
 msgstr "Der Standard-Kommentar ist auf %d Zeichen beschränkt."
@@ -4103,8 +4118,8 @@ msgstr "Unquadratische Pixel. Das Bild könnte gequetscht aussehen."
 msgid "Background (%d%s)"
 msgstr "Hintergrund (%d%s)"
 
-#: ../plug-ins/common/gifload.c:918 ../plug-ins/common/iwarp.c:797
-#: ../plug-ins/common/iwarp.c:832
+#: ../plug-ins/common/gifload.c:918 ../plug-ins/common/iwarp.c:798
+#: ../plug-ins/common/iwarp.c:833
 #, c-format
 msgid "Frame %d"
 msgstr "Einzelbild %d"
@@ -4205,7 +4220,7 @@ msgstr "Glasbausteine"
 msgid "Tile _width:"
 msgstr "Kachel_breite:"
 
-#: ../plug-ins/common/glasstile.c:304 ../plug-ins/common/mosaic.c:743
+#: ../plug-ins/common/glasstile.c:304 ../plug-ins/common/mosaic.c:663
 msgid "Tile _height:"
 msgstr "Kachel_höhe:"
 
@@ -4503,101 +4518,101 @@ msgstr "Modus _2"
 msgid "_IWarp..."
 msgstr "_IWarp..."
 
-#: ../plug-ins/common/iwarp.c:703
+#: ../plug-ins/common/iwarp.c:704
 msgid "Warping"
 msgstr "Verformen"
 
-#: ../plug-ins/common/iwarp.c:808
+#: ../plug-ins/common/iwarp.c:809
 #, c-format
 msgid "Warping Frame %d"
 msgstr "Einzelbild Nr. %d verformen..."
 
-#: ../plug-ins/common/iwarp.c:820
+#: ../plug-ins/common/iwarp.c:821
 msgid "Ping pong"
 msgstr "Ping-Pong"
 
-#: ../plug-ins/common/iwarp.c:1026
+#: ../plug-ins/common/iwarp.c:1027
 msgid "A_nimate"
 msgstr "Ani_mation"
 
-#: ../plug-ins/common/iwarp.c:1045
+#: ../plug-ins/common/iwarp.c:1046
 msgid "Number of _frames:"
 msgstr "Anzahl der _Einzelbilder:"
 
-#: ../plug-ins/common/iwarp.c:1054
+#: ../plug-ins/common/iwarp.c:1055
 msgid "R_everse"
 msgstr "_Umgekehrt"
 
-#: ../plug-ins/common/iwarp.c:1063
+#: ../plug-ins/common/iwarp.c:1064
 msgid "_Ping pong"
 msgstr "_Ping-Pong"
 
-#: ../plug-ins/common/iwarp.c:1076
+#: ../plug-ins/common/iwarp.c:1077
 msgid "_Animate"
 msgstr "A_nimation"
 
-#: ../plug-ins/common/iwarp.c:1097
+#: ../plug-ins/common/iwarp.c:1098
 msgid "Deform Mode"
 msgstr "Deformations-Modus"
 
-#: ../plug-ins/common/iwarp.c:1110
+#: ../plug-ins/common/iwarp.c:1111
 msgid "_Move"
 msgstr "Be_wegen"
 
-#: ../plug-ins/common/iwarp.c:1111
+#: ../plug-ins/common/iwarp.c:1112
 msgid "_Grow"
 msgstr "_Vergrößern"
 
-#: ../plug-ins/common/iwarp.c:1112
+#: ../plug-ins/common/iwarp.c:1113
 msgid "S_wirl CCW"
 msgstr "Verdrehen gegen den _Uhrzeigersinn"
 
-#: ../plug-ins/common/iwarp.c:1113
+#: ../plug-ins/common/iwarp.c:1114
 msgid "Remo_ve"
 msgstr "_Entfernen"
 
-#: ../plug-ins/common/iwarp.c:1114
+#: ../plug-ins/common/iwarp.c:1115
 msgid "S_hrink"
 msgstr "_Schrumpfen"
 
-#: ../plug-ins/common/iwarp.c:1115
+#: ../plug-ins/common/iwarp.c:1116
 msgid "Sw_irl CW"
 msgstr "Verdrehen i_m Uhrzeigersinn"
 
-#: ../plug-ins/common/iwarp.c:1144
+#: ../plug-ins/common/iwarp.c:1145
 msgid "_Deform radius:"
 msgstr "De_formations-Radius:"
 
-#: ../plug-ins/common/iwarp.c:1154
+#: ../plug-ins/common/iwarp.c:1155
 msgid "D_eform amount:"
 msgstr "_Deformation:"
 
-#: ../plug-ins/common/iwarp.c:1163
+#: ../plug-ins/common/iwarp.c:1164
 msgid "_Bilinear"
 msgstr "_Bilinear"
 
-#: ../plug-ins/common/iwarp.c:1177
+#: ../plug-ins/common/iwarp.c:1178
 msgid "Adaptive s_upersample"
 msgstr "Anpassende _Hochrechnung"
 
-#: ../plug-ins/common/iwarp.c:1197
+#: ../plug-ins/common/iwarp.c:1198
 msgid "Ma_x depth:"
 msgstr "Ma_x. Tiefe:"
 
-#: ../plug-ins/common/iwarp.c:1207
+#: ../plug-ins/common/iwarp.c:1208
 msgid "Thresho_ld:"
 msgstr "Sc_hwellwert:"
 
-#: ../plug-ins/common/iwarp.c:1220 ../plug-ins/common/sinus.c:771
+#: ../plug-ins/common/iwarp.c:1221 ../plug-ins/common/sinus.c:771
 #: ../plug-ins/gflare/gflare.c:2797
 msgid "_Settings"
 msgstr "_Einstellungen"
 
-#: ../plug-ins/common/iwarp.c:1270
+#: ../plug-ins/common/iwarp.c:1271
 msgid "IWarp"
 msgstr "IWarp"
 
-#: ../plug-ins/common/iwarp.c:1307
+#: ../plug-ins/common/iwarp.c:1308
 msgid ""
 "Click and drag in the preview to define the distortions to apply to the "
 "image."
@@ -4879,6 +4894,10 @@ msgstr "Die maximalen Kanäle _halten"
 msgid "Ho_ld the minimal channels"
 msgstr "Die minimalen Kanäle h_alten"
 
+#: ../plug-ins/common/mblur.c:167
+msgid "Simulate movement by applying a blur effect"
+msgstr "Simuliere Bewegung durch Weichzeichnen"
+
 #: ../plug-ins/common/mblur.c:174
 msgid "_Motion Blur..."
 msgstr "_Bewegungsunschärfe..."
@@ -5032,85 +5051,83 @@ msgstr "Standard-Einzelbildanzeigedauer"
 msgid "MNG animation"
 msgstr "MNG Animation"
 
-#: ../plug-ins/common/mosaic.c:358
+#: ../plug-ins/common/mosaic.c:366
 msgid "_Mosaic..."
 msgstr "_Mosaik..."
 
 #. progress bar for gradient finding
-#: ../plug-ins/common/mosaic.c:497
+#: ../plug-ins/common/mosaic.c:505
 msgid "Finding edges"
 msgstr "Kanten werden gesucht"
 
 #. Progress bar for rendering tiles
-#: ../plug-ins/common/mosaic.c:548
+#: ../plug-ins/common/mosaic.c:559
 msgid "Rendering tiles"
 msgstr "Kacheln werden berechnet"
 
-#: ../plug-ins/common/mosaic.c:584
+#: ../plug-ins/common/mosaic.c:592
 msgid "Mosaic"
 msgstr "Mosaik"
 
+#: ../plug-ins/common/mosaic.c:632
+msgid "Squares"
+msgstr "Quadrate"
+
+#: ../plug-ins/common/mosaic.c:633
+msgid "Hexagons"
+msgstr "Sechsecke"
+
+#: ../plug-ins/common/mosaic.c:634
+msgid "Octagons & squares"
+msgstr "Achtecke und Quadrate"
+
+#: ../plug-ins/common/mosaic.c:635
+msgid "Triangles"
+msgstr "Dreiecke"
+
+#: ../plug-ins/common/mosaic.c:643
+msgid "_Tiling primitives:"
+msgstr "_Primitive:"
+
+#: ../plug-ins/common/mosaic.c:651
+msgid "Tile _size:"
+msgstr "K_achelgröße:"
+
+#: ../plug-ins/common/mosaic.c:676
+msgid "Til_e spacing:"
+msgstr "Ka_chelabstand:"
+
+#: ../plug-ins/common/mosaic.c:688
+msgid "Tile _neatness:"
+msgstr "Kachel_ordnung:"
+
+#: ../plug-ins/common/mosaic.c:701
+msgid "Light _direction:"
+msgstr "_Richtung des Lichts:"
+
+#: ../plug-ins/common/mosaic.c:713
+msgid "Color _variation:"
+msgstr "Farb_variation:"
+
 # TODO!
-#: ../plug-ins/common/mosaic.c:641
+#: ../plug-ins/common/mosaic.c:742
 msgid "Co_lor averaging"
 msgstr "_Farbmittelwerte berechnen"
 
-#: ../plug-ins/common/mosaic.c:654
+#: ../plug-ins/common/mosaic.c:755
 msgid "Allo_w tile splitting"
 msgstr "Zerteilung von Kacheln _erlauben"
 
 # pit=vertiefung
-#: ../plug-ins/common/mosaic.c:667
+#: ../plug-ins/common/mosaic.c:768
 msgid "_Pitted surfaces"
 msgstr "_Vertiefungen in der Oberfläche"
 
-#: ../plug-ins/common/mosaic.c:680
+#: ../plug-ins/common/mosaic.c:781
 msgid "_FG/BG lighting"
 msgstr "_VG/HG Beleuchtung"
 
-#. tiling primitive
-#: ../plug-ins/common/mosaic.c:697
-msgid "Tiling Primitives"
-msgstr "Primitive für die Kacheln"
-
-#: ../plug-ins/common/mosaic.c:701
-msgid "_Squares"
-msgstr "_Quadrate"
-
-#: ../plug-ins/common/mosaic.c:702
-msgid "He_xagons"
-msgstr "_Sechsecke"
-
-#: ../plug-ins/common/mosaic.c:703
-msgid "Oc_tagons & squares"
-msgstr "_Achtecke und Quadrate"
-
-#. parameter settings
-#: ../plug-ins/common/mosaic.c:722
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: ../plug-ins/common/mosaic.c:731
-msgid "T_ile size:"
-msgstr "K_achelgröße:"
-
-#: ../plug-ins/common/mosaic.c:755
-msgid "Til_e spacing:"
-msgstr "Ka_chelabstand:"
-
-#: ../plug-ins/common/mosaic.c:767
-msgid "Tile _neatness:"
-msgstr "Kachel_ordnung:"
-
-#: ../plug-ins/common/mosaic.c:780
-msgid "Light _direction:"
-msgstr "_Richtung des Lichts:"
-
-#: ../plug-ins/common/mosaic.c:792
-msgid "Color _variation:"
-msgstr "Farb_variation:"
-
-#: ../plug-ins/common/mosaic.c:2597
+#: ../plug-ins/common/mosaic.c:2685
 msgid "Unable to add additional point.\n"
 msgstr "Konnte keinen Kontrollpunkt hinzufügen.\n"
 
@@ -5126,7 +5143,7 @@ msgstr "Neon"
 msgid "Neon Detection"
 msgstr "Neon Kantenfinder"
 
-#: ../plug-ins/common/neon.c:754 ../plug-ins/common/unsharp.c:682
+#: ../plug-ins/common/neon.c:754 ../plug-ins/common/unsharp.c:683
 msgid "_Amount:"
 msgstr "_Menge:"
 
@@ -6747,7 +6764,7 @@ msgid "Luminosity _threshold:"
 msgstr "Leuchtstärke-_Schwellwert:"
 
 #: ../plug-ins/common/sparkle.c:379
-msgid "Adjust the Luminosity Threshold"
+msgid "Adjust the luminosity threshold"
 msgstr "Leuchtstärke Schwellwert anpassen"
 
 #: ../plug-ins/common/sparkle.c:389
@@ -6755,7 +6772,7 @@ msgid "F_lare intensity:"
 msgstr "_Leuchtintensität:"
 
 #: ../plug-ins/common/sparkle.c:392
-msgid "Adjust the Flare Intensity"
+msgid "Adjust the flare intensity"
 msgstr "Flacker Intensität anpassen"
 
 #: ../plug-ins/common/sparkle.c:402
@@ -6763,7 +6780,7 @@ msgid "_Spike length:"
 msgstr "_Strahlenlänge:"
 
 #: ../plug-ins/common/sparkle.c:405
-msgid "Adjust the Spike Length"
+msgid "Adjust the spike length"
 msgstr "Einstellen der Strahlenlänge"
 
 #: ../plug-ins/common/sparkle.c:415
@@ -6771,7 +6788,7 @@ msgid "Sp_ike points:"
 msgstr "St_rahlzentren:"
 
 #: ../plug-ins/common/sparkle.c:418
-msgid "Adjust the Number of Spikes"
+msgid "Adjust the number of spikes"
 msgstr "Einstellen der Anzahl der Strahlen"
 
 #: ../plug-ins/common/sparkle.c:428
@@ -6779,7 +6796,7 @@ msgid "Spi_ke angle (-1: random):"
 msgstr "Stra_hlwinkel (-1: Zufällig)"
 
 #: ../plug-ins/common/sparkle.c:431
-msgid "Adjust the Spike Angle (-1 means a Random Angle is chosen)"
+msgid "Adjust the spike angle (-1 causes a random angle to be chosen)"
 msgstr ""
 "Einstellen des Winkels zwischen den Strahlen (-1 bedeutet einen zufällig "
 "gewählten Winkel)"
@@ -6789,11 +6806,15 @@ msgid "Spik_e density:"
 msgstr "Strahl_endichte:"
 
 #: ../plug-ins/common/sparkle.c:445
-msgid "Adjust the Spike Density"
+msgid "Adjust the spike density"
 msgstr "Einstellen der Strahlendichte"
 
+#: ../plug-ins/common/sparkle.c:455
+msgid "Tr_ansparency:"
+msgstr "_Transparenz:"
+
 #: ../plug-ins/common/sparkle.c:458
-msgid "Adjust the Opacity of the Spikes"
+msgid "Adjust the opacity of the spikes"
 msgstr "Deckkraft der Strahlen anpassen"
 
 #: ../plug-ins/common/sparkle.c:468
@@ -6801,62 +6822,62 @@ msgid "_Random hue:"
 msgstr "_Zufallsfarbton:"
 
 #: ../plug-ins/common/sparkle.c:471
-msgid "Adjust the Value how much the Hue should be changed randomly"
+msgid "Adjust how much the hue should be changed randomly"
 msgstr "Wie sehr soll der Farbton zufällig geändert werden"
 
-#: ../plug-ins/common/sparkle.c:482
+#: ../plug-ins/common/sparkle.c:481
 msgid "Rando_m saturation:"
 msgstr "Zu_fällige Sättigung:"
 
-#: ../plug-ins/common/sparkle.c:485
-msgid "Adjust the Value how much the Saturation should be changed randomly"
+#: ../plug-ins/common/sparkle.c:484
+msgid "Adjust how much the saturation should be changed randomly"
 msgstr "Einstellen wie zufällig die Sättigung geändert wird"
 
-#: ../plug-ins/common/sparkle.c:502
+#: ../plug-ins/common/sparkle.c:501
 msgid "_Preserve luminosity"
 msgstr "Helligkeit _erhalten"
 
-#: ../plug-ins/common/sparkle.c:509
-msgid "Should the Luminosity be preserved?"
+#: ../plug-ins/common/sparkle.c:508
+msgid "Should the luminosity be preserved?"
 msgstr "Soll die Helligkeit erhalten bleiben?"
 
-#: ../plug-ins/common/sparkle.c:518
+#: ../plug-ins/common/sparkle.c:517
 msgid "In_verse"
 msgstr "In_vertieren"
 
-#: ../plug-ins/common/sparkle.c:524
-msgid "Should an Inverse Effect be done?"
+#: ../plug-ins/common/sparkle.c:523
+msgid "Should the effect be inversed?"
 msgstr "Möchten Sie einen Umkehreffekt anwenden?"
 
-#: ../plug-ins/common/sparkle.c:533
+#: ../plug-ins/common/sparkle.c:532
 msgid "A_dd border"
 msgstr "Rand hin_zufügen"
 
-#: ../plug-ins/common/sparkle.c:539
-msgid "Draw a Border of Spikes around the Image"
+#: ../plug-ins/common/sparkle.c:538
+msgid "Draw a border of spikes around the image"
 msgstr "Zeichne einen Rand aus Strahlen um das Bild"
 
-#: ../plug-ins/common/sparkle.c:553
+#: ../plug-ins/common/sparkle.c:552
 msgid "_Natural color"
 msgstr "_Natürliche Farbe"
 
-#: ../plug-ins/common/sparkle.c:554
+#: ../plug-ins/common/sparkle.c:553
 msgid "_Foreground color"
 msgstr "_Vordergrundfarbe"
 
-#: ../plug-ins/common/sparkle.c:555
+#: ../plug-ins/common/sparkle.c:554
 msgid "_Background color"
 msgstr "_Hintergrundfarbe"
 
-#: ../plug-ins/common/sparkle.c:562
+#: ../plug-ins/common/sparkle.c:561
 msgid "Use the color of the image"
 msgstr "Die Farbe des Bildes verwenden"
 
-#: ../plug-ins/common/sparkle.c:563
+#: ../plug-ins/common/sparkle.c:562
 msgid "Use the foreground color"
 msgstr "Die Vordergrundfarbe verwenden"
 
-#: ../plug-ins/common/sparkle.c:564
+#: ../plug-ins/common/sparkle.c:563
 msgid "Use the background color"
 msgstr "Die Hintergrundfarbe verwenden"
 
@@ -7141,8 +7162,8 @@ msgstr ""
 
 #: ../plug-ins/common/svg.c:519 ../plug-ins/common/wmf.c:338
 #, c-format
-msgid "%d x %d"
-msgstr "%d x %d"
+msgid "%d × %d"
+msgstr "%d × %d"
 
 #. Scalable Vector Graphics is SVG, should perhaps not be translated
 #: ../plug-ins/common/svg.c:724
@@ -7526,11 +7547,11 @@ msgstr "Einheiten-Editor"
 msgid "_Unsharp Mask..."
 msgstr "_Unscharf Maskieren..."
 
-#: ../plug-ins/common/unsharp.c:465
+#: ../plug-ins/common/unsharp.c:466
 msgid "Merging"
 msgstr "Zusammenfügen"
 
-#: ../plug-ins/common/unsharp.c:632
+#: ../plug-ins/common/unsharp.c:633
 msgid "Unsharp Mask"
 msgstr "Unscharf Maskieren"
 
@@ -9720,11 +9741,11 @@ msgstr "Zum Inhaltsverzeichnis"
 msgid "Visit the GIMP documentation website"
 msgstr "Besuchen Sie die GIMP Dokumentations-Webseite"
 
-#: ../plug-ins/helpbrowser/dialog.c:586
+#: ../plug-ins/helpbrowser/dialog.c:588
 msgid "Document not found"
 msgstr "Dokument nicht gefunden"
 
-#: ../plug-ins/helpbrowser/dialog.c:588
+#: ../plug-ins/helpbrowser/dialog.c:590
 msgid "The requested URL could not be loaded:"
 msgstr "Die angegebene Adresse konnte nicht geladen werden:"
 
@@ -9846,44 +9867,38 @@ msgstr "Unterteilung:"
 msgid "Spot radius:"
 msgstr "Punktradius:"
 
-#: ../plug-ins/ifscompose/ifscompose.c:1306
+#: ../plug-ins/ifscompose/ifscompose.c:1305
 #, c-format
 msgid "Rendering IFS (%d/%d)"
 msgstr "IFS (%d/%d) wird berechnet"
 
-#. transfer the image to the drawable
-#: ../plug-ins/ifscompose/ifscompose.c:1323
-#, c-format
-msgid "Copying IFS to image (%d/%d)"
-msgstr "IFS wird ins Bild (%d/%d) kopiert"
-
-#: ../plug-ins/ifscompose/ifscompose.c:1479
+#: ../plug-ins/ifscompose/ifscompose.c:1471
 #, c-format
 msgid "Transformation %s"
 msgstr "Transformation %s"
 
-#: ../plug-ins/ifscompose/ifscompose.c:2392
+#: ../plug-ins/ifscompose/ifscompose.c:2384
 #: ../plug-ins/metadata/interface.c:563 ../plug-ins/metadata/interface.c:573
 msgid "Save failed"
 msgstr "Speichern fehlgeschlagen"
 
-#: ../plug-ins/ifscompose/ifscompose.c:2473
-#: ../plug-ins/ifscompose/ifscompose.c:2486
+#: ../plug-ins/ifscompose/ifscompose.c:2465
+#: ../plug-ins/ifscompose/ifscompose.c:2478
 #: ../plug-ins/metadata/interface.c:462 ../plug-ins/metadata/interface.c:472
 #: ../plug-ins/metadata/interface.c:548
 msgid "Open failed"
 msgstr "Öffnen fehlgeschlagen"
 
-#: ../plug-ins/ifscompose/ifscompose.c:2481
+#: ../plug-ins/ifscompose/ifscompose.c:2473
 #, c-format
 msgid "File '%s' doesn't seem to be an IFS Fractal file."
 msgstr "Die Datei »%s« scheint keine IFS-Fraktal-Datei zu sein."
 
-#: ../plug-ins/ifscompose/ifscompose.c:2521
+#: ../plug-ins/ifscompose/ifscompose.c:2513
 msgid "Save as IFS Fractal file"
 msgstr "Als IFS-Fraktal-Datei speichern"
 
-#: ../plug-ins/ifscompose/ifscompose.c:2556
+#: ../plug-ins/ifscompose/ifscompose.c:2548
 msgid "Open IFS Fractal file"
 msgstr "IFS-Fraktal-Datei öffnen"
 
@@ -10036,11 +10051,11 @@ msgstr "Anz. _vert.:"
 msgid "Base _URL:"
 msgstr "Basis-_URL:"
 
-#: ../plug-ins/imagemap/imap_cmd_guides.c:238
+#: ../plug-ins/imagemap/imap_cmd_guides.c:239
 msgid "Resulting Guide Bounds: 0,0 to 0,0 (0 areas)"
 msgstr "Resultierende Hilfslinien-Reichweite: 0,0 bis 0,0 (0 Flächen)"
 
-#: ../plug-ins/imagemap/imap_cmd_guides.c:273
+#: ../plug-ins/imagemap/imap_cmd_guides.c:274
 msgid "Guides"
 msgstr "Hilfslinien"
 
@@ -11882,23 +11897,3 @@ msgstr "Fehler: XJT-Eigenschaften-Datei »%s« konnte nicht gelesen werden."
 msgid "Error: XJT property file '%s' is empty."
 msgstr "Fehler: Die XJT Eigenschaften-Datei »%s« ist leer."
 
-#~ msgid "FlareFX"
-#~ msgstr "Linsenreflexe"
-
-#~ msgid "_Show cursor"
-#~ msgstr "_Zeige Cursor"
-
-#~ msgid "S_how cursor"
-#~ msgstr "Cursor _zeigen"
-
-#~ msgid "_Use intensity algorithm"
-#~ msgstr "Intensitäts-Algorithmus _verwenden"
-
-#~ msgid "Polarizing"
-#~ msgstr "Polarisieren"
-
-#~ msgid "Polarize"
-#~ msgstr "Polarkoordinaten"
-
-#~ msgid "Take a screenshot of your _desktop"
-#~ msgstr "Ein Bildschirmfoto des _Desktops machen."

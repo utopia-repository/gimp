@@ -34,10 +34,11 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkEntry">GtkEntry</link>
-                     +----GimpColorHexEntry
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkEntry">GtkEntry</link>
+                           +----GimpColorHexEntry
 </synopsis>
 
 </refsect1>

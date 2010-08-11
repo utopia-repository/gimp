@@ -46,6 +46,12 @@
 #define GIMP_COORDS_MAX_WHEEL         1.0
 #define GIMP_COORDS_DEFAULT_WHEEL     0.5
 
+#define GIMP_COORDS_DEFAULT_VALUES  { 0.0, 0.0, \
+                                      GIMP_COORDS_DEFAULT_PRESSURE, \
+                                      GIMP_COORDS_DEFAULT_TILT,     \
+                                      GIMP_COORDS_DEFAULT_TILT,     \
+                                      GIMP_COORDS_DEFAULT_WHEEL }
+
 
 /*  base classes  */
 
@@ -81,7 +87,7 @@ typedef struct _GimpToolInfo        GimpToolInfo;
 
 typedef struct _GimpDataFactory     GimpDataFactory;
 typedef struct _GimpData            GimpData;
-typedef struct _GimpBrush	    GimpBrush;
+typedef struct _GimpBrush            GimpBrush;
 typedef struct _GimpBrushGenerated  GimpBrushGenerated;
 typedef struct _GimpBrushPipe       GimpBrushPipe;
 typedef struct _GimpGradient        GimpGradient;

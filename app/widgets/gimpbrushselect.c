@@ -32,8 +32,9 @@
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpbrush.h"
+#include "core/gimpparamspecs.h"
 
-#include "pdb/procedural_db.h"
+#include "pdb/gimp-pdb.h"
 
 #include "gimpbrushfactoryview.h"
 #include "gimpbrushselect.h"
@@ -60,10 +61,10 @@ static void       gimp_brush_select_set_property (GObject         *object,
                                                   const GValue    *value,
                                                   GParamSpec      *pspec);
 
-static Argument * gimp_brush_select_run_callback (GimpPdbDialog   *dialog,
+static GValueArray *
+                  gimp_brush_select_run_callback (GimpPdbDialog   *dialog,
                                                   GimpObject      *object,
-                                                  gboolean         closing,
-                                                  gint            *n_return_vals);
+                                                  gboolean         closing);
 
 static void   gimp_brush_select_opacity_changed  (GimpContext     *context,
                                                   gdouble          opacity,
@@ -186,13 +187,13 @@ gimp_brush_select_constructor (GType                  type,
   /*  Create the paint mode option menu  */
   select->paint_mode_menu = gimp_paint_mode_menu_new (TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
-			     _("Mode:"), 0.0, 0.5,
-			     select->paint_mode_menu, 2, FALSE);
+                             _("Mode:"), 0.0, 0.5,
+                             select->paint_mode_menu, 2, FALSE);
 
   gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (select->paint_mode_menu),
                               gimp_context_get_paint_mode (dialog->context),
                               G_CALLBACK (gimp_brush_select_mode_update),
-			      select);
+                              select);
 
   spacing_adj = GIMP_BRUSH_FACTORY_VIEW (dialog->view)->spacing_adjustment;
 
@@ -250,31 +251,40 @@ gimp_brush_select_set_property (GObject      *object,
     }
 }
 
-static Argument *
+static GValueArray *
 gimp_brush_select_run_callback (GimpPdbDialog *dialog,
                                 GimpObject    *object,
-                                gboolean       closing,
-                                gint          *n_return_vals)
+                                gboolean       closing)
 {
-  GimpBrush *brush = GIMP_BRUSH (object);
+  GimpBrush   *brush = GIMP_BRUSH (object);
+  GimpArray   *array;
+  GValueArray *return_vals;
 
-  return procedural_db_run_proc (dialog->caller_context->gimp,
-                                 dialog->caller_context,
-                                 NULL,
-                                 dialog->callback_name,
-                                 n_return_vals,
-                                 GIMP_PDB_STRING,    object->name,
-                                 GIMP_PDB_FLOAT,     gimp_context_get_opacity (dialog->context) * 100.0,
-                                 GIMP_PDB_INT32,     GIMP_BRUSH_SELECT (dialog)->spacing,
-                                 GIMP_PDB_INT32,     (gint) gimp_context_get_paint_mode (dialog->context),
-                                 GIMP_PDB_INT32,     brush->mask->width,
-                                 GIMP_PDB_INT32,     brush->mask->height,
-                                 GIMP_PDB_INT32,     (brush->mask->width *
-                                                      brush->mask->height),
-                                 GIMP_PDB_INT8ARRAY, temp_buf_data (brush->mask),
+  array = gimp_array_new (temp_buf_data (brush->mask),
+                          brush->mask->width *
+                          brush->mask->height *
+                          brush->mask->bytes,
+                          TRUE);
 
-                                 GIMP_PDB_INT32,     closing,
-                                 GIMP_PDB_END);
+  return_vals =
+    gimp_pdb_run_proc (dialog->caller_context->gimp,
+                       dialog->caller_context,
+                       NULL,
+                       dialog->callback_name,
+                       G_TYPE_STRING,        object->name,
+                       G_TYPE_DOUBLE,        gimp_context_get_opacity (dialog->context) * 100.0,
+                       GIMP_TYPE_INT32,      GIMP_BRUSH_SELECT (dialog)->spacing,
+                       GIMP_TYPE_INT32,      gimp_context_get_paint_mode (dialog->context),
+                       GIMP_TYPE_INT32,      brush->mask->width,
+                       GIMP_TYPE_INT32,      brush->mask->height,
+                       GIMP_TYPE_INT32,      array->length,
+                       GIMP_TYPE_INT8_ARRAY, array,
+                       GIMP_TYPE_INT32,      closing,
+                       G_TYPE_NONE);
+
+  gimp_array_free (array);
+
+  return return_vals;
 }
 
 static void
@@ -284,14 +294,14 @@ gimp_brush_select_opacity_changed (GimpContext     *context,
 {
   g_signal_handlers_block_by_func (select->opacity_data,
                                    gimp_brush_select_opacity_update,
-				   select);
+                                   select);
 
   gtk_adjustment_set_value (GTK_ADJUSTMENT (select->opacity_data),
-			    opacity * 100.0);
+                            opacity * 100.0);
 
   g_signal_handlers_unblock_by_func (select->opacity_data,
-				     gimp_brush_select_opacity_update,
-				     select);
+                                     gimp_brush_select_opacity_update,
+                                     select);
 
   gimp_pdb_dialog_run_callback (GIMP_PDB_DIALOG (select), FALSE);
 }
@@ -303,7 +313,7 @@ gimp_brush_select_mode_changed (GimpContext          *context,
 {
   g_signal_handlers_block_by_func (select->paint_mode_menu,
                                    gimp_brush_select_mode_update,
-				   select);
+                                   select);
 
   gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (select->paint_mode_menu),
                                  paint_mode);

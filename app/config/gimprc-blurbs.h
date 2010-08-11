@@ -236,6 +236,9 @@ N_("When enabled, the X server is queried for the mouse's current position " \
    "be slower.  Perversely, on some X servers enabling this option results " \
    "in faster painting.")
 
+#define PLUG_IN_HISTORY_SIZE_BLURB \
+"How many recently used plug-ins to keep on the Filters menu."
+
 #define PLUG_IN_PATH_BLURB \
 "Sets the plug-in search path."
 
@@ -330,8 +333,8 @@ N_("When enabled, the sample points are visible by default. This can also be " \
 #define SHOW_TIPS_BLURB \
 N_("Enable displaying a handy GIMP tip on startup.")
 
-#define SHOW_TOOL_TIPS_BLURB \
-N_("Enable tooltips display.")
+#define SHOW_TOOLTIPS_BLURB \
+N_("Show a tooltip when the pointer hovers over an item.")
 
 #define SWAP_PATH_BLURB \
 N_("Sets the swap file location. GIMP uses a tile based memory allocation " \

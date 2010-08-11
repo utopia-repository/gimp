@@ -89,6 +89,7 @@
   <functions>
     <function name="gimp_enums_init ()" link="libgimp-gimpenums.html#gimp-enums-init"/>
     <function name="enum GimpBrushApplicationMode" link="libgimp-gimpenums.html#GimpBrushApplicationMode"/>
+    <function name="enum GimpBrushGeneratedShape" link="libgimp-gimpenums.html#GimpBrushGeneratedShape"/>
     <function name="enum GimpConvertDitherType" link="libgimp-gimpenums.html#GimpConvertDitherType"/>
     <function name="enum GimpConvertPaletteType" link="libgimp-gimpenums.html#GimpConvertPaletteType"/>
     <function name="enum GimpConvolutionType" link="libgimp-gimpenums.html#GimpConvolutionType"/>
@@ -104,7 +105,6 @@
     <function name="enum GimpOffsetType" link="libgimp-gimpenums.html#GimpOffsetType"/>
     <function name="enum GimpOrientationType" link="libgimp-gimpenums.html#GimpOrientationType"/>
     <function name="enum GimpRotationType" link="libgimp-gimpenums.html#GimpRotationType"/>
-    <function name="enum GimpRunMode" link="libgimp-gimpenums.html#GimpRunMode"/>
     <function name="gimp_enums_get_type_names ()" link="libgimp-gimpenums.html#gimp-enums-get-type-names"/>
     <function name="GIMPVAR" link="libgimp-gimp.html#GIMPVAR:CAPS"/>
     <function name="gimp_version ()" link="libgimp-gimp.html#gimp-version"/>
@@ -490,8 +490,6 @@
     <function name="gimp_path_delete ()" link="libgimp-gimppaths.html#gimp-path-delete"/>
     <function name="gimp_path_get_locked ()" link="libgimp-gimppaths.html#gimp-path-get-locked"/>
     <function name="gimp_path_set_locked ()" link="libgimp-gimppaths.html#gimp-path-set-locked"/>
-    <function name="gimp_path_get_visible ()" link="libgimp-gimppaths.html#gimp-path-get-visible"/>
-    <function name="gimp_path_set_visible ()" link="libgimp-gimppaths.html#gimp-path-set-visible"/>
     <function name="gimp_path_set_tattoo ()" link="libgimp-gimppaths.html#gimp-path-set-tattoo"/>
     <function name="gimp_path_to_selection ()" link="libgimp-gimppaths.html#gimp-path-to-selection"/>
     <function name="gimp_path_import ()" link="libgimp-gimppaths.html#gimp-path-import"/>
@@ -604,6 +602,10 @@
     <function name="gimp_vectors_set_tattoo ()" link="libgimp-gimpvectors.html#gimp-vectors-set-tattoo"/>
     <function name="gimp_vectors_set_visible ()" link="libgimp-gimpvectors.html#gimp-vectors-set-visible"/>
     <function name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes"/>
+    <function name="gimp_vectors_parasite_attach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-attach"/>
+    <function name="gimp_vectors_parasite_detach ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-detach"/>
+    <function name="gimp_vectors_parasite_find ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-find"/>
+    <function name="gimp_vectors_parasite_list ()" link="libgimp-gimpvectors.html#gimp-vectors-parasite-list"/>
     <function name="gimp_vectors_stroke_close ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-close"/>
     <function name="gimp_vectors_stroke_remove ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-remove"/>
     <function name="gimp_vectors_stroke_get_length ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-get-length"/>
@@ -770,13 +772,16 @@
     <function name="gimp_drawable_preview_new ()" link="GimpDrawablePreview.html#gimp-drawable-preview-new"/>
     <function name="gimp_drawable_preview_get_drawable ()" link="GimpDrawablePreview.html#gimp-drawable-preview-get-drawable"/>
     <function name="gimp_drawable_preview_draw_region ()" link="GimpDrawablePreview.html#gimp-drawable-preview-draw-region"/>
+    <function name="The &quot;drawable&quot; property" link="GimpDrawablePreview.html#GimpDrawablePreview--drawable"/>
     <function name="GimpAspectPreview" link="GimpAspectPreview.html#GimpAspectPreview-struct"/>
     <function name="gimp_aspect_preview_new ()" link="GimpAspectPreview.html#gimp-aspect-preview-new"/>
+    <function name="The &quot;drawable&quot; property" link="GimpAspectPreview.html#GimpAspectPreview--drawable"/>
     <function name="GimpZoomPreview" link="GimpZoomPreview.html#GimpZoomPreview-struct"/>
     <function name="gimp_zoom_preview_new ()" link="GimpZoomPreview.html#gimp-zoom-preview-new"/>
     <function name="gimp_zoom_preview_get_source ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-source"/>
     <function name="gimp_zoom_preview_get_drawable ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-drawable"/>
     <function name="gimp_zoom_preview_get_factor ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-factor"/>
+    <function name="The &quot;drawable&quot; property" link="GimpZoomPreview.html#GimpZoomPreview--drawable"/>
     <function name="GimpDrawableComboBox" link="GimpDrawableComboBox.html#GimpDrawableComboBox-struct"/>
     <function name="GimpDrawableConstraintFunc ()" link="GimpDrawableComboBox.html#GimpDrawableConstraintFunc"/>
     <function name="gimp_drawable_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-drawable-combo-box-new"/>

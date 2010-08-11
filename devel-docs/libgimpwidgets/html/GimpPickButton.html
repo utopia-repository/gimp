@@ -54,36 +54,37 @@ href="../gtk/GtkWidget.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2519453"></a><h2>Object Hierarchy</h2>
+<a name="id2554064"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
+   +----GInitiallyUnowned
+         +----<a
 href="../gtk/GtkObject.html"
 >GtkObject</a>
-         +----<a
+               +----<a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>
-               +----<a
+                     +----<a
 href="../gtk/GtkContainer.html"
 >GtkContainer</a>
-                     +----<a
+                           +----<a
 href="../gtk/GtkBin.html"
 >GtkBin</a>
-                           +----<a
+                                 +----<a
 href="../gtk/GtkButton.html"
 >GtkButton</a>
-                                 +----GimpPickButton
+                                       +----GimpPickButton
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2562233"></a><h2>Implemented Interfaces</h2>
+<a name="id2541650"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPickButton implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2568095"></a><h2>Signal Prototypes</h2>
+<a name="id2567989"></a><h2>Signal Prototypes</h2>
 <pre class="synopsis">
 
 "<a href="GimpPickButton.html#GimpPickButton-color-picked">color-picked</a>"
@@ -93,7 +94,7 @@ GimpPickButton implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2576436"></a><h2>Description</h2>
+<a name="id2568035"></a><h2>Description</h2>
 <p>
 <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> is a specialized button. When clicked, it changes the
 cursor to a color-picker pipette and allows the user to pick a color
@@ -101,20 +102,20 @@ from any point on the screen.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2576457"></a><h2>Details</h2>
+<a name="id2570522"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2576463"></a><h3>
+<a name="id2570528"></a><h3>
 <a name="GimpPickButton-struct"></a>GimpPickButton</h3>
-<a class="indexterm" name="id2576473"></a><pre class="programlisting">typedef struct _GimpPickButton GimpPickButton;</pre>
+<a class="indexterm" name="id2570538"></a><pre class="programlisting">typedef struct _GimpPickButton GimpPickButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576489"></a><h3>
+<a name="id2570554"></a><h3>
 <a name="gimp-pick-button-new"></a>gimp_pick_button_new ()</h3>
-<a class="indexterm" name="id2576498"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2570563"></a><pre class="programlisting"><a
 href="../gtk/GtkWidget.html"
 >GtkWidget</a>*  gimp_pick_button_new            (void);</pre>
 <p>
@@ -134,9 +135,9 @@ Creates a new <a href="GimpPickButton.html" title="GimpPickButton"><span class="
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2576553"></a><h2>Signals</h2>
+<a name="id2570618"></a><h2>Signals</h2>
 <div class="refsect2" lang="en">
-<a name="id2576559"></a><h3>
+<a name="id2570624"></a><h3>
 <a name="GimpPickButton-color-picked"></a>The "color-picked" signal</h3>
 <pre class="programlisting">void        user_function                  (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
                                             gpointer arg1,

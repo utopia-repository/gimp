@@ -1221,8 +1221,11 @@ prefs_dialog_new (Gimp       *gimp,
   gtk_widget_show (hbox);
 
   /* The categories tree */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  frame = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (frame),
+                                       GTK_SHADOW_IN);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (frame),
+                                  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
@@ -1375,8 +1378,8 @@ prefs_dialog_new (Gimp       *gimp,
   vbox2 = prefs_frame_new (_("Document History"), GTK_CONTAINER (vbox), FALSE);
 
   prefs_check_button_add (object, "save-document-history",
-		          _("Save document _history on exit"),
-			  GTK_BOX (vbox2));
+                          _("Save document _history on exit"),
+                          GTK_BOX (vbox2));
 
 
   /***************/
@@ -1571,8 +1574,8 @@ prefs_dialog_new (Gimp       *gimp,
   /*  General  */
   vbox2 = prefs_frame_new (_("General"), GTK_CONTAINER (vbox), FALSE);
 
-  prefs_check_button_add (object, "show-tool-tips",
-                          _("Show tool _tips"),
+  prefs_check_button_add (object, "show-tooltips",
+                          _("Show _tooltips"),
                           GTK_BOX (vbox2));
   prefs_check_button_add (object, "show-help-button",
                           _("Show help _buttons"),
@@ -2065,7 +2068,7 @@ prefs_dialog_new (Gimp       *gimp,
   gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
                                 _("Vertical"), 0, 2, 0.0);
   gimp_size_entry_attach_label (GIMP_SIZE_ENTRY (entry),
-                                _("dpi"), 1, 4, 0.0);
+                                _("ppi"), 1, 4, 0.0);
 
   hbox = gtk_hbox_new (FALSE, 0);
 
@@ -2081,7 +2084,8 @@ prefs_dialog_new (Gimp       *gimp,
 
     gimp_get_screen_resolution (NULL, &xres, &yres);
 
-    str = g_strdup_printf (_("From _windowing system (currently %d x %d dpi)"),
+    str = g_strdup_printf (_("From _windowing system "
+                             "(currently %d × %d ppi)"),
                            ROUND (xres), ROUND (yres));
 
     button = gtk_radio_button_new_with_mnemonic (group, str);
@@ -2186,7 +2190,7 @@ prefs_dialog_new (Gimp       *gimp,
     for (i = 0, row = 3; i < G_N_ELEMENTS (profiles); i++, row++)
       {
 #if 0
-	button = gimp_prop_file_entry_new (color_config,
+        button = gimp_prop_file_entry_new (color_config,
                                            profiles[i].property_name,
                                            gettext (profiles[i].fs_label),
                                            FALSE, TRUE);

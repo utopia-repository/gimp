@@ -24,204 +24,187 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 
-static ProcRecord fonts_popup_proc;
-static ProcRecord fonts_close_popup_proc;
-static ProcRecord fonts_set_popup_proc;
 
-void
-register_font_select_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &fonts_popup_proc);
-  procedural_db_register (gimp, &fonts_close_popup_proc);
-  procedural_db_register (gimp, &fonts_set_popup_proc);
-}
-
-static Argument *
-fonts_popup_invoker (Gimp         *gimp,
-                     GimpContext  *context,
-                     GimpProgress *progress,
-                     Argument     *args)
+static GValueArray *
+fonts_popup_invoker (GimpProcedure     *procedure,
+                     Gimp              *gimp,
+                     GimpContext       *context,
+                     GimpProgress      *progress,
+                     const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *font_callback;
-  gchar *popup_title;
-  gchar *initial_font;
+  const gchar *font_callback;
+  const gchar *popup_title;
+  const gchar *initial_font;
 
-  font_callback = (gchar *) args[0].value.pdb_pointer;
-  if (font_callback == NULL || !g_utf8_validate (font_callback, -1, NULL))
-    success = FALSE;
-
-  popup_title = (gchar *) args[1].value.pdb_pointer;
-  if (popup_title == NULL || !g_utf8_validate (popup_title, -1, NULL))
-    success = FALSE;
-
-  initial_font = (gchar *) args[2].value.pdb_pointer;
-  if (initial_font && !g_utf8_validate (initial_font, -1, NULL))
-    success = FALSE;
+  font_callback = g_value_get_string (&args->values[0]);
+  popup_title = g_value_get_string (&args->values[1]);
+  initial_font = g_value_get_string (&args->values[2]);
 
   if (success)
     {
       if (gimp->no_interface ||
-          ! procedural_db_lookup (gimp, font_callback) ||
+          ! gimp_pdb_lookup (gimp, font_callback) ||
           ! gimp_pdb_dialog_new (gimp, context, gimp->fonts,
                                  popup_title, font_callback, initial_font,
                                  NULL))
         success = FALSE;
     }
 
-  return procedural_db_return_args (&fonts_popup_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg fonts_popup_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "font-callback",
-    "The callback PDB proc to call when font selection is made"
-  },
-  {
-    GIMP_PDB_STRING,
-    "popup-title",
-    "Title to give the font popup window"
-  },
-  {
-    GIMP_PDB_STRING,
-    "initial-font",
-    "The name of the font to set as the first selected"
-  }
-};
-
-static ProcRecord fonts_popup_proc =
-{
-  "gimp-fonts-popup",
-  "gimp-fonts-popup",
-  "Invokes the Gimp font selection.",
-  "This procedure popups the font selection dialog.",
-  "Sven Neumann <sven@gimp.org>",
-  "Sven Neumann",
-  "2003",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  fonts_popup_inargs,
-  0,
-  NULL,
-  { { fonts_popup_invoker } }
-};
-
-static Argument *
-fonts_close_popup_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+fonts_close_popup_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *font_callback;
+  const gchar *font_callback;
 
-  font_callback = (gchar *) args[0].value.pdb_pointer;
-  if (font_callback == NULL || !g_utf8_validate (font_callback, -1, NULL))
-    success = FALSE;
+  font_callback = g_value_get_string (&args->values[0]);
 
   if (success)
     {
       if (gimp->no_interface ||
-          ! procedural_db_lookup (gimp, font_callback) ||
+          ! gimp_pdb_lookup (gimp, font_callback) ||
           ! gimp_pdb_dialog_close (gimp, gimp->fonts, font_callback))
         success = FALSE;
     }
 
-  return procedural_db_return_args (&fonts_close_popup_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg fonts_close_popup_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "font-callback",
-    "The name of the callback registered for this popup"
-  }
-};
-
-static ProcRecord fonts_close_popup_proc =
-{
-  "gimp-fonts-close-popup",
-  "gimp-fonts-close-popup",
-  "Popdown the Gimp font selection.",
-  "This procedure closes an opened font selection dialog.",
-  "Sven Neumann <sven@gimp.org>",
-  "Sven Neumann",
-  "2003",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  fonts_close_popup_inargs,
-  0,
-  NULL,
-  { { fonts_close_popup_invoker } }
-};
-
-static Argument *
-fonts_set_popup_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+fonts_set_popup_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *font_callback;
-  gchar *font_name;
+  const gchar *font_callback;
+  const gchar *font_name;
 
-  font_callback = (gchar *) args[0].value.pdb_pointer;
-  if (font_callback == NULL || !g_utf8_validate (font_callback, -1, NULL))
-    success = FALSE;
-
-  font_name = (gchar *) args[1].value.pdb_pointer;
-  if (font_name == NULL || !g_utf8_validate (font_name, -1, NULL))
-    success = FALSE;
+  font_callback = g_value_get_string (&args->values[0]);
+  font_name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
       if (gimp->no_interface ||
-          ! procedural_db_lookup (gimp, font_callback) ||
+          ! gimp_pdb_lookup (gimp, font_callback) ||
           ! gimp_pdb_dialog_set (gimp, gimp->fonts, font_callback, font_name,
                                  NULL))
         success = FALSE;
     }
 
-  return procedural_db_return_args (&fonts_set_popup_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg fonts_set_popup_inargs[] =
+void
+register_font_select_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "font-callback",
-    "The name of the callback registered for this popup"
-  },
-  {
-    GIMP_PDB_STRING,
-    "font-name",
-    "The name of the font to set as selected"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord fonts_set_popup_proc =
-{
-  "gimp-fonts-set-popup",
-  "gimp-fonts-set-popup",
-  "Sets the current font selection in a popup.",
-  "Sets the current font selection in a popup.",
-  "Sven Neumann <sven@gimp.org>",
-  "Sven Neumann",
-  "2003",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  fonts_set_popup_inargs,
-  0,
-  NULL,
-  { { fonts_set_popup_invoker } }
-};
+  /*
+   * gimp-fonts-popup
+   */
+  procedure = gimp_procedure_new (fonts_popup_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-fonts-popup");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-fonts-popup",
+                                     "Invokes the Gimp font selection.",
+                                     "This procedure popups the font selection dialog.",
+                                     "Sven Neumann <sven@gimp.org>",
+                                     "Sven Neumann",
+                                     "2003",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("font-callback",
+                                                       "font callback",
+                                                       "The callback PDB proc to call when font selection is made",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("popup-title",
+                                                       "popup title",
+                                                       "Title to give the font popup window",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("initial-font",
+                                                       "initial font",
+                                                       "The name of the font to set as the first selected",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-fonts-close-popup
+   */
+  procedure = gimp_procedure_new (fonts_close_popup_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-fonts-close-popup");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-fonts-close-popup",
+                                     "Popdown the Gimp font selection.",
+                                     "This procedure closes an opened font selection dialog.",
+                                     "Sven Neumann <sven@gimp.org>",
+                                     "Sven Neumann",
+                                     "2003",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("font-callback",
+                                                       "font callback",
+                                                       "The name of the callback registered for this popup",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-fonts-set-popup
+   */
+  procedure = gimp_procedure_new (fonts_set_popup_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-fonts-set-popup");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-fonts-set-popup",
+                                     "Sets the current font selection in a popup.",
+                                     "Sets the current font selection in a popup.",
+                                     "Sven Neumann <sven@gimp.org>",
+                                     "Sven Neumann",
+                                     "2003",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("font-callback",
+                                                       "font callback",
+                                                       "The name of the callback registered for this popup",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("font-name",
+                                                       "font name",
+                                                       "The name of the font to set as selected",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

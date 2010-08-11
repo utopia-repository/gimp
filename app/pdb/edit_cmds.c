@@ -25,7 +25,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp-edit.h"
 #include "core/gimp.h"
@@ -40,942 +42,438 @@
 #include "core/gimpstrokedesc.h"
 #include "gimp-intl.h"
 
-static ProcRecord edit_cut_proc;
-static ProcRecord edit_copy_proc;
-static ProcRecord edit_copy_visible_proc;
-static ProcRecord edit_paste_proc;
-static ProcRecord edit_paste_as_new_proc;
-static ProcRecord edit_named_cut_proc;
-static ProcRecord edit_named_copy_proc;
-static ProcRecord edit_named_copy_visible_proc;
-static ProcRecord edit_named_paste_proc;
-static ProcRecord edit_named_paste_as_new_proc;
-static ProcRecord edit_clear_proc;
-static ProcRecord edit_fill_proc;
-static ProcRecord edit_bucket_fill_proc;
-static ProcRecord edit_blend_proc;
-static ProcRecord edit_stroke_proc;
 
-void
-register_edit_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &edit_cut_proc);
-  procedural_db_register (gimp, &edit_copy_proc);
-  procedural_db_register (gimp, &edit_copy_visible_proc);
-  procedural_db_register (gimp, &edit_paste_proc);
-  procedural_db_register (gimp, &edit_paste_as_new_proc);
-  procedural_db_register (gimp, &edit_named_cut_proc);
-  procedural_db_register (gimp, &edit_named_copy_proc);
-  procedural_db_register (gimp, &edit_named_copy_visible_proc);
-  procedural_db_register (gimp, &edit_named_paste_proc);
-  procedural_db_register (gimp, &edit_named_paste_as_new_proc);
-  procedural_db_register (gimp, &edit_clear_proc);
-  procedural_db_register (gimp, &edit_fill_proc);
-  procedural_db_register (gimp, &edit_bucket_fill_proc);
-  procedural_db_register (gimp, &edit_blend_proc);
-  procedural_db_register (gimp, &edit_stroke_proc);
-}
-
-static Argument *
-edit_cut_invoker (Gimp         *gimp,
-                  GimpContext  *context,
-                  GimpProgress *progress,
-                  Argument     *args)
+static GValueArray *
+edit_cut_invoker (GimpProcedure     *procedure,
+                  Gimp              *gimp,
+                  GimpContext       *context,
+                  GimpProgress      *progress,
+                  const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean non_empty = FALSE;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
           GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
           non_empty = gimp_edit_cut (image, drawable, context) != NULL;
         }
+      else
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&edit_cut_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = non_empty;
+    g_value_set_boolean (&return_vals->values[1], non_empty);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg edit_cut_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to cut from"
-  }
-};
-
-static ProcArg edit_cut_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "non-empty",
-    "TRUE if the cut was successful, FALSE if the selection contained only transparent pixels"
-  }
-};
-
-static ProcRecord edit_cut_proc =
-{
-  "gimp-edit-cut",
-  "gimp-edit-cut",
-  "Cut from the specified drawable.",
-  "If there is a selection in the image, then the area specified by the selection is cut from the specified drawable and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection, then the specified drawable will be removed and its contents stored in the internal GIMP edit buffer.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  edit_cut_inargs,
-  1,
-  edit_cut_outargs,
-  { { edit_cut_invoker } }
-};
-
-static Argument *
-edit_copy_invoker (Gimp         *gimp,
-                   GimpContext  *context,
-                   GimpProgress *progress,
-                   Argument     *args)
+static GValueArray *
+edit_copy_invoker (GimpProcedure     *procedure,
+                   Gimp              *gimp,
+                   GimpContext       *context,
+                   GimpProgress      *progress,
+                   const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean non_empty = FALSE;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
           GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
           non_empty = gimp_edit_copy (image, drawable, context) != NULL;
         }
+      else
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&edit_copy_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = non_empty;
+    g_value_set_boolean (&return_vals->values[1], non_empty);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg edit_copy_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to copy from"
-  }
-};
-
-static ProcArg edit_copy_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "non-empty",
-    "TRUE if the copy was successful, FALSE if the selection contained only transparent pixels"
-  }
-};
-
-static ProcRecord edit_copy_proc =
-{
-  "gimp-edit-copy",
-  "gimp-edit-copy",
-  "Copy from the specified drawable.",
-  "If there is a selection in the image, then the area specified by the selection is copied from the specified drawable and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection, then the specified drawable's contents will be stored in the internal GIMP edit buffer.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  edit_copy_inargs,
-  1,
-  edit_copy_outargs,
-  { { edit_copy_invoker } }
-};
-
-static Argument *
-edit_copy_visible_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+edit_copy_visible_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpImage *image;
   gboolean non_empty = FALSE;
 
-  image = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (image))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
 
   if (success)
     {
       non_empty = gimp_edit_copy_visible (image, context) != NULL;
     }
 
-  return_args = procedural_db_return_args (&edit_copy_visible_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = non_empty;
+    g_value_set_boolean (&return_vals->values[1], non_empty);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg edit_copy_visible_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image to copy from"
-  }
-};
-
-static ProcArg edit_copy_visible_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "non-empty",
-    "TRUE if the copy was successful, FALSE if the selection contained only transparent pixels"
-  }
-};
-
-static ProcRecord edit_copy_visible_proc =
-{
-  "gimp-edit-copy-visible",
-  "gimp-edit-copy-visible",
-  "Copy from the projection.",
-  "If there is a selection in the image, then the area specified by the selection is copied from the projection and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection, then the projection's contents will be stored in the internal GIMP edit buffer.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  edit_copy_visible_inargs,
-  1,
-  edit_copy_visible_outargs,
-  { { edit_copy_visible_invoker } }
-};
-
-static Argument *
-edit_paste_invoker (Gimp         *gimp,
-                    GimpContext  *context,
-                    GimpProgress *progress,
-                    Argument     *args)
+static GValueArray *
+edit_paste_invoker (GimpProcedure     *procedure,
+                    Gimp              *gimp,
+                    GimpContext       *context,
+                    GimpProgress      *progress,
+                    const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gboolean paste_into;
-  GimpLayer *layer = NULL;
+  GimpLayer *floating_sel = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  paste_into = args[1].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  paste_into = g_value_get_boolean (&args->values[1]);
 
   if (success)
     {
-      success = (gimp_item_is_attached (GIMP_ITEM (drawable)) &&
-                 gimp->global_buffer != NULL);
-
-      if (success)
+      if (gimp->global_buffer && gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
-          layer = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
-                                   drawable, gimp->global_buffer,
-                                   paste_into, -1, -1, -1, -1);
-          if (! layer)
+          floating_sel = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
+                                          drawable, gimp->global_buffer,
+                                          paste_into, -1, -1, -1, -1);
+
+          if (! floating_sel)
             success = FALSE;
         }
-    }
-
-  return_args = procedural_db_return_args (&edit_paste_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (layer));
-
-  return return_args;
-}
-
-static ProcArg edit_paste_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to paste to"
-  },
-  {
-    GIMP_PDB_INT32,
-    "paste-into",
-    "Clear selection, or paste behind it?"
-  }
-};
-
-static ProcArg edit_paste_outargs[] =
-{
-  {
-    GIMP_PDB_LAYER,
-    "floating-sel",
-    "The new floating selection"
-  }
-};
-
-static ProcRecord edit_paste_proc =
-{
-  "gimp-edit-paste",
-  "gimp-edit-paste",
-  "Paste buffer to the specified drawable.",
-  "This procedure pastes a copy of the internal GIMP edit buffer to the specified drawable. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. The \"paste_into\" option specifies whether to clear the current image selection, or to paste the buffer \"behind\" the selection. This allows the selection to act as a mask for the pasted buffer. Anywhere that the selection mask is non-zero, the pasted buffer will show through. The pasted buffer will be a new layer in the image which is designated as the image floating selection. If the image has a floating selection at the time of pasting, the old floating selection will be anchored to it's drawable before the new floating selection is added. This procedure returns the new floating layer. The resulting floating selection will already be attached to the specified drawable, and a subsequent call to floating_sel_attach is not needed.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  edit_paste_inargs,
-  1,
-  edit_paste_outargs,
-  { { edit_paste_invoker } }
-};
-
-static Argument *
-edit_paste_as_new_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *image = NULL;
-
-  success = (gimp->global_buffer != NULL);
-
-  if (success)
-    {
-      image = gimp_edit_paste_as_new (gimp, NULL, gimp->global_buffer);
-      if (! image)
+      else
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&edit_paste_as_new_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_image_get_ID (image);
+    gimp_value_set_layer (&return_vals->values[1], floating_sel);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg edit_paste_as_new_outargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The new image"
-  }
-};
-
-static ProcRecord edit_paste_as_new_proc =
-{
-  "gimp-edit-paste-as-new",
-  "gimp-edit-paste-as-new",
-  "Paste buffer to a new image.",
-  "This procedure pastes a copy of the internal GIMP edit buffer to a new image. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This procedure returns the new image.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  1,
-  edit_paste_as_new_outargs,
-  { { edit_paste_as_new_invoker } }
-};
-
-static Argument *
-edit_named_cut_invoker (Gimp         *gimp,
-                        GimpContext  *context,
-                        GimpProgress *progress,
-                        Argument     *args)
+static GValueArray *
+edit_paste_as_new_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpDrawable *drawable;
-  gchar *buffer_name;
-  gchar *real_name = NULL;
+  GValueArray *return_vals;
+  GimpImage *image = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  buffer_name = (gchar *) args[1].value.pdb_pointer;
-  if (buffer_name == NULL || !g_utf8_validate (buffer_name, -1, NULL))
-    success = FALSE;
-
-  if (success)
+  if (gimp->global_buffer)
     {
-       success = (strlen (buffer_name) > 0 &&
-                  gimp_item_is_attached (GIMP_ITEM (drawable)));
+      image = gimp_edit_paste_as_new (gimp, NULL, gimp->global_buffer);
 
-       if (success)
-         {
-            GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
-
-            real_name = (gchar *) gimp_edit_named_cut (image, buffer_name,
-                                                       drawable, context);
-
-            if (real_name)
-              real_name = g_strdup (real_name);
-            else
-              success = FALSE;
-         }
+      if (! image)
+        success = FALSE;
     }
+  else
+    success = FALSE;
 
-  return_args = procedural_db_return_args (&edit_named_cut_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_pointer = real_name;
+    gimp_value_set_image (&return_vals->values[1], image);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg edit_named_cut_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to cut from"
-  },
-  {
-    GIMP_PDB_STRING,
-    "buffer-name",
-    "The name of the buffer to create"
-  }
-};
-
-static ProcArg edit_named_cut_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "real-name",
-    "The real name given to the buffer, or NULL if the selection contained only transparent pixels"
-  }
-};
-
-static ProcRecord edit_named_cut_proc =
-{
-  "gimp-edit-named-cut",
-  "gimp-edit-named-cut",
-  "Cut into a named buffer.",
-  "This procedure works like gimp-edit-cut, but additionally stores the cut buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  edit_named_cut_inargs,
-  1,
-  edit_named_cut_outargs,
-  { { edit_named_cut_invoker } }
-};
-
-static Argument *
-edit_named_copy_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+edit_named_cut_invoker (GimpProcedure     *procedure,
+                        Gimp              *gimp,
+                        GimpContext       *context,
+                        GimpProgress      *progress,
+                        const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
-  gchar *buffer_name;
+  const gchar *buffer_name;
   gchar *real_name = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  buffer_name = (gchar *) args[1].value.pdb_pointer;
-  if (buffer_name == NULL || !g_utf8_validate (buffer_name, -1, NULL))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  buffer_name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-       success = (strlen (buffer_name) > 0 &&
-                  gimp_item_is_attached (GIMP_ITEM (drawable)));
+      if (strlen (buffer_name) && gimp_item_is_attached (GIMP_ITEM (drawable)))
+        {
+           GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-       if (success)
-         {
-            GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
-
-            real_name = (gchar *) gimp_edit_named_copy (image, buffer_name,
-                                                        drawable, context);
-
-            if (real_name)
-              real_name = g_strdup (real_name);
-            else
-              success = FALSE;
-         }
-    }
-
-  return_args = procedural_db_return_args (&edit_named_copy_proc, success);
-
-  if (success)
-    return_args[1].value.pdb_pointer = real_name;
-
-  return return_args;
-}
-
-static ProcArg edit_named_copy_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to copy from"
-  },
-  {
-    GIMP_PDB_STRING,
-    "buffer-name",
-    "The name of the buffer to create"
-  }
-};
-
-static ProcArg edit_named_copy_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "real-name",
-    "The real name given to the buffer, or NULL if the selection contained only transparent pixels"
-  }
-};
-
-static ProcRecord edit_named_copy_proc =
-{
-  "gimp-edit-named-copy",
-  "gimp-edit-named-copy",
-  "Copy into a named buffer.",
-  "This procedure works like gimp-edit-copy, but additionally stores the copied buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  edit_named_copy_inargs,
-  1,
-  edit_named_copy_outargs,
-  { { edit_named_copy_invoker } }
-};
-
-static Argument *
-edit_named_copy_visible_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *image;
-  gchar *buffer_name;
-  gchar *real_name = NULL;
-
-  image = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (image))
-    success = FALSE;
-
-  buffer_name = (gchar *) args[1].value.pdb_pointer;
-  if (buffer_name == NULL || !g_utf8_validate (buffer_name, -1, NULL))
-    success = FALSE;
-
-  if (success)
-    {
-       success = (strlen (buffer_name) > 0);
-
-       if (success)
-         {
-           real_name = (gchar *) gimp_edit_named_copy_visible (image, buffer_name,
-                                                               context);
+           real_name = (gchar *) gimp_edit_named_cut (image, buffer_name,
+                                                      drawable, context);
 
            if (real_name)
              real_name = g_strdup (real_name);
            else
              success = FALSE;
-         }
+        }
+      else
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&edit_named_copy_visible_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_pointer = real_name;
+    g_value_take_string (&return_vals->values[1], real_name);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg edit_named_copy_visible_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image to copy from"
-  },
-  {
-    GIMP_PDB_STRING,
-    "buffer-name",
-    "The name of the buffer to create"
-  }
-};
-
-static ProcArg edit_named_copy_visible_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "real-name",
-    "The real name given to the buffer"
-  }
-};
-
-static ProcRecord edit_named_copy_visible_proc =
-{
-  "gimp-edit-named-copy-visible",
-  "gimp-edit-named-copy-visible",
-  "Copy from the projection into a named buffer.",
-  "This procedure works like gimp-edit-copy-visible, but additionally stores the copied buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  edit_named_copy_visible_inargs,
-  1,
-  edit_named_copy_visible_outargs,
-  { { edit_named_copy_visible_invoker } }
-};
-
-static Argument *
-edit_named_paste_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+edit_named_copy_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
-  gchar *buffer_name;
-  gboolean paste_into;
-  GimpLayer *layer = NULL;
+  const gchar *buffer_name;
+  gchar *real_name = NULL;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  buffer_name = (gchar *) args[1].value.pdb_pointer;
-  if (buffer_name == NULL || !g_utf8_validate (buffer_name, -1, NULL))
-    success = FALSE;
-
-  paste_into = args[2].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  buffer_name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
-      GimpBuffer *buffer;
-
-      buffer = (GimpBuffer *)
-        gimp_container_get_child_by_name (gimp->named_buffers, buffer_name);
-
-      success = (buffer != NULL && gimp_item_is_attached (GIMP_ITEM (drawable)));
-
-      if (success)
+      if (strlen (buffer_name) && gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
-          layer = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
-                                   drawable, buffer,
-                                   paste_into, -1, -1, -1, -1);
-          if (! layer)
+           GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+
+           real_name = (gchar *) gimp_edit_named_copy (image, buffer_name,
+                                                       drawable, context);
+
+           if (real_name)
+             real_name = g_strdup (real_name);
+           else
+             success = FALSE;
+        }
+      else
+        success = FALSE;
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_take_string (&return_vals->values[1], real_name);
+
+  return return_vals;
+}
+
+static GValueArray *
+edit_named_copy_visible_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  GimpImage *image;
+  const gchar *buffer_name;
+  gchar *real_name = NULL;
+
+  image = gimp_value_get_image (&args->values[0], gimp);
+  buffer_name = g_value_get_string (&args->values[1]);
+
+  if (success)
+    {
+      if (strlen (buffer_name))
+        {
+          real_name = (gchar *) gimp_edit_named_copy_visible (image, buffer_name,
+                                                              context);
+
+          if (real_name)
+            real_name = g_strdup (real_name);
+          else
             success = FALSE;
         }
+      else
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&edit_named_paste_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (layer));
+    g_value_take_string (&return_vals->values[1], real_name);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg edit_named_paste_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to paste to"
-  },
-  {
-    GIMP_PDB_STRING,
-    "buffer-name",
-    "The name of the buffer to paste"
-  },
-  {
-    GIMP_PDB_INT32,
-    "paste-into",
-    "Clear selection, or paste behind it?"
-  }
-};
-
-static ProcArg edit_named_paste_outargs[] =
-{
-  {
-    GIMP_PDB_LAYER,
-    "floating-sel",
-    "The new floating selection"
-  }
-};
-
-static ProcRecord edit_named_paste_proc =
-{
-  "gimp-edit-named-paste",
-  "gimp-edit-named-paste",
-  "Paste named buffer to the specified drawable.",
-  "This procedure works like gimp-edit-paste but pastes a named buffer instead of the global buffer.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  edit_named_paste_inargs,
-  1,
-  edit_named_paste_outargs,
-  { { edit_named_paste_invoker } }
-};
-
-static Argument *
-edit_named_paste_as_new_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
+static GValueArray *
+edit_named_paste_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *buffer_name;
-  GimpImage *image = NULL;
+  GValueArray *return_vals;
+  GimpDrawable *drawable;
+  const gchar *buffer_name;
+  gboolean paste_into;
+  GimpLayer *floating_sel = NULL;
 
-  buffer_name = (gchar *) args[0].value.pdb_pointer;
-  if (buffer_name == NULL || !g_utf8_validate (buffer_name, -1, NULL))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  buffer_name = g_value_get_string (&args->values[1]);
+  paste_into = g_value_get_boolean (&args->values[2]);
 
   if (success)
     {
-      GimpBuffer *buffer;
-
-      buffer = (GimpBuffer *)
+      GimpBuffer *buffer = (GimpBuffer *)
         gimp_container_get_child_by_name (gimp->named_buffers, buffer_name);
 
-      success = (buffer != NULL);
+      if (buffer && gimp_item_is_attached (GIMP_ITEM (drawable)))
+        {
+          floating_sel = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
+                                          drawable, buffer,
+                                          paste_into, -1, -1, -1, -1);
+          if (! floating_sel)
+            success = FALSE;
+        }
+      else
+        success = FALSE;
+    }
 
-      if (success)
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    gimp_value_set_layer (&return_vals->values[1], floating_sel);
+
+  return return_vals;
+}
+
+static GValueArray *
+edit_named_paste_as_new_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  const gchar *buffer_name;
+  GimpImage *image = NULL;
+
+  buffer_name = g_value_get_string (&args->values[0]);
+
+  if (success)
+    {
+      GimpBuffer *buffer = (GimpBuffer *)
+        gimp_container_get_child_by_name (gimp->named_buffers, buffer_name);
+
+      if (buffer)
         {
           image = gimp_edit_paste_as_new (gimp, NULL, buffer);
+
           if (! image)
             success = FALSE;
         }
+      else
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&edit_named_paste_as_new_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_image_get_ID (image);
+    gimp_value_set_image (&return_vals->values[1], image);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg edit_named_paste_as_new_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "buffer-name",
-    "The name of the buffer to paste"
-  }
-};
-
-static ProcArg edit_named_paste_as_new_outargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The new image"
-  }
-};
-
-static ProcRecord edit_named_paste_as_new_proc =
-{
-  "gimp-edit-named-paste-as-new",
-  "gimp-edit-named-paste-as-new",
-  "Paste named buffer to a new image.",
-  "This procedure works like gimp-edit-paste-as-new but pastes a named buffer instead of the global buffer.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer <mitch@gimp.org>",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  edit_named_paste_as_new_inargs,
-  1,
-  edit_named_paste_as_new_outargs,
-  { { edit_named_paste_as_new_invoker } }
-};
-
-static Argument *
-edit_clear_invoker (Gimp         *gimp,
-                    GimpContext  *context,
-                    GimpProgress *progress,
-                    Argument     *args)
+static GValueArray *
+edit_clear_invoker (GimpProcedure     *procedure,
+                    Gimp              *gimp,
+                    GimpContext       *context,
+                    GimpProgress      *progress,
+                    const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
           GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
           success = gimp_edit_clear (image, drawable, context);
         }
+      else
+        success = FALSE;
     }
 
-  return procedural_db_return_args (&edit_clear_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg edit_clear_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to clear from"
-  }
-};
-
-static ProcRecord edit_clear_proc =
-{
-  "gimp-edit-clear",
-  "gimp-edit-clear",
-  "Clear selected area of drawable.",
-  "This procedure clears the specified drawable. If the drawable has an alpha channel, the cleared pixels will become transparent. If the drawable does not have an alpha channel, cleared pixels will be set to the background color. This procedure only affects regions within a selection if there is a selection active.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  edit_clear_inargs,
-  0,
-  NULL,
-  { { edit_clear_invoker } }
-};
-
-static Argument *
-edit_fill_invoker (Gimp         *gimp,
-                   GimpContext  *context,
-                   GimpProgress *progress,
-                   Argument     *args)
+static GValueArray *
+edit_fill_invoker (GimpProcedure     *procedure,
+                   Gimp              *gimp,
+                   GimpContext       *context,
+                   GimpProgress      *progress,
+                   const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 fill_type;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  fill_type = args[1].value.pdb_int;
-  if (fill_type < GIMP_FOREGROUND_FILL || fill_type > GIMP_PATTERN_FILL)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  fill_type = g_value_get_enum (&args->values[1]);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
           GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-          success = gimp_edit_fill (image, drawable, context, (GimpFillType) fill_type);
+          success = gimp_edit_fill (image, drawable, context,
+                                    (GimpFillType) fill_type);
         }
+      else
+        success = FALSE;
     }
 
-  return procedural_db_return_args (&edit_fill_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg edit_fill_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to fill to"
-  },
-  {
-    GIMP_PDB_INT32,
-    "fill-type",
-    "The type of fill: GIMP_FOREGROUND_FILL (0), GIMP_BACKGROUND_FILL (1), GIMP_WHITE_FILL (2), GIMP_TRANSPARENT_FILL (3), GIMP_PATTERN_FILL (4)"
-  }
-};
-
-static ProcRecord edit_fill_proc =
-{
-  "gimp-edit-fill",
-  "gimp-edit-fill",
-  "Fill selected area of drawable.",
-  "This procedure fills the specified drawable with the fill mode. If the fill mode is foreground, the current foreground color is used. If the fill mode is background, the current background color is used. Other fill modes should not be used. This procedure only affects regions within a selection if there is a selection active. If you want to fill the whole drawable, regardless of the selection, use gimp_drawable_fill().",
-  "Spencer Kimball & Peter Mattis & Raphael Quinet",
-  "Spencer Kimball & Peter Mattis",
-  "1995-2000",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  edit_fill_inargs,
-  0,
-  NULL,
-  { { edit_fill_invoker } }
-};
-
-static Argument *
-edit_bucket_fill_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+edit_bucket_fill_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -987,37 +485,18 @@ edit_bucket_fill_invoker (Gimp         *gimp,
   gdouble x;
   gdouble y;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  fill_mode = args[1].value.pdb_int;
-  if (fill_mode < GIMP_FG_BUCKET_FILL || fill_mode > GIMP_PATTERN_BUCKET_FILL)
-    success = FALSE;
-
-  paint_mode = args[2].value.pdb_int;
-  if (paint_mode < GIMP_NORMAL_MODE || paint_mode > GIMP_COLOR_ERASE_MODE)
-    success = FALSE;
-
-  opacity = args[3].value.pdb_float;
-  if (opacity < 0.0 || opacity > 100.0)
-    success = FALSE;
-
-  threshold = args[4].value.pdb_float;
-  if (threshold < 0.0 || threshold > 255.0)
-    success = FALSE;
-
-  sample_merged = args[5].value.pdb_int ? TRUE : FALSE;
-
-  x = args[6].value.pdb_float;
-
-  y = args[7].value.pdb_float;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  fill_mode = g_value_get_enum (&args->values[1]);
+  paint_mode = g_value_get_enum (&args->values[2]);
+  opacity = g_value_get_double (&args->values[3]);
+  threshold = g_value_get_double (&args->values[4]);
+  sample_merged = g_value_get_boolean (&args->values[5]);
+  x = g_value_get_double (&args->values[6]);
+  y = g_value_get_double (&args->values[7]);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
           GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
           gboolean   do_seed_fill;
@@ -1030,78 +509,19 @@ edit_bucket_fill_invoker (Gimp         *gimp,
                                      FALSE /* don't fill transparent */,
                                      threshold, sample_merged, x, y);
         }
+      else
+        success = FALSE;
     }
 
-  return procedural_db_return_args (&edit_bucket_fill_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg edit_bucket_fill_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "fill-mode",
-    "The type of fill: { GIMP_FG_BUCKET_FILL (0), GIMP_BG_BUCKET_FILL (1), GIMP_PATTERN_BUCKET_FILL (2) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "paint-mode",
-    "The paint application mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "opacity",
-    "The opacity of the final bucket fill (0 <= opacity <= 100)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "threshold",
-    "The threshold determines how extensive the seed fill will be. It's value is specified in terms of intensity levels (0 <= threshold <= 255). This parameter is only valid when there is no selection in the specified image."
-  },
-  {
-    GIMP_PDB_INT32,
-    "sample-merged",
-    "Use the composite image, not the drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x",
-    "The x coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image."
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y",
-    "The y coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image."
-  }
-};
-
-static ProcRecord edit_bucket_fill_proc =
-{
-  "gimp-edit-bucket-fill",
-  "gimp-edit-bucket-fill",
-  "Fill the area specified either by the current selection if there is one, or by a seed fill starting at the specified coordinates.",
-  "This tool requires information on the paint application mode, and the fill mode, which can either be in the foreground color, or in the currently active pattern. If there is no selection, a seed fill is executed at the specified coordinates and extends outward in keeping with the threshold parameter. If there is a selection in the target image, the threshold, sample merged, x, and y arguments are unused. If the sample_merged parameter is non-zero, the data of the composite image will be used instead of that for the specified drawable. This is equivalent to sampling for colors after merging all visible layers. In the case of merged sampling, the x and y coordinates are relative to the image's origin; otherwise, they are relative to the drawable's origin.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  8,
-  edit_bucket_fill_inargs,
-  0,
-  NULL,
-  { { edit_bucket_fill_invoker } }
-};
-
-static Argument *
-edit_blend_invoker (Gimp         *gimp,
-                    GimpContext  *context,
-                    GimpProgress *progress,
-                    Argument     *args)
+static GValueArray *
+edit_blend_invoker (GimpProcedure     *procedure,
+                    Gimp              *gimp,
+                    GimpContext       *context,
+                    GimpProgress      *progress,
+                    const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -1121,59 +541,35 @@ edit_blend_invoker (Gimp         *gimp,
   gdouble x2;
   gdouble y2;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  blend_mode = args[1].value.pdb_int;
-  if (blend_mode < GIMP_FG_BG_RGB_MODE || blend_mode > GIMP_CUSTOM_MODE)
-    success = FALSE;
-
-  paint_mode = args[2].value.pdb_int;
-  if (paint_mode < GIMP_NORMAL_MODE || paint_mode > GIMP_COLOR_ERASE_MODE)
-    success = FALSE;
-
-  gradient_type = args[3].value.pdb_int;
-  if (gradient_type < GIMP_GRADIENT_LINEAR || gradient_type > GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE)
-    success = FALSE;
-
-  opacity = args[4].value.pdb_float;
-  if (opacity < 0.0 || opacity > 100.0)
-    success = FALSE;
-
-  offset = args[5].value.pdb_float;
-  if (offset < 0.0)
-    success = FALSE;
-
-  repeat = args[6].value.pdb_int;
-  if (repeat < GIMP_REPEAT_NONE || repeat > GIMP_REPEAT_TRIANGULAR)
-    success = FALSE;
-
-  reverse = args[7].value.pdb_int ? TRUE : FALSE;
-
-  supersample = args[8].value.pdb_int ? TRUE : FALSE;
-
-  max_depth = args[9].value.pdb_int;
-  if (supersample && (max_depth < 1 || max_depth > 9))
-    success = FALSE;
-
-  threshold = args[10].value.pdb_float;
-  if (supersample && (threshold < 0.0 || threshold > 4.0))
-    success = FALSE;
-
-  dither = args[11].value.pdb_int ? TRUE : FALSE;
-
-  x1 = args[12].value.pdb_float;
-
-  y1 = args[13].value.pdb_float;
-
-  x2 = args[14].value.pdb_float;
-
-  y2 = args[15].value.pdb_float;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  blend_mode = g_value_get_enum (&args->values[1]);
+  paint_mode = g_value_get_enum (&args->values[2]);
+  gradient_type = g_value_get_enum (&args->values[3]);
+  opacity = g_value_get_double (&args->values[4]);
+  offset = g_value_get_double (&args->values[5]);
+  repeat = g_value_get_enum (&args->values[6]);
+  reverse = g_value_get_boolean (&args->values[7]);
+  supersample = g_value_get_boolean (&args->values[8]);
+  max_depth = g_value_get_int (&args->values[9]);
+  threshold = g_value_get_double (&args->values[10]);
+  dither = g_value_get_boolean (&args->values[11]);
+  x1 = g_value_get_double (&args->values[12]);
+  y1 = g_value_get_double (&args->values[13]);
+  x2 = g_value_get_double (&args->values[14]);
+  y2 = g_value_get_double (&args->values[15]);
 
   if (success)
     {
       success = gimp_item_is_attached (GIMP_ITEM (drawable));
+
+      if (success && supersample)
+        {
+          if (max_depth < 1 || max_depth > 9)
+            success = FALSE;
+
+          if (threshold < 0.0 || threshold > 4.0)
+            success = FALSE;
+        }
 
       if (success)
         {
@@ -1197,129 +593,24 @@ edit_blend_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&edit_blend_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg edit_blend_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "blend-mode",
-    "The type of blend: { GIMP_FG_BG_RGB_MODE (0), GIMP_FG_BG_HSV_MODE (1), GIMP_FG_TRANSPARENT_MODE (2), GIMP_CUSTOM_MODE (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "paint-mode",
-    "The paint application mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "gradient-type",
-    "The type of gradient: { GIMP_GRADIENT_LINEAR (0), GIMP_GRADIENT_BILINEAR (1), GIMP_GRADIENT_RADIAL (2), GIMP_GRADIENT_SQUARE (3), GIMP_GRADIENT_CONICAL_SYMMETRIC (4), GIMP_GRADIENT_CONICAL_ASYMMETRIC (5), GIMP_GRADIENT_SHAPEBURST_ANGULAR (6), GIMP_GRADIENT_SHAPEBURST_SPHERICAL (7), GIMP_GRADIENT_SHAPEBURST_DIMPLED (8), GIMP_GRADIENT_SPIRAL_CLOCKWISE (9), GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE (10) }"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "opacity",
-    "The opacity of the final blend (0 <= opacity <= 100)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "offset",
-    "Offset relates to the starting and ending coordinates specified for the blend. This parameter is mode dependent (0 <= offset)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "repeat",
-    "Repeat mode: { GIMP_REPEAT_NONE (0), GIMP_REPEAT_SAWTOOTH (1), GIMP_REPEAT_TRIANGULAR (2) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "reverse",
-    "Use the reverse gradient (TRUE or FALSE)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "supersample",
-    "Do adaptive supersampling (TRUE or FALSE)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "max-depth",
-    "Maximum recursion levels for supersampling"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "threshold",
-    "Supersampling threshold"
-  },
-  {
-    GIMP_PDB_INT32,
-    "dither",
-    "Use dithering to reduce banding (TRUE or FALSE)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x1",
-    "The x coordinate of this blend's starting point"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y1",
-    "The y coordinate of this blend's starting point"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x2",
-    "The x coordinate of this blend's ending point"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y2",
-    "The y coordinate of this blend's ending point"
-  }
-};
-
-static ProcRecord edit_blend_proc =
-{
-  "gimp-edit-blend",
-  "gimp-edit-blend",
-  "Blend between the starting and ending coordinates with the specified blend mode and gradient type.",
-  "This tool requires information on the paint application mode, the blend mode, and the gradient type. It creates the specified variety of blend using the starting and ending coordinates as defined for each gradient type.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  16,
-  edit_blend_inargs,
-  0,
-  NULL,
-  { { edit_blend_invoker } }
-};
-
-static Argument *
-edit_stroke_invoker (Gimp         *gimp,
-                     GimpContext  *context,
-                     GimpProgress *progress,
-                     Argument     *args)
+static GValueArray *
+edit_stroke_invoker (GimpProcedure     *procedure,
+                     Gimp              *gimp,
+                     GimpContext       *context,
+                     GimpProgress      *progress,
+                     const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
-      success = gimp_item_is_attached (GIMP_ITEM (drawable));
-
-      if (success)
+      if (gimp_item_is_attached (GIMP_ITEM (drawable)))
         {
           GimpImage      *image = gimp_item_get_image (GIMP_ITEM (drawable));
           GimpStrokeDesc *desc  = gimp_stroke_desc_new (gimp, context);
@@ -1331,34 +622,604 @@ edit_stroke_invoker (Gimp         *gimp,
 
           g_object_unref (desc);
         }
+      else
+        success = FALSE;
     }
 
-  return procedural_db_return_args (&edit_stroke_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg edit_stroke_inargs[] =
+void
+register_edit_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable to stroke to"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord edit_stroke_proc =
-{
-  "gimp-edit-stroke",
-  "gimp-edit-stroke",
-  "Stroke the current selection",
-  "This procedure strokes the current selection, painting along the selection boundary with the active brush and foreground color. The paint is applied to the specified drawable regardless of the active selection.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  edit_stroke_inargs,
-  0,
-  NULL,
-  { { edit_stroke_invoker } }
-};
+  /*
+   * gimp-edit-cut
+   */
+  procedure = gimp_procedure_new (edit_cut_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-cut");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-cut",
+                                     "Cut from the specified drawable.",
+                                     "If there is a selection in the image, then the area specified by the selection is cut from the specified drawable and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection, then the specified drawable will be removed and its contents stored in the internal GIMP edit buffer.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to cut from",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("non-empty",
+                                                         "non empty",
+                                                         "TRUE if the cut was successful, FALSE if the selection contained only transparent pixels",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-copy
+   */
+  procedure = gimp_procedure_new (edit_copy_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-copy");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-copy",
+                                     "Copy from the specified drawable.",
+                                     "If there is a selection in the image, then the area specified by the selection is copied from the specified drawable and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection, then the specified drawable's contents will be stored in the internal GIMP edit buffer.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to copy from",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("non-empty",
+                                                         "non empty",
+                                                         "TRUE if the copy was successful, FALSE if the selection contained only transparent pixels",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-copy-visible
+   */
+  procedure = gimp_procedure_new (edit_copy_visible_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-copy-visible");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-copy-visible",
+                                     "Copy from the projection.",
+                                     "If there is a selection in the image, then the area specified by the selection is copied from the projection and placed in an internal GIMP edit buffer. It can subsequently be retrieved using the 'gimp-edit-paste' command. If there is no selection, then the projection's contents will be stored in the internal GIMP edit buffer.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to copy from",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("non-empty",
+                                                         "non empty",
+                                                         "TRUE if the copy was successful, FALSE if the selection contained only transparent pixels",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-paste
+   */
+  procedure = gimp_procedure_new (edit_paste_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-paste");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-paste",
+                                     "Paste buffer to the specified drawable.",
+                                     "This procedure pastes a copy of the internal GIMP edit buffer to the specified drawable. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. The \"paste_into\" option specifies whether to clear the current image selection, or to paste the buffer \"behind\" the selection. This allows the selection to act as a mask for the pasted buffer. Anywhere that the selection mask is non-zero, the pasted buffer will show through. The pasted buffer will be a new layer in the image which is designated as the image floating selection. If the image has a floating selection at the time of pasting, the old floating selection will be anchored to it's drawable before the new floating selection is added. This procedure returns the new floating layer. The resulting floating selection will already be attached to the specified drawable, and a subsequent call to floating_sel_attach is not needed.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to paste to",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("paste-into",
+                                                     "paste into",
+                                                     "Clear selection, or paste behind it?",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_layer_id ("floating-sel",
+                                                             "floating sel",
+                                                             "The new floating selection",
+                                                             gimp,
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-paste-as-new
+   */
+  procedure = gimp_procedure_new (edit_paste_as_new_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-paste-as-new");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-paste-as-new",
+                                     "Paste buffer to a new image.",
+                                     "This procedure pastes a copy of the internal GIMP edit buffer to a new image. The GIMP edit buffer will be empty unless a call was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This procedure returns the new image.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_image_id ("image",
+                                                             "image",
+                                                             "The new image",
+                                                             gimp,
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-named-cut
+   */
+  procedure = gimp_procedure_new (edit_named_cut_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-named-cut");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-named-cut",
+                                     "Cut into a named buffer.",
+                                     "This procedure works like gimp-edit-cut, but additionally stores the cut buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to cut from",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("buffer-name",
+                                                       "buffer name",
+                                                       "The name of the buffer to create",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("real-name",
+                                                           "real name",
+                                                           "The real name given to the buffer, or NULL if the selection contained only transparent pixels",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-named-copy
+   */
+  procedure = gimp_procedure_new (edit_named_copy_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-named-copy");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-named-copy",
+                                     "Copy into a named buffer.",
+                                     "This procedure works like gimp-edit-copy, but additionally stores the copied buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to copy from",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("buffer-name",
+                                                       "buffer name",
+                                                       "The name of the buffer to create",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("real-name",
+                                                           "real name",
+                                                           "The real name given to the buffer, or NULL if the selection contained only transparent pixels",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-named-copy-visible
+   */
+  procedure = gimp_procedure_new (edit_named_copy_visible_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-named-copy-visible");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-named-copy-visible",
+                                     "Copy from the projection into a named buffer.",
+                                     "This procedure works like gimp-edit-copy-visible, but additionally stores the copied buffer into a named buffer that will stay available for later pasting, regardless of any intermediate copy or cut operations.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to copy from",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("buffer-name",
+                                                       "buffer name",
+                                                       "The name of the buffer to create",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("real-name",
+                                                           "real name",
+                                                           "The real name given to the buffer",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-named-paste
+   */
+  procedure = gimp_procedure_new (edit_named_paste_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-named-paste");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-named-paste",
+                                     "Paste named buffer to the specified drawable.",
+                                     "This procedure works like gimp-edit-paste but pastes a named buffer instead of the global buffer.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to paste to",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("buffer-name",
+                                                       "buffer name",
+                                                       "The name of the buffer to paste",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("paste-into",
+                                                     "paste into",
+                                                     "Clear selection, or paste behind it?",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_layer_id ("floating-sel",
+                                                             "floating sel",
+                                                             "The new floating selection",
+                                                             gimp,
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-named-paste-as-new
+   */
+  procedure = gimp_procedure_new (edit_named_paste_as_new_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-named-paste-as-new");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-named-paste-as-new",
+                                     "Paste named buffer to a new image.",
+                                     "This procedure works like gimp-edit-paste-as-new but pastes a named buffer instead of the global buffer.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("buffer-name",
+                                                       "buffer name",
+                                                       "The name of the buffer to paste",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_image_id ("image",
+                                                             "image",
+                                                             "The new image",
+                                                             gimp,
+                                                             GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-clear
+   */
+  procedure = gimp_procedure_new (edit_clear_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-clear");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-clear",
+                                     "Clear selected area of drawable.",
+                                     "This procedure clears the specified drawable. If the drawable has an alpha channel, the cleared pixels will become transparent. If the drawable does not have an alpha channel, cleared pixels will be set to the background color. This procedure only affects regions within a selection if there is a selection active.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to clear from",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-fill
+   */
+  procedure = gimp_procedure_new (edit_fill_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-fill");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-fill",
+                                     "Fill selected area of drawable.",
+                                     "This procedure fills the specified drawable with the fill mode. If the fill mode is foreground, the current foreground color is used. If the fill mode is background, the current background color is used. Other fill modes should not be used. This procedure only affects regions within a selection if there is a selection active. If you want to fill the whole drawable, regardless of the selection, use gimp_drawable_fill().",
+                                     "Spencer Kimball & Peter Mattis & Raphael Quinet",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-2000",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to fill to",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("fill-type",
+                                                  "fill type",
+                                                  "The type of fill: { GIMP_FOREGROUND_FILL (0), GIMP_BACKGROUND_FILL (1), GIMP_WHITE_FILL (2), GIMP_TRANSPARENT_FILL (3), GIMP_PATTERN_FILL (4) }",
+                                                  GIMP_TYPE_FILL_TYPE,
+                                                  GIMP_FOREGROUND_FILL,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-bucket-fill
+   */
+  procedure = gimp_procedure_new (edit_bucket_fill_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-bucket-fill");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-bucket-fill",
+                                     "Fill the area specified either by the current selection if there is one, or by a seed fill starting at the specified coordinates.",
+                                     "This tool requires information on the paint application mode, and the fill mode, which can either be in the foreground color, or in the currently active pattern. If there is no selection, a seed fill is executed at the specified coordinates and extends outward in keeping with the threshold parameter. If there is a selection in the target image, the threshold, sample merged, x, and y arguments are unused. If the sample_merged parameter is TRUE, the data of the composite image will be used instead of that for the specified drawable. This is equivalent to sampling for colors after merging all visible layers. In the case of merged sampling, the x and y coordinates are relative to the image's origin; otherwise, they are relative to the drawable's origin.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("fill-mode",
+                                                  "fill mode",
+                                                  "The type of fill: { GIMP_FG_BUCKET_FILL (0), GIMP_BG_BUCKET_FILL (1), GIMP_PATTERN_BUCKET_FILL (2) }",
+                                                  GIMP_TYPE_BUCKET_FILL_MODE,
+                                                  GIMP_FG_BUCKET_FILL,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("paint-mode",
+                                                  "paint mode",
+                                                  "The paint application mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }",
+                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
+                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("opacity",
+                                                    "opacity",
+                                                    "The opacity of the final bucket fill (0 <= opacity <= 100)",
+                                                    0, 100, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("threshold",
+                                                    "threshold",
+                                                    "The threshold determines how extensive the seed fill will be. It's value is specified in terms of intensity levels (0 <= threshold <= 255). This parameter is only valid when there is no selection in the specified image.",
+                                                    0, 255, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("sample-merged",
+                                                     "sample merged",
+                                                     "Use the composite image, not the drawable",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x",
+                                                    "x",
+                                                    "The x coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y",
+                                                    "y",
+                                                    "The y coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-blend
+   */
+  procedure = gimp_procedure_new (edit_blend_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-blend");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-blend",
+                                     "Blend between the starting and ending coordinates with the specified blend mode and gradient type.",
+                                     "This tool requires information on the paint application mode, the blend mode, and the gradient type. It creates the specified variety of blend using the starting and ending coordinates as defined for each gradient type.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("blend-mode",
+                                                  "blend mode",
+                                                  "The type of blend: { GIMP_FG_BG_RGB_MODE (0), GIMP_FG_BG_HSV_MODE (1), GIMP_FG_TRANSPARENT_MODE (2), GIMP_CUSTOM_MODE (3) }",
+                                                  GIMP_TYPE_BLEND_MODE,
+                                                  GIMP_FG_BG_RGB_MODE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("paint-mode",
+                                                  "paint mode",
+                                                  "The paint application mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }",
+                                                  GIMP_TYPE_LAYER_MODE_EFFECTS,
+                                                  GIMP_NORMAL_MODE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("gradient-type",
+                                                  "gradient type",
+                                                  "The type of gradient: { GIMP_GRADIENT_LINEAR (0), GIMP_GRADIENT_BILINEAR (1), GIMP_GRADIENT_RADIAL (2), GIMP_GRADIENT_SQUARE (3), GIMP_GRADIENT_CONICAL_SYMMETRIC (4), GIMP_GRADIENT_CONICAL_ASYMMETRIC (5), GIMP_GRADIENT_SHAPEBURST_ANGULAR (6), GIMP_GRADIENT_SHAPEBURST_SPHERICAL (7), GIMP_GRADIENT_SHAPEBURST_DIMPLED (8), GIMP_GRADIENT_SPIRAL_CLOCKWISE (9), GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE (10) }",
+                                                  GIMP_TYPE_GRADIENT_TYPE,
+                                                  GIMP_GRADIENT_LINEAR,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("opacity",
+                                                    "opacity",
+                                                    "The opacity of the final blend (0 <= opacity <= 100)",
+                                                    0, 100, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("offset",
+                                                    "offset",
+                                                    "Offset relates to the starting and ending coordinates specified for the blend. This parameter is mode dependent (0 <= offset)",
+                                                    0, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("repeat",
+                                                  "repeat",
+                                                  "Repeat mode: { GIMP_REPEAT_NONE (0), GIMP_REPEAT_SAWTOOTH (1), GIMP_REPEAT_TRIANGULAR (2) }",
+                                                  GIMP_TYPE_REPEAT_MODE,
+                                                  GIMP_REPEAT_NONE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("reverse",
+                                                     "reverse",
+                                                     "Use the reverse gradient (TRUE or FALSE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("supersample",
+                                                     "supersample",
+                                                     "Do adaptive supersampling (TRUE or FALSE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("max-depth",
+                                                      "max depth",
+                                                      "Maximum recursion levels for supersampling",
+                                                      1, 9, 1,
+                                                      GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("threshold",
+                                                    "threshold",
+                                                    "Supersampling threshold",
+                                                    0, 4, 0,
+                                                    GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("dither",
+                                                     "dither",
+                                                     "Use dithering to reduce banding (TRUE or FALSE)",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x1",
+                                                    "x1",
+                                                    "The x coordinate of this blend's starting point",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y1",
+                                                    "y1",
+                                                    "The y coordinate of this blend's starting point",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x2",
+                                                    "x2",
+                                                    "The x coordinate of this blend's ending point",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y2",
+                                                    "y2",
+                                                    "The y coordinate of this blend's ending point",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-edit-stroke
+   */
+  procedure = gimp_procedure_new (edit_stroke_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-edit-stroke");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-edit-stroke",
+                                     "Stroke the current selection",
+                                     "This procedure strokes the current selection, painting along the selection boundary with the active brush and foreground color. The paint is applied to the specified drawable regardless of the active selection.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable to stroke to",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

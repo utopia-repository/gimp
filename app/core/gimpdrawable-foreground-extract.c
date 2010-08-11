@@ -79,7 +79,7 @@ gimp_drawable_foreground_extract_siox_init (GimpDrawable *drawable,
                                             gint          width,
                                             gint          height)
 {
-  GimpImage    *gimage;
+  GimpImage    *image;
   const guchar *colormap = NULL;
   gboolean      intersect;
   gint          offset_x;
@@ -88,10 +88,10 @@ gimp_drawable_foreground_extract_siox_init (GimpDrawable *drawable,
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
-  if (gimp_image_base_type (gimage) == GIMP_INDEXED)
-    colormap = gimp_image_get_colormap (gimage);
+  if (gimp_image_base_type (image) == GIMP_INDEXED)
+    colormap = gimp_image_get_colormap (image);
 
   gimp_item_offsets (GIMP_ITEM (drawable), &offset_x, &offset_y);
 
@@ -109,7 +109,7 @@ gimp_drawable_foreground_extract_siox_init (GimpDrawable *drawable,
   if (! intersect)
     return NULL;
 
-  return siox_init (gimp_drawable_data (drawable), colormap,
+  return siox_init (gimp_drawable_get_tiles (drawable), colormap,
                     offset_x, offset_y,
                     x, y, width, height);
 }
@@ -123,6 +123,9 @@ gimp_drawable_foreground_extract_siox (GimpDrawable       *mask,
                                        gboolean            multiblob,
                                        GimpProgress       *progress)
 {
+  gint x1, y1;
+  gint x2, y2;
+
   g_return_if_fail (GIMP_IS_DRAWABLE (mask));
   g_return_if_fail (gimp_drawable_bytes (mask) == 1);
 
@@ -133,7 +136,20 @@ gimp_drawable_foreground_extract_siox (GimpDrawable       *mask,
   if (progress)
     gimp_progress_start (progress, _("Foreground Extraction"), FALSE);
 
-  siox_foreground_extract (state, refinement, gimp_drawable_data (mask),
+  if (GIMP_IS_CHANNEL (mask))
+    {
+      gimp_channel_bounds (GIMP_CHANNEL (mask), &x1, &y1, &x2, &y2);
+    }
+  else
+    {
+      x1 = 0;
+      y1 = 0;
+      x2 = gimp_item_width (GIMP_ITEM (mask));
+      y2 = gimp_item_height (GIMP_ITEM (mask));
+    }
+
+  siox_foreground_extract (state, refinement,
+                           gimp_drawable_get_tiles (mask), x1, y1, x2, y2,
                            smoothness, sensitivity, multiblob,
                            (SioxProgressFunc) gimp_progress_set_value,
                            progress);
@@ -141,10 +157,7 @@ gimp_drawable_foreground_extract_siox (GimpDrawable       *mask,
   if (progress)
     gimp_progress_end (progress);
 
-  gimp_drawable_update (mask,
-                        0, 0,
-                        gimp_item_width (GIMP_ITEM (mask)),
-                        gimp_item_height (GIMP_ITEM (mask)));
+  gimp_drawable_update (mask, x1, y1, x2, y2);
 }
 
 void

@@ -94,7 +94,7 @@ G_DEFINE_TYPE (GimpDockable, gimp_dockable, GTK_TYPE_BIN);
 
 #define parent_class gimp_dockable_parent_class
 
-static GtkTargetEntry dialog_target_table[] = { GIMP_TARGET_DIALOG };
+static const GtkTargetEntry dialog_target_table[] = { GIMP_TARGET_DIALOG };
 
 
 static void
@@ -197,9 +197,11 @@ gimp_dockable_destroy (GtkObject *object)
   if (dockable->context)
     gimp_dockable_set_context (dockable, NULL);
 
-  if (dockable->blurb && dockable->blurb != dockable->name)
+  if (dockable->blurb)
     {
-      g_free (dockable->blurb);
+      if (dockable->blurb != dockable->name)
+        g_free (dockable->blurb);
+
       dockable->blurb = NULL;
     }
 

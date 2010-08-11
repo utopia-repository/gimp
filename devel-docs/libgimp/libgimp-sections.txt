@@ -58,6 +58,7 @@ gimp_attach_new_parasite
 <FILE>gimpenums</FILE>
 gimp_enums_init
 GimpBrushApplicationMode
+GimpBrushGeneratedShape
 GimpConvertDitherType
 GimpConvertPaletteType
 GimpConvolutionType
@@ -73,10 +74,10 @@ GimpMergeType
 GimpOffsetType
 GimpOrientationType
 GimpRotationType
-GimpRunMode
 gimp_enums_get_type_names
 <SUBSECTION Standard>
 GIMP_TYPE_BRUSH_APPLICATION_MODE
+GIMP_TYPE_BRUSH_GENERATED_SHAPE
 GIMP_TYPE_CONVERT_DITHER_TYPE
 GIMP_TYPE_CONVERT_PALETTE_TYPE
 GIMP_TYPE_CONVOLUTION_TYPE
@@ -92,8 +93,8 @@ GIMP_TYPE_MERGE_TYPE
 GIMP_TYPE_OFFSET_TYPE
 GIMP_TYPE_ORIENTATION_TYPE
 GIMP_TYPE_ROTATION_TYPE
-GIMP_TYPE_RUN_MODE
 gimp_brush_application_mode_get_type
+gimp_brush_generated_shape_get_type
 gimp_convert_dither_type_get_type
 gimp_convert_palette_type_get_type
 gimp_convolution_type_get_type
@@ -109,7 +110,6 @@ gimp_merge_type_get_type
 gimp_offset_type_get_type
 gimp_orientation_type_get_type
 gimp_rotation_type_get_type
-gimp_run_mode_get_type
 </SECTION>
 
 <SECTION>
@@ -669,8 +669,6 @@ gimp_get_path_by_tattoo
 gimp_path_delete
 gimp_path_get_locked
 gimp_path_set_locked
-gimp_path_get_visible
-gimp_path_set_visible
 gimp_path_set_tattoo
 gimp_path_to_selection
 gimp_path_import
@@ -886,6 +884,10 @@ gimp_vectors_set_name
 gimp_vectors_set_tattoo
 gimp_vectors_set_visible
 gimp_vectors_get_strokes
+gimp_vectors_parasite_attach
+gimp_vectors_parasite_detach
+gimp_vectors_parasite_find
+gimp_vectors_parasite_list
 gimp_vectors_stroke_close
 gimp_vectors_stroke_remove
 gimp_vectors_stroke_get_length
@@ -1046,7 +1048,6 @@ gimp_font_select_button_get_font_name
 gimp_font_select_button_set_font_name
 gimp_font_select_button_close_popup
 <SUBSECTION Standard>
-GimpFontSelectButtonPrivate
 GimpFontSelectButtonClass
 GIMP_FONT_SELECT_BUTTON
 GIMP_IS_FONT_SELECT_BUTTON

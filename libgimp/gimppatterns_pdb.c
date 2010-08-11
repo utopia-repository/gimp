@@ -45,8 +45,8 @@ gimp_patterns_refresh (void)
   gboolean success = TRUE;
 
   return_vals = gimp_run_procedure ("gimp-patterns-refresh",
-				    &nreturn_vals,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
 
@@ -70,7 +70,7 @@ gimp_patterns_refresh (void)
  */
 gchar **
 gimp_patterns_get_list (const gchar *filter,
-			gint        *num_patterns)
+                        gint        *num_patterns)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
@@ -78,9 +78,9 @@ gimp_patterns_get_list (const gchar *filter,
   gint i;
 
   return_vals = gimp_run_procedure ("gimp-patterns-get-list",
-				    &nreturn_vals,
-				    GIMP_PDB_STRING, filter,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, filter,
+                                    GIMP_PDB_END);
 
   *num_patterns = 0;
 
@@ -89,7 +89,7 @@ gimp_patterns_get_list (const gchar *filter,
       *num_patterns = return_vals[1].data.d_int32;
       pattern_list = g_new (gchar *, *num_patterns);
       for (i = 0; i < *num_patterns; i++)
-	pattern_list[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
+        pattern_list[i] = g_strdup (return_vals[2].data.d_stringarray[i]);
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);
@@ -109,15 +109,15 @@ gimp_patterns_get_list (const gchar *filter,
  */
 gchar *
 gimp_patterns_get_pattern (gint *width,
-			   gint *height)
+                           gint *height)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
   gchar *name = NULL;
 
   return_vals = gimp_run_procedure ("gimp-patterns-get-pattern",
-				    &nreturn_vals,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_END);
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     {
@@ -146,36 +146,37 @@ gimp_patterns_get_pattern (gint *width,
  */
 gchar *
 gimp_patterns_get_pattern_data (const gchar  *name,
-				gint         *width,
-				gint         *height,
-				gint         *mask_bpp,
-				gint         *length,
-				guint8      **mask_data)
+                                gint         *width,
+                                gint         *height,
+                                gint         *mask_bpp,
+                                gint         *length,
+                                guint8      **mask_data)
 {
   GimpParam *return_vals;
   gint nreturn_vals;
-  gchar *ret_name = NULL;
+  gchar *actual_name = NULL;
 
   return_vals = gimp_run_procedure ("gimp-patterns-get-pattern-data",
-				    &nreturn_vals,
-				    GIMP_PDB_STRING, name,
-				    GIMP_PDB_END);
+                                    &nreturn_vals,
+                                    GIMP_PDB_STRING, name,
+                                    GIMP_PDB_END);
 
   *length = 0;
 
   if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
     {
-      ret_name = g_strdup (return_vals[1].data.d_string);
+      actual_name = g_strdup (return_vals[1].data.d_string);
       *width = return_vals[2].data.d_int32;
       *height = return_vals[3].data.d_int32;
       *mask_bpp = return_vals[4].data.d_int32;
       *length = return_vals[5].data.d_int32;
       *mask_data = g_new (guint8, *length);
-      memcpy (*mask_data, return_vals[6].data.d_int8array,
-	      *length * sizeof (guint8));
+      memcpy (*mask_data,
+              return_vals[6].data.d_int8array,
+              *length * sizeof (guint8));
     }
 
   gimp_destroy_params (return_vals, nreturn_vals);
 
-  return ret_name;
+  return actual_name;
 }

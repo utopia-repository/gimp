@@ -26,183 +26,80 @@
 #include "libgimpcolor/gimpcolor.h"
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimpchannel-combine.h"
 #include "core/gimpchannel.h"
 #include "core/gimpimage.h"
 
-static ProcRecord channel_new_proc;
-static ProcRecord channel_new_from_component_proc;
-static ProcRecord channel_copy_proc;
-static ProcRecord channel_combine_masks_proc;
-static ProcRecord channel_get_show_masked_proc;
-static ProcRecord channel_set_show_masked_proc;
-static ProcRecord channel_get_opacity_proc;
-static ProcRecord channel_set_opacity_proc;
-static ProcRecord channel_get_color_proc;
-static ProcRecord channel_set_color_proc;
 
-void
-register_channel_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &channel_new_proc);
-  procedural_db_register (gimp, &channel_new_from_component_proc);
-  procedural_db_register (gimp, &channel_copy_proc);
-  procedural_db_register (gimp, &channel_combine_masks_proc);
-  procedural_db_register (gimp, &channel_get_show_masked_proc);
-  procedural_db_register (gimp, &channel_set_show_masked_proc);
-  procedural_db_register (gimp, &channel_get_opacity_proc);
-  procedural_db_register (gimp, &channel_set_opacity_proc);
-  procedural_db_register (gimp, &channel_get_color_proc);
-  procedural_db_register (gimp, &channel_set_color_proc);
-}
-
-static Argument *
-channel_new_invoker (Gimp         *gimp,
-                     GimpContext  *context,
-                     GimpProgress *progress,
-                     Argument     *args)
+static GValueArray *
+channel_new_invoker (GimpProcedure     *procedure,
+                     Gimp              *gimp,
+                     GimpContext       *context,
+                     GimpProgress      *progress,
+                     const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
+  GValueArray *return_vals;
+  GimpImage *image;
   gint32 width;
   gint32 height;
-  gchar *name;
+  const gchar *name;
   gdouble opacity;
   GimpRGB color;
   GimpChannel *channel = NULL;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  width = args[1].value.pdb_int;
-  if (width <= 0)
-    success = FALSE;
-
-  height = args[2].value.pdb_int;
-  if (height <= 0)
-    success = FALSE;
-
-  name = (gchar *) args[3].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  opacity = args[4].value.pdb_float;
-  if (opacity < 0.0 || opacity > 100.0)
-    success = FALSE;
-
-  color = args[5].value.pdb_color;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  width = g_value_get_int (&args->values[1]);
+  height = g_value_get_int (&args->values[2]);
+  name = g_value_get_string (&args->values[3]);
+  opacity = g_value_get_double (&args->values[4]);
+  gimp_value_get_rgb (&args->values[5], &color);
 
   if (success)
     {
       GimpRGB rgb_color = color;
 
       rgb_color.a = opacity / 100.0;
-      channel = gimp_channel_new (gimage, width, height, name, &rgb_color);
-      success = channel != NULL;
+      channel = gimp_channel_new (image, width, height, name, &rgb_color);
+
+      if (! channel)
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&channel_new_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (channel));
+    gimp_value_set_channel (&return_vals->values[1], channel);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg channel_new_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image to which to add the channel"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The channel width: (0 < width)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The channel height: (0 < height)"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The channel name"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "opacity",
-    "The channel opacity: (0 <= opacity <= 100)"
-  },
-  {
-    GIMP_PDB_COLOR,
-    "color",
-    "The channel compositing color"
-  }
-};
-
-static ProcArg channel_new_outargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The newly created channel"
-  }
-};
-
-static ProcRecord channel_new_proc =
-{
-  "gimp-channel-new",
-  "gimp-channel-new",
-  "Create a new channel.",
-  "This procedure creates a new channel with the specified width and height. Name, opacity, and color are also supplied parameters. The new channel still needs to be added to the image, as this is not automatic. Add the new channel with the 'gimp_image_add_channel' command. Other attributes such as channel show masked, should be set with explicit procedure calls. The channel's contents are undefined initially.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  6,
-  channel_new_inargs,
-  1,
-  channel_new_outargs,
-  { { channel_new_invoker } }
-};
-
-static Argument *
-channel_new_from_component_invoker (Gimp         *gimp,
-                                    GimpContext  *context,
-                                    GimpProgress *progress,
-                                    Argument     *args)
+static GValueArray *
+channel_new_from_component_invoker (GimpProcedure     *procedure,
+                                    Gimp              *gimp,
+                                    GimpContext       *context,
+                                    GimpProgress      *progress,
+                                    const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpImage *gimage;
+  GValueArray *return_vals;
+  GimpImage *image;
   gint32 component;
-  gchar *name;
+  const gchar *name;
   GimpChannel *channel = NULL;
 
-  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! GIMP_IS_IMAGE (gimage))
-    success = FALSE;
-
-  component = args[1].value.pdb_int;
-  if (component < GIMP_RED_CHANNEL || component > GIMP_ALPHA_CHANNEL)
-    success = FALSE;
-
-  name = (gchar *) args[2].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  image = gimp_value_get_image (&args->values[0], gimp);
+  component = g_value_get_enum (&args->values[1]);
+  name = g_value_get_string (&args->values[2]);
 
   if (success)
     {
-      if (gimp_image_get_component_index (gimage, component) != -1)
-        channel = gimp_channel_new_from_component (gimage,
+      if (gimp_image_get_component_index (image, component) != -1)
+        channel = gimp_channel_new_from_component (image,
                                                    component, name, NULL);
 
       if (channel)
@@ -211,131 +108,51 @@ channel_new_from_component_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&channel_new_from_component_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (channel));
+    gimp_value_set_channel (&return_vals->values[1], channel);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg channel_new_from_component_inargs[] =
-{
-  {
-    GIMP_PDB_IMAGE,
-    "image",
-    "The image to which to add the channel"
-  },
-  {
-    GIMP_PDB_INT32,
-    "component",
-    "The image component: { GIMP_RED_CHANNEL (0), GIMP_GREEN_CHANNEL (1), GIMP_BLUE_CHANNEL (2), GIMP_GRAY_CHANNEL (3), GIMP_INDEXED_CHANNEL (4), GIMP_ALPHA_CHANNEL (5) }"
-  },
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The channel name"
-  }
-};
-
-static ProcArg channel_new_from_component_outargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The newly created channel"
-  }
-};
-
-static ProcRecord channel_new_from_component_proc =
-{
-  "gimp-channel-new-from-component",
-  "gimp-channel-new-from-component",
-  "Create a new channel from a color component",
-  "This procedure creates a new channel from a color component.",
-  "Shlomi Fish <shlomif@iglu.org.il>",
-  "Shlomi Fish",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  channel_new_from_component_inargs,
-  1,
-  channel_new_from_component_outargs,
-  { { channel_new_from_component_invoker } }
-};
-
-static Argument *
-channel_copy_invoker (Gimp         *gimp,
-                      GimpContext  *context,
-                      GimpProgress *progress,
-                      Argument     *args)
+static GValueArray *
+channel_copy_invoker (GimpProcedure     *procedure,
+                      Gimp              *gimp,
+                      GimpContext       *context,
+                      GimpProgress      *progress,
+                      const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpChannel *channel;
   GimpChannel *channel_copy = NULL;
 
-  channel = (GimpChannel *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel) && ! gimp_item_is_removed (GIMP_ITEM (channel))))
-    success = FALSE;
+  channel = gimp_value_get_channel (&args->values[0], gimp);
 
   if (success)
     {
       channel_copy = GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (channel),
                                    G_TYPE_FROM_INSTANCE (channel), FALSE));
-      success = (channel_copy != NULL);
+
+      if (! channel_copy)
+        success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&channel_copy_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (channel_copy));
+    gimp_value_set_channel (&return_vals->values[1], channel_copy);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg channel_copy_inargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The channel to copy"
-  }
-};
-
-static ProcArg channel_copy_outargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel-copy",
-    "The newly copied channel"
-  }
-};
-
-static ProcRecord channel_copy_proc =
-{
-  "gimp-channel-copy",
-  "gimp-channel-copy",
-  "Copy a channel.",
-  "This procedure copies the specified channel and returns the copy.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  channel_copy_inargs,
-  1,
-  channel_copy_outargs,
-  { { channel_copy_invoker } }
-};
-
-static Argument *
-channel_combine_masks_invoker (Gimp         *gimp,
-                               GimpContext  *context,
-                               GimpProgress *progress,
-                               Argument     *args)
+static GValueArray *
+channel_combine_masks_invoker (GimpProcedure     *procedure,
+                               Gimp              *gimp,
+                               GimpContext       *context,
+                               GimpProgress      *progress,
+                               const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpChannel *channel1;
@@ -344,380 +161,158 @@ channel_combine_masks_invoker (Gimp         *gimp,
   gint32 offx;
   gint32 offy;
 
-  channel1 = (GimpChannel *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel1) && ! gimp_item_is_removed (GIMP_ITEM (channel1))))
-    success = FALSE;
-
-  channel2 = (GimpChannel *) gimp_item_get_by_ID (gimp, args[1].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel2) && ! gimp_item_is_removed (GIMP_ITEM (channel2))))
-    success = FALSE;
-
-  operation = args[2].value.pdb_int;
-  if (operation < GIMP_CHANNEL_OP_ADD || operation > GIMP_CHANNEL_OP_INTERSECT)
-    success = FALSE;
-
-  offx = args[3].value.pdb_int;
-
-  offy = args[4].value.pdb_int;
+  channel1 = gimp_value_get_channel (&args->values[0], gimp);
+  channel2 = gimp_value_get_channel (&args->values[1], gimp);
+  operation = g_value_get_enum (&args->values[2]);
+  offx = g_value_get_int (&args->values[3]);
+  offy = g_value_get_int (&args->values[4]);
 
   if (success)
     {
       gimp_channel_combine_mask (channel1, channel2, operation, offx, offy);
     }
 
-  return procedural_db_return_args (&channel_combine_masks_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg channel_combine_masks_inargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel1",
-    "The channel1"
-  },
-  {
-    GIMP_PDB_CHANNEL,
-    "channel2",
-    "The channel2"
-  },
-  {
-    GIMP_PDB_INT32,
-    "operation",
-    "The selection operation: { GIMP_CHANNEL_OP_ADD (0), GIMP_CHANNEL_OP_SUBTRACT (1), GIMP_CHANNEL_OP_REPLACE (2), GIMP_CHANNEL_OP_INTERSECT (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "offx",
-    "x offset between upper left corner of channels: (second - first)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "offy",
-    "y offset between upper left corner of channels: (second - first)"
-  }
-};
-
-static ProcRecord channel_combine_masks_proc =
-{
-  "gimp-channel-combine-masks",
-  "gimp-channel-combine-masks",
-  "Combine two channel masks.",
-  "This procedure combines two channel masks. The result is stored in the first channel.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  channel_combine_masks_inargs,
-  0,
-  NULL,
-  { { channel_combine_masks_invoker } }
-};
-
-static Argument *
-channel_get_show_masked_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
+static GValueArray *
+channel_get_show_masked_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpChannel *channel;
+  gboolean show_masked = FALSE;
 
-  channel = (GimpChannel *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel) && ! gimp_item_is_removed (GIMP_ITEM (channel))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&channel_get_show_masked_proc, success);
+  channel = gimp_value_get_channel (&args->values[0], gimp);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_channel_get_show_masked (channel);
+    {
+      show_masked = gimp_channel_get_show_masked (channel);
+    }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_boolean (&return_vals->values[1], show_masked);
+
+  return return_vals;
 }
 
-static ProcArg channel_get_show_masked_inargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The channel"
-  }
-};
-
-static ProcArg channel_get_show_masked_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "show-masked",
-    "The channel composite method"
-  }
-};
-
-static ProcRecord channel_get_show_masked_proc =
-{
-  "gimp-channel-get-show-masked",
-  "gimp-channel-get-show-masked",
-  "Get the composite method of the specified channel.",
-  "This procedure returns the specified channel's composite method. If it is non-zero, then the channel is composited with the image so that masked regions are shown. Otherwise, selected regions are shown.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  channel_get_show_masked_inargs,
-  1,
-  channel_get_show_masked_outargs,
-  { { channel_get_show_masked_invoker } }
-};
-
-static Argument *
-channel_set_show_masked_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
+static GValueArray *
+channel_set_show_masked_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpChannel *channel;
   gboolean show_masked;
 
-  channel = (GimpChannel *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel) && ! gimp_item_is_removed (GIMP_ITEM (channel))))
-    success = FALSE;
-
-  show_masked = args[1].value.pdb_int ? TRUE : FALSE;
+  channel = gimp_value_get_channel (&args->values[0], gimp);
+  show_masked = g_value_get_boolean (&args->values[1]);
 
   if (success)
-    gimp_channel_set_show_masked (channel, show_masked);
+    {
+      gimp_channel_set_show_masked (channel, show_masked);
+    }
 
-  return procedural_db_return_args (&channel_set_show_masked_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg channel_set_show_masked_inargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The channel"
-  },
-  {
-    GIMP_PDB_INT32,
-    "show-masked",
-    "The new channel composite method"
-  }
-};
-
-static ProcRecord channel_set_show_masked_proc =
-{
-  "gimp-channel-set-show-masked",
-  "gimp-channel-set-show-masked",
-  "Set the composite method of the specified channel.",
-  "This procedure sets the specified channel's composite method. If it is non-zero, then the channel is composited with the image so that masked regions are shown. Otherwise, selected regions are shown.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  channel_set_show_masked_inargs,
-  0,
-  NULL,
-  { { channel_set_show_masked_invoker } }
-};
-
-static Argument *
-channel_get_opacity_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+channel_get_opacity_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpChannel *channel;
+  gdouble opacity = 0.0;
 
-  channel = (GimpChannel *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel) && ! gimp_item_is_removed (GIMP_ITEM (channel))))
-    success = FALSE;
-
-  return_args = procedural_db_return_args (&channel_get_opacity_proc, success);
+  channel = gimp_value_get_channel (&args->values[0], gimp);
 
   if (success)
-    return_args[1].value.pdb_float = gimp_channel_get_opacity (channel) * 100.0;
+    {
+      opacity = gimp_channel_get_opacity (channel) * 100;
+    }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    g_value_set_double (&return_vals->values[1], opacity);
+
+  return return_vals;
 }
 
-static ProcArg channel_get_opacity_inargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The channel"
-  }
-};
-
-static ProcArg channel_get_opacity_outargs[] =
-{
-  {
-    GIMP_PDB_FLOAT,
-    "opacity",
-    "The channel opacity"
-  }
-};
-
-static ProcRecord channel_get_opacity_proc =
-{
-  "gimp-channel-get-opacity",
-  "gimp-channel-get-opacity",
-  "Get the opacity of the specified channel.",
-  "This procedure returns the specified channel's opacity.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  channel_get_opacity_inargs,
-  1,
-  channel_get_opacity_outargs,
-  { { channel_get_opacity_invoker } }
-};
-
-static Argument *
-channel_set_opacity_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+channel_set_opacity_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpChannel *channel;
   gdouble opacity;
 
-  channel = (GimpChannel *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel) && ! gimp_item_is_removed (GIMP_ITEM (channel))))
-    success = FALSE;
-
-  opacity = args[1].value.pdb_float;
-  if (opacity < 0.0 || opacity > 100.0)
-    success = FALSE;
+  channel = gimp_value_get_channel (&args->values[0], gimp);
+  opacity = g_value_get_double (&args->values[1]);
 
   if (success)
-    gimp_channel_set_opacity (channel, opacity / 100.0, TRUE);
+    {
+      gimp_channel_set_opacity (channel, opacity / 100.0, TRUE);
+    }
 
-  return procedural_db_return_args (&channel_set_opacity_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg channel_set_opacity_inargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The channel"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "opacity",
-    "The new channel opacity (0 <= opacity <= 100)"
-  }
-};
-
-static ProcRecord channel_set_opacity_proc =
-{
-  "gimp-channel-set-opacity",
-  "gimp-channel-set-opacity",
-  "Set the opacity of the specified channel.",
-  "This procedure sets the specified channel's opacity.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  channel_set_opacity_inargs,
-  0,
-  NULL,
-  { { channel_set_opacity_invoker } }
-};
-
-static Argument *
-channel_get_color_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+channel_get_color_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpChannel *channel;
-  GimpRGB color;
+  GimpRGB color = { 0.0, 0.0, 0.0, 1.0 };
 
-  channel = (GimpChannel *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel) && ! gimp_item_is_removed (GIMP_ITEM (channel))))
-    success = FALSE;
+  channel = gimp_value_get_channel (&args->values[0], gimp);
 
   if (success)
-    gimp_channel_get_color (channel, &color);
+    {
+      gimp_channel_get_color (channel, &color);
+    }
 
-  return_args = procedural_db_return_args (&channel_get_color_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_color = color;
+    gimp_value_set_rgb (&return_vals->values[1], &color);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg channel_get_color_inargs[] =
-{
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The channel"
-  }
-};
-
-static ProcArg channel_get_color_outargs[] =
-{
-  {
-    GIMP_PDB_COLOR,
-    "color",
-    "The channel compositing color"
-  }
-};
-
-static ProcRecord channel_get_color_proc =
-{
-  "gimp-channel-get-color",
-  "gimp-channel-get-color",
-  "Get the compositing color of the specified channel.",
-  "This procedure returns the specified channel's compositing color.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  channel_get_color_inargs,
-  1,
-  channel_get_color_outargs,
-  { { channel_get_color_invoker } }
-};
-
-static Argument *
-channel_set_color_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+channel_set_color_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpChannel *channel;
   GimpRGB color;
 
-  channel = (GimpChannel *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_CHANNEL (channel) && ! gimp_item_is_removed (GIMP_ITEM (channel))))
-    success = FALSE;
-
-  color = args[1].value.pdb_color;
+  channel = gimp_value_get_channel (&args->values[0], gimp);
+  gimp_value_get_rgb (&args->values[1], &color);
 
   if (success)
     {
@@ -727,37 +322,366 @@ channel_set_color_invoker (Gimp         *gimp,
       gimp_channel_set_color (channel, &rgb_color, TRUE);
     }
 
-  return procedural_db_return_args (&channel_set_color_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg channel_set_color_inargs[] =
+void
+register_channel_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_CHANNEL,
-    "channel",
-    "The channel"
-  },
-  {
-    GIMP_PDB_COLOR,
-    "color",
-    "The new channel compositing color"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord channel_set_color_proc =
-{
-  "gimp-channel-set-color",
-  "gimp-channel-set-color",
-  "Set the compositing color of the specified channel.",
-  "This procedure sets the specified channel's compositing color.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  channel_set_color_inargs,
-  0,
-  NULL,
-  { { channel_set_color_invoker } }
-};
+  /*
+   * gimp-channel-new
+   */
+  procedure = gimp_procedure_new (channel_new_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-new");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-new",
+                                     "Create a new channel.",
+                                     "This procedure creates a new channel with the specified width and height. Name, opacity, and color are also supplied parameters. The new channel still needs to be added to the image, as this is not automatic. Add the new channel with the 'gimp_image_add_channel' command. Other attributes such as channel show masked, should be set with explicit procedure calls. The channel's contents are undefined initially.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to which to add the channel",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("width",
+                                                      "width",
+                                                      "The channel width (1 <= width)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("height",
+                                                      "height",
+                                                      "The channel height (1 <= height)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The channel name",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("opacity",
+                                                    "opacity",
+                                                    "The channel opacity (0 <= opacity <= 100)",
+                                                    0, 100, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_rgb ("color",
+                                                    "color",
+                                                    "The channel compositing color",
+                                                    NULL,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_channel_id ("channel",
+                                                               "channel",
+                                                               "The newly created channel",
+                                                               gimp,
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-new-from-component
+   */
+  procedure = gimp_procedure_new (channel_new_from_component_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-new-from-component");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-new-from-component",
+                                     "Create a new channel from a color component",
+                                     "This procedure creates a new channel from a color component.",
+                                     "Shlomi Fish <shlomif@iglu.org.il>",
+                                     "Shlomi Fish",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_image_id ("image",
+                                                         "image",
+                                                         "The image to which to add the channel",
+                                                         gimp,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("component",
+                                                  "component",
+                                                  "The image component: { GIMP_RED_CHANNEL (0), GIMP_GREEN_CHANNEL (1), GIMP_BLUE_CHANNEL (2), GIMP_GRAY_CHANNEL (3), GIMP_INDEXED_CHANNEL (4), GIMP_ALPHA_CHANNEL (5) }",
+                                                  GIMP_TYPE_CHANNEL_TYPE,
+                                                  GIMP_RED_CHANNEL,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The channel name",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_channel_id ("channel",
+                                                               "channel",
+                                                               "The newly created channel",
+                                                               gimp,
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-copy
+   */
+  procedure = gimp_procedure_new (channel_copy_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-copy");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-copy",
+                                     "Copy a channel.",
+                                     "This procedure copies the specified channel and returns the copy.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel",
+                                                           "channel",
+                                                           "The channel to copy",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_channel_id ("channel-copy",
+                                                               "channel copy",
+                                                               "The newly copied channel",
+                                                               gimp,
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-combine-masks
+   */
+  procedure = gimp_procedure_new (channel_combine_masks_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-combine-masks");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-combine-masks",
+                                     "Combine two channel masks.",
+                                     "This procedure combines two channel masks. The result is stored in the first channel.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel1",
+                                                           "channel1",
+                                                           "The channel1",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel2",
+                                                           "channel2",
+                                                           "The channel2",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("operation",
+                                                  "operation",
+                                                  "The selection operation: { GIMP_CHANNEL_OP_ADD (0), GIMP_CHANNEL_OP_SUBTRACT (1), GIMP_CHANNEL_OP_REPLACE (2), GIMP_CHANNEL_OP_INTERSECT (3) }",
+                                                  GIMP_TYPE_CHANNEL_OPS,
+                                                  GIMP_CHANNEL_OP_ADD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("offx",
+                                                      "offx",
+                                                      "x offset between upper left corner of channels: (second - first)",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("offy",
+                                                      "offy",
+                                                      "y offset between upper left corner of channels: (second - first)",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-get-show-masked
+   */
+  procedure = gimp_procedure_new (channel_get_show_masked_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-get-show-masked");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-get-show-masked",
+                                     "Get the composite method of the specified channel.",
+                                     "This procedure returns the specified channel's composite method. If it is TRUE, then the channel is composited with the image so that masked regions are shown. Otherwise, selected regions are shown.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel",
+                                                           "channel",
+                                                           "The channel",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_boolean ("show-masked",
+                                                         "show masked",
+                                                         "The channel composite method",
+                                                         FALSE,
+                                                         GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-set-show-masked
+   */
+  procedure = gimp_procedure_new (channel_set_show_masked_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-set-show-masked");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-set-show-masked",
+                                     "Set the composite method of the specified channel.",
+                                     "This procedure sets the specified channel's composite method. If it is TRUE, then the channel is composited with the image so that masked regions are shown. Otherwise, selected regions are shown.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel",
+                                                           "channel",
+                                                           "The channel",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("show-masked",
+                                                     "show masked",
+                                                     "The new channel composite method",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-get-opacity
+   */
+  procedure = gimp_procedure_new (channel_get_opacity_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-get-opacity");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-get-opacity",
+                                     "Get the opacity of the specified channel.",
+                                     "This procedure returns the specified channel's opacity.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel",
+                                                           "channel",
+                                                           "The channel",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("opacity",
+                                                        "opacity",
+                                                        "The channel opacity",
+                                                        0, 100, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-set-opacity
+   */
+  procedure = gimp_procedure_new (channel_set_opacity_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-set-opacity");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-set-opacity",
+                                     "Set the opacity of the specified channel.",
+                                     "This procedure sets the specified channel's opacity.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel",
+                                                           "channel",
+                                                           "The channel",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("opacity",
+                                                    "opacity",
+                                                    "The new channel opacity (0 <= opacity <= 100)",
+                                                    0, 100, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-get-color
+   */
+  procedure = gimp_procedure_new (channel_get_color_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-get-color");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-get-color",
+                                     "Get the compositing color of the specified channel.",
+                                     "This procedure returns the specified channel's compositing color.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel",
+                                                           "channel",
+                                                           "The channel",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_rgb ("color",
+                                                        "color",
+                                                        "The channel compositing color",
+                                                        NULL,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-channel-set-color
+   */
+  procedure = gimp_procedure_new (channel_set_color_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-channel-set-color");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-channel-set-color",
+                                     "Set the compositing color of the specified channel.",
+                                     "This procedure sets the specified channel's compositing color.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_channel_id ("channel",
+                                                           "channel",
+                                                           "The channel",
+                                                           gimp,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_rgb ("color",
+                                                    "color",
+                                                    "The new channel compositing color",
+                                                    NULL,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

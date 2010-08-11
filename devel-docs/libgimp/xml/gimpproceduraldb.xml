@@ -46,12 +46,12 @@
                                              const <link linkend="gchar">gchar</link> *proc_type,
                                              <link linkend="gint">gint</link> *num_matches,
                                              <link linkend="gchar">gchar</link> ***procedure_names);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-procedural-db-proc-arg">gimp_procedural_db_proc_arg</link>     (const <link linkend="gchar">gchar</link> *procedure,
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-procedural-db-proc-arg">gimp_procedural_db_proc_arg</link>     (const <link linkend="gchar">gchar</link> *procedure_name,
                                              <link linkend="gint">gint</link> arg_num,
                                              <link linkend="GimpPDBArgType">GimpPDBArgType</link> *arg_type,
                                              <link linkend="gchar">gchar</link> **arg_name,
                                              <link linkend="gchar">gchar</link> **arg_desc);
-<link linkend="gboolean">gboolean</link>    <link linkend="gimp-procedural-db-proc-val">gimp_procedural_db_proc_val</link>     (const <link linkend="gchar">gchar</link> *procedure,
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-procedural-db-proc-val">gimp_procedural_db_proc_val</link>     (const <link linkend="gchar">gchar</link> *procedure_name,
                                              <link linkend="gint">gint</link> val_num,
                                              <link linkend="GimpPDBArgType">GimpPDBArgType</link> *val_type,
                                              <link linkend="gchar">gchar</link> **val_name,
@@ -292,7 +292,7 @@ entries is 0.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-procedural-db-proc-arg"/>gimp_procedural_db_proc_arg ()</title>
-<indexterm><primary>gimp_procedural_db_proc_arg</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_proc_arg     (const <link linkend="gchar">gchar</link> *procedure,
+<indexterm><primary>gimp_procedural_db_proc_arg</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_proc_arg     (const <link linkend="gchar">gchar</link> *procedure_name,
                                              <link linkend="gint">gint</link> arg_num,
                                              <link linkend="GimpPDBArgType">GimpPDBArgType</link> *arg_type,
                                              <link linkend="gchar">gchar</link> **arg_name,
@@ -307,7 +307,7 @@ argument. The argument type, name, and a description are retrieved.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><parameter>procedure</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>procedure_name</parameter>&nbsp;:</term>
 <listitem><simpara> The procedure name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>arg_num</parameter>&nbsp;:</term>
@@ -327,7 +327,7 @@ argument. The argument type, name, and a description are retrieved.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-procedural-db-proc-val"/>gimp_procedural_db_proc_val ()</title>
-<indexterm><primary>gimp_procedural_db_proc_val</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_proc_val     (const <link linkend="gchar">gchar</link> *procedure,
+<indexterm><primary>gimp_procedural_db_proc_val</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_procedural_db_proc_val     (const <link linkend="gchar">gchar</link> *procedure_name,
                                              <link linkend="gint">gint</link> val_num,
                                              <link linkend="GimpPDBArgType">GimpPDBArgType</link> *val_type,
                                              <link linkend="gchar">gchar</link> **val_name,
@@ -343,7 +343,7 @@ retrieved.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><parameter>procedure</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>procedure_name</parameter>&nbsp;:</term>
 <listitem><simpara> The procedure name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>val_num</parameter>&nbsp;:</term>

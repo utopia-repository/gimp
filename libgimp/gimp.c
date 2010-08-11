@@ -142,7 +142,7 @@ static gboolean   gimp_plugin_io_error_handler (GIOChannel      *channel,
                                                 GIOCondition     cond,
                                                 gpointer         data);
 static gboolean   gimp_write                   (GIOChannel      *channel,
-                                                guint8          *buf,
+                                                const guint8    *buf,
                                                 gulong           count,
                                                 gpointer         user_data);
 static gboolean   gimp_flush                   (GIOChannel      *channel,
@@ -961,7 +961,8 @@ gimp_run_procedure2 (const gchar     *name,
       break;
 
     case GIMP_PDB_CALLING_ERROR:
-      g_printerr ("a calling error occurred while trying to run: \"%s\"", name);
+      g_printerr ("a calling error occurred while trying to run: \"%s\"\n",
+                  name);
       break;
 
     default:
@@ -1520,10 +1521,10 @@ gimp_plugin_io_error_handler (GIOChannel   *channel,
 }
 
 static gboolean
-gimp_write (GIOChannel *channel,
-            guint8     *buf,
-            gulong      count,
-            gpointer    user_data)
+gimp_write (GIOChannel   *channel,
+            const guint8 *buf,
+            gulong        count,
+            gpointer      user_data)
 {
   gulong bytes;
 
@@ -1690,7 +1691,7 @@ gimp_config (GPConfig *config)
   _check_size       = config->check_size;
   _check_type       = config->check_type;
   _install_cmap     = config->install_cmap;
-  _show_tool_tips   = config->show_tool_tips;
+  _show_tool_tips   = config->show_tooltips;
   _show_help_button = config->show_help_button;
   _min_colors       = config->min_colors;
   _gdisp_ID         = config->gdisp_ID;

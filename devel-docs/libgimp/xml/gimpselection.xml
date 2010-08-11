@@ -41,7 +41,7 @@
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-selection-grow">gimp_selection_grow</link>             (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint">gint</link> steps);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-selection-shrink">gimp_selection_shrink</link>           (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="gint">gint</link> radius);
+                                             <link linkend="gint">gint</link> steps);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-selection-invert">gimp_selection_invert</link>           (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-selection-feather">gimp_selection_feather</link>          (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gdouble">gdouble</link> radius);
@@ -102,7 +102,7 @@ pixel. This means the width of the selection can be calculated as
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>non_empty</parameter>&nbsp;:</term>
-<listitem><simpara> True if there is a selection.
+<listitem><simpara> TRUE if there is a selection.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>x1</parameter>&nbsp;:</term>
 <listitem><simpara> x coordinate of upper left corner of selection bounds.
@@ -177,8 +177,8 @@ This procedure is deprecated! Use <link linkend="gimp-selection-none"><function>
 Determine whether the selection is empty.
 </para>
 <para>
-This procedure returns non-zero if the selection for the specified
-image is not empty.</para>
+This procedure returns TRUE if the selection for the specified image
+is not empty.</para>
 <para>
 
 </para><variablelist role="params">
@@ -309,7 +309,7 @@ boundary in all directions by the specified pixel amount.</para>
 <refsect2>
 <title><anchor id="gimp-selection-shrink"/>gimp_selection_shrink ()</title>
 <indexterm><primary>gimp_selection_shrink</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_selection_shrink           (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="gint">gint</link> radius);</programlisting>
+                                             <link linkend="gint">gint</link> steps);</programlisting>
 <para>
 Shrink the image's selection
 </para>
@@ -323,8 +323,8 @@ of pixels.</para>
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>radius</parameter>&nbsp;:</term>
-<listitem><simpara> Radius of shrink (in pixels).
+<varlistentry><term><parameter>steps</parameter>&nbsp;:</term>
+<listitem><simpara> Steps of shrink (in pixels).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>

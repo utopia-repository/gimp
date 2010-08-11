@@ -22,93 +22,23 @@
 #define __PLUG_INS_H__
 
 
-struct _PlugInMenuBranch
-{
-  gchar *prog_name;
-  gchar *menu_path;
-  gchar *menu_label;
-};
+void   plug_ins_init                  (Gimp                   *gimp,
+                                       GimpContext            *context,
+                                       GimpInitStatusFunc      status_callback);
+void   plug_ins_exit                  (Gimp                   *gimp);
 
-
-void              plug_ins_init                 (Gimp               *gimp,
-                                                 GimpContext        *context,
-                                                 GimpInitStatusFunc  status_callback);
-void              plug_ins_exit                 (Gimp          *gimp);
-
-/* Register an internal plug-in.  This is for file load-save
+/* Register a plug-in. This function is public for file load-save
  * handlers, which are organized around the plug-in data structure.
  * This could all be done a little better, but oh well.  -josh
  */
-void              plug_ins_add_internal         (Gimp          *gimp,
-                                                 PlugInProcDef *proc_def);
-
-/* Add in the file load/save handler fields procedure. */
-PlugInProcDef   * plug_ins_file_register_magic  (Gimp          *gimp,
-                                                 const gchar   *name,
-                                                 const gchar   *extensions,
-                                                 const gchar   *prefixes,
-                                                 const gchar   *magics);
-
-PlugInProcDef   * plug_ins_file_register_mime   (Gimp          *gimp,
-                                                 const gchar   *name,
-                                                 const gchar   *mime_type);
-
-PlugInProcDef   * plug_ins_file_register_thumb_loader
-                                                (Gimp          *gimp,
-                                                 const gchar   *load_proc,
-                                                 const gchar   *thumb_proc);
-
-
-/* Add a plug-in definition. */
-void              plug_ins_def_add_from_rc      (Gimp          *gimp,
-                                                 PlugInDef     *plug_in_def);
+void   plug_ins_procedure_add         (Gimp                   *gimp,
+                                       GimpPlugInProcedure    *proc);
 
 /* Add/Remove temporary procedures. */
-void              plug_ins_temp_proc_def_add    (Gimp          *gimp,
-                                                 PlugInProcDef *proc_def);
-void              plug_ins_temp_proc_def_remove (Gimp          *gimp,
-                                                 PlugInProcDef *proc_def);
-
-/* Add a menu branch */
-void              plug_ins_menu_branch_add      (Gimp          *gimp,
-                                                 const gchar   *prog_name,
-                                                 const gchar   *menu_path,
-                                                 const gchar   *menu_label);
-
-/* Add a locale domain */
-void              plug_ins_locale_domain_add    (Gimp          *gimp,
-                                                 const gchar   *prog_name,
-                                                 const gchar   *domain_name,
-                                                 const gchar   *domain_path);
-
-/* Retrieve a plug-ins locale domain */
-const gchar     * plug_ins_locale_domain        (Gimp          *gimp,
-                                                 const gchar   *prog_name,
-                                                 const gchar  **locale_path);
-
-/* Add a help domain */
-void              plug_ins_help_domain_add      (Gimp          *gimp,
-                                                 const gchar   *prog_name,
-                                                 const gchar   *domain_name,
-                                                 const gchar   *domain_uri);
-
-/* Retrieve a plug-ins help domain */
-const gchar     * plug_ins_help_domain          (Gimp          *gimp,
-                                                 const gchar   *prog_name,
-                                                 const gchar  **help_uri);
-
-/* Retrieve all help domains */
-gint              plug_ins_help_domains         (Gimp          *gimp,
-                                                 gchar       ***help_domains,
-                                                 gchar       ***help_uris);
-
-/* Retreive a plug-ins proc_def from its ProcRecord */
-PlugInProcDef   * plug_ins_proc_def_find        (Gimp          *gimp,
-                                                 ProcRecord    *proc_rec);
-
-
-GSList          * plug_ins_extensions_parse     (gchar         *extensions);
-PlugInImageType   plug_ins_image_types_parse    (gchar         *image_types);
+void   plug_ins_temp_procedure_add    (Gimp                   *gimp,
+                                       GimpTemporaryProcedure *proc);
+void   plug_ins_temp_procedure_remove (Gimp                   *gimp,
+                                       GimpTemporaryProcedure *proc);
 
 
 #endif /* __PLUG_INS_H__ */

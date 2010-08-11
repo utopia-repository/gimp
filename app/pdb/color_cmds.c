@@ -24,7 +24,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "base/color-balance.h"
 #include "base/colorize.h"
@@ -47,66 +49,22 @@
 #include "core/gimpimage.h"
 #include "gimp-intl.h"
 
-static ProcRecord brightness_contrast_proc;
-static ProcRecord levels_proc;
-static ProcRecord levels_auto_proc;
-static ProcRecord levels_stretch_proc;
-static ProcRecord posterize_proc;
-static ProcRecord desaturate_proc;
-static ProcRecord desaturate_full_proc;
-static ProcRecord equalize_proc;
-static ProcRecord invert_proc;
-static ProcRecord curves_spline_proc;
-static ProcRecord curves_explicit_proc;
-static ProcRecord color_balance_proc;
-static ProcRecord colorize_proc;
-static ProcRecord histogram_proc;
-static ProcRecord hue_saturation_proc;
-static ProcRecord threshold_proc;
 
-void
-register_color_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &brightness_contrast_proc);
-  procedural_db_register (gimp, &levels_proc);
-  procedural_db_register (gimp, &levels_auto_proc);
-  procedural_db_register (gimp, &levels_stretch_proc);
-  procedural_db_register (gimp, &posterize_proc);
-  procedural_db_register (gimp, &desaturate_proc);
-  procedural_db_register (gimp, &desaturate_full_proc);
-  procedural_db_register (gimp, &equalize_proc);
-  procedural_db_register (gimp, &invert_proc);
-  procedural_db_register (gimp, &curves_spline_proc);
-  procedural_db_register (gimp, &curves_explicit_proc);
-  procedural_db_register (gimp, &color_balance_proc);
-  procedural_db_register (gimp, &colorize_proc);
-  procedural_db_register (gimp, &histogram_proc);
-  procedural_db_register (gimp, &hue_saturation_proc);
-  procedural_db_register (gimp, &threshold_proc);
-}
-
-static Argument *
-brightness_contrast_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+brightness_contrast_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 brightness;
   gint32 contrast;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  brightness = args[1].value.pdb_int;
-  if (brightness < -127 || brightness > 127)
-    success = FALSE;
-
-  contrast = args[2].value.pdb_int;
-  if (contrast < -127 || contrast > 127)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  brightness = g_value_get_int (&args->values[1]);
+  contrast = g_value_get_int (&args->values[2]);
 
   if (success)
     {
@@ -128,9 +86,9 @@ brightness_contrast_invoker (Gimp         *gimp,
                                                  contrast / 127.0,
                                                  gimp_drawable_bytes (drawable));
 
-              pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                                  x, y, width, height, FALSE);
-              pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+              pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                                  x, y, width, height, TRUE);
 
               pixel_regions_process_parallel ((PixelProcessorFunc)
@@ -145,51 +103,15 @@ brightness_contrast_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&brightness_contrast_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg brightness_contrast_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "brightness",
-    "Brightness adjustment: (-127 <= brightness <= 127)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "contrast",
-    "Contrast adjustment: (-127 <= contrast <= 127)"
-  }
-};
-
-static ProcRecord brightness_contrast_proc =
-{
-  "gimp-brightness-contrast",
-  "gimp-brightness-contrast",
-  "Modify brightness/contrast in the specified drawable.",
-  "This procedures allows the brightness and contrast of the specified drawable to be modified. Both 'brightness' and 'contrast' parameters are defined between -127 and 127.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  brightness_contrast_inargs,
-  0,
-  NULL,
-  { { brightness_contrast_invoker } }
-};
-
-static Argument *
-levels_invoker (Gimp         *gimp,
-                GimpContext  *context,
-                GimpProgress *progress,
-                Argument     *args)
+static GValueArray *
+levels_invoker (GimpProcedure     *procedure,
+                Gimp              *gimp,
+                GimpContext       *context,
+                GimpProgress      *progress,
+                const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -200,33 +122,13 @@ levels_invoker (Gimp         *gimp,
   gint32 low_output;
   gint32 high_output;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  channel = args[1].value.pdb_int;
-  if (channel < GIMP_HISTOGRAM_VALUE || channel > GIMP_HISTOGRAM_ALPHA)
-    success = FALSE;
-
-  low_input = args[2].value.pdb_int;
-  if (low_input < 0 || low_input > 255)
-    success = FALSE;
-
-  high_input = args[3].value.pdb_int;
-  if (high_input < 0 || high_input > 255)
-    success = FALSE;
-
-  gamma = args[4].value.pdb_float;
-  if (gamma < 0.1 || gamma > 10.0)
-    success = FALSE;
-
-  low_output = args[5].value.pdb_int;
-  if (low_output < 0 || low_output > 255)
-    success = FALSE;
-
-  high_output = args[6].value.pdb_int;
-  if (high_output < 0 || high_output > 255)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  channel = g_value_get_enum (&args->values[1]);
+  low_input = g_value_get_int (&args->values[2]);
+  high_input = g_value_get_int (&args->values[3]);
+  gamma = g_value_get_double (&args->values[4]);
+  low_output = g_value_get_int (&args->values[5]);
+  high_output = g_value_get_int (&args->values[6]);
 
   if (success)
     {
@@ -241,85 +143,25 @@ levels_invoker (Gimp         *gimp,
       if (success)
         gimp_drawable_levels (drawable, context,
                               channel,
-                              low_input,
-                              high_input,
+                              low_input, high_input,
                               gamma,
-                              low_output,
-                              high_output);
+                              low_output, high_output);
     }
 
-  return procedural_db_return_args (&levels_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg levels_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "channel",
-    "The channel to modify: { GIMP_HISTOGRAM_VALUE (0), GIMP_HISTOGRAM_RED (1), GIMP_HISTOGRAM_GREEN (2), GIMP_HISTOGRAM_BLUE (3), GIMP_HISTOGRAM_ALPHA (4) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "low-input",
-    "Intensity of lowest input: (0 <= low_input <= 255)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "high-input",
-    "Intensity of highest input: (0 <= high_input <= 255)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "gamma",
-    "Gamma correction factor: (0.1 <= gamma <= 10)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "low-output",
-    "Intensity of lowest output: (0 <= low_output <= 255)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "high-output",
-    "Intensity of highest output: (0 <= high_output <= 255)"
-  }
-};
-
-static ProcRecord levels_proc =
-{
-  "gimp-levels",
-  "gimp-levels",
-  "Modifies intensity levels in the specified drawable.",
-  "This tool allows intensity levels in the specified drawable to be remapped according to a set of parameters. The low/high input levels specify an initial mapping from the source intensities. The gamma value determines how intensities between the low and high input intensities are interpolated. A gamma value of 1.0 results in a linear interpolation. Higher gamma values result in more high-level intensities. Lower gamma values result in more low-level intensities. The low/high output levels constrain the final intensity mapping--that is, no final intensity will be lower than the low output level and no final intensity will be higher than the high output level. This tool is only valid on RGB color and grayscale images. It will not operate on indexed drawables.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  7,
-  levels_inargs,
-  0,
-  NULL,
-  { { levels_invoker } }
-};
-
-static Argument *
-levels_auto_invoker (Gimp         *gimp,
-                     GimpContext  *context,
-                     GimpProgress *progress,
-                     Argument     *args)
+static GValueArray *
+levels_auto_invoker (GimpProcedure     *procedure,
+                     Gimp              *gimp,
+                     GimpContext       *context,
+                     GimpProgress      *progress,
+                     const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
@@ -331,48 +173,20 @@ levels_auto_invoker (Gimp         *gimp,
         gimp_drawable_levels_stretch (drawable, context);
     }
 
-  return procedural_db_return_args (&levels_auto_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg levels_auto_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcRecord levels_auto_proc =
-{
-  "gimp-levels-auto",
-  "gimp-levels-auto",
-  "This procedure is deprecated! Use 'gimp_levels_stretch' instead.",
-  "This procedure is deprecated! Use 'gimp_levels_stretch' instead.",
-  "",
-  "",
-  "",
-  "gimp_levels_stretch",
-  GIMP_INTERNAL,
-  1,
-  levels_auto_inargs,
-  0,
-  NULL,
-  { { levels_auto_invoker } }
-};
-
-static Argument *
-levels_stretch_invoker (Gimp         *gimp,
-                        GimpContext  *context,
-                        GimpProgress *progress,
-                        Argument     *args)
+static GValueArray *
+levels_stretch_invoker (GimpProcedure     *procedure,
+                        Gimp              *gimp,
+                        GimpContext       *context,
+                        GimpProgress      *progress,
+                        const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
@@ -384,53 +198,22 @@ levels_stretch_invoker (Gimp         *gimp,
         gimp_drawable_levels_stretch (drawable, context);
     }
 
-  return procedural_db_return_args (&levels_stretch_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg levels_stretch_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcRecord levels_stretch_proc =
-{
-  "gimp-levels-stretch",
-  "gimp-levels-stretch",
-  "Automatically modifies intensity levels in the specified drawable.",
-  "This procedure allows intensity levels in the specified drawable to be remapped according to a set of guessed parameters. It is equivalent to clicking the \"Auto\" button in the Levels tool. This procedure is only valid on RGB color and grayscale images. It will not operate on indexed drawables.",
-  "Joao S.O. Bueno, Shawn Willden",
-  "Joao S.O. Bueno, Shawn Willden",
-  "2003",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  levels_stretch_inargs,
-  0,
-  NULL,
-  { { levels_stretch_invoker } }
-};
-
-static Argument *
-posterize_invoker (Gimp         *gimp,
-                   GimpContext  *context,
-                   GimpProgress *progress,
-                   Argument     *args)
+static GValueArray *
+posterize_invoker (GimpProcedure     *procedure,
+                   Gimp              *gimp,
+                   GimpContext       *context,
+                   GimpProgress      *progress,
+                   const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 levels;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  levels = args[1].value.pdb_int;
-  if (levels < 2 || levels > 255)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  levels = g_value_get_int (&args->values[1]);
 
   if (success)
     {
@@ -450,9 +233,9 @@ posterize_invoker (Gimp         *gimp,
 
               lut = posterize_lut_new (levels, gimp_drawable_bytes (drawable));
 
-              pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                                  x, y, width, height, FALSE);
-              pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+              pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                                  x, y, width, height, TRUE);
 
               pixel_regions_process_parallel ((PixelProcessorFunc)
@@ -467,53 +250,20 @@ posterize_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&posterize_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg posterize_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "levels",
-    "Levels of posterization: (2 <= levels <= 255)"
-  }
-};
-
-static ProcRecord posterize_proc =
-{
-  "gimp-posterize",
-  "gimp-posterize",
-  "Posterize the specified drawable.",
-  "This procedures reduces the number of shades allows in each intensity channel to the specified 'levels' parameter.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  posterize_inargs,
-  0,
-  NULL,
-  { { posterize_invoker } }
-};
-
-static Argument *
-desaturate_invoker (Gimp         *gimp,
-                    GimpContext  *context,
-                    GimpProgress *progress,
-                    Argument     *args)
+static GValueArray *
+desaturate_invoker (GimpProcedure     *procedure,
+                    Gimp              *gimp,
+                    GimpContext       *context,
+                    GimpProgress      *progress,
+                    const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
@@ -525,53 +275,22 @@ desaturate_invoker (Gimp         *gimp,
         gimp_drawable_desaturate (drawable, GIMP_DESATURATE_LIGHTNESS);
     }
 
-  return procedural_db_return_args (&desaturate_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg desaturate_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcRecord desaturate_proc =
-{
-  "gimp-desaturate",
-  "gimp-desaturate",
-  "Desaturate the contents of the specified drawable.",
-  "This procedure desaturates the contents of the specified drawable. This procedure only works on drawables of type RGB color.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  desaturate_inargs,
-  0,
-  NULL,
-  { { desaturate_invoker } }
-};
-
-static Argument *
-desaturate_full_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+desaturate_full_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 desaturate_mode;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  desaturate_mode = args[1].value.pdb_int;
-  if (desaturate_mode < GIMP_DESATURATE_LIGHTNESS || desaturate_mode > GIMP_DESATURATE_AVERAGE)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  desaturate_mode = g_value_get_enum (&args->values[1]);
 
   if (success)
     {
@@ -580,59 +299,25 @@ desaturate_full_invoker (Gimp         *gimp,
         success = FALSE;
 
       if (success)
-        gimp_drawable_desaturate (drawable, (GimpDesaturateMode) desaturate_mode);
+        gimp_drawable_desaturate (drawable, desaturate_mode);
     }
 
-  return procedural_db_return_args (&desaturate_full_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg desaturate_full_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "desaturate-mode",
-    "The formula to use to desaturate"
-  }
-};
-
-static ProcRecord desaturate_full_proc =
-{
-  "gimp-desaturate-full",
-  "gimp-desaturate-full",
-  "Desaturate the contents of the specified drawable, with the specified formula.",
-  "This procedure desaturates the contents of the specified drawable, with the specified formula. This procedure only works on drawables of type RGB color.",
-  "Karine Delvare",
-  "Karine Delvare",
-  "2005",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  desaturate_full_inargs,
-  0,
-  NULL,
-  { { desaturate_full_invoker } }
-};
-
-static Argument *
-equalize_invoker (Gimp         *gimp,
-                  GimpContext  *context,
-                  GimpProgress *progress,
-                  Argument     *args)
+static GValueArray *
+equalize_invoker (GimpProcedure     *procedure,
+                  Gimp              *gimp,
+                  GimpContext       *context,
+                  GimpProgress      *progress,
+                  const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gboolean mask_only;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  mask_only = args[1].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  mask_only = g_value_get_boolean (&args->values[1]);
 
   if (success)
     {
@@ -644,53 +329,20 @@ equalize_invoker (Gimp         *gimp,
         gimp_drawable_equalize (drawable, mask_only);
     }
 
-  return procedural_db_return_args (&equalize_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg equalize_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "mask-only",
-    "Equalization option"
-  }
-};
-
-static ProcRecord equalize_proc =
-{
-  "gimp-equalize",
-  "gimp-equalize",
-  "Equalize the contents of the specified drawable.",
-  "This procedure equalizes the contents of the specified drawable. Each intensity channel is equalizeed independently. The equalized intensity is given as inten' = (255 - inten). Indexed color drawables are not valid for this operation. The 'mask_only' option specifies whether to adjust only the area of the image within the selection bounds, or the entire image based on the histogram of the selected area. If there is no selection, the entire image is adjusted based on the histogram for the entire image.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  equalize_inargs,
-  0,
-  NULL,
-  { { equalize_invoker } }
-};
-
-static Argument *
-invert_invoker (Gimp         *gimp,
-                GimpContext  *context,
-                GimpProgress *progress,
-                Argument     *args)
+static GValueArray *
+invert_invoker (GimpProcedure     *procedure,
+                Gimp              *gimp,
+                GimpContext       *context,
+                GimpProgress      *progress,
+                const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
 
   if (success)
     {
@@ -702,61 +354,26 @@ invert_invoker (Gimp         *gimp,
         gimp_drawable_invert (drawable);
     }
 
-  return procedural_db_return_args (&invert_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg invert_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  }
-};
-
-static ProcRecord invert_proc =
-{
-  "gimp-invert",
-  "gimp-invert",
-  "Invert the contents of the specified drawable.",
-  "This procedure inverts the contents of the specified drawable. Each intensity channel is inverted independently. The inverted intensity is given as inten' = (255 - inten). Indexed color drawables are not valid for this operation.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  invert_inargs,
-  0,
-  NULL,
-  { { invert_invoker } }
-};
-
-static Argument *
-curves_spline_invoker (Gimp         *gimp,
-                       GimpContext  *context,
-                       GimpProgress *progress,
-                       Argument     *args)
+static GValueArray *
+curves_spline_invoker (GimpProcedure     *procedure,
+                       Gimp              *gimp,
+                       GimpContext       *context,
+                       GimpProgress      *progress,
+                       const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 channel;
   gint32 num_points;
-  guint8 *control_pts;
+  const guint8 *control_pts;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  channel = args[1].value.pdb_int;
-  if (channel < GIMP_HISTOGRAM_VALUE || channel > GIMP_HISTOGRAM_ALPHA)
-    success = FALSE;
-
-  num_points = args[2].value.pdb_int;
-  if (num_points <= 3 || num_points > 34)
-    success = FALSE;
-
-  control_pts = (guint8 *) args[3].value.pdb_pointer;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  channel = g_value_get_enum (&args->values[1]);
+  num_points = g_value_get_int (&args->values[2]);
+  control_pts = gimp_value_get_int8array (&args->values[3]);
 
   if (success)
     {
@@ -806,9 +423,9 @@ curves_spline_invoker (Gimp         *gimp,
                               &c,
                               gimp_drawable_bytes (drawable));
 
-              pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                                  x, y, width, height, FALSE);
-              pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+              pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                                  x, y, width, height, TRUE);
 
               pixel_regions_process_parallel ((PixelProcessorFunc)
@@ -823,76 +440,26 @@ curves_spline_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&curves_spline_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg curves_spline_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "channel",
-    "The channel to modify: { GIMP_HISTOGRAM_VALUE (0), GIMP_HISTOGRAM_RED (1), GIMP_HISTOGRAM_GREEN (2), GIMP_HISTOGRAM_BLUE (3), GIMP_HISTOGRAM_ALPHA (4) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-points",
-    "The number of values in the control point array (3 < num_points <= 34)"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "control-pts",
-    "The spline control points: { cp1.x, cp1.y, cp2.x, cp2.y, ... }"
-  }
-};
-
-static ProcRecord curves_spline_proc =
-{
-  "gimp-curves-spline",
-  "gimp-curves-spline",
-  "Modifies the intensity curve(s) for specified drawable.",
-  "Modifies the intensity mapping for one channel in the specified drawable. The drawable must be either grayscale or RGB, and the channel can be either an intensity component, or the value. The 'control_pts' parameter is an array of integers which define a set of control points which describe a Catmull Rom spline which yields the final intensity curve. Use the 'gimp_curves_explicit' function to explicitly modify intensity levels.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  4,
-  curves_spline_inargs,
-  0,
-  NULL,
-  { { curves_spline_invoker } }
-};
-
-static Argument *
-curves_explicit_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+curves_explicit_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 channel;
   gint32 num_bytes;
-  guint8 *curve;
+  const guint8 *curve;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  channel = args[1].value.pdb_int;
-  if (channel < GIMP_HISTOGRAM_VALUE || channel > GIMP_HISTOGRAM_ALPHA)
-    success = FALSE;
-
-  num_bytes = args[2].value.pdb_int;
-  if (num_bytes <= 0)
-    success = FALSE;
-
-  curve = (guint8 *) args[3].value.pdb_pointer;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  channel = g_value_get_enum (&args->values[1]);
+  num_bytes = g_value_get_int (&args->values[2]);
+  curve = gimp_value_get_int8array (&args->values[3]);
 
   if (success)
     {
@@ -933,9 +500,9 @@ curves_explicit_invoker (Gimp         *gimp,
                               &c,
                               gimp_drawable_bytes (drawable));
 
-              pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                                  x, y, width, height, FALSE);
-              pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+              pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                                  x, y, width, height, TRUE);
 
               pixel_regions_process_parallel ((PixelProcessorFunc)
@@ -950,56 +517,15 @@ curves_explicit_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&curves_explicit_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg curves_explicit_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "channel",
-    "The channel to modify: { GIMP_HISTOGRAM_VALUE (0), GIMP_HISTOGRAM_RED (1), GIMP_HISTOGRAM_GREEN (2), GIMP_HISTOGRAM_BLUE (3), GIMP_HISTOGRAM_ALPHA (4) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-bytes",
-    "The number of bytes in the new curve (always 256)"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "curve",
-    "The explicit curve"
-  }
-};
-
-static ProcRecord curves_explicit_proc =
-{
-  "gimp-curves-explicit",
-  "gimp-curves-explicit",
-  "Modifies the intensity curve(s) for specified drawable.",
-  "Modifies the intensity mapping for one channel in the specified drawable. The drawable must be either grayscale or RGB, and the channel can be either an intensity component, or the value. The 'curve' parameter is an array of bytes which explicitly defines how each pixel value in the drawable will be modified. Use the 'gimp_curves_spline' function to modify intensity levels with Catmull Rom splines.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  4,
-  curves_explicit_inargs,
-  0,
-  NULL,
-  { { curves_explicit_invoker } }
-};
-
-static Argument *
-color_balance_invoker (Gimp         *gimp,
-                       GimpContext  *context,
-                       GimpProgress *progress,
-                       Argument     *args)
+static GValueArray *
+color_balance_invoker (GimpProcedure     *procedure,
+                       Gimp              *gimp,
+                       GimpContext       *context,
+                       GimpProgress      *progress,
+                       const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -1009,27 +535,12 @@ color_balance_invoker (Gimp         *gimp,
   gdouble magenta_green;
   gdouble yellow_blue;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  transfer_mode = args[1].value.pdb_int;
-  if (transfer_mode < GIMP_SHADOWS || transfer_mode > GIMP_HIGHLIGHTS)
-    success = FALSE;
-
-  preserve_lum = args[2].value.pdb_int ? TRUE : FALSE;
-
-  cyan_red = args[3].value.pdb_float;
-  if (cyan_red < -100.0 || cyan_red > 100.0)
-    success = FALSE;
-
-  magenta_green = args[4].value.pdb_float;
-  if (magenta_green < -100.0 || magenta_green > 100.0)
-    success = FALSE;
-
-  yellow_blue = args[5].value.pdb_float;
-  if (yellow_blue < -100.0 || yellow_blue > 100.0)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  transfer_mode = g_value_get_enum (&args->values[1]);
+  preserve_lum = g_value_get_boolean (&args->values[2]);
+  cyan_red = g_value_get_double (&args->values[3]);
+  magenta_green = g_value_get_double (&args->values[4]);
+  yellow_blue = g_value_get_double (&args->values[5]);
 
   if (success)
     {
@@ -1057,9 +568,9 @@ color_balance_invoker (Gimp         *gimp,
 
               color_balance_create_lookup_tables (&cb);
 
-              pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                                  x, y, width, height, FALSE);
-              pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+              pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                                  x, y, width, height, TRUE);
 
               pixel_regions_process_parallel ((PixelProcessorFunc) color_balance,
@@ -1071,66 +582,15 @@ color_balance_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&color_balance_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg color_balance_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "transfer-mode",
-    "Transfer mode: { GIMP_SHADOWS (0), GIMP_MIDTONES (1), GIMP_HIGHLIGHTS (2) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "preserve-lum",
-    "Preserve luminosity values at each pixel"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "cyan-red",
-    "Cyan-Red color balance: (-100 <= cyan_red <= 100)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "magenta-green",
-    "Magenta-Green color balance: (-100 <= magenta_green <= 100)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "yellow-blue",
-    "Yellow-Blue color balance: (-100 <= yellow_blue <= 100)"
-  }
-};
-
-static ProcRecord color_balance_proc =
-{
-  "gimp-color-balance",
-  "gimp-color-balance",
-  "Modify the color balance of the specified drawable.",
-  "Modify the color balance of the specified drawable. There are three axis which can be modified: cyan-red, magenta-green, and yellow-blue. Negative values increase the amount of the former, positive values increase the amount of the latter. Color balance can be controlled with the 'transfer_mode' setting, which allows shadows, midtones, and highlights in an image to be affected differently. The 'preserve_lum' parameter, if non-zero, ensures that the luminosity of each pixel remains fixed.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  6,
-  color_balance_inargs,
-  0,
-  NULL,
-  { { color_balance_invoker } }
-};
-
-static Argument *
-colorize_invoker (Gimp         *gimp,
-                  GimpContext  *context,
-                  GimpProgress *progress,
-                  Argument     *args)
+static GValueArray *
+colorize_invoker (GimpProcedure     *procedure,
+                  Gimp              *gimp,
+                  GimpContext       *context,
+                  GimpProgress      *progress,
+                  const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -1138,21 +598,10 @@ colorize_invoker (Gimp         *gimp,
   gdouble saturation;
   gdouble lightness;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  hue = args[1].value.pdb_float;
-  if (hue < 0.0 || hue > 360.0)
-    success = FALSE;
-
-  saturation = args[2].value.pdb_float;
-  if (saturation < 0.0 || saturation > 100.0)
-    success = FALSE;
-
-  lightness = args[3].value.pdb_float;
-  if (lightness < -100.0 || lightness > 100.0)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  hue = g_value_get_double (&args->values[1]);
+  saturation = g_value_get_double (&args->values[2]);
+  lightness = g_value_get_double (&args->values[3]);
 
   if (success)
     {
@@ -1178,9 +627,9 @@ colorize_invoker (Gimp         *gimp,
 
               colorize_calculate (&colors);
 
-              pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                                  x, y, width, height, FALSE);
-              pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+              pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                                  x, y, width, height, TRUE);
 
               pixel_regions_process_parallel ((PixelProcessorFunc) colorize,
@@ -1192,85 +641,33 @@ colorize_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&colorize_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg colorize_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "hue",
-    "Hue in degrees: (0 <= hue <= 360)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "saturation",
-    "Saturation in percent: (0 <= saturation <= 100)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "lightness",
-    "Lightness in percent: (-100 <= lightness <= 100)"
-  }
-};
-
-static ProcRecord colorize_proc =
-{
-  "gimp-colorize",
-  "gimp-colorize",
-  "Render the drawable as a grayscale image seen through a colored glass.",
-  "Desatures the drawable, then tints it with the specified color. This tool is only valid on RGB color images. It will not operate on grayscale or indexed drawables.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  4,
-  colorize_inargs,
-  0,
-  NULL,
-  { { colorize_invoker } }
-};
-
-static Argument *
-histogram_invoker (Gimp         *gimp,
-                   GimpContext  *context,
-                   GimpProgress *progress,
-                   Argument     *args)
+static GValueArray *
+histogram_invoker (GimpProcedure     *procedure,
+                   Gimp              *gimp,
+                   GimpContext       *context,
+                   GimpProgress      *progress,
+                   const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 channel;
   gint32 start_range;
   gint32 end_range;
-  gdouble mean = 0;
-  gdouble std_dev = 0;
-  gdouble median = 0;
-  gdouble pixels = 0;
-  gdouble count = 0;
-  gdouble percentile = 0;
+  gdouble mean = 0.0;
+  gdouble std_dev = 0.0;
+  gdouble median = 0.0;
+  gdouble pixels = 0.0;
+  gdouble count = 0.0;
+  gdouble percentile = 0.0;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  channel = args[1].value.pdb_int;
-  if (channel < GIMP_HISTOGRAM_VALUE || channel > GIMP_HISTOGRAM_ALPHA)
-    success = FALSE;
-
-  start_range = args[2].value.pdb_int;
-  if (start_range < 0 || start_range >= 256)
-    success = FALSE;
-
-  end_range = args[3].value.pdb_int;
-  if (end_range < 0 || end_range >= 256)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  channel = g_value_get_enum (&args->values[1]);
+  start_range = g_value_get_int (&args->values[2]);
+  end_range = g_value_get_int (&args->values[3]);
 
   if (success)
     {
@@ -1303,102 +700,27 @@ histogram_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&histogram_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_float = mean;
-      return_args[2].value.pdb_float = std_dev;
-      return_args[3].value.pdb_float = median;
-      return_args[4].value.pdb_float = pixels;
-      return_args[5].value.pdb_float = count;
-      return_args[6].value.pdb_float = percentile;
+      g_value_set_double (&return_vals->values[1], mean);
+      g_value_set_double (&return_vals->values[2], std_dev);
+      g_value_set_double (&return_vals->values[3], median);
+      g_value_set_double (&return_vals->values[4], pixels);
+      g_value_set_double (&return_vals->values[5], count);
+      g_value_set_double (&return_vals->values[6], percentile);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg histogram_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "channel",
-    "The channel to modify: { GIMP_HISTOGRAM_VALUE (0), GIMP_HISTOGRAM_RED (1), GIMP_HISTOGRAM_GREEN (2), GIMP_HISTOGRAM_BLUE (3), GIMP_HISTOGRAM_ALPHA (4) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "start-range",
-    "Start of the intensity measurement range"
-  },
-  {
-    GIMP_PDB_INT32,
-    "end-range",
-    "End of the intensity measurement range"
-  }
-};
-
-static ProcArg histogram_outargs[] =
-{
-  {
-    GIMP_PDB_FLOAT,
-    "mean",
-    "Mean intensity value"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "std-dev",
-    "Standard deviation of intensity values"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "median",
-    "Median intensity value"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "pixels",
-    "Alpha-weighted pixel count for entire image"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "count",
-    "Alpha-weighted pixel count for range"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "percentile",
-    "Percentile that range falls under"
-  }
-};
-
-static ProcRecord histogram_proc =
-{
-  "gimp-histogram",
-  "gimp-histogram",
-  "Returns information on the intensity histogram for the specified drawable.",
-  "This tool makes it possible to gather information about the intensity histogram of a drawable. A channel to examine is first specified. This can be either value, red, green, or blue, depending on whether the drawable is of type color or grayscale. The drawable may not be indexed. Second, a range of intensities are specified. The gimp_histogram function returns statistics based on the pixels in the drawable that fall under this range of values. Mean, standard deviation, median, number of pixels, and percentile are all returned. Additionally, the total count of pixels in the image is returned. Counts of pixels are weighted by any associated alpha values and by the current selection mask. That is, pixels that lie outside an active selection mask will not be counted. Similarly, pixels with transparent alpha values will not be counted.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  4,
-  histogram_inargs,
-  6,
-  histogram_outargs,
-  { { histogram_invoker } }
-};
-
-static Argument *
-hue_saturation_invoker (Gimp         *gimp,
-                        GimpContext  *context,
-                        GimpProgress *progress,
-                        Argument     *args)
+static GValueArray *
+hue_saturation_invoker (GimpProcedure     *procedure,
+                        Gimp              *gimp,
+                        GimpContext       *context,
+                        GimpProgress      *progress,
+                        const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
@@ -1407,25 +729,11 @@ hue_saturation_invoker (Gimp         *gimp,
   gdouble lightness;
   gdouble saturation;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  hue_range = args[1].value.pdb_int;
-  if (hue_range < GIMP_ALL_HUES || hue_range > GIMP_MAGENTA_HUES)
-    success = FALSE;
-
-  hue_offset = args[2].value.pdb_float;
-  if (hue_offset < -180.0 || hue_offset > 180.0)
-    success = FALSE;
-
-  lightness = args[3].value.pdb_float;
-  if (lightness < -100.0 || lightness > 100.0)
-    success = FALSE;
-
-  saturation = args[4].value.pdb_float;
-  if (saturation < -100.0 || saturation > 100.0)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  hue_range = g_value_get_enum (&args->values[1]);
+  hue_offset = g_value_get_double (&args->values[2]);
+  lightness = g_value_get_double (&args->values[3]);
+  saturation = g_value_get_double (&args->values[4]);
 
   if (success)
     {
@@ -1452,9 +760,9 @@ hue_saturation_invoker (Gimp         *gimp,
               /* Calculate the transfer arrays */
               hue_saturation_calculate_transfers (&hs);
 
-              pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                                  x, y, width, height, FALSE);
-              pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+              pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                                  x, y, width, height, TRUE);
 
               pixel_regions_process_parallel ((PixelProcessorFunc) hue_saturation,
@@ -1466,78 +774,24 @@ hue_saturation_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&hue_saturation_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg hue_saturation_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "hue-range",
-    "Range of affected hues: { GIMP_ALL_HUES (0), GIMP_RED_HUES (1), GIMP_YELLOW_HUES (2), GIMP_GREEN_HUES (3), GIMP_CYAN_HUES (4), GIMP_BLUE_HUES (5), GIMP_MAGENTA_HUES (6) }"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "hue-offset",
-    "Hue offset in degrees: (-180 <= hue_offset <= 180)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "lightness",
-    "lightness modification: (-100 <= lightness <= 100)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "saturation",
-    "saturation modification: (-100 <= saturation <= 100)"
-  }
-};
-
-static ProcRecord hue_saturation_proc =
-{
-  "gimp-hue-saturation",
-  "gimp-hue-saturation",
-  "Modify hue, lightness, and saturation in the specified drawable.",
-  "This procedures allows the hue, lightness, and saturation in the specified drawable to be modified. The 'hue_range' parameter provides the capability to limit range of affected hues.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  hue_saturation_inargs,
-  0,
-  NULL,
-  { { hue_saturation_invoker } }
-};
-
-static Argument *
-threshold_invoker (Gimp         *gimp,
-                   GimpContext  *context,
-                   GimpProgress *progress,
-                   Argument     *args)
+static GValueArray *
+threshold_invoker (GimpProcedure     *procedure,
+                   Gimp              *gimp,
+                   GimpContext       *context,
+                   GimpProgress      *progress,
+                   const GValueArray *args)
 {
   gboolean success = TRUE;
   GimpDrawable *drawable;
   gint32 low_threshold;
   gint32 high_threshold;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  low_threshold = args[1].value.pdb_int;
-  if (low_threshold < 0 || low_threshold > 255)
-    success = FALSE;
-
-  high_threshold = args[2].value.pdb_int;
-  if (high_threshold < 0 || high_threshold > 255)
-    success = FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  low_threshold = g_value_get_int (&args->values[1]);
+  high_threshold = g_value_get_int (&args->values[2]);
 
   if (success)
     {
@@ -1560,9 +814,9 @@ threshold_invoker (Gimp         *gimp,
               tr.low_threshold  = low_threshold;
               tr.high_threshold = high_threshold;
 
-              pixel_region_init (&srcPR, gimp_drawable_data (drawable),
+              pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                                  x, y, width, height, FALSE);
-              pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
+              pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
                                  x, y, width, height, TRUE);
 
               pixel_regions_process_parallel ((PixelProcessorFunc) threshold,
@@ -1574,42 +828,625 @@ threshold_invoker (Gimp         *gimp,
         }
     }
 
-  return procedural_db_return_args (&threshold_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg threshold_inargs[] =
+void
+register_color_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "low-threshold",
-    "The low threshold value: 0 <= low_threshold <= 255"
-  },
-  {
-    GIMP_PDB_INT32,
-    "high-threshold",
-    "The high threshold value: 0 <= high_threshold <= 255"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord threshold_proc =
-{
-  "gimp-threshold",
-  "gimp-threshold",
-  "Threshold the specified drawable.",
-  "This procedures generates a threshold map of the specified drawable. All pixels between the values of 'low_threshold' and 'high_threshold' are replaced with white, and all other pixels with black.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  threshold_inargs,
-  0,
-  NULL,
-  { { threshold_invoker } }
-};
+  /*
+   * gimp-brightness-contrast
+   */
+  procedure = gimp_procedure_new (brightness_contrast_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-brightness-contrast");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-brightness-contrast",
+                                     "Modify brightness/contrast in the specified drawable.",
+                                     "This procedures allows the brightness and contrast of the specified drawable to be modified. Both 'brightness' and 'contrast' parameters are defined between -127 and 127.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("brightness",
+                                                      "brightness",
+                                                      "Brightness adjustment (-127 <= brightness <= 127)",
+                                                      -127, 127, -127,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("contrast",
+                                                      "contrast",
+                                                      "Contrast adjustment (-127 <= contrast <= 127)",
+                                                      -127, 127, -127,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-levels
+   */
+  procedure = gimp_procedure_new (levels_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-levels");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-levels",
+                                     "Modifies intensity levels in the specified drawable.",
+                                     "This tool allows intensity levels in the specified drawable to be remapped according to a set of parameters. The low/high input levels specify an initial mapping from the source intensities. The gamma value determines how intensities between the low and high input intensities are interpolated. A gamma value of 1.0 results in a linear interpolation. Higher gamma values result in more high-level intensities. Lower gamma values result in more low-level intensities. The low/high output levels constrain the final intensity mapping--that is, no final intensity will be lower than the low output level and no final intensity will be higher than the high output level. This tool is only valid on RGB color and grayscale images. It will not operate on indexed drawables.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("channel",
+                                                  "channel",
+                                                  "The channel to modify: { GIMP_HISTOGRAM_VALUE (0), GIMP_HISTOGRAM_RED (1), GIMP_HISTOGRAM_GREEN (2), GIMP_HISTOGRAM_BLUE (3), GIMP_HISTOGRAM_ALPHA (4) }",
+                                                  GIMP_TYPE_HISTOGRAM_CHANNEL,
+                                                  GIMP_HISTOGRAM_VALUE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("low-input",
+                                                      "low input",
+                                                      "Intensity of lowest input (0 <= low_input <= 255)",
+                                                      0, 255, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("high-input",
+                                                      "high input",
+                                                      "Intensity of highest input (0 <= high_input <= 255)",
+                                                      0, 255, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("gamma",
+                                                    "gamma",
+                                                    "Gamma correction factor (0.1 <= gamma <= 10)",
+                                                    0.1, 10, 0.1,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("low-output",
+                                                      "low output",
+                                                      "Intensity of lowest output (0 <= low_output <= 255)",
+                                                      0, 255, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("high-output",
+                                                      "high output",
+                                                      "Intensity of highest output (0 <= high_output <= 255)",
+                                                      0, 255, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-levels-auto
+   */
+  procedure = gimp_procedure_new (levels_auto_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-levels-auto");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-levels-auto",
+                                     "This procedure is deprecated! Use 'gimp_levels_stretch' instead.",
+                                     "This procedure is deprecated! Use 'gimp_levels_stretch' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp_levels_stretch");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-levels-stretch
+   */
+  procedure = gimp_procedure_new (levels_stretch_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-levels-stretch");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-levels-stretch",
+                                     "Automatically modifies intensity levels in the specified drawable.",
+                                     "This procedure allows intensity levels in the specified drawable to be remapped according to a set of guessed parameters. It is equivalent to clicking the \"Auto\" button in the Levels tool. This procedure is only valid on RGB color and grayscale images. It will not operate on indexed drawables.",
+                                     "Joao S.O. Bueno, Shawn Willden",
+                                     "Joao S.O. Bueno, Shawn Willden",
+                                     "2003",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-posterize
+   */
+  procedure = gimp_procedure_new (posterize_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-posterize");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-posterize",
+                                     "Posterize the specified drawable.",
+                                     "This procedures reduces the number of shades allows in each intensity channel to the specified 'levels' parameter.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("levels",
+                                                      "levels",
+                                                      "Levels of posterization (2 <= levels <= 255)",
+                                                      2, 255, 2,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-desaturate
+   */
+  procedure = gimp_procedure_new (desaturate_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-desaturate");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-desaturate",
+                                     "Desaturate the contents of the specified drawable.",
+                                     "This procedure desaturates the contents of the specified drawable. This procedure only works on drawables of type RGB color.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-desaturate-full
+   */
+  procedure = gimp_procedure_new (desaturate_full_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-desaturate-full");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-desaturate-full",
+                                     "Desaturate the contents of the specified drawable, with the specified formula.",
+                                     "This procedure desaturates the contents of the specified drawable, with the specified formula. This procedure only works on drawables of type RGB color.",
+                                     "Karine Delvare",
+                                     "Karine Delvare",
+                                     "2005",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("desaturate-mode",
+                                                  "desaturate mode",
+                                                  "The formula to use to desaturate",
+                                                  GIMP_TYPE_DESATURATE_MODE,
+                                                  GIMP_DESATURATE_LIGHTNESS,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-equalize
+   */
+  procedure = gimp_procedure_new (equalize_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-equalize");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-equalize",
+                                     "Equalize the contents of the specified drawable.",
+                                     "This procedure equalizes the contents of the specified drawable. Each intensity channel is equalizeed independently. The equalized intensity is given as inten' = (255 - inten). Indexed color drawables are not valid for this operation. The 'mask_only' option specifies whether to adjust only the area of the image within the selection bounds, or the entire image based on the histogram of the selected area. If there is no selection, the entire image is adjusted based on the histogram for the entire image.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("mask-only",
+                                                     "mask only",
+                                                     "Equalization option",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-invert
+   */
+  procedure = gimp_procedure_new (invert_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-invert");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-invert",
+                                     "Invert the contents of the specified drawable.",
+                                     "This procedure inverts the contents of the specified drawable. Each intensity channel is inverted independently. The inverted intensity is given as inten' = (255 - inten). Indexed color drawables are not valid for this operation.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-curves-spline
+   */
+  procedure = gimp_procedure_new (curves_spline_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-curves-spline");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-curves-spline",
+                                     "Modifies the intensity curve(s) for specified drawable.",
+                                     "Modifies the intensity mapping for one channel in the specified drawable. The drawable must be either grayscale or RGB, and the channel can be either an intensity component, or the value. The 'control_pts' parameter is an array of integers which define a set of control points which describe a Catmull Rom spline which yields the final intensity curve. Use the 'gimp_curves_explicit' function to explicitly modify intensity levels.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("channel",
+                                                  "channel",
+                                                  "The channel to modify: { GIMP_HISTOGRAM_VALUE (0), GIMP_HISTOGRAM_RED (1), GIMP_HISTOGRAM_GREEN (2), GIMP_HISTOGRAM_BLUE (3), GIMP_HISTOGRAM_ALPHA (4) }",
+                                                  GIMP_TYPE_HISTOGRAM_CHANNEL,
+                                                  GIMP_HISTOGRAM_VALUE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("num-points",
+                                                      "num points",
+                                                      "The number of values in the control point array (4 <= num_points <= 34)",
+                                                      4, 34, 4,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int8_array ("control-pts",
+                                                           "control pts",
+                                                           "The spline control points: { cp1.x, cp1.y, cp2.x, cp2.y, ... }",
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-curves-explicit
+   */
+  procedure = gimp_procedure_new (curves_explicit_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-curves-explicit");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-curves-explicit",
+                                     "Modifies the intensity curve(s) for specified drawable.",
+                                     "Modifies the intensity mapping for one channel in the specified drawable. The drawable must be either grayscale or RGB, and the channel can be either an intensity component, or the value. The 'curve' parameter is an array of bytes which explicitly defines how each pixel value in the drawable will be modified. Use the 'gimp_curves_spline' function to modify intensity levels with Catmull Rom splines.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("channel",
+                                                  "channel",
+                                                  "The channel to modify: { GIMP_HISTOGRAM_VALUE (0), GIMP_HISTOGRAM_RED (1), GIMP_HISTOGRAM_GREEN (2), GIMP_HISTOGRAM_BLUE (3), GIMP_HISTOGRAM_ALPHA (4) }",
+                                                  GIMP_TYPE_HISTOGRAM_CHANNEL,
+                                                  GIMP_HISTOGRAM_VALUE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("num-bytes",
+                                                      "num bytes",
+                                                      "The number of bytes in the new curve (always 256)",
+                                                      0, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int8_array ("curve",
+                                                           "curve",
+                                                           "The explicit curve",
+                                                           GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-color-balance
+   */
+  procedure = gimp_procedure_new (color_balance_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-color-balance");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-color-balance",
+                                     "Modify the color balance of the specified drawable.",
+                                     "Modify the color balance of the specified drawable. There are three axis which can be modified: cyan-red, magenta-green, and yellow-blue. Negative values increase the amount of the former, positive values increase the amount of the latter. Color balance can be controlled with the 'transfer_mode' setting, which allows shadows, midtones, and highlights in an image to be affected differently. The 'preserve_lum' parameter, if TRUE, ensures that the luminosity of each pixel remains fixed.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("transfer-mode",
+                                                  "transfer mode",
+                                                  "Transfer mode: { GIMP_SHADOWS (0), GIMP_MIDTONES (1), GIMP_HIGHLIGHTS (2) }",
+                                                  GIMP_TYPE_TRANSFER_MODE,
+                                                  GIMP_SHADOWS,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("preserve-lum",
+                                                     "preserve lum",
+                                                     "Preserve luminosity values at each pixel",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("cyan-red",
+                                                    "cyan red",
+                                                    "Cyan-Red color balance (-100 <= cyan_red <= 100)",
+                                                    -100, 100, -100,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("magenta-green",
+                                                    "magenta green",
+                                                    "Magenta-Green color balance (-100 <= magenta_green <= 100)",
+                                                    -100, 100, -100,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("yellow-blue",
+                                                    "yellow blue",
+                                                    "Yellow-Blue color balance (-100 <= yellow_blue <= 100)",
+                                                    -100, 100, -100,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-colorize
+   */
+  procedure = gimp_procedure_new (colorize_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-colorize");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-colorize",
+                                     "Render the drawable as a grayscale image seen through a colored glass.",
+                                     "Desatures the drawable, then tints it with the specified color. This tool is only valid on RGB color images. It will not operate on grayscale or indexed drawables.",
+                                     "Sven Neumann <sven@gimp.org>",
+                                     "Sven Neumann",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("hue",
+                                                    "hue",
+                                                    "Hue in degrees (0 <= hue <= 360)",
+                                                    0, 360, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("saturation",
+                                                    "saturation",
+                                                    "Saturation in percent (0 <= saturation <= 100)",
+                                                    0, 100, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("lightness",
+                                                    "lightness",
+                                                    "Lightness in percent (-100 <= lightness <= 100)",
+                                                    -100, 100, -100,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-histogram
+   */
+  procedure = gimp_procedure_new (histogram_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-histogram");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-histogram",
+                                     "Returns information on the intensity histogram for the specified drawable.",
+                                     "This tool makes it possible to gather information about the intensity histogram of a drawable. A channel to examine is first specified. This can be either value, red, green, or blue, depending on whether the drawable is of type color or grayscale. The drawable may not be indexed. Second, a range of intensities are specified. The gimp_histogram function returns statistics based on the pixels in the drawable that fall under this range of values. Mean, standard deviation, median, number of pixels, and percentile are all returned. Additionally, the total count of pixels in the image is returned. Counts of pixels are weighted by any associated alpha values and by the current selection mask. That is, pixels that lie outside an active selection mask will not be counted. Similarly, pixels with transparent alpha values will not be counted.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("channel",
+                                                  "channel",
+                                                  "The channel to modify: { GIMP_HISTOGRAM_VALUE (0), GIMP_HISTOGRAM_RED (1), GIMP_HISTOGRAM_GREEN (2), GIMP_HISTOGRAM_BLUE (3), GIMP_HISTOGRAM_ALPHA (4) }",
+                                                  GIMP_TYPE_HISTOGRAM_CHANNEL,
+                                                  GIMP_HISTOGRAM_VALUE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("start-range",
+                                                      "start range",
+                                                      "Start of the intensity measurement range",
+                                                      0, 256, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("end-range",
+                                                      "end range",
+                                                      "End of the intensity measurement range",
+                                                      0, 256, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("mean",
+                                                        "mean",
+                                                        "Mean intensity value",
+                                                        -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("std-dev",
+                                                        "std dev",
+                                                        "Standard deviation of intensity values",
+                                                        -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("median",
+                                                        "median",
+                                                        "Median intensity value",
+                                                        -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("pixels",
+                                                        "pixels",
+                                                        "Alpha-weighted pixel count for entire image",
+                                                        -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("count",
+                                                        "count",
+                                                        "Alpha-weighted pixel count for range",
+                                                        -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("percentile",
+                                                        "percentile",
+                                                        "Percentile that range falls under",
+                                                        -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-hue-saturation
+   */
+  procedure = gimp_procedure_new (hue_saturation_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-hue-saturation");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-hue-saturation",
+                                     "Modify hue, lightness, and saturation in the specified drawable.",
+                                     "This procedures allows the hue, lightness, and saturation in the specified drawable to be modified. The 'hue_range' parameter provides the capability to limit range of affected hues.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("hue-range",
+                                                  "hue range",
+                                                  "Range of affected hues: { GIMP_ALL_HUES (0), GIMP_RED_HUES (1), GIMP_YELLOW_HUES (2), GIMP_GREEN_HUES (3), GIMP_CYAN_HUES (4), GIMP_BLUE_HUES (5), GIMP_MAGENTA_HUES (6) }",
+                                                  GIMP_TYPE_HUE_RANGE,
+                                                  GIMP_ALL_HUES,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("hue-offset",
+                                                    "hue offset",
+                                                    "Hue offset in degrees (-180 <= hue_offset <= 180)",
+                                                    -180, 180, -180,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("lightness",
+                                                    "lightness",
+                                                    "Lightness modification (-100 <= lightness <= 100)",
+                                                    -100, 100, -100,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("saturation",
+                                                    "saturation",
+                                                    "Saturation modification (-100 <= saturation <= 100)",
+                                                    -100, 100, -100,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-threshold
+   */
+  procedure = gimp_procedure_new (threshold_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-threshold");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-threshold",
+                                     "Threshold the specified drawable.",
+                                     "This procedures generates a threshold map of the specified drawable. All pixels between the values of 'low_threshold' and 'high_threshold' are replaced with white, and all other pixels with black.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1997",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("low-threshold",
+                                                      "low threshold",
+                                                      "The low threshold value (0 <= low_threshold <= 255)",
+                                                      0, 255, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("high-threshold",
+                                                      "high threshold",
+                                                      "The high threshold value (0 <= high_threshold <= 255)",
+                                                      0, 255, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

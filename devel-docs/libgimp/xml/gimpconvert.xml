@@ -133,7 +133,7 @@ location ('Fixed' dithering).</para>
 <listitem><simpara> Dither transparency to fake partial opacity.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>remove_unused</parameter>&nbsp;:</term>
-<listitem><simpara> Remove unused or duplicate colour entries from final palette, ignored if (palette_type == GIMP_MAKE_PALETTE).
+<listitem><simpara> Remove unused or duplicate color entries from final palette, ignored if (palette_type == GIMP_MAKE_PALETTE).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>palette</parameter>&nbsp;:</term>
 <listitem><simpara> The name of the custom palette to use, ignored unless (palette_type == GIMP_CUSTOM_PALETTE).

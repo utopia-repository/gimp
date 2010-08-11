@@ -24,207 +24,190 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "core/gimpdatafactory.h"
 
-static ProcRecord patterns_popup_proc;
-static ProcRecord patterns_close_popup_proc;
-static ProcRecord patterns_set_popup_proc;
 
-void
-register_pattern_select_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &patterns_popup_proc);
-  procedural_db_register (gimp, &patterns_close_popup_proc);
-  procedural_db_register (gimp, &patterns_set_popup_proc);
-}
-
-static Argument *
-patterns_popup_invoker (Gimp         *gimp,
-                        GimpContext  *context,
-                        GimpProgress *progress,
-                        Argument     *args)
+static GValueArray *
+patterns_popup_invoker (GimpProcedure     *procedure,
+                        Gimp              *gimp,
+                        GimpContext       *context,
+                        GimpProgress      *progress,
+                        const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *pattern_callback;
-  gchar *popup_title;
-  gchar *initial_pattern;
+  const gchar *pattern_callback;
+  const gchar *popup_title;
+  const gchar *initial_pattern;
 
-  pattern_callback = (gchar *) args[0].value.pdb_pointer;
-  if (pattern_callback == NULL || !g_utf8_validate (pattern_callback, -1, NULL))
-    success = FALSE;
-
-  popup_title = (gchar *) args[1].value.pdb_pointer;
-  if (popup_title == NULL || !g_utf8_validate (popup_title, -1, NULL))
-    success = FALSE;
-
-  initial_pattern = (gchar *) args[2].value.pdb_pointer;
-  if (initial_pattern && !g_utf8_validate (initial_pattern, -1, NULL))
-    success = FALSE;
+  pattern_callback = g_value_get_string (&args->values[0]);
+  popup_title = g_value_get_string (&args->values[1]);
+  initial_pattern = g_value_get_string (&args->values[2]);
 
   if (success)
     {
       if (gimp->no_interface ||
-          ! procedural_db_lookup (gimp, pattern_callback) ||
+          ! gimp_pdb_lookup (gimp, pattern_callback) ||
           ! gimp_pdb_dialog_new (gimp, context, gimp->pattern_factory->container,
                                  popup_title, pattern_callback, initial_pattern,
                                  NULL))
         success = FALSE;
     }
 
-  return procedural_db_return_args (&patterns_popup_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg patterns_popup_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "pattern-callback",
-    "The callback PDB proc to call when pattern selection is made"
-  },
-  {
-    GIMP_PDB_STRING,
-    "popup-title",
-    "Title to give the pattern popup window"
-  },
-  {
-    GIMP_PDB_STRING,
-    "initial-pattern",
-    "The name of the pattern to set as the first selected"
-  }
-};
-
-static ProcRecord patterns_popup_proc =
-{
-  "gimp-patterns-popup",
-  "gimp-patterns-popup",
-  "Invokes the Gimp pattern selection.",
-  "This procedure popups the pattern selection dialog.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  3,
-  patterns_popup_inargs,
-  0,
-  NULL,
-  { { patterns_popup_invoker } }
-};
-
-static Argument *
-patterns_close_popup_invoker (Gimp         *gimp,
-                              GimpContext  *context,
-                              GimpProgress *progress,
-                              Argument     *args)
+static GValueArray *
+patterns_close_popup_invoker (GimpProcedure     *procedure,
+                              Gimp              *gimp,
+                              GimpContext       *context,
+                              GimpProgress      *progress,
+                              const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *pattern_callback;
+  const gchar *pattern_callback;
 
-  pattern_callback = (gchar *) args[0].value.pdb_pointer;
-  if (pattern_callback == NULL || !g_utf8_validate (pattern_callback, -1, NULL))
-    success = FALSE;
+  pattern_callback = g_value_get_string (&args->values[0]);
 
   if (success)
     {
       if (gimp->no_interface ||
-          ! procedural_db_lookup (gimp, pattern_callback) ||
+          ! gimp_pdb_lookup (gimp, pattern_callback) ||
           ! gimp_pdb_dialog_close (gimp, gimp->pattern_factory->container,
                                    pattern_callback))
         success = FALSE;
     }
 
-  return procedural_db_return_args (&patterns_close_popup_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg patterns_close_popup_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "pattern-callback",
-    "The name of the callback registered for this popup"
-  }
-};
-
-static ProcRecord patterns_close_popup_proc =
-{
-  "gimp-patterns-close-popup",
-  "gimp-patterns-close-popup",
-  "Popdown the Gimp pattern selection.",
-  "This procedure closes an opened pattern selection dialog.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  patterns_close_popup_inargs,
-  0,
-  NULL,
-  { { patterns_close_popup_invoker } }
-};
-
-static Argument *
-patterns_set_popup_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
+static GValueArray *
+patterns_set_popup_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
 {
   gboolean success = TRUE;
-  gchar *pattern_callback;
-  gchar *pattern_name;
+  const gchar *pattern_callback;
+  const gchar *pattern_name;
 
-  pattern_callback = (gchar *) args[0].value.pdb_pointer;
-  if (pattern_callback == NULL || !g_utf8_validate (pattern_callback, -1, NULL))
-    success = FALSE;
-
-  pattern_name = (gchar *) args[1].value.pdb_pointer;
-  if (pattern_name == NULL || !g_utf8_validate (pattern_name, -1, NULL))
-    success = FALSE;
+  pattern_callback = g_value_get_string (&args->values[0]);
+  pattern_name = g_value_get_string (&args->values[1]);
 
   if (success)
     {
       if (gimp->no_interface ||
-          ! procedural_db_lookup (gimp, pattern_callback) ||
+          ! gimp_pdb_lookup (gimp, pattern_callback) ||
           ! gimp_pdb_dialog_set (gimp, gimp->pattern_factory->container,
                                  pattern_callback, pattern_name,
                                  NULL))
         success = FALSE;
     }
 
-  return procedural_db_return_args (&patterns_set_popup_proc, success);
+  return gimp_procedure_get_return_values (procedure, success);
 }
 
-static ProcArg patterns_set_popup_inargs[] =
+void
+register_pattern_select_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "pattern-callback",
-    "The name of the callback registered for this popup"
-  },
-  {
-    GIMP_PDB_STRING,
-    "pattern-name",
-    "The name of the pattern to set as selected"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcRecord patterns_set_popup_proc =
-{
-  "gimp-patterns-set-popup",
-  "gimp-patterns-set-popup",
-  "Sets the current pattern selection in a popup.",
-  "Sets the current pattern selection in a popup.",
-  "Andy Thomas",
-  "Andy Thomas",
-  "1998",
-  NULL,
-  GIMP_INTERNAL,
-  2,
-  patterns_set_popup_inargs,
-  0,
-  NULL,
-  { { patterns_set_popup_invoker } }
-};
+  /*
+   * gimp-patterns-popup
+   */
+  procedure = gimp_procedure_new (patterns_popup_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-patterns-popup");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-patterns-popup",
+                                     "Invokes the Gimp pattern selection.",
+                                     "This procedure popups the pattern selection dialog.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("pattern-callback",
+                                                       "pattern callback",
+                                                       "The callback PDB proc to call when pattern selection is made",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("popup-title",
+                                                       "popup title",
+                                                       "Title to give the pattern popup window",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("initial-pattern",
+                                                       "initial pattern",
+                                                       "The name of the pattern to set as the first selected",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-patterns-close-popup
+   */
+  procedure = gimp_procedure_new (patterns_close_popup_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-patterns-close-popup");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-patterns-close-popup",
+                                     "Popdown the Gimp pattern selection.",
+                                     "This procedure closes an opened pattern selection dialog.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("pattern-callback",
+                                                       "pattern callback",
+                                                       "The name of the callback registered for this popup",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-patterns-set-popup
+   */
+  procedure = gimp_procedure_new (patterns_set_popup_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-patterns-set-popup");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-patterns-set-popup",
+                                     "Sets the current pattern selection in a popup.",
+                                     "Sets the current pattern selection in a popup.",
+                                     "Andy Thomas",
+                                     "Andy Thomas",
+                                     "1998",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("pattern-callback",
+                                                       "pattern callback",
+                                                       "The name of the callback registered for this popup",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("pattern-name",
+                                                       "pattern name",
+                                                       "The name of the pattern to set as selected",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

@@ -258,7 +258,7 @@ gimp_parasite_list_deserialize (GimpConfig *list,
                     goto cleanup;
 
                   parasite_data_size = strlen (str);
-                  parasite_data      = str;
+                  parasite_data      = (guint8 *) str;
                 }
               else
                 {
@@ -331,9 +331,11 @@ gimp_parasite_list_copy (const GimpParasiteList *list)
 }
 
 void
-gimp_parasite_list_add (GimpParasiteList *list,
-                        GimpParasite     *parasite)
+gimp_parasite_list_add (GimpParasiteList   *list,
+                        const GimpParasite *parasite)
 {
+  GimpParasite *copy;
+
   g_return_if_fail (GIMP_IS_PARASITE_LIST (list));
   g_return_if_fail (parasite != NULL);
   g_return_if_fail (parasite->name != NULL);
@@ -342,23 +344,23 @@ gimp_parasite_list_add (GimpParasiteList *list,
     list->table = g_hash_table_new (g_str_hash, g_str_equal);
 
   gimp_parasite_list_remove (list, parasite->name);
-  parasite = gimp_parasite_copy (parasite);
-  g_hash_table_insert (list->table, parasite->name, parasite);
+  copy = gimp_parasite_copy (parasite);
+  g_hash_table_insert (list->table, copy->name, copy);
 
-  g_signal_emit (list, parasite_list_signals[ADD], 0, parasite);
+  g_signal_emit (list, parasite_list_signals[ADD], 0, copy);
 }
 
 void
 gimp_parasite_list_remove (GimpParasiteList *list,
                            const gchar      *name)
 {
-  GimpParasite *parasite;
-
   g_return_if_fail (GIMP_IS_PARASITE_LIST (list));
 
   if (list->table)
     {
-      parasite = gimp_parasite_list_find (list, name);
+      GimpParasite *parasite;
+
+      parasite = (GimpParasite *) gimp_parasite_list_find (list, name);
 
       if (parasite)
         {
@@ -411,7 +413,7 @@ gimp_parasite_list_foreach (GimpParasiteList *list,
   g_hash_table_foreach (list->table, function, user_data);
 }
 
-GimpParasite *
+const GimpParasite *
 gimp_parasite_list_find (GimpParasiteList *list,
                          const gchar      *name)
 {

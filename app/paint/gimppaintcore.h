@@ -100,7 +100,7 @@ struct _GimpPaintCoreClass
                                 GimpPaintOptions *paint_options);
 
   gboolean  (* push_undo)      (GimpPaintCore    *core,
-                                GimpImage        *gimage,
+                                GimpImage        *image,
                                 const gchar      *undo_desc);
 };
 
@@ -150,14 +150,14 @@ TempBuf * gimp_paint_core_get_orig_proj             (GimpPaintCore    *core,
 void      gimp_paint_core_paste             (GimpPaintCore            *core,
                                              PixelRegion              *paint_maskPR,
                                              GimpDrawable             *drawable,
-                                             gdouble	               paint_opacity,
-                                             gdouble	               image_opacity,
+                                             gdouble                       paint_opacity,
+                                             gdouble                       image_opacity,
                                              GimpLayerModeEffects      paint_mode,
                                              GimpPaintApplicationMode  mode);
 void      gimp_paint_core_replace           (GimpPaintCore            *core,
                                              PixelRegion              *paint_maskPR,
                                              GimpDrawable             *drawable,
-                                             gdouble	               paint_opacity,
+                                             gdouble                       paint_opacity,
                                              gdouble                   image_opacity,
                                              GimpPaintApplicationMode  mode);
 

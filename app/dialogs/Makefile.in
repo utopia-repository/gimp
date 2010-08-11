@@ -63,7 +63,7 @@ am__objects_2 = dialogs.$(OBJEXT) dialogs-constructors.$(OBJEXT) \
 	file-save-dialog.$(OBJEXT) grid-dialog.$(OBJEXT) \
 	image-merge-layers-dialog.$(OBJEXT) image-new-dialog.$(OBJEXT) \
 	image-properties-dialog.$(OBJEXT) image-scale-dialog.$(OBJEXT) \
-	info-dialog.$(OBJEXT) keyboard-shortcuts-dialog.$(OBJEXT) \
+	keyboard-shortcuts-dialog.$(OBJEXT) \
 	layer-add-mask-dialog.$(OBJEXT) layer-options-dialog.$(OBJEXT) \
 	module-dialog.$(OBJEXT) offset-dialog.$(OBJEXT) \
 	palette-import-dialog.$(OBJEXT) preferences-dialog.$(OBJEXT) \
@@ -263,6 +263,7 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
+INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -356,7 +357,6 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
-SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -372,6 +372,8 @@ SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
 URI_CFLAGS = @URI_CFLAGS@
 URI_LIBS = @URI_LIBS@
+USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
+USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@
@@ -493,8 +495,6 @@ libappdialogs_a_sources = \
 	image-properties-dialog.h	\
 	image-scale-dialog.c		\
 	image-scale-dialog.h		\
-	info-dialog.c			\
-	info-dialog.h			\
 	keyboard-shortcuts-dialog.c	\
 	keyboard-shortcuts-dialog.h	\
 	layer-add-mask-dialog.c		\
@@ -607,7 +607,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/image-new-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/image-properties-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/image-scale-dialog.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/info-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/keyboard-shortcuts-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/layer-add-mask-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/layer-options-dialog.Po@am__quote@

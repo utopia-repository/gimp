@@ -135,33 +135,33 @@ buffers_paste (GimpBufferView *view,
 
   if (buffer && gimp_container_have (container, GIMP_OBJECT (buffer)))
     {
-      GimpDisplay *gdisp  = gimp_context_get_display (context);
-      GimpImage   *gimage = NULL;
-      gint         x      = -1;
-      gint         y      = -1;
-      gint         width  = -1;
-      gint         height = -1;
+      GimpDisplay *display = gimp_context_get_display (context);
+      GimpImage   *image   = NULL;
+      gint         x       = -1;
+      gint         y       = -1;
+      gint         width   = -1;
+      gint         height  = -1;
 
-      if (gdisp)
-	{
-          GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (gdisp->shell);
+      if (display)
+        {
+          GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
 
           gimp_display_shell_untransform_viewport (shell,
                                                    &x, &y, &width, &height);
 
-          gimage = gdisp->gimage;
+          image = display->image;
         }
       else
         {
-          gimage = gimp_context_get_image (context);
+          image = gimp_context_get_image (context);
         }
 
-      if (gimage)
+      if (image)
         {
-	  gimp_edit_paste (gimage, gimp_image_active_drawable (gimage),
-			   buffer, paste_into, x, y, width, height);
+          gimp_edit_paste (image, gimp_image_active_drawable (image),
+                           buffer, paste_into, x, y, width, height);
 
-	  gimp_image_flush (gimage);
-	}
+          gimp_image_flush (image);
+        }
     }
 }

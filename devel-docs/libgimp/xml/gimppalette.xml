@@ -517,14 +517,14 @@ color and vice versa.</para>
 Tests if palette can be edited
 </para>
 <para>
-Returns True if you have permission to change the palette</para>
+Returns TRUE if you have permission to change the palette</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
 <listitem><simpara> The palette name.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the palette can be edited.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the palette can be edited.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4

@@ -43,7 +43,7 @@
 #include "gimp-intl.h"
 
 
-static GimpActionEntry dockable_actions[] =
+static const GimpActionEntry dockable_actions[] =
 {
   { "dockable-popup", NULL,
     N_("Dialogs Menu"), NULL, NULL, NULL,
@@ -59,7 +59,7 @@ static GimpActionEntry dockable_actions[] =
     G_CALLBACK (dockable_close_tab_cmd_callback),
     GIMP_HELP_DOCK_TAB_CLOSE },
 
-  { "dockable-detach-tab", GTK_STOCK_CONVERT,
+  { "dockable-detach-tab", GIMP_STOCK_DETACH,
     N_("_Detach Tab"), "", NULL,
     G_CALLBACK (dockable_detach_tab_cmd_callback),
     GIMP_HELP_DOCK_TAB_DETACH }
@@ -76,7 +76,7 @@ static GimpActionEntry dockable_actions[] =
     (style), \
     GIMP_HELP_DOCK_TAB_STYLE }
 
-static GimpRadioActionEntry dockable_view_size_actions[] =
+static const GimpRadioActionEntry dockable_view_size_actions[] =
 {
   VIEW_SIZE ("tiny",        N_("_Tiny"),        GIMP_VIEW_SIZE_TINY),
   VIEW_SIZE ("extra-small", N_("E_xtra Small"), GIMP_VIEW_SIZE_EXTRA_SMALL),
@@ -89,7 +89,7 @@ static GimpRadioActionEntry dockable_view_size_actions[] =
   VIEW_SIZE ("gigantic",    N_("_Gigantic"),    GIMP_VIEW_SIZE_GIGANTIC)
 };
 
-static GimpRadioActionEntry dockable_tab_style_actions[] =
+static const GimpRadioActionEntry dockable_tab_style_actions[] =
 {
   TAB_STYLE ("icon",         N_("_Icon"),           GIMP_TAB_STYLE_ICON),
   TAB_STYLE ("preview",      N_("Current _Status"), GIMP_TAB_STYLE_PREVIEW),
@@ -102,7 +102,7 @@ static GimpRadioActionEntry dockable_tab_style_actions[] =
 #undef TAB_STYLE
 
 
-static GimpToggleActionEntry dockable_toggle_actions[] =
+static const GimpToggleActionEntry dockable_toggle_actions[] =
 {
   { "dockable-show-button-bar", NULL,
     N_("Show _Button Bar"), NULL, NULL,
@@ -111,7 +111,7 @@ static GimpToggleActionEntry dockable_toggle_actions[] =
     GIMP_HELP_DOCK_SHOW_BUTTON_BAR }
 };
 
-static GimpRadioActionEntry dockable_view_type_actions[] =
+static const GimpRadioActionEntry dockable_view_type_actions[] =
 {
   { "dockable-view-type-list", NULL,
     N_("View as _List"), NULL, NULL,
@@ -189,7 +189,7 @@ dockable_actions_update (GimpActionGroup *group,
       page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (dockbook));
 
       dockable = (GimpDockable *)
-	gtk_notebook_get_nth_page (GTK_NOTEBOOK (dockbook), page_num);
+        gtk_notebook_get_nth_page (GTK_NOTEBOOK (dockbook), page_num);
     }
   else if (GIMP_IS_DOCKABLE (data))
     {

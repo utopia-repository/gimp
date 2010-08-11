@@ -128,11 +128,11 @@ gimp_smudge_paint (GimpPaintCore    *paint_core,
     case GIMP_PAINT_STATE_MOTION:
       /* initialization fails if the user starts outside the drawable */
       if (! smudge->initialized)
-	smudge->initialized = gimp_smudge_start (paint_core, drawable,
+        smudge->initialized = gimp_smudge_start (paint_core, drawable,
                                                  paint_options);
 
       if (smudge->initialized)
-	gimp_smudge_motion (paint_core, drawable, paint_options);
+        gimp_smudge_motion (paint_core, drawable, paint_options);
       break;
 
     case GIMP_PAINT_STATE_FINISH:
@@ -157,13 +157,13 @@ gimp_smudge_start (GimpPaintCore    *paint_core,
                    GimpPaintOptions *paint_options)
 {
   GimpSmudge  *smudge = GIMP_SMUDGE (paint_core);
-  GimpImage   *gimage;
+  GimpImage   *image;
   TempBuf     *area;
   PixelRegion  srcPR;
   gint         bytes;
   gint         x, y, w, h;
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
   if (gimp_drawable_is_indexed (drawable))
     return FALSE;
@@ -201,8 +201,8 @@ gimp_smudge_start (GimpPaintCore    *paint_core,
       g_free (fill);
     }
 
-  pixel_region_init (&srcPR, gimp_drawable_data (drawable),
-		     area->x, area->y, area->width, area->height, FALSE);
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
+                     area->x, area->y, area->width, area->height, FALSE);
 
   pixel_region_init_data (&smudge->accumPR, smudge->accum_data,
                           bytes, bytes * w,
@@ -233,19 +233,19 @@ gimp_smudge_motion (GimpPaintCore    *paint_core,
   GimpSmudgeOptions   *options          = GIMP_SMUDGE_OPTIONS (paint_options);
   GimpContext         *context          = GIMP_CONTEXT (paint_options);
   GimpPressureOptions *pressure_options = paint_options->pressure_options;
-  GimpImage           *gimage;
+  GimpImage           *image;
   TempBuf             *area;
   PixelRegion          srcPR, destPR, tempPR;
   gdouble              rate;
   gdouble              opacity;
   gint                 x, y, w, h;
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
   if (gimp_drawable_is_indexed (drawable))
     return;
 
-  opacity = gimp_paint_options_get_fade (paint_options, gimage,
+  opacity = gimp_paint_options_get_fade (paint_options, image,
                                          paint_core->pixel_dist);
   if (opacity == 0.0)
     return;
@@ -258,8 +258,8 @@ gimp_smudge_motion (GimpPaintCore    *paint_core,
     return;
 
   /* srcPR will be the pixels under the current painthit from the drawable */
-  pixel_region_init (&srcPR, gimp_drawable_data (drawable),
-		     area->x, area->y, area->width, area->height, FALSE);
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
+                     area->x, area->y, area->width, area->height, FALSE);
 
   /* Enable pressure sensitive rate */
   if (pressure_options->rate)
@@ -309,9 +309,9 @@ gimp_smudge_motion (GimpPaintCore    *paint_core,
     opacity *= PRESSURE_SCALE * paint_core->cur_coords.pressure;
 
   gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
-				  MIN (opacity, GIMP_OPACITY_OPAQUE),
-				  gimp_context_get_opacity (context),
-				  gimp_paint_options_get_brush_mode (paint_options),
+                                  MIN (opacity, GIMP_OPACITY_OPAQUE),
+                                  gimp_context_get_opacity (context),
+                                  gimp_paint_options_get_brush_mode (paint_options),
                                   GIMP_PAINT_INCREMENTAL);
 }
 

@@ -233,7 +233,8 @@ quit_close_all_dialog_container_changed (GimpContainer  *images,
                     "use-stock", FALSE,
                     "image",     icon,
                     NULL);
-      gtk_window_set_default (GTK_WINDOW (dialog), NULL);
+      gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+                                       GTK_RESPONSE_CANCEL);
     }
 }
 
@@ -251,7 +252,7 @@ quit_close_all_dialog_image_activated (GimpContainerView *view,
     {
       GimpDisplay *display = list->data;
 
-      if (display->gimage == image)
+      if (display->image == image)
         gtk_window_present (GTK_WINDOW (display->shell));
     }
 }

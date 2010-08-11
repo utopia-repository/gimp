@@ -25,7 +25,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "base/temp-buf.h"
 #include "core/gimp.h"
@@ -35,296 +37,160 @@
 #include "core/gimpdatafactory.h"
 #include "core/gimplist.h"
 
-static ProcRecord brushes_refresh_proc;
-static ProcRecord brushes_get_list_proc;
-static ProcRecord brushes_get_brush_proc;
-static ProcRecord brushes_get_spacing_proc;
-static ProcRecord brushes_set_spacing_proc;
-static ProcRecord brushes_get_brush_data_proc;
 
-void
-register_brushes_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &brushes_refresh_proc);
-  procedural_db_register (gimp, &brushes_get_list_proc);
-  procedural_db_register (gimp, &brushes_get_brush_proc);
-  procedural_db_register (gimp, &brushes_get_spacing_proc);
-  procedural_db_register (gimp, &brushes_set_spacing_proc);
-  procedural_db_register (gimp, &brushes_get_brush_data_proc);
-}
-
-static Argument *
-brushes_refresh_invoker (Gimp         *gimp,
-                         GimpContext  *context,
-                         GimpProgress *progress,
-                         Argument     *args)
+static GValueArray *
+brushes_refresh_invoker (GimpProcedure     *procedure,
+                         Gimp              *gimp,
+                         GimpContext       *context,
+                         GimpProgress      *progress,
+                         const GValueArray *args)
 {
   gimp_data_factory_data_refresh (gimp->brush_factory);
-  return procedural_db_return_args (&brushes_refresh_proc, TRUE);
+  return gimp_procedure_get_return_values (procedure, TRUE);
 }
 
-static ProcRecord brushes_refresh_proc =
-{
-  "gimp-brushes-refresh",
-  "gimp-brushes-refresh",
-  "Refresh current brushes. This function always succeeds.",
-  "This procedure retrieves all brushes currently in the user's brush path and updates the brush dialogs accordingly.",
-  "Seth Burgess",
-  "Seth Burgess",
-  "1997",
-  NULL,
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  0,
-  NULL,
-  { { brushes_refresh_invoker } }
-};
-
-static Argument *
-brushes_get_list_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+brushes_get_list_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *filter;
-  gint32 num_brushes;
+  GValueArray *return_vals;
+  const gchar *filter;
+  gint32 num_brushes = 0;
   gchar **brush_list = NULL;
 
-  filter = (gchar *) args[0].value.pdb_pointer;
-  if (filter && !g_utf8_validate (filter, -1, NULL))
-    success = FALSE;
-
-  if (success)
-    brush_list = gimp_container_get_filtered_name_array (gimp->brush_factory->container, filter, &num_brushes);
-
-  return_args = procedural_db_return_args (&brushes_get_list_proc, success);
+  filter = g_value_get_string (&args->values[0]);
 
   if (success)
     {
-      return_args[1].value.pdb_int = num_brushes;
-      return_args[2].value.pdb_pointer = brush_list;
+      brush_list = gimp_container_get_filtered_name_array (gimp->brush_factory->container,
+                                                           filter, &num_brushes);
     }
 
-  return return_args;
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], num_brushes);
+      gimp_value_take_stringarray (&return_vals->values[2], brush_list, num_brushes);
+    }
+
+  return return_vals;
 }
 
-static ProcArg brushes_get_list_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "filter",
-    "An optional regular expression used to filter the list"
-  }
-};
-
-static ProcArg brushes_get_list_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "num-brushes",
-    "The number of brushes in the brush list"
-  },
-  {
-    GIMP_PDB_STRINGARRAY,
-    "brush-list",
-    "The list of brush names"
-  }
-};
-
-static ProcRecord brushes_get_list_proc =
-{
-  "gimp-brushes-get-list",
-  "gimp-brushes-get-list",
-  "Retrieve a complete listing of the available brushes.",
-  "This procedure returns a complete listing of available GIMP brushes. Each name returned can be used as input to the 'gimp-context-set-brush' procedure.",
-  "Spencer Kimball & Peter Mattis",
-  "Spencer Kimball & Peter Mattis",
-  "1995-1996",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  brushes_get_list_inargs,
-  2,
-  brushes_get_list_outargs,
-  { { brushes_get_list_invoker } }
-};
-
-static Argument *
-brushes_get_brush_invoker (Gimp         *gimp,
-                           GimpContext  *context,
-                           GimpProgress *progress,
-                           Argument     *args)
+static GValueArray *
+brushes_get_brush_invoker (GimpProcedure     *procedure,
+                           Gimp              *gimp,
+                           GimpContext       *context,
+                           GimpProgress      *progress,
+                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  GimpBrush *brush;
+  GValueArray *return_vals;
+  gchar *name = NULL;
+  gint32 width = 0;
+  gint32 height = 0;
+  gint32 spacing = 0;
 
-  success = (brush = gimp_context_get_brush (context)) != NULL;
+  GimpBrush *brush = gimp_context_get_brush (context);
 
-  return_args = procedural_db_return_args (&brushes_get_brush_proc, success);
+  if (brush)
+    {
+      name    = g_strdup (gimp_object_get_name (GIMP_OBJECT (brush)));
+      width   = brush->mask->width;
+      height  = brush->mask->height;
+      spacing = gimp_brush_get_spacing (brush);
+    }
+  else
+    success = FALSE;
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_pointer = g_strdup (GIMP_OBJECT (brush)->name);
-      return_args[2].value.pdb_int = brush->mask->width;
-      return_args[3].value.pdb_int = brush->mask->height;
-      return_args[4].value.pdb_int = brush->spacing;
+      g_value_take_string (&return_vals->values[1], name);
+      g_value_set_int (&return_vals->values[2], width);
+      g_value_set_int (&return_vals->values[3], height);
+      g_value_set_int (&return_vals->values[4], spacing);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg brushes_get_brush_outargs[] =
+static GValueArray *
+brushes_get_spacing_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The brush name"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The brush width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The brush height"
-  },
-  {
-    GIMP_PDB_INT32,
-    "spacing",
-    "The brush spacing: 0 <= spacing <= 1000"
-  }
-};
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  gint32 spacing = 0;
 
-static ProcRecord brushes_get_brush_proc =
-{
-  "gimp-brushes-get-brush",
-  "gimp-brushes-get-brush",
-  "This procedure is deprecated! Use 'gimp-context-get-brush' instead.",
-  "This procedure is deprecated! Use 'gimp-context-get-brush' instead.",
-  "",
-  "",
-  "",
-  "gimp-context-get-brush",
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  4,
-  brushes_get_brush_outargs,
-  { { brushes_get_brush_invoker } }
-};
+  GimpBrush *brush = gimp_context_get_brush (context);
 
-static Argument *
-brushes_get_spacing_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
-{
-  Argument *return_args;
+  if (brush)
+    spacing = gimp_brush_get_spacing (brush);
+  else
+    success = FALSE;
 
-  return_args = procedural_db_return_args (&brushes_get_spacing_proc, TRUE);
-  return_args[1].value.pdb_int = gimp_brush_get_spacing (gimp_context_get_brush (context));
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
-  return return_args;
+  if (success)
+    g_value_set_int (&return_vals->values[1], spacing);
+
+  return return_vals;
 }
 
-static ProcArg brushes_get_spacing_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "spacing",
-    "The brush spacing: 0 <= spacing <= 1000"
-  }
-};
-
-static ProcRecord brushes_get_spacing_proc =
-{
-  "gimp-brushes-get-spacing",
-  "gimp-brushes-get-spacing",
-  "This procedure is deprecated! Use 'gimp-brush-get-spacing' instead.",
-  "This procedure is deprecated! Use 'gimp-brush-get-spacing' instead.",
-  "",
-  "",
-  "",
-  "gimp-brush-get-spacing",
-  GIMP_INTERNAL,
-  0,
-  NULL,
-  1,
-  brushes_get_spacing_outargs,
-  { { brushes_get_spacing_invoker } }
-};
-
-static Argument *
-brushes_set_spacing_invoker (Gimp         *gimp,
-                             GimpContext  *context,
-                             GimpProgress *progress,
-                             Argument     *args)
+static GValueArray *
+brushes_set_spacing_invoker (GimpProcedure     *procedure,
+                             Gimp              *gimp,
+                             GimpContext       *context,
+                             GimpProgress      *progress,
+                             const GValueArray *args)
 {
   gboolean success = TRUE;
   gint32 spacing;
 
-  spacing = args[0].value.pdb_int;
-  if (spacing < 0 || spacing > 1000)
-    success = FALSE;
-
-  if (success)
-    gimp_brush_set_spacing (gimp_context_get_brush (context), spacing);
-
-  return procedural_db_return_args (&brushes_set_spacing_proc, success);
-}
-
-static ProcArg brushes_set_spacing_inargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "spacing",
-    "The brush spacing: 0 <= spacing <= 1000"
-  }
-};
-
-static ProcRecord brushes_set_spacing_proc =
-{
-  "gimp-brushes-set-spacing",
-  "gimp-brushes-set-spacing",
-  "This procedure is deprecated! Use 'gimp-brush-set-spacing' instead.",
-  "This procedure is deprecated! Use 'gimp-brush-set-spacing' instead.",
-  "",
-  "",
-  "",
-  "gimp-brush-set-spacing",
-  GIMP_INTERNAL,
-  1,
-  brushes_set_spacing_inargs,
-  0,
-  NULL,
-  { { brushes_set_spacing_invoker } }
-};
-
-static Argument *
-brushes_get_brush_data_invoker (Gimp         *gimp,
-                                GimpContext  *context,
-                                GimpProgress *progress,
-                                Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  gchar *name;
-  gint32 length = 0;
-  guint8 *mask_data = NULL;
-  GimpBrush *brush = NULL;
-
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name && !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
+  spacing = g_value_get_int (&args->values[0]);
 
   if (success)
     {
+      gimp_brush_set_spacing (gimp_context_get_brush (context), spacing);
+    }
+
+  return gimp_procedure_get_return_values (procedure, success);
+}
+
+static GValueArray *
+brushes_get_brush_data_invoker (GimpProcedure     *procedure,
+                                Gimp              *gimp,
+                                GimpContext       *context,
+                                GimpProgress      *progress,
+                                const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  const gchar *name;
+  gchar *actual_name = NULL;
+  gdouble opacity = 0.0;
+  gint32 spacing = 0;
+  gint32 paint_mode = 0;
+  gint32 width = 0;
+  gint32 height = 0;
+  gint32 length = 0;
+  guint8 *mask_data = NULL;
+
+  name = g_value_get_string (&args->values[0]);
+
+  if (success)
+    {
+      GimpBrush *brush;
+
       if (name && strlen (name))
         {
           brush = (GimpBrush *)
@@ -337,97 +203,252 @@ brushes_get_brush_data_invoker (Gimp         *gimp,
 
       if (brush)
         {
-          length    = brush->mask->height * brush->mask->width;
-          mask_data = g_memdup (temp_buf_data (brush->mask), length);
+          actual_name = g_strdup (gimp_object_get_name (GIMP_OBJECT (brush)));
+          opacity     = 1.0;
+          spacing     = gimp_brush_get_spacing (brush);
+          paint_mode  = 0;
+          width       = brush->mask->width;
+          height      = brush->mask->height;
+          length      = brush->mask->height * brush->mask->width;
+          mask_data   = g_memdup (temp_buf_data (brush->mask), length);
         }
       else
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&brushes_get_brush_data_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_pointer = g_strdup (GIMP_OBJECT (brush)->name);
-      return_args[2].value.pdb_float = 1.0;
-      return_args[3].value.pdb_int = brush->spacing;
-      return_args[4].value.pdb_int = 0;
-      return_args[5].value.pdb_int = brush->mask->width;
-      return_args[6].value.pdb_int = brush->mask->height;
-      return_args[7].value.pdb_int = length;
-      return_args[8].value.pdb_pointer = mask_data;
+      g_value_take_string (&return_vals->values[1], actual_name);
+      g_value_set_double (&return_vals->values[2], opacity);
+      g_value_set_int (&return_vals->values[3], spacing);
+      g_value_set_enum (&return_vals->values[4], paint_mode);
+      g_value_set_int (&return_vals->values[5], width);
+      g_value_set_int (&return_vals->values[6], height);
+      g_value_set_int (&return_vals->values[7], length);
+      gimp_value_take_int8array (&return_vals->values[8], mask_data, length);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg brushes_get_brush_data_inargs[] =
+void
+register_brushes_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The brush name (\"\" means current active brush)"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcArg brushes_get_brush_data_outargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The brush name"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "opacity",
-    "The brush opacity: 0 <= opacity <= 100"
-  },
-  {
-    GIMP_PDB_INT32,
-    "spacing",
-    "The brush spacing: 0 <= spacing <= 1000"
-  },
-  {
-    GIMP_PDB_INT32,
-    "paint-mode",
-    "The paint mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The brush width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The brush height"
-  },
-  {
-    GIMP_PDB_INT32,
-    "length",
-    "Length of brush mask data"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "mask-data",
-    "The brush mask data"
-  }
-};
+  /*
+   * gimp-brushes-refresh
+   */
+  procedure = gimp_procedure_new (brushes_refresh_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-brushes-refresh");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-brushes-refresh",
+                                     "Refresh current brushes. This function always succeeds.",
+                                     "This procedure retrieves all brushes currently in the user's brush path and updates the brush dialogs accordingly.",
+                                     "Seth Burgess",
+                                     "Seth Burgess",
+                                     "1997",
+                                     NULL);
 
-static ProcRecord brushes_get_brush_data_proc =
-{
-  "gimp-brushes-get-brush-data",
-  "gimp-brushes-get-brush-data",
-  "This procedure is deprecated! Use 'gimp-brush-get-pixels' instead.",
-  "This procedure is deprecated! Use 'gimp-brush-get-pixels' instead.",
-  "",
-  "",
-  "",
-  "gimp-brush-get-pixels",
-  GIMP_INTERNAL,
-  1,
-  brushes_get_brush_data_inargs,
-  8,
-  brushes_get_brush_data_outargs,
-  { { brushes_get_brush_data_invoker } }
-};
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-brushes-get-list
+   */
+  procedure = gimp_procedure_new (brushes_get_list_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-brushes-get-list");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-brushes-get-list",
+                                     "Retrieve a complete listing of the available brushes.",
+                                     "This procedure returns a complete listing of available GIMP brushes. Each name returned can be used as input to the 'gimp-context-set-brush' procedure.",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "Spencer Kimball & Peter Mattis",
+                                     "1995-1996",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("filter",
+                                                       "filter",
+                                                       "An optional regular expression used to filter the list",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-brushes",
+                                                          "num brushes",
+                                                          "The number of brushes in the brush list",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string_array ("brush-list",
+                                                                 "brush list",
+                                                                 "The list of brush names",
+                                                                 GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-brushes-get-brush
+   */
+  procedure = gimp_procedure_new (brushes_get_brush_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-brushes-get-brush");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-brushes-get-brush",
+                                     "This procedure is deprecated! Use 'gimp-context-get-brush' instead.",
+                                     "This procedure is deprecated! Use 'gimp-context-get-brush' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-context-get-brush");
+
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("name",
+                                                           "name",
+                                                           "The brush name",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The brush width",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The brush height",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("spacing",
+                                                          "spacing",
+                                                          "The brush spacing (0 <= spacing <= 1000)",
+                                                          0, 1000, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-brushes-get-spacing
+   */
+  procedure = gimp_procedure_new (brushes_get_spacing_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-brushes-get-spacing");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-brushes-get-spacing",
+                                     "This procedure is deprecated! Use 'gimp-brush-get-spacing' instead.",
+                                     "This procedure is deprecated! Use 'gimp-brush-get-spacing' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-brush-get-spacing");
+
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("spacing",
+                                                          "spacing",
+                                                          "The brush spacing (0 <= spacing <= 1000)",
+                                                          0, 1000, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-brushes-set-spacing
+   */
+  procedure = gimp_procedure_new (brushes_set_spacing_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-brushes-set-spacing");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-brushes-set-spacing",
+                                     "This procedure is deprecated! Use 'gimp-brush-set-spacing' instead.",
+                                     "This procedure is deprecated! Use 'gimp-brush-set-spacing' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-brush-set-spacing");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("spacing",
+                                                      "spacing",
+                                                      "The brush spacing (0 <= spacing <= 1000)",
+                                                      0, 1000, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-brushes-get-brush-data
+   */
+  procedure = gimp_procedure_new (brushes_get_brush_data_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-brushes-get-brush-data");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-brushes-get-brush-data",
+                                     "This procedure is deprecated! Use 'gimp-brush-get-pixels' instead.",
+                                     "This procedure is deprecated! Use 'gimp-brush-get-pixels' instead.",
+                                     "",
+                                     "",
+                                     "",
+                                     "gimp-brush-get-pixels");
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The brush name (\"\" means current active brush)",
+                                                       FALSE, TRUE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_string ("actual-name",
+                                                           "actual name",
+                                                           "The brush name",
+                                                           FALSE, FALSE,
+                                                           NULL,
+                                                           GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_double ("opacity",
+                                                        "opacity",
+                                                        "The brush opacity (0 <= opacity <= 100)",
+                                                        0, 100, 0,
+                                                        GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("spacing",
+                                                          "spacing",
+                                                          "The brush spacing (0 <= spacing <= 1000)",
+                                                          0, 1000, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   g_param_spec_enum ("paint-mode",
+                                                      "paint mode",
+                                                      "The paint mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }",
+                                                      GIMP_TYPE_LAYER_MODE_EFFECTS,
+                                                      GIMP_NORMAL_MODE,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The brush width",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The brush height",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("length",
+                                                          "length",
+                                                          "Length of brush mask data",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int8_array ("mask-data",
+                                                               "mask data",
+                                                               "The brush mask data",
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

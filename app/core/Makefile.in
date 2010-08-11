@@ -102,15 +102,15 @@ am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimplayermask.$(OBJEXT) gimplist.$(OBJEXT) \
 	gimpobject.$(OBJEXT) gimppaintinfo.$(OBJEXT) \
 	gimppattern.$(OBJEXT) gimppalette.$(OBJEXT) \
-	gimppalette-import.$(OBJEXT) gimpparasitelist.$(OBJEXT) \
-	gimppdbprogress.$(OBJEXT) gimppickable.$(OBJEXT) \
-	gimppreviewcache.$(OBJEXT) gimpprogress.$(OBJEXT) \
-	gimpprojection.$(OBJEXT) gimpprojection-construct.$(OBJEXT) \
-	gimpscanconvert.$(OBJEXT) gimpselection.$(OBJEXT) \
-	gimpstrokedesc.$(OBJEXT) gimpstrokeoptions.$(OBJEXT) \
-	gimptemplate.$(OBJEXT) gimptoolinfo.$(OBJEXT) \
-	gimptooloptions.$(OBJEXT) gimpunit.$(OBJEXT) \
-	gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
+	gimppalette-import.$(OBJEXT) gimpparamspecs.$(OBJEXT) \
+	gimpparasitelist.$(OBJEXT) gimppdbprogress.$(OBJEXT) \
+	gimppickable.$(OBJEXT) gimppreviewcache.$(OBJEXT) \
+	gimpprogress.$(OBJEXT) gimpprojection.$(OBJEXT) \
+	gimpprojection-construct.$(OBJEXT) gimpscanconvert.$(OBJEXT) \
+	gimpselection.$(OBJEXT) gimpstrokedesc.$(OBJEXT) \
+	gimpstrokeoptions.$(OBJEXT) gimptemplate.$(OBJEXT) \
+	gimptoolinfo.$(OBJEXT) gimptooloptions.$(OBJEXT) \
+	gimpunit.$(OBJEXT) gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
 	gimpviewable.$(OBJEXT)
 am_libappcore_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libappcore_a_OBJECTS = $(am_libappcore_a_OBJECTS)
@@ -300,6 +300,7 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
+INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -393,7 +394,6 @@ PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
-SCREENSHOT = @SCREENSHOT@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -409,6 +409,8 @@ SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
 URI_CFLAGS = @URI_CFLAGS@
 URI_LIBS = @URI_LIBS@
+USE_BINRELOC_FALSE = @USE_BINRELOC_FALSE@
+USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@
@@ -682,6 +684,8 @@ libappcore_a_sources = \
 	gimppalette.h			\
 	gimppalette-import.c		\
 	gimppalette-import.h		\
+	gimpparamspecs.c		\
+	gimpparamspecs.h		\
 	gimpparasitelist.c		\
 	gimpparasitelist.h		\
 	gimppdbprogress.c		\
@@ -875,6 +879,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppalette-import.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppalette.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparamspecs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpparasitelist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppattern.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdbprogress.Po@am__quote@

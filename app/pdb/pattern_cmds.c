@@ -25,7 +25,9 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "base/temp-buf.h"
 #include "core/gimp.h"
@@ -34,121 +36,78 @@
 #include "core/gimplist.h"
 #include "core/gimppattern.h"
 
-static ProcRecord pattern_get_info_proc;
-static ProcRecord pattern_get_pixels_proc;
 
-void
-register_pattern_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &pattern_get_info_proc);
-  procedural_db_register (gimp, &pattern_get_pixels_proc);
-}
-
-static Argument *
-pattern_get_info_invoker (Gimp         *gimp,
-                          GimpContext  *context,
-                          GimpProgress *progress,
-                          Argument     *args)
+static GValueArray *
+pattern_get_info_invoker (GimpProcedure     *procedure,
+                          Gimp              *gimp,
+                          GimpContext       *context,
+                          GimpProgress      *progress,
+                          const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
-  gchar *name;
-  GimpPattern *pattern = NULL;
+  GValueArray *return_vals;
+  const gchar *name;
+  gint32 width = 0;
+  gint32 height = 0;
+  gint32 bpp = 0;
 
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  if (success)
-    {
-      pattern = (GimpPattern *)
-        gimp_container_get_child_by_name (gimp->pattern_factory->container, name);
-
-      success = (pattern != NULL);
-    }
-
-  return_args = procedural_db_return_args (&pattern_get_info_proc, success);
+  name = g_value_get_string (&args->values[0]);
 
   if (success)
     {
-      return_args[1].value.pdb_int = pattern->mask->width;
-      return_args[2].value.pdb_int = pattern->mask->height;
-      return_args[3].value.pdb_int = pattern->mask->bytes;
-    }
-
-  return return_args;
-}
-
-static ProcArg pattern_get_info_inargs[] =
-{
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The pattern name."
-  }
-};
-
-static ProcArg pattern_get_info_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The pattern width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The pattern height"
-  },
-  {
-    GIMP_PDB_INT32,
-    "bpp",
-    "The pattern bpp"
-  }
-};
-
-static ProcRecord pattern_get_info_proc =
-{
-  "gimp-pattern-get-info",
-  "gimp-pattern-get-info",
-  "Retrieve information about the specified pattern.",
-  "This procedure retrieves information about the specified pattern. This includes the pattern extents (width and height).",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  pattern_get_info_inargs,
-  3,
-  pattern_get_info_outargs,
-  { { pattern_get_info_invoker } }
-};
-
-static Argument *
-pattern_get_pixels_invoker (Gimp         *gimp,
-                            GimpContext  *context,
-                            GimpProgress *progress,
-                            Argument     *args)
-{
-  gboolean success = TRUE;
-  Argument *return_args;
-  gchar *name;
-  gint32 num_color_bytes = 0;
-  guint8 *color_bytes = NULL;
-  GimpPattern *pattern = NULL;
-
-  name = (gchar *) args[0].value.pdb_pointer;
-  if (name == NULL || !g_utf8_validate (name, -1, NULL))
-    success = FALSE;
-
-  if (success)
-    {
-      pattern = (GimpPattern *)
+      GimpPattern *pattern = (GimpPattern *)
         gimp_container_get_child_by_name (gimp->pattern_factory->container, name);
 
       if (pattern)
         {
+          width  = pattern->mask->width;
+          height = pattern->mask->height;
+          bpp    = pattern->mask->bytes;
+        }
+      else
+        success = FALSE;
+    }
+
+  return_vals = gimp_procedure_get_return_values (procedure, success);
+
+  if (success)
+    {
+      g_value_set_int (&return_vals->values[1], width);
+      g_value_set_int (&return_vals->values[2], height);
+      g_value_set_int (&return_vals->values[3], bpp);
+    }
+
+  return return_vals;
+}
+
+static GValueArray *
+pattern_get_pixels_invoker (GimpProcedure     *procedure,
+                            Gimp              *gimp,
+                            GimpContext       *context,
+                            GimpProgress      *progress,
+                            const GValueArray *args)
+{
+  gboolean success = TRUE;
+  GValueArray *return_vals;
+  const gchar *name;
+  gint32 width = 0;
+  gint32 height = 0;
+  gint32 bpp = 0;
+  gint32 num_color_bytes = 0;
+  guint8 *color_bytes = NULL;
+
+  name = g_value_get_string (&args->values[0]);
+
+  if (success)
+    {
+      GimpPattern *pattern = (GimpPattern *)
+        gimp_container_get_child_by_name (gimp->pattern_factory->container, name);
+
+      if (pattern)
+        {
+          width           = pattern->mask->width;
+          height          = pattern->mask->height;
+          bpp             = pattern->mask->bytes;
           num_color_bytes = pattern->mask->height * pattern->mask->width *
                             pattern->mask->bytes;
           color_bytes     = g_memdup (temp_buf_data (pattern->mask),
@@ -158,72 +117,118 @@ pattern_get_pixels_invoker (Gimp         *gimp,
         success = FALSE;
     }
 
-  return_args = procedural_db_return_args (&pattern_get_pixels_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
     {
-      return_args[1].value.pdb_int = pattern->mask->width;
-      return_args[2].value.pdb_int = pattern->mask->height;
-      return_args[3].value.pdb_int = pattern->mask->bytes;
-      return_args[4].value.pdb_int = num_color_bytes;
-      return_args[5].value.pdb_pointer = color_bytes;
+      g_value_set_int (&return_vals->values[1], width);
+      g_value_set_int (&return_vals->values[2], height);
+      g_value_set_int (&return_vals->values[3], bpp);
+      g_value_set_int (&return_vals->values[4], num_color_bytes);
+      gimp_value_take_int8array (&return_vals->values[5], color_bytes, num_color_bytes);
     }
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg pattern_get_pixels_inargs[] =
+void
+register_pattern_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_STRING,
-    "name",
-    "The pattern name."
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcArg pattern_get_pixels_outargs[] =
-{
-  {
-    GIMP_PDB_INT32,
-    "width",
-    "The pattern width"
-  },
-  {
-    GIMP_PDB_INT32,
-    "height",
-    "The pattern height"
-  },
-  {
-    GIMP_PDB_INT32,
-    "bpp",
-    "The pattern bpp"
-  },
-  {
-    GIMP_PDB_INT32,
-    "num-color-bytes",
-    "Number of pattern bytes"
-  },
-  {
-    GIMP_PDB_INT8ARRAY,
-    "color-bytes",
-    "The pattern data."
-  }
-};
+  /*
+   * gimp-pattern-get-info
+   */
+  procedure = gimp_procedure_new (pattern_get_info_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-pattern-get-info");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-pattern-get-info",
+                                     "Retrieve information about the specified pattern.",
+                                     "This procedure retrieves information about the specified pattern. This includes the pattern extents (width and height).",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2004",
+                                     NULL);
 
-static ProcRecord pattern_get_pixels_proc =
-{
-  "gimp-pattern-get-pixels",
-  "gimp-pattern-get-pixels",
-  "Retrieve information about the specified pattern (including pixels).",
-  "This procedure retrieves information about the specified. This includes the pattern extents (width and height), its bpp and its pixel data.",
-  "Michael Natterer <mitch@gimp.org>",
-  "Michael Natterer",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  1,
-  pattern_get_pixels_inargs,
-  5,
-  pattern_get_pixels_outargs,
-  { { pattern_get_pixels_invoker } }
-};
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The pattern name.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The pattern width",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The pattern height",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("bpp",
+                                                          "bpp",
+                                                          "The pattern bpp",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-pattern-get-pixels
+   */
+  procedure = gimp_procedure_new (pattern_get_pixels_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-pattern-get-pixels");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-pattern-get-pixels",
+                                     "Retrieve information about the specified pattern (including pixels).",
+                                     "This procedure retrieves information about the specified. This includes the pattern extents (width and height), its bpp and its pixel data.",
+                                     "Michael Natterer <mitch@gimp.org>",
+                                     "Michael Natterer",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_string ("name",
+                                                       "name",
+                                                       "The pattern name.",
+                                                       FALSE, FALSE,
+                                                       NULL,
+                                                       GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("width",
+                                                          "width",
+                                                          "The pattern width",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("height",
+                                                          "height",
+                                                          "The pattern height",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("bpp",
+                                                          "bpp",
+                                                          "The pattern bpp",
+                                                          G_MININT32, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int32 ("num-color-bytes",
+                                                          "num color bytes",
+                                                          "Number of pattern bytes",
+                                                          0, G_MAXINT32, 0,
+                                                          GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_int8_array ("color-bytes",
+                                                               "color bytes",
+                                                               "The pattern data.",
+                                                               GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

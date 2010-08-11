@@ -37,14 +37,15 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBox">GtkBox</link>
-                           +----<link linkend="GtkVBox">GtkVBox</link>
-                                 +----<link linkend="GimpPreview">GimpPreview</link>
-                                       +----<link linkend="GimpScrolledPreview">GimpScrolledPreview</link>
-                                             +----GimpZoomPreview
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBox">GtkBox</link>
+                                 +----<link linkend="GtkVBox">GtkVBox</link>
+                                       +----<link linkend="GimpPreview">GimpPreview</link>
+                                             +----<link linkend="GimpScrolledPreview">GimpScrolledPreview</link>
+                                                   +----GimpZoomPreview
 </synopsis>
 
 </refsect1>
@@ -60,6 +61,13 @@ GimpZoomPreview implements
 </refsect1>
 
 
+<refsect1>
+<title>Properties</title>
+<synopsis>
+
+  &quot;<link linkend="GimpZoomPreview--drawable">drawable</link>&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
+</synopsis>
+</refsect1>
 
 
 
@@ -102,21 +110,27 @@ Creates a new <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link
                                              <link linkend="gint">gint</link> *height,
                                              <link linkend="gint">gint</link> *bpp);</programlisting>
 <para>
-</para>
+Returns the scaled image data of the part of the drawable the
+<link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link> is currently showing, as a newly allocated array of guchar.
+This function also allow to get the current width, height and bpp of the
+<link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link>.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> a <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link> widget
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>width</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> a pointer to an int where the current width of the zoom widget
+        will be put.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>height</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> a pointer to an int where the current width of the zoom widget
+         will be put.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bpp</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> a pointer to an int where the bpp of the current drawable the zoom
+      widget is using will be put.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
@@ -152,6 +166,19 @@ Creates a new <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+
+</refsect1>
+<refsect1>
+<title>Properties</title>
+<refsect2><title><anchor id="GimpZoomPreview--drawable"/>The &quot;<literal>drawable</literal>&quot; property</title>
+<programlisting>  &quot;drawable&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
+<para>
+The drawable the <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link> is currently attached to.</para>
+<para>
+
+</para><para>Since  GIMP 2.4
+</para>
+</refsect2>
 
 </refsect1>
 

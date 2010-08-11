@@ -67,7 +67,6 @@
 #include "core/gimpchannel-select.h"
 #include "core/gimpimage.h"
 #include "core/gimppickable.h"
-#include "core/gimpprojection.h"
 #include "core/gimpscanconvert.h"
 #include "core/gimptoolinfo.h"
 
@@ -127,76 +126,77 @@ static void   gimp_iscissors_tool_finalize       (GObject           *object);
 
 static void   gimp_iscissors_tool_control        (GimpTool          *tool,
                                                   GimpToolAction     action,
-                                                  GimpDisplay       *gdisp);
+                                                  GimpDisplay       *display);
 static void   gimp_iscissors_tool_button_press   (GimpTool          *tool,
                                                   GimpCoords        *coords,
                                                   guint32            time,
                                                   GdkModifierType    state,
-                                                  GimpDisplay       *gdisp);
+                                                  GimpDisplay       *display);
 static void   gimp_iscissors_tool_button_release (GimpTool          *tool,
                                                   GimpCoords        *coords,
                                                   guint32            time,
                                                   GdkModifierType    state,
-                                                  GimpDisplay       *gdisp);
+                                                  GimpDisplay       *display);
 static void   gimp_iscissors_tool_motion         (GimpTool          *tool,
                                                   GimpCoords        *coords,
                                                   guint32            time,
                                                   GdkModifierType    state,
-                                                  GimpDisplay       *gdisp);
+                                                  GimpDisplay       *display);
 static void   gimp_iscissors_tool_oper_update    (GimpTool          *tool,
                                                   GimpCoords        *coords,
                                                   GdkModifierType    state,
-                                                  GimpDisplay       *gdisp);
+                                                  gboolean           proximity,
+                                                  GimpDisplay       *display);
 static void   gimp_iscissors_tool_cursor_update  (GimpTool          *tool,
                                                   GimpCoords        *coords,
                                                   GdkModifierType    state,
-                                                  GimpDisplay       *gdisp);
+                                                  GimpDisplay       *display);
 
 static void   gimp_iscissors_tool_reset          (GimpIscissorsTool *iscissors);
 static void   gimp_iscissors_tool_draw           (GimpDrawTool      *draw_tool);
 
 
 static void          iscissors_convert         (GimpIscissorsTool *iscissors,
-                                                GimpDisplay       *gdisp);
-static TileManager * gradient_map_new          (GimpImage         *gimage);
+                                                GimpDisplay       *display);
+static TileManager * gradient_map_new          (GimpImage         *image);
 
 static void          find_optimal_path         (TileManager       *gradient_map,
-						TempBuf           *dp_buf,
-						gint               x1,
-						gint               y1,
-						gint               x2,
-						gint               y2,
-						gint               xs,
-						gint               ys);
+                                                TempBuf           *dp_buf,
+                                                gint               x1,
+                                                gint               y1,
+                                                gint               x2,
+                                                gint               y2,
+                                                gint               xs,
+                                                gint               ys);
 static void          find_max_gradient         (GimpIscissorsTool *iscissors,
-						GimpImage         *gimage,
-						gint              *x,
-						gint              *y);
+                                                GimpImage         *image,
+                                                gint              *x,
+                                                gint              *y);
 static void          calculate_curve           (GimpTool          *tool,
-						ICurve            *curve);
+                                                ICurve            *curve);
 static void          iscissors_draw_curve      (GimpDrawTool      *draw_tool,
-						ICurve            *curve);
+                                                ICurve            *curve);
 static void          iscissors_free_icurves    (GSList            *list);
 static void          iscissors_free_buffers    (GimpIscissorsTool *iscissors);
 
 static gint          mouse_over_vertex         (GimpIscissorsTool *iscissors,
-						gdouble            x,
-						gdouble            y);
+                                                gdouble            x,
+                                                gdouble            y);
 static gboolean      clicked_on_vertex         (GimpTool          *tool);
 static GSList      * mouse_over_curve          (GimpIscissorsTool *iscissors,
-						gdouble            x,
-						gdouble            y);
+                                                gdouble            x,
+                                                gdouble            y);
 static gboolean      clicked_on_curve          (GimpTool          *tool);
 
 static void          precalculate_arrays       (void);
 static GPtrArray   * plot_pixels               (GimpIscissorsTool *iscissors,
-						TempBuf           *dp_buf,
-						gint               x1,
-						gint               y1,
-						gint               xs,
-						gint               ys,
-						gint               xe,
-						gint               ye);
+                                                TempBuf           *dp_buf,
+                                                gint               x1,
+                                                gint               y1,
+                                                gint               xs,
+                                                gint               ys,
+                                                gint               xe,
+                                                gint               ye);
 
 
 G_DEFINE_TYPE (GimpIscissorsTool, gimp_iscissors_tool,
@@ -339,7 +339,7 @@ gimp_iscissors_tool_finalize (GObject *object)
 static void
 gimp_iscissors_tool_control (GimpTool       *tool,
                              GimpToolAction  action,
-                             GimpDisplay    *gdisp)
+                             GimpDisplay    *display)
 {
   GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
   IscissorsDraw      draw;
@@ -361,7 +361,7 @@ gimp_iscissors_tool_control (GimpTool       *tool,
 
   iscissors->draw = draw;
 
-  GIMP_TOOL_CLASS (parent_class)->control (tool, action, gdisp);
+  GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 
   switch (action)
     {
@@ -385,7 +385,7 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
                                   GimpCoords      *coords,
                                   guint32          time,
                                   GdkModifierType  state,
-                                  GimpDisplay     *gdisp)
+                                  GimpDisplay     *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
   GimpSelectionOptions *options;
@@ -399,7 +399,7 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
 
   if (gimp_tool_control_is_active (tool->control))
     {
-      if (gdisp != tool->gdisp)
+      if (display != tool->display)
         {
           gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
           gimp_iscissors_tool_reset (iscissors);
@@ -411,7 +411,7 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
       gimp_tool_control_activate (tool->control);
     }
 
-  tool->gdisp = gdisp;
+  tool->display = display;
 
   switch (iscissors->state)
     {
@@ -420,45 +420,45 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
       iscissors->draw  = DRAW_CURRENT_SEED;
 
       if (! (state & GDK_SHIFT_MASK))
-	find_max_gradient (iscissors,
-                           gdisp->gimage,
-			   &iscissors->x,
+        find_max_gradient (iscissors,
+                           display->image,
+                           &iscissors->x,
                            &iscissors->y);
 
-      iscissors->x = CLAMP (iscissors->x, 0, gdisp->gimage->width - 1);
-      iscissors->y = CLAMP (iscissors->y, 0, gdisp->gimage->height - 1);
+      iscissors->x = CLAMP (iscissors->x, 0, display->image->width - 1);
+      iscissors->y = CLAMP (iscissors->y, 0, display->image->height - 1);
 
       iscissors->ix = iscissors->x;
       iscissors->iy = iscissors->y;
 
       /*  Initialize the selection core only on starting the tool  */
-      gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), gdisp);
+      gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), display);
       break;
 
     default:
       /*  Check if the mouse click occurred on a vertex or the curve itself  */
       if (clicked_on_vertex (tool))
-	{
-	  iscissors->nx    = iscissors->x;
-	  iscissors->ny    = iscissors->y;
-	  iscissors->state = SEED_ADJUSTMENT;
+        {
+          iscissors->nx    = iscissors->x;
+          iscissors->ny    = iscissors->y;
+          iscissors->state = SEED_ADJUSTMENT;
 
-	  iscissors->draw = DRAW_CURVE | DRAW_ACTIVE_CURVE;
-	  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
-	}
+          iscissors->draw = DRAW_CURVE | DRAW_ACTIVE_CURVE;
+          gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+        }
       /*  If the iscissors is connected, check if the click was inside  */
       else if (iscissors->connected && iscissors->mask &&
-	       gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
+               gimp_pickable_get_opacity_at (GIMP_PICKABLE (iscissors->mask),
                                              iscissors->x,
                                              iscissors->y))
-	{
-	  /*  Undraw the curve  */
-	  gimp_tool_control_halt (tool->control);
+        {
+          /*  Undraw the curve  */
+          gimp_tool_control_halt (tool->control);
 
-	  iscissors->draw = DRAW_CURVE;
-	  gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
+          iscissors->draw = DRAW_CURVE;
+          gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
-          gimp_channel_select_channel (gimp_image_get_mask (gdisp->gimage),
+          gimp_channel_select_channel (gimp_image_get_mask (display->image),
                                        tool->tool_info->blurb,
                                        iscissors->mask,
                                        0, 0,
@@ -467,26 +467,26 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
                                        options->feather_radius,
                                        options->feather_radius);
 
-	  gimp_iscissors_tool_reset (iscissors);
+          gimp_iscissors_tool_reset (iscissors);
 
-	  gimp_image_flush (gdisp->gimage);
-	}
+          gimp_image_flush (display->image);
+        }
       else if (! iscissors->connected)
-	{
+        {
           /*  if we're not connected, we're adding a new point  */
 
           /*  pause the tool, but undraw nothing  */
           iscissors->draw = DRAW_NOTHING;
-	  gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
+          gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-	  iscissors->state = SEED_PLACEMENT;
-	  iscissors->draw  = DRAW_CURRENT_SEED;
+          iscissors->state = SEED_PLACEMENT;
+          iscissors->draw  = DRAW_CURRENT_SEED;
 
           if (options->interactive)
             iscissors->draw |= DRAW_LIVEWIRE;
 
-	  gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
-	}
+          gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
+        }
       break;
     }
 }
@@ -494,7 +494,7 @@ gimp_iscissors_tool_button_press (GimpTool        *tool,
 
 static void
 iscissors_convert (GimpIscissorsTool *iscissors,
-		   GimpDisplay       *gdisp)
+                   GimpDisplay       *display)
 {
   GimpSelectionOptions *options;
   GimpScanConvert      *sc;
@@ -523,11 +523,11 @@ iscissors_convert (GimpIscissorsTool *iscissors,
       points   = g_new (GimpVector2, n_points);
 
       for (i = 0; i < n_points; i ++)
-	{
-	  packed = GPOINTER_TO_INT (g_ptr_array_index (icurve->points, i));
-	  points[i].x = packed & 0x0000ffff;
-	  points[i].y = packed >> 16;
-	}
+        {
+          packed = GPOINTER_TO_INT (g_ptr_array_index (icurve->points, i));
+          points[i].x = packed & 0x0000ffff;
+          points[i].y = packed >> 16;
+        }
 
       gimp_scan_convert_add_points (sc, n_points, points, FALSE);
       g_free (points);
@@ -536,9 +536,9 @@ iscissors_convert (GimpIscissorsTool *iscissors,
   if (iscissors->mask)
     g_object_unref (iscissors->mask);
 
-  iscissors->mask = gimp_channel_new_mask (gdisp->gimage,
-                                           gdisp->gimage->width,
-                                           gdisp->gimage->height);
+  iscissors->mask = gimp_channel_new_mask (display->image,
+                                           display->image->width,
+                                           display->image->height);
   gimp_scan_convert_render (sc, GIMP_DRAWABLE (iscissors->mask)->tiles,
                             0, 0, options->antialias);
   gimp_scan_convert_free (sc);
@@ -549,7 +549,7 @@ gimp_iscissors_tool_button_release (GimpTool        *tool,
                                     GimpCoords      *coords,
                                     guint32          time,
                                     GdkModifierType  state,
-                                    GimpDisplay     *gdisp)
+                                    GimpDisplay     *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
   GimpSelectionOptions *options;
@@ -569,7 +569,7 @@ gimp_iscissors_tool_button_release (GimpTool        *tool,
     case SEED_PLACEMENT:
       iscissors->draw = DRAW_CURVE | DRAW_CURRENT_SEED;
       if (options->interactive)
-	iscissors->draw |= DRAW_LIVEWIRE;
+        iscissors->draw |= DRAW_LIVEWIRE;
       break;
     case SEED_ADJUSTMENT:
       iscissors->draw = DRAW_CURVE | DRAW_ACTIVE_CURVE;
@@ -585,70 +585,70 @@ gimp_iscissors_tool_button_release (GimpTool        *tool,
     {
       /*  Progress to the next stage of intelligent selection  */
       switch (iscissors->state)
-	{
-	case SEED_PLACEMENT:
-	  /*  Add a new icurve  */
-	  if (!iscissors->first_point)
-	    {
-	      /*  Determine if we're connecting to the first point  */
-	      if (iscissors->curves)
-		{
-		  curve = (ICurve *) iscissors->curves->data;
+        {
+        case SEED_PLACEMENT:
+          /*  Add a new icurve  */
+          if (!iscissors->first_point)
+            {
+              /*  Determine if we're connecting to the first point  */
+              if (iscissors->curves)
+                {
+                  curve = (ICurve *) iscissors->curves->data;
 
-		  if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), gdisp,
+                  if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (tool), display,
                                                 iscissors->x, iscissors->y,
                                                 GIMP_HANDLE_CIRCLE,
                                                 curve->x1, curve->y1,
                                                 POINT_WIDTH, POINT_WIDTH,
                                                 GTK_ANCHOR_CENTER,
                                                 FALSE))
-		    {
-		      iscissors->x = curve->x1;
-		      iscissors->y = curve->y1;
-		      iscissors->connected = TRUE;
+                    {
+                      iscissors->x = curve->x1;
+                      iscissors->y = curve->y1;
+                      iscissors->connected = TRUE;
                     }
-		}
+                }
 
-	      /*  Create the new curve segment  */
-	      if (iscissors->ix != iscissors->x ||
-		  iscissors->iy != iscissors->y)
-		{
-		  curve = g_new (ICurve, 1);
+              /*  Create the new curve segment  */
+              if (iscissors->ix != iscissors->x ||
+                  iscissors->iy != iscissors->y)
+                {
+                  curve = g_new (ICurve, 1);
 
-		  curve->x1 = iscissors->ix;
-		  curve->y1 = iscissors->iy;
-		  iscissors->ix = curve->x2 = iscissors->x;
-		  iscissors->iy = curve->y2 = iscissors->y;
-		  curve->points = NULL;
-		  iscissors->curves = g_slist_append (iscissors->curves, curve);
-		  calculate_curve (tool, curve);
-		}
-	    }
-	  else /* this was our first point */
-	    {
-	      iscissors->first_point = FALSE;
-	    }
-	  break;
+                  curve->x1 = iscissors->ix;
+                  curve->y1 = iscissors->iy;
+                  iscissors->ix = curve->x2 = iscissors->x;
+                  iscissors->iy = curve->y2 = iscissors->y;
+                  curve->points = NULL;
+                  iscissors->curves = g_slist_append (iscissors->curves, curve);
+                  calculate_curve (tool, curve);
+                }
+            }
+          else /* this was our first point */
+            {
+              iscissors->first_point = FALSE;
+            }
+          break;
 
-	case SEED_ADJUSTMENT:
-	  /*  recalculate both curves  */
-	  if (iscissors->curve1)
-	    {
-	      iscissors->curve1->x1 = iscissors->nx;
-	      iscissors->curve1->y1 = iscissors->ny;
-	      calculate_curve (tool, iscissors->curve1);
-	    }
-	  if (iscissors->curve2)
-	    {
-	      iscissors->curve2->x2 = iscissors->nx;
-	      iscissors->curve2->y2 = iscissors->ny;
-	      calculate_curve (tool, iscissors->curve2);
-	    }
-	  break;
+        case SEED_ADJUSTMENT:
+          /*  recalculate both curves  */
+          if (iscissors->curve1)
+            {
+              iscissors->curve1->x1 = iscissors->nx;
+              iscissors->curve1->y1 = iscissors->ny;
+              calculate_curve (tool, iscissors->curve1);
+            }
+          if (iscissors->curve2)
+            {
+              iscissors->curve2->x2 = iscissors->nx;
+              iscissors->curve2->y2 = iscissors->ny;
+              calculate_curve (tool, iscissors->curve2);
+            }
+          break;
 
-	default:
-	  break;
-	}
+        default:
+          break;
+        }
     }
 
   iscissors->state = WAITING;
@@ -659,7 +659,7 @@ gimp_iscissors_tool_button_release (GimpTool        *tool,
 
   /*  convert the curves into a region  */
   if (iscissors->connected)
-    iscissors_convert (iscissors, gdisp);
+    iscissors_convert (iscissors, display);
 }
 
 static void
@@ -667,7 +667,7 @@ gimp_iscissors_tool_motion (GimpTool        *tool,
                             GimpCoords      *coords,
                             guint32          time,
                             GdkModifierType  state,
-                            GimpDisplay     *gdisp)
+                            GimpDisplay     *display)
 {
   GimpIscissorsTool    *iscissors = GIMP_ISCISSORS_TOOL (tool);
   GimpSelectionOptions *options;
@@ -682,7 +682,7 @@ gimp_iscissors_tool_motion (GimpTool        *tool,
       iscissors->draw = DRAW_CURRENT_SEED;
 
       if (options->interactive)
-	iscissors->draw |= DRAW_LIVEWIRE;
+        iscissors->draw |= DRAW_LIVEWIRE;
     }
   else if (iscissors->state == SEED_ADJUSTMENT)
     {
@@ -699,27 +699,27 @@ gimp_iscissors_tool_motion (GimpTool        *tool,
     case SEED_PLACEMENT:
       /*  Hold the shift key down to disable the auto-edge snap feature  */
       if (! (state & GDK_SHIFT_MASK))
-	find_max_gradient (iscissors, gdisp->gimage,
-			   &iscissors->x, &iscissors->y);
+        find_max_gradient (iscissors, display->image,
+                           &iscissors->x, &iscissors->y);
 
-      iscissors->x = CLAMP (iscissors->x, 0, gdisp->gimage->width  - 1);
-      iscissors->y = CLAMP (iscissors->y, 0, gdisp->gimage->height - 1);
+      iscissors->x = CLAMP (iscissors->x, 0, display->image->width  - 1);
+      iscissors->y = CLAMP (iscissors->y, 0, display->image->height - 1);
 
       if (iscissors->first_point)
-	{
-	  iscissors->ix = iscissors->x;
-	  iscissors->iy = iscissors->y;
-	}
+        {
+          iscissors->ix = iscissors->x;
+          iscissors->iy = iscissors->y;
+        }
       break;
 
     case SEED_ADJUSTMENT:
       /*  Move the current seed to the location of the cursor  */
       if (! (state & GDK_SHIFT_MASK))
-	find_max_gradient (iscissors, gdisp->gimage,
-			   &iscissors->x, &iscissors->y);
+        find_max_gradient (iscissors, display->image,
+                           &iscissors->x, &iscissors->y);
 
-      iscissors->x = CLAMP (iscissors->x, 0, gdisp->gimage->width  - 1);
-      iscissors->y = CLAMP (iscissors->y, 0, gdisp->gimage->height - 1);
+      iscissors->x = CLAMP (iscissors->x, 0, display->image->width  - 1);
+      iscissors->y = CLAMP (iscissors->y, 0, display->image->height - 1);
 
       iscissors->nx = iscissors->x;
       iscissors->ny = iscissors->y;
@@ -737,11 +737,11 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
 {
   GimpTool          *tool      = GIMP_TOOL (draw_tool);
   GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (draw_tool);
-  GimpDisplay       *gdisp;
+  GimpDisplay       *display;
   ICurve            *curve;
   GSList            *list;
 
-  gdisp = tool->gdisp;
+  display = tool->display;
 
   /*  Draw the crosshairs target if we're placing a seed  */
   if (iscissors->draw & DRAW_CURRENT_SEED)
@@ -757,12 +757,12 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
 
       /* Draw a line boundary */
       if (! iscissors->first_point && ! (iscissors->draw & DRAW_LIVEWIRE))
-	{
+        {
           gimp_draw_tool_draw_line (draw_tool,
                                     iscissors->ix, iscissors->iy,
                                     iscissors->x, iscissors->y,
                                     FALSE);
-	}
+        }
     }
 
   /* Draw the livewire boundary */
@@ -770,11 +770,11 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
     {
       /* See if the mouse has moved.  If so, create a new segment... */
       if (! iscissors->livewire ||
-	  (iscissors->livewire &&
-	   (iscissors->ix != iscissors->livewire->x1 ||
-	    iscissors->x  != iscissors->livewire->x2  ||
-	    iscissors->iy != iscissors->livewire->y1 ||
-	    iscissors->y  != iscissors->livewire->y2)))
+          (iscissors->livewire &&
+           (iscissors->ix != iscissors->livewire->x1 ||
+            iscissors->x  != iscissors->livewire->x2  ||
+            iscissors->iy != iscissors->livewire->y1 ||
+            iscissors->y  != iscissors->livewire->y2)))
         {
           curve = g_new (ICurve, 1);
 
@@ -792,7 +792,7 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
               g_free (iscissors->livewire);
 
               iscissors->livewire = NULL;
-	    }
+            }
 
           iscissors->livewire = curve;
           calculate_curve (tool, curve);
@@ -820,8 +820,8 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
 
       /*  Go through the list of icurves, and render each one...  */
       for (list = iscissors->curves; list; list = g_slist_next (list))
-	{
-	  curve = (ICurve *) list->data;
+        {
+          curve = (ICurve *) list->data;
 
           if (iscissors->draw & DRAW_ACTIVE_CURVE)
             {
@@ -846,32 +846,32 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
                 continue;
             }
 
-	  /*  plot the curve  */
-	  iscissors_draw_curve (draw_tool, curve);
-	}
+          /*  plot the curve  */
+          iscissors_draw_curve (draw_tool, curve);
+        }
     }
 
   if (iscissors->draw & DRAW_ACTIVE_CURVE)
     {
       /*  plot both curves, and the control point between them  */
       if (iscissors->curve1)
-	{
+        {
           gimp_draw_tool_draw_line (draw_tool,
                                     iscissors->curve1->x2,
                                     iscissors->curve1->y2,
                                     iscissors->nx,
                                     iscissors->ny,
                                     FALSE);
-	}
+        }
       if (iscissors->curve2)
-	{
+        {
           gimp_draw_tool_draw_line (draw_tool,
                                     iscissors->curve2->x1,
                                     iscissors->curve2->y1,
                                     iscissors->nx,
                                     iscissors->ny,
                                     FALSE);
-	}
+        }
 
       gimp_draw_tool_draw_handle (draw_tool,
                                   GIMP_HANDLE_FILLED_CIRCLE,
@@ -887,7 +887,7 @@ gimp_iscissors_tool_draw (GimpDrawTool *draw_tool)
 
 static void
 iscissors_draw_curve (GimpDrawTool *draw_tool,
-		      ICurve       *curve)
+                      ICurve       *curve)
 {
   gpointer *point;
   guint     len;
@@ -911,20 +911,20 @@ iscissors_draw_curve (GimpDrawTool *draw_tool,
       point++;
 
       if (npts < MAX_POINTS)
-	{
+        {
           gimp_draw_tool_draw_line (draw_tool,
                                     (coords & 0x0000ffff),
                                     (coords >> 16),
                                     (coords_2 & 0x0000ffff),
                                     (coords_2 >> 16),
                                     FALSE);
-	  npts++;
-	}
+          npts++;
+        }
       else
-	{
-	  g_warning ("too many points in ICurve segment!");
-	  return;
-	}
+        {
+          g_warning ("too many points in ICurve segment!");
+          return;
+        }
     }
 }
 
@@ -932,11 +932,13 @@ static void
 gimp_iscissors_tool_oper_update (GimpTool        *tool,
                                  GimpCoords      *coords,
                                  GdkModifierType  state,
-                                 GimpDisplay     *gdisp)
+                                 gboolean         proximity,
+                                 GimpDisplay     *display)
 {
   GimpIscissorsTool *iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, gdisp);
+  GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, proximity,
+                                               display);
 
   if (mouse_over_vertex (iscissors, coords->x, coords->y))
     {
@@ -961,17 +963,17 @@ gimp_iscissors_tool_oper_update (GimpTool        *tool,
   else
     {
       switch (iscissors->state)
-	{
-	case WAITING:
+        {
+        case WAITING:
           iscissors->op = ISCISSORS_OP_ADD_POINT;
-	  break;
+          break;
 
-	case SEED_PLACEMENT:
-	case SEED_ADJUSTMENT:
-	default:
+        case SEED_PLACEMENT:
+        case SEED_ADJUSTMENT:
+        default:
           iscissors->op = ISCISSORS_OP_NONE;
           break;
-	}
+        }
     }
 }
 
@@ -979,7 +981,7 @@ static void
 gimp_iscissors_tool_cursor_update (GimpTool        *tool,
                                    GimpCoords      *coords,
                                    GdkModifierType  state,
-                                   GimpDisplay     *gdisp)
+                                   GimpDisplay     *display)
 {
   GimpIscissorsTool  *iscissors = GIMP_ISCISSORS_TOOL (tool);
   GimpCursorType      cursor    = GIMP_CURSOR_MOUSE;
@@ -988,7 +990,7 @@ gimp_iscissors_tool_cursor_update (GimpTool        *tool,
   switch (iscissors->op)
     {
     case ISCISSORS_OP_SELECT:
-      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, gdisp);
+      GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, display);
       return;
     case ISCISSORS_OP_MOVE_POINT:
       modifier = GIMP_CURSOR_MODIFIER_MOVE;
@@ -1003,7 +1005,7 @@ gimp_iscissors_tool_cursor_update (GimpTool        *tool,
       break;
     }
 
-  gimp_tool_set_cursor (tool, gdisp,
+  gimp_tool_set_cursor (tool, display,
                         cursor, GIMP_TOOL_CURSOR_ISCISSORS, modifier);
 }
 
@@ -1031,8 +1033,8 @@ gimp_iscissors_tool_reset (GimpIscissorsTool *iscissors)
     {
       /* release any tile we were using */
       if (cur_tile)
-	{
-	  tile_release (cur_tile, FALSE);
+        {
+          tile_release (cur_tile, FALSE);
           cur_tile = NULL;
         }
 
@@ -1070,7 +1072,7 @@ iscissors_free_icurves (GSList *list)
     {
       curve = (ICurve *) list->data;
       if (curve->points)
-	g_ptr_array_free (curve->points, TRUE);
+        g_ptr_array_free (curve->points, TRUE);
 
       g_free (curve);
       list = g_slist_next (list);
@@ -1092,8 +1094,8 @@ iscissors_free_buffers (GimpIscissorsTool *iscissors)
 
 static gint
 mouse_over_vertex (GimpIscissorsTool *iscissors,
-		   gdouble            x,
-		   gdouble            y)
+                   gdouble            x,
+                   gdouble            y)
 {
   GSList *list;
   ICurve *curve;
@@ -1113,33 +1115,33 @@ mouse_over_vertex (GimpIscissorsTool *iscissors,
       curve = (ICurve *) list->data;
 
       if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (iscissors),
-                                    GIMP_TOOL (iscissors)->gdisp,
+                                    GIMP_TOOL (iscissors)->display,
                                     x, y,
                                     GIMP_HANDLE_CIRCLE,
                                     curve->x1, curve->y1,
                                     POINT_WIDTH, POINT_WIDTH,
                                     GTK_ANCHOR_CENTER,
                                     FALSE))
-	{
-	  iscissors->curve1 = curve;
+        {
+          iscissors->curve1 = curve;
 
-	  if (curves_found++)
-	    return curves_found;
-	}
+          if (curves_found++)
+            return curves_found;
+        }
       else if (gimp_draw_tool_on_handle (GIMP_DRAW_TOOL (iscissors),
-                                         GIMP_TOOL (iscissors)->gdisp,
+                                         GIMP_TOOL (iscissors)->display,
                                          x, y,
                                          GIMP_HANDLE_CIRCLE,
                                          curve->x2, curve->y2,
                                          POINT_WIDTH, POINT_WIDTH,
                                          GTK_ANCHOR_CENTER,
                                          FALSE))
-	{
-	  iscissors->curve2 = curve;
+        {
+          iscissors->curve2 = curve;
 
-	  if (curves_found++)
-	    return curves_found;
-	}
+          if (curves_found++)
+            return curves_found;
+        }
 
       list = g_slist_next (list);
     }
@@ -1177,8 +1179,8 @@ clicked_on_vertex (GimpTool *tool)
 
 static GSList *
 mouse_over_curve (GimpIscissorsTool *iscissors,
-		  gdouble            x,
-		  gdouble            y)
+                  gdouble            x,
+                  gdouble            y)
 {
   GSList   *list;
   gpointer *pt;
@@ -1198,22 +1200,22 @@ mouse_over_curve (GimpIscissorsTool *iscissors,
       pt = curve->points->pdata;
       len = curve->points->len;
       while (len--)
-	{
-	  coords = GPOINTER_TO_INT (*pt);
-	  pt++;
-	  tx = coords & 0x0000ffff;
-	  ty = coords >> 16;
+        {
+          coords = GPOINTER_TO_INT (*pt);
+          pt++;
+          tx = coords & 0x0000ffff;
+          ty = coords >> 16;
 
-	  /*  Is the specified point close enough to the curve?  */
-	  if (gimp_draw_tool_in_radius (GIMP_DRAW_TOOL (iscissors),
-                                        GIMP_TOOL (iscissors)->gdisp,
+          /*  Is the specified point close enough to the curve?  */
+          if (gimp_draw_tool_in_radius (GIMP_DRAW_TOOL (iscissors),
+                                        GIMP_TOOL (iscissors)->display,
                                         tx, ty,
                                         x, y,
                                         POINT_HALFWIDTH))
-	    {
-	      return list;
-	    }
-	}
+            {
+              return list;
+            }
+        }
     }
 
   return NULL;
@@ -1299,10 +1301,10 @@ precalculate_arrays (void)
 
 static void
 calculate_curve (GimpTool *tool,
-		 ICurve   *curve)
+                 ICurve   *curve)
 {
   GimpIscissorsTool *iscissors;
-  GimpDisplay       *gdisp;
+  GimpDisplay       *display;
   gint               x, y, dir;
   gint               xs, ys, xe, ye;
   gint               x1, y1, x2, y2;
@@ -1321,13 +1323,13 @@ calculate_curve (GimpTool *tool,
 
   iscissors = GIMP_ISCISSORS_TOOL (tool);
 
-  gdisp = tool->gdisp;
+  display = tool->display;
 
   /*  Get the bounding box  */
-  xs = CLAMP (curve->x1, 0, gdisp->gimage->width - 1);
-  ys = CLAMP (curve->y1, 0, gdisp->gimage->height - 1);
-  xe = CLAMP (curve->x2, 0, gdisp->gimage->width - 1);
-  ye = CLAMP (curve->y2, 0, gdisp->gimage->height - 1);
+  xs = CLAMP (curve->x1, 0, display->image->width - 1);
+  ys = CLAMP (curve->y1, 0, display->image->height - 1);
+  xe = CLAMP (curve->x2, 0, display->image->width - 1);
+  ye = CLAMP (curve->y2, 0, display->image->height - 1);
   x1 = MIN (xs, xe);
   y1 = MIN (ys, ye);
   x2 = MAX (xs, xe) + 1;  /*  +1 because if xe = 199 & xs = 0, x2 - x1, width = 200  */
@@ -1344,11 +1346,11 @@ calculate_curve (GimpTool *tool,
   eheight = (y2 - y1) * EXTEND_BY + FIXED;
 
   if (xe >= xs)
-    x2 += CLAMP (ewidth, 0, gdisp->gimage->width - x2);
+    x2 += CLAMP (ewidth, 0, display->image->width - x2);
   else
     x1 -= CLAMP (ewidth, 0, x1);
   if (ye >= ys)
-    y2 += CLAMP (eheight, 0, gdisp->gimage->height - y2);
+    y2 += CLAMP (eheight, 0, display->image->height - y2);
   else
     y1 -= CLAMP (eheight, 0, y1);
 
@@ -1368,19 +1370,19 @@ calculate_curve (GimpTool *tool,
       /* Initialise the gradient map tile manager for this image if we
        * don't already have one. */
       if (!iscissors->gradient_map)
-	  iscissors->gradient_map = gradient_map_new (gdisp->gimage);
+          iscissors->gradient_map = gradient_map_new (display->image);
 
       /*  allocate the dynamic programming array  */
       iscissors->dp_buf =
-	temp_buf_resize (iscissors->dp_buf, 4, x1, y1, width, height);
+        temp_buf_resize (iscissors->dp_buf, 4, x1, y1, width, height);
 
       /*  find the optimal path of pixels from (x1, y1) to (x2, y2)  */
       find_optimal_path (iscissors->gradient_map, iscissors->dp_buf,
-			 x1, y1, x2, y2, xs, ys);
+                         x1, y1, x2, y2, xs, ys);
 
       /*  get a list of the pixels in the optimal path  */
       curve->points = plot_pixels (iscissors, iscissors->dp_buf,
-				   x1, y1, xs, ys, xe, ye);
+                                   x1, y1, xs, ys, xe, ye);
     }
   /*  If the bounding box has no width  */
   else if ((x2 - x1) == 0)
@@ -1390,10 +1392,10 @@ calculate_curve (GimpTool *tool,
       dir = (ys > ye) ? -1 : 1;
       curve->points = g_ptr_array_new ();
       while (y != ye)
-	{
-	  g_ptr_array_add (curve->points, GINT_TO_POINTER ((y << 16) + xs));
-	  y += dir;
-	}
+        {
+          g_ptr_array_add (curve->points, GINT_TO_POINTER ((y << 16) + xs));
+          y += dir;
+        }
     }
   /*  If the bounding box has no height  */
   else if ((y2 - y1) == 0)
@@ -1403,10 +1405,10 @@ calculate_curve (GimpTool *tool,
       dir = (xs > xe) ? -1 : 1;
       curve->points = g_ptr_array_new ();
       while (x != xe)
-	{
-	  g_ptr_array_add (curve->points, GINT_TO_POINTER ((ys << 16) + x));
-	  x += dir;
-	}
+        {
+          g_ptr_array_add (curve->points, GINT_TO_POINTER ((ys << 16) + x));
+          x += dir;
+        }
     }
 }
 
@@ -1414,10 +1416,10 @@ calculate_curve (GimpTool *tool,
 /* badly need to get a replacement - this is _way_ too expensive */
 static gboolean
 gradient_map_value (TileManager *map,
-		    gint         x,
-		    gint         y,
-		    guint8      *grad,
-		    guint8      *dir)
+                    gint         x,
+                    gint         y,
+                    guint8      *grad,
+                    guint8      *dir)
 {
   static gint  cur_tilex;
   static gint  cur_tiley;
@@ -1428,10 +1430,10 @@ gradient_map_value (TileManager *map,
       y / TILE_HEIGHT != cur_tiley)
     {
       if (cur_tile)
-	tile_release (cur_tile, FALSE);
+        tile_release (cur_tile, FALSE);
       cur_tile = tile_manager_get_tile (map, x, y, TRUE, FALSE);
       if (!cur_tile)
-	return FALSE;
+        return FALSE;
       cur_tilex = x / TILE_WIDTH;
       cur_tiley = y / TILE_HEIGHT;
     }
@@ -1445,10 +1447,10 @@ gradient_map_value (TileManager *map,
 
 static gint
 calculate_link (TileManager *gradient_map,
-		gint         x,
-		gint         y,
-		guint32      pixel,
-		gint         link)
+                gint         x,
+                gint         y,
+                guint32      pixel,
+                gint         link)
 {
   gint   value = 0;
   guint8 grad1, dir1, grad2, dir2;
@@ -1486,13 +1488,13 @@ calculate_link (TileManager *gradient_map,
 
 static GPtrArray *
 plot_pixels (GimpIscissorsTool *iscissors,
-	     TempBuf           *dp_buf,
-	     gint               x1,
-	     gint               y1,
-	     gint               xs,
-	     gint               ys,
-	     gint               xe,
-	     gint               ye)
+             TempBuf           *dp_buf,
+             gint               x1,
+             gint               y1,
+             gint               xs,
+             gint               ys,
+             gint               xe,
+             gint               ye)
 {
   gint       x, y;
   guint32    coords;
@@ -1518,7 +1520,7 @@ plot_pixels (GimpIscissorsTool *iscissors,
 
       link = PIXEL_DIR (*data);
       if (link == SEED_POINT)
-	return list;
+        return list;
 
       x += move[link][0];
       y += move[link][1];
@@ -1537,13 +1539,13 @@ plot_pixels (GimpIscissorsTool *iscissors,
 
 static void
 find_optimal_path (TileManager *gradient_map,
-		   TempBuf     *dp_buf,
-		   gint         x1,
-		   gint         y1,
-		   gint         x2,
-		   gint         y2,
-		   gint         xs,
-		   gint         ys)
+                   TempBuf     *dp_buf,
+                   gint         x1,
+                   gint         y1,
+                   gint         x2,
+                   gint         y2,
+                   gint         xs,
+                   gint         ys)
 {
   gint     i, j, k;
   gint     x, y;
@@ -1577,90 +1579,90 @@ find_optimal_path (TileManager *gradient_map,
       d = data + (y-y1) * dp_buf->width + (x-x1);
 
       for (j = 0; j < dp_buf->width; j++)
-	{
-	  min_cost = G_MAXINT;
+        {
+          min_cost = G_MAXINT;
 
-	  /* pixel[] array encodes how to get to a neigbour, if possible.
-	   * 0 means no connection (eg edge).
-	   * Rest packed as bottom two bytes: y offset then x offset.
-	   * Initially, we assume we can't get anywhere. */
-	  for (k = 0; k < 8; k++)
-	    pixel[k] = 0;
+          /* pixel[] array encodes how to get to a neigbour, if possible.
+           * 0 means no connection (eg edge).
+           * Rest packed as bottom two bytes: y offset then x offset.
+           * Initially, we assume we can't get anywhere. */
+          for (k = 0; k < 8; k++)
+            pixel[k] = 0;
 
-	  /*  Find the valid neighboring pixels  */
-	  /*  the previous pixel  */
-	  if (j)
-	    pixel[((dirx == 1) ? 4 : 0)] = PACK (-dirx, 0);
+          /*  Find the valid neighboring pixels  */
+          /*  the previous pixel  */
+          if (j)
+            pixel[((dirx == 1) ? 4 : 0)] = PACK (-dirx, 0);
 
-	  /*  the previous row of pixels  */
-	  if (i)
-	    {
-	      pixel[((diry == 1) ? 5 : 1)] = PACK (0, -diry);
+          /*  the previous row of pixels  */
+          if (i)
+            {
+              pixel[((diry == 1) ? 5 : 1)] = PACK (0, -diry);
 
-	      link = (linkdir == 1) ? 3 : 2;
-	      if (j)
-		pixel[((diry == 1) ? (link + 4) : link)] = PACK(-dirx, -diry);
+              link = (linkdir == 1) ? 3 : 2;
+              if (j)
+                pixel[((diry == 1) ? (link + 4) : link)] = PACK(-dirx, -diry);
 
-	      link = (linkdir == 1) ? 2 : 3;
-	      if (j != dp_buf->width - 1)
-		pixel[((diry == 1) ? (link + 4) : link)] = PACK (dirx, -diry);
-	    }
+              link = (linkdir == 1) ? 2 : 3;
+              if (j != dp_buf->width - 1)
+                pixel[((diry == 1) ? (link + 4) : link)] = PACK (dirx, -diry);
+            }
 
-	  /*  find the minimum cost of going through each neighbor to reach the
-	   *  seed point...
-	   */
-	  link = -1;
-	  for (k = 0; k < 8; k ++)
-	    if (pixel[k])
-	      {
-		link_cost[k] = calculate_link (gradient_map,
+          /*  find the minimum cost of going through each neighbor to reach the
+           *  seed point...
+           */
+          link = -1;
+          for (k = 0; k < 8; k ++)
+            if (pixel[k])
+              {
+                link_cost[k] = calculate_link (gradient_map,
                                                xs + j*dirx, ys + i*diry,
                                                pixel [k],
                                                ((k > 3) ? k - 4 : k));
-		offset = OFFSET (pixel [k]);
-		pixel_cost[k] = PIXEL_COST (d[offset]);
-		cum_cost[k] = pixel_cost[k] + link_cost[k];
-		if (cum_cost[k] < min_cost)
-		  {
-		    min_cost = cum_cost[k];
-		    link = k;
-		  }
-	      }
+                offset = OFFSET (pixel [k]);
+                pixel_cost[k] = PIXEL_COST (d[offset]);
+                cum_cost[k] = pixel_cost[k] + link_cost[k];
+                if (cum_cost[k] < min_cost)
+                  {
+                    min_cost = cum_cost[k];
+                    link = k;
+                  }
+              }
 
-	  /*  If anything can be done...  */
-	  if (link >= 0)
-	    {
-	      /*  set the cumulative cost of this pixel and the new direction  */
-	      *d = (cum_cost[link] << 8) + link;
+          /*  If anything can be done...  */
+          if (link >= 0)
+            {
+              /*  set the cumulative cost of this pixel and the new direction  */
+              *d = (cum_cost[link] << 8) + link;
 
-	      /*  possibly change the links from the other pixels to this pixel...
-	       *  these changes occur if a neighboring pixel will receive a lower
-	       *  cumulative cost by going through this pixel.
-	       */
-	      for (k = 0; k < 8; k ++)
-		if (pixel[k] && k != link)
-		  {
-		    /*  if the cumulative cost at the neighbor is greater than
-		     *  the cost through the link to the current pixel, change the
-		     *  neighbor's link to point to the current pixel.
-		     */
-		    new_cost = link_cost[k] + cum_cost[link];
-		    if (pixel_cost[k] > new_cost)
-		    {
-		      /*  reverse the link direction   /-----------------------\ */
-		      offset = OFFSET (pixel[k]);
-		      d[offset] = (new_cost << 8) + ((k > 3) ? k - 4 : k + 4);
-		    }
-		  }
-	    }
-	  /*  Set the seed point  */
-	  else if (!i && !j)
-	    *d = SEED_POINT;
+              /*  possibly change the links from the other pixels to this pixel...
+               *  these changes occur if a neighboring pixel will receive a lower
+               *  cumulative cost by going through this pixel.
+               */
+              for (k = 0; k < 8; k ++)
+                if (pixel[k] && k != link)
+                  {
+                    /*  if the cumulative cost at the neighbor is greater than
+                     *  the cost through the link to the current pixel, change the
+                     *  neighbor's link to point to the current pixel.
+                     */
+                    new_cost = link_cost[k] + cum_cost[link];
+                    if (pixel_cost[k] > new_cost)
+                    {
+                      /*  reverse the link direction   /-----------------------\ */
+                      offset = OFFSET (pixel[k]);
+                      d[offset] = (new_cost << 8) + ((k > 3) ? k - 4 : k + 4);
+                    }
+                  }
+            }
+          /*  Set the seed point  */
+          else if (!i && !j)
+            *d = SEED_POINT;
 
-	  /*  increment the data pointer and the x counter  */
-	  d += dirx;
-	  x += dirx;
-	}
+          /*  increment the data pointer and the x counter  */
+          d += dirx;
+          x += dirx;
+        }
 
       /*  increment the y counter  */
       y += diry;
@@ -1671,25 +1673,26 @@ find_optimal_path (TileManager *gradient_map,
 /* Called to fill in a newly referenced tile in the gradient map */
 static void
 gradmap_tile_validate (TileManager *tm,
-		       Tile        *tile)
+                       Tile        *tile)
 {
   static gboolean first_gradient = TRUE;
 
-  gint         x, y;
-  gint         dw, dh;
-  gint         sw, sh;
-  gint         i, j;
-  gint         b;
-  gfloat       gradient;
-  guint8      *gradmap;
-  guint8      *tiledata;
-  guint8      *datah, *datav;
-  gint8        hmax, vmax;
-  Tile        *srctile;
-  PixelRegion  srcPR, destPR;
-  GimpImage   *gimage;
+  gint          x, y;
+  gint          dw, dh;
+  gint          sw, sh;
+  gint          i, j;
+  gint          b;
+  gfloat        gradient;
+  guint8       *gradmap;
+  guint8       *tiledata;
+  guint8       *datah, *datav;
+  gint8         hmax, vmax;
+  GimpPickable *pickable;
+  Tile         *srctile;
+  PixelRegion   srcPR, destPR;
+  GimpImage    *image;
 
-  gimage = (GimpImage *) tile_manager_get_user_data (tm);
+  image = (GimpImage *) tile_manager_get_user_data (tm);
 
   if (first_gradient)
     {
@@ -1697,9 +1700,9 @@ gradmap_tile_validate (TileManager *tm,
 
       /*  compute the distance weights  */
       for (i = 0; i < GRADIENT_SEARCH; i++)
-	for (j = 0; j < GRADIENT_SEARCH; j++)
-	  distance_weights[i * GRADIENT_SEARCH + j] =
-	    1.0 / (1 + sqrt (SQR(i - radius) + SQR(j - radius)));
+        for (j = 0; j < GRADIENT_SEARCH; j++)
+          distance_weights[i * GRADIENT_SEARCH + j] =
+            1.0 / (1 + sqrt (SQR(i - radius) + SQR(j - radius)));
 
       first_gradient = FALSE;
     }
@@ -1708,9 +1711,13 @@ gradmap_tile_validate (TileManager *tm,
   dw = tile_ewidth (tile);
   dh = tile_eheight (tile);
 
-  /* get corresponding tile in the gimage */
-  srctile = tile_manager_get_tile (gimp_projection_get_tiles (gimage->projection),
-				   x, y, TRUE, FALSE);
+  pickable = GIMP_PICKABLE (image->projection);
+
+  gimp_pickable_flush (pickable);
+
+  /* get corresponding tile in the image */
+  srctile = tile_manager_get_tile (gimp_pickable_get_tiles (pickable),
+                                   x, y, TRUE, FALSE);
   if (!srctile)
     return;
 
@@ -1718,8 +1725,8 @@ gradmap_tile_validate (TileManager *tm,
   sh = tile_eheight (srctile);
 
   pixel_region_init_data (&srcPR, tile_data_pointer (srctile, 0, 0),
-                          gimp_projection_get_bytes (gimage->projection),
-                          gimp_projection_get_bytes (gimage->projection) *
+                          gimp_pickable_get_bytes (pickable),
+                          gimp_pickable_get_bytes (pickable) *
                           MIN (dw, sw),
                           0, 0, MIN (dw, sw), MIN (dh, sh));
 
@@ -1753,62 +1760,62 @@ gradmap_tile_validate (TileManager *tm,
       gradmap = tiledata + tile_ewidth (tile) * COST_WIDTH * i;
 
       for (j = 0; j < srcPR.w; j++)
-	{
-	  hmax = datah[0] - 128;
-	  vmax = datav[0] - 128;
-	  for (b = 1; b < srcPR.bytes; b++)
-	    {
-	      if (abs (datah[b] - 128) > abs (hmax)) hmax = datah[b] - 128;
-	      if (abs (datav[b] - 128) > abs (vmax)) vmax = datav[b] - 128;
-	    }
+        {
+          hmax = datah[0] - 128;
+          vmax = datav[0] - 128;
+          for (b = 1; b < srcPR.bytes; b++)
+            {
+              if (abs (datah[b] - 128) > abs (hmax)) hmax = datah[b] - 128;
+              if (abs (datav[b] - 128) > abs (vmax)) vmax = datav[b] - 128;
+            }
 
-	  if (i == 0 || j == 0 || i == srcPR.h-1 || j == srcPR.w-1)
-	  {
-	      gradmap[j*COST_WIDTH] = 0;
-	      gradmap[j*COST_WIDTH + 1] = 255;
-	      goto contin;
-	  }
+          if (i == 0 || j == 0 || i == srcPR.h-1 || j == srcPR.w-1)
+          {
+              gradmap[j*COST_WIDTH] = 0;
+              gradmap[j*COST_WIDTH + 1] = 255;
+              goto contin;
+          }
 
-	  /* 1 byte absolute magitude first */
-	  gradient = sqrt(SQR(hmax) + SQR(vmax));
-	  gradmap[j*COST_WIDTH] = gradient * 255 / MAX_GRADIENT;
+          /* 1 byte absolute magitude first */
+          gradient = sqrt(SQR(hmax) + SQR(vmax));
+          gradmap[j*COST_WIDTH] = gradient * 255 / MAX_GRADIENT;
 
-	  /* then 1 byte direction */
-	  if (gradient > MIN_GRADIENT)
-	    {
-	      gfloat direction;
+          /* then 1 byte direction */
+          if (gradient > MIN_GRADIENT)
+            {
+              gfloat direction;
 
-	      if (!hmax)
-		direction = (vmax > 0) ? G_PI_2 : -G_PI_2;
-	      else
-		direction = atan ((double) vmax / (double) hmax);
+              if (!hmax)
+                direction = (vmax > 0) ? G_PI_2 : -G_PI_2;
+              else
+                direction = atan ((double) vmax / (double) hmax);
 
-	      /* Scale the direction from between 0 and 254,
-	       *  corresponding to -PI/2, PI/2 255 is reserved for
-	       *  directionless pixels */
-	      gradmap[j*COST_WIDTH + 1] =
-		(guint8) (254 * (direction + G_PI_2) / G_PI);
-	    }
-	  else
-	    gradmap[j*COST_WIDTH + 1] = 255; /* reserved for weak gradient */
+              /* Scale the direction from between 0 and 254,
+               *  corresponding to -PI/2, PI/2 255 is reserved for
+               *  directionless pixels */
+              gradmap[j*COST_WIDTH + 1] =
+                (guint8) (254 * (direction + G_PI_2) / G_PI);
+            }
+          else
+            gradmap[j*COST_WIDTH + 1] = 255; /* reserved for weak gradient */
 
 contin:
-	  datah += srcPR.bytes;
-	  datav += srcPR.bytes;
-	}
+          datah += srcPR.bytes;
+          datav += srcPR.bytes;
+        }
     }
 
   tile_release (srctile, FALSE);
 }
 
 static TileManager *
-gradient_map_new (GimpImage *gimage)
+gradient_map_new (GimpImage *image)
 {
   TileManager *tm;
 
-  tm = tile_manager_new (gimage->width, gimage->height,
-			 sizeof (guint8) * COST_WIDTH);
-  tile_manager_set_user_data (tm, gimage);
+  tm = tile_manager_new (image->width, image->height,
+                         sizeof (guint8) * COST_WIDTH);
+  tile_manager_set_user_data (tm, image);
   tile_manager_set_validate_proc (tm, gradmap_tile_validate);
 
   return tm;
@@ -1816,9 +1823,9 @@ gradient_map_new (GimpImage *gimage)
 
 static void
 find_max_gradient (GimpIscissorsTool *iscissors,
-		   GimpImage         *gimage,
-		   gint              *x,
-		   gint              *y)
+                   GimpImage         *image,
+                   gint              *x,
+                   gint              *y)
 {
   PixelRegion  srcPR;
   gint         radius;
@@ -1833,19 +1840,19 @@ find_max_gradient (GimpIscissorsTool *iscissors,
   /* Initialise the gradient map tile manager for this image if we
    * don't already have one. */
   if (!iscissors->gradient_map)
-    iscissors->gradient_map = gradient_map_new (gimage);
+    iscissors->gradient_map = gradient_map_new (image);
 
   radius = GRADIENT_SEARCH >> 1;
 
   /*  calculate the extent of the search  */
-  cx = CLAMP (*x, 0, gimage->width);
-  cy = CLAMP (*y, 0, gimage->height);
+  cx = CLAMP (*x, 0, image->width);
+  cy = CLAMP (*y, 0, image->height);
   sx = cx - radius;
   sy = cy - radius;
-  x1 = CLAMP (cx - radius, 0, gimage->width);
-  y1 = CLAMP (cy - radius, 0, gimage->height);
-  x2 = CLAMP (cx + radius, 0, gimage->width);
-  y2 = CLAMP (cy + radius, 0, gimage->height);
+  x1 = CLAMP (cx - radius, 0, image->width);
+  y1 = CLAMP (cy - radius, 0, image->height);
+  x2 = CLAMP (cx + radius, 0, image->width);
+  y2 = CLAMP (cy + radius, 0, image->height);
   /*  calculate the factor to multiply the distance from the cursor by  */
 
   max_gradient = 0;
@@ -1854,7 +1861,7 @@ find_max_gradient (GimpIscissorsTool *iscissors,
 
   /*  Find the point of max gradient  */
   pixel_region_init (&srcPR, iscissors->gradient_map,
-		     x1, y1, x2 - x1, y2 - y1, FALSE);
+                     x1, y1, x2 - x1, y2 - y1, FALSE);
 
   /* this iterates over 1, 2 or 4 tiles only */
   for (pr = pixel_regions_register (1, &srcPR);
@@ -1864,20 +1871,20 @@ find_max_gradient (GimpIscissorsTool *iscissors,
       endx = srcPR.x + srcPR.w;
       endy = srcPR.y + srcPR.h;
       for (i = srcPR.y; i < endy; i++)
-	{
-	  gradient = srcPR.data + srcPR.rowstride * (i - srcPR.y);
-	  for (j = srcPR.x; j < endx; j++)
-	    {
-	      g = *gradient;
-	      gradient += COST_WIDTH;
-	      g *= distance_weights [(i-y1) * GRADIENT_SEARCH + (j-x1)];
-	      if (g > max_gradient)
-		{
-		  max_gradient = g;
-		  *x = j;
-		  *y = i;
-		}
-	    }
-	}
+        {
+          gradient = srcPR.data + srcPR.rowstride * (i - srcPR.y);
+          for (j = srcPR.x; j < endx; j++)
+            {
+              g = *gradient;
+              gradient += COST_WIDTH;
+              g *= distance_weights [(i-y1) * GRADIENT_SEARCH + (j-x1)];
+              if (g > max_gradient)
+                {
+                  max_gradient = g;
+                  *x = j;
+                  *y = i;
+                }
+            }
+        }
     }
 }

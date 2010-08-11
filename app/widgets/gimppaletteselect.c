@@ -30,22 +30,22 @@
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimppalette.h"
+#include "core/gimpparamspecs.h"
 
-#include "pdb/procedural_db.h"
+#include "pdb/gimp-pdb.h"
 
 #include "gimpcontainerbox.h"
 #include "gimpdatafactoryview.h"
 #include "gimppaletteselect.h"
 
 
-static GObject  * gimp_palette_select_constructor  (GType          type,
-                                                    guint          n_params,
-                                                    GObjectConstructParam *params);
+static GObject     * gimp_palette_select_constructor  (GType          type,
+                                                       guint          n_params,
+                                                       GObjectConstructParam *params);
 
-static Argument * gimp_palette_select_run_callback (GimpPdbDialog *dialog,
-                                                    GimpObject    *object,
-                                                    gboolean       closing,
-                                                    gint          *n_return_vals);
+static GValueArray * gimp_palette_select_run_callback (GimpPdbDialog *dialog,
+                                                       GimpObject    *object,
+                                                       gboolean       closing);
 
 
 G_DEFINE_TYPE (GimpPaletteSelect, gimp_palette_select, GIMP_TYPE_PDB_DIALOG);
@@ -101,21 +101,19 @@ gimp_palette_select_constructor (GType                  type,
   return object;
 }
 
-static Argument *
+static GValueArray *
 gimp_palette_select_run_callback (GimpPdbDialog *dialog,
                                   GimpObject    *object,
-                                  gboolean       closing,
-                                  gint          *n_return_vals)
+                                  gboolean       closing)
 {
   GimpPalette *palette = GIMP_PALETTE (object);
 
-  return procedural_db_run_proc (dialog->caller_context->gimp,
-                                 dialog->caller_context,
-                                 NULL,
-                                 dialog->callback_name,
-                                 n_return_vals,
-                                 GIMP_PDB_STRING, GIMP_OBJECT (palette)->name,
-                                 GIMP_PDB_INT32,  palette->n_colors,
-                                 GIMP_PDB_INT32,  closing,
-                                 GIMP_PDB_END);
+  return gimp_pdb_run_proc (dialog->caller_context->gimp,
+                            dialog->caller_context,
+                            NULL,
+                            dialog->callback_name,
+                            G_TYPE_STRING,   GIMP_OBJECT (palette)->name,
+                            GIMP_TYPE_INT32, palette->n_colors,
+                            GIMP_TYPE_INT32, closing,
+                            G_TYPE_NONE);
 }

@@ -117,7 +117,7 @@ gimp_layer_mask_is_attached (GimpItem *item)
   GimpLayerMask *mask  = GIMP_LAYER_MASK (item);
   GimpLayer     *layer = gimp_layer_mask_get_layer (mask);
 
-  return (GIMP_IS_IMAGE (item->gimage)        &&
+  return (GIMP_IS_IMAGE (item->image)         &&
           GIMP_IS_LAYER (layer)               &&
           gimp_layer_get_mask (layer) == mask &&
           gimp_item_is_attached (GIMP_ITEM (layer)));
@@ -159,7 +159,7 @@ gimp_layer_mask_rename (GimpItem    *item,
 }
 
 GimpLayerMask *
-gimp_layer_mask_new (GimpImage     *gimage,
+gimp_layer_mask_new (GimpImage     *image,
                      gint           width,
                      gint           height,
                      const gchar   *name,
@@ -170,7 +170,7 @@ gimp_layer_mask_new (GimpImage     *gimage,
   layer_mask = g_object_new (GIMP_TYPE_LAYER_MASK, NULL);
 
   gimp_drawable_configure (GIMP_DRAWABLE (layer_mask),
-			   gimage,
+                           image,
                            0, 0, width, height,
                            GIMP_GRAY_IMAGE, name);
 
@@ -187,7 +187,7 @@ gimp_layer_mask_new (GimpImage     *gimage,
 
 void
 gimp_layer_mask_set_layer (GimpLayerMask *layer_mask,
-			   GimpLayer     *layer)
+                           GimpLayer     *layer)
 {
   g_return_if_fail (GIMP_IS_LAYER_MASK (layer_mask));
   g_return_if_fail (layer == NULL || GIMP_IS_LAYER (layer));
@@ -203,8 +203,8 @@ gimp_layer_mask_set_layer (GimpLayerMask *layer_mask,
 
       mask_name = g_strdup_printf (_("%s mask"),
                                    gimp_object_get_name (GIMP_OBJECT (layer)));
-      gimp_object_set_name (GIMP_OBJECT (layer_mask), mask_name);
-      g_free (mask_name);
+
+      gimp_object_take_name (GIMP_OBJECT (layer_mask), mask_name);
     }
 }
 
@@ -225,10 +225,10 @@ gimp_layer_mask_set_apply (GimpLayerMask *layer_mask,
 
   if (layer_mask->apply_mask != apply)
     {
-      GimpImage *gimage = GIMP_ITEM (layer_mask)->gimage;
+      GimpImage *image = GIMP_ITEM (layer_mask)->image;
 
       if (push_undo)
-        gimp_image_undo_push_layer_mask_apply (gimage, _("Apply Layer Mask"),
+        gimp_image_undo_push_layer_mask_apply (image, _("Apply Layer Mask"),
                                                layer_mask);
 
       layer_mask->apply_mask = apply ? TRUE : FALSE;
@@ -238,9 +238,9 @@ gimp_layer_mask_set_apply (GimpLayerMask *layer_mask,
           GimpDrawable *drawable = GIMP_DRAWABLE (layer_mask->layer);
 
           gimp_drawable_update (drawable,
-				0, 0,
-				gimp_item_width  (GIMP_ITEM (drawable)),
-				gimp_item_height (GIMP_ITEM (drawable)));
+                                0, 0,
+                                gimp_item_width  (GIMP_ITEM (drawable)),
+                                gimp_item_height (GIMP_ITEM (drawable)));
         }
 
       g_signal_emit (layer_mask, layer_mask_signals[APPLY_CHANGED], 0);
@@ -286,10 +286,10 @@ gimp_layer_mask_set_show (GimpLayerMask *layer_mask,
 
   if (layer_mask->show_mask != show)
     {
-      GimpImage *gimage = GIMP_ITEM (layer_mask)->gimage;
+      GimpImage *image = GIMP_ITEM (layer_mask)->image;
 
       if (push_undo)
-        gimp_image_undo_push_layer_mask_show (gimage, _("Show Layer Mask"),
+        gimp_image_undo_push_layer_mask_show (image, _("Show Layer Mask"),
                                               layer_mask);
 
       layer_mask->show_mask = show ? TRUE : FALSE;
@@ -299,9 +299,9 @@ gimp_layer_mask_set_show (GimpLayerMask *layer_mask,
           GimpDrawable *drawable = GIMP_DRAWABLE (layer_mask->layer);
 
           gimp_drawable_update (drawable,
-				0, 0,
-				gimp_item_width  (GIMP_ITEM (drawable)),
-				gimp_item_height (GIMP_ITEM (drawable)));
+                                0, 0,
+                                gimp_item_width  (GIMP_ITEM (drawable)),
+                                gimp_item_height (GIMP_ITEM (drawable)));
         }
 
       g_signal_emit (layer_mask, layer_mask_signals[SHOW_CHANGED], 0);

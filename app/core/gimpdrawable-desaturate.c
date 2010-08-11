@@ -86,10 +86,10 @@ gimp_drawable_desaturate (GimpDrawable       *drawable,
 
   has_alpha = gimp_drawable_has_alpha (drawable);
 
-  pixel_region_init (&srcPR, gimp_drawable_data (drawable),
-		     x, y, width, height, FALSE);
-  pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
-		     x, y, width, height, TRUE);
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
+                     x, y, width, height, FALSE);
+  pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
+                     x, y, width, height, TRUE);
 
   pixel_regions_process_parallel (function, GINT_TO_POINTER (has_alpha),
                                   2, &srcPR, &destPR);

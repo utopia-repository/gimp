@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
@@ -25,15 +27,16 @@
 #include "actions-types.h"
 
 #include "core/gimp.h"
+#include "core/gimp-utils.h"
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimpitem.h"
+#include "core/gimpparamspecs.h"
 #include "core/gimpprogress.h"
 
-#include "pdb/procedural_db.h"
+#include "plug-in/plug-in-data.h"
 
-#include "plug-in/plug-in-run.h"
-#include "plug-in/plug-in-proc-def.h"
+#include "pdb/gimpprocedure.h"
 
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpmessagebox.h"
@@ -57,97 +60,85 @@ static void  plug_in_reset_all_response (GtkWidget *dialog,
 /*  public functions  */
 
 void
-plug_in_run_cmd_callback (GtkAction     *action,
-                          PlugInProcDef *proc_def,
-                          gpointer       data)
+plug_in_run_cmd_callback (GtkAction           *action,
+                          GimpPlugInProcedure *proc,
+                          gpointer             data)
 {
+  GimpProcedure *procedure = GIMP_PROCEDURE (proc);
   Gimp          *gimp;
-  ProcRecord    *proc_rec;
-  Argument      *args;
-  gint           n_args = 0;
-  GimpDisplay   *gdisp  = NULL;
-  gint           i;
+  GValueArray   *args;
+  gint           n_args    = 0;
+  GimpDisplay   *display   = NULL;
+  return_if_no_gimp (gimp, data);
 
-  gimp = action_data_get_gimp (data);
-  if (! gimp)
-    return;
-
-  proc_rec = &proc_def->db_info;
-
-  /* construct the procedures arguments */
-  args = g_new0 (Argument, proc_rec->num_args);
-
-  /* initialize the argument types */
-  for (i = 0; i < proc_rec->num_args; i++)
-    args[i].arg_type = proc_rec->args[i].arg_type;
+  args = gimp_procedure_get_arguments (procedure);
 
   /* initialize the first argument  */
-  args[n_args].value.pdb_int = GIMP_RUN_INTERACTIVE;
+  g_value_set_int (&args->values[n_args], GIMP_RUN_INTERACTIVE);
   n_args++;
 
-  switch (proc_rec->proc_type)
+  switch (procedure->proc_type)
     {
     case GIMP_EXTENSION:
       break;
 
     case GIMP_PLUGIN:
     case GIMP_TEMPORARY:
-      if (proc_rec->num_args > n_args &&
-          proc_rec->args[n_args].arg_type == GIMP_PDB_IMAGE)
+      if (args->n_values > n_args &&
+          GIMP_VALUE_HOLDS_IMAGE_ID (&args->values[n_args]))
         {
-          gdisp = action_data_get_display (data);
+          display = action_data_get_display (data);
 
-          if (gdisp)
+          if (display)
             {
-              args[n_args].value.pdb_int = gimp_image_get_ID (gdisp->gimage);
+              gimp_value_set_image (&args->values[n_args], display->image);
               n_args++;
 
-              if (proc_rec->num_args > n_args &&
-                  proc_rec->args[n_args].arg_type == GIMP_PDB_DRAWABLE)
+              if (args->n_values > n_args &&
+                  GIMP_VALUE_HOLDS_DRAWABLE_ID (&args->values[n_args]));
                 {
                   GimpDrawable *drawable;
 
-                  drawable = gimp_image_active_drawable (gdisp->gimage);
+                  drawable = gimp_image_active_drawable (display->image);
 
                   if (drawable)
                     {
-                      args[n_args].value.pdb_int =
-                        gimp_item_get_ID (GIMP_ITEM (drawable));
+                      gimp_value_set_drawable (&args->values[n_args], drawable);
                       n_args++;
                     }
                   else
                     {
                       g_warning ("Uh-oh, no active drawable for the plug-in!");
-                      g_free (args);
-                      return;
+                      goto error;
                     }
                 }
             }
-	}
+        }
       break;
 
     default:
       g_error ("Unknown procedure type.");
-      g_free (args);
-      return;
+      goto error;
     }
+
+  gimp_value_array_truncate (args, n_args);
 
   /* run the plug-in procedure */
-  plug_in_run (gimp, gimp_get_user_context (gimp),
-               GIMP_PROGRESS (gdisp),
-               proc_rec, args, n_args, FALSE, TRUE,
-               gdisp ? gimp_display_get_ID (gdisp) : -1);
+  gimp_procedure_execute_async (procedure, gimp, gimp_get_user_context (gimp),
+                                GIMP_PROGRESS (display), args,
+                                display ? gimp_display_get_ID (display) : -1);
 
   /* remember only "standard" plug-ins */
-  if (proc_rec->proc_type == GIMP_PLUGIN           &&
-      proc_rec->num_args >= 3                      &&
-      proc_rec->args[1].arg_type == GIMP_PDB_IMAGE &&
-      proc_rec->args[2].arg_type == GIMP_PDB_DRAWABLE)
+  if (procedure->proc_type == GIMP_PLUGIN                 &&
+      procedure->num_args  >= 3                           &&
+      GIMP_IS_PARAM_SPEC_IMAGE_ID    (procedure->args[1]) &&
+      GIMP_IS_PARAM_SPEC_DRAWABLE_ID (procedure->args[2]))
     {
-      gimp_set_last_plug_in (gimp, proc_def);
+      gimp_set_last_plug_in (gimp, proc);
     }
 
-  g_free (args);
+ error:
+  g_value_array_free (args);
 }
 
 void
@@ -155,38 +146,50 @@ plug_in_repeat_cmd_callback (GtkAction *action,
                              gint       value,
                              gpointer   data)
 {
-  GimpDisplay  *gdisp;
-  GimpDrawable *drawable;
-  gboolean      interactive;
+  GimpProcedure *procedure;
+  Gimp          *gimp;
+  GimpDisplay   *display;
+  GimpDrawable  *drawable;
+  gboolean       interactive = TRUE;
+  return_if_no_gimp (gimp, data);
+  return_if_no_display (display, data);
 
-  gdisp = action_data_get_display (data);
-  if (! gdisp)
-    return;
-
-  drawable = gimp_image_active_drawable (gdisp->gimage);
+  drawable = gimp_image_active_drawable (display->image);
   if (! drawable)
     return;
 
-  interactive = value ? TRUE : FALSE;
+  if (strcmp (gtk_action_get_name (action), "plug-in-repeat") == 0)
+    interactive = FALSE;
 
-  plug_in_repeat (gdisp->gimage->gimp,
-                  gimp_get_user_context (gdisp->gimage->gimp),
-                  GIMP_PROGRESS (gdisp),
-                  gimp_display_get_ID (gdisp),
-                  gimp_image_get_ID (gdisp->gimage),
-                  gimp_item_get_ID (GIMP_ITEM (drawable)),
-                  interactive);
+  procedure = g_slist_nth_data (gimp->last_plug_ins, value);
+
+  if (procedure)
+    {
+      GValueArray *args = gimp_procedure_get_arguments (procedure);
+
+      g_value_set_int         (&args->values[0],
+                               interactive ?
+                               GIMP_RUN_INTERACTIVE : GIMP_RUN_WITH_LAST_VALS);
+      gimp_value_set_image    (&args->values[1], display->image);
+      gimp_value_set_drawable (&args->values[2], drawable);
+
+      /* run the plug-in procedure */
+      gimp_procedure_execute_async (procedure, gimp,
+                                    gimp_get_user_context (gimp),
+                                    GIMP_PROGRESS (display), args,
+                                    gimp_display_get_ID (display));
+
+      g_value_array_free (args);
+    }
 }
 
 void
 plug_in_reset_all_cmd_callback (GtkAction *action,
                                 gpointer   data)
 {
-  Gimp      *gimp = action_data_get_gimp (data);
+  Gimp      *gimp;
   GtkWidget *dialog;
-
-  if (! gimp)
-    return;
+  return_if_no_gimp (gimp, data);
 
   dialog = gimp_message_dialog_new (_("Reset all Filters"), GIMP_STOCK_QUESTION,
                                     NULL, 0,
@@ -224,5 +227,5 @@ plug_in_reset_all_response (GtkWidget *dialog,
   gtk_widget_destroy (dialog);
 
   if (response_id == GTK_RESPONSE_OK)
-    procedural_db_free_data (gimp);
+    plug_in_data_free (gimp);
 }

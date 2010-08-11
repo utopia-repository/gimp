@@ -24,9 +24,9 @@
 
 #include "plug-in-types.h"
 
-#include "plug-in.h"
+#include "pdb/gimppluginprocedure.h"
+
 #include "plug-in-def.h"
-#include "plug-in-proc-def.h"
 
 
 PlugInDef *
@@ -44,8 +44,7 @@ plug_in_def_new (const gchar *prog)
 }
 
 void
-plug_in_def_free (PlugInDef *plug_in_def,
-		  gboolean   free_proc_defs)
+plug_in_def_free (PlugInDef *plug_in_def)
 {
   g_return_if_fail (plug_in_def != NULL);
 
@@ -55,26 +54,34 @@ plug_in_def_free (PlugInDef *plug_in_def,
   g_free (plug_in_def->help_domain_name);
   g_free (plug_in_def->help_domain_uri);
 
-  if (free_proc_defs)
-    g_slist_foreach (plug_in_def->proc_defs, (GFunc) plug_in_proc_def_free,
-                     NULL);
-
-  if (plug_in_def->proc_defs)
-    g_slist_free (plug_in_def->proc_defs);
+  g_slist_foreach (plug_in_def->procedures, (GFunc) g_object_unref, NULL);
+  g_slist_free (plug_in_def->procedures);
 
   g_free (plug_in_def);
 }
 
 void
-plug_in_def_add_proc_def (PlugInDef     *plug_in_def,
-                          PlugInProcDef *proc_def)
+plug_in_def_add_procedure (PlugInDef           *plug_in_def,
+                           GimpPlugInProcedure *proc)
 {
   g_return_if_fail (plug_in_def != NULL);
+  g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
 
-  proc_def->mtime = plug_in_def->mtime;
-  proc_def->prog  = g_strdup (plug_in_def->prog);
+  proc->mtime = plug_in_def->mtime;
 
-  plug_in_def->proc_defs = g_slist_append (plug_in_def->proc_defs, proc_def);
+  plug_in_def->procedures = g_slist_append (plug_in_def->procedures,
+                                            g_object_ref (proc));
+}
+
+void
+plug_in_def_remove_procedure (PlugInDef           *plug_in_def,
+                              GimpPlugInProcedure *proc)
+{
+  g_return_if_fail (plug_in_def != NULL);
+  g_return_if_fail (GIMP_IS_PLUG_IN_PROCEDURE (proc));
+
+  plug_in_def->procedures = g_slist_remove (plug_in_def->procedures, proc);
+  g_object_unref (proc);
 }
 
 void
@@ -125,9 +132,18 @@ void
 plug_in_def_set_mtime (PlugInDef *plug_in_def,
                        time_t     mtime)
 {
+  GSList *list;
+
   g_return_if_fail (plug_in_def != NULL);
 
   plug_in_def->mtime = mtime;
+
+  for (list = plug_in_def->procedures; list; list = g_slist_next (list))
+    {
+      GimpPlugInProcedure *proc = list->data;
+
+      proc->mtime = plug_in_def->mtime;
+    }
 }
 
 void

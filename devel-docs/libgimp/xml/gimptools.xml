@@ -262,7 +262,7 @@ selection. The antialiasing parameter allows the final selection
 mask to contain intermediate values based on close misses to the
 threshold bar. Feathering can be enabled optionally and is
 controlled with the \"feather_radius\" parameter. If the
-sample_merged parameter is non-zero, the data of the composite image
+sample_merged parameter is TRUE, the data of the composite image
 will be used instead of that for the specified drawable. This is
 equivalent to sampling for colors after merging all visible layers.
 In the case of a merged sampling, the supplied drawable is ignored.</para>
@@ -276,7 +276,7 @@ In the case of a merged sampling, the supplied drawable is ignored.</para>
 <listitem><simpara> The color to select.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>threshold</parameter>&nbsp;:</term>
-<listitem><simpara> Threshold in intensity levels %<literal>desc</literal>%%.
+<listitem><simpara> Threshold in intensity levels.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>operation</parameter>&nbsp;:</term>
 <listitem><simpara> The selection operation.
@@ -463,7 +463,7 @@ Dodgeburn. More details here later.</para>
 <listitem><simpara> The affected drawable.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>exposure</parameter>&nbsp;:</term>
-<listitem><simpara> The exposer of the strokes.
+<listitem><simpara> The exposure of the strokes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dodgeburn_type</parameter>&nbsp;:</term>
 <listitem><simpara> The type either dodge or burn.
@@ -729,13 +729,13 @@ antialiasing parameter allows the final selection mask to contain
 intermediate values based on close misses to the threshold bar at
 pixels along the seed fill boundary. Feathering can be enabled
 optionally and is controlled with the \"feather_radius\" paramter.
-If the sample_merged parameter is non-zero, the data of the
-composite image will be used instead of that for the specified
-drawable. This is equivalent to sampling for colors after merging
-all visible layers. In the case of a merged sampling, the supplied
-drawable is ignored. If the sample is merged, the specified
-coordinates are relative to the image origin; otherwise, they are
-relative to the drawable's origin.</para>
+If the sample_merged parameter is TRUE, the data of the composite
+image will be used instead of that for the specified drawable. This
+is equivalent to sampling for colors after merging all visible
+layers. In the case of a merged sampling, the supplied drawable is
+ignored. If the sample is merged, the specified coordinates are
+relative to the image origin; otherwise, they are relative to the
+drawable's origin.</para>
 <para>
 
 </para><variablelist role="params">
@@ -749,7 +749,7 @@ relative to the drawable's origin.</para>
 <listitem><simpara> y coordinate of initial seed fill point: (image coordinates).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>threshold</parameter>&nbsp;:</term>
-<listitem><simpara> Threshold in intensity levels %<literal>desc</literal>%%.
+<listitem><simpara> Threshold in intensity levels.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>operation</parameter>&nbsp;:</term>
 <listitem><simpara> The selection operation.
@@ -1032,16 +1032,16 @@ This procedure is deprecated! Use
 <listitem><simpara> Whether to use interpolation.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>x0</parameter>&nbsp;:</term>
-<listitem><simpara> The new x coordinate of upper-left corner of newly scaled region.
+<listitem><simpara> The new x coordinate of the upper-left corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>y0</parameter>&nbsp;:</term>
-<listitem><simpara> The new y coordinate of upper-left corner of newly scaled region.
+<listitem><simpara> The new y coordinate of the upper-left corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>x1</parameter>&nbsp;:</term>
-<listitem><simpara> The new x coordinate of lower-right corner of newly scaled region.
+<listitem><simpara> The new x coordinate of the lower-right corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>y1</parameter>&nbsp;:</term>
-<listitem><simpara> The new y coordinate of lower-right corner of newly scaled region.
+<listitem><simpara> The new y coordinate of the lower-right corner of the scaled region.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The scaled drawable.
 </simpara></listitem></varlistentry>

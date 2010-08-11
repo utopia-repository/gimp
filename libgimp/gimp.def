@@ -6,6 +6,7 @@ EXPORTS
 	gimp_brush_application_mode_get_type
 	gimp_brush_delete
 	gimp_brush_duplicate
+	gimp_brush_generated_shape_get_type
 	gimp_brush_get_angle
 	gimp_brush_get_aspect_ratio
 	gimp_brush_get_hardness
@@ -468,7 +469,6 @@ EXPORTS
 	gimp_path_get_point_at_dist
 	gimp_path_get_points
 	gimp_path_get_tattoo
-	gimp_path_get_visible
 	gimp_path_import
 	gimp_path_import_string
 	gimp_path_list
@@ -476,7 +476,6 @@ EXPORTS
 	gimp_path_set_locked
 	gimp_path_set_points
 	gimp_path_set_tattoo
-	gimp_path_set_visible
 	gimp_path_stroke_current
 	gimp_path_to_selection
 	gimp_pattern_get_info
@@ -612,6 +611,10 @@ EXPORTS
 	gimp_vectors_get_tattoo
 	gimp_vectors_get_visible
 	gimp_vectors_new
+	gimp_vectors_parasite_attach
+	gimp_vectors_parasite_detach
+	gimp_vectors_parasite_find
+	gimp_vectors_parasite_list
 	gimp_vectors_set_linked
 	gimp_vectors_set_name
 	gimp_vectors_set_tattoo

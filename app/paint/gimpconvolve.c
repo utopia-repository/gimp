@@ -160,7 +160,7 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
   GimpConvolveOptions *options          = GIMP_CONVOLVE_OPTIONS (paint_options);
   GimpContext         *context          = GIMP_CONTEXT (paint_options);
   GimpPressureOptions *pressure_options = paint_options->pressure_options;
-  GimpImage           *gimage;
+  GimpImage           *image;
   TempBuf             *area;
   guchar              *temp_data;
   PixelRegion          srcPR;
@@ -172,7 +172,7 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
   gint                 marginx    = 0;
   gint                 marginy    = 0;
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
   if (gimp_drawable_is_indexed (drawable))
     return;
@@ -182,7 +182,7 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
       brush_core->brush->mask->height < matrix_size)
     return;
 
-  opacity = gimp_paint_options_get_fade (paint_options, gimage,
+  opacity = gimp_paint_options_get_fade (paint_options, image,
                                          paint_core->pixel_dist);
   if (opacity == 0.0)
     return;
@@ -192,8 +192,8 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
     return;
 
   /*  configure the source pixel region  */
-  pixel_region_init (&srcPR, gimp_drawable_data (drawable),
-		     area->x, area->y, area->width, area->height, FALSE);
+  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
+                     area->x, area->y, area->width, area->height, FALSE);
 
   /*  configure the destination pixel region  */
   pixel_region_init_temp_buf (&destPR, area,
@@ -254,11 +254,11 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
       gint        bytes;
 
       if (! gimp_drawable_has_alpha (drawable))
-	{
-	  /* note: this particular approach needlessly convolves the totally-
-	     opaque alpha channel. A faster approach would be to keep
-	     tempPR the same number of bytes as srcPR, and extend the
-	     paint_core_replace_canvas API to handle non-alpha images. */
+        {
+          /* note: this particular approach needlessly convolves the totally-
+             opaque alpha channel. A faster approach would be to keep
+             tempPR the same number of bytes as srcPR, and extend the
+             paint_core_replace_canvas API to handle non-alpha images. */
 
           bytes = srcPR.bytes + 1;
 
@@ -269,9 +269,9 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
                                   0, 0, area->width, area->height);
 
           add_alpha_region (&srcPR, &tempPR);
-	}
+        }
       else
-	{
+        {
           bytes = srcPR.bytes;
 
           temp_data = g_malloc (area->height * bytes * area->width);
@@ -281,7 +281,7 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
                                   0, 0, area->width, area->height);
 
           copy_region (&srcPR, &tempPR);
-	}
+        }
 
       /*  Convolve the region  */
       pixel_region_init_data (&tempPR, temp_data,
@@ -348,9 +348,9 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
                               area->height);
 
       if (! gimp_drawable_has_alpha (drawable))
-	add_alpha_region (&srcPR, &ovrsz1PR);
+        add_alpha_region (&srcPR, &ovrsz1PR);
       else
-	copy_region (&srcPR, &ovrsz1PR);
+        copy_region (&srcPR, &ovrsz1PR);
 
       /*  Convolve the region  */
       pixel_region_init_data (&ovrsz1PR, ovrsz1_data,
@@ -379,8 +379,8 @@ gimp_convolve_motion (GimpPaintCore    *paint_core,
 
   gimp_brush_core_replace_canvas (brush_core, drawable,
                                   MIN (opacity, GIMP_OPACITY_OPAQUE),
-				  gimp_context_get_opacity (context),
-				  gimp_paint_options_get_brush_mode (paint_options),
+                                  gimp_context_get_opacity (context),
+                                  gimp_paint_options_get_brush_mode (paint_options),
                                   GIMP_PAINT_INCREMENTAL);
 }
 

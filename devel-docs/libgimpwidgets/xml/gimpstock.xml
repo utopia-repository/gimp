@@ -198,14 +198,15 @@
 #define     <link linkend="GIMP-STOCK-WILBER:CAPS">GIMP_STOCK_WILBER</link>
 #define     <link linkend="GIMP-STOCK-WILBER-EEK:CAPS">GIMP_STOCK_WILBER_EEK</link>
 #define     <link linkend="GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS">GIMP_STOCK_ZOOM_FOLLOW_WINDOW</link>
+#define     <link linkend="GIMP-STOCK-QMASK-ON:CAPS">GIMP_STOCK_QMASK_ON</link>
+#define     <link linkend="GIMP-STOCK-QMASK-OFF:CAPS">GIMP_STOCK_QMASK_OFF</link>
 #define     <link linkend="GIMP-STOCK-BRUSH:CAPS">GIMP_STOCK_BRUSH</link>
 #define     <link linkend="GIMP-STOCK-BUFFER:CAPS">GIMP_STOCK_BUFFER</link>
+#define     <link linkend="GIMP-STOCK-DETACH:CAPS">GIMP_STOCK_DETACH</link>
 #define     <link linkend="GIMP-STOCK-FONT:CAPS">GIMP_STOCK_FONT</link>
 #define     <link linkend="GIMP-STOCK-GRADIENT:CAPS">GIMP_STOCK_GRADIENT</link>
 #define     <link linkend="GIMP-STOCK-PALETTE:CAPS">GIMP_STOCK_PALETTE</link>
 #define     <link linkend="GIMP-STOCK-PATTERN:CAPS">GIMP_STOCK_PATTERN</link>
-#define     <link linkend="GIMP-STOCK-QMASK-ON:CAPS">GIMP_STOCK_QMASK_ON</link>
-#define     <link linkend="GIMP-STOCK-QMASK-OFF:CAPS">GIMP_STOCK_QMASK_OFF</link>
 </synopsis>
 </refsynopsisdiv>
 
@@ -1589,6 +1590,22 @@ RTL variant
 <inlinegraphic fileref="stock-zoom-follow-window-12.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
+<title><anchor id="GIMP-STOCK-QMASK-ON:CAPS"/>GIMP_STOCK_QMASK_ON</title>
+<indexterm role="deprecated"><primary>GIMP_STOCK_QMASK_ON</primary></indexterm><programlisting>#define GIMP_STOCK_QMASK_ON                 "gimp-quick-mask-on"
+</programlisting>
+<warning><para><literal>GIMP_STOCK_QMASK_ON</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-STOCK-QMASK-OFF:CAPS"/>GIMP_STOCK_QMASK_OFF</title>
+<indexterm role="deprecated"><primary>GIMP_STOCK_QMASK_OFF</primary></indexterm><programlisting>#define GIMP_STOCK_QMASK_OFF                "gimp-quick-mask-off"
+</programlisting>
+<warning><para><literal>GIMP_STOCK_QMASK_OFF</literal> is deprecated and should not be used in newly-written code.</para></warning>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="GIMP-STOCK-BRUSH:CAPS"/>GIMP_STOCK_BRUSH</title>
 <indexterm><primary>GIMP_STOCK_BRUSH</primary></indexterm><programlisting>#define GIMP_STOCK_BRUSH                    GIMP_STOCK_TOOL_PAINTBRUSH
 </programlisting>
@@ -1598,6 +1615,13 @@ RTL variant
 <refsect2>
 <title><anchor id="GIMP-STOCK-BUFFER:CAPS"/>GIMP_STOCK_BUFFER</title>
 <indexterm><primary>GIMP_STOCK_BUFFER</primary></indexterm><programlisting>#define GIMP_STOCK_BUFFER                   GTK_STOCK_PASTE
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GIMP-STOCK-DETACH:CAPS"/>GIMP_STOCK_DETACH</title>
+<indexterm><primary>GIMP_STOCK_DETACH</primary></indexterm><programlisting>#define GIMP_STOCK_DETACH                   GTK_STOCK_CONVERT
 </programlisting>
 <para>
 
@@ -1627,22 +1651,6 @@ RTL variant
 <title><anchor id="GIMP-STOCK-PATTERN:CAPS"/>GIMP_STOCK_PATTERN</title>
 <indexterm><primary>GIMP_STOCK_PATTERN</primary></indexterm><programlisting>#define GIMP_STOCK_PATTERN                  GIMP_STOCK_TOOL_BUCKET_FILL
 </programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="GIMP-STOCK-QMASK-ON:CAPS"/>GIMP_STOCK_QMASK_ON</title>
-<indexterm role="deprecated"><primary>GIMP_STOCK_QMASK_ON</primary></indexterm><programlisting>#define GIMP_STOCK_QMASK_ON                 "gimp-quick-mask-on"
-</programlisting>
-<warning><para><literal>GIMP_STOCK_QMASK_ON</literal> is deprecated and should not be used in newly-written code.</para></warning>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="GIMP-STOCK-QMASK-OFF:CAPS"/>GIMP_STOCK_QMASK_OFF</title>
-<indexterm role="deprecated"><primary>GIMP_STOCK_QMASK_OFF</primary></indexterm><programlisting>#define GIMP_STOCK_QMASK_OFF                "gimp-quick-mask-off"
-</programlisting>
-<warning><para><literal>GIMP_STOCK_QMASK_OFF</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 
 </para></refsect2>

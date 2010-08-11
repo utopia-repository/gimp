@@ -46,12 +46,18 @@
  *       memory and opperate on tile-size chunks.  Create a flattened
  *       copy of the image when necessary. Fixes file corruption bug
  *       #167139 and memory bug #121871
+ *
+ *  2006-03-29 Guillermo S. Romero <gsr.bugs@infernal-iceberg.com>
+ *       - Added/enabled basic support for layer masks based in psd.c
+ *         and whatever was already here.
+ *         Layers that are not canvas sized need investigation, here
+ *         or in the import plugin something seems wrong.
+ *       - Cosmetic changes about the debug messages, more like psd.c.
  */
 
 /*
  * TODO:
  *       Save preview
- *       Save layer masks
  */
 
 /*
@@ -98,8 +104,8 @@
 
 typedef struct PsdLayerDimension
 {
-  gint left;
-  gint top;
+  gint   left;
+  gint   top;
   gint32 width;
   gint32 height;
 } PSD_Layer_Dimension;
@@ -148,13 +154,13 @@ static void   xfwrite              (FILE *fd, void *buf, long len, gchar *why);
 static void   write_pascalstring   (FILE *fd, char *val, gint padding,
                                     gchar *why);
 static void   write_string         (FILE *fd, char *val, gchar *why);
-static void   write_gchar          (FILE *fd, unsigned char val, gchar *why);
-static void   write_gshort         (FILE *fd, gshort val, gchar *why);
-static void   write_glong          (FILE *fd, glong val, gchar *why);
+static void   write_gchar          (FILE *fd, guchar val, gchar *why);
+static void   write_gint16         (FILE *fd, gint16 val, gchar *why);
+static void   write_gint32         (FILE *fd, gint32 val, gchar *why);
 
 static void   write_pixel_data     (FILE *fd, gint32 drawableID,
 				    gint32 *ChanLenPosition,
-				    glong rowlenOffset);
+				    gint32 rowlenOffset);
 
 
 GimpPlugInInfo PLUG_IN_INFO =
@@ -240,7 +246,8 @@ run (const gchar      *name,
                                       GIMP_EXPORT_CAN_HANDLE_GRAY    |
                                       GIMP_EXPORT_CAN_HANDLE_INDEXED |
                                       GIMP_EXPORT_CAN_HANDLE_ALPHA   |
-                                      GIMP_EXPORT_CAN_HANDLE_LAYERS);
+                                      GIMP_EXPORT_CAN_HANDLE_LAYERS  |
+                                      GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS);
 
           if (export == GIMP_EXPORT_CANCEL)
             {
@@ -306,11 +313,14 @@ psd_lmode_layer (gint32 idLayer, gchar *psdMode)
       break;
     case GIMP_ADDITION_MODE:
     case GIMP_SUBTRACT_MODE:
+      g_message (_("Unable to save layer with mode '%c'. The psd file format does not support that, using normal mode instead."),
+                 gimp_layer_get_mode (idLayer));
       IFDBG printf ("PSD: Warning - unsupported layer-blend mode: %c, using 'norm' mode\n",
                     gimp_layer_get_mode (idLayer));
       strcpy (psdMode, "norm");
       break;
     default:
+      g_message (_("Unable to save layer with UNKNOWN mode. Using normal mode as fallback."));
       IFDBG printf ("PSD: Warning - UNKNOWN layer-blend mode, reverting to 'norm'\n");
       strcpy (psdMode, "norm");
       break;
@@ -344,7 +354,7 @@ write_pascalstring (FILE *fd, char *val, gint padding, gchar *why)
       xfwrite (fd, val, len, why);
     }
   else
-    write_gshort (fd, 0, why);
+    write_gint16 (fd, 0, why);
 
   /* If total length (length byte + content) is not a multiple of PADDING,
      add zeros to pad it.  */
@@ -373,7 +383,7 @@ xfwrite (FILE *fd, void *buf, long len, gchar *why)
 
 
 static void
-write_gchar (FILE *fd, unsigned char val, gchar *why)
+write_gchar (FILE *fd, guchar val, gchar *why)
 {
   unsigned char b[2];
   gint32 pos;
@@ -394,7 +404,7 @@ write_gchar (FILE *fd, unsigned char val, gchar *why)
 
 
 static void
-write_gshort (FILE *fd, gshort val, gchar *why)
+write_gint16 (FILE *fd, gint16 val, gchar *why)
 {
   unsigned char b[2];
   /*  b[0] = val & 255;
@@ -405,7 +415,7 @@ write_gshort (FILE *fd, gshort val, gchar *why)
 
   if (fwrite (&b, 1, 2, fd) == 0)
     {
-      IFDBG printf (" Function: write_gshort: Error while writing '%s'\n", why);
+      IFDBG printf (" Function: write_gint16: Error while writing '%s'\n", why);
       gimp_quit ();
     }
 }
@@ -414,7 +424,7 @@ write_gshort (FILE *fd, gshort val, gchar *why)
 
 
 static void
-write_glong (FILE *fd, glong val, gchar *why)
+write_gint32 (FILE *fd, gint32 val, gchar *why)
 {
   unsigned char b[4];
 
@@ -425,18 +435,18 @@ write_glong (FILE *fd, glong val, gchar *why)
 
   if (fwrite (&b, 1, 4, fd) == 0)
     {
-      IFDBG printf (" Function: write_glong: Error while writing '%s'\n", why);
+      IFDBG printf (" Function: write_gint32: Error while writing '%s'\n", why);
       gimp_quit ();
     }
 }
 
 
-static glong
-pack_pb_line (guchar *start, glong length, glong stride,
+static gint32
+pack_pb_line (guchar *start, gint32 length, gint32 stride,
 	       guchar *dest_ptr)
 {
   gint i,j;
-  glong remaining;
+  gint32 remaining;
   remaining = length;
   length = 0;
   while (remaining > 0)
@@ -505,7 +515,7 @@ gimpBaseTypeToPsdMode (GimpImageBaseType gimpBaseType)
     case GIMP_INDEXED:
       return 2;                                         /* Indexed */
     default:
-      g_message ("Error: Can't convert GIMP base imagetype to PSD mode");
+      g_message (_("Error: Can't convert GIMP base imagetype to PSD mode"));
       IFDBG printf ("PSD Save: gimpBaseType value is %d, can't convert to PSD mode", gimpBaseType);
       gimp_quit ();
       return 3;                            /* Return RGB by default */
@@ -514,20 +524,22 @@ gimpBaseTypeToPsdMode (GimpImageBaseType gimpBaseType)
 
 
 static gint
-nChansLayer (gint gimpBaseType, gint hasAlpha)
+nChansLayer (gint gimpBaseType, gint hasAlpha, gint hasMask)
 {
   gint incAlpha = 0;
+  gint incMask = 0;
 
   incAlpha = (hasAlpha == 0) ? 0 : 1;
+  incMask = (hasMask == 0) ? 0 : 1;
 
   switch (gimpBaseType)
     {
     case GIMP_RGB:
-      return 3 + incAlpha;               /* R,G,B & Alpha (if any) */
+      return 3 + incAlpha + incMask;     /* R,G,B & Alpha & Mask (if any) */
     case GIMP_GRAY:
-      return 1 + incAlpha;               /* G & Alpha (if any) */
+      return 1 + incAlpha + incMask;     /* G & Alpha & Mask (if any) */
     case GIMP_INDEXED:
-      return 1 + incAlpha;               /* I & Alpha (if any) */
+      return 1 + incAlpha + incMask;     /* I & Alpha & Mask (if any) */
     default:
       return 0;                          /* Return 0 channels by default */
     }
@@ -562,23 +574,23 @@ static void
 save_header (FILE *fd, gint32 image_id)
 {
   IFDBG printf (" Function: save_header\n");
-  IFDBG printf ("      Rows: %d\n", PSDImageData.image_height);
-  IFDBG printf ("      Columns: %d\n", PSDImageData.image_width);
-  IFDBG printf ("      Base type: %d\n", PSDImageData.baseType);
-  IFDBG printf ("      Number of channels: %d\n", PSDImageData.nChannels);
+  IFDBG printf ("\tRows: %d\n", PSDImageData.image_height);
+  IFDBG printf ("\tColumns: %d\n", PSDImageData.image_width);
+  IFDBG printf ("\tBase type: %d\n", PSDImageData.baseType);
+  IFDBG printf ("\tNumber of channels: %d\n", PSDImageData.nChannels);
 
   xfwrite (fd, "8BPS", 4, "signature");
-  write_gshort (fd, 1, "version");
-  write_glong (fd, 0, "reserved 1");       /* 6 for the 'reserved' field + 4 bytes for a long */
-  write_gshort (fd, 0, "reserved 1");      /* and 2 bytes for a short */
-  write_gshort (fd, (PSDImageData.nChannels +
-                     nChansLayer (PSDImageData.baseType, 0)),
+  write_gint16 (fd, 1, "version");
+  write_gint32 (fd, 0, "reserved 1");      /* 6 for the 'reserved' field + 4 bytes for a long */
+  write_gint16 (fd, 0, "reserved 1");      /* and 2 bytes for a short */
+  write_gint16 (fd, (PSDImageData.nChannels +
+                     nChansLayer (PSDImageData.baseType, 0, 0)),
                 "channels");
-  write_glong (fd, PSDImageData.image_height, "rows");
-  write_glong (fd, PSDImageData.image_width, "columns");
-  write_gshort (fd, 8, "depth");  /* Apparently GIMP only supports 8 bit deep
+  write_gint32 (fd, PSDImageData.image_height, "rows");
+  write_gint32 (fd, PSDImageData.image_width, "columns");
+  write_gint16 (fd, 8, "depth");  /* Apparently GIMP only supports 8 bit deep
                                      PSD images.  */
-  write_gshort (fd, gimpBaseTypeToPsdMode (PSDImageData.baseType), "mode");
+  write_gint16 (fd, gimpBaseTypeToPsdMode (PSDImageData.baseType), "mode");
 }
 
 
@@ -596,21 +608,21 @@ save_color_mode_data (FILE *fd, gint32 image_id)
   switch (PSDImageData.baseType)
     {
     case GIMP_INDEXED:
-      IFDBG printf ("      Image type: INDEXED\n");
+      IFDBG printf ("\tImage type: INDEXED\n");
 
       cmap = gimp_image_get_colormap (image_id, &nColors);
-      IFDBG printf ("      Length of colormap returned by gimp_image_get_colormap: %d\n", nColors);
+      IFDBG printf ("\t\tLength of colormap returned by gimp_image_get_colormap: %d\n", nColors);
 
       if (nColors == 0)
         {
-          IFDBG printf ("      The indexed image lacks a colormap\n");
-          write_glong (fd, 0, "color data length");
+          IFDBG printf ("\t\tThe indexed image lacks a colormap\n");
+          write_gint32 (fd, 0, "color data length");
         }
       else if (nColors != 256)
         {
-          IFDBG printf ("      The indexed image has %d!=256 colors\n", nColors);
-          IFDBG printf ("      Padding with zeros up to 256\n");
-          write_glong (fd, 768, "color data length");
+          IFDBG printf ("\t\tThe indexed image has %d!=256 colors\n", nColors);
+          IFDBG printf ("\t\tPadding with zeros up to 256\n");
+          write_gint32 (fd, 768, "color data length");
             /* For this type, length is always 768 */
 
           cmap_modified = g_malloc (768);
@@ -627,15 +639,15 @@ save_color_mode_data (FILE *fd, gint32 image_id)
         }
       else         /* nColors equals 256 */
         {
-          write_glong (fd, 768, "color data length");   /* For this type, length is always 768 */
+          write_gint32 (fd, 768, "color data length");   /* For this type, length is always 768 */
           reshuffle_cmap_write (cmap);
           xfwrite (fd, cmap, 768, "colormap");  /* Write readjusted colormap */
         }
       break;
 
     default:
-      IFDBG printf ("      Image type: Not INDEXED\n");
-      write_glong (fd, 0, "color data length");
+      IFDBG printf ("\tImage type: Not INDEXED\n");
+      write_gint32 (fd, 0, "color data length");
     }
 }
 
@@ -665,12 +677,12 @@ save_resources (FILE *fd, gint32 image_id)
   /* Get the image title from its filename */
 
   fileName = gimp_image_get_filename (image_id);
-  IFDBG printf ("      Image title: %s\n", fileName);
+  IFDBG printf ("\tImage title: %s\n", fileName);
 
   /* Get the active layer number id */
 
   idActLayer = gimp_image_get_active_layer (image_id);
-  IFDBG printf ("      Current layer id: %d\n", idActLayer);
+  IFDBG printf ("\tCurrent layer id: %d\n", idActLayer);
 
   ActiveLayerPresent = FALSE;
   for (i = 0; i < PSDImageData.nLayers; i++)
@@ -682,18 +694,18 @@ save_resources (FILE *fd, gint32 image_id)
 
   if (ActiveLayerPresent)
     {
-      IFDBG printf ("      Active layer number is: %d\n", nActiveLayer);
+      IFDBG printf ("\t\tActive layer is number %d\n", nActiveLayer);
     }
   else
     {
-      IFDBG printf ("      No active layer\n");
+      IFDBG printf ("\t\tNo active layer\n");
     }
 
 
   /* Here's where actual writing starts */
 
   rsc_pos = ftell (fd);
-  write_glong (fd, 0, "image resources length");
+  write_gint32 (fd, 0, "image resources length");
 
 
   /* --------------- Write Channel names --------------- */
@@ -701,14 +713,14 @@ save_resources (FILE *fd, gint32 image_id)
   if (PSDImageData.nChannels > 0)
     {
       xfwrite (fd, "8BIM", 4, "imageresources signature");
-      write_gshort (fd, 0x03EE, "0x03EE Id");
+      write_gint16 (fd, 0x03EE, "0x03EE Id");
       /* write_pascalstring (fd, Name, "Id name"); */
-      write_gshort (fd, 0, "Id name"); /* Set to null string (two zeros) */
+      write_gint16 (fd, 0, "Id name"); /* Set to null string (two zeros) */
 
     /* Mark current position in the file */
 
     name_sec = ftell (fd);
-    write_glong (fd, 0, "0x03EE resource size");
+    write_gint32 (fd, 0, "0x03EE resource size");
 
     /* Write all strings */
 
@@ -723,9 +735,9 @@ save_resources (FILE *fd, gint32 image_id)
     eof_pos = ftell (fd);
 
     fseek (fd, name_sec, SEEK_SET);
-    write_glong (fd, eof_pos - name_sec - sizeof (glong), "0x03EE resource size");
-    IFDBG printf ("\n      Total length of 0x03EE resource: %d\n",
-                  (int) (eof_pos - name_sec - sizeof (glong)));
+    write_gint32 (fd, eof_pos - name_sec - sizeof (gint32), "0x03EE resource size");
+    IFDBG printf ("\tTotal length of 0x03EE resource: %d\n",
+                  (int) (eof_pos - name_sec - sizeof (gint32)));
 
     /* Return to EOF to continue writing */
 
@@ -733,7 +745,7 @@ save_resources (FILE *fd, gint32 image_id)
 
     /* Pad if length is odd */
 
-    if ((eof_pos - name_sec - sizeof (glong)) & 1)
+    if ((eof_pos - name_sec - sizeof (gint32)) & 1)
       write_gchar (fd, 0, "pad byte");
   }
 
@@ -748,25 +760,25 @@ save_resources (FILE *fd, gint32 image_id)
 	n_guides++;
 
       xfwrite (fd, "8BIM", 4, "imageresources signature");
-      write_gshort (fd, 0x0408, "0x0408 Id (Guides)");
+      write_gint16 (fd, 0x0408, "0x0408 Id (Guides)");
       /* write_pascalstring (fd, Name, "Id name"); */
-      write_gshort (fd, 0, "Id name"); /* Set to null string (two zeros) */
-      write_glong (fd, 16 + 5 * n_guides, "0x0408 resource size");
+      write_gint16 (fd, 0, "Id name"); /* Set to null string (two zeros) */
+      write_gint32 (fd, 16 + 5 * n_guides, "0x0408 resource size");
       /* Save grid and guide header */
-      write_glong (fd,   1, "grid/guide header version");
-      write_glong (fd, 576, "grid custom spacing horizontal");/* dpi*32/4??*/
-      write_glong (fd, 576, "grid custom spacing vertical");  /* dpi*32/4??*/
-      write_glong (fd, n_guides, "number of guides");
+      write_gint32 (fd,   1, "grid/guide header version");
+      write_gint32 (fd, 576, "grid custom spacing horizontal");/* dpi*32/4??*/
+      write_gint32 (fd, 576, "grid custom spacing vertical");  /* dpi*32/4??*/
+      write_gint32 (fd, n_guides, "number of guides");
 
       /* write the guides */
       while ((guide_id = gimp_image_find_next_guide(image_id, guide_id)))
         {
 	  gchar orientation;
-	  glong position;
+	  gint32 position;
 	  orientation = gimp_image_get_guide_orientation(image_id, guide_id);
 	  position    = 32 * gimp_image_get_guide_position(image_id, guide_id);
 	  orientation ^= 1; /* in the psd vert =0 , horiz = 1 */
-	  write_glong (fd, position, "Position of guide");
+	  write_gint32 (fd, position, "Position of guide");
 	  write_gchar (fd, orientation, "Orientation of guide");
 	  n_guides--;
 	}
@@ -774,7 +786,7 @@ save_resources (FILE *fd, gint32 image_id)
 	write_gchar(fd, 0, "pad byte");
       if (n_guides != 0)
 	g_warning("Screwed up guide resource:: wrong number of guides\n");
-      IFDBG printf ("      Total length of 0x0400 resource: %d\n", (int) sizeof (gshort));
+      IFDBG printf ("\tTotal length of 0x0400 resource: %d\n", (int) sizeof (gint16));
     }
 
   /* --------------- Write resolution data ------------------- */
@@ -782,7 +794,7 @@ save_resources (FILE *fd, gint32 image_id)
     gdouble xres = 0, yres = 0;
     guint32 xres_fix, yres_fix;
     GimpUnit g_unit;
-    gshort psd_unit;
+    gint16 psd_unit;
 
     g_unit = gimp_image_get_unit (image_id);
     gimp_image_get_resolution (image_id, &xres, &yres);
@@ -805,31 +817,31 @@ save_resources (FILE *fd, gint32 image_id)
     yres_fix = yres * 65536.0 + .5; /* Convert to 16.16 fixed point */
 
     xfwrite (fd, "8BIM", 4, "imageresources signature (for resolution)");
-    write_gshort(fd, 0x03ed, "0x03ed Id (resolution)");
-    write_gshort (fd, 0, "Id name"); /* Set to null string (two zeros) */
-    write_glong (fd, 16, "0x0400 resource size");
-    write_glong (fd,  xres_fix, "hRes (16.16 fixed point)");
-    write_gshort (fd, psd_unit, "hRes unit");
-    write_gshort (fd, psd_unit, "width unit");
-    write_glong (fd,  yres_fix, "vRes (16.16 fixed point)");
-    write_gshort (fd, psd_unit, "vRes unit");
-    write_gshort (fd, psd_unit, "height unit");
+    write_gint16(fd, 0x03ed, "0x03ed Id (resolution)");
+    write_gint16 (fd, 0, "Id name"); /* Set to null string (two zeros) */
+    write_gint32 (fd, 16, "0x0400 resource size");
+    write_gint32 (fd,  xres_fix, "hRes (16.16 fixed point)");
+    write_gint16 (fd, psd_unit, "hRes unit");
+    write_gint16 (fd, psd_unit, "width unit");
+    write_gint32 (fd,  yres_fix, "vRes (16.16 fixed point)");
+    write_gint16 (fd, psd_unit, "vRes unit");
+    write_gint16 (fd, psd_unit, "height unit");
   }
   /* --------------- Write Active Layer Number --------------- */
 
   if (ActiveLayerPresent)
     {
       xfwrite (fd, "8BIM", 4, "imageresources signature");
-      write_gshort (fd, 0x0400, "0x0400 Id");
+      write_gint16 (fd, 0x0400, "0x0400 Id");
       /* write_pascalstring (fd, Name, "Id name"); */
-      write_gshort (fd, 0, "Id name"); /* Set to null string (two zeros) */
-      write_glong (fd, sizeof (gshort), "0x0400 resource size");
+      write_gint16 (fd, 0, "Id name"); /* Set to null string (two zeros) */
+      write_gint32 (fd, sizeof (gint16), "0x0400 resource size");
 
-      /* Save title as gshort (length always even) */
+      /* Save title as gint16 (length always even) */
 
-      write_gshort (fd, nActiveLayer, "active layer");
+      write_gint16 (fd, nActiveLayer, "active layer");
 
-      IFDBG printf ("      Total length of 0x0400 resource: %d\n", (int) sizeof (gshort));
+      IFDBG printf ("\tTotal length of 0x0400 resource: %d\n", (int) sizeof (gint16));
     }
 
 
@@ -838,9 +850,9 @@ save_resources (FILE *fd, gint32 image_id)
   eof_pos = ftell (fd);
 
   fseek (fd, rsc_pos, SEEK_SET);
-  write_glong (fd, eof_pos - rsc_pos - sizeof (glong), "image resources length");
-  IFDBG printf ("      Resource section total length: %d\n",
-                (int) (eof_pos - rsc_pos - sizeof (glong)));
+  write_gint32 (fd, eof_pos - rsc_pos - sizeof (gint32), "image resources length");
+  IFDBG printf ("\tResource section total length: %d\n",
+                (int) (eof_pos - rsc_pos - sizeof (gint32)));
 
   /* Return to EOF to continue writing */
 
@@ -854,7 +866,7 @@ get_compress_channel_data (guchar  *channel_data,
 			   gint32   channel_cols,
 			   gint32   channel_rows,
 			   gint32   stride,
-			   gshort  *LengthsTable,
+			   gint16  *LengthsTable,
 			   guchar  *remdata)
 {
   gint    i;
@@ -877,7 +889,7 @@ get_compress_channel_data (guchar  *channel_data,
       len += LengthsTable[i];
     }
 
-  /*  return((len + channel_rows * sizeof (gshort)) + sizeof (gshort));*/
+  /*  return((len + channel_rows * sizeof (gint16)) + sizeof (gint16));*/
   return len;
 }
 
@@ -897,6 +909,7 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
   gint     nChannelsLayer;              /* Number of channels of a layer */
   gint32   ChanSize;                    /* Data length for a channel */
   gchar   *layerName;                   /* Layer name */
+  gint     mask;                        /* Layer mask */
 
   gint32   eof_pos;                     /* Position: End of file */
   gint32   ExtraDataPos;                /* Position: Extra data length */
@@ -905,7 +918,7 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
   gint32 **ChannelLengthPos;            /* Position: Channel length */
 
 
-  IFDBG printf (" Function: save_layer&mask\n");
+  IFDBG printf (" Function: save_layer_and_mask\n");
 
   /* Create first array dimension (layers, channels) */
 
@@ -914,22 +927,24 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
   /* Layer and mask information section */
 
   LayerMaskPos = ftell (fd);
-  write_glong (fd, 0, "layers & mask information length");
+  write_gint32 (fd, 0, "layers & mask information length");
 
   /* Layer info section */
 
   LayerInfoPos = ftell (fd);
-  write_glong (fd, 0, "layers info section length");
+  write_gint32 (fd, 0, "layers info section length");
 
   /* Layer structure section */
 
-  write_gshort (fd, PSDImageData.nLayers, "Layer structure count");
+  write_gint16 (fd, PSDImageData.nLayers, "Layer structure count");
 
   /* Layer records section */
   /* GIMP layers must be written in reverse order */
 
   for (i = PSDImageData.nLayers - 1; i >= 0; i--)
     {
+      gint hasMask = 0;
+
       gimp_drawable_offsets (PSDImageData.lLayers[i], &offset_x, &offset_y);
       layerWidth = gimp_drawable_width (PSDImageData.lLayers[i]);
       layerHeight = gimp_drawable_height (PSDImageData.lLayers[i]);
@@ -939,25 +954,27 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
       PSDImageData.layersDim[i].width = layerWidth;
       PSDImageData.layersDim[i].height = layerHeight;
 
-      IFDBG printf ("      Layer number: %d\n", i);
-      IFDBG printf ("         Offset x: %d\n", PSDImageData.layersDim[i].left);
-      IFDBG printf ("         Offset y: %d\n", PSDImageData.layersDim[i].top);
-      IFDBG printf ("         Width: %d\n", PSDImageData.layersDim[i].width);
-      IFDBG printf ("         Height: %d\n", PSDImageData.layersDim[i].height);
+      IFDBG printf ("\tLayer number: %d\n", i);
+      IFDBG printf ("\t\tX offset: %d\n", PSDImageData.layersDim[i].left);
+      IFDBG printf ("\t\tY offset: %d\n", PSDImageData.layersDim[i].top);
+      IFDBG printf ("\t\tWidth: %d\n", PSDImageData.layersDim[i].width);
+      IFDBG printf ("\t\tHeight: %d\n", PSDImageData.layersDim[i].height);
 
-      write_glong (fd, PSDImageData.layersDim[i].top, "Layer top");
-      write_glong (fd, PSDImageData.layersDim[i].left, "Layer left");
-      write_glong (fd, (PSDImageData.layersDim[i].height +
+      write_gint32 (fd, PSDImageData.layersDim[i].top, "Layer top");
+      write_gint32 (fd, PSDImageData.layersDim[i].left, "Layer left");
+      write_gint32 (fd, (PSDImageData.layersDim[i].height +
                         PSDImageData.layersDim[i].top), "Layer bottom");
-      write_glong (fd, (PSDImageData.layersDim[i].width +
+      write_gint32 (fd, (PSDImageData.layersDim[i].width +
                         PSDImageData.layersDim[i].left), "Layer right");
 
+      hasMask = (gimp_layer_get_mask(PSDImageData.lLayers[i]) == -1 ) ? 0 : 1;
       nChannelsLayer = nChansLayer (PSDImageData.baseType,
-                                    gimp_drawable_has_alpha (PSDImageData.lLayers[i]));
+                                    gimp_drawable_has_alpha (PSDImageData.lLayers[i]),
+                                    hasMask);
 
 
-      write_gshort (fd, nChannelsLayer, "Number channels in the layer");
-      IFDBG printf ("         Number of channels: %d\n", nChannelsLayer);
+      write_gint16 (fd, nChannelsLayer, "Number channels in the layer");
+      IFDBG printf ("\t\tNumber of channels: %d\n", nChannelsLayer);
 
       /* Create second array dimension (layers, channels) */
 
@@ -971,29 +988,31 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
             idChannel = j - 1;
           else
             idChannel = j;
+          if (hasMask && (j+1 == nChannelsLayer)) /* Last channel ... */
+            idChannel = -2; /* ... will be layer mask */
 
-          write_gshort (fd, idChannel, "Channel ID");
-          IFDBG printf ("           - Identifier: %d\n", idChannel);
+          write_gint16 (fd, idChannel, "Channel ID");
+          IFDBG printf ("\t\t\tChannel Identifier: %d\n", idChannel);
 
           /* Write the length assuming no compression.  In case there is,
              will modify it later when writing data.  */
 
           ChannelLengthPos[i][j] = ftell (fd);
-          ChanSize = sizeof (gshort) + (PSDImageData.layersDim[i].width *
+          ChanSize = sizeof (gint16) + (PSDImageData.layersDim[i].width *
                                         PSDImageData.layersDim[i].height);
 
-          write_glong (fd, ChanSize, "Channel Size");
-          IFDBG printf ("             Length: %d\n", ChanSize);
+          write_gint32 (fd, ChanSize, "Channel Size");
+          IFDBG printf ("\t\t\tLength: %d\n", ChanSize);
         }
 
       xfwrite (fd, "8BIM", 4, "blend mode signature");
 
       psd_lmode_layer (PSDImageData.lLayers[i], blendMode);
-      IFDBG printf ("         Blend mode: %s\n", blendMode);
+      IFDBG printf ("\t\tBlend mode: %s\n", blendMode);
       xfwrite (fd, blendMode, 4, "blend mode key");
 
       layerOpacity = (gimp_layer_get_opacity (PSDImageData.lLayers[i]) * 255.0) / 100.0;
-      IFDBG printf ("         Opacity: %u\n", layerOpacity);
+      IFDBG printf ("\t\tOpacity: %u\n", layerOpacity);
       write_gchar (fd, layerOpacity, "Opacity");
 
       /* Apparently this field is not used in GIMP */
@@ -1002,54 +1021,54 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
       flags = 0;
       if (gimp_layer_get_lock_alpha (PSDImageData.lLayers[i])) flags |= 1;
       if (! gimp_drawable_get_visible (PSDImageData.lLayers[i])) flags |= 2;
-      IFDBG printf ("         Flags: %u\n", flags);
+      IFDBG printf ("\t\tFlags: %u\n", flags);
       write_gchar (fd, flags, "Flags");
 
       /* Padding byte to make the length even */
       write_gchar (fd, 0, "Filler");
 
       ExtraDataPos = ftell (fd); /* Position of Extra Data size */
-      write_glong (fd, 0, "Extra data size");
+      write_gint32 (fd, 0, "Extra data size");
 
-#ifdef SAVELAYERMASK
       mask = gimp_layer_get_mask (PSDImageData.lLayers[i]);
       if (mask  >= 0)
         {
-	  write_glong  (fd, 14,                        "Layer mask size");
-	  write_glong  (fd, 0,                         "Layer mask top");
-	  write_glong  (fd, 0,                         "Layer mask left");
-	  write_glong  (fd, gimp_drawable_height(mask),"Layer mask bottom");
-	  write_glong  (fd, gimp_drawable_width(mask), "Layer mask right");
+          IFDBG printf ("\t\tLayer mask size: %d\n", 20);
+	  write_gint32  (fd, 20,                        "Layer mask size");
+	  write_gint32  (fd, 0,                         "Layer mask top");
+	  write_gint32  (fd, 0,                         "Layer mask left");
+	  write_gint32  (fd, gimp_drawable_height(mask),"Layer mask bottom");
+	  write_gint32  (fd, gimp_drawable_width(mask), "Layer mask right");
 	  write_gchar  (fd, 0,                         "lmask default color");
 	  flags = (1                                        | /* relative */
-		   (gimp_layer_mask_is_disabled(mask) << 1) | /* disabled?*/
+		   (gimp_layer_get_apply_mask(PSDImageData.lLayers[i]) << 1) | /* disabled?*/
 		   (0 << 2)                                   /* invert   */);
 	  write_gchar  (fd, flags,                      "layer mask flags");
-	  write_gshort (fd, 0,                          "Layer mask Padding");
+	  write_gint16 (fd, 0,                          "Layer mask Padding");
 	}
       else
-#else
-      /* NOTE Writing empty Layer mask / adjustment layer data */
-      write_glong (fd, 0, "Layer mask size");
-      IFDBG printf ("\n         Layer mask size: %d\n", 0);
-#endif
+        {
+          /* NOTE Writing empty Layer mask / adjustment layer data */
+          write_gint32 (fd, 0, "Layer mask size");
+          IFDBG printf ("\t\tLayer mask size: %d\n", 0);
+        }
 
       /* NOTE Writing empty Layer blending ranges data */
-      write_glong (fd, 0, "Layer blending size");
-      IFDBG printf ("\n         Layer blending size: %d\n", 0);
+      write_gint32 (fd, 0, "Layer blending size");
+      IFDBG printf ("\t\tLayer blending size: %d\n", 0);
 
       layerName = gimp_drawable_get_name (PSDImageData.lLayers[i]);
       write_pascalstring (fd, layerName, 4, "layer name");
-      IFDBG printf ("\n         Layer name: %s\n", layerName);
+      IFDBG printf ("\t\tLayer name: %s\n", layerName);
 
       /* Write real length for: Extra data */
 
       eof_pos = ftell (fd);
 
       fseek (fd, ExtraDataPos, SEEK_SET);
-      write_glong (fd, eof_pos - ExtraDataPos - sizeof (glong), "Extra data size");
-      IFDBG printf ("      ExtraData size: %d\n",
-                    (int) (eof_pos - ExtraDataPos - sizeof (glong)));
+      write_gint32 (fd, eof_pos - ExtraDataPos - sizeof (gint32), "Extra data size");
+      IFDBG printf ("\t\tExtraData size: %d\n",
+                    (int) (eof_pos - ExtraDataPos - sizeof (gint32)));
 
       /* Return to EOF to continue writing */
 
@@ -1062,6 +1081,7 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
 
   for (i = PSDImageData.nLayers - 1; i >= 0; i--)
     {
+      IFDBG printf ("\t\tWriting pixel data for layer slot %d\n", i);
       write_pixel_data(fd, PSDImageData.lLayers[i], ChannelLengthPos[i], 0);
     }
 
@@ -1070,16 +1090,16 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
   /* Write actual size of Layer info section */
 
   fseek (fd, LayerInfoPos, SEEK_SET);
-  write_glong (fd, eof_pos - LayerInfoPos - sizeof (glong), "layers info section length");
-  IFDBG printf ("\n      Total layers info section length: %d\n",
-                (int) (eof_pos - LayerInfoPos - sizeof (glong)));
+  write_gint32 (fd, eof_pos - LayerInfoPos - sizeof (gint32), "layers info section length");
+  IFDBG printf ("\t\tTotal layers info section length: %d\n",
+                (int) (eof_pos - LayerInfoPos - sizeof (gint32)));
 
   /* Write actual size of Layer and mask information secton */
 
   fseek (fd, LayerMaskPos, SEEK_SET);
-  write_glong (fd, eof_pos - LayerMaskPos - sizeof (glong), "layers & mask information length");
-  IFDBG printf ("      Total layers & mask information length: %d\n",
-                (int) (eof_pos - LayerMaskPos - sizeof (glong)));
+  write_gint32 (fd, eof_pos - LayerMaskPos - sizeof (gint32), "layers & mask information length");
+  IFDBG printf ("\t\tTotal layers & mask information length: %d\n",
+                (int) (eof_pos - LayerMaskPos - sizeof (gint32)));
 
   /* Return to EOF to continue writing */
 
@@ -1090,14 +1110,18 @@ save_layer_and_mask (FILE *fd, gint32 image_id)
 
 static void
 write_pixel_data (FILE *fd, gint32 drawableID, gint32 *ChanLenPosition,
-		  glong ltable_offset)
+		  gint32 ltable_offset)
 {
   GimpPixelRgn region;      /* Image region */
   guchar *data;             /* Temporary copy of pixel data */
 
+  IFDBG printf (" Function: write_pixel_data, drw %d, lto %d\n",
+                drawableID, ltable_offset);
+
   gint32 tile_height = gimp_tile_height();
 
   GimpDrawable *drawable = gimp_drawable_get (drawableID);
+  gint32 maskID = gimp_layer_get_mask(drawableID);
 
   gint32 height = drawable->height;
   gint32 width  = drawable->width;
@@ -1105,8 +1129,8 @@ write_pixel_data (FILE *fd, gint32 drawableID, gint32 *ChanLenPosition,
   gint32 colors = bytes;    /* fixed up down below */
   gint32 y;
 
-  glong   len;                  /* Length of compressed data */
-  gshort *LengthsTable;         /* Lengths of every compressed row */
+  gint32   len;                  /* Length of compressed data */
+  gint16 *LengthsTable;         /* Lengths of every compressed row */
   guchar *rledata;              /* Compressed data from a region */
   gint32 length_table_pos;      /* position in file of the length table */
   int i, j;
@@ -1116,7 +1140,7 @@ write_pixel_data (FILE *fd, gint32 drawableID, gint32 *ChanLenPosition,
     colors -= 1;
   gimp_tile_cache_ntiles (2* (drawable->width / gimp_tile_width () + 1));
 
-  LengthsTable = g_new (gshort, height);
+  LengthsTable = g_new (gint16, height);
   rledata = g_new (guchar, (MIN (height, tile_height) *
                             (width + 10 + (width / 100))));
 
@@ -1144,7 +1168,7 @@ write_pixel_data (FILE *fd, gint32 drawableID, gint32 *ChanLenPosition,
 	chan = i;
       if (ChanLenPosition)
         {
-	  write_gshort (fd, 1, "Compression type (RLE)");
+	  write_gint16 (fd, 1, "Compression type (RLE)");
 	  len += 2;
 	}
 
@@ -1156,9 +1180,10 @@ write_pixel_data (FILE *fd, gint32 drawableID, gint32 *ChanLenPosition,
         {
 	  length_table_pos = ftell(fd);
 
-	  xfwrite (fd, LengthsTable, height * sizeof(gshort),
+	  xfwrite (fd, LengthsTable, height * sizeof(gint16),
 		   "Dummy RLE length");
-	  len += height * 2;
+          len += height * sizeof(gint16);
+          IF_DEEP_DBG printf ("\t\t\t\t. ltable, pos %d len %d\n", length_table_pos, len);
         }
 
       for (y = 0; y < height; y += tile_height)
@@ -1174,20 +1199,89 @@ write_pixel_data (FILE *fd, gint32 drawableID, gint32 *ChanLenPosition,
 					     rledata);
 	  len += tlen;
 	  xfwrite (fd, rledata, tlen, "Compressed pixel data");
+          IF_DEEP_DBG printf ("\t\t\t\t. Writing compressed pixels, stream of %d\n", tlen);
 	}
 
       /* Write compressed lengths table */
       fseek (fd, length_table_pos, SEEK_SET);
       for (j = 0; j < height; j++) /* write real length table */
-	write_gshort (fd, LengthsTable[j], "RLE length");
+	write_gint16 (fd, LengthsTable[j], "RLE length");
 
       if (ChanLenPosition)    /* Update total compressed length */
 	{
 	  fseek (fd, ChanLenPosition[i], SEEK_SET);
-	  write_glong (fd, len, "channel data length");
+	  write_gint32 (fd, len, "channel data length");
+          IFDBG printf ("\t\tUpdating data len to %d\n", len);
 	}
       fseek (fd, 0, SEEK_END);
+      IF_DEEP_DBG printf ("\t\t\t\t. Cur pos %ld\n", ftell(fd));
     }
+
+  /* Write layer mask, as last channel, id -2 */
+  if (maskID != -1) {
+    len = 0;
+    GimpDrawable *mdrawable = gimp_drawable_get(maskID);
+
+    gimp_pixel_rgn_init (&region, mdrawable, 0, 0,
+                         width, height, FALSE, FALSE);
+
+    if (ChanLenPosition)
+      {
+        write_gint16 (fd, 1, "Compression type (RLE)");
+        len += 2;
+        IF_DEEP_DBG printf ("\t\t\t\t. ChanLenPos, len %d\n", len);
+      }
+
+    if (ltable_offset > 0)
+      {
+        length_table_pos = ltable_offset + 2 * (bytes+1) * height;
+        IF_DEEP_DBG printf ("\t\t\t\t. ltable, pos %d\n", length_table_pos);
+      }
+    else
+      {
+        length_table_pos = ftell(fd);
+
+        xfwrite (fd, LengthsTable, height * sizeof(gint16),
+                 "Dummy RLE length");
+        len += height * sizeof(gint16);
+        IF_DEEP_DBG printf ("\t\t\t\t. ltable, pos %d len %d\n", length_table_pos, len);
+      }
+
+    for (y = 0; y < height; y += tile_height)
+      {
+        int tlen;
+        gimp_pixel_rgn_get_rect (&region, data, 0, y,
+                                 width, MIN(height - y, tile_height));
+        tlen = get_compress_channel_data (&data[0],
+                                          width,
+                                          MIN(height - y, tile_height),
+                                          1,
+                                          &LengthsTable[y],
+                                          rledata);
+        len += tlen;
+        xfwrite (fd, rledata, tlen, "Compressed mask data");
+        IF_DEEP_DBG printf ("\t\t\t\t. Writing compressed mask, stream of %d\n", tlen);
+      }
+
+    /* Write compressed lengths table */
+    fseek (fd, length_table_pos, SEEK_SET); /*POS WHERE???*/
+    for (j = 0; j < height; j++) /* write real length table */
+      {
+        write_gint16 (fd, LengthsTable[j], "RLE length");
+        IF_DEEP_DBG printf ("\t\t\t\t. Updating RLE len %d\n", LengthsTable[j]);
+      }
+
+    if (ChanLenPosition)    /* Update total compressed length */
+      {
+        fseek (fd, ChanLenPosition[bytes], SEEK_SET); /*+bytes OR SOMETHING*/
+        write_gint32 (fd, len, "channel data length");
+        IFDBG printf ("\t\tUpdating data len to %d, at %ld\n", len, ftell(fd));
+      }
+    fseek (fd, 0, SEEK_END);
+    IF_DEEP_DBG printf ("\t\t\t\t. Cur pos %ld\n", ftell(fd));
+
+    gimp_drawable_detach (mdrawable);
+  }
 
   gimp_drawable_detach (drawable);
 
@@ -1205,24 +1299,24 @@ save_data (FILE *fd, gint32 image_id)
   gint i, j;
   gint nChannel;
   gint32 imageHeight;                   /* Height of image */
-  glong offset;                         /* offset in file of rle lengths */
+  gint32 offset;                         /* offset in file of rle lengths */
   gint chan;
   gint32 bottom_layer;
 
-  IFDBG printf ("\n Function: save_data\n");
+  IFDBG printf (" Function: save_data\n");
 
   ChanCount = (PSDImageData.nChannels +
-               nChansLayer (PSDImageData.baseType, 0));
+               nChansLayer (PSDImageData.baseType, 0, 0));
 
-  i = PSDImageData.nLayers - 1;  /* Channel to be written */
-  IFDBG printf ("     Processing layer %d\n", i);
+  i = PSDImageData.nLayers - 1;  /* Layers to be written */
+  IFDBG printf ("\tProcessing %d layers\n", i);
 
   imageHeight = gimp_image_height (image_id);
 
   nChannel = 0;
 
 
-  write_gshort (fd, 1, "RLE compression");
+  write_gint16 (fd, 1, "RLE compression");
 
   /* All line lengths go before the rle pixel data */
 
@@ -1230,7 +1324,7 @@ save_data (FILE *fd, gint32 image_id)
 
   for (i = 0; i < ChanCount; i++)
     for (j = 0; j < imageHeight; j++)
-      write_gshort (fd, 0, "junk line lengths");
+      write_gint16 (fd, 0, "junk line lengths");
 
   bottom_layer = PSDImageData.lLayers[PSDImageData.nLayers - 1];
 
@@ -1241,28 +1335,28 @@ save_data (FILE *fd, gint32 image_id)
       gint32 flat_image;
       gint32 flat_drawable;
 
-      IFDBG printf ("\n     Creating flattened image\n");
+      IFDBG printf ("\t\tCreating flattened image\n");
       flat_image = gimp_image_duplicate (image_id);
       gimp_image_undo_disable (flat_image);
       flat_drawable = gimp_image_flatten (flat_image);
 
-      IFDBG printf ("\n     Writing compressed flattened image data\n");
+      IFDBG printf ("\t\tWriting compressed flattened image data\n");
       write_pixel_data (fd, flat_drawable, NULL, offset);
 
       gimp_image_delete (flat_image);
     }
   else
     {
-      IFDBG printf ("\n     Writing compressed image data\n");
+      IFDBG printf ("\t\tWriting compressed image data\n");
       write_pixel_data (fd, PSDImageData.lLayers[PSDImageData.nLayers - 1],
 			NULL, offset);
     }
 
-  chan = nChansLayer (PSDImageData.baseType, 0);
+  chan = nChansLayer (PSDImageData.baseType, 0, 0);
 
   for (i = PSDImageData.nChannels - 1; i >= 0; i--)
     {
-      IFDBG printf ("\n     Writing compressed channel data for channel %d\n",
+      IFDBG printf ("\t\tWriting compressed channel data for channel %d\n",
 		    i);
       write_pixel_data (fd, PSDImageData.lChannels[i], NULL,
 			offset + 2*imageHeight*chan);
@@ -1280,27 +1374,27 @@ get_image_data (FILE *fd, gint32 image_id)
   PSDImageData.compression = FALSE;
 
   PSDImageData.image_height = gimp_image_height (image_id);
-  IFDBG printf ("      Got number of rows: %d\n", PSDImageData.image_height);
+  IFDBG printf ("\tGot number of rows: %d\n", PSDImageData.image_height);
 
   PSDImageData.image_width = gimp_image_width (image_id);
-  IFDBG printf ("      Got number of cols: %d\n", PSDImageData.image_width);
+  IFDBG printf ("\tGot number of cols: %d\n", PSDImageData.image_width);
 
   PSDImageData.baseType = gimp_image_base_type (image_id);
-  IFDBG printf ("      Got base type: %d\n", PSDImageData.baseType);
+  IFDBG printf ("\tGot base type: %d\n", PSDImageData.baseType);
 
   /* PSD format does not support indexed layered images */
 
   if (PSDImageData.baseType == GIMP_INDEXED)
     {
-      IFDBG printf ("      Flattening indexed image\n");
+      IFDBG printf ("\tFlattening indexed image\n");
       gimp_image_flatten (image_id);
     }
 
   PSDImageData.lChannels = gimp_image_get_channels (image_id, &PSDImageData.nChannels);
-  IFDBG printf ("      Got number of channels: %d\n", PSDImageData.nChannels);
+  IFDBG printf ("\tGot number of channels: %d\n", PSDImageData.nChannels);
 
   PSDImageData.lLayers = gimp_image_get_layers (image_id, &PSDImageData.nLayers);
-  IFDBG printf ("      Got number of layers: %d\n", PSDImageData.nLayers);
+  IFDBG printf ("\tGot number of layers: %d\n", PSDImageData.nLayers);
 
   PSDImageData.layersDim = g_new (PSD_Layer_Dimension, PSDImageData.nLayers);
 }
@@ -1354,7 +1448,7 @@ save_image (const gchar *filename,
   gimp_progress_init_printf (_("Saving '%s'"),
                              gimp_filename_to_utf8 (filename));
 
-  IFDBG g_print ("      File \"%s\" has been opened\n",
+  IFDBG g_print ("\tFile '%s' has been opened\n",
                  gimp_filename_to_utf8 (filename));
 
   get_image_data (fd, image_id);
@@ -1365,7 +1459,7 @@ save_image (const gchar *filename,
   /* PSD format does not support layers in indexed images */
 
   if (PSDImageData.baseType == GIMP_INDEXED)
-    write_glong (fd, 0, "layers info section length");
+    write_gint32 (fd, 0, "layers info section length");
   else
     save_layer_and_mask (fd, image_id);
 
@@ -1373,7 +1467,7 @@ save_image (const gchar *filename,
 
   save_data (fd, image_id);
 
-  IFDBG printf ("\n\n");
+  IFDBG printf ("----- Closing PSD file, done -----\n\n");
 
   fclose (fd);
   return TRUE;

@@ -26,7 +26,9 @@
 #include "libgimpmath/gimpmath.h"
 
 #include "pdb-types.h"
-#include "procedural_db.h"
+#include "gimp-pdb.h"
+#include "gimpprocedure.h"
+#include "core/gimpparamspecs.h"
 
 #include "config/gimpcoreconfig.h"
 #include "core/gimp-transform-utils.h"
@@ -37,71 +39,27 @@
 #include "core/gimpprogress.h"
 #include "gimp-intl.h"
 
-static ProcRecord drawable_transform_flip_simple_proc;
-static ProcRecord drawable_transform_flip_proc;
-static ProcRecord drawable_transform_flip_default_proc;
-static ProcRecord drawable_transform_perspective_proc;
-static ProcRecord drawable_transform_perspective_default_proc;
-static ProcRecord drawable_transform_rotate_simple_proc;
-static ProcRecord drawable_transform_rotate_proc;
-static ProcRecord drawable_transform_rotate_default_proc;
-static ProcRecord drawable_transform_scale_proc;
-static ProcRecord drawable_transform_scale_default_proc;
-static ProcRecord drawable_transform_shear_proc;
-static ProcRecord drawable_transform_shear_default_proc;
-static ProcRecord drawable_transform_2d_proc;
-static ProcRecord drawable_transform_2d_default_proc;
-static ProcRecord drawable_transform_matrix_proc;
-static ProcRecord drawable_transform_matrix_default_proc;
 
-void
-register_drawable_transform_procs (Gimp *gimp)
-{
-  procedural_db_register (gimp, &drawable_transform_flip_simple_proc);
-  procedural_db_register (gimp, &drawable_transform_flip_proc);
-  procedural_db_register (gimp, &drawable_transform_flip_default_proc);
-  procedural_db_register (gimp, &drawable_transform_perspective_proc);
-  procedural_db_register (gimp, &drawable_transform_perspective_default_proc);
-  procedural_db_register (gimp, &drawable_transform_rotate_simple_proc);
-  procedural_db_register (gimp, &drawable_transform_rotate_proc);
-  procedural_db_register (gimp, &drawable_transform_rotate_default_proc);
-  procedural_db_register (gimp, &drawable_transform_scale_proc);
-  procedural_db_register (gimp, &drawable_transform_scale_default_proc);
-  procedural_db_register (gimp, &drawable_transform_shear_proc);
-  procedural_db_register (gimp, &drawable_transform_shear_default_proc);
-  procedural_db_register (gimp, &drawable_transform_2d_proc);
-  procedural_db_register (gimp, &drawable_transform_2d_default_proc);
-  procedural_db_register (gimp, &drawable_transform_matrix_proc);
-  procedural_db_register (gimp, &drawable_transform_matrix_default_proc);
-}
-
-static Argument *
-drawable_transform_flip_simple_invoker (Gimp         *gimp,
-                                        GimpContext  *context,
-                                        GimpProgress *progress,
-                                        Argument     *args)
+static GValueArray *
+drawable_transform_flip_simple_invoker (GimpProcedure     *procedure,
+                                        Gimp              *gimp,
+                                        GimpContext       *context,
+                                        GimpProgress      *progress,
+                                        const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 flip_type;
   gboolean auto_center;
   gdouble axis;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  flip_type = args[1].value.pdb_int;
-  if (flip_type < GIMP_ORIENTATION_HORIZONTAL || flip_type > GIMP_ORIENTATION_VERTICAL)
-    success = FALSE;
-
-  auto_center = args[2].value.pdb_int ? TRUE : FALSE;
-
-  axis = args[3].value.pdb_float;
-
-  clip_result = args[4].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  flip_type = g_value_get_enum (&args->values[1]);
+  auto_center = g_value_get_boolean (&args->values[2]);
+  axis = g_value_get_double (&args->values[3]);
+  clip_result = g_value_get_boolean (&args->values[4]);
 
   if (success)
     {
@@ -119,78 +77,23 @@ drawable_transform_flip_simple_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_flip_simple_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_flip_simple_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "flip-type",
-    "Type of flip: GIMP_ORIENTATION_HORIZONTAL (0) or GIMP_ORIENTATION_VERTICAL (1)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "auto-center",
-    "Whether to automatically position the axis in the selection center"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "axis",
-    "coord. of flip axis"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_flip_simple_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The flipped drawable"
-  }
-};
-
-static ProcRecord drawable_transform_flip_simple_proc =
-{
-  "gimp-drawable-transform-flip-simple",
-  "gimp-drawable-transform-flip-simple",
-  "Flip the specified drawable either vertically or horizontally.",
-  "This procedure flips the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then flipped. If auto_center is set to true, the flip is around the selection's center. Otherwise, the coordinate of the axis needs to be specified. The return value is the ID of the flipped drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and flipped drawable.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  drawable_transform_flip_simple_inargs,
-  1,
-  drawable_transform_flip_simple_outargs,
-  { { drawable_transform_flip_simple_invoker } }
-};
-
-static Argument *
-drawable_transform_flip_invoker (Gimp         *gimp,
-                                 GimpContext  *context,
-                                 GimpProgress *progress,
-                                 Argument     *args)
+static GValueArray *
+drawable_transform_flip_invoker (GimpProcedure     *procedure,
+                                 Gimp              *gimp,
+                                 GimpContext       *context,
+                                 GimpProgress      *progress,
+                                 const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gdouble x0;
   gdouble y0;
@@ -202,33 +105,16 @@ drawable_transform_flip_invoker (Gimp         *gimp,
   gint32 recursion_level;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  x0 = args[1].value.pdb_float;
-
-  y0 = args[2].value.pdb_float;
-
-  x1 = args[3].value.pdb_float;
-
-  y1 = args[4].value.pdb_float;
-
-  transform_direction = args[5].value.pdb_int;
-  if (transform_direction < GIMP_TRANSFORM_FORWARD || transform_direction > GIMP_TRANSFORM_BACKWARD)
-    success = FALSE;
-
-  interpolation = args[6].value.pdb_int;
-  if (interpolation < GIMP_INTERPOLATION_NONE || interpolation > GIMP_INTERPOLATION_LANCZOS)
-    success = FALSE;
-
-  supersample = args[7].value.pdb_int ? TRUE : FALSE;
-
-  recursion_level = args[8].value.pdb_int;
-  if (recursion_level <= 0)
-    success = FALSE;
-
-  clip_result = args[9].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x0 = g_value_get_double (&args->values[1]);
+  y0 = g_value_get_double (&args->values[2]);
+  x1 = g_value_get_double (&args->values[3]);
+  y1 = g_value_get_double (&args->values[4]);
+  transform_direction = g_value_get_enum (&args->values[5]);
+  interpolation = g_value_get_enum (&args->values[6]);
+  supersample = g_value_get_boolean (&args->values[7]);
+  recursion_level = g_value_get_int (&args->values[8]);
+  clip_result = g_value_get_boolean (&args->values[9]);
 
   if (success)
     {
@@ -261,103 +147,23 @@ drawable_transform_flip_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_flip_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_flip_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x0",
-    "horz. coord. of one end of axis"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y0",
-    "vert. coord. of one end of axis"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x1",
-    "horz. coord. of other end of axis"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y1",
-    "vert. coord. of other end of axis"
-  },
-  {
-    GIMP_PDB_INT32,
-    "transform-direction",
-    "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolation",
-    "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "supersample",
-    "Whether to perform supersample"
-  },
-  {
-    GIMP_PDB_INT32,
-    "recursion-level",
-    "Level of recursion (3 is a nice default)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_flip_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The flipped drawable"
-  }
-};
-
-static ProcRecord drawable_transform_flip_proc =
-{
-  "gimp-drawable-transform-flip",
-  "gimp-drawable-transform-flip",
-  "Flip the specified drawable around a given line.",
-  "This procedure flips the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then flipped. The axis to flip around is specified by specifying two points from that line. The return value is the ID of the flipped drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and flipped drawable. The clip results parameter specifies wheter current selection will affect the transform.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  10,
-  drawable_transform_flip_inargs,
-  1,
-  drawable_transform_flip_outargs,
-  { { drawable_transform_flip_invoker } }
-};
-
-static Argument *
-drawable_transform_flip_default_invoker (Gimp         *gimp,
-                                         GimpContext  *context,
-                                         GimpProgress *progress,
-                                         Argument     *args)
+static GValueArray *
+drawable_transform_flip_default_invoker (GimpProcedure     *procedure,
+                                         Gimp              *gimp,
+                                         GimpContext       *context,
+                                         GimpProgress      *progress,
+                                         const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gdouble x0;
   gdouble y0;
@@ -366,21 +172,13 @@ drawable_transform_flip_default_invoker (Gimp         *gimp,
   gboolean interpolate;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  x0 = args[1].value.pdb_float;
-
-  y0 = args[2].value.pdb_float;
-
-  x1 = args[3].value.pdb_float;
-
-  y1 = args[4].value.pdb_float;
-
-  interpolate = args[5].value.pdb_int ? TRUE : FALSE;
-
-  clip_result = args[6].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x0 = g_value_get_double (&args->values[1]);
+  y0 = g_value_get_double (&args->values[2]);
+  x1 = g_value_get_double (&args->values[3]);
+  y1 = g_value_get_double (&args->values[4]);
+  interpolate = g_value_get_boolean (&args->values[5]);
+  clip_result = g_value_get_boolean (&args->values[6]);
 
   if (success)
     {
@@ -417,131 +215,52 @@ drawable_transform_flip_default_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_flip_default_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_flip_default_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x0",
-    "horz. coord. of one end of axis"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y0",
-    "vert. coord. of one end of axis"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x1",
-    "horz. coord. of other end of axis"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y1",
-    "vert. coord. of other end of axis"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolate",
-    "Whether to use interpolation and supersampling"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_flip_default_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The flipped drawable"
-  }
-};
-
-static ProcRecord drawable_transform_flip_default_proc =
-{
-  "gimp-drawable-transform-flip-default",
-  "gimp-drawable-transform-flip-default",
-  "Flip the specified drawable around a given line.",
-  "This procedure is a variant of gimp_drawable_transform_flip() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  7,
-  drawable_transform_flip_default_inargs,
-  1,
-  drawable_transform_flip_default_outargs,
-  { { drawable_transform_flip_default_invoker } }
-};
-
-static Argument *
-drawable_transform_perspective_invoker (Gimp         *gimp,
-                                        GimpContext  *context,
-                                        GimpProgress *progress,
-                                        Argument     *args)
+static GValueArray *
+drawable_transform_perspective_invoker (GimpProcedure     *procedure,
+                                        Gimp              *gimp,
+                                        GimpContext       *context,
+                                        GimpProgress      *progress,
+                                        const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
+  gdouble x0;
+  gdouble y0;
+  gdouble x1;
+  gdouble y1;
+  gdouble x2;
+  gdouble y2;
+  gdouble x3;
+  gdouble y3;
   gint32 transform_direction;
   gint32 interpolation;
   gboolean supersample;
   gint32 recursion_level;
   gboolean clip_result;
-  gdouble trans_info[8];
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  trans_info[X0] = args[1].value.pdb_float;
-
-  trans_info[Y0] = args[2].value.pdb_float;
-
-  trans_info[X1] = args[3].value.pdb_float;
-
-  trans_info[Y1] = args[4].value.pdb_float;
-
-  trans_info[X2] = args[5].value.pdb_float;
-
-  trans_info[Y2] = args[6].value.pdb_float;
-
-  trans_info[X3] = args[7].value.pdb_float;
-
-  trans_info[Y3] = args[8].value.pdb_float;
-
-  transform_direction = args[9].value.pdb_int;
-  if (transform_direction < GIMP_TRANSFORM_FORWARD || transform_direction > GIMP_TRANSFORM_BACKWARD)
-    success = FALSE;
-
-  interpolation = args[10].value.pdb_int;
-  if (interpolation < GIMP_INTERPOLATION_NONE || interpolation > GIMP_INTERPOLATION_LANCZOS)
-    success = FALSE;
-
-  supersample = args[11].value.pdb_int ? TRUE : FALSE;
-
-  recursion_level = args[12].value.pdb_int;
-  if (recursion_level <= 0)
-    success = FALSE;
-
-  clip_result = args[13].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x0 = g_value_get_double (&args->values[1]);
+  y0 = g_value_get_double (&args->values[2]);
+  x1 = g_value_get_double (&args->values[3]);
+  y1 = g_value_get_double (&args->values[4]);
+  x2 = g_value_get_double (&args->values[5]);
+  y2 = g_value_get_double (&args->values[6]);
+  x3 = g_value_get_double (&args->values[7]);
+  y3 = g_value_get_double (&args->values[8]);
+  transform_direction = g_value_get_enum (&args->values[9]);
+  interpolation = g_value_get_enum (&args->values[10]);
+  supersample = g_value_get_boolean (&args->values[11]);
+  recursion_level = g_value_get_int (&args->values[12]);
+  clip_result = g_value_get_boolean (&args->values[13]);
 
   if (success)
     {
@@ -558,10 +277,10 @@ drawable_transform_perspective_invoker (Gimp         *gimp,
           gimp_matrix3_identity (&matrix);
           gimp_transform_matrix_perspective (&matrix,
                                              x, y, width, height,
-                                             trans_info[X0], trans_info[Y0],
-                                             trans_info[X1], trans_info[Y1],
-                                             trans_info[X2], trans_info[Y2],
-                                             trans_info[X3], trans_info[Y3]);
+                                             x0, y0,
+                                             x1, y1,
+                                             x2, y2,
+                                             x3, y3);
 
           if (progress)
             gimp_progress_start (progress, _("Perspective"), FALSE);
@@ -578,151 +297,46 @@ drawable_transform_perspective_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_perspective_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_perspective_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x0",
-    "The new x coordinate of upper-left corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y0",
-    "The new y coordinate of upper-left corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x1",
-    "The new x coordinate of upper-right corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y1",
-    "The new y coordinate of upper-right corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x2",
-    "The new x coordinate of lower-left corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y2",
-    "The new y coordinate of lower-left corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x3",
-    "The new x coordinate of lower-right corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y3",
-    "The new y coordinate of lower-right corner of original bounding box"
-  },
-  {
-    GIMP_PDB_INT32,
-    "transform-direction",
-    "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolation",
-    "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "supersample",
-    "Whether to perform supersample"
-  },
-  {
-    GIMP_PDB_INT32,
-    "recursion-level",
-    "Level of recursion (3 is a nice default)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_perspective_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The newly mapped drawable"
-  }
-};
-
-static ProcRecord drawable_transform_perspective_proc =
-{
-  "gimp-drawable-transform-perspective",
-  "gimp-drawable-transform-perspective",
-  "Perform a possibly non-affine transformation on the specified drawable, with extra parameters.",
-  "This procedure performs a possibly non-affine transformation on the specified drawable by allowing the corners of the original bounding box to be arbitrarily remapped to any values. The specified drawable is remapped if no selection exists. However, if a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then remapped as specified. The return value is the ID of the remapped drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and remapped drawable. The 4 coordinates specify the new locations of each corner of the original bounding box. By specifying these values, any affine transformation (rotation, scaling, translation) can be affected. Additionally, these values can be specified such that the resulting transformed drawable will appear to have been projected via a perspective transform.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  14,
-  drawable_transform_perspective_inargs,
-  1,
-  drawable_transform_perspective_outargs,
-  { { drawable_transform_perspective_invoker } }
-};
-
-static Argument *
-drawable_transform_perspective_default_invoker (Gimp         *gimp,
-                                                GimpContext  *context,
-                                                GimpProgress *progress,
-                                                Argument     *args)
+static GValueArray *
+drawable_transform_perspective_default_invoker (GimpProcedure     *procedure,
+                                                Gimp              *gimp,
+                                                GimpContext       *context,
+                                                GimpProgress      *progress,
+                                                const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
+  gdouble x0;
+  gdouble y0;
+  gdouble x1;
+  gdouble y1;
+  gdouble x2;
+  gdouble y2;
+  gdouble x3;
+  gdouble y3;
   gboolean interpolate;
   gboolean clip_result;
-  gdouble trans_info[8];
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  trans_info[X0] = args[1].value.pdb_float;
-
-  trans_info[Y0] = args[2].value.pdb_float;
-
-  trans_info[X1] = args[3].value.pdb_float;
-
-  trans_info[Y1] = args[4].value.pdb_float;
-
-  trans_info[X2] = args[5].value.pdb_float;
-
-  trans_info[Y2] = args[6].value.pdb_float;
-
-  trans_info[X3] = args[7].value.pdb_float;
-
-  trans_info[Y3] = args[8].value.pdb_float;
-
-  interpolate = args[9].value.pdb_int ? TRUE : FALSE;
-
-  clip_result = args[10].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x0 = g_value_get_double (&args->values[1]);
+  y0 = g_value_get_double (&args->values[2]);
+  x1 = g_value_get_double (&args->values[3]);
+  y1 = g_value_get_double (&args->values[4]);
+  x2 = g_value_get_double (&args->values[5]);
+  y2 = g_value_get_double (&args->values[6]);
+  x3 = g_value_get_double (&args->values[7]);
+  y3 = g_value_get_double (&args->values[8]);
+  interpolate = g_value_get_boolean (&args->values[9]);
+  clip_result = g_value_get_boolean (&args->values[10]);
 
   if (success)
     {
@@ -740,10 +354,10 @@ drawable_transform_perspective_default_invoker (Gimp         *gimp,
           gimp_matrix3_identity (&matrix);
           gimp_transform_matrix_perspective (&matrix,
                                              x, y, width, height,
-                                             trans_info[X0], trans_info[Y0],
-                                             trans_info[X1], trans_info[Y1],
-                                             trans_info[X2], trans_info[Y2],
-                                             trans_info[X3], trans_info[Y3]);
+                                             x0, y0,
+                                             x1, y1,
+                                             x2, y2,
+                                             x3, y3);
 
           if (interpolate)
             interpolation_type = gimp->config->interpolation_type;
@@ -763,108 +377,23 @@ drawable_transform_perspective_default_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_perspective_default_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_perspective_default_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x0",
-    "The new x coordinate of upper-left corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y0",
-    "The new y coordinate of upper-left corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x1",
-    "The new x coordinate of upper-right corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y1",
-    "The new y coordinate of upper-right corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x2",
-    "The new x coordinate of lower-left corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y2",
-    "The new y coordinate of lower-left corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x3",
-    "The new x coordinate of lower-right corner of original bounding box"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y3",
-    "The new y coordinate of lower-right corner of original bounding box"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolate",
-    "Whether to use interpolation and supersampling"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_perspective_default_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The newly mapped drawable"
-  }
-};
-
-static ProcRecord drawable_transform_perspective_default_proc =
-{
-  "gimp-drawable-transform-perspective-default",
-  "gimp-drawable-transform-perspective-default",
-  "Perform a possibly non-affine transformation on the specified drawable, with extra parameters.",
-  "This procedure is a variant of gimp_drawable_transform_perspective() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  11,
-  drawable_transform_perspective_default_inargs,
-  1,
-  drawable_transform_perspective_default_outargs,
-  { { drawable_transform_perspective_default_invoker } }
-};
-
-static Argument *
-drawable_transform_rotate_simple_invoker (Gimp         *gimp,
-                                          GimpContext  *context,
-                                          GimpProgress *progress,
-                                          Argument     *args)
+static GValueArray *
+drawable_transform_rotate_simple_invoker (GimpProcedure     *procedure,
+                                          Gimp              *gimp,
+                                          GimpContext       *context,
+                                          GimpProgress      *progress,
+                                          const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 rotate_type;
   gboolean auto_center;
@@ -872,21 +401,12 @@ drawable_transform_rotate_simple_invoker (Gimp         *gimp,
   gint32 center_y;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  rotate_type = args[1].value.pdb_int;
-  if (rotate_type < GIMP_ROTATE_90 || rotate_type > GIMP_ROTATE_270)
-    success = FALSE;
-
-  auto_center = args[2].value.pdb_int ? TRUE : FALSE;
-
-  center_x = args[3].value.pdb_int;
-
-  center_y = args[4].value.pdb_int;
-
-  clip_result = args[5].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  rotate_type = g_value_get_enum (&args->values[1]);
+  auto_center = g_value_get_boolean (&args->values[2]);
+  center_x = g_value_get_int (&args->values[3]);
+  center_y = g_value_get_int (&args->values[4]);
+  clip_result = g_value_get_boolean (&args->values[5]);
 
   if (success)
     {
@@ -904,83 +424,23 @@ drawable_transform_rotate_simple_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_rotate_simple_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_rotate_simple_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "rotate-type",
-    "Type of rotation: GIMP_ROTATE_90 (0), GIMP_ROTATE_180 (1), GIMP_ROTATE_270 (2)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "auto-center",
-    "Whether to automatically rotate around the selection center"
-  },
-  {
-    GIMP_PDB_INT32,
-    "center-x",
-    "The hor. coordinate of the center of rotation"
-  },
-  {
-    GIMP_PDB_INT32,
-    "center-y",
-    "The vert. coordinate of the center of rotation"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_rotate_simple_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The rotated drawable"
-  }
-};
-
-static ProcRecord drawable_transform_rotate_simple_proc =
-{
-  "gimp-drawable-transform-rotate-simple",
-  "gimp-drawable-transform-rotate-simple",
-  "Rotate the specified drawable about given coordinates through the specified angle.",
-  "This function rotates the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount. The return value is the ID of the rotated drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and rotated drawable.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  6,
-  drawable_transform_rotate_simple_inargs,
-  1,
-  drawable_transform_rotate_simple_outargs,
-  { { drawable_transform_rotate_simple_invoker } }
-};
-
-static Argument *
-drawable_transform_rotate_invoker (Gimp         *gimp,
-                                   GimpContext  *context,
-                                   GimpProgress *progress,
-                                   Argument     *args)
+static GValueArray *
+drawable_transform_rotate_invoker (GimpProcedure     *procedure,
+                                   Gimp              *gimp,
+                                   GimpContext       *context,
+                                   GimpProgress      *progress,
+                                   const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gdouble angle;
   gboolean auto_center;
@@ -992,33 +452,16 @@ drawable_transform_rotate_invoker (Gimp         *gimp,
   gint32 recursion_level;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  angle = args[1].value.pdb_float;
-
-  auto_center = args[2].value.pdb_int ? TRUE : FALSE;
-
-  center_x = args[3].value.pdb_int;
-
-  center_y = args[4].value.pdb_int;
-
-  transform_direction = args[5].value.pdb_int;
-  if (transform_direction < GIMP_TRANSFORM_FORWARD || transform_direction > GIMP_TRANSFORM_BACKWARD)
-    success = FALSE;
-
-  interpolation = args[6].value.pdb_int;
-  if (interpolation < GIMP_INTERPOLATION_NONE || interpolation > GIMP_INTERPOLATION_LANCZOS)
-    success = FALSE;
-
-  supersample = args[7].value.pdb_int ? TRUE : FALSE;
-
-  recursion_level = args[8].value.pdb_int;
-  if (recursion_level <= 0)
-    success = FALSE;
-
-  clip_result = args[9].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  angle = g_value_get_double (&args->values[1]);
+  auto_center = g_value_get_boolean (&args->values[2]);
+  center_x = g_value_get_int (&args->values[3]);
+  center_y = g_value_get_int (&args->values[4]);
+  transform_direction = g_value_get_enum (&args->values[5]);
+  interpolation = g_value_get_enum (&args->values[6]);
+  supersample = g_value_get_boolean (&args->values[7]);
+  recursion_level = g_value_get_int (&args->values[8]);
+  clip_result = g_value_get_boolean (&args->values[9]);
 
   if (success)
     {
@@ -1054,103 +497,23 @@ drawable_transform_rotate_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_rotate_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_rotate_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "angle",
-    "The angle of rotation (radians)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "auto-center",
-    "Whether to automatically rotate around the selection center"
-  },
-  {
-    GIMP_PDB_INT32,
-    "center-x",
-    "The hor. coordinate of the center of rotation"
-  },
-  {
-    GIMP_PDB_INT32,
-    "center-y",
-    "The vert. coordinate of the center of rotation"
-  },
-  {
-    GIMP_PDB_INT32,
-    "transform-direction",
-    "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolation",
-    "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "supersample",
-    "Whether to perform supersample"
-  },
-  {
-    GIMP_PDB_INT32,
-    "recursion-level",
-    "Level of recursion (3 is a nice default)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_rotate_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The rotated drawable"
-  }
-};
-
-static ProcRecord drawable_transform_rotate_proc =
-{
-  "gimp-drawable-transform-rotate",
-  "gimp-drawable-transform-rotate",
-  "Rotate the specified drawable about given coordinates through the specified angle.",
-  "This function rotates the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount. The return value is the ID of the rotated drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and rotated drawable.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  10,
-  drawable_transform_rotate_inargs,
-  1,
-  drawable_transform_rotate_outargs,
-  { { drawable_transform_rotate_invoker } }
-};
-
-static Argument *
-drawable_transform_rotate_default_invoker (Gimp         *gimp,
-                                           GimpContext  *context,
-                                           GimpProgress *progress,
-                                           Argument     *args)
+static GValueArray *
+drawable_transform_rotate_default_invoker (GimpProcedure     *procedure,
+                                           Gimp              *gimp,
+                                           GimpContext       *context,
+                                           GimpProgress      *progress,
+                                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gdouble angle;
   gboolean auto_center;
@@ -1159,21 +522,13 @@ drawable_transform_rotate_default_invoker (Gimp         *gimp,
   gboolean interpolate;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  angle = args[1].value.pdb_float;
-
-  auto_center = args[2].value.pdb_int ? TRUE : FALSE;
-
-  center_x = args[3].value.pdb_int;
-
-  center_y = args[4].value.pdb_int;
-
-  interpolate = args[5].value.pdb_int ? TRUE : FALSE;
-
-  clip_result = args[6].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  angle = g_value_get_double (&args->values[1]);
+  auto_center = g_value_get_boolean (&args->values[2]);
+  center_x = g_value_get_int (&args->values[3]);
+  center_y = g_value_get_int (&args->values[4]);
+  interpolate = g_value_get_boolean (&args->values[5]);
+  clip_result = g_value_get_boolean (&args->values[6]);
 
   if (success)
     {
@@ -1213,131 +568,50 @@ drawable_transform_rotate_default_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_rotate_default_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_rotate_default_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "angle",
-    "The angle of rotation (radians)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "auto-center",
-    "Whether to automatically rotate around the selection center"
-  },
-  {
-    GIMP_PDB_INT32,
-    "center-x",
-    "The hor. coordinate of the center of rotation"
-  },
-  {
-    GIMP_PDB_INT32,
-    "center-y",
-    "The vert. coordinate of the center of rotation"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolate",
-    "Whether to use interpolation and supersampling"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_rotate_default_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The rotated drawable"
-  }
-};
-
-static ProcRecord drawable_transform_rotate_default_proc =
-{
-  "gimp-drawable-transform-rotate-default",
-  "gimp-drawable-transform-rotate-default",
-  "Rotate the specified drawable about given coordinates through the specified angle.",
-  "This procedure is a variant of gimp_drawable_transform_rotate() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  7,
-  drawable_transform_rotate_default_inargs,
-  1,
-  drawable_transform_rotate_default_outargs,
-  { { drawable_transform_rotate_default_invoker } }
-};
-
-static Argument *
-drawable_transform_scale_invoker (Gimp         *gimp,
-                                  GimpContext  *context,
-                                  GimpProgress *progress,
-                                  Argument     *args)
+static GValueArray *
+drawable_transform_scale_invoker (GimpProcedure     *procedure,
+                                  Gimp              *gimp,
+                                  GimpContext       *context,
+                                  GimpProgress      *progress,
+                                  const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
+  gdouble x0;
+  gdouble y0;
+  gdouble x1;
+  gdouble y1;
   gint32 transform_direction;
   gint32 interpolation;
   gboolean supersample;
   gint32 recursion_level;
   gboolean clip_result;
-  gdouble trans_info[4];
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  trans_info[X0] = args[1].value.pdb_float;
-
-  trans_info[Y0] = args[2].value.pdb_float;
-
-  trans_info[X1] = args[3].value.pdb_float;
-
-  trans_info[Y1] = args[4].value.pdb_float;
-
-  transform_direction = args[5].value.pdb_int;
-  if (transform_direction < GIMP_TRANSFORM_FORWARD || transform_direction > GIMP_TRANSFORM_BACKWARD)
-    success = FALSE;
-
-  interpolation = args[6].value.pdb_int;
-  if (interpolation < GIMP_INTERPOLATION_NONE || interpolation > GIMP_INTERPOLATION_LANCZOS)
-    success = FALSE;
-
-  supersample = args[7].value.pdb_int ? TRUE : FALSE;
-
-  recursion_level = args[8].value.pdb_int;
-  if (recursion_level <= 0)
-    success = FALSE;
-
-  clip_result = args[9].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x0 = g_value_get_double (&args->values[1]);
+  y0 = g_value_get_double (&args->values[2]);
+  x1 = g_value_get_double (&args->values[3]);
+  y1 = g_value_get_double (&args->values[4]);
+  transform_direction = g_value_get_enum (&args->values[5]);
+  interpolation = g_value_get_enum (&args->values[6]);
+  supersample = g_value_get_boolean (&args->values[7]);
+  recursion_level = g_value_get_int (&args->values[8]);
+  clip_result = g_value_get_boolean (&args->values[9]);
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = (gimp_item_is_attached (GIMP_ITEM (drawable)) &&
-                 trans_info[X0] < trans_info[X1] &&
-                 trans_info[Y0] < trans_info[Y1]);
+      success = (gimp_item_is_attached (GIMP_ITEM (drawable)) && x0 < x1 && y0 < y1);
 
       if (success &&
           gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
@@ -1348,10 +622,9 @@ drawable_transform_scale_invoker (Gimp         *gimp,
           gimp_matrix3_identity (&matrix);
           gimp_transform_matrix_scale (&matrix,
                                        x, y, width, height,
-                                       trans_info[X0],
-                                       trans_info[Y0],
-                                       trans_info[X1] - trans_info[X0],
-                                       trans_info[Y1] - trans_info[Y0]);
+                                       x0, y0,
+                                       x1 - x0,
+                                       y1 - y0);
 
           if (progress)
             gimp_progress_start (progress, _("Scaling"), FALSE);
@@ -1368,131 +641,44 @@ drawable_transform_scale_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_scale_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_scale_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x0",
-    "The new x coordinate of upper-left corner of newly scaled region"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y0",
-    "The new y coordinate of upper-left corner of newly scaled region"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x1",
-    "The new x coordinate of lower-right corner of newly scaled region"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y1",
-    "The new y coordinate of lower-right corner of newly scaled region"
-  },
-  {
-    GIMP_PDB_INT32,
-    "transform-direction",
-    "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolation",
-    "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "supersample",
-    "Whether to perform supersample"
-  },
-  {
-    GIMP_PDB_INT32,
-    "recursion-level",
-    "Level of recursion (3 is a nice default)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_scale_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The scaled drawable"
-  }
-};
-
-static ProcRecord drawable_transform_scale_proc =
-{
-  "gimp-drawable-transform-scale",
-  "gimp-drawable-transform-scale",
-  "Scale the specified drawable with extra parameters",
-  "This procedure scales the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then scaled by the specified amount. The return value is the ID of the scaled drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and scaled drawable.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  10,
-  drawable_transform_scale_inargs,
-  1,
-  drawable_transform_scale_outargs,
-  { { drawable_transform_scale_invoker } }
-};
-
-static Argument *
-drawable_transform_scale_default_invoker (Gimp         *gimp,
-                                          GimpContext  *context,
-                                          GimpProgress *progress,
-                                          Argument     *args)
+static GValueArray *
+drawable_transform_scale_default_invoker (GimpProcedure     *procedure,
+                                          Gimp              *gimp,
+                                          GimpContext       *context,
+                                          GimpProgress      *progress,
+                                          const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
+  gdouble x0;
+  gdouble y0;
+  gdouble x1;
+  gdouble y1;
   gboolean interpolate;
   gboolean clip_result;
-  gdouble trans_info[4];
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  trans_info[X0] = args[1].value.pdb_float;
-
-  trans_info[Y0] = args[2].value.pdb_float;
-
-  trans_info[X1] = args[3].value.pdb_float;
-
-  trans_info[Y1] = args[4].value.pdb_float;
-
-  interpolate = args[5].value.pdb_int ? TRUE : FALSE;
-
-  clip_result = args[6].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  x0 = g_value_get_double (&args->values[1]);
+  y0 = g_value_get_double (&args->values[2]);
+  x1 = g_value_get_double (&args->values[3]);
+  y1 = g_value_get_double (&args->values[4]);
+  interpolate = g_value_get_boolean (&args->values[5]);
+  clip_result = g_value_get_boolean (&args->values[6]);
 
   if (success)
     {
       gint x, y, width, height;
 
-      success = (gimp_item_is_attached (GIMP_ITEM (drawable)) &&
-                 trans_info[X0] < trans_info[X1] &&
-                 trans_info[Y0] < trans_info[Y1]);
+      success = (gimp_item_is_attached (GIMP_ITEM (drawable)) && x0 < x1 && y0 < y1);
 
       if (success &&
           gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
@@ -1504,10 +690,9 @@ drawable_transform_scale_default_invoker (Gimp         *gimp,
           gimp_matrix3_identity (&matrix);
           gimp_transform_matrix_scale (&matrix,
                                        x, y, width, height,
-                                       trans_info[X0],
-                                       trans_info[Y0],
-                                       trans_info[X1] - trans_info[X0],
-                                       trans_info[Y1] - trans_info[Y0]);
+                                       x0, y0,
+                                       x1 - x0,
+                                       y1 - y0);
 
           if (interpolate)
             interpolation_type = gimp->config->interpolation_type;
@@ -1527,88 +712,23 @@ drawable_transform_scale_default_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_scale_default_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_scale_default_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x0",
-    "The new x coordinate of upper-left corner of newly scaled region"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y0",
-    "The new y coordinate of upper-left corner of newly scaled region"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "x1",
-    "The new x coordinate of lower-right corner of newly scaled region"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "y1",
-    "The new y coordinate of lower-right corner of newly scaled region"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolate",
-    "Whether to use interpolation and supersampling"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_scale_default_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The scaled drawable"
-  }
-};
-
-static ProcRecord drawable_transform_scale_default_proc =
-{
-  "gimp-drawable-transform-scale-default",
-  "gimp-drawable-transform-scale-default",
-  "Scale the specified drawable with extra parameters",
-  "This procedure is a variant of gimp_drawable_transform_scale() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  7,
-  drawable_transform_scale_default_inargs,
-  1,
-  drawable_transform_scale_default_outargs,
-  { { drawable_transform_scale_default_invoker } }
-};
-
-static Argument *
-drawable_transform_shear_invoker (Gimp         *gimp,
-                                  GimpContext  *context,
-                                  GimpProgress *progress,
-                                  Argument     *args)
+static GValueArray *
+drawable_transform_shear_invoker (GimpProcedure     *procedure,
+                                  Gimp              *gimp,
+                                  GimpContext       *context,
+                                  GimpProgress      *progress,
+                                  const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 shear_type;
   gdouble magnitude;
@@ -1618,31 +738,14 @@ drawable_transform_shear_invoker (Gimp         *gimp,
   gint32 recursion_level;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  shear_type = args[1].value.pdb_int;
-  if (shear_type < GIMP_ORIENTATION_HORIZONTAL || shear_type > GIMP_ORIENTATION_VERTICAL)
-    success = FALSE;
-
-  magnitude = args[2].value.pdb_float;
-
-  transform_direction = args[3].value.pdb_int;
-  if (transform_direction < GIMP_TRANSFORM_FORWARD || transform_direction > GIMP_TRANSFORM_BACKWARD)
-    success = FALSE;
-
-  interpolation = args[4].value.pdb_int;
-  if (interpolation < GIMP_INTERPOLATION_NONE || interpolation > GIMP_INTERPOLATION_LANCZOS)
-    success = FALSE;
-
-  supersample = args[5].value.pdb_int ? TRUE : FALSE;
-
-  recursion_level = args[6].value.pdb_int;
-  if (recursion_level <= 0)
-    success = FALSE;
-
-  clip_result = args[7].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  shear_type = g_value_get_enum (&args->values[1]);
+  magnitude = g_value_get_double (&args->values[2]);
+  transform_direction = g_value_get_enum (&args->values[3]);
+  interpolation = g_value_get_enum (&args->values[4]);
+  supersample = g_value_get_boolean (&args->values[5]);
+  recursion_level = g_value_get_int (&args->values[6]);
+  clip_result = g_value_get_boolean (&args->values[7]);
 
   if (success)
     {
@@ -1676,112 +779,34 @@ drawable_transform_shear_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_shear_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_shear_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "shear-type",
-    "Type of shear: GIMP_ORIENTATION_HORIZONTAL (0) or GIMP_ORIENTATION_VERTICAL (1)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "magnitude",
-    "The magnitude of the shear"
-  },
-  {
-    GIMP_PDB_INT32,
-    "transform-direction",
-    "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolation",
-    "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "supersample",
-    "Whether to perform supersample"
-  },
-  {
-    GIMP_PDB_INT32,
-    "recursion-level",
-    "Level of recursion (3 is a nice default)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_shear_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The sheared drawable"
-  }
-};
-
-static ProcRecord drawable_transform_shear_proc =
-{
-  "gimp-drawable-transform-shear",
-  "gimp-drawable-transform-shear",
-  "Shear the specified drawable about its center by the specified magnitude, with extra parameters.",
-  "This procedure shears the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then sheard by the specified amount. The return value is the ID of the sheard drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and sheard drawable. The shear type parameter indicates whether the shear will be applied horizontally or vertically. The magnitude can be either positive or negative and indicates the extent (in pixels) to shear by.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  8,
-  drawable_transform_shear_inargs,
-  1,
-  drawable_transform_shear_outargs,
-  { { drawable_transform_shear_invoker } }
-};
-
-static Argument *
-drawable_transform_shear_default_invoker (Gimp         *gimp,
-                                          GimpContext  *context,
-                                          GimpProgress *progress,
-                                          Argument     *args)
+static GValueArray *
+drawable_transform_shear_default_invoker (GimpProcedure     *procedure,
+                                          Gimp              *gimp,
+                                          GimpContext       *context,
+                                          GimpProgress      *progress,
+                                          const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gint32 shear_type;
   gdouble magnitude;
   gboolean interpolate;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  shear_type = args[1].value.pdb_int;
-  if (shear_type < GIMP_ORIENTATION_HORIZONTAL || shear_type > GIMP_ORIENTATION_VERTICAL)
-    success = FALSE;
-
-  magnitude = args[2].value.pdb_float;
-
-  interpolate = args[3].value.pdb_int ? TRUE : FALSE;
-
-  clip_result = args[4].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  shear_type = g_value_get_enum (&args->values[1]);
+  magnitude = g_value_get_double (&args->values[2]);
+  interpolate = g_value_get_boolean (&args->values[3]);
+  clip_result = g_value_get_boolean (&args->values[4]);
 
   if (success)
     {
@@ -1819,78 +844,23 @@ drawable_transform_shear_default_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_shear_default_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_shear_default_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_INT32,
-    "shear-type",
-    "Type of shear: GIMP_ORIENTATION_HORIZONTAL (0) or GIMP_ORIENTATION_VERTICAL (1)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "magnitude",
-    "The magnitude of the shear"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolate",
-    "Whether to use interpolation and supersampling"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_shear_default_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The sheared drawable"
-  }
-};
-
-static ProcRecord drawable_transform_shear_default_proc =
-{
-  "gimp-drawable-transform-shear-default",
-  "gimp-drawable-transform-shear-default",
-  "Shear the specified drawable about its center by the specified magnitude, with extra parameters.",
-  "This procedure is a variant of gimp_drawable_transform_shear() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  5,
-  drawable_transform_shear_default_inargs,
-  1,
-  drawable_transform_shear_default_outargs,
-  { { drawable_transform_shear_default_invoker } }
-};
-
-static Argument *
-drawable_transform_2d_invoker (Gimp         *gimp,
-                               GimpContext  *context,
-                               GimpProgress *progress,
-                               Argument     *args)
+static GValueArray *
+drawable_transform_2d_invoker (GimpProcedure     *procedure,
+                               Gimp              *gimp,
+                               GimpContext       *context,
+                               GimpProgress      *progress,
+                               const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gdouble source_x;
   gdouble source_y;
@@ -1905,39 +875,19 @@ drawable_transform_2d_invoker (Gimp         *gimp,
   gint32 recursion_level;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  source_x = args[1].value.pdb_float;
-
-  source_y = args[2].value.pdb_float;
-
-  scale_x = args[3].value.pdb_float;
-
-  scale_y = args[4].value.pdb_float;
-
-  angle = args[5].value.pdb_float;
-
-  dest_x = args[6].value.pdb_float;
-
-  dest_y = args[7].value.pdb_float;
-
-  transform_direction = args[8].value.pdb_int;
-  if (transform_direction < GIMP_TRANSFORM_FORWARD || transform_direction > GIMP_TRANSFORM_BACKWARD)
-    success = FALSE;
-
-  interpolation = args[9].value.pdb_int;
-  if (interpolation < GIMP_INTERPOLATION_NONE || interpolation > GIMP_INTERPOLATION_LANCZOS)
-    success = FALSE;
-
-  supersample = args[10].value.pdb_int ? TRUE : FALSE;
-
-  recursion_level = args[11].value.pdb_int;
-  if (recursion_level <= 0)
-    success = FALSE;
-
-  clip_result = args[12].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  source_x = g_value_get_double (&args->values[1]);
+  source_y = g_value_get_double (&args->values[2]);
+  scale_x = g_value_get_double (&args->values[3]);
+  scale_y = g_value_get_double (&args->values[4]);
+  angle = g_value_get_double (&args->values[5]);
+  dest_x = g_value_get_double (&args->values[6]);
+  dest_y = g_value_get_double (&args->values[7]);
+  transform_direction = g_value_get_enum (&args->values[8]);
+  interpolation = g_value_get_enum (&args->values[9]);
+  supersample = g_value_get_boolean (&args->values[10]);
+  recursion_level = g_value_get_int (&args->values[11]);
+  clip_result = g_value_get_boolean (&args->values[12]);
 
   if (success)
     {
@@ -1972,118 +922,23 @@ drawable_transform_2d_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_2d_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_2d_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "source-x",
-    "X coordinate of the transformation center"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "source-y",
-    "Y coordinate of the transformation center"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "scale-x",
-    "Amount to scale in x direction"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "scale-y",
-    "Amount to scale in y direction"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "angle",
-    "The angle of rotation (radians)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "dest-x",
-    "X coordinate of where the center goes"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "dest-y",
-    "Y coordinate of where the center goes"
-  },
-  {
-    GIMP_PDB_INT32,
-    "transform-direction",
-    "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolation",
-    "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "supersample",
-    "Whether to perform supersample"
-  },
-  {
-    GIMP_PDB_INT32,
-    "recursion-level",
-    "Level of recursion (3 is a nice default)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_2d_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The transformed drawable"
-  }
-};
-
-static ProcRecord drawable_transform_2d_proc =
-{
-  "gimp-drawable-transform-2d",
-  "gimp-drawable-transform-2d",
-  "Transform the specified drawable in 2d, with extra parameters.",
-  "This procedure transforms the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then transformed. The transformation is done by scaling the image by the x and y scale factors about the point (source_x, source_y), then rotating around the same point, then translating that point to the new position (dest_x, dest_y). The return value is the ID of the rotated drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and transformed drawable.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  13,
-  drawable_transform_2d_inargs,
-  1,
-  drawable_transform_2d_outargs,
-  { { drawable_transform_2d_invoker } }
-};
-
-static Argument *
-drawable_transform_2d_default_invoker (Gimp         *gimp,
-                                       GimpContext  *context,
-                                       GimpProgress *progress,
-                                       Argument     *args)
+static GValueArray *
+drawable_transform_2d_default_invoker (GimpProcedure     *procedure,
+                                       Gimp              *gimp,
+                                       GimpContext       *context,
+                                       GimpProgress      *progress,
+                                       const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gdouble source_x;
   gdouble source_y;
@@ -2095,27 +950,16 @@ drawable_transform_2d_default_invoker (Gimp         *gimp,
   gboolean interpolate;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  source_x = args[1].value.pdb_float;
-
-  source_y = args[2].value.pdb_float;
-
-  scale_x = args[3].value.pdb_float;
-
-  scale_y = args[4].value.pdb_float;
-
-  angle = args[5].value.pdb_float;
-
-  dest_x = args[6].value.pdb_float;
-
-  dest_y = args[7].value.pdb_float;
-
-  interpolate = args[8].value.pdb_int ? TRUE : FALSE;
-
-  clip_result = args[9].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  source_x = g_value_get_double (&args->values[1]);
+  source_y = g_value_get_double (&args->values[2]);
+  scale_x = g_value_get_double (&args->values[3]);
+  scale_y = g_value_get_double (&args->values[4]);
+  angle = g_value_get_double (&args->values[5]);
+  dest_x = g_value_get_double (&args->values[6]);
+  dest_y = g_value_get_double (&args->values[7]);
+  interpolate = g_value_get_boolean (&args->values[8]);
+  clip_result = g_value_get_boolean (&args->values[9]);
 
   if (success)
     {
@@ -2154,103 +998,23 @@ drawable_transform_2d_default_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_2d_default_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_2d_default_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "source-x",
-    "X coordinate of the transformation center"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "source-y",
-    "Y coordinate of the transformation center"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "scale-x",
-    "Amount to scale in x direction"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "scale-y",
-    "Amount to scale in y direction"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "angle",
-    "The angle of rotation (radians)"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "dest-x",
-    "X coordinate of where the center goes"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "dest-y",
-    "Y coordinate of where the center goes"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolate",
-    "Whether to use interpolation and supersampling"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_2d_default_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The transformed drawable"
-  }
-};
-
-static ProcRecord drawable_transform_2d_default_proc =
-{
-  "gimp-drawable-transform-2d-default",
-  "gimp-drawable-transform-2d-default",
-  "Transform the specified drawable in 2d, with extra parameters.",
-  "This procedure is a variant of gimp_drawable_transform_2d() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  10,
-  drawable_transform_2d_default_inargs,
-  1,
-  drawable_transform_2d_default_outargs,
-  { { drawable_transform_2d_default_invoker } }
-};
-
-static Argument *
-drawable_transform_matrix_invoker (Gimp         *gimp,
-                                   GimpContext  *context,
-                                   GimpProgress *progress,
-                                   Argument     *args)
+static GValueArray *
+drawable_transform_matrix_invoker (GimpProcedure     *procedure,
+                                   Gimp              *gimp,
+                                   GimpContext       *context,
+                                   GimpProgress      *progress,
+                                   const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gdouble coeff_0_0;
   gdouble coeff_0_1;
@@ -2267,43 +1031,21 @@ drawable_transform_matrix_invoker (Gimp         *gimp,
   gint32 recursion_level;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  coeff_0_0 = args[1].value.pdb_float;
-
-  coeff_0_1 = args[2].value.pdb_float;
-
-  coeff_0_2 = args[3].value.pdb_float;
-
-  coeff_1_0 = args[4].value.pdb_float;
-
-  coeff_1_1 = args[5].value.pdb_float;
-
-  coeff_1_2 = args[6].value.pdb_float;
-
-  coeff_2_0 = args[7].value.pdb_float;
-
-  coeff_2_1 = args[8].value.pdb_float;
-
-  coeff_2_2 = args[9].value.pdb_float;
-
-  transform_direction = args[10].value.pdb_int;
-  if (transform_direction < GIMP_TRANSFORM_FORWARD || transform_direction > GIMP_TRANSFORM_BACKWARD)
-    success = FALSE;
-
-  interpolation = args[11].value.pdb_int;
-  if (interpolation < GIMP_INTERPOLATION_NONE || interpolation > GIMP_INTERPOLATION_LANCZOS)
-    success = FALSE;
-
-  supersample = args[12].value.pdb_int ? TRUE : FALSE;
-
-  recursion_level = args[13].value.pdb_int;
-  if (recursion_level <= 0)
-    success = FALSE;
-
-  clip_result = args[14].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  coeff_0_0 = g_value_get_double (&args->values[1]);
+  coeff_0_1 = g_value_get_double (&args->values[2]);
+  coeff_0_2 = g_value_get_double (&args->values[3]);
+  coeff_1_0 = g_value_get_double (&args->values[4]);
+  coeff_1_1 = g_value_get_double (&args->values[5]);
+  coeff_1_2 = g_value_get_double (&args->values[6]);
+  coeff_2_0 = g_value_get_double (&args->values[7]);
+  coeff_2_1 = g_value_get_double (&args->values[8]);
+  coeff_2_2 = g_value_get_double (&args->values[9]);
+  transform_direction = g_value_get_enum (&args->values[10]);
+  interpolation = g_value_get_enum (&args->values[11]);
+  supersample = g_value_get_boolean (&args->values[12]);
+  recursion_level = g_value_get_int (&args->values[13]);
+  clip_result = g_value_get_boolean (&args->values[14]);
 
   if (success)
     {
@@ -2342,128 +1084,23 @@ drawable_transform_matrix_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_matrix_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_matrix_inargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-0-0",
-    "coefficient (0,0) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-0-1",
-    "coefficient (0,1) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-0-2",
-    "coefficient (0,2) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-1-0",
-    "coefficient (1,0) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-1-1",
-    "coefficient (1,1) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-1-2",
-    "coefficient (1,2) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-2-0",
-    "coefficient (2,0) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-2-1",
-    "coefficient (2,1) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-2-2",
-    "coefficient (2,2) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_INT32,
-    "transform-direction",
-    "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolation",
-    "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }"
-  },
-  {
-    GIMP_PDB_INT32,
-    "supersample",
-    "Whether to perform supersample"
-  },
-  {
-    GIMP_PDB_INT32,
-    "recursion-level",
-    "Level of recursion (3 is a nice default)"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
-
-static ProcArg drawable_transform_matrix_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The transformed drawable"
-  }
-};
-
-static ProcRecord drawable_transform_matrix_proc =
-{
-  "gimp-drawable-transform-matrix",
-  "gimp-drawable-transform-matrix",
-  "Transform the specified drawable in 2d, with extra parameters.",
-  "This procedure transforms the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then transformed. The transformation is done by assembling a 3x3 matrix from the coefficients passed. The return value is the ID of the rotated drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and transformed drawable.",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  15,
-  drawable_transform_matrix_inargs,
-  1,
-  drawable_transform_matrix_outargs,
-  { { drawable_transform_matrix_invoker } }
-};
-
-static Argument *
-drawable_transform_matrix_default_invoker (Gimp         *gimp,
-                                           GimpContext  *context,
-                                           GimpProgress *progress,
-                                           Argument     *args)
+static GValueArray *
+drawable_transform_matrix_default_invoker (GimpProcedure     *procedure,
+                                           Gimp              *gimp,
+                                           GimpContext       *context,
+                                           GimpProgress      *progress,
+                                           const GValueArray *args)
 {
   gboolean success = TRUE;
-  Argument *return_args;
+  GValueArray *return_vals;
   GimpDrawable *drawable;
   gdouble coeff_0_0;
   gdouble coeff_0_1;
@@ -2477,31 +1114,18 @@ drawable_transform_matrix_default_invoker (Gimp         *gimp,
   gboolean interpolate;
   gboolean clip_result;
 
-  drawable = (GimpDrawable *) gimp_item_get_by_ID (gimp, args[0].value.pdb_int);
-  if (! (GIMP_IS_DRAWABLE (drawable) && ! gimp_item_is_removed (GIMP_ITEM (drawable))))
-    success = FALSE;
-
-  coeff_0_0 = args[1].value.pdb_float;
-
-  coeff_0_1 = args[2].value.pdb_float;
-
-  coeff_0_2 = args[3].value.pdb_float;
-
-  coeff_1_0 = args[4].value.pdb_float;
-
-  coeff_1_1 = args[5].value.pdb_float;
-
-  coeff_1_2 = args[6].value.pdb_float;
-
-  coeff_2_0 = args[7].value.pdb_float;
-
-  coeff_2_1 = args[8].value.pdb_float;
-
-  coeff_2_2 = args[9].value.pdb_float;
-
-  interpolate = args[10].value.pdb_int ? TRUE : FALSE;
-
-  clip_result = args[11].value.pdb_int ? TRUE : FALSE;
+  drawable = gimp_value_get_drawable (&args->values[0], gimp);
+  coeff_0_0 = g_value_get_double (&args->values[1]);
+  coeff_0_1 = g_value_get_double (&args->values[2]);
+  coeff_0_2 = g_value_get_double (&args->values[3]);
+  coeff_1_0 = g_value_get_double (&args->values[4]);
+  coeff_1_1 = g_value_get_double (&args->values[5]);
+  coeff_1_2 = g_value_get_double (&args->values[6]);
+  coeff_2_0 = g_value_get_double (&args->values[7]);
+  coeff_2_1 = g_value_get_double (&args->values[8]);
+  coeff_2_2 = g_value_get_double (&args->values[9]);
+  interpolate = g_value_get_boolean (&args->values[10]);
+  clip_result = g_value_get_boolean (&args->values[11]);
 
   if (success)
     {
@@ -2544,101 +1168,1309 @@ drawable_transform_matrix_default_invoker (Gimp         *gimp,
         }
     }
 
-  return_args = procedural_db_return_args (&drawable_transform_matrix_default_proc, success);
+  return_vals = gimp_procedure_get_return_values (procedure, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (drawable));
+    gimp_value_set_drawable (&return_vals->values[1], drawable);
 
-  return return_args;
+  return return_vals;
 }
 
-static ProcArg drawable_transform_matrix_default_inargs[] =
+void
+register_drawable_transform_procs (Gimp *gimp)
 {
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The affected drawable"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-0-0",
-    "coefficient (0,0) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-0-1",
-    "coefficient (0,1) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-0-2",
-    "coefficient (0,2) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-1-0",
-    "coefficient (1,0) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-1-1",
-    "coefficient (1,1) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-1-2",
-    "coefficient (1,2) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-2-0",
-    "coefficient (2,0) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-2-1",
-    "coefficient (2,1) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_FLOAT,
-    "coeff-2-2",
-    "coefficient (2,2) of the transformation matrix"
-  },
-  {
-    GIMP_PDB_INT32,
-    "interpolate",
-    "Whether to use interpolation and supersampling"
-  },
-  {
-    GIMP_PDB_INT32,
-    "clip-result",
-    "Whether to clip results"
-  }
-};
+  GimpProcedure *procedure;
 
-static ProcArg drawable_transform_matrix_default_outargs[] =
-{
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "The transformed drawable"
-  }
-};
+  /*
+   * gimp-drawable-transform-flip-simple
+   */
+  procedure = gimp_procedure_new (drawable_transform_flip_simple_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-flip-simple");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-flip-simple",
+                                     "Flip the specified drawable either vertically or horizontally.",
+                                     "This procedure flips the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then flipped. If auto_center is set to TRUE, the flip is around the selection's center. Otherwise, the coordinate of the axis needs to be specified. The return value is the ID of the flipped drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and flipped drawable.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
 
-static ProcRecord drawable_transform_matrix_default_proc =
-{
-  "gimp-drawable-transform-matrix-default",
-  "gimp-drawable-transform-matrix-default",
-  "Transform the specified drawable in 2d, with extra parameters.",
-  "This procedure is a variant of gimp_drawable_transform_matrix() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "Jo\xc3\xa3o S. O. Bueno Calligaris",
-  "2004",
-  NULL,
-  GIMP_INTERNAL,
-  12,
-  drawable_transform_matrix_default_inargs,
-  1,
-  drawable_transform_matrix_default_outargs,
-  { { drawable_transform_matrix_default_invoker } }
-};
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_enum ("flip-type",
+                                                     "flip type",
+                                                     "Type of flip: { GIMP_ORIENTATION_HORIZONTAL (0), GIMP_ORIENTATION_VERTICAL (1) }",
+                                                     GIMP_TYPE_ORIENTATION_TYPE,
+                                                     GIMP_ORIENTATION_HORIZONTAL,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->args[1]),
+                                      GIMP_ORIENTATION_UNKNOWN);
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("auto-center",
+                                                     "auto center",
+                                                     "Whether to automatically position the axis in the selection center",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("axis",
+                                                    "axis",
+                                                    "coord. of flip axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The flipped drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-flip
+   */
+  procedure = gimp_procedure_new (drawable_transform_flip_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-flip");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-flip",
+                                     "Flip the specified drawable around a given line.",
+                                     "This procedure flips the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then flipped. The axis to flip around is specified by specifying two points from that line. The return value is the ID of the flipped drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and flipped drawable. The clip results parameter specifies wheter current selection will affect the transform.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x0",
+                                                    "x0",
+                                                    "horz. coord. of one end of axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y0",
+                                                    "y0",
+                                                    "vert. coord. of one end of axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x1",
+                                                    "x1",
+                                                    "horz. coord. of other end of axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y1",
+                                                    "y1",
+                                                    "vert. coord. of other end of axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("transform-direction",
+                                                  "transform direction",
+                                                  "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }",
+                                                  GIMP_TYPE_TRANSFORM_DIRECTION,
+                                                  GIMP_TRANSFORM_FORWARD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("interpolation",
+                                                  "interpolation",
+                                                  "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }",
+                                                  GIMP_TYPE_INTERPOLATION_TYPE,
+                                                  GIMP_INTERPOLATION_NONE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("supersample",
+                                                     "supersample",
+                                                     "Whether to perform supersample",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("recursion-level",
+                                                      "recursion level",
+                                                      "Level of recursion (3 is a nice default)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The flipped drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-flip-default
+   */
+  procedure = gimp_procedure_new (drawable_transform_flip_default_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-flip-default");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-flip-default",
+                                     "Flip the specified drawable around a given line.",
+                                     "This procedure is a variant of gimp_drawable_transform_flip() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x0",
+                                                    "x0",
+                                                    "horz. coord. of one end of axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y0",
+                                                    "y0",
+                                                    "vert. coord. of one end of axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x1",
+                                                    "x1",
+                                                    "horz. coord. of other end of axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y1",
+                                                    "y1",
+                                                    "vert. coord. of other end of axis",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("interpolate",
+                                                     "interpolate",
+                                                     "Whether to use interpolation and supersampling",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The flipped drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-perspective
+   */
+  procedure = gimp_procedure_new (drawable_transform_perspective_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-perspective");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-perspective",
+                                     "Perform a possibly non-affine transformation on the specified drawable, with extra parameters.",
+                                     "This procedure performs a possibly non-affine transformation on the specified drawable by allowing the corners of the original bounding box to be arbitrarily remapped to any values. The specified drawable is remapped if no selection exists. However, if a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then remapped as specified. The return value is the ID of the remapped drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and remapped drawable. The 4 coordinates specify the new locations of each corner of the original bounding box. By specifying these values, any affine transformation (rotation, scaling, translation) can be affected. Additionally, these values can be specified such that the resulting transformed drawable will appear to have been projected via a perspective transform.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x0",
+                                                    "x0",
+                                                    "The new x coordinate of upper-left corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y0",
+                                                    "y0",
+                                                    "The new y coordinate of upper-left corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x1",
+                                                    "x1",
+                                                    "The new x coordinate of upper-right corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y1",
+                                                    "y1",
+                                                    "The new y coordinate of upper-right corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x2",
+                                                    "x2",
+                                                    "The new x coordinate of lower-left corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y2",
+                                                    "y2",
+                                                    "The new y coordinate of lower-left corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x3",
+                                                    "x3",
+                                                    "The new x coordinate of lower-right corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y3",
+                                                    "y3",
+                                                    "The new y coordinate of lower-right corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("transform-direction",
+                                                  "transform direction",
+                                                  "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }",
+                                                  GIMP_TYPE_TRANSFORM_DIRECTION,
+                                                  GIMP_TRANSFORM_FORWARD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("interpolation",
+                                                  "interpolation",
+                                                  "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }",
+                                                  GIMP_TYPE_INTERPOLATION_TYPE,
+                                                  GIMP_INTERPOLATION_NONE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("supersample",
+                                                     "supersample",
+                                                     "Whether to perform supersample",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("recursion-level",
+                                                      "recursion level",
+                                                      "Level of recursion (3 is a nice default)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The newly mapped drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-perspective-default
+   */
+  procedure = gimp_procedure_new (drawable_transform_perspective_default_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-perspective-default");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-perspective-default",
+                                     "Perform a possibly non-affine transformation on the specified drawable, with extra parameters.",
+                                     "This procedure is a variant of gimp_drawable_transform_perspective() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x0",
+                                                    "x0",
+                                                    "The new x coordinate of upper-left corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y0",
+                                                    "y0",
+                                                    "The new y coordinate of upper-left corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x1",
+                                                    "x1",
+                                                    "The new x coordinate of upper-right corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y1",
+                                                    "y1",
+                                                    "The new y coordinate of upper-right corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x2",
+                                                    "x2",
+                                                    "The new x coordinate of lower-left corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y2",
+                                                    "y2",
+                                                    "The new y coordinate of lower-left corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x3",
+                                                    "x3",
+                                                    "The new x coordinate of lower-right corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y3",
+                                                    "y3",
+                                                    "The new y coordinate of lower-right corner of original bounding box",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("interpolate",
+                                                     "interpolate",
+                                                     "Whether to use interpolation and supersampling",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The newly mapped drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-rotate-simple
+   */
+  procedure = gimp_procedure_new (drawable_transform_rotate_simple_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-rotate-simple");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-rotate-simple",
+                                     "Rotate the specified drawable about given coordinates through the specified angle.",
+                                     "This function rotates the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount. The return value is the ID of the rotated drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and rotated drawable.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("rotate-type",
+                                                  "rotate type",
+                                                  "Type of rotation: { GIMP_ROTATE_90 (0), GIMP_ROTATE_180 (1), GIMP_ROTATE_270 (2) }",
+                                                  GIMP_TYPE_ROTATION_TYPE,
+                                                  GIMP_ROTATE_90,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("auto-center",
+                                                     "auto center",
+                                                     "Whether to automatically rotate around the selection center",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("center-x",
+                                                      "center x",
+                                                      "The hor. coordinate of the center of rotation",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("center-y",
+                                                      "center y",
+                                                      "The vert. coordinate of the center of rotation",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The rotated drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-rotate
+   */
+  procedure = gimp_procedure_new (drawable_transform_rotate_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-rotate");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-rotate",
+                                     "Rotate the specified drawable about given coordinates through the specified angle.",
+                                     "This function rotates the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then rotated by the specified amount. The return value is the ID of the rotated drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and rotated drawable.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("angle",
+                                                    "angle",
+                                                    "The angle of rotation (radians)",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("auto-center",
+                                                     "auto center",
+                                                     "Whether to automatically rotate around the selection center",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("center-x",
+                                                      "center x",
+                                                      "The hor. coordinate of the center of rotation",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("center-y",
+                                                      "center y",
+                                                      "The vert. coordinate of the center of rotation",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("transform-direction",
+                                                  "transform direction",
+                                                  "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }",
+                                                  GIMP_TYPE_TRANSFORM_DIRECTION,
+                                                  GIMP_TRANSFORM_FORWARD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("interpolation",
+                                                  "interpolation",
+                                                  "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }",
+                                                  GIMP_TYPE_INTERPOLATION_TYPE,
+                                                  GIMP_INTERPOLATION_NONE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("supersample",
+                                                     "supersample",
+                                                     "Whether to perform supersample",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("recursion-level",
+                                                      "recursion level",
+                                                      "Level of recursion (3 is a nice default)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The rotated drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-rotate-default
+   */
+  procedure = gimp_procedure_new (drawable_transform_rotate_default_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-rotate-default");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-rotate-default",
+                                     "Rotate the specified drawable about given coordinates through the specified angle.",
+                                     "This procedure is a variant of gimp_drawable_transform_rotate() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("angle",
+                                                    "angle",
+                                                    "The angle of rotation (radians)",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("auto-center",
+                                                     "auto center",
+                                                     "Whether to automatically rotate around the selection center",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("center-x",
+                                                      "center x",
+                                                      "The hor. coordinate of the center of rotation",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("center-y",
+                                                      "center y",
+                                                      "The vert. coordinate of the center of rotation",
+                                                      G_MININT32, G_MAXINT32, 0,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("interpolate",
+                                                     "interpolate",
+                                                     "Whether to use interpolation and supersampling",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The rotated drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-scale
+   */
+  procedure = gimp_procedure_new (drawable_transform_scale_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-scale");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-scale",
+                                     "Scale the specified drawable with extra parameters",
+                                     "This procedure scales the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then scaled by the specified amount. The return value is the ID of the scaled drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and scaled drawable.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x0",
+                                                    "x0",
+                                                    "The new x coordinate of the upper-left corner of the scaled region",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y0",
+                                                    "y0",
+                                                    "The new y coordinate of the upper-left corner of the scaled region",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x1",
+                                                    "x1",
+                                                    "The new x coordinate of the lower-right corner of the scaled region",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y1",
+                                                    "y1",
+                                                    "The new y coordinate of the lower-right corner of the scaled region",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("transform-direction",
+                                                  "transform direction",
+                                                  "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }",
+                                                  GIMP_TYPE_TRANSFORM_DIRECTION,
+                                                  GIMP_TRANSFORM_FORWARD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("interpolation",
+                                                  "interpolation",
+                                                  "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }",
+                                                  GIMP_TYPE_INTERPOLATION_TYPE,
+                                                  GIMP_INTERPOLATION_NONE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("supersample",
+                                                     "supersample",
+                                                     "Whether to perform supersample",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("recursion-level",
+                                                      "recursion level",
+                                                      "Level of recursion (3 is a nice default)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The scaled drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-scale-default
+   */
+  procedure = gimp_procedure_new (drawable_transform_scale_default_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-scale-default");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-scale-default",
+                                     "Scale the specified drawable with extra parameters",
+                                     "This procedure is a variant of gimp_drawable_transform_scale() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x0",
+                                                    "x0",
+                                                    "The new x coordinate of the upper-left corner of the scaled region",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y0",
+                                                    "y0",
+                                                    "The new y coordinate of the upper-left corner of the scaled region",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("x1",
+                                                    "x1",
+                                                    "The new x coordinate of the lower-right corner of the scaled region",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("y1",
+                                                    "y1",
+                                                    "The new y coordinate of the lower-right corner of the scaled region",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("interpolate",
+                                                     "interpolate",
+                                                     "Whether to use interpolation and supersampling",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The scaled drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-shear
+   */
+  procedure = gimp_procedure_new (drawable_transform_shear_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-shear");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-shear",
+                                     "Shear the specified drawable about its center by the specified magnitude, with extra parameters.",
+                                     "This procedure shears the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then sheard by the specified amount. The return value is the ID of the sheard drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and sheard drawable. The shear type parameter indicates whether the shear will be applied horizontally or vertically. The magnitude can be either positive or negative and indicates the extent (in pixels) to shear by.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_enum ("shear-type",
+                                                     "shear type",
+                                                     "Type of shear: { GIMP_ORIENTATION_HORIZONTAL (0), GIMP_ORIENTATION_VERTICAL (1) }",
+                                                     GIMP_TYPE_ORIENTATION_TYPE,
+                                                     GIMP_ORIENTATION_HORIZONTAL,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->args[1]),
+                                      GIMP_ORIENTATION_UNKNOWN);
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("magnitude",
+                                                    "magnitude",
+                                                    "The magnitude of the shear",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("transform-direction",
+                                                  "transform direction",
+                                                  "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }",
+                                                  GIMP_TYPE_TRANSFORM_DIRECTION,
+                                                  GIMP_TRANSFORM_FORWARD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("interpolation",
+                                                  "interpolation",
+                                                  "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }",
+                                                  GIMP_TYPE_INTERPOLATION_TYPE,
+                                                  GIMP_INTERPOLATION_NONE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("supersample",
+                                                     "supersample",
+                                                     "Whether to perform supersample",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("recursion-level",
+                                                      "recursion level",
+                                                      "Level of recursion (3 is a nice default)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The sheared drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-shear-default
+   */
+  procedure = gimp_procedure_new (drawable_transform_shear_default_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-shear-default");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-shear-default",
+                                     "Shear the specified drawable about its center by the specified magnitude, with extra parameters.",
+                                     "This procedure is a variant of gimp_drawable_transform_shear() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_enum ("shear-type",
+                                                     "shear type",
+                                                     "Type of shear: { GIMP_ORIENTATION_HORIZONTAL (0), GIMP_ORIENTATION_VERTICAL (1) }",
+                                                     GIMP_TYPE_ORIENTATION_TYPE,
+                                                     GIMP_ORIENTATION_HORIZONTAL,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_param_spec_enum_exclude_value (GIMP_PARAM_SPEC_ENUM (procedure->args[1]),
+                                      GIMP_ORIENTATION_UNKNOWN);
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("magnitude",
+                                                    "magnitude",
+                                                    "The magnitude of the shear",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("interpolate",
+                                                     "interpolate",
+                                                     "Whether to use interpolation and supersampling",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The sheared drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-2d
+   */
+  procedure = gimp_procedure_new (drawable_transform_2d_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-2d");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-2d",
+                                     "Transform the specified drawable in 2d, with extra parameters.",
+                                     "This procedure transforms the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then transformed. The transformation is done by scaling the image by the x and y scale factors about the point (source_x, source_y), then rotating around the same point, then translating that point to the new position (dest_x, dest_y). The return value is the ID of the rotated drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and transformed drawable.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("source-x",
+                                                    "source x",
+                                                    "X coordinate of the transformation center",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("source-y",
+                                                    "source y",
+                                                    "Y coordinate of the transformation center",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("scale-x",
+                                                    "scale x",
+                                                    "Amount to scale in x direction",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("scale-y",
+                                                    "scale y",
+                                                    "Amount to scale in y direction",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("angle",
+                                                    "angle",
+                                                    "The angle of rotation (radians)",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("dest-x",
+                                                    "dest x",
+                                                    "X coordinate of where the center goes",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("dest-y",
+                                                    "dest y",
+                                                    "Y coordinate of where the center goes",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("transform-direction",
+                                                  "transform direction",
+                                                  "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }",
+                                                  GIMP_TYPE_TRANSFORM_DIRECTION,
+                                                  GIMP_TRANSFORM_FORWARD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("interpolation",
+                                                  "interpolation",
+                                                  "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }",
+                                                  GIMP_TYPE_INTERPOLATION_TYPE,
+                                                  GIMP_INTERPOLATION_NONE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("supersample",
+                                                     "supersample",
+                                                     "Whether to perform supersample",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("recursion-level",
+                                                      "recursion level",
+                                                      "Level of recursion (3 is a nice default)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The transformed drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-2d-default
+   */
+  procedure = gimp_procedure_new (drawable_transform_2d_default_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-2d-default");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-2d-default",
+                                     "Transform the specified drawable in 2d, with extra parameters.",
+                                     "This procedure is a variant of gimp_drawable_transform_2d() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("source-x",
+                                                    "source x",
+                                                    "X coordinate of the transformation center",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("source-y",
+                                                    "source y",
+                                                    "Y coordinate of the transformation center",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("scale-x",
+                                                    "scale x",
+                                                    "Amount to scale in x direction",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("scale-y",
+                                                    "scale y",
+                                                    "Amount to scale in y direction",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("angle",
+                                                    "angle",
+                                                    "The angle of rotation (radians)",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("dest-x",
+                                                    "dest x",
+                                                    "X coordinate of where the center goes",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("dest-y",
+                                                    "dest y",
+                                                    "Y coordinate of where the center goes",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("interpolate",
+                                                     "interpolate",
+                                                     "Whether to use interpolation and supersampling",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The transformed drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-matrix
+   */
+  procedure = gimp_procedure_new (drawable_transform_matrix_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-matrix");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-matrix",
+                                     "Transform the specified drawable in 2d, with extra parameters.",
+                                     "This procedure transforms the specified drawable if no selection exists. If a selection exists, the portion of the drawable which lies under the selection is cut from the drawable and made into a floating selection which is then transformed. The transformation is done by assembling a 3x3 matrix from the coefficients passed. The return value is the ID of the rotated drawable. If there was no selection, this will be equal to the drawable ID supplied as input. Otherwise, this will be the newly created and transformed drawable.",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-0-0",
+                                                    "coeff 0 0",
+                                                    "coefficient (0,0) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-0-1",
+                                                    "coeff 0 1",
+                                                    "coefficient (0,1) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-0-2",
+                                                    "coeff 0 2",
+                                                    "coefficient (0,2) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-1-0",
+                                                    "coeff 1 0",
+                                                    "coefficient (1,0) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-1-1",
+                                                    "coeff 1 1",
+                                                    "coefficient (1,1) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-1-2",
+                                                    "coeff 1 2",
+                                                    "coefficient (1,2) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-2-0",
+                                                    "coeff 2 0",
+                                                    "coefficient (2,0) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-2-1",
+                                                    "coeff 2 1",
+                                                    "coefficient (2,1) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-2-2",
+                                                    "coeff 2 2",
+                                                    "coefficient (2,2) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("transform-direction",
+                                                  "transform direction",
+                                                  "Direction of Transformation: { GIMP_TRANSFORM_FORWARD (0), GIMP_TRANSFORM_BACKWARD (1) }",
+                                                  GIMP_TYPE_TRANSFORM_DIRECTION,
+                                                  GIMP_TRANSFORM_FORWARD,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_enum ("interpolation",
+                                                  "interpolation",
+                                                  "Type of interpolation: { GIMP_INTERPOLATION_NONE (0), GIMP_INTERPOLATION_LINEAR (1), GIMP_INTERPOLATION_CUBIC (2), GIMP_INTERPOLATION_LANCZOS (3) }",
+                                                  GIMP_TYPE_INTERPOLATION_TYPE,
+                                                  GIMP_INTERPOLATION_NONE,
+                                                  GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("supersample",
+                                                     "supersample",
+                                                     "Whether to perform supersample",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_int32 ("recursion-level",
+                                                      "recursion level",
+                                                      "Level of recursion (3 is a nice default)",
+                                                      1, G_MAXINT32, 1,
+                                                      GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The transformed drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+  /*
+   * gimp-drawable-transform-matrix-default
+   */
+  procedure = gimp_procedure_new (drawable_transform_matrix_default_invoker);
+  gimp_object_set_static_name (GIMP_OBJECT (procedure), "gimp-drawable-transform-matrix-default");
+  gimp_procedure_set_static_strings (procedure,
+                                     "gimp-drawable-transform-matrix-default",
+                                     "Transform the specified drawable in 2d, with extra parameters.",
+                                     "This procedure is a variant of gimp_drawable_transform_matrix() which uses no interpolation/supersampling at all, or default values (depending on the 'interpolate' parameter).",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "Jo\xc3\xa3o S. O. Bueno Calligaris",
+                                     "2004",
+                                     NULL);
+
+  gimp_procedure_add_argument (procedure,
+                               gimp_param_spec_drawable_id ("drawable",
+                                                            "drawable",
+                                                            "The affected drawable",
+                                                            gimp,
+                                                            GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-0-0",
+                                                    "coeff 0 0",
+                                                    "coefficient (0,0) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-0-1",
+                                                    "coeff 0 1",
+                                                    "coefficient (0,1) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-0-2",
+                                                    "coeff 0 2",
+                                                    "coefficient (0,2) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-1-0",
+                                                    "coeff 1 0",
+                                                    "coefficient (1,0) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-1-1",
+                                                    "coeff 1 1",
+                                                    "coefficient (1,1) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-1-2",
+                                                    "coeff 1 2",
+                                                    "coefficient (1,2) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-2-0",
+                                                    "coeff 2 0",
+                                                    "coefficient (2,0) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-2-1",
+                                                    "coeff 2 1",
+                                                    "coefficient (2,1) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_double ("coeff-2-2",
+                                                    "coeff 2 2",
+                                                    "coefficient (2,2) of the transformation matrix",
+                                                    -G_MAXDOUBLE, G_MAXDOUBLE, 0,
+                                                    GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("interpolate",
+                                                     "interpolate",
+                                                     "Whether to use interpolation and supersampling",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_argument (procedure,
+                               g_param_spec_boolean ("clip-result",
+                                                     "clip result",
+                                                     "Whether to clip results",
+                                                     FALSE,
+                                                     GIMP_PARAM_READWRITE));
+  gimp_procedure_add_return_value (procedure,
+                                   gimp_param_spec_drawable_id ("drawable",
+                                                                "drawable",
+                                                                "The transformed drawable",
+                                                                gimp,
+                                                                GIMP_PARAM_READWRITE));
+  gimp_pdb_register (gimp, procedure);
+  g_object_unref (procedure);
+
+}

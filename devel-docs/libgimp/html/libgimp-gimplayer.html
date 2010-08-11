@@ -198,9 +198,9 @@ should be set with explicit procedure calls.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601659"></a><h3>
+<a name="id2601685"></a><h3>
 <a name="gimp-layer-copy"></a>gimp_layer_copy ()</h3>
-<a class="indexterm" name="id2601669"></a><pre class="programlisting">gint32      gimp_layer_copy                 (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2601695"></a><pre class="programlisting">gint32      gimp_layer_copy                 (gint32 layer_ID);</pre>
 <p>
 Copy a layer.
 </p>
@@ -233,9 +233,9 @@ before you add the new layer to the image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601737"></a><h3>
+<a name="id2601763"></a><h3>
 <a name="gimp-layer-scale"></a>gimp_layer_scale ()</h3>
-<a class="indexterm" name="id2601747"></a><pre class="programlisting">gboolean    gimp_layer_scale                (gint32 layer_ID,
+<a class="indexterm" name="id2601773"></a><pre class="programlisting">gboolean    gimp_layer_scale                (gint32 layer_ID,
                                              gint new_width,
                                              gint new_height,
                                              gboolean local_origin);</pre>
@@ -243,8 +243,8 @@ before you add the new layer to the image.</p>
 Scale the layer to the specified extents.
 </p>
 <p>
-This procedure scales the layer so that it's new width and height
-are equal to the supplied parameters. The \"local_origin\" parameter
+This procedure scales the layer so that its new width and height are
+equal to the supplied parameters. The \"local_origin\" parameter
 specifies whether to scale from the center of the layer, or from the
 image origin. This operation only works if the layer has been added
 to an image.</p>
@@ -289,9 +289,9 @@ to an image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601879"></a><h3>
+<a name="id2601905"></a><h3>
 <a name="gimp-layer-resize"></a>gimp_layer_resize ()</h3>
-<a class="indexterm" name="id2601889"></a><pre class="programlisting">gboolean    gimp_layer_resize               (gint32 layer_ID,
+<a class="indexterm" name="id2601916"></a><pre class="programlisting">gboolean    gimp_layer_resize               (gint32 layer_ID,
                                              gint new_width,
                                              gint new_height,
                                              gint offx,
@@ -300,7 +300,7 @@ to an image.</p>
 Resize the layer to the specified extents.
 </p>
 <p>
-This procedure resizes the layer so that it's new width and height
+This procedure resizes the layer so that its new width and height
 are equal to the supplied parameters. Offsets are also provided
 which describe the position of the previous layer's content. This
 operation only works if the layer has been added to an image.</p>
@@ -351,9 +351,9 @@ operation only works if the layer has been added to an image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602044"></a><h3>
+<a name="id2602070"></a><h3>
 <a name="gimp-layer-resize-to-image-size"></a>gimp_layer_resize_to_image_size ()</h3>
-<a class="indexterm" name="id2602053"></a><pre class="programlisting">gboolean    gimp_layer_resize_to_image_size (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2602079"></a><pre class="programlisting">gboolean    gimp_layer_resize_to_image_size (gint32 layer_ID);</pre>
 <p>
 Resize a layer to the image size.
 </p>
@@ -383,9 +383,9 @@ are equal to the width and height of its image container.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602117"></a><h3>
+<a name="id2602143"></a><h3>
 <a name="gimp-layer-translate"></a>gimp_layer_translate ()</h3>
-<a class="indexterm" name="id2602126"></a><pre class="programlisting">gboolean    gimp_layer_translate            (gint32 layer_ID,
+<a class="indexterm" name="id2602152"></a><pre class="programlisting">gboolean    gimp_layer_translate            (gint32 layer_ID,
                                              gint offx,
                                              gint offy);</pre>
 <p>
@@ -433,9 +433,9 @@ the specified offsets.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602238"></a><h3>
+<a name="id2602264"></a><h3>
 <a name="gimp-layer-add-alpha"></a>gimp_layer_add_alpha ()</h3>
-<a class="indexterm" name="id2602246"></a><pre class="programlisting">gboolean    gimp_layer_add_alpha            (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2602273"></a><pre class="programlisting">gboolean    gimp_layer_add_alpha            (gint32 layer_ID);</pre>
 <p>
 Add an alpha channel to the layer if it doesn't already have one.
 </p>
@@ -469,9 +469,9 @@ and INDEXED to INDEXEDA.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602316"></a><h3>
+<a name="id2602342"></a><h3>
 <a name="gimp-layer-set-offsets"></a>gimp_layer_set_offsets ()</h3>
-<a class="indexterm" name="id2602325"></a><pre class="programlisting">gboolean    gimp_layer_set_offsets          (gint32 layer_ID,
+<a class="indexterm" name="id2602351"></a><pre class="programlisting">gboolean    gimp_layer_set_offsets          (gint32 layer_ID,
                                              gint offx,
                                              gint offy);</pre>
 <p>
@@ -516,9 +516,9 @@ operation is valid only on layers which have been added to an image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602433"></a><h3>
+<a name="id2602459"></a><h3>
 <a name="gimp-layer-create-mask"></a>gimp_layer_create_mask ()</h3>
-<a class="indexterm" name="id2602442"></a><pre class="programlisting">gint32      gimp_layer_create_mask          (gint32 layer_ID,
+<a class="indexterm" name="id2602468"></a><pre class="programlisting">gint32      gimp_layer_create_mask          (gint32 layer_ID,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpAddMaskType"
 >GimpAddMaskType</a> mask_type);</pre>
@@ -565,9 +565,9 @@ to 'gimp_layer_add_mask'.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602537"></a><h3>
+<a name="id2602563"></a><h3>
 <a name="gimp-layer-from-mask"></a>gimp_layer_from_mask ()</h3>
-<a class="indexterm" name="id2602546"></a><pre class="programlisting">gint32      gimp_layer_from_mask            (gint32 mask_ID);</pre>
+<a class="indexterm" name="id2602572"></a><pre class="programlisting">gint32      gimp_layer_from_mask            (gint32 mask_ID);</pre>
 <p>
 Get the specified mask's layer.
 </p>
@@ -600,9 +600,9 @@ exists.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602614"></a><h3>
+<a name="id2602640"></a><h3>
 <a name="gimp-layer-get-mask"></a>gimp_layer_get_mask ()</h3>
-<a class="indexterm" name="id2602624"></a><pre class="programlisting">gint32      gimp_layer_get_mask             (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2602650"></a><pre class="programlisting">gint32      gimp_layer_get_mask             (gint32 layer_ID);</pre>
 <p>
 Get the specified layer's mask if it exists.
 </p>
@@ -632,9 +632,9 @@ exists.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602689"></a><h3>
+<a name="id2602715"></a><h3>
 <a name="gimp-layer-add-mask"></a>gimp_layer_add_mask ()</h3>
-<a class="indexterm" name="id2602700"></a><pre class="programlisting">gboolean    gimp_layer_add_mask             (gint32 layer_ID,
+<a class="indexterm" name="id2602725"></a><pre class="programlisting">gboolean    gimp_layer_add_mask             (gint32 layer_ID,
                                              gint32 mask_ID);</pre>
 <p>
 Add a layer mask to the specified layer.
@@ -675,9 +675,9 @@ have been created for use with the specified image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602791"></a><h3>
+<a name="id2602815"></a><h3>
 <a name="gimp-layer-remove-mask"></a>gimp_layer_remove_mask ()</h3>
-<a class="indexterm" name="id2602800"></a><pre class="programlisting">gboolean    gimp_layer_remove_mask          (gint32 layer_ID,
+<a class="indexterm" name="id2602824"></a><pre class="programlisting">gboolean    gimp_layer_remove_mask          (gint32 layer_ID,
                                              <a href="libgimp-gimpenums.html#GimpMaskApplyMode">GimpMaskApplyMode</a> mode);</pre>
 <p>
 Remove the specified layer mask from the layer.
@@ -714,9 +714,9 @@ the mask doesn't exist, an error is returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602888"></a><h3>
+<a name="id2602912"></a><h3>
 <a name="gimp-layer-new-from-drawable"></a>gimp_layer_new_from_drawable ()</h3>
-<a class="indexterm" name="id2602897"></a><pre class="programlisting">gint32      gimp_layer_new_from_drawable    (gint32 drawable_ID,
+<a class="indexterm" name="id2602921"></a><pre class="programlisting">gint32      gimp_layer_new_from_drawable    (gint32 drawable_ID,
                                              gint32 dest_image_ID);</pre>
 <p>
 Create a new layer by copying an existing drawable.
@@ -756,9 +756,9 @@ modes, and offsets should be set with explicit procedure calls.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602990"></a><h3>
+<a name="id2603014"></a><h3>
 <a name="gimp-layer-get-lock-alpha"></a>gimp_layer_get_lock_alpha ()</h3>
-<a class="indexterm" name="id2603000"></a><pre class="programlisting">gboolean    gimp_layer_get_lock_alpha       (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2603023"></a><pre class="programlisting">gboolean    gimp_layer_get_lock_alpha       (gint32 layer_ID);</pre>
 <p>
 Get the lock alpha channel setting of the specified layer.
 </p>
@@ -788,9 +788,9 @@ setting.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603066"></a><h3>
+<a name="id2603090"></a><h3>
 <a name="gimp-layer-set-lock-alpha"></a>gimp_layer_set_lock_alpha ()</h3>
-<a class="indexterm" name="id2603075"></a><pre class="programlisting">gboolean    gimp_layer_set_lock_alpha       (gint32 layer_ID,
+<a class="indexterm" name="id2603099"></a><pre class="programlisting">gboolean    gimp_layer_set_lock_alpha       (gint32 layer_ID,
                                              gboolean lock_alpha);</pre>
 <p>
 Set the lock alpha channel setting of the specified layer.
@@ -827,9 +827,9 @@ setting.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603163"></a><h3>
+<a name="id2603187"></a><h3>
 <a name="gimp-layer-get-preserve-trans"></a>gimp_layer_get_preserve_trans ()</h3>
-<a class="indexterm" name="id2603174"></a><pre class="programlisting">gboolean    gimp_layer_get_preserve_trans   (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2603198"></a><pre class="programlisting">gboolean    gimp_layer_get_preserve_trans   (gint32 layer_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_layer_get_preserve_trans</code> is deprecated and should not be used in newly-written code.</p>
@@ -859,9 +859,9 @@ This procedure is deprecated! Use <a href="libgimp-gimplayer.html#gimp-layer-get
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603258"></a><h3>
+<a name="id2603282"></a><h3>
 <a name="gimp-layer-set-preserve-trans"></a>gimp_layer_set_preserve_trans ()</h3>
-<a class="indexterm" name="id2603269"></a><pre class="programlisting">gboolean    gimp_layer_set_preserve_trans   (gint32 layer_ID,
+<a class="indexterm" name="id2603292"></a><pre class="programlisting">gboolean    gimp_layer_set_preserve_trans   (gint32 layer_ID,
                                              gboolean preserve_trans);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -898,15 +898,15 @@ This procedure is deprecated! Use <a href="libgimp-gimplayer.html#gimp-layer-set
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603374"></a><h3>
+<a name="id2603398"></a><h3>
 <a name="gimp-layer-get-apply-mask"></a>gimp_layer_get_apply_mask ()</h3>
-<a class="indexterm" name="id2603383"></a><pre class="programlisting">gboolean    gimp_layer_get_apply_mask       (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2603407"></a><pre class="programlisting">gboolean    gimp_layer_get_apply_mask       (gint32 layer_ID);</pre>
 <p>
-Get the apply mask of the specified layer.
+Get the apply mask setting of the specified layer.
 </p>
 <p>
-This procedure returns the specified layer's apply mask. If the
-value is non-zero, then the layer mask for this layer is currently
+This procedure returns the specified layer's apply mask setting. If
+the value is TRUE, then the layer mask for this layer is currently
 being composited with the layer's alpha channel.</p>
 <p>
 
@@ -923,7 +923,7 @@ being composited with the layer's alpha channel.</p>
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> The layer apply mask.
+<td> The layer's apply mask setting.
 </td>
 </tr>
 </tbody>
@@ -931,17 +931,18 @@ being composited with the layer's alpha channel.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603450"></a><h3>
+<a name="id2603475"></a><h3>
 <a name="gimp-layer-set-apply-mask"></a>gimp_layer_set_apply_mask ()</h3>
-<a class="indexterm" name="id2603460"></a><pre class="programlisting">gboolean    gimp_layer_set_apply_mask       (gint32 layer_ID,
+<a class="indexterm" name="id2603485"></a><pre class="programlisting">gboolean    gimp_layer_set_apply_mask       (gint32 layer_ID,
                                              gboolean apply_mask);</pre>
 <p>
-Set the apply mask of the specified layer.
+Set the apply mask setting of the specified layer.
 </p>
 <p>
-This procedure sets the specified layer's apply mask. This controls
-whether the layer's mask is currently affecting the alpha channel.
-If there is no layer mask, this function will return an error.</p>
+This procedure sets the specified layer's apply mask setting. This
+controls whether the layer's mask is currently affecting the alpha
+channel. If there is no layer mask, this function will return an
+error.</p>
 <p>
 
 </p>
@@ -957,7 +958,7 @@ If there is no layer mask, this function will return an error.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>apply_mask</code></em>&#160;:</span></td>
-<td> The new layer apply mask.
+<td> The new layer's apply mask setting.
 </td>
 </tr>
 <tr>
@@ -971,49 +972,15 @@ If there is no layer mask, this function will return an error.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603549"></a><h3>
+<a name="id2603574"></a><h3>
 <a name="gimp-layer-get-show-mask"></a>gimp_layer_get_show_mask ()</h3>
-<a class="indexterm" name="id2603558"></a><pre class="programlisting">gboolean    gimp_layer_get_show_mask        (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2603583"></a><pre class="programlisting">gboolean    gimp_layer_get_show_mask        (gint32 layer_ID);</pre>
 <p>
-Get the show mask of the specified layer.
+Get the show mask setting of the specified layer.
 </p>
 <p>
-This procedure returns the specified layer's show mask. If the value
-is non-zero, then the layer mask for this layer is currently being
-shown instead of the layer.</p>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td>
-<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
-<td> The layer.
-</td>
-</tr>
-<tr>
-<td>
-<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> The layer show mask.
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
-<a name="id2603624"></a><h3>
-<a name="gimp-layer-set-show-mask"></a>gimp_layer_set_show_mask ()</h3>
-<a class="indexterm" name="id2603633"></a><pre class="programlisting">gboolean    gimp_layer_set_show_mask        (gint32 layer_ID,
-                                             gboolean show_mask);</pre>
-<p>
-Set the show mask of the specified layer.
-</p>
-<p>
-This procedure sets the specified layer's show mask. This controls
-whether the layer or it's mask is visible. Non-zero values indicate
+This procedure returns the specified layer's show mask setting. This
+controls whether the layer or its mask is visible. TRUE indicates
 that the mask should be visible. If the layer has no mask, then this
 function returns an error.</p>
 <p>
@@ -1030,8 +997,43 @@ function returns an error.</p>
 </tr>
 <tr>
 <td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The layer's show mask setting.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2603652"></a><h3>
+<a name="gimp-layer-set-show-mask"></a>gimp_layer_set_show_mask ()</h3>
+<a class="indexterm" name="id2603661"></a><pre class="programlisting">gboolean    gimp_layer_set_show_mask        (gint32 layer_ID,
+                                             gboolean show_mask);</pre>
+<p>
+Set the show mask setting of the specified layer.
+</p>
+<p>
+This procedure sets the specified layer's show mask setting. This
+controls whether the layer's mask is currently affecting the alpha
+channel. If there is no layer mask, this function will return an
+error.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>layer_ID</code></em>&#160;:</span></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td>
 <span class="term"><em class="parameter"><code>show_mask</code></em>&#160;:</span></td>
-<td> The new layer show mask.
+<td> The new layer's show mask setting.
 </td>
 </tr>
 <tr>
@@ -1045,16 +1047,16 @@ function returns an error.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603722"></a><h3>
+<a name="id2603750"></a><h3>
 <a name="gimp-layer-get-edit-mask"></a>gimp_layer_get_edit_mask ()</h3>
-<a class="indexterm" name="id2603731"></a><pre class="programlisting">gboolean    gimp_layer_get_edit_mask        (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2603759"></a><pre class="programlisting">gboolean    gimp_layer_get_edit_mask        (gint32 layer_ID);</pre>
 <p>
-Get the edit mask of the specified layer.
+Get the edit mask setting of the specified layer.
 </p>
 <p>
-This procedure returns the specified layer's edit mask. If the value
-is non-zero, then the layer mask for this layer is currently active,
-and not the layer.</p>
+This procedure returns the specified layer's edit mask setting. If
+the value is TRUE, then the layer mask for this layer is currently
+active, and not the layer.</p>
 <p>
 
 </p>
@@ -1070,7 +1072,7 @@ and not the layer.</p>
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> The layer edit mask.
+<td> The layer's edit mask setting.
 </td>
 </tr>
 </tbody>
@@ -1078,18 +1080,18 @@ and not the layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603798"></a><h3>
+<a name="id2603827"></a><h3>
 <a name="gimp-layer-set-edit-mask"></a>gimp_layer_set_edit_mask ()</h3>
-<a class="indexterm" name="id2603807"></a><pre class="programlisting">gboolean    gimp_layer_set_edit_mask        (gint32 layer_ID,
+<a class="indexterm" name="id2603836"></a><pre class="programlisting">gboolean    gimp_layer_set_edit_mask        (gint32 layer_ID,
                                              gboolean edit_mask);</pre>
 <p>
-Set the edit mask of the specified layer.
+Set the edit mask setting of the specified layer.
 </p>
 <p>
-This procedure sets the specified layer's edit mask. This controls
-whether the layer or it's mask is currently active for editing. If
-the specified layer has no layer mask, then this procedure will
-return an error.</p>
+This procedure sets the specified layer's edit mask setting. This
+controls whether the layer or it's mask is currently active for
+editing. If the specified layer has no layer mask, then this
+procedure will return an error.</p>
 <p>
 
 </p>
@@ -1105,7 +1107,7 @@ return an error.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>edit_mask</code></em>&#160;:</span></td>
-<td> The new layer edit mask.
+<td> The new layer's edit mask setting.
 </td>
 </tr>
 <tr>
@@ -1119,9 +1121,9 @@ return an error.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603895"></a><h3>
+<a name="id2603925"></a><h3>
 <a name="gimp-layer-get-opacity"></a>gimp_layer_get_opacity ()</h3>
-<a class="indexterm" name="id2603904"></a><pre class="programlisting">gdouble     gimp_layer_get_opacity          (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2603934"></a><pre class="programlisting">gdouble     gimp_layer_get_opacity          (gint32 layer_ID);</pre>
 <p>
 Get the opacity of the specified layer.
 </p>
@@ -1150,9 +1152,9 @@ This procedure returns the specified layer's opacity.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603969"></a><h3>
+<a name="id2603999"></a><h3>
 <a name="gimp-layer-set-opacity"></a>gimp_layer_set_opacity ()</h3>
-<a class="indexterm" name="id2603978"></a><pre class="programlisting">gboolean    gimp_layer_set_opacity          (gint32 layer_ID,
+<a class="indexterm" name="id2604008"></a><pre class="programlisting">gboolean    gimp_layer_set_opacity          (gint32 layer_ID,
                                              gdouble opacity);</pre>
 <p>
 Set the opacity of the specified layer.
@@ -1188,9 +1190,9 @@ This procedure sets the specified layer's opacity.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604064"></a><h3>
+<a name="id2604094"></a><h3>
 <a name="gimp-layer-get-mode"></a>gimp_layer_get_mode ()</h3>
-<a class="indexterm" name="id2604074"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> gimp_layer_get_mode    (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2604104"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> gimp_layer_get_mode    (gint32 layer_ID);</pre>
 <p>
 Get the combination mode of the specified layer.
 </p>
@@ -1219,9 +1221,9 @@ This procedure returns the specified layer's combination mode.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604138"></a><h3>
+<a name="id2604168"></a><h3>
 <a name="gimp-layer-set-mode"></a>gimp_layer_set_mode ()</h3>
-<a class="indexterm" name="id2604149"></a><pre class="programlisting">gboolean    gimp_layer_set_mode             (gint32 layer_ID,
+<a class="indexterm" name="id2604179"></a><pre class="programlisting">gboolean    gimp_layer_set_mode             (gint32 layer_ID,
                                              <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> mode);</pre>
 <p>
 Set the combination mode of the specified layer.
@@ -1257,9 +1259,9 @@ This procedure sets the specified layer's combination mode.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2604235"></a><h3>
+<a name="id2604265"></a><h3>
 <a name="gimp-layer-is-floating-sel"></a>gimp_layer_is_floating_sel ()</h3>
-<a class="indexterm" name="id2604245"></a><pre class="programlisting">gboolean    gimp_layer_is_floating_sel      (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2604275"></a><pre class="programlisting">gboolean    gimp_layer_is_floating_sel      (gint32 layer_ID);</pre>
 <p>
 Is the specified layer a floating selection?
 </p>
@@ -1282,7 +1284,7 @@ to a specific drawable.</p>
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> Non-zero if the layer is a floating selection.
+<td> TRUE if the layer is a floating selection.
 </td>
 </tr>
 </tbody>

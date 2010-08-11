@@ -35,10 +35,11 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkCellRenderer">GtkCellRenderer</link>
-               +----<link linkend="GtkCellRendererToggle">GtkCellRendererToggle</link>
-                     +----GimpCellRendererToggle
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkCellRenderer">GtkCellRenderer</link>
+                     +----<link linkend="GtkCellRendererToggle">GtkCellRendererToggle</link>
+                           +----GimpCellRendererToggle
 </synopsis>
 
 </refsect1>

@@ -21,6 +21,7 @@
 
 <link linkend="void">void</link>        <link linkend="gimp-enums-init">gimp_enums_init</link>                 (void);
 enum        <link linkend="GimpBrushApplicationMode">GimpBrushApplicationMode</link>;
+enum        <link linkend="GimpBrushGeneratedShape">GimpBrushGeneratedShape</link>;
 enum        <link linkend="GimpConvertDitherType">GimpConvertDitherType</link>;
 enum        <link linkend="GimpConvertPaletteType">GimpConvertPaletteType</link>;
 enum        <link linkend="GimpConvolutionType">GimpConvolutionType</link>;
@@ -36,7 +37,6 @@ enum        <link linkend="GimpMergeType">GimpMergeType</link>;
 enum        <link linkend="GimpOffsetType">GimpOffsetType</link>;
 enum        <link linkend="GimpOrientationType">GimpOrientationType</link>;
 enum        <link linkend="GimpRotationType">GimpRotationType</link>;
-enum        <link linkend="GimpRunMode">GimpRunMode</link>;
 const <link linkend="gchar">gchar</link>** <link linkend="gimp-enums-get-type-names">gimp_enums_get_type_names</link>     (<link linkend="gint">gint</link> *n_type_names);
 
 </synopsis>
@@ -81,6 +81,18 @@ implicitly.</para>
   GIMP_BRUSH_HARD,
   GIMP_BRUSH_SOFT
 } GimpBrushApplicationMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GimpBrushGeneratedShape"/>enum GimpBrushGeneratedShape</title>
+<indexterm><primary>GimpBrushGeneratedShape</primary></indexterm><programlisting>typedef enum
+{
+  GIMP_BRUSH_GENERATED_CIRCLE,
+  GIMP_BRUSH_GENERATED_SQUARE,
+  GIMP_BRUSH_GENERATED_DIAMOND
+} GimpBrushGeneratedShape;
 </programlisting>
 <para>
 
@@ -292,18 +304,6 @@ implicitly.</para>
   GIMP_ROTATE_180,
   GIMP_ROTATE_270
 } GimpRotationType;
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="GimpRunMode"/>enum GimpRunMode</title>
-<indexterm><primary>GimpRunMode</primary></indexterm><programlisting>typedef enum
-{
-  GIMP_RUN_INTERACTIVE,
-  GIMP_RUN_NONINTERACTIVE,
-  GIMP_RUN_WITH_LAST_VALS
-} GimpRunMode;
 </programlisting>
 <para>
 

@@ -159,9 +159,8 @@ Get the composite method of the specified channel.
 </para>
 <para>
 This procedure returns the specified channel's composite method. If
-it is non-zero, then the channel is composited with the image so
-that masked regions are shown. Otherwise, selected regions are
-shown.</para>
+it is TRUE, then the channel is composited with the image so that
+masked regions are shown. Otherwise, selected regions are shown.</para>
 <para>
 
 </para><variablelist role="params">
@@ -180,7 +179,7 @@ Set the composite method of the specified channel.
 </para>
 <para>
 This procedure sets the specified channel's composite method. If it
-is non-zero, then the channel is composited with the image so that
+is TRUE, then the channel is composited with the image so that
 masked regions are shown. Otherwise, selected regions are shown.</para>
 <para>
 

@@ -43,7 +43,7 @@ sub desc_wrap {
 sub desc_clean {
     my ($str) = @_;
     $str =~ s/\(\s*%%desc%%\s*\)//g;
-    $str =~ s/:\s*%%desc%%//g;
+    $str =~ s/:*\s+%%desc%%//g;
     $str =~ s/\{\s*%%desc%%\s*\}//g;
     $str =~ s/\s*$//g;
     $str =~ s/:$//g;
@@ -56,19 +56,29 @@ sub generate {
 
     sub libtype {
 	my $arg = shift;
+	my $outarg = shift;
 	my ($type, $name) = &arg_parse($arg->{type});
 	my $argtype = $arg_types{$type};
+	my $rettype = '';
 	
-	if (exists $argtype->{id_func} || $arg->{type} =~ /guide/) {
+	if (exists $argtype->{id}) {
 	    return 'gint32 ';
 	}
 
 	if ($type eq 'enum') {
-	    $name = "Gimp$name" if $name !~ /^Gimp/;
 	    return "$name ";
 	}
 
-	my $rettype = $argtype->{type};
+	if ($outarg) {
+	    $rettype .= $argtype->{type};
+	}
+	else {
+	    if (exists $argtype->{struct}) {
+		$rettype .= 'const ';
+	    }
+	    $rettype .= $argtype->{const_type};
+	}
+	
 	$rettype =~ s/int32/int/ unless exists $arg->{keep_size};
 	$rettype .= '*' if exists $argtype->{struct};
 	return $rettype;
@@ -112,7 +122,7 @@ sub generate {
 
 	my $rettype;
 	if ($retarg) {
-	    $rettype = &libtype($retarg);
+	    $rettype = &libtype($retarg, 1);
 	    chop $rettype unless $rettype =~ /\*$/;
 
 	    $retarg->{retval} = 1;
@@ -131,43 +141,27 @@ sub generate {
 	    my ($type) = &arg_parse($_->{type});
 	    my $desc = &desc_clean($_->{desc});
 	    my $arg = $arg_types{$type};
-	    my $id = exists $arg->{id_func} || $_->{type} =~ /guide/;
 
 	    $wrapped = "_" if exists $_->{wrap};
 	    $attribute = " G_GNUC_INTERNAL" if exists $_->{wrap};
 
 	    $usednames{$_->{name}}++;
 
-	    if (exists $_->{implicit_fill}) {
-		$privatevars++;
-	    }
-	    else {
-		if ($type eq 'string' ||
-		    $type eq 'color' ||
-		    $type =~ /array$/) {
-		    $arglist .= 'const '
-		}
-		$arglist .= &libtype($_);
-		$arglist .= $_->{name};
-		$arglist .= '_ID' if $id;
-		$arglist .= ', ';
+	    $arglist .= &libtype($_, 0);
+	    $arglist .= $_->{name};
+	    $arglist .= '_ID' if $arg->{id};
+	    $arglist .= ', ';
 
-		$argdesc .= " * \@$_->{name}";
-		$argdesc .= '_ID' if $id;
-		$argdesc .= ": $desc";
-	    }
+	    $argdesc .= " * \@$_->{name}";
+	    $argdesc .= '_ID' if $arg->{id};
+	    $argdesc .= ": $desc";
 
 	    # This is what's passed into gimp_run_procedure
-	    $argpass .= "\n\t\t\t\t" . ' ' x 4;
+	    $argpass .= "\n" . ' ' x 36;
 	    $argpass .= "GIMP_PDB_$arg->{name}, ";
 
-	    if (exists $_->{implicit_fill}) {
-		$argpass .= $_->{implicit_fill};
-	    }
-	    else {
-		$argpass .= "$_->{name}";
-		$argpass .= '_ID' if $id;
-	    }
+	    $argpass .= "$_->{name}";
+	    $argpass .= '_ID' if $arg->{id};
 
 	    $argpass .= ',';
 
@@ -194,7 +188,6 @@ sub generate {
 	    foreach (@outargs) {
 		my ($type) = &arg_parse($_->{type});
 		my $arg = $arg_types{$type};
-		my $id = $arg->{id_ret_func} || $_->{type} =~ /guide/;
 		my $var;
 
 		$return_marshal = "" unless $once++;
@@ -212,33 +205,25 @@ sub generate {
 		}
 		elsif (exists $_->{retval}) {
 		    $return_args .= "\n" . ' ' x 2;
-		    $return_args .= &libtype($_);
+		    $return_args .= &libtype($_, 1);
 
 		    # The return value variable
 		    $var = $_->{libname};
-		    $var .= '_ID' if $id;
+		    $var .= '_ID' if $arg->{id};
 		    $return_args .= $var;
 
 		    # Save the first var to "return" it
 		    $firstvar = $var unless defined $firstvar;
 
-		    if (exists $_->{libdef}) {
-			$return_args .= " = $_->{libdef}";
-		    }
-		    elsif ($id) {
+		    if ($arg->{id}) {
 			# Initialize all IDs to -1
 			$return_args .= " = -1";
 		    }
-		    elsif ($arg->{type} =~ /\*/) {
-			# Initialize pointers to NULL
-			$return_args .= " = NULL";
-		    }
-		    elsif ($arg->{type} =~ /boolean/) {
-			$return_args .= " = FALSE";
+		    elsif ($_->{libdef}) {
+			$return_args .= " = $_->{libdef}";
 		    }
 		    else {
-			# Default to 0
-			$return_args .= " = 0";
+			$return_args .= " = $arg->{init_value}";
 		    }
 
 		    $return_args .= ";";
@@ -287,7 +272,6 @@ CODE
 		my ($type) = &arg_parse($_->{type});
                 my $desc = &desc_clean($_->{desc});
 		my $arg = $arg_types{$type};
-		my $id = $arg->{id_ret_func} || $_->{type} =~ /guide/;
 		my $var;
 	    
 		my $ch = ""; my $cf = "";
@@ -340,10 +324,11 @@ CODE
       $var = g_new ($datatype, $numvar);
 NEW
       for (i = 0; i < $numvar; i++)
-	$dh$_->{name}$df\[i] = ${ch}return_vals[$argc].data.d_$type\[i]${cf};
+        $dh$_->{name}$df\[i] = ${ch}return_vals[$argc].data.d_$type\[i]${cf};
 CP1
-      memcpy ($var, return_vals[$argc].data.d_$type,
-	      $numvar * sizeof ($datatype));
+      memcpy ($var,
+              return_vals[$argc].data.d_$type,
+              $numvar * sizeof ($datatype));
 CP2
 		    $out->{headers} = "#include <string.h>\n" unless ($ch || $cf);
                 }
@@ -353,20 +338,20 @@ CP2
 
 		    unless (exists $_->{retval}) {
 			$var .= '*';
-			$arglist .= &libtype($_);
+			$arglist .= &libtype($_, 1);
 			$arglist .= '*' unless exists $arg->{struct};
 			$arglist .= "$_->{libname}";
-			$arglist .= '_ID' if $id;
+			$arglist .= '_ID' if $arg->{id};
 			$arglist .= ', ';
 
 			$argdesc .= " * \@$_->{libname}";
-			$argdesc .= '_ID' if $id;
+			$argdesc .= '_ID' if $arg->{id};
 			$argdesc .= ": $desc";
 		    }
 
 		    $var = exists $_->{retval} ? "" : '*';
 		    $var .= $_->{libname};
-		    $var .= '_ID' if $id;
+		    $var .= '_ID' if $arg->{id};
 
 		    $return_marshal .= ' ' x 2 if $#outargs;
 		    $return_marshal .= <<CODE
@@ -449,8 +434,7 @@ CODE
 
 	my $clist = $arglist;
 	my $padlen = length($wrapped) + length($funcname) + 2;
-	my $padtab = $padlen / 8; my $padspace = $padlen % 8;
-	my $padding = "\t" x $padtab . ' ' x $padspace;
+	my $padding = ' ' x $padlen;
 	$clist =~ s/\t/$padding/eg;
 
         unless ($retdesc =~ /[\.\!\?]$/) { $retdesc .= '.' }
@@ -492,8 +476,8 @@ $wrapped$funcname ($clist)
   gint nreturn_vals;$return_args
 
   return_vals = gimp_run_procedure ("gimp-$proc->{canonical_name}",
-				    \&nreturn_vals,$argpass
-				    GIMP_PDB_END);
+                                    \&nreturn_vals,$argpass
+                                    GIMP_PDB_END);
 
   $return_marshal
 }
@@ -628,8 +612,6 @@ LGPL
 		$arg .= ' ' x ($longest[0] - length($type) + 1) . $func;
 		$arg .= ' ' x ($longest[1] - length($func) + 1) . $arglist;
 		$arg =~ s/\t/' ' x ($longest[0] + $longest[1] + 3)/eg;
-
-		while ($arg =~ /^\t* {8}/m) { $arg =~ s/^(\t*) {8}/$1\t/mg }
 	    }
 	    else {
 		$arg = $_;

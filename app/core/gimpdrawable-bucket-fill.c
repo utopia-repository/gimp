@@ -58,7 +58,7 @@ gimp_drawable_bucket_fill (GimpDrawable       *drawable,
                            gdouble             x,
                            gdouble             y)
 {
-  GimpImage   *gimage;
+  GimpImage   *image;
   GimpRGB      color;
   GimpPattern *pattern = NULL;
 
@@ -66,7 +66,7 @@ gimp_drawable_bucket_fill (GimpDrawable       *drawable,
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
   if (fill_mode == GIMP_FG_BUCKET_FILL)
     {
@@ -81,10 +81,10 @@ gimp_drawable_bucket_fill (GimpDrawable       *drawable,
       pattern = gimp_context_get_pattern (context);
 
       if (! pattern)
-	{
-	  g_message (_("No patterns available for this operation."));
-	  return;
-	}
+        {
+          g_message (_("No patterns available for this operation."));
+          return;
+        }
     }
   else
     {
@@ -116,7 +116,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable       *drawable,
                                 const GimpRGB      *color,
                                 GimpPattern        *pattern)
 {
-  GimpImage   *gimage;
+  GimpImage   *image;
   TileManager *buf_tiles;
   PixelRegion  bufPR, maskPR;
   GimpChannel *mask = NULL;
@@ -134,7 +134,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable       *drawable,
   g_return_if_fail (fill_mode == GIMP_PATTERN_BUCKET_FILL ||
                     color != NULL);
 
-  gimage = gimp_item_get_image (GIMP_ITEM (drawable));
+  image = gimp_item_get_image (GIMP_ITEM (drawable));
 
   bytes     = gimp_drawable_bytes (drawable);
   selection = gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
@@ -152,12 +152,12 @@ gimp_drawable_bucket_fill_full (GimpDrawable       *drawable,
                           &tmp_col[GREEN_PIX],
                           &tmp_col[BLUE_PIX]);
 
-      gimp_image_transform_color (gimage, drawable, col, GIMP_RGB, tmp_col);
+      gimp_image_transform_color (image, drawable, col, GIMP_RGB, tmp_col);
       col[gimp_drawable_bytes_with_alpha (drawable) - 1] = OPAQUE_OPACITY;
     }
   else if (fill_mode == GIMP_PATTERN_BUCKET_FILL)
     {
-      pat_buf = gimp_image_transform_temp_buf (gimage, drawable,
+      pat_buf = gimp_image_transform_temp_buf (image, drawable,
                                                pattern->mask, &new_buf);
     }
   else
@@ -166,7 +166,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable       *drawable,
       return;
     }
 
-  gimp_set_busy (gimage->gimp);
+  gimp_set_busy (image->gimp);
 
   /*  Do a seed bucket fill...To do this, calculate a new
    *  contiguous region. If there is a selection, calculate the
@@ -174,7 +174,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable       *drawable,
    */
   if (do_seed_fill)
     {
-      mask = gimp_image_contiguous_region_by_seed (gimage, drawable,
+      mask = gimp_image_contiguous_region_by_seed (image, drawable,
                                                    sample_merged,
                                                    TRUE,
                                                    (gint) threshold,
@@ -190,7 +190,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable       *drawable,
           if (! sample_merged)
             gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
 
-          gimp_channel_combine_mask (mask, gimp_image_get_mask (gimage),
+          gimp_channel_combine_mask (mask, gimp_image_get_mask (image),
                                      GIMP_CHANNEL_OP_INTERSECT,
                                      -off_x, -off_y);
         }
@@ -199,36 +199,38 @@ gimp_drawable_bucket_fill_full (GimpDrawable       *drawable,
 
       /*  make sure we handle the mask correctly if it was sample-merged  */
       if (sample_merged)
-	{
+        {
           GimpItem *item;
-	  gint      off_x, off_y;
+          gint      off_x, off_y;
 
           item = GIMP_ITEM (drawable);
 
-	  /*  Limit the channel bounds to the drawable's extents  */
-	  gimp_item_offsets (item, &off_x, &off_y);
+          /*  Limit the channel bounds to the drawable's extents  */
+          gimp_item_offsets (item, &off_x, &off_y);
 
-	  x1 = CLAMP (x1, off_x, (off_x + gimp_item_width (item)));
-	  y1 = CLAMP (y1, off_y, (off_y + gimp_item_height (item)));
-	  x2 = CLAMP (x2, off_x, (off_x + gimp_item_width (item)));
-	  y2 = CLAMP (y2, off_y, (off_y + gimp_item_height (item)));
+          x1 = CLAMP (x1, off_x, (off_x + gimp_item_width (item)));
+          y1 = CLAMP (y1, off_y, (off_y + gimp_item_height (item)));
+          x2 = CLAMP (x2, off_x, (off_x + gimp_item_width (item)));
+          y2 = CLAMP (y2, off_y, (off_y + gimp_item_height (item)));
 
-	  pixel_region_init (&maskPR, gimp_drawable_data (GIMP_DRAWABLE (mask)),
-			     x1, y1, (x2 - x1), (y2 - y1), TRUE);
+          pixel_region_init (&maskPR,
+                             gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
+                             x1, y1, (x2 - x1), (y2 - y1), TRUE);
 
-	  /*  translate mask bounds to drawable coords  */
-	  x1 -= off_x;
-	  y1 -= off_y;
-	  x2 -= off_x;
-	  y2 -= off_y;
-	}
+          /*  translate mask bounds to drawable coords  */
+          x1 -= off_x;
+          y1 -= off_y;
+          x2 -= off_x;
+          y2 -= off_y;
+        }
       else
         {
-          pixel_region_init (&maskPR, gimp_drawable_data (GIMP_DRAWABLE (mask)),
+          pixel_region_init (&maskPR,
+                             gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
                              x1, y1, (x2 - x1), (y2 - y1), TRUE);
         }
 
-      /*  if the gimage doesn't have an alpha channel, make sure that
+      /*  if the image doesn't have an alpha channel, make sure that
        *  the buf_tiles have.  We need the alpha channel to fill with
        *  the region calculated above
        */
@@ -284,5 +286,5 @@ gimp_drawable_bucket_fill_full (GimpDrawable       *drawable,
   if (new_buf)
     temp_buf_free (pat_buf);
 
-  gimp_unset_busy (gimage->gimp);
+  gimp_unset_busy (image->gimp);
 }

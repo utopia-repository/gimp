@@ -89,7 +89,7 @@
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-raise-channel">gimp_image_raise_channel</link>        (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> channel_ID);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-lower-channel">gimp_image_lower_channel</link>        (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="gint32">gint32</link> layer_ID);
+                                             <link linkend="gint32">gint32</link> channel_ID);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-flatten">gimp_image_flatten</link>              (<link linkend="gint32">gint32</link> image_ID);
 <link linkend="gint32">gint32</link>      <link linkend="gimp-image-merge-visible-layers">gimp_image_merge_visible_layers</link> (<link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="GimpMergeType">GimpMergeType</link> merge_type);
@@ -160,7 +160,7 @@
                                              <link linkend="gint">gint</link> *num_parasites,
                                              <link linkend="gchar">gchar</link> ***parasites);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-parasite-attach">gimp_image_parasite_attach</link>      (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="GimpParasite">GimpParasite</link> *parasite);
+                                             const <link linkend="GimpParasite">GimpParasite</link> *parasite);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-parasite-detach">gimp_image_parasite_detach</link>      (<link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *name);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-attach-new-parasite">gimp_image_attach_new_parasite</link>  (<link linkend="gint32">gint32</link> image_ID,
@@ -688,11 +688,10 @@ specified drawable, then an error is returned. If the drawable has
 an alpha channel, the algorithm examines the alpha value of the
 drawable at the coordinates. If the alpha value is completely
 transparent (0), then an error is returned. If the sample_merged
-parameter is non-zero, the data of the composite image will be used
+parameter is TRUE, the data of the composite image will be used
 instead of that for the specified drawable. This is equivalent to
 sampling for colors after merging all visible layers. In the case of
-a merged sampling, the supplied drawable is ignored except for
-finding the image it belongs to.</para>
+a merged sampling, the supplied drawable is ignored.</para>
 <para>
 
 </para><variablelist role="params">
@@ -761,7 +760,7 @@ layer is found.</para>
 Add the specified layer to the image.
 </para>
 <para>
-This procedure adds the specified layer to the gimage at the given
+This procedure adds the specified layer to the image at the given
 position. If the position is specified as -1, then the layer is
 inserted at the top of the layer stack. If the layer to be added has
 no alpha channel, it must be added at position 0. The layer type
@@ -816,7 +815,7 @@ Raise the specified layer in the image's layer stack
 <para>
 This procedure raises the specified layer one step in the existing
 layer stack. It will not move the layer if there is no layer above
-it, or the layer has no alpha channel.</para>
+it.</para>
 <para>
 
 </para><variablelist role="params">
@@ -839,7 +838,7 @@ Lower the specified layer in the image's layer stack
 <para>
 This procedure lowers the specified layer one step in the existing
 layer stack. It will not move the layer if there is no layer below
-it, or the layer has no alpha channel.</para>
+it.</para>
 <para>
 
 </para><variablelist role="params">
@@ -862,7 +861,7 @@ Raise the specified layer in the image's layer stack to top of stack
 <para>
 This procedure raises the specified layer to top of the existing
 layer stack. It will not move the layer if there is no layer above
-it, or the layer has no alpha channel.</para>
+it.</para>
 <para>
 
 </para><variablelist role="params">
@@ -887,7 +886,7 @@ stack
 <para>
 This procedure lowers the specified layer to bottom of the existing
 layer stack. It will not move the layer if there is no layer below
-it, or the layer has no alpha channel.</para>
+it.</para>
 <para>
 
 </para><variablelist role="params">
@@ -975,22 +974,22 @@ above it.</para>
 <refsect2>
 <title><anchor id="gimp-image-lower-channel"/>gimp_image_lower_channel ()</title>
 <indexterm><primary>gimp_image_lower_channel</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_lower_channel        (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="gint32">gint32</link> layer_ID);</programlisting>
+                                             <link linkend="gint32">gint32</link> channel_ID);</programlisting>
 <para>
-Lower the specified layer in the image's layer stack
+Lower the specified channel in the image's channel stack
 </para>
 <para>
-This procedure lowers the specified layer one step in the existing
-layer stack. It will not move the layer if there is no layer below
-it, or the layer has no alpha channel.</para>
+This procedure lowers the specified channel one step in the existing
+channel stack. It will not move the channel if there is no channel
+below it.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
-<listitem><simpara> The layer to lower.
+<varlistentry><term><parameter>channel_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The channel to lower.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -1111,7 +1110,7 @@ after calling a save procedure to make the image clean.</para>
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> True if the image has unsaved changes.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the image has unsaved changes.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -1400,10 +1399,10 @@ inch. This value is independent of any of the layers in this image.</para>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>xresolution</parameter>&nbsp;:</term>
-<listitem><simpara> The resolutionin the x-axis, in dots per inch.
+<listitem><simpara> The resolution in the x-axis, in dots per inch.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>yresolution</parameter>&nbsp;:</term>
-<listitem><simpara> The resolutionin the y-axis, in dots per inch.
+<listitem><simpara> The resolution in the y-axis, in dots per inch.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -1506,7 +1505,7 @@ that all is OK.</para>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>tattoo_state</parameter>&nbsp;:</term>
-<listitem><simpara> The new image tattoo_state.
+<listitem><simpara> The new image tattoo state.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
@@ -1527,7 +1526,7 @@ Using this function at other times will produce unexpected results.</para>
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The tattoo_state.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The tattoo state.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -1768,7 +1767,7 @@ Returns a list of all currently attached parasites.</para>
 <refsect2>
 <title><anchor id="gimp-image-parasite-attach"/>gimp_image_parasite_attach ()</title>
 <indexterm><primary>gimp_image_parasite_attach</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_parasite_attach      (<link linkend="gint32">gint32</link> image_ID,
-                                             <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
+                                             const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 Add a parasite to an image.
 </para>
@@ -1852,9 +1851,9 @@ See Also: <link linkend="gimp-image-parasite-attach"><function>gimp_image_parasi
 Add the specified vectors object to the image.
 </para>
 <para>
-This procedure adds the specified vectors object to the gimage at
-the given position. If the position is specified as -1, then the
-vectors object is inserted at the top of the vectors stack.</para>
+This procedure adds the specified vectors object to the image at the
+given position. If the position is specified as -1, then the vectors
+object is inserted at the top of the vectors stack.</para>
 <para>
 
 </para><variablelist role="params">

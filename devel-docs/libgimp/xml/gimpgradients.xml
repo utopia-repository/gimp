@@ -4,39 +4,37 @@
 
 <refentry id="libgimp-gimpgradients">
 <refmeta>
-<refentrytitle role="top_of_page">gimpgradients</refentrytitle>
+<refentrytitle>gimpgradients</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpgradients</refname>
-<refpurpose>Operations related to gradients.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimpgradients</refname><refpurpose>Operations related to gradients.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-gradients-refresh">gimp_gradients_refresh</link>              (void);
-<link linkend="gchar">gchar</link>**             <link linkend="gimp-gradients-get-list">gimp_gradients_get_list</link>             (const <link linkend="gchar">gchar</link> *filter,
-                                                         <link linkend="gint">gint</link> *num_gradients);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-gradients-get-gradient">gimp_gradients_get_gradient</link>         (void);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-gradients-set-gradient">gimp_gradients_set_gradient</link>         (const <link linkend="gchar">gchar</link> *name);
-<link linkend="gdouble">gdouble</link>*            <link linkend="gimp-gradients-sample-uniform">gimp_gradients_sample_uniform</link>       (<link linkend="gint">gint</link> num_samples,
-                                                         <link linkend="gboolean">gboolean</link> reverse);
-<link linkend="gdouble">gdouble</link>*            <link linkend="gimp-gradients-sample-custom">gimp_gradients_sample_custom</link>        (<link linkend="gint">gint</link> num_samples,
-                                                         const <link linkend="gdouble">gdouble</link> *positions,
-                                                         <link linkend="gboolean">gboolean</link> reverse);
-<link linkend="gchar">gchar</link>*              <link linkend="gimp-gradients-get-gradient-data">gimp_gradients_get_gradient_data</link>    (const <link linkend="gchar">gchar</link> *name,
-                                                         <link linkend="gint">gint</link> sample_size,
-                                                         <link linkend="gboolean">gboolean</link> reverse,
-                                                         <link linkend="gint">gint</link> *width,
-                                                         <link linkend="gdouble">gdouble</link> **grad_data);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-gradients-refresh">gimp_gradients_refresh</link>          (void);
+<link linkend="gchar">gchar</link>**     <link linkend="gimp-gradients-get-list">gimp_gradients_get_list</link>         (const <link linkend="gchar">gchar</link> *filter,
+                                             <link linkend="gint">gint</link> *num_gradients);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-gradients-get-gradient">gimp_gradients_get_gradient</link>     (void);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-gradients-set-gradient">gimp_gradients_set_gradient</link>     (const <link linkend="gchar">gchar</link> *name);
+<link linkend="gdouble">gdouble</link>*    <link linkend="gimp-gradients-sample-uniform">gimp_gradients_sample_uniform</link>   (<link linkend="gint">gint</link> num_samples,
+                                             <link linkend="gboolean">gboolean</link> reverse);
+<link linkend="gdouble">gdouble</link>*    <link linkend="gimp-gradients-sample-custom">gimp_gradients_sample_custom</link>    (<link linkend="gint">gint</link> num_samples,
+                                             const <link linkend="gdouble">gdouble</link> *positions,
+                                             <link linkend="gboolean">gboolean</link> reverse);
+<link linkend="gchar">gchar</link>*      <link linkend="gimp-gradients-get-gradient-data">gimp_gradients_get_gradient_data</link>
+                                            (const <link linkend="gchar">gchar</link> *name,
+                                             <link linkend="gint">gint</link> sample_size,
+                                             <link linkend="gboolean">gboolean</link> reverse,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gdouble">gdouble</link> **grad_data);
 </synopsis>
 </refsynopsisdiv>
 
@@ -48,19 +46,19 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Operations related to gradients.
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="gimp-gradients-refresh" role="function"/>gimp_gradients_refresh ()</title>
-<indexterm><primary>gimp_gradients_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_refresh              (void);</programlisting>
+<title><anchor id="gimp-gradients-refresh"/>gimp_gradients_refresh ()</title>
+<indexterm><primary>gimp_gradients_refresh</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_gradients_refresh          (void);</programlisting>
 <para>
 Refresh current gradients. This function always succeeds.
 </para>
@@ -74,15 +72,15 @@ gradient path and updates the gradient dialogs accordingly.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gradients-get-list" role="function"/>gimp_gradients_get_list ()</title>
-<indexterm><primary>gimp_gradients_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**             gimp_gradients_get_list             (const <link linkend="gchar">gchar</link> *filter,
-                                                         <link linkend="gint">gint</link> *num_gradients);</programlisting>
+<title><anchor id="gimp-gradients-get-list"/>gimp_gradients_get_list ()</title>
+<indexterm><primary>gimp_gradients_get_list</primary></indexterm><programlisting><link linkend="gchar">gchar</link>**     gimp_gradients_get_list         (const <link linkend="gchar">gchar</link> *filter,
+                                             <link linkend="gint">gint</link> *num_gradients);</programlisting>
 <para>
 Retrieve the list of loaded gradients.
 </para>
 <para>
 This procedure returns a list of the gradients that are currently
-loaded. You can later use the 'gimp_context_set_gradient' function
+loaded. You can later use the 'gimp-context-set-gradient' function
 to set the active gradient.</para>
 <para>
 
@@ -97,8 +95,8 @@ to set the active gradient.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gradients-get-gradient" role="function" condition="deprecated:"/>gimp_gradients_get_gradient ()</title>
-<indexterm role="deprecated"><primary>gimp_gradients_get_gradient</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gradients_get_gradient         (void);</programlisting>
+<title><anchor id="gimp-gradients-get-gradient"/>gimp_gradients_get_gradient ()</title>
+<indexterm role="deprecated"><primary>gimp_gradients_get_gradient</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_gradients_get_gradient     (void);</programlisting>
 <warning><para><literal>gimp_gradients_get_gradient</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-get-gradient"><function>gimp_context_get_gradient()</function></link> instead.</para>
@@ -109,8 +107,8 @@ This procedure is deprecated! Use <link linkend="gimp-context-get-gradient"><fun
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gradients-set-gradient" role="function" condition="deprecated:"/>gimp_gradients_set_gradient ()</title>
-<indexterm role="deprecated"><primary>gimp_gradients_set_gradient</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_set_gradient         (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<title><anchor id="gimp-gradients-set-gradient"/>gimp_gradients_set_gradient ()</title>
+<indexterm role="deprecated"><primary>gimp_gradients_set_gradient</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_gradients_set_gradient     (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <warning><para><literal>gimp_gradients_set_gradient</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-context-set-gradient"><function>gimp_context_set_gradient()</function></link> instead.</para>
@@ -124,9 +122,9 @@ This procedure is deprecated! Use <link linkend="gimp-context-set-gradient"><fun
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gradients-sample-uniform" role="function" condition="deprecated:"/>gimp_gradients_sample_uniform ()</title>
-<indexterm role="deprecated"><primary>gimp_gradients_sample_uniform</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>*            gimp_gradients_sample_uniform       (<link linkend="gint">gint</link> num_samples,
-                                                         <link linkend="gboolean">gboolean</link> reverse);</programlisting>
+<title><anchor id="gimp-gradients-sample-uniform"/>gimp_gradients_sample_uniform ()</title>
+<indexterm role="deprecated"><primary>gimp_gradients_sample_uniform</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>*    gimp_gradients_sample_uniform   (<link linkend="gint">gint</link> num_samples,
+                                             <link linkend="gboolean">gboolean</link> reverse);</programlisting>
 <warning><para><literal>gimp_gradients_sample_uniform</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use
@@ -144,10 +142,10 @@ This procedure is deprecated! Use
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gradients-sample-custom" role="function" condition="deprecated:"/>gimp_gradients_sample_custom ()</title>
-<indexterm role="deprecated"><primary>gimp_gradients_sample_custom</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>*            gimp_gradients_sample_custom        (<link linkend="gint">gint</link> num_samples,
-                                                         const <link linkend="gdouble">gdouble</link> *positions,
-                                                         <link linkend="gboolean">gboolean</link> reverse);</programlisting>
+<title><anchor id="gimp-gradients-sample-custom"/>gimp_gradients_sample_custom ()</title>
+<indexterm role="deprecated"><primary>gimp_gradients_sample_custom</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>*    gimp_gradients_sample_custom    (<link linkend="gint">gint</link> num_samples,
+                                             const <link linkend="gdouble">gdouble</link> *positions,
+                                             <link linkend="gboolean">gboolean</link> reverse);</programlisting>
 <warning><para><literal>gimp_gradients_sample_custom</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-gradient-get-custom-samples"><function>gimp_gradient_get_custom_samples()</function></link>
@@ -168,12 +166,13 @@ instead.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gradients-get-gradient-data" role="function" condition="deprecated:"/>gimp_gradients_get_gradient_data ()</title>
-<indexterm role="deprecated"><primary>gimp_gradients_get_gradient_data</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_gradients_get_gradient_data    (const <link linkend="gchar">gchar</link> *name,
-                                                         <link linkend="gint">gint</link> sample_size,
-                                                         <link linkend="gboolean">gboolean</link> reverse,
-                                                         <link linkend="gint">gint</link> *width,
-                                                         <link linkend="gdouble">gdouble</link> **grad_data);</programlisting>
+<title><anchor id="gimp-gradients-get-gradient-data"/>gimp_gradients_get_gradient_data ()</title>
+<indexterm role="deprecated"><primary>gimp_gradients_get_gradient_data</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_gradients_get_gradient_data
+                                            (const <link linkend="gchar">gchar</link> *name,
+                                             <link linkend="gint">gint</link> sample_size,
+                                             <link linkend="gboolean">gboolean</link> reverse,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gdouble">gdouble</link> **grad_data);</programlisting>
 <warning><para><literal>gimp_gradients_get_gradient_data</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use

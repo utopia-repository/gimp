@@ -124,7 +124,7 @@ gradient_editor_load_left_cmd_callback (GtkAction *action,
 
   switch (value)
     {
-    case 0: /* Fetch from left neighbor's right endpoint */
+    case GRADIENT_EDITOR_COLOR_NEIGHBOR_ENDPOINT:
       if (editor->control_sel_l->prev != NULL)
 	seg = editor->control_sel_l->prev;
       else
@@ -133,20 +133,20 @@ gradient_editor_load_left_cmd_callback (GtkAction *action,
       color = seg->right_color;
       break;
 
-    case 1: /* Fetch from right endpoint */
+    case GRADIENT_EDITOR_COLOR_OTHER_ENDPOINT:
       color = editor->control_sel_r->right_color;
       break;
 
-    case 2: /* Fetch from FG color */
+    case GRADIENT_EDITOR_COLOR_FOREGROUND:
       gimp_context_get_foreground (context, &color);
       break;
 
-    case 3: /* Fetch from BG color */
+    case GRADIENT_EDITOR_COLOR_BACKGROUND:
       gimp_context_get_background (context, &color);
       break;
 
     default: /* Load a color */
-      color = editor->saved_colors[value - 4];
+      color = editor->saved_colors[value - GRADIENT_EDITOR_COLOR_FIRST_CUSTOM];
       break;
     }
 
@@ -228,7 +228,7 @@ gradient_editor_load_right_cmd_callback (GtkAction *action,
 
   switch (value)
     {
-    case 0: /* Fetch from right neighbor's left endpoint */
+    case GRADIENT_EDITOR_COLOR_NEIGHBOR_ENDPOINT:
       if (editor->control_sel_r->next != NULL)
 	seg = editor->control_sel_r->next;
       else
@@ -237,20 +237,20 @@ gradient_editor_load_right_cmd_callback (GtkAction *action,
       color = seg->left_color;
       break;
 
-    case 1: /* Fetch from left endpoint */
+    case GRADIENT_EDITOR_COLOR_OTHER_ENDPOINT:
       color = editor->control_sel_l->left_color;
       break;
 
-    case 2: /* Fetch from FG color */
+    case GRADIENT_EDITOR_COLOR_FOREGROUND:
       gimp_context_get_foreground (context, &color);
       break;
 
-    case 3: /* Fetch from BG color */
+    case GRADIENT_EDITOR_COLOR_BACKGROUND:
       gimp_context_get_background (context, &color);
       break;
 
     default: /* Load a color */
-      color = editor->saved_colors[value - 4];
+      color = editor->saved_colors[value - GRADIENT_EDITOR_COLOR_FIRST_CUSTOM];
       break;
     }
 
@@ -377,6 +377,11 @@ gradient_editor_replicate_cmd_callback (GtkAction *action,
 
                               NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   g_signal_connect (dialog, "response",
                     G_CALLBACK (gradient_editor_replicate_response),
                     editor);
@@ -407,7 +412,7 @@ gradient_editor_replicate_cmd_callback (GtkAction *action,
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, TRUE, 4);
   gtk_widget_show (scale);
 
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
 		    G_CALLBACK (gimp_int_adjustment_update),
 		    &editor->replicate_times);
 
@@ -471,6 +476,11 @@ gradient_editor_split_uniformly_cmd_callback (GtkAction *action,
 
                               NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   g_signal_connect (dialog, "response",
                     G_CALLBACK (gradient_editor_split_uniform_response),
                     editor);
@@ -502,7 +512,7 @@ gradient_editor_split_uniformly_cmd_callback (GtkAction *action,
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 4);
   gtk_widget_show (scale);
 
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
 		    G_CALLBACK (gimp_int_adjustment_update),
 		    &editor->split_parts);
 
@@ -770,8 +780,6 @@ gradient_editor_replace_selection (GimpGradientEditor  *editor,
 
   editor->control_sel_l = replace_seg;
   editor->control_sel_r = replace_last;
-
-  gradient->last_visited = NULL; /* Force re-search */
 }
 
 static void

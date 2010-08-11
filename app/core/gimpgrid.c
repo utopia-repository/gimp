@@ -27,13 +27,11 @@
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpbase/gimplimits.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "libgimpcolor/gimpcolor.h"
 
 #include "core-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
 
 #include "gimpgrid.h"
 
@@ -54,69 +52,28 @@ enum
   PROP_OFFSET_UNIT
 };
 
-static void gimp_grid_class_init   (GimpGridClass *klass);
-static void gimp_grid_finalize     (GObject       *object);
-static void gimp_grid_get_property (GObject       *object,
-                                    guint          property_id,
-                                    GValue        *value,
-                                    GParamSpec    *pspec);
-static void gimp_grid_set_property (GObject       *object,
-                                    guint          property_id,
-                                    const GValue  *value,
-                                    GParamSpec    *pspec);
+
+static void   gimp_grid_get_property (GObject      *object,
+                                      guint         property_id,
+                                      GValue       *value,
+                                      GParamSpec   *pspec);
+static void   gimp_grid_set_property (GObject      *object,
+                                      guint         property_id,
+                                      const GValue *value,
+                                      GParamSpec   *pspec);
 
 
-static GimpObjectClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpGrid, gimp_grid, GIMP_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
 
-
-GType
-gimp_grid_get_type (void)
-{
-  static GType grid_type = 0;
-
-  if (! grid_type)
-    {
-      static const GTypeInfo grid_info =
-      {
-        sizeof (GimpGridClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_grid_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpGrid),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
-      };
-      static const GInterfaceInfo grid_iface_info =
-      {
-        NULL,           /* iface_init     */
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      grid_type = g_type_register_static (GIMP_TYPE_OBJECT,
-                                          "GimpGrid", &grid_info, 0);
-
-      g_type_add_interface_static (grid_type, GIMP_TYPE_CONFIG,
-                                   &grid_iface_info);
-    }
-
-  return grid_type;
-}
 
 static void
 gimp_grid_class_init (GimpGridClass *klass)
 {
-  GObjectClass *object_class;
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GimpRGB       black;
   GimpRGB       white;
 
-  object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
-
-  object_class->finalize     = gimp_grid_finalize;
   object_class->get_property = gimp_grid_get_property;
   object_class->set_property = gimp_grid_set_property;
 
@@ -143,12 +100,12 @@ gimp_grid_class_init (GimpGridClass *klass)
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_XSPACING,
 				   "xspacing",
                                    N_("Horizontal spacing of grid lines."),
-				   1.0, GIMP_MAX_IMAGE_SIZE, 10.0,
+				   1.0, GIMP_MAX_IMAGE_SIZE, 32.0,
 				   0);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_YSPACING,
 				   "yspacing",
                                    N_("Vertical spacing of grid lines."),
-				   1.0, GIMP_MAX_IMAGE_SIZE, 10.0,
+				   1.0, GIMP_MAX_IMAGE_SIZE, 32.0,
 				   0);
   GIMP_CONFIG_INSTALL_PROP_UNIT (object_class, PROP_SPACING_UNIT,
 				 "spacing-unit", NULL,
@@ -175,11 +132,9 @@ gimp_grid_class_init (GimpGridClass *klass)
 }
 
 static void
-gimp_grid_finalize (GObject *object)
+gimp_grid_init (GimpGrid *grid)
 {
-  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
-
 
 static void
 gimp_grid_get_property (GObject      *object,

@@ -1,4 +1,4 @@
-/* $Id: maze.c 15673 2004-11-18 08:59:56Z neo $
+/* $Id: maze.c,v 1.40 2005/09/30 08:16:06 mitch Exp $
  * This is a plug-in for the GIMP.
  * It draws mazes...
  *
@@ -38,9 +38,6 @@
  */
 
 #include "config.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "libgimp/gimp.h"
 #include "libgimp/gimpui.h"
@@ -138,21 +135,21 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",    "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image_ID",    "(unused)" },
-    { GIMP_PDB_DRAWABLE, "drawable_ID", "ID of drawable" },
+    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",     "(unused)" },
+    { GIMP_PDB_DRAWABLE, "drawable",  "ID of drawable" },
     /* If we did have parameters, these be them: */
-    { GIMP_PDB_INT16,    "width",       "Width of the passages" },
-    { GIMP_PDB_INT16,    "height",      "Height of the passages"},
-    { GIMP_PDB_INT8,     "tileable",    "Tileable maze?"},
-    { GIMP_PDB_INT8,     "algorithm",   "Generation algorithm"
-                                        "(0=DEPTH FIRST, 1=PRIM'S ALGORITHM)" },
-    { GIMP_PDB_INT32,    "seed",        "Random Seed"},
-    { GIMP_PDB_INT16,    "multiple",    "Multiple (use 57)" },
-    { GIMP_PDB_INT16,    "offset",      "Offset (use 1)" }
+    { GIMP_PDB_INT16,    "width",     "Width of the passages" },
+    { GIMP_PDB_INT16,    "height",    "Height of the passages"},
+    { GIMP_PDB_INT8,     "tileable",  "Tileable maze?"},
+    { GIMP_PDB_INT8,     "algorithm", "Generation algorithm"
+                                      "(0=DEPTH FIRST, 1=PRIM'S ALGORITHM)" },
+    { GIMP_PDB_INT32,    "seed",      "Random Seed"},
+    { GIMP_PDB_INT16,    "multiple",  "Multiple (use 57)" },
+    { GIMP_PDB_INT16,    "offset",    "Offset (use 1)" }
   };
 
-  gimp_install_procedure ("plug_in_maze",
+  gimp_install_procedure (PLUG_IN_PROC,
 			  "Draws a maze.",
 			  "Generates a maze using either the depth-first "
                           "search method or Prim's algorithm.  Can make "
@@ -166,7 +163,7 @@ query (void)
 			  G_N_ELEMENTS (args), 0,
 			  args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_maze",
+  gimp_plugin_menu_register (PLUG_IN_PROC,
                              "<Image>/Filters/Render/Pattern");
 }
 
@@ -204,7 +201,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /* Possibly retrieve data */
-      gimp_get_data ("plug_in_maze", &mvals);
+      gimp_get_data (PLUG_IN_PROC, &mvals);
 
       /* The interface needs to know the dimensions of the image... */
       gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
@@ -240,7 +237,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /* Possibly retrieve data */
-      gimp_get_data ("plug_in_maze", &mvals);
+      gimp_get_data (PLUG_IN_PROC, &mvals);
 
       if (mvals.random_seed)
         mvals.seed = g_random_int ();
@@ -262,7 +259,7 @@ run (const gchar      *name,
 
       if (run_mode == GIMP_RUN_INTERACTIVE ||
 	  (run_mode == GIMP_RUN_WITH_LAST_VALS))
-	gimp_set_data ("plug_in_maze", &mvals, sizeof (MazeValues));
+	gimp_set_data (PLUG_IN_PROC, &mvals, sizeof (MazeValues));
     }
   else
     {
@@ -447,7 +444,7 @@ maze (GimpDrawable * drawable)
   /* Get the foreground and background colors */
   get_colors (drawable, fg, bg);
 
-  gimp_progress_init (_("Drawing Maze..."));
+  gimp_progress_init (_("Drawing maze"));
 
   for (pr = gimp_pixel_rgns_register (1, &dest_rgn);
        pr != NULL;

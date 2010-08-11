@@ -37,51 +37,21 @@
 #define GIMP_ERROR_DIALOG_MAX_MESSAGES 3
 
 
-static void   gimp_error_dialog_class_init (GimpErrorDialogClass *klass);
-static void   gimp_error_dialog_init       (GimpErrorDialog      *dialog);
-static void   gimp_error_dialog_finalize   (GObject              *object);
-static void   gimp_error_dialog_response   (GtkDialog            *dialog,
-                                            gint                  response_id);
+static void   gimp_error_dialog_finalize (GObject   *object);
+static void   gimp_error_dialog_response (GtkDialog *dialog,
+                                          gint       response_id);
 
 
-static GimpDialogClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpErrorDialog, gimp_error_dialog, GIMP_TYPE_DIALOG);
 
+#define parent_class gimp_error_dialog_parent_class
 
-GType
-gimp_error_dialog_get_type (void)
-{
-  static GType dialog_type = 0;
-
-  if (! dialog_type)
-    {
-      static const GTypeInfo dialog_info =
-      {
-        sizeof (GimpErrorDialogClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_error_dialog_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpErrorDialog),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_error_dialog_init
-      };
-
-      dialog_type = g_type_register_static (GIMP_TYPE_DIALOG,
-                                            "GimpErrorDialog",
-                                            &dialog_info, 0);
-    }
-
-  return dialog_type;
-}
 
 static void
 gimp_error_dialog_class_init (GimpErrorDialogClass *klass)
 {
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkDialogClass *dialog_class = GTK_DIALOG_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize = gimp_error_dialog_finalize;
 
@@ -139,64 +109,16 @@ gimp_error_dialog_response (GtkDialog *dialog,
 }
 
 
-static void
-gimp_error_dialog_set_icon (GtkWidget   *dialog,
-                            const gchar *stock_id)
-{
-  GtkIconSet *icon_set;
-
-  gtk_widget_ensure_style (dialog);
-
-  icon_set = gtk_style_lookup_icon_set (dialog->style, stock_id);
-
-  if (icon_set)
-    {
-      GtkIconSize *sizes;
-      GList       *icons = NULL;
-      gint         i, n_sizes;
-
-      gtk_icon_set_get_sizes (icon_set, &sizes, &n_sizes);
-
-      for (i = 0; i < n_sizes; i++)
-        {
-          if (sizes[i] < GTK_ICON_SIZE_DIALOG)  /* skip the large version */
-            icons = g_list_prepend (icons,
-                                    gtk_widget_render_icon (dialog,
-                                                            stock_id, sizes[i],
-                                                            NULL));
-        }
-
-      g_free (sizes);
-
-      if (icons)
-        {
-          gtk_window_set_icon_list (GTK_WINDOW (dialog), icons);
-
-          g_list_foreach (icons, (GFunc) g_object_unref, NULL);
-          g_list_free (icons);
-        }
-    }
-}
-
-
 /*  public functions  */
 
 GtkWidget *
-gimp_error_dialog_new (const gchar *title,
-                       const gchar *stock_id)
+gimp_error_dialog_new (const gchar *title)
 {
-  GtkWidget *dialog;
-
   g_return_val_if_fail (title != NULL, NULL);
 
-  dialog = g_object_new (GIMP_TYPE_ERROR_DIALOG,
-                         "title", title,
-                         NULL);
-
-  if (stock_id)
-    gimp_error_dialog_set_icon (dialog, stock_id);
-
-  return dialog;
+  return g_object_new (GIMP_TYPE_ERROR_DIALOG,
+                       "title", title,
+                       NULL);
 }
 
 void
@@ -240,7 +162,7 @@ gimp_error_dialog_add (GimpErrorDialog *dialog,
     }
 
   box = g_object_new (GIMP_TYPE_MESSAGE_BOX,
-                      "stock_id", stock_id,
+                      "stock-id", stock_id,
                       NULL);
 
   dialog->num_messages++;

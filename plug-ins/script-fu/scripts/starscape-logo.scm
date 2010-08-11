@@ -69,7 +69,7 @@
     (gimp-image-add-layer img glow-layer 1)
     (gimp-image-add-layer img shadow-layer 1)
     (gimp-image-add-channel img bump-channel 0)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
 
     (gimp-context-set-background '(0 0 0))
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
@@ -134,7 +134,7 @@
 		    SF-COLOR      _"Glow color"               '(28 65 188))
 
 (script-fu-menu-register "script-fu-starscape-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-starscape-logo text
@@ -146,7 +146,6 @@
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text border
 					      TRUE size PIXELS fontname))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-starscape-logo-effect img text-layer size glow-color)
     (gimp-image-undo-enable img)
     (gimp-display-new img)))
@@ -164,4 +163,4 @@
 		    SF-COLOR      _"Glow color"         '(28 65 188))
 
 (script-fu-menu-register "script-fu-starscape-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

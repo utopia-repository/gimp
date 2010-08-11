@@ -2,7 +2,7 @@
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  *
  * gimpcontrollerinfo.c
- * Copyright (C) 2004 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2004-2005 Michael Natterer <mitch@gimp.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,17 +26,13 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #define GIMP_ENABLE_CONTROLLER_UNDER_CONSTRUCTION
 #include "libgimpwidgets/gimpcontroller.h"
 
 #include "widgets-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
-#include "config/gimpconfigwriter.h"
-#include "config/gimpscanner.h"
 
 #include "core/gimp-utils.h"
 #include "core/gimpmarshal.h"
@@ -62,10 +58,7 @@ enum
 };
 
 
-static void     gimp_controller_info_class_init (GimpControllerInfoClass *klass);
-static void     gimp_controller_info_init       (GimpControllerInfo      *info);
-
-static void     gimp_controller_info_config_iface_init (GimpConfigInterface *config_iface);
+static void     gimp_controller_info_config_iface_init (GimpConfigInterface *iface);
 
 static void     gimp_controller_info_finalize     (GObject          *object);
 static void     gimp_controller_info_set_property (GObject          *object,
@@ -94,54 +87,20 @@ static gboolean gimp_controller_info_event (GimpController            *controlle
                                             GimpControllerInfo        *info);
 
 
-static GimpObjectClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpControllerInfo, gimp_controller_info,
+                         GIMP_TYPE_VIEWABLE,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
+                                                gimp_controller_info_config_iface_init));
 
-static guint  info_signals[LAST_SIGNAL] = { 0 };
+#define parent_class gimp_controller_info_parent_class
 
+static guint info_signals[LAST_SIGNAL] = { 0 };
 
-GType
-gimp_controller_info_get_type (void)
-{
-  static GType controller_type = 0;
-
-  if (! controller_type)
-    {
-      static const GTypeInfo controller_info =
-      {
-        sizeof (GimpControllerInfoClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_controller_info_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpControllerInfo),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_controller_info_init,
-      };
-      static const GInterfaceInfo config_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_controller_info_config_iface_init,
-        NULL,  /* iface_finalize */
-        NULL   /* iface_data     */
-      };
-
-      controller_type = g_type_register_static (GIMP_TYPE_OBJECT,
-                                                "GimpControllerInfo",
-                                                &controller_info, 0);
-
-      g_type_add_interface_static (controller_type, GIMP_TYPE_CONFIG,
-                                   &config_iface_info);
-    }
-
-  return controller_type;
-}
 
 static void
 gimp_controller_info_class_init (GimpControllerInfoClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize     = gimp_controller_info_finalize;
   object_class->set_property = gimp_controller_info_set_property;
@@ -187,10 +146,10 @@ gimp_controller_info_init (GimpControllerInfo *info)
 }
 
 static void
-gimp_controller_info_config_iface_init (GimpConfigInterface *config_iface)
+gimp_controller_info_config_iface_init (GimpConfigInterface *iface)
 {
-  config_iface->serialize_property   = gimp_controller_info_serialize_property;
-  config_iface->deserialize_property = gimp_controller_info_deserialize_property;
+  iface->serialize_property   = gimp_controller_info_serialize_property;
+  iface->deserialize_property = gimp_controller_info_deserialize_property;
 }
 
 static void
@@ -409,6 +368,32 @@ gimp_controller_info_deserialize_property (GimpConfig *config,
   return TRUE;
 }
 
+
+/*  public functions  */
+
+GimpControllerInfo *
+gimp_controller_info_new (GType type)
+{
+  GimpControllerClass *controller_class;
+  GimpController      *controller;
+  GimpControllerInfo  *info;
+
+  g_return_val_if_fail (g_type_is_a (type, GIMP_TYPE_CONTROLLER), NULL);
+
+  controller_class = g_type_class_ref (type);
+
+  controller = gimp_controller_new (type);
+  info = g_object_new (GIMP_TYPE_CONTROLLER_INFO,
+                       "name",       controller_class->name,
+                       "controller", controller,
+                       NULL);
+  g_object_unref (controller);
+
+  g_type_class_unref (controller_class);
+
+  return info;
+}
+
 void
 gimp_controller_info_set_enabled (GimpControllerInfo *info,
                                   gboolean            enabled)
@@ -427,6 +412,20 @@ gimp_controller_info_get_enabled (GimpControllerInfo *info)
   return info->enabled;
 }
 
+void
+gimp_controller_info_set_event_snooper (GimpControllerInfo         *info,
+                                        GimpControllerEventSnooper  snooper,
+                                        gpointer                    snooper_data)
+{
+  g_return_if_fail (GIMP_IS_CONTROLLER_INFO (info));
+
+  info->snooper      = snooper;
+  info->snooper_data = snooper_data;
+}
+
+
+/*  private functions  */
+
 static gboolean
 gimp_controller_info_event (GimpController            *controller,
                             const GimpControllerEvent *event,
@@ -440,29 +439,38 @@ gimp_controller_info_event (GimpController            *controller,
   event_blurb = gimp_controller_get_event_blurb (controller, event->any.event_id);
 
   if (info->debug_events)
-    g_print ("Received '%s' (class '%s')\n"
-             "    controller event '%s (%s)'\n",
-             controller->name, GIMP_CONTROLLER_GET_CLASS (controller)->name,
-             event_name, event_blurb);
-
-  switch (event->any.type)
     {
-    case GIMP_CONTROLLER_EVENT_TRIGGER:
-      if (info->debug_events)
-        g_print ("    (trigger event)\n");
-      break;
+      g_print ("Received '%s' (class '%s')\n"
+               "    controller event '%s (%s)'\n",
+               controller->name, GIMP_CONTROLLER_GET_CLASS (controller)->name,
+               event_name, event_blurb);
 
-    case GIMP_CONTROLLER_EVENT_VALUE:
-      if (info->debug_events)
+      switch (event->any.type)
         {
+        case GIMP_CONTROLLER_EVENT_TRIGGER:
+          g_print ("    (trigger event)\n");
+          break;
+
+        case GIMP_CONTROLLER_EVENT_VALUE:
           if (G_VALUE_HOLDS_DOUBLE (&event->value.value))
             g_print ("    (value event, value = %f)\n",
                      g_value_get_double (&event->value.value));
           else
             g_print ("    (value event, unhandled type '%s')\n",
                      g_type_name (event->value.value.g_type));
+          break;
         }
-      break;
+    }
+
+  if (info->snooper)
+    {
+      if (info->snooper (info, controller, event, info->snooper_data))
+        {
+          if (info->debug_events)
+            g_print ("    intercepted by event snooper\n\n");
+
+          return TRUE;
+        }
     }
 
   if (! info->enabled)

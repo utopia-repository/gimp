@@ -13,12 +13,12 @@ extern gboolean gimp_composite_sse_install (void);
 #if defined(USE_SSE)
 #if defined(ARCH_X86)
 #if __GNUC__ >= 3
-#if defined(ARCH_X86_64) || (!defined(PIC) && !defined(__PIC__))
+#if defined(ARCH_X86_64) || !defined(PIC)
 #define COMPILE_SSE_IS_OKAY
-#endif /* defined(ARCH_X86_64) || !defined(PIC) */
-#endif /* __GNUC__ >= 3 */
-#endif /* defined(ARCH_X86) */
-#endif /* defined(USE_SSE) */
+#endif		/* defined(ARCH_X86_64) || !defined(PIC) */
+#endif		/* __GNUC__ >= 3 */
+#endif		/*  */
+#endif		/*  */
 #endif		/*  */
 
 #ifdef COMPILE_SSE_IS_OKAY
@@ -26,6 +26,7 @@ extern gboolean gimp_composite_sse_install (void);
  *
  */
 extern void gimp_composite_addition_rgba8_rgba8_rgba8_sse (GimpCompositeContext *ctx);
+extern void gimp_composite_burn_rgba8_rgba8_rgba8_sse (GimpCompositeContext *ctx);
 extern void gimp_composite_coloronly_rgba8_rgba8_rgba8_sse (GimpCompositeContext *ctx);
 extern void gimp_composite_darken_rgba8_rgba8_rgba8_sse (GimpCompositeContext *ctx);
 extern void gimp_composite_difference_rgba8_rgba8_rgba8_sse (GimpCompositeContext *ctx);

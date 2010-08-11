@@ -15,6 +15,11 @@ EXPORTS
 	gimp_drawable_preview_get_type
 	gimp_drawable_preview_new
 	gimp_export_image
+	gimp_font_select_button_close_popup
+	gimp_font_select_button_get_font_name
+	gimp_font_select_button_get_type
+	gimp_font_select_button_new
+	gimp_font_select_button_set_font_name
 	gimp_font_select_widget_close
 	gimp_font_select_widget_new
 	gimp_font_select_widget_set
@@ -32,6 +37,19 @@ EXPORTS
 	gimp_pattern_select_widget_close
 	gimp_pattern_select_widget_new
 	gimp_pattern_select_widget_set
+	gimp_proc_browser_dialog_get_type
+	gimp_proc_browser_dialog_new
+	gimp_proc_browser_dialog_get_selected
+	gimp_proc_view_new
 	gimp_progress_bar_get_type
 	gimp_progress_bar_new
 	gimp_ui_init
+	gimp_ui_get_display_window
+	gimp_ui_get_progress_window
+	gimp_window_set_transient
+	gimp_window_set_transient_for_display
+	gimp_zoom_preview_get_drawable
+	gimp_zoom_preview_get_factor
+	gimp_zoom_preview_get_source
+	gimp_zoom_preview_get_type
+	gimp_zoom_preview_new

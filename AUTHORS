@@ -18,7 +18,6 @@ This file is generated from authors.xml, do not edit it directly.
   Xavier Bouchoux
   Roberto Boyd
   Stanislav Brabec
-  Robert Brady
   Hans Breuer
   Simon Budig
   João S. O. Bueno Calligaris
@@ -30,7 +29,6 @@ This file is generated from authors.xml, do not edit it directly.
   George J. Carrette
   Sean Cier
   Winston Chang
-  Kenneth Christiansen
   Zbigniew Chyla
   Branko Collin
   Ed Connel
@@ -39,7 +37,7 @@ This file is generated from authors.xml, do not edit it directly.
   Jay Cox
   Kevin Cozens
   Brian Degenhardt
-  Gert Dewit
+  Karine Delvare
   Andreas Dilger
   Austin Donnelly
   Scott Draves
@@ -49,13 +47,11 @@ This file is generated from authors.xml, do not edit it directly.
   Morton Eriksen
   Larry Ewing
   Nick Fetchak
-  Valek Filippov
   Shlomi Fish
   David Forsyth
   Raphael Francois
   Jochen Friedrich
   Jordi Gay
-  Sami Gerdt
   Jim Geuther
   Graeme Gill
   Pedro Gimeno
@@ -67,8 +63,6 @@ This file is generated from authors.xml, do not edit it directly.
   Pavel Grinfeld
   Dov Grobgeld
   Michael Hammel
-  Henrik Hansen
-  Ville Hautamäki
   James Henstridge
   Eric Hernes
   David Hodson
@@ -76,12 +70,9 @@ This file is generated from authors.xml, do not edit it directly.
   Wolfgang Hofer
   Alan Horkan
   Jan Hubička
-  Andreas Hyden
   Ben Jackson
-  Krzysztof Jakubowski
   Simon Janes
   Tim Janik
-  Fellmann Joaquim
   Róman Joost
   Geert Jordaens
   Andrew Kieschnick
@@ -118,7 +109,6 @@ This file is generated from authors.xml, do not edit it directly.
   Torsten Martinsen
   Gordon Matzigkeit
   Gregory McLean
-  Daniele Medri
   Federico Mena Quintero
   Jim Meyer
   James Mitchell
@@ -127,7 +117,6 @@ This file is generated from authors.xml, do not edit it directly.
   Adam D Moss
   Balazs Nagy
   Yukihiro Nakai
-  Sung-Hyun Nam
   Shuji Narazaki
   Felix Natter
   Michael Natterer
@@ -138,29 +127,25 @@ This file is generated from authors.xml, do not edit it directly.
   Tim Newsome
   Erik Nygren
   Miles O'Neal
-  David Odin 
+  David Odin
   Robert Ögren
   Thom van Os
   Garry R. Osgood
   Alan Paeth
   Jay Painter
-  Sergey Panov
   Ville Pätsi
+  Akkana Peck
   Asbjorn Pettersen
   Mike Phillips
-  Artur Polaczynski
   Ari Pollak
-  Karine Proot
   Raphaël Quinet
   Tom Rathborne
-  Vincent Renardias
   Jens Restemeier
   Maurits Rijk
   Daniel Risacher
   James Robinson
   Guillermo S. Romero
   Tim Rowley
-  Pablo Saratxaga
   Mike Schaeffer
   John Schlag
   Norbert Schmitz
@@ -178,7 +163,6 @@ This file is generated from authors.xml, do not edit it directly.
   Jakub Steiner
   Nathan Summers
   Mike Sweet
-  Yuri Syrota
   Eiichi Takamori
   Tristan Tarrant
   Michael Taylor

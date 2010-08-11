@@ -82,6 +82,18 @@ static void     gimp_pattern_select_popup_open      (PatternSelect *pattern_sel,
                                                      gint           y);
 static void     gimp_pattern_select_popup_close     (PatternSelect *pattern_sel);
 
+static void     gimp_pattern_select_drag_data_received (GtkWidget        *preview,
+                                                        GdkDragContext   *context,
+                                                        gint              x,
+                                                        gint              y,
+                                                        GtkSelectionData *selection,
+                                                        guint             info,
+                                                        guint             time,
+                                                        GtkWidget        *widget);
+
+
+static const GtkTargetEntry target = { "application/x-gimp-pattern-name", 0 };
+
 
 /**
  * gimp_pattern_select_widget_new:
@@ -121,7 +133,7 @@ gimp_pattern_select_widget_new (const gchar            *title,
   hbox = gtk_hbox_new (FALSE, 6);
 
   frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME(frame), GTK_SHADOW_ETCHED_IN);
+  gtk_frame_set_shadow_type (GTK_FRAME(frame), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
@@ -132,12 +144,23 @@ gimp_pattern_select_widget_new (const gchar            *title,
   gtk_container_add (GTK_CONTAINER (frame), pattern_sel->preview);
   gtk_widget_show (pattern_sel->preview);
 
-  g_signal_connect_swapped (pattern_sel->preview, "size_allocate",
+  g_signal_connect_swapped (pattern_sel->preview, "size-allocate",
                             G_CALLBACK (gimp_pattern_select_preview_resize),
                             pattern_sel);
   g_signal_connect (pattern_sel->preview, "event",
                     G_CALLBACK (gimp_pattern_select_preview_events),
                     pattern_sel);
+
+  gtk_drag_dest_set (GTK_WIDGET (pattern_sel->preview),
+                     GTK_DEST_DEFAULT_HIGHLIGHT |
+                     GTK_DEST_DEFAULT_MOTION |
+                     GTK_DEST_DEFAULT_DROP,
+                     &target, 1,
+                     GDK_ACTION_COPY);
+
+  g_signal_connect (pattern_sel->preview, "drag-data-received",
+                    G_CALLBACK (gimp_pattern_select_drag_data_received),
+                    hbox);
 
   pattern_sel->button = gtk_button_new_with_mnemonic (_("_Browse..."));
   gtk_box_pack_start (GTK_BOX (hbox), pattern_sel->button, TRUE, TRUE, 0);
@@ -463,4 +486,42 @@ gimp_pattern_select_popup_close (PatternSelect *pattern_sel)
       gtk_widget_destroy (pattern_sel->popup);
       pattern_sel->popup = NULL;
     }
+}
+
+static void
+gimp_pattern_select_drag_data_received (GtkWidget        *preview,
+                                        GdkDragContext   *context,
+                                        gint              x,
+                                        gint              y,
+                                        GtkSelectionData *selection,
+                                        guint             info,
+                                        guint             time,
+                                        GtkWidget        *widget)
+{
+  gchar *str;
+
+  if ((selection->format != 8) || (selection->length < 1))
+    {
+      g_warning ("Received invalid pattern data!");
+      return;
+    }
+
+  str = g_strndup ((const gchar *) selection->data, selection->length);
+
+  if (g_utf8_validate (str, -1, NULL))
+    {
+      gint     pid;
+      gpointer unused;
+      gint     name_offset = 0;
+
+      if (sscanf (str, "%i:%p:%n", &pid, &unused, &name_offset) >= 2 &&
+          pid == gimp_getpid () && name_offset > 0)
+        {
+          gchar *name = str + name_offset;
+
+          gimp_pattern_select_widget_set (widget, name);
+        }
+    }
+
+  g_free (str);
 }

@@ -81,7 +81,8 @@ sub generate {
 	my @inargs = @{$proc->{inargs}} if exists $proc->{inargs};
 	my @outargs = @{$proc->{outargs}} if exists $proc->{outargs};
 
-	my $funcname = "gimp_$name"; my $wrapped = ""; my %usednames;
+	my $funcname = "gimp_$name"; my $wrapped = ""; my $attribute = "";
+	my %usednames;
 	my $retdesc = "";
 
 	if ($proc->{deprecated} && !$out->{deprecated}) {
@@ -133,6 +134,7 @@ sub generate {
 	    my $id = exists $arg->{id_func} || $_->{type} =~ /guide/;
 
 	    $wrapped = "_" if exists $_->{wrap};
+	    $attribute = " G_GNUC_INTERNAL" if exists $_->{wrap};
 
 	    $usednames{$_->{name}}++;
 
@@ -198,6 +200,7 @@ sub generate {
 		$return_marshal = "" unless $once++;
 
 		$wrapped = "_" if exists $_->{wrap};
+		$attribute = " G_GNUC_INTERNAL" if exists $_->{wrap};
 
 		$_->{libname} = exists $usednames{$_->{name}} ? "ret_$_->{name}"
 							      : $_->{name};
@@ -439,7 +442,7 @@ CODE
 	# Our function prototype for the headers
 	(my $hrettype = $rettype) =~ s/ //g;
 
-	my $proto = "$hrettype $wrapped$funcname ($arglist);\n";
+	my $proto = "$hrettype $wrapped$funcname ($arglist)$attribute;\n";
 	$proto =~ s/ +/ /g;
 
         push @{$out->{protos}}, $proto;
@@ -461,14 +464,18 @@ CODE
 		$procdesc = &desc_wrap("This procedure is deprecated!");
 	    }
 	    else {
+		my $underscores = $proc->{deprecated};
+		$underscores =~ s/-/_/g;
+
 		$procdesc = &desc_wrap("This procedure is deprecated! " .
-				       "Use $proc->{deprecated}() instead.");
+				       "Use $underscores() instead.");
 	    }
 	}
 	else {
 	    $procdesc = &desc_wrap($proc->{blurb}) . "\n *\n" .
 			&desc_wrap($proc->{help});
 	}
+
 	$out->{code} .= <<CODE;
 
 /**
@@ -484,7 +491,7 @@ $wrapped$funcname ($clist)
   GimpParam *return_vals;
   gint nreturn_vals;$return_args
 
-  return_vals = gimp_run_procedure ("$funcname",
+  return_vals = gimp_run_procedure ("gimp-$proc->{canonical_name}",
 				    \&nreturn_vals,$argpass
 				    GIMP_PDB_END);
 
@@ -601,6 +608,9 @@ LGPL
 
 		foreach (@args) {
 		    $space = rindex($_, ' ');
+                    if ($space > 0 && substr($_, $space - 1, 1) eq ')') {
+                        $space = rindex($_, ' ', $space - 1)
+                    }
 		    my $len = $longest[2] - $space + 1;
 
 		    $len -= scalar @{[ /\*/g ]};

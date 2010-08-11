@@ -18,12 +18,12 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -40,7 +40,6 @@
 
 GList *
 gimp_gradient_load (const gchar  *filename,
-                    gboolean      stingy_memory_use,
                     GError      **error)
 {
   GimpGradient        *gradient;
@@ -56,7 +55,7 @@ gimp_gradient_load (const gchar  *filename,
   g_return_val_if_fail (g_path_is_absolute (filename), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  file = fopen (filename, "rb");
+  file = g_fopen (filename, "rb");
   if (!file)
     {
       g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_OPEN,
@@ -76,7 +75,9 @@ gimp_gradient_load (const gchar  *filename,
       return NULL;
     }
 
-  gradient = g_object_new (GIMP_TYPE_GRADIENT, NULL);
+  gradient = g_object_new (GIMP_TYPE_GRADIENT,
+                           "mime-type", "application/x-gimp-gradient",
+                           NULL);
 
   fgets (line, 1024, file);
   if (! strncmp (line, "Name: ", strlen ("Name: ")))
@@ -95,16 +96,10 @@ gimp_gradient_load (const gchar  *filename,
     }
   else /* old gradient format */
     {
-      gchar *basename;
-      gchar *utf8;
+      gchar *name = g_filename_display_basename (filename);
 
-      basename = g_path_get_basename (filename);
-
-      utf8 = g_filename_to_utf8 (basename, -1, NULL, NULL, NULL);
-      g_free (basename);
-
-      gimp_object_set_name (GIMP_OBJECT (gradient), utf8);
-      g_free (utf8);
+      gimp_object_set_name (GIMP_OBJECT (gradient), name);
+      g_free (name);
     }
 
   num_segments = atoi (line);
@@ -169,9 +164,8 @@ gimp_gradient_load (const gchar  *filename,
         }
       else
         {
-          g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_READ,
-                       _("Corrupt segment %d in gradient file '%s'."),
-                       i, gimp_filename_to_utf8 (filename));
+	  g_message (_("Corrupt segment %d in gradient file '%s'."),
+		     i, gimp_filename_to_utf8 (filename));
           g_object_unref (gradient);
           fclose (file);
           return NULL;
@@ -255,7 +249,6 @@ static const GMarkupParser markup_parser =
 
 GList *
 gimp_gradient_load_svg (const gchar  *filename,
-                        gboolean      stingy_memory_use,
                         GError      **error)
 {
   GimpXmlParser *xml_parser;
@@ -332,7 +325,8 @@ svg_parser_start_element (GMarkupParseContext  *context,
         }
 
       parser->gradient = g_object_new (GIMP_TYPE_GRADIENT,
-                                       "name", name,
+                                       "name",      name,
+                                       "mime-type", "image/svg+xml",
                                        NULL);
     }
   else if (parser->gradient && strcmp (element_name, "stop") == 0)

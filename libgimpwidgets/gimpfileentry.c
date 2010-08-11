@@ -40,60 +40,29 @@ enum
 };
 
 
-static void   gimp_file_entry_class_init      (GimpFileEntryClass *klass);
-static void   gimp_file_entry_init            (GimpFileEntry      *entry);
+static void   gimp_file_entry_destroy         (GtkObject     *object);
 
-static void   gimp_file_entry_destroy         (GtkObject          *object);
+static void   gimp_file_entry_entry_activate  (GtkWidget     *widget,
+                                               GimpFileEntry *entry);
+static gint   gimp_file_entry_entry_focus_out (GtkWidget     *widget,
+                                               GdkEvent      *event,
+                                               GimpFileEntry *entry);
+static void   gimp_file_entry_browse_clicked  (GtkWidget     *widget,
+                                               GimpFileEntry *entry);
+static void   gimp_file_entry_check_filename  (GimpFileEntry *entry);
 
-static void   gimp_file_entry_entry_activate  (GtkWidget          *widget,
-                                               GimpFileEntry      *entry);
-static gint   gimp_file_entry_entry_focus_out (GtkWidget          *widget,
-                                               GdkEvent           *event,
-                                               GimpFileEntry      *entry);
-static void   gimp_file_entry_browse_clicked  (GtkWidget          *widget,
-                                               GimpFileEntry      *entry);
-static void   gimp_file_entry_check_filename  (GimpFileEntry      *entry);
 
+G_DEFINE_TYPE (GimpFileEntry, gimp_file_entry, GTK_TYPE_HBOX);
+
+#define parent_class gimp_file_entry_parent_class
 
 static guint gimp_file_entry_signals[LAST_SIGNAL] = { 0 };
 
-static GtkHBoxClass *parent_class = NULL;
-
-
-GType
-gimp_file_entry_get_type (void)
-{
-  static GType entry_type = 0;
-
-  if (! entry_type)
-    {
-      static const GTypeInfo entry_info =
-      {
-        sizeof (GimpFileEntryClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_file_entry_class_init,
-        NULL,		/* class_finalize */
-        NULL,		/* class_data     */
-        sizeof (GimpFileEntry),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_file_entry_init,
-      };
-
-      entry_type = g_type_register_static (GTK_TYPE_HBOX,
-                                           "GimpFileEntry",
-                                           &entry_info, 0);
-    }
-
-  return entry_type;
-}
 
 static void
 gimp_file_entry_class_init (GimpFileEntryClass *klass)
 {
   GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   /**
    * GimpFileEntry::filename-changed:
@@ -101,7 +70,7 @@ gimp_file_entry_class_init (GimpFileEntryClass *klass)
    * This signal is emitted whenever the user changes the filename.
    **/
   gimp_file_entry_signals[FILENAME_CHANGED] =
-    g_signal_new ("filename_changed",
+    g_signal_new ("filename-changed",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (GimpFileEntryClass, filename_changed),
@@ -140,7 +109,7 @@ gimp_file_entry_init (GimpFileEntry *entry)
   g_signal_connect (entry->entry, "activate",
                     G_CALLBACK (gimp_file_entry_entry_activate),
                     entry);
-  g_signal_connect (entry->entry, "focus_out_event",
+  g_signal_connect (entry->entry, "focus-out-event",
                     G_CALLBACK (gimp_file_entry_entry_focus_out),
                     entry);
 }
@@ -364,6 +333,11 @@ gimp_file_entry_browse_clicked (GtkWidget     *widget,
 
                                      NULL);
 
+	gtk_dialog_set_alternative_button_order (GTK_DIALOG (entry->file_dialog),
+                                                GTK_RESPONSE_OK,
+                                                GTK_RESPONSE_CANCEL,
+                                                -1);
+
       chooser = GTK_FILE_CHOOSER (entry->file_dialog);
 
       gtk_window_set_position (GTK_WINDOW (chooser), GTK_WIN_POS_MOUSE);
@@ -373,7 +347,7 @@ gimp_file_entry_browse_clicked (GtkWidget     *widget,
       g_signal_connect (chooser, "response",
                         G_CALLBACK (gimp_file_entry_chooser_response),
                         entry);
-      g_signal_connect (chooser, "delete_event",
+      g_signal_connect (chooser, "delete-event",
                         G_CALLBACK (gtk_true),
                         NULL);
 

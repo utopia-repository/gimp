@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
@@ -34,6 +35,7 @@ INCLUDES = \
 LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
+	$(libgimpconfig)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
 	$(libgimpmath)		\
@@ -66,4 +68,4 @@ pagecurl-icons.list: $(PAGECURL_IMAGES) Makefile.am
 	  done )
 
 $(srcdir)/pagecurl-icons.h: pagecurl-icons.list
-	gdk-pixbuf-csource --raw --build-list `cat pagecurl-icons.list` > $(@F)
+	$(GDK_PIXBUF_CSOURCE) --raw --build-list `cat pagecurl-icons.list` > $(@F)

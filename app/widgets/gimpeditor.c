@@ -30,10 +30,11 @@
 #include "gimpdocked.h"
 #include "gimpeditor.h"
 #include "gimpdnd.h"
-#include "gimpenumwidgets.h"
 #include "gimpmenufactory.h"
 #include "gimpuimanager.h"
 #include "gimpwidgets-utils.h"
+
+#include "gimp-intl.h"
 
 
 #define DEFAULT_CONTENT_SPACING  2
@@ -47,13 +48,13 @@ enum
   PROP_MENU_FACTORY,
   PROP_MENU_IDENTIFIER,
   PROP_UI_PATH,
-  PROP_POPUP_DATA
+  PROP_POPUP_DATA,
+  PROP_SHOW_NAME,
+  PROP_NAME
 };
 
 
-static void        gimp_editor_class_init        (GimpEditorClass *klass);
-static void        gimp_editor_init              (GimpEditor      *editor);
-static void        gimp_editor_docked_iface_init (GimpDockedInterface *docked_iface);
+static void        gimp_editor_docked_iface_init (GimpDockedInterface *iface);
 
 static GObject   * gimp_editor_constructor       (GType            type,
                                                   guint            n_params,
@@ -70,52 +71,23 @@ static void        gimp_editor_destroy           (GtkObject       *object);
 static void        gimp_editor_style_set         (GtkWidget       *widget,
                                                   GtkStyle        *prev_style);
 
-static GimpUIManager * gimp_editor_get_menu      (GimpDocked      *docked,
-                                                  const gchar    **ui_path,
-                                                  gpointer        *popup_data);
+static GimpUIManager * gimp_editor_get_menu        (GimpDocked      *docked,
+                                                    const gchar    **ui_path,
+                                                    gpointer        *popup_data);
+static gboolean    gimp_editor_has_button_bar      (GimpDocked      *docked);
+static void        gimp_editor_set_show_button_bar (GimpDocked      *docked,
+                                                    gboolean         show);
+static gboolean    gimp_editor_get_show_button_bar (GimpDocked      *docked);
 
-static GtkIconSize gimp_editor_ensure_button_box (GimpEditor      *editor);
+static GtkIconSize gimp_editor_ensure_button_box   (GimpEditor      *editor);
 
 
-static GtkVBoxClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpEditor, gimp_editor, GTK_TYPE_VBOX,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
+                                                gimp_editor_docked_iface_init));
 
+#define parent_class gimp_editor_parent_class
 
-GType
-gimp_editor_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_editor_init,
-      };
-      static const GInterfaceInfo docked_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_editor_docked_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      type = g_type_register_static (GTK_TYPE_VBOX,
-                                     "GimpEditor",
-                                     &info, 0);
-
-      g_type_add_interface_static (type, GIMP_TYPE_DOCKED,
-                                   &docked_iface_info);
-    }
-
-  return type;
-}
 
 static void
 gimp_editor_class_init (GimpEditorClass *klass)
@@ -123,8 +95,6 @@ gimp_editor_class_init (GimpEditorClass *klass)
   GObjectClass   *object_class     = G_OBJECT_CLASS (klass);
   GtkObjectClass *gtk_object_class = GTK_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class     = GTK_WIDGET_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor  = gimp_editor_constructor;
   object_class->set_property = gimp_editor_set_property;
@@ -161,8 +131,21 @@ gimp_editor_class_init (GimpEditorClass *klass)
                                                          G_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT_ONLY));
 
+  g_object_class_install_property (object_class, PROP_SHOW_NAME,
+                                   g_param_spec_boolean ("show-name",
+                                                         NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_NAME,
+                                   g_param_spec_string ("name",
+                                                        NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_WRITABLE |
+                                                        G_PARAM_CONSTRUCT));
+
   gtk_widget_class_install_style_property (widget_class,
-                                           g_param_spec_int ("content_spacing",
+                                           g_param_spec_int ("content-spacing",
                                                              NULL, NULL,
                                                              0,
                                                              G_MAXINT,
@@ -170,7 +153,7 @@ gimp_editor_class_init (GimpEditorClass *klass)
                                                              G_PARAM_READABLE));
 
   gtk_widget_class_install_style_property (widget_class,
-                                           g_param_spec_int ("button_spacing",
+                                           g_param_spec_int ("button-spacing",
                                                              NULL, NULL,
                                                              0,
                                                              G_MAXINT,
@@ -178,7 +161,7 @@ gimp_editor_class_init (GimpEditorClass *klass)
                                                              G_PARAM_READABLE));
 
   gtk_widget_class_install_style_property (widget_class,
-                                           g_param_spec_enum ("button_icon_size",
+                                           g_param_spec_enum ("button-icon-size",
                                                               NULL, NULL,
                                                               GTK_TYPE_ICON_SIZE,
                                                               DEFAULT_BUTTON_ICON_SIZE,
@@ -194,12 +177,26 @@ gimp_editor_init (GimpEditor *editor)
   editor->ui_path         = NULL;
   editor->popup_data      = editor;
   editor->button_box      = NULL;
+  editor->show_button_bar = TRUE;
+
+  editor->name_label = g_object_new (GTK_TYPE_LABEL,
+                                     "xalign",    0.0,
+                                     "yalign",    0.5,
+                                     "ellipsize", PANGO_ELLIPSIZE_END,
+                                     NULL);
+  gimp_label_set_attributes (GTK_LABEL (editor->name_label),
+                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+                             -1);
+  gtk_box_pack_start (GTK_BOX (editor), editor->name_label, FALSE, FALSE, 0);
 }
 
 static void
-gimp_editor_docked_iface_init (GimpDockedInterface *docked_iface)
+gimp_editor_docked_iface_init (GimpDockedInterface *iface)
 {
-  docked_iface->get_menu = gimp_editor_get_menu;
+  iface->get_menu            = gimp_editor_get_menu;
+  iface->has_button_bar      = gimp_editor_has_button_bar;
+  iface->set_show_button_bar = gimp_editor_set_show_button_bar;
+  iface->get_show_button_bar = gimp_editor_get_show_button_bar;
 }
 
 static GObject *
@@ -251,6 +248,12 @@ gimp_editor_set_property (GObject      *object,
     case PROP_POPUP_DATA:
       editor->popup_data = g_value_get_pointer (value);
       break;
+    case PROP_SHOW_NAME:
+      g_object_set_property (G_OBJECT (editor->name_label), "visible", value);
+      break;
+    case PROP_NAME:
+      gimp_editor_set_name (editor, g_value_get_string (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -278,6 +281,9 @@ gimp_editor_get_property (GObject    *object,
       break;
     case PROP_POPUP_DATA:
       g_value_set_pointer (value, editor->popup_data);
+      break;
+    case PROP_SHOW_NAME:
+      g_object_get_property (G_OBJECT (editor->name_label), "visible", value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -327,7 +333,7 @@ gimp_editor_style_set (GtkWidget *widget,
   if (GTK_WIDGET_CLASS (parent_class)->style_set)
     GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 
-  gtk_widget_style_get (widget, "content_spacing",  &content_spacing, NULL);
+  gtk_widget_style_get (widget, "content-spacing",  &content_spacing, NULL);
 
   gtk_box_set_spacing (GTK_BOX (widget), content_spacing);
 
@@ -348,14 +354,47 @@ gimp_editor_get_menu (GimpDocked   *docked,
   return editor->ui_manager;
 }
 
+
+static gboolean
+gimp_editor_has_button_bar (GimpDocked *docked)
+{
+  GimpEditor *editor = GIMP_EDITOR (docked);
+
+  return editor->button_box != NULL;
+}
+
+static void
+gimp_editor_set_show_button_bar (GimpDocked *docked,
+                                 gboolean    show)
+{
+  GimpEditor *editor = GIMP_EDITOR (docked);
+
+  if (show != editor->show_button_bar)
+    {
+      editor->show_button_bar = show;
+
+      if (editor->button_box)
+        {
+          if (show)
+            gtk_widget_show (editor->button_box);
+          else
+            gtk_widget_hide (editor->button_box);
+        }
+    }
+}
+
+static gboolean
+gimp_editor_get_show_button_bar (GimpDocked *docked)
+{
+  GimpEditor *editor = GIMP_EDITOR (docked);
+
+  return editor->show_button_bar;
+}
+
 GtkWidget *
 gimp_editor_new (void)
 {
-  GimpEditor *editor;
-
-  editor = g_object_new (GIMP_TYPE_EDITOR, NULL);
-
-  return GTK_WIDGET (editor);
+  return g_object_new (GIMP_TYPE_EDITOR, NULL);
 }
 
 void
@@ -429,7 +468,9 @@ gimp_editor_add_button (GimpEditor  *editor,
 
   button_icon_size = gimp_editor_ensure_button_box (editor);
 
-  button = gimp_button_new ();
+  button = g_object_new (GIMP_TYPE_BUTTON,
+                         "use-stock", TRUE,
+                         NULL);
   gtk_box_pack_start (GTK_BOX (editor->button_box), button, TRUE, TRUE, 0);
   gtk_widget_show (button);
 
@@ -442,7 +483,7 @@ gimp_editor_add_button (GimpEditor  *editor,
 		      callback_data);
 
   if (extended_callback)
-    g_signal_connect (button, "extended_clicked",
+    g_signal_connect (button, "extended-clicked",
 		      extended_callback,
 		      callback_data);
 
@@ -574,7 +615,9 @@ gimp_editor_add_action_button (GimpEditor  *editor,
     }
   else
     {
-      button = gimp_button_new ();
+      button = g_object_new (GIMP_TYPE_BUTTON,
+                             "use-stock", TRUE,
+                             NULL);
     }
 
   gtk_action_connect_proxy (action, button);
@@ -629,9 +672,9 @@ gimp_editor_add_action_button (GimpEditor  *editor,
 
               if (ext_tooltip)
                 {
-                  gchar *tmp = g_strconcat (tooltip, "\n",
+                  gchar *tmp = g_strconcat (tooltip, "\n(",
                                             gimp_get_mod_string (mod_mask),
-                                            "  ", ext_tooltip, NULL);
+                                            ")  ", ext_tooltip, NULL);
 
                   g_free (ext_tooltip);
                   g_free (tooltip);
@@ -650,7 +693,7 @@ gimp_editor_add_action_button (GimpEditor  *editor,
       g_object_set_data_full (G_OBJECT (button), "extended-actions", extended,
                               (GDestroyNotify) gimp_editor_button_extended_actions_free);
 
-      g_signal_connect (button, "extended_clicked",
+      g_signal_connect (button, "extended-clicked",
                         G_CALLBACK (gimp_editor_button_extended_clicked),
                         NULL);
     }
@@ -661,6 +704,25 @@ gimp_editor_add_action_button (GimpEditor  *editor,
   g_free (tooltip);
 
   return button;
+}
+
+void
+gimp_editor_set_show_name (GimpEditor *editor,
+                           gboolean    show)
+{
+  g_return_if_fail (GIMP_IS_EDITOR (editor));
+
+  g_object_set (editor, "show-name", show, NULL);
+}
+
+void
+gimp_editor_set_name (GimpEditor  *editor,
+                      const gchar *name)
+{
+  g_return_if_fail (GIMP_IS_EDITOR (editor));
+
+  gtk_label_set_text (GTK_LABEL (editor->name_label),
+                      name ? name : _("(None)"));
 }
 
 void
@@ -676,8 +738,8 @@ gimp_editor_set_box_style (GimpEditor *editor,
   g_return_if_fail (GTK_IS_BOX (box));
 
   gtk_widget_style_get (GTK_WIDGET (editor),
-                        "button_icon_size", &button_icon_size,
-			"button_spacing",   &button_spacing,
+                        "button-icon-size", &button_icon_size,
+			"button-spacing",   &button_spacing,
 			NULL);
 
   gtk_box_set_spacing (box, button_spacing);
@@ -716,8 +778,8 @@ gimp_editor_ensure_button_box (GimpEditor *editor)
   gint         button_spacing;
 
   gtk_widget_style_get (GTK_WIDGET (editor),
-                        "button_icon_size", &button_icon_size,
-                        "button_spacing",   &button_spacing,
+                        "button-icon-size", &button_icon_size,
+                        "button-spacing",   &button_spacing,
                         NULL);
 
   if (! editor->button_box)
@@ -725,7 +787,9 @@ gimp_editor_ensure_button_box (GimpEditor *editor)
       editor->button_box = gtk_hbox_new (TRUE, button_spacing);
       gtk_box_pack_end (GTK_BOX (editor), editor->button_box, FALSE, FALSE, 0);
       gtk_box_reorder_child (GTK_BOX (editor), editor->button_box, 0);
-      gtk_widget_show (editor->button_box);
+
+      if (editor->show_button_bar)
+        gtk_widget_show (editor->button_box);
     }
 
   return button_icon_size;

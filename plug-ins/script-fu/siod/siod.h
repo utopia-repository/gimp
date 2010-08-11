@@ -5,7 +5,7 @@
  *        PARADIGM ASSOCIATES INCORPORATED, CAMBRIDGE, MASSACHUSETTS.       *
  *        See the source file SLIB.C for more information.                  *
 
- $Id: siod.h 2625 1999-09-23 23:42:38Z yosh $
+ $Id: siod.h,v 1.5 2005/12/17 00:37:52 kcozens Exp $
 
  */
 #ifndef __SIOD_H__

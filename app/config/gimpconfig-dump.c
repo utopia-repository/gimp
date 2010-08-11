@@ -31,6 +31,7 @@
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #ifdef G_OS_WIN32
 #include "libgimpbase/gimpwin32-io.h"
@@ -38,12 +39,7 @@
 
 #include "config-types.h"
 
-#include "gimpconfig.h"
 #include "gimpconfig-dump.h"
-#include "gimpconfig-params.h"
-#include "gimpconfig-serialize.h"
-#include "gimpconfig-types.h"
-#include "gimpconfigwriter.h"
 #include "gimprc.h"
 
 
@@ -133,10 +129,10 @@ dump_gimprc_system (GimpConfig       *rc,
       GParamSpec *prop_spec = property_specs[i];
       gchar      *comment;
 
-      if (! (prop_spec->flags & GIMP_PARAM_SERIALIZE))
+      if (! (prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE))
         continue;
 
-      if (prop_spec->flags & GIMP_PARAM_IGNORE)
+      if (prop_spec->flags & GIMP_CONFIG_PARAM_IGNORE)
         continue;
 
       comment = dump_describe_param (prop_spec);
@@ -265,10 +261,10 @@ dump_gimprc_manpage (GimpConfig       *rc,
       GParamSpec *prop_spec = property_specs[i];
       gchar      *desc;
 
-      if (! (prop_spec->flags & GIMP_PARAM_SERIALIZE))
+      if (! (prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE))
         continue;
 
-      if (prop_spec->flags & GIMP_PARAM_IGNORE)
+      if (prop_spec->flags & GIMP_CONFIG_PARAM_IGNORE)
         continue;
 
       write (fd, ".TP\n", strlen (".TP\n"));
@@ -356,15 +352,15 @@ dump_describe_param (GParamSpec *param_spec)
 	"megabytes or gigabytes. If no suffix is specified the size defaults "
 	"to being specified in kilobytes.";
     }
-  else if (g_type_is_a (type, GIMP_TYPE_PATH))
+  else if (g_type_is_a (type, GIMP_TYPE_CONFIG_PATH))
     {
-      switch (gimp_param_spec_path_type (param_spec))
+      switch (gimp_param_spec_config_path_type (param_spec))
 	{
-	case GIMP_PARAM_PATH_FILE:
+	case GIMP_CONFIG_PATH_FILE:
 	  values = "This is a single filename.";
 	  break;
 
-	case GIMP_PARAM_PATH_FILE_LIST:
+	case GIMP_CONFIG_PATH_FILE_LIST:
 	  switch (G_SEARCHPATH_SEPARATOR)
 	    {
 	    case ':':
@@ -379,11 +375,11 @@ dump_describe_param (GParamSpec *param_spec)
 	    }
 	  break;
 
-	case GIMP_PARAM_PATH_DIR:
+	case GIMP_CONFIG_PATH_DIR:
 	  values = "This is a single folder.";
 	  break;
 
-	case GIMP_PARAM_PATH_DIR_LIST:
+	case GIMP_CONFIG_PATH_DIR_LIST:
 	  switch (G_SEARCHPATH_SEPARATOR)
 	    {
 	    case ':':

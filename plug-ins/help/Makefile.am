@@ -1,7 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
+libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 
 if OS_WIN32
 mwindows = -mwindows
@@ -30,7 +32,9 @@ INCLUDES = \
 
 LDADD = \
 	$(libgimp)	\
+	$(libgimpcolor)	\
 	$(libgimpbase)	\
+	$(libgimpmath)	\
 	$(GLIB_LIBS)	\
 	$(RT_LIBS)	\
 	$(INTLLIBS)
@@ -46,4 +50,6 @@ gimp_help_lookup_SOURCES = \
 	help.h		\
 	gimp-help-lookup.c
 
-gimp_help_lookup_LDADD = $(GLIB_LIBS)
+gimp_help_lookup_LDADD = \
+	$(libgimpbase)	\
+	$(GLIB_LIBS)

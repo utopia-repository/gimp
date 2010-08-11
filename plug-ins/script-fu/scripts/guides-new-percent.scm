@@ -1,6 +1,7 @@
 ;; -*-scheme-*-
 
-;; Alan Horkan 2004.  No copyright.  Public Domain.
+;; Alan Horkan 2004.  Copyright.  
+;; I'll fix it and license it differntly later if anyone cares to ask
 
 (define (script-fu-guide-new-percent image
 				     drawable
@@ -8,7 +9,6 @@
 				     position)
   (let* ((width (car (gimp-image-width image)))
 	 (height (car (gimp-image-height image))))
-    (gimp-image-undo-group-start image)
 
     (if (= direction 0)
 	(set! position (/ (* height position) 100))
@@ -16,10 +16,9 @@
 
     (if (= direction 0) 
 	;; convert position to pixel 
-	(if (<= position height) (gimp-image-add-hguide image position))
-	(if (<= position width) (gimp-image-add-vguide image position)))
+	(if (< position height) (gimp-image-add-hguide image position))
+	(if (< position width) (gimp-image-add-vguide image position)))
 
-    (gimp-image-undo-group-end image)
     (gimp-displays-flush)))
     
 (script-fu-register "script-fu-guide-new-percent"

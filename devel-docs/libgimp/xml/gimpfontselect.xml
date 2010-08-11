@@ -4,38 +4,35 @@
 
 <refentry id="libgimp-gimpfontselect">
 <refmeta>
-<refentrytitle role="top_of_page">gimpfontselect</refentrytitle>
+<refentrytitle>gimpfontselect</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpfontselect</refname>
-<refpurpose>Functions providing a font selection dialog.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimpfontselect</refname><refpurpose>Functions providing a font selection dialog.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="void">void</link>                (<link linkend="GimpRunFontCallback">*GimpRunFontCallback</link>)              (const <link linkend="gchar">gchar</link> *font_name,
-                                                         <link linkend="gboolean">gboolean</link> dialog_closing,
-                                                         <link linkend="gpointer">gpointer</link> user_data);
-const <link linkend="gchar">gchar</link>*        <link linkend="gimp-font-select-new">gimp_font_select_new</link>                (const <link linkend="gchar">gchar</link> *title,
-                                                         const <link linkend="gchar">gchar</link> *font_name,
-                                                         <link linkend="GimpRunFontCallback">GimpRunFontCallback</link> callback,
-                                                         <link linkend="gpointer">gpointer</link> data);
-<link linkend="void">void</link>                <link linkend="gimp-font-select-destroy">gimp_font_select_destroy</link>            (const <link linkend="gchar">gchar</link> *font_callback);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-fonts-popup">gimp_fonts_popup</link>                    (const <link linkend="gchar">gchar</link> *font_callback,
-                                                         const <link linkend="gchar">gchar</link> *popup_title,
-                                                         const <link linkend="gchar">gchar</link> *initial_font);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-fonts-close-popup">gimp_fonts_close_popup</link>              (const <link linkend="gchar">gchar</link> *font_callback);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-fonts-set-popup">gimp_fonts_set_popup</link>                (const <link linkend="gchar">gchar</link> *font_callback,
-                                                         const <link linkend="gchar">gchar</link> *font_name);
+<link linkend="void">void</link>        (<link linkend="GimpRunFontCallback">*GimpRunFontCallback</link>)          (const <link linkend="gchar">gchar</link> *font_name,
+                                             <link linkend="gboolean">gboolean</link> dialog_closing,
+                                             <link linkend="gpointer">gpointer</link> user_data);
+const <link linkend="gchar">gchar</link>* <link linkend="gimp-font-select-new">gimp_font_select_new</link>           (const <link linkend="gchar">gchar</link> *title,
+                                             const <link linkend="gchar">gchar</link> *font_name,
+                                             <link linkend="GimpRunFontCallback">GimpRunFontCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data);
+<link linkend="void">void</link>        <link linkend="gimp-font-select-destroy">gimp_font_select_destroy</link>        (const <link linkend="gchar">gchar</link> *font_callback);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-fonts-popup">gimp_fonts_popup</link>                (const <link linkend="gchar">gchar</link> *font_callback,
+                                             const <link linkend="gchar">gchar</link> *popup_title,
+                                             const <link linkend="gchar">gchar</link> *initial_font);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-fonts-close-popup">gimp_fonts_close_popup</link>          (const <link linkend="gchar">gchar</link> *font_callback);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-fonts-set-popup">gimp_fonts_set_popup</link>            (const <link linkend="gchar">gchar</link> *font_callback,
+                                             const <link linkend="gchar">gchar</link> *font_name);
 </synopsis>
 </refsynopsisdiv>
 
@@ -47,20 +44,20 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-font-select
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Functions providing a font selection dialog.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpRunFontCallback" role="function"/>GimpRunFontCallback ()</title>
-<indexterm><primary>GimpRunFontCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunFontCallback)              (const <link linkend="gchar">gchar</link> *font_name,
-                                                         <link linkend="gboolean">gboolean</link> dialog_closing,
-                                                         <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<title><anchor id="GimpRunFontCallback"/>GimpRunFontCallback ()</title>
+<indexterm><primary>GimpRunFontCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpRunFontCallback)          (const <link linkend="gchar">gchar</link> *font_name,
+                                             <link linkend="gboolean">gboolean</link> dialog_closing,
+                                             <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -77,11 +74,11 @@ Functions providing a font selection dialog.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-font-select-new" role="function"/>gimp_font_select_new ()</title>
-<indexterm><primary>gimp_font_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_font_select_new                (const <link linkend="gchar">gchar</link> *title,
-                                                         const <link linkend="gchar">gchar</link> *font_name,
-                                                         <link linkend="GimpRunFontCallback">GimpRunFontCallback</link> callback,
-                                                         <link linkend="gpointer">gpointer</link> data);</programlisting>
+<title><anchor id="gimp-font-select-new"/>gimp_font_select_new ()</title>
+<indexterm><primary>gimp_font_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_font_select_new           (const <link linkend="gchar">gchar</link> *title,
+                                             const <link linkend="gchar">gchar</link> *font_name,
+                                             <link linkend="GimpRunFontCallback">GimpRunFontCallback</link> callback,
+                                             <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -103,8 +100,8 @@ Functions providing a font selection dialog.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-font-select-destroy" role="function"/>gimp_font_select_destroy ()</title>
-<indexterm><primary>gimp_font_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_font_select_destroy            (const <link linkend="gchar">gchar</link> *font_callback);</programlisting>
+<title><anchor id="gimp-font-select-destroy"/>gimp_font_select_destroy ()</title>
+<indexterm><primary>gimp_font_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_font_select_destroy        (const <link linkend="gchar">gchar</link> *font_callback);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -115,10 +112,10 @@ Functions providing a font selection dialog.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-fonts-popup" role="function"/>gimp_fonts_popup ()</title>
-<indexterm><primary>gimp_fonts_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_fonts_popup                    (const <link linkend="gchar">gchar</link> *font_callback,
-                                                         const <link linkend="gchar">gchar</link> *popup_title,
-                                                         const <link linkend="gchar">gchar</link> *initial_font);</programlisting>
+<title><anchor id="gimp-fonts-popup"/>gimp_fonts_popup ()</title>
+<indexterm><primary>gimp_fonts_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_fonts_popup                (const <link linkend="gchar">gchar</link> *font_callback,
+                                             const <link linkend="gchar">gchar</link> *popup_title,
+                                             const <link linkend="gchar">gchar</link> *initial_font);</programlisting>
 <para>
 Invokes the Gimp font selection.
 </para>
@@ -140,8 +137,8 @@ This procedure popups the font selection dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-fonts-close-popup" role="function"/>gimp_fonts_close_popup ()</title>
-<indexterm><primary>gimp_fonts_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_fonts_close_popup              (const <link linkend="gchar">gchar</link> *font_callback);</programlisting>
+<title><anchor id="gimp-fonts-close-popup"/>gimp_fonts_close_popup ()</title>
+<indexterm><primary>gimp_fonts_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_fonts_close_popup          (const <link linkend="gchar">gchar</link> *font_callback);</programlisting>
 <para>
 Popdown the Gimp font selection.
 </para>
@@ -157,9 +154,9 @@ This procedure closes an opened font selection dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-fonts-set-popup" role="function"/>gimp_fonts_set_popup ()</title>
-<indexterm><primary>gimp_fonts_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_fonts_set_popup                (const <link linkend="gchar">gchar</link> *font_callback,
-                                                         const <link linkend="gchar">gchar</link> *font_name);</programlisting>
+<title><anchor id="gimp-fonts-set-popup"/>gimp_fonts_set_popup ()</title>
+<indexterm><primary>gimp_fonts_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_fonts_set_popup            (const <link linkend="gchar">gchar</link> *font_callback,
+                                             const <link linkend="gchar">gchar</link> *font_name);</programlisting>
 <para>
 Sets the current font selection in a popup.
 </para>

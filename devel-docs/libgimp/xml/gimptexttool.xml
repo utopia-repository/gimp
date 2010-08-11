@@ -4,74 +4,71 @@
 
 <refentry id="libgimp-gimptexttool">
 <refmeta>
-<refentrytitle role="top_of_page">gimptexttool</refentrytitle>
+<refentrytitle>gimptexttool</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimptexttool</refname>
-<refpurpose>Functions for controlling the text tool.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimptexttool</refname><refpurpose>Functions for controlling the text tool.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="gint32">gint32</link>              <link linkend="gimp-text-fontname">gimp_text_fontname</link>                  (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="gdouble">gdouble</link> x,
-                                                         <link linkend="gdouble">gdouble</link> y,
-                                                         const <link linkend="gchar">gchar</link> *text,
-                                                         <link linkend="gint">gint</link> border,
-                                                         <link linkend="gboolean">gboolean</link> antialias,
-                                                         <link linkend="gdouble">gdouble</link> size,
-                                                         <link linkend="GimpSizeType">GimpSizeType</link> size_type,
-                                                         const <link linkend="gchar">gchar</link> *fontname);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-text-get-extents-fontname">gimp_text_get_extents_fontname</link>      (const <link linkend="gchar">gchar</link> *text,
-                                                         <link linkend="gdouble">gdouble</link> size,
-                                                         <link linkend="GimpSizeType">GimpSizeType</link> size_type,
-                                                         const <link linkend="gchar">gchar</link> *fontname,
-                                                         <link linkend="gint">gint</link> *width,
-                                                         <link linkend="gint">gint</link> *height,
-                                                         <link linkend="gint">gint</link> *ascent,
-                                                         <link linkend="gint">gint</link> *descent);
-<link linkend="gint32">gint32</link>              <link linkend="gimp-text">gimp_text</link>                           (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="gdouble">gdouble</link> x,
-                                                         <link linkend="gdouble">gdouble</link> y,
-                                                         const <link linkend="gchar">gchar</link> *text,
-                                                         <link linkend="gint">gint</link> border,
-                                                         <link linkend="gboolean">gboolean</link> antialias,
-                                                         <link linkend="gdouble">gdouble</link> size,
-                                                         <link linkend="GimpSizeType">GimpSizeType</link> size_type,
-                                                         const <link linkend="gchar">gchar</link> *foundry,
-                                                         const <link linkend="gchar">gchar</link> *family,
-                                                         const <link linkend="gchar">gchar</link> *weight,
-                                                         const <link linkend="gchar">gchar</link> *slant,
-                                                         const <link linkend="gchar">gchar</link> *set_width,
-                                                         const <link linkend="gchar">gchar</link> *spacing,
-                                                         const <link linkend="gchar">gchar</link> *registry,
-                                                         const <link linkend="gchar">gchar</link> *encoding);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-text-get-extents">gimp_text_get_extents</link>               (const <link linkend="gchar">gchar</link> *text,
-                                                         <link linkend="gdouble">gdouble</link> size,
-                                                         <link linkend="GimpSizeType">GimpSizeType</link> size_type,
-                                                         const <link linkend="gchar">gchar</link> *foundry,
-                                                         const <link linkend="gchar">gchar</link> *family,
-                                                         const <link linkend="gchar">gchar</link> *weight,
-                                                         const <link linkend="gchar">gchar</link> *slant,
-                                                         const <link linkend="gchar">gchar</link> *set_width,
-                                                         const <link linkend="gchar">gchar</link> *spacing,
-                                                         const <link linkend="gchar">gchar</link> *registry,
-                                                         const <link linkend="gchar">gchar</link> *encoding,
-                                                         <link linkend="gint">gint</link> *width,
-                                                         <link linkend="gint">gint</link> *height,
-                                                         <link linkend="gint">gint</link> *ascent,
-                                                         <link linkend="gint">gint</link> *descent);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-text-fontname">gimp_text_fontname</link>              (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y,
+                                             const <link linkend="gchar">gchar</link> *text,
+                                             <link linkend="gint">gint</link> border,
+                                             <link linkend="gboolean">gboolean</link> antialias,
+                                             <link linkend="gdouble">gdouble</link> size,
+                                             <link linkend="GimpSizeType">GimpSizeType</link> size_type,
+                                             const <link linkend="gchar">gchar</link> *fontname);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-text-get-extents-fontname">gimp_text_get_extents_fontname</link>  (const <link linkend="gchar">gchar</link> *text,
+                                             <link linkend="gdouble">gdouble</link> size,
+                                             <link linkend="GimpSizeType">GimpSizeType</link> size_type,
+                                             const <link linkend="gchar">gchar</link> *fontname,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gint">gint</link> *height,
+                                             <link linkend="gint">gint</link> *ascent,
+                                             <link linkend="gint">gint</link> *descent);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-text">gimp_text</link>                       (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y,
+                                             const <link linkend="gchar">gchar</link> *text,
+                                             <link linkend="gint">gint</link> border,
+                                             <link linkend="gboolean">gboolean</link> antialias,
+                                             <link linkend="gdouble">gdouble</link> size,
+                                             <link linkend="GimpSizeType">GimpSizeType</link> size_type,
+                                             const <link linkend="gchar">gchar</link> *foundry,
+                                             const <link linkend="gchar">gchar</link> *family,
+                                             const <link linkend="gchar">gchar</link> *weight,
+                                             const <link linkend="gchar">gchar</link> *slant,
+                                             const <link linkend="gchar">gchar</link> *set_width,
+                                             const <link linkend="gchar">gchar</link> *spacing,
+                                             const <link linkend="gchar">gchar</link> *registry,
+                                             const <link linkend="gchar">gchar</link> *encoding);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-text-get-extents">gimp_text_get_extents</link>           (const <link linkend="gchar">gchar</link> *text,
+                                             <link linkend="gdouble">gdouble</link> size,
+                                             <link linkend="GimpSizeType">GimpSizeType</link> size_type,
+                                             const <link linkend="gchar">gchar</link> *foundry,
+                                             const <link linkend="gchar">gchar</link> *family,
+                                             const <link linkend="gchar">gchar</link> *weight,
+                                             const <link linkend="gchar">gchar</link> *slant,
+                                             const <link linkend="gchar">gchar</link> *set_width,
+                                             const <link linkend="gchar">gchar</link> *spacing,
+                                             const <link linkend="gchar">gchar</link> *registry,
+                                             const <link linkend="gchar">gchar</link> *encoding,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gint">gint</link> *height,
+                                             <link linkend="gint">gint</link> *ascent,
+                                             <link linkend="gint">gint</link> *descent);
 </synopsis>
 </refsynopsisdiv>
 
@@ -83,28 +80,28 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Functions for controlling the text tool.
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="gimp-text-fontname" role="function"/>gimp_text_fontname ()</title>
-<indexterm><primary>gimp_text_fontname</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_text_fontname                  (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="gdouble">gdouble</link> x,
-                                                         <link linkend="gdouble">gdouble</link> y,
-                                                         const <link linkend="gchar">gchar</link> *text,
-                                                         <link linkend="gint">gint</link> border,
-                                                         <link linkend="gboolean">gboolean</link> antialias,
-                                                         <link linkend="gdouble">gdouble</link> size,
-                                                         <link linkend="GimpSizeType">GimpSizeType</link> size_type,
-                                                         const <link linkend="gchar">gchar</link> *fontname);</programlisting>
+<title><anchor id="gimp-text-fontname"/>gimp_text_fontname ()</title>
+<indexterm><primary>gimp_text_fontname</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_text_fontname              (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y,
+                                             const <link linkend="gchar">gchar</link> *text,
+                                             <link linkend="gint">gint</link> border,
+                                             <link linkend="gboolean">gboolean</link> antialias,
+                                             <link linkend="gdouble">gdouble</link> size,
+                                             <link linkend="GimpSizeType">GimpSizeType</link> size_type,
+                                             const <link linkend="gchar">gchar</link> *fontname);</programlisting>
 <para>
 Add text at the specified location as a floating selection or a new
 layer.
@@ -157,15 +154,15 @@ The border is measured in pixels.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-text-get-extents-fontname" role="function"/>gimp_text_get_extents_fontname ()</title>
-<indexterm><primary>gimp_text_get_extents_fontname</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_text_get_extents_fontname      (const <link linkend="gchar">gchar</link> *text,
-                                                         <link linkend="gdouble">gdouble</link> size,
-                                                         <link linkend="GimpSizeType">GimpSizeType</link> size_type,
-                                                         const <link linkend="gchar">gchar</link> *fontname,
-                                                         <link linkend="gint">gint</link> *width,
-                                                         <link linkend="gint">gint</link> *height,
-                                                         <link linkend="gint">gint</link> *ascent,
-                                                         <link linkend="gint">gint</link> *descent);</programlisting>
+<title><anchor id="gimp-text-get-extents-fontname"/>gimp_text_get_extents_fontname ()</title>
+<indexterm><primary>gimp_text_get_extents_fontname</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_text_get_extents_fontname  (const <link linkend="gchar">gchar</link> *text,
+                                             <link linkend="gdouble">gdouble</link> size,
+                                             <link linkend="GimpSizeType">GimpSizeType</link> size_type,
+                                             const <link linkend="gchar">gchar</link> *fontname,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gint">gint</link> *height,
+                                             <link linkend="gint">gint</link> *ascent,
+                                             <link linkend="gint">gint</link> *descent);</programlisting>
 <para>
 Get extents of the bounding box for the specified text.
 </para>
@@ -204,24 +201,24 @@ and descent for the specified font are returned as well.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-text" role="function" condition="deprecated:"/>gimp_text ()</title>
-<indexterm role="deprecated"><primary>gimp_text</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_text                           (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="gdouble">gdouble</link> x,
-                                                         <link linkend="gdouble">gdouble</link> y,
-                                                         const <link linkend="gchar">gchar</link> *text,
-                                                         <link linkend="gint">gint</link> border,
-                                                         <link linkend="gboolean">gboolean</link> antialias,
-                                                         <link linkend="gdouble">gdouble</link> size,
-                                                         <link linkend="GimpSizeType">GimpSizeType</link> size_type,
-                                                         const <link linkend="gchar">gchar</link> *foundry,
-                                                         const <link linkend="gchar">gchar</link> *family,
-                                                         const <link linkend="gchar">gchar</link> *weight,
-                                                         const <link linkend="gchar">gchar</link> *slant,
-                                                         const <link linkend="gchar">gchar</link> *set_width,
-                                                         const <link linkend="gchar">gchar</link> *spacing,
-                                                         const <link linkend="gchar">gchar</link> *registry,
-                                                         const <link linkend="gchar">gchar</link> *encoding);</programlisting>
+<title><anchor id="gimp-text"/>gimp_text ()</title>
+<indexterm role="deprecated"><primary>gimp_text</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_text                       (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> drawable_ID,
+                                             <link linkend="gdouble">gdouble</link> x,
+                                             <link linkend="gdouble">gdouble</link> y,
+                                             const <link linkend="gchar">gchar</link> *text,
+                                             <link linkend="gint">gint</link> border,
+                                             <link linkend="gboolean">gboolean</link> antialias,
+                                             <link linkend="gdouble">gdouble</link> size,
+                                             <link linkend="GimpSizeType">GimpSizeType</link> size_type,
+                                             const <link linkend="gchar">gchar</link> *foundry,
+                                             const <link linkend="gchar">gchar</link> *family,
+                                             const <link linkend="gchar">gchar</link> *weight,
+                                             const <link linkend="gchar">gchar</link> *slant,
+                                             const <link linkend="gchar">gchar</link> *set_width,
+                                             const <link linkend="gchar">gchar</link> *spacing,
+                                             const <link linkend="gchar">gchar</link> *registry,
+                                             const <link linkend="gchar">gchar</link> *encoding);</programlisting>
 <warning><para><literal>gimp_text</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-text-fontname"><function>gimp_text_fontname()</function></link> instead.</para>
@@ -283,22 +280,22 @@ This procedure is deprecated! Use <link linkend="gimp-text-fontname"><function>g
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-text-get-extents" role="function" condition="deprecated:"/>gimp_text_get_extents ()</title>
-<indexterm role="deprecated"><primary>gimp_text_get_extents</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_text_get_extents               (const <link linkend="gchar">gchar</link> *text,
-                                                         <link linkend="gdouble">gdouble</link> size,
-                                                         <link linkend="GimpSizeType">GimpSizeType</link> size_type,
-                                                         const <link linkend="gchar">gchar</link> *foundry,
-                                                         const <link linkend="gchar">gchar</link> *family,
-                                                         const <link linkend="gchar">gchar</link> *weight,
-                                                         const <link linkend="gchar">gchar</link> *slant,
-                                                         const <link linkend="gchar">gchar</link> *set_width,
-                                                         const <link linkend="gchar">gchar</link> *spacing,
-                                                         const <link linkend="gchar">gchar</link> *registry,
-                                                         const <link linkend="gchar">gchar</link> *encoding,
-                                                         <link linkend="gint">gint</link> *width,
-                                                         <link linkend="gint">gint</link> *height,
-                                                         <link linkend="gint">gint</link> *ascent,
-                                                         <link linkend="gint">gint</link> *descent);</programlisting>
+<title><anchor id="gimp-text-get-extents"/>gimp_text_get_extents ()</title>
+<indexterm role="deprecated"><primary>gimp_text_get_extents</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_text_get_extents           (const <link linkend="gchar">gchar</link> *text,
+                                             <link linkend="gdouble">gdouble</link> size,
+                                             <link linkend="GimpSizeType">GimpSizeType</link> size_type,
+                                             const <link linkend="gchar">gchar</link> *foundry,
+                                             const <link linkend="gchar">gchar</link> *family,
+                                             const <link linkend="gchar">gchar</link> *weight,
+                                             const <link linkend="gchar">gchar</link> *slant,
+                                             const <link linkend="gchar">gchar</link> *set_width,
+                                             const <link linkend="gchar">gchar</link> *spacing,
+                                             const <link linkend="gchar">gchar</link> *registry,
+                                             const <link linkend="gchar">gchar</link> *encoding,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gint">gint</link> *height,
+                                             <link linkend="gint">gint</link> *ascent,
+                                             <link linkend="gint">gint</link> *descent);</programlisting>
 <warning><para><literal>gimp_text_get_extents</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 This procedure is deprecated! Use <link linkend="gimp-text-get-extents-fontname"><function>gimp_text_get_extents_fontname()</function></link>

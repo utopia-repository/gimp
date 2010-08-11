@@ -36,7 +36,7 @@
 
 static GimpActionEntry text_editor_actions[] =
 {
-  { "text-editor-toolbar", GIMP_STOCK_EDIT,
+  { "text-editor-toolbar", GTK_STOCK_EDIT,
     "Text Editor Toolbar", NULL, NULL, NULL,
     GIMP_HELP_TEXT_EDITOR_DIALOG },
 
@@ -79,6 +79,7 @@ text_editor_actions_setup (GimpActionGroup *group)
   gimp_action_group_add_radio_actions (group,
                                        text_editor_direction_actions,
                                        G_N_ELEMENTS (text_editor_direction_actions),
+                                       NULL,
                                        GIMP_TEXT_DIRECTION_LTR,
                                        G_CALLBACK (text_editor_direction_cmd_callback));
 }

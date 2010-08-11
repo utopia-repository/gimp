@@ -155,7 +155,7 @@ create_generalpage (GtkNotebook *notebook)
                                                 GIMP_COLOR_AREA_FLAT);
   g_signal_connect (general_color_button, "clicked",
                     G_CALLBACK (select_color), NULL);
-  g_signal_connect (general_color_button, "color_changed",
+  g_signal_connect (general_color_button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &pcvals.color);
   gtk_box_pack_start (GTK_BOX (box4), general_color_button, FALSE, FALSE, 0);
@@ -200,7 +200,7 @@ create_generalpage (GtkNotebook *notebook)
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tmpw),
                                 pcvals.general_tileable);
 
-  tmpw = gtk_check_button_new_with_label ( _("Drop Shadow"));
+  tmpw = gtk_check_button_new_with_label ( _("Drop shadow"));
   general_drop_shadow = tmpw;
   gtk_box_pack_start (GTK_BOX (box2), tmpw, FALSE, FALSE, 0);
   gtk_widget_show (tmpw);

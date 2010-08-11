@@ -21,11 +21,11 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
-#include "config/gimpconfig.h"
-
+#include "gimp.h"
 #include "gimptoolinfo.h"
 #include "gimptooloptions.h"
 
@@ -36,9 +36,6 @@ enum
   PROP_TOOL_INFO
 };
 
-
-static void   gimp_tool_options_init       (GimpToolOptions      *options);
-static void   gimp_tool_options_class_init (GimpToolOptionsClass *options_class);
 
 static void   gimp_tool_options_set_property (GObject         *object,
                                               guint            property_id,
@@ -52,43 +49,13 @@ static void   gimp_tool_options_get_property (GObject         *object,
 static void   gimp_tool_options_real_reset   (GimpToolOptions *tool_options);
 
 
-static GimpContextClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpToolOptions, gimp_tool_options, GIMP_TYPE_CONTEXT);
 
-
-GType
-gimp_tool_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpToolOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_tool_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpToolOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_tool_options_init,
-      };
-
-      type = g_type_register_static (GIMP_TYPE_CONTEXT,
-                                     "GimpToolOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_tool_options_class_init (GimpToolOptionsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_tool_options_set_property;
   object_class->get_property = gimp_tool_options_get_property;
@@ -218,6 +185,9 @@ gimp_tool_options_serialize (GimpToolOptions  *tool_options,
 
   filename = gimp_tool_options_build_filename (tool_options, extension);
 
+  if (tool_options->tool_info->gimp->be_verbose)
+    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
+
   header = g_strdup_printf ("GIMP %s options",
                             GIMP_OBJECT (tool_options->tool_info)->name);
   footer = g_strdup_printf ("end of %s options",
@@ -248,6 +218,9 @@ gimp_tool_options_deserialize (GimpToolOptions  *tool_options,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   filename = gimp_tool_options_build_filename (tool_options, extension);
+
+  if (tool_options->tool_info->gimp->be_verbose)
+    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
 
   retval = gimp_config_deserialize_file (GIMP_CONFIG (tool_options),
                                          filename,

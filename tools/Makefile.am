@@ -10,19 +10,28 @@ SUBDIRS = $(D_pdbgen)
 
 bin_PROGRAMS = $(GIMP_REMOTE)
 
+noinst_PROGRAMS = test-clipboard
+
 EXTRA_PROGRAMS = \
-	gimp-remote-2.2	\
+	gimp-remote-2.3	\
 	kernelgen
 
-gimp_remote_2_2_SOURCES = gimp-remote.c
+gimp_remote_2_3_SOURCES = gimp-remote.c
 
-gimp_remote_2_2_LDADD = \
+gimp_remote_2_3_LDADD = \
 	$(GTK_LIBS)	\
 	$(LIBXMU)
 
 kernelgen_SOURCES = kernelgen.c
 
-AM_CPPFLAGS = -DGIMP_APP_VERSION=\"@GIMP_APP_VERSION@\"
+test_clipboard_SURCES = test-clipboard.c
+
+test_clipboard_LDADD = \
+	$(GTK_LIBS)
+
+AM_CPPFLAGS = \
+	-DGIMP_APP_VERSION=\"@GIMP_APP_VERSION@\"	\
+	-DLOCALEDIR=\""$(gimplocaledir)"\"
 
 INCLUDES = \
 	-I$(top_srcdir)	\

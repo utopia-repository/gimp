@@ -34,8 +34,12 @@ gchar*   gimp_palette_duplicate       (const gchar    *name);
 gchar*   gimp_palette_rename          (const gchar    *name,
 				       const gchar    *new_name);
 gboolean gimp_palette_delete          (const gchar    *name);
+gboolean gimp_palette_is_editable     (const gchar    *name);
 gboolean gimp_palette_get_info        (const gchar    *name,
 				       gint           *num_colors);
+gint     gimp_palette_get_columns     (const gchar    *name);
+gboolean gimp_palette_set_columns     (const gchar    *name,
+				       gint            columns);
 gboolean gimp_palette_add_entry       (const gchar    *name,
 				       const gchar    *entry_name,
 				       const GimpRGB  *color,

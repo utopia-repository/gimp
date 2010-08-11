@@ -84,7 +84,7 @@ gimp_drawable_stroke_boundary (GimpDrawable      *drawable,
 
   g_return_if_fail (bound_segs != NULL);
 
-  stroke_segs = sort_boundary (bound_segs, n_bound_segs, &n_stroke_segs);
+  stroke_segs = boundary_sort (bound_segs, n_bound_segs, &n_stroke_segs);
 
   if (n_stroke_segs == 0)
     return;
@@ -253,7 +253,7 @@ gimp_drawable_stroke_scan_convert (GimpDrawable      *drawable,
   gimp_scan_convert_stroke (scan_convert, width,
                             options->join_style,
                             options->cap_style,
-                            options->miter,
+                            options->miter_limit,
                             options->dash_offset,
                             options->dash_info);
 

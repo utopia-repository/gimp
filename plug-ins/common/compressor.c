@@ -59,21 +59,26 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+
 #include <sys/types.h>
+
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
+
 #ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
 #endif
+
 #include <sys/stat.h>
-#include <string.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include <errno.h>
+
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 
@@ -157,13 +162,13 @@ static const Compressor compressors[] =
     ".xcfgz",
     ".gz",
 
-    "file_gz_load",
+    "file-gz-load",
     "loads files compressed with gzip",
     "You need to have gzip installed.",
     "gzip", "-cfd",
     "minigzip -d",
 
-    "file_gz_save",
+    "file-gz-save",
     "saves files compressed with gzip",
     "You need to have gzip installed.",
     "gzip", "-cfn",
@@ -178,13 +183,13 @@ static const Compressor compressors[] =
     ".xcfbz2",
     ".bz2",
 
-    "file_bz2_load",
+    "file-bz2-load",
     "loads files compressed with bzip2",
     "You need to have bzip2 installed.",
     "bzip2", "-cfd",
     "bzip2 -cfd",
 
-    "file_bz2_save",
+    "file-bz2-save",
     "saves files compressed with bzip2",
     "You need to have bzip2 installed",
     "bzip2", "-cf",
@@ -209,9 +214,9 @@ query (void)
 {
   static GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run_mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
-    { GIMP_PDB_STRING, "raw_filename", "The name entered"             }
+    { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
   static GimpParamDef load_return_vals[] =
   {
@@ -220,11 +225,12 @@ query (void)
 
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",     "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",        "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
-    { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw_filename", "The name of the file to save the image in" }
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",        "Input image"                  },
+    { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save"             },
+    { GIMP_PDB_STRING,   "filename",     "The name of the file to "
+                                         "save the image in"            },
+    { GIMP_PDB_STRING,   "raw-filename", "The name entered"             },
   };
 
   gint i;
@@ -323,7 +329,7 @@ run (const gchar      *name,
               break;
             case GIMP_RUN_NONINTERACTIVE:
               /*  Make sure all the arguments are there!  */
-              if (nparams != 5)
+              if (nparams != 4)
                 status = GIMP_PDB_CALLING_ERROR;
               break;
             case GIMP_RUN_WITH_LAST_VALS:
@@ -378,7 +384,7 @@ save_image (const Compressor *compressor,
                          tmpname,
                          tmpname) && valid_file (tmpname)))
     {
-      unlink (tmpname);
+      g_unlink (tmpname);
       g_free (tmpname);
       return GIMP_PDB_EXECUTION_ERROR;
     }
@@ -399,7 +405,7 @@ save_image (const Compressor *compressor,
       {
         FILE *f;
 
-        if (!(f = fopen (filename, "w")))
+        if (!(f = g_fopen (filename, "w")))
           {
             g_message (_("Could not open '%s' for writing: %s"),
                        gimp_filename_to_utf8 (filename), g_strerror (errno));
@@ -450,26 +456,8 @@ save_image (const Compressor *compressor,
     STARTUPINFO          startupinfo;
     PROCESS_INFORMATION  processinfo;
 
-    in  = fopen (tmpname, "rb");
-    out = fopen (filename, "wb");
-
-    if (in == NULL)
-      {
-        g_message (_("Could not open '%s' for reading: %s"),
-                   gimp_filename_to_utf8 (tmpname), g_strerror (errno));
-        g_free (tmpname);
-
-        return GIMP_PDB_EXECUTION_ERROR;
-       }
-
-    if (out == NULL)
-      {
-        g_message (_("Could not open '%s' for writing: %s"),
-                   gimp_filename_to_utf8 (filename), g_strerror (errno));
-        g_free (tmpname);
-
-        return GIMP_PDB_EXECUTION_ERROR;
-      }
+    in  = g_fopen (tmpname, "rb");
+    out = g_fopen (filename, "wb");
 
     startupinfo.cb          = sizeof (STARTUPINFO);
     startupinfo.lpReserved  = NULL;
@@ -503,7 +491,7 @@ save_image (const Compressor *compressor,
   }
 #endif /* G_OS_WIN32 */
 
-  unlink (tmpname);
+  g_unlink (tmpname);
   g_free (tmpname);
 
   return GIMP_PDB_SUCCESS;
@@ -548,7 +536,7 @@ load_image (const Compressor  *compressor,
       {
         FILE *f;
 
-        if (! (f = fopen (tmpname, "w")))
+        if (! (f = g_fopen (tmpname, "w")))
           {
             g_message (_("Could not open '%s' for writing: %s"),
                        gimp_filename_to_utf8 (tmpname), g_strerror (errno));
@@ -604,28 +592,8 @@ load_image (const Compressor  *compressor,
     STARTUPINFO          startupinfo;
     PROCESS_INFORMATION  processinfo;
 
-    in  = fopen (filename, "rb");
-    out = fopen (tmpname, "wb");
-
-    if (in == NULL)
-      {
-        g_message (_("Could not open '%s' for reading: %s"),
-                   gimp_filename_to_utf8 (filename), g_strerror (errno));
-        g_free (tmpname);
-
-        *status = GIMP_PDB_EXECUTION_ERROR;
-        return -1;
-      }
-
-    if (out == NULL)
-      {
-        g_message (_("Could not open '%s' for writing: %s"),
-                   gimp_filename_to_utf8 (tmpname), g_strerror (errno));
-        g_free (tmpname);
-
-        *status = GIMP_PDB_EXECUTION_ERROR;
-        return -1;
-      }
+    in  = g_fopen (filename, "rb");
+    out = g_fopen (tmpname, "wb");
 
     startupinfo.cb          = sizeof (STARTUPINFO);
     startupinfo.lpReserved  = NULL;
@@ -664,7 +632,7 @@ load_image (const Compressor  *compressor,
 
   image_ID = gimp_file_load (run_mode, tmpname, tmpname);
 
-  unlink (tmpname);
+  g_unlink (tmpname);
   g_free (tmpname);
 
   if (image_ID != -1)
@@ -685,7 +653,7 @@ valid_file (const gchar *filename)
 {
   struct stat buf;
 
-  return stat (filename, &buf) == 0 && buf.st_size > 0;
+  return g_stat (filename, &buf) == 0 && buf.st_size > 0;
 }
 
 static const gchar *
@@ -703,10 +671,11 @@ find_extension (const Compressor *compressor,
 
   while (TRUE)
     {
-      if (!ext || ext[1] == '\0' || strchr (ext, '/'))
+      if (!ext || ext[1] == '\0' || strchr (ext, G_DIR_SEPARATOR))
         {
           return NULL;
         }
+
       if (0 == g_ascii_strcasecmp (ext, compressor->xcf_extension))
         {
           return ".xcf";  /* we've found it */

@@ -1,11 +1,13 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimpthumb = $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la
+
 
 SUBDIRS = \
 	paint-funcs	\
@@ -28,12 +30,11 @@ SUBDIRS = \
 	gui		\
 	pdb
 
-scriptdata =
 
 if ENABLE_GIMP_CONSOLE
-bin_PROGRAMS = gimp-2.2 gimp-console-2.2
+bin_PROGRAMS = gimp-2.3 gimp-console-2.3
 else
-bin_PROGRAMS = gimp-2.2
+bin_PROGRAMS = gimp-2.3
 endif
 
 app_sources = \
@@ -50,7 +51,7 @@ app_sources = \
 	units.h		\
 	gimp-intl.h
 
-gimp_2_2_SOURCES = $(app_sources)
+gimp_2_3_SOURCES = $(app_sources)
 
 
 EXTRA_DIST = \
@@ -69,6 +70,9 @@ endif
 if OS_WIN32
 mwindows = -mwindows
 endif
+if OS_UNIX
+munix = -Wl,-rpath '-Wl,$$ORIGIN/../lib'
+endif
 
 if HAVE_WINDRES
 GIMPICONRC = gimprc.o
@@ -77,18 +81,17 @@ endif
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp\"		\
 	-DGIMP_APP_GLUE_COMPILATION	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
-	-I$(top_srcdir)	\
-	$(GTK_CFLAGS)	\
-	$(PANGOFT2_CFLAGS) \
+	-I$(top_srcdir)		\
+	$(GTK_CFLAGS)		\
+	$(PANGOFT2_CFLAGS)	\
 	-I$(includedir)
 
-gimp_2_2_LDFLAGS = $(mwindows)
+gimp_2_3_LDFLAGS = $(mwindows) $(munix)
 
-gimp_2_2_LDADD = \
+gimp_2_3_LDADD = \
 	gui/libappgui.a			\
 	actions/libappactions.a		\
 	dialogs/libappdialogs.a		\
@@ -113,6 +116,7 @@ gimp_2_2_LDADD = \
 	$(libgimpcolor)			\
 	$(libgimpthumb)			\
 	$(libgimpmath)			\
+	$(libgimpconfig)		\
 	$(libgimpbase)			\
 	$(REGEXREPL)			\
 	$(GTK_LIBS)			\
@@ -120,8 +124,7 @@ gimp_2_2_LDADD = \
 	$(PANGOFT2_LIBS)		\
 	$(FONTCONFIG_LIBS)		\
 	$(FREETYPE_LIBS)		\
-	$(GIMP_THREAD_LIBS)		\
-	$(GIMP_MP_LIBS)			\
+	$(GTHREAD_LIBS)			\
 	$(RT_LIBS)			\
 	$(INTLLIBS)			\
 	$(GIMPICONRC)
@@ -129,15 +132,13 @@ gimp_2_2_LDADD = \
 
 if ENABLE_GIMP_CONSOLE
 
-gimp_console_2_2_SOURCES = $(app_sources)
+gimp_console_2_3_SOURCES = $(app_sources)
 
-gimp_console_2_2_CPPFLAGS = \
+gimp_console_2_3_CPPFLAGS = \
 	$(AM_CPPFLAGS)			\
 	-DGIMP_CONSOLE_COMPILATION
 
-gimp_console_2_2_LDFLAGS = $(gimp_2_2_LDFLAGS)
-
-gimp_console_2_2_LDADD = \
+gimp_console_2_3_LDADD = \
 	widgets/widgets-enums.o		\
 	display/display-enums.o		\
 	display/gimpdisplayoptions.o	\
@@ -157,6 +158,7 @@ gimp_console_2_2_LDADD = \
 	$(libgimpcolor)			\
 	$(libgimpthumb)			\
 	$(libgimpmath)			\
+	$(libgimpconfig)		\
 	$(libgimpbase)			\
 	$(REGEXREPL)			\
 	$(GDK_PIXBUF_LIBS)		\
@@ -164,8 +166,7 @@ gimp_console_2_2_LDADD = \
 	$(PANGOFT2_LIBS)		\
 	$(FONTCONFIG_LIBS)		\
 	$(FREETYPE_LIBS)		\
-	$(GIMP_THREAD_LIBS)		\
-	$(GIMP_MP_LIBS)			\
+	$(GTHREAD_LIBS)			\
 	$(RT_LIBS)			\
 	$(INTLLIBS)			\
 	$(GIMPICONRC)
@@ -209,9 +210,14 @@ endif
 # uptodate when a release is made
 #
 dist-dump-gimprc: gimp-console-$(GIMP_APP_VERSION)$(EXEEXT)
-	./$< --dump-gimprc-system > $(top_srcdir)/etc/gimprc
-	./$< --dump-gimprc-manpage > $(top_srcdir)/docs/gimprc.5.in
-
+	./$< --dump-gimprc-system > gimprc.tmp	\
+		&& (cmp -s gimprc.tmp $(top_srcdir)/etc/gimprc ||	\
+		    cp gimprc.tmp $(top_srcdir)/etc/gimprc)		\
+		&& rm gimprc.tmp
+	./$< --dump-gimprc-manpage > gimprc.tmp	\
+		&& (cmp -s gimprc.tmp $(top_srcdir)/docs/gimprc.5.in ||	\
+		    cp gimprc.tmp $(top_srcdir)/docs/gimprc.5.in)	\
+		&& rm gimprc.tmp
 
 dist-hook: dist-check-gimp-console dist-dump-gimprc
 

@@ -47,9 +47,6 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_magnify_tool_class_init      (GimpMagnifyToolClass *klass);
-static void   gimp_magnify_tool_init            (GimpMagnifyTool      *tool);
-
 static void   gimp_magnify_tool_button_press    (GimpTool        *tool,
                                                  GimpCoords      *coords,
                                                  guint32          time,
@@ -78,10 +75,10 @@ static void   gimp_magnify_tool_cursor_update   (GimpTool        *tool,
 static void   gimp_magnify_tool_draw            (GimpDrawTool    *draw_tool);
 
 
-static GimpDrawToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpMagnifyTool, gimp_magnify_tool, GIMP_TYPE_DRAW_TOOL);
 
+#define parent_class gimp_magnify_tool_parent_class
 
-/*  public functions  */
 
 void
 gimp_magnify_tool_register (GimpToolRegisterCallback  callback,
@@ -100,44 +97,11 @@ gimp_magnify_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_magnify_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpMagnifyToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_magnify_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpMagnifyTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_magnify_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_DRAW_TOOL,
-                                          "GimpMagnifyTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
-
-/*  private functions  */
-
 static void
 gimp_magnify_tool_class_init (GimpMagnifyToolClass *klass)
 {
   GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   tool_class->button_press   = gimp_magnify_tool_button_press;
   tool_class->button_release = gimp_magnify_tool_button_release;
@@ -159,19 +123,15 @@ gimp_magnify_tool_init (GimpMagnifyTool *magnify_tool)
   magnify_tool->h = 0;
 
   gimp_tool_control_set_scroll_lock            (tool->control, TRUE);
+  gimp_tool_control_set_handle_empty_image     (tool->control, TRUE);
   gimp_tool_control_set_snap_to                (tool->control, FALSE);
 
   gimp_tool_control_set_cursor                 (tool->control,
-                                                GIMP_CURSOR_ZOOM);
+                                                GIMP_CURSOR_MOUSE);
   gimp_tool_control_set_tool_cursor            (tool->control,
                                                 GIMP_TOOL_CURSOR_ZOOM);
   gimp_tool_control_set_cursor_modifier        (tool->control,
                                                 GIMP_CURSOR_MODIFIER_PLUS);
-
-  gimp_tool_control_set_toggle_cursor          (tool->control,
-                                                GIMP_CURSOR_ZOOM);
-  gimp_tool_control_set_toggle_tool_cursor     (tool->control,
-                                                GIMP_TOOL_CURSOR_ZOOM);
   gimp_tool_control_set_toggle_cursor_modifier (tool->control,
                                                 GIMP_CURSOR_MODIFIER_MINUS);
 }
@@ -206,6 +166,7 @@ gimp_magnify_tool_button_release (GimpTool        *tool,
   GimpMagnifyTool    *magnify = GIMP_MAGNIFY_TOOL (tool);
   GimpMagnifyOptions *options;
   GimpDisplayShell   *shell;
+  gdouble             current;
 
   options = GIMP_MAGNIFY_OPTIONS (tool->tool_info->tool_options);
 
@@ -233,12 +194,13 @@ gimp_magnify_tool_button_release (GimpTool        *tool,
       win_width  = shell->disp_width;
       win_height = shell->disp_height;
 
+      current = gimp_zoom_model_get_factor (shell->zoom);
+
       /* we need to compute the mouse movement in screen coordinates */
       if ((SCALEX (shell, w) < options->threshold) ||
           (SCALEY (shell, h) < options->threshold))
         {
-          new_scale = gimp_display_shell_scale_zoom_step (options->zoom_type,
-                                                          shell->scale);
+          new_scale = gimp_zoom_model_zoom_step (options->zoom_type, current);
         }
       else
         {
@@ -260,11 +222,11 @@ gimp_magnify_tool_button_release (GimpTool        *tool,
                            ((gdouble) h / (gdouble) height));
               break;
 
-            case GIMP_ZOOM_TO:
+            default:
               break;
             }
 
-          new_scale = shell->scale * scale;
+          new_scale = current * scale;
         }
 
       offset_x = (new_scale * ((x1 + x2) / 2)
@@ -338,8 +300,8 @@ gimp_magnify_tool_cursor_update (GimpTool        *tool,
 
   options = GIMP_MAGNIFY_OPTIONS (tool->tool_info->tool_options);
 
-  gimp_tool_control_set_toggle (tool->control,
-                                options->zoom_type == GIMP_ZOOM_OUT);
+  gimp_tool_control_set_toggled (tool->control,
+                                 options->zoom_type == GIMP_ZOOM_OUT);
 
   GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, gdisp);
 }

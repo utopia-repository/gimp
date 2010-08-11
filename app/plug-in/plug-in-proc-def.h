@@ -44,6 +44,7 @@ struct _PlugInProcDef
   ProcRecord       db_info;
 
   /*  file proc specific members  */
+  gboolean         file_proc;
   gchar           *extensions;
   gchar           *prefixes;
   gchar           *magics;
@@ -58,12 +59,21 @@ struct _PlugInProcDef
 PlugInProcDef    * plug_in_proc_def_new          (void);
 void               plug_in_proc_def_free         (PlugInProcDef       *proc_def);
 
+PlugInProcDef    * plug_in_proc_def_find         (GSList              *list,
+                                                  const gchar         *proc_name);
+
 const ProcRecord * plug_in_proc_def_get_proc     (const PlugInProcDef *proc_def);
 const gchar      * plug_in_proc_def_get_progname (const PlugInProcDef *proc_def);
 gchar            * plug_in_proc_def_get_label    (const PlugInProcDef *proc_def,
                                                   const gchar         *locale_domain);
+
+void               plug_in_proc_def_set_icon     (PlugInProcDef       *proc_def,
+                                                  GimpIconType         type,
+                                                  const gchar         *data,
+                                                  gint                 data_length);
 const gchar      * plug_in_proc_def_get_stock_id (const PlugInProcDef *proc_def);
 GdkPixbuf        * plug_in_proc_def_get_pixbuf   (const PlugInProcDef *proc_def);
+
 gchar            * plug_in_proc_def_get_help_id  (const PlugInProcDef *proc_def,
                                                   const gchar         *help_domain);
 gboolean          plug_in_proc_def_get_sensitive (const PlugInProcDef *proc_def,

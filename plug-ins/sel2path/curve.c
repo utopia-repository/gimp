@@ -16,10 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
-#include <stdio.h>
+#include "config.h"
+
 #include <glib.h>
 
-#include "config.h"
 #include "global.h"
 #include "curve.h"
 
@@ -107,8 +107,9 @@ new_curve_list (void)
 {
   curve_list_type curve_list;
 
-  curve_list.length = 0;
-  curve_list.data = NULL;
+  curve_list.length    = 0;
+  curve_list.data      = NULL;
+  curve_list.clockwise = FALSE;
 
   return curve_list;
 }

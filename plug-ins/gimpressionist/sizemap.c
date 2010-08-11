@@ -362,7 +362,7 @@ update_sizemap_dialog (void)
 #endif
 
 void
-create_sizemap_dialog (void)
+create_sizemap_dialog (GtkWidget *parent)
 {
   GtkWidget *tmpw, *tmpw2;
   GtkWidget *table1;
@@ -381,14 +381,20 @@ create_sizemap_dialog (void)
 
   smwindow =
     gimp_dialog_new (_("Size Map Editor"), "gimpressionist",
-                     NULL, 0,
-                     gimp_standard_help_func, HELP_ID,
+                     gtk_widget_get_toplevel (parent), 0,
+                     gimp_standard_help_func, PLUG_IN_NAME,
 
                      GTK_STOCK_APPLY,  RESPONSE_APPLY,
                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                      GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                      NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (smwindow),
+                                              GTK_RESPONSE_OK,
+					      RESPONSE_APPLY,
+                                              GTK_RESPONSE_CANCEL,
+                                              -1);
 
   g_signal_connect (smwindow, "response",
                     G_CALLBACK (smresponse),
@@ -421,7 +427,7 @@ create_sizemap_dialog (void)
   gtk_container_add (GTK_CONTAINER (tmpw2), tmpw);
   gtk_widget_show (tmpw);
   gtk_widget_add_events (tmpw2, GDK_BUTTON_PRESS_MASK);
-  g_signal_connect (tmpw2, "button_press_event",
+  g_signal_connect (tmpw2, "button-press-event",
                     G_CALLBACK (smmapclick), NULL);
   gtk_widget_show (tmpw2);
 
@@ -430,7 +436,7 @@ create_sizemap_dialog (void)
   gtk_scale_set_draw_value (GTK_SCALE (tmpw), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), tmpw,FALSE,FALSE,0);
   gtk_widget_show (tmpw);
-  g_signal_connect (smvectprevbrightadjust, "value_changed",
+  g_signal_connect (smvectprevbrightadjust, "value-changed",
                     G_CALLBACK (updatesmvectorprev), NULL);
   gimp_help_set_help_data (tmpw, _("Adjust the preview's brightness"), NULL);
 
@@ -490,7 +496,7 @@ create_sizemap_dialog (void)
                           TRUE, 0, 0,
                           _("Change the angle of the selected smvector"),
                           NULL);
-  g_signal_connect (sizadjust, "value_changed",
+  g_signal_connect (sizadjust, "value-changed",
                     G_CALLBACK (angsmadjmove), NULL);
 
   smstradjust =
@@ -501,7 +507,7 @@ create_sizemap_dialog (void)
                           TRUE, 0, 0,
                           _("Change the strength of the selected smvector"),
                           NULL);
-  g_signal_connect (smstradjust, "value_changed",
+  g_signal_connect (smstradjust, "value-changed",
                     G_CALLBACK (strsmadjmove), NULL);
 
   smstrexpadjust =
@@ -512,7 +518,7 @@ create_sizemap_dialog (void)
                           TRUE, 0, 0,
                           _("Change the exponent of the strength"),
                           NULL);
-  g_signal_connect (smstrexpadjust, "value_changed",
+  g_signal_connect (smstrexpadjust, "value-changed",
                     G_CALLBACK (smstrexpsmadjmove), NULL);
 
   size_voronoi = tmpw = gtk_check_button_new_with_mnemonic ( _("_Voronoi"));

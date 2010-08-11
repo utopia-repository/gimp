@@ -29,7 +29,6 @@
 #include "paint/gimperaseroptions.h"
 
 #include "widgets/gimphelp-ids.h"
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimperasertool.h"
@@ -39,23 +38,22 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_eraser_tool_class_init    (GimpEraserToolClass  *klass);
-static void   gimp_eraser_tool_init          (GimpEraserTool       *eraser);
+static void   gimp_eraser_tool_modifier_key  (GimpTool        *tool,
+                                              GdkModifierType  key,
+                                              gboolean         press,
+                                              GdkModifierType  state,
+                                              GimpDisplay     *gdisp);
+static void   gimp_eraser_tool_cursor_update (GimpTool        *tool,
+                                              GimpCoords      *coords,
+                                              GdkModifierType  state,
+                                              GimpDisplay     *gdisp);
 
-static void   gimp_eraser_tool_modifier_key  (GimpTool             *tool,
-                                              GdkModifierType       key,
-                                              gboolean              press,
-                                              GdkModifierType       state,
-                                              GimpDisplay          *gdisp);
-static void   gimp_eraser_tool_cursor_update (GimpTool             *tool,
-                                              GimpCoords           *coords,
-                                              GdkModifierType       state,
-                                              GimpDisplay          *gdisp);
-
-static GtkWidget * gimp_eraser_options_gui   (GimpToolOptions      *tool_options);
+static GtkWidget * gimp_eraser_options_gui   (GimpToolOptions *tool_options);
 
 
-static GimpPaintToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpEraserTool, gimp_eraser_tool, GIMP_TYPE_PAINT_TOOL);
+
+#define parent_class gimp_eraser_tool_parent_class
 
 
 void
@@ -75,40 +73,10 @@ gimp_eraser_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_eraser_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpEraserToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_eraser_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpEraserTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_eraser_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_PAINT_TOOL,
-                                          "GimpEraserTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
 static void
 gimp_eraser_tool_class_init (GimpEraserToolClass *klass)
 {
   GimpToolClass *tool_class = GIMP_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   tool_class->modifier_key  = gimp_eraser_tool_modifier_key;
   tool_class->cursor_update = gimp_eraser_tool_cursor_update;
@@ -120,8 +88,6 @@ gimp_eraser_tool_init (GimpEraserTool *eraser)
   GimpTool *tool = GIMP_TOOL (eraser);
 
   gimp_tool_control_set_tool_cursor            (tool->control,
-                                                GIMP_TOOL_CURSOR_ERASER);
-  gimp_tool_control_set_toggle_tool_cursor     (tool->control,
                                                 GIMP_TOOL_CURSOR_ERASER);
   gimp_tool_control_set_toggle_cursor_modifier (tool->control,
                                                 GIMP_CURSOR_MODIFIER_MINUS);
@@ -161,7 +127,7 @@ gimp_eraser_tool_cursor_update (GimpTool        *tool,
 
   options = GIMP_ERASER_OPTIONS (tool->tool_info->tool_options);
 
-  gimp_tool_control_set_toggle (tool->control, options->anti_erase);
+  gimp_tool_control_set_toggled (tool->control, options->anti_erase);
 
   GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, gdisp);
 }
@@ -182,7 +148,7 @@ gimp_eraser_options_gui (GimpToolOptions *tool_options)
   vbox = gimp_paint_options_gui (tool_options);
 
   /* the anti_erase toggle */
-  str = g_strdup_printf (_("Anti erase  %s"),
+  str = g_strdup_printf (_("Anti erase  (%s)"),
                          gimp_get_mod_string (GDK_MOD1_MASK));
 
   button = gimp_prop_check_button_new (config, "anti-erase", str);

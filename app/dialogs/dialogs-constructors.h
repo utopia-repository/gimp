@@ -37,6 +37,9 @@ GtkWidget * dialogs_file_save_new          (GimpDialogFactory *factory,
 GtkWidget * dialogs_preferences_get        (GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
+GtkWidget * dialogs_keyboard_shortcuts_get (GimpDialogFactory *factory,
+                                            GimpContext       *context,
+                                            gint               preview_size);
 GtkWidget * dialogs_module_get             (GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
@@ -47,6 +50,9 @@ GtkWidget * dialogs_about_get              (GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
 GtkWidget * dialogs_error_get              (GimpDialogFactory *factory,
+                                            GimpContext       *context,
+                                            gint               preview_size);
+GtkWidget * dialogs_close_all_get          (GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
 GtkWidget * dialogs_quit_get               (GimpDialogFactory *factory,
@@ -71,13 +77,16 @@ GtkWidget * dialogs_dockable_constructor   (GimpDialogFactory      *factory,
                                             GimpContext            *context,
                                             gint                    preview_size);
 
-GtkWidget * dialogs_tool_options_get       (GimpDialogFactory *factory,
+GtkWidget * dialogs_tool_options_new       (GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
-GtkWidget * dialogs_device_status_get      (GimpDialogFactory *factory,
+GtkWidget * dialogs_device_status_new      (GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
-GtkWidget * dialogs_error_console_get      (GimpDialogFactory *factory,
+GtkWidget * dialogs_error_console_new      (GimpDialogFactory *factory,
+                                            GimpContext       *context,
+                                            gint               preview_size);
+GtkWidget * dialogs_cursor_view_new        (GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
 
@@ -165,6 +174,9 @@ GtkWidget * dialogs_selection_editor_new   (GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
 GtkWidget * dialogs_undo_editor_new        (GimpDialogFactory *factory,
+                                            GimpContext       *context,
+                                            gint               preview_size);
+GtkWidget * dialogs_sample_point_editor_new(GimpDialogFactory *factory,
                                             GimpContext       *context,
                                             gint               preview_size);
 

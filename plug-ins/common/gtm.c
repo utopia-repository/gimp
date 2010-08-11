@@ -51,17 +51,18 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
+
+#define SAVE_PROC      "file-gtm-save"
+#define PLUG_IN_BINARY "gtm"
 
 /* Typedefs */
 
@@ -138,14 +139,14 @@ query (void)
 {
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",     "Interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw_filename", "The name of the file to save the image in" }
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" }
   };
 
-  gimp_install_procedure ("file_gtm_save",
+  gimp_install_procedure (SAVE_PROC,
                           "GIMP Table Magic",
                           "Allows you to draw an HTML table in GIMP. See help for more info.",
                           "Daniel Dunbar",
@@ -157,8 +158,8 @@ query (void)
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_register_file_handler_mime ("file_gtm_save", "text/html");
-  gimp_register_save_handler ("file_gtm_save", "html,htm", "");
+  gimp_register_file_handler_mime (SAVE_PROC, "text/html");
+  gimp_register_save_handler (SAVE_PROC, "html,htm", "");
 }
 
 static void
@@ -182,13 +183,13 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  gimp_get_data ("file_gtm_save", &gtmvals);
+  gimp_get_data (SAVE_PROC, &gtmvals);
 
   if (save_dialog (param[1].data.d_int32))
     {
       if (save_image (param[3].data.d_string, drawable))
 	{
-	  gimp_set_data ("file_gtm_save", &gtmvals, sizeof (GTMValues));
+	  gimp_set_data (SAVE_PROC, &gtmvals, sizeof (GTMValues));
 	}
       else
 	{
@@ -213,12 +214,11 @@ save_image (const gchar  *filename,
   guchar       *buffer, *buf2;
   gchar        *width, *height;
   GimpPixelRgn  pixel_rgn;
-  gchar        *name;
   FILE         *fp;
 
   palloc = g_new (int, drawable->width * drawable->height);
 
-  fp = fopen (filename, "w");
+  fp = g_fopen (filename, "w");
 
   if (! fp)
     {
@@ -242,10 +242,8 @@ save_image (const gchar  *filename,
     fprintf (fp, "<CAPTION>%s</CAPTION>\n",
              gtmvals.captiontxt);
 
-  name = g_strdup_printf (_("Saving '%s'..."),
-                          gimp_filename_to_utf8 (filename));
-  gimp_progress_init (name);
-  g_free (name);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   gimp_pixel_rgn_init (&pixel_rgn, drawable,
                        0, 0, drawable->width, drawable->height,
@@ -383,7 +381,7 @@ save_image (const gchar  *filename,
 static gint
 save_dialog (gint32 image_ID)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *main_vbox;
   GtkWidget *frame;
   GtkWidget *vbox;
@@ -394,20 +392,27 @@ save_dialog (gint32 image_ID)
   GtkWidget *toggle;
   gboolean   run;
 
-  gimp_ui_init ("gtm", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dlg = gimp_dialog_new (_("GIMP Table Magic"), "gtm",
-                         NULL, 0,
-			 gimp_standard_help_func, "file-gtm-save",
+  dialog = gimp_dialog_new (_("Save as HTML table"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, SAVE_PROC,
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
-			 NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), main_vbox,
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_vbox,
 		      TRUE, TRUE, 0);
 
   if (gimp_image_width (image_ID) * gimp_image_height (image_ID) > 4096)
@@ -567,7 +572,7 @@ save_dialog (gint32 image_ID)
 			   _("The number of pixels in the table border."),
 			   NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &gtmvals.border);
 
@@ -612,7 +617,7 @@ save_dialog (gint32 image_ID)
   gimp_help_set_help_data (spinbutton,
 			   _("The amount of cellpadding."), NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &gtmvals.cellpadding);
 
@@ -625,18 +630,18 @@ save_dialog (gint32 image_ID)
   gimp_help_set_help_data (spinbutton,
 			   _("The amount of cellspacing."), NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &gtmvals.cellspacing);
 
   gtk_widget_show (table);
   gtk_widget_show (frame);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }

@@ -43,20 +43,20 @@
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
     (gimp-selection-none img)
 
-    (gimp-layer-set-preserve-trans blur-layer TRUE)
+    (gimp-layer-set-lock-alpha blur-layer TRUE)
     (gimp-context-set-background '(255 255 255))
     (gimp-selection-all img)
     (gimp-edit-fill blur-layer BACKGROUND-FILL)
     (gimp-edit-clear blur-layer)
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans blur-layer FALSE)
+    (gimp-layer-set-lock-alpha blur-layer FALSE)
     (gimp-selection-layer-alpha logo-layer)
     (gimp-edit-fill blur-layer BACKGROUND-FILL)
     (plug-in-gauss-rle 1 img blur-layer bevel-width 1 1)
     (gimp-selection-none img)
     (gimp-context-set-background '(127 127 127))
     (gimp-context-set-foreground '(255 255 255))
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-selection-all img)
 
     (gimp-edit-blend logo-layer FG-BG-RGB-MODE NORMAL-MODE
@@ -65,7 +65,7 @@
 		     indentX indentY indentX (- height indentY))
 
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans logo-layer FALSE)
+    (gimp-layer-set-lock-alpha logo-layer FALSE)
     (plug-in-bump-map 1 img logo-layer blur-layer 115 bevel-height 5 0 0 0 15 TRUE FALSE 0)
     (gimp-layer-set-offsets blur-layer 5 5)
     (gimp-invert blur-layer)
@@ -97,12 +97,12 @@
                     SF-IMAGE      "Image"                     0
                     SF-DRAWABLE   "Drawable"                  0
 		    SF-ADJUSTMENT _"Border size (pixels)"     '(22 1 300 1 10 0 1)
-		    SF-ADJUSTMENT _"Bevel height (Sharpness)" '(40 1 250 1 10 0 1)
+		    SF-ADJUSTMENT _"Bevel height (sharpness)" '(40 1 250 1 10 0 1)
 		    SF-ADJUSTMENT _"Bevel width"              '(2.5 1 200 1 10 1 1)
 		    SF-COLOR      _"Background color"         '(255 255 255))
 
 (script-fu-menu-register "script-fu-gradient-bevel-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-gradient-bevel-logo text
@@ -116,7 +116,6 @@
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text
 					      border TRUE size PIXELS font))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-gradient-bevel-logo-effect img text-layer border
 				      bevel-height bevel-width bg-color)
     (gimp-image-undo-enable img)
@@ -137,4 +136,4 @@
 		    SF-COLOR      _"Background color"         '(255 255 255))
 
 (script-fu-menu-register "script-fu-gradient-bevel-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

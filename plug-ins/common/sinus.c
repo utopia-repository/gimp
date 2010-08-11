@@ -29,15 +29,15 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-sinus"
+#define PLUG_IN_BINARY "sinus"
+
 
 /*
  * This structure is used for persistent data.
@@ -163,7 +163,7 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
 
@@ -179,10 +179,10 @@ query (void)
     { GIMP_PDB_FLOAT,    "alpha1",      "alpha for the first color (used if the drawable has an alpha chanel)" },
     { GIMP_PDB_FLOAT,    "alpha2",      "alpha for the second color (used if the drawable has an alpha chanel)" },
     { GIMP_PDB_INT32,    "blend",       "0= linear, 1= bilinear, 2= sinusoidal" },
-    { GIMP_PDB_FLOAT,    "blend_power", "Power used to strech the blend" }
+    { GIMP_PDB_FLOAT,    "blend-power", "Power used to strech the blend" }
   };
 
-  gimp_install_procedure ("plug_in_sinus",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Generates a texture with sinus functions",
                           "FIX ME: sinus help",
                           "Xavier Bouchoux",
@@ -194,7 +194,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_sinus", "<Image>/Filters/Render/Pattern");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Pattern");
 }
 
 static void
@@ -222,7 +222,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_sinus", &svals);
+      gimp_get_data (PLUG_IN_PROC, &svals);
 
       /* In order to prepare the dialog I need to know wether it's grayscale or not */
       drawable = gimp_drawable_get (param[2].data.d_drawable);
@@ -263,7 +263,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_sinus", &svals);
+      gimp_get_data (PLUG_IN_PROC, &svals);
 
       if (svals.random_seed)
         svals.seed = g_random_int ();
@@ -281,7 +281,7 @@ run (const gchar      *name,
       (gimp_drawable_is_rgb (drawable->drawable_id) ||
        gimp_drawable_is_gray (drawable->drawable_id)))
     {
-      gimp_progress_init (_("Sinus: rendering..."));
+      gimp_progress_init (_("Sinus: rendering"));
       gimp_tile_cache_ntiles (1);
       sinus ();
 
@@ -290,7 +290,7 @@ run (const gchar      *name,
 
       /*  Store data  */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_sinus", &svals, sizeof (SinusVals));
+        gimp_set_data (PLUG_IN_PROC, &svals, sizeof (SinusVals));
     }
   else
     {
@@ -641,18 +641,25 @@ sinus_dialog (void)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("sinus", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
   /* Create Main window with a vbox */
   /* ============================== */
-  dlg = gimp_dialog_new (_("Sinus"), "sinus",
+  dlg = gimp_dialog_new (_("Sinus"), PLUG_IN_BINARY,
                          NULL, 0,
-                         gimp_standard_help_func, "plug-in-sinus",
+                         gimp_standard_help_func, PLUG_IN_PROC,
 
                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                          GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                          NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dlg));
 
   main_hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
@@ -690,20 +697,20 @@ sinus_dialog (void)
   gtk_container_add (GTK_CONTAINER(frame), table);
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
-                              _("_X Scale:"), 140, 8,
+                              _("_X scale:"), 140, 8,
                               svals.scalex, 0.0001, 100.0, 0.0001, 5, 4,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (sinus_double_adjustment_update),
                     &svals.scalex);
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 1,
-                              _("_Y Scale:"), 140, 8,
+                              _("_Y scale:"), 140, 8,
                               svals.scaley, 0.0001, 100.0, 0.0001, 5, 4,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (sinus_double_adjustment_update),
                     &svals.scaley);
 
@@ -712,7 +719,7 @@ sinus_dialog (void)
                               svals.cmplx, 0.0, 15.0, 0.01, 5, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (sinus_double_adjustment_update),
                     &svals.cmplx);
 
@@ -737,7 +744,7 @@ sinus_dialog (void)
                                  GIMP_RANDOM_SEED_SPINBUTTON (hbox));
 
   g_signal_connect (GIMP_RANDOM_SEED_SPINBUTTON_ADJ (hbox),
-                    "value_changed", G_CALLBACK (sinus_random_update), NULL);
+                    "value-changed", G_CALLBACK (sinus_random_update), NULL);
   gtk_widget_show (table);
 
   toggle = gtk_check_button_new_with_mnemonic (_("_Force tiling?"));
@@ -815,7 +822,7 @@ sinus_dialog (void)
       gtk_box_pack_start (GTK_BOX (hbox), push_col1, FALSE, FALSE, 0);
       gtk_widget_show (push_col1);
 
-      g_signal_connect (push_col1, "color_changed",
+      g_signal_connect (push_col1, "color-changed",
                         G_CALLBACK (gimp_color_button_get_color),
                         &svals.col1);
 
@@ -825,7 +832,7 @@ sinus_dialog (void)
       gtk_box_pack_start (GTK_BOX (hbox), push_col2, FALSE, FALSE, 0);
       gtk_widget_show (push_col2);
 
-      g_signal_connect (push_col2, "color_changed",
+      g_signal_connect (push_col2, "color-changed",
                         G_CALLBACK (gimp_color_button_get_color),
                         &svals.col2);
 
@@ -845,32 +852,32 @@ sinus_dialog (void)
   gtk_container_add (GTK_CONTAINER (frame), table);
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
-                              _("F_irst Color:"), 0, 0,
+                              _("F_irst color:"), 0, 0,
                               svals.col1.a, 0.0, 1.0, 0.01, 0.1, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (alpha_scale_cb),
                     push_col1);
 
   if (push_col1)
-    g_signal_connect (push_col1, "color_changed",
+    g_signal_connect (push_col1, "color-changed",
                       G_CALLBACK (alpha_scale_update),
                       adj);
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 1,
-                              _("S_econd Color:"), 0, 0,
+                              _("S_econd color:"), 0, 0,
                               svals.col2.a, 0.0, 1.0, 0.01, 0.1, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (alpha_scale_cb),
                     push_col2);
 
   if (push_col2)
-    g_signal_connect (push_col2, "color_changed",
+    g_signal_connect (push_col2, "color-changed",
                       G_CALLBACK (alpha_scale_update),
                       adj);
 
@@ -916,7 +923,7 @@ sinus_dialog (void)
                               svals.blend_power, -7.5, 7.5, 0.01, 5.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (sinus_double_adjustment_update),
                     &svals.blend_power);
 
@@ -1039,7 +1046,7 @@ mw_preview_new (GtkWidget *parent,
   gtk_container_add (GTK_CONTAINER (frame), preview);
   gtk_widget_show (preview);
 
-  button = gtk_check_button_new_with_mnemonic (_("Do _Preview"));
+  button = gtk_check_button_new_with_mnemonic (_("Do _preview"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), do_preview);
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);

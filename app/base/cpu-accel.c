@@ -74,7 +74,12 @@ enum
   ARCH_X86_CYRIX_FEATURE_MMXEXT   = 1 << 24
 };
 
-#if !defined(ARCH_X86_64) && (defined(PIC) || defined(__PIC__))
+enum
+{
+  ARCH_X86_INTEL_FEATURE_PNI      = 1 << 0
+};
+
+#if !defined(ARCH_X86_64) && defined(PIC)
 #define cpuid(op,eax,ebx,ecx,edx)  \
   __asm__ ("movl %%ebx, %%esi\n\t" \
            "cpuid\n\t"             \
@@ -187,6 +192,9 @@ arch_accel_intel (void)
 
     if (edx & ARCH_X86_INTEL_FEATURE_XMM2)
       caps |= CPU_ACCEL_X86_SSE2;
+
+    if (ecx & ARCH_X86_INTEL_FEATURE_PNI)
+      caps |= CPU_ACCEL_X86_SSE3;
 #endif /* USE_SSE */
   }
 #endif /* USE_MMX */
@@ -361,7 +369,31 @@ arch_accel (void)
 #endif /* ARCH_X86 && USE_MMX && __GNUC__ */
 
 
-#if defined (ARCH_PPC) && defined (USE_ALTIVEC) && defined(__GNUC__)
+#if defined(ARCH_PPC) && defined (USE_ALTIVEC)
+
+#if defined(HAVE_ALTIVEC_SYSCTL)
+
+#include <sys/sysctl.h>
+
+#define HAVE_ACCEL 1
+
+static guint32
+arch_accel (void)
+{
+  gint     sels[2] = { CTL_HW, HW_VECTORUNIT };
+  gboolean has_vu  = FALSE;
+  gsize    length  = sizeof(has_vu);
+  gint     err;
+
+  err = sysctl (sels, 2, &has_vu, &length, NULL, 0);
+
+  if (err == 0 && has_vu)
+    return CPU_ACCEL_PPC_ALTIVEC;
+
+  return 0;
+}
+
+#elif defined(__GNUC__)
 
 #define HAVE_ACCEL 1
 
@@ -403,8 +435,9 @@ arch_accel (void)
 
   return CPU_ACCEL_PPC_ALTIVEC;
 }
+#endif /* __GNUC__ */
 
-#endif /* ARCH_PPC && USE_ALTIVEC && __GNUC__ */
+#endif /* ARCH_PPC && USE_ALTIVEC */
 
 
 guint32
@@ -441,6 +474,8 @@ cpu_accel_print_results (void)
               (cpu_accel() & CPU_ACCEL_X86_SSE)     ? "yes" : "no");
   g_printerr ("  sse2    : %s\n",
               (cpu_accel() & CPU_ACCEL_X86_SSE2)    ? "yes" : "no");
+  g_printerr ("  sse3    : %s\n",
+              (cpu_accel() & CPU_ACCEL_X86_SSE3)    ? "yes" : "no");
 #endif
 #ifdef ARCH_PPC
   g_printerr ("  altivec : %s\n",

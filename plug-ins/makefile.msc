@@ -32,17 +32,18 @@ FROMPLUGINSDIR=YES		# Used to bypass other parts below
 # List plug-ins. We must use several lists to work around nmake's limits
 
 # The COMMON* ones are in the common subdirectory
-COMMON1 = AlienMap2 ccanalyze CEL channel_mixer CML_explorer align_layers animationplay animoptimize apply_lens autocrop autostretch_hsv blinds blur borderaverage bumpmap c_astretch checkerboard color_enhance colorify colortoalpha compose convmatrix csource cubism curve_bend
-COMMON2 = decompose deinterlace depthmerge despeckle destripe dicom diffraction displace edge emboss engrave exchange film flarefx fractaltrace
-COMMON3 = gauss gbr gee gee_zoom gif gifload gih glasstile gqbist gradmap grid gtm guillotine header hot illusion iwarp jigsaw jpeg laplace lic
-COMMON4 = mapcolor max_rgb mblur mosaic newsprint nlfilt noisify normalize nova oilify papertile pat pcx pix pixelize plasma png pnm polar postscript psd psd_save psp randomize ripple rotate
-COMMON5 = sample_colorize scatter_hsv screenshot sel_gauss semiflatten sharpen shift sinus smooth_palette snoise sobel sparkle spheredesigner spread struc sunras svg tga threshold_alpha tiff tile tileit tiler uniteditor unsharp video vinvert vpropagate 
+COMMON0 = plugin_browser procedure_browser gnomeprint
+COMMON1 = AlienMap2 ccanalyze CEL channel_mixer CML_explorer align_layers animationplay animoptimize apply_lens autocrop autostretch_hsv blinds blur borderaverage bumpmap c_astretch cartoon checkerboard color_enhance colorify colortoalpha compose compressor convmatrix csource cubism curve_bend
+COMMON2 = decompose deinterlace depthmerge despeckle destripe dicom diffraction displace dog edge emboss engrave exchange film flarefx fp fractaltrace
+COMMON3 = gauss gbr gee gee_zoom gif gifload gih glasstile glob gqbist gradmap grid gtm guillotine header hot illusion iwarp jigsaw laplace lic
+COMMON4 = mapcolor max_rgb mblur mosaic neon newsprint nlfilt noisify normalize nova oilify papertile pat pcx photocopy pix pixelize plasma png pnm polar postscript psd psd_save psp randomize raw retinex ripple rotate
+COMMON5 = sample_colorize scatter_hsv screenshot sel_gauss semiflatten sharpen shift sinus smooth_palette snoise sobel softglow sparkle spheredesigner spread struc sunras tga threshold_alpha tiff tile tileit tiler uniteditor unsharp video vinvert vpropagate 
 COMMON6 = warp waves webbrowser whirlpinch winclipboard wind winprint wiredebug xbm xwd zealouscrop
 
-NOTNOW = wmf 
+NOTNOW = wmf svg
 
 # These have own subdirectories each
-SEPARATE = FractalExplorer Lighting MapObject bmp dbbrowser faxg3 fits flame fp gfig gflare gfli gimpressionist helpbrowser ifscompose imagemap maze mosaic pagecurl rcm sel2path sgi twain winicon winsnap xjt
+SEPARATE = FractalExplorer Lighting MapObject bmp faxg3 fits flame gfig gflare gfli gimpressionist help helpbrowser ifscompose imagemap jpeg maze metadata pagecurl rcm sel2path sgi twain winicon winsnap xjt
 
 # These are unofficial, ie not in the CVS. To build these, you should
 # get tml's source snapshot and copy this makefile to the
@@ -92,6 +93,7 @@ common-plugins-clean :
 
 
 sub-common-plugins :
+	for %d in ($(COMMON0)) do nmake -nologo -f makefile.msc sub-one-common DIR=%d TARGET=$(TARGET)
 	for %d in ($(COMMON1)) do nmake -nologo -f makefile.msc sub-one-common DIR=%d TARGET=$(TARGET)
 	for %d in ($(COMMON2)) do nmake -nologo -f makefile.msc sub-one-common DIR=%d TARGET=$(TARGET)
 	for %d in ($(COMMON3)) do nmake -nologo -f makefile.msc sub-one-common DIR=%d TARGET=$(TARGET)
@@ -227,11 +229,13 @@ OBJECTS = \
 	bmpwrite.obj
 !ENDIF
 
-!IFDEF EXTRA_dbbrowser
+!IFDEF EXTRA_plugin_browser
 OBJECTS = \
-	gimpprocbox.obj \
-	gimpprocbrowser.obj \
-	gimpprocview.obj \
+	plugin-browser.obj
+!ENDIF
+
+!IFDEF EXTRA_procedure_browser
+OBJECTS = \
 	procedure-browser.obj
 !ENDIF
 
@@ -282,6 +286,7 @@ STOCK_VARS = \
 	stock_move_object images/stock-move-object.png	\
 	stock_move_point images/stock-move-point.png	\
 	stock_polygon images/stock-polygon.png	\
+	stock_rectangle images/stock-rectangle.png	\
 	stock_spiral images/stock-spiral.png	\
 	stock_star images/stock-star.png		\
 	stock_select_object images/stock-select-object.png \
@@ -320,6 +325,7 @@ OBJECTS = \
 	gfig-line.obj \
 	gfig-poly.obj \
 	gfig-preview.obj \
+	gfig-rectangle.obj \
 	gfig-spiral.obj \
 	gfig-star.obj \
 	gfig-style.obj \
@@ -419,7 +425,6 @@ OBJECTS = \
 	imap_object.obj \
 	imap_object_popup.obj \
 	imap_polygon.obj \
-	imap_popup.obj \
 	imap_preferences.obj \
 	imap_preview.obj \
 	imap_rectangle.obj \
@@ -430,8 +435,7 @@ OBJECTS = \
 	imap_stock.obj \
 	imap_string.obj \
 	imap_table.obj \
-	imap_toolbar.obj \
-	imap_tools.obj
+	imap_taglist.obj
 # not changing the source which is lexed
 EXTRACFLAGS = -FIstring.h -FIstdlib.h
 !ENDIF
@@ -443,6 +447,13 @@ OPTIMIZE =
 !IFDEF EXTRA_jpeg
 EXTRACFLAGS = -I$(JPEG)
 EXTRALIBS = $(JPEG)\libjpeg.lib
+OBJECTS = \
+	gimpexif.obj \
+	jpeg.obj \
+	jpeg-exif.obj \
+	jpeg-icc.obj \
+	jpeg-load.obj \
+	jpeg-save.obj
 !ENDIF
 
 !IFDEF EXTRA_maze
@@ -456,6 +467,17 @@ OBJECTS = \
 !IFDEF EXTRA_mpeg
 EXTRACFLAGS = -I$(MPEG)
 EXTRALIBS = $(MPEG)\release\libmpeg.lib
+!ENDIF
+
+!IFDEF EXTRA_metadata
+OBJECTS = \
+	base64.obj \
+	interface.obj \
+	metadata.obj \
+	xmp-encode.obj \
+	xmp-model.obj \
+	xmp-parse.obj \
+	xmp-schemas.obj
 !ENDIF
 
 !IFDEF EXTRA_pagecurl
@@ -487,8 +509,8 @@ EXTRA_DEPS = pagecurl-icons.h
 !ENDIF
 
 !IFDEF EXTRA_png
-EXTRACFLAGS = -I$(PNG) -I$(ZLIB)
-EXTRALIBS = $(PNG)\libpng.lib $(ZLIB)\zlib.lib
+EXTRACFLAGS = $(PNG_CFLAGS)
+EXTRALIBS = $(PNG_LIBS)
 !ENDIF
 
 !IFDEF EXTRA_print
@@ -500,9 +522,14 @@ OBJECTS = \
 	print-util.obj
 !ENDIF
 
+!IFDEF EXTRA_gnomeprint
+EXTRACFLAGS = $(GNOMEPRINT_CFLAGS) $(LIBART_CFLAGS) $(GNOMECANVAS_CFLAGS) $(GNOMEPRINTUI_CFLAGS)
+EXTRALIBS = $(GNOMEPRINT_LIBS) $(GNOMEPRINTUI_LIBS)
+!ENDIF
+
 !IFDEF EXTRA_psp
-EXTRACFLAGS = -I$(ZLIB)
-EXTRALIBS = $(ZLIB)\zlib.lib user32.lib
+EXTRACFLAGS = $(ZLIB_CFLAGS)
+EXTRALIBS = $(ZLIB_LIBS)
 !ENDIF
 
 !IFDEF EXTRA_rcm
@@ -541,10 +568,9 @@ OBJECTS = \
 	script-fu-scripts.obj \
 	script-fu-text-console.obj \
 	script-fu-interface.obj \
-	..\dbbrowser\gimpprocbrowser.obj \
-	..\dbbrowser\gimpprocbox.obj \
-	..\dbbrowser\gimpprocview.obj
-EXTRALIBS = ..\..\regexrepl\regexrepl.lib siod\siod.lib kernel32.lib 
+	script-fu-server.obj
+
+EXTRALIBS = ..\..\regexrepl\regexrepl.lib siod\siod.lib kernel32.lib wsock32.lib
 EXTRACFLAGS = -DREGEX_MALLOC
 HAVE_RESOURCE = YES
 !ENDIF
@@ -575,7 +601,7 @@ EXTRALIBS = $(RSVG_LIBS)
 
 !IFDEF EXTRA_tiff
 EXTRACFLAGS = -I$(TIFF)
-EXTRALIBS = $(TIFF)\libtiff.lib $(JPEG)\libjpeg.lib $(ZLIB)\zlib.lib user32.lib
+EXTRALIBS = $(TIFF)\libtiff.lib $(JPEG)\libjpeg.lib $(ZLIB_LIBS) user32.lib
 !ENDIF
 
 !IFDEF EXTRA_gimp_ace
@@ -592,6 +618,8 @@ gimpressionist.c: logo-pixbuf.h
 
 logo-pixbuf.h: logo.png
 	gdk-pixbuf-csource --rle --name=logo_data logo.png > $(@F)
+
+EXTRALIBS = $(GTK2_LIBS)
 
 OBJECTS = \
 	brush.obj \
@@ -614,14 +642,31 @@ OBJECTS = \
 	utils.obj
 !ENDIF
 
+!IFDEF EXTRA_help
+OBJECTS = \
+	locales.obj \
+	domain.obj \
+	help.obj
+TEST_OBJECTS = \
+	gimp-help-lookup.obj
+!ENDIF
+
 !IFDEF EXTRA_helpbrowser
 OBJECTS = \
+	gimpthrobber.obj \
+	gimpthrobberaction.obj \
 	helpbrowser.obj	\
 	dialog.obj	\
 	queue.obj		\
 	uri.obj
 EXTRACFLAGS = $(GTKHTML2_CFLAGS)
 EXTRALIBS = $(GTKHTML2_LIBS) user32.lib shell32.lib
+
+dialog.c : logo-pixbuf.h
+
+logo-pixbuf.h: wilber-reading.png
+	gdk-pixbuf-csource --raw --name=logo_data wilber-reading.png > logo-pixbuf.h
+
 !ENDIF
 
 !IFDEF EXTRA_guash
@@ -672,7 +717,7 @@ EXTRALIBS = user32.lib
 !ENDIF
 
 !IFDEF EXTRA_webbrowser
-EXTRALIBS = shell32.lib
+EXTRALIBS = shell32.lib user32.lib
 !ENDIF
 
 !IFDEF EXTRA_winprint
@@ -760,6 +805,7 @@ $(PLUGIN).exe :  $(EXTRA_DEPS) $(OBJECTS) $(RESOURCE)
 	..\..\libgimp\gimp-$(GIMP_VER).lib ..\..\libgimp\gimpui-$(GIMP_VER).lib \
 	..\..\libgimpbase\gimpbase-$(GIMP_VER).lib \
 	..\..\libgimpcolor\gimpcolor-$(GIMP_VER).lib \
+	..\..\libgimpconfig\gimpconfig-$(GIMP_VER).lib \
 	..\..\libgimpmath\gimpmath-$(GIMP_VER).lib \
 	..\..\libgimpwidgets\gimpwidgets-$(GIMP_VER).lib \
 	$(GLIB_LIBS) $(GTK2_LIBS) $(INTL_LIBS) $(EXTRALIBS) $(LDFLAGS)
@@ -803,12 +849,12 @@ install : all
 OBJECTS = $(MODULE).obj
 !ENDIF
 
-$(MODULE).$(MODULE_EXT) : $(OBJECTS) $(MODULE).def
+$(MODULE).$(MODULE_EXT) : $(OBJECTS)
 	$(CC) $(CFLAGS) -LD -Fe$@ $(OBJECTS) $(LDFLAGS) $(EXTRALIBS) \
 	..\..\libgimp\gimp-$(GIMP_VER).lib ..\..\libgimp\gimpui-$(GIMP_VER).lib \
 	..\..\libgimpcolor\gimpcolor-$(GIMP_VER).lib \
 	..\..\libgimpbase\gimpbase-$(GIMP_VER).lib \
-	$(GLIB_LIBS) $(GTK2_LIBS) /def:$(MODULE).def
+	$(GLIB_LIBS) $(GTK2_LIBS) /export:init$(MODULE)
 !ENDIF
 
 .c.obj :

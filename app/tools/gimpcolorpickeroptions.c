@@ -20,13 +20,11 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig-params.h"
-
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpcolorpickeroptions.h"
@@ -39,11 +37,10 @@ enum
   PROP_0,
   PROP_SAMPLE_AVERAGE, /* overrides a GimpColorOptions property */
   PROP_PICK_MODE,
-  PROP_ADD_TO_PALETTE
+  PROP_ADD_TO_PALETTE,
+  PROP_USE_INFO_WINDOW
 };
 
-
-static void   gimp_color_picker_options_class_init   (GimpColorPickerOptionsClass *klass);
 
 static void   gimp_color_picker_options_set_property (GObject      *object,
                                                       guint         property_id,
@@ -55,43 +52,14 @@ static void   gimp_color_picker_options_get_property (GObject      *object,
                                                       GParamSpec   *pspec);
 
 
-static GimpToolOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpColorPickerOptions, gimp_color_picker_options,
+               GIMP_TYPE_COLOR_OPTIONS);
 
-
-GType
-gimp_color_picker_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpColorPickerOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_color_picker_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpColorPickerOptions),
-        0,              /* n_preallocs    */
-        NULL            /* instance_init  */
-      };
-
-      type = g_type_register_static (GIMP_TYPE_COLOR_OPTIONS,
-                                     "GimpColorPickerOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_color_picker_options_class_init (GimpColorPickerOptionsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_color_picker_options_set_property;
   object_class->get_property = gimp_color_picker_options_get_property;
@@ -110,6 +78,15 @@ gimp_color_picker_options_class_init (GimpColorPickerOptionsClass *klass)
                                     "add-to-palette", NULL,
                                     FALSE,
                                     0);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_INFO_WINDOW,
+                                    "use-info-window", NULL,
+                                    FALSE,
+                                    0);
+}
+
+static void
+gimp_color_picker_options_init (GimpColorPickerOptions *options)
+{
 }
 
 static void
@@ -130,6 +107,9 @@ gimp_color_picker_options_set_property (GObject      *object,
       break;
     case PROP_ADD_TO_PALETTE:
       options->add_to_palette = g_value_get_boolean (value);
+      break;
+    case PROP_USE_INFO_WINDOW:
+      options->use_info_window = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -157,6 +137,9 @@ gimp_color_picker_options_get_property (GObject    *object,
     case PROP_ADD_TO_PALETTE:
       g_value_set_boolean (value, options->add_to_palette);
       break;
+    case PROP_USE_INFO_WINDOW:
+      g_value_set_boolean (value, options->use_info_window);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -181,7 +164,7 @@ gimp_color_picker_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (button);
 
   /*  the pick FG/BG frame  */
-  str = g_strdup_printf (_("Pick Mode  %s"),
+  str = g_strdup_printf (_("Pick Mode  (%s)"),
                          gimp_get_mod_string (GDK_CONTROL_MASK));
   frame = gimp_prop_enum_radio_frame_new (config, "pick-mode", str, -1, -1);
   g_free (str);
@@ -189,13 +172,13 @@ gimp_color_picker_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
-  /*  the add to palette toggle  */
-  str = g_strdup_printf (_("Add to palette  %s"),
+  /*  the use_info_window toggle button  */
+  str = g_strdup_printf (_("Use info window  (%s)"),
                          gimp_get_mod_string (GDK_SHIFT_MASK));
-  button = gimp_prop_check_button_new (config, "add-to-palette", str);
+  button = gimp_prop_check_button_new (config, "use-info-window", str);
   g_free (str);
 
-  gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
   return vbox;

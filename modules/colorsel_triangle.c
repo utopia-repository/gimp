@@ -210,17 +210,17 @@ colorsel_triangle_create_preview (ColorselTriangle *triangle)
 
   gtk_widget_add_events (preview, PREVIEW_MASK);
 
-  g_signal_connect (preview, "motion_notify_event",
+  g_signal_connect (preview, "motion-notify-event",
                     G_CALLBACK (colorsel_triangle_event),
                     triangle);
-  g_signal_connect (preview, "button_press_event",
+  g_signal_connect (preview, "button-press-event",
                     G_CALLBACK (colorsel_triangle_event),
                     triangle);
-  g_signal_connect (preview, "button_release_event",
+  g_signal_connect (preview, "button-release-event",
                     G_CALLBACK (colorsel_triangle_event),
                     triangle);
 
-  g_signal_connect (preview, "size_allocate",
+  g_signal_connect (preview, "size-allocate",
                     G_CALLBACK (colorsel_triangle_size_allocate),
                     triangle);
 
@@ -325,7 +325,7 @@ colorsel_triangle_update_preview (ColorselTriangle *triangle)
 
   gimp_hsv_to_rgb4 (buf, atn / (2 * G_PI), 1, 1);
 
-  col = GIMP_RGB_INTENSITY (buf[0], buf[1], buf[2]) > 127 ? 0 : 255;
+  col = GIMP_RGB_LUMINANCE (buf[0], buf[1], buf[2]) > 127 ? 0 : 255;
 
   d = CLAMP (triangle->wheelradius / 16, 2, 4);
 
@@ -359,7 +359,7 @@ colorsel_triangle_update_preview (ColorselTriangle *triangle)
 
   /* marker in triangle */
 
-  col = gimp_rgb_intensity (&selector->rgb) > 0.5 ? 0 : 255;
+  col = gimp_rgb_luminance (&selector->rgb) > 0.5 ? 0 : 255;
 
   sat = triangle->oldsat = selector->hsv.s;
   val = triangle->oldval = selector->hsv.v;

@@ -1,15 +1,16 @@
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+
 #include <sys/stat.h>
 #include <sys/types.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -90,7 +91,7 @@ get_early_line_from_preset (gchar *full_path, const gchar *prefix)
   gint prefix_len, line_idx;
 
   prefix_len = strlen (prefix);
-  f = fopen (full_path, "rt");
+  f = g_fopen (full_path, "rt");
   if (f)
     {
       /* Skip the preset magic. */
@@ -125,8 +126,8 @@ get_object_name (gchar *dir, gchar *filename, void *context)
    * */
 
   full_path = g_build_filename (dir, filename, NULL);
+
   unprocessed_line = get_early_line_from_preset (full_path, "name=");
-  g_free (full_path);
   if (unprocessed_line)
     {
       ret = g_strcompress (unprocessed_line);
@@ -135,8 +136,11 @@ get_object_name (gchar *dir, gchar *filename, void *context)
   else
     {
       /* The object name defaults to a filename-derived description */
-      ret = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
+      ret = g_filename_display_basename (full_path);
     }
+
+  g_free (full_path);
+
   return ret;
 }
 
@@ -152,7 +156,6 @@ static gchar *
 preset_create_filename (const gchar *basename,
                         const gchar *dest_dir)
 {
-  gchar *filename;
   gchar *fullpath;
   gchar *safe_name;
   gint   i;
@@ -166,23 +169,20 @@ preset_create_filename (const gchar *basename,
 
   if (safe_name[0] == '.')
     safe_name[0] = '-';
+
   for (i = 0; safe_name[i]; i++)
     if (safe_name[i] == G_DIR_SEPARATOR || g_ascii_isspace (safe_name[i]))
       safe_name[i] = '-';
 
-  filename = g_strdup (safe_name);
-
-  fullpath = g_build_filename (dest_dir, filename, NULL);
-
-  g_free (filename);
+  fullpath = g_build_filename (dest_dir, safe_name, NULL);
 
   while (g_file_test (fullpath, G_FILE_TEST_EXISTS))
     {
+      gchar *filename;
+
       g_free (fullpath);
 
-      filename = g_strdup_printf ("%s-%d",
-                                  safe_name,
-                                  unum++);
+      filename = g_strdup_printf ("%s-%d", safe_name, unum++);
 
       fullpath = g_build_filename (dest_dir, filename, NULL);
 
@@ -224,10 +224,11 @@ load_old_preset (const gchar *fname)
   FILE *f;
   int   len;
 
-  f = fopen (fname, "rb");
+  f = g_fopen (fname, "rb");
   if (!f)
     {
-      fprintf (stderr, "Error opening file \"%s\" for reading!%c\n", fname, 7);
+      g_printerr ("Error opening file \"%s\" for reading!\n",
+                  gimp_filename_to_utf8 (fname));
       return -1;
     }
   len = fread (&pcvals, 1, sizeof (pcvals), f);
@@ -444,10 +445,11 @@ load_preset (const gchar *fn)
   char  line[1024] = "";
   FILE *f;
 
-  f = fopen (fn, "rt");
+  f = g_fopen (fn, "rt");
   if (!f)
     {
-      fprintf (stderr, "Error opening file \"%s\" for reading!\n", fn);
+      g_printerr ("Error opening file \"%s\" for reading!\n",
+                  gimp_filename_to_utf8 (fn));
       return -1;
     }
   fgets (line, 10, f);
@@ -496,9 +498,8 @@ select_preset (const gchar *preset)
       if (abs)
         {
           if (load_preset (abs))
-            {
-              ret = SELECT_PRESET_LOAD_FAILED;
-            }
+            ret = SELECT_PRESET_LOAD_FAILED;
+
           g_free (abs);
         }
       else
@@ -564,9 +565,7 @@ delete_preset (GtkWidget *w, GtkTreeSelection *selection)
             {
               /* Don't delete global presets - bug # 147483 */
               if (can_delete_preset (abs))
-                {
-                  unlink (abs);
-                }
+                g_unlink (abs);
 
               g_free (abs);
             }
@@ -604,7 +603,7 @@ save_preset_response (GtkWidget *widget,
 }
 
 static void
-create_save_preset (void)
+create_save_preset (GtkWidget *parent)
 {
   static GtkWidget *window = NULL;
   GtkWidget        *box, *label;
@@ -619,13 +618,18 @@ create_save_preset (void)
 
   window =
     gimp_dialog_new (_("Save Current"), "gimpressionist",
-                     NULL, 0,
-                     gimp_standard_help_func, HELP_ID,
+                     gtk_widget_get_toplevel (parent), 0,
+                     gimp_standard_help_func, PLUG_IN_NAME,
 
                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                      GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                      NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (window),
+                                              GTK_RESPONSE_OK,
+                                              GTK_RESPONSE_CANCEL,
+                                              -1);
 
   g_signal_connect (window, "response",
                     G_CALLBACK (save_preset_response),
@@ -685,23 +689,25 @@ save_preset (void)
 
   if (!thispath)
     {
-      g_printerr ("Internal error: (save_preset) thispath == NULL");
+      g_printerr ("Internal error: (save_preset) thispath == NULL\n");
       return;
     }
 
   /* Create the ~/.gimp-$VER/gimpressionist/Presets directory if
    * it doesn't already exists.
    * */
-  presets_dir_path = g_build_filename ((char *)thispath->data, "Presets", NULL);
+  presets_dir_path = g_build_filename ((const char *) thispath->data, "Presets",
+                                       NULL);
 
   if (!g_file_test (presets_dir_path, G_FILE_TEST_IS_DIR))
     {
-      if (mkdir (presets_dir_path,
-                 S_IRUSR | S_IWUSR | S_IXUSR |
-                 S_IRGRP | S_IXGRP |
-                 S_IROTH | S_IXOTH) == -1)
+      if (g_mkdir (presets_dir_path,
+                   S_IRUSR | S_IWUSR | S_IXUSR |
+                   S_IRGRP | S_IXGRP |
+                   S_IROTH | S_IXOTH) == -1)
         {
-          g_printerr ("Error creating folder \"%s\"!\n", presets_dir_path);
+          g_printerr ("Error creating folder \"%s\"!\n",
+                      gimp_filename_to_utf8 (presets_dir_path));
           g_free (presets_dir_path);
           return;
         }
@@ -729,10 +735,11 @@ save_preset (void)
       return;
     }
 
-  f = fopen (fname, "wt");
+  f = g_fopen (fname, "wt");
   if (!f)
     {
-      g_printerr ("Error opening file \"%s\" for writing!%c\n", fname, 7);
+      g_printerr ("Error opening file \"%s\" for writing!\n",
+                  gimp_filename_to_utf8 (fname));
       g_free (fname);
       return;
     }
@@ -860,7 +867,7 @@ read_description (const char *fn)
       if (!strcmp (fn, factory_defaults))
         {
           gtk_widget_set_sensitive (delete_button, FALSE);
-          set_preset_description_text (_("The Gimpressionist Defaults"));
+          set_preset_description_text (_("Gimpressionist Defaults"));
         }
       else
         {
@@ -888,8 +895,9 @@ read_description (const char *fn)
     }
 }
 
-static void presets_list_select_preset (GtkTreeSelection *selection,
-                                        gpointer data)
+static void
+presets_list_select_preset (GtkTreeSelection *selection,
+                            gpointer          data)
 {
   GtkTreeIter iter;
   GtkTreeModel *model;
@@ -903,9 +911,11 @@ static void presets_list_select_preset (GtkTreeSelection *selection,
                           &preset_name, -1);
       gtk_tree_model_get (model, &iter, PRESETS_LIST_COLUMN_FILENAME,
                           &preset_filename, -1);
+
       /* TODO : Maybe make the factory defaults behavior in regards
        * to the preset's object name and filename more robust?
-       * */
+       *
+       */
       if (strcmp (preset_filename, factory_defaults))
         {
           gtk_entry_set_text (GTK_ENTRY (presetnameentry), preset_name);
@@ -914,7 +924,9 @@ static void presets_list_select_preset (GtkTreeSelection *selection,
           selected_preset_orig_name = g_strdup (preset_name);
           selected_preset_filename = g_strdup (selected_preset_filename);
         }
+
       read_description (preset_filename);
+
       g_free (preset_name);
       g_free (preset_filename);
     }
@@ -937,7 +949,7 @@ create_presets_list (GtkWidget *parent)
                                        GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (parent), swin, FALSE, FALSE, 0);
   gtk_widget_show (swin);
-  gtk_widget_set_size_request (swin, 150,-1);
+  gtk_widget_set_size_request (swin, 200, -1);
 
   store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
   view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
@@ -982,16 +994,19 @@ create_presetpage (GtkNotebook *notebook)
   gtk_container_set_border_width (GTK_CONTAINER (thispage), 12);
   gtk_widget_show (thispage);
 
-  box1 = gtk_hbox_new (FALSE, 6);
+  box1 = gtk_hbox_new (FALSE, 12);
   gtk_box_pack_start (GTK_BOX (thispage), box1, FALSE, FALSE, 0);
   gtk_widget_show (box1);
 
   presetnameentry = tmpw = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (box1), tmpw, FALSE, FALSE, 0);
-  gtk_widget_set_size_request (tmpw, 150, -1);
+  gtk_widget_set_size_request (tmpw, 200, -1);
   gtk_widget_show (tmpw);
 
-  presetsavebutton = tmpw = gtk_button_new_with_label ( _("Save current..."));
+  presetsavebutton = tmpw = gtk_button_new_with_label ( _("Save Current..."));
+  gtk_button_set_image (GTK_BUTTON (presetsavebutton),
+                        gtk_image_new_from_stock (GTK_STOCK_SAVE,
+                                                  GTK_ICON_SIZE_BUTTON));
   gtk_box_pack_start (GTK_BOX (box1), tmpw, FALSE, FALSE, 0);
   gtk_widget_show (tmpw);
   g_signal_connect (tmpw, "clicked", G_CALLBACK (create_save_preset), NULL);
@@ -1039,12 +1054,15 @@ create_presetpage (GtkNotebook *notebook)
   gimp_help_set_help_data (tmpw, _("Reread the folder of Presets"), NULL);
 
   presetdesclabel = tmpw = gtk_label_new (NULL);
+  gimp_label_set_attributes (GTK_LABEL (tmpw),
+                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+                             -1);
   gtk_label_set_line_wrap (GTK_LABEL (tmpw), TRUE);
   /*
    * Make sure the label's width is reasonable and it won't stretch
    * the dialog more than its width.
    * */
-  gtk_widget_set_size_request (tmpw, 200, -1);
+  gtk_widget_set_size_request (tmpw, 240, -1);
 
   gtk_misc_set_alignment (GTK_MISC (tmpw), 0.0, 0.0);
   gtk_box_pack_start (GTK_BOX (vbox), tmpw, TRUE, TRUE, 0);

@@ -47,43 +47,49 @@ static GimpActionEntry palettes_actions[] =
   { "palettes-new", GTK_STOCK_NEW,
     N_("_New Palette"), "",
     N_("New palette"),
-    G_CALLBACK (data_new_data_cmd_callback),
+    G_CALLBACK (data_new_cmd_callback),
     GIMP_HELP_PALETTE_NEW },
 
   { "palettes-import", GTK_STOCK_CONVERT,
     N_("_Import Palette..."), "",
     N_("Import palette"),
-    G_CALLBACK (palettes_import_palette_cmd_callback),
+    G_CALLBACK (palettes_import_cmd_callback),
     GIMP_HELP_PALETTE_IMPORT },
 
   { "palettes-duplicate", GIMP_STOCK_DUPLICATE,
     N_("D_uplicate Palette"), NULL,
     N_("Duplicate palette"),
-    G_CALLBACK (data_duplicate_data_cmd_callback),
+    G_CALLBACK (data_duplicate_cmd_callback),
     GIMP_HELP_PALETTE_DUPLICATE },
 
   { "palettes-merge", NULL,
     N_("_Merge Palettes..."), NULL,
     N_("Merge palettes"),
-    G_CALLBACK (palettes_merge_palettes_cmd_callback),
+    G_CALLBACK (palettes_merge_cmd_callback),
     GIMP_HELP_PALETTE_MERGE },
+
+  { "palettes-copy-location", GTK_STOCK_COPY,
+    N_("Copy Palette _Location"), "",
+    N_("Copy palette file location to clipboard"),
+    G_CALLBACK (data_copy_location_cmd_callback),
+    GIMP_HELP_PALETTE_COPY_LOCATION },
 
   { "palettes-delete", GTK_STOCK_DELETE,
     N_("_Delete Palette"), "",
     N_("Delete palette"),
-    G_CALLBACK (data_delete_data_cmd_callback),
+    G_CALLBACK (data_delete_cmd_callback),
     GIMP_HELP_PALETTE_DELETE },
 
   { "palettes-refresh", GTK_STOCK_REFRESH,
     N_("_Refresh Palettes"), "",
     N_("Refresh palettes"),
-    G_CALLBACK (data_refresh_data_cmd_callback),
+    G_CALLBACK (data_refresh_cmd_callback),
     GIMP_HELP_PALETTE_REFRESH }
 };
 
 static GimpStringActionEntry palettes_edit_actions[] =
 {
-  { "palettes-edit", GIMP_STOCK_EDIT,
+  { "palettes-edit", GTK_STOCK_EDIT,
     N_("_Edit Palette..."), NULL,
     N_("Edit palette"),
     "gimp-palette-editor",
@@ -101,7 +107,7 @@ palettes_actions_setup (GimpActionGroup *group)
   gimp_action_group_add_string_actions (group,
                                         palettes_edit_actions,
                                         G_N_ELEMENTS (palettes_edit_actions),
-                                        G_CALLBACK (data_edit_data_cmd_callback));
+                                        G_CALLBACK (data_edit_cmd_callback));
 }
 
 void
@@ -123,10 +129,11 @@ palettes_actions_update (GimpActionGroup *group,
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("palettes-edit",      palette);
-  SET_SENSITIVE ("palettes-duplicate", palette && GIMP_DATA_GET_CLASS (data)->duplicate);
-  SET_SENSITIVE ("palettes-merge",     FALSE); /* FIXME palette && GIMP_IS_CONTAINER_LIST_VIEW (editor->view)); */
-  SET_SENSITIVE ("palettes-delete",    palette && data->deletable);
+  SET_SENSITIVE ("palettes-edit",          palette);
+  SET_SENSITIVE ("palettes-duplicate",     palette && GIMP_DATA_GET_CLASS (data)->duplicate);
+  SET_SENSITIVE ("palettes-merge",         FALSE); /* FIXME palette && GIMP_IS_CONTAINER_LIST_VIEW (editor->view)); */
+  SET_SENSITIVE ("palettes-copy-location", palette && data->filename);
+  SET_SENSITIVE ("palettes-delete",        palette && data->deletable);
 
 #undef SET_SENSITIVE
 }

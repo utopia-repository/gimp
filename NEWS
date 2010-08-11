@@ -1,358 +1,231 @@
-The GNU Image Manipulation Program Version 2.2
-----------------------------------------------
+                   ------------------------------ 
+                   GNU Image Manipulation Program
+                         Development Branch
+                   ------------------------------
 
-This is the stable branch of GIMP 2.2. Only bug-fixes are applied
-here. New features are being added in the HEAD branch that will be
-released as GIMP version 2.4.
-
-
-Bugs fixed in GIMP 2.2.17
-=========================
-
-- fixed regression in PSD load plug-in (bug #456042)
-- fixed crash when loading a corrupt PSD file (bug #327444)
-- work around for Pango appending " Not-Rotated" to font names 
+This is the development branch of The GIMP. Here's where all the shiny
+new stuff is being done that will one day be released as GIMP 2.4.
 
 
-Bugs fixed in GIMP 2.2.16
-=========================
+Changes in GIMP 2.3.6
+=====================
 
-- improved input value validation in several file plug-ins (bug #453973)
-- improved handling of corrupt or invalid XCF files
-- guard against integer overflows in several file plug-ins (bug #451379)
-- fixed handling of background alpha channel in XCF files (bug #443097)
-- improved forward compatibility of the config parser
-- fixed crash when previewing some animated brushes (bug #446005)
-
-
-Bugs fixed in GIMP 2.2.15
-=========================
-
-- fixed parsing of GFig files with CRLF line endings (bug #346988)
-- guard against a possible stack overflow in the Sunras loader (bug #433902)
-- fixed definition of datarootdir in gimptool-2.0 (bug #436386)
-- fixed Perspective tool crash on Mac OS X (bug #349483)
-- fixed area resizing in the Image Map plug-in (bug #439222)
-- added missing library in gimptool-2.0 --libs output
-- added new localizations: Occitan and Persian
+- even faster application startup
+- binary relocatibility on Linux by means of binreloc
+- be more verbose when being asked for it
+- select color index when picking from an indexed drawable
+- allow to migrate windows between displays
+- mouse-wheel scrolling and zooming in plug-in previews
+- added keyboard shortcuts ([ and ]) for changing the brush radius
+- improved Oilify plug-in
+- bug fixes and code cleanup
 
 
-Bugs fixed in GIMP 2.2.14
-=========================
+Changes in GIMP 2.3.5
+=====================
 
-- avoid crashing on newer versions of the winicon format (bug #352899)
-- fixed crash in Postscript plug-in (bug #353381)
-- fixed handling of TABs in the text tool (bug #353132)
-- fixed bug in Depth Merge plug-in (bug #355219)
-- fixed bug in GimpDrawablePreview widget (bug #353639)
-- fixed bug in Line Nove script (bug #357433)
-- fixed bug in Ripple plug-in (bug #357431)
-- save locale independent files from Fractal Explorer plug-in (bug #360095)
-- fixed bug in Super Nova plug-in (bug #340073)
-- be more robust against broken XCF files (bug #357809)
-- fixed drawing issues in Image Map plug-in (bug #311621)
-- fixed smoothing option in Fractal Explorer plug-in (bug #372671)
-- load channels in the proper order when opening an XCF file (bug #378003)
-- deal with floating selections in the Burn-In Animation script (bug #384096)
-- fixed clipping in the GimpPreviewArea widget (bug #392692)
-- fixed a potential crash in gimp-remote (bug #392111)
-- work around a file-chooser problem on Windows (bug #398726)
-- fixed markup of the gimp(1) manual page (bug #401145)
-- fixed the fix for the right-to-left layout in layers dialog (bug #348347)
-- fixed PSD save plug-in on 64bit architectures (bug #335130)
-- added missing dependency in gimpui-2.0.pc file (bug #356394)
-- fixed a crash in the PSD save plug-in (bug #395385)
-- improved robustness of transform tool preview code (bug #420595)
-- improved forward compatibility of XCF loader (bug #316207)
-- don't crash in the Compressor plug-in if files can't be opened (bug #422444)
-- fixed sensitivity of input fields in the Lighting plug-in (bug #359833)
+- optionally add jitter to paint strokes
+- implemented Snap to Path
+- added PDB API to access the Image Grid
+- ease access to Keyboard Shortcuts editor
+- optimizations to the Tile Cache and Undo/Redo implementations
+- more work on the Buffer PDB API
+- bug fixes to the new zoomable plug-in previews
+- optimization of the SIOX algorithm
+- menu reorganisation in the Toolbox menu
+- export "Open As Layer" to the PDB as file-load-layer
+- added keyboard control for the Curves tool
+- load and save embedded ICC profiles from/to PNG images
+- improved appearance of some tool icons on dark background
+- added PDB API to get and set path visibility
+- let data editors follow the active brush, palette and gradient (optional)
+- some rearrangements in the new toplevel Colors menu
+- speed up reloading of data files
+- allow to copy the location of data files to the clipboard
+- allow to disable saving of the document history in the preferences
+- slightly faster application startup
+- more use of ngettext for plural forms
+- bug fixes and code cleanup
 
 
-Bugs fixed in GIMP 2.2.13
-=========================
+Changes in GIMP 2.3.4
+=====================
 
-- avoid endless looping when loading a corrupt XCF file (bug #345802)
-- fixed regression in file dialogs (bug #347544)
-- fixed right-to-left layout in layers dialog (bug #348347)
-- avoid a crash when loading a corrupt gradient file (bug #349996)
-- fixed segfault in Warp plug-in on 64bit architectures (bug #327479)
-- fixed crash in GimpDrawablePreview (bug #350760)
-- fixed error in Winicon load plug-in (bug #172503)
-- fixed errors in Autocrop plug-in (bug #337888)
-- fixed compile errors in regression tests on OS X (bug #352221)
-- fixed regression in Gaussian Blur plug-in (bug #343047)
-- fixed crash when opening an RGB image in an indexed image (bug #345051)
-- fixed a possible crash in the Save dialog (bug #329001)
-- fixed Lighten Only layer mode on SSE2 platforms (bug #164061)
-- work with newer versions of autoconf
-- protect against bogus values returned from GDK (bug #340056)
-- fixed handling of indexed images in the Winicon save plug-in (bug #342883)
-
-
-Bugs fixed in GIMP 2.2.12
-=========================
-
-- fixed display problem in the Animation Playback plug-in (bug #338378)
-- fixed misbehaviour of the user installation dialog (bug #324254)
-- make sure that session-managed windows are mapped completely inside a
-  monitor (bug #339099, bug #324254)
-- don't use long deprecated libpng API (bug #339402)
-- fixed possible segfault when closing image while saving it (bug #322978)
-- halt tools when the image mode changes (bug #330083)
-- fixed problem in Scale and Resize widgets (bug #336259)
-- fixed wrong offset in transform PDB functions (bug #342548)
-- fixed bugs in the Dicom load plug-in (bug #163256)
-- make sure text widgets get all key events first (bug #301006)
-- fixed problems with default values in the PNG save plug-in (bug #343284)
-- fixed Save As dialog not displaying the filename (bug #343284)
-- fixed compilation problem with gcc 4.1 (bug #345473)
-- plugged a possible buffer overrun in the XCF parser (bug #346742)
-- don't save image parasites twice in XCF files (bug #346754)
+- allow plug-ins and scripts to register menu entries in the <Brushes>,
+  <Gradients>, <Palettes>, <Patterns> and <Fonts> menus
+- replaced Selection to Brush/Pattern scripts with scripts that paste
+  a new brush/pattern from the content of the clipboard
+- allow to easily close all opened images
+- added a first version of a Print plug-in using libgnomeprint
+- improved Sphere Designer plug-in
+- improved Compose plug-in
+- added a zoomable preview widget for plug-ins
+- implement copy and paste of paths as SVG 
+- use new stock icons introduced with GTK+ 2.6
+- allow to zoom in/out using the +/- keys on the numerical keypad
+- make it easier to drop dockables below the toolbox
+- set plug-in dialogs transient to the window they have been called from
+- added PDB function to obtain handles to the image and progress windows
+- export named buffers to the PDB
+- easier access to the popup menu in empty container views
+- use ngettext for plural forms
+- implement "Sample Merged" for the Clone tool
+- various Win32 fixes
+- fixed capitalization for better HIG compliance
+- use a descriptive verb instead of "OK" as button label in most dialogs
+- redone About dialog to be more informative
+- take the default unit from the locale settings
+- moved color-related tools and plug-ins to a new toplevel Colors menu
+- let the gnomevfs plug-in use GNOME authentication manager if available
+- rewritten Crop tool (work in progress)
+- added page selector to the Postscript Import plug-in
+- added preview to Checkerboard and Threshold Alpha plug-ins
+- more PDB procedure and parameter name canonicalization
+- touched up new path tool cursors and added one for the Join operation
+- bug fixes and code cleanup
 
 
-Bugs fixed in GIMP 2.2.11
-=========================
+Changes in GIMP 2.3.3
+=====================
 
-- fixed handling of EXIF data in JPEG plug-in (bug #303383)
-- let gimptool use pkg-config to determine compiler and linker flags at
-  run-time (bug #324761)
-- added GTK+ category in gimp.desktop file (bug #328012)
-- fixed guides scripts to allow guides at the right and bottom (bug #328320)
-- fixed icons in color picker buttons in Levels tool (bug #325745)
-- fixed parameter check in Compressor plug-in
-- made the internal help browser the default for all platforms (bug #329888)
-- fixed handling of alpha channel in Gaussian Blur plug-in (bug #331051)
-- fixed incorrect bitshifts in Win Icon plug-in (bug #330692)
-- fixed a potential crash in the Animation Playback plug-in (bug #328919)
-- corrected tile cache size in Unsharp Mask plug-in (bug #331344)
-- fixed the import of SVG circles
-- fixed rounding of resolution in BMP plug-in (bug #332501)
-- fixed resolution handling in PSD load plug-in
-- store resolution when saving in the PSD file format (bug #310426)
-- fixed crash in Revert function (bug #333568)
-- flush the projection before reading from it (bug #332933)
-- fixed MMX instructions on Pentium II machines (bug #162778)
-- fixed possible crash on closing a dockable (bug #338286)
+- improved new GimpPageSelector widget
+- minor improvements to the Procedure and Plug-In browsers
+- set alternative button order in some places that were missed earlier
+- added SIOX algorithm for foreground extraction
+- fixed most gcc 4.0 warnings
+- improved Cursor view and Sample Points functionality
+- prepared code and UI for more layer lock types
+- added new PDF import plug-in based on libpoppler
+- undeprecated and improved palette editor, added cursor navigation
+- show more information in the Image Properties dialog
+- added prototype of SIOX foreground selection tool
+- fixed build of MMX code on gcc 4.0
+- moved procedure browser to libgimpwidgets as GimpProcBrowserDialog
+- canonicalize PDB procedure and parameter names
+- use the coefficients from the sRGB spec when calculating luminance
+- allow to remove alpha channel from a layer
+- added more different cursors for the paths tool
+- bug fixes and code cleanup
 
 
-Bugs fixed in GIMP 2.2.10
-=========================
+Changes in GIMP 2.3.2
+=====================
 
-- fixed build error on Sun C compiler (bug #319811)
-- fixed issue with Guides scripts (bug #320933)
-- corrected selection display problem (bug #319029)
-- fixed potential wget issue (bug #322977)
-- fixed non-interactive use of gimp-edit-stroke (bug #323778)
-- fixed Script-Fu crash in some locales such as Chinese (bug #163212)
-- fixed build of librsvg plug-in (bug #314400)
-- fixed parameter type in "plug-in-unsharp-mask" procedure (bug #325007).
-
-
-Bugs fixed in GIMP 2.2.9
-========================
-
-- fixed minor problem in JPEG plug-in (bug #309091)
-- allow to disable build of gtkhtml2, svg, and lcms features (bug #307704)
-- fixed bug in Imagemap plug-in (bug #169698)
-- handle PSD files with untitled channels (bug #312963)
-- fixed build of MMX/SSE assembly code on gcc 4.0 (bug #308412)
-- fixed crash in image preview code (bug #312144)
-- fixed redraw of previews in Rotate Colormap plug-in (bug #172284)
-- fixed redraw of previews in Filterpack plug-in (bug #160032)
-- cross-compilation fixes and build fixes for Cygwin (bug #314893)
-- fixed character placement in Text Circle script (bug #144588)
-- made GIMP more robust against strange characters in directory names
-- fixed minor issue in Dicom plug-in (bug #313008)
-- deal with API change in librsvg >= 2.11.0 (bug #314400)
-- fixed bug in ellipse selection (bug #315417)
-- fixed build issue on Cygwin (bug #314893)
-- fixed problem in ellipse selection (bug #315417)
-- ease closing of iscissors outline (bug #134250)
-- fixed handling of Tab key if NumLock is active (bug #317118)
-- fixed problem with random number generator in QBist plug-in (bug #317355)
-- raise palettes grid instead of creating a new one (bug #317435)
-- fixed problem with environment maps in Lighting plug-in (bug #313872)
-- fixed Gaussian Blur for small radii (bug #315953)
-- fixed Select By Color tool on grayscale layers (bug #319683)
+- more standard way of dealing with translation of the startup tips
+- allow to use the selected font in the text tool's text editor
+- some minor UI changes for HIG compliance
+- redid the framework that deals with installing desktop files
+- started to reorganize menus, mainly plug-ins and scripts
+- renamed "Scatter RGB" and "Scatter HSV" to "RGB Noise" and "HSV Noise"
+- allow to clear the document history
+- don't normalize the result in the Laplace plug-in (bug #306874)
+- ported FractalExplorer GUI to GtkTreeView, getting rid of the last
+  XPM icons that were being used
+- added an option to Motion Blur to blur outwards
+- added support for the proposed ICC Profiles In X Specification
+- added new widget GimpEnumLabel to libgimpwidgets
+- let the lcms display filter module show information about the used
+  color profiles
+- improved drawing of the brush outline
+- fixed build of Python language binding on Win32
+- allow plug-ins to access the user's color management configuration
+- added new widget GimpPageSelector to libgimpwidgets
+- reenabled the Debug menu
+- load and save ICC color profiles from/to JPEG images
+- bug fixes and code cleanup
 
 
-Bugs fixed in GIMP 2.2.8
-========================
+Changes in GIMP 2.3.1
+=====================
 
-- fixed possible crash in plug-ins-query PDB function
-- fixes to Script-Fu server mode on Win32
-- fixed possible crash in win32 gimptool variant
-- plugged a tiny memleak in the image display code
-- plugged a tiny memleak in libgimpwidgets
-- attempt to fix calling the web-browser on win32 (bug #171200)
-- fixed loading of images in help-browser plug-in on win32
-- fixed zoom offsets if dot-for-dot mode is disabled (bug #306476)
-- fixes to Gfig parasite loading
-- disabled buggy gimprc option stingy-memory-use (bug #306617)
-- don't try to create a preview for a non-existant image file (bug #307672)
-- fixed bug in Retinex plug-in (bug #157915)
-- fixed bug in Newsprint plug-in (bug #161573)
-- fixed bug in Shift plug-in (bug #308748)
-- fixed bug in Grid plug-in (bug #308754)
-
-
-Bugs fixed in GIMP 2.2.7
-========================
-
-- update layer previews on colormap changes (bug #301033)
-- fixed loading of text layers from XCF files (bug #301028)
-- when loading a PDF, honor CropBox over MediaBox (bug #301432)
-- fixed incompatibility of GimpIntStore with GTK+ 2.6 (bug #301524)
-- fixed navigation popup in plug-in previews (bug #301523)
-- fixed handling of compression types in TIFF plug-in (bug #301557)
-- fixed bug in Lighting Effects plug-in (bug #302075)
-- fixed focus issues in message dialogs (bug #302400)
-- fixed bug in SSE2 assembly for Lighten Only layer mode (bug #164061)
-- fixed resize-window-on-zoom feature (bug #164281)
-- corrected upper limit of tile-cache-size (bug #303371)
+- allow to copy and paste SVG between GIMP and other applications
+- added a utility for testing and debugging clipboard operations
+- more work on the new vectors PDB API
+- made screen edges active in the image display in fullscreen mode
+- made file and color selection dialogs transient to their parent windows
+- moved browser widget from Procedure Browser plug-in to libgimpwidgets
+- allow more search types in the Procedure Browser
+- reduced size of the Colors dockable by moving the hex entry down
+- added object properties to GimpColorArea and GimpColorButton
+- changed default for RGB->Indexed conversion to not to any dithering
+- allow to paste a new image using Ctrl-V on the toolbox
+- show previews of dash presets in Stroke Options dialog
+- Escape key cancels the window selection in the Screenshot plug-in
+- allow to operate the Brightness Contrast tool by clicking and dragging
+  on the canvas
+- improved Sample Points dockable
+- added first draft of new align tool
+- turned image and drawable combo boxes in libgimpui into real widgets
+- further improved Python bindings
+- nicer DND icons for viewables
+- allow to hide the button-bar found at the bottom of most dockables
+- turned font selection in libgimpui into a real widget
+- added support for BMP files with alpha channel (RGBA)
+- bug fixes and code cleanup
 
 
-Bugs fixed in GIMP 2.2.6
-========================
+Changes in GIMP 2.3.0
+=====================
 
-- reverted change to the print plug-in (see bug #169909)
-
-
-Bugs fixed in GIMP 2.2.5
-========================
-
-- fixed double-click behaviour of GimpButton
-- properly handle 302 redirect output from wget in URL plug-in (bug #168322)
-- fixed loading of layer masks in PSD plug-in (bug #166976)
-- fixed bugs in PSD save plug-in (bugs #167139 and #121871)
-- fixed Reset in Scale and Resize dialogs (bug #169011)
-- fixed filename encoding issues when loading Script-Fu scripts (bug #165002)
-- fixed i18n build quirks (bug #169274)
-- improve autoscrolling with tablets in Windows (bug #167960)
-- fixed setup of size entries in tool-options (bug #169066)
-- when opening images as layers, do it interactively (bug #168936)
-- fixed precondition checks in gimp_drawable_transform_scale (bug #170195)
-- fixed handling of resolution unit in Print Size dialog (bug #170200)
-- disable "gtk-alternative-button-order" setting because our code
-  doesn't honor it (bug #170543)
-- fixed behaviour of selection tool when dragging from top-right (bug #143887)
-- speed up conversion of grayscale images to indexed colors (bug #170801)
-- fixed bug in grayscale to indexed color conversion (bug #170825)
-- don't offer empty palettes for conversion to indexed color (bug #170973)
-- disable search in container tree-views since it interferes with global 
-  accelerators (bug #169339)
-- corrected mousewheel section of default controllerrc (bug #171083)
-- fixed build on amd64/gcc-4.0 (bug #300227)
-- unset Keep Transparency from Color to Alpha plug-in.
-- fixed crash caused by Histogram dockable in RGB mode (bug #170116)
-- fixed statusbar display for negative moves (bug #171497)
-- fixed a couple of problems in the BMP plug-in (bug #171306, bug #171453
-  and bug #171562)
-- fixed bug in Resize dialog if previews are turned off (bug #171827)
-- fixed disappearing previews in Rotate Colormap plug-in (bug #172284)
-- fixed deletion of fractals in Fractal Explorer plug-in (bug #172347)
-- fixed preview in Deinterlace plug-in (bug #172589)
-- fixed crashes on exit in some locales (bug #172581)
-- fixed installation directories for message catalogs (bug #169274)
-- handle deletion of layers and channels that have a floating selection
-  attached (bug #168582)
-- plugged some smaller memory leaks
-- fixed preview in Gaussian Blur plug-in for zero radii (bug #173039)
-- fixed a couple of problems in the Winicon plug-in
-- fixed bug in GIF loader that was triggered with a broken GIF (bug #173119)
-- fixed crash in Ink tool (bug #164272)
-- let the text tool remember the last-used font (bug #171024)
-- quote the print command used in the Print plug-in (bug #169909)
-
-
-Bugs fixed in GIMP 2.2.4
-========================
-
-- fixed an out-of-bounds read access in the Edge plug-in (bug #164963)
-- limit aspect ratio in crop tool to sane values (bug #164827)
-- fixed indexed conversion on floating selections (bug #165342)
-- fixed button order in resize and scale dialogs
-- improved handling of UNC paths on Windows
-- fixed crash in winicon save plug-in (bug #162742)
-- fixed image types registration for some python plug-ins (bug #1666650)
-- workaround problems with font names ending in numbers (bug #166540)
-- show clone source when cloning from a different image (bug #167002)
-- corrected coordinate limits in New Guide script (bug #167529)
-- fixed crash in gradient editor (bug #167604)
-- don't give keyboard focus to combo boxes in image window (bug #167809)
-- fixed saving of MNG files with negative layer offsets (bug #166059)
-- fixed use of the text tool on floating selections (bug #166829)
-- don't create duplicate templates when migrating user settings (bug #167893)
-- let the py-slice script ignore out-of-bounds guides (bug #167843)
-- store thumbnails in temporary folder if no valid home directory exists
-  (bug #167973)
-- fixed Emboss plug-in for small images (bug #168022)
-- avoid crashes in toolbox size allocation code (bug #162500)
-- switch from display-wide grab to application-wide grab while tool
-  actions are being performed (bug #162823)
-
-
-Bugs fixed in GIMP 2.2.3
-========================
-
-- fixed build problem in MIDI input controller (bug #163593)
-- remember last used directory in file open and save dialogs (bug #162385)
-- fixed crashed in DND of indexed drawables (bug #163879)
-- removed bumpmap artifacts in Lighting Effects plug-in (bug #163877)
-- fixed non-interactive mode of Retinex plug-in
-- fixed undo of ink strokes (bug #163670)
-- fixed expose event handling in Curve Bend plug-in (bug #164207)
-- added a missing pressure sensitivity toggle to Airbrush tool (bug #164237)
-- fixed loading of XJT images files from read-only folders (bug #164116)
-- fixed bug in the Info dialog that crashed the Crop tool (bug #163617)
-- fixed yet another entry problem in the Scale Image dialog (bug #163951)
-- fixed serialization of binary parasites (bug #163131)
-- correctly initialize the preview in the Bumpmap plug-in (bug #162285)
-- give visual feedback if a dialog is already opened (bug #164156)
-- fixed saving of JPEG images with large quality settings (bug #164087)
-- update the menus when selecting a component in the Channels dialog
-  (bug #164195)
-- fixed issues with the save dialog in the Imagemap plug-in (bug #164864)
-- update filesize in JPEG dialog if size of EXIF data changes (bug #164914)
-
-
-Bugs fixed in GIMP 2.2.2
-========================
-
-- let Decompose plug-in create layers with alpha channel
-- fixed crash in save dialog (bug #162443)
-- fixed misbehaviour in Scale and Resize dialogs (bug #162387)
-- fixed preview in Imagemap plug-in (bug #162592)
-- fixed handling of broken menu path translations (bug #162590)
-- fixed bugs in the Sparkle plug-in and the Frosty Logo script (bug #132145)
-- fixed two broken Python scripts (bug #162707)
-- changed default response in Close dialog (bug #162872)
-- flush the display when plug-in dialogs are disposed (bug #163084)
-- fixed build problem on amd64 with gcc-4.0 (bug #163041)
-- fixed problem in locales that are rendered right-to-left (bug #162663)
-- fixed bug in Frosty Logo Script-Fu (bug #132145)
-- raise the toolbox when it is selected from the Tools menu (bug #163381)
-- improved usability of Keyboard Shortcuts editor (bug #163385)
-- fixed gradient selection widget in libgimpui (bug #163427)
-- workaround a problem in the MMX code (bug #162778)
-
-
-Bugs fixed in GIMP 2.2.1
-========================
-
-- added python logo to EXTRA_DIST so it shows up in the tarball (bug #161716)
-- fixed mempory corruption in FracalExplorer plug-in (bug #161729)
-- fixed crash in gradient editor (bug #161411)
-- fixed crash in unsharp mask plug-in preview code (bug #157910)
-- fixed bug in unsharp mask plug-in that caused artefacts when a large blur
-  radius was being used on a small drawable; minor optimizations
-- removed broken asc2img Script-Fu
-- fixed channel drag-n-drop (bug #161877)
-- fixed misbehaviour of entries in Scale and Resize dialogs (bug #161756)
-- speed up preview in several plug-ins
-- fixed bug in Despeckle plug-in that caused it to run very slowly
-  (bug #162129)
-- fixed a crash in the error dialog (bug #162147)
-- fixed parameter value range in Weave script (bug #162182)
-- fixed crash in brush preview (bug #162232)
-- minor improvements to the API docs
+- added Recompose plug-in
+- added rectangle tool in GFig plug-in
+- improved palette editor color DND
+- improved EXIF handling in JPEG plug-in
+- smoother autoscrolling in image display
+- added Snap to Canvas Border and Snap to Path (yet unimplemented)
+- added previews to Mosaic, Pixelize and Sparkle plug-ins
+- added Lanczos interpolation method
+- added Open as Image menu entries to brushes and patterns dialogs
+- improved drag-n-drop of drawables within GIMP
+- added a prototype of a new rectangular select tool
+- moved a bunch of enums from core into libgimpbase
+- moved GimpConfig functionality from core into libgimpconfig
+- moved GimpEnumStore and GimpEnumComboBox to libgimpwidgets
+- moved convenience constructors for property views to libgimpwidgets
+- ported ImageMap plug-in to action based menus.
+- first steps towards color management
+- use GOptionContext for command-line parsing
+- added a gnome-vfs backend for the uri plug-in (former url plug-in)
+- prepared code for accessing remote files in the file-chooser
+- let all dialogs obey the gtk-alternative-button-order setting
+- extended GimpProgress PDB API
+- improved file type handling in file save dialog
+- resurrected threaded pixel processor and enable it by default
+- parallelized a few more internal functions
+- speed up gradient dithering
+- improved PSD save plug-in
+- improved Python bindings
+- allow to resize layers with the image
+- allow to control letter spacing in the text tool
+- added path-on-path functionality, use it to implement Text on Path
+- improved gradient editor
+- allow to import paths from a string
+- ported all code to gstdio wrappers
+- added infrastructure for color sample points
+- added first draft of a metadata editor plug-in
+- speed up burn compositing function
+- added Altivec versions of some compositing functions
+- added PDB API to control the number of columns in a palette
+- allow to control hue overlap in Hue-Saturation tool
+- added a PDB API to register menu branches
+- added missing mnemonics
+- improved Screenshot plug-in
+- allow to drag brushes/patterns/gradients... to the selectors in Script-Fu
+- allow to save images by dragging them to a filemanager that supports the
+  XDS protocol
+- optimizations in the Color Deficiency display filter
+- transfer the clipboard content to a clipboard manager on exit
+- moved cursor info out of the Info window into a dockable
+- moved remaining bits of the Info Window to a new Image Properties dialog
+- build and install gimp-console by default
+- allow to drag and drop image data into GIMP
+- use the statusbar more to display hints and info about the tool state
+- resurrected --no-data functionality
+- zoom to the cursor position instead of the display center
+- some improvements to the Helpbrowser plug-in
+- load PS brushes in the .abr format
+- allow to choose between different algorithms for Desaturate
+- added thumbnail loader to Winicon plug-in
+- improved configuration of input controllers
+- added an option to make the dock windows transient to the active image display
+- lots of code cleanup and bug-fixes

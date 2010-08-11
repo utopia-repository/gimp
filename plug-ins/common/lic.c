@@ -36,11 +36,6 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -54,7 +49,8 @@
 #define numx    40              /* Pseudo-random vector grid size */
 #define numy    40
 
-#define HELP_ID "plug-in-lic"
+#define PLUG_IN_PROC   "plug-in-lic"
+#define PLUG_IN_BINARY "lic"
 
 typedef enum
 {
@@ -568,7 +564,7 @@ compute_image (GimpDrawable *drawable)
   gimp_drawable_mask_bounds (drawable->drawable_id,
                              &border_x1, &border_y1, &border_x2, &border_y2);
 
-  gimp_progress_init (_("Van Gogh (LIC)..."));
+  gimp_progress_init (_("Van Gogh (LIC)"));
 
   if (licvals.effect_convolve == 0)
     generatevectors ();
@@ -641,16 +637,23 @@ create_main_dialog (void)
   gint       row;
   gboolean   run;
 
-  gimp_ui_init ("lic", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Van Gogh (LIC)"), "lic",
+  dialog = gimp_dialog_new (_("Van Gogh (LIC)"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
@@ -711,7 +714,7 @@ create_main_dialog (void)
                               &licvals.effect_image_id);
 
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-                             _("_Effect Image:"), 0.0, 0.5, combo, 2, TRUE);
+                             _("_Effect image:"), 0.0, 0.5, combo, 2, TRUE);
 
   table = gtk_table_new (5, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
@@ -726,7 +729,7 @@ create_main_dialog (void)
                                      licvals.filtlen, 0.1, 64, 1.0, 8.0, 1,
                                      TRUE, 0, 0,
                                      NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &licvals.filtlen);
 
@@ -735,7 +738,7 @@ create_main_dialog (void)
                                      licvals.noisemag, 1, 5, 0.1, 1.0, 1,
                                      TRUE, 0, 0,
                                      NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &licvals.noisemag);
 
@@ -744,7 +747,7 @@ create_main_dialog (void)
                                      licvals.intsteps, 1, 40, 1.0, 5.0, 1,
                                      TRUE, 0, 0,
                                      NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &licvals.intsteps);
 
@@ -753,7 +756,7 @@ create_main_dialog (void)
                                      licvals.minv, -100, 0, 1, 10, 1,
                                      TRUE, 0, 0,
                                      NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &licvals.minv);
 
@@ -762,7 +765,7 @@ create_main_dialog (void)
                                      licvals.maxv, 0, 100, 1, 10, 1,
                                      TRUE, 0, 0,
                                      NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &licvals.maxv);
 
@@ -798,12 +801,12 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive"    },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive"    },
     { GIMP_PDB_IMAGE,    "image",    "Input image"    },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
   };
 
-  gimp_install_procedure ("plug_in_lic",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Creates a Van Gogh effect (Line Integral Convolution)",
                           "No help yet",
                           "Tom Bech & Federico Mena Quintero",
@@ -815,7 +818,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_lic", "<Image>/Filters/Map");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Artistic");
 }
 
 static void
@@ -848,7 +851,7 @@ run (const gchar      *name,
   /* Possibly retrieve data */
   /* ====================== */
 
-  gimp_get_data ("plug_in_lic", &licvals);
+  gimp_get_data (PLUG_IN_PROC, &licvals);
 
   /* Get the specified drawable */
   /* ========================== */
@@ -873,7 +876,7 @@ run (const gchar      *name,
                 if (create_main_dialog ())
                   compute_image (drawable);
 
-                gimp_set_data ("plug_in_lic", &licvals, sizeof (LicValues));
+                gimp_set_data (PLUG_IN_PROC, &licvals, sizeof (LicValues));
               break;
               case GIMP_RUN_WITH_LAST_VALS:
                 compute_image (drawable);

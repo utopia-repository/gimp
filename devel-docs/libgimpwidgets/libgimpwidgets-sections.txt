@@ -1,4 +1,23 @@
 <SECTION>
+<FILE>gimpbrowser</FILE>
+<TITLE>GimpBrowser</TITLE>
+GimpBrowser
+gimp_browser_new
+gimp_browser_add_search_types
+gimp_browser_set_widget
+gimp_browser_show_message
+<SUBSECTION Standard>
+GimpBrowserClass
+GIMP_BROWSER
+GIMP_IS_BROWSER
+GIMP_TYPE_BROWSER
+gimp_browser_get_type
+GIMP_BROWSER_CLASS
+GIMP_IS_BROWSER_CLASS
+GIMP_BROWSER_GET_CLASS
+</SECTION>
+
+<SECTION>
 <FILE>gimpbutton</FILE>
 <TITLE>GimpButton</TITLE>
 GimpButton
@@ -65,6 +84,8 @@ GimpChainButtonClass
 GIMP_CHAIN_BUTTON_CLASS
 GIMP_IS_CHAIN_BUTTON_CLASS
 GIMP_CHAIN_BUTTON_GET_CLASS
+GIMP_TYPE_CHAIN_POSITION
+gimp_chain_position_get_type
 </SECTION>
 
 <SECTION>
@@ -87,6 +108,8 @@ GimpColorAreaClass
 GIMP_COLOR_AREA_CLASS
 GIMP_IS_COLOR_AREA_CLASS
 GIMP_COLOR_AREA_GET_CLASS
+GIMP_TYPE_COLOR_AREA_TYPE
+gimp_color_area_type_get_type
 </SECTION>
 
 <SECTION>
@@ -171,6 +194,62 @@ GIMP_IS_COLOR_SELECTION_CLASS
 GIMP_COLOR_SELECTION_GET_CLASS
 </SECTION>
 
+
+<SECTION>
+<FILE>gimpenumstore</FILE>
+<TITLE>GimpEnumStore</TITLE>
+GimpEnumStore
+gimp_enum_store_new
+gimp_enum_store_new_with_range
+gimp_enum_store_new_with_values
+gimp_enum_store_new_with_values_valist
+gimp_enum_store_set_stock_prefix
+<SUBSECTION Standard>
+GimpEnumStoreClass
+GIMP_ENUM_STORE
+GIMP_IS_ENUM_STORE
+GIMP_TYPE_ENUM_STORE
+gimp_enum_store_get_type
+GIMP_ENUM_STORE_CLASS
+GIMP_IS_ENUM_STORE_CLASS
+GIMP_ENUM_STORE_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>gimpenumcombobox</FILE>
+<TITLE>GimpEnumComboBox</TITLE>
+GimpEnumComboBox
+gimp_enum_combo_box_new
+gimp_enum_combo_box_new_with_model
+gimp_enum_combo_box_set_stock_prefix
+<SUBSECTION Standard>
+GimpEnumComboBoxClass
+GIMP_ENUM_COMBO_BOX
+GIMP_IS_ENUM_COMBO_BOX
+GIMP_TYPE_ENUM_COMBO_BOX
+gimp_enum_combo_box_get_type
+GIMP_ENUM_COMBO_BOX_CLASS
+GIMP_IS_ENUM_COMBO_BOX_CLASS
+GIMP_ENUM_COMBO_BOX_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>gimpenumlabel</FILE>
+<TITLE>GimpEnumLabel</TITLE>
+GimpEnumLabel
+gimp_enum_label_new
+gimp_enum_label_set_value
+<SUBSECTION Standard>
+GimpEnumLabelClass
+GIMP_ENUM_LABEL
+GIMP_IS_ENUM_LABEL
+GIMP_TYPE_ENUM_LABEL
+gimp_enum_label_get_type
+GIMP_ENUM_LABEL_CLASS
+GIMP_IS_ENUM_LABEL_CLASS
+GIMP_ENUM_LABEL_GET_CLASS
+</SECTION>
+
 <SECTION>
 <FILE>gimpfileentry</FILE>
 <TITLE>GimpFileEntry</TITLE>
@@ -203,6 +282,41 @@ gimp_frame_get_type
 GIMP_FRAME_CLASS
 GIMP_IS_FRAME_CLASS
 GIMP_FRAME_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>gimppageselector</FILE>
+<TITLE>GimpPageSelector</TITLE>
+GimpPageSelector
+GimpPageSelectorTarget
+gimp_page_selector_new
+gimp_page_selector_set_n_pages
+gimp_page_selector_get_n_pages
+gimp_page_selector_set_target
+gimp_page_selector_get_target
+gimp_page_selector_set_page_thumbnail
+gimp_page_selector_get_page_thumbnail
+gimp_page_selector_set_page_label
+gimp_page_selector_get_page_label
+gimp_page_selector_select_all
+gimp_page_selector_unselect_all
+gimp_page_selector_select_page
+gimp_page_selector_unselect_page
+gimp_page_selector_page_is_selected
+gimp_page_selector_get_selected_pages
+gimp_page_selector_select_range
+gimp_page_selector_get_selected_range
+<SUBSECTION Standard>
+GimpPageSelectorClass
+GIMP_PAGE_SELECTOR
+GIMP_IS_PAGE_SELECTOR
+GIMP_TYPE_PAGE_SELECTOR
+gimp_page_selector_get_type
+GIMP_PAGE_SELECTOR_CLASS
+GIMP_IS_PAGE_SELECTOR_CLASS
+GIMP_PAGE_SELECTOR_GET_CLASS
+GIMP_TYPE_PAGE_SELECTOR_TARGET
+gimp_page_selector_target_get_type
 </SECTION>
 
 <SECTION>
@@ -266,6 +380,7 @@ GIMP_INT_STORE_GET_CLASS
 <FILE>gimpintcombobox</FILE>
 <TITLE>GimpIntComboBox</TITLE>
 GimpIntComboBox
+GimpIntSensitivityFunc
 gimp_int_combo_box_new
 gimp_int_combo_box_new_valist
 gimp_int_combo_box_new_array
@@ -274,6 +389,7 @@ gimp_int_combo_box_append
 gimp_int_combo_box_set_active
 gimp_int_combo_box_get_active
 gimp_int_combo_box_connect
+gimp_int_combo_box_set_sensitivity
 <SUBSECTION Standard>
 GimpIntComboBoxClass
 GIMP_INT_COMBO_BOX
@@ -324,7 +440,9 @@ gimp_size_entry_set_refval
 gimp_size_entry_get_unit
 gimp_size_entry_set_unit
 gimp_size_entry_set_pixel_digits
+gimp_size_entry_show_unit_menu
 gimp_size_entry_grab_focus
+gimp_size_entry_set_activates_default
 gimp_size_entry_get_help_widget
 <SUBSECTION Standard>
 GIMP_SIZE_ENTRY
@@ -335,6 +453,8 @@ GimpSizeEntryClass
 GIMP_SIZE_ENTRY_CLASS
 GIMP_IS_SIZE_ENTRY_CLASS
 GIMP_SIZE_ENTRY_GET_CLASS
+GIMP_TYPE_SIZE_ENTRY_UPDATE_POLICY
+gimp_size_entry_update_policy_get_type
 </SECTION>
 
 <SECTION>
@@ -449,8 +569,8 @@ GIMP_STOCK_PASTE_AS_NEW
 GIMP_STOCK_PASTE_INTO
 GIMP_STOCK_PATH_STROKE
 GIMP_STOCK_PLUGIN
-GIMP_STOCK_QMASK_OFF
-GIMP_STOCK_QMASK_ON
+GIMP_STOCK_QUICK_MASK_OFF
+GIMP_STOCK_QUICK_MASK_ON
 GIMP_STOCK_HISTOGRAM
 GIMP_STOCK_HISTOGRAM_LINEAR
 GIMP_STOCK_HISTOGRAM_LOGARITHMIC
@@ -489,6 +609,8 @@ GIMP_STOCK_LAYERS
 GIMP_STOCK_CHANNELS
 GIMP_STOCK_PATHS
 GIMP_STOCK_INDEXED_PALETTE
+GIMP_STOCK_CURSOR
+GIMP_STOCK_SAMPLE_POINT
 GIMP_STOCK_SHAPE_CIRCLE
 GIMP_STOCK_SHAPE_SQUARE
 GIMP_STOCK_SHAPE_DIAMOND
@@ -530,6 +652,8 @@ GIMP_STOCK_GRAVITY_EAST
 GIMP_STOCK_GRAVITY_SOUTH_WEST
 GIMP_STOCK_GRAVITY_SOUTH
 GIMP_STOCK_GRAVITY_SOUTH_EAST
+GIMP_STOCK_HCENTER
+GIMP_STOCK_VCENTER
 GIMP_STOCK_CHAR_PICKER
 GIMP_STOCK_LETTER_SPACING
 GIMP_STOCK_LINE_SPACING
@@ -570,6 +694,7 @@ GIMP_STOCK_TOOL_DODGE
 GIMP_STOCK_TOOL_ELLIPSE_SELECT
 GIMP_STOCK_TOOL_ERASER
 GIMP_STOCK_TOOL_FLIP
+GIMP_STOCK_TOOL_FOREGROUND_SELECT
 GIMP_STOCK_TOOL_FREE_SELECT
 GIMP_STOCK_TOOL_FUZZY_SELECT
 GIMP_STOCK_TOOL_HUE_SATURATION
@@ -603,13 +728,27 @@ GIMP_STOCK_QUESTION
 GIMP_STOCK_WARNING
 GIMP_STOCK_WILBER
 GIMP_STOCK_WILBER_EEK
+GIMP_STOCK_ZOOM_FOLLOW_WINDOW
 GIMP_STOCK_BRUSH
 GIMP_STOCK_BUFFER
 GIMP_STOCK_FONT
 GIMP_STOCK_GRADIENT
 GIMP_STOCK_PALETTE
 GIMP_STOCK_PATTERN
-GIMP_STOCK_ZOOM_FOLLOW_WINDOW
+GIMP_STOCK_QMASK_ON
+GIMP_STOCK_QMASK_OFF
+</SECTION>
+
+<SECTION>
+<FILE>gimpenumwidgets</FILE>
+<TITLE>GimpEnumWidgets</TITLE>
+gimp_enum_radio_box_new
+gimp_enum_radio_box_new_with_range
+gimp_enum_radio_frame_new
+gimp_enum_radio_frame_new_with_range
+gimp_enum_stock_box_new
+gimp_enum_stock_box_new_with_range
+gimp_enum_stock_box_set_child_padding
 </SECTION>
 
 <SECTION>
@@ -648,6 +787,39 @@ gimp_double_adjustment_update
 gimp_unit_menu_update
 gimp_table_attach_aligned
 gimp_label_set_attributes
+</SECTION>
+
+<SECTION>
+<FILE>gimppropwidgets</FILE>
+<TITLE>GimpPropWidgets</TITLE>
+gimp_prop_check_button_new
+gimp_prop_boolean_combo_box_new
+gimp_prop_boolean_radio_frame_new
+gimp_prop_expander_new
+gimp_prop_hscale_new
+gimp_prop_int_combo_box_new
+gimp_prop_enum_combo_box_new
+gimp_prop_enum_check_button_new
+gimp_prop_enum_label_new
+gimp_prop_enum_radio_frame_new
+gimp_prop_enum_radio_box_new
+gimp_prop_enum_stock_box_new
+gimp_prop_spin_button_new
+gimp_prop_scale_entry_new
+gimp_prop_opacity_entry_new
+gimp_prop_memsize_entry_new
+gimp_prop_label_new
+gimp_prop_entry_new
+gimp_prop_text_buffer_new
+gimp_prop_file_chooser_button_new
+gimp_prop_file_entry_new
+gimp_prop_path_editor_new
+gimp_prop_size_entry_new
+gimp_prop_coordinates_new
+gimp_prop_coordinates_connect
+gimp_prop_color_area_new
+gimp_prop_unit_menu_new
+gimp_prop_stock_image_new
 </SECTION>
 
 <SECTION>
@@ -722,6 +894,8 @@ gimp_color_selector_get_type
 GIMP_COLOR_SELECTOR_CLASS
 GIMP_IS_COLOR_SELECTOR_CLASS
 GIMP_COLOR_SELECTOR_GET_CLASS
+GIMP_TYPE_COLOR_SELECTOR_CHANNEL
+gimp_color_selector_channel_get_type
 </SECTION>
 
 <SECTION>
@@ -811,10 +985,12 @@ gimp_preview_set_update
 gimp_preview_set_bounds
 gimp_preview_get_size
 gimp_preview_get_position
+gimp_preview_get_area
 gimp_preview_draw
 gimp_preview_draw_buffer
 gimp_preview_invalidate
 gimp_preview_set_default_cursor
+gimp_preview_get_controls
 <SUBSECTION Standard>
 GimpPreviewClass
 GIMP_PREVIEW
@@ -830,6 +1006,8 @@ GIMP_PREVIEW_GET_CLASS
 <FILE>gimpscrolledpreview</FILE>
 <TITLE>GimpScrolledPreview</TITLE>
 GimpScrolledPreview
+gimp_scrolled_preview_set_position
+gimp_scrolled_preview_set_policy
 <SUBSECTION Standard>
 GimpScrolledPreviewClass
 GIMP_SCROLLED_PREVIEW
@@ -839,6 +1017,31 @@ gimp_scrolled_preview_get_type
 GIMP_SCROLLED_PREVIEW_CLASS
 GIMP_IS_SCROLLED_PREVIEW_CLASS
 GIMP_SCROLLED_PREVIEW_GET_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>gimpzoommodel</FILE>
+<TITLE>GimpZoomModel</TITLE>
+GimpZoomModel
+GimpZoomType
+gimp_zoom_model_new
+gimp_zoom_model_set_range
+gimp_zoom_model_zoom
+gimp_zoom_model_get_factor
+gimp_zoom_model_get_fraction
+gimp_zoom_button_new
+gimp_zoom_model_zoom_step
+<SUBSECTION Standard>
+GimpZoomModelClass
+GIMP_ZOOM_MODEL
+GIMP_IS_ZOOM_MODEL
+GIMP_TYPE_ZOOM_MODEL
+gimp_zoom_model_get_type
+GIMP_ZOOM_MODEL_CLASS
+GIMP_IS_ZOOM_MODEL_CLASS
+GIMP_ZOOM_MODEL_GET_CLASS
+GIMP_TYPE_ZOOM_TYPE
+gimp_zoom_type_get_type
 </SECTION>
 
 <SECTION>

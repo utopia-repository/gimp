@@ -78,14 +78,15 @@ static ProcArg unit_get_number_of_units_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_units",
+    "num-units",
     "The number of units"
   }
 };
 
 static ProcRecord unit_get_number_of_units_proc =
 {
-  "gimp_unit_get_number_of_units",
+  "gimp-unit-get-number-of-units",
+  "gimp-unit-get-number-of-units",
   "Returns the number of units.",
   "This procedure returns the number of defined units.",
   "Michael Natterer",
@@ -118,14 +119,15 @@ static ProcArg unit_get_number_of_built_in_units_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_units",
+    "num-units",
     "The number of built-in units"
   }
 };
 
 static ProcRecord unit_get_number_of_built_in_units_proc =
 {
-  "gimp_unit_get_number_of_built_in_units",
+  "gimp-unit-get-number-of-built-in-units",
+  "gimp-unit-get-number-of-built-in-units",
   "Returns the number of built-in units.",
   "This procedure returns the number of defined units built-in to the GIMP.",
   "Michael Natterer",
@@ -236,14 +238,15 @@ static ProcArg unit_new_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The new unit's ID"
   }
 };
 
 static ProcRecord unit_new_proc =
 {
-  "gimp_unit_new",
+  "gimp-unit-new",
+  "gimp-unit-new",
   "Creates a new unit and returns it's integer ID.",
   "This procedure creates a new unit and returns it's integer ID. Note that the new unit will have it's deletion flag set to TRUE, so you will have to set it to FALSE with gimp_unit_set_deletion_flag to make it persistent.",
   "Michael Natterer",
@@ -284,7 +287,7 @@ static ProcArg unit_get_deletion_flag_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   }
 };
@@ -293,14 +296,15 @@ static ProcArg unit_get_deletion_flag_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "deletion_flag",
+    "deletion-flag",
     "The unit's deletion flag"
   }
 };
 
 static ProcRecord unit_get_deletion_flag_proc =
 {
-  "gimp_unit_get_deletion_flag",
+  "gimp-unit-get-deletion-flag",
+  "gimp-unit-get-deletion-flag",
   "Returns the deletion flag of the unit.",
   "This procedure returns the deletion flag of the unit. If this value is TRUE the unit's definition will not be saved in the user's unitrc file on gimp exit.",
   "Michael Natterer",
@@ -341,19 +345,20 @@ static ProcArg unit_set_deletion_flag_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   },
   {
     GIMP_PDB_INT32,
-    "deletion_flag",
+    "deletion-flag",
     "The new deletion flag of the unit"
   }
 };
 
 static ProcRecord unit_set_deletion_flag_proc =
 {
-  "gimp_unit_set_deletion_flag",
+  "gimp-unit-set-deletion-flag",
+  "gimp-unit-set-deletion-flag",
   "Sets the deletion flag of a unit.",
   "This procedure sets the unit's deletion flag. If the deletion flag of a unit is TRUE on gimp exit, this unit's definition will not be saved in the user's unitrc.",
   "Michael Natterer",
@@ -394,7 +399,7 @@ static ProcArg unit_get_identifier_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   }
 };
@@ -410,7 +415,8 @@ static ProcArg unit_get_identifier_outargs[] =
 
 static ProcRecord unit_get_identifier_proc =
 {
-  "gimp_unit_get_identifier",
+  "gimp-unit-get-identifier",
+  "gimp-unit-get-identifier",
   "Returns the textual identifier of the unit.",
   "This procedure returns the textual identifier of the unit. For built-in units it will be the english singular form of the unit's name. For user-defined units this should equal to the singular form.",
   "Michael Natterer",
@@ -451,7 +457,7 @@ static ProcArg unit_get_factor_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   }
 };
@@ -467,7 +473,8 @@ static ProcArg unit_get_factor_outargs[] =
 
 static ProcRecord unit_get_factor_proc =
 {
-  "gimp_unit_get_factor",
+  "gimp-unit-get-factor",
+  "gimp-unit-get-factor",
   "Returns the factor of the unit.",
   "This procedure returns the unit's factor which indicates how many units make up an inch. Note that asking for the factor of \"pixels\" will produce an error.",
   "Michael Natterer",
@@ -508,7 +515,7 @@ static ProcArg unit_get_digits_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   }
 };
@@ -524,7 +531,8 @@ static ProcArg unit_get_digits_outargs[] =
 
 static ProcRecord unit_get_digits_proc =
 {
-  "gimp_unit_get_digits",
+  "gimp-unit-get-digits",
+  "gimp-unit-get-digits",
   "Returns the number of digits of the unit.",
   "This procedure returns the number of digits you should provide in input or output functions to get approximately the same accuracy as with two digits and inches. Note that asking for the digits of \"pixels\" will produce an error.",
   "Michael Natterer",
@@ -565,7 +573,7 @@ static ProcArg unit_get_symbol_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   }
 };
@@ -581,7 +589,8 @@ static ProcArg unit_get_symbol_outargs[] =
 
 static ProcRecord unit_get_symbol_proc =
 {
-  "gimp_unit_get_symbol",
+  "gimp-unit-get-symbol",
+  "gimp-unit-get-symbol",
   "Returns the symbol of the unit.",
   "This procedure returns the symbol of the unit (\"''\" for inches).",
   "Michael Natterer",
@@ -622,7 +631,7 @@ static ProcArg unit_get_abbreviation_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   }
 };
@@ -638,7 +647,8 @@ static ProcArg unit_get_abbreviation_outargs[] =
 
 static ProcRecord unit_get_abbreviation_proc =
 {
-  "gimp_unit_get_abbreviation",
+  "gimp-unit-get-abbreviation",
+  "gimp-unit-get-abbreviation",
   "Returns the abbreviation of the unit.",
   "This procedure returns the abbreviation of the unit (\"in\" for inches).",
   "Michael Natterer",
@@ -679,7 +689,7 @@ static ProcArg unit_get_singular_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   }
 };
@@ -695,7 +705,8 @@ static ProcArg unit_get_singular_outargs[] =
 
 static ProcRecord unit_get_singular_proc =
 {
-  "gimp_unit_get_singular",
+  "gimp-unit-get-singular",
+  "gimp-unit-get-singular",
   "Returns the singular form of the unit.",
   "This procedure returns the singular form of the unit.",
   "Michael Natterer",
@@ -736,7 +747,7 @@ static ProcArg unit_get_plural_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "unit_id",
+    "unit-id",
     "The unit's integer ID"
   }
 };
@@ -752,7 +763,8 @@ static ProcArg unit_get_plural_outargs[] =
 
 static ProcRecord unit_get_plural_proc =
 {
-  "gimp_unit_get_plural",
+  "gimp-unit-get-plural",
+  "gimp-unit-get-plural",
   "Returns the plural form of the unit.",
   "This procedure returns the plural form of the unit.",
   "Michael Natterer",

@@ -21,13 +21,14 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
@@ -49,13 +50,10 @@ struct _GimpEnvironValue
 extern char **environ;
 
 
-static void     gimp_environ_table_class_init     (GimpEnvironTableClass *class);
-static void     gimp_environ_table_init           (GimpEnvironTable      *environ_table);
-
 static void     gimp_environ_table_finalize       (GObject               *object);
 
-static void    gimp_environ_table_load_env_file  (const GimpDatafileData *file_data,
-                                                  gpointer                user_data);
+static void     gimp_environ_table_load_env_file  (const GimpDatafileData *file_data,
+                                                   gpointer                user_data);
 static gboolean gimp_environ_table_legal_name     (gchar                 *name);
 
 static void     gimp_environ_table_populate       (GimpEnvironTable      *environ_table);
@@ -72,45 +70,15 @@ static void     gimp_environ_table_clear_envp     (GimpEnvironTable      *enviro
 static void     gimp_environ_table_free_value     (gpointer               value);
 
 
-static GObjectClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpEnvironTable, gimp_environ_table, G_TYPE_OBJECT);
 
+#define parent_class gimp_environ_table_parent_class
 
-GType
-gimp_environ_table_get_type (void)
-{
-  static GType environ_table_type = 0;
-
-  if (! environ_table_type)
-    {
-      static const GTypeInfo environ_table_info =
-      {
-        sizeof (GimpEnvironTableClass),
-        NULL,                /* base_init */
-        NULL,                /* base_finalize */
-        (GClassInitFunc) gimp_environ_table_class_init,
-        NULL,                /* class_finalize */
-        NULL,                /* class_data */
-        sizeof (GimpEnvironTable),
-        0,                /* n_preallocs */
-        (GInstanceInitFunc) gimp_environ_table_init,
-      };
-
-      environ_table_type = g_type_register_static (G_TYPE_OBJECT,
-                                                   "GimpEnvironTable",
-                                                   &environ_table_info, 0);
-    }
-
-  return environ_table_type;
-}
 
 static void
 gimp_environ_table_class_init (GimpEnvironTableClass *class)
 {
-  GObjectClass *object_class;
-
-  object_class = G_OBJECT_CLASS (class);
-
-  parent_class = g_type_class_peek_parent (class);
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = gimp_environ_table_finalize;
 }
@@ -118,18 +86,16 @@ gimp_environ_table_class_init (GimpEnvironTableClass *class)
 static void
 gimp_environ_table_init (GimpEnvironTable *environ_table)
 {
-  environ_table->vars = NULL;
+  environ_table->vars     = NULL;
   environ_table->internal = NULL;
 
-  environ_table->envp = NULL;
+  environ_table->envp     = NULL;
 }
 
 static void
 gimp_environ_table_finalize (GObject *object)
 {
-  GimpEnvironTable *environ_table;
-
-  environ_table = GIMP_ENVIRON_TABLE (object);
+  GimpEnvironTable *environ_table = GIMP_ENVIRON_TABLE (object);
 
   gimp_environ_table_clear_all (environ_table);
 
@@ -229,7 +195,7 @@ gimp_environ_table_get_envp (GimpEnvironTable *environ_table)
 
   /* Hmm.. should we return a copy here in the future? Not thread safe atm,
    * but the rest of it isn't either.
-   */ 
+   */
 
   if (! environ_table->envp)
     gimp_environ_table_populate (environ_table);
@@ -244,16 +210,14 @@ static void
 gimp_environ_table_load_env_file (const GimpDatafileData *file_data,
                                   gpointer                user_data)
 {
-  GimpEnvironTable *environ_table;
+  GimpEnvironTable *environ_table = GIMP_ENVIRON_TABLE (user_data);
   FILE             *env;
   gchar             buffer[4096];
   gsize             len;
   gchar            *name, *value, *separator, *p, *q;
   GimpEnvironValue *val;
 
-  environ_table = GIMP_ENVIRON_TABLE (user_data);
-
-  env = fopen (file_data->filename, "r");
+  env = g_fopen (file_data->filename, "r");
   if (! env)
     return;
 
@@ -308,7 +272,8 @@ gimp_environ_table_load_env_file (const GimpDatafileData *file_data,
       if (! g_hash_table_lookup (environ_table->vars, name))
         {
           val = g_new (GimpEnvironValue, 1);
-          val->value = g_strdup (value);
+
+          val->value     = gimp_config_path_expand (value, FALSE, NULL);
           val->separator = g_strdup (separator);
 
           g_hash_table_insert (environ_table->vars, g_strdup (name), val);
@@ -377,7 +342,7 @@ gimp_environ_table_populate (GimpEnvironTable *environ_table)
 #ifdef ENVP_DEBUG
   var = environ_table->envp;
 
-  g_print ("GimpEnvironTable:\n"); 
+  g_print ("GimpEnvironTable:\n");
   while (*var)
     {
       g_print ("%s\n", *var);

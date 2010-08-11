@@ -43,9 +43,6 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_tool_view_class_init     (GimpToolViewClass     *klass);
-static void   gimp_tool_view_init           (GimpToolView          *view);
-
 static void   gimp_tool_view_destroy        (GtkObject             *object);
 
 static void   gimp_tool_view_select_item    (GimpContainerEditor   *editor,
@@ -67,44 +64,16 @@ static void   gimp_tool_view_eye_clicked    (GtkCellRendererToggle *toggle,
                                              GimpContainerTreeView *tree_view);
 
 
-static GimpContainerEditorClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpToolView, gimp_tool_view, GIMP_TYPE_CONTAINER_EDITOR);
 
+#define parent_class gimp_tool_view_parent_class
 
-GType
-gimp_tool_view_get_type (void)
-{
-  static GType view_type = 0;
-
-  if (! view_type)
-    {
-      static const GTypeInfo view_info =
-      {
-        sizeof (GimpToolViewClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_tool_view_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpToolView),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_tool_view_init,
-      };
-
-      view_type = g_type_register_static (GIMP_TYPE_CONTAINER_EDITOR,
-                                          "GimpToolView",
-                                          &view_info, 0);
-    }
-
-  return view_type;
-}
 
 static void
 gimp_tool_view_class_init (GimpToolViewClass *klass)
 {
   GtkObjectClass           *object_class = GTK_OBJECT_CLASS (klass);
   GimpContainerEditorClass *editor_class = GIMP_CONTAINER_EDITOR_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->destroy       = gimp_tool_view_destroy;
 
@@ -116,6 +85,8 @@ static void
 gimp_tool_view_init (GimpToolView *view)
 {
   view->visible_handler_id = 0;
+  view->raise_button       = NULL;
+  view->lower_button       = NULL;
   view->reset_button       = NULL;
 }
 
@@ -162,6 +133,18 @@ gimp_tool_view_new (GimpViewType     view_type,
     }
 
   editor = GIMP_CONTAINER_EDITOR (tool_view);
+
+  tool_view->raise_button =
+    gimp_editor_add_action_button (GIMP_EDITOR (editor->view), "tools",
+                                   "tools-raise",
+                                   "tools-raise-to-top", GDK_SHIFT_MASK,
+                                   NULL);
+
+  tool_view->lower_button =
+    gimp_editor_add_action_button (GIMP_EDITOR (editor->view), "tools",
+                                   "tools-lower",
+                                   "tools-lower-to-bottom", GDK_SHIFT_MASK,
+                                    NULL);
 
   tool_view->reset_button =
     gimp_editor_add_action_button (GIMP_EDITOR (editor->view), "tools",

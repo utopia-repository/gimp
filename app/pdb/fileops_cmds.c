@@ -39,24 +39,27 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpthumb/gimpthumb.h"
 
 #include "pdb-types.h"
 #include "procedural_db.h"
 
 #include "config/gimpbaseconfig.h"
-#include "config/gimpconfig-path.h"
 #include "core/gimp.h"
 #include "core/gimpimage.h"
 #include "core/gimpimagefile.h"
+#include "core/gimplayer.h"
+#include "file/file-open.h"
 #include "file/file-utils.h"
 #include "plug-in/plug-in-proc-def.h"
 #include "plug-in/plug-in.h"
 #include "plug-in/plug-ins.h"
 
 static ProcRecord file_load_proc;
-static ProcRecord file_save_proc;
+static ProcRecord file_load_layer_proc;
 static ProcRecord file_load_thumbnail_proc;
+static ProcRecord file_save_proc;
 static ProcRecord file_save_thumbnail_proc;
 static ProcRecord temp_name_proc;
 static ProcRecord register_magic_load_handler_proc;
@@ -69,8 +72,9 @@ void
 register_fileops_procs (Gimp *gimp)
 {
   procedural_db_register (gimp, &file_load_proc);
-  procedural_db_register (gimp, &file_save_proc);
+  procedural_db_register (gimp, &file_load_layer_proc);
   procedural_db_register (gimp, &file_load_thumbnail_proc);
+  procedural_db_register (gimp, &file_save_proc);
   procedural_db_register (gimp, &file_save_thumbnail_proc);
   procedural_db_register (gimp, &temp_name_proc);
   procedural_db_register (gimp, &register_magic_load_handler_proc);
@@ -127,7 +131,7 @@ static ProcArg file_load_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "run_mode",
+    "run-mode",
     "The run mode: GIMP_RUN_INTERACTIVE (0) or GIMP_RUN_NONINTERACTIVE (1)"
   },
   {
@@ -137,7 +141,7 @@ static ProcArg file_load_inargs[] =
   },
   {
     GIMP_PDB_STRING,
-    "raw_filename",
+    "raw-filename",
     "The name as entered by the user"
   }
 };
@@ -153,8 +157,9 @@ static ProcArg file_load_outargs[] =
 
 static ProcRecord file_load_proc =
 {
-  "gimp_file_load",
-  "Loads a file by invoking the right load handler.",
+  "gimp-file-load",
+  "gimp-file-load",
+  "Loads an image file by invoking the right load handler.",
   "This procedure invokes the correct file load handler using magic if possible, and falling back on the file's extension and/or prefix if not. The name of the file to load is typically a full pathname, and the name entered is what the user actually typed before prepending a directory path. The reason for this is that if the user types http://www.xcf/~gimp/ he wants to fetch a URL, and the full pathname will not look like a URL.\"",
   "Josh MacDonald",
   "Josh MacDonald",
@@ -169,92 +174,97 @@ static ProcRecord file_load_proc =
 };
 
 static Argument *
-file_save_invoker (Gimp         *gimp,
-                   GimpContext  *context,
-                   GimpProgress *progress,
-                   Argument     *args)
+file_load_layer_invoker (Gimp         *gimp,
+                         GimpContext  *context,
+                         GimpProgress *progress,
+                         Argument     *args)
 {
-  Argument *new_args;
-  Argument *return_vals;
-  PlugInProcDef *file_proc;
-  const ProcRecord *proc;
+  gboolean success = TRUE;
+  Argument *return_args;
+  gint32 run_mode;
+  GimpImage *image;
+  gchar *filename;
+  GimpLayer *layer = NULL;
+  GimpPDBStatusType status;
   gchar *uri;
-  gint i;
 
-  uri = file_utils_filename_to_uri (gimp->load_procs, (gchar *) args[3].value.pdb_pointer, NULL);
+  run_mode = args[0].value.pdb_int;
+  if (run_mode < GIMP_RUN_INTERACTIVE || run_mode > GIMP_RUN_NONINTERACTIVE)
+    success = FALSE;
 
-  if (! uri)
-    return procedural_db_return_args (&file_save_proc, FALSE);
+  image = gimp_image_get_by_ID (gimp, args[1].value.pdb_int);
+  if (! GIMP_IS_IMAGE (image))
+    success = FALSE;
 
-  file_proc = file_utils_find_proc (gimp->save_procs, uri);
+  filename = (gchar *) args[2].value.pdb_pointer;
+  if (filename == NULL)
+    success = FALSE;
 
-  g_free (uri);
-
-  if (! file_proc) 
-    return procedural_db_return_args (&file_save_proc, FALSE);
-
-  proc = plug_in_proc_def_get_proc (file_proc);
-
-  new_args = g_new0 (Argument, proc->num_args);
-  memcpy (new_args, args, sizeof (Argument) * 5);
-
-  for (i = 5; i < proc->num_args; i++)
+  if (success)
     {
-      new_args[i].arg_type = proc->args[i].arg_type;
-      if (proc->args[i].arg_type == GIMP_PDB_STRING)
-        new_args[i].value.pdb_pointer = g_strdup ("");
+      uri = file_utils_filename_to_uri (gimp->load_procs, filename, NULL);
+      if (! uri)
+        success = FALSE;
+
+      if (success)
+        layer = file_open_layer (gimp, context, progress,
+                                 image, uri, run_mode, &status, NULL);
+
+      success = layer != NULL;
     }
 
-  return_vals = procedural_db_execute (gimp, context, progress, proc->name, new_args);
-  g_free (new_args);
+  return_args = procedural_db_return_args (&file_load_layer_proc, success);
 
-  return return_vals;
+  if (success)
+    return_args[1].value.pdb_int = gimp_item_get_ID (GIMP_ITEM (layer));
+
+  return return_args;
 }
 
-static ProcArg file_save_inargs[] =
+static ProcArg file_load_layer_inargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "run_mode",
+    "run-mode",
     "The run mode: GIMP_RUN_INTERACTIVE (0) or GIMP_RUN_NONINTERACTIVE (1)"
   },
   {
     GIMP_PDB_IMAGE,
     "image",
-    "Input image"
-  },
-  {
-    GIMP_PDB_DRAWABLE,
-    "drawable",
-    "Drawable to save"
+    "Destination image"
   },
   {
     GIMP_PDB_STRING,
     "filename",
-    "The name of the file to save the image in"
-  },
-  {
-    GIMP_PDB_STRING,
-    "raw_filename",
-    "The name as entered by the user"
+    "The name of the file to load"
   }
 };
 
-static ProcRecord file_save_proc =
+static ProcArg file_load_layer_outargs[] =
 {
-  "gimp_file_save",
-  "Saves a file by extension.",
-  "This procedure invokes the correct file save handler according to the file's extension and/or prefix. The name of the file to save is typically a full pathname, and the name entered is what the user actually typed before prepending a directory path. The reason for this is that if the user types http://www.xcf/~gimp/ she wants to fetch a URL, and the full pathname will not look like a URL.",
-  "Josh MacDonald",
-  "Josh MacDonald",
-  "1997",
+  {
+    GIMP_PDB_LAYER,
+    "layer",
+    "The layer created when loading the image file"
+  }
+};
+
+static ProcRecord file_load_layer_proc =
+{
+  "gimp-file-load-layer",
+  "gimp-file-load-layer",
+  "Loads an image file as a layer into an already opened image.",
+  "This procedure behaves like the file-load procedure but opens the specified image as a layer into an already opened image.",
+  "Sven Neumann",
+  "Sven Neumann",
+  "2005",
   NULL,
   GIMP_INTERNAL,
-  5,
-  file_save_inargs,
-  0,
-  NULL,
-  { { file_save_invoker } }
+  3,
+  file_load_layer_inargs,
+  1,
+  file_load_layer_outargs,
+  { { file_load_layer_invoker } }
 };
 
 static Argument *
@@ -363,19 +373,20 @@ static ProcArg file_load_thumbnail_outargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "thumbnail_data_count",
+    "thumbnail-data-count",
     "The number of bytes in thumbnail data"
   },
   {
     GIMP_PDB_INT8ARRAY,
-    "thumb_data",
+    "thumb-data",
     "The thumbnail data"
   }
 };
 
 static ProcRecord file_load_thumbnail_proc =
 {
-  "gimp_file_load_thumbnail",
+  "gimp-file-load-thumbnail",
+  "gimp-file-load-thumbnail",
   "Loads the thumbnail for a file.",
   "This procedure tries to load a thumbnail that belongs to the file with the given filename. This name is a full pathname. The returned data is an array of colordepth 3 (RGB), regardless of the image type. Width and height of the thumbnail are also returned. Don't use this function if you need a thumbnail of an already opened image, use gimp_image_thumbnail instead.",
   "Adam D. Moss, Sven Neumann",
@@ -388,6 +399,96 @@ static ProcRecord file_load_thumbnail_proc =
   4,
   file_load_thumbnail_outargs,
   { { file_load_thumbnail_invoker } }
+};
+
+static Argument *
+file_save_invoker (Gimp         *gimp,
+                   GimpContext  *context,
+                   GimpProgress *progress,
+                   Argument     *args)
+{
+  Argument *new_args;
+  Argument *return_vals;
+  PlugInProcDef *file_proc;
+  const ProcRecord *proc;
+  gchar *uri;
+  gint i;
+
+  uri = file_utils_filename_to_uri (gimp->load_procs, (gchar *) args[3].value.pdb_pointer, NULL);
+
+  if (! uri)
+    return procedural_db_return_args (&file_save_proc, FALSE);
+
+  file_proc = file_utils_find_proc (gimp->save_procs, uri);
+
+  g_free (uri);
+
+  if (! file_proc) 
+    return procedural_db_return_args (&file_save_proc, FALSE);
+
+  proc = plug_in_proc_def_get_proc (file_proc);
+
+  new_args = g_new0 (Argument, proc->num_args);
+  memcpy (new_args, args, sizeof (Argument) * 5);
+
+  for (i = 5; i < proc->num_args; i++)
+    {
+      new_args[i].arg_type = proc->args[i].arg_type;
+      if (proc->args[i].arg_type == GIMP_PDB_STRING)
+        new_args[i].value.pdb_pointer = g_strdup ("");
+    }
+
+  return_vals = procedural_db_execute (gimp, context, progress, proc->name, new_args);
+  g_free (new_args);
+
+  return return_vals;
+}
+
+static ProcArg file_save_inargs[] =
+{
+  {
+    GIMP_PDB_INT32,
+    "run-mode",
+    "The run mode: GIMP_RUN_INTERACTIVE (0) or GIMP_RUN_NONINTERACTIVE (1)"
+  },
+  {
+    GIMP_PDB_IMAGE,
+    "image",
+    "Input image"
+  },
+  {
+    GIMP_PDB_DRAWABLE,
+    "drawable",
+    "Drawable to save"
+  },
+  {
+    GIMP_PDB_STRING,
+    "filename",
+    "The name of the file to save the image in"
+  },
+  {
+    GIMP_PDB_STRING,
+    "raw-filename",
+    "The name as entered by the user"
+  }
+};
+
+static ProcRecord file_save_proc =
+{
+  "gimp-file-save",
+  "gimp-file-save",
+  "Saves a file by extension.",
+  "This procedure invokes the correct file save handler according to the file's extension and/or prefix. The name of the file to save is typically a full pathname, and the name entered is what the user actually typed before prepending a directory path. The reason for this is that if the user types http://www.xcf/~gimp/ she wants to fetch a URL, and the full pathname will not look like a URL.",
+  "Josh MacDonald",
+  "Josh MacDonald",
+  "1997",
+  NULL,
+  GIMP_INTERNAL,
+  5,
+  file_save_inargs,
+  0,
+  NULL,
+  { { file_save_invoker } }
 };
 
 static Argument *
@@ -459,7 +560,8 @@ static ProcArg file_save_thumbnail_inargs[] =
 
 static ProcRecord file_save_thumbnail_proc =
 {
-  "gimp_file_save_thumbnail",
+  "gimp-file-save-thumbnail",
+  "gimp-file-save-thumbnail",
   "Saves a thumbnail for the given image",
   "This procedure saves a thumbnail for the given image according to the Free Desktop Thumbnail Managing Standard. The thumbnail is saved so that it belongs to the file with the given filename. This means you have to save the image under this name first, otherwise this procedure will fail. This procedure may become useful if you want to explicitely save a thumbnail with a file.",
   "Josh MacDonald",
@@ -538,7 +640,8 @@ static ProcArg temp_name_outargs[] =
 
 static ProcRecord temp_name_proc =
 {
-  "gimp_temp_name",
+  "gimp-temp-name",
+  "gimp-temp-name",
   "Generates a unique filename.",
   "Generates a unique filename using the temp path supplied in the user's gimprc.",
   "Josh MacDonald",
@@ -579,9 +682,13 @@ register_magic_load_handler_invoker (Gimp         *gimp,
 
   if (success)
     {
+      gchar *canonical;
+
       success = FALSE;
 
-      proc = procedural_db_lookup (gimp, name);
+      canonical = gimp_canonicalize_identifier (name);
+
+      proc = procedural_db_lookup (gimp, canonical);
 
       if (proc && ((proc->num_args < 3) ||
                    (proc->num_values < 1) ||
@@ -591,17 +698,17 @@ register_magic_load_handler_invoker (Gimp         *gimp,
                    (proc->values[0].arg_type != GIMP_PDB_IMAGE)))
         {
           g_message ("load handler \"%s\" does not take the standard load handler args",
-                     name);
+                     canonical);
           goto done;
         }
 
-      file_proc = plug_ins_file_register_magic (gimp, name,
+      file_proc = plug_ins_file_register_magic (gimp, canonical,
                                                 extensions, prefixes, magics);
 
       if (! file_proc)
         {
-          g_message ("attempt to register non-existant load handler \"%s\"",
-                     name);
+          g_message ("attempt to register nonexistent load handler \"%s\"",
+                     canonical);
           goto done;
         }
 
@@ -610,7 +717,8 @@ register_magic_load_handler_invoker (Gimp         *gimp,
 
       success = TRUE;
 
-    done: ;
+    done:
+      g_free (canonical);
     }
 
   return procedural_db_return_args (&register_magic_load_handler_proc, success);
@@ -620,7 +728,7 @@ static ProcArg register_magic_load_handler_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "procedure_name",
+    "procedure-name",
     "The name of the procedure to be used for loading"
   },
   {
@@ -642,7 +750,8 @@ static ProcArg register_magic_load_handler_inargs[] =
 
 static ProcRecord register_magic_load_handler_proc =
 {
-  "gimp_register_magic_load_handler",
+  "gimp-register-magic-load-handler",
+  "gimp-register-magic-load-handler",
   "Registers a file load handler procedure.",
   "Registers a procedural database procedure to be called to load files of a particular file format using magic file information.",
   "Spencer Kimball & Peter Mattis",
@@ -679,7 +788,7 @@ static ProcArg register_load_handler_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "procedure_name",
+    "procedure-name",
     "The name of the procedure to be used for loading"
   },
   {
@@ -696,7 +805,8 @@ static ProcArg register_load_handler_inargs[] =
 
 static ProcRecord register_load_handler_proc =
 {
-  "gimp_register_load_handler",
+  "gimp-register-load-handler",
+  "gimp-register-load-handler",
   "Registers a file load handler procedure.",
   "Registers a procedural database procedure to be called to load files of a particular file format.",
   "Spencer Kimball & Peter Mattis",
@@ -734,9 +844,13 @@ register_save_handler_invoker (Gimp         *gimp,
 
   if (success)
     {
+      gchar *canonical;
+
       success = FALSE;
 
-      proc = procedural_db_lookup (gimp, name);
+      canonical = gimp_canonicalize_identifier (name);
+
+      proc = procedural_db_lookup (gimp, canonical);
 
       if (proc && ((proc->num_args < 5) ||
                    (proc->args[0].arg_type != GIMP_PDB_INT32) ||
@@ -746,17 +860,17 @@ register_save_handler_invoker (Gimp         *gimp,
                    (proc->args[4].arg_type != GIMP_PDB_STRING)))
         {
           g_message ("save handler \"%s\" does not take the standard save handler args",
-                     name);
+                     canonical);
           goto done;
         }
 
-      file_proc = plug_ins_file_register_magic (gimp, name,
+      file_proc = plug_ins_file_register_magic (gimp, canonical,
                                                 extensions, prefixes, NULL);
 
       if (! file_proc)
         {
-          g_message ("attempt to register non-existant save handler \"%s\"",
-                     name);
+          g_message ("attempt to register nonexistent save handler \"%s\"",
+                     canonical);
           goto done;
         }
 
@@ -765,7 +879,8 @@ register_save_handler_invoker (Gimp         *gimp,
 
       success = TRUE;
 
-    done: ;
+    done:
+      g_free (canonical);
     }
 
   return procedural_db_return_args (&register_save_handler_proc, success);
@@ -775,7 +890,7 @@ static ProcArg register_save_handler_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "procedure_name",
+    "procedure-name",
     "The name of the procedure to be used for saving"
   },
   {
@@ -792,7 +907,8 @@ static ProcArg register_save_handler_inargs[] =
 
 static ProcRecord register_save_handler_proc =
 {
-  "gimp_register_save_handler",
+  "gimp-register-save-handler",
+  "gimp-register-save-handler",
   "Registers a file save handler procedure.",
   "Registers a procedural database procedure to be called to save files in a particular file format.",
   "Spencer Kimball & Peter Mattis",
@@ -827,7 +943,13 @@ register_file_handler_mime_invoker (Gimp         *gimp,
 
   if (success)
     {
-      success = (plug_ins_file_register_mime (gimp, name, mime_type) != NULL);
+      gchar *canonical;
+
+      canonical = gimp_canonicalize_identifier (name);
+
+      success = (plug_ins_file_register_mime (gimp, canonical, mime_type) != NULL);
+
+      g_free (canonical);
     }
 
   return procedural_db_return_args (&register_file_handler_mime_proc, success);
@@ -837,19 +959,20 @@ static ProcArg register_file_handler_mime_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "procedure_name",
+    "procedure-name",
     "The name of the procedure to associate a MIME type with."
   },
   {
     GIMP_PDB_STRING,
-    "mime_type",
+    "mime-type",
     "A single MIME type, like for example \"image/jpeg\"."
   }
 };
 
 static ProcRecord register_file_handler_mime_proc =
 {
-  "gimp_register_file_handler_mime",
+  "gimp-register-file-handler-mime",
+  "gimp-register-file-handler-mime",
   "Associates a MIME type with a file handler procedure.",
   "Registers a MIME type for a file handler procedure. This allows GIMP to determine the MIME type of the file opened or saved using this procedure.",
   "Sven Neumann",
@@ -884,9 +1007,14 @@ register_thumbnail_loader_invoker (Gimp         *gimp,
 
   if (success)
     {
-      success = (plug_ins_file_register_thumb_loader (gimp,
-                                                      load_proc,
+      gchar *canonical;
+
+      canonical = gimp_canonicalize_identifier (load_proc);
+
+      success = (plug_ins_file_register_thumb_loader (gimp, canonical,
                                                       thumb_proc) != NULL);
+
+      g_free (canonical);
     }
 
   return procedural_db_return_args (&register_thumbnail_loader_proc, success);
@@ -896,19 +1024,20 @@ static ProcArg register_thumbnail_loader_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "load_proc",
+    "load-proc",
     "The name of the procedure the thumbnail loader with."
   },
   {
     GIMP_PDB_STRING,
-    "thumb_proc",
+    "thumb-proc",
     "The name of the thumbnail load procedure."
   }
 };
 
 static ProcRecord register_thumbnail_loader_proc =
 {
-  "gimp_register_thumbnail_loader",
+  "gimp-register-thumbnail-loader",
+  "gimp-register-thumbnail-loader",
   "Associates a thumbnail loader with a file load procedure.",
   "Some file formats allow for embedded thumbnails, other file formats contain a scalable image or provide the image data in different resolutions. A file plug-in for such a format may register a special procedure that allows GIMP to load a thumbnail preview of the image. This procedure is then associated with the standard load procedure using this function.",
   "Sven Neumann",

@@ -64,6 +64,7 @@ struct _Gimp
   GimpParasiteList       *parasites;
 
   GimpContainer          *paint_info_list;
+  GimpPaintInfo          *standard_paint_info;
 
   GimpModuleDB           *module_db;
   gboolean                write_modulerc;
@@ -72,6 +73,7 @@ struct _Gimp
   gboolean                write_pluginrc;
 
   GSList                 *plug_in_proc_defs;
+  GSList                 *plug_in_menu_branches;
   GSList                 *plug_in_locale_domains;
   GSList                 *plug_in_help_domains;
 
@@ -81,12 +83,14 @@ struct _Gimp
   PlugInProcDef          *last_plug_in;
 
   PlugInShm              *plug_in_shm;
+  GimpInterpreterDB      *interpreter_db;
   GimpEnvironTable       *environ_table;
   GimpPlugInDebug        *plug_in_debug;
 
   GimpContainer          *images;
   gint                    next_image_ID;
   guint32                 next_guide_ID;
+  guint32                 next_sample_point_ID;
   GHashTable             *image_table;
 
   gint                    next_item_ID;
@@ -121,7 +125,6 @@ struct _Gimp
   /*  image_new values  */
   GimpContainer          *templates;
   GimpTemplate           *image_new_last_template;
-  gboolean                have_current_cut_buffer;
 
   /*  the list of all contexts  */
   GList                  *context_list;

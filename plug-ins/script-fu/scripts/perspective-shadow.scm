@@ -144,7 +144,7 @@
 
     (if (>= shadow-blur 1.0)
 	(begin
-	  (gimp-layer-set-preserve-trans shadow-layer FALSE)
+	  (gimp-layer-set-lock-alpha shadow-layer FALSE)
 	  (gimp-layer-resize shadow-layer
 			     shadow-width
 			     shadow-height
@@ -189,8 +189,8 @@
 		    SF-ADJUSTMENT _"Blur radius"    '(3 0 1024 1 10 0 0)
 		    SF-COLOR      _"Color"          '(0 0 0)
 		    SF-ADJUSTMENT _"Opacity"        '(80 0 100 1 10 0 0)
-		    SF-OPTION     _"Interpolation"  '(_"None" _"Linear" _"Cubic")
+		    SF-ENUM       _"Interpolation"  '("InterpolationType" "linear")
 		    SF-TOGGLE     _"Allow resizing" FALSE)
 
 (script-fu-menu-register "script-fu-perspective-shadow"
-			 _"<Image>/Script-Fu/Shadow")
+			 "<Image>/Filters/Light and Shadow/Shadow")

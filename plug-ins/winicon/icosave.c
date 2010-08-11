@@ -22,8 +22,9 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <string.h>
+
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -168,8 +169,8 @@ ico_show_icon_dialog (gint32  image_ID,
 
   /* Scale the thing to approximately fit its content, but not too large ... */
   gtk_window_set_default_size (GTK_WINDOW (dialog),
-                               500,
-                               120 + (num_layers > 4 ? 400 : num_layers * 100));
+                               -1,
+                               120 + (num_layers > 4 ? 500 : num_layers * 120));
 
   icon_depths = g_object_get_data (G_OBJECT (dialog), "icon_depths");
 
@@ -236,9 +237,9 @@ ico_init (const gchar *filename,
           MsIcon      *ico,
           gint         num_icons)
 {
-  memset (ico, 0, sizeof(MsIcon));
+  memset (ico, 0, sizeof (MsIcon));
 
-  if (! (ico->fp = fopen (filename, "wb")))
+  if (! (ico->fp = g_fopen (filename, "wb")))
     {
       g_message (_("Could not open '%s' for writing: %s"),
                  gimp_filename_to_utf8 (filename), g_strerror (errno));
@@ -295,7 +296,7 @@ ico_set_bit_in_data (guint8 *data,
   offset = bit_num % line_width;
   bit_val = bit_val & 0x00000001;
 
-  data[line * width32 * 4 + offset/8] |= (bit_val << (7 - (offset % 8)));
+  data[line * width32 * 4 + offset/8] |= (bit_val << (7 - (bit_num % 8)));
 }
 
 
@@ -316,7 +317,7 @@ ico_set_nibble_in_data (guint8 *data,
   offset = nibble_num % line_width;
   nibble_val = nibble_val & 0x0000000F;
 
-  data[line * width8 * 4 + offset/2] |= (nibble_val << (4 * (1 - (offset % 2))));
+  data[line * width8 * 4 + offset/2] |= (nibble_val << (4 * (1 - (nibble_num % 2))));
 }
 
 
@@ -463,7 +464,7 @@ ico_init_data (MsIcon *ico,
   MsIconEntry    *entry;
   MsIconData     *data;
   gint            and_len, xor_len, palette_index, x, y;
-  gint            num_colors = 0, num_colors_used = 0, black_index;
+  gint            num_colors = 0, num_colors_used = 0, black_index = 0;
   guchar         *buffer = NULL, *pixel;
   guint32        *buffer32;
   guchar         *palette;
@@ -862,12 +863,12 @@ ico_image_get_reduced_buf (guint32   layer,
   gint32          tmp_layer;
   gint            w, h;
   guchar         *buffer;
-  guchar         *cmap;
+  guchar         *cmap = NULL;
   GimpDrawable   *drawable = gimp_drawable_get (layer);
 
   w = gimp_drawable_width (layer);
   h = gimp_drawable_height (layer);
-  *cmap_out = NULL;
+
   *num_colors = 0;
 
   buffer = g_new (guchar, w * h * 4);
@@ -881,16 +882,6 @@ ico_image_get_reduced_buf (guint32   layer,
                                   gimp_drawable_height (layer),
                                   gimp_image_base_type (image));
       gimp_image_undo_disable (tmp_image);
-
-      if (gimp_drawable_is_indexed (layer))
-        {
-          guchar *cmap;
-          gint    num_colors;
-
-          cmap = gimp_image_get_colormap (image, &num_colors);
-          gimp_image_set_colormap (tmp_image, cmap, num_colors);
-          g_free (cmap);
-        }
 
       tmp_layer = gimp_layer_new (tmp_image, "tmp", w, h,
                                   gimp_drawable_type (layer),
@@ -938,7 +929,6 @@ ico_image_get_reduced_buf (guint32   layer,
               cmap = gimp_image_get_colormap (tmp_image, num_colors);
             }
 
-          *cmap_out = g_memdup (cmap, *num_colors * 3);
           gimp_image_convert_rgb (tmp_image);
         }
 
@@ -959,6 +949,7 @@ ico_image_get_reduced_buf (guint32   layer,
 
   gimp_drawable_detach (drawable);
 
+  *cmap_out = cmap;
   *buf_out = buffer;
 }
 
@@ -967,7 +958,6 @@ SaveICO (const gchar *filename,
          gint32       image)
 {
   MsIcon             ico;
-  gchar             *temp_buf;
   gint              *icon_depths = NULL;
   gint               num_icons;
   GimpPDBStatusType  exit_state;
@@ -984,10 +974,8 @@ SaveICO (const gchar *filename,
   if ((icon_depths = ico_show_icon_dialog (image, &num_icons)) == NULL)
     return GIMP_PDB_CANCEL;
 
-  temp_buf = g_strdup_printf (_("Saving '%s'..."),
-                              gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp_buf);
-  g_free (temp_buf);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   /* Okay, let's actually save the thing with the depths the
      user specified. */

@@ -7,7 +7,6 @@ exec_prefix_set=no
 bindir=@bindir@
 sbindir=@sbindir@
 libexecdir=@libexecdir@
-datarootdir=@datarootdir@
 datadir=@datadir@
 sysconfdir=@sysconfdir@
 sharedstatedir=@sharedstatedir@
@@ -93,20 +92,15 @@ if test $# -eq 0; then
 fi
 
 if test x${PKG_CONFIG+set} != xset ; then
-  PKG_CONFIG=pkg-config
-fi
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.7 ; then
-  gtk_cflags=`$PKG_CONFIG --cflags gtk+-2.0`
-  gtk_libs=`$PKG_CONFIG --libs gtk+-2.0`
-  glib_cflags=`$PKG_CONFIG --cflags glib-2.0`
-  glib_libs=`$PKG_CONFIG --libs glib-2.0`
-else
-  echo "*** pkg-config not found or too old; using paths from gimp compilation." 1>&2
   gtk_cflags='@GTK_CFLAGS@'
   gtk_libs='@GTK_LIBS@'
   glib_cflags='@GLIB_CFLAGS@'
   glib_libs='@GLIB_LIBS@'
+else
+  gtk_cflags=`$PKG_CONFIG --cflags gtk+-2.0`
+  gtk_libs=`$PKG_CONFIG --libs gtk+-2.0`
+  glib_cflags=`$PKG_CONFIG --cflags glib-2.0`
+  glib_libs=`$PKG_CONFIG --libs glib-2.0`
 fi
 
 if test x${INSTALL+set} != xset ; then
@@ -208,7 +202,7 @@ while test $# -gt 0; do
       done
       case $1 in
         --libs)
-          echo $libdirs -lgimpui-@GIMP_API_VERSION@ -lgimpwidgets-@GIMP_API_VERSION@ -lgimpmodule-@GIMP_API_VERSION@ -lgimp-@GIMP_API_VERSION@ -lgimpcolor-@GIMP_API_VERSION@ -lgimpmath-@GIMP_API_VERSION@ -lgimpbase-@GIMP_API_VERSION@ $my_gtk_libs $rt_libs ;;
+          echo $libdirs -lgimpui-@GIMP_API_VERSION@ -lgimpwidgets-@GIMP_API_VERSION@ -lgimp-@GIMP_API_VERSION@ -lgimpcolor-@GIMP_API_VERSION@ -lgimpmath-@GIMP_API_VERSION@ -lgimpbase-@GIMP_API_VERSION@ $my_gtk_libs $rt_libs ;;
         --libs-nogimpui)
           echo $libdirs -lgimp-@GIMP_API_VERSION@ -lgimpcolor-@GIMP_API_VERSION@ -lgimpmath-@GIMP_API_VERSION@ -lgimpbase-@GIMP_API_VERSION@ $my_gtk_libs $rt_libs ;;
       esac

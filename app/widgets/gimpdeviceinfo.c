@@ -22,14 +22,14 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
+
 #include "widgets-types.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimpmarshal.h"
-
-#include "config/gimpconfig-params.h"
 
 #include "gimpdeviceinfo.h"
 
@@ -54,9 +54,6 @@ enum
 
 /*  local function prototypes  */
 
-static void   gimp_device_info_class_init   (GimpDeviceInfoClass *klass);
-static void   gimp_device_info_init         (GimpDeviceInfo      *device_info);
-
 static GObject * gimp_device_info_constructor  (GType                  type,
                                                 guint                  n_params,
                                                 GObjectConstructParam *params);
@@ -71,46 +68,18 @@ static void      gimp_device_info_get_property (GObject               *object,
                                                 GParamSpec            *pspec);
 
 
-static GimpContextClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpDeviceInfo, gimp_device_info, GIMP_TYPE_CONTEXT);
+
+#define parent_class gimp_device_info_parent_class
 
 static guint device_info_signals[LAST_SIGNAL] = { 0 };
 
-
-GType
-gimp_device_info_get_type (void)
-{
-  static GType device_info_type = 0;
-
-  if (! device_info_type)
-    {
-      static const GTypeInfo device_info_info =
-      {
-        sizeof (GimpDeviceInfoClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_device_info_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpDeviceInfo),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_device_info_init,
-      };
-
-      device_info_type = g_type_register_static (GIMP_TYPE_CONTEXT,
-                                                 "GimpDeviceInfo",
-                                                 &device_info_info, 0);
-    }
-
-  return device_info_type;
-}
 
 static void
 gimp_device_info_class_init (GimpDeviceInfoClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamSpec   *array_spec;
-
-  parent_class = g_type_class_peek_parent (klass);
 
   device_info_signals[CHANGED] =
     g_signal_new ("changed",
@@ -155,6 +124,7 @@ static void
 gimp_device_info_init (GimpDeviceInfo *device_info)
 {
   device_info->device   = NULL;
+  device_info->display  = NULL;
   device_info->mode     = GDK_MODE_DISABLED;
   device_info->num_axes = 0;
   device_info->axes     = NULL;
@@ -189,22 +159,22 @@ gimp_device_info_constructor (GType                  type,
   /*  FIXME: this is ugly and needs to be done via "notify" once
    *  the contexts' properties are dynamic.
    */
-  g_signal_connect (object, "foreground_changed",
+  g_signal_connect (object, "foreground-changed",
                     G_CALLBACK (gimp_device_info_changed),
                     NULL);
-  g_signal_connect (object, "background_changed",
+  g_signal_connect (object, "background-changed",
                     G_CALLBACK (gimp_device_info_changed),
                     NULL);
-  g_signal_connect (object, "tool_changed",
+  g_signal_connect (object, "tool-changed",
                     G_CALLBACK (gimp_device_info_changed),
                     NULL);
-  g_signal_connect (object, "brush_changed",
+  g_signal_connect (object, "brush-changed",
                     G_CALLBACK (gimp_device_info_changed),
                     NULL);
-  g_signal_connect (object, "pattern_changed",
+  g_signal_connect (object, "pattern-changed",
                     G_CALLBACK (gimp_device_info_changed),
                     NULL);
-  g_signal_connect (object, "gradient_changed",
+  g_signal_connect (object, "gradient-changed",
                     G_CALLBACK (gimp_device_info_changed),
                     NULL);
 
@@ -237,8 +207,8 @@ gimp_device_info_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_MODE:
-      if (device_info->device)
-        gdk_device_set_mode (device_info->device, g_value_get_enum (value));
+      if (device)
+        gdk_device_set_mode (device, g_value_get_enum (value));
       else
         device_info->mode = g_value_get_enum (value);
       break;
@@ -389,24 +359,13 @@ gimp_device_info_get_property (GObject    *object,
 
             if (keyval)
               {
-                /* FIXME: integrate this back with menus_install_accelerator */
-                gchar  accel[64];
-                gchar  t2[2];
+                gchar *accel;
                 gchar *escaped;
 
-                accel[0] = '\0';
-                if (modifiers & GDK_CONTROL_MASK)
-                  strcat (accel, "<control>");
-                if (modifiers & GDK_SHIFT_MASK)
-                  strcat (accel, "<shift>");
-                if (modifiers & GDK_MOD1_MASK)
-                  strcat (accel, "<alt>");
-
-                t2[0] = keyval;
-                t2[1] = '\0';
-                strcat (accel, t2);
-
+                accel = gtk_accelerator_name (keyval, modifiers);
                 escaped = g_strescape (accel, NULL);
+                g_free (accel);
+
                 g_value_set_string (&string_value, escaped);
                 g_free (escaped);
               }
@@ -434,29 +393,28 @@ GimpDeviceInfo *
 gimp_device_info_new (Gimp        *gimp,
                       const gchar *name)
 {
-  GimpDeviceInfo *device_info;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
-  device_info = g_object_new (GIMP_TYPE_DEVICE_INFO,
-                              "name", name,
-                              "gimp", gimp,
-                              NULL);
-
-  return device_info;
+  return g_object_new (GIMP_TYPE_DEVICE_INFO,
+                       "name", name,
+                       "gimp", gimp,
+                       NULL);
 }
 
 GimpDeviceInfo *
 gimp_device_info_set_from_device (GimpDeviceInfo *device_info,
-                                  GdkDevice      *device)
+                                  GdkDevice      *device,
+                                  GdkDisplay     *display)
 {
   g_return_val_if_fail (GIMP_IS_DEVICE_INFO (device_info), NULL);
   g_return_val_if_fail (GDK_IS_DEVICE (device), NULL);
+  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
 
   g_object_set_data (G_OBJECT (device), GIMP_DEVICE_INFO_DATA_KEY, device_info);
 
   device_info->device     = device;
+  device_info->display    = display;
 
   device_info->mode       = device->mode;
 
@@ -492,7 +450,7 @@ gimp_device_info_changed_by_device (GdkDevice *device)
 
   g_return_if_fail (GDK_IS_DEVICE (device));
 
-  device_info = g_object_get_data (G_OBJECT (device), GIMP_DEVICE_INFO_DATA_KEY);
+  device_info = gimp_device_info_get_by_device (device);
 
   if (device_info)
     gimp_device_info_changed (device_info);

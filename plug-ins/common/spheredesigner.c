@@ -2,6 +2,22 @@
  * The GIMP -- an image manipulation program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
  * SphereDesigner v0.4 - creates textured spheres
  * by Vidar Madsen <vidar@prosalg.no>
  *
@@ -20,26 +36,21 @@
  * - (Probably more. ;-)
  */
 
-#define PLUG_IN_NAME "SphereDesigner"
-
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
+
+#define PLUG_IN_PROC   "plug-in-spheredesigner"
+#define PLUG_IN_BINARY "spheredesigner"
 
 #define RESPONSE_RESET 1
 
@@ -264,7 +275,7 @@ static GtkWidget *drawarea = NULL;
 
 static guchar img[PREVIEWSIZE * PREVIEWSIZE * 3];
 
-static gint running = FALSE;
+static guint  idle_id = 0;
 
 static sphere s;
 
@@ -296,24 +307,24 @@ struct
 settings = { 1, 1, 1 };
 
 
-static inline void vset      (GimpVector4          *v,
-                              gdouble               a,
-                              gdouble               b,
-                              gdouble               c);
-static void    restartrender (void);
-static void    drawcolor1    (GtkWidget            *widget);
-static void    drawcolor2    (GtkWidget            *widget);
-static void    render        (void);
-static void    realrender    (GimpDrawable         *drawable);
-static void    fileselect    (GtkFileChooserAction  action,
-                              GtkWidget            *parent);
-static gint    traceray      (ray                  *r,
-                              GimpVector4          *col,
-                              gint                  level,
-                              gdouble               imp);
-static gdouble turbulence    (gdouble              *point,
-                              gdouble               lofreq,
-                              gdouble               hifreq);
+static inline void vset        (GimpVector4          *v,
+                                gdouble               a,
+                                gdouble               b,
+                                gdouble               c);
+static void      restartrender (void);
+static void      drawcolor1    (GtkWidget            *widget);
+static void      drawcolor2    (GtkWidget            *widget);
+static gboolean  render        (void);
+static void      realrender    (GimpDrawable         *drawable);
+static void      fileselect    (GtkFileChooserAction  action,
+                                GtkWidget            *parent);
+static gint      traceray      (ray                  *r,
+                                GimpVector4          *col,
+                                gint                  level,
+                                gdouble               imp);
+static gdouble   turbulence    (gdouble              *point,
+                                gdouble               lofreq,
+                                gdouble               hifreq);
 
 
 #define COLORBUTTONWIDTH  30
@@ -1203,8 +1214,7 @@ objnormal (GimpVector4 *res, common *obj, GimpVector4 *p)
       vset (res, 1, 1, 1);      /* fixme */
       break;
     default:
-      fprintf (stderr, "objnormal(): Unsupported object type!?\n");
-      exit (0);
+      g_error ("objnormal(): Unsupported object type!?\n");
     }
   vnorm (res, 1.0);
 
@@ -1468,8 +1478,7 @@ traceray (ray * r, GimpVector4 * col, gint level, gdouble imp)
           t = checkcylinder (r, (cylinder *) & world.obj[i]);
           break;
         default:
-          fprintf (stderr, "Illegal object!!\n");
-          exit (0);
+          g_error ("Illegal object!!\n");
         }
       if (t <= 0.0)
         continue;
@@ -1807,7 +1816,7 @@ relabel (void)
 static gboolean noupdate = FALSE;
 
 static void
-setvals (texture * t)
+setvals (texture *t)
 {
   struct textures_t *l;
 
@@ -1885,6 +1894,7 @@ addtexture (void)
                                   &iter);
 
   s.com.numtexture++;
+
   restartrender ();
 }
 
@@ -1914,15 +1924,19 @@ duptexture (void)
                                   &iter);
 
   s.com.numtexture++;
+
   restartrender ();
 }
 
 static void
 rebuildlist (void)
 {
-  GtkListStore *list_store;
-  GtkTreeIter   iter;
-  gint          n;
+  GtkListStore     *list_store;
+  GtkTreeSelection *sel;
+  GtkTreeIter       iter;
+  gint              n;
+
+  sel = gtk_tree_view_get_selection (texturelist);
 
   for (n = 0; n < s.com.numtexture; n++)
     {
@@ -1948,6 +1962,10 @@ rebuildlist (void)
                           TEXTURE, &s.com.texture[n],
                           -1);
     }
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter))
+    gtk_tree_selection_select_iter (sel, &iter);
+
   restartrender ();
 }
 
@@ -1971,6 +1989,8 @@ deltexture (void)
       t->majtype = -1;
       gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
     }
+
+  restartrender ();
 }
 
 static void
@@ -1981,16 +2001,27 @@ loadit (const gchar * fn)
   gchar    line[1024];
   gint     i;
   texture *t;
+  gint     majtype, type;
 
-  s.com.numtexture = 0;
-
-  f = fopen (fn, "rt");
-  if (!f)
+  f = g_fopen (fn, "rt");
+  if (! f)
     {
       g_message (_("Could not open '%s' for reading: %s"),
                  gimp_filename_to_utf8 (fn), g_strerror (errno));
       return;
     }
+
+  if (2 != fscanf (f, "%d %d", &majtype, &type) || majtype < 0 || majtype > 2)
+    {
+      g_message (_("File '%s' is not a valid save file."),
+                 gimp_filename_to_utf8 (fn));
+      fclose (f);
+      return;
+    }
+
+  rewind (f);
+
+  s.com.numtexture = 0;
 
   while (!feof (f))
     {
@@ -2082,7 +2113,7 @@ saveit (const gchar *fn)
   FILE  *f;
   gchar  buf[G_ASCII_DTOSTR_BUF_SIZE];
 
-  f = fopen (fn, "wt");
+  f = g_fopen (fn, "wt");
   if (!f)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -2179,6 +2210,11 @@ fileselect (GtkFileChooserAction  action,
 
                                      NULL);
 
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
       g_signal_connect (dialog, "destroy",
@@ -2255,13 +2291,6 @@ initworld (void)
   world.smartambient = 40.0;
 }
 
-static void
-drawit (void)
-{
-  if (drawarea)
-    gtk_widget_queue_draw (drawarea);
-}
-
 static gboolean
 expose_event (GtkWidget      *widget,
               GdkEventExpose *event)
@@ -2282,13 +2311,10 @@ expose_event (GtkWidget      *widget,
 static void
 restartrender (void)
 {
-  if (running)
-    {
-      running = 2;
-      return;
-    }
+  if (idle_id)
+    g_source_remove (idle_id);
 
-  render ();
+  idle_id = g_idle_add ((GSourceFunc) render, NULL);
 }
 
 static void
@@ -2338,15 +2364,19 @@ getscales (GtkWidget *widget,
 
   if (noupdate)
     return;
+
   t = currenttexture ();
   if (!t)
     return;
+
   t->amount = GTK_ADJUSTMENT (amountscale)->value;
   t->exp = GTK_ADJUSTMENT (expscale)->value;
+
   f = GTK_ADJUSTMENT (turbulencescale)->value;
   vset (&t->turbulence, f, f, f);
 
   t->oscale = GTK_ADJUSTMENT (scalescale)->value;
+
   t->scale.x = GTK_ADJUSTMENT (scalexscale)->value;
   t->scale.y = GTK_ADJUSTMENT (scaleyscale)->value;
   t->scale.z = GTK_ADJUSTMENT (scalezscale)->value;
@@ -2358,6 +2388,8 @@ getscales (GtkWidget *widget,
   t->translate.x = GTK_ADJUSTMENT (posxscale)->value;
   t->translate.y = GTK_ADJUSTMENT (posyscale)->value;
   t->translate.z = GTK_ADJUSTMENT (poszscale)->value;
+
+  restartrender ();
 }
 
 
@@ -2369,6 +2401,7 @@ color1_changed (GimpColorButton *button,
   if (t)
     {
       gimp_color_button_get_color (button, (GimpRGB *) &t->color1);
+      restartrender ();
     }
 }
 
@@ -2380,6 +2413,7 @@ color2_changed (GimpColorButton *button,
   if (t)
     {
       gimp_color_button_get_color (button, (GimpRGB *) &t->color2);
+      restartrender ();
     }
 }
 
@@ -2452,7 +2486,12 @@ sphere_response (GtkWidget *widget,
       break;
 
     case GTK_RESPONSE_OK:
-      running = -1;
+      if (idle_id)
+        {
+          g_source_remove (idle_id);
+          idle_id = 0;
+        }
+
       do_run = TRUE;
 
     default:
@@ -2467,8 +2506,10 @@ makewindow (void)
 {
   GtkListStore      *store;
   GtkTreeViewColumn *col;
+  GtkTreeSelection  *selection;
   GtkWidget  *window;
   GtkWidget  *main_hbox;
+  GtkWidget  *main_vbox;
   GtkWidget  *table;
   GtkWidget  *frame;
   GtkWidget  *scrolled;
@@ -2476,12 +2517,11 @@ makewindow (void)
   GtkWidget  *vbox;
   GtkWidget  *button;
   GtkWidget  *list;
-  GimpRGB     rgb;
+  GimpRGB     rgb = { 0, 0, 0, 0 };
 
-  window = gimp_dialog_new (_("Sphere Designer"), "spheredesigner",
+  window = gimp_dialog_new (_("Sphere Designer"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func,
-                            "plug-in-spheredesigner",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GIMP_STOCK_RESET, RESPONSE_RESET,
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -2489,16 +2529,28 @@ makewindow (void)
 
                             NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (window),
+                                           RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (window));
+
   g_signal_connect (window, "response",
                     G_CALLBACK (sphere_response),
                     NULL);
 
+  main_vbox = gtk_vbox_new (FALSE, 12);
+  gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), main_vbox);
+  gtk_widget_show (main_vbox);
+
   main_hbox = gtk_hbox_new (FALSE, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), main_hbox);
+  gtk_box_pack_start (GTK_BOX (main_vbox), main_hbox, TRUE, TRUE, 0);
   gtk_widget_show (main_hbox);
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_vbox_new (FALSE, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -2512,15 +2564,8 @@ makewindow (void)
   gtk_widget_set_size_request (drawarea, PREVIEWSIZE, PREVIEWSIZE);
   gtk_widget_show (drawarea);
 
-  g_signal_connect (drawarea, "expose_event",
+  g_signal_connect (drawarea, "expose-event",
                     G_CALLBACK (expose_event), NULL);
-
-  button = gtk_button_new_with_mnemonic (_("Update _Preview"));
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
-
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (restartrender), NULL);
 
   hbox = gtk_hbox_new (TRUE, 0);
   gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
@@ -2543,7 +2588,7 @@ makewindow (void)
                     window);
 
   vbox = gtk_vbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (main_hbox), vbox, FALSE, FALSE, 0);
+  gtk_box_pack_end (GTK_BOX (main_hbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
   scrolled = gtk_scrolled_window_new (NULL, NULL);
@@ -2561,7 +2606,11 @@ makewindow (void)
 
   texturelist = GTK_TREE_VIEW (list);
 
-  g_signal_connect (gtk_tree_view_get_selection (texturelist), "changed",
+  selection = gtk_tree_view_get_selection (texturelist);
+
+  gtk_tree_selection_set_mode (selection, GTK_SELECTION_BROWSE);
+
+  g_signal_connect (selection, "changed",
                     G_CALLBACK (selectitem),
                     NULL);
 
@@ -2569,7 +2618,7 @@ makewindow (void)
   gtk_container_add (GTK_CONTAINER (scrolled), list);
   gtk_widget_show (list);
 
-  col = gtk_tree_view_column_new_with_attributes (_("Textures"),
+  col = gtk_tree_view_column_new_with_attributes (_("Layers"),
                                                   gtk_cell_renderer_text_new (),
                                                   "text", TYPE,
                                                   NULL);
@@ -2597,7 +2646,11 @@ makewindow (void)
                             G_CALLBACK (deltexture), NULL);
   gtk_widget_show (button);
 
-  frame = gimp_frame_new (_("Texture Properties"));
+  main_hbox = gtk_hbox_new (FALSE, 12);
+  gtk_box_pack_start (GTK_BOX (main_vbox), main_hbox, FALSE, FALSE, 0);
+  gtk_widget_show (main_hbox);
+
+  frame = gimp_frame_new (_("Properties"));
   gtk_box_pack_start (GTK_BOX (main_hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
@@ -2624,8 +2677,7 @@ makewindow (void)
                              _("Type:"), 0.0, 0.5,
                              typemenu, 2, FALSE);
 
-  texturemenu = gimp_int_combo_box_new (NULL, 0);
-
+  texturemenu = g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL);
   {
     struct textures_t *t;
 
@@ -2656,7 +2708,7 @@ makewindow (void)
   gtk_widget_show (button);
   drawcolor1 (button);
 
-  g_signal_connect (button, "color_changed",
+  g_signal_connect (button, "color-changed",
                     G_CALLBACK (color1_changed),
                     NULL);
 
@@ -2667,14 +2719,14 @@ makewindow (void)
   gtk_widget_show (button);
   drawcolor2 (button);
 
-  g_signal_connect (button, "color_changed",
+  g_signal_connect (button, "color-changed",
                     G_CALLBACK (color2_changed),
                     NULL);
 
   scalescale = gimp_scale_entry_new (GTK_TABLE (table), 0, 3, _("Scale:"),
                                      100, -1, 1.0, 0.0, 10.0, 0.1, 1.0, 1,
                                      TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (scalescale, "value_changed",
+  g_signal_connect (scalescale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
@@ -2682,25 +2734,25 @@ makewindow (void)
                                           _("Turbulence:"),
                                           100, -1, 1.0, 0.0, 10.0, 0.1, 1.0, 1,
                                           TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (turbulencescale, "value_changed",
+  g_signal_connect (turbulencescale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   amountscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 5, _("Amount:"),
                                        100, -1, 1.0, 0.0, 1.0, 0.01, 0.1, 2,
                                        TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (amountscale, "value_changed",
+  g_signal_connect (amountscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   expscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 6, _("Exp.:"),
                                    100, -1, 1.0, 0.0, 1.0, 0.01, 0.1, 2,
                                    TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (expscale, "value_changed",
+  g_signal_connect (expscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
-  frame = gimp_frame_new (_("Texture Transformations"));
+  frame = gimp_frame_new (_("Transformations"));
   gtk_box_pack_start (GTK_BOX (main_hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
 
@@ -2719,62 +2771,62 @@ makewindow (void)
   scalexscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 0, _("Scale X:"),
                                       100, -1, 1.0, 0.0, 10.0, 0.1, 1.0, 2,
                                       TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (scalexscale, "value_changed",
+  g_signal_connect (scalexscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   scaleyscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 1, _("Scale Y:"),
                                       100, -1, 1.0, 0.0, 10.0, 0.1, 1.0, 2,
                                       TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (scaleyscale, "value_changed",
+  g_signal_connect (scaleyscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
   scalezscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 2, _("Scale Z:"),
                                       100, -1, 1.0, 0.0, 10.0, 0.1, 1.0, 2,
                                       TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (scalezscale, "value_changed",
+  g_signal_connect (scalezscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   rotxscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 3, _("Rotate X:"),
                                     100, -1, 0.0, 0.0, 360.0, 1.0, 10.0, 1,
                                     TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (rotxscale, "value_changed",
+  g_signal_connect (rotxscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   rotyscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 4, _("Rotate Y:"),
                                     100, -1, 0.0, 0.0, 360.0, 1.0, 10.0, 1,
                                     TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (rotyscale, "value_changed",
+  g_signal_connect (rotyscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   rotzscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 5, _("Rotate Z:"),
                                     100, -1, 0.0, 0.0, 360.0, 1.0, 10.0, 1,
                                     TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (rotzscale, "value_changed",
+  g_signal_connect (rotzscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   posxscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 6, _("Position X:"),
                                     100, -1, 0.0, -20.0, 20.0, 0.1, 1.0, 1,
                                     TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (rotxscale, "value_changed",
+  g_signal_connect (posxscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   posyscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 7, _("Position Y:"),
                                     100, -1, 0.0, -20.0, 20.0, 0.1, 1.0, 1,
                                     TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (rotyscale, "value_changed",
+  g_signal_connect (posyscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
   poszscale = gimp_scale_entry_new (GTK_TABLE (table), 0, 8, _("Position Z:"),
                                     100, -1, 0.0, -20.0, 20.0, 0.1, 1.0, 1,
                                     TRUE, 0.0, 0.0, NULL, NULL);
-  g_signal_connect (rotzscale, "value_changed",
+  g_signal_connect (poszscale, "value-changed",
                     G_CALLBACK (getscales),
                     NULL);
 
@@ -2794,37 +2846,27 @@ pixelval (gdouble v)
   return v;
 }
 
-static void
+static gboolean
 render (void)
 {
-  gint    x, y, p;
-  ray     r;
   GimpVector4  col;
-  gint    hit;
-  gint    tx, ty;
   guchar *dest_row;
-  gint    bpp;
+  ray     r;
+  gint    x, y, p;
+  gint    hit;
+  gint    tx  = PREVIEWSIZE;
+  gint    ty  = PREVIEWSIZE;
+  gint    bpp = 3;
+
+  idle_id = 0;
+
+  initworld ();
 
   r.v1.z = -10.0;
   r.v2.z = 0.0;
 
-  running = 2;
-
-  tx = PREVIEWSIZE;
-  ty = PREVIEWSIZE;
-  bpp = 3;
-
-  while (running > 0)
+  if (world.obj[0].com.numtexture > 0)
     {
-
-      if (running == 2)
-        {
-          running = 1;
-          initworld ();
-        }
-      if (world.obj[0].com.numtexture == 0)
-        break;
-
       for (y = 0; y < ty; y++)
         {
           dest_row = img + y * PREVIEWSIZE * 3;
@@ -2853,33 +2895,13 @@ render (void)
                 pixelval (255 * col.y) * col.w + g * (1.0 - col.w);
               dest_row[p + 2] =
                 pixelval (255 * col.z) * col.w + g * (1.0 - col.w);
-
-              if (running != 1)
-                {
-                  break;
-                }
-            }
-
-#if CONTINOUS_UPDATE
-          drawit ();
-
-          while (gtk_events_pending ())
-            gtk_main_iteration ();
-#endif
-
-          if (running != 1)
-            {
-              break;
-            }
+             }
         }
-      if (running == 1)
-        break;
-      if (running == -1)
-        break;
     }
 
-  running = 0;
-  drawit ();
+  gtk_widget_queue_draw (drawarea);
+
+  return FALSE;
 }
 
 static void
@@ -2894,9 +2916,6 @@ realrender (GimpDrawable *drawable)
   gint          bpp;
   GimpPixelRgn  pr, dpr;
   guchar       *buffer, *ibuffer;
-
-  if (running > 0)
-    return;                     /* Fixme: abort preview-render instead! */
 
   initworld ();
 
@@ -2919,7 +2938,7 @@ realrender (GimpDrawable *drawable)
   tx = x2 - x1;
   ty = y2 - y1;
 
-  gimp_progress_init (_("Rendering Sphere..."));
+  gimp_progress_init (_("Rendering sphere"));
 
   for (y = 0; y < ty; y++)
     {
@@ -2963,12 +2982,12 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
   };
 
-  gimp_install_procedure ("plug_in_spheredesigner",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Renders textures spheres",
                           "This plugin can be used to create textured and/or "
                           "bumpmapped spheres, and uses a small lightweight "
@@ -2982,16 +3001,13 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_spheredesigner",
-                             "<Image>/Filters/Render");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render");
 }
 
 static gboolean
 sphere_main (GimpDrawable *drawable)
 {
-  initworld ();
-
-  gimp_ui_init ("spheredesigner", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
   memset (img, 0, PREVIEWSIZE * PREVIEWSIZE * 3);
   makewindow ();
@@ -3017,6 +3033,7 @@ run (const gchar      *name,
   GimpDrawable      *drawable;
   GimpRunMode        run_mode;
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
+  gint               x, y, w, h;
 
   run_mode = param[0].data.d_int32;
 
@@ -3030,11 +3047,17 @@ run (const gchar      *name,
 
   drawable = gimp_drawable_get (param[2].data.d_drawable);
 
+  if (! gimp_drawable_mask_intersect (drawable->drawable_id, &x, &y, &w, &h))
+    {
+      g_message (_("Region selected for plug-in is empty"));
+      return;
+    }
+
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
       s.com.numtexture = 0;
-      gimp_get_data (PLUG_IN_NAME, &s);
+      gimp_get_data (PLUG_IN_PROC, &s);
       if (!sphere_main (drawable))
         {
           gimp_drawable_detach (drawable);
@@ -3043,7 +3066,7 @@ run (const gchar      *name,
       break;
     case GIMP_RUN_WITH_LAST_VALS:
       s.com.numtexture = 0;
-      gimp_get_data (PLUG_IN_NAME, &s);
+      gimp_get_data (PLUG_IN_PROC, &s);
       if (s.com.numtexture == 0)
         {
           gimp_drawable_detach (drawable);
@@ -3057,7 +3080,7 @@ run (const gchar      *name,
       return;
     }
 
-  gimp_set_data (PLUG_IN_NAME, &s, sizeof (s));
+  gimp_set_data (PLUG_IN_PROC, &s, sizeof (s));
 
   realrender (drawable);
   gimp_displays_flush ();

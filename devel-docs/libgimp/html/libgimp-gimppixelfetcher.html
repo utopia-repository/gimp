@@ -1,14 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimppixelfetcher</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimppaths.html" title="gimppaths">
 <link rel="next" href="libgimp-gimppixelrgn.html" title="gimppixelrgn">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -18,27 +17,24 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimppaths.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppixelrgn.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2568089" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2642587" class="shortcut">Description</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppixelfetcher"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2568089"></a><span class="refentrytitle">gimppixelfetcher</span>
-</h2>
+<h2><span class="refentrytitle">gimppixelfetcher</span></h2>
 <p>gimppixelfetcher &#8212; Functions for operating on pixel regions.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -49,29 +45,30 @@
 
 
 
-enum                <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</a>;
-                    <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a>;
-<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a>*   <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-new">gimp_pixel_fetcher_new</a>              (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
-                                                         gboolean shadow);
-void                <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-set-edge-mode">gimp_pixel_fetcher_set_edge_mode</a>    (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
-                                                         <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</a> mode);
-void                <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-set-bg-color">gimp_pixel_fetcher_set_bg_color</a>     (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
-                                                         const <a
+enum        <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</a>;
+            <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a>;
+<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a>* <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-new">gimp_pixel_fetcher_new</a>    (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+                                             gboolean shadow);
+void        <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-set-edge-mode">gimp_pixel_fetcher_set_edge_mode</a>
+                                            (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
+                                             <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</a> mode);
+void        <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-set-bg-color">gimp_pixel_fetcher_set_bg_color</a> (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
+                                             const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-void                <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-get-pixel">gimp_pixel_fetcher_get_pixel</a>        (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
-                                                         gint x,
-                                                         gint y,
-                                                         guchar *pixel);
-void                <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-put-pixel">gimp_pixel_fetcher_put_pixel</a>        (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
-                                                         gint x,
-                                                         gint y,
-                                                         const guchar *pixel);
-void                <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-destroy">gimp_pixel_fetcher_destroy</a>          (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf);
+void        <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-get-pixel">gimp_pixel_fetcher_get_pixel</a>    (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
+                                             gint x,
+                                             gint y,
+                                             guchar *pixel);
+void        <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-put-pixel">gimp_pixel_fetcher_put_pixel</a>    (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
+                                             gint x,
+                                             gint y,
+                                             const guchar *pixel);
+void        <a href="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-destroy">gimp_pixel_fetcher_destroy</a>      (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642587"></a><h2>Description</h2>
+<a name="id2604652"></a><h2>Description</h2>
 <p>
 These functions provide neighbourhood-based algorithms which get
 dramatically slower on region boundaries, to the point where a special
@@ -81,11 +78,11 @@ plug-in code more readable and shorter.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2642608"></a><h2>Details</h2>
+<a name="id2604668"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2642619"></a><h3>
+<a name="id2604674"></a><h3>
 <a name="GimpPixelFetcherEdgeMode"></a>enum GimpPixelFetcherEdgeMode</h3>
-<a class="indexterm" name="id2642630"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2604683"></a><pre class="programlisting">typedef enum
 {
   GIMP_PIXEL_FETCHER_EDGE_NONE,
   GIMP_PIXEL_FETCHER_EDGE_WRAP,
@@ -100,19 +97,19 @@ plug-in code more readable and shorter.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642649"></a><h3>
+<a name="id2604701"></a><h3>
 <a name="GimpPixelFetcher"></a>GimpPixelFetcher</h3>
-<a class="indexterm" name="id2608700"></a><pre class="programlisting">typedef struct _GimpPixelFetcher GimpPixelFetcher;</pre>
+<a class="indexterm" name="id2604711"></a><pre class="programlisting">typedef struct _GimpPixelFetcher GimpPixelFetcher;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608716"></a><h3>
+<a name="id2604728"></a><h3>
 <a name="gimp-pixel-fetcher-new"></a>gimp_pixel_fetcher_new ()</h3>
-<a class="indexterm" name="id2608728"></a><pre class="programlisting"><a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a>*   gimp_pixel_fetcher_new              (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
-                                                         gboolean shadow);</pre>
+<a class="indexterm" name="id2604737"></a><pre class="programlisting"><a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a>* gimp_pixel_fetcher_new    (<a href="libgimp-gimpdrawable.html#GimpDrawable">GimpDrawable</a> *drawable,
+                                             gboolean shadow);</pre>
 <p>
 Initialize a pixel region from the drawable.</p>
 <p>
@@ -122,18 +119,21 @@ Initialize a pixel region from the drawable.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>drawable</code></em>&#160;:</span></td>
 <td> the <a href="libgimp-gimpdrawable.html#GimpDrawable"><span class="type">GimpDrawable</span></a> the new region will be attached to.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>shadow</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>shadow</code></em>&#160;:</span></td>
 <td>   a <span class="type">gboolean</span> indicating whether the region is attached to
            the shadow tiles or the real <code class="literal">drawable</code> tiles.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a pointer to a <a href="libgimp-gimppixelrgn.html#GimpPixelRgn"><span class="type">GimpPixelRgn</span></a> structure (or NULL).
 </td>
 </tr>
@@ -142,10 +142,11 @@ Initialize a pixel region from the drawable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650478"></a><h3>
+<a name="id2604847"></a><h3>
 <a name="gimp-pixel-fetcher-set-edge-mode"></a>gimp_pixel_fetcher_set_edge_mode ()</h3>
-<a class="indexterm" name="id2650489"></a><pre class="programlisting">void                gimp_pixel_fetcher_set_edge_mode    (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
-                                                         <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</a> mode);</pre>
+<a class="indexterm" name="id2604856"></a><pre class="programlisting">void        gimp_pixel_fetcher_set_edge_mode
+                                            (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
+                                             <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode">GimpPixelFetcherEdgeMode</a> mode);</pre>
 <p>
 Change the edage mode of a previously initialized pixel region.</p>
 <p>
@@ -155,12 +156,14 @@ Change the edage mode of a previously initialized pixel region.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
 <td>   a pointer to a previously initialized <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher"><span class="type">GimpPixelFetcher</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></td>
 <td> the new edge mode from <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode"><span class="type">GimpPixelFetcherEdgeMode</span></a>.
 </td>
 </tr>
@@ -169,10 +172,10 @@ Change the edage mode of a previously initialized pixel region.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650574"></a><h3>
+<a name="id2599018"></a><h3>
 <a name="gimp-pixel-fetcher-set-bg-color"></a>gimp_pixel_fetcher_set_bg_color ()</h3>
-<a class="indexterm" name="id2650585"></a><pre class="programlisting">void                gimp_pixel_fetcher_set_bg_color     (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
-                                                         const <a
+<a class="indexterm" name="id2599027"></a><pre class="programlisting">void        gimp_pixel_fetcher_set_bg_color (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
+                                             const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
 <p>
@@ -184,12 +187,14 @@ Change the background color of a previously initialized pixel region.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
 <td>    a pointer to a previously initialized <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher"><span class="type">GimpPixelFetcher</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> the color to be used as bg color.
 </td>
 </tr>
@@ -198,12 +203,12 @@ Change the background color of a previously initialized pixel region.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650664"></a><h3>
+<a name="id2599105"></a><h3>
 <a name="gimp-pixel-fetcher-get-pixel"></a>gimp_pixel_fetcher_get_pixel ()</h3>
-<a class="indexterm" name="id2650676"></a><pre class="programlisting">void                gimp_pixel_fetcher_get_pixel        (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
-                                                         gint x,
-                                                         gint y,
-                                                         guchar *pixel);</pre>
+<a class="indexterm" name="id2599114"></a><pre class="programlisting">void        gimp_pixel_fetcher_get_pixel    (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
+                                             gint x,
+                                             gint y,
+                                             guchar *pixel);</pre>
 <p>
 Get a pixel from the pixel region.</p>
 <p>
@@ -213,22 +218,26 @@ Get a pixel from the pixel region.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
 <td>    a pointer to a previously initialized <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher"><span class="type">GimpPixelFetcher</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td>     the x coordinate of the pixel to get.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td>     the y coordinate of the pixel to get.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>pixel</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pixel</code></em>&#160;:</span></td>
 <td> the memory location where to return the pixel.
 </td>
 </tr>
@@ -237,12 +246,12 @@ Get a pixel from the pixel region.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636160"></a><h3>
+<a name="id2599232"></a><h3>
 <a name="gimp-pixel-fetcher-put-pixel"></a>gimp_pixel_fetcher_put_pixel ()</h3>
-<a class="indexterm" name="id2636173"></a><pre class="programlisting">void                gimp_pixel_fetcher_put_pixel        (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
-                                                         gint x,
-                                                         gint y,
-                                                         const guchar *pixel);</pre>
+<a class="indexterm" name="id2599241"></a><pre class="programlisting">void        gimp_pixel_fetcher_put_pixel    (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf,
+                                             gint x,
+                                             gint y,
+                                             const guchar *pixel);</pre>
 <p>
 Set a pixel in the pixel region.</p>
 <p>
@@ -252,22 +261,26 @@ Set a pixel in the pixel region.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
 <td>    a pointer to a previously initialized <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher"><span class="type">GimpPixelFetcher</span></a>.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
 <td>     the x coordinate of the pixel to set.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
 <td>     the y coordinate of the pixel to set.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>pixel</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pixel</code></em>&#160;:</span></td>
 <td> the pixel to set.
 </td>
 </tr>
@@ -276,9 +289,9 @@ Set a pixel in the pixel region.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636297"></a><h3>
+<a name="id2597150"></a><h3>
 <a name="gimp-pixel-fetcher-destroy"></a>gimp_pixel_fetcher_destroy ()</h3>
-<a class="indexterm" name="id2636309"></a><pre class="programlisting">void                gimp_pixel_fetcher_destroy          (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf);</pre>
+<a class="indexterm" name="id2597159"></a><pre class="programlisting">void        gimp_pixel_fetcher_destroy      (<a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher">GimpPixelFetcher</a> *pf);</pre>
 <p>
 Close a previously initializd pixel region.</p>
 <p>
@@ -287,7 +300,8 @@ Close a previously initializd pixel region.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>pf</code></em>&#160;:</span></td>
 <td> a pointer to a previously initialized <a href="libgimp-gimppixelfetcher.html#GimpPixelFetcher"><span class="type">GimpPixelFetcher</span></a>.
 </td>
 </tr></tbody>
@@ -295,5 +309,9 @@ Close a previously initializd pixel region.</p>
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimppaths.html"><b>&lt;&lt;&#160;gimppaths</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-gimppixelrgn.html"><b>gimppixelrgn&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

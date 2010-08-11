@@ -28,6 +28,7 @@
 #include "widgets-types.h"
 
 #include "gimpcolordisplayeditor.h"
+#include "gimpeditor.h"
 
 #include "gimp-intl.h"
 
@@ -52,10 +53,7 @@ enum
 };
 
 
-static void   gimp_color_display_editor_class_init        (GimpColorDisplayEditorClass *klass);
-static void   gimp_color_display_editor_init              (GimpColorDisplayEditor      *editor);
-
-static void   gimp_color_display_editor_destroy         (GtkObject             *object);
+static void   gimp_color_display_editor_destroy        (GtkObject             *object);
 
 static void   gimp_color_display_editor_add_clicked    (GtkWidget             *widget,
                                                         GimpColorDisplayEditor *editor);
@@ -95,43 +93,16 @@ static void   gimp_color_display_editor_enable_toggled (GtkCellRendererToggle  *
 static void   gimp_color_display_editor_update_buttons (GimpColorDisplayEditor *editor);
 
 
-static GtkVBoxClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpColorDisplayEditor, gimp_color_display_editor,
+               GTK_TYPE_VBOX);
 
+#define parent_class gimp_color_display_editor_parent_class
 
-GType
-gimp_color_display_editor_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo editor_info =
-      {
-        sizeof (GimpColorDisplayEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_color_display_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_tool */
-        sizeof (GimpColorDisplayEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_color_display_editor_init,
-      };
-
-      type = g_type_register_static (GTK_TYPE_VBOX,
-                                     "GimpColorDisplayEditor",
-                                     &editor_info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_color_display_editor_class_init (GimpColorDisplayEditorClass *klass)
 {
   GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->destroy = gimp_color_display_editor_destroy;
 }
@@ -139,6 +110,7 @@ gimp_color_display_editor_class_init (GimpColorDisplayEditorClass *klass)
 static void
 gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
 {
+  GtkWidget         *paned;
   GtkWidget         *hbox;
   GtkWidget         *ed;
   GtkWidget         *scrolled_win;
@@ -148,11 +120,12 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
   GtkTreeViewColumn *column;
   GtkCellRenderer   *rend;
 
-  gtk_box_set_spacing (GTK_BOX (editor), 12);
-  gtk_box_set_homogeneous (GTK_BOX (editor), TRUE);
+  paned = gtk_vpaned_new ();
+  gtk_box_pack_start (GTK_BOX (editor), paned, TRUE, TRUE, 0);
+  gtk_widget_show (paned);
 
   hbox = gtk_hbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (editor), hbox, TRUE, TRUE, 0);
+  gtk_paned_pack1 (GTK_PANED (paned), hbox, FALSE, FALSE);
   gtk_widget_show (hbox);
 
   scrolled_win = gtk_scrolled_window_new (NULL, NULL);
@@ -187,7 +160,7 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
                     G_CALLBACK (gimp_color_display_editor_src_changed),
                     editor);
 
-  vbox = gtk_vbox_new (TRUE, 0);
+  vbox = gtk_vbox_new (TRUE, 6);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
   gtk_widget_show (vbox);
 
@@ -302,8 +275,16 @@ gimp_color_display_editor_init (GimpColorDisplayEditor *editor)
 
   /*  the config frame  */
 
+  vbox = gtk_vbox_new (FALSE, 6);
+  gtk_paned_pack2 (GTK_PANED (paned), vbox, TRUE, FALSE);
+  gtk_widget_show (vbox);
+
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
   editor->config_frame = gimp_frame_new (NULL);
-  gtk_box_pack_start (GTK_BOX (editor), editor->config_frame, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), editor->config_frame, TRUE, TRUE, 0);
   gtk_widget_show (editor->config_frame);
 
   editor->config_box = gtk_vbox_new (FALSE, 6);
@@ -531,8 +512,6 @@ gimp_color_display_editor_dest_changed (GtkTreeSelection       *sel,
 
   if (display)
     {
-      gchar *str;
-
       editor->selected = display;
 
       g_object_add_weak_pointer (G_OBJECT (display),
@@ -540,18 +519,15 @@ gimp_color_display_editor_dest_changed (GtkTreeSelection       *sel,
 
       editor->config_widget = gimp_color_display_configure (display);
 
-      str = g_strdup_printf (_("Configure selected filter: %s"),
-                             GIMP_COLOR_DISPLAY_GET_CLASS (display)->name);
-      gtk_frame_set_label (GTK_FRAME (editor->config_frame), str);
-      g_free (str);
+      gtk_frame_set_label (GTK_FRAME (editor->config_frame),
+                           GIMP_COLOR_DISPLAY_GET_CLASS (display)->name);
     }
   else
     {
-      editor->config_widget = gtk_label_new (_("No filter selected"));
-      gtk_widget_set_sensitive (editor->config_widget, FALSE);
+      editor->config_widget = NULL;
 
       gtk_frame_set_label (GTK_FRAME (editor->config_frame),
-                           _("Configure selected filter"));
+                           _("No filter selected"));
     }
 
   if (editor->config_widget)

@@ -3,7 +3,7 @@
  *
  * Generates clickable image maps.
  *
- * Copyright (C) 1998-2003 Maurits Rijk  lpeek.mrijk@consunet.nl
+ * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,112 +27,22 @@
 
 #include "imap_commands.h"
 #include "imap_main.h"
+#include "imap_menu.h"
 #include "imap_object_popup.h"
 
 #include "libgimp/stdplugins-intl.h"
 
-
-/* Current object with popup menu */
-static Object_t *_current_obj;
-
-Object_t*
-get_popup_object(void)
-{
-   return _current_obj;
-}
-
-static void
-popup_edit_area_info(GtkWidget *widget, gpointer data)
-{
-   object_edit(_current_obj, TRUE);
-}
-
-static void
-popup_delete_area(GtkWidget *widget, gpointer data)
-{
-   if (_current_obj->locked) {
-      do_object_locked_dialog();
-   } else {
-      object_remove(_current_obj);
-      redraw_preview();
-   }
-}
-
-static void
-popup_move_up(GtkWidget *widget, gpointer data)
-{
-   Command_t *command = object_up_command_new(_current_obj->list,
-					      _current_obj);
-   command_execute(command);
-}
-
-static void
-popup_move_down(GtkWidget *widget, gpointer data)
-{
-   Command_t *command = object_down_command_new(_current_obj->list,
-						_current_obj);
-   command_execute(command);
-}
-
-static void
-popup_cut(GtkWidget *widget, gpointer data)
-{
-   if (_current_obj->locked) {
-      do_object_locked_dialog();
-   } else {
-      Command_t *command = cut_object_command_new(_current_obj);
-      command_execute(command);
-   }
-}
-
-static void
-popup_copy(GtkWidget *widget, gpointer data)
-{
-   Command_t *command = copy_object_command_new(_current_obj);
-   command_execute(command);
-}
-
-ObjectPopup_t*
-make_object_popup(void)
-{
-   ObjectPopup_t *popup = g_new (ObjectPopup_t, 1);
-   GtkWidget     *menu;
-
-   popup->menu = menu = gtk_menu_new ();
-   make_item_with_label (menu,
-                        _("Edit Area Info..."), popup_edit_area_info, NULL);
-   make_item_with_label (menu,
-                         _("Delete Area"), popup_delete_area, NULL);
-   popup->up = make_item_with_label (menu,
-                                     _("Move Up"), popup_move_up, NULL);
-   popup->down = make_item_with_label (menu,
-                                       _("Move Down"), popup_move_down, NULL);
-   make_item_with_label (menu,
-                         _("Cut"), popup_cut, NULL);
-   make_item_with_label (menu,
-                         _("Copy"), popup_copy, NULL);
-
-   return popup;
-}
-
-GtkWidget*
-object_popup_prepend_menu(ObjectPopup_t *popup, gchar *label,
-			  MenuCallback activate, gpointer data)
-{
-   return prepend_item_with_label(popup->menu, label, activate, data);
-}
-
 void
 object_handle_popup(ObjectPopup_t *popup, Object_t *obj, GdkEventButton *event)
 {
-   int position = object_get_position_in_list(obj) + 1;
+  /* int position = object_get_position_in_list(obj) + 1; */
 
-   _current_obj = popup->obj = obj;
+#ifdef _TEMP_
    gtk_widget_set_sensitive(popup->up, (position > 1) ? TRUE : FALSE);
    gtk_widget_set_sensitive(popup->down,
 			    (position < g_list_length(obj->list->list))
 			    ? TRUE : FALSE);
-
+#endif
    gtk_menu_popup(GTK_MENU(popup->menu), NULL, NULL, NULL, NULL,
 		  event->button, event->time);
 }
@@ -143,6 +53,9 @@ object_do_popup(Object_t *obj, GdkEventButton *event)
    static ObjectPopup_t *popup;
 
    if (!popup)
-      popup = make_object_popup();
-   object_handle_popup(popup, obj, event);
+     {
+       popup = g_new (ObjectPopup_t, 1);
+       popup->menu = menu_get_widget ("/ObjectPopupMenu");
+     }
+   object_handle_popup (popup, obj, event);
 }

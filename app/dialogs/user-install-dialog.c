@@ -22,16 +22,17 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <sys/types.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
 #ifdef G_OS_WIN32
-#include <direct.h> /* _mkdir() */
+#include <libgimpbase/gimpwin32-io.h>
 #endif
 
 #include "libgimpbase/gimpbase.h"
@@ -40,22 +41,16 @@
 
 #include "dialogs-types.h"
 
-#include "config/gimpconfig-utils.h"
+#include "config/gimpconfig-file.h"
 #include "config/gimprc.h"
 
 #include "core/gimp-templates.h"
 
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "user-install-dialog.h"
 
 #include "gimp-intl.h"
-
-#ifdef G_OS_WIN32
-#  include <io.h>
-#  define mkdir(path, mode) _mkdir(path)
-#endif
 
 
 #define PAGE_STYLE(widget)  gtk_widget_modify_style (widget, page_style)
@@ -110,6 +105,8 @@ static GdkColor    white_color;
 static GdkColor    title_color;
 
 static gchar      *oldgimp         = NULL;
+static gint        oldgimp_major   = 0;
+static gint        oldgimp_minor   = 0;
 static gboolean    migrate         = FALSE;
 
 
@@ -146,29 +143,29 @@ tree_items[] =
   },
   {
     FALSE, "pluginrc",
-    N_("Plug-ins and extensions are external programs run "
-       "by the GIMP which provide additional functionality.  "
-       "These programs are searched for at run-time and "
-       "information about their functionality and mod-times "
-       "is cached in this file.  This file is intended to "
-       "be GIMP-readable only, and should not be edited."),
+    N_("Plug-ins and extensions are external programs which "
+       "provide additional functionality to GIMP.  These "
+       "programs are searched for at run-time and information "
+       "about their functionality is cached in this file.  "
+       "This file is intended to be written to by GIMP only, "
+       "and should not be edited."),
     TREE_ITEM_DO_NOTHING
   },
   {
     FALSE, "menurc",
-    N_("Key shortcuts can be dynamically redefined in The GIMP. "
-       "The menurc is a dump of your configuration so it can. "
+    N_("Key shortcuts can be dynamically redefined. "
+       "The menurc is a dump of your configuration so it can "
        "be remembered for the next session.  You may edit this "
        "file if you wish, but it is much easier to define the "
-       "keys from within The GIMP.  Deleting this file will "
+       "keys from within GIMP.  Deleting this file will "
        "restore the default shortcuts."),
     TREE_ITEM_DO_NOTHING
   },
   {
     FALSE, "sessionrc",
     N_("The sessionrc is used to store what dialog windows were "
-       "open the last time you quit The GIMP.  You can configure "
-       "The GIMP to reopen these dialogs at the saved position."),
+       "open the last time you quit GIMP.  You can configure "
+       "GIMP to reopen these dialogs at the saved position."),
     TREE_ITEM_DO_NOTHING
   },
   {
@@ -189,64 +186,71 @@ tree_items[] =
   {
     TRUE, "brushes",
     N_("This folder is used to store user defined brushes. "
-       "The GIMP checks this folder in addition to the system-wide "
-       "GIMP brushes installation when searching for "
-       "brushes."),
+       "GIMP checks this folder in addition to the system-wide "
+       "brushes installation."),
     TREE_ITEM_MKDIR
   },
   {
     TRUE, "fonts",
-    N_("This folder is used to store fonts you only want "
-       "visible in the GIMP. The GIMP checks this folder in "
-       "addition to the system-wide GIMP fonts installation "
-       "when searching for fonts. Use this only if you really "
-       "want to have GIMP-only fonts, otherwise put things "
+    N_("This folder is used to store fonts you only want to be "
+       "visible in GIMP. GIMP checks this folder in addition to "
+       "the system-wide fonts installation. Use this only if you really "
+       "want to have fonts available in GIMP only, otherwise put them "
        "in your global font directory."),
     TREE_ITEM_MKDIR
   },
   {
     TRUE, "gradients",
     N_("This folder is used to store user defined gradients.  "
-       "The GIMP checks this folder in addition to the system-wide "
-       "GIMP gradients installation when searching for gradients."),
+       "GIMP checks this folder in addition to the system-wide "
+       "gradients installation."),
     TREE_ITEM_MKDIR
   },
   {
     TRUE, "palettes",
     N_("This folder is used to store user defined palettes.  "
-       "The GIMP checks this folder in addition to the system-wide "
-       "GIMP palettes installation when searching for palettes."),
+       "GIMP checks this folder in addition to the system-wide "
+       "palettes installation."),
     TREE_ITEM_MKDIR
   },
   {
     TRUE, "patterns",
     N_("This folder is used to store user defined patterns.  "
-       "The GIMP checks this folder in addition to the system-wide "
-       "GIMP patterns installation when searching for patterns."),
+       "GIMP checks this folder in addition to the system-wide "
+       "patterns installation when searching for patterns."),
     TREE_ITEM_MKDIR
   },
   {
     TRUE, "plug-ins",
     N_("This folder is used to store user created, temporary, "
-       "or otherwise non-system-supported plug-ins.  The GIMP "
+       "or otherwise non-system-supported plug-ins.  GIMP "
        "checks this folder in addition to the system-wide "
-       "GIMP plug-in folder when searching for plug-ins."),
+       "plug-in folder."),
     TREE_ITEM_MKDIR
   },
   {
     TRUE, "modules",
     N_("This folder is used to store user created, temporary, "
-       "or otherwise non-system-supported DLL modules.  The "
-       "GIMP checks this folder in addition to the system-wide "
-       "GIMP module folder when searching for modules to load "
-       "during initialization."),
+       "or otherwise non-system-supported DLL modules.  GIMP "
+       "checks this folder in addition to the system-wide "
+       "module folder."),
+    TREE_ITEM_MKDIR
+  },
+  {
+    TRUE, "interpreters",
+    N_("This folder is used to store configuration for user "
+       "created, temporary, or otherwise non-system-supported "
+       "plug-in interpreters.  GIMP checks this folder in "
+       "addition to the system-wide GIMP interpreters folder "
+       "when searching for plug-in interpreter configuration "
+       "files."),
     TREE_ITEM_MKDIR
   },
   {
     TRUE, "environ",
     N_("This folder is used to store user created, temporary, "
        "or otherwise non-system-supported additions to the "
-       "plug-in environment.  The GIMP checks this folder in "
+       "plug-in environment.  GIMP checks this folder in "
        "addition to the system-wide GIMP environment folder "
        "when searching for plug-in environment modification "
        "files."),
@@ -255,9 +259,8 @@ tree_items[] =
   {
     TRUE, "scripts",
     N_("This folder is used to store user created and installed "
-       "scripts.  The GIMP checks this folder in addition to "
-       "the systemwide GIMP scripts folder when searching for "
-       "scripts."),
+       "scripts.  GIMP checks this folder in addition to "
+       "the systemwide scripts folder."),
     TREE_ITEM_MKDIR
   },
   {
@@ -272,11 +275,7 @@ tree_items[] =
   },
   {
     TRUE, "tmp",
-    N_("This folder is used to temporarily store undo buffers "
-       "to reduce memory usage.  If The GIMP is unceremoniously "
-       "killed, files of the form: gimp<#>.<#> may persist in "
-       "this folder.  These files are useless across GIMP "
-       "sessions and can be destroyed with impunity."),
+    N_("This folder is used for temporary files."),
     TREE_ITEM_MKDIR
   },
   {
@@ -591,16 +590,33 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
   oldgimp = g_strdup (gimp_directory ());
 
   /*  FIXME  */
-  version = strstr (oldgimp, "2.2");
-  if (version)
-    version[2] = '0';
+  version = strstr (oldgimp, "2.3");
 
+  if (version)
+    {
+      version[2]    = '2';
+      oldgimp_major = 2;
+      oldgimp_minor = 2;
+    }
   migrate = (version && g_file_test (oldgimp, G_FILE_TEST_IS_DIR));
+
+  if (! migrate)
+    {
+      if (version)
+        {
+          version[2]    = '0';
+          oldgimp_major = 2;
+          oldgimp_minor = 0;
+        }
+      migrate = (version && g_file_test (oldgimp, G_FILE_TEST_IS_DIR));
+    }
 
   if (! migrate)
     {
       g_free (oldgimp);
       oldgimp = NULL;
+      oldgimp_major = 0;
+      oldgimp_minor = 0;
     }
 
   gimprc = gimp_rc_new (alternate_system_gimprc, alternate_gimprc, verbose);
@@ -614,6 +630,11 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
                      _("Continue"),    GTK_RESPONSE_OK,
 
                      NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   g_signal_connect (dialog, "response",
                     G_CALLBACK (user_install_response),
@@ -636,6 +657,8 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
   gdk_color_parse ("black",       &black_color);
   gdk_color_parse ("white",       &white_color);
   gdk_color_parse ("dark orange", &title_color);
+
+  gtk_widget_realize (dialog);
 
   /*  B/W Style for the page contents  */
   page_style = gtk_widget_get_modifier_style (dialog);
@@ -732,7 +755,7 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
   darea = gtk_drawing_area_new ();
   TITLE_STYLE (darea);
   gtk_widget_set_size_request (darea, 16, 16);
-  g_signal_connect (darea, "expose_event",
+  g_signal_connect (darea, "expose-event",
                     G_CALLBACK (user_install_corner_expose),
                     GINT_TO_POINTER (GTK_CORNER_TOP_LEFT));
   gtk_table_attach (GTK_TABLE (table), darea, 0, 1, 0, 1,
@@ -742,7 +765,7 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
   darea = gtk_drawing_area_new ();
   TITLE_STYLE (darea);
   gtk_widget_set_size_request (darea, 16, 16);
-  g_signal_connect (darea, "expose_event",
+  g_signal_connect (darea, "expose-event",
                     G_CALLBACK (user_install_corner_expose),
                     GINT_TO_POINTER (GTK_CORNER_BOTTOM_LEFT));
   gtk_table_attach (GTK_TABLE (table), darea, 0, 1, 2, 3,
@@ -774,7 +797,7 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
 
   add_label (GTK_BOX (page),
              _("<b>The GIMP - GNU Image Manipulation Program</b>\n"
-               "Copyright (C) 1995-2004\n"
+               "Copyright (C) 1995-2005\n"
                "Spencer Kimball, Peter Mattis and the GIMP Development Team."));
 
   sep = gtk_hseparator_new ();
@@ -801,8 +824,11 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
        "MA 02111-1307, USA."));
 
   /*  MIGRATION_PAGE  */
+  if (version && migrate)
   {
     GtkWidget *box;
+    gchar     *title;
+    gchar     *label;
 
     page = user_install_notebook_append_page (GTK_NOTEBOOK (notebook),
                                               _("Migrate User Settings"),
@@ -810,17 +836,23 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
                                                 "with the user installation."),
                                               12);
 
-    box = gimp_int_radio_group_new (TRUE,
-                                    _("It seems you have used GIMP 2.0 before."),
+    title = g_strdup_printf (_("It seems you have used GIMP %s before."),
+                             version);
+    label = g_strdup_printf (_("_Migrate GIMP %s user settings"), version);
+
+    box = gimp_int_radio_group_new (TRUE, title,
                                     G_CALLBACK (gimp_radio_button_update),
                                     &migrate, migrate,
 
-                                    _("_Migrate GIMP 2.0 user settings"),
+                                    label,
                                     TRUE,  NULL,
 
                                     _("Do a _fresh user installation"),
                                     FALSE, NULL,
                                     NULL);
+
+    g_free (label);
+    g_free (title);
 
     gtk_box_pack_start (GTK_BOX (page), box, FALSE, FALSE, 0);
     gtk_widget_show (box);
@@ -975,7 +1007,7 @@ user_install_dialog_run (const gchar *alternate_system_gimprc,
 
     gtk_tree_view_expand_all (GTK_TREE_VIEW (tv));
 
-    g_signal_connect (tv, "size_allocate",
+    g_signal_connect (tv, "size-allocate",
                       G_CALLBACK (user_install_tv_fix_size_request),
                       NULL);
 
@@ -1087,10 +1119,10 @@ user_install_mkdir (GtkTextBuffer  *log_buffer,
   while (gtk_events_pending ())
     gtk_main_iteration ();
 
-  if (mkdir (dirname,
-             S_IRUSR | S_IWUSR | S_IXUSR |
-             S_IRGRP | S_IXGRP |
-             S_IROTH | S_IXOTH) == -1)
+  if (g_mkdir (dirname,
+               S_IRUSR | S_IWUSR | S_IXUSR |
+               S_IRGRP | S_IXGRP |
+               S_IROTH | S_IXOTH) == -1)
     {
       g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errno),
                    _("Cannot create folder '%s': %s"),
@@ -1227,6 +1259,8 @@ user_install_create_files (GtkWidget     *log_view,
 
 static gboolean
 user_install_migrate_files (const gchar   *oldgimp,
+                            gint           oldgimp_major,
+                            gint           oldgimp_minor,
                             GtkWidget     *log_view,
                             GtkTextBuffer *log_buffer)
 {
@@ -1244,12 +1278,23 @@ user_install_migrate_files (const gchar   *oldgimp,
         {
           source = g_build_filename (oldgimp, basename, NULL);
 
-          if (g_file_test (source, G_FILE_TEST_IS_REGULAR) &&
-              (strncmp (basename, "gimpswap.", 9) != 0)    &&
-              (strncmp (basename, "menurc",    6) != 0)    &&
-              (strncmp (basename, "pluginrc",  8) != 0)    &&
-              (strncmp (basename, "themerc",   7) != 0))
+          if (g_file_test (source, G_FILE_TEST_IS_REGULAR))
             {
+              /*  skip these for all old versions  */
+              if ((strncmp (basename, "gimpswap.", 9) == 0) ||
+                  (strncmp (basename, "pluginrc",  8) == 0) ||
+                  (strncmp (basename, "themerc",   7) == 0))
+                {
+                  goto next_file;
+                }
+
+              /*  skip menurc for gimp 2.0 since the format has changed  */
+              if (oldgimp_minor == 0 &&
+                  (strncmp (basename, "menurc", 6) == 0))
+                {
+                  goto next_file;
+                }
+
               g_snprintf (dest, sizeof (dest), "%s%c%s",
                           gimp_directory (), G_DIR_SEPARATOR, basename);
 
@@ -1268,6 +1313,8 @@ user_install_migrate_files (const gchar   *oldgimp,
                   g_clear_error (&error);
                 }
             }
+
+            next_file:
 
           g_free (source);
           source = NULL;
@@ -1338,7 +1385,8 @@ user_install_run (const gchar *oldgimp)
   print_log (log_view, log_buffer, NULL);
 
   if (oldgimp)
-    return user_install_migrate_files (oldgimp, log_view, log_buffer);
+    return user_install_migrate_files (oldgimp, oldgimp_major, oldgimp_minor,
+                                       log_view, log_buffer);
   else
     return user_install_create_files (log_view, log_buffer);
 }
@@ -1393,7 +1441,7 @@ user_install_tuning (GimpRc *gimprc)
   gtk_widget_show (hbox);
 
   entry = gimp_prop_file_entry_new (G_OBJECT (gimprc), "swap-path",
-                                    _("Select swap dir"),
+                                    _("Select Swap Dir"),
                                     TRUE, TRUE);
   gtk_box_pack_end (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
   gtk_widget_show (entry);

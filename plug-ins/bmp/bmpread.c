@@ -24,17 +24,16 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 
 #include "bmp.h"
 
 #include "libgimp/stdplugins-intl.h"
+
 
 #if !defined(WIN32) || defined(__MINGW32__)
 #define BI_RGB 		0
@@ -126,7 +125,8 @@ ReadChannelMasks (FILE *fd, Bitmap_Channel *masks, guint channels)
       masks[i].shiftin = offset;
       masks[i].shiftout = 8 - nbits;
 #ifdef DEBUG
-      g_print ("Channel %d mask %08x in %d out %d\n", i, masks[i].mask, masks[i].shiftin, masks[i].shiftout);
+      g_print ("Channel %d mask %08x in %d out %d\n",
+               i, masks[i].mask, masks[i].shiftin, masks[i].shiftout);
 #endif
     }
   return TRUE;
@@ -136,17 +136,16 @@ gint32
 ReadBMP (const gchar *name)
 {
   FILE     *fd;
-  gchar    *temp_buf;
   guchar    buffer[64];
   gint      ColormapSize, rowbytes, Maps;
-  gboolean  Grey;
+  gboolean  Grey = FALSE;
   guchar    ColorMap[256][3];
   gint32    image_ID;
-  guchar    magick[2];
+  gchar     magick[2];
   Bitmap_Channel *masks;
 
   filename = name;
-  fd = fopen (filename, "rb");
+  fd = g_fopen (filename, "rb");
 
   if (!fd)
     {
@@ -155,24 +154,22 @@ ReadBMP (const gchar *name)
       return -1;
     }
 
-  temp_buf = g_strdup_printf (_("Opening '%s'..."),
-                              gimp_filename_to_utf8 (name));
-  gimp_progress_init (temp_buf);
-  g_free (temp_buf);
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (name));
 
   /* It is a File. Now is it a Bitmap? Read the shortest possible header */
 
-  if (!ReadOK (fd, magick, 2) || !(!strncmp (magick,"BA",2) ||
-     !strncmp (magick,"BM",2) || !strncmp (magick,"IC",2)   ||
-     !strncmp (magick,"PI",2) || !strncmp (magick,"CI",2)   ||
-     !strncmp (magick,"CP",2)))
+  if (!ReadOK (fd, magick, 2) || !(!strncmp (magick, "BA", 2) ||
+     !strncmp (magick, "BM", 2) || !strncmp (magick, "IC", 2) ||
+     !strncmp (magick, "PI", 2) || !strncmp (magick, "CI", 2) ||
+     !strncmp (magick, "CP", 2)))
     {
       g_message (_("'%s' is not a valid BMP file"),
                  gimp_filename_to_utf8 (filename));
       return -1;
     }
 
-  while (!strncmp(magick,"BA",2))
+  while (!strncmp (magick, "BA", 2))
     {
       if (!ReadOK (fd, buffer, 12))
 	{
@@ -390,9 +387,6 @@ ReadBMP (const gchar *name)
 			Grey,
 			masks);
 
-  if (image_ID < 0)
-    return -1;
-
   if (Bitmap_Head.biXPels > 0 && Bitmap_Head.biYPels > 0)
     {
       /* Fixed up from scott@asofyet's changes last year, njl195 */
@@ -462,9 +456,9 @@ ReadImage (FILE     *fd,
     case 24:
     case 16:
       base_type = GIMP_RGB;
-      image_type = GIMP_RGB_IMAGE;
+      image_type = bpp == 32 ? GIMP_RGBA_IMAGE : GIMP_RGB_IMAGE;
 
-      channels = 3;
+      channels = bpp == 32 ? 4 : 3;
       break;
 
     case 8:
@@ -489,16 +483,6 @@ ReadImage (FILE     *fd,
       return -1;
     }
 
-  if ((width < 0) || (width > GIMP_MAX_IMAGE_SIZE))
-    {
-      g_message (_("Unsupported or invalid image width: %d"), width);
-      return -1;
-    }
-  if ((height < 0) || (height > GIMP_MAX_IMAGE_SIZE))
-    {
-      g_message (_("Unsupported or invalid image height: %d"), height);
-      return -1;
-    }
   image = gimp_image_new (width, height, base_type);
   layer = gimp_layer_new (image, _("Background"),
                           width, height,
@@ -531,7 +515,8 @@ ReadImage (FILE     *fd,
               {
                 *(temp++)= buffer[xpos * 4 + 2];
                 *(temp++)= buffer[xpos * 4 + 1];
-                *(temp++)= buffer[xpos * 4];
+                *(temp++)= buffer[xpos * 4 + 0];
+                *(temp++)= buffer[xpos * 4 + 3];
               }
             if (ypos == 0)
               break;
@@ -628,7 +613,12 @@ ReadImage (FILE     *fd,
             /* compressed image (either RLE8 or RLE4) */
 	    while (ypos >= 0 && xpos <= width)
 	      {
-		ReadOK (fd, buffer, 2);
+                if (!ReadOK (fd, buffer, 2))
+                  {
+                    g_message (_("The bitmap ends unexpectedly."));
+                    break;
+                  }
+
 		if ((guchar) buffer[0] != 0)
 		  /* Count + Color - record */
 		  {
@@ -662,7 +652,11 @@ ReadImage (FILE     *fd,
 		    for (j = 0; j < n; j += (8 / bpp))
 		      {
                         /* read the next byte in the record */
-                        ReadOK (fd, &v, 1);
+                        if (!ReadOK (fd, &v, 1))
+                          {
+                            g_message (_("The bitmap ends unexpectedly."));
+                            break;
+                          }
                         total_bytes_read++;
 
                         /* read all pixels from that byte */
@@ -707,7 +701,11 @@ ReadImage (FILE     *fd,
 		if (((guchar) buffer[0]==0) && ((guchar) buffer[1]==2))
 		  /* Deltarecord */
 		  {
-		    ReadOK (fd, buffer, 2);
+                    if (!ReadOK (fd, buffer, 2))
+                      {
+                        g_message (_("The bitmap ends unexpectedly."));
+                        break;
+                      }
 		    xpos += (guchar) buffer[0];
 		    ypos -= (guchar) buffer[1];
 		  }

@@ -30,6 +30,10 @@
 #include "libgimp/stdplugins-intl.h"
 
 
+#define AUTOCROP_PROC       "plug-in-autocrop"
+#define AUTOCROP_LAYER_PROC "plug-in-autocrop-layer"
+
+
 /* Declare local functions. */
 static void      query         (void);
 static void      run           (const gchar      *name,
@@ -71,12 +75,12 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
   };
 
-  gimp_install_procedure ("plug_in_autocrop",
+  gimp_install_procedure (AUTOCROP_PROC,
                           "Automagically crops an image.",
                           "",
                           "Tim Newsome",
@@ -88,9 +92,9 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_autocrop", "<Image>/Image/Crop");
+  gimp_plugin_menu_register (AUTOCROP_PROC, "<Image>/Image/Crop");
 
-  gimp_install_procedure ("plug_in_autocrop_layer",
+  gimp_install_procedure (AUTOCROP_LAYER_PROC,
                           "Automagically crops a layer.",
                           "",
                           "Tim Newsome",
@@ -102,7 +106,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_autocrop_layer", "<Image>/Layer/Crop");
+  gimp_plugin_menu_register (AUTOCROP_LAYER_PROC, "<Image>/Layer/Crop");
 }
 
 static void
@@ -141,22 +145,23 @@ run (const gchar      *name,
   if (gimp_drawable_is_rgb (drawable->drawable_id) ||
       gimp_drawable_is_gray (drawable->drawable_id)  ||
       gimp_drawable_is_indexed (drawable->drawable_id))
-  {
-    if (interactive)
-      gimp_progress_init (_("Cropping..."));
+    {
+      if (interactive)
+        gimp_progress_init (_("Cropping"));
 
-    gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width() + 1));
+      gimp_tile_cache_ntiles (MAX (drawable->width / gimp_tile_width (),
+                                   drawable->height / gimp_tile_height ()) + 1);
 
-    autocrop (drawable, image_id, interactive,
-              ! strcmp (name, "plug_in_autocrop_layer"));
+      autocrop (drawable, image_id, interactive,
+                strcmp (name, AUTOCROP_LAYER_PROC) == 0);
 
-    if (interactive)
-      gimp_displays_flush ();
-  }
+      if (interactive)
+        gimp_displays_flush ();
+    }
   else
-  {
+    {
       status = GIMP_PDB_EXECUTION_ERROR;
-  }
+    }
 
  out:
   values[0].type = GIMP_PDB_STATUS;
@@ -206,12 +211,11 @@ autocrop (GimpDrawable *drawable,
   for (y1 = 0; y1 < height && !abort; y1++)
     {
       gimp_pixel_rgn_get_row (&srcPR, buffer, 0, y1, width);
-
       for (i = 0; i < width && !abort; i++)
         abort = !colors_equal (color, buffer + i * bytes, bytes);
     }
 
-  if (y1 == height && !abort)
+  if (y1 == height - 1 && !abort)
     {
       /* whee - a plain color drawable. Do nothing. */
       g_free (buffer);
@@ -227,7 +231,6 @@ autocrop (GimpDrawable *drawable,
   for (y2 = height - 1; y2 >= 0 && !abort; y2--)
     {
       gimp_pixel_rgn_get_row (&srcPR, buffer, 0, y2, width);
-
       for (i = 0; i < width && !abort; i++)
         abort = !colors_equal (color, buffer + i * bytes, bytes);
     }
@@ -237,11 +240,8 @@ autocrop (GimpDrawable *drawable,
   /* The coordinates are now the first rows which DON'T match
    * the color. Crop instead to one row larger:
    */
-  if (y1 > 0)
-    y1--;
-
-  if (y2 < height)
-    y2++;
+  if (y1 > 0) --y1;
+  if (y2 < height-1) ++y2;
 
   if (show_progress)
     gimp_progress_update (0.5);
@@ -250,9 +250,8 @@ autocrop (GimpDrawable *drawable,
   abort = FALSE;
   for (x1 = 0; x1 < width && !abort; x1++)
     {
-      gimp_pixel_rgn_get_col (&srcPR, buffer, x1, y1, y2 - y1);
-
-      for (i = 0; i < y2 - y1 && !abort; i++)
+      gimp_pixel_rgn_get_col (&srcPR, buffer, x1, y1, y2-y1);
+      for (i = 0; i < y2-y1 && !abort; i++)
         abort = !colors_equal (color, buffer + i * bytes, bytes);
     }
 
@@ -263,9 +262,8 @@ autocrop (GimpDrawable *drawable,
   abort = FALSE;
   for (x2 = width - 1; x2 >= 0 && !abort; x2--)
     {
-      gimp_pixel_rgn_get_col (&srcPR, buffer, x2, y1, y2 - y1);
-
-      for (i = 0; i < y2 - y1 && !abort; i++)
+      gimp_pixel_rgn_get_col (&srcPR, buffer, x2, y1, y2-y1);
+      for (i = 0; i < y2-y1 && !abort; i++)
         abort = !colors_equal (color, buffer + i * bytes, bytes);
     }
 
@@ -274,11 +272,8 @@ autocrop (GimpDrawable *drawable,
   /* The coordinates are now the first columns which DON'T match
    * the color. Crop instead to one column larger:
    */
-  if (x1 > 0)
-    x1--;
-
-  if (x2 < width)
-    x2++;
+  if (x1 > 0) --x1;
+  if (x2 < width-1) ++x2;
 
   g_free (buffer);
 

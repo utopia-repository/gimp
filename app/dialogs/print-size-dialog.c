@@ -26,6 +26,7 @@
 #include "dialogs-types.h"
 
 #include "core/gimpimage.h"
+#include "core/gimp-utils.h"
 
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpviewabledialog.h"
@@ -119,6 +120,12 @@ print_size_dialog_new (GimpImage              *image,
                     G_CALLBACK (print_size_dialog_response),
                     private);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   private->image     = image;
   private->callback  = callback;
   private->user_data = user_data;
@@ -147,7 +154,7 @@ print_size_dialog_new (GimpImage              *image,
   height = gimp_spin_button_new (&adj, 1, 1, 1, 1, 10, 0, 1, 2);
   gtk_entry_set_width_chars (GTK_ENTRY (height), SB_WIDTH);
 
-  entry = gimp_size_entry_new (0, gimp_image_get_unit (image), "%p",
+  entry = gimp_size_entry_new (0, gimp_get_default_unit (), "%p",
                                FALSE, FALSE, FALSE, SB_WIDTH,
                                GIMP_SIZE_ENTRY_UPDATE_SIZE);
   private->size_entry = GIMP_SIZE_ENTRY (entry);
@@ -272,10 +279,10 @@ print_size_dialog_new (GimpImage              *image,
   gtk_container_set_focus_chain (GTK_CONTAINER (entry), focus_chain);
   g_list_free (focus_chain);
 
-  g_signal_connect (private->size_entry, "value_changed",
+  g_signal_connect (private->size_entry, "value-changed",
 		    G_CALLBACK (print_size_dialog_size_changed),
 		    private);
-  g_signal_connect (private->resolution_entry, "value_changed",
+  g_signal_connect (private->resolution_entry, "value-changed",
 		    G_CALLBACK (print_size_dialog_resolution_changed),
 		    private);
 
@@ -316,7 +323,7 @@ print_size_dialog_reset (PrintSizeDialog *private)
   gdouble  xres, yres;
 
   gimp_size_entry_set_unit (private->resolution_entry,
-                            gimp_image_get_unit (private->image));
+                            gimp_get_default_unit ());
 
   gimp_image_get_resolution (private->image, &xres, &yres);
   print_size_dialog_set_resolution (private, xres, yres);

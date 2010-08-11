@@ -28,12 +28,13 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/types.h>
-#include <sys/stat.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_WIN32
 #include "libgimpbase/gimpwin32-io.h"
@@ -119,8 +120,7 @@ gimp_thumb_init (const gchar *creator,
         }
       else
         {
-          gchar *name =
-            g_filename_to_utf8 (g_get_tmp_dir (), -1, NULL, NULL, NULL);
+          gchar *name = g_filename_display_name (g_get_tmp_dir ());
 
           g_message (_("Cannot determine a valid home directory.\n"
                        "Thumbnails will be stored in the folder for "
@@ -233,12 +233,12 @@ gimp_thumb_ensure_thumb_dir (GimpThumbSize   size,
     return TRUE;
 
   if (g_file_test (thumb_dir, G_FILE_TEST_IS_DIR) ||
-      (mkdir (thumb_dir, S_IRUSR | S_IWUSR | S_IXUSR) == 0))
+      (g_mkdir (thumb_dir, S_IRUSR | S_IWUSR | S_IXUSR) == 0))
     {
       if (size == 0)
-        mkdir (thumb_fail_subdir, S_IRUSR | S_IWUSR | S_IXUSR);
+        g_mkdir (thumb_fail_subdir, S_IRUSR | S_IWUSR | S_IXUSR);
 
-      mkdir (thumb_subdirs[size], S_IRUSR | S_IWUSR | S_IXUSR);
+      g_mkdir (thumb_subdirs[size], S_IRUSR | S_IWUSR | S_IXUSR);
     }
 
   if (g_file_test (thumb_subdirs[size], G_FILE_TEST_IS_DIR))
@@ -299,9 +299,9 @@ gimp_thumb_ensure_thumb_dir_local (const gchar    *dirname,
   basedir = g_build_filename (dirname, ".thumblocal", NULL);
 
   if (g_file_test (basedir, G_FILE_TEST_IS_DIR) ||
-      (mkdir (thumb_dir, S_IRUSR | S_IWUSR | S_IXUSR) == 0))
+      (g_mkdir (thumb_dir, S_IRUSR | S_IWUSR | S_IXUSR) == 0))
     {
-      mkdir (subdir, S_IRUSR | S_IWUSR | S_IXUSR);
+      g_mkdir (subdir, S_IRUSR | S_IWUSR | S_IXUSR);
     }
 
   g_free (basedir);
@@ -487,7 +487,7 @@ gimp_thumb_file_test (const gchar *filename,
 
   g_return_val_if_fail (filename != NULL, FALSE);
 
-  if (stat (filename, &s) == 0)
+  if (g_stat (filename, &s) == 0)
     {
       if (mtime)  *mtime  = s.st_mtime;
       if (size)   *size   = s.st_size;
@@ -535,7 +535,7 @@ gimp_thumbs_delete_for_uri (const gchar *uri)
 
       if (filename)
         {
-          unlink (filename);
+          g_unlink (filename);
           g_free (filename);
         }
     }
@@ -564,7 +564,7 @@ gimp_thumbs_delete_for_uri_local (const gchar *uri)
 
       if (filename)
         {
-          unlink (filename);
+          g_unlink (filename);
           g_free (filename);
         }
     }
@@ -591,7 +591,7 @@ _gimp_thumbs_delete_others (const gchar   *uri,
       filename = gimp_thumb_name_from_uri (uri, thumb_sizes[i]);
       if (filename)
         {
-          unlink (filename);
+          g_unlink (filename);
           g_free (filename);
         }
     }

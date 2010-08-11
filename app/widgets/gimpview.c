@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpview.c
- * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2001-2005 Michael Natterer <mitch@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,15 +50,13 @@
 
 enum
 {
+  SET_VIEWABLE,
   CLICKED,
   DOUBLE_CLICKED,
   CONTEXT,
   LAST_SIGNAL
 };
 
-
-static void        gimp_view_class_init           (GimpViewClass    *klass);
-static void        gimp_view_init                 (GimpView         *view);
 
 static void        gimp_view_destroy              (GtkObject        *object);
 static void        gimp_view_realize              (GtkWidget        *widget);
@@ -80,46 +78,25 @@ static gboolean    gimp_view_enter_notify_event   (GtkWidget        *widget,
 static gboolean    gimp_view_leave_notify_event   (GtkWidget        *widget,
                                                    GdkEventCrossing *event);
 
+static void        gimp_view_real_set_viewable    (GimpView         *view,
+                                                   GimpViewable     *old,
+                                                   GimpViewable     *viewable);
+
 static void        gimp_view_update_callback      (GimpViewRenderer *renderer,
                                                    GimpView         *view);
 
 static GimpViewable * gimp_view_drag_viewable     (GtkWidget        *widget,
                                                    gpointer          data);
+static GdkPixbuf    * gimp_view_drag_pixbuf       (GtkWidget        *widget,
+                                                   gpointer          data);
 
 
+G_DEFINE_TYPE (GimpView, gimp_view, GTK_TYPE_WIDGET);
+
+#define parent_class gimp_view_parent_class
 
 static guint view_signals[LAST_SIGNAL] = { 0 };
 
-static GtkWidgetClass *parent_class = NULL;
-
-
-GType
-gimp_view_get_type (void)
-{
-  static GType view_type = 0;
-
-  if (! view_type)
-    {
-      static const GTypeInfo view_info =
-      {
-        sizeof (GimpViewClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_view_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpView),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_view_init,
-      };
-
-      view_type = g_type_register_static (GTK_TYPE_WIDGET,
-                                          "GimpView",
-                                          &view_info, 0);
-    }
-
-  return view_type;
-}
 
 static void
 gimp_view_class_init (GimpViewClass *klass)
@@ -127,7 +104,15 @@ gimp_view_class_init (GimpViewClass *klass)
   GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
+  view_signals[SET_VIEWABLE] =
+    g_signal_new ("set-viewable",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpViewClass, set_viewable),
+                  NULL, NULL,
+                  gimp_marshal_VOID__OBJECT_OBJECT,
+                  G_TYPE_NONE, 2,
+                  GIMP_TYPE_VIEWABLE, GIMP_TYPE_VIEWABLE);
 
   view_signals[CLICKED] =
     g_signal_new ("clicked",
@@ -140,7 +125,7 @@ gimp_view_class_init (GimpViewClass *klass)
                   GDK_TYPE_MODIFIER_TYPE);
 
   view_signals[DOUBLE_CLICKED] =
-    g_signal_new ("double_clicked",
+    g_signal_new ("double-clicked",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpViewClass, double_clicked),
@@ -172,6 +157,7 @@ gimp_view_class_init (GimpViewClass *klass)
   widget_class->enter_notify_event   = gimp_view_enter_notify_event;
   widget_class->leave_notify_event   = gimp_view_leave_notify_event;
 
+  klass->set_viewable                = gimp_view_real_set_viewable;
   klass->clicked                     = NULL;
   klass->double_clicked              = NULL;
   klass->context                     = NULL;
@@ -271,7 +257,10 @@ gimp_view_unmap (GtkWidget *widget)
   GimpView *view = GIMP_VIEW (widget);
 
   if (view->has_grab)
-    gtk_grab_remove (widget);
+    {
+      gtk_grab_remove (widget);
+      view->has_grab = FALSE;
+    }
 
   if (view->event_window)
     gdk_window_hide (view->event_window);
@@ -394,15 +383,15 @@ gimp_view_size_allocate (GtkWidget     *widget,
 
 static gboolean
 gimp_view_expose_event (GtkWidget      *widget,
-                           GdkEventExpose *event)
+                        GdkEventExpose *event)
 {
-  if (! GTK_WIDGET_DRAWABLE (widget))
-    return FALSE;
-
-  gimp_view_renderer_draw (GIMP_VIEW (widget)->renderer,
-                           widget->window, widget,
-                           &widget->allocation,
-                           &event->area);
+  if (GTK_WIDGET_DRAWABLE (widget))
+    {
+      gimp_view_renderer_draw (GIMP_VIEW (widget)->renderer,
+                               widget->window, widget,
+                               &widget->allocation,
+                               &event->area);
+    }
 
   return FALSE;
 }
@@ -495,13 +484,11 @@ gimp_view_button_release_event (GtkWidget      *widget,
   if (bevent->button == 1)
     {
       gtk_grab_remove (widget);
-
       view->has_grab = FALSE;
 
       if (view->clickable && view->in_button)
         {
-          g_signal_emit (widget, view_signals[CLICKED], 0,
-                         view->press_state);
+          g_signal_emit (widget, view_signals[CLICKED], 0, view->press_state);
         }
     }
   else
@@ -544,6 +531,69 @@ gimp_view_leave_notify_event (GtkWidget        *widget,
   return FALSE;
 }
 
+static void
+gimp_view_real_set_viewable (GimpView     *view,
+                             GimpViewable *old,
+                             GimpViewable *viewable)
+{
+  GType viewable_type = G_TYPE_NONE;
+
+  if (viewable == view->viewable)
+    return;
+
+  if (viewable)
+    {
+      viewable_type = G_TYPE_FROM_INSTANCE (viewable);
+
+      g_return_if_fail (g_type_is_a (viewable_type,
+                                     view->renderer->viewable_type));
+    }
+
+  if (view->viewable)
+    {
+      g_object_remove_weak_pointer (G_OBJECT (view->viewable),
+                                    (gpointer *) &view->viewable);
+
+      if (! viewable && ! view->renderer->is_popup)
+        {
+          if (gimp_dnd_viewable_source_remove (GTK_WIDGET (view),
+                                               G_TYPE_FROM_INSTANCE (view->viewable)))
+            {
+              if (gimp_viewable_get_size (view->viewable, NULL, NULL))
+                gimp_dnd_pixbuf_source_remove (GTK_WIDGET (view));
+
+              gtk_drag_source_unset (GTK_WIDGET (view));
+            }
+        }
+    }
+  else if (viewable && ! view->renderer->is_popup)
+    {
+      if (gimp_dnd_drag_source_set_by_type (GTK_WIDGET (view),
+                                            GDK_BUTTON1_MASK | GDK_BUTTON2_MASK,
+                                            viewable_type,
+                                            GDK_ACTION_COPY))
+        {
+          gimp_dnd_viewable_source_add (GTK_WIDGET (view),
+                                        viewable_type,
+                                        gimp_view_drag_viewable,
+                                        NULL);
+
+          if (gimp_viewable_get_size (viewable, NULL, NULL))
+            gimp_dnd_pixbuf_source_add (GTK_WIDGET (view),
+                                        gimp_view_drag_pixbuf,
+                                        NULL);
+        }
+    }
+
+  gimp_view_renderer_set_viewable (view->renderer, viewable);
+  view->viewable = viewable;
+
+  if (view->viewable)
+    {
+      g_object_add_weak_pointer (G_OBJECT (view->viewable),
+                                 (gpointer *) &view->viewable);
+    }
+}
 
 /*  public functions  */
 
@@ -668,62 +718,25 @@ gimp_view_new_full_by_types (GType    view_type,
   return GTK_WIDGET (view);
 }
 
+GimpViewable *
+gimp_view_get_viewable (GimpView *view)
+{
+  g_return_val_if_fail (GIMP_IS_VIEW (view), NULL);
+
+  return view->viewable;
+}
+
 void
 gimp_view_set_viewable (GimpView     *view,
                         GimpViewable *viewable)
 {
-  GType viewable_type = G_TYPE_NONE;
-
   g_return_if_fail (GIMP_IS_VIEW (view));
   g_return_if_fail (viewable == NULL || GIMP_IS_VIEWABLE (viewable));
 
   if (viewable == view->viewable)
     return;
 
-  if (viewable)
-    {
-      viewable_type = G_TYPE_FROM_INSTANCE (viewable);
-
-      g_return_if_fail (g_type_is_a (viewable_type,
-                                     view->renderer->viewable_type));
-    }
-
-  if (view->viewable)
-    {
-      g_object_remove_weak_pointer (G_OBJECT (view->viewable),
-                                    (gpointer *) &view->viewable);
-
-      if (! viewable && ! view->renderer->is_popup)
-        {
-          if (gimp_dnd_viewable_source_remove (GTK_WIDGET (view),
-                                               G_TYPE_FROM_INSTANCE (view->viewable)))
-            {
-              gtk_drag_source_unset (GTK_WIDGET (view));
-            }
-        }
-    }
-  else if (viewable && ! view->renderer->is_popup)
-    {
-      if (gimp_dnd_drag_source_set_by_type (GTK_WIDGET (view),
-                                            GDK_BUTTON1_MASK | GDK_BUTTON2_MASK,
-                                            viewable_type,
-                                            GDK_ACTION_COPY))
-        {
-          gimp_dnd_viewable_source_add (GTK_WIDGET (view),
-                                        viewable_type,
-                                        gimp_view_drag_viewable,
-                                        NULL);
-        }
-    }
-
-  gimp_view_renderer_set_viewable (view->renderer, viewable);
-  view->viewable = viewable;
-
-  if (view->viewable)
-    {
-      g_object_add_weak_pointer (G_OBJECT (view->viewable),
-                                 (gpointer *) &view->viewable);
-    }
+  g_signal_emit (view, view_signals[SET_VIEWABLE], 0, view->viewable, viewable);
 }
 
 void
@@ -772,4 +785,18 @@ gimp_view_drag_viewable (GtkWidget *widget,
                          gpointer   data)
 {
   return GIMP_VIEW (widget)->viewable;
+}
+
+static GdkPixbuf *
+gimp_view_drag_pixbuf (GtkWidget *widget,
+                       gpointer   data)
+{
+  GimpViewable *viewable = GIMP_VIEW (widget)->viewable;
+  gint          width;
+  gint          height;
+
+  if (viewable && gimp_viewable_get_size (viewable, &width, &height))
+    return gimp_viewable_get_new_pixbuf (viewable, width, height);
+
+  return NULL;
 }

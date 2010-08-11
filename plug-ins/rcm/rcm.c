@@ -38,11 +38,8 @@
 
 #include "config.h"
 
-#include <stdio.h>
-
-#include <gtk/gtk.h>
-
 #include "libgimp/gimp.h"
+#include "libgimp/gimpui.h"
 
 #include "rcm.h"
 #include "rcm_misc.h"
@@ -90,12 +87,12 @@ query (void)
 {
   GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image (used for indexed images)" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image (used for indexed images)" },
     { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
   };
 
-  gimp_install_procedure ("plug_in_rotate_colormap",
+  gimp_install_procedure (PLUG_IN_PROC,
 			  "Colormap rotation as in xv",
 			  "Exchanges two color ranges. "
                           "Based on code from Pavel Grinfeld (pavel@ml.com). "
@@ -109,8 +106,7 @@ query (void)
 			  G_N_ELEMENTS (args), 0,
 			  args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_rotate_colormap",
-                             "<Image>/Filters/Colors/Map");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Map");
 }
 
 
@@ -162,7 +158,7 @@ rcm_row (const guchar *src_row,
 
       if (! skip)
         {
-          H = rcm_linear( rcm_left_end (Current.From->angle),
+          H = rcm_linear (rcm_left_end (Current.From->angle),
                           rcm_right_end (Current.From->angle),
                           rcm_left_end (Current.To->angle),
                           rcm_right_end (Current.To->angle),
@@ -267,7 +263,7 @@ run (const gchar      *name,
       /* call dialog and rotate the colormap */
       if (gimp_drawable_is_rgb (Current.drawable->drawable_id) && rcm_dialog ())
         {
-          gimp_progress_init (_("Rotating the colormap..."));
+          gimp_progress_init (_("Rotating the colormap"));
 
           gimp_tile_cache_ntiles (2 * (Current.drawable->width /
                                        gimp_tile_width () + 1));

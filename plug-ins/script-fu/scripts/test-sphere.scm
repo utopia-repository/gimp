@@ -111,14 +111,27 @@
 ; ----------------------------------------------------------------------
 ; SF-OPTION
 ; Only useful in interactive mode. It will create a widget in the control
-; dialog. The widget is an option_menu showing the options that are passed
+; dialog. The widget is a combo-box showing the options that are passed
 ; as a list. The first option is the default choice.
 ;
 ; Usage:
 ; SF-OPTION "Orientation" '("Horizontal" "Vertical")
 ;
 ; The value returned when the script is invoked is the number of the
-; choosen option, where the option first is counted as 0.
+; chosen option, where the option first is counted as 0.
+; ----------------------------------------------------------------------
+; SF-ENUM
+; Only useful in interactive mode. It will create a widget in the control
+; dialog. The widget is a combo-box showing all enum values for the given
+; enum type. This has to be the name of a registered enum, without the
+; "Gimp" prefix. The second parameter speficies the default value, using
+; the enum value's nick.
+;
+; Usage:
+; SF-ENUM "Interpolation" '("InterpolationType" "linear")
+;
+; The value returned when the script is invoked corresponds to chosen
+; enum value.
 ; ----------------------------------------------------------------------
 
 
@@ -138,6 +151,7 @@
 			       unused-palette
 			       unused-filename
 			       unused-orientation
+			       unused-interpolation
 			       unused-dirname
 			       unused-image
 			       unused-layer
@@ -248,6 +262,7 @@
 						 gimp-data-directory
 						 "/scripts/images/beavis.jpg")
 		    SF-OPTION     "Orientation"        '("Horizontal" "Vertical")
+		    SF-ENUM       "Interpolation"      '("InterpolationType" "linear")
 		    SF-DIRNAME    "Output directory"   "/var/tmp/"
 		    SF-IMAGE      "Image"              -1
 		    SF-LAYER      "Layer"              -1
@@ -255,4 +270,4 @@
 		    SF-DRAWABLE   "Drawable"           -1)
 
 (script-fu-menu-register "script-fu-test-sphere"
-			 "<Toolbox>/Xtns/Script-Fu/Test")
+			 "<Toolbox>/Xtns/Languages/Script-Fu/Test")

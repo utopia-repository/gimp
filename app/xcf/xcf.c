@@ -19,11 +19,11 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #include "libgimpbase/gimpbase.h"
 
@@ -63,13 +63,13 @@ static Argument * xcf_save_invoker (Gimp         *gimp,
 static ProcArg xcf_load_args[] =
 {
   { GIMP_PDB_INT32,
-    "dummy_param",
+    "dummy-param",
     "dummy parameter" },
   { GIMP_PDB_STRING,
     "filename",
     "The name of the file to load, in the on-disk character set and encoding" },
   { GIMP_PDB_STRING,
-    "raw_filename",
+    "raw-filename",
     "The basename of the file, in UTF-8" }
 };
 
@@ -82,7 +82,7 @@ static ProcArg xcf_load_return_vals[] =
 
 static PlugInProcDef xcf_plug_in_load_proc =
 {
-  "gimp_xcf_load",
+  "gimp-xcf-load",
   N_("GIMP XCF image"),
   NULL,
   GIMP_ICON_TYPE_STOCK_ID,
@@ -93,7 +93,8 @@ static PlugInProcDef xcf_plug_in_load_proc =
   0,
   FALSE,
   {
-    "gimp_xcf_load",
+    "gimp-xcf-load",
+    "gimp-xcf-load",
     "loads file saved in the .xcf file format",
     "The xcf file format has been designed specifically for loading and "
     "saving tiled and layered images in the GIMP. This procedure will load "
@@ -109,6 +110,7 @@ static PlugInProcDef xcf_plug_in_load_proc =
     xcf_load_return_vals,
     { { xcf_load_invoker } },
   },
+  TRUE,
   "xcf",
   "",
   "0,string,gimp\\040xcf\\040",
@@ -121,7 +123,7 @@ static PlugInProcDef xcf_plug_in_load_proc =
 static ProcArg xcf_save_args[] =
 {
   { GIMP_PDB_INT32,
-    "dummy_param",
+    "dummy-param",
     "dummy parameter" },
   { GIMP_PDB_IMAGE,
     "image",
@@ -139,7 +141,7 @@ static ProcArg xcf_save_args[] =
 
 static PlugInProcDef xcf_plug_in_save_proc =
 {
-  "gimp_xcf_save",
+  "gimp-xcf-save",
   N_("GIMP XCF image"),
   NULL,
   GIMP_ICON_TYPE_STOCK_ID,
@@ -150,7 +152,8 @@ static PlugInProcDef xcf_plug_in_save_proc =
   0,
   FALSE,
   {
-    "gimp_xcf_save",
+    "gimp-xcf-save",
+    "gimp-xcf-save",
     "saves file in the .xcf file format",
     "The xcf file format has been designed specifically for loading and "
     "saving tiled and layered images in the GIMP. This procedure will save "
@@ -166,6 +169,7 @@ static PlugInProcDef xcf_plug_in_save_proc =
     NULL,
     { { xcf_save_invoker } },
   },
+  TRUE,
   "xcf",
   "",
   NULL,
@@ -231,7 +235,7 @@ xcf_load_invoker (Gimp         *gimp,
 
   filename = args[1].value.pdb_pointer;
 
-  info.fp = fopen (filename, "rb");
+  info.fp = g_fopen (filename, "rb");
 
   if (info.fp)
     {
@@ -319,7 +323,7 @@ xcf_save_invoker (Gimp         *gimp,
   gimage   = gimp_image_get_by_ID (gimp, args[1].value.pdb_int);
   filename = args[3].value.pdb_pointer;
 
-  info.fp = fopen (filename, "wb");
+  info.fp = g_fopen (filename, "wb");
 
   if (info.fp)
     {

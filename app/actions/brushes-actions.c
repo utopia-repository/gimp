@@ -24,8 +24,8 @@
 
 #include "actions-types.h"
 
+#include "core/gimpbrushgenerated.h"
 #include "core/gimpcontext.h"
-#include "core/gimpdata.h"
 
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimphelp-ids.h"
@@ -43,34 +43,46 @@ static GimpActionEntry brushes_actions[] =
     N_("Brushes Menu"), NULL, NULL, NULL,
     GIMP_HELP_BRUSH_DIALOG },
 
+  { "brushes-open-as-image", GTK_STOCK_OPEN,
+    N_("_Open Brush as Image"), "",
+    N_("Open brush as image"),
+    G_CALLBACK (data_open_as_image_cmd_callback),
+    GIMP_HELP_BRUSH_OPEN_AS_IMAGE },
+
   { "brushes-new", GTK_STOCK_NEW,
     N_("_New Brush"), "",
     N_("New brush"),
-    G_CALLBACK (data_new_data_cmd_callback),
+    G_CALLBACK (data_new_cmd_callback),
     GIMP_HELP_BRUSH_NEW },
 
   { "brushes-duplicate", GIMP_STOCK_DUPLICATE,
     N_("D_uplicate Brush"), NULL,
     N_("Duplicate brush"),
-    G_CALLBACK (data_duplicate_data_cmd_callback),
+    G_CALLBACK (data_duplicate_cmd_callback),
     GIMP_HELP_BRUSH_DUPLICATE },
+
+  { "brushes-copy-location", GTK_STOCK_COPY,
+    N_("Copy Brush _Location"), "",
+    N_("Copy brush file location to clipboard"),
+    G_CALLBACK (data_copy_location_cmd_callback),
+    GIMP_HELP_BRUSH_COPY_LOCATION },
 
   { "brushes-delete", GTK_STOCK_DELETE,
     N_("_Delete Brush"), "",
     N_("Delete brush"),
-    G_CALLBACK (data_delete_data_cmd_callback),
+    G_CALLBACK (data_delete_cmd_callback),
     GIMP_HELP_BRUSH_DELETE },
 
   { "brushes-refresh", GTK_STOCK_REFRESH,
     N_("_Refresh Brushes"), "",
     N_("Refresh brushes"),
-    G_CALLBACK (data_refresh_data_cmd_callback),
+    G_CALLBACK (data_refresh_cmd_callback),
     GIMP_HELP_BRUSH_REFRESH }
 };
 
 static GimpStringActionEntry brushes_edit_actions[] =
 {
-  { "brushes-edit", GIMP_STOCK_EDIT,
+  { "brushes-edit", GTK_STOCK_EDIT,
     N_("_Edit Brush..."), NULL,
     N_("Edit brush"),
     "gimp-brush-editor",
@@ -88,7 +100,7 @@ brushes_actions_setup (GimpActionGroup *group)
   gimp_action_group_add_string_actions (group,
                                         brushes_edit_actions,
                                         G_N_ELEMENTS (brushes_edit_actions),
-                                        G_CALLBACK (data_edit_data_cmd_callback));
+                                        G_CALLBACK (data_edit_cmd_callback));
 }
 
 void
@@ -110,9 +122,11 @@ brushes_actions_update (GimpActionGroup *group,
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("brushes-edit",      brush);
-  SET_SENSITIVE ("brushes-duplicate", brush && GIMP_DATA_GET_CLASS (data)->duplicate);
-  SET_SENSITIVE ("brushes-delete",    brush && data->deletable);
+  SET_SENSITIVE ("brushes-edit",          brush);
+  SET_SENSITIVE ("brushes-open-as-image", brush && data->filename && ! GIMP_IS_BRUSH_GENERATED (brush));
+  SET_SENSITIVE ("brushes-duplicate",     brush && GIMP_DATA_GET_CLASS (data)->duplicate);
+  SET_SENSITIVE ("brushes-copy-location", brush && data->filename);
+  SET_SENSITIVE ("brushes-delete",        brush && data->deletable);
 
 #undef SET_SENSITIVE
 }

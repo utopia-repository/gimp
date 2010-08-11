@@ -24,7 +24,7 @@ static void
 init_regex_version (void)
 {
   setvar (cintern ("*regex-version*"),
-	  cintern ("$Id: regex.c 8560 2003-01-05 20:51:39Z yosh $"),
+	  cintern ("$Id: regex.c,v 1.12 2003/01/05 20:51:39 yosh Exp $"),
 	  NIL);
 }
 

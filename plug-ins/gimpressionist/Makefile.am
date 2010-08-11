@@ -1,10 +1,12 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 
 SUBDIRS = Brushes Paper Presets
 
@@ -26,7 +28,7 @@ libexecdir = $(gimpplugindir)/plug-ins
 
 libexec_PROGRAMS = gimpressionist
 
-gimpressionist_sources = \
+gimpressionist_SOURCES = \
 	brush.c			\
 	brush.h			\
 	color.c			\
@@ -60,29 +62,16 @@ gimpressionist_sources = \
 	sizemap.c		\
 	utils.c
 
-gimpressionist_built_sources = logo-pixbuf.h
-gimpressionist.c: $(gimpressionist_built_sources)
-
-gimpressionist_SOURCES = \
-	$(gimpressionist_built_sources) $(gimpressionist_sources)
-
-
 LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
+	$(libgimpconfig)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
-
-$(srcdir)/logo-pixbuf.h: logo.png
-	gdk-pixbuf-csource --raw --name=logo_data $< > $(@F)
-
-EXTRA_DIST = \
-	README	\
-	logo.png
-
-CLEANFILES = logo-pixbuf.h
+EXTRA_DIST = README

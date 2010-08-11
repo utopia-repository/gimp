@@ -34,66 +34,47 @@
 
 #define SELECTION_BORDER  2
 
-
-static void  gimp_drawable_preview_class_init    (GimpDrawablePreviewClass *klass);
-static void  gimp_drawable_preview_init          (GimpDrawablePreview *preview);
-
-static void  gimp_drawable_preview_style_set     (GtkWidget           *widget,
-                                                  GtkStyle            *prev_style);
-
-static void  gimp_drawable_preview_draw_original (GimpPreview         *preview);
-static void  gimp_drawable_preview_draw_thumb    (GimpPreview         *preview,
-                                                  GimpPreviewArea     *area,
-                                                  gint                 width,
-                                                  gint                 height);
-static void  gimp_drawable_preview_draw_buffer   (GimpPreview         *preview,
-                                                  const guchar        *buffer,
-                                                  gint                 rowstride);
-static gboolean gimp_drawable_preview_get_bounds (GimpDrawable        *drawable,
-                                                  gint                *xmin,
-                                                  gint                *ymin,
-                                                  gint                *xmax,
-                                                  gint                *ymax);
-
-
-static GimpScrolledPreviewClass *parent_class = NULL;
-
-
-GType
-gimp_drawable_preview_get_type (void)
+typedef struct
 {
-  static GType preview_type = 0;
+  gint     x, y;
+  gboolean update;
+} PreviewSettings;
 
-  if (!preview_type)
-    {
-      static const GTypeInfo drawable_preview_info =
-      {
-        sizeof (GimpDrawablePreviewClass),
-        (GBaseInitFunc)     NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_drawable_preview_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpDrawablePreview),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_drawable_preview_init
-      };
 
-      preview_type = g_type_register_static (GIMP_TYPE_SCROLLED_PREVIEW,
-                                             "GimpDrawablePreview",
-                                             &drawable_preview_info, 0);
-    }
+static void  gimp_drawable_preview_destroy       (GtkObject       *object);
 
-  return preview_type;
-}
+static void  gimp_drawable_preview_style_set     (GtkWidget       *widget,
+                                                  GtkStyle        *prev_style);
+
+static void  gimp_drawable_preview_draw_original (GimpPreview     *preview);
+static void  gimp_drawable_preview_draw_thumb    (GimpPreview     *preview,
+                                                  GimpPreviewArea *area,
+                                                  gint             width,
+                                                  gint             height);
+static void  gimp_drawable_preview_draw_buffer   (GimpPreview     *preview,
+                                                  const guchar    *buffer,
+                                                  gint             rowstride);
+static gboolean gimp_drawable_preview_get_bounds (GimpDrawable    *drawable,
+                                                  gint            *xmin,
+                                                  gint            *ymin,
+                                                  gint            *xmax,
+                                                  gint            *ymax);
+
+
+G_DEFINE_TYPE (GimpDrawablePreview, gimp_drawable_preview,
+               GIMP_TYPE_SCROLLED_PREVIEW);
+
+#define parent_class gimp_drawable_preview_parent_class
+
 
 static void
 gimp_drawable_preview_class_init (GimpDrawablePreviewClass *klass)
 {
+  GtkObjectClass   *object_class  = GTK_OBJECT_CLASS (klass);
   GtkWidgetClass   *widget_class  = GTK_WIDGET_CLASS (klass);
   GimpPreviewClass *preview_class = GIMP_PREVIEW_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
+  object_class->destroy      = gimp_drawable_preview_destroy;
 
   widget_class->style_set    = gimp_drawable_preview_style_set;
 
@@ -109,6 +90,24 @@ gimp_drawable_preview_init (GimpDrawablePreview *preview)
                 "check-size", gimp_check_size (),
                 "check-type", gimp_check_type (),
                 NULL);
+}
+
+static void
+gimp_drawable_preview_destroy (GtkObject *object)
+{
+  GimpPreview     *preview = GIMP_PREVIEW (object);
+  PreviewSettings  settings;
+  gchar           *data_name;
+
+  settings.x      = preview->xoff + preview->xmin;
+  settings.y      = preview->yoff + preview->ymin;
+  settings.update = TRUE;
+
+  data_name = g_strconcat (g_get_prgname (), "-preview", NULL);
+  gimp_set_data (data_name, &settings, sizeof (PreviewSettings));
+  g_free (data_name);
+
+  GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
 static void
@@ -181,27 +180,51 @@ gimp_drawable_preview_draw_thumb (GimpPreview     *preview,
   guchar              *buffer;
   gint                 x1, y1, x2, y2;
   gint                 bpp;
+  gint                 size = 100;
+  gint                 nav_width, nav_height;
 
   if (! drawable)
     return;
 
   if (gimp_drawable_preview_get_bounds (drawable, &x1, &y1, &x2, &y2))
     {
+      width  = x2 - x1;
+      height = y2 - y1;
+    }
+  else
+    {
+      width  = gimp_drawable_width  (drawable->drawable_id);
+      height = gimp_drawable_height (drawable->drawable_id);
+    }
+
+  if (width > height)
+    {
+      nav_width  = MIN (width, size);
+      nav_height = (height * nav_width) / width;
+    }
+  else
+    {
+      nav_height = MIN (height, size);
+      nav_width  = (width * nav_height) / height;
+    }
+
+  if (gimp_drawable_preview_get_bounds (drawable, &x1, &y1, &x2, &y2))
+    {
       buffer = gimp_drawable_get_sub_thumbnail_data (drawable->drawable_id,
                                                      x1, y1, x2 - x1, y2 - y1,
-                                                     &width, &height, &bpp);
+                                                     &nav_width, &nav_height, &bpp);
     }
   else
     {
       buffer = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                                 &width, &height, &bpp);
+                                                 &nav_width, &nav_height, &bpp);
     }
 
   if (buffer)
     {
       GimpImageType  type;
 
-      gtk_widget_set_size_request (GTK_WIDGET (area), width, height);
+      gtk_widget_set_size_request (GTK_WIDGET (area), nav_width, nav_height);
       gtk_widget_show (GTK_WIDGET (area));
       gtk_widget_realize (GTK_WIDGET (area));
 
@@ -217,41 +240,11 @@ gimp_drawable_preview_draw_thumb (GimpPreview     *preview,
         }
 
       gimp_preview_area_draw (area,
-                              0, 0, width, height,
-                              type, buffer, bpp * width);
+                              0, 0, nav_width, nav_height,
+                              type, buffer, bpp * nav_width);
 
       g_free (buffer);
     }
-}
-
-static gboolean
-gimp_rectangle_intersect (gint  x1,
-                          gint  y1,
-                          gint  width1,
-                          gint  height1,
-                          gint  x2,
-                          gint  y2,
-                          gint  width2,
-                          gint  height2,
-                          gint *dest_x,
-                          gint *dest_y,
-                          gint *dest_width,
-                          gint *dest_height)
-{
-  gint d_x, d_y;
-  gint d_w, d_h;
-
-  d_x = MAX (x1, x2);
-  d_y = MAX (y1, y2);
-  d_w = MIN (x1 + width1,  x2 + width2)  - d_x;
-  d_h = MIN (y1 + height1, y2 + height2) - d_y;
-
-  if (dest_x)      *dest_x      = d_x;
-  if (dest_y)      *dest_y      = d_y;
-  if (dest_width)  *dest_width  = d_w;
-  if (dest_height) *dest_height = d_h;
-
-  return (d_w > 0 && d_h > 0);
 }
 
 static void
@@ -281,67 +274,45 @@ gimp_drawable_preview_draw_area (GimpDrawablePreview *preview,
     }
   else
     {
-      gint offset_x, offset_y;
-      gint mask_x, mask_y;
-      gint mask_width, mask_height;
-      gint draw_x, draw_y;
-      gint draw_width, draw_height;
+      GimpPixelRgn  drawable_rgn;
+      GimpPixelRgn  selection_rgn;
+      guchar       *src;
+      guchar       *sel;
+      gint          offset_x;
+      gint          offset_y;
+      gint          selection_id;
+
+      selection_id = gimp_image_get_selection (image_id);
 
       gimp_drawable_offsets (drawable->drawable_id, &offset_x, &offset_y);
 
-      if (gimp_drawable_mask_intersect (drawable->drawable_id,
-                                        &mask_x, &mask_y,
-                                        &mask_width, &mask_height) &&
-          gimp_rectangle_intersect (mask_x, mask_y,
-                                    mask_width, mask_height,
-                                    x, y, width, height,
-                                    &draw_x, &draw_y,
-                                    &draw_width, &draw_height))
-        {
-          GimpDrawable *selection;
-          GimpPixelRgn  drawable_rgn;
-          GimpPixelRgn  selection_rgn;
-          guchar       *src;
-          guchar       *sel;
+      gimp_pixel_rgn_init (&drawable_rgn, drawable,
+                           x, y, width, height,
+                           FALSE, FALSE);
+      gimp_pixel_rgn_init (&selection_rgn, gimp_drawable_get (selection_id),
+                           x + offset_x, y + offset_y, width, height,
+                           FALSE, FALSE);
 
-          selection = gimp_drawable_get (gimp_image_get_selection (image_id));
+      src = g_new (guchar, width * height * drawable->bpp);
+      sel = g_new (guchar, width * height);
 
-          gimp_pixel_rgn_init (&drawable_rgn, drawable,
-                               draw_x, draw_y, draw_width, draw_height,
-                               FALSE, FALSE);
-          gimp_pixel_rgn_init (&selection_rgn, selection,
-                               draw_x + offset_x, draw_y + offset_y,
-                               draw_width, draw_height,
-                               FALSE, FALSE);
+      gimp_pixel_rgn_get_rect (&drawable_rgn,
+                               src, x, y, width, height);
+      gimp_pixel_rgn_get_rect (&selection_rgn,
+                               sel, x + offset_x, y + offset_y, width, height);
 
-          src = g_new (guchar, draw_width * draw_height * drawable->bpp);
-          sel = g_new (guchar, draw_width * draw_height);
+      gimp_preview_area_mask (GIMP_PREVIEW_AREA (gimp_preview->area),
+                              x - gimp_preview->xoff - gimp_preview->xmin,
+                              y - gimp_preview->yoff - gimp_preview->ymin,
+                              width,
+                              height,
+                              gimp_drawable_type (drawable->drawable_id),
+                              src, width * drawable->bpp,
+                              buf, rowstride,
+                              sel, width);
 
-          gimp_pixel_rgn_get_rect (&drawable_rgn, src,
-                                   draw_x, draw_y,
-                                   draw_width, draw_height);
-          gimp_pixel_rgn_get_rect (&selection_rgn, sel,
-                                   draw_x + offset_x, draw_y + offset_y,
-                                   draw_width, draw_height);
-
-          gimp_preview_area_mask (GIMP_PREVIEW_AREA (gimp_preview->area),
-                                  draw_x - gimp_preview->xoff - gimp_preview->xmin,
-                                  draw_y - gimp_preview->yoff - gimp_preview->ymin,
-                                  draw_width,
-                                  draw_height,
-                                  gimp_drawable_type (drawable->drawable_id),
-                                  src, draw_width * drawable->bpp,
-                                  (buf +
-                                   (draw_x - x) * drawable->bpp +
-                                   (draw_y - y) * rowstride),
-                                  rowstride,
-                                  sel, draw_width);
-
-          g_free (sel);
-          g_free (src);
-
-          gimp_drawable_detach (selection);
-        }
+      g_free (sel);
+      g_free (src);
     }
 }
 
@@ -450,6 +421,8 @@ gimp_drawable_preview_new (GimpDrawable *drawable,
                            gboolean     *toggle)
 {
   GimpDrawablePreview *preview;
+  gchar               *data_name;
+  PreviewSettings      settings;
 
   g_return_val_if_fail (drawable != NULL, NULL);
 
@@ -465,6 +438,14 @@ gimp_drawable_preview_new (GimpDrawable *drawable,
     }
 
   gimp_drawable_preview_set_drawable (preview, drawable);
+
+  data_name = g_strconcat (g_get_prgname (), "-preview", NULL);
+
+  if (gimp_get_data (data_name, &settings))
+    gimp_scrolled_preview_set_position (GIMP_SCROLLED_PREVIEW (preview),
+                                        settings.x, settings.y);
+
+  g_free (data_name);
 
   return GTK_WIDGET (preview);
 }

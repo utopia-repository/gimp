@@ -571,7 +571,44 @@ gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,POINTER (./gimpmarshal.list:45) */
+/* VOID:OBJECT,OBJECT (./gimpmarshal.list:45) */
+void
+gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
+                                  GValue       *return_value,
+                                  guint         n_param_values,
+                                  const GValue *param_values,
+                                  gpointer      invocation_hint,
+                                  gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__OBJECT_OBJECT) (gpointer     data1,
+                                                    gpointer     arg_1,
+                                                    gpointer     arg_2,
+                                                    gpointer     data2);
+  register GMarshalFunc_VOID__OBJECT_OBJECT callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__OBJECT_OBJECT) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_object (param_values + 1),
+            g_marshal_value_peek_object (param_values + 2),
+            data2);
+}
+
+/* VOID:OBJECT,POINTER (./gimpmarshal.list:46) */
 void
 gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
                                    GValue       *return_value,
@@ -608,11 +645,85 @@ gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
             data2);
 }
 
-/* VOID:POINTER (./gimpmarshal.list:46) */
+/* VOID:POINTER (./gimpmarshal.list:47) */
 
-/* VOID:STRING (./gimpmarshal.list:47) */
+/* VOID:POINTER,BOXED (./gimpmarshal.list:48) */
+void
+gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
+                                  GValue       *return_value,
+                                  guint         n_param_values,
+                                  const GValue *param_values,
+                                  gpointer      invocation_hint,
+                                  gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__POINTER_BOXED) (gpointer     data1,
+                                                    gpointer     arg_1,
+                                                    gpointer     arg_2,
+                                                    gpointer     data2);
+  register GMarshalFunc_VOID__POINTER_BOXED callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
 
-/* VOID:STRING,BOOLEAN,UINT,FLAGS (./gimpmarshal.list:48) */
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__POINTER_BOXED) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_pointer (param_values + 1),
+            g_marshal_value_peek_boxed (param_values + 2),
+            data2);
+}
+
+/* VOID:POINTER,ENUM (./gimpmarshal.list:49) */
+void
+gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
+                                 GValue       *return_value,
+                                 guint         n_param_values,
+                                 const GValue *param_values,
+                                 gpointer      invocation_hint,
+                                 gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__POINTER_ENUM) (gpointer     data1,
+                                                   gpointer     arg_1,
+                                                   gint         arg_2,
+                                                   gpointer     data2);
+  register GMarshalFunc_VOID__POINTER_ENUM callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__POINTER_ENUM) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_pointer (param_values + 1),
+            g_marshal_value_peek_enum (param_values + 2),
+            data2);
+}
+
+/* VOID:STRING (./gimpmarshal.list:50) */
+
+/* VOID:STRING,BOOLEAN,UINT,FLAGS (./gimpmarshal.list:51) */
 void
 gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
                                               GValue       *return_value,
@@ -653,7 +764,7 @@ gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,FLAGS (./gimpmarshal.list:49) */
+/* VOID:STRING,FLAGS (./gimpmarshal.list:52) */
 void
 gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
                                  GValue       *return_value,
@@ -690,5 +801,5 @@ gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID:VOID (./gimpmarshal.list:50) */
+/* VOID:VOID (./gimpmarshal.list:53) */
 

@@ -44,24 +44,24 @@
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
     (gimp-selection-none img)
 
-    (gimp-layer-set-preserve-trans blur-layer TRUE)
+    (gimp-layer-set-lock-alpha blur-layer TRUE)
     (gimp-context-set-background '(255 255 255))
     (gimp-selection-all img)
     (gimp-edit-fill blur-layer BACKGROUND-FILL)
     (gimp-edit-clear blur-layer)
     (gimp-context-set-background '(191 191 191))
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans blur-layer FALSE)
+    (gimp-layer-set-lock-alpha blur-layer FALSE)
     (gimp-selection-layer-alpha logo-layer)
     (gimp-edit-fill blur-layer BACKGROUND-FILL)
     (plug-in-gauss-rle 1 img blur-layer 5.0 1 1)
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-selection-all img)
     (plug-in-solid-noise 1 img logo-layer 0 0 23 1 spots-x spots-y)
     (gimp-brightness-contrast logo-layer 0 127)
     (gimp-selection-none img)
-    (gimp-layer-set-preserve-trans logo-layer FALSE)
+    (gimp-layer-set-lock-alpha logo-layer FALSE)
     (plug-in-bump-map 1 img logo-layer blur-layer
 		      135 50 10 0 0 0 30 TRUE FALSE 0)
     (gimp-layer-set-offsets blur-layer 5 5)
@@ -93,10 +93,10 @@
                     SF-DRAWABLE    "Drawable"         0
 		    SF-ADJUSTMENT _"Spots density X"  '(16 1 16 1 10 0 1)
 		    SF-ADJUSTMENT _"Spots density Y"  '(4 1 16 1 10 0 1)
-		    SF-COLOR      _"Background Color" '(255 255 255))
+		    SF-COLOR      _"Background color" '(255 255 255))
 
 (script-fu-menu-register "script-fu-bovinated-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-bovinated-logo text
@@ -109,7 +109,6 @@
          (border (/ size 4))
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text border TRUE size PIXELS font))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-bovinated-logo-effect img text-layer spots-x spots-y bg-color)
     (gimp-image-undo-enable img)
     (gimp-display-new img)))
@@ -129,4 +128,4 @@
 		    SF-COLOR      _"Background color"   '(255 255 255))
 
 (script-fu-menu-register "script-fu-bovinated-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

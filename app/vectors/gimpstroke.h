@@ -38,6 +38,7 @@ typedef struct _GimpStrokeClass GimpStrokeClass;
 struct _GimpStroke
 {
   GimpObject  parent_instance;
+  gint        ID;
 
   GList      *anchors;
 
@@ -57,6 +58,23 @@ struct _GimpStrokeClass
                                           const GimpCoords      *coord,
                                           const gdouble          precision,
                                           GimpCoords            *ret_point,
+                                          GimpAnchor           **ret_segment_start,
+                                          GimpAnchor           **ret_segment_end,
+                                          gdouble               *ret_pos);
+  gdouble       (* nearest_tangent_get)  (const GimpStroke      *stroke,
+                                          const GimpCoords      *coord1,
+                                          const GimpCoords      *coord2,
+                                          const gdouble          precision,
+                                          GimpCoords            *nearest,
+                                          GimpAnchor           **ret_segment_start,
+                                          GimpAnchor           **ret_segment_end,
+                                          gdouble               *ret_pos);
+  gdouble       (* nearest_intersection_get)
+                                         (const GimpStroke      *stroke,
+                                          const GimpCoords      *coord1,
+                                          const GimpCoords      *direction,
+                                          const gdouble          precision,
+                                          GimpCoords            *nearest,
                                           GimpAnchor           **ret_segment_start,
                                           GimpAnchor           **ret_segment_end,
                                           gdouble               *ret_pos);
@@ -154,6 +172,10 @@ struct _GimpStrokeClass
 
 GType        gimp_stroke_get_type             (void) G_GNUC_CONST;
 
+void         gimp_stroke_set_ID               (GimpStroke            *stroke,
+                                               gint                   id);
+gint         gimp_stroke_get_ID               (const GimpStroke      *stroke);
+
 
 /* accessing / modifying the anchors */
 
@@ -167,6 +189,22 @@ gdouble      gimp_stroke_nearest_point_get    (const GimpStroke      *stroke,
                                                const GimpCoords      *coord,
                                                const gdouble          precision,
                                                GimpCoords            *ret_point,
+                                               GimpAnchor           **ret_segment_start,
+                                               GimpAnchor           **ret_segment_end,
+                                               gdouble               *ret_pos);
+gdouble     gimp_stroke_nearest_tangent_get   (const GimpStroke      *stroke,
+                                               const GimpCoords      *coords1,
+                                               const GimpCoords      *coords2,
+                                               gdouble                precision,
+                                               GimpCoords            *nearest,
+                                               GimpAnchor           **ret_segment_start,
+                                               GimpAnchor           **ret_segment_end,
+                                               gdouble               *ret_pos);
+gdouble  gimp_stroke_nearest_intersection_get (const GimpStroke      *stroke,
+                                               const GimpCoords      *coords1,
+                                               const GimpCoords      *direction,
+                                               gdouble                precision,
+                                               GimpCoords            *nearest,
                                                GimpAnchor           **ret_segment_start,
                                                GimpAnchor           **ret_segment_end,
                                                gdouble               *ret_pos);

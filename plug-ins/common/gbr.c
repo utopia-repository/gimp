@@ -1,3 +1,21 @@
+/* The GIMP -- an image manipulation program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
 /*
  * gbr plug-in version 1.00
  * Loads/saves version 2 GIMP .gbr files, by Tim Newsome <drz@frody.bloke.com>
@@ -17,19 +35,20 @@
 
 #include "config.h"
 
-#include <glib.h>		/* Include early for G_OS_WIN32 */
-
 #include <errno.h>
+#include <string.h>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+
+#include <glib/gstdio.h>
+
+#include <glib.h>
 
 #ifdef G_OS_WIN32
 #include <io.h>
@@ -39,8 +58,6 @@
 #define _O_BINARY 0
 #endif
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -48,6 +65,11 @@
 #include "app/core/gimppattern-header.h"
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define LOAD_PROC      "file-gbr-load"
+#define SAVE_PROC      "file-gbr-save"
+#define PLUG_IN_BINARY "gbr"
 
 
 typedef struct
@@ -101,32 +123,32 @@ query (void)
 {
   static GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run_mode",       "Interactive, non-interactive" },
-    { GIMP_PDB_STRING, "filename",       "The name of the file to load" },
-    { GIMP_PDB_STRING, "raw_filename",   "The name of the file to load" }
+    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
+    { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
   static GimpParamDef load_return_vals[] =
   {
-    { GIMP_PDB_IMAGE,  "image",          "Output image" }
+    { GIMP_PDB_IMAGE,  "image",        "Output image" }
   };
 
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw_filename", "The name of the file to save the image in" },
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" },
     { GIMP_PDB_INT32,    "spacing",      "Spacing of the brush" },
     { GIMP_PDB_STRING,   "description",  "Short description of the brush" }
   };
 
-  gimp_install_procedure ("file_gbr_load",
+  gimp_install_procedure (LOAD_PROC,
                           "Loads GIMP brushes (1 or 4 bpp and old .gpb format)",
                           "FIXME: write help",
                           "Tim Newsome, Jens Lautenbacher, Sven Neumann",
                           "Tim Newsome, Jens Lautenbacher, Sven Neumann",
-                          "1997-2000",
+                          "1997-2005",
                           N_("GIMP brush"),
                           NULL,
                           GIMP_PLUGIN,
@@ -134,30 +156,30 @@ query (void)
                           G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_plugin_icon_register ("file_gbr_load",
+  gimp_plugin_icon_register (LOAD_PROC,
                              GIMP_ICON_TYPE_STOCK_ID, GIMP_STOCK_BRUSH);
-  gimp_register_file_handler_mime ("file_gbr_load", "image/x-gimp-gbr");
-  gimp_register_magic_load_handler ("file_gbr_load",
+  gimp_register_file_handler_mime (LOAD_PROC, "image/x-gimp-gbr");
+  gimp_register_magic_load_handler (LOAD_PROC,
 				    "gbr, gpb",
 				    "",
 				    "20, string, GIMP");
 
-  gimp_install_procedure ("file_gbr_save",
+  gimp_install_procedure (SAVE_PROC,
                           "saves files in the .gbr file format",
                           "Yeah!",
                           "Tim Newsome, Jens Lautenbacher, Sven Neumann",
                           "Tim Newsome, Jens Lautenbacher, Sven Neumann",
                           "1997-2000",
                           N_("GIMP brush"),
-                          "RGBA, GRAY",
+                          "RGB, RGBA, GRAY",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_plugin_icon_register ("file_gbr_save",
+  gimp_plugin_icon_register (SAVE_PROC,
                              GIMP_ICON_TYPE_STOCK_ID, GIMP_STOCK_BRUSH);
-  gimp_register_file_handler_mime ("file_gbr_save", "image/x-gimp-gbr");
-  gimp_register_save_handler ("file_gbr_save", "gbr", "");
+  gimp_register_file_handler_mime (SAVE_PROC, "image/x-gimp-gbr");
+  gimp_register_save_handler (SAVE_PROC, "gbr", "");
 }
 
 static void
@@ -184,7 +206,7 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  if (strcmp (name, "file_gbr_load") == 0)
+  if (strcmp (name, LOAD_PROC) == 0)
     {
       image_ID = load_image (param[1].data.d_string);
 
@@ -199,7 +221,7 @@ run (const gchar      *name,
 	  status = GIMP_PDB_EXECUTION_ERROR;
 	}
     }
-  else if (strcmp (name, "file_gbr_save") == 0)
+  else if (strcmp (name, SAVE_PROC) == 0)
     {
       GimpParasite *parasite;
       gint32        orig_image_ID;
@@ -213,7 +235,7 @@ run (const gchar      *name,
 	{
 	case GIMP_RUN_INTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
-	  gimp_ui_init ("gbr", FALSE);
+	  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 	  export = gimp_export_image (&image_ID, &drawable_ID, "GBR",
 				      GIMP_EXPORT_CAN_HANDLE_GRAY  |
 				      GIMP_EXPORT_CAN_HANDLE_RGB   |
@@ -225,7 +247,7 @@ run (const gchar      *name,
 	    }
 
 	  /*  Possibly retrieve data  */
-	  gimp_get_data ("file_gbr_save", &info);
+	  gimp_get_data (SAVE_PROC, &info);
 	  break;
 
 	default:
@@ -272,7 +294,7 @@ run (const gchar      *name,
 	{
 	  if (save_image (param[3].data.d_string, image_ID, drawable_ID))
 	    {
-	      gimp_set_data ("file_gbr_save", &info, sizeof (info));
+	      gimp_set_data (SAVE_PROC, &info, sizeof (info));
 	    }
 	  else
 	    {
@@ -306,7 +328,6 @@ run (const gchar      *name,
 static gint32
 load_image (const gchar *filename)
 {
-  gchar             *temp;
   gchar             *name;
   gint               fd;
   BrushHeader        bh;
@@ -320,7 +341,7 @@ load_image (const gchar *filename)
   GimpImageType      image_type;
   gssize             size;
 
-  fd = open (filename, O_RDONLY | _O_BINARY);
+  fd = g_open (filename, O_RDONLY | _O_BINARY, 0);
 
   if (fd == -1)
     {
@@ -329,10 +350,8 @@ load_image (const gchar *filename)
       return -1;
     }
 
-  temp = g_strdup_printf (_("Opening '%s'..."),
-                          gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp);
-  g_free (temp);
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   if (read (fd, &bh, sizeof (BrushHeader)) != sizeof (BrushHeader))
     {
@@ -385,7 +404,7 @@ load_image (const gchar *filename)
 
   if ((bn_size = (bh.header_size - sizeof (BrushHeader))) > 0)
     {
-      temp = g_new (gchar, bn_size);
+      gchar *temp = g_new (gchar, bn_size);
 
       if ((read (fd, temp, bn_size)) < bn_size)
 	{
@@ -569,17 +588,28 @@ save_image (const gchar *filename,
   GimpDrawable *drawable;
   gint          line;
   gint          x;
+  gint          bpp;
   GimpPixelRgn  pixel_rgn;
-  gchar        *temp;
 
-  if (gimp_drawable_type (drawable_ID) != GIMP_GRAY_IMAGE &&
-      gimp_drawable_type (drawable_ID) != GIMP_RGBA_IMAGE)
+  switch (gimp_drawable_type (drawable_ID))
     {
-      g_message (_("GIMP brushes are either GRAYSCALE or RGBA"));
-      return FALSE;
+    case GIMP_RGB_IMAGE:
+    case GIMP_RGBA_IMAGE:
+      bpp = 4;
+      break;
+
+    case GIMP_GRAY_IMAGE:
+      bpp = 1;
+      break;
+
+    default:
+      {
+        g_message (_("GIMP brushes are either GRAYSCALE or RGBA"));
+        return FALSE;
+      }
     }
 
-  fd = open (filename, O_CREAT | O_TRUNC | O_WRONLY | _O_BINARY, 0644);
+  fd = g_open (filename, O_CREAT | O_TRUNC | O_WRONLY | _O_BINARY, 0644);
 
   if (fd == -1)
     {
@@ -588,10 +618,8 @@ save_image (const gchar *filename,
       return FALSE;
     }
 
-  temp = g_strdup_printf (_("Saving '%s'..."),
-                          gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp);
-  g_free (temp);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   drawable = gimp_drawable_get (drawable_ID);
 
@@ -600,7 +628,7 @@ save_image (const gchar *filename,
   bh.version      = g_htonl (2);
   bh.width        = g_htonl (drawable->width);
   bh.height       = g_htonl (drawable->height);
-  bh.bytes        = g_htonl (drawable->bpp);
+  bh.bytes        = g_htonl (bpp);
   bh.magic_number = g_htonl (GBRUSH_MAGIC);
   bh.spacing      = g_htonl (info.spacing);
 
@@ -621,20 +649,33 @@ save_image (const gchar *filename,
 		       0, 0, drawable->width, drawable->height,
 		       FALSE, FALSE);
 
-  buffer = g_malloc (drawable->width * drawable->bpp);
+  buffer = g_new (guchar, drawable->width * bpp);
 
   for (line = 0; line < drawable->height; line++)
     {
       gimp_pixel_rgn_get_row (&pixel_rgn, buffer, 0, line, drawable->width);
 
-      if (drawable->bpp == 1)
-	{
+      switch (drawable->bpp)
+        {
+        case 1:
+          /*  invert  */
 	  for (x = 0; x < drawable->width; x++)
 	    buffer[x] = 255 - buffer[x];
-	}
+          break;
 
-      if (write (fd, buffer, drawable->width * drawable->bpp) !=
-          drawable->width * drawable->bpp)
+        case 3:
+          /*  add alpha channel  */
+          for (x = drawable->width - 1; x >= 0; x--)
+            {
+              buffer[x * 4 + 3] = 0xFF;
+              buffer[x * 4 + 2] = buffer[x * 3 + 2];
+              buffer[x * 4 + 1] = buffer[x * 3 + 1];
+              buffer[x * 4 + 0] = buffer[x * 3 + 0];
+            }
+          break;
+        }
+
+      if (write (fd, buffer, drawable->width * bpp) != drawable->width * bpp)
 	{
 	  g_free (buffer);
 	  close (fd);
@@ -653,28 +694,35 @@ save_image (const gchar *filename,
 static gboolean
 save_dialog (void)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *table;
   GtkWidget *entry;
   GtkWidget *spinbutton;
   GtkObject *adj;
   gboolean   run;
 
-  dlg = gimp_dialog_new (_("Save as Brush"), "gbr",
-                         NULL, 0,
-			 gimp_standard_help_func, "file-gbr-save",
+  dialog = gimp_dialog_new (_("Save as Brush"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, SAVE_PROC,
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
-			 NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   /* The main table */
   table = gtk_table_new (2, 2, FALSE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), table, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 
   spinbutton = gimp_spin_button_new (&adj,
@@ -683,7 +731,7 @@ save_dialog (void)
 			     _("Spacing:"), 1.0, 0.5,
 			     spinbutton, 1, TRUE);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &info.spacing);
 
@@ -698,11 +746,11 @@ save_dialog (void)
                     G_CALLBACK (entry_callback),
                     info.description);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }

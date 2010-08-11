@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libgimp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-08 12:28+0200\n"
+"POT-Creation-Date: 2005-02-02 19:53+0100\n"
 "PO-Revision-Date: 2003-10-30 08:00+0800\n"
 "Last-Translator: Mimos Open Source Development Group <syed@mimos.my>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sf.net>\n"
@@ -201,7 +201,7 @@ msgstr "Pemilihan Fon"
 msgid "Gradient Selection"
 msgstr "Pemilihan Kecerunan"
 
-#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:167
+#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:181
 msgid "(Empty)"
 msgstr ""
 
@@ -218,75 +218,324 @@ msgstr "Pemilihan Corak"
 msgid "percent"
 msgstr "peratus"
 
-#: ../libgimpbase/gimpbaseenums.c:23
-msgid "Small"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:26
+#, fuzzy
+msgid "_White (full opacity)"
+msgstr "_Putih (Kelegapan Penuh)"
 
-#: ../libgimpbase/gimpbaseenums.c:24
-msgid "Medium"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:27
+#, fuzzy
+msgid "_Black (full transparency)"
+msgstr "_Hitam (Kelutsinaran Penuh)"
 
-#: ../libgimpbase/gimpbaseenums.c:25
-msgid "Large"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:28
+#, fuzzy
+msgid "Layer's _alpha channel"
+msgstr "Saluran _Alfa Lapisan"
 
-#: ../libgimpbase/gimpbaseenums.c:57
-msgid "Light Checks"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:29
+#, fuzzy
+msgid "_Transfer layer's alpha channel"
+msgstr "Saluran _Alfa Lapisan"
 
-#: ../libgimpbase/gimpbaseenums.c:58
-msgid "Mid-Tone Checks"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:30
+msgid "_Selection"
+msgstr "_Pemilihan"
 
-#: ../libgimpbase/gimpbaseenums.c:59
-msgid "Dark Checks"
-msgstr ""
-
-#: ../libgimpbase/gimpbaseenums.c:60
-msgid "White Only"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:31
+#, fuzzy
+msgid "_Grayscale copy of layer"
+msgstr "_Salinan Skala kelabu Lapisan"
 
 #: ../libgimpbase/gimpbaseenums.c:61
-msgid "Gray Only"
-msgstr ""
+msgid "FG to BG (RGB)"
+msgstr "FG ke BG (RGB)"
 
 #: ../libgimpbase/gimpbaseenums.c:62
-#, fuzzy
-msgid "Black Only"
-msgstr "Hitam"
+msgid "FG to BG (HSV)"
+msgstr "FG ke BG (HSV)"
 
-#: ../libgimpbase/gimpbaseenums.c:91
+#: ../libgimpbase/gimpbaseenums.c:63
+#, fuzzy
+msgid "FG to transparent"
+msgstr "FG ke Lut sinar"
+
+#: ../libgimpbase/gimpbaseenums.c:64
+#, fuzzy
+msgid "Custom gradient"
+msgstr "Kecerunan Biasa"
+
+#: ../libgimpbase/gimpbaseenums.c:93
+#, fuzzy
+msgid "FG color fill"
+msgstr "Isian Warna FG"
+
+#: ../libgimpbase/gimpbaseenums.c:94
+#, fuzzy
+msgid "BG color fill"
+msgstr "Isian Warna BG"
+
+#: ../libgimpbase/gimpbaseenums.c:95
+#, fuzzy
+msgid "Pattern fill"
+msgstr "Isian Corak"
+
+#: ../libgimpbase/gimpbaseenums.c:125
+msgid "Add to the current selection"
+msgstr "Tambahkan ke pemilihan semasa"
+
+#: ../libgimpbase/gimpbaseenums.c:126
+msgid "Subtract from the current selection"
+msgstr "Tolak dari pemilihan semasa"
+
+#: ../libgimpbase/gimpbaseenums.c:127
+msgid "Replace the current selection"
+msgstr "Gantikan pemilihan semasa"
+
+#: ../libgimpbase/gimpbaseenums.c:128
+msgid "Intersect with the current selection"
+msgstr "Bersilang dengan pemilihan semasa"
+
+#: ../libgimpbase/gimpbaseenums.c:160 ../libgimpwidgets/gimpcolorscales.c:168
+#: ../libgimpwidgets/gimpcolorselect.c:352
+msgid "Red"
+msgstr "Merah"
+
+#: ../libgimpbase/gimpbaseenums.c:161 ../libgimpwidgets/gimpcolorscales.c:169
+#: ../libgimpwidgets/gimpcolorselect.c:353
+msgid "Green"
+msgstr "Hijau"
+
+#: ../libgimpbase/gimpbaseenums.c:162 ../libgimpwidgets/gimpcolorscales.c:170
+#: ../libgimpwidgets/gimpcolorselect.c:354
+msgid "Blue"
+msgstr "Biru"
+
+#: ../libgimpbase/gimpbaseenums.c:163
+msgid "Gray"
+msgstr "Kelabu"
+
+#: ../libgimpbase/gimpbaseenums.c:164 ../libgimpbase/gimpbaseenums.c:436
+msgid "Indexed"
+msgstr "Berindeks"
+
+#: ../libgimpbase/gimpbaseenums.c:165 ../libgimpwidgets/gimpcolorscales.c:171
+#: ../libgimpwidgets/gimpcolorselect.c:355
+msgid "Alpha"
+msgstr "Alfa"
+
+#: ../libgimpbase/gimpbaseenums.c:194
+msgid "Small"
+msgstr "Kecil"
+
+#: ../libgimpbase/gimpbaseenums.c:195
+msgid "Medium"
+msgstr "Sederhana"
+
+#: ../libgimpbase/gimpbaseenums.c:196
+msgid "Large"
+msgstr "Besar"
+
+#: ../libgimpbase/gimpbaseenums.c:228
+msgid "Light Checks"
+msgstr "Corak Dam yang Terang"
+
+#: ../libgimpbase/gimpbaseenums.c:229
+msgid "Mid-Tone Checks"
+msgstr "Corak Dam Ton Sederhana"
+
+#: ../libgimpbase/gimpbaseenums.c:230
+msgid "Dark Checks"
+msgstr "Corak Dam yang Gelap"
+
+#: ../libgimpbase/gimpbaseenums.c:231
+msgid "White Only"
+msgstr "Putih Sahaja"
+
+#: ../libgimpbase/gimpbaseenums.c:232
+msgid "Gray Only"
+msgstr "Kelabu Sahaja"
+
+#: ../libgimpbase/gimpbaseenums.c:233
+msgid "Black Only"
+msgstr "Hitam Sahaja"
+
+#: ../libgimpbase/gimpbaseenums.c:261
+#, fuzzy
+msgid "Image source"
+msgstr "Sumber Imej"
+
+#: ../libgimpbase/gimpbaseenums.c:262
+#, fuzzy
+msgid "Pattern source"
+msgstr "Sumber Corak"
+
+#: ../libgimpbase/gimpbaseenums.c:290
+msgid "Dodge"
+msgstr "Tepis"
+
+#: ../libgimpbase/gimpbaseenums.c:291
+msgid "Burn"
+msgstr "Lebur"
+
+#: ../libgimpbase/gimpbaseenums.c:328 ../libgimpbase/gimpbaseenums.c:468
+msgid "Linear"
+msgstr "Linear"
+
+#: ../libgimpbase/gimpbaseenums.c:329
+#, fuzzy
+msgid "Bi-linear"
+msgstr "Bi-Linear"
+
+#: ../libgimpbase/gimpbaseenums.c:330
+msgid "Radial"
+msgstr "Jejari"
+
+#: ../libgimpbase/gimpbaseenums.c:331
+msgid "Square"
+msgstr "Segi empat sama"
+
+#: ../libgimpbase/gimpbaseenums.c:332
+#, fuzzy
+msgid "Conical (sym)"
+msgstr "Kon (simetrik)"
+
+#: ../libgimpbase/gimpbaseenums.c:333
+#, fuzzy
+msgid "Conical (asym)"
+msgstr "Kon (asimetrik)"
+
+#: ../libgimpbase/gimpbaseenums.c:334
+#, fuzzy
+msgid "Shaped (angular)"
+msgstr "Taburan bentuk (sudut)"
+
+#: ../libgimpbase/gimpbaseenums.c:335
+#, fuzzy
+msgid "Shaped (spherical)"
+msgstr "Taburan bentuk (sfera)"
+
+#: ../libgimpbase/gimpbaseenums.c:336
+#, fuzzy
+msgid "Shaped (dimpled)"
+msgstr "Taburan bentuk (berlekuk)"
+
+#: ../libgimpbase/gimpbaseenums.c:337
+#, fuzzy
+msgid "Spiral (cw)"
+msgstr "Lingkaran (ikut jam)"
+
+#: ../libgimpbase/gimpbaseenums.c:338
+#, fuzzy
+msgid "Spiral (ccw)"
+msgstr "Lingkaran (ikut jam)"
+
+#: ../libgimpbase/gimpbaseenums.c:367
+msgid "Stock ID"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:368
+msgid "Inline pixbuf"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:369
+#, fuzzy
+msgid "Image file"
+msgstr "Saiz Imej"
+
+#: ../libgimpbase/gimpbaseenums.c:398
 msgid "RGB color"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:92 ../libgimpbase/gimpbaseenums.c:127
-#, fuzzy
+#: ../libgimpbase/gimpbaseenums.c:399 ../libgimpbase/gimpbaseenums.c:434
 msgid "Grayscale"
-msgstr "Tukarkan kepada Skala kelabu"
+msgstr "Skala kelabu"
 
-#: ../libgimpbase/gimpbaseenums.c:93
+#: ../libgimpbase/gimpbaseenums.c:400
 msgid "Indexed color"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:125
+#: ../libgimpbase/gimpbaseenums.c:432
 msgid "RGB"
-msgstr ""
+msgstr "RGB"
 
-#: ../libgimpbase/gimpbaseenums.c:126
+#: ../libgimpbase/gimpbaseenums.c:433
 msgid "RGB-alpha"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:128
+#: ../libgimpbase/gimpbaseenums.c:435
 msgid "Grayscale-alpha"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:129
-msgid "Indexed"
-msgstr ""
-
-#: ../libgimpbase/gimpbaseenums.c:130
+#: ../libgimpbase/gimpbaseenums.c:437
 msgid "Indexed-alpha"
 msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:467
+msgid "None (Fastest)"
+msgstr "Tiada (Paling laju)"
+
+#: ../libgimpbase/gimpbaseenums.c:469
+msgid "Cubic"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:470
+#, fuzzy
+msgid "Lanczos (Best)"
+msgstr "Kubik (Terbaik)"
+
+#: ../libgimpbase/gimpbaseenums.c:498
+msgid "Constant"
+msgstr "Pemalar"
+
+#: ../libgimpbase/gimpbaseenums.c:499
+msgid "Incremental"
+msgstr "Tambahan"
+
+#: ../libgimpbase/gimpbaseenums.c:528
+msgid "None"
+msgstr "Tiada"
+
+#: ../libgimpbase/gimpbaseenums.c:529
+#, fuzzy
+msgid "Sawtooth wave"
+msgstr "Gelombang Gigi gergaji"
+
+#: ../libgimpbase/gimpbaseenums.c:530
+#, fuzzy
+msgid "Triangular wave"
+msgstr "Gelombang Tiga segi"
+
+#: ../libgimpbase/gimpbaseenums.c:558
+msgid "Pixels"
+msgstr "Piksel"
+
+#: ../libgimpbase/gimpbaseenums.c:559
+#, fuzzy
+msgid "Points"
+msgstr "titik"
+
+#: ../libgimpbase/gimpbaseenums.c:588
+msgid "Shadows"
+msgstr "Bayang"
+
+#: ../libgimpbase/gimpbaseenums.c:589
+msgid "Midtones"
+msgstr "Ton sederhana"
+
+#: ../libgimpbase/gimpbaseenums.c:590
+msgid "Highlights"
+msgstr "Tonjolan"
+
+#: ../libgimpbase/gimpbaseenums.c:618
+#, fuzzy
+msgid "Forward (traditional)"
+msgstr "Ke depan (Tradisional)"
+
+#: ../libgimpbase/gimpbaseenums.c:619
+#, fuzzy
+msgid "Backward (corrective)"
+msgstr "Ke belakang (Pembetulan)"
 
 #: ../libgimpbase/gimpmemsize.c:177
 #, c-format
@@ -342,6 +591,97 @@ msgstr "%d KB"
 msgid "(invalid UTF-8 string)"
 msgstr "(rentetan UTF-8 tak sah)"
 
+#: ../libgimpconfig/gimpconfig-deserialize.c:95
+#, c-format
+msgid "value for token %s is not a valid UTF-8 string"
+msgstr "nilai bagi token %s bukan rentetan UTF-8 yang sah"
+
+#. please don't translate 'yes' and 'no'
+#: ../libgimpconfig/gimpconfig-deserialize.c:423
+#, c-format
+msgid "expected 'yes' or 'no' for boolean token %s, got '%s'"
+msgstr "menjangkakan 'ya' atau 'tidak' bagi token boolean %s, dapat '%s'"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:497
+#, c-format
+msgid "invalid value '%s' for token %s"
+msgstr "nilai tak sah '%s' bagi token %s"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:512
+#, c-format
+msgid "invalid value '%ld' for token %s"
+msgstr "nilai tak sah '%ld' bagi token %s"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:581
+#, fuzzy, c-format
+msgid "while parsing token '%s': %s"
+msgstr "semasa menghuraikan token %s: %s"
+
+#: ../libgimpconfig/gimpconfig-iface.c:454
+#: ../libgimpconfig/gimpconfig-iface.c:467 ../libgimpconfig/gimpscanner.c:513
+#: ../libgimpconfig/gimpscanner.c:594
+msgid "fatal parse error"
+msgstr "ralat huraian mati"
+
+#: ../libgimpconfig/gimpconfig-path.c:349
+#, fuzzy, c-format
+msgid "Cannot expand ${%s}"
+msgstr "tidak dapat menambahkan ${%s}"
+
+#: ../libgimpconfig/gimpconfigwriter.c:134
+#, fuzzy, c-format
+msgid "Could not create temporary file for '%s': %s"
+msgstr "Gagal mewujudkan fail sementara bagi '%s': %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:147
+#, c-format
+msgid "Could not open '%s' for writing: %s"
+msgstr "Tidak dapat membuka '%s' untuk menulis: %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:666
+#, c-format
+msgid ""
+"Error writing to temporary file for '%s': %s\n"
+"The original file has not been touched."
+msgstr ""
+"Ralat menulis ke fail sementara bagi '%s': %s\n"
+"Fail asal tidak diganggu."
+
+#: ../libgimpconfig/gimpconfigwriter.c:674
+#, c-format
+msgid ""
+"Error writing to temporary file for '%s': %s\n"
+"No file has been created."
+msgstr ""
+"Ralat menulis ke fail sementara bagi '%s': %s\n"
+"Tiada fail diwujudkan."
+
+#: ../libgimpconfig/gimpconfigwriter.c:685
+#, c-format
+msgid "Error writing to '%s': %s"
+msgstr "Ralat menulis ke '%s': %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:703
+#, fuzzy, c-format
+msgid "Could not create '%s': %s"
+msgstr "Tidak dapat menghapuskan '%s': %s"
+
+#: ../libgimpconfig/gimpscanner.c:100
+#, c-format
+msgid "Could not open '%s' for reading: %s"
+msgstr "Tidak dapat membuka '%s' untuk mebaca: %s"
+
+#: ../libgimpconfig/gimpscanner.c:270
+msgid "invalid UTF-8 string"
+msgstr "rentetan UTF-8 tak sah"
+
+#: ../libgimpconfig/gimpscanner.c:621
+#, fuzzy, c-format
+msgid "Error while parsing '%s' in line %d: %s"
+msgstr ""
+"Ralat semasa menghuraikan '%s' dalam baris %d:\n"
+"%s"
+
 #: ../libgimpmodule/gimpmodule.c:177
 #, c-format
 msgid "Loading module: '%s'\n"
@@ -377,14 +717,7 @@ msgstr "Muat gagal dilakukan"
 msgid "Not loaded"
 msgstr "Tidak dimuatkan"
 
-#: ../libgimpthumb/gimpthumb-utils.c:125
-#, c-format
-msgid ""
-"Cannot determine a valid home directory.\n"
-"Thumbnails will be stored in the folder for temporary files (%s) instead."
-msgstr ""
-
-#: ../libgimpthumb/gimpthumb-utils.c:249 ../libgimpthumb/gimpthumb-utils.c:317
+#: ../libgimpthumb/gimpthumb-utils.c:227 ../libgimpthumb/gimpthumb-utils.c:295
 #, c-format
 msgid "Failed to create thumbnail folder '%s'."
 msgstr ""
@@ -419,32 +752,32 @@ msgid "Scales"
 msgstr "Skala"
 
 #: ../libgimpwidgets/gimpcolorscales.c:155
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_H"
 msgstr "_H"
 
 #: ../libgimpwidgets/gimpcolorscales.c:156
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_S"
 msgstr "_S"
 
 #: ../libgimpwidgets/gimpcolorscales.c:157
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_V"
 msgstr "_V"
 
 #: ../libgimpwidgets/gimpcolorscales.c:158
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_R"
 msgstr "_R"
 
 #: ../libgimpwidgets/gimpcolorscales.c:159
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_G"
 msgstr "_G"
 
 #: ../libgimpwidgets/gimpcolorscales.c:160
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_B"
 msgstr "_B"
 
@@ -453,40 +786,19 @@ msgid "_A"
 msgstr "_A"
 
 #: ../libgimpwidgets/gimpcolorscales.c:165
-#: ../libgimpwidgets/gimpcolorselect.c:347
+#: ../libgimpwidgets/gimpcolorselect.c:349
 msgid "Hue"
 msgstr "Warna"
 
 #: ../libgimpwidgets/gimpcolorscales.c:166
-#: ../libgimpwidgets/gimpcolorselect.c:348 ../modules/cdisplay_proof.c:49
-#: ../modules/cdisplay_proof.c:444
+#: ../libgimpwidgets/gimpcolorselect.c:350 ../modules/cdisplay_proof.c:59
 msgid "Saturation"
 msgstr "Ketepuan"
 
 #: ../libgimpwidgets/gimpcolorscales.c:167
-#: ../libgimpwidgets/gimpcolorselect.c:349
+#: ../libgimpwidgets/gimpcolorselect.c:351
 msgid "Value"
 msgstr "Nilai"
-
-#: ../libgimpwidgets/gimpcolorscales.c:168
-#: ../libgimpwidgets/gimpcolorselect.c:350
-msgid "Red"
-msgstr "Merah"
-
-#: ../libgimpwidgets/gimpcolorscales.c:169
-#: ../libgimpwidgets/gimpcolorselect.c:351
-msgid "Green"
-msgstr "Hijau"
-
-#: ../libgimpwidgets/gimpcolorscales.c:170
-#: ../libgimpwidgets/gimpcolorselect.c:352
-msgid "Blue"
-msgstr "Biru"
-
-#: ../libgimpwidgets/gimpcolorscales.c:171
-#: ../libgimpwidgets/gimpcolorselect.c:353
-msgid "Alpha"
-msgstr "Alfa"
 
 #: ../libgimpwidgets/gimpcolorscales.c:243
 #, fuzzy
@@ -499,11 +811,11 @@ msgstr ""
 
 #: ../libgimpwidgets/gimpcolorselection.c:203
 msgid "Current:"
-msgstr ""
+msgstr "Semasa:"
 
 #: ../libgimpwidgets/gimpcolorselection.c:225
 msgid "Old:"
-msgstr ""
+msgstr "Lama:"
 
 #: ../libgimpwidgets/gimpfileentry.c:351
 msgid "Select Folder"
@@ -556,9 +868,8 @@ msgstr ""
 
 #. toggle button to (des)activate the instant preview
 #: ../libgimpwidgets/gimppreview.c:240
-#, fuzzy
 msgid "_Preview"
-msgstr "Pralihat"
+msgstr "_Pralihat"
 
 #: ../libgimpwidgets/gimpstock.c:113
 msgid "Anchor"
@@ -669,27 +980,28 @@ msgstr "Mulakan penjana nombor rawak dengan nombor rawak yang dijanakan"
 msgid "_Randomize"
 msgstr "_Rawakkan"
 
-#: ../modules/cdisplay_colorblind.c:57 ../modules/cdisplay_colorblind.c:545
-msgid "Protanopia (insensitivity to red)"
+#: ../modules/cdisplay_colorblind.c:68
+#, fuzzy
+msgid "Protanopia (insensitivity to red"
 msgstr "Protanopia (tidak peka terhadap warna merah)"
 
-#: ../modules/cdisplay_colorblind.c:59 ../modules/cdisplay_colorblind.c:547
+#: ../modules/cdisplay_colorblind.c:70
 msgid "Deuteranopia (insensitivity to green)"
 msgstr "Deuteranopia (tidak peka terhadap warna hijau)"
 
-#: ../modules/cdisplay_colorblind.c:61 ../modules/cdisplay_colorblind.c:549
+#: ../modules/cdisplay_colorblind.c:72
 msgid "Tritanopia (insensitivity to blue)"
 msgstr "Tritanopia (tidak peka terhadap warna biru)"
 
-#: ../modules/cdisplay_colorblind.c:153
+#: ../modules/cdisplay_colorblind.c:163
 msgid "Color deficit simulation filter (Brettel-Vienot-Mollon algorithm)"
 msgstr "Penapis simulasi kurangan warna (algoritma Brettel-Vienot-Mollon)"
 
-#: ../modules/cdisplay_colorblind.c:242
+#: ../modules/cdisplay_colorblind.c:256
 msgid "Color Deficient Vision"
 msgstr "Penglihatan Kurang Warna"
 
-#: ../modules/cdisplay_colorblind.c:540
+#: ../modules/cdisplay_colorblind.c:554
 #, fuzzy
 msgid "Color _Deficiency Type:"
 msgstr "Jenis Kekurangan Warna:"
@@ -720,39 +1032,39 @@ msgstr "Kontras"
 msgid "Contrast C_ycles:"
 msgstr "Kitar Kontras:"
 
-#: ../modules/cdisplay_proof.c:45 ../modules/cdisplay_proof.c:440
+#: ../modules/cdisplay_proof.c:57
 msgid "Perceptual"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:47 ../modules/cdisplay_proof.c:442
+#: ../modules/cdisplay_proof.c:58
 msgid "Relative Colorimetric"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:51 ../modules/cdisplay_proof.c:446
+#: ../modules/cdisplay_proof.c:60
 msgid "Absolute Colorimetric"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:138
+#: ../modules/cdisplay_proof.c:147
 msgid "Color proof filter using ICC color profile"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:238
+#: ../modules/cdisplay_proof.c:251
 msgid "Color Proof"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:457
+#: ../modules/cdisplay_proof.c:462
 msgid "_Intent:"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:460
+#: ../modules/cdisplay_proof.c:465
 msgid "Choose an ICC Color Profile"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:463
+#: ../modules/cdisplay_proof.c:468
 msgid "_Profile:"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:471
+#: ../modules/cdisplay_proof.c:476
 msgid "_Black Point Compensation"
 msgstr ""
 
@@ -824,29 +1136,3 @@ msgstr "Cat air"
 #: ../modules/colorsel_water.c:220
 msgid "Pressure"
 msgstr "Tekanan"
-
-#~ msgid "He_x Triplet:"
-#~ msgstr "Tiga kali ganda perenambelasan:"
-
-#~ msgid "None"
-#~ msgstr "Tiada"
-
-#~ msgid ""
-#~ "No %s in gimprc:\n"
-#~ "You need to add an entry like\n"
-#~ "(%s \"%s\")\n"
-#~ "to your %s file."
-#~ msgstr ""
-#~ "Tiada %s dalam gimprc:\n"
-#~ "Anda perlu tambah entri seperti\n"
-#~ "(%s \"%s\")\n"
-#~ "ke fail %s anda."
-
-#~ msgid "Parameter Settings"
-#~ msgstr "Seting Parameter"
-
-#~ msgid "None (normal vision)"
-#~ msgstr "Tiada (penglihatan normal)"
-
-#~ msgid "Cancel"
-#~ msgstr "Batal"

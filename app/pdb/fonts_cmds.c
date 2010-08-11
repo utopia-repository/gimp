@@ -53,7 +53,8 @@ fonts_refresh_invoker (Gimp         *gimp,
 
 static ProcRecord fonts_refresh_proc =
 {
-  "gimp_fonts_refresh",
+  "gimp-fonts-refresh",
+  "gimp-fonts-refresh",
   "Refresh current fonts. This function always succeeds.",
   "This procedure retrieves all fonts currently in the user's font path and updates the font dialogs accordingly.",
   "Sven Neumann",
@@ -111,19 +112,20 @@ static ProcArg fonts_get_list_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_fonts",
+    "num-fonts",
     "The number of available fonts"
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "font_list",
+    "font-list",
     "The list of font names"
   }
 };
 
 static ProcRecord fonts_get_list_proc =
 {
-  "gimp_fonts_get_list",
+  "gimp-fonts-get-list",
+  "gimp-fonts-get-list",
   "Retrieve the list of loaded fonts.",
   "This procedure returns a list of the fonts that are currently available.",
   "Sven Neumann",

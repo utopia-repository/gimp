@@ -41,204 +41,43 @@
 #include "gimpdrawtool.h"
 
 
-static void          gimp_draw_tool_class_init (GimpDrawToolClass *klass);
-static void          gimp_draw_tool_init       (GimpDrawTool      *draw_tool);
+static void          gimp_draw_tool_finalize   (GObject        *object);
 
-static void          gimp_draw_tool_finalize   (GObject           *object);
+static void          gimp_draw_tool_control    (GimpTool       *tool,
+                                                GimpToolAction  action,
+                                                GimpDisplay    *gdisp);
 
-static void          gimp_draw_tool_control    (GimpTool          *tool,
-                                                GimpToolAction     action,
-                                                GimpDisplay       *gdisp);
-
-static void          gimp_draw_tool_draw       (GimpDrawTool      *draw_tool);
-static void          gimp_draw_tool_real_draw  (GimpDrawTool      *draw_tool);
+static void          gimp_draw_tool_draw       (GimpDrawTool   *draw_tool);
+static void          gimp_draw_tool_real_draw  (GimpDrawTool   *draw_tool);
 
 static inline void   gimp_draw_tool_shift_to_north_west
-                                               (gdouble            x,
-                                                gdouble            y,
-                                                gint               handle_width,
-                                                gint               handle_height,
-                                                GtkAnchorType      anchor,
-                                                gdouble           *shifted_x,
-                                                gdouble           *shifted_y);
+                                               (gdouble         x,
+                                                gdouble         y,
+                                                gint            handle_width,
+                                                gint            handle_height,
+                                                GtkAnchorType   anchor,
+                                                gdouble        *shifted_x,
+                                                gdouble        *shifted_y);
 static inline void   gimp_draw_tool_shift_to_center
-                                               (gdouble            x,
-                                                gdouble            y,
-                                                gint               handle_width,
-                                                gint               handle_height,
-                                                GtkAnchorType      anchor,
-                                                gdouble           *shifted_x,
-                                                gdouble           *shifted_y);
+                                               (gdouble         x,
+                                                gdouble         y,
+                                                gint            handle_width,
+                                                gint            handle_height,
+                                                GtkAnchorType   anchor,
+                                                gdouble        *shifted_x,
+                                                gdouble        *shifted_y);
 
 
-static GimpToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpDrawTool, gimp_draw_tool, GIMP_TYPE_TOOL);
 
+#define parent_class gimp_draw_tool_parent_class
 
-/*  private functions  */
-
-static inline void
-gimp_draw_tool_shift_to_north_west (gdouble        x,
-                                    gdouble        y,
-                                    gint           handle_width,
-                                    gint           handle_height,
-                                    GtkAnchorType  anchor,
-                                    gdouble       *shifted_x,
-                                    gdouble       *shifted_y)
-{
-  switch (anchor)
-    {
-    case GTK_ANCHOR_CENTER:
-      x -= (handle_width >> 1);
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_NORTH:
-      x -= (handle_width >> 1);
-      break;
-
-    case GTK_ANCHOR_NORTH_WEST:
-      /*  nothing, this is the default  */
-      break;
-
-    case GTK_ANCHOR_NORTH_EAST:
-      x -= handle_width;
-      break;
-
-    case GTK_ANCHOR_SOUTH:
-      x -= (handle_width >> 1);
-      y -= handle_height;
-      break;
-
-    case GTK_ANCHOR_SOUTH_WEST:
-      y -= handle_height;
-      break;
-
-    case GTK_ANCHOR_SOUTH_EAST:
-      x -= handle_width;
-      y -= handle_height;
-      break;
-
-    case GTK_ANCHOR_WEST:
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_EAST:
-      x -= handle_width;
-      y -= (handle_height >> 1);
-      break;
-
-    default:
-      break;
-    }
-
-  if (shifted_x)
-    *shifted_x = x;
-
-  if (shifted_y)
-    *shifted_y = y;
-}
-
-static inline void
-gimp_draw_tool_shift_to_center (gdouble        x,
-                                gdouble        y,
-                                gint           handle_width,
-                                gint           handle_height,
-                                GtkAnchorType  anchor,
-                                gdouble       *shifted_x,
-                                gdouble       *shifted_y)
-{
-  switch (anchor)
-    {
-    case GTK_ANCHOR_CENTER:
-      /*  nothing, this is the default  */
-      break;
-
-    case GTK_ANCHOR_NORTH:
-      y += (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_NORTH_WEST:
-      x += (handle_width >> 1);
-      y += (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_NORTH_EAST:
-      x -= (handle_width >> 1);
-      y += (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_SOUTH:
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_SOUTH_WEST:
-      x += (handle_width >> 1);
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_SOUTH_EAST:
-      x -= (handle_width >> 1);
-      y -= (handle_height >> 1);
-      break;
-
-    case GTK_ANCHOR_WEST:
-      x += (handle_width >> 1);
-      break;
-
-    case GTK_ANCHOR_EAST:
-      x -= (handle_width >> 1);
-      break;
-
-    default:
-      break;
-    }
-
-  if (shifted_x)
-    *shifted_x = x;
-
-  if (shifted_y)
-    *shifted_y = y;
-}
-
-
-GType
-gimp_draw_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpDrawToolClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_draw_tool_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpDrawTool),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_draw_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_TOOL,
-					  "GimpDrawTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
 
 static void
 gimp_draw_tool_class_init (GimpDrawToolClass *klass)
 {
-  GObjectClass  *object_class;
-  GimpToolClass *tool_class;
-
-  object_class = G_OBJECT_CLASS (klass);
-  tool_class   = GIMP_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass  *object_class = G_OBJECT_CLASS (klass);
+  GimpToolClass *tool_class   = GIMP_TOOL_CLASS (klass);
 
   object_class->finalize = gimp_draw_tool_finalize;
 
@@ -941,16 +780,16 @@ gimp_draw_tool_on_handle (GimpDrawTool   *draw_tool,
 }
 
 gboolean
-gimp_draw_tool_on_vectors_handle (GimpDrawTool    *draw_tool,
-                                  GimpDisplay     *gdisp,
-                                  GimpVectors     *vectors,
-                                  GimpCoords      *coord,
-                                  gint             width,
-                                  gint             height,
-                                  GimpAnchorType   preferred,
-                                  gboolean         exclusive,
-                                  GimpAnchor     **ret_anchor,
-                                  GimpStroke     **ret_stroke)
+gimp_draw_tool_on_vectors_handle (GimpDrawTool      *draw_tool,
+                                  GimpDisplay       *gdisp,
+                                  GimpVectors       *vectors,
+                                  const GimpCoords  *coord,
+                                  gint               width,
+                                  gint               height,
+                                  GimpAnchorType     preferred,
+                                  gboolean           exclusive,
+                                  GimpAnchor       **ret_anchor,
+                                  GimpStroke       **ret_stroke)
 {
   GimpStroke *stroke       = NULL;
   GimpStroke *pref_stroke  = NULL;
@@ -1065,17 +904,17 @@ gimp_draw_tool_on_vectors_handle (GimpDrawTool    *draw_tool,
 }
 
 gboolean
-gimp_draw_tool_on_vectors_curve (GimpDrawTool  *draw_tool,
-                                 GimpDisplay   *gdisp,
-                                 GimpVectors   *vectors,
-                                 GimpCoords    *coord,
-                                 gint           width,
-                                 gint           height,
-                                 GimpCoords    *ret_coords,
-                                 gdouble       *ret_pos,
-                                 GimpAnchor   **ret_segment_start,
-                                 GimpAnchor   **ret_segment_end,
-                                 GimpStroke   **ret_stroke)
+gimp_draw_tool_on_vectors_curve (GimpDrawTool      *draw_tool,
+                                 GimpDisplay       *gdisp,
+                                 GimpVectors       *vectors,
+                                 const GimpCoords  *coord,
+                                 gint               width,
+                                 gint               height,
+                                 GimpCoords        *ret_coords,
+                                 gdouble           *ret_pos,
+                                 GimpAnchor       **ret_segment_start,
+                                 GimpAnchor       **ret_segment_end,
+                                 GimpStroke       **ret_stroke)
 {
   GimpStroke *stroke = NULL;
   GimpAnchor *segment_start;
@@ -1135,17 +974,17 @@ gimp_draw_tool_on_vectors_curve (GimpDrawTool  *draw_tool,
 }
 
 gboolean
-gimp_draw_tool_on_vectors (GimpDrawTool *draw_tool,
-                           GimpDisplay  *gdisp,
-                           GimpCoords   *coords,
-                           gint          width,
-                           gint          height,
-                           GimpCoords   *ret_coords,
-                           gdouble      *ret_pos,
-                           GimpAnchor  **ret_segment_start,
-                           GimpAnchor  **ret_segment_end,
-                           GimpStroke  **ret_stroke,
-                           GimpVectors **ret_vectors)
+gimp_draw_tool_on_vectors (GimpDrawTool      *draw_tool,
+                           GimpDisplay       *gdisp,
+                           const GimpCoords  *coords,
+                           gint               width,
+                           gint               height,
+                           GimpCoords        *ret_coords,
+                           gdouble           *ret_pos,
+                           GimpAnchor       **ret_segment_start,
+                           GimpAnchor       **ret_segment_end,
+                           GimpStroke       **ret_stroke,
+                           GimpVectors      **ret_vectors)
 {
   GList *list;
 
@@ -1186,16 +1025,15 @@ gimp_draw_tool_on_vectors (GimpDrawTool *draw_tool,
 }
 
 void
-gimp_draw_tool_draw_lines (GimpDrawTool *draw_tool,
-			   gdouble      *points,
-			   gint          n_points,
-			   gboolean      filled,
-                           gboolean      use_offsets)
+gimp_draw_tool_draw_lines (GimpDrawTool  *draw_tool,
+			   const gdouble *points,
+			   gint           n_points,
+			   gboolean       filled,
+                           gboolean       use_offsets)
 {
   GimpDisplayShell *shell;
   GdkPoint         *coords;
   gint              i;
-  gint              sx, sy;
 
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
 
@@ -1207,10 +1045,8 @@ gimp_draw_tool_draw_lines (GimpDrawTool *draw_tool,
     {
       gimp_display_shell_transform_xy (shell,
                                        points[i*2], points[i*2+1],
-                                       &sx, &sy,
+                                       &coords[i].x, &coords[i].y,
                                        use_offsets);
-      coords[i].x = sx;
-      coords[i].y = sy;
     }
 
   if (filled)
@@ -1230,16 +1066,15 @@ gimp_draw_tool_draw_lines (GimpDrawTool *draw_tool,
 }
 
 void
-gimp_draw_tool_draw_strokes (GimpDrawTool *draw_tool,
-			     GimpCoords   *points,
-			     gint          n_points,
-			     gboolean      filled,
-                             gboolean      use_offsets)
+gimp_draw_tool_draw_strokes (GimpDrawTool     *draw_tool,
+			     const GimpCoords *points,
+			     gint              n_points,
+			     gboolean          filled,
+                             gboolean          use_offsets)
 {
   GimpDisplayShell *shell;
   GdkPoint         *coords;
   gint              i;
-  gint              sx, sy;
 
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
 
@@ -1251,10 +1086,8 @@ gimp_draw_tool_draw_strokes (GimpDrawTool *draw_tool,
     {
       gimp_display_shell_transform_xy (shell,
                                        points[i].x, points[i].y,
-                                       &sx, &sy,
+                                       &coords[i].x, &coords[i].y,
                                        use_offsets);
-      coords[i].x = sx;
-      coords[i].y = sy;
     }
 
   if (filled)
@@ -1273,6 +1106,21 @@ gimp_draw_tool_draw_strokes (GimpDrawTool *draw_tool,
   g_free (coords);
 }
 
+/**
+ * gimp_draw_tool_draw_boundary:
+ *
+ * @draw_tool: a #GimpDrawTool
+ * @bound_segs: the sorted brush outline
+ * @n_bound_segs: the number of segments in @bound_segs
+ * @offset_x: x offset
+ * @offset_y: y offset
+ * @use_offsets: whether to use offsets
+ *
+ * Draw the boundary of the brush that @draw_tool uses. The boundary
+ * should be sorted with sort_boundary(), and @n_bound_segs should
+ * include the sentinel segments inserted by sort_boundary() that
+ * indicate the end of connected segment sequences (groups) .
+ */
 void
 gimp_draw_tool_draw_boundary (GimpDrawTool   *draw_tool,
                               const BoundSeg *bound_segs,
@@ -1282,33 +1130,57 @@ gimp_draw_tool_draw_boundary (GimpDrawTool   *draw_tool,
                               gboolean        use_offsets)
 {
   GimpDisplayShell *shell;
-  GdkSegment       *gdk_segs;
-  gint              n_gdk_segs;
+  GdkPoint         *gdk_points;
+  gint              n_gdk_points;
   gint              xmax, ymax;
   gint              x, y;
   gint              i;
 
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
-  g_return_if_fail (n_bound_segs > 0 || bound_segs == NULL);
+  g_return_if_fail (n_bound_segs > 0);
+  g_return_if_fail (bound_segs != NULL);
 
   shell = GIMP_DISPLAY_SHELL (draw_tool->gdisp->shell);
 
-  gdk_segs   = g_new0 (GdkSegment, n_bound_segs);
-  n_gdk_segs = 0;
+  gdk_points = g_new0 (GdkPoint, n_bound_segs + 1);
+  n_gdk_points = 0;
 
   xmax = shell->disp_width  + 1;
   ymax = shell->disp_height + 1;
 
+  /* The sorted boundary has sentinel segments inserted at the end of
+   * each group.
+   */
   for (i = 0; i < n_bound_segs; i++)
     {
-      gimp_display_shell_transform_xy (shell,
-                                       bound_segs[i].x1 + offset_x,
-                                       bound_segs[i].y1 + offset_y,
-                                       &x, &y,
-                                       use_offsets);
+      if (bound_segs[i].x1 == -1 &&
+	  bound_segs[i].y1 == -1 &&
+	  bound_segs[i].x2 == -1 &&
+	  bound_segs[i].y2 == -1)
+	{
+	  /* Group ends */
+	  gimp_canvas_draw_lines (GIMP_CANVAS (shell->canvas),
+				  GIMP_CANVAS_STYLE_XOR_DOTTED,
+				  gdk_points, n_gdk_points);
+	  n_gdk_points = 0;
+	  continue;
+	}
 
-      gdk_segs[n_gdk_segs].x1 = CLAMP (x, -1, xmax);
-      gdk_segs[n_gdk_segs].y1 = CLAMP (y, -1, ymax);
+      if (n_gdk_points == 0)
+	{
+	  gimp_display_shell_transform_xy (shell,
+					   bound_segs[i].x1 + offset_x,
+					   bound_segs[i].y1 + offset_y,
+					   &x, &y,
+					   use_offsets);
+
+	  gdk_points[0].x = CLAMP (x, -1, xmax);
+	  gdk_points[0].y = CLAMP (y, -1, ymax);
+
+	  n_gdk_points++;
+	}
+
+      g_assert (n_gdk_points < n_bound_segs + 1);
 
       gimp_display_shell_transform_xy (shell,
                                        bound_segs[i].x2 + offset_x,
@@ -1316,39 +1188,138 @@ gimp_draw_tool_draw_boundary (GimpDrawTool   *draw_tool,
                                        &x, &y,
                                        use_offsets);
 
-      gdk_segs[n_gdk_segs].x2 = CLAMP (x, -1, xmax);
-      gdk_segs[n_gdk_segs].y2 = CLAMP (y, -1, ymax);
+      gdk_points[n_gdk_points].x = CLAMP (x, -1, xmax);
+      gdk_points[n_gdk_points].y = CLAMP (y, -1, ymax);
 
-      if (gdk_segs[n_gdk_segs].x1 == gdk_segs[n_gdk_segs].x2 &&
-          gdk_segs[n_gdk_segs].y1 == gdk_segs[n_gdk_segs].y2)
-        continue;
-
-      /*  If this segment is a closing segment && the segments lie inside
-       *  the region, OR if this is an opening segment and the segments
-       *  lie outside the region...
-       *  we need to transform it by one display pixel
-       */
-      if (! bound_segs[i].open)
-        {
-          /*  If it is vertical  */
-          if (gdk_segs[n_gdk_segs].x1 == gdk_segs[n_gdk_segs].x2)
-            {
-              gdk_segs[n_gdk_segs].x1 -= 1;
-              gdk_segs[n_gdk_segs].x2 -= 1;
-            }
-          else
-            {
-              gdk_segs[n_gdk_segs].y1 -= 1;
-              gdk_segs[n_gdk_segs].y2 -= 1;
-            }
-        }
-
-      n_gdk_segs++;
+      n_gdk_points++;
     }
 
-  gimp_canvas_draw_segments (GIMP_CANVAS (shell->canvas),
-                             GIMP_CANVAS_STYLE_XOR,
-                             gdk_segs, n_gdk_segs);
+  g_free (gdk_points);
+}
 
-  g_free (gdk_segs);
+
+/*  private functions  */
+
+static inline void
+gimp_draw_tool_shift_to_north_west (gdouble        x,
+                                    gdouble        y,
+                                    gint           handle_width,
+                                    gint           handle_height,
+                                    GtkAnchorType  anchor,
+                                    gdouble       *shifted_x,
+                                    gdouble       *shifted_y)
+{
+  switch (anchor)
+    {
+    case GTK_ANCHOR_CENTER:
+      x -= (handle_width >> 1);
+      y -= (handle_height >> 1);
+      break;
+
+    case GTK_ANCHOR_NORTH:
+      x -= (handle_width >> 1);
+      break;
+
+    case GTK_ANCHOR_NORTH_WEST:
+      /*  nothing, this is the default  */
+      break;
+
+    case GTK_ANCHOR_NORTH_EAST:
+      x -= handle_width;
+      break;
+
+    case GTK_ANCHOR_SOUTH:
+      x -= (handle_width >> 1);
+      y -= handle_height;
+      break;
+
+    case GTK_ANCHOR_SOUTH_WEST:
+      y -= handle_height;
+      break;
+
+    case GTK_ANCHOR_SOUTH_EAST:
+      x -= handle_width;
+      y -= handle_height;
+      break;
+
+    case GTK_ANCHOR_WEST:
+      y -= (handle_height >> 1);
+      break;
+
+    case GTK_ANCHOR_EAST:
+      x -= handle_width;
+      y -= (handle_height >> 1);
+      break;
+
+    default:
+      break;
+    }
+
+  if (shifted_x)
+    *shifted_x = x;
+
+  if (shifted_y)
+    *shifted_y = y;
+}
+
+static inline void
+gimp_draw_tool_shift_to_center (gdouble        x,
+                                gdouble        y,
+                                gint           handle_width,
+                                gint           handle_height,
+                                GtkAnchorType  anchor,
+                                gdouble       *shifted_x,
+                                gdouble       *shifted_y)
+{
+  switch (anchor)
+    {
+    case GTK_ANCHOR_CENTER:
+      /*  nothing, this is the default  */
+      break;
+
+    case GTK_ANCHOR_NORTH:
+      y += (handle_height >> 1);
+      break;
+
+    case GTK_ANCHOR_NORTH_WEST:
+      x += (handle_width >> 1);
+      y += (handle_height >> 1);
+      break;
+
+    case GTK_ANCHOR_NORTH_EAST:
+      x -= (handle_width >> 1);
+      y += (handle_height >> 1);
+      break;
+
+    case GTK_ANCHOR_SOUTH:
+      y -= (handle_height >> 1);
+      break;
+
+    case GTK_ANCHOR_SOUTH_WEST:
+      x += (handle_width >> 1);
+      y -= (handle_height >> 1);
+      break;
+
+    case GTK_ANCHOR_SOUTH_EAST:
+      x -= (handle_width >> 1);
+      y -= (handle_height >> 1);
+      break;
+
+    case GTK_ANCHOR_WEST:
+      x += (handle_width >> 1);
+      break;
+
+    case GTK_ANCHOR_EAST:
+      x -= (handle_width >> 1);
+      break;
+
+    default:
+      break;
+    }
+
+  if (shifted_x)
+    *shifted_x = x;
+
+  if (shifted_y)
+    *shifted_y = y;
 }

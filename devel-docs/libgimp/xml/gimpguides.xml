@@ -4,36 +4,34 @@
 
 <refentry id="libgimp-gimpguides">
 <refmeta>
-<refentrytitle role="top_of_page">gimpguides</refentrytitle>
+<refentrytitle>gimpguides</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpguides</refname>
-<refpurpose>Functions for manipulating guides.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimpguides</refname><refpurpose>Functions for manipulating guides.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="gint32">gint32</link>              <link linkend="gimp-image-add-hguide">gimp_image_add_hguide</link>               (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint">gint</link> yposition);
-<link linkend="gint32">gint32</link>              <link linkend="gimp-image-add-vguide">gimp_image_add_vguide</link>               (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint">gint</link> xposition);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-image-delete-guide">gimp_image_delete_guide</link>             (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> guide_ID);
-<link linkend="gint32">gint32</link>              <link linkend="gimp-image-find-next-guide">gimp_image_find_next_guide</link>          (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> guide_ID);
-<link linkend="GimpOrientationType">GimpOrientationType</link> <link linkend="gimp-image-get-guide-orientation">gimp_image_get_guide_orientation</link>    (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> guide_ID);
-<link linkend="gint">gint</link>                <link linkend="gimp-image-get-guide-position">gimp_image_get_guide_position</link>       (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> guide_ID);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-image-add-hguide">gimp_image_add_hguide</link>           (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint">gint</link> yposition);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-image-add-vguide">gimp_image_add_vguide</link>           (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint">gint</link> xposition);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-image-delete-guide">gimp_image_delete_guide</link>         (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> guide_ID);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-image-find-next-guide">gimp_image_find_next_guide</link>      (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> guide_ID);
+<link linkend="GimpOrientationType">GimpOrientationType</link> <link linkend="gimp-image-get-guide-orientation">gimp_image_get_guide_orientation</link>
+                                            (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> guide_ID);
+<link linkend="gint">gint</link>        <link linkend="gimp-image-get-guide-position">gimp_image_get_guide_position</link>   (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> guide_ID);
 </synopsis>
 </refsynopsisdiv>
 
@@ -45,20 +43,20 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Functions for manipulating guides.
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="gimp-image-add-hguide" role="function"/>gimp_image_add_hguide ()</title>
-<indexterm><primary>gimp_image_add_hguide</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_image_add_hguide               (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint">gint</link> yposition);</programlisting>
+<title><anchor id="gimp-image-add-hguide"/>gimp_image_add_hguide ()</title>
+<indexterm><primary>gimp_image_add_hguide</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_add_hguide           (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint">gint</link> yposition);</programlisting>
 <para>
 Add a horizontal guide to an image.
 </para>
@@ -79,9 +77,9 @@ returns the guide ID of the new guide.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-add-vguide" role="function"/>gimp_image_add_vguide ()</title>
-<indexterm><primary>gimp_image_add_vguide</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_image_add_vguide               (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint">gint</link> xposition);</programlisting>
+<title><anchor id="gimp-image-add-vguide"/>gimp_image_add_vguide ()</title>
+<indexterm><primary>gimp_image_add_vguide</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_add_vguide           (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint">gint</link> xposition);</programlisting>
 <para>
 Add a vertical guide to an image.
 </para>
@@ -102,9 +100,9 @@ the guide ID of the new guide.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-delete-guide" role="function"/>gimp_image_delete_guide ()</title>
-<indexterm><primary>gimp_image_delete_guide</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_image_delete_guide             (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> guide_ID);</programlisting>
+<title><anchor id="gimp-image-delete-guide"/>gimp_image_delete_guide ()</title>
+<indexterm><primary>gimp_image_delete_guide</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_image_delete_guide         (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> guide_ID);</programlisting>
 <para>
 Deletes a guide from an image.
 </para>
@@ -124,9 +122,9 @@ the specified guide from the specified image.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-find-next-guide" role="function"/>gimp_image_find_next_guide ()</title>
-<indexterm><primary>gimp_image_find_next_guide</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_image_find_next_guide          (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> guide_ID);</programlisting>
+<title><anchor id="gimp-image-find-next-guide"/>gimp_image_find_next_guide ()</title>
+<indexterm><primary>gimp_image_find_next_guide</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_image_find_next_guide      (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> guide_ID);</programlisting>
 <para>
 Find next guide on an image.
 </para>
@@ -149,9 +147,10 @@ as an argument or the image has no guides.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-guide-orientation" role="function"/>gimp_image_get_guide_orientation ()</title>
-<indexterm><primary>gimp_image_get_guide_orientation</primary></indexterm><programlisting><link linkend="GimpOrientationType">GimpOrientationType</link> gimp_image_get_guide_orientation    (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> guide_ID);</programlisting>
+<title><anchor id="gimp-image-get-guide-orientation"/>gimp_image_get_guide_orientation ()</title>
+<indexterm><primary>gimp_image_get_guide_orientation</primary></indexterm><programlisting><link linkend="GimpOrientationType">GimpOrientationType</link> gimp_image_get_guide_orientation
+                                            (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> guide_ID);</programlisting>
 <para>
 Get orientation of a guide on an image.
 </para>
@@ -171,9 +170,9 @@ the orientations of the guide.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-get-guide-position" role="function"/>gimp_image_get_guide_position ()</title>
-<indexterm><primary>gimp_image_get_guide_position</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_image_get_guide_position       (<link linkend="gint32">gint32</link> image_ID,
-                                                         <link linkend="gint32">gint32</link> guide_ID);</programlisting>
+<title><anchor id="gimp-image-get-guide-position"/>gimp_image_get_guide_position ()</title>
+<indexterm><primary>gimp_image_get_guide_position</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_image_get_guide_position   (<link linkend="gint32">gint32</link> image_ID,
+                                             <link linkend="gint32">gint32</link> guide_ID);</programlisting>
 <para>
 Get position of a guide on an image.
 </para>

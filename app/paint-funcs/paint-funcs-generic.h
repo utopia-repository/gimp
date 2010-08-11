@@ -276,6 +276,13 @@ pattern_pixels_mask (guchar  *dest,
     }
 }
 
+/* 
+ * blend_pixels patched 8-24-05 to fix bug #163721.  Note that this change
+ * causes the function to treat src1 and src2 asymmetrically.  This gives the
+ * right behavior for the smudge tool, which is the only user of this function
+ * at the time of patching.  If you want to use the function for something
+ * else, caveat emptor.
+ */
 inline void
 blend_pixels (const guchar *src1,
               const guchar *src2,
@@ -288,15 +295,15 @@ blend_pixels (const guchar *src1,
 
   if (HAS_ALPHA (bytes))
     {
-      const guint blend1 = 256 - blend;
+      const guint blend1 = 255 - blend;
       const guint blend2 = blend + 1;
       const guint c      = bytes - 1;
 
       while (w--)
         {
-          guint a1 = blend1 * src1[c];
-          guint a2 = blend2 * src2[c];
-          guint a  = a1 + a2;
+          gint a1 = blend1 * src1[c];
+          gint a2 = blend2 * src2[c];
+          gint a  = a1 + a2;
 
           if (!a)
             {
@@ -306,7 +313,7 @@ blend_pixels (const guchar *src1,
           else
             {
               for (b = 0; b < c; b++)
-                dest[b] = (src1[b] * a1 + src2[b] * a2) / a;
+                dest[b] = src1[b] + (src1[b] * a1 + src2[b] * a2 - a * src1[b]) / a;
 
               dest[c] = a >> 8;
             }
@@ -323,7 +330,7 @@ blend_pixels (const guchar *src1,
       while (w--)
         {
           for (b = 0; b < bytes; b++)
-            dest[b] = (src1[b] * blend1 + src2[b] * blend) / 255;
+            dest[b] = src1[b] + (src1[b] * blend1 + src2[b] * blend - src1[b] * 255) / 255;
 
           src1 += bytes;
           src2 += bytes;
@@ -336,7 +343,7 @@ inline void
 shade_pixels (const guchar *src,
               guchar       *dest,
               const guchar *col,
-              guchar            blend,
+              guchar        blend,
               guint         w,
               guint         bytes,
               gboolean      has_alpha)
@@ -510,8 +517,8 @@ saturation_only_pixels (const guchar *src1,
 {
   const guint has_alpha1 = HAS_ALPHA (bytes1);
   const guint has_alpha2 = HAS_ALPHA (bytes2);
-  guint r1, g1, b1;
-  guint r2, g2, b2;
+  gint r1, g1, b1;
+  gint r2, g2, b2;
 
   /*  assumes inputs are only 4 byte RGBA pixels  */
   while (length--)
@@ -550,8 +557,8 @@ value_only_pixels (const guchar *src1,
 {
   const guint has_alpha1 = HAS_ALPHA (bytes1);
   const guint has_alpha2 = HAS_ALPHA (bytes2);
-  guint r1, g1, b1;
-  guint r2, g2, b2;
+  gint r1, g1, b1;
+  gint r2, g2, b2;
 
   /*  assumes inputs are only 4 byte RGBA pixels  */
   while (length--)
@@ -590,8 +597,8 @@ color_only_pixels (const guchar *src1,
 {
   const guint has_alpha1 = HAS_ALPHA (bytes1);
   const guint has_alpha2 = HAS_ALPHA (bytes2);
-  guint r1, g1, b1;
-  guint r2, g2, b2;
+  gint r1, g1, b1;
+  gint r2, g2, b2;
 
   /*  assumes inputs are only 4 byte RGBA pixels  */
   while (length--)
@@ -1100,7 +1107,7 @@ dissolve_pixels (const guchar *src,
                  gint          length,
                  gint          sb,
                  gint          db,
-                 guint               has_alpha)
+                 gboolean      has_alpha)
 {
   gint    alpha, b;
   gint32  rand_val;
@@ -1249,9 +1256,11 @@ swap_pixels (guchar *src,
 {
   while (length--)
     {
-      *src = *src ^ *dest;
-      *dest = *dest ^ *src;
-      *src = *src ^ *dest;
+      guchar tmp = *dest;
+
+      *dest = *src;
+      *src = tmp;
+
       src++;
       dest++;
     }

@@ -44,9 +44,6 @@ enum
 };
 
 
-static void gimp_cell_renderer_color_class_init (GimpCellRendererColorClass *klass);
-static void gimp_cell_renderer_color_init       (GimpCellRendererColor      *cell);
-
 static void gimp_cell_renderer_color_get_property (GObject         *object,
                                                    guint            param_id,
                                                    GValue          *value,
@@ -71,44 +68,17 @@ static void gimp_cell_renderer_color_render       (GtkCellRenderer *cell,
                                                    GtkCellRendererState flags);
 
 
-static GtkCellRendererClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpCellRendererColor, gimp_cell_renderer_color,
+               GTK_TYPE_CELL_RENDERER);
 
+#define parent_class gimp_cell_renderer_color_parent_class
 
-GType
-gimp_cell_renderer_color_get_type (void)
-{
-  static GType cell_type = 0;
-
-  if (! cell_type)
-    {
-      static const GTypeInfo cell_info =
-      {
-        sizeof (GimpCellRendererColorClass),
-        NULL,		/* base_init */
-        NULL,		/* base_finalize */
-        (GClassInitFunc) gimp_cell_renderer_color_class_init,
-        NULL,		/* class_finalize */
-        NULL,		/* class_data */
-        sizeof (GimpCellRendererColor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_cell_renderer_color_init,
-      };
-
-      cell_type = g_type_register_static (GTK_TYPE_CELL_RENDERER,
-                                          "GimpCellRendererColor",
-                                          &cell_info, 0);
-    }
-
-  return cell_type;
-}
 
 static void
 gimp_cell_renderer_color_class_init (GimpCellRendererColorClass *klass)
 {
   GObjectClass         *object_class = G_OBJECT_CLASS (klass);
   GtkCellRendererClass *cell_class   = GTK_CELL_RENDERER_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->get_property = gimp_cell_renderer_color_get_property;
   object_class->set_property = gimp_cell_renderer_color_set_property;
@@ -129,7 +99,7 @@ gimp_cell_renderer_color_class_init (GimpCellRendererColorClass *klass)
                                                          G_PARAM_CONSTRUCT));
   g_object_class_install_property (object_class,
 				   PROP_SIZE,
-                                   g_param_spec_int ("icon_size", NULL, NULL,
+                                   g_param_spec_int ("icon-size", NULL, NULL,
                                                      0, G_MAXINT,
                                                      DEFAULT_ICON_SIZE,
                                                      G_PARAM_READWRITE |
@@ -204,13 +174,10 @@ gimp_cell_renderer_color_get_size (GtkCellRenderer *cell,
                                    gint            *height)
 {
   GimpCellRendererColor *color = GIMP_CELL_RENDERER_COLOR (cell);
-  GtkSettings           *settings;
   gint                   calc_width;
   gint                   calc_height;
 
-  settings = gtk_settings_get_for_screen (gtk_widget_get_screen (widget));
-
-  gtk_icon_size_lookup_for_settings (settings,
+  gtk_icon_size_lookup_for_settings (gtk_widget_get_settings (widget),
                                      color->size, &calc_width, &calc_height);
 
   if (cell_area && calc_width > 0 && calc_height > 0)
@@ -277,7 +244,10 @@ gimp_cell_renderer_color_render (GtkCellRenderer      *cell,
 
       buf = g_alloca (rowstride * (rect.height - 2));
 
-      _gimp_color_area_render_buf ((color->opaque ?
+      _gimp_color_area_render_buf (widget,
+                                   (GTK_WIDGET_STATE (widget) ==
+                                    GTK_STATE_INSENSITIVE || !cell->sensitive),
+                                   (color->opaque ?
                                     GIMP_COLOR_AREA_FLAT :
                                     GIMP_COLOR_AREA_SMALL_CHECKS),
                                    buf,

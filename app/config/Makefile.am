@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 
@@ -8,27 +9,12 @@ noinst_LIBRARIES = libappconfig.a
 
 libappconfig_a_SOURCES = \
 	config-types.h			\
-	gimpconfig.c			\
-	gimpconfig.h			\
-	gimpconfig-deserialize.c	\
-	gimpconfig-deserialize.h	\
 	gimpconfig-dump.c		\
 	gimpconfig-dump.h		\
-	gimpconfig-error.c		\
-	gimpconfig-error.h		\
-	gimpconfig-params.c		\
-	gimpconfig-params.h		\
-	gimpconfig-path.c		\
-	gimpconfig-path.h		\
-	gimpconfig-serialize.c		\
-	gimpconfig-serialize.h		\
-	gimpconfig-serialize.h		\
-	gimpconfig-types.c		\
-	gimpconfig-types.h		\
+	gimpconfig-file.c		\
+	gimpconfig-file.h		\
 	gimpconfig-utils.c		\
 	gimpconfig-utils.h		\
-	gimpconfigwriter.c		\
-	gimpconfigwriter.h		\
 	gimpbaseconfig.c		\
 	gimpbaseconfig.h		\
 	gimpcoreconfig.c		\
@@ -42,18 +28,23 @@ libappconfig_a_SOURCES = \
 	gimprc.c			\
 	gimprc.h			\
 	gimprc-blurbs.h			\
-	gimpscanner.c			\
-	gimpscanner.h			\
+	gimprc-deserialize.c		\
+	gimprc-deserialize.h		\
+	gimprc-serialize.c		\
+	gimprc-serialize.h		\
+	gimprc-unknown.c		\
+	gimprc-unknown.h		\
 	gimpxmlparser.c			\
 	gimpxmlparser.h
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Config\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GLIB_CFLAGS)		\
 	$(GDK_PIXBUF_CFLAGS)	\
@@ -78,6 +69,7 @@ test_config_LDADD = \
 	libappconfig.a		\
 	$(libgimpcolor)		\
 	$(libgimpmath)		\
+	$(libgimpconfig)	\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)
 

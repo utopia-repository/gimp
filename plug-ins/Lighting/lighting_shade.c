@@ -74,7 +74,7 @@ phong_shade (GimpVector3 *position,
       gimp_vector3_add (&h, &lnormal, &v);
       gimp_vector3_normalize (&h);
 
-      rv = MAX (0., gimp_vector3_inner_product (&n, &h));
+      rv = MAX (0.01, gimp_vector3_inner_product (&n, &h));
       rv = pow (rv, mapvals.material.highlight);
       rv *= nl;
 
@@ -474,76 +474,88 @@ get_ray_color (GimpVector3 *position)
 GimpRGB
 get_ray_color_ref (GimpVector3 *position)
 {
+  GimpRGB      color_sum;
   GimpRGB      color_int;
   GimpRGB      light_color;
   GimpRGB      color, env_color;
-  gint         x;
+  gint         x, f;
   gdouble      xf, yf;
   GimpVector3  normal, *p, v, r;
   gint         k;
+  gdouble      tmpval;
 
   pos_to_float (position->x, position->y, &xf, &yf);
 
   x = RINT (xf);
 
+  if (mapvals.bump_mapped == FALSE || mapvals.bumpmap_id == -1)
+    normal = mapvals.planenormal;
+  else
+    normal = vertex_normals[1][(gint) RINT (xf)];
+  gimp_vector3_normalize (&normal);
+
   if (mapvals.transparent_background && heights[1][x] == 0)
     {
-      gimp_rgb_set_alpha (&light_color, 0.0);
+      gimp_rgb_set_alpha (&color_sum, 0.0);
     }
   else
     {
+      color = get_image_color (xf, yf, &f);
+      color_sum = color;
+      gimp_rgb_multiply (&color_sum, mapvals.material.ambient_int);
+
       for (k = 0; k < NUM_LIGHTS; k++)
         {
+          p = &mapvals.lightsource[k].direction;
+
           if (!mapvals.lightsource[k].active
               || mapvals.lightsource[k].type == NO_LIGHT)
             continue;
           else if (mapvals.lightsource[k].type == POINT_LIGHT)
             p = &mapvals.lightsource[k].position;
-          else
-            p = &mapvals.lightsource[k].direction;
 
           color_int = mapvals.lightsource[k].color;
           gimp_rgb_multiply (&color_int, mapvals.lightsource[k].intensity);
 
-          if (mapvals.bump_mapped == FALSE || mapvals.bumpmap_id == -1)
-            {
-              light_color = phong_shade (position,
-                                         &mapvals.viewpoint,
-                                         &mapvals.planenormal,
-                                         p,
-                                         &color,
-                                         &color_int,
-                                         mapvals.lightsource[0].type);
-            }
-          else
-            {
-              normal = vertex_normals[1][(gint) RINT (xf)];
-
-              gimp_vector3_sub (&v, &mapvals.viewpoint,position);
-              gimp_vector3_normalize (&v);
-
-              r = compute_reflected_ray (&normal, &v);
-
-              /* Get color in the direction of r */
-              /* =============================== */
-
-              sphere_to_image (&r, &xf, &yf);
-              env_color = peek_env_map (RINT (env_width * xf),
-                                        RINT (env_height * yf));
-
-              light_color = phong_shade (position,
-                                         &mapvals.viewpoint,
-                                         &normal,
-                                         p,
-                                         &env_color,
-                                         &color_int,
-                                         mapvals.lightsource[0].type);
-            }
+          light_color = phong_shade (position,
+                                     &mapvals.viewpoint,
+                                     &normal,
+                                     p,
+                                     &color,
+                                     &color_int,
+                                     mapvals.lightsource[0].type);
         }
+
+      gimp_vector3_sub (&v, &mapvals.viewpoint, position);
+      gimp_vector3_normalize (&v);
+
+      r = compute_reflected_ray (&normal, &v);
+
+      /* Get color in the direction of r */
+      /* =============================== */
+
+      sphere_to_image (&r, &xf, &yf);
+      env_color = peek_env_map (RINT (env_width * xf),
+                                RINT (env_height * yf));
+
+      tmpval = mapvals.material.diffuse_int;
+      mapvals.material.diffuse_int = 0.;
+
+      light_color = phong_shade (position,
+                                 &mapvals.viewpoint,
+                                 &normal,
+                                 &r,
+                                 &color,
+                                 &env_color,
+                                 DIRECTIONAL_LIGHT);
+
+      mapvals.material.diffuse_int = tmpval;
+
+      gimp_rgb_add (&color_sum, &light_color);
     }
 
-  gimp_rgb_clamp (&light_color);
-  return light_color;
+  gimp_rgb_clamp (&color_sum);
+  return color_sum;
 }
 
 GimpRGB
@@ -576,13 +588,13 @@ get_ray_color_no_bilinear (GimpVector3 *position)
 
       for (k = 0; k < NUM_LIGHTS; k++)
         {
+          p = &mapvals.lightsource[k].direction;
+
           if (!mapvals.lightsource[k].active
               || mapvals.lightsource[k].type == NO_LIGHT)
             continue;
           else if (mapvals.lightsource[k].type == POINT_LIGHT)
             p = &mapvals.lightsource[k].position;
-          else
-            p = &mapvals.lightsource[k].direction;
 
           color_int = mapvals.lightsource[k].color;
           gimp_rgb_multiply (&color_int, mapvals.lightsource[k].intensity);
@@ -621,6 +633,7 @@ get_ray_color_no_bilinear (GimpVector3 *position)
 GimpRGB
 get_ray_color_no_bilinear_ref (GimpVector3 *position)
 {
+  GimpRGB      color_sum;
   GimpRGB      color_int;
   GimpRGB      light_color;
   GimpRGB      color, env_color;
@@ -628,86 +641,78 @@ get_ray_color_no_bilinear_ref (GimpVector3 *position)
   gdouble      xf, yf;
   GimpVector3  normal, *p, v, r;
   gint         k;
+  gdouble      tmpval;
 
   pos_to_float (position->x, position->y, &xf, &yf);
 
   x = RINT (xf);
 
+  if (mapvals.bump_mapped == FALSE || mapvals.bumpmap_id == -1)
+    normal = mapvals.planenormal;
+  else
+    normal = vertex_normals[1][(gint) RINT (xf)];
+  gimp_vector3_normalize (&normal);
+
   if (mapvals.transparent_background && heights[1][x] == 0)
     {
-      gimp_rgb_set_alpha (&light_color, 0.0);
+      gimp_rgb_set_alpha (&color_sum, 0.0);
     }
   else
     {
+      color = peek (RINT (xf), RINT (yf));
+      color_sum = color;
+      gimp_rgb_multiply (&color_sum, mapvals.material.ambient_int);
+
       for (k = 0; k < NUM_LIGHTS; k++)
         {
+          p = &mapvals.lightsource[k].direction;
+
           if (!mapvals.lightsource[k].active
               || mapvals.lightsource[k].type == NO_LIGHT)
             continue;
           else if (mapvals.lightsource[k].type == POINT_LIGHT)
             p = &mapvals.lightsource[k].position;
-          else
-            p = &mapvals.lightsource[k].direction;
 
           color_int = mapvals.lightsource[k].color;
           gimp_rgb_multiply (&color_int, mapvals.lightsource[k].intensity);
-
-          if (mapvals.bump_mapped == FALSE || mapvals.bumpmap_id == -1)
-            {
-              pos_to_float (position->x, position->y, &xf, &yf);
-
-              color = peek (RINT (xf), RINT (yf));
-
-              gimp_vector3_sub (&v, &mapvals.viewpoint, position);
-              gimp_vector3_normalize (&v);
-
-              r = compute_reflected_ray (&mapvals.planenormal, &v);
-
-              /* Get color in the direction of r */
-              /* =============================== */
-
-              sphere_to_image (&r, &xf, &yf);
-              env_color = peek_env_map (RINT (env_width * xf),
-                                        RINT (env_height * yf));
-
-              light_color = phong_shade (position,
-                                         &mapvals.viewpoint,
-                                         &mapvals.planenormal,
-                                         p,
-                                         &env_color,
-                                         &color_int,
-                                         mapvals.lightsource[0].type);
-            }
-          else
-            {
-              normal = vertex_normals[1][(gint) RINT (xf)];
-
-              pos_to_float (position->x, position->y, &xf, &yf);
-              color = peek (RINT (xf), RINT (yf));
-
-              gimp_vector3_sub (&v, &mapvals.viewpoint, position);
-              gimp_vector3_normalize (&v);
-
-              r = compute_reflected_ray (&normal, &v);
-
-              /* Get color in the direction of r */
-              /* =============================== */
-
-              sphere_to_image (&r, &xf, &yf);
-              env_color = peek_env_map (RINT (env_width * xf),
-                                        RINT (env_height * yf));
 
               light_color = phong_shade (position,
                                          &mapvals.viewpoint,
                                          &normal,
                                          p,
-                                         &env_color,
+                                         &color,
                                          &color_int,
                                          mapvals.lightsource[0].type);
-            }
         }
+
+      gimp_vector3_sub (&v, &mapvals.viewpoint, position);
+      gimp_vector3_normalize (&v);
+
+      r = compute_reflected_ray (&normal, &v);
+
+      /* Get color in the direction of r */
+      /* =============================== */
+
+      sphere_to_image (&r, &xf, &yf);
+      env_color = peek_env_map (RINT (env_width * xf),
+                                RINT (env_height * yf));
+
+      tmpval = mapvals.material.diffuse_int;
+      mapvals.material.diffuse_int = 0.;
+
+      light_color = phong_shade (position,
+                                 &mapvals.viewpoint,
+                                 &normal,
+                                 &r,
+                                 &color,
+                                 &env_color,
+                                 DIRECTIONAL_LIGHT);
+
+      mapvals.material.diffuse_int = tmpval;
+
+      gimp_rgb_add (&color_sum, &light_color);
     }
 
- gimp_rgb_clamp (&light_color);
- return light_color;
+ gimp_rgb_clamp (&color_sum);
+ return color_sum;
 }

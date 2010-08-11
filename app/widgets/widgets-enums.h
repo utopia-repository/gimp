@@ -65,10 +65,10 @@ GType gimp_color_frame_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_COLOR_FRAME_MODE_PIXEL,  /*< desc="Pixel values" >*/
-  GIMP_COLOR_FRAME_MODE_RGB,    /*< desc="RGB"          >*/
-  GIMP_COLOR_FRAME_MODE_HSV,    /*< desc="HSV"          >*/
-  GIMP_COLOR_FRAME_MODE_CMYK    /*< desc="CMYK"         >*/
+  GIMP_COLOR_FRAME_MODE_PIXEL,  /*< desc="Pixel" >*/
+  GIMP_COLOR_FRAME_MODE_RGB,    /*< desc="RGB"   >*/
+  GIMP_COLOR_FRAME_MODE_HSV,    /*< desc="HSV"   >*/
+  GIMP_COLOR_FRAME_MODE_CMYK    /*< desc="CMYK"  >*/
 } GimpColorFrameMode;
 
 
@@ -156,18 +156,6 @@ typedef enum
 } GimpWindowHint;
 
 
-#define GIMP_TYPE_ZOOM_TYPE (gimp_zoom_type_get_type ())
-
-GType gimp_zoom_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_ZOOM_IN,  /*< desc="Zoom in"  >*/
-  GIMP_ZOOM_OUT, /*< desc="Zoom out" >*/
-  GIMP_ZOOM_TO   /*< skip >*/
-} GimpZoomType;
-
-
 /*
  * non-registered enums; register them if needed
  */
@@ -192,26 +180,27 @@ typedef enum  /*< skip >*/
   GIMP_DND_TYPE_URI_LIST     = 1,
   GIMP_DND_TYPE_TEXT_PLAIN   = 2,
   GIMP_DND_TYPE_NETSCAPE_URL = 3,
-  GIMP_DND_TYPE_COLOR        = 4,
-  GIMP_DND_TYPE_PNG          = 5,
+  GIMP_DND_TYPE_XDS          = 4,
+  GIMP_DND_TYPE_COLOR        = 5,
   GIMP_DND_TYPE_SVG          = 6,
   GIMP_DND_TYPE_SVG_XML      = 7,
-  GIMP_DND_TYPE_IMAGE        = 8,
-  GIMP_DND_TYPE_LAYER        = 9,
-  GIMP_DND_TYPE_CHANNEL      = 10,
-  GIMP_DND_TYPE_LAYER_MASK   = 11,
-  GIMP_DND_TYPE_COMPONENT    = 12,
-  GIMP_DND_TYPE_VECTORS      = 13,
-  GIMP_DND_TYPE_BRUSH        = 14,
-  GIMP_DND_TYPE_PATTERN      = 15,
-  GIMP_DND_TYPE_GRADIENT     = 16,
-  GIMP_DND_TYPE_PALETTE      = 17,
-  GIMP_DND_TYPE_FONT         = 18,
-  GIMP_DND_TYPE_BUFFER       = 19,
-  GIMP_DND_TYPE_IMAGEFILE    = 20,
-  GIMP_DND_TYPE_TEMPLATE     = 21,
-  GIMP_DND_TYPE_TOOL         = 22,
-  GIMP_DND_TYPE_DIALOG       = 23,
+  GIMP_DND_TYPE_PIXBUF       = 8,
+  GIMP_DND_TYPE_IMAGE        = 9,
+  GIMP_DND_TYPE_COMPONENT    = 10,
+  GIMP_DND_TYPE_LAYER        = 11,
+  GIMP_DND_TYPE_CHANNEL      = 12,
+  GIMP_DND_TYPE_LAYER_MASK   = 13,
+  GIMP_DND_TYPE_VECTORS      = 14,
+  GIMP_DND_TYPE_BRUSH        = 15,
+  GIMP_DND_TYPE_PATTERN      = 16,
+  GIMP_DND_TYPE_GRADIENT     = 17,
+  GIMP_DND_TYPE_PALETTE      = 18,
+  GIMP_DND_TYPE_FONT         = 19,
+  GIMP_DND_TYPE_BUFFER       = 20,
+  GIMP_DND_TYPE_IMAGEFILE    = 21,
+  GIMP_DND_TYPE_TEMPLATE     = 22,
+  GIMP_DND_TYPE_TOOL_INFO    = 23,
+  GIMP_DND_TYPE_DIALOG       = 24,
 
   GIMP_DND_TYPE_LAST         = GIMP_DND_TYPE_DIALOG
 } GimpDndType;
@@ -243,6 +232,9 @@ typedef enum  /*< skip >*/
   GIMP_TOOL_CURSOR_FREE_SELECT,
   GIMP_TOOL_CURSOR_FUZZY_SELECT,
   GIMP_TOOL_CURSOR_PATHS,
+  GIMP_TOOL_CURSOR_PATHS_ANCHOR,
+  GIMP_TOOL_CURSOR_PATHS_CONTROL,
+  GIMP_TOOL_CURSOR_PATHS_SEGMENT,
   GIMP_TOOL_CURSOR_ISCISSORS,
   GIMP_TOOL_CURSOR_MOVE,
   GIMP_TOOL_CURSOR_ZOOM,
@@ -285,6 +277,7 @@ typedef enum  /*< skip >*/
   GIMP_CURSOR_MODIFIER_FOREGROUND,
   GIMP_CURSOR_MODIFIER_BACKGROUND,
   GIMP_CURSOR_MODIFIER_PATTERN,
+  GIMP_CURSOR_MODIFIER_JOIN,
   GIMP_CURSOR_MODIFIER_LAST
 } GimpCursorModifier;
 

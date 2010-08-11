@@ -140,7 +140,28 @@ Operations related to paths.
 
 @image_ID: 
 @name: 
-@lockstatus: 
+@locked: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_path_get_visible ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_path_set_visible ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@name: 
+@visible: 
 @Returns: 
 
 
@@ -177,6 +198,19 @@ Operations related to paths.
 
 @image_ID: 
 @filename: 
+@merge: 
+@scale: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_path_import_string ##### -->
+<para>
+
+</para>
+
+@image_ID: 
+@string: 
+@length: 
 @merge: 
 @scale: 
 @Returns: 

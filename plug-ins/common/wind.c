@@ -29,18 +29,17 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
-#define PLUG_IN_NAME "wind"
+
+#define PLUG_IN_PROC   "plug-in-wind"
+#define PLUG_IN_BINARY "wind"
 
 #define COMPARE_WIDTH   3
 
@@ -164,17 +163,17 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",     "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable" },
     { GIMP_PDB_INT32,    "threshold", "Controls where blending will be done >= 0" },
     { GIMP_PDB_INT32,    "direction", "Left or Right: 0 or 1" },
     { GIMP_PDB_INT32,    "strength",  "Controls the extent of the blending > 1" },
-    { GIMP_PDB_INT32,    "alg",       "WIND, BLAST" },
+    { GIMP_PDB_INT32,    "algorithm", "WIND, BLAST" },
     { GIMP_PDB_INT32,    "edge",      "LEADING, TRAILING, or BOTH" }
   };
 
-  gimp_install_procedure ("plug_in_wind",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Renders a wind effect.",
                           "Renders a wind effect.",
                           "Nigel Wetten",
@@ -186,7 +185,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_wind", "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 }
 
 static void
@@ -228,7 +227,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data ("plug_in_wind", &config);
+      gimp_get_data (PLUG_IN_PROC, &config);
       if (! dialog_box (drawable))
         {
           status = GIMP_PDB_CANCEL;
@@ -239,16 +238,16 @@ run (const gchar      *name,
           status = GIMP_PDB_CALLING_ERROR;
           break;
         }
-      gimp_set_data ("plug_in_wind", &config, sizeof (config_t));
+      gimp_set_data (PLUG_IN_PROC, &config, sizeof (config_t));
       gimp_displays_flush ();
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data ("plug_in_wind", &config);
+      gimp_get_data (PLUG_IN_PROC, &config);
       if (render_effect (drawable, NULL) == -1)
         {
           status = GIMP_PDB_EXECUTION_ERROR;
-          gimp_message ("An execution error occured.");
+          gimp_message ("An execution error occurred.");
         }
       else
         {
@@ -312,14 +311,19 @@ render_blast (GimpDrawable *drawable,
     }
   else
     {
-      gimp_progress_init (_("Rendering Blast..."));
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+      if (gimp_drawable_mask_intersect (drawable->drawable_id,
+                                        &x1, &y1, &x2, &y2))
+        {
+          gimp_progress_init (_("Rendering blast"));
 
-      width = x2 - x1;
-      height = y2 - y1;
+          width = x2 - x1;
+          height = y2 - y1;
 
-      gimp_pixel_rgn_init (&dest_region, drawable,
-                           x1, y1, width, height, TRUE, TRUE);
+          gimp_pixel_rgn_init (&dest_region, drawable,
+                               x1, y1, width, height, TRUE, TRUE);
+        }
+      else
+        return;
     }
 
   gimp_pixel_rgn_init (&src_region,  drawable,
@@ -435,14 +439,18 @@ render_wind (GimpDrawable *drawable,
     }
   else
     {
-      gimp_progress_init (_("Rendering Wind..."));
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+      if (gimp_drawable_mask_intersect (drawable->drawable_id, &x1, &y1, &x2, &y2))
+        {
+          gimp_progress_init (_("Rendering wind"));
 
-      width = x2 - x1;
-      height = y2 - y1;
+          width = x2 - x1;
+          height = y2 - y1;
 
-      gimp_pixel_rgn_init (&dest_region, drawable,
-                           x1, y1, width, height, TRUE, TRUE);
+          gimp_pixel_rgn_init (&dest_region, drawable,
+                               x1, y1, width, height, TRUE, TRUE);
+        }
+      else
+        return;
     }
 
   gimp_pixel_rgn_init (&src_region, drawable,
@@ -868,16 +876,23 @@ dialog_box (GimpDrawable *drawable)
   GtkWidget *edge3;
   gboolean   run;
 
-  gimp_ui_init ("wind", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Wind"), "wind",
+  dialog = gimp_dialog_new (_("Wind"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-wind",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -996,11 +1011,11 @@ dialog_box (GimpDrawable *drawable)
                               TRUE, 0, 0,
                               _("Higher values restrict the effect to fewer areas of the image"), NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &config.threshold);
 
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1015,11 +1030,11 @@ dialog_box (GimpDrawable *drawable)
                               TRUE, 0, 0,
                               _("Higher values increase the magnitude of the effect"), NULL);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &config.strength);
 
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

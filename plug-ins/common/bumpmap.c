@@ -102,14 +102,7 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -119,9 +112,12 @@
 
 /***** Magic numbers *****/
 
-#define PLUG_IN_VERSION "April 2000, 3.0-pre1-ac2"
+#define PLUG_IN_PROC       "plug-in-bump-map"
+#define PLUG_IN_TILED_PROC "plug-in-bump-map-tiled"
+#define PLUG_IN_BINARY     "bumpmap"
+#define PLUG_IN_VERSION    "April 2000, 3.0-pre1-ac2"
 
-#define SCALE_WIDTH       0
+#define SCALE_WIDTH       100
 
 /***** Types *****/
 
@@ -312,23 +308,25 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",   "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",      "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
-    { GIMP_PDB_DRAWABLE, "bumpmap",    "Bump map drawable" },
-    { GIMP_PDB_FLOAT,    "azimuth",    "Azimuth" },
-    { GIMP_PDB_FLOAT,    "elevation",  "Elevation" },
-    { GIMP_PDB_INT32,    "depth",      "Depth" },
-    { GIMP_PDB_INT32,    "xofs",       "X offset" },
-    { GIMP_PDB_INT32,    "yofs",       "Y offset" },
-    { GIMP_PDB_INT32,    "waterlevel", "Level that full transparency should represent" },
-    { GIMP_PDB_INT32,    "ambient",    "Ambient lighting factor" },
-    { GIMP_PDB_INT32,    "compensate", "Compensate for darkening" },
-    { GIMP_PDB_INT32,    "invert",     "Invert bumpmap" },
-    { GIMP_PDB_INT32,    "type",       "Type of map (LINEAR (0), SPHERICAL (1), SINUSOIDAL (2))" }
+    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive"   },
+    { GIMP_PDB_IMAGE,    "image",      "Input image"                    },
+    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"                 },
+    { GIMP_PDB_DRAWABLE, "bumpmap",    "Bump map drawable"              },
+    { GIMP_PDB_FLOAT,    "azimuth",    "Azimuth"                        },
+    { GIMP_PDB_FLOAT,    "elevation",  "Elevation"                      },
+    { GIMP_PDB_INT32,    "depth",      "Depth"                          },
+    { GIMP_PDB_INT32,    "xofs",       "X offset"                       },
+    { GIMP_PDB_INT32,    "yofs",       "Y offset"                       },
+    { GIMP_PDB_INT32,    "waterlevel", "Level that full transparency "
+                                       "should represent"               },
+    { GIMP_PDB_INT32,    "ambient",    "Ambient lighting factor"        },
+    { GIMP_PDB_INT32,    "compensate", "Compensate for darkening"       },
+    { GIMP_PDB_INT32,    "invert",     "Invert bumpmap"                 },
+    { GIMP_PDB_INT32,    "type",       "Type of map (LINEAR (0), "
+                                       "SPHERICAL (1), SINUSOIDAL (2))" }
   };
 
-  gimp_install_procedure ("plug_in_bump_map",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Create an embossing effect using an image as a "
                           "bump map",
                           "This plug-in uses the algorithm described by John "
@@ -346,9 +344,9 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_bump_map", "<Image>/Filters/Map");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Map");
 
-  gimp_install_procedure ("plug_in_bump_map_tiled",
+  gimp_install_procedure (PLUG_IN_TILED_PROC,
                           "Create an embossing effect using a tiled image "
                           "as a bump map",
                           "This plug-in uses the algorithm described by John "
@@ -434,7 +432,7 @@ run (const gchar      *name,
           bmvals.compensate = param[11].data.d_int32;
           bmvals.invert     = param[12].data.d_int32;
           bmvals.type       = param[13].data.d_int32;
-          bmvals.tiled      = strcmp (name, "plug_in_bump_map_tiled") == 0;
+          bmvals.tiled      = strcmp (name, PLUG_IN_TILED_PROC) == 0;
         }
       break;
 
@@ -489,7 +487,7 @@ bumpmap (void)
   gint              progress;
   gint              drawable_tiles_per_row, bm_tiles_per_row;
 
-  gimp_progress_init (_("Bump-mapping..."));
+  gimp_progress_init (_("Bump-mapping"));
 
   /* Get the bumpmap drawable */
   if (bmvals.bumpmap_id != -1)
@@ -792,12 +790,12 @@ bumpmap_convert_row (guchar   *row,
       {
         if (has_alpha)
           *p++ = lut[(gint) (bmvals.waterlevel +
-                             (((gint) (GIMP_RGB_INTENSITY (row[0],
+                             (((gint) (GIMP_RGB_LUMINANCE (row[0],
                                                            row[1],
                                                            row[2]) + 0.5) -
                                bmvals.waterlevel) * row[3]) / 255.0)];
         else
-          *p++ = lut[(gint) (GIMP_RGB_INTENSITY (row[0],
+          *p++ = lut[(gint) (GIMP_RGB_LUMINANCE (row[0],
                                                  row[1],
                                                  row[2]) + 0.5)];
 
@@ -831,16 +829,23 @@ bumpmap_dialog (void)
   gboolean   run;
   gint       row = 0;
 
-  gimp_ui_init ("bumpmap", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Bump Map"), "bumpmap",
+  dialog = gimp_dialog_new (_("Bump Map"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-bump-map",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   paned = gtk_hpaned_new ();
   gtk_container_set_border_width (GTK_CONTAINER (paned), 12);
@@ -956,10 +961,10 @@ bumpmap_dialog (void)
                               bmvals.azimuth, 0.0, 360.0, 1.0, 15.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &bmvals.azimuth);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -968,10 +973,10 @@ bumpmap_dialog (void)
                               bmvals.elevation, 0.5, 90.0, 1.0, 5.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &bmvals.elevation);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -980,10 +985,10 @@ bumpmap_dialog (void)
                               bmvals.depth, 1.0, 65.0, 1.0, 5.0, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &bmvals.depth);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
   gtk_table_set_row_spacing (GTK_TABLE (table), row++, 12);
@@ -995,10 +1000,10 @@ bumpmap_dialog (void)
                           TRUE, 0, 0,
                           _("The offset can be adjusted by dragging the "
                             "preview using the middle mouse button."), NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &bmvals.xofs);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1009,10 +1014,10 @@ bumpmap_dialog (void)
                           TRUE, 0, 0,
                           _("The offset can be adjusted by dragging the "
                             "preview using the middle mouse button."), NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &bmvals.yofs);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
   gtk_table_set_row_spacing (GTK_TABLE (table), row++, 12);
@@ -1022,10 +1027,10 @@ bumpmap_dialog (void)
                               bmvals.waterlevel, 0.0, 255.0, 1.0, 8.0, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &bmvals.waterlevel);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1034,10 +1039,10 @@ bumpmap_dialog (void)
                               bmvals.ambient, 0.0, 255.0, 1.0, 8.0, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &bmvals.ambient);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

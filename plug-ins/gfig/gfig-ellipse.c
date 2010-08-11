@@ -25,12 +25,7 @@
 
 #include "config.h"
 
-#include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -39,6 +34,7 @@
 #include "gfig-dobject.h"
 
 #include "libgimp/stdplugins-intl.h"
+
 
 static void        d_draw_ellipse   (GfigObject *obj);
 static void        d_paint_ellipse  (GfigObject *obj);
@@ -149,7 +145,7 @@ d_paint_ellipse (GfigObject *obj)
                        selopt.feather,
                        selopt.feather_radius);
 
-  paint_layer_fill ();
+  paint_layer_fill (top_x, top_y, top_x + bound_wx, top_y + bound_wy);
 
   if (obj->style.paint_type == PAINT_BRUSH_TYPE)
     gimp_edit_stroke (gfig_context->drawable_id);

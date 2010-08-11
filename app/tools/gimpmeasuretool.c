@@ -60,9 +60,6 @@
 
 /*  local function prototypes  */
 
-static void     gimp_measure_tool_class_init      (GimpMeasureToolClass *klass);
-static void     gimp_measure_tool_init            (GimpMeasureTool      *tool);
-
 static void     gimp_measure_tool_control         (GimpTool        *tool,
                                                    GimpToolAction   action,
                                                    GimpDisplay     *gdisp);
@@ -103,7 +100,9 @@ static void        gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
                                                     GimpDisplay     *gdisp);
 
 
-static GimpDrawToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpMeasureTool, gimp_measure_tool, GIMP_TYPE_DRAW_TOOL);
+
+#define parent_class gimp_measure_tool_parent_class
 
 
 void
@@ -123,41 +122,11 @@ gimp_measure_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_measure_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpMeasureToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_measure_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpMeasureTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_measure_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_DRAW_TOOL,
-                                          "GimpMeasureTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
 static void
 gimp_measure_tool_class_init (GimpMeasureToolClass *klass)
 {
   GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   tool_class->control        = gimp_measure_tool_control;
   tool_class->button_press   = gimp_measure_tool_button_press;
@@ -174,7 +143,9 @@ gimp_measure_tool_init (GimpMeasureTool *measure_tool)
 {
   GimpTool *tool = GIMP_TOOL (measure_tool);
 
-  gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_MEASURE);
+  gimp_tool_control_set_handle_empty_image (tool->control, TRUE);
+  gimp_tool_control_set_tool_cursor        (tool->control,
+                                            GIMP_TOOL_CURSOR_MEASURE);
 }
 
 static void
@@ -218,7 +189,7 @@ gimp_measure_tool_button_press (GimpTool        *tool,
   /*  if we are changing displays, pop the statusbar of the old one  */
   if (gimp_tool_control_is_active (tool->control) && gdisp != tool->gdisp)
     {
-      gimp_tool_pop_status (tool);
+      gimp_tool_pop_status (tool, gdisp);
     }
 
   mtool->function = CREATING;
@@ -340,8 +311,7 @@ gimp_measure_tool_button_press (GimpTool        *tool,
 
       if (gimp_tool_control_is_active (tool->control))
 	{
-	  gimp_tool_pop_status (tool);
-	  gimp_tool_push_status (tool, " ");
+	  gimp_tool_replace_status (tool, gdisp, " ");
         }
       else
         {
@@ -683,7 +653,7 @@ gimp_measure_tool_halt (GimpMeasureTool *mtool)
   if (mtool->dialog)
     gtk_widget_destroy (mtool->dialog);
 
-  gimp_tool_pop_status (tool);
+  gimp_tool_pop_status (tool, tool->gdisp);
 
   if (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (mtool)))
     gimp_draw_tool_stop (GIMP_DRAW_TOOL (mtool));
@@ -731,10 +701,14 @@ gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
   GimpImage        *image = gdisp->gimage;
   gint              ax, ay;
   gint              bx, by;
-  gdouble           theta1, theta2;
+  gint              pixel_width;
+  gint              pixel_height;
+  gdouble           unit_width;
+  gdouble           unit_height;
   gdouble           pixel_distance;
-  gdouble           pixel_angle;
   gdouble           unit_distance;
+  gdouble           theta1, theta2;
+  gdouble           pixel_angle;
   gdouble           unit_angle;
   gchar             format[128];
   gchar             buf[128];
@@ -753,6 +727,14 @@ gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
       bx = 0;
       by = 0;
     }
+
+  pixel_width  = ABS (ax - bx);
+  pixel_height = ABS (ay - by);
+
+  unit_width  = (_gimp_unit_get_factor (image->gimp, shell->unit) *
+                 pixel_width / image->xresolution);
+  unit_height = (_gimp_unit_get_factor (image->gimp, shell->unit) *
+                 pixel_height / image->yresolution);
 
   pixel_distance = sqrt (SQR (ax - bx) + SQR (ay - by));
   unit_distance  = (_gimp_unit_get_factor (image->gimp, shell->unit) *
@@ -783,36 +765,43 @@ gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
 
   if (shell->unit == GIMP_UNIT_PIXEL)
     {
-      g_snprintf (buf, sizeof (buf), "%.1f %s, %.2f \302\260",
-                  pixel_distance, _("pixels"), pixel_angle);
+      g_snprintf (buf, sizeof (buf), "%.1f %s, %.2f \302\260 (%d x %d)",
+                  pixel_distance, _("pixels"), pixel_angle,
+                  pixel_width, pixel_height);
     }
   else
     {
-      g_snprintf (format, sizeof (format), "%%.%df %s, %%.2f \302\260",
+      g_snprintf (format, sizeof (format),
+                  "%%.%df %s, %%.2f \302\260 (%%.%df x %%.%df)",
                   _gimp_unit_get_digits (image->gimp, shell->unit),
-                  _gimp_unit_get_plural (image->gimp, shell->unit));
+                  _gimp_unit_get_plural (image->gimp, shell->unit),
+                  _gimp_unit_get_digits (image->gimp, shell->unit),
+                  _gimp_unit_get_digits (image->gimp, shell->unit));
 
-      g_snprintf (buf, sizeof (buf), format, unit_distance, unit_angle);
+      g_snprintf (buf, sizeof (buf), format, unit_distance, unit_angle,
+                  unit_width, unit_height);
     }
 
-  gimp_tool_pop_status (GIMP_TOOL (mtool));
-  gimp_tool_push_status (GIMP_TOOL (mtool), buf);
+  gimp_tool_replace_status (GIMP_TOOL (mtool), gdisp, buf);
 
   if (mtool->dialog)
     {
+      g_snprintf (format, sizeof (format), "%%.%df",
+                  _gimp_unit_get_digits (image->gimp, shell->unit));
+
+      /* Distance */
       g_snprintf (buf, sizeof (buf), "%.1f", pixel_distance);
       gtk_label_set_text (GTK_LABEL (mtool->distance_label[0]), buf);
 
-      g_snprintf (buf, sizeof (buf), "%.2f", pixel_angle);
-      gtk_label_set_text (GTK_LABEL (mtool->angle_label[0]), buf);
-
-      g_snprintf (format, sizeof (format),
-                  "%%.%df", _gimp_unit_get_digits (image->gimp, shell->unit));
       g_snprintf (buf, sizeof (buf), format, unit_distance);
       gtk_label_set_text (GTK_LABEL (mtool->distance_label[1]), buf);
 
       gtk_label_set_text (GTK_LABEL (mtool->unit_label[0]),
                           _gimp_unit_get_plural (image->gimp, shell->unit));
+
+      /* Angle */
+      g_snprintf (buf, sizeof (buf), "%.2f", pixel_angle);
+      gtk_label_set_text (GTK_LABEL (mtool->angle_label[0]), buf);
 
       if (fabs (unit_angle - pixel_angle) > 0.01)
         {
@@ -826,6 +815,26 @@ gimp_measure_tool_dialog_update (GimpMeasureTool *mtool,
           gtk_label_set_text (GTK_LABEL (mtool->angle_label[1]), " ");
           gtk_label_set_text (GTK_LABEL (mtool->unit_label[1]),  " ");
         }
+
+      /* Width */
+      g_snprintf (buf, sizeof (buf), "%d", pixel_width);
+      gtk_label_set_text (GTK_LABEL (mtool->width_label[0]), buf);
+
+      g_snprintf (buf, sizeof (buf), format, unit_width);
+      gtk_label_set_text (GTK_LABEL (mtool->width_label[1]), buf);
+
+      gtk_label_set_text (GTK_LABEL (mtool->unit_label[2]),
+                          _gimp_unit_get_plural (image->gimp, shell->unit));
+
+      /* Height */
+      g_snprintf (buf, sizeof (buf), "%d", pixel_height);
+      gtk_label_set_text (GTK_LABEL (mtool->height_label[0]), buf);
+
+      g_snprintf (buf, sizeof (buf), format, unit_height);
+      gtk_label_set_text (GTK_LABEL (mtool->height_label[1]), buf);
+
+      gtk_label_set_text (GTK_LABEL (mtool->unit_label[3]),
+                          _gimp_unit_get_plural (image->gimp, shell->unit));
 
       if (GTK_WIDGET_VISIBLE (mtool->dialog))
         gdk_window_show (mtool->dialog->window);
@@ -854,7 +863,7 @@ gimp_measure_tool_dialog_new (GimpMeasureTool *mtool)
                     G_CALLBACK (gtk_widget_destroy),
                     NULL);
 
-  table = gtk_table_new (2, 5, TRUE);
+  table = gtk_table_new (4, 5, TRUE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 6);
@@ -911,6 +920,58 @@ gimp_measure_tool_dialog_new (GimpMeasureTool *mtool)
   mtool->unit_label[1] = label = gtk_label_new (" ");
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_table_attach_defaults (GTK_TABLE (table), label, 4, 5, 1, 2);
+  gtk_widget_show (label);
+
+
+  label = gtk_label_new (_("Width:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3);
+  gtk_widget_show (label);
+
+  mtool->width_label[0] = label = gtk_label_new ("0.0");
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 2, 3);
+  gtk_widget_show (label);
+
+  label = gtk_label_new (_("pixels"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 2, 3, 2, 3);
+  gtk_widget_show (label);
+
+  mtool->width_label[1] = label = gtk_label_new ("0.0");
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 3, 4, 2, 3);
+  gtk_widget_show (label);
+
+  mtool->unit_label[2] = label = gtk_label_new (" ");
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 4, 5, 2, 3);
+  gtk_widget_show (label);
+
+
+  label = gtk_label_new (_("Height:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 3, 4);
+  gtk_widget_show (label);
+
+  mtool->height_label[0] = label = gtk_label_new ("0.0");
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 3, 4);
+  gtk_widget_show (label);
+
+  label = gtk_label_new (_("pixels"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 2, 3, 3, 4);
+  gtk_widget_show (label);
+
+  mtool->height_label[1] = label = gtk_label_new ("0.0");
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 3, 4, 3, 4);
+  gtk_widget_show (label);
+
+  mtool->unit_label[3] = label = gtk_label_new (" ");
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 4, 5, 3, 4);
   gtk_widget_show (label);
 
   return dialog;

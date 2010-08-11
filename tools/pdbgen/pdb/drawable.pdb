@@ -548,7 +548,7 @@ sub drawable_set_pixel {
     $help = <<'HELP';
 This procedure sets the pixel value at the specified coordinates. The
 'num_channels' argument must always be equal to the bytes-per-pixel value for
-the spec ified drawable. Note that this function is not undoable, you should
+the specified drawable. Note that this function is not undoable, you should
 use it only on drawables you just created yourself.
 HELP
 
@@ -837,6 +837,39 @@ HELP
 CODE
 }
 
+sub drawable_foreground_extract {
+    $blurb = 'Extract the foreground of a drawable using a given trimap.';
+
+    $help = <<'HELP';
+Image Segmentation by Uniform Color Clustering, see
+http://www.inf.fu-berlin.de/inst/pubs/tr-b-05-07.pdf
+HELP
+
+    $author    = 'Gerald Friedland <fland@inf.fu-berlin.de>, Kristian Jantz <jantz@inf.fu-berlin.de>, Sven Neumann <sven@gimp.org>';
+    $copyright = 'Gerald Friedland';
+    $date      = '2005';
+    $since     = '2.4';
+
+    @inargs = (
+	&drawable_arg,
+        { name => 'mode', type => 'enum GimpForegroundExtractMode',
+	  desc => 'The algorithm to use: %%desc%%' },
+        { name => 'mask', type => 'drawable', desc => 'Tri-Map' }
+    );
+
+    %invoke = ( headers => [ qw("core/gimpdrawable-foreground-extract.h") ],
+        code    => <<'CODE'
+{
+  success = gimp_item_is_attached (GIMP_ITEM (drawable));
+
+  if (success)
+    gimp_drawable_foreground_extract (drawable, mode, mask, progress);
+}
+CODE
+    );
+}
+
+
 @headers = qw("base/tile.h" "base/tile-manager.h" "base/temp-buf.h"
               "config/gimpcoreconfig.h"
               "core/gimp.h" "core/gimplayer.h" "core/gimplayermask.h"
@@ -856,7 +889,8 @@ CODE
             drawable_merge_shadow drawable_update
             drawable_get_pixel drawable_set_pixel
 	    drawable_fill drawable_offset
-            drawable_thumbnail drawable_sub_thumbnail);
+            drawable_thumbnail drawable_sub_thumbnail
+            drawable_foreground_extract);
 %exports = (app => [@procs], lib => [@procs]);
 
 $desc = 'Drawable procedures';

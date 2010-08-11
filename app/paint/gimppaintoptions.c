@@ -21,11 +21,9 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "paint-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
 
 #include "core/gimp.h"
 #include "core/gimpimage.h"
@@ -35,24 +33,29 @@
 #include "gimppaintoptions.h"
 
 
-#define DEFAULT_APPLICATION_MODE  GIMP_PAINT_CONSTANT
-#define DEFAULT_HARD              FALSE
+#define DEFAULT_APPLICATION_MODE      GIMP_PAINT_CONSTANT
+#define DEFAULT_HARD                  FALSE
 
-#define DEFAULT_PRESSURE_OPACITY  TRUE
-#define DEFAULT_PRESSURE_HARDNESS FALSE
-#define DEFAULT_PRESSURE_RATE     FALSE
-#define DEFAULT_PRESSURE_SIZE     FALSE
-#define DEFAULT_PRESSURE_COLOR    FALSE
+#define DEFAULT_PRESSURE_EXPANDED     FALSE
+#define DEFAULT_PRESSURE_OPACITY      TRUE
+#define DEFAULT_PRESSURE_HARDNESS     FALSE
+#define DEFAULT_PRESSURE_RATE         FALSE
+#define DEFAULT_PRESSURE_SIZE         FALSE
+#define DEFAULT_PRESSURE_INVERSE_SIZE FALSE
+#define DEFAULT_PRESSURE_COLOR        FALSE
 
-#define DEFAULT_USE_FADE          FALSE
-#define DEFAULT_FADE_LENGTH       100.0
-#define DEFAULT_FADE_UNIT         GIMP_UNIT_PIXEL
+#define DEFAULT_USE_FADE              FALSE
+#define DEFAULT_FADE_LENGTH           100.0
+#define DEFAULT_FADE_UNIT             GIMP_UNIT_PIXEL
 
-#define DEFAULT_USE_GRADIENT      FALSE
-#define DEFAULT_GRADIENT_REVERSE  FALSE
-#define DEFAULT_GRADIENT_REPEAT   GIMP_REPEAT_TRIANGULAR
-#define DEFAULT_GRADIENT_LENGTH   100.0
-#define DEFAULT_GRADIENT_UNIT     GIMP_UNIT_PIXEL
+#define DEFAULT_USE_JITTER            FALSE
+#define DEFAULT_JITTER_AMOUNT         0.2
+
+#define DEFAULT_USE_GRADIENT          FALSE
+#define DEFAULT_GRADIENT_REVERSE      FALSE
+#define DEFAULT_GRADIENT_REPEAT       GIMP_REPEAT_TRIANGULAR
+#define DEFAULT_GRADIENT_LENGTH       100.0
+#define DEFAULT_GRADIENT_UNIT         GIMP_UNIT_PIXEL
 
 
 enum
@@ -61,10 +64,12 @@ enum
   PROP_PAINT_INFO,
   PROP_APPLICATION_MODE,
   PROP_HARD,
+  PROP_PRESSURE_EXPANDED,
   PROP_PRESSURE_OPACITY,
   PROP_PRESSURE_HARDNESS,
   PROP_PRESSURE_RATE,
   PROP_PRESSURE_SIZE,
+  PROP_PRESSURE_INVERSE_SIZE,
   PROP_PRESSURE_COLOR,
   PROP_USE_FADE,
   PROP_FADE_LENGTH,
@@ -73,63 +78,35 @@ enum
   PROP_GRADIENT_REVERSE,
   PROP_GRADIENT_REPEAT,
   PROP_GRADIENT_LENGTH,
-  PROP_GRADIENT_UNIT
+  PROP_GRADIENT_UNIT,
+  PROP_USE_JITTER,
+  PROP_JITTER_AMOUNT
 };
 
 
-static void   gimp_paint_options_init         (GimpPaintOptions      *options);
-static void   gimp_paint_options_class_init   (GimpPaintOptionsClass *klass);
-
-static void   gimp_paint_options_finalize     (GObject         *object);
-static void   gimp_paint_options_set_property (GObject         *object,
-                                               guint            property_id,
-                                               const GValue    *value,
-                                               GParamSpec      *pspec);
-static void   gimp_paint_options_get_property (GObject         *object,
-                                               guint            property_id,
-                                               GValue          *value,
-                                               GParamSpec      *pspec);
-static void   gimp_paint_options_notify       (GObject         *object,
-                                               GParamSpec      *pspec);
+static void   gimp_paint_options_finalize     (GObject      *object);
+static void   gimp_paint_options_set_property (GObject      *object,
+                                               guint         property_id,
+                                               const GValue *value,
+                                               GParamSpec   *pspec);
+static void   gimp_paint_options_get_property (GObject      *object,
+                                               guint         property_id,
+                                               GValue       *value,
+                                               GParamSpec   *pspec);
+static void   gimp_paint_options_notify       (GObject      *object,
+                                               GParamSpec   *pspec);
 
 
-static GimpToolOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpPaintOptions, gimp_paint_options,
+               GIMP_TYPE_TOOL_OPTIONS);
 
+#define parent_class gimp_paint_options_parent_class
 
-GType
-gimp_paint_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpPaintOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_paint_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpPaintOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_paint_options_init,
-      };
-
-      type = g_type_register_static (GIMP_TYPE_TOOL_OPTIONS,
-                                     "GimpPaintOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_paint_options_class_init (GimpPaintOptionsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize     = gimp_paint_options_finalize;
   object_class->set_property = gimp_paint_options_set_property;
@@ -153,6 +130,10 @@ gimp_paint_options_class_init (GimpPaintOptionsClass *klass)
                                     DEFAULT_HARD,
                                     0);
 
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_PRESSURE_EXPANDED,
+                                    "pressure-expanded", NULL,
+                                    DEFAULT_PRESSURE_EXPANDED,
+                                    0);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_PRESSURE_OPACITY,
                                     "pressure-opacity", NULL,
                                     DEFAULT_PRESSURE_OPACITY,
@@ -173,6 +154,10 @@ gimp_paint_options_class_init (GimpPaintOptionsClass *klass)
                                     "pressure-color", NULL,
                                     DEFAULT_PRESSURE_COLOR,
                                     0);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_PRESSURE_INVERSE_SIZE,
+                                    "pressure-inverse-size", NULL,
+                                    DEFAULT_PRESSURE_INVERSE_SIZE,
+                                    0);
 
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_FADE,
                                     "use-fade", NULL,
@@ -186,6 +171,15 @@ gimp_paint_options_class_init (GimpPaintOptionsClass *klass)
                                  "fade-unit", NULL,
                                  TRUE, TRUE, DEFAULT_FADE_UNIT,
                                  0);
+
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_JITTER,
+                                    "use-jitter", NULL,
+                                    DEFAULT_USE_JITTER,
+                                    0);
+  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_JITTER_AMOUNT,
+                                   "jitter-amount", NULL,
+                                   0.0, 50.0, DEFAULT_JITTER_AMOUNT,
+                                   0);
 
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_USE_GRADIENT,
                                     "use-gradient", NULL,
@@ -216,6 +210,7 @@ gimp_paint_options_init (GimpPaintOptions *options)
   options->pressure_options = g_new0 (GimpPressureOptions, 1);
   options->fade_options     = g_new0 (GimpFadeOptions,     1);
   options->gradient_options = g_new0 (GimpGradientOptions, 1);
+  options->jitter_options   = g_new0 (GimpJitterOptions,   1);
 }
 
 static void
@@ -229,6 +224,7 @@ gimp_paint_options_finalize (GObject *object)
   g_free (options->pressure_options);
   g_free (options->fade_options);
   g_free (options->gradient_options);
+  g_free (options->jitter_options);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -243,10 +239,12 @@ gimp_paint_options_set_property (GObject      *object,
   GimpPressureOptions *pressure_options;
   GimpFadeOptions     *fade_options;
   GimpGradientOptions *gradient_options;
+  GimpJitterOptions   *jitter_options;
 
   pressure_options = options->pressure_options;
   fade_options     = options->fade_options;
   gradient_options = options->gradient_options;
+  jitter_options   = options->jitter_options;
 
   switch (property_id)
     {
@@ -261,6 +259,9 @@ gimp_paint_options_set_property (GObject      *object,
       options->hard = g_value_get_boolean (value);
       break;
 
+    case PROP_PRESSURE_EXPANDED:
+      pressure_options->expanded = g_value_get_boolean (value);
+      break;
     case PROP_PRESSURE_OPACITY:
       pressure_options->opacity = g_value_get_boolean (value);
       break;
@@ -272,6 +273,9 @@ gimp_paint_options_set_property (GObject      *object,
       break;
     case PROP_PRESSURE_SIZE:
       pressure_options->size = g_value_get_boolean (value);
+      break;
+    case PROP_PRESSURE_INVERSE_SIZE:
+      pressure_options->inverse_size = g_value_get_boolean (value);
       break;
     case PROP_PRESSURE_COLOR:
       pressure_options->color = g_value_get_boolean (value);
@@ -285,6 +289,13 @@ gimp_paint_options_set_property (GObject      *object,
       break;
     case PROP_FADE_UNIT:
       fade_options->fade_unit = g_value_get_int (value);
+      break;
+
+    case PROP_USE_JITTER:
+      jitter_options->use_jitter = g_value_get_boolean (value);
+      break;
+    case PROP_JITTER_AMOUNT:
+      jitter_options->jitter_amount = g_value_get_double (value);
       break;
 
     case PROP_USE_GRADIENT:
@@ -319,10 +330,12 @@ gimp_paint_options_get_property (GObject    *object,
   GimpPressureOptions *pressure_options;
   GimpFadeOptions     *fade_options;
   GimpGradientOptions *gradient_options;
+  GimpJitterOptions   *jitter_options;
 
   pressure_options = options->pressure_options;
   fade_options     = options->fade_options;
   gradient_options = options->gradient_options;
+  jitter_options   = options->jitter_options;
 
   switch (property_id)
     {
@@ -337,6 +350,9 @@ gimp_paint_options_get_property (GObject    *object,
       g_value_set_boolean (value, options->hard);
       break;
 
+    case PROP_PRESSURE_EXPANDED:
+      g_value_set_boolean (value, pressure_options->expanded);
+      break;
     case PROP_PRESSURE_OPACITY:
       g_value_set_boolean (value, pressure_options->opacity);
       break;
@@ -348,6 +364,9 @@ gimp_paint_options_get_property (GObject    *object,
       break;
     case PROP_PRESSURE_SIZE:
       g_value_set_boolean (value, pressure_options->size);
+      break;
+    case PROP_PRESSURE_INVERSE_SIZE:
+      g_value_set_boolean (value, pressure_options->inverse_size);
       break;
     case PROP_PRESSURE_COLOR:
       g_value_set_boolean (value, pressure_options->color);
@@ -361,6 +380,13 @@ gimp_paint_options_get_property (GObject    *object,
       break;
     case PROP_FADE_UNIT:
       g_value_set_int (value, fade_options->fade_unit);
+      break;
+
+    case PROP_USE_JITTER:
+      g_value_set_boolean (value, jitter_options->use_jitter);
+      break;
+    case PROP_JITTER_AMOUNT:
+      g_value_set_double (value, jitter_options->jitter_amount);
       break;
 
     case PROP_USE_GRADIENT:
@@ -477,6 +503,20 @@ gimp_paint_options_get_fade (GimpPaintOptions *paint_options,
   return GIMP_OPACITY_OPAQUE;
 }
 
+gdouble
+gimp_paint_options_get_jitter (GimpPaintOptions *paint_options,
+			       GimpImage        *gimage)
+{
+  GimpJitterOptions *jitter_options;
+
+  jitter_options = paint_options->jitter_options;
+
+  if (jitter_options->use_jitter)
+    return jitter_options->jitter_amount;
+
+  return 0.0;
+}
+
 gboolean
 gimp_paint_options_get_gradient_color (GimpPaintOptions *paint_options,
                                        GimpImage        *gimage,
@@ -499,7 +539,7 @@ gimp_paint_options_get_gradient_color (GimpPaintOptions *paint_options,
 
   if (pressure_options->color)
     {
-      gimp_gradient_get_color_at (gradient, pressure,
+      gimp_gradient_get_color_at (gradient, NULL, pressure,
                                   gradient_options->gradient_reverse,
                                   color);
 
@@ -543,7 +583,7 @@ gimp_paint_options_get_gradient_color (GimpPaintOptions *paint_options,
       else
         pos = pos - (gint) pos;
 
-      gimp_gradient_get_color_at (gradient, pos,
+      gimp_gradient_get_color_at (gradient, NULL, pos,
                                   gradient_options->gradient_reverse,
                                   color);
 

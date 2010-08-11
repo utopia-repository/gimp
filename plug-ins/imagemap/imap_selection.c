@@ -3,7 +3,7 @@
  *
  * Generates clickable image maps.
  *
- * Copyright (C) 1998-2004 Maurits Rijk  m.rijk@chello.nl
+ * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,8 @@
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "imap_commands.h"
-#include "imap_edit_area_info.h"
 #include "imap_main.h"
-#include "imap_misc.h"
+#include "imap_menu.h"
 #include "imap_selection.h"
 
 #include "libgimp/stdplugins-intl.h"
@@ -40,6 +39,7 @@
 static void
 set_buttons(Selection_t *data)
 {
+#ifdef _OLD_
   if (gtk_tree_selection_count_selected_rows (data->selection)) {
 #ifdef _OLD_
     gtk_widget_set_sensitive(data->arrow_up,
@@ -57,6 +57,7 @@ set_buttons(Selection_t *data)
     gtk_widget_set_sensitive(data->remove, FALSE);
     gtk_widget_set_sensitive(data->edit, FALSE);
   }
+#endif
 }
 
 static void
@@ -64,39 +65,44 @@ changed_cb(GtkTreeSelection *selection, gpointer param)
 {
   Selection_t *data = (Selection_t*) param;
 
-  if (data->select_lock) {
-    data->select_lock = FALSE;
-  } else {
-    Command_t *command, *sub_command;
-    GtkTreeModel *model;
-    GList *list = gtk_tree_selection_get_selected_rows (selection, &model);
-
-    command = subcommand_start (NULL);
-    sub_command = unselect_all_command_new (data->object_list, NULL);
-    command_add_subcommand (command, sub_command);
-
-    for (; list; list = list->next)
+  if (data->select_lock) 
+    {
+      data->select_lock = FALSE;
+    } else 
       {
-	Object_t *obj;
-	GtkTreeIter iter;
-	GtkTreePath *path = (GtkTreePath*) list->data;
+        Command_t *command, *sub_command;
+        GtkTreeModel *model;
+        GList *list, *selected_rows;
+        
+        selected_rows = gtk_tree_selection_get_selected_rows (selection, 
+                                                              &model);
 
-	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_tree_model_get (model, &iter, 0, &obj, -1);
-
-	sub_command = select_command_new (obj);
-	command_add_subcommand (command, sub_command);
-      }
-
-    command_set_name (command, sub_command->name);
-    subcommand_end ();
-
-    command_execute (command);
-
-    g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
-    g_list_free (list);
-
-    set_buttons (data);
+        command = subcommand_start (NULL);
+        sub_command = unselect_all_command_new (data->object_list, NULL);
+        command_add_subcommand (command, sub_command);
+        
+        for (list = selected_rows; list; list = list->next)
+          {
+            Object_t *obj;
+            GtkTreeIter iter;
+            GtkTreePath *path = (GtkTreePath*) list->data;
+            
+            gtk_tree_model_get_iter (model, &iter, path);
+            gtk_tree_model_get (model, &iter, 0, &obj, -1);
+            
+            sub_command = select_command_new (obj);
+            command_add_subcommand (command, sub_command);
+          }
+        
+        command_set_name (command, sub_command->name);
+        subcommand_end ();
+        
+        command_execute (command);
+        
+        g_list_foreach (selected_rows, (GFunc) gtk_tree_path_free, NULL);
+        g_list_free (selected_rows);
+        
+        set_buttons (data);
   }
 }
 
@@ -135,46 +141,6 @@ button_release_cb(GtkWidget *widget, GdkEventButton *event, Selection_t *data)
   if (event->button == 1)
     data->doubleclick = FALSE;
   return FALSE;
-}
-
-static void
-selection_command(GtkWidget *widget, gpointer data)
-{
-  CommandFactory_t *factory = (CommandFactory_t*) data;
-  Command_t *command = (*factory)();
-  command_execute(command);
-}
-
-static GtkWidget*
-make_selection_toolbar(Selection_t *data)
-{
-  GtkWidget *toolbar;
-
-  toolbar = gtk_toolbar_new();
-  gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_orientation(GTK_TOOLBAR(toolbar), GTK_ORIENTATION_VERTICAL);
-  gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
-
-  data->arrow_up = make_toolbar_stock_icon(toolbar, GTK_STOCK_GO_UP,
-					   "MoveUp", _("Move Up"),
-					   selection_command,
-					   &data->cmd_move_up);
-  data->arrow_down = make_toolbar_stock_icon(toolbar, GTK_STOCK_GO_DOWN,
-					     "MoveDown", _("Move Down"),
-					     selection_command,
-					     &data->cmd_move_down);
-  toolbar_add_space(toolbar);
-  data->edit = make_toolbar_stock_icon(toolbar, GTK_STOCK_PROPERTIES,
-				       "Edit", _("Edit"), selection_command,
-				       &data->cmd_edit);
-  toolbar_add_space(toolbar);
-  data->remove = make_toolbar_stock_icon(toolbar, GTK_STOCK_DELETE, "Delete",
-					 _("Delete"), selection_command,
-					 &data->cmd_delete);
-
-  gtk_widget_show(toolbar);
-
-  return toolbar;
 }
 
 static void
@@ -313,7 +279,7 @@ handle_drop(GtkWidget *widget, GdkDragContext *context, gint x, gint y,
 	Object_t *obj = selection_get_object (model, &iter);
 	if (!obj->locked) {
 	  command_list_add(edit_object_command_new (obj));
-	  object_set_url (obj, data->data);
+	  object_set_url (obj, (const gchar *) data->data);
 	  object_emit_update_signal (obj);
 	  success = TRUE;
 	}
@@ -329,7 +295,7 @@ render_image (GtkTreeViewColumn *column, GtkCellRenderer *cell,
 	      GtkTreeModel *tree_model, GtkTreeIter *iter, gpointer data)
 {
   Object_t *obj = selection_get_object (tree_model, iter);
-  g_object_set(cell, "stock-id", obj->class->get_stock_icon_name(), NULL);
+  g_object_set(cell, "stock-id", object_get_stock_icon_name(obj), NULL);
 }
 
 static void
@@ -393,7 +359,7 @@ make_selection(ObjectList_t *object_list)
   gtk_container_add(GTK_CONTAINER(frame), hbox);
   gtk_widget_show(hbox);
 
-  toolbar = make_selection_toolbar(data);
+  toolbar = make_selection_toolbar();
   gtk_container_add(GTK_CONTAINER(hbox), toolbar);
 
   /* Create selection */
@@ -472,9 +438,9 @@ make_selection(ObjectList_t *object_list)
 
   /* For handling doubleclick */
 
-  g_signal_connect (list, "button_press_event",
+  g_signal_connect (list, "button-press-event",
 		    G_CALLBACK(button_press_cb), data);
-  g_signal_connect (list, "button_release_event",
+  g_signal_connect (list, "button-release-event",
 		    G_CALLBACK(button_release_cb), data);
 
   /* Callbacks we are interested in */

@@ -20,6 +20,18 @@
 
 #include "config.h"
 
+#include <glib.h>
+
+#ifdef G_OS_WIN32
+#include <process.h>
+#endif
+
+#include <sys/types.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 
 #include <glib-object.h>
 
@@ -31,12 +43,14 @@
 #include "core/gimp.h"
 
 static ProcRecord version_proc;
+static ProcRecord getpid_proc;
 static ProcRecord quit_proc;
 
 void
 register_misc_procs (Gimp *gimp)
 {
   procedural_db_register (gimp, &version_proc);
+  procedural_db_register (gimp, &getpid_proc);
   procedural_db_register (gimp, &quit_proc);
 }
 
@@ -65,7 +79,8 @@ static ProcArg version_outargs[] =
 
 static ProcRecord version_proc =
 {
-  "gimp_version",
+  "gimp-version",
+  "gimp-version",
   "Returns the host gimp version.",
   "This procedure returns the version number of the currently running gimp.",
   "Manish Singh",
@@ -78,6 +93,47 @@ static ProcRecord version_proc =
   1,
   version_outargs,
   { { version_invoker } }
+};
+
+static Argument *
+getpid_invoker (Gimp         *gimp,
+                GimpContext  *context,
+                GimpProgress *progress,
+                Argument     *args)
+{
+  Argument *return_args;
+
+  return_args = procedural_db_return_args (&getpid_proc, TRUE);
+  return_args[1].value.pdb_int = getpid ();
+
+  return return_args;
+}
+
+static ProcArg getpid_outargs[] =
+{
+  {
+    GIMP_PDB_INT32,
+    "pid",
+    "The PID"
+  }
+};
+
+static ProcRecord getpid_proc =
+{
+  "gimp-getpid",
+  "gimp-getpid",
+  "Returns the PID of the host gimp process.",
+  "This procedure returns the process ID of the currently running gimp.",
+  "Michael Natterer",
+  "Michael Natterer",
+  "2005",
+  NULL,
+  GIMP_INTERNAL,
+  0,
+  NULL,
+  1,
+  getpid_outargs,
+  { { getpid_invoker } }
 };
 
 static Argument *
@@ -106,7 +162,8 @@ static ProcArg quit_inargs[] =
 
 static ProcRecord quit_proc =
 {
-  "gimp_quit",
+  "gimp-quit",
+  "gimp-quit",
   "Causes the gimp to exit gracefully.",
   "The internal procedure which can either be used to make the gimp quit. If there are unsaved images in an interactive GIMP session, the user will be asked for confirmation. If force is TRUE, the application is quit without querying the user to save any dirty images.",
   "Spencer Kimball & Peter Mattis",

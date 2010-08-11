@@ -24,6 +24,7 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
@@ -31,10 +32,7 @@
 #include "gimp-units.h"
 #include "gimpunit.h"
 
-#include "config/gimpconfig-error.h"
-#include "config/gimpconfig-utils.h"
-#include "config/gimpconfigwriter.h"
-#include "config/gimpscanner.h"
+#include "config/gimpconfig-file.h"
 
 #include "gimp-intl.h"
 
@@ -62,14 +60,7 @@ gimp_units_exit (Gimp *gimp)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
-  if (gimp->user_units)
-    {
-      g_list_foreach (gimp->user_units, (GFunc) g_free, NULL);
-      g_list_free (gimp->user_units);
-
-      gimp->user_units   = NULL;
-      gimp->n_user_units = 0;
-    }
+  gimp_user_units_free (gimp);
 }
 
 
@@ -97,6 +88,10 @@ gimp_unitrc_load (Gimp *gimp)
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
   filename = gimp_personal_rc_file ("unitrc");
+
+  if (gimp->be_verbose)
+    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
+
   scanner = gimp_scanner_new_file (filename, &error);
 
   if (! scanner && error->code == GIMP_CONFIG_ERROR_OPEN_ENOENT)
@@ -189,6 +184,9 @@ gimp_unitrc_save (Gimp *gimp)
 
   filename = gimp_personal_rc_file ("unitrc");
 
+  if (gimp->be_verbose)
+    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
+
   writer =
     gimp_config_writer_new_file (filename,
 				 TRUE,
@@ -273,7 +271,6 @@ gimp_unitrc_unit_info_deserialize (GScanner *scanner,
   gchar      *singular     = NULL;
   gchar      *plural       = NULL;
   GTokenType  token;
-  GimpUnit    unit;
 
   if (! gimp_scanner_parse_string (scanner, &identifier))
     return G_TOKEN_STRING;
@@ -350,8 +347,10 @@ gimp_unitrc_unit_info_deserialize (GScanner *scanner,
 
       if (g_scanner_peek_next_token (scanner) == token)
         {
-          unit = _gimp_unit_new (gimp, identifier, factor, digits,
-                                 symbol, abbreviation, singular, plural);
+          GimpUnit unit = _gimp_unit_new (gimp,
+                                          identifier, factor, digits,
+                                          symbol, abbreviation,
+                                          singular, plural);
 
           /*  make the unit definition persistent  */
           _gimp_unit_set_deletion_flag (gimp, unit, FALSE);

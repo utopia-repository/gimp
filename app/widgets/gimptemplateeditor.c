@@ -24,12 +24,10 @@
 
 #include "libgimpmath/gimpmath.h"
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
-
-#include "config/gimpconfig-utils.h"
-#include "config/gimpconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimplist.h"
@@ -37,8 +35,6 @@
 #include "core/gimptemplate.h"
 
 #include "gimptemplateeditor.h"
-#include "gimpenumwidgets.h"
-#include "gimppropwidgets.h"
 #include "gimpviewablebutton.h"
 
 #include "gimp-intl.h"
@@ -54,21 +50,18 @@ enum
 };
 
 
-static void gimp_template_editor_class_init (GimpTemplateEditorClass *klass);
-static GObject * gimp_template_editor_constructor  (GType                 type,
-                                                    guint                 n_params,
-                                                   GObjectConstructParam *params);
-static void      gimp_template_editor_set_property (GObject          *object,
-                                                    guint             property_id,
-                                                    const GValue     *value,
-                                                    GParamSpec       *pspec);
-static void      gimp_template_editor_get_property (GObject          *object,
-                                                    guint             property_id,
-                                                    GValue           *value,
-                                                    GParamSpec       *pspec);
-
-static void gimp_template_editor_finalize        (GObject            *object);
-static void gimp_template_editor_init            (GimpTemplateEditor *editor);
+static GObject *gimp_template_editor_constructor (GType               type,
+                                                  guint               n_params,
+                                                  GObjectConstructParam *params);
+static void    gimp_template_editor_finalize     (GObject            *object);
+static void    gimp_template_editor_set_property (GObject            *object,
+                                                  guint               property_id,
+                                                  const GValue       *value,
+                                                  GParamSpec         *pspec);
+static void    gimp_template_editor_get_property (GObject            *object,
+                                                  guint               property_id,
+                                                  GValue             *value,
+                                                  GParamSpec         *pspec);
 
 static void gimp_template_editor_aspect_callback (GtkWidget          *widget,
                                                   GimpTemplateEditor *editor);
@@ -80,50 +73,20 @@ static void gimp_template_editor_icon_changed    (GimpContext        *context,
                                                   GimpTemplateEditor *editor);
 
 
-static GtkVBoxClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpTemplateEditor, gimp_template_editor, GTK_TYPE_VBOX);
 
+#define parent_class gimp_template_editor_parent_class
 
-GType
-gimp_template_editor_get_type (void)
-{
-  static GType view_type = 0;
-
-  if (! view_type)
-    {
-      static const GTypeInfo view_info =
-      {
-        sizeof (GimpTemplateEditorClass),
-        NULL,           /* base_init      */
-        NULL,           /* base_finalize  */
-        (GClassInitFunc) gimp_template_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpTemplateEditor),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_template_editor_init
-      };
-
-      view_type = g_type_register_static (GTK_TYPE_VBOX,
-                                          "GimpTemplateEditor",
-                                          &view_info, 0);
-    }
-
-  return view_type;
-}
 
 static void
 gimp_template_editor_class_init (GimpTemplateEditorClass *klass)
 {
-  GObjectClass *object_class;
-
-  object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->constructor  = gimp_template_editor_constructor;
+  object_class->finalize     = gimp_template_editor_finalize;
   object_class->set_property = gimp_template_editor_set_property;
   object_class->get_property = gimp_template_editor_get_property;
-  object_class->finalize     = gimp_template_editor_finalize;
 
   g_object_class_install_property (object_class, PROP_TEMPLATE,
                                    g_param_spec_object ("template", NULL, NULL,
@@ -136,44 +99,6 @@ static void
 gimp_template_editor_init (GimpTemplateEditor *editor)
 {
   editor->template = NULL;
-}
-
-static void
-gimp_template_editor_set_property (GObject      *object,
-                                   guint         property_id,
-                                   const GValue *value,
-                                   GParamSpec   *pspec)
-{
-  GimpTemplateEditor *editor = GIMP_TEMPLATE_EDITOR (object);
-
-  switch (property_id)
-    {
-    case PROP_TEMPLATE:
-      editor->template = GIMP_TEMPLATE (g_value_dup_object (value));
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-    }
-}
-
-static void
-gimp_template_editor_get_property (GObject      *object,
-                                   guint         property_id,
-                                   GValue       *value,
-                                   GParamSpec   *pspec)
-{
-  GimpTemplateEditor *editor = GIMP_TEMPLATE_EDITOR (object);
-
-  switch (property_id)
-    {
-    case PROP_TEMPLATE:
-      g_value_set_object (value, editor->template);
-      break;
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-      break;
-    }
 }
 
 static GObject *
@@ -330,8 +255,8 @@ gimp_template_editor_constructor (GType                  type,
   text = g_strdup_printf ("<b>%s</b>", _("_Advanced Options"));
   editor->expander = g_object_new (GTK_TYPE_EXPANDER,
                                    "label",         text,
-                                   "use_markup",    TRUE,
-                                   "use_underline", TRUE,
+                                   "use-markup",    TRUE,
+                                   "use-underline", TRUE,
                                    NULL);
   g_free (text);
 
@@ -434,7 +359,7 @@ gimp_template_editor_constructor (GType                  type,
                                         "image-type",
                                         GIMP_RGB, GIMP_GRAY);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
-                             _("Color_space:"), 0.0, 0.5,
+                             _("Color _space:"), 0.0, 0.5,
                              combo, 1, FALSE);
 
   combo = gimp_prop_enum_combo_box_new (G_OBJECT (editor->template),
@@ -501,6 +426,44 @@ gimp_template_editor_finalize (GObject *object)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+static void
+gimp_template_editor_set_property (GObject      *object,
+                                   guint         property_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec)
+{
+  GimpTemplateEditor *editor = GIMP_TEMPLATE_EDITOR (object);
+
+  switch (property_id)
+    {
+    case PROP_TEMPLATE:
+      editor->template = GIMP_TEMPLATE (g_value_dup_object (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_template_editor_get_property (GObject      *object,
+                                   guint         property_id,
+                                   GValue       *value,
+                                   GParamSpec   *pspec)
+{
+  GimpTemplateEditor *editor = GIMP_TEMPLATE_EDITOR (object);
+
+  switch (property_id)
+    {
+    case PROP_TEMPLATE:
+      g_value_set_object (value, editor->template);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
 GtkWidget *
 gimp_template_editor_new (GimpTemplate *template,
                           Gimp         *gimp,
@@ -528,7 +491,7 @@ gimp_template_editor_new (GimpTemplate *template,
       editor->stock_id_container = gimp_list_new (GIMP_TYPE_TEMPLATE, FALSE);
       editor->stock_id_context = gimp_context_new (gimp, "foo", NULL);
 
-      g_signal_connect (editor->stock_id_context, "template_changed",
+      g_signal_connect (editor->stock_id_context, "template-changed",
                         G_CALLBACK (gimp_template_editor_icon_changed),
                         editor);
 
@@ -567,6 +530,7 @@ gimp_template_editor_new (GimpTemplate *template,
 
       button = gimp_viewable_button_new (editor->stock_id_container,
                                          editor->stock_id_context,
+                                         GIMP_VIEW_TYPE_LIST,
                                          GIMP_VIEW_SIZE_SMALL, 0,
                                          NULL, NULL, NULL, NULL);
       gimp_viewable_button_set_view_type (GIMP_VIEWABLE_BUTTON (button),
@@ -593,6 +557,17 @@ gimp_template_editor_show_advanced (GimpTemplateEditor *editor,
 /*  private functions  */
 
 static void
+gimp_template_editor_set_pixels (GimpTemplateEditor *editor,
+                                 GimpTemplate       *template)
+{
+  gchar *text = g_strdup_printf (ngettext ("%d x %d pixel",
+                                           "%d x %d pixels", template->height),
+                                 template->width, template->height);
+  gtk_label_set_text (GTK_LABEL (editor->pixel_label), text);
+  g_free (text);
+}
+
+static void
 gimp_template_editor_aspect_callback (GtkWidget          *widget,
                                       GimpTemplateEditor *editor)
 {
@@ -603,7 +578,6 @@ gimp_template_editor_aspect_callback (GtkWidget          *widget,
       gint          height      = template->height;
       gdouble       xresolution = template->xresolution;
       gdouble       yresolution = template->yresolution;
-      gchar        *text;
 
       if (template->width == template->height)
         {
@@ -634,10 +608,7 @@ gimp_template_editor_aspect_callback (GtkWidget          *widget,
                                          gimp_template_editor_template_notify,
                                          editor);
 
-      text = g_strdup_printf (_("%d x %d pixels"),
-                              template->width, template->height);
-      gtk_label_set_text (GTK_LABEL (editor->pixel_label), text);
-      g_free (text);
+      gimp_template_editor_set_pixels (editor, template);
     }
 }
 
@@ -672,10 +643,7 @@ gimp_template_editor_template_notify (GimpTemplate       *template,
   g_free (text);
 #endif
 
-  text = g_strdup_printf (_("%d x %d pixels"),
-                          template->width, template->height);
-  gtk_label_set_text (GTK_LABEL (editor->pixel_label), text);
-  g_free (text);
+  gimp_template_editor_set_pixels (editor, template);
 
   if (template->width > template->height)
     aspect = GIMP_ASPECT_LANDSCAPE;

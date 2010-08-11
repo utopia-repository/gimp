@@ -39,8 +39,8 @@
 #include "gimp-intl.h"
 
 
-#define CELL_WIDTH       48
-#define CELL_HEIGHT      48
+#define CELL_WIDTH   48
+#define CELL_HEIGHT  48
 
 
 static void
@@ -55,6 +55,8 @@ image_preview_clicked (GtkWidget       *widget,
 
 static void
 image_preview_drop_image (GtkWidget    *widget,
+                          gint          x,
+                          gint          y,
                           GimpViewable *viewable,
                           gpointer      data)
 {
@@ -63,6 +65,22 @@ image_preview_drop_image (GtkWidget    *widget,
   gimp_context_set_image (context, GIMP_IMAGE (viewable));
 }
 
+static void
+image_preview_set_viewable (GimpView     *view,
+                            GimpViewable *old_viewable,
+                            GimpViewable *new_viewable)
+{
+  if (! old_viewable && new_viewable)
+    {
+      gimp_dnd_xds_source_add (GTK_WIDGET (view),
+                               (GimpDndDragViewableFunc) gimp_view_get_viewable,
+                               NULL);
+    }
+  else if (old_viewable && ! new_viewable)
+    {
+      gimp_dnd_xds_source_remove (GTK_WIDGET (view));
+    }
+}
 
 /*  public functions  */
 
@@ -73,27 +91,42 @@ gimp_toolbox_image_area_create (GimpToolbox *toolbox,
 {
   GimpContext *context;
   GtkWidget   *image_view;
+  gchar       *tooltip;
 
   g_return_val_if_fail (GIMP_IS_TOOLBOX (toolbox), NULL);
 
   context = GIMP_DOCK (toolbox)->context;
 
-  image_view =
-    gimp_view_new_full_by_types (GIMP_TYPE_VIEW, GIMP_TYPE_IMAGE,
-                                 width, height, 0,
-                                 FALSE, TRUE, TRUE);
+  image_view = gimp_view_new_full_by_types (GIMP_TYPE_VIEW, GIMP_TYPE_IMAGE,
+                                            width, height, 0,
+                                            FALSE, TRUE, TRUE);
+
+  g_signal_connect (image_view, "set-viewable",
+                    G_CALLBACK (image_preview_set_viewable),
+                    NULL);
+
   gimp_view_set_viewable (GIMP_VIEW (image_view),
                           (GimpViewable *) gimp_context_get_image (context));
+
   gtk_widget_show (image_view);
 
-  gimp_help_set_help_data (image_view,
-                           _("The active image.\n"
-                             "Click to open the Image Dialog."), NULL);
+#ifdef GDK_WINDOWING_X11
+  tooltip = g_strdup_printf ("%s\n%s",
+                             _("The active image.\n"
+                               "Click to open the Image Dialog."),
+                             _("Drag to an XDS enabled file-manager to "
+                               "save the image."));
+#else
+  tooltip = g_strdup (_("The active image.\n"
+                        "Click to open the Image Dialog."));
+#endif
 
-  g_signal_connect_object (context, "image_changed",
+  gimp_help_set_help_data (image_view, tooltip, NULL);
+  g_free (tooltip);
+
+  g_signal_connect_object (context, "image-changed",
                            G_CALLBACK (gimp_view_set_viewable),
-                           image_view,
-                           G_CONNECT_SWAPPED);
+                           image_view, G_CONNECT_SWAPPED);
 
   g_signal_connect (image_view, "clicked",
                     G_CALLBACK (image_preview_clicked),

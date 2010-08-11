@@ -11,6 +11,7 @@ STOCK_IMAGES = \
 	stock-move-object.png	\
 	stock-move-point.png	\
 	stock-polygon.png	\
+	stock-rectangle.png	\
 	stock-select-object.png \
 	stock-show-all.png      \
 	stock-spiral.png	\
@@ -31,4 +32,4 @@ stock-icons.list: $(STOCK_IMAGES) Makefile.am
 	  done )
 
 $(srcdir)/gfig-stock-pixbufs.h: stock-icons.list
-	gdk-pixbuf-csource --raw --build-list `cat stock-icons.list` > $(@F)
+	$(GDK_PIXBUF_CSOURCE) --raw --build-list `cat stock-icons.list` > $(@F)

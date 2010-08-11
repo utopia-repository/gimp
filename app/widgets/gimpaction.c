@@ -25,12 +25,11 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
-
-#include "config/gimpconfig-params.h"
 
 #include "core/gimpmarshal.h"
 #include "core/gimpimagefile.h"  /* eek */
@@ -48,54 +47,25 @@ enum
 };
 
 
-static void   gimp_action_init          (GimpAction      *action);
-static void   gimp_action_class_init    (GimpActionClass *klass);
-
-static void   gimp_action_finalize      (GObject         *object);
-static void   gimp_action_set_property  (GObject         *object,
-                                         guint            prop_id,
-                                         const GValue    *value,
-                                         GParamSpec      *pspec);
-static void   gimp_action_get_property  (GObject         *object,
-                                         guint            prop_id,
-                                         GValue          *value,
-                                         GParamSpec      *pspec);
-static void   gimp_action_connect_proxy (GtkAction       *action,
-                                         GtkWidget       *proxy);
-static void   gimp_action_set_proxy     (GimpAction      *action,
-                                         GtkWidget       *proxy);
+static void   gimp_action_finalize      (GObject      *object);
+static void   gimp_action_set_property  (GObject      *object,
+                                         guint         prop_id,
+                                         const GValue *value,
+                                         GParamSpec   *pspec);
+static void   gimp_action_get_property  (GObject      *object,
+                                         guint         prop_id,
+                                         GValue       *value,
+                                         GParamSpec   *pspec);
+static void   gimp_action_connect_proxy (GtkAction    *action,
+                                         GtkWidget    *proxy);
+static void   gimp_action_set_proxy     (GimpAction   *action,
+                                         GtkWidget    *proxy);
 
 
-static GtkActionClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpAction, gimp_action, GTK_TYPE_ACTION);
 
+#define parent_class gimp_action_parent_class
 
-GType
-gimp_action_get_type (void)
-{
-  static GType type = 0;
-
-  if (!type)
-    {
-      static const GTypeInfo type_info =
-      {
-        sizeof (GimpActionClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_action_class_init,
-        (GClassFinalizeFunc) NULL,
-        NULL,
-        sizeof (GimpAction),
-        0, /* n_preallocs */
-        (GInstanceInitFunc) gimp_action_init,
-      };
-
-      type = g_type_register_static (GTK_TYPE_ACTION,
-                                     "GimpAction",
-                                     &type_info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_action_class_init (GimpActionClass *klass)
@@ -103,8 +73,6 @@ gimp_action_class_init (GimpActionClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkActionClass *action_class = GTK_ACTION_CLASS (klass);
   GimpRGB         black;
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize      = gimp_action_finalize;
   object_class->set_property  = gimp_action_set_property;
@@ -239,7 +207,7 @@ gimp_action_new (const gchar *name,
                        "name",     name,
                        "label",    label,
                        "tooltip",  tooltip,
-                       "stock_id", stock_id,
+                       "stock-id", stock_id,
                        NULL);
 }
 
@@ -261,6 +229,27 @@ gimp_action_set_proxy (GimpAction *action,
   if (! GTK_IS_IMAGE_MENU_ITEM (proxy))
     return;
 
+  /*  This is not quite the correct check, but works fine to enable
+   *  tooltips only for the "Open Recent" menu items, since they are
+   *  the only ones having both a viewable and a tooltip. --mitch
+   */
+  if (action->viewable)
+    {
+      gchar *tooltip = NULL;
+
+      g_object_get (action, "tooltip", &tooltip, NULL);
+
+      if (tooltip)
+        {
+          const gchar *help_id;
+
+          help_id = g_object_get_qdata (G_OBJECT (proxy), GIMP_HELP_ID);
+
+          gimp_help_set_help_data (proxy, tooltip, help_id);
+          g_free (tooltip);
+        }
+    }
+
   if (action->color)
     {
       GtkWidget *area;
@@ -275,8 +264,7 @@ gimp_action_set_proxy (GimpAction *action,
 
       if (! area)
         {
-          GdkScreen   *screen   = gtk_widget_get_screen (proxy);
-          GtkSettings *settings = gtk_settings_get_for_screen (screen);
+          GtkSettings *settings = gtk_widget_get_settings (proxy);
           gint         width, height;
 
           area = gimp_color_area_new (action->color,
@@ -309,8 +297,7 @@ gimp_action_set_proxy (GimpAction *action,
 
       if (! view)
         {
-          GdkScreen   *screen   = gtk_widget_get_screen (proxy);
-          GtkSettings *settings = gtk_settings_get_for_screen (screen);
+          GtkSettings *settings = gtk_widget_get_settings (proxy);
           GtkIconSize  size;
           gint         width, height;
           gint         border_width;

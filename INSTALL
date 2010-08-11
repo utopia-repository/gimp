@@ -1,16 +1,17 @@
-Installation instructions for GIMP 2.2
+Installation instructions for GIMP 2.3
 --------------------------------------
 
 There are some basic steps to building and installing The GIMP.
 
-GIMP 2.2 replaces GIMP 2.0. It is advised that you uninstall GIMP 2.0
-before installing GIMP 2.2. If you want to keep GIMP 2.0 installed in
-parallel to GIMP 2.2, you have to choose a separate prefix which is
-not in your default library search path.
+GIMP 2.3 replaces earlier GIMP 2.x versions. It is advised that you
+uninstall them before installing GIMP 2.3. If you want to keep your
+older GIMP 2.x installation in parallel to GIMP 2.3, you have to
+choose a separate prefix which is not in your default library search
+path.
 
-GIMP 2.2 is fully backward compatible to GIMP 2.0. Plug-ins and
+GIMP 2.x is fully backward compatible to GIMP 2.0. Plug-ins and
 scripts written for GIMP 2.0 will continue to work and don't need to
-be changed nor recompiled to be used with GIMP 2.2.
+be changed nor recompiled to be used with GIMP 2.x.
 
 The most important part is to make sure the requirements for a build
 are fulfilled.  We depend on a number of tools and libraries which are
@@ -27,12 +28,12 @@ header files installed.
   1. You need to have installed a recent version of pkg-config available
      from http://www.freedesktop.org/software/pkgconfig/.  
 
-  2. You need to have installed GTK+ version 2.4.4 or better. Do not
-     try to use an older GTK+ version (1.2.x), it will not work.
-     GTK+ itself needs recent versions of GLib (>= 2.4.5),
-     Pango (>= 1.4.0) and ATK. Sources for these can be grabbed from
-     ftp://ftp.gtk.org/. GTK+-2.x and friends can be installed side
-     by side with GTK+-1.2.
+  2. You need to have installed GTK+ version 2.6.0 or newer. Do not
+     try to use an older GTK+ version (1.2.x), it will not work.  GIMP
+     needs an even more recent version of GLib (>= 2.8.0). It also
+     wants Pango (>= 1.8.0) and ATK. Sources for these can be grabbed
+     from ftp://ftp.gtk.org/. GTK+-2.x and friends can be installed
+     side by side with GTK+-1.2.
 
   3. We require PangoFT2, a Pango backend that uses FreeType2. Make
      sure you have FreeType2 and fontconfig installed before you
@@ -40,29 +41,28 @@ header files installed.
      http://www.freetype.org/.  Fontconfig from
      http://freedesktop.org/fontconfig/.  GIMP 2.2 depends on
      freetype2 being newer than version 2.1.7. Older versions are
-     known to have bugs that seriously affect stability of The GIMP.
+     known to have bugs that seriously affect stability of GIMP.
 
-  4. We use libart2. Grab the module libart_lgpl from the GNOME
-     Subversion repository or fetch the tarball from
+  4. We use libart2. Grab the module libart_lgpl out of GNOME CVS or
+     fetch the tarball from
      ftp://ftp.gnome.org/pub/gnome/sources/libart_lgpl/
 
-  5. You may want to install other third party libraries or programs that
-     are needed for some of the available plugins. We recommend to check
-     that the following libraries are installed: libpng, libjpeg,
-     libtiff, gimp-print (4.2.x), gtkhtml-2, libmng, librsvg, libwmf.
+  5. You may want to install other third party libraries or programs
+     that are needed for some of the available plugins. We recommend
+     to check that the following libraries are installed: libpng,
+     libjpeg, libpoppler, libtiff, gtkhtml-2, libmng, librsvg, libwmf.
 
-  6. Configure the GIMP by running the `configure' script. You may want
+  6. Configure GIMP by running the `configure' script. You may want
      to pass some options to it, see below.
 
-  7. Build the GIMP by running `make'. The use of GNU make is recommened.
+  7. Build GIMP by running `make'. The use of GNU make is recommened.
      If you need to tweak the build to make it work with other flavours
      of make, we'd appreciate if you'd send us a patch with the changes.
 
-  8. Install the GIMP by running `make install'. In order to avoid clashes
-     with other versions of The GIMP, we install a binary called gimp-2.2.
+  8. Install GIMP by running `make install'. In order to avoid clashes
+     with other versions of GIMP, we install a binary called gimp-2.3.
      By default there's also a link created so that you can type 'gimp'
-     to start gimp-2.2. If you have the 2.0 version installed, you should
-     still be able to run it using 'gimp-2.0'.
+     to start gimp-2.3.
 
 Please make sure you don't have any old GTK+-2.x, jpeg, etc. libraries 
 lying around on your system, otherwise configure may fail to find the 
@@ -71,19 +71,19 @@ new ones.
 
 Generic instructions for configuring and compiling auto-configured
 packages are included below. Here is an illustration of commands that
-might be used to build and install the GIMP. The actual configuration,
+might be used to build and install GIMP. The actual configuration,
 compilation and installation output is not shown.
 
-  % tar xvfz gimp-2.2.x.tar.gz   # unpack the sources
-  % cd gimp-2.2.x                # change to the toplevel directory
+  % tar xvfz gimp-2.3.x.tar.gz   # unpack the sources
+  % cd gimp-2.3.x                # change to the toplevel directory
   % ./configure                  # run the `configure' script
-  % make                         # build the GIMP
-  % make install                 # install the GIMP
+  % make                         # build GIMP
+  % make install                 # install GIMP
 
 
-The `configure' script examines your system, and adapts the GIMP to
-run on it. The script has many options, some of which are described in
-the generic instructions included at the end of this file. All of the
+The `configure' script examines your system, and adapts GIMP to run on
+it. The script has many options, some of which are described in the
+generic instructions included at the end of this file. All of the
 options can be listed using the command `./configure --help'. There
 are several special options the GIMP `configure' script recognizes.
 These are:
@@ -95,7 +95,7 @@ These are:
 
   --enable-debug and --disable-debug.  This option causes the build
      process to compile with debugging enabled. If debugging is
-     disabled, the GIMP will instead be compiled with optimizations turned
+     disabled, GIMP will instead be compiled with optimizations turned
      on. The default is for debugging to be disabled. NOTE: This
      option is intended primarily as a convenience for developers.
 
@@ -105,8 +105,13 @@ These are:
      is intended primarily as a convenience for developers.
 
   --enable-gimpdir=DIR.  This option changes the default directory
-     the gimp uses to search for its configuration files from ~/.gimp-2.2 
-     (the directory .gimp-2.2 in the users home directory) to DIR.
+     GIMP uses to search for its configuration files from ~/.gimp-2.3 
+     (the directory .gimp-2.3 in the users home directory) to DIR.
+
+  --enable-binreloc.  When compiled for Linux with this option enabled,
+     GIMP will be binary relocatable.  Plug-ins and data files will
+     be searched relative to the gimp binary instead of in the paths
+     defined at compile time.
 
   --without-libtiff, --without-libjpeg, --without-libpng.  configure
      will bail out if libtiff, libjpeg or libpng can not be found. You
@@ -136,6 +141,19 @@ These are:
   --without-lcms.  If for some reason you want to build GIMP without
      using lcms for color support, you can build with --without-lcms.
 
+  --without-poppler.  If for some reason you don't want to build the PDF
+     import plug-in that uses libpoppler, you can use --without-poppler.
+
+  --without-gnomeprint.  If you don't want to build the Print plug-in
+     that uses libgnomeprint, you can use --without-gnomeprint.
+
+  --without-gimpprint.  The gimp-print plug-in provides Print support
+     by means of libgimpprint (see http://gimp-print.sourceforge.net/).
+     The gimp-print project has changed its name to gutenprint in the
+     meantime and you may find that libgimpprint 4.2 is somewhat outdated.
+     You can disable the build of this plug-in and instead grab a beta
+     release of gutenprint which comes with a GIMP plug-in.
+
   --with-gif-compression=[lzw|rle|none].  Allows to tune the compression
      algorithm used by the GIF plug-in. If you are afraid of Unisys' LZW
      patent (which should have expired in most countries by now), you
@@ -145,20 +163,13 @@ These are:
   --enable-gtk-doc.  This option controls whether the libgimp API
      references will be created using gtk-doc. The HTML pages are 
      included in a standard tarball, so you will only need this if you
-     are building from a Subversion checkout.
+     are building from CVS.
 
   --with-html-dir=PATH.  This option allows to specify where the
      libgimp API reference should be installed. You might want to modify
      the path so it points to the place where glib and gtk+ installled
      their API references so that the libgimp reference can link to
      them.
-
-  --disable-print.  The print plug-in requires a recent version of
-     libgimpprint. If you don't have it already installed, download
-     it from http://gimp-print.sourceforge.net/. You need to pass
-     --without-gimp to gimp-print's configure script to build it without
-     having gimp-1.2 installed. If you want to compile GIMP without
-     support for printing, use the --disable-print option.
 
   --enable-mp. This options control whether to build GIMP with or without
      support for multiple processors. This option is off by default. If
@@ -172,26 +183,26 @@ These are:
      because configure tries to find it in the usual places.
 
   --with-desktop-dir=[PATH]. This option specifies where to install
-     links to the gimp desktop files. These files are used by desktop
-     environments that comply to the specs published at freedesktop.org.
-     The default value ${prefix}/share should be fine if your desktop
-     environment is installed in the same prefix as gimp. No links are
-     created if the desktop directories don't exist or you used
-     --without-desktop-dir.
+     desktop files. These files are used by desktop environments that
+     comply to the specs published at freedesktop.org. The default
+     value ${prefix}/share should be fine if your desktop environment
+     is installed in the same prefix as gimp. No files are installed
+     if you call configure with --without-desktop-dir.
 
   --disable-default-binary. Use this option if you don't want to make
-     gimp-2.2 the default gimp installation. Otherwise a link called
-     gimp pointing to the gimp-2.2 executable will be installed.
+     gimp-2.3 the default gimp installation. Otherwise a link called
+     gimp pointing to the gimp-2.3 executable will be installed.
 
-  --enable-gimp-console.  In addition to the standard gimp binary,
-     build a console-only binary which does not link GTK+ at all.
+  --disable-gimp-console.  Use this option if you don't want the
+     gimp-console binary to be built in addition to the standard binary.
+     gimp-console is useful for command-line batch mode or as a server.
 
 
 The `make' command builds several things:
  - A bunch of public libraries in the directories starting with 'libgimp'.
  - The plug-in programs in the 'plug-ins' directory.
  - Some modules in the 'modules' subdirectory.
- - The main GIMP program 'gimp-2.2' in `app'.
+ - The main GIMP program 'gimp-2.3' in `app'.
 
 The `make install' commands installs the gimp header files associated 
 with the libgimp libraries, the plug-ins, some data files and the GIMP 
@@ -272,10 +283,6 @@ Set your CPPFLAGS environment variable to look for the header file in a
 certain place, e.g. if you are working in a bash shell you would say:
       export CPPFLAGS="-I<path_to_header_file> -I<path_to_another_one>"
 before you run configure.
-
-* If the check for gimpprint fails even though you have version 4.2.x
-  installed, please try the latest available 4.2 package (which is
-  gimp-print 4.2.7 at the time of this writing).
 
 
       Generic Instructions for Building Auto-Configured Packages

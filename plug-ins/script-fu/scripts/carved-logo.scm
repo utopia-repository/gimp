@@ -56,7 +56,7 @@
 
     (gimp-image-add-channel img mask 0)
 
-    (gimp-layer-set-preserve-trans mask-layer TRUE)
+    (gimp-layer-set-lock-alpha mask-layer TRUE)
     (gimp-context-set-background '(255 255 255))
     (gimp-edit-fill mask-layer BACKGROUND-FILL)
     (gimp-context-set-background '(0 0 0))
@@ -162,7 +162,7 @@
 		    SF-STRING     _"Text" "Marble"
 		    SF-ADJUSTMENT _"Font size (pixels)"  '(100 2 1000 1 10 0 1)
 		    SF-FONT       _"Font"                "Engraver"
-		    SF-FILENAME   _"Background Image"
+		    SF-FILENAME   _"Background image"
 		                  (string-append ""
 						 gimp-data-directory
 						 "/scripts/images/texture3.jpg")
@@ -170,4 +170,4 @@
 		    SF-ADJUSTMENT _"Padding around text" '(10 0 1000 1 10 0 1))
 
 (script-fu-menu-register "script-fu-carved-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

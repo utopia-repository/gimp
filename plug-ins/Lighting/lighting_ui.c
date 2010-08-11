@@ -19,9 +19,10 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <string.h>
 #include <errno.h>
+
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -48,7 +49,7 @@ static GtkWidget *light_type_combo;
 static GtkWidget *lightselect_combo;
 static GtkWidget *spin_intensity;
 static GtkWidget *isolate_button;
-static gchar     *lighting_effects_path       = NULL;
+static gchar     *lighting_effects_path = NULL;
 
 static void create_main_notebook      (GtkWidget       *container);
 
@@ -57,6 +58,9 @@ static void xyzval_update             (GtkEntry        *entry);
 #endif
 
 static void toggle_update             (GtkWidget       *widget,
+                                       gpointer         data);
+
+static void     distance_update       (GtkAdjustment   *adj,
                                        gpointer         data);
 
 static gboolean  bumpmap_constrain    (gint32           image_id,
@@ -69,14 +73,14 @@ static void     envmap_combo_callback (GtkWidget       *widget,
                                        gpointer         data);
 static void     save_lighting_preset  (GtkWidget       *widget,
                                        gpointer         data);
-static void     file_chooser_response (GtkFileChooser  *chooser,
+static void     save_preset_response  (GtkFileChooser  *chooser,
                                        gint             response_id,
                                        gpointer         data);
 static void     load_lighting_preset  (GtkWidget       *widget,
                                        gpointer         data);
-static void     load_file_chooser_response (GtkFileChooser *chooser,
-                                            gint        response_id,
-                                            gpointer    data);
+static void     load_preset_response  (GtkFileChooser  *chooser,
+                                       gint             response_id,
+                                       gpointer         data);
 static void     lightselect_callback  (GimpIntComboBox *combo,
                                        gpointer         data);
 static void     apply_settings        (GtkWidget       *widget,
@@ -113,6 +117,16 @@ toggle_update (GtkWidget *widget,
                gpointer   data)
 {
   gimp_toggle_button_update (widget, data);
+
+  draw_preview_image (TRUE);
+}
+
+
+static void
+distance_update (GtkAdjustment *adj,
+                 gpointer   data)
+{
+  mapvals.viewpoint.z = gtk_adjustment_get_value (adj);
 
   draw_preview_image (TRUE);
 }
@@ -158,39 +172,6 @@ apply_settings (GtkWidget *widget,
         = gtk_spin_button_get_value (GTK_SPIN_BUTTON(spin_intensity));
 
       interactive_preview_callback(NULL);
-    }
-
-  if (widget == light_type_combo)
-    {
-      switch (mapvals.lightsource[k].type)
-        {
-        case NO_LIGHT:
-          gtk_widget_set_sensitive (spin_pos_x, FALSE);
-          gtk_widget_set_sensitive (spin_pos_y, FALSE);
-          gtk_widget_set_sensitive (spin_pos_z, FALSE);
-          gtk_widget_set_sensitive (spin_dir_x, FALSE);
-          gtk_widget_set_sensitive (spin_dir_y, FALSE);
-          gtk_widget_set_sensitive (spin_dir_z, FALSE);
-          break;
-        case POINT_LIGHT:
-          gtk_widget_set_sensitive (spin_pos_x, TRUE);
-          gtk_widget_set_sensitive (spin_pos_y, TRUE);
-          gtk_widget_set_sensitive (spin_pos_z, TRUE);
-          gtk_widget_set_sensitive (spin_dir_x, FALSE);
-          gtk_widget_set_sensitive (spin_dir_y, FALSE);
-          gtk_widget_set_sensitive (spin_dir_z, FALSE);
-          break;
-        case DIRECTIONAL_LIGHT:
-          gtk_widget_set_sensitive (spin_pos_x, FALSE);
-          gtk_widget_set_sensitive (spin_pos_y, FALSE);
-          gtk_widget_set_sensitive (spin_pos_z, FALSE);
-          gtk_widget_set_sensitive (spin_dir_x, TRUE);
-          gtk_widget_set_sensitive (spin_dir_y, TRUE);
-          gtk_widget_set_sensitive (spin_dir_z, TRUE);
-          break;
-        default:
-          break;
-        }
     }
 }
 
@@ -285,6 +266,8 @@ create_options_page (void)
   GtkWidget *frame;
   GtkWidget *vbox;
   GtkWidget *toggle;
+  GtkWidget *table;
+  GtkObject *adj;
 
   page = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (page), 12);
@@ -324,7 +307,7 @@ create_options_page (void)
   gimp_help_set_help_data (toggle,
                            _("Create a new image when applying filter"), NULL);
 
-  toggle = gtk_check_button_new_with_mnemonic (_("High _Quality preview"));
+  toggle = gtk_check_button_new_with_mnemonic (_("High _quality preview"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
                                 mapvals.previewquality);
   gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
@@ -336,6 +319,20 @@ create_options_page (void)
   gimp_help_set_help_data (toggle,
                            _("Enable/disable high quality preview"), NULL);
 
+  table = gtk_table_new (1, 3, FALSE);
+  gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 12);
+  gtk_widget_show (table);
+
+  adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
+                              _("Distance:"), 100, 6,
+                              mapvals.viewpoint.z,
+                              0.0, 2.0, 0.01, 0.05,
+                              3, TRUE, 0.0, 0.0,
+                              "Distance of observer from surface",
+                              "plug-in-lighting");
+  g_signal_connect (adj, "value-changed",
+                    G_CALLBACK (distance_update),
+                    NULL);
 
   gtk_widget_show (page);
 
@@ -423,7 +420,7 @@ create_light_page (void)
                                           &mapvals.lightsource[k].color,
                                           GIMP_COLOR_AREA_FLAT);
   gimp_color_button_set_update (GIMP_COLOR_BUTTON (colorbutton), TRUE);
-  g_signal_connect (colorbutton, "color_changed",
+  g_signal_connect (colorbutton, "color-changed",
                     G_CALLBACK (apply_settings),
                     NULL);
   gtk_widget_show (colorbutton);
@@ -440,7 +437,7 @@ create_light_page (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
                                  _("_Intensity:"), 0.0, 0.5,
                                  spin_intensity, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (apply_settings),
                     NULL);
   gimp_help_set_help_data (spin_intensity,
@@ -458,7 +455,7 @@ create_light_page (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 2, 1,
                                  _("_X:"), 0.0, 0.5,
                                  spin_pos_x, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (apply_settings),
                     NULL);
   gimp_help_set_help_data (spin_pos_x,
@@ -471,7 +468,7 @@ create_light_page (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 2, 2,
                              _("_Y:"), 0.0, 0.5,
                              spin_pos_y, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (apply_settings),
                     NULL);
   gimp_help_set_help_data (spin_pos_y,
@@ -484,7 +481,7 @@ create_light_page (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 2, 3,
                              _("_Z:"), 0.0, 0.5,
                              spin_pos_z, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (apply_settings),
                     NULL);
   gimp_help_set_help_data (spin_pos_z,
@@ -501,7 +498,7 @@ create_light_page (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 4, 1,
                              _("X:"), 0.0, 0.5,
                              spin_dir_x, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (apply_settings),
                     NULL);
   gimp_help_set_help_data (spin_dir_x,
@@ -513,7 +510,7 @@ create_light_page (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 4, 2,
                              _("Y:"), 0.0, 0.5,
                                  spin_dir_y, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (apply_settings),
                     NULL);
   gimp_help_set_help_data (spin_dir_y,
@@ -525,7 +522,7 @@ create_light_page (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 4, 3,
                              _("Z:"), 0.0, 0.5,
                              spin_dir_z, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (apply_settings),
                     NULL);
   gimp_help_set_help_data (spin_dir_z,
@@ -588,7 +585,7 @@ create_material_page (void)
   page = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (page), 12);
 
-  frame = gimp_frame_new (_("Material properties"));
+  frame = gimp_frame_new (_("Material Properties"));
   gtk_box_pack_start (GTK_BOX (page), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
@@ -613,10 +610,10 @@ create_material_page (void)
                                      0, G_MAXFLOAT, 0.01, 0.1, 1.0, 0.0, 2);
   gtk_table_attach (GTK_TABLE (table), spinbutton, 2, 3, 0, 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.ambient_int);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (interactive_preview_callback),
                     NULL);
   gtk_widget_show (spinbutton);
@@ -642,10 +639,10 @@ create_material_page (void)
                                      0, G_MAXFLOAT, 0.01, 0.1, 1.0, 0.0, 2);
   gtk_table_attach (GTK_TABLE (table), spinbutton, 2, 3, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.diffuse_int);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (interactive_preview_callback),
                     NULL);
   gtk_widget_show (spinbutton);
@@ -671,10 +668,10 @@ create_material_page (void)
                                      0, G_MAXFLOAT, 0.01, 0.1, 1.0, 0.0, 2);
   gtk_table_attach (GTK_TABLE (table), spinbutton, 2, 3, 2, 3,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.specular_ref);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (interactive_preview_callback),
                     NULL);
   gtk_widget_show (spinbutton);
@@ -699,10 +696,10 @@ create_material_page (void)
                                      0, G_MAXFLOAT, 0.01, 0.1, 1.0, 0.0, 2);
   gtk_table_attach (GTK_TABLE (table), spinbutton, 2, 3, 3, 4,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.material.highlight);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (interactive_preview_callback),
                     NULL);
   gtk_widget_show (spinbutton);
@@ -808,10 +805,10 @@ create_bump_page (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
                              _("Ma_ximum height:"), 0.0, 0.5,
                              spinbutton, 1, TRUE);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &mapvals.bumpmax);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (interactive_preview_callback),
                     NULL);
 
@@ -952,6 +949,7 @@ main_dialog (GimpDrawable *drawable)
   GtkWidget *frame;
   GtkWidget *button;
   GtkWidget *toggle;
+  gchar     *path;
   gboolean   run = FALSE;
 
   /*
@@ -959,7 +957,13 @@ main_dialog (GimpDrawable *drawable)
   */
 
   gimp_ui_init ("Lighting", FALSE);
-  lighting_effects_path = gimp_gimprc_query ("lighting-effects-path");
+
+  path = gimp_gimprc_query ("lighting-effects-path");
+  if (path)
+    {
+      lighting_effects_path = g_filename_from_utf8 (path, -1, NULL, NULL, NULL);
+      g_free (path);
+    }
 
   lighting_stock_init ();
 
@@ -971,6 +975,13 @@ main_dialog (GimpDrawable *drawable)
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (appwin),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (appwin));
 
   main_hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
@@ -1083,11 +1094,18 @@ save_lighting_preset (GtkWidget *widget,
 
                                      NULL);
 
+      gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);
+
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (window),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
       g_signal_connect (window, "destroy",
                         G_CALLBACK (gtk_widget_destroyed),
                         &window);
       g_signal_connect (window, "response",
-                        G_CALLBACK (file_chooser_response),
+                        G_CALLBACK (save_preset_response),
                         NULL);
     }
 
@@ -1118,9 +1136,9 @@ save_lighting_preset (GtkWidget *widget,
 
 
 static void
-file_chooser_response (GtkFileChooser *chooser,
-                       gint            response_id,
-                       gpointer        data)
+save_preset_response (GtkFileChooser *chooser,
+                      gint            response_id,
+                      gpointer        data)
 {
   FILE          *fp;
   gint           num_lights = 0;
@@ -1135,7 +1153,7 @@ file_chooser_response (GtkFileChooser *chooser,
     {
       gchar *filename = gtk_file_chooser_get_filename (chooser);
 
-      fp = fopen (filename, "w");
+      fp = g_fopen (filename, "w");
 
       if (!fp)
         {
@@ -1193,6 +1211,8 @@ file_chooser_response (GtkFileChooser *chooser,
 
           fclose (fp);
         }
+
+      g_free (filename);
     }
 
   gtk_widget_destroy (GTK_WIDGET (chooser));
@@ -1218,11 +1238,16 @@ load_lighting_preset (GtkWidget *widget,
 
       gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);
 
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (window),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
       g_signal_connect (window, "destroy",
                         G_CALLBACK (gtk_widget_destroyed),
                         &window);
       g_signal_connect (window, "response",
-                        G_CALLBACK (load_file_chooser_response),
+                        G_CALLBACK (load_preset_response),
                         NULL);
     }
 
@@ -1254,9 +1279,9 @@ load_lighting_preset (GtkWidget *widget,
 
 
 static void
-load_file_chooser_response (GtkFileChooser *chooser,
-                            gint            response_id,
-                            gpointer        data)
+load_preset_response (GtkFileChooser *chooser,
+                      gint            response_id,
+                      gpointer        data)
 {
   FILE          *fp;
   gint           num_lights;
@@ -1268,12 +1293,11 @@ load_file_chooser_response (GtkFileChooser *chooser,
   gchar          type_label[20];
   gchar         *endptr;
 
-
   if (response_id == GTK_RESPONSE_OK)
     {
       gchar *filename = gtk_file_chooser_get_filename (chooser);
 
-      fp = fopen (filename, "r");
+      fp = g_fopen (filename, "r");
 
       if (!fp)
         {
@@ -1331,6 +1355,8 @@ load_file_chooser_response (GtkFileChooser *chooser,
           fclose (fp);
         }
 
+      g_free (filename);
+
       lightselect_callback (GIMP_INT_COMBO_BOX (lightselect_combo), NULL);
    }
 
@@ -1373,6 +1399,36 @@ lightselect_callback (GimpIntComboBox *combo,
                                  mapvals.lightsource[k].intensity);
 
       mapvals.update_enabled = TRUE;
+
+      switch (mapvals.lightsource[k].type)
+        {
+        case NO_LIGHT:
+          gtk_widget_set_sensitive (spin_pos_x, FALSE);
+          gtk_widget_set_sensitive (spin_pos_y, FALSE);
+          gtk_widget_set_sensitive (spin_pos_z, FALSE);
+          gtk_widget_set_sensitive (spin_dir_x, FALSE);
+          gtk_widget_set_sensitive (spin_dir_y, FALSE);
+          gtk_widget_set_sensitive (spin_dir_z, FALSE);
+          break;
+        case POINT_LIGHT:
+          gtk_widget_set_sensitive (spin_pos_x, TRUE);
+          gtk_widget_set_sensitive (spin_pos_y, TRUE);
+          gtk_widget_set_sensitive (spin_pos_z, TRUE);
+          gtk_widget_set_sensitive (spin_dir_x, FALSE);
+          gtk_widget_set_sensitive (spin_dir_y, FALSE);
+          gtk_widget_set_sensitive (spin_dir_z, FALSE);
+          break;
+        case DIRECTIONAL_LIGHT:
+          gtk_widget_set_sensitive (spin_pos_x, FALSE);
+          gtk_widget_set_sensitive (spin_pos_y, FALSE);
+          gtk_widget_set_sensitive (spin_pos_z, FALSE);
+          gtk_widget_set_sensitive (spin_dir_x, TRUE);
+          gtk_widget_set_sensitive (spin_dir_y, TRUE);
+          gtk_widget_set_sensitive (spin_dir_z, TRUE);
+          break;
+        default:
+          break;
+        }
 
       /* if we are isolating a light, need to switch */
       if (mapvals.light_isolated)

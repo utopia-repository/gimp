@@ -29,15 +29,16 @@
 
 /*  local function prototypes  */
 
-static void     gimp_canvas_class_init (GimpCanvasClass  *klass);
-static void     gimp_canvas_init       (GimpCanvas       *gdisp);
-static void     gimp_canvas_realize    (GtkWidget        *widget);
-static void     gimp_canvas_unrealize  (GtkWidget        *widget);
-static GdkGC  * gimp_canvas_gc_new     (GimpCanvas       *canvas,
-                                        GimpCanvasStyle   style);
+static void    gimp_canvas_realize   (GtkWidget       *widget);
+static void    gimp_canvas_unrealize (GtkWidget       *widget);
+static GdkGC * gimp_canvas_gc_new    (GimpCanvas      *canvas,
+                                      GimpCanvasStyle  style);
 
 
-static GtkDrawingAreaClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpCanvas, gimp_canvas, GTK_TYPE_DRAWING_AREA);
+
+#define parent_class gimp_canvas_parent_class
+
 
 static const guchar stipples[GIMP_CANVAS_NUM_STIPPLES][8] =
 {
@@ -124,40 +125,10 @@ static const guchar stipples[GIMP_CANVAS_NUM_STIPPLES][8] =
 };
 
 
-GType
-gimp_canvas_get_type (void)
-{
-  static GType canvas_type = 0;
-
-  if (! canvas_type)
-    {
-      static const GTypeInfo canvas_info =
-      {
-        sizeof (GimpCanvasClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_canvas_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpCanvas),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_canvas_init,
-      };
-
-      canvas_type = g_type_register_static (GTK_TYPE_DRAWING_AREA,
-                                            "GimpCanvas",
-                                            &canvas_info, 0);
-    }
-
-  return canvas_type;
-}
-
 static void
 gimp_canvas_class_init (GimpCanvasClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   widget_class->realize   = gimp_canvas_realize;
   widget_class->unrealize = gimp_canvas_unrealize;
@@ -211,6 +182,12 @@ gimp_canvas_unrealize (GtkWidget *widget)
         }
     }
 
+  if (canvas->layout)
+    {
+      g_object_unref (canvas->layout);
+      canvas->layout = NULL;
+    }
+
   GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
 }
 
@@ -231,6 +208,8 @@ gimp_canvas_gc_new (GimpCanvas      *canvas,
     {
     case GIMP_CANVAS_STYLE_BLACK:
     case GIMP_CANVAS_STYLE_WHITE:
+    case GIMP_CANVAS_STYLE_SAMPLE_POINT_NORMAL:
+    case GIMP_CANVAS_STYLE_SAMPLE_POINT_ACTIVE:
       break;
 
     case GIMP_CANVAS_STYLE_RENDER:
@@ -238,6 +217,7 @@ gimp_canvas_gc_new (GimpCanvas      *canvas,
       values.graphics_exposures = TRUE;
       break;
 
+    case GIMP_CANVAS_STYLE_XOR_DOTTED:
     case GIMP_CANVAS_STYLE_XOR_DASHED:
       mask |= GDK_GC_LINE_STYLE;
       values.line_style = GDK_LINE_ON_OFF_DASH;
@@ -267,6 +247,12 @@ gimp_canvas_gc_new (GimpCanvas      *canvas,
     }
 
   gc = gdk_gc_new_with_values (GTK_WIDGET (canvas)->window, &values, mask);
+
+  if (style == GIMP_CANVAS_STYLE_XOR_DOTTED)
+    {
+      gint8 one = 1;
+      gdk_gc_set_dashes (gc, 0, &one, 1);
+    }
 
   switch (style)
     {
@@ -332,6 +318,18 @@ gimp_canvas_gc_new (GimpCanvas      *canvas,
       bg.red   = 0xffff;
       bg.green = 0x0;
       bg.blue  = 0x0;
+      break;
+
+    case GIMP_CANVAS_STYLE_SAMPLE_POINT_NORMAL:
+      fg.red   = 0x0;
+      fg.green = 0x7f7f;
+      fg.blue  = 0xffff;
+      break;
+
+    case GIMP_CANVAS_STYLE_SAMPLE_POINT_ACTIVE:
+      fg.red   = 0xffff;
+      fg.green = 0x0;
+      fg.blue  = 0x0;
       break;
     }
 
@@ -616,8 +614,49 @@ gimp_canvas_draw_segments (GimpCanvas      *canvas,
       num_segments -= 32000;
       segments     += 32000;
     }
+
   gdk_draw_segments (GTK_WIDGET (canvas)->window, canvas->gc[style],
                      segments, num_segments);
+}
+
+/**
+ * gimp_canvas_draw_text:
+ * @canvas:  a #GimpCanvas widget
+ * @style:   one of the enumerated #GimpCanvasStyle's.
+ * @x:       X coordinate of the left of the layout.
+ * @y:       Y coordinate of the top of the layout.
+ * @format:  a standard printf() format string.
+ * @Varargs: the parameters to insert into the format string.
+ *
+ * Draws a layout, in the specified style.
+ **/
+void
+gimp_canvas_draw_text (GimpCanvas      *canvas,
+                       GimpCanvasStyle  style,
+                       gint             x,
+                       gint             y,
+                       const gchar     *format,
+                       ...)
+{
+  va_list  args;
+  gchar   *text;
+
+  if (! gimp_canvas_ensure_style (canvas, style))
+    return;
+
+  if (! canvas->layout)
+    canvas->layout = gtk_widget_create_pango_layout (GTK_WIDGET (canvas),
+                                                     NULL);
+
+  va_start (args, format);
+  text = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  pango_layout_set_text (canvas->layout, text, -1);
+  g_free (text);
+
+  gdk_draw_layout (GTK_WIDGET (canvas)->window, canvas->gc[style],
+                   x, y, canvas->layout);
 }
 
 /**
@@ -755,13 +794,13 @@ void
 gimp_canvas_set_custom_gc (GimpCanvas *canvas,
                            GdkGC      *gc)
 {
+  if (gc)
+    g_object_ref (gc);
+
   if (canvas->gc[GIMP_CANVAS_STYLE_CUSTOM])
     g_object_unref (canvas->gc[GIMP_CANVAS_STYLE_CUSTOM]);
 
   canvas->gc[GIMP_CANVAS_STYLE_CUSTOM] = gc;
-
-  if (gc)
-    g_object_ref (gc);
 }
 
 /**

@@ -1,9 +1,29 @@
+/**********************************************************************
+   The GIMP -- an image manipulation program
+   Copyright (C) 1995 Spencer Kimball and Peter Mattis
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *********************************************************************/
+
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -11,12 +31,9 @@
 #include "FractalExplorer.h"
 #include "Dialogs.h"
 
-#include "logo.h"
-
 #include "libgimp/stdplugins-intl.h"
 
 
-#define RESPONSE_ABOUT 1
 #define ZOOM_UNDO_SIZE 100
 
 
@@ -78,12 +95,8 @@ static void create_load_file_chooser   (GtkWidget      *widget,
 static void create_save_file_chooser   (GtkWidget      *widget,
                                         GtkWidget      *dialog);
 
-static void explorer_logo_dialog       (GtkWidget      *parent);
-
 static void cmap_preview_size_allocate (GtkWidget      *widget,
                                         GtkAllocation  *allocation);
-
-static void logo_preview_size_allocate (GtkWidget      *preview);
 
 /**********************************************************************
  CALLBACKS
@@ -96,10 +109,6 @@ dialog_response (GtkWidget *widget,
 {
   switch (response_id)
     {
-    case RESPONSE_ABOUT:
-      explorer_logo_dialog (widget);
-      break;
-
     case GTK_RESPONSE_OK:
       wint.run = TRUE;
       gtk_widget_destroy (widget);
@@ -496,28 +505,25 @@ explorer_dialog (void)
   GtkWidget *table;
   GtkWidget *button;
   GtkWidget *gradient;
+  gchar     *path;
   gchar     *gradient_name;
   GSList    *group = NULL;
   gint       i;
 
   gimp_ui_init ("fractalexplorer", TRUE);
 
-  fractalexplorer_path = gimp_gimprc_query ("fractalexplorer-path");
+  path = gimp_gimprc_query ("fractalexplorer-path");
 
-  if (! fractalexplorer_path)
+  if (path)
     {
-      gchar *gimprc = gimp_personal_rc_file ("gimprc");
-      gchar *full_path;
-      gchar *esc_path;
-
-      full_path =
-        g_strconcat ("${gimp_dir}", G_DIR_SEPARATOR_S,
-                     "fractalexplorer",
-                     G_SEARCHPATH_SEPARATOR_S,
-                     "${gimp_data_dir}", G_DIR_SEPARATOR_S,
-                     "fractalexplorer",
-                     NULL);
-      esc_path = g_strescape (full_path, NULL);
+      fractalexplorer_path = g_filename_from_utf8 (path, -1, NULL, NULL, NULL);
+      g_free (path);
+    }
+  else
+    {
+      gchar *gimprc    = gimp_personal_rc_file ("gimprc");
+      gchar *full_path = gimp_config_build_data_path ("fractalexplorer");
+      gchar *esc_path  = g_strescape (full_path, NULL);
       g_free (full_path);
 
       g_message (_("No %s in gimprc:\n"
@@ -525,12 +531,12 @@ explorer_dialog (void)
                    "(%s \"%s\")\n"
                    "to your %s file."),
                  "fractalexplorer-path",
-                 "fractalexplorer-path", esc_path, gimprc);
+                 "fractalexplorer-path",
+                 esc_path, gimp_filename_to_utf8 (gimprc));
 
       g_free (gimprc);
       g_free (esc_path);
     }
-
 
   wint.wimage = g_new (guchar, preview_width * preview_height * 3);
   elements    = g_new (DialogElements, 1);
@@ -540,11 +546,17 @@ explorer_dialog (void)
                      NULL, 0,
                      gimp_standard_help_func, HELP_ID,
 
-                     _("About"),       RESPONSE_ABOUT,
                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                      GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                      NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   g_signal_connect (dialog, "response",
                     G_CALLBACK (dialog_response),
@@ -582,19 +594,19 @@ explorer_dialog (void)
   gtk_widget_set_size_request (wint.preview, preview_width, preview_height);
   gtk_container_add (GTK_CONTAINER (frame), wint.preview);
 
-  g_signal_connect (wint.preview, "button_press_event",
+  g_signal_connect (wint.preview, "button-press-event",
                     G_CALLBACK (preview_button_press_event),
                     NULL);
-  g_signal_connect (wint.preview, "button_release_event",
+  g_signal_connect (wint.preview, "button-release-event",
                     G_CALLBACK (preview_button_release_event),
                     NULL);
-  g_signal_connect (wint.preview, "motion_notify_event",
+  g_signal_connect (wint.preview, "motion-notify-event",
                     G_CALLBACK (preview_motion_notify_event),
                     NULL);
-  g_signal_connect (wint.preview, "leave_notify_event",
+  g_signal_connect (wint.preview, "leave-notify-event",
                     G_CALLBACK (preview_leave_notify_event),
                     NULL);
-  g_signal_connect (wint.preview, "enter_notify_event",
+  g_signal_connect (wint.preview, "enter-notify-event",
                     G_CALLBACK (preview_enter_notify_event),
                     NULL);
 
@@ -605,7 +617,7 @@ explorer_dialog (void)
                                         GDK_ENTER_NOTIFY_MASK));
   gtk_widget_show (wint.preview);
 
-  toggle = gtk_check_button_new_with_label (_("Realtime Preview"));
+  toggle = gtk_check_button_new_with_label (_("Realtime preview"));
   gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (explorer_toggle_update),
@@ -698,7 +710,7 @@ explorer_dialog (void)
                           TRUE, 0, 0,
                           _("Change the first (minimal) x-coordinate "
                             "delimitation"), NULL);
-  g_signal_connect (elements->xmin, "value_changed",
+  g_signal_connect (elements->xmin, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.xmin);
 
@@ -709,7 +721,7 @@ explorer_dialog (void)
                           TRUE, 0, 0,
                           _("Change the second (maximal) x-coordinate "
                             "delimitation"), NULL);
-  g_signal_connect (elements->xmax, "value_changed",
+  g_signal_connect (elements->xmax, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.xmax);
 
@@ -720,7 +732,7 @@ explorer_dialog (void)
                           TRUE, 0, 0,
                           _("Change the first (minimal) y-coordinate "
                             "delimitation"), NULL);
-  g_signal_connect (elements->ymin, "value_changed",
+  g_signal_connect (elements->ymin, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.ymin);
 
@@ -731,7 +743,7 @@ explorer_dialog (void)
                           TRUE, 0, 0,
                           _("Change the second (maximal) y-coordinate "
                             "delimitation"), NULL);
-  g_signal_connect (elements->ymax, "value_changed",
+  g_signal_connect (elements->ymax, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.ymax);
 
@@ -743,7 +755,7 @@ explorer_dialog (void)
                           _("Change the iteration value. The higher it "
                             "is, the more details will be calculated, "
                             "which will take more time"), NULL);
-  g_signal_connect (elements->iter, "value_changed",
+  g_signal_connect (elements->iter, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.iter);
 
@@ -755,7 +767,7 @@ explorer_dialog (void)
                           _("Change the CX value (changes aspect of "
                             "fractal, active with every fractal but "
                             "Mandelbrot and Sierpinski)"), NULL);
-  g_signal_connect (elements->cx, "value_changed",
+  g_signal_connect (elements->cx, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.cx);
 
@@ -767,7 +779,7 @@ explorer_dialog (void)
                           _("Change the CY value (changes aspect of "
                             "fractal, active with every fractal but "
                             "Mandelbrot and Sierpinski)"), NULL);
-  g_signal_connect (elements->cy, "value_changed",
+  g_signal_connect (elements->cy, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.cy);
 
@@ -897,7 +909,7 @@ explorer_dialog (void)
                           TRUE, 0, 0,
                           _("Change the number of colors in the mapping"),
                           NULL);
-  g_signal_connect (elements->ncol, "value_changed",
+  g_signal_connect (elements->ncol, "value-changed",
                     G_CALLBACK (explorer_number_of_colors_callback),
                     &wvals.ncolors);
 
@@ -929,7 +941,7 @@ explorer_dialog (void)
                           wvals.redstretch, 0, 1, 0.01, 0.1, 2,
                           TRUE, 0, 0,
                           _("Change the intensity of the red channel"), NULL);
-  g_signal_connect (elements->red, "value_changed",
+  g_signal_connect (elements->red, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.redstretch);
 
@@ -939,7 +951,7 @@ explorer_dialog (void)
                           wvals.greenstretch, 0, 1, 0.01, 0.1, 2,
                           TRUE, 0, 0,
                           _("Change the intensity of the green channel"), NULL);
-  g_signal_connect (elements->green, "value_changed",
+  g_signal_connect (elements->green, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.greenstretch);
 
@@ -949,7 +961,7 @@ explorer_dialog (void)
                           wvals.bluestretch, 0, 1, 0.01, 0.1, 2,
                           TRUE, 0, 0,
                           _("Change the intensity of the blue channel"), NULL);
-  g_signal_connect (elements->blue, "value_changed",
+  g_signal_connect (elements->blue, "value-changed",
                     G_CALLBACK (explorer_double_adjustment_update),
                     &wvals.bluestretch);
 
@@ -1173,7 +1185,7 @@ explorer_dialog (void)
                             gtk_label_new_with_mnemonic (_("_Fractals")));
   gtk_widget_show (frame);
 
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 0);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 1);
 
   gtk_widget_show (dialog);
   ready_now = TRUE;
@@ -1227,10 +1239,9 @@ dialog_update_preview (void)
   gdouble  foldyinity;
   gdouble  adjust;
   gdouble  xx = 0;
-  gint     counter;
+  gint     zaehler;
   gint     color;
   gint     useloglog;
-  gdouble  log2;
 
   if (NULL == wint.preview)
     return;
@@ -1260,8 +1271,6 @@ dialog_update_preview (void)
       p_ul = wint.wimage;
       iteration = (int) wvals.iter;
       useloglog = wvals.useloglog;
-      log2 = log (2.0);
-
       for (ycoord = 0; ycoord < preview_height; ycoord++)
         {
           px = 0;
@@ -1281,7 +1290,9 @@ dialog_update_preview (void)
                   x = 0;
                   y = 0;
                 }
-              for (counter = 0; counter < iteration; counter++)
+              for (zaehler = 0;
+                   (zaehler < iteration) && ((x * x + y * y) < 4);
+                   zaehler++)
                 {
                   oldx = x;
                   oldy = y;
@@ -1391,25 +1402,17 @@ dialog_update_preview (void)
                     }
 
                   x = xx;
-
-                  if (((x * x) + (y * y)) >= 4.0)
-                    break;
                 }
 
               if (useloglog)
                 {
-                  gdouble modulus_square = (x * x) + (y * y);
-
-                  if (modulus_square > (G_E * G_E))
-                      adjust = log (log (modulus_square) / 2.0) / log2;
-                  else
-                      adjust = 0.0;
+                  adjust = log (log (x * x + y * y) / 2) / log (2);
                 }
               else
                 {
                   adjust = 0.0;
                 }
-              color = (int) (((counter - adjust) *
+              color = (int) (((zaehler - adjust) *
                               (wvals.ncolors - 1)) / iteration);
               p_ul[0] = colormap[color][0];
               p_ul[1] = colormap[color][1];
@@ -1604,116 +1607,6 @@ make_color_map (void)
 }
 
 /**********************************************************************
- FUNCTION: explorer_logo_dialog
- *********************************************************************/
-
-static void
-logo_preview_size_allocate (GtkWidget *preview)
-{
-  guchar *temp;
-  guchar *temp2;
-  guchar *datapointer;
-  gint    x, y;
-
-  temp2 = temp = g_new (guchar, logo_height*(logo_width + 10) * 3);
-  datapointer = header_data + logo_width * logo_height - 1;
-
-  for (y = 0; y < logo_height; y++)
-  {
-    for (x = 0; x < logo_width; x++)
-    {
-      HEADER_PIXEL (datapointer, temp2);
-      temp2 += 3;
-    }
-  }
-  gimp_preview_area_draw (GIMP_PREVIEW_AREA (preview), 0, 0, 
-      logo_width, logo_height, GIMP_RGB_IMAGE,
-      temp, logo_width * 3);
-  g_free (temp);
-}
-
-/**********************************************************************
- FUNCTION: explorer_logo_dialog
- *********************************************************************/
-
-static void
-explorer_logo_dialog (GtkWidget *parent)
-{
-  static GtkWidget *dialog = NULL;
-
-  GtkWidget *label;
-  GtkWidget *vbox;
-  GtkWidget *abox;
-  GtkWidget *preview;
-  GtkWidget *frame;
-
-  if (dialog)
-    {
-      gtk_window_present (GTK_WINDOW (dialog));
-      return;
-    }
-
-  dialog = gimp_dialog_new (_("About"), "fractalexplorer",
-                            parent, 0,
-                            gimp_standard_help_func, HELP_ID,
-
-                            GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
-
-                            NULL);
-
-  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
-
-  g_signal_connect (dialog, "response",
-                    G_CALLBACK (gtk_widget_destroy),
-                    NULL);
-  g_signal_connect (dialog, "destroy",
-                    G_CALLBACK (gtk_widget_destroyed),
-                    &dialog);
-
-  vbox = gtk_vbox_new (FALSE, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                      vbox, TRUE, TRUE, 0);
-  gtk_widget_show (vbox);
-
-  /*  The logo frame & drawing area  */
-  abox = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
-  gtk_box_pack_start (GTK_BOX (vbox), abox, FALSE, FALSE, 0);
-  gtk_widget_show (abox);
-
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type(GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (abox), frame);
-  gtk_widget_show (frame);
-
-  preview = gimp_preview_area_new ();
-  gtk_widget_set_size_request (preview, logo_width, logo_height);
-  gtk_container_add (GTK_CONTAINER (frame), preview);
-  gtk_widget_show (preview);
-  g_signal_connect (preview, "size_allocate",
-                    G_CALLBACK (logo_preview_size_allocate), NULL);
-
-
-  label = gtk_label_new ("Fractal Chaos Explorer\n"
-                         "Plug-In for the GIMP\n"
-                         "Version 2.00 (Multilingual)");
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  label = gtk_label_new ("\nContains code from:\n\n"
-                         "Daniel Cotting  <cotting@mygale.org>\n"
-                         "Peter Kirchgessner  <Pkirchg@aol.com>\n"
-                         "Scott Draves  <spot@cs.cmu.edu>\n"
-                         "Andy Thomas  <alt@picnic.demon.co.uk>\n"
-                         "and the GIMP distribution.");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  gtk_widget_show (dialog);
-}
-
-/**********************************************************************
  FUNCTION: dialog_change_scale
  *********************************************************************/
 
@@ -1765,42 +1658,19 @@ dialog_change_scale (void)
 static void
 save_options (FILE * fp)
 {
-  gchar buf[64];
-
   /* Save options */
 
   fprintf (fp, "fractaltype: %i\n", wvals.fractaltype);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.xmin);
-  fprintf (fp, "xmin: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.xmax);
-  fprintf (fp, "xmax: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.ymin);
-  fprintf (fp, "ymin: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.ymax);
-  fprintf (fp, "ymax: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.iter);
-  fprintf (fp, "iter: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.cx);
-  fprintf (fp, "cx: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.cy);
-  fprintf (fp, "cy: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.redstretch * 128.0);
-  fprintf (fp, "redstretch: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.greenstretch * 128.0);
-  fprintf (fp, "greenstretch: %s\n", buf);
-
-  g_ascii_formatd (buf, sizeof (buf), "%0.15f", wvals.bluestretch * 128.0);
-  fprintf (fp, "bluestretch: %s\n", buf);
-
+  fprintf (fp, "xmin: %0.15f\n", wvals.xmin);
+  fprintf (fp, "xmax: %0.15f\n", wvals.xmax);
+  fprintf (fp, "ymin: %0.15f\n", wvals.ymin);
+  fprintf (fp, "ymax: %0.15f\n", wvals.ymax);
+  fprintf (fp, "iter: %0.15f\n", wvals.iter);
+  fprintf (fp, "cx: %0.15f\n", wvals.cx);
+  fprintf (fp, "cy: %0.15f\n", wvals.cy);
+  fprintf (fp, "redstretch: %0.15f\n", wvals.redstretch * 128.0);
+  fprintf (fp, "greenstretch: %0.15f\n", wvals.greenstretch * 128.0);
+  fprintf (fp, "bluestretch: %0.15f\n", wvals.bluestretch * 128.0);
   fprintf (fp, "redmode: %i\n", wvals.redmode);
   fprintf (fp, "greenmode: %i\n", wvals.greenmode);
   fprintf (fp, "bluemode: %i\n", wvals.bluemode);
@@ -1816,12 +1686,10 @@ save_options (FILE * fp)
 static void
 save_callback (void)
 {
-  FILE  *fp;
-  gchar *savename;
+  FILE        *fp;
+  const gchar *savename = filename;
 
-  savename = filename;
-
-  fp = fopen (savename, "wt+");
+  fp = g_fopen (savename, "wt+");
 
   if (!fp)
     {
@@ -1858,28 +1726,6 @@ save_file_chooser_response (GtkFileChooser *chooser,
     }
 
   gtk_widget_destroy (GTK_WIDGET (chooser));
-}
-
-static void
-file_chooser_set_default_folder (GtkFileChooser *chooser)
-{
-  GList *path_list;
-  gchar *dir;
-
-  if (! fractalexplorer_path)
-    return;
-
-  path_list = gimp_path_parse (fractalexplorer_path, 16, FALSE, NULL);
-
-  dir = gimp_path_get_user_writable_dir (path_list);
-
-  if (! dir)
-    dir = g_strdup (gimp_directory ());
-
-  gtk_file_chooser_set_current_folder (chooser, dir);
-
-  g_free (dir);
-  gimp_path_free (path_list);
 }
 
 static void
@@ -1925,7 +1771,10 @@ create_load_file_chooser (GtkWidget *widget,
 
       gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);
 
-      file_chooser_set_default_folder (GTK_FILE_CHOOSER (window));
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (window),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
 
       g_signal_connect (window, "destroy",
                         G_CALLBACK (gtk_widget_destroyed),
@@ -1958,6 +1807,11 @@ create_save_file_chooser (GtkWidget *widget,
 
       gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);
 
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (window),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
       g_signal_connect (window, "destroy",
                         G_CALLBACK (gtk_widget_destroyed),
                         &window);
@@ -1970,9 +1824,26 @@ create_save_file_chooser (GtkWidget *widget,
     {
       gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (window), tpath);
     }
+  else if (fractalexplorer_path)
+    {
+      GList *path_list;
+      gchar *dir;
+
+      path_list = gimp_path_parse (fractalexplorer_path, 16, FALSE, NULL);
+
+      dir = gimp_path_get_user_writable_dir (path_list);
+
+      if (!dir)
+        dir = g_strdup (gimp_directory ());
+
+      gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (window), dir);
+
+      g_free (dir);
+      gimp_path_free (path_list);
+    }
   else
     {
-      file_chooser_set_default_folder (GTK_FILE_CHOOSER (window));
+      gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (window), "/tmp");
     }
 
   gtk_window_present (GTK_WINDOW (window));
@@ -2126,7 +1997,8 @@ explorer_load (void)
   gchar  load_buf[MAX_LOAD_LINE];
 
   g_assert (filename != NULL);
-  fp = fopen (filename, "rt");
+
+  fp = g_fopen (filename, "rt");
 
   if (!fp)
     {

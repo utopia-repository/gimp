@@ -1,10 +1,12 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 
 if OS_WIN32
 mwindows = -mwindows
@@ -19,10 +21,6 @@ libexecdir = $(gimpplugindir)/plug-ins
 libexec_PROGRAMS = imagemap
 
 EXTRA_DIST = \
-	AUTHORS		\
-	NEWS		\
-	README		\
-	TODO		\
 	imap_cern.l  	\
 	imap_csim.l  	\
 	imap_ncsa.l	\
@@ -103,8 +101,6 @@ imagemap_SOURCES = \
 	imap_object_popup.h		\
 	imap_polygon.c			\
 	imap_polygon.h			\
-	imap_popup.c			\
-	imap_popup.h			\
 	imap_preferences.c		\
 	imap_preferences.h		\
 	imap_preview.c			\
@@ -126,11 +122,7 @@ imagemap_SOURCES = \
 	imap_table.c			\
 	imap_table.h			\
 	imap_taglist.c			\
-	imap_taglist.h			\
-	imap_toolbar.c			\
-	imap_toolbar.h			\
-	imap_tools.c			\
-	imap_tools.h
+	imap_taglist.h
 
 INCLUDES = \
 	-I$(top_srcdir)	\
@@ -140,8 +132,10 @@ INCLUDES = \
 LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
+	$(libgimpconfig)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\

@@ -48,6 +48,7 @@ STOCK_MENU_IMAGES = \
 	stock-convert-grayscale-16.png			\
 	stock-convert-indexed-16.png			\
 	stock-convert-rgb-16.png			\
+	stock-cursor-16.png				\
 	stock-default-colors-12.png			\
 	stock-device-status-16.png			\
 	stock-display-filter-16.png			\
@@ -94,13 +95,14 @@ STOCK_MENU_IMAGES = \
 	stock-plugin-16.png				\
 	stock-portrait-16.png				\
 	stock-print-resolution-16.png			\
-	stock-qmask-off-16.png				\
-	stock-qmask-on-16.png				\
+	stock-quick-mask-off-16.png			\
+	stock-quick-mask-on-16.png			\
 	stock-reshow-filter-16.png			\
 	stock-resize-16.png				\
 	stock-rotate-180-16.png				\
 	stock-rotate-270-16.png				\
 	stock-rotate-90-16.png				\
+	stock-sample-point-16.png			\
 	stock-scale-16.png				\
 	stock-selection-16.png				\
 	stock-selection-all-16.png			\
@@ -142,6 +144,7 @@ STOCK_BUTTON_IMAGES = \
 	stock-color-picker-white-18.png		\
 	stock-color-pick-from-screen-16.png	\
 	stock-color-triangle-16.png		\
+	stock-cursor-24.png			\
 	stock-curve-free-16.png			\
 	stock-curve-smooth-16.png		\
 	stock-device-status-24.png		\
@@ -158,6 +161,7 @@ STOCK_BUTTON_IMAGES = \
 	stock-gravity-south-east-24.png		\
 	stock-gravity-south-west-24.png		\
 	stock-gravity-west-24.png		\
+	stock-hcenter-24.png			\
 	stock-hchain-24.png			\
 	stock-hchain-broken-24.png		\
 	stock-histogram-22.png			\
@@ -180,6 +184,7 @@ STOCK_BUTTON_IMAGES = \
 	stock-paths-22.png			\
 	stock-print-resolution-24.png		\
 	stock-reset-16.png			\
+	stock-sample-point-24.png		\
 	stock-selection-add-16.png		\
 	stock-selection-intersect-16.png	\
 	stock-selection-replace-16.png		\
@@ -195,6 +200,7 @@ STOCK_BUTTON_IMAGES = \
 	stock-tool-options-24.png		\
 	stock-tools-24.png			\
 	stock-transparency-24.png		\
+	stock-vcenter-24.png			\
 	stock-vchain-24.png			\
 	stock-vchain-broken-24.png		\
 	stock-video-24.png			\
@@ -273,6 +279,8 @@ STOCK_TOOL_IMAGES = \
 	tools/stock-tool-flip-22.png			\
 	tools/stock-tool-free-select-16.png		\
 	tools/stock-tool-free-select-22.png		\
+	tools/stock-tool-foreground-select-16.png	\
+	tools/stock-tool-foreground-select-22.png	\
 	tools/stock-tool-fuzzy-select-16.png		\
 	tools/stock-tool-fuzzy-select-22.png		\
 	tools/stock-tool-hue-saturation-16.png		\

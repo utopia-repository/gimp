@@ -30,14 +30,9 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -45,6 +40,7 @@
 #include "bmp.h"
 
 #include "libgimp/stdplugins-intl.h"
+
 
 static gint cur_progress = 0;
 static gint max_progress = 0;
@@ -115,7 +111,6 @@ WriteBMP (const gchar *filename,
   gint          rows, cols, Spcols, channels, MapSize, SpZeile;
   glong         BitsPerPixel;
   gint          colors;
-  gchar        *temp_buf;
   guchar       *pixels;
   GimpPixelRgn  pixel_rgn;
   GimpDrawable *drawable;
@@ -123,30 +118,28 @@ WriteBMP (const gchar *filename,
   guchar        puffer[50];
   gint          i;
 
-  /* first: can we save this image? */
-
   drawable = gimp_drawable_get (drawable_ID);
   drawable_type = gimp_drawable_type (drawable_ID);
 
   gimp_pixel_rgn_init (&pixel_rgn, drawable,
                        0, 0, drawable->width, drawable->height, FALSE, FALSE);
 
-  if (gimp_drawable_has_alpha (drawable_ID))
-    {
-      g_message (_("Cannot save images with alpha channel."));
-      return GIMP_PDB_EXECUTION_ERROR;
-    }
-
-  /* We can save it. So what colors do we use? */
-
   switch (drawable_type)
     {
+    case GIMP_RGBA_IMAGE:
+      colors       = 0;
+      BitsPerPixel = 32;
+      MapSize      = 0;
+      channels     = 4;
+      break;
+
     case GIMP_RGB_IMAGE:
       colors       = 0;
       BitsPerPixel = 24;
       MapSize      = 0;
       channels     = 3;
       break;
+
     case GIMP_GRAY_IMAGE:
       colors       = 256;
       BitsPerPixel = 8;
@@ -159,6 +152,11 @@ WriteBMP (const gchar *filename,
           Blue[i]  = i;
         }
       break;
+
+    case GIMP_GRAYA_IMAGE:
+      g_message (_("Cannot operate on grayscale images with alpha channel."));
+      return GIMP_PDB_EXECUTION_ERROR;
+
     case GIMP_INDEXED_IMAGE:
       cmap     = gimp_image_get_colormap (image, &colors);
       MapSize  = 4 * colors;
@@ -178,9 +176,13 @@ WriteBMP (const gchar *filename,
           Blue[i]  = *cmap++;
         }
       break;
-    default:
-      g_message (_("Cannot operate on unknown image types."));
+
+    case GIMP_INDEXEDA_IMAGE:
+      g_message (_("Cannot operate on indexed images with alpha channel."));
       return GIMP_PDB_EXECUTION_ERROR;
+
+    default:
+      g_assert_not_reached ();
     }
 
   /* Perhaps someone wants RLE encoded Bitmaps */
@@ -192,7 +194,7 @@ WriteBMP (const gchar *filename,
     }
 
   /* Let's take some file */
-  outfile = fopen (filename, "wb");
+  outfile = g_fopen (filename, "wb");
   if (!outfile)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -206,10 +208,8 @@ WriteBMP (const gchar *filename,
                            0, 0, drawable->width, drawable->height);
 
   /* And let's begin the progress */
-  temp_buf = g_strdup_printf (_("Saving '%s'..."),
-                               gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp_buf);
-  g_free (temp_buf);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   cur_progress = 0;
   max_progress = drawable->height;
@@ -219,7 +219,7 @@ WriteBMP (const gchar *filename,
   rows = drawable->height;
 
   /* ... that we write to our headers. */
-  if ((BitsPerPixel != 24) &&
+  if ((BitsPerPixel < 24) &&
       (cols % (8/BitsPerPixel)))
     Spcols = (((cols / (8 / BitsPerPixel)) + 1) * (8 / BitsPerPixel));
   else
@@ -268,11 +268,9 @@ WriteBMP (const gchar *filename,
          *    n dots    inch     100 cm   m dots
          *    ------ * ------- * ------ = ------
          *     inch    2.54 cm     m       inch
-         *
-         * We add 0.5 for proper rounding.
          */
-        Bitmap_Head.biXPels = (long int) (xresolution * 100.0 / 2.54 + 0.5);
-        Bitmap_Head.biYPels = (long int) (yresolution * 100.0 / 2.54 + 0.5);
+        Bitmap_Head.biXPels = (long int) (xresolution * 100.0 / 2.54);
+        Bitmap_Head.biYPels = (long int) (yresolution * 100.0 / 2.54);
       }
   }
 
@@ -352,9 +350,38 @@ WriteImage (FILE   *f,
   xpos = 0;
   rowstride = width * channels;
 
-  /* We'll begin with the 24 bit Bitmaps, they are easy :-) */
+  /* We'll begin with the 32 and 24 bit Bitmaps, they are easy :-) */
 
-  if (bpp == 24)
+  if (bpp == 32)
+    {
+      for (ypos = height - 1; ypos >= 0; ypos--)  /* for each row   */
+        {
+          for (i = 0; i < width; i++)  /* for each pixel */
+            {
+              temp = src + (ypos * rowstride) + (xpos * channels);
+              buf[2] = (guchar) *temp;
+              temp++;
+              buf[1] = (guchar) *temp;
+              temp++;
+              buf[0] = (guchar) *temp;
+              temp++;
+              buf[3] = (guchar) *temp;
+              xpos++;
+
+              Write (f, buf, 4);
+            }
+
+          Write (f, &buf[3], spzeile - (width * 4));
+
+          cur_progress++;
+          if ((cur_progress % 5) == 0)
+            gimp_progress_update ((gdouble) cur_progress /
+                                  (gdouble) max_progress);
+
+          xpos = 0;
+        }
+    }
+  else if (bpp == 24)
     {
       for (ypos = height - 1; ypos >= 0; ypos--)  /* for each row   */
         {
@@ -558,16 +585,21 @@ save_dialog (void)
                          gimp_standard_help_func, "file-bmp-save",
 
                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                         GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
                          NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), vbox, TRUE, TRUE, 0);
   gtk_widget_show (vbox);
 
-  toggle = gtk_check_button_new_with_mnemonic (_("_RLE encoded"));
+  toggle = gtk_check_button_new_with_mnemonic (_("_Run-Length Encoded"));
   gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), encoded);
   gtk_widget_show (toggle);

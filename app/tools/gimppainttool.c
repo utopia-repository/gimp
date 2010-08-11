@@ -62,9 +62,6 @@
 #define STATUSBAR_SIZE 128
 
 
-static void   gimp_paint_tool_class_init     (GimpPaintToolClass  *klass);
-static void   gimp_paint_tool_init           (GimpPaintTool       *paint_tool);
-
 static GObject * gimp_paint_tool_constructor (GType                type,
                                               guint                n_params,
                                               GObjectConstructParam *params);
@@ -121,36 +118,10 @@ static void   gimp_paint_tool_notify_brush   (GimpDisplayConfig   *config,
                                               GimpPaintTool       *paint_tool);
 
 
-static GimpColorToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpPaintTool, gimp_paint_tool, GIMP_TYPE_COLOR_TOOL);
 
+#define parent_class gimp_paint_tool_parent_class
 
-GType
-gimp_paint_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpPaintToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_paint_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpPaintTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_paint_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_COLOR_TOOL,
-                                          "GimpPaintTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
 
 static void
 gimp_paint_tool_class_init (GimpPaintToolClass *klass)
@@ -159,8 +130,6 @@ gimp_paint_tool_class_init (GimpPaintToolClass *klass)
   GimpToolClass      *tool_class       = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass  *draw_tool_class  = GIMP_DRAW_TOOL_CLASS (klass);
   GimpColorToolClass *color_tool_class = GIMP_COLOR_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor  = gimp_paint_tool_constructor;
   object_class->finalize     = gimp_paint_tool_finalize;
@@ -183,7 +152,18 @@ gimp_paint_tool_init (GimpPaintTool *paint_tool)
 {
   GimpTool *tool = GIMP_TOOL (paint_tool);
 
-  gimp_tool_control_set_motion_mode (tool->control, GIMP_MOTION_MODE_EXACT);
+  gimp_tool_control_set_motion_mode     (tool->control,
+                                         GIMP_MOTION_MODE_EXACT);
+  gimp_tool_control_set_action_value_1  (tool->control,
+                                         "context/context-opacity-set");
+  gimp_tool_control_set_action_value_2  (tool->control,
+                                         "context/context-brush-radius-set");
+  gimp_tool_control_set_action_value_3  (tool->control,
+                                         "context/context-brush-aspect-set");
+  gimp_tool_control_set_action_value_4  (tool->control,
+                                         "context/context-brush-angle-set");
+  gimp_tool_control_set_action_object_1 (tool->control,
+                                         "context/context-brush-select-set");
 
   paint_tool->pick_colors = FALSE;
   paint_tool->draw_line   = FALSE;
@@ -277,7 +257,6 @@ gimp_paint_tool_enable_color_picker (GimpPaintTool     *tool,
   GIMP_COLOR_TOOL (tool)->pick_mode = mode;
 }
 
-
 static void
 gimp_paint_tool_control (GimpTool       *tool,
 			 GimpToolAction  action,
@@ -309,9 +288,7 @@ gimp_paint_tool_control (GimpTool       *tool,
 
         for (list = display_list; list; list = g_slist_next (list))
           {
-            GimpDisplay *tmp_disp;
-
-            tmp_disp = (GimpDisplay *) list->data;
+            GimpDisplay *tmp_disp = list->data;
 
             if (tmp_disp != gdisp && tmp_disp->gimage == gdisp->gimage)
               {
@@ -627,8 +604,7 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
   if (gimp_draw_tool_is_active (draw_tool))
     gimp_draw_tool_stop (draw_tool);
 
-  gimp_statusbar_pop (GIMP_STATUSBAR (shell->statusbar),
-                      g_type_name (G_TYPE_FROM_INSTANCE (tool)));
+  gimp_tool_pop_status (tool, gdisp);
 
   if (tool->gdisp          &&
       tool->gdisp != gdisp &&
@@ -650,13 +626,13 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
       if (gdisp == tool->gdisp && (state & GDK_SHIFT_MASK))
         {
           /*  If shift is down and this is not the first paint stroke,
-           *  draw a line
+           *  draw a line.
            */
 
-          gdouble  dx, dy, dist;
-          gchar    status_str[STATUSBAR_SIZE];
-          gint     off_x, off_y;
-          gboolean hard;
+          gdouble   dx, dy, dist;
+          gchar     status_str[STATUSBAR_SIZE];
+          gint      off_x, off_y;
+          gboolean  hard;
 
           core->cur_coords = *coords;
 
@@ -696,14 +672,16 @@ gimp_paint_tool_oper_update (GimpTool        *tool,
               g_snprintf (status_str, sizeof (status_str), format_str, dist);
             }
 
-          gimp_statusbar_push (GIMP_STATUSBAR (shell->statusbar),
-                               g_type_name (G_TYPE_FROM_INSTANCE (tool)),
-                               status_str);
+          gimp_tool_push_status (tool, gdisp, status_str);
 
           paint_tool->draw_line = TRUE;
         }
       else
         {
+          if (gdisp == tool->gdisp)
+            gimp_tool_push_status (tool, gdisp,
+                                   _("Press Shift to draw a straight line."));
+
           paint_tool->draw_line = FALSE;
         }
 
@@ -771,27 +749,28 @@ gimp_paint_tool_draw (GimpDrawTool *draw_tool)
         {
           GimpBrushCore *brush_core = GIMP_BRUSH_CORE (core);
 
-          if (! brush_core->brush_bound_segs)
+          if (! brush_core->brush_bound_segs && brush_core->main_brush)
             {
-              TempBuf     *mask;
-              PixelRegion  PR = { 0, };
+              TempBuf     *mask = gimp_brush_get_mask (brush_core->main_brush);
+              PixelRegion  PR   = { 0, };
+	      BoundSeg    *boundary;
+	      gint	   num_groups;
 
-              mask = gimp_brush_get_mask (brush_core->main_brush);
+              pixel_region_init_temp_buf (&PR, mask,
+                                          0, 0, mask->width, mask->height);
 
-              PR.data      = temp_buf_data (mask);
-              PR.x         = 0;
-              PR.y         = 0;
-              PR.w         = mask->width;
-              PR.h         = mask->height;
-              PR.bytes     = mask->bytes;
-              PR.rowstride = PR.w * PR.bytes;
+              boundary = boundary_find (&PR, BOUNDARY_WITHIN_BOUNDS,
+                                        0, 0, PR.w, PR.h,
+                                        0,
+                                        &brush_core->n_brush_bound_segs);
 
               brush_core->brush_bound_segs =
-                find_mask_boundary (&PR, &brush_core->n_brush_bound_segs,
-                                    WithinBounds,
-                                    0, 0,
-                                    PR.w, PR.h,
-                                    0);
+                boundary_sort (boundary, brush_core->n_brush_bound_segs,
+                               &num_groups);
+
+	      brush_core->n_brush_bound_segs += num_groups;
+
+	      g_free (boundary);
 
               brush_core->brush_bound_width  = mask->width;
               brush_core->brush_bound_height = mask->height;
@@ -870,21 +849,19 @@ gimp_paint_tool_color_picked (GimpColorTool      *color_tool,
 
   if (tool->gdisp)
     {
-      GimpContext *context;
-
-      context = gimp_get_user_context (tool->gdisp->gimage->gimp);
+      GimpContext *context = gimp_get_user_context (tool->gdisp->gimage->gimp);
 
       switch (color_tool->pick_mode)
         {
-        case GIMP_COLOR_PICK_MODE_NONE:
-          break;
-
         case GIMP_COLOR_PICK_MODE_FOREGROUND:
           gimp_context_set_foreground (context, color);
           break;
 
         case GIMP_COLOR_PICK_MODE_BACKGROUND:
           gimp_context_set_background (context, color);
+          break;
+
+        default:
           break;
         }
     }

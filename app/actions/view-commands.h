@@ -20,9 +20,7 @@
 #define __VIEW_COMMANDS_H__
 
 
-void   view_new_view_cmd_callback              (GtkAction *action,
-                                                gpointer   data);
-void   view_close_view_cmd_callback            (GtkAction *action,
+void   view_new_cmd_callback                   (GtkAction *action,
                                                 gpointer   data);
 
 void   view_zoom_fit_in_cmd_callback           (GtkAction *action,
@@ -47,8 +45,6 @@ void   view_scroll_vertical_cmd_callback       (GtkAction *action,
                                                 gint       value,
                                                 gpointer   data);
 
-void   view_info_window_cmd_callback           (GtkAction *action,
-                                                gpointer   data);
 void   view_navigation_window_cmd_callback     (GtkAction *action,
                                                 gpointer   data);
 void   view_display_filters_cmd_callback       (GtkAction *action,
@@ -67,11 +63,18 @@ void   view_toggle_statusbar_cmd_callback      (GtkAction *action,
                                                 gpointer   data);
 void   view_toggle_guides_cmd_callback         (GtkAction *action,
                                                 gpointer   data);
-void   view_snap_to_guides_cmd_callback        (GtkAction *action,
-                                                gpointer   data);
 void   view_toggle_grid_cmd_callback           (GtkAction *action,
                                                 gpointer   data);
+void   view_toggle_sample_points_cmd_callback  (GtkAction *action,
+                                                gpointer   data);
+
+void   view_snap_to_guides_cmd_callback        (GtkAction *action,
+                                                gpointer   data);
 void   view_snap_to_grid_cmd_callback          (GtkAction *action,
+                                                gpointer   data);
+void   view_snap_to_canvas_cmd_callback        (GtkAction *action,
+                                                gpointer   data);
+void   view_snap_to_vectors_cmd_callback       (GtkAction *action,
                                                 gpointer   data);
 void   view_padding_color_cmd_callback         (GtkAction *action,
                                                 gint       value,
@@ -80,9 +83,7 @@ void   view_padding_color_cmd_callback         (GtkAction *action,
 void   view_shrink_wrap_cmd_callback           (GtkAction *action,
                                                 gpointer   data);
 void   view_fullscreen_cmd_callback            (GtkAction *action,
-						gpointer   data);
-void   view_change_screen_cmd_callback         (GtkAction *action,
-						gpointer   data);
+                                                gpointer   data);
 
 
 #endif /* __VIEW_COMMANDS_H__ */

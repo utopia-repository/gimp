@@ -27,18 +27,15 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
-#define SCALE_WIDTH  200
-#define ENTRY_WIDTH    6
+#define PLUG_IN_PROC   "plug-in-alienmap2"
+#define PLUG_IN_BINARY "AlienMap2"
+#define SCALE_WIDTH    200
+#define ENTRY_WIDTH      6
 
 /***** Color model *****/
 
@@ -61,7 +58,6 @@ typedef struct
   gboolean   redmode;
   gboolean   greenmode;
   gboolean   bluemode;
-  gboolean   preview;
 } alienmap2_vals_t;
 
 /* Declare local functions. */
@@ -113,7 +109,6 @@ static alienmap2_vals_t wvals =
   1.0,
   0.0,
   RGB_MODEL,
-  TRUE,
   TRUE,
   TRUE,
   TRUE
@@ -169,7 +164,7 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",       "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",       "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",          "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",       "Input drawable" },
     { GIMP_PDB_FLOAT,    "redfrequency",   "Red/hue component frequency factor" },
@@ -184,19 +179,19 @@ query (void)
     { GIMP_PDB_INT8,     "bluemode",       "Blue/luminance application mode (TRUE, FALSE)" },
   };
 
-  gimp_install_procedure ("plug_in_alienmap2",
-                          "AlienMap2 Color Transformation Plug-In",
+  gimp_install_procedure (PLUG_IN_PROC,
+                          "Alien Map Color Transformation Plug-In",
                           "No help yet. Just try it and you'll see!",
                           "Martin Weber (martweb@gmx.net)",
                           "Martin Weber (martweb@gmx.net",
                           "24th April 1998",
-                          N_("Alien Map _2..."),
+                          N_("_Alien Map..."),
                           "RGB*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_alienmap2", "<Image>/Filters/Colors/Map");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Map");
 }
 
 static void
@@ -279,7 +274,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /* Possibly retrieve data */
-      gimp_get_data ("plug_in_alienmap2", &wvals);
+      gimp_get_data (PLUG_IN_PROC, &wvals);
 
       /* Get information from the dialog */
       if (!alienmap2_dialog ())
@@ -310,7 +305,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /* Possibly retrieve data */
-      gimp_get_data ("plug_in_alienmap2", &wvals);
+      gimp_get_data (PLUG_IN_PROC, &wvals);
       break;
 
     default:
@@ -322,7 +317,7 @@ run (const gchar      *name,
       /*  Make sure that the drawable is RGB or RGBA  */
       if (gimp_drawable_is_rgb (drawable->drawable_id))
         {
-          gimp_progress_init (_("AlienMap2: Transforming..."));
+          gimp_progress_init (_("Alien Map: Transforming"));
 
           /* Set the tile cache size */
           gimp_tile_cache_ntiles (2 * (drawable->width /
@@ -336,8 +331,8 @@ run (const gchar      *name,
 
           /* Store data */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data ("plug_in_alienmap2",
-                           &wvals, sizeof(alienmap2_vals_t));
+            gimp_set_data (PLUG_IN_PROC,
+                           &wvals, sizeof (alienmap2_vals_t));
         }
       else
         {
@@ -393,23 +388,30 @@ alienmap2_dialog (void)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("alienmap2", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("AlienMap2"), "alienmap2",
+  dialog = gimp_dialog_new (_("Alien Map"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-alienmap2",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, &wvals.preview);
+  preview = gimp_zoom_preview_new (drawable);
   gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",
@@ -438,7 +440,7 @@ alienmap2_dialog (void)
                           _("Number of cycles covering full value range"),
                           NULL);
   label_freq_rh = GIMP_SCALE_ENTRY_LABEL (adj);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (dialog_scale_update),
                     &wvals.redfrequency);
 
@@ -450,7 +452,7 @@ alienmap2_dialog (void)
                           _("Phase angle, range 0-360"),
                           NULL);
   label_phase_rh = GIMP_SCALE_ENTRY_LABEL (adj);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (dialog_scale_update),
                     &wvals.redangle);
 
@@ -462,7 +464,7 @@ alienmap2_dialog (void)
                           _("Number of cycles covering full value range"),
                           NULL);
   label_freq_gs = GIMP_SCALE_ENTRY_LABEL (adj);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (dialog_scale_update),
                     &wvals.greenfrequency);
 
@@ -474,7 +476,7 @@ alienmap2_dialog (void)
                           _("Phase angle, range 0-360"),
                           NULL);
   label_phase_gs = GIMP_SCALE_ENTRY_LABEL (adj);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (dialog_scale_update),
                     &wvals.greenangle);
 
@@ -486,7 +488,7 @@ alienmap2_dialog (void)
                           _("Number of cycles covering full value range"),
                           NULL);
   label_freq_bl = GIMP_SCALE_ENTRY_LABEL (adj);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (dialog_scale_update),
                     &wvals.bluefrequency);
 
@@ -498,7 +500,7 @@ alienmap2_dialog (void)
                           _("Phase angle, range 0-360"),
                           NULL);
   label_phase_bl = GIMP_SCALE_ENTRY_LABEL (adj);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (dialog_scale_update),
                     &wvals.blueangle);
 
@@ -573,9 +575,8 @@ dialog_update_preview (GimpDrawable *drawable,
   gint    width, height, bpp;
   gint    i;
 
-  gimp_preview_get_size (preview, &width, &height);
-  src = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                          &width, &height, &bpp);
+  src = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
+                                      &width, &height, &bpp);
   dest = g_new (guchar, width * height * bpp);
 
   for (i = 0 ; i < width * height ; i++)

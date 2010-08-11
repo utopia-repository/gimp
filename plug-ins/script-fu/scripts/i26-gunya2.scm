@@ -84,7 +84,7 @@
 
 
 (script-fu-register "script-fu-i26-gunya2"
-		    _"Imigre-26..."
+		    _"Imigre-_26..."
 		    "Two-colored text by hand"
 		    "Shuji Narazaki"
 		    "Shuji Narazaki"
@@ -98,4 +98,4 @@
 		    SF-ADJUSTMENT _"Frame size"         '(2 1 20 1 5 0 1))
 
 (script-fu-menu-register "script-fu-i26-gunya2"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

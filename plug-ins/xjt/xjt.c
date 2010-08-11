@@ -56,7 +56,6 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
@@ -66,7 +65,8 @@
 #include <unistd.h>
 #endif
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
+
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -74,13 +74,17 @@
 
 #ifdef G_OS_WIN32
 #include <process.h> /* getpid() */
-#include <direct.h> /* _mkdir */
-#define mkdir(path,mode) _mkdir(path)
-#define mode_t int
 #endif
 
 /* XJT includes */
 #include "xjpeg.h"
+
+#define LOAD_PROC      "file-xjt-load"
+#define SAVE_PROC      "file-xjt-save"
+
+#ifdef _MSC_VER
+typedef int pid_t;
+#endif
 
 #define GIMP_XJ_IMAGE  "GIMP_XJ_IMAGE"
 
@@ -111,7 +115,7 @@ typedef enum
   PROP_MODE = 7,
   PROP_VISIBLE = 8,
   PROP_LINKED = 9,
-  PROP_PRESERVE_TRANSPARENCY = 10,
+  PROP_LOCK_ALPHA = 10,
   PROP_APPLY_MASK = 11,
   PROP_EDIT_MASK = 12,
   PROP_SHOW_MASK = 13,
@@ -290,7 +294,7 @@ typedef struct
   gint32   mode;
   gint     visible;
   gint     linked;
-  gint     preserve_transparency;
+  gint     lock_alpha;
   gint     apply_mask;
   gint     edit_mask;
   gint     show_mask;
@@ -351,7 +355,7 @@ t_prop_table g_prop_table[PROP_TABLE_ENTRIES] = {
   { PROP_MODE,                  "md",     PTYP_INT,                 0.0,  0.0,  0.0 } ,
   { PROP_VISIBLE,               "iv",     PTYP_BOOLEAN,             0.0,  0.0,  0.0 } ,
   { PROP_LINKED,                "ln",     PTYP_BOOLEAN,             0.0,  0.0,  0.0 } ,
-  { PROP_PRESERVE_TRANSPARENCY, "pt",     PTYP_BOOLEAN,             0.0,  0.0,  0.0 } ,
+  { PROP_LOCK_ALPHA,            "pt",     PTYP_BOOLEAN,             0.0,  0.0,  0.0 } ,
   { PROP_APPLY_MASK,            "aml",    PTYP_BOOLEAN,             0.0,  0.0,  0.0 } ,
   { PROP_EDIT_MASK,             "eml",    PTYP_BOOLEAN,             0.0,  0.0,  0.0 } ,
   { PROP_SHOW_MASK,             "sml",    PTYP_BOOLEAN,             0.0,  0.0,  0.0 } ,
@@ -444,9 +448,9 @@ query (void)
 {
   static GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_STRING, "filename", "The name of the file to load" },
-    { GIMP_PDB_STRING, "raw_filename", "The name of the file to load" },
+    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
+    { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" },
   };
   static GimpParamDef load_return_vals[] =
   {
@@ -455,18 +459,18 @@ query (void)
 
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "is ignored" },
-    { GIMP_PDB_STRING, "filename", "The name of the file to save the image in" },
-    { GIMP_PDB_STRING, "raw_filename", "The name of the file to save the image in" },
-    { GIMP_PDB_FLOAT, "quality", "Quality of saved image (0 <= quality <= 1)" },
-    { GIMP_PDB_FLOAT, "smoothing", "Smoothing factor for saved image (0 <= smoothing <= 1)" },
-    { GIMP_PDB_INT32, "optimize", "Optimization of entropy encoding parameters" },
-    { GIMP_PDB_INT32, "clr_transparent", "set all full-transparent pixels to 0" },
+    { GIMP_PDB_INT32,    "run-mode",        "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",           "Input image" },
+    { GIMP_PDB_DRAWABLE, "drawable",        "is ignored" },
+    { GIMP_PDB_STRING,   "filename",        "The name of the file to save the image in" },
+    { GIMP_PDB_STRING,   "raw-filename",    "The name of the file to save the image in" },
+    { GIMP_PDB_FLOAT,    "quality",         "Quality of saved image (0 <= quality <= 1)" },
+    { GIMP_PDB_FLOAT,    "smoothing",       "Smoothing factor for saved image (0 <= smoothing <= 1)" },
+    { GIMP_PDB_INT32,    "optimize",        "Optimization of entropy encoding parameters" },
+    { GIMP_PDB_INT32,    "clr-transparent", "set all full-transparent pixels to 0" },
   };
 
-  gimp_install_procedure ("file_xjt_load",
+  gimp_install_procedure (LOAD_PROC,
                           "loads files of the jpeg-tar file format",
 			  "loads files of the jpeg-tar file format",
                           "Wolfgang Hofer",
@@ -479,12 +483,12 @@ query (void)
                           G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_register_magic_load_handler ("file_xjt_load",
+  gimp_register_magic_load_handler (LOAD_PROC,
 				    "xjt,xjtgz,xjtbz2",
 				    "",
 				    "");
 
-  gimp_install_procedure ("file_xjt_save",
+  gimp_install_procedure (SAVE_PROC,
                           "saves files in the jpeg-tar file format",
 			  "saves files in the jpeg-tar file format",
                           "Wolfgang Hofer",
@@ -496,7 +500,7 @@ query (void)
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_register_save_handler ("file_xjt_save", "xjt,xjtgz,xjtbz2", "");
+  gimp_register_save_handler (SAVE_PROC, "xjt,xjtgz,xjtbz2", "");
 }
 
 static void
@@ -530,7 +534,7 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  if (strcmp (name, "file_xjt_load") == 0)
+  if (strcmp (name, LOAD_PROC) == 0)
     {
       image_ID = load_xjt_image (param[1].data.d_string);
 
@@ -545,13 +549,13 @@ run (const gchar      *name,
 	  status = GIMP_PDB_EXECUTION_ERROR;
 	}
     }
-  else if (strcmp (name, "file_xjt_save") == 0)
+  else if (strcmp (name, SAVE_PROC) == 0)
     {
       switch (run_mode)
 	{
 	case GIMP_RUN_INTERACTIVE:
 	  /*  Possibly retrieve data  */
-	  gimp_get_data ("file_xjt_save", &jsvals);
+	  gimp_get_data (SAVE_PROC, &jsvals);
 
 	  /*  First acquire information with a dialog  */
 	  if (! save_dialog ())
@@ -586,7 +590,7 @@ run (const gchar      *name,
 
 	case GIMP_RUN_WITH_LAST_VALS:
 	  /*  Possibly retrieve data  */
-	  gimp_get_data ("file_xjt_save", &jsvals);
+	  gimp_get_data (SAVE_PROC, &jsvals);
 	  break;
 
 	default:
@@ -604,7 +608,7 @@ run (const gchar      *name,
 	  else
 	    {
 	      /*  Store mvals data  */
-	      gimp_set_data ("file_xjt_save", &jsvals, sizeof (t_JpegSaveVals));
+	      gimp_set_data (SAVE_PROC, &jsvals, sizeof (t_JpegSaveVals));
 	    }
 	}
     }
@@ -846,9 +850,14 @@ save_dialog (void)
 			 gimp_standard_help_func, "file-xjt-save",
 
 			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+			 GTK_STOCK_SAVE,   GTK_RESPONSE_OK,
 
 			 NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   table = gtk_table_new (4, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
@@ -883,7 +892,7 @@ save_dialog (void)
 				     jsvals.quality, 0.0, 1.0, 0.01, 0.11, 2,
 				     TRUE, 0, 0,
 				     NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &jsvals.quality);
 
@@ -892,7 +901,7 @@ save_dialog (void)
 				     jsvals.smoothing, 0.0, 1.0, 0.01, 0.1, 2,
 				     TRUE, 0, 0,
 				     NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &jsvals.smoothing);
 
@@ -1257,7 +1266,7 @@ p_write_parasite(const gchar  *dirname,
 
      /* write the parasite data to a file named p1.pte */
      l_parasite_file = g_strdup_printf("%s%cp%d.pte", dirname, G_DIR_SEPARATOR, (int)global_parasite_id);
-     l_fp_pte = fopen(l_parasite_file, "wb");
+     l_fp_pte = g_fopen(l_parasite_file, "wb");
      if(l_fp_pte == NULL)
      {
        g_message (_("Could not open '%s' for writing: %s"),
@@ -1433,8 +1442,8 @@ p_write_layer_prp(const gchar *dirname,
   l_param.int_val1 = gimp_drawable_get_linked (layer_id);
   p_write_prop (fp, PROP_LINKED, &l_param, wr_all_prp);
 
-  l_param.int_val1 = gimp_layer_get_preserve_trans (layer_id);
-  p_write_prop (fp, PROP_PRESERVE_TRANSPARENCY, &l_param, wr_all_prp);
+  l_param.int_val1 = gimp_layer_get_lock_alpha (layer_id);
+  p_write_prop (fp, PROP_LOCK_ALPHA, &l_param, wr_all_prp);
 
   l_param.int_val1 = gimp_layer_get_apply_mask(layer_id);
   p_write_prop (fp, PROP_APPLY_MASK, &l_param, wr_all_prp);
@@ -1628,9 +1637,7 @@ save_xjt_image (const gchar *filename,
   gchar  *l_prop_file;
   gchar  *l_jpg_file;
   gchar  *l_cmd;
-  gchar  *l_name;
   FILE   *l_fp_prp;
-  mode_t  l_mode_dir;
 
   GimpImageBaseType l_image_type;
   gint32 *l_layers_list;
@@ -1679,16 +1686,13 @@ save_xjt_image (const gchar *filename,
       break;
     }
 
-  l_name = g_strdup_printf (_("Saving '%s'..."),
-                            gimp_filename_to_utf8 (filename));
-  gimp_progress_init (l_name);
-  g_free (l_name);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   /* create temporary directory */
   l_dirname = gimp_temp_name (".tmpdir");
   l_prop_file = g_strdup_printf ("%s%cPRP", l_dirname, G_DIR_SEPARATOR);
-  l_mode_dir = 0777;
-  if (mkdir (l_dirname, l_mode_dir) != 0)
+  if (g_mkdir (l_dirname, 0777) != 0)
     {
       g_message (_("Could not create working folder '%s': %s"),
                  gimp_filename_to_utf8 (l_dirname), g_strerror (errno));
@@ -1696,7 +1700,7 @@ save_xjt_image (const gchar *filename,
     }
 
   /* create property file PRP */
-  l_fp_prp = fopen (l_prop_file, "w");
+  l_fp_prp = g_fopen (l_prop_file, "w");
   if (l_fp_prp == NULL)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -1924,7 +1928,7 @@ t_layer_props * p_new_layer_prop(void)
   l_new_prop->mode               = g_prop_table[p_get_property_index(PROP_MODE)].default_val1;
   l_new_prop->visible            = p_invert(g_prop_table[p_get_property_index(PROP_VISIBLE)].default_val1);
   l_new_prop->linked             = g_prop_table[p_get_property_index(PROP_LINKED)].default_val1;
-  l_new_prop->preserve_transparency = g_prop_table[p_get_property_index(PROP_PRESERVE_TRANSPARENCY)].default_val1;
+  l_new_prop->lock_alpha         = g_prop_table[p_get_property_index(PROP_LOCK_ALPHA)].default_val1;
   l_new_prop->apply_mask         = g_prop_table[p_get_property_index(PROP_APPLY_MASK)].default_val1;
   l_new_prop->edit_mask          = g_prop_table[p_get_property_index(PROP_EDIT_MASK)].default_val1;
   l_new_prop->show_mask          = g_prop_table[p_get_property_index(PROP_SHOW_MASK)].default_val1;
@@ -2520,7 +2524,7 @@ p_create_and_attach_parasite (gint32            gimp_obj_id,
   /* create filename dirname/p1.pte  1 == parasite_id */
   l_parasite_file = g_strdup_printf("%s%cp%d.pte", dirname, G_DIR_SEPARATOR, (int)parasite_props->parasite_id);
 
-  if (0 != stat(l_parasite_file, &l_stat_buf))
+  if (0 != g_stat(l_parasite_file, &l_stat_buf))
   {
      /* stat error (file does not exist) */
      g_message (_("Could not open '%s' for reading: %s"),
@@ -2528,7 +2532,7 @@ p_create_and_attach_parasite (gint32            gimp_obj_id,
      return(-1);
   }
 
-  l_fp_pte = fopen(l_parasite_file, "rb");
+  l_fp_pte = g_fopen(l_parasite_file, "rb");
   if(l_fp_pte == NULL)
   {
      g_message (_("Could not open '%s' for reading: %s"),
@@ -2666,8 +2670,8 @@ gint p_scann_layer_prop(gchar         *scan_ptr,
        case PROP_LINKED:
             l_new_prop->linked = l_param.int_val1;
             break;
-       case PROP_PRESERVE_TRANSPARENCY:
-            l_new_prop->preserve_transparency = l_param.int_val1;
+       case PROP_LOCK_ALPHA:
+            l_new_prop->lock_alpha = l_param.int_val1;
             break;
        case PROP_APPLY_MASK:
             l_new_prop->apply_mask = l_param.int_val1;
@@ -3113,7 +3117,7 @@ p_load_linefile(const gchar *filename, gint32 *len)
 
   *len = 0;
   /* get file length */
-  if (0 != stat(filename, &stat_buf))
+  if (0 != g_stat(filename, &stat_buf))
   {
     return(NULL);
   }
@@ -3122,7 +3126,7 @@ p_load_linefile(const gchar *filename, gint32 *len)
   l_file_buff = g_malloc0(*len +1);
 
   /* read file into buffer */
-  l_fp = fopen(filename, "r");
+  l_fp = g_fopen(filename, "r");
   if(l_fp == NULL)
   {
     return(NULL);
@@ -3279,8 +3283,6 @@ load_xjt_image (const gchar *filename)
   gchar  *l_prop_file;
   gchar  *l_jpg_file;
   gchar  *l_cmd;
-  gchar  *l_name;
-  mode_t  l_mode_dir;
 
   gint32 *l_layers_list;
   gint32 *l_channels_list;
@@ -3309,16 +3311,14 @@ load_xjt_image (const gchar *filename)
   l_fsel_attached_to_id = -1;    /* -1  assume fsel is not available (and not attached to any drawable) */
   l_fsel_id = -1;                /* -1  assume there is no floating selection */
 
-  l_name = g_strdup_printf (_("Opening '%s'..."),
-                            gimp_filename_to_utf8 (filename));
-  gimp_progress_init (l_name);
-  g_free (l_name);
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   /* create temporary directory */
   l_dirname = gimp_temp_name (".tmpdir");
   l_prop_file = g_strdup_printf("%s%cPRP", l_dirname, G_DIR_SEPARATOR);
-  l_mode_dir = 0777;
-  if(mkdir(l_dirname, l_mode_dir) != 0)
+
+  if(g_mkdir(l_dirname, 0777) != 0)
     {
       g_message (_("Could not create working folder '%s': %s"),
                   gimp_filename_to_utf8 (l_dirname), g_strerror (errno));
@@ -3463,7 +3463,7 @@ load_xjt_image (const gchar *filename)
       gimp_layer_set_offsets(l_layer_id, l_layer_prp_ptr->offx, l_layer_prp_ptr->offy);
       gimp_drawable_set_visible (l_layer_id, l_layer_prp_ptr->visible);
       gimp_drawable_set_linked (l_layer_id, l_layer_prp_ptr->linked);
-      gimp_layer_set_preserve_trans (l_layer_id, l_layer_prp_ptr->preserve_transparency);
+      gimp_layer_set_lock_alpha (l_layer_id, l_layer_prp_ptr->lock_alpha);
       if (l_layer_prp_ptr->tattoo >= 0)
 	{
 	 gimp_drawable_set_tattoo (l_layer_id, l_layer_prp_ptr->tattoo);

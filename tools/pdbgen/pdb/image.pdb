@@ -514,6 +514,12 @@ topmost to bottommost.
 HELP
 }
 
+sub image_get_vectors {
+    &image_list_proc('vector');
+
+    $since = '2.4';
+}
+
 sub image_unset_active_channel {
     $blurb = 'Unsets the active channel in the specified image.';
 
@@ -577,7 +583,7 @@ HELP
     );
 
     %invoke = (
-	headers => [ qw("core/gimpimage-pick-color.h" "core/gimpprojection.h") ],
+	headers => [ qw("core/gimpimage-pick-color.h") ],
 	code => <<'CODE'
 {
   if (!sample_merged)
@@ -585,23 +591,15 @@ HELP
       success = FALSE;
 
   if (success)
-    {
-      if (sample_merged)
-        {
-          gimp_projection_finish_draw (gimage->projection);
-          gimp_projection_flush_now (gimage->projection);
-        }
-
-      success = gimp_image_pick_color (gimage,
-                                       drawable,
-                                       (gint) x, (gint) y,
-		  	               sample_merged,
-                                       sample_average,
-                                       average_radius,
-                                       NULL,
-                                       &color,
-                                       NULL);
-    }
+    success = gimp_image_pick_color (gimage,
+                                     drawable,
+                                     (gint) x, (gint) y,
+			             sample_merged,
+                                     sample_average,
+                                     average_radius,
+                                     NULL,
+                                     &color,
+                                     NULL);
 }
 CODE
     );
@@ -818,7 +816,7 @@ HELP
 }
 
 sub image_add_layer_mask {
-    &std_pdb_deprecated ('gimp_layer_add_mask');
+    &std_pdb_deprecated ('gimp-layer-add-mask');
 
     @inargs = (
 	&std_image_arg,
@@ -838,7 +836,7 @@ CODE
 }
 
 sub image_remove_layer_mask {
-    &std_pdb_deprecated ('gimp_layer_remove_mask');
+    &std_pdb_deprecated ('gimp-layer-remove-mask');
 
     @inargs = (
 	&std_image_arg,
@@ -1019,10 +1017,12 @@ sub image_clean_all {
     $blurb = 'Set the image dirty count to 0.';
 
     $help = <<'HELP';
-This procedure sets the specified image's dirty count to 0, allowing operations
-to occur without having a 'dirtied' image. This is especially useful for
-creating and loading images which should not initially be considered dirty, even
-though layers must be created, filled, and installed in the image.
+This procedure sets the specified image's dirty count to 0, allowing
+operations to occur without having a 'dirtied' image. This is
+especially useful for creating and loading images which should not
+initially be considered dirty, even though layers must be created,
+filled, and installed in the image. Note that save plug-ins must NOT
+call this function themselves after saving the image.
 HELP
 
     &std_pdb_misc;
@@ -1036,8 +1036,10 @@ sub image_is_dirty {
     $blurb = 'Checks if the image has unsaved changes.';
 
     $help = <<'HELP';
-This procedure checks the specified image's dirty count to see if it needs
-to be saved.
+This procedure checks the specified image's dirty count to see if it
+needs to be saved. Note that saving the image does not automatically
+set the dirty count to 0, you need to call gimp-image-clean-all after
+calling a save procedure to make the image clean.
 HELP
 
     &std_pdb_misc;
@@ -1303,18 +1305,9 @@ CODE2
   filename = gimp_image_get_filename (gimage);
 
   if (filename)
-    {
-      gchar *basename = g_path_get_basename (filename);
-      name = g_filename_to_utf8 (basename, -1, NULL, NULL, NULL);
-      g_free (basename);
-
-      if (! name)
-        name = g_strdup (_("(invalid UTF-8 string)"));
-    }
+    name = g_filename_display_basename (filename);
   else
-    {
-      name = g_strdup (_("Untitled"));
-    }
+    name = g_strdup (_("Untitled"));
 }
 CODE2
     );
@@ -1581,6 +1574,7 @@ unshift @procs, qw(image_list image_new image_duplicate image_delete
                    image_resize image_resize_to_layers image_scale
 		   image_crop image_flip image_rotate
                    image_get_layers image_get_channels
+		   image_get_vectors
 		   image_get_active_drawable
                    image_unset_active_channel
                    image_get_floating_sel image_floating_sel_attached_to
@@ -1595,7 +1589,7 @@ unshift @procs, qw(image_list image_new image_duplicate image_delete
                    image_get_colormap image_set_colormap
 		   image_clean_all image_is_dirty
                    image_thumbnail);
-%exports = (app => [@procs], lib => [@procs[0..34,37..61]]);
+%exports = (app => [@procs], lib => [@procs[0..35,38..62]]);
 
 $desc = 'Image';
 

@@ -81,24 +81,25 @@ static ProcArg palettes_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "palette_callback",
+    "palette-callback",
     "The callback PDB proc to call when palette selection is made"
   },
   {
     GIMP_PDB_STRING,
-    "popup_title",
+    "popup-title",
     "Title to give the palette popup window"
   },
   {
     GIMP_PDB_STRING,
-    "initial_palette",
+    "initial-palette",
     "The name of the palette to set as the first selected"
   }
 };
 
 static ProcRecord palettes_popup_proc =
 {
-  "gimp_palettes_popup",
+  "gimp-palettes-popup",
+  "gimp-palettes-popup",
   "Invokes the Gimp palette selection.",
   "This procedure popups the palette selection dialog.",
   "Michael Natterer <mitch@gimp.org>",
@@ -142,14 +143,15 @@ static ProcArg palettes_close_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "palette_callback",
+    "palette-callback",
     "The name of the callback registered for this popup"
   }
 };
 
 static ProcRecord palettes_close_popup_proc =
 {
-  "gimp_palettes_close_popup",
+  "gimp-palettes-close-popup",
+  "gimp-palettes-close-popup",
   "Popdown the Gimp palette selection.",
   "This procedure closes an opened palette selection dialog.",
   "Michael Natterer <mitch@gimp.org>",
@@ -199,19 +201,20 @@ static ProcArg palettes_set_popup_inargs[] =
 {
   {
     GIMP_PDB_STRING,
-    "palette_callback",
+    "palette-callback",
     "The name of the callback registered for this popup"
   },
   {
     GIMP_PDB_STRING,
-    "palette_name",
+    "palette-name",
     "The name of the palette to set as selected"
   }
 };
 
 static ProcRecord palettes_set_popup_proc =
 {
-  "gimp_palettes_set_popup",
+  "gimp-palettes-set-popup",
+  "gimp-palettes-set-popup",
   "Sets the current palette selection in a popup.",
   "Sets the current palette selection in a popup.",
   "Michael Natterer <mitch@gimp.org>",

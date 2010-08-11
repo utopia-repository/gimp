@@ -42,9 +42,6 @@
 #include "gimp-intl.h"
 
 
-static void       gimp_selection_class_init    (GimpSelectionClass *klass);
-static void       gimp_selection_init          (GimpSelection      *selection);
-
 static gboolean   gimp_selection_is_attached   (GimpItem        *item);
 static void       gimp_selection_translate     (GimpItem        *item,
                                                 gint             offset_x,
@@ -76,7 +73,6 @@ static void       gimp_selection_rotate        (GimpItem        *item,
                                                 gboolean         clip_result);
 static gboolean   gimp_selection_stroke        (GimpItem        *item,
                                                 GimpDrawable    *drawable,
-                                                GimpContext     *context,
                                                 GimpStrokeDesc  *stroke_desc);
 
 static void gimp_selection_invalidate_boundary (GimpDrawable    *drawable);
@@ -96,9 +92,6 @@ static gboolean   gimp_selection_bounds        (GimpChannel     *channel,
                                                 gint            *x2,
                                                 gint            *y2);
 static gboolean   gimp_selection_is_empty      (GimpChannel     *channel);
-static gint       gimp_selection_value         (GimpChannel     *channel,
-                                                gint             x,
-                                                gint             y);
 static void       gimp_selection_feather       (GimpChannel     *channel,
                                                 gdouble          radius_x,
                                                 gdouble          radius_y,
@@ -130,36 +123,10 @@ static void       gimp_selection_validate      (TileManager     *tm,
                                                 Tile            *tile);
 
 
-static GimpChannelClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpSelection, gimp_selection, GIMP_TYPE_CHANNEL);
 
+#define parent_class gimp_selection_parent_class
 
-GType
-gimp_selection_get_type (void)
-{
-  static GType selection_type = 0;
-
-  if (! selection_type)
-    {
-      static const GTypeInfo selection_info =
-      {
-        sizeof (GimpSelectionClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_selection_class_init,
-        NULL,		/* class_finalize */
-        NULL,		/* class_data     */
-        sizeof (GimpSelection),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_selection_init,
-      };
-
-      selection_type = g_type_register_static (GIMP_TYPE_CHANNEL,
-                                               "GimpSelection",
-                                               &selection_info, 0);
-    }
-
-  return selection_type;
-}
 
 static void
 gimp_selection_class_init (GimpSelectionClass *klass)
@@ -168,8 +135,6 @@ gimp_selection_class_init (GimpSelectionClass *klass)
   GimpItemClass     *item_class     = GIMP_ITEM_CLASS (klass);
   GimpDrawableClass *drawable_class = GIMP_DRAWABLE_CLASS (klass);
   GimpChannelClass  *channel_class  = GIMP_CHANNEL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   viewable_class->default_stock_id    = "gimp-selection";
 
@@ -188,7 +153,6 @@ gimp_selection_class_init (GimpSelectionClass *klass)
   channel_class->boundary             = gimp_selection_boundary;
   channel_class->bounds               = gimp_selection_bounds;
   channel_class->is_empty             = gimp_selection_is_empty;
-  channel_class->value                = gimp_selection_value;
   channel_class->feather              = gimp_selection_feather;
   channel_class->sharpen              = gimp_selection_sharpen;
   channel_class->clear                = gimp_selection_clear;
@@ -289,7 +253,6 @@ gimp_selection_rotate (GimpItem         *item,
 static gboolean
 gimp_selection_stroke (GimpItem       *item,
                        GimpDrawable   *drawable,
-                       GimpContext    *context,
                        GimpStrokeDesc *stroke_desc)
 {
   GimpSelection  *selection = GIMP_SELECTION (item);
@@ -310,8 +273,7 @@ gimp_selection_stroke (GimpItem       *item,
 
   selection->stroking = TRUE;
 
-  retval = GIMP_ITEM_CLASS (parent_class)->stroke (item, drawable, context,
-                                                   stroke_desc);
+  retval = GIMP_ITEM_CLASS (parent_class)->stroke (item, drawable, stroke_desc);
 
   selection->stroking = FALSE;
 
@@ -452,14 +414,6 @@ gimp_selection_is_empty (GimpChannel *channel)
     return TRUE;
 
   return GIMP_CHANNEL_CLASS (parent_class)->is_empty (channel);
-}
-
-static gint
-gimp_selection_value (GimpChannel *channel,
-                      gint         x,
-                      gint         y)
-{
-  return GIMP_CHANNEL_CLASS (parent_class)->value (channel, x, y);
 }
 
 static void
@@ -670,6 +624,12 @@ gimp_selection_extract (GimpChannel  *selection,
       return NULL;
     }
 
+  /*  If there is a selection, we must add alpha because the selection
+   *  could have any shape.
+   */
+  if (non_empty)
+    add_alpha = TRUE;
+
   /*  How many bytes in the temp buffer?  */
   switch (GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable)))
     {
@@ -691,7 +651,8 @@ gimp_selection_extract (GimpChannel  *selection,
 	}
       else
 	{
-	  bytes = add_alpha ? 4 : drawable->bytes;
+	  bytes = (add_alpha ||
+                   gimp_drawable_has_alpha (drawable)) ? 4 : 3;
 	  base_type = GIMP_INDEXED;
 	}
       break;
@@ -733,8 +694,7 @@ gimp_selection_extract (GimpChannel  *selection,
 
       extract_from_region (&srcPR, &destPR, &maskPR,
 			   gimp_drawable_cmap (drawable),
-			   bg_color, base_type,
-			   gimp_drawable_has_alpha (drawable), cut_image);
+			   bg_color, base_type, cut_image);
 
       if (cut_image)
 	{
@@ -751,8 +711,7 @@ gimp_selection_extract (GimpChannel  *selection,
       if (base_type == GIMP_INDEXED && !keep_indexed)
 	extract_from_region (&srcPR, &destPR, NULL,
 			     gimp_drawable_cmap (drawable),
-			     bg_color, base_type,
-			     gimp_drawable_has_alpha (drawable), FALSE);
+			     bg_color, base_type, FALSE);
       /*  If the layer doesn't have an alpha channel, add one  */
       else if (bytes > srcPR.bytes)
 	add_alpha_region (&srcPR, &destPR);

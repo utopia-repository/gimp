@@ -59,14 +59,14 @@ brushes_refresh_invoker (Gimp         *gimp,
                          GimpProgress *progress,
                          Argument     *args)
 {
-  gimp_data_factory_data_save (gimp->brush_factory);
-  gimp_data_factory_data_init (gimp->brush_factory, FALSE);
+  gimp_data_factory_data_refresh (gimp->brush_factory);
   return procedural_db_return_args (&brushes_refresh_proc, TRUE);
 }
 
 static ProcRecord brushes_refresh_proc =
 {
-  "gimp_brushes_refresh",
+  "gimp-brushes-refresh",
+  "gimp-brushes-refresh",
   "Refresh current brushes. This function always succeeds.",
   "This procedure retrieves all brushes currently in the user's brush path and updates the brush dialogs accordingly.",
   "Seth Burgess",
@@ -124,21 +124,22 @@ static ProcArg brushes_get_list_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_brushes",
+    "num-brushes",
     "The number of brushes in the brush list"
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "brush_list",
+    "brush-list",
     "The list of brush names"
   }
 };
 
 static ProcRecord brushes_get_list_proc =
 {
-  "gimp_brushes_get_list",
+  "gimp-brushes-get-list",
+  "gimp-brushes-get-list",
   "Retrieve a complete listing of the available brushes.",
-  "This procedure returns a complete listing of available GIMP brushes. Each name returned can be used as input to the 'gimp_context_set_brush' procedure.",
+  "This procedure returns a complete listing of available GIMP brushes. Each name returned can be used as input to the 'gimp-context-set-brush' procedure.",
   "Spencer Kimball & Peter Mattis",
   "Spencer Kimball & Peter Mattis",
   "1995-1996",
@@ -202,13 +203,14 @@ static ProcArg brushes_get_brush_outargs[] =
 
 static ProcRecord brushes_get_brush_proc =
 {
-  "gimp_brushes_get_brush",
-  "This procedure is deprecated! Use 'gimp_context_get_brush' instead.",
-  "This procedure is deprecated! Use 'gimp_context_get_brush' instead.",
+  "gimp-brushes-get-brush",
+  "gimp-brushes-get-brush",
+  "This procedure is deprecated! Use 'gimp-context-get-brush' instead.",
+  "This procedure is deprecated! Use 'gimp-context-get-brush' instead.",
   "",
   "",
   "",
-  "gimp_context_get_brush",
+  "gimp-context-get-brush",
   GIMP_INTERNAL,
   0,
   NULL,
@@ -242,13 +244,14 @@ static ProcArg brushes_get_spacing_outargs[] =
 
 static ProcRecord brushes_get_spacing_proc =
 {
-  "gimp_brushes_get_spacing",
-  "This procedure is deprecated! Use 'gimp_brush_get_spacing' instead.",
-  "This procedure is deprecated! Use 'gimp_brush_get_spacing' instead.",
+  "gimp-brushes-get-spacing",
+  "gimp-brushes-get-spacing",
+  "This procedure is deprecated! Use 'gimp-brush-get-spacing' instead.",
+  "This procedure is deprecated! Use 'gimp-brush-get-spacing' instead.",
   "",
   "",
   "",
-  "gimp_brush_get_spacing",
+  "gimp-brush-get-spacing",
   GIMP_INTERNAL,
   0,
   NULL,
@@ -287,13 +290,14 @@ static ProcArg brushes_set_spacing_inargs[] =
 
 static ProcRecord brushes_set_spacing_proc =
 {
-  "gimp_brushes_set_spacing",
-  "This procedure is deprecated! Use 'gimp_brush_set_spacing' instead.",
-  "This procedure is deprecated! Use 'gimp_brush_set_spacing' instead.",
+  "gimp-brushes-set-spacing",
+  "gimp-brushes-set-spacing",
+  "This procedure is deprecated! Use 'gimp-brush-set-spacing' instead.",
+  "This procedure is deprecated! Use 'gimp-brush-set-spacing' instead.",
   "",
   "",
   "",
-  "gimp_brush_set_spacing",
+  "gimp-brush-set-spacing",
   GIMP_INTERNAL,
   1,
   brushes_set_spacing_inargs,
@@ -385,7 +389,7 @@ static ProcArg brushes_get_brush_data_outargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "paint_mode",
+    "paint-mode",
     "The paint mode: { GIMP_NORMAL_MODE (0), GIMP_DISSOLVE_MODE (1), GIMP_BEHIND_MODE (2), GIMP_MULTIPLY_MODE (3), GIMP_SCREEN_MODE (4), GIMP_OVERLAY_MODE (5), GIMP_DIFFERENCE_MODE (6), GIMP_ADDITION_MODE (7), GIMP_SUBTRACT_MODE (8), GIMP_DARKEN_ONLY_MODE (9), GIMP_LIGHTEN_ONLY_MODE (10), GIMP_HUE_MODE (11), GIMP_SATURATION_MODE (12), GIMP_COLOR_MODE (13), GIMP_VALUE_MODE (14), GIMP_DIVIDE_MODE (15), GIMP_DODGE_MODE (16), GIMP_BURN_MODE (17), GIMP_HARDLIGHT_MODE (18), GIMP_SOFTLIGHT_MODE (19), GIMP_GRAIN_EXTRACT_MODE (20), GIMP_GRAIN_MERGE_MODE (21), GIMP_COLOR_ERASE_MODE (22) }"
   },
   {
@@ -405,20 +409,21 @@ static ProcArg brushes_get_brush_data_outargs[] =
   },
   {
     GIMP_PDB_INT8ARRAY,
-    "mask_data",
+    "mask-data",
     "The brush mask data"
   }
 };
 
 static ProcRecord brushes_get_brush_data_proc =
 {
-  "gimp_brushes_get_brush_data",
-  "This procedure is deprecated! Use 'gimp_brush_get_pixels' instead.",
-  "This procedure is deprecated! Use 'gimp_brush_get_pixels' instead.",
+  "gimp-brushes-get-brush-data",
+  "gimp-brushes-get-brush-data",
+  "This procedure is deprecated! Use 'gimp-brush-get-pixels' instead.",
+  "This procedure is deprecated! Use 'gimp-brush-get-pixels' instead.",
   "",
   "",
   "",
-  "gimp_brush_get_pixels",
+  "gimp-brush-get-pixels",
   GIMP_INTERNAL,
   1,
   brushes_get_brush_data_inargs,

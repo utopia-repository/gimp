@@ -75,35 +75,25 @@ static gboolean   app_exit_after_callback (Gimp        *gimp,
 
 /*  public functions  */
 
-gboolean
-app_libs_init (gboolean   *no_interface,
-               gint       *argc,
-               gchar    ***argv)
+void
+app_libs_init (GOptionContext *context,
+               gboolean        no_interface)
 {
-#ifdef GIMP_CONSOLE_COMPILATION
-  *no_interface = TRUE;
+#ifdef ENABLE_MP
+  if (! g_thread_supported ())
+    g_thread_init (NULL);
 #endif
 
-  if (*no_interface)
+  if (no_interface)
     {
-      gchar *basename;
-
-      basename = g_path_get_basename ((*argv)[0]);
-      g_set_prgname (basename);
-      g_free (basename);
-
       g_type_init ();
-
-      return TRUE;
     }
 #ifndef GIMP_CONSOLE_COMPILATION
   else
     {
-      return gui_libs_init (argc, argv);
+      gui_libs_init (context);
     }
 #endif
-
-  return FALSE;
 }
 
 void
@@ -151,8 +141,7 @@ app_exit (gint status)
 
 void
 app_run (const gchar         *full_prog_name,
-         gint                 gimp_argc,
-         gchar              **gimp_argv,
+         const gchar        **filenames,
          const gchar         *alternate_system_gimprc,
          const gchar         *alternate_gimprc,
          const gchar         *session_name,
@@ -287,10 +276,10 @@ app_run (const gchar         *full_prog_name,
 
   /* display a warning when no test swap file could be generated */
   if (! swap_is_ok)
-    g_message (_("Unable to open a test swap file. To avoid data loss "
-                 "please check the location and permissions of the swap "
-                 "directory defined in your Preferences "
-                 "(currently \"%s\")."),
+    g_message (_("Unable to open a test swap file.\n\n"
+                 "To avoid data loss, please check the location "
+                 "and permissions of the swap directory defined in "
+                 "your Preferences (currently \"%s\")."),
                GIMP_BASE_CONFIG (gimp->config)->swap_path);
 
   /*  enable autosave late so we don't autosave when the
@@ -298,63 +287,58 @@ app_run (const gchar         *full_prog_name,
    */
   gimp_rc_set_autosave (GIMP_RC (gimp->edit_config), TRUE);
 
-  /*  Parse the rest of the command line arguments as images to load
+  /*  Load the images given on the command-line.
    */
-  if (gimp_argc > 0)
+  if (filenames)
     {
-      gint i;
-
-      for (i = 0; i < gimp_argc; i++)
+      for (i = 0; filenames[i]; i++)
         {
-          if (gimp_argv[i])
+          GError *error = NULL;
+          gchar  *uri;
+
+          /*  first try if we got a file uri  */
+          uri = g_filename_from_uri (filenames[i], NULL, NULL);
+
+          if (uri)
             {
-              GError *error = NULL;
-              gchar  *uri;
+              g_free (uri);
+              uri = g_strdup (filenames[i]);
+            }
+          else
+            {
+              uri = file_utils_filename_to_uri (gimp->load_procs,
+                                                filenames[i], &error);
+            }
 
-              /*  first try if we got a file uri  */
-              uri = g_filename_from_uri (gimp_argv[i], NULL, NULL);
+          if (! uri)
+            {
+              g_printerr ("conversion filename -> uri failed: %s\n",
+                          error->message);
+              g_clear_error (&error);
+            }
+          else
+            {
+              GimpImage         *gimage;
+              GimpPDBStatusType  status;
 
-              if (uri)
-                {
-                  g_free (uri);
-                  uri = g_strdup (gimp_argv[i]);
-                }
-              else
-                {
-                  uri = file_utils_filename_to_uri (gimp->load_procs,
-                                                    gimp_argv[i], &error);
-                }
+              gimage = file_open_with_display (gimp,
+                                               gimp_get_user_context (gimp),
+                                               NULL,
+                                               uri,
+                                               &status, &error);
 
-              if (! uri)
+              if (! gimage && status != GIMP_PDB_CANCEL)
                 {
-                  g_printerr ("conversion filename -> uri failed: %s\n",
-                              error->message);
+                  gchar *filename = file_utils_uri_to_utf8_filename (uri);
+
+                  g_message (_("Opening '%s' failed: %s"),
+                             filename, error->message);
                   g_clear_error (&error);
+
+                  g_free (filename);
                 }
-              else
-                {
-                  GimpImage         *gimage;
-                  GimpPDBStatusType  status;
 
-                  gimage = file_open_with_display (gimp,
-                                                   gimp_get_user_context (gimp),
-                                                   NULL,
-                                                   uri,
-                                                   &status, &error);
-
-                  if (! gimage && status != GIMP_PDB_CANCEL)
-                    {
-                      gchar *filename = file_utils_uri_to_utf8_filename (uri);
-
-                      g_message (_("Opening '%s' failed: %s"),
-                                 filename, error->message);
-                      g_clear_error (&error);
-
-                      g_free (filename);
-                   }
-
-                  g_free (uri);
-                }
+              g_free (uri);
             }
         }
     }

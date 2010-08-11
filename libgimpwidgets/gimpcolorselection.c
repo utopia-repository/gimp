@@ -50,8 +50,14 @@ typedef enum
 {
   UPDATE_NOTEBOOK  = 1 << 0,
   UPDATE_SCALES    = 1 << 1,
-  UPDATE_NEW_COLOR = 1 << 2
+  UPDATE_ENTRY     = 1 << 2,
+  UPDATE_COLOR     = 1 << 3
 } UpdateType;
+
+#define UPDATE_ALL (UPDATE_NOTEBOOK | \
+                    UPDATE_SCALES   | \
+                    UPDATE_ENTRY    | \
+                    UPDATE_COLOR)
 
 enum
 {
@@ -59,9 +65,6 @@ enum
   LAST_SIGNAL
 };
 
-
-static void   gimp_color_selection_class_init (GimpColorSelectionClass *klass);
-static void   gimp_color_selection_init       (GimpColorSelection      *selection);
 
 static void   gimp_color_selection_switch_page       (GtkWidget          *widget,
                                                       GtkNotebookPage    *page,
@@ -75,6 +78,11 @@ static void   gimp_color_selection_scales_changed    (GimpColorSelector  *select
                                                       const GimpRGB      *rgb,
                                                       const GimpHSV      *hsv,
                                                       GimpColorSelection *selection);
+static void   gimp_color_selection_color_picked      (GtkWidget          *widget,
+                                                      const GimpRGB      *rgb,
+                                                      GimpColorSelection *selection);
+static void   gimp_color_selection_entry_changed     (GimpColorHexEntry  *entry,
+                                                      GimpColorSelection *selection);
 static void   gimp_color_selection_channel_changed   (GimpColorSelector  *selector,
                                                       GimpColorSelectorChannel channel,
                                                       GimpColorSelection *selection);
@@ -85,46 +93,18 @@ static void   gimp_color_selection_update            (GimpColorSelection *select
                                                       UpdateType          update);
 
 
-static GtkVBoxClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpColorSelection, gimp_color_selection, GTK_TYPE_VBOX);
 
-static guint  selection_signals[LAST_SIGNAL] = { 0 };
+#define parent_class gimp_color_selection_parent_class
 
+static guint selection_signals[LAST_SIGNAL] = { 0 };
 
-GType
-gimp_color_selection_get_type (void)
-{
-  static GType selection_type = 0;
-
-  if (! selection_type)
-    {
-      static const GTypeInfo selection_info =
-      {
-        sizeof (GimpColorSelectionClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_color_selection_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpColorSelection),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_color_selection_init,
-      };
-
-      selection_type = g_type_register_static (GTK_TYPE_VBOX,
-                                              "GimpColorSelection",
-                                              &selection_info, 0);
-    }
-
-  return selection_type;
-}
 
 static void
 gimp_color_selection_class_init (GimpColorSelectionClass *klass)
 {
-  parent_class = g_type_class_peek_parent (klass);
-
   selection_signals[COLOR_CHANGED] =
-    g_signal_new ("color_changed",
+    g_signal_new ("color-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpColorSelectionClass, color_changed),
@@ -141,6 +121,10 @@ gimp_color_selection_init (GimpColorSelection *selection)
   GtkWidget *main_hbox;
   GtkWidget *frame;
   GtkWidget *table;
+  GtkWidget *hbox;
+  GtkWidget *label;
+  GtkWidget *entry;
+  GtkWidget *button;
 
   selection->show_alpha = TRUE;
 
@@ -179,11 +163,11 @@ gimp_color_selection_init (GimpColorSelection *selection)
                       TRUE, TRUE, 0);
   gtk_widget_show (selection->notebook);
 
-  g_signal_connect (selection->notebook, "color_changed",
+  g_signal_connect (selection->notebook, "color-changed",
                     G_CALLBACK (gimp_color_selection_notebook_changed),
                     selection);
   g_signal_connect (GIMP_COLOR_NOTEBOOK (selection->notebook)->notebook,
-                    "switch_page",
+                    "switch-page",
                     G_CALLBACK (gimp_color_selection_switch_page),
                     selection);
 
@@ -212,7 +196,7 @@ gimp_color_selection_init (GimpColorSelection *selection)
   gtk_container_add (GTK_CONTAINER (frame), selection->new_color);
   gtk_widget_show (selection->new_color);
 
-  g_signal_connect (selection->new_color, "color_changed",
+  g_signal_connect (selection->new_color, "color-changed",
 		    G_CALLBACK (gimp_color_selection_new_color_changed),
 		    selection);
 
@@ -253,11 +237,43 @@ gimp_color_selection_init (GimpColorSelection *selection)
                       TRUE, TRUE, 0);
   gtk_widget_show (selection->scales);
 
-  g_signal_connect (selection->scales, "channel_changed",
+  g_signal_connect (selection->scales, "channel-changed",
                     G_CALLBACK (gimp_color_selection_channel_changed),
                     selection);
-  g_signal_connect (selection->scales, "color_changed",
+  g_signal_connect (selection->scales, "color-changed",
                     G_CALLBACK (gimp_color_selection_scales_changed),
+                    selection);
+
+  hbox = gtk_hbox_new (FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (selection->right_vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  /*  The color picker  */
+  button = gimp_pick_button_new ();
+  gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
+
+  g_signal_connect (button, "color-picked",
+                    G_CALLBACK (gimp_color_selection_color_picked),
+                    selection);
+
+  /* The hex triplet entry */
+  entry = gimp_color_hex_entry_new ();
+  gimp_help_set_help_data (entry,
+                           _("Hexadecimal color notation "
+                             "as used in HTML and CSS"), NULL);
+  gtk_box_pack_end (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
+  gtk_widget_show (entry);
+
+  label = gtk_label_new_with_mnemonic (_("HTML _notation:"));
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
+  gtk_box_pack_end (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_widget_show (label);
+
+  g_object_set_data (G_OBJECT (selection), "color-hex-entry", entry);
+
+  g_signal_connect (entry, "color-changed",
+                    G_CALLBACK (gimp_color_selection_entry_changed),
                     selection);
 }
 
@@ -340,10 +356,7 @@ gimp_color_selection_set_color (GimpColorSelection *selection,
   selection->rgb = *color;
   gimp_rgb_to_hsv (&selection->rgb, &selection->hsv);
 
-  gimp_color_selection_update (selection,
-                               UPDATE_NOTEBOOK   |
-                               UPDATE_SCALES     |
-                               UPDATE_NEW_COLOR);
+  gimp_color_selection_update (selection, UPDATE_ALL);
 
   gimp_color_selection_color_changed (selection);
 }
@@ -420,7 +433,7 @@ gimp_color_selection_reset (GimpColorSelection *selection)
  * gimp_color_selection_color_changed:
  * @selection: A #GimpColorSelection widget.
  *
- * Emits the "color_changed" signal.
+ * Emits the "color-changed" signal.
  **/
 void
 gimp_color_selection_color_changed (GimpColorSelection *selection)
@@ -458,7 +471,8 @@ gimp_color_selection_notebook_changed (GimpColorSelector  *selector,
   selection->hsv = *hsv;
   selection->rgb = *rgb;
 
-  gimp_color_selection_update (selection, UPDATE_SCALES | UPDATE_NEW_COLOR);
+  gimp_color_selection_update (selection,
+                               UPDATE_SCALES | UPDATE_ENTRY | UPDATE_COLOR);
   gimp_color_selection_color_changed (selection);
 }
 
@@ -471,7 +485,29 @@ gimp_color_selection_scales_changed (GimpColorSelector  *selector,
   selection->rgb = *rgb;
   selection->hsv = *hsv;
 
-  gimp_color_selection_update (selection, UPDATE_NOTEBOOK | UPDATE_NEW_COLOR);
+  gimp_color_selection_update (selection,
+                               UPDATE_ENTRY | UPDATE_NOTEBOOK | UPDATE_COLOR);
+  gimp_color_selection_color_changed (selection);
+}
+
+static void
+gimp_color_selection_color_picked (GtkWidget          *widget,
+                                   const GimpRGB      *rgb,
+                                   GimpColorSelection *selection)
+{
+  gimp_color_selection_set_color (selection, rgb);
+}
+
+static void
+gimp_color_selection_entry_changed (GimpColorHexEntry  *entry,
+                                    GimpColorSelection *selection)
+{
+  gimp_color_hex_entry_get_color (entry, &selection->rgb);
+
+  gimp_rgb_to_hsv (&selection->rgb, &selection->hsv);
+
+  gimp_color_selection_update (selection,
+                               UPDATE_NOTEBOOK | UPDATE_SCALES | UPDATE_COLOR);
   gimp_color_selection_color_changed (selection);
 }
 
@@ -493,7 +529,8 @@ gimp_color_selection_new_color_changed (GtkWidget          *widget,
   gimp_color_area_get_color (GIMP_COLOR_AREA (widget), &selection->rgb);
   gimp_rgb_to_hsv (&selection->rgb, &selection->hsv);
 
-  gimp_color_selection_update (selection, UPDATE_NOTEBOOK | UPDATE_SCALES);
+  gimp_color_selection_update (selection,
+                               UPDATE_NOTEBOOK | UPDATE_SCALES | UPDATE_ENTRY);
   gimp_color_selection_color_changed (selection);
 }
 
@@ -531,7 +568,24 @@ gimp_color_selection_update (GimpColorSelection *selection,
                                          selection);
     }
 
-  if (update & UPDATE_NEW_COLOR)
+  if (update & UPDATE_ENTRY)
+    {
+      GimpColorHexEntry *entry;
+
+      entry = g_object_get_data (G_OBJECT (selection), "color-hex-entry");
+
+      g_signal_handlers_block_by_func (entry,
+                                       gimp_color_selection_entry_changed,
+                                       selection);
+
+      gimp_color_hex_entry_set_color (entry, &selection->rgb);
+
+      g_signal_handlers_unblock_by_func (entry,
+                                         gimp_color_selection_entry_changed,
+                                         selection);
+    }
+
+  if (update & UPDATE_COLOR)
     {
       g_signal_handlers_block_by_func (selection->new_color,
                                        gimp_color_selection_new_color_changed,

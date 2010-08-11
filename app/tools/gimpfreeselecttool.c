@@ -18,14 +18,9 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
-
-#include "libgimpmath/gimpmath.h"
 
 #include "tools-types.h"
 
@@ -49,10 +44,11 @@
 #define DEFAULT_MAX_INC 1024
 
 
-static void   gimp_free_select_tool_class_init (GimpFreeSelectToolClass *klass);
-static void   gimp_free_select_tool_init       (GimpFreeSelectTool      *free_select);
 static void   gimp_free_select_tool_finalize       (GObject         *object);
 
+static void   gimp_free_select_tool_control        (GimpTool        *tool,
+                                                    GimpToolAction   action,
+                                                    GimpDisplay     *gdisp);
 static void   gimp_free_select_tool_button_press   (GimpTool        *tool,
                                                     GimpCoords      *coords,
                                                     guint32          time,
@@ -71,6 +67,9 @@ static void   gimp_free_select_tool_motion         (GimpTool        *tool,
 
 static void   gimp_free_select_tool_draw           (GimpDrawTool    *draw_tool);
 
+static void   gimp_free_select_tool_real_select    (GimpFreeSelectTool *free_sel,
+                                                    GimpDisplay        *gdisp);
+
 static void   gimp_free_select_tool_add_point      (GimpFreeSelectTool *free_sel,
                                                     gdouble             x,
                                                     gdouble             y);
@@ -79,10 +78,11 @@ static void   gimp_free_select_tool_move_points    (GimpFreeSelectTool *free_sel
                                                     gdouble             dy);
 
 
-static GimpSelectionToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpFreeSelectTool, gimp_free_select_tool,
+               GIMP_TYPE_SELECTION_TOOL);
 
+#define parent_class gimp_free_select_tool_parent_class
 
-/*  public functions  */
 
 void
 gimp_free_select_tool_register (GimpToolRegisterCallback  callback,
@@ -101,36 +101,6 @@ gimp_free_select_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_free_select_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpFreeSelectToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_free_select_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpFreeSelectTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_free_select_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_SELECTION_TOOL,
-                                          "GimpFreeSelectTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
-/*  private functions  */
-
 static void
 gimp_free_select_tool_class_init (GimpFreeSelectToolClass *klass)
 {
@@ -138,15 +108,16 @@ gimp_free_select_tool_class_init (GimpFreeSelectToolClass *klass)
   GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   object_class->finalize     = gimp_free_select_tool_finalize;
 
+  tool_class->control        = gimp_free_select_tool_control;
   tool_class->button_press   = gimp_free_select_tool_button_press;
   tool_class->button_release = gimp_free_select_tool_button_release;
   tool_class->motion         = gimp_free_select_tool_motion;
 
   draw_tool_class->draw      = gimp_free_select_tool_draw;
+
+  klass->select              = gimp_free_select_tool_real_select;
 }
 
 static void
@@ -175,6 +146,24 @@ gimp_free_select_tool_finalize (GObject *object)
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+gimp_free_select_tool_control (GimpTool       *tool,
+                               GimpToolAction  action,
+                               GimpDisplay    *gdisp)
+{
+  switch (action)
+    {
+    case HALT:
+      GIMP_FREE_SELECT_TOOL (tool)->num_points = 0;
+      break;
+
+    default:
+      break;
+    }
+
+  GIMP_TOOL_CLASS (parent_class)->control (tool, action, gdisp);
 }
 
 static void
@@ -217,34 +206,28 @@ gimp_free_select_tool_button_release (GimpTool        *tool,
   gimp_tool_control_halt (tool->control);
 
   /*  First take care of the case where the user "cancels" the action  */
-  if (! (state & GDK_BUTTON3_MASK))
+  if (state & GDK_BUTTON3_MASK)
+    return;
+
+  if (free_sel->num_points == 1)
     {
-      if (free_sel->num_points == 1)
+      /*  If there is a floating selection, anchor it  */
+      if (gimp_image_floating_sel (gdisp->gimage))
         {
-          /*  If there is a floating selection, anchor it  */
-          if (gimp_image_floating_sel (gdisp->gimage))
-            floating_sel_anchor (gimp_image_floating_sel (gdisp->gimage));
-          /*  Otherwise, clear the selection mask  */
-          else
-            gimp_channel_clear (gimp_image_get_mask (gdisp->gimage), NULL,
-                                TRUE);
-
-          gimp_image_flush (gdisp->gimage);
-          return;
+          floating_sel_anchor (gimp_image_floating_sel (gdisp->gimage));
         }
-
-      gimp_channel_select_polygon (gimp_image_get_mask (gdisp->gimage),
-                                   tool->tool_info->blurb,
-                                   free_sel->num_points,
-                                   free_sel->points,
-                                   GIMP_SELECTION_TOOL (tool)->op,
-                                   options->antialias,
-                                   options->feather,
-                                   options->feather_radius,
-                                   options->feather_radius);
-
-      gimp_image_flush (gdisp->gimage);
+      /*  Otherwise, clear the selection mask  */
+      else
+        {
+          gimp_channel_clear (gimp_image_get_mask (gdisp->gimage), NULL, TRUE);
+        }
     }
+  else
+    {
+      GIMP_FREE_SELECT_TOOL_GET_CLASS (free_sel)->select (free_sel, gdisp);
+    }
+
+  gimp_image_flush (gdisp->gimage);
 }
 
 static void
@@ -304,6 +287,42 @@ gimp_free_select_tool_draw (GimpDrawTool *draw_tool)
                                 free_sel->points[i].y,
                                 FALSE);
     }
+}
+
+
+/*  public functions  */
+
+void
+gimp_free_select_tool_select (GimpFreeSelectTool *free_sel,
+                              GimpDisplay        *gdisp)
+{
+  g_return_if_fail (GIMP_IS_FREE_SELECT_TOOL (free_sel));
+  g_return_if_fail (GIMP_IS_DISPLAY (gdisp));
+
+  GIMP_FREE_SELECT_TOOL_GET_CLASS (free_sel)->select (free_sel, gdisp);
+}
+
+
+/*  private functions  */
+
+static void
+gimp_free_select_tool_real_select (GimpFreeSelectTool *free_sel,
+                                   GimpDisplay        *gdisp)
+{
+  GimpTool             *tool = GIMP_TOOL (free_sel);
+  GimpSelectionOptions *options;
+
+  options = GIMP_SELECTION_OPTIONS (tool->tool_info->tool_options);
+
+  gimp_channel_select_polygon (gimp_image_get_mask (gdisp->gimage),
+                               tool->tool_info->blurb,
+                               free_sel->num_points,
+                               free_sel->points,
+                               GIMP_SELECTION_TOOL (tool)->op,
+                               options->antialias,
+                               options->feather,
+                               options->feather_radius,
+                               options->feather_radius);
 }
 
 static void

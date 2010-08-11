@@ -53,63 +53,67 @@ libexec_PROGRAMS = AlienMap2$(EXEEXT) CEL$(EXEEXT) \
 	exchange$(EXEEXT) film$(EXEEXT) flarefx$(EXEEXT) fp$(EXEEXT) \
 	fractaltrace$(EXEEXT) gauss$(EXEEXT) gbr$(EXEEXT) gee$(EXEEXT) \
 	gee_zoom$(EXEEXT) gif$(EXEEXT) gifload$(EXEEXT) gih$(EXEEXT) \
-	glasstile$(EXEEXT) glob$(EXEEXT) gqbist$(EXEEXT) \
-	gradmap$(EXEEXT) grid$(EXEEXT) gtm$(EXEEXT) \
+	glasstile$(EXEEXT) glob$(EXEEXT) $(am__EXEEXT_2) \
+	gqbist$(EXEEXT) gradmap$(EXEEXT) grid$(EXEEXT) gtm$(EXEEXT) \
 	guillotine$(EXEEXT) header$(EXEEXT) hot$(EXEEXT) \
 	illusion$(EXEEXT) iwarp$(EXEEXT) jigsaw$(EXEEXT) \
-	$(am__EXEEXT_2) laplace$(EXEEXT) lic$(EXEEXT) $(am__EXEEXT_3) \
+	laplace$(EXEEXT) lic$(EXEEXT) $(am__EXEEXT_3) \
 	mapcolor$(EXEEXT) max_rgb$(EXEEXT) mblur$(EXEEXT) \
 	$(am__EXEEXT_4) mosaic$(EXEEXT) neon$(EXEEXT) \
 	newsprint$(EXEEXT) nlfilt$(EXEEXT) noisify$(EXEEXT) \
 	normalize$(EXEEXT) nova$(EXEEXT) oilify$(EXEEXT) \
 	papertile$(EXEEXT) pat$(EXEEXT) pcx$(EXEEXT) \
 	photocopy$(EXEEXT) pix$(EXEEXT) pixelize$(EXEEXT) \
-	plasma$(EXEEXT) $(am__EXEEXT_5) pnm$(EXEEXT) polar$(EXEEXT) \
-	postscript$(EXEEXT) psd$(EXEEXT) psd_save$(EXEEXT) \
-	$(am__EXEEXT_6) randomize$(EXEEXT) raw$(EXEEXT) \
-	retinex$(EXEEXT) ripple$(EXEEXT) rotate$(EXEEXT) \
-	sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) $(am__EXEEXT_7) \
+	plasma$(EXEEXT) plugin-browser$(EXEEXT) $(am__EXEEXT_5) \
+	pnm$(EXEEXT) polar$(EXEEXT) $(am__EXEEXT_6) \
+	postscript$(EXEEXT) procedure-browser$(EXEEXT) psd$(EXEEXT) \
+	psd_save$(EXEEXT) $(am__EXEEXT_7) randomize$(EXEEXT) \
+	raw$(EXEEXT) retinex$(EXEEXT) ripple$(EXEEXT) rotate$(EXEEXT) \
+	sample_colorize$(EXEEXT) scatter_hsv$(EXEEXT) $(am__EXEEXT_8) \
 	sel_gauss$(EXEEXT) semiflatten$(EXEEXT) sharpen$(EXEEXT) \
 	shift$(EXEEXT) sinus$(EXEEXT) smooth_palette$(EXEEXT) \
 	snoise$(EXEEXT) sobel$(EXEEXT) softglow$(EXEEXT) \
 	sparkle$(EXEEXT) spheredesigner$(EXEEXT) spread$(EXEEXT) \
-	struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_8) tga$(EXEEXT) \
-	threshold_alpha$(EXEEXT) $(am__EXEEXT_9) tile$(EXEEXT) \
+	struc$(EXEEXT) sunras$(EXEEXT) $(am__EXEEXT_9) tga$(EXEEXT) \
+	threshold_alpha$(EXEEXT) $(am__EXEEXT_10) tile$(EXEEXT) \
 	tileit$(EXEEXT) tiler$(EXEEXT) uniteditor$(EXEEXT) \
-	unsharp$(EXEEXT) $(am__EXEEXT_10) video$(EXEEXT) \
-	vinvert$(EXEEXT) vpropagate$(EXEEXT) warp$(EXEEXT) \
-	waves$(EXEEXT) webbrowser$(EXEEXT) whirlpinch$(EXEEXT) \
-	$(am__EXEEXT_11) wind$(EXEEXT) $(am__EXEEXT_12) \
-	$(am__EXEEXT_13) xbm$(EXEEXT) $(am__EXEEXT_14) xwd$(EXEEXT) \
-	zealouscrop$(EXEEXT)
-EXTRA_PROGRAMS = aa$(EXEEXT) jpeg$(EXEEXT) mail$(EXEEXT) mng$(EXEEXT) \
-	png$(EXEEXT) psp$(EXEEXT) screenshot$(EXEEXT) svg$(EXEEXT) \
-	tiff$(EXEEXT) url$(EXEEXT) winclipboard$(EXEEXT) \
+	unsharp$(EXEEXT) video$(EXEEXT) vinvert$(EXEEXT) \
+	vpropagate$(EXEEXT) warp$(EXEEXT) waves$(EXEEXT) \
+	webbrowser$(EXEEXT) whirlpinch$(EXEEXT) wind$(EXEEXT) \
+	$(am__EXEEXT_11) $(am__EXEEXT_12) xbm$(EXEEXT) \
+	$(am__EXEEXT_13) xwd$(EXEEXT) zealouscrop$(EXEEXT)
+EXTRA_PROGRAMS = aa$(EXEEXT) gnomeprint$(EXEEXT) mail$(EXEEXT) \
+	mng$(EXEEXT) png$(EXEEXT) poppler$(EXEEXT) psp$(EXEEXT) \
+	screenshot$(EXEEXT) svg$(EXEEXT) tiff$(EXEEXT) \
 	winprint$(EXEEXT) wmf$(EXEEXT) xpm$(EXEEXT)
 subdir = plug-ins/common
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/m4macros/detectcflags.m4 \
+	$(top_srcdir)/m4macros/pythondev.m4 \
+	$(top_srcdir)/m4macros/gimpprint.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
+	$(top_srcdir)/m4macros/gtk-doc.m4 \
+	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__EXEEXT_1 = @AA@
-am__EXEEXT_2 = @JPEG@
+am__EXEEXT_2 = @GNOMEPRINT@
 am__EXEEXT_3 = @MAIL@
 am__EXEEXT_4 = @MNG@
 am__EXEEXT_5 = @PNG@
-am__EXEEXT_6 = @PSP@
-am__EXEEXT_7 = @SCREENSHOT@
-am__EXEEXT_8 = @SVG@
-am__EXEEXT_9 = @TIFF@
-am__EXEEXT_10 = @URL@
-am__EXEEXT_11 = @WINCLIPBOARD@
-am__EXEEXT_12 = @WINPRINT@
-am__EXEEXT_13 = @WMF@
-am__EXEEXT_14 = @XPM@
+am__EXEEXT_6 = @POPPLER@
+am__EXEEXT_7 = @PSP@
+am__EXEEXT_8 = @SCREENSHOT@
+am__EXEEXT_9 = @SVG@
+am__EXEEXT_10 = @TIFF@
+am__EXEEXT_11 = @WINPRINT@
+am__EXEEXT_12 = @WMF@
+am__EXEEXT_13 = @XPM@
 am__installdirs = "$(DESTDIR)$(libexecdir)"
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
@@ -117,864 +121,1015 @@ am_AlienMap2_OBJECTS = AlienMap2.$(OBJEXT)
 AlienMap2_OBJECTS = $(am_AlienMap2_OBJECTS)
 am__DEPENDENCIES_1 =  \
 	$(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_2 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_3 =  \
+am__DEPENDENCIES_2 = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_3 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_4 =  \
 	$(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_4 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_5 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_6 =
+am__DEPENDENCIES_5 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_6 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_7 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_8 =
 AlienMap2_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_CEL_OBJECTS = CEL.$(OBJEXT)
 CEL_OBJECTS = $(am_CEL_OBJECTS)
 CEL_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_CML_explorer_OBJECTS = CML_explorer.$(OBJEXT)
 CML_explorer_OBJECTS = $(am_CML_explorer_OBJECTS)
 CML_explorer_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_aa_OBJECTS = aa.$(OBJEXT)
 aa_OBJECTS = $(am_aa_OBJECTS)
 aa_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_align_layers_OBJECTS = align_layers.$(OBJEXT)
 align_layers_OBJECTS = $(am_align_layers_OBJECTS)
 align_layers_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_animationplay_OBJECTS = animationplay.$(OBJEXT)
 animationplay_OBJECTS = $(am_animationplay_OBJECTS)
 animationplay_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_animoptimize_OBJECTS = animoptimize.$(OBJEXT)
 animoptimize_OBJECTS = $(am_animoptimize_OBJECTS)
-animoptimize_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+animoptimize_DEPENDENCIES = $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_apply_lens_OBJECTS = apply_lens.$(OBJEXT)
 apply_lens_OBJECTS = $(am_apply_lens_OBJECTS)
 apply_lens_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_autocrop_OBJECTS = autocrop.$(OBJEXT)
 autocrop_OBJECTS = $(am_autocrop_OBJECTS)
-autocrop_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+autocrop_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_autostretch_hsv_OBJECTS = autostretch_hsv.$(OBJEXT)
 autostretch_hsv_OBJECTS = $(am_autostretch_hsv_OBJECTS)
-autostretch_hsv_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+autostretch_hsv_DEPENDENCIES = $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_blinds_OBJECTS = blinds.$(OBJEXT)
 blinds_OBJECTS = $(am_blinds_OBJECTS)
 blinds_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_blur_OBJECTS = blur.$(OBJEXT)
 blur_OBJECTS = $(am_blur_OBJECTS)
-blur_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+blur_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_borderaverage_OBJECTS = borderaverage.$(OBJEXT)
 borderaverage_OBJECTS = $(am_borderaverage_OBJECTS)
 borderaverage_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_bumpmap_OBJECTS = bumpmap.$(OBJEXT)
 bumpmap_OBJECTS = $(am_bumpmap_OBJECTS)
 bumpmap_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_c_astretch_OBJECTS = c_astretch.$(OBJEXT)
 c_astretch_OBJECTS = $(am_c_astretch_OBJECTS)
-c_astretch_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+c_astretch_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_cartoon_OBJECTS = cartoon.$(OBJEXT)
 cartoon_OBJECTS = $(am_cartoon_OBJECTS)
 cartoon_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_ccanalyze_OBJECTS = ccanalyze.$(OBJEXT)
 ccanalyze_OBJECTS = $(am_ccanalyze_OBJECTS)
 ccanalyze_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_channel_mixer_OBJECTS = channel_mixer.$(OBJEXT)
 channel_mixer_OBJECTS = $(am_channel_mixer_OBJECTS)
 channel_mixer_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_checkerboard_OBJECTS = checkerboard.$(OBJEXT)
 checkerboard_OBJECTS = $(am_checkerboard_OBJECTS)
 checkerboard_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_color_enhance_OBJECTS = color_enhance.$(OBJEXT)
 color_enhance_OBJECTS = $(am_color_enhance_OBJECTS)
 color_enhance_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_colorify_OBJECTS = colorify.$(OBJEXT)
 colorify_OBJECTS = $(am_colorify_OBJECTS)
 colorify_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_colortoalpha_OBJECTS = colortoalpha.$(OBJEXT)
 colortoalpha_OBJECTS = $(am_colortoalpha_OBJECTS)
 colortoalpha_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_compose_OBJECTS = compose.$(OBJEXT)
 compose_OBJECTS = $(am_compose_OBJECTS)
 compose_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_compressor_OBJECTS = compressor.$(OBJEXT)
 compressor_OBJECTS = $(am_compressor_OBJECTS)
-compressor_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+compressor_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_convmatrix_OBJECTS = convmatrix.$(OBJEXT)
 convmatrix_OBJECTS = $(am_convmatrix_OBJECTS)
 convmatrix_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_csource_OBJECTS = csource.$(OBJEXT)
 csource_OBJECTS = $(am_csource_OBJECTS)
 csource_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_cubism_OBJECTS = cubism.$(OBJEXT)
 cubism_OBJECTS = $(am_cubism_OBJECTS)
 cubism_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_curve_bend_OBJECTS = curve_bend.$(OBJEXT)
 curve_bend_OBJECTS = $(am_curve_bend_OBJECTS)
 curve_bend_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_decompose_OBJECTS = decompose.$(OBJEXT)
 decompose_OBJECTS = $(am_decompose_OBJECTS)
 decompose_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_deinterlace_OBJECTS = deinterlace.$(OBJEXT)
 deinterlace_OBJECTS = $(am_deinterlace_OBJECTS)
 deinterlace_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_depthmerge_OBJECTS = depthmerge.$(OBJEXT)
 depthmerge_OBJECTS = $(am_depthmerge_OBJECTS)
 depthmerge_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_despeckle_OBJECTS = despeckle.$(OBJEXT)
 despeckle_OBJECTS = $(am_despeckle_OBJECTS)
 despeckle_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_destripe_OBJECTS = destripe.$(OBJEXT)
 destripe_OBJECTS = $(am_destripe_OBJECTS)
 destripe_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_dicom_OBJECTS = dicom.$(OBJEXT)
 dicom_OBJECTS = $(am_dicom_OBJECTS)
 dicom_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_diffraction_OBJECTS = diffraction.$(OBJEXT)
 diffraction_OBJECTS = $(am_diffraction_OBJECTS)
 diffraction_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_displace_OBJECTS = displace.$(OBJEXT)
 displace_OBJECTS = $(am_displace_OBJECTS)
 displace_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_dog_OBJECTS = dog.$(OBJEXT)
 dog_OBJECTS = $(am_dog_OBJECTS)
 dog_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_edge_OBJECTS = edge.$(OBJEXT)
 edge_OBJECTS = $(am_edge_OBJECTS)
 edge_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_emboss_OBJECTS = emboss.$(OBJEXT)
 emboss_OBJECTS = $(am_emboss_OBJECTS)
 emboss_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_engrave_OBJECTS = engrave.$(OBJEXT)
 engrave_OBJECTS = $(am_engrave_OBJECTS)
 engrave_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_exchange_OBJECTS = exchange.$(OBJEXT)
 exchange_OBJECTS = $(am_exchange_OBJECTS)
 exchange_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_film_OBJECTS = film.$(OBJEXT)
 film_OBJECTS = $(am_film_OBJECTS)
 film_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_flarefx_OBJECTS = flarefx.$(OBJEXT)
 flarefx_OBJECTS = $(am_flarefx_OBJECTS)
 flarefx_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_fp_OBJECTS = fp.$(OBJEXT)
 fp_OBJECTS = $(am_fp_OBJECTS)
 fp_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_fractaltrace_OBJECTS = fractaltrace.$(OBJEXT)
 fractaltrace_OBJECTS = $(am_fractaltrace_OBJECTS)
 fractaltrace_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_gauss_OBJECTS = gauss.$(OBJEXT)
 gauss_OBJECTS = $(am_gauss_OBJECTS)
 gauss_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_gbr_OBJECTS = gbr.$(OBJEXT)
 gbr_OBJECTS = $(am_gbr_OBJECTS)
 gbr_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_gee_OBJECTS = gee.$(OBJEXT)
 gee_OBJECTS = $(am_gee_OBJECTS)
 gee_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_gee_zoom_OBJECTS = gee_zoom.$(OBJEXT)
 gee_zoom_OBJECTS = $(am_gee_zoom_OBJECTS)
 gee_zoom_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_gif_OBJECTS = gif.$(OBJEXT)
 gif_OBJECTS = $(am_gif_OBJECTS)
 gif_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_gifload_OBJECTS = gifload.$(OBJEXT)
 gifload_OBJECTS = $(am_gifload_OBJECTS)
-gifload_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+gifload_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_gih_OBJECTS = gih.$(OBJEXT)
 gih_OBJECTS = $(am_gih_OBJECTS)
 gih_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_glasstile_OBJECTS = glasstile.$(OBJEXT)
 glasstile_OBJECTS = $(am_glasstile_OBJECTS)
 glasstile_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_glob_OBJECTS = glob.$(OBJEXT)
 glob_OBJECTS = $(am_glob_OBJECTS)
-glob_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
+glob_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
+am_gnomeprint_OBJECTS = gnomeprint-gnomeprint.$(OBJEXT)
+gnomeprint_OBJECTS = $(am_gnomeprint_OBJECTS)
+gnomeprint_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_gqbist_OBJECTS = gqbist.$(OBJEXT)
 gqbist_OBJECTS = $(am_gqbist_OBJECTS)
 gqbist_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_gradmap_OBJECTS = gradmap.$(OBJEXT)
 gradmap_OBJECTS = $(am_gradmap_OBJECTS)
 gradmap_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_grid_OBJECTS = grid.$(OBJEXT)
 grid_OBJECTS = $(am_grid_OBJECTS)
 grid_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_gtm_OBJECTS = gtm.$(OBJEXT)
 gtm_OBJECTS = $(am_gtm_OBJECTS)
 gtm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_guillotine_OBJECTS = guillotine.$(OBJEXT)
 guillotine_OBJECTS = $(am_guillotine_OBJECTS)
-guillotine_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+guillotine_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_header_OBJECTS = header.$(OBJEXT)
 header_OBJECTS = $(am_header_OBJECTS)
 header_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_hot_OBJECTS = hot.$(OBJEXT)
 hot_OBJECTS = $(am_hot_OBJECTS)
 hot_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_illusion_OBJECTS = illusion.$(OBJEXT)
 illusion_OBJECTS = $(am_illusion_OBJECTS)
 illusion_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_iwarp_OBJECTS = iwarp.$(OBJEXT)
 iwarp_OBJECTS = $(am_iwarp_OBJECTS)
 iwarp_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_jigsaw_OBJECTS = jigsaw.$(OBJEXT)
 jigsaw_OBJECTS = $(am_jigsaw_OBJECTS)
 jigsaw_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
-am_jpeg_OBJECTS = jpeg.$(OBJEXT)
-jpeg_OBJECTS = $(am_jpeg_OBJECTS)
-jpeg_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
-	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_laplace_OBJECTS = laplace.$(OBJEXT)
 laplace_OBJECTS = $(am_laplace_OBJECTS)
 laplace_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_lic_OBJECTS = lic.$(OBJEXT)
 lic_OBJECTS = $(am_lic_OBJECTS)
 lic_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_mail_OBJECTS = mail.$(OBJEXT)
 mail_OBJECTS = $(am_mail_OBJECTS)
 mail_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_mapcolor_OBJECTS = mapcolor.$(OBJEXT)
 mapcolor_OBJECTS = $(am_mapcolor_OBJECTS)
 mapcolor_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_max_rgb_OBJECTS = max_rgb.$(OBJEXT)
 max_rgb_OBJECTS = $(am_max_rgb_OBJECTS)
 max_rgb_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_mblur_OBJECTS = mblur.$(OBJEXT)
 mblur_OBJECTS = $(am_mblur_OBJECTS)
 mblur_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_mng_OBJECTS = mng.$(OBJEXT)
 mng_OBJECTS = $(am_mng_OBJECTS)
 mng_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_mosaic_OBJECTS = mosaic.$(OBJEXT)
 mosaic_OBJECTS = $(am_mosaic_OBJECTS)
 mosaic_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_neon_OBJECTS = neon.$(OBJEXT)
 neon_OBJECTS = $(am_neon_OBJECTS)
 neon_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_newsprint_OBJECTS = newsprint.$(OBJEXT)
 newsprint_OBJECTS = $(am_newsprint_OBJECTS)
 newsprint_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_nlfilt_OBJECTS = nlfilt.$(OBJEXT)
 nlfilt_OBJECTS = $(am_nlfilt_OBJECTS)
 nlfilt_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_noisify_OBJECTS = noisify.$(OBJEXT)
 noisify_OBJECTS = $(am_noisify_OBJECTS)
 noisify_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_normalize_OBJECTS = normalize.$(OBJEXT)
 normalize_OBJECTS = $(am_normalize_OBJECTS)
-normalize_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+normalize_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_nova_OBJECTS = nova.$(OBJEXT)
 nova_OBJECTS = $(am_nova_OBJECTS)
 nova_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_oilify_OBJECTS = oilify.$(OBJEXT)
 oilify_OBJECTS = $(am_oilify_OBJECTS)
 oilify_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_papertile_OBJECTS = papertile.$(OBJEXT)
 papertile_OBJECTS = $(am_papertile_OBJECTS)
 papertile_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_pat_OBJECTS = pat.$(OBJEXT)
 pat_OBJECTS = $(am_pat_OBJECTS)
 pat_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_pcx_OBJECTS = pcx.$(OBJEXT)
 pcx_OBJECTS = $(am_pcx_OBJECTS)
 pcx_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_photocopy_OBJECTS = photocopy.$(OBJEXT)
 photocopy_OBJECTS = $(am_photocopy_OBJECTS)
 photocopy_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_pix_OBJECTS = pix.$(OBJEXT)
 pix_OBJECTS = $(am_pix_OBJECTS)
 pix_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_pixelize_OBJECTS = pixelize.$(OBJEXT)
 pixelize_OBJECTS = $(am_pixelize_OBJECTS)
 pixelize_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_plasma_OBJECTS = plasma.$(OBJEXT)
 plasma_OBJECTS = $(am_plasma_OBJECTS)
 plasma_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_plugin_browser_OBJECTS = plugin-browser.$(OBJEXT)
+plugin_browser_OBJECTS = $(am_plugin_browser_OBJECTS)
+plugin_browser_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_png_OBJECTS = png.$(OBJEXT)
 png_OBJECTS = $(am_png_OBJECTS)
 png_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_pnm_OBJECTS = pnm.$(OBJEXT)
 pnm_OBJECTS = $(am_pnm_OBJECTS)
 pnm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_polar_OBJECTS = polar.$(OBJEXT)
 polar_OBJECTS = $(am_polar_OBJECTS)
 polar_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_poppler_OBJECTS = poppler-poppler.$(OBJEXT)
+poppler_OBJECTS = $(am_poppler_OBJECTS)
+poppler_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_postscript_OBJECTS = postscript.$(OBJEXT)
 postscript_OBJECTS = $(am_postscript_OBJECTS)
 postscript_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_procedure_browser_OBJECTS = procedure-browser.$(OBJEXT)
+procedure_browser_OBJECTS = $(am_procedure_browser_OBJECTS)
+procedure_browser_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_psd_OBJECTS = psd.$(OBJEXT)
 psd_OBJECTS = $(am_psd_OBJECTS)
-psd_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+psd_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_psd_save_OBJECTS = psd_save.$(OBJEXT)
 psd_save_OBJECTS = $(am_psd_save_OBJECTS)
 psd_save_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_psp_OBJECTS = psp.$(OBJEXT)
 psp_OBJECTS = $(am_psp_OBJECTS)
 psp_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_randomize_OBJECTS = randomize.$(OBJEXT)
 randomize_OBJECTS = $(am_randomize_OBJECTS)
 randomize_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_raw_OBJECTS = raw.$(OBJEXT)
 raw_OBJECTS = $(am_raw_OBJECTS)
 raw_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_retinex_OBJECTS = retinex.$(OBJEXT)
 retinex_OBJECTS = $(am_retinex_OBJECTS)
 retinex_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_ripple_OBJECTS = ripple.$(OBJEXT)
 ripple_OBJECTS = $(am_ripple_OBJECTS)
 ripple_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_rotate_OBJECTS = rotate.$(OBJEXT)
 rotate_OBJECTS = $(am_rotate_OBJECTS)
-rotate_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+rotate_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_sample_colorize_OBJECTS = sample_colorize.$(OBJEXT)
 sample_colorize_OBJECTS = $(am_sample_colorize_OBJECTS)
 sample_colorize_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_scatter_hsv_OBJECTS = scatter_hsv.$(OBJEXT)
 scatter_hsv_OBJECTS = $(am_scatter_hsv_OBJECTS)
 scatter_hsv_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_screenshot_OBJECTS = screenshot.$(OBJEXT)
 screenshot_OBJECTS = $(am_screenshot_OBJECTS)
 screenshot_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_sel_gauss_OBJECTS = sel_gauss.$(OBJEXT)
 sel_gauss_OBJECTS = $(am_sel_gauss_OBJECTS)
 sel_gauss_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_semiflatten_OBJECTS = semiflatten.$(OBJEXT)
 semiflatten_OBJECTS = $(am_semiflatten_OBJECTS)
-semiflatten_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+semiflatten_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_sharpen_OBJECTS = sharpen.$(OBJEXT)
 sharpen_OBJECTS = $(am_sharpen_OBJECTS)
 sharpen_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_shift_OBJECTS = shift.$(OBJEXT)
 shift_OBJECTS = $(am_shift_OBJECTS)
 shift_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_sinus_OBJECTS = sinus.$(OBJEXT)
 sinus_OBJECTS = $(am_sinus_OBJECTS)
 sinus_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_smooth_palette_OBJECTS = smooth_palette.$(OBJEXT)
 smooth_palette_OBJECTS = $(am_smooth_palette_OBJECTS)
 smooth_palette_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_snoise_OBJECTS = snoise.$(OBJEXT)
 snoise_OBJECTS = $(am_snoise_OBJECTS)
 snoise_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_sobel_OBJECTS = sobel.$(OBJEXT)
 sobel_OBJECTS = $(am_sobel_OBJECTS)
 sobel_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_softglow_OBJECTS = softglow.$(OBJEXT)
 softglow_OBJECTS = $(am_softglow_OBJECTS)
 softglow_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_sparkle_OBJECTS = sparkle.$(OBJEXT)
 sparkle_OBJECTS = $(am_sparkle_OBJECTS)
 sparkle_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_spheredesigner_OBJECTS = spheredesigner.$(OBJEXT)
 spheredesigner_OBJECTS = $(am_spheredesigner_OBJECTS)
 spheredesigner_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_spread_OBJECTS = spread.$(OBJEXT)
 spread_OBJECTS = $(am_spread_OBJECTS)
 spread_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_struc_OBJECTS = struc.$(OBJEXT)
 struc_OBJECTS = $(am_struc_OBJECTS)
 struc_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_sunras_OBJECTS = sunras.$(OBJEXT)
 sunras_OBJECTS = $(am_sunras_OBJECTS)
 sunras_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
-am_svg_OBJECTS = svg.$(OBJEXT)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_svg_OBJECTS = svg-svg.$(OBJEXT)
 svg_OBJECTS = $(am_svg_OBJECTS)
 svg_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_tga_OBJECTS = tga.$(OBJEXT)
 tga_OBJECTS = $(am_tga_OBJECTS)
 tga_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_threshold_alpha_OBJECTS = threshold_alpha.$(OBJEXT)
 threshold_alpha_OBJECTS = $(am_threshold_alpha_OBJECTS)
 threshold_alpha_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_tiff_OBJECTS = tiff.$(OBJEXT)
 tiff_OBJECTS = $(am_tiff_OBJECTS)
 tiff_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_tile_OBJECTS = tile.$(OBJEXT)
 tile_OBJECTS = $(am_tile_OBJECTS)
 tile_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_tileit_OBJECTS = tileit.$(OBJEXT)
 tileit_OBJECTS = $(am_tileit_OBJECTS)
 tileit_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_tiler_OBJECTS = tiler.$(OBJEXT)
 tiler_OBJECTS = $(am_tiler_OBJECTS)
-tiler_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+tiler_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_uniteditor_OBJECTS = uniteditor.$(OBJEXT)
 uniteditor_OBJECTS = $(am_uniteditor_OBJECTS)
 uniteditor_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_unsharp_OBJECTS = unsharp.$(OBJEXT)
 unsharp_OBJECTS = $(am_unsharp_OBJECTS)
 unsharp_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
-am_url_OBJECTS = url.$(OBJEXT)
-url_OBJECTS = $(am_url_OBJECTS)
-url_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_video_OBJECTS = video.$(OBJEXT)
 video_OBJECTS = $(am_video_OBJECTS)
 video_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_vinvert_OBJECTS = vinvert.$(OBJEXT)
 vinvert_OBJECTS = $(am_vinvert_OBJECTS)
-vinvert_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+vinvert_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_vpropagate_OBJECTS = vpropagate.$(OBJEXT)
 vpropagate_OBJECTS = $(am_vpropagate_OBJECTS)
 vpropagate_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_warp_OBJECTS = warp.$(OBJEXT)
 warp_OBJECTS = $(am_warp_OBJECTS)
 warp_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_waves_OBJECTS = waves.$(OBJEXT)
 waves_OBJECTS = $(am_waves_OBJECTS)
 waves_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_webbrowser_OBJECTS = webbrowser.$(OBJEXT)
 webbrowser_OBJECTS = $(am_webbrowser_OBJECTS)
-webbrowser_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+webbrowser_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_whirlpinch_OBJECTS = whirlpinch.$(OBJEXT)
 whirlpinch_OBJECTS = $(am_whirlpinch_OBJECTS)
 whirlpinch_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
-am_winclipboard_OBJECTS = winclipboard.$(OBJEXT)
-winclipboard_OBJECTS = $(am_winclipboard_OBJECTS)
-winclipboard_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_wind_OBJECTS = wind.$(OBJEXT)
 wind_OBJECTS = $(am_wind_OBJECTS)
 wind_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_winprint_OBJECTS = winprint.$(OBJEXT)
 winprint_OBJECTS = $(am_winprint_OBJECTS)
 winprint_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
-am_wmf_OBJECTS = wmf.$(OBJEXT)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
+am_wmf_OBJECTS = wmf-wmf.$(OBJEXT)
 wmf_OBJECTS = $(am_wmf_OBJECTS)
 wmf_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_xbm_OBJECTS = xbm.$(OBJEXT)
 xbm_OBJECTS = $(am_xbm_OBJECTS)
 xbm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_xpm_OBJECTS = xpm.$(OBJEXT)
 xpm_OBJECTS = $(am_xpm_OBJECTS)
 xpm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 am_xwd_OBJECTS = xwd.$(OBJEXT)
 xwd_OBJECTS = $(am_xwd_OBJECTS)
 xwd_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+	$(am__DEPENDENCIES_7) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8)
 am_zealouscrop_OBJECTS = zealouscrop.$(OBJEXT)
 zealouscrop_OBJECTS = $(am_zealouscrop_OBJECTS)
-zealouscrop_DEPENDENCIES = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_5) $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_6)
+zealouscrop_DEPENDENCIES = $(am__DEPENDENCIES_4) $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_8) \
+	$(am__DEPENDENCIES_8)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -1005,22 +1160,24 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(fp_SOURCES) $(fractaltrace_SOURCES) $(gauss_SOURCES) \
 	$(gbr_SOURCES) $(gee_SOURCES) $(gee_zoom_SOURCES) \
 	$(gif_SOURCES) $(gifload_SOURCES) $(gih_SOURCES) \
-	$(glasstile_SOURCES) $(glob_SOURCES) $(gqbist_SOURCES) \
-	$(gradmap_SOURCES) $(grid_SOURCES) $(gtm_SOURCES) \
-	$(guillotine_SOURCES) $(header_SOURCES) $(hot_SOURCES) \
-	$(illusion_SOURCES) $(iwarp_SOURCES) $(jigsaw_SOURCES) \
-	$(jpeg_SOURCES) $(laplace_SOURCES) $(lic_SOURCES) \
+	$(glasstile_SOURCES) $(glob_SOURCES) $(gnomeprint_SOURCES) \
+	$(gqbist_SOURCES) $(gradmap_SOURCES) $(grid_SOURCES) \
+	$(gtm_SOURCES) $(guillotine_SOURCES) $(header_SOURCES) \
+	$(hot_SOURCES) $(illusion_SOURCES) $(iwarp_SOURCES) \
+	$(jigsaw_SOURCES) $(laplace_SOURCES) $(lic_SOURCES) \
 	$(mail_SOURCES) $(mapcolor_SOURCES) $(max_rgb_SOURCES) \
 	$(mblur_SOURCES) $(mng_SOURCES) $(mosaic_SOURCES) \
 	$(neon_SOURCES) $(newsprint_SOURCES) $(nlfilt_SOURCES) \
 	$(noisify_SOURCES) $(normalize_SOURCES) $(nova_SOURCES) \
 	$(oilify_SOURCES) $(papertile_SOURCES) $(pat_SOURCES) \
 	$(pcx_SOURCES) $(photocopy_SOURCES) $(pix_SOURCES) \
-	$(pixelize_SOURCES) $(plasma_SOURCES) $(png_SOURCES) \
-	$(pnm_SOURCES) $(polar_SOURCES) $(postscript_SOURCES) \
-	$(psd_SOURCES) $(psd_save_SOURCES) $(psp_SOURCES) \
-	$(randomize_SOURCES) $(raw_SOURCES) $(retinex_SOURCES) \
-	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
+	$(pixelize_SOURCES) $(plasma_SOURCES) \
+	$(plugin_browser_SOURCES) $(png_SOURCES) $(pnm_SOURCES) \
+	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
+	$(procedure_browser_SOURCES) $(psd_SOURCES) \
+	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
+	$(raw_SOURCES) $(retinex_SOURCES) $(ripple_SOURCES) \
+	$(rotate_SOURCES) $(sample_colorize_SOURCES) \
 	$(scatter_hsv_SOURCES) $(screenshot_SOURCES) \
 	$(sel_gauss_SOURCES) $(semiflatten_SOURCES) $(sharpen_SOURCES) \
 	$(shift_SOURCES) $(sinus_SOURCES) $(smooth_palette_SOURCES) \
@@ -1029,12 +1186,12 @@ SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) $(CML_explorer_SOURCES) \
 	$(struc_SOURCES) $(sunras_SOURCES) $(svg_SOURCES) \
 	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_SOURCES) \
 	$(tile_SOURCES) $(tileit_SOURCES) $(tiler_SOURCES) \
-	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(url_SOURCES) \
-	$(video_SOURCES) $(vinvert_SOURCES) $(vpropagate_SOURCES) \
-	$(warp_SOURCES) $(waves_SOURCES) $(webbrowser_SOURCES) \
-	$(whirlpinch_SOURCES) $(winclipboard_SOURCES) $(wind_SOURCES) \
-	$(winprint_SOURCES) $(wmf_SOURCES) $(xbm_SOURCES) \
-	$(xpm_SOURCES) $(xwd_SOURCES) $(zealouscrop_SOURCES)
+	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(video_SOURCES) \
+	$(vinvert_SOURCES) $(vpropagate_SOURCES) $(warp_SOURCES) \
+	$(waves_SOURCES) $(webbrowser_SOURCES) $(whirlpinch_SOURCES) \
+	$(wind_SOURCES) $(winprint_SOURCES) $(wmf_SOURCES) \
+	$(xbm_SOURCES) $(xpm_SOURCES) $(xwd_SOURCES) \
+	$(zealouscrop_SOURCES)
 DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(CML_explorer_SOURCES) $(aa_SOURCES) $(align_layers_SOURCES) \
 	$(animationplay_SOURCES) $(animoptimize_SOURCES) \
@@ -1055,22 +1212,24 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(fp_SOURCES) $(fractaltrace_SOURCES) $(gauss_SOURCES) \
 	$(gbr_SOURCES) $(gee_SOURCES) $(gee_zoom_SOURCES) \
 	$(gif_SOURCES) $(gifload_SOURCES) $(gih_SOURCES) \
-	$(glasstile_SOURCES) $(glob_SOURCES) $(gqbist_SOURCES) \
-	$(gradmap_SOURCES) $(grid_SOURCES) $(gtm_SOURCES) \
-	$(guillotine_SOURCES) $(header_SOURCES) $(hot_SOURCES) \
-	$(illusion_SOURCES) $(iwarp_SOURCES) $(jigsaw_SOURCES) \
-	$(jpeg_SOURCES) $(laplace_SOURCES) $(lic_SOURCES) \
+	$(glasstile_SOURCES) $(glob_SOURCES) $(gnomeprint_SOURCES) \
+	$(gqbist_SOURCES) $(gradmap_SOURCES) $(grid_SOURCES) \
+	$(gtm_SOURCES) $(guillotine_SOURCES) $(header_SOURCES) \
+	$(hot_SOURCES) $(illusion_SOURCES) $(iwarp_SOURCES) \
+	$(jigsaw_SOURCES) $(laplace_SOURCES) $(lic_SOURCES) \
 	$(mail_SOURCES) $(mapcolor_SOURCES) $(max_rgb_SOURCES) \
 	$(mblur_SOURCES) $(mng_SOURCES) $(mosaic_SOURCES) \
 	$(neon_SOURCES) $(newsprint_SOURCES) $(nlfilt_SOURCES) \
 	$(noisify_SOURCES) $(normalize_SOURCES) $(nova_SOURCES) \
 	$(oilify_SOURCES) $(papertile_SOURCES) $(pat_SOURCES) \
 	$(pcx_SOURCES) $(photocopy_SOURCES) $(pix_SOURCES) \
-	$(pixelize_SOURCES) $(plasma_SOURCES) $(png_SOURCES) \
-	$(pnm_SOURCES) $(polar_SOURCES) $(postscript_SOURCES) \
-	$(psd_SOURCES) $(psd_save_SOURCES) $(psp_SOURCES) \
-	$(randomize_SOURCES) $(raw_SOURCES) $(retinex_SOURCES) \
-	$(ripple_SOURCES) $(rotate_SOURCES) $(sample_colorize_SOURCES) \
+	$(pixelize_SOURCES) $(plasma_SOURCES) \
+	$(plugin_browser_SOURCES) $(png_SOURCES) $(pnm_SOURCES) \
+	$(polar_SOURCES) $(poppler_SOURCES) $(postscript_SOURCES) \
+	$(procedure_browser_SOURCES) $(psd_SOURCES) \
+	$(psd_save_SOURCES) $(psp_SOURCES) $(randomize_SOURCES) \
+	$(raw_SOURCES) $(retinex_SOURCES) $(ripple_SOURCES) \
+	$(rotate_SOURCES) $(sample_colorize_SOURCES) \
 	$(scatter_hsv_SOURCES) $(screenshot_SOURCES) \
 	$(sel_gauss_SOURCES) $(semiflatten_SOURCES) $(sharpen_SOURCES) \
 	$(shift_SOURCES) $(sinus_SOURCES) $(smooth_palette_SOURCES) \
@@ -1079,21 +1238,21 @@ DIST_SOURCES = $(AlienMap2_SOURCES) $(CEL_SOURCES) \
 	$(struc_SOURCES) $(sunras_SOURCES) $(svg_SOURCES) \
 	$(tga_SOURCES) $(threshold_alpha_SOURCES) $(tiff_SOURCES) \
 	$(tile_SOURCES) $(tileit_SOURCES) $(tiler_SOURCES) \
-	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(url_SOURCES) \
-	$(video_SOURCES) $(vinvert_SOURCES) $(vpropagate_SOURCES) \
-	$(warp_SOURCES) $(waves_SOURCES) $(webbrowser_SOURCES) \
-	$(whirlpinch_SOURCES) $(winclipboard_SOURCES) $(wind_SOURCES) \
-	$(winprint_SOURCES) $(wmf_SOURCES) $(xbm_SOURCES) \
-	$(xpm_SOURCES) $(xwd_SOURCES) $(zealouscrop_SOURCES)
+	$(uniteditor_SOURCES) $(unsharp_SOURCES) $(video_SOURCES) \
+	$(vinvert_SOURCES) $(vpropagate_SOURCES) $(warp_SOURCES) \
+	$(waves_SOURCES) $(webbrowser_SOURCES) $(whirlpinch_SOURCES) \
+	$(wind_SOURCES) $(winprint_SOURCES) $(wmf_SOURCES) \
+	$(xbm_SOURCES) $(xpm_SOURCES) $(xwd_SOURCES) \
+	$(zealouscrop_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
-ALL_LINGUAS = @ALL_LINGUAS@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
+ALTIVEC_EXTRA_CFLAGS = @ALTIVEC_EXTRA_CFLAGS@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -1103,6 +1262,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
+BINRELOC_LIBS = @BINRELOC_LIBS@
 BUILD_HELPBROWSER_FALSE = @BUILD_HELPBROWSER_FALSE@
 BUILD_HELPBROWSER_TRUE = @BUILD_HELPBROWSER_TRUE@
 BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
@@ -1134,6 +1295,7 @@ DESKTOP_DATADIR = @DESKTOP_DATADIR@
 DESKTOP_DATADIR_FALSE = @DESKTOP_DATADIR_FALSE@
 DESKTOP_DATADIR_TRUE = @DESKTOP_DATADIR_TRUE@
 DLLTOOL = @DLLTOOL@
+DOC_SHOOTER = @DOC_SHOOTER@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -1168,7 +1330,6 @@ GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
-GIMP_DESKTOP_ICON = @GIMP_DESKTOP_ICON@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
 GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
@@ -1176,18 +1337,16 @@ GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
 GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
 GIMP_MKENUMS = @GIMP_MKENUMS@
 GIMP_MODULES = @GIMP_MODULES@
-GIMP_MP_FLAGS = @GIMP_MP_FLAGS@
-GIMP_MP_LIBS = @GIMP_MP_LIBS@
 GIMP_PKGCONFIG_VERSION = @GIMP_PKGCONFIG_VERSION@
 GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
-GIMP_THREAD_FLAGS = @GIMP_THREAD_FLAGS@
-GIMP_THREAD_LIBS = @GIMP_THREAD_LIBS@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
+GIMP_UNSTABLE_FALSE = @GIMP_UNSTABLE_FALSE@
+GIMP_UNSTABLE_TRUE = @GIMP_UNSTABLE_TRUE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
@@ -1199,8 +1358,12 @@ GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOMEPRINT = @GNOMEPRINT@
+GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
+GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
-GREP = @GREP@
+GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -1214,6 +1377,10 @@ HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
 HAVE_GLIBC_REGEX_TRUE = @HAVE_GLIBC_REGEX_TRUE@
+HAVE_GNOMEPRINT_FALSE = @HAVE_GNOMEPRINT_FALSE@
+HAVE_GNOMEPRINT_TRUE = @HAVE_GNOMEPRINT_TRUE@
+HAVE_GNOMEVFS_FALSE = @HAVE_GNOMEVFS_FALSE@
+HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
@@ -1250,7 +1417,6 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
-INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -1266,10 +1432,12 @@ LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
+LIBGNOMEPRINT = @LIBGNOMEPRINT@
 LIBJPEG = @LIBJPEG@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
+LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
 LIBSCREENSHOT = @LIBSCREENSHOT@
 LIBSVG = @LIBSVG@
@@ -1292,7 +1460,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
-MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -1318,15 +1485,22 @@ PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
 POFILES = @POFILES@
+POPPLER = @POPPLER@
+POPPLER_CFLAGS = @POPPLER_CFLAGS@
+POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PRINT_CFLAGS = @PRINT_CFLAGS@
 PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
+PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
+PYGTK_CODEGEN = @PYGTK_CODEGEN@
+PYGTK_DEFSDIR = @PYGTK_DEFSDIR@
 PYGTK_LIBS = @PYGTK_LIBS@
+PYLINK_LIBS = @PYLINK_LIBS@
 PYTHON = @PYTHON@
 PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
 PYTHON_INCLUDES = @PYTHON_INCLUDES@
@@ -1350,10 +1524,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URL = @URL@
+URI_CFLAGS = @URI_CFLAGS@
+URI_LIBS = @URI_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WINCLIPBOARD = @WINCLIPBOARD@
 WINDRES = @WINDRES@
 WINPRINT = @WINPRINT@
 WITH_PDBGEN_FALSE = @WITH_PDBGEN_FALSE@
@@ -1363,7 +1537,6 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
-XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -1371,9 +1544,17 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+ac_ct_AR = @ac_ct_AR@
+ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
+ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
+ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
+ac_ct_RANLIB = @ac_ct_RANLIB@
+ac_ct_STRIP = @ac_ct_STRIP@
+ac_ct_WINDRES = @ac_ct_WINDRES@
+ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -1390,12 +1571,10 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
-datarootdir = @datarootdir@
-docdir = @docdir@
-dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
+gimplocaledir = @gimplocaledir@
 gimpplugindir = @gimpplugindir@
 gimpsysconfdir = @gimpsysconfdir@
 host = @host@
@@ -1403,24 +1582,20 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
-htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = $(gimpplugindir)/plug-ins
-localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
-pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -1429,9 +1604,11 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
 @OS_WIN32_TRUE@mwindows = -mwindows
 AM_LDFLAGS = $(mwindows)
 EXTRA_DIST = \
@@ -1441,9 +1618,6 @@ EXTRA_DIST = \
 INCLUDES = \
 	-I$(top_srcdir)	\
 	$(GTK_CFLAGS)	\
-	$(EXIF_CFLAGS)	\
-	$(SVG_CFLAGS)	\
-	$(WMF_CFLAGS)	\
 	-I$(includedir)
 
 AlienMap2_SOURCES = \
@@ -1451,9 +1625,11 @@ AlienMap2_SOURCES = \
 
 AlienMap2_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1464,9 +1640,11 @@ CEL_SOURCES = \
 
 CEL_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1477,9 +1655,11 @@ CML_explorer_SOURCES = \
 
 CML_explorer_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1490,9 +1670,11 @@ aa_SOURCES = \
 
 aa_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBAA)		\
 	$(GTK_LIBS)		\
@@ -1504,9 +1686,11 @@ align_layers_SOURCES = \
 
 align_layers_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1517,9 +1701,11 @@ animationplay_SOURCES = \
 
 animationplay_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1531,6 +1717,7 @@ animoptimize_SOURCES = \
 animoptimize_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -1541,9 +1728,11 @@ apply_lens_SOURCES = \
 
 apply_lens_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1555,6 +1744,7 @@ autocrop_SOURCES = \
 autocrop_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -1566,6 +1756,7 @@ autostretch_hsv_SOURCES = \
 autostretch_hsv_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -1576,9 +1767,11 @@ blinds_SOURCES = \
 
 blinds_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1590,6 +1783,7 @@ blur_SOURCES = \
 blur_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -1600,9 +1794,11 @@ borderaverage_SOURCES = \
 
 borderaverage_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1613,9 +1809,11 @@ bumpmap_SOURCES = \
 
 bumpmap_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1627,6 +1825,7 @@ c_astretch_SOURCES = \
 c_astretch_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -1637,9 +1836,11 @@ cartoon_SOURCES = \
 
 cartoon_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1650,9 +1851,11 @@ ccanalyze_SOURCES = \
 
 ccanalyze_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1663,9 +1866,11 @@ channel_mixer_SOURCES = \
 
 channel_mixer_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1676,9 +1881,11 @@ checkerboard_SOURCES = \
 
 checkerboard_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1689,9 +1896,11 @@ color_enhance_SOURCES = \
 
 color_enhance_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1702,9 +1911,11 @@ colorify_SOURCES = \
 
 colorify_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1715,9 +1926,11 @@ colortoalpha_SOURCES = \
 
 colortoalpha_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1728,9 +1941,11 @@ compose_SOURCES = \
 
 compose_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1742,6 +1957,7 @@ compressor_SOURCES = \
 compressor_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -1752,9 +1968,11 @@ convmatrix_SOURCES = \
 
 convmatrix_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1765,9 +1983,11 @@ csource_SOURCES = \
 
 csource_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1778,9 +1998,11 @@ cubism_SOURCES = \
 
 cubism_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1791,9 +2013,11 @@ curve_bend_SOURCES = \
 
 curve_bend_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1804,9 +2028,11 @@ decompose_SOURCES = \
 
 decompose_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1817,9 +2043,11 @@ deinterlace_SOURCES = \
 
 deinterlace_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1830,9 +2058,11 @@ depthmerge_SOURCES = \
 
 depthmerge_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1843,9 +2073,11 @@ despeckle_SOURCES = \
 
 despeckle_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1856,9 +2088,11 @@ destripe_SOURCES = \
 
 destripe_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1869,9 +2103,11 @@ dicom_SOURCES = \
 
 dicom_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1882,9 +2118,11 @@ diffraction_SOURCES = \
 
 diffraction_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1895,9 +2133,11 @@ displace_SOURCES = \
 
 displace_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1908,9 +2148,11 @@ dog_SOURCES = \
 
 dog_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1921,9 +2163,11 @@ edge_SOURCES = \
 
 edge_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1934,9 +2178,11 @@ emboss_SOURCES = \
 
 emboss_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1947,9 +2193,11 @@ engrave_SOURCES = \
 
 engrave_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1960,9 +2208,11 @@ exchange_SOURCES = \
 
 exchange_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1973,9 +2223,11 @@ film_SOURCES = \
 
 film_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1986,9 +2238,11 @@ flarefx_SOURCES = \
 
 flarefx_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -1999,9 +2253,11 @@ fp_SOURCES = \
 
 fp_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2012,9 +2268,11 @@ fractaltrace_SOURCES = \
 
 fractaltrace_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2025,9 +2283,11 @@ gauss_SOURCES = \
 
 gauss_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2038,9 +2298,11 @@ gbr_SOURCES = \
 
 gbr_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2051,9 +2313,11 @@ gee_SOURCES = \
 
 gee_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2064,9 +2328,11 @@ gee_zoom_SOURCES = \
 
 gee_zoom_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2077,9 +2343,11 @@ gif_SOURCES = \
 
 gif_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2091,8 +2359,9 @@ gifload_SOURCES = \
 gifload_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
-	$(GTK_LIBS)		\
+	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -2101,9 +2370,11 @@ gih_SOURCES = \
 
 gih_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2114,9 +2385,11 @@ glasstile_SOURCES = \
 
 glasstile_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2128,8 +2401,26 @@ glob_SOURCES = \
 glob_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+gnomeprint_CFLAGS = $(GNOMEPRINT_CFLAGS)
+gnomeprint_SOURCES = \
+	gnomeprint.c
+
+gnomeprint_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(LIBGNOMEPRINT)		\
+	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -2138,9 +2429,11 @@ gqbist_SOURCES = \
 
 gqbist_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2151,9 +2444,11 @@ gradmap_SOURCES = \
 
 gradmap_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -2164,9 +2459,11 @@ grid_SOURCES = \
 
 grid_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2177,9 +2474,11 @@ gtm_SOURCES = \
 
 gtm_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2191,6 +2490,7 @@ guillotine_SOURCES = \
 guillotine_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -2201,9 +2501,11 @@ header_SOURCES = \
 
 header_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2214,9 +2516,11 @@ hot_SOURCES = \
 
 hot_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2227,9 +2531,11 @@ illusion_SOURCES = \
 
 illusion_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2240,9 +2546,11 @@ iwarp_SOURCES = \
 
 iwarp_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2253,26 +2561,13 @@ jigsaw_SOURCES = \
 
 jigsaw_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-jpeg_SOURCES = \
-	jpeg.c
-
-jpeg_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(LIBJPEG)		\
-	$(GTK_LIBS)		\
-	$(EXIF_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -2281,9 +2576,11 @@ laplace_SOURCES = \
 
 laplace_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -2294,9 +2591,11 @@ lic_SOURCES = \
 
 lic_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2307,9 +2606,11 @@ mail_SOURCES = \
 
 mail_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBMAIL)		\
 	$(GTK_LIBS)		\
@@ -2321,9 +2622,11 @@ mapcolor_SOURCES = \
 
 mapcolor_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2334,9 +2637,11 @@ max_rgb_SOURCES = \
 
 max_rgb_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2347,9 +2652,11 @@ mblur_SOURCES = \
 
 mblur_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2360,9 +2667,11 @@ mng_SOURCES = \
 
 mng_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBMNG)		\
 	$(GTK_LIBS)		\
@@ -2374,9 +2683,11 @@ mosaic_SOURCES = \
 
 mosaic_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2387,9 +2698,11 @@ neon_SOURCES = \
 
 neon_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2400,9 +2713,11 @@ newsprint_SOURCES = \
 
 newsprint_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2413,9 +2728,11 @@ nlfilt_SOURCES = \
 
 nlfilt_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2426,9 +2743,11 @@ noisify_SOURCES = \
 
 noisify_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2440,6 +2759,7 @@ normalize_SOURCES = \
 normalize_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -2450,9 +2770,11 @@ nova_SOURCES = \
 
 nova_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2463,9 +2785,11 @@ oilify_SOURCES = \
 
 oilify_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2476,9 +2800,11 @@ papertile_SOURCES = \
 
 papertile_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2489,9 +2815,11 @@ pat_SOURCES = \
 
 pat_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2502,9 +2830,11 @@ pcx_SOURCES = \
 
 pcx_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2515,9 +2845,11 @@ photocopy_SOURCES = \
 
 photocopy_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2528,9 +2860,11 @@ pix_SOURCES = \
 
 pix_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2541,9 +2875,11 @@ pixelize_SOURCES = \
 
 pixelize_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2554,9 +2890,26 @@ plasma_SOURCES = \
 
 plasma_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+plugin_browser_SOURCES = \
+	plugin-browser.c
+
+plugin_browser_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2567,9 +2920,11 @@ png_SOURCES = \
 
 png_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBPNG)		\
 	$(GTK_LIBS)		\
@@ -2581,9 +2936,11 @@ pnm_SOURCES = \
 
 pnm_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2594,10 +2951,29 @@ polar_SOURCES = \
 
 polar_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+poppler_CFLAGS = $(POPPLER_CFLAGS)
+poppler_SOURCES = \
+	poppler.c
+
+poppler_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(LIBPOPPLER)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
@@ -2607,9 +2983,26 @@ postscript_SOURCES = \
 
 postscript_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
+	$(libgimpbase)		\
+	$(GTK_LIBS)		\
+	$(RT_LIBS)		\
+	$(INTLLIBS)
+
+procedure_browser_SOURCES = \
+	procedure-browser.c
+
+procedure_browser_LDADD = \
+	$(libgimpui)		\
+	$(libgimpconfig)	\
+	$(libgimpwidgets)	\
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2621,6 +3014,7 @@ psd_SOURCES = \
 psd_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -2631,9 +3025,11 @@ psd_save_SOURCES = \
 
 psd_save_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2644,9 +3040,11 @@ psp_SOURCES = \
 
 psp_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBZ)		\
 	$(GTK_LIBS)		\
@@ -2658,9 +3056,11 @@ randomize_SOURCES = \
 
 randomize_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2671,9 +3071,11 @@ raw_SOURCES = \
 
 raw_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2684,9 +3086,11 @@ retinex_SOURCES = \
 
 retinex_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2697,9 +3101,11 @@ ripple_SOURCES = \
 
 ripple_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2711,6 +3117,7 @@ rotate_SOURCES = \
 rotate_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -2721,9 +3128,11 @@ sample_colorize_SOURCES = \
 
 sample_colorize_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2734,9 +3143,11 @@ scatter_hsv_SOURCES = \
 
 scatter_hsv_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2747,9 +3158,11 @@ screenshot_SOURCES = \
 
 screenshot_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBSCREENSHOT)		\
 	$(GTK_LIBS)		\
@@ -2761,9 +3174,11 @@ sel_gauss_SOURCES = \
 
 sel_gauss_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2775,6 +3190,7 @@ semiflatten_SOURCES = \
 semiflatten_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -2785,9 +3201,11 @@ sharpen_SOURCES = \
 
 sharpen_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2798,9 +3216,11 @@ shift_SOURCES = \
 
 shift_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2811,9 +3231,11 @@ sinus_SOURCES = \
 
 sinus_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2824,9 +3246,11 @@ smooth_palette_SOURCES = \
 
 smooth_palette_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2837,9 +3261,11 @@ snoise_SOURCES = \
 
 snoise_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2850,9 +3276,11 @@ sobel_SOURCES = \
 
 sobel_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2863,9 +3291,11 @@ softglow_SOURCES = \
 
 softglow_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2876,9 +3306,11 @@ sparkle_SOURCES = \
 
 sparkle_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2889,9 +3321,11 @@ spheredesigner_SOURCES = \
 
 spheredesigner_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2902,9 +3336,11 @@ spread_SOURCES = \
 
 spread_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2915,9 +3351,11 @@ struc_SOURCES = \
 
 struc_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2928,22 +3366,27 @@ sunras_SOURCES = \
 
 sunras_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+svg_CFLAGS = $(SVG_CFLAGS)
 svg_SOURCES = \
 	svg.c
 
 svg_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBSVG)		\
 	$(GTK_LIBS)		\
@@ -2955,9 +3398,11 @@ tga_SOURCES = \
 
 tga_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2968,9 +3413,11 @@ threshold_alpha_SOURCES = \
 
 threshold_alpha_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -2981,9 +3428,11 @@ tiff_SOURCES = \
 
 tiff_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBTIFF)		\
 	$(GTK_LIBS)		\
@@ -2995,9 +3444,11 @@ tile_SOURCES = \
 
 tile_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3008,9 +3459,11 @@ tileit_SOURCES = \
 
 tileit_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3022,6 +3475,7 @@ tiler_SOURCES = \
 tiler_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -3032,9 +3486,11 @@ uniteditor_SOURCES = \
 
 uniteditor_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3045,23 +3501,13 @@ unsharp_SOURCES = \
 
 unsharp_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-url_SOURCES = \
-	url.c
-
-url_LDADD = \
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(LIBURL)		\
-	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -3070,9 +3516,11 @@ video_SOURCES = \
 
 video_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3084,6 +3532,7 @@ vinvert_SOURCES = \
 vinvert_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -3094,9 +3543,11 @@ vpropagate_SOURCES = \
 
 vpropagate_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3107,9 +3558,11 @@ warp_SOURCES = \
 
 warp_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3120,9 +3573,11 @@ waves_SOURCES = \
 
 waves_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3134,6 +3589,7 @@ webbrowser_SOURCES = \
 webbrowser_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -3144,25 +3600,13 @@ whirlpinch_SOURCES = \
 
 whirlpinch_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
-	$(RT_LIBS)		\
-	$(INTLLIBS)
-
-winclipboard_SOURCES = \
-	winclipboard.c
-
-winclipboard_LDADD = \
-	$(libgimpui)		\
-	$(libgimpwidgets)	\
-	$(libgimp)		\
-	$(libgimpcolor)		\
-	$(libgimpbase)		\
-	$(LIBWINCLIPBOARD)		\
-	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -3171,9 +3615,11 @@ wind_SOURCES = \
 
 wind_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3184,23 +3630,28 @@ winprint_SOURCES = \
 
 winprint_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBWINPRINT)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
+wmf_CFLAGS = $(WMF_CFLAGS)
 wmf_SOURCES = \
 	wmf.c
 
 wmf_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBWMF)		\
 	$(GTK_LIBS)		\
@@ -3212,9 +3663,11 @@ xbm_SOURCES = \
 
 xbm_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3225,9 +3678,11 @@ xpm_SOURCES = \
 
 xpm_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(LIBXPM)		\
 	$(GTK_LIBS)		\
@@ -3239,9 +3694,11 @@ xwd_SOURCES = \
 
 xwd_LDADD = \
 	$(libgimpui)		\
+	$(libgimpconfig)	\
 	$(libgimpwidgets)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
 	$(RT_LIBS)		\
@@ -3253,6 +3710,7 @@ zealouscrop_SOURCES = \
 zealouscrop_LDADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
+	$(libgimpmath)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
 	$(RT_LIBS)		\
@@ -3481,6 +3939,9 @@ glasstile$(EXEEXT): $(glasstile_OBJECTS) $(glasstile_DEPENDENCIES)
 glob$(EXEEXT): $(glob_OBJECTS) $(glob_DEPENDENCIES) 
 	@rm -f glob$(EXEEXT)
 	$(LINK) $(glob_LDFLAGS) $(glob_OBJECTS) $(glob_LDADD) $(LIBS)
+gnomeprint$(EXEEXT): $(gnomeprint_OBJECTS) $(gnomeprint_DEPENDENCIES) 
+	@rm -f gnomeprint$(EXEEXT)
+	$(LINK) $(gnomeprint_LDFLAGS) $(gnomeprint_OBJECTS) $(gnomeprint_LDADD) $(LIBS)
 gqbist$(EXEEXT): $(gqbist_OBJECTS) $(gqbist_DEPENDENCIES) 
 	@rm -f gqbist$(EXEEXT)
 	$(LINK) $(gqbist_LDFLAGS) $(gqbist_OBJECTS) $(gqbist_LDADD) $(LIBS)
@@ -3511,9 +3972,6 @@ iwarp$(EXEEXT): $(iwarp_OBJECTS) $(iwarp_DEPENDENCIES)
 jigsaw$(EXEEXT): $(jigsaw_OBJECTS) $(jigsaw_DEPENDENCIES) 
 	@rm -f jigsaw$(EXEEXT)
 	$(LINK) $(jigsaw_LDFLAGS) $(jigsaw_OBJECTS) $(jigsaw_LDADD) $(LIBS)
-jpeg$(EXEEXT): $(jpeg_OBJECTS) $(jpeg_DEPENDENCIES) 
-	@rm -f jpeg$(EXEEXT)
-	$(LINK) $(jpeg_LDFLAGS) $(jpeg_OBJECTS) $(jpeg_LDADD) $(LIBS)
 laplace$(EXEEXT): $(laplace_OBJECTS) $(laplace_DEPENDENCIES) 
 	@rm -f laplace$(EXEEXT)
 	$(LINK) $(laplace_LDFLAGS) $(laplace_OBJECTS) $(laplace_LDADD) $(LIBS)
@@ -3580,6 +4038,9 @@ pixelize$(EXEEXT): $(pixelize_OBJECTS) $(pixelize_DEPENDENCIES)
 plasma$(EXEEXT): $(plasma_OBJECTS) $(plasma_DEPENDENCIES) 
 	@rm -f plasma$(EXEEXT)
 	$(LINK) $(plasma_LDFLAGS) $(plasma_OBJECTS) $(plasma_LDADD) $(LIBS)
+plugin-browser$(EXEEXT): $(plugin_browser_OBJECTS) $(plugin_browser_DEPENDENCIES) 
+	@rm -f plugin-browser$(EXEEXT)
+	$(LINK) $(plugin_browser_LDFLAGS) $(plugin_browser_OBJECTS) $(plugin_browser_LDADD) $(LIBS)
 png$(EXEEXT): $(png_OBJECTS) $(png_DEPENDENCIES) 
 	@rm -f png$(EXEEXT)
 	$(LINK) $(png_LDFLAGS) $(png_OBJECTS) $(png_LDADD) $(LIBS)
@@ -3589,9 +4050,15 @@ pnm$(EXEEXT): $(pnm_OBJECTS) $(pnm_DEPENDENCIES)
 polar$(EXEEXT): $(polar_OBJECTS) $(polar_DEPENDENCIES) 
 	@rm -f polar$(EXEEXT)
 	$(LINK) $(polar_LDFLAGS) $(polar_OBJECTS) $(polar_LDADD) $(LIBS)
+poppler$(EXEEXT): $(poppler_OBJECTS) $(poppler_DEPENDENCIES) 
+	@rm -f poppler$(EXEEXT)
+	$(LINK) $(poppler_LDFLAGS) $(poppler_OBJECTS) $(poppler_LDADD) $(LIBS)
 postscript$(EXEEXT): $(postscript_OBJECTS) $(postscript_DEPENDENCIES) 
 	@rm -f postscript$(EXEEXT)
 	$(LINK) $(postscript_LDFLAGS) $(postscript_OBJECTS) $(postscript_LDADD) $(LIBS)
+procedure-browser$(EXEEXT): $(procedure_browser_OBJECTS) $(procedure_browser_DEPENDENCIES) 
+	@rm -f procedure-browser$(EXEEXT)
+	$(LINK) $(procedure_browser_LDFLAGS) $(procedure_browser_OBJECTS) $(procedure_browser_LDADD) $(LIBS)
 psd$(EXEEXT): $(psd_OBJECTS) $(psd_DEPENDENCIES) 
 	@rm -f psd$(EXEEXT)
 	$(LINK) $(psd_LDFLAGS) $(psd_OBJECTS) $(psd_LDADD) $(LIBS)
@@ -3694,9 +4161,6 @@ uniteditor$(EXEEXT): $(uniteditor_OBJECTS) $(uniteditor_DEPENDENCIES)
 unsharp$(EXEEXT): $(unsharp_OBJECTS) $(unsharp_DEPENDENCIES) 
 	@rm -f unsharp$(EXEEXT)
 	$(LINK) $(unsharp_LDFLAGS) $(unsharp_OBJECTS) $(unsharp_LDADD) $(LIBS)
-url$(EXEEXT): $(url_OBJECTS) $(url_DEPENDENCIES) 
-	@rm -f url$(EXEEXT)
-	$(LINK) $(url_LDFLAGS) $(url_OBJECTS) $(url_LDADD) $(LIBS)
 video$(EXEEXT): $(video_OBJECTS) $(video_DEPENDENCIES) 
 	@rm -f video$(EXEEXT)
 	$(LINK) $(video_LDFLAGS) $(video_OBJECTS) $(video_LDADD) $(LIBS)
@@ -3718,9 +4182,6 @@ webbrowser$(EXEEXT): $(webbrowser_OBJECTS) $(webbrowser_DEPENDENCIES)
 whirlpinch$(EXEEXT): $(whirlpinch_OBJECTS) $(whirlpinch_DEPENDENCIES) 
 	@rm -f whirlpinch$(EXEEXT)
 	$(LINK) $(whirlpinch_LDFLAGS) $(whirlpinch_OBJECTS) $(whirlpinch_LDADD) $(LIBS)
-winclipboard$(EXEEXT): $(winclipboard_OBJECTS) $(winclipboard_DEPENDENCIES) 
-	@rm -f winclipboard$(EXEEXT)
-	$(LINK) $(winclipboard_LDFLAGS) $(winclipboard_OBJECTS) $(winclipboard_LDADD) $(LIBS)
 wind$(EXEEXT): $(wind_OBJECTS) $(wind_DEPENDENCIES) 
 	@rm -f wind$(EXEEXT)
 	$(LINK) $(wind_LDFLAGS) $(wind_OBJECTS) $(wind_LDADD) $(LIBS)
@@ -3803,6 +4264,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gih.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glasstile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glob.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gnomeprint-gnomeprint.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gqbist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gradmap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/grid.Po@am__quote@
@@ -3813,7 +4275,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/illusion.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/iwarp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jigsaw.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jpeg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/laplace.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lic.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mail.Po@am__quote@
@@ -3836,10 +4297,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pix.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pixelize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plasma.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugin-browser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/png.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pnm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/polar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/poppler-poppler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/postscript.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procedure-browser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psd_save.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/psp.Po@am__quote@
@@ -3865,7 +4329,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/struc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sunras.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svg.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svg-svg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tga.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/threshold_alpha.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tiff.Po@am__quote@
@@ -3874,7 +4338,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tiler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/uniteditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/unsharp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/url.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/video.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vinvert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vpropagate.Po@am__quote@
@@ -3882,10 +4345,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/waves.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/webbrowser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/whirlpinch.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winclipboard.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wind.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/winprint.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wmf.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wmf-wmf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xbm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xpm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xwd.Po@am__quote@
@@ -3911,6 +4373,62 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+gnomeprint-gnomeprint.o: gnomeprint.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -MT gnomeprint-gnomeprint.o -MD -MP -MF "$(DEPDIR)/gnomeprint-gnomeprint.Tpo" -c -o gnomeprint-gnomeprint.o `test -f 'gnomeprint.c' || echo '$(srcdir)/'`gnomeprint.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gnomeprint-gnomeprint.Tpo" "$(DEPDIR)/gnomeprint-gnomeprint.Po"; else rm -f "$(DEPDIR)/gnomeprint-gnomeprint.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gnomeprint.c' object='gnomeprint-gnomeprint.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -c -o gnomeprint-gnomeprint.o `test -f 'gnomeprint.c' || echo '$(srcdir)/'`gnomeprint.c
+
+gnomeprint-gnomeprint.obj: gnomeprint.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -MT gnomeprint-gnomeprint.obj -MD -MP -MF "$(DEPDIR)/gnomeprint-gnomeprint.Tpo" -c -o gnomeprint-gnomeprint.obj `if test -f 'gnomeprint.c'; then $(CYGPATH_W) 'gnomeprint.c'; else $(CYGPATH_W) '$(srcdir)/gnomeprint.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gnomeprint-gnomeprint.Tpo" "$(DEPDIR)/gnomeprint-gnomeprint.Po"; else rm -f "$(DEPDIR)/gnomeprint-gnomeprint.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gnomeprint.c' object='gnomeprint-gnomeprint.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(gnomeprint_CFLAGS) $(CFLAGS) -c -o gnomeprint-gnomeprint.obj `if test -f 'gnomeprint.c'; then $(CYGPATH_W) 'gnomeprint.c'; else $(CYGPATH_W) '$(srcdir)/gnomeprint.c'; fi`
+
+poppler-poppler.o: poppler.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(poppler_CFLAGS) $(CFLAGS) -MT poppler-poppler.o -MD -MP -MF "$(DEPDIR)/poppler-poppler.Tpo" -c -o poppler-poppler.o `test -f 'poppler.c' || echo '$(srcdir)/'`poppler.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/poppler-poppler.Tpo" "$(DEPDIR)/poppler-poppler.Po"; else rm -f "$(DEPDIR)/poppler-poppler.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='poppler.c' object='poppler-poppler.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(poppler_CFLAGS) $(CFLAGS) -c -o poppler-poppler.o `test -f 'poppler.c' || echo '$(srcdir)/'`poppler.c
+
+poppler-poppler.obj: poppler.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(poppler_CFLAGS) $(CFLAGS) -MT poppler-poppler.obj -MD -MP -MF "$(DEPDIR)/poppler-poppler.Tpo" -c -o poppler-poppler.obj `if test -f 'poppler.c'; then $(CYGPATH_W) 'poppler.c'; else $(CYGPATH_W) '$(srcdir)/poppler.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/poppler-poppler.Tpo" "$(DEPDIR)/poppler-poppler.Po"; else rm -f "$(DEPDIR)/poppler-poppler.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='poppler.c' object='poppler-poppler.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(poppler_CFLAGS) $(CFLAGS) -c -o poppler-poppler.obj `if test -f 'poppler.c'; then $(CYGPATH_W) 'poppler.c'; else $(CYGPATH_W) '$(srcdir)/poppler.c'; fi`
+
+svg-svg.o: svg.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(svg_CFLAGS) $(CFLAGS) -MT svg-svg.o -MD -MP -MF "$(DEPDIR)/svg-svg.Tpo" -c -o svg-svg.o `test -f 'svg.c' || echo '$(srcdir)/'`svg.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/svg-svg.Tpo" "$(DEPDIR)/svg-svg.Po"; else rm -f "$(DEPDIR)/svg-svg.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='svg.c' object='svg-svg.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(svg_CFLAGS) $(CFLAGS) -c -o svg-svg.o `test -f 'svg.c' || echo '$(srcdir)/'`svg.c
+
+svg-svg.obj: svg.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(svg_CFLAGS) $(CFLAGS) -MT svg-svg.obj -MD -MP -MF "$(DEPDIR)/svg-svg.Tpo" -c -o svg-svg.obj `if test -f 'svg.c'; then $(CYGPATH_W) 'svg.c'; else $(CYGPATH_W) '$(srcdir)/svg.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/svg-svg.Tpo" "$(DEPDIR)/svg-svg.Po"; else rm -f "$(DEPDIR)/svg-svg.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='svg.c' object='svg-svg.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(svg_CFLAGS) $(CFLAGS) -c -o svg-svg.obj `if test -f 'svg.c'; then $(CYGPATH_W) 'svg.c'; else $(CYGPATH_W) '$(srcdir)/svg.c'; fi`
+
+wmf-wmf.o: wmf.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(wmf_CFLAGS) $(CFLAGS) -MT wmf-wmf.o -MD -MP -MF "$(DEPDIR)/wmf-wmf.Tpo" -c -o wmf-wmf.o `test -f 'wmf.c' || echo '$(srcdir)/'`wmf.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/wmf-wmf.Tpo" "$(DEPDIR)/wmf-wmf.Po"; else rm -f "$(DEPDIR)/wmf-wmf.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='wmf.c' object='wmf-wmf.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(wmf_CFLAGS) $(CFLAGS) -c -o wmf-wmf.o `test -f 'wmf.c' || echo '$(srcdir)/'`wmf.c
+
+wmf-wmf.obj: wmf.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(wmf_CFLAGS) $(CFLAGS) -MT wmf-wmf.obj -MD -MP -MF "$(DEPDIR)/wmf-wmf.Tpo" -c -o wmf-wmf.obj `if test -f 'wmf.c'; then $(CYGPATH_W) 'wmf.c'; else $(CYGPATH_W) '$(srcdir)/wmf.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/wmf-wmf.Tpo" "$(DEPDIR)/wmf-wmf.Po"; else rm -f "$(DEPDIR)/wmf-wmf.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='wmf.c' object='wmf-wmf.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(wmf_CFLAGS) $(CFLAGS) -c -o wmf-wmf.obj `if test -f 'wmf.c'; then $(CYGPATH_W) 'wmf.c'; else $(CYGPATH_W) '$(srcdir)/wmf.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -64,7 +64,7 @@
     (gimp-context-pop)))
 
 (script-fu-register "script-fu-newsprint-text"
-		    _"Newsprint Text..."
+		    _"Newsprint Te_xt..."
 		    "Apply a screen to text"
 		    "Austin Donnelly"
 		    "Austin Donnelly"
@@ -80,4 +80,4 @@
 		    SF-COLOR      _"Background color"   '(255 255 255))
 
 (script-fu-menu-register "script-fu-newsprint-text"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

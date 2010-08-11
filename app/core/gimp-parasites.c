@@ -20,11 +20,9 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-error.h"
 
 #include "gimp.h"
 #include "gimp-parasites.h"
@@ -101,6 +99,9 @@ gimp_parasiterc_load (Gimp *gimp)
 
   filename = gimp_personal_rc_file ("parasiterc");
 
+  if (gimp->be_verbose)
+    g_print ("Parsing '%s'\n", gimp_filename_to_utf8 (filename));
+
   if (! gimp_config_deserialize_file (GIMP_CONFIG (gimp->parasites),
 				      filename, NULL, &error))
     {
@@ -129,6 +130,9 @@ gimp_parasiterc_save (Gimp *gimp)
   g_return_if_fail (GIMP_IS_PARASITE_LIST (gimp->parasites));
 
   filename = gimp_personal_rc_file ("parasiterc");
+
+  if (gimp->be_verbose)
+    g_print ("Writing '%s'\n", gimp_filename_to_utf8 (filename));
 
   if (! gimp_config_serialize_to_file (GIMP_CONFIG (gimp->parasites),
 				       filename,

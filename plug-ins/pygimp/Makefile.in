@@ -38,12 +38,17 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 subdir = plug-ins/pygimp
-DIST_COMMON = README $(pygimp_PYTHON) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in AUTHORS COPYING ChangeLog INSTALL NEWS \
+DIST_COMMON = $(pygimp_PYTHON) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in AUTHORS COPYING ChangeLog INSTALL \
 	py-compile
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/m4macros/detectcflags.m4 \
+	$(top_srcdir)/m4macros/pythondev.m4 \
+	$(top_srcdir)/m4macros/gimpprint.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
+	$(top_srcdir)/m4macros/gtk-doc.m4 \
+	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -64,26 +69,36 @@ am__DEPENDENCIES_1 =  \
 am__DEPENDENCIES_2 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_3 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 am__DEPENDENCIES_4 =
-gimpmodule_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+_gimpenums_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
-am_gimpmodule_la_OBJECTS = gimpmodule.lo pygimp-image.lo \
-	pygimp-drawable.lo pygimp-tile.lo pygimp-display.lo \
-	pygimp-parasite.lo pygimp-pdb.lo
-gimpmodule_la_OBJECTS = $(am_gimpmodule_la_OBJECTS)
-am__DEPENDENCIES_5 =  \
-	$(top_builddir)/plug-ins/dbbrowser/libgimpprocbrowser.la
-am__DEPENDENCIES_6 =  \
-	$(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_7 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-gimpprocbrowsermodule_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_4)
+am__gimpenums_la_OBJECTS = gimpenumsmodule.lo
+_gimpenums_la_OBJECTS = $(am__gimpenums_la_OBJECTS)
+gimp_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
-am_gimpprocbrowsermodule_la_OBJECTS = procbrowser.lo
-gimpprocbrowsermodule_la_OBJECTS =  \
-	$(am_gimpprocbrowsermodule_la_OBJECTS)
+am_gimp_la_OBJECTS = gimpmodule.lo pygimp-display.lo \
+	pygimp-drawable.lo pygimp-image.lo pygimp-parasite.lo \
+	pygimp-pdb.lo pygimp-tile.lo
+gimp_la_OBJECTS = $(am_gimp_la_OBJECTS)
+gimpcolor_la_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
+am_gimpcolor_la_OBJECTS = gimpcolormodule.lo pygimp-rgb.lo
+gimpcolor_la_OBJECTS = $(am_gimpcolor_la_OBJECTS)
+am__DEPENDENCIES_5 =  \
+	$(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_6 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_7 = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_8 = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+gimpprocbrowser_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_6) $(am__DEPENDENCIES_7) \
+	$(am__DEPENDENCIES_8) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4) \
+	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_4)
+am_gimpprocbrowser_la_OBJECTS = procbrowser.lo
+gimpprocbrowser_la_OBJECTS = $(am_gimpprocbrowser_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -95,9 +110,10 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(gimpmodule_la_SOURCES) $(gimpprocbrowsermodule_la_SOURCES)
-DIST_SOURCES = $(gimpmodule_la_SOURCES) \
-	$(gimpprocbrowsermodule_la_SOURCES)
+SOURCES = $(_gimpenums_la_SOURCES) $(gimp_la_SOURCES) \
+	$(gimpcolor_la_SOURCES) $(gimpprocbrowser_la_SOURCES)
+DIST_SOURCES = $(_gimpenums_la_SOURCES) $(gimp_la_SOURCES) \
+	$(gimpcolor_la_SOURCES) $(gimpprocbrowser_la_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-exec-recursive install-info-recursive \
@@ -115,9 +131,9 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
-ALL_LINGUAS = @ALL_LINGUAS@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
+ALTIVEC_EXTRA_CFLAGS = @ALTIVEC_EXTRA_CFLAGS@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -127,6 +143,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
+BINRELOC_LIBS = @BINRELOC_LIBS@
 BUILD_HELPBROWSER_FALSE = @BUILD_HELPBROWSER_FALSE@
 BUILD_HELPBROWSER_TRUE = @BUILD_HELPBROWSER_TRUE@
 BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
@@ -158,6 +176,7 @@ DESKTOP_DATADIR = @DESKTOP_DATADIR@
 DESKTOP_DATADIR_FALSE = @DESKTOP_DATADIR_FALSE@
 DESKTOP_DATADIR_TRUE = @DESKTOP_DATADIR_TRUE@
 DLLTOOL = @DLLTOOL@
+DOC_SHOOTER = @DOC_SHOOTER@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -192,7 +211,6 @@ GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
-GIMP_DESKTOP_ICON = @GIMP_DESKTOP_ICON@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
 GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
@@ -200,18 +218,16 @@ GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
 GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
 GIMP_MKENUMS = @GIMP_MKENUMS@
 GIMP_MODULES = @GIMP_MODULES@
-GIMP_MP_FLAGS = @GIMP_MP_FLAGS@
-GIMP_MP_LIBS = @GIMP_MP_LIBS@
 GIMP_PKGCONFIG_VERSION = @GIMP_PKGCONFIG_VERSION@
 GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
-GIMP_THREAD_FLAGS = @GIMP_THREAD_FLAGS@
-GIMP_THREAD_LIBS = @GIMP_THREAD_LIBS@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
+GIMP_UNSTABLE_FALSE = @GIMP_UNSTABLE_FALSE@
+GIMP_UNSTABLE_TRUE = @GIMP_UNSTABLE_TRUE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
@@ -223,8 +239,12 @@ GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOMEPRINT = @GNOMEPRINT@
+GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
+GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
-GREP = @GREP@
+GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -238,6 +258,10 @@ HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
 HAVE_GLIBC_REGEX_TRUE = @HAVE_GLIBC_REGEX_TRUE@
+HAVE_GNOMEPRINT_FALSE = @HAVE_GNOMEPRINT_FALSE@
+HAVE_GNOMEPRINT_TRUE = @HAVE_GNOMEPRINT_TRUE@
+HAVE_GNOMEVFS_FALSE = @HAVE_GNOMEVFS_FALSE@
+HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
@@ -274,7 +298,6 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
-INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -290,10 +313,12 @@ LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
+LIBGNOMEPRINT = @LIBGNOMEPRINT@
 LIBJPEG = @LIBJPEG@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
+LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
 LIBSCREENSHOT = @LIBSCREENSHOT@
 LIBSVG = @LIBSVG@
@@ -316,7 +341,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
-MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -342,15 +366,22 @@ PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
 POFILES = @POFILES@
+POPPLER = @POPPLER@
+POPPLER_CFLAGS = @POPPLER_CFLAGS@
+POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PRINT_CFLAGS = @PRINT_CFLAGS@
 PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
+PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
+PYGTK_CODEGEN = @PYGTK_CODEGEN@
+PYGTK_DEFSDIR = @PYGTK_DEFSDIR@
 PYGTK_LIBS = @PYGTK_LIBS@
+PYLINK_LIBS = @PYLINK_LIBS@
 PYTHON = @PYTHON@
 PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
 PYTHON_INCLUDES = @PYTHON_INCLUDES@
@@ -374,10 +405,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URL = @URL@
+URI_CFLAGS = @URI_CFLAGS@
+URI_LIBS = @URI_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WINCLIPBOARD = @WINCLIPBOARD@
 WINDRES = @WINDRES@
 WINPRINT = @WINPRINT@
 WITH_PDBGEN_FALSE = @WITH_PDBGEN_FALSE@
@@ -387,7 +418,6 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
-XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -395,9 +425,17 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+ac_ct_AR = @ac_ct_AR@
+ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
+ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
+ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
+ac_ct_RANLIB = @ac_ct_RANLIB@
+ac_ct_STRIP = @ac_ct_STRIP@
+ac_ct_WINDRES = @ac_ct_WINDRES@
+ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -414,12 +452,10 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
-datarootdir = @datarootdir@
-docdir = @docdir@
-dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
+gimplocaledir = @gimplocaledir@
 gimpplugindir = @gimpplugindir@
 gimpsysconfdir = @gimpsysconfdir@
 host = @host@
@@ -427,24 +463,20 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
-htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
-pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -452,48 +484,86 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-libgimpprocbrowser = $(top_builddir)/plug-ins/dbbrowser/libgimpprocbrowser.la
-SUBDIRS = doc plug-ins
+libgimpmath = $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la
+SUBDIRS = plug-ins
+@PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
+@PLATFORM_WIN32_FALSE@path_separator = :
+@PLATFORM_WIN32_TRUE@path_separator = ;
 AM_CFLAGS = $(PYGIMP_EXTRA_CFLAGS)
 INCLUDES = -I$(top_srcdir) $(PYTHON_INCLUDES) $(PYGTK_CFLAGS) $(GTK_CFLAGS)
-pygimpdir = $(gimpplugindir)/python
-pygimp_LTLIBRARIES = gimpmodule.la gimpprocbrowsermodule.la
-gimpmodule_la_SOURCES = \
+pygimpbase = python
+pygimpdir = $(gimpplugindir)/$(pygimpbase)
+pygimp_LTLIBRARIES = gimp.la _gimpenums.la gimpcolor.la gimpprocbrowser.la
+gimp_la_SOURCES = \
 	gimpmodule.c		\
-	pygimp-image.c		\
-	pygimp-drawable.c	\
-	pygimp-tile.c		\
 	pygimp-display.c	\
+	pygimp-drawable.c	\
+	pygimp-image.c		\
 	pygimp-parasite.c	\
 	pygimp-pdb.c		\
-	pygimp.h
+	pygimp-tile.c		\
+	pygimp.h		\
+	pygimp-api.h
 
-gimpmodule_la_LDFLAGS = -module -avoid-version \
-	-export-symbols-regex 'initgimp|PLUG_IN_INFO'
+gimp_la_LDFLAGS = -module -avoid-version $(no_undefined) \
+	-export-symbols-regex initgimp
 
-gimpmodule_la_LIBADD = \
+gimp_la_LIBADD = \
 	$(libgimp)		\
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GLIB_LIBS)		\
+	$(PYLINK_LIBS)		\
 	$(RT_LIBS)
 
-gimpprocbrowsermodule_la_SOURCES = \
+_gimpenums_la_SOURCES = \
+	gimpenumsmodule.c
+
+_gimpenums_la_LDFLAGS = -module -avoid-version $(no_undefined) \
+	-export-symbols-regex init_gimpenums
+
+_gimpenums_la_LIBADD = \
+	$(libgimp)		\
+	$(libgimpcolor)		\
+	$(libgimpbase)		\
+	$(GLIB_LIBS)		\
+	$(PYLINK_LIBS)		\
+	$(RT_LIBS)
+
+gimpcolor_la_SOURCES = \
+	gimpcolormodule.c	\
+	pygimp-rgb.c		\
+	pygimpcolor.h
+
+gimpcolor_la_LDFLAGS = -module -avoid-version $(no_undefined) \
+	-export-symbols-regex initgimpcolor
+
+gimpcolor_la_LIBADD = \
+	$(libgimpcolor)	\
+	$(GLIB_LIBS)	\
+	$(PYLINK_LIBS)
+
+gimpprocbrowser_la_SOURCES = \
 	procbrowser.c
 
-gimpprocbrowsermodule_la_LDFLAGS = -module -avoid-version
-gimpprocbrowsermodule_la_LIBADD = \
-	$(libgimpprocbrowser)	\
+gimpprocbrowser_la_LDFLAGS = -module -avoid-version $(no_undefined) \
+	-export-symbols-regex initgimpprocbrowser
+
+gimpprocbrowser_la_LIBADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
+	$(libgimpconfig)	\
+	$(libgimpmath)		\
 	$(libgimp)		\
 	$(libgimpcolor)		\
 	$(libgimpbase)		\
 	$(GTK_LIBS)		\
+	$(PYLINK_LIBS)		\
 	$(RT_LIBS)		\
 	$(INTLLIBS)
 
@@ -506,6 +576,9 @@ pygimp_PYTHON = \
 
 pygimp_DATA = pygimp-logo.png
 pyenvdir = $(gimpplugindir)/environ
+pyinterpdir = $(gimpplugindir)/interpreters
+pyenvfile = $(pyenvdir)/pygimp.env
+pyinterpfile = $(pyinterpdir)/pygimp.interp
 EXTRA_DIST = \
 	$(pygimp_DATA)	\
 	makefile.msc
@@ -570,10 +643,14 @@ clean-pygimpLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-gimpmodule.la: $(gimpmodule_la_OBJECTS) $(gimpmodule_la_DEPENDENCIES) 
-	$(LINK) -rpath $(pygimpdir) $(gimpmodule_la_LDFLAGS) $(gimpmodule_la_OBJECTS) $(gimpmodule_la_LIBADD) $(LIBS)
-gimpprocbrowsermodule.la: $(gimpprocbrowsermodule_la_OBJECTS) $(gimpprocbrowsermodule_la_DEPENDENCIES) 
-	$(LINK) -rpath $(pygimpdir) $(gimpprocbrowsermodule_la_LDFLAGS) $(gimpprocbrowsermodule_la_OBJECTS) $(gimpprocbrowsermodule_la_LIBADD) $(LIBS)
+_gimpenums.la: $(_gimpenums_la_OBJECTS) $(_gimpenums_la_DEPENDENCIES) 
+	$(LINK) -rpath $(pygimpdir) $(_gimpenums_la_LDFLAGS) $(_gimpenums_la_OBJECTS) $(_gimpenums_la_LIBADD) $(LIBS)
+gimp.la: $(gimp_la_OBJECTS) $(gimp_la_DEPENDENCIES) 
+	$(LINK) -rpath $(pygimpdir) $(gimp_la_LDFLAGS) $(gimp_la_OBJECTS) $(gimp_la_LIBADD) $(LIBS)
+gimpcolor.la: $(gimpcolor_la_OBJECTS) $(gimpcolor_la_DEPENDENCIES) 
+	$(LINK) -rpath $(pygimpdir) $(gimpcolor_la_LDFLAGS) $(gimpcolor_la_OBJECTS) $(gimpcolor_la_LIBADD) $(LIBS)
+gimpprocbrowser.la: $(gimpprocbrowser_la_OBJECTS) $(gimpprocbrowser_la_DEPENDENCIES) 
+	$(LINK) -rpath $(pygimpdir) $(gimpprocbrowser_la_LDFLAGS) $(gimpprocbrowser_la_OBJECTS) $(gimpprocbrowser_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -581,6 +658,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolormodule.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumsmodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmodule.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/procbrowser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-display.Plo@am__quote@
@@ -588,6 +667,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-image.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-parasite.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-pdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-rgb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pygimp-tile.Plo@am__quote@
 
 .c.o:
@@ -922,7 +1002,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-pygimpDATA \
+uninstall-am: uninstall-info-am uninstall-local uninstall-pygimpDATA \
 	uninstall-pygimpLTLIBRARIES uninstall-pygimpPYTHON
 
 uninstall-info: uninstall-info-recursive
@@ -942,16 +1022,24 @@ uninstall-info: uninstall-info-recursive
 	mostlyclean mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
 	tags tags-recursive uninstall uninstall-am uninstall-info-am \
-	uninstall-pygimpDATA uninstall-pygimpLTLIBRARIES \
-	uninstall-pygimpPYTHON
+	uninstall-local uninstall-pygimpDATA \
+	uninstall-pygimpLTLIBRARIES uninstall-pygimpPYTHON
 
 
-install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(pyenvdir)
-	echo ": PYTHONPATH=$(pygimpdir)" > $(DESTDIR)$(pyenvdir)/pygimp.env
+install-env-file:
+	$(mkinstalldirs) '$(DESTDIR)$(pyenvdir)'
+	echo '$(path_separator) PYTHONPATH=$${gimp_plug_in_dir}/$(pygimpbase)' > '$(DESTDIR)$(pyenvfile)'
 
-snap:
-	$(MAKE) dist distdir=$(PACKAGE)-SNAP-`date +"%Y%m%d"`
+install-interp-file:
+	$(mkinstalldirs) '$(DESTDIR)$(pyinterpdir)'
+	echo 'python=$(PYBIN_PATH)' > '$(DESTDIR)$(pyinterpfile)'
+	echo '/usr/bin/python=$(PYBIN_PATH)' >> '$(DESTDIR)$(pyinterpfile)'
+	echo ':Python:E::py::python:' >> '$(DESTDIR)$(pyinterpfile)'
+
+install-data-local: install-env-file install-interp-file
+
+uninstall-local:
+	rm -f '$(DESTDIR)$(pyenvfile)' '$(DESTDIR)$(pyinterpfile)'
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

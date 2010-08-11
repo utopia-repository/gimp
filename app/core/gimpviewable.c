@@ -25,13 +25,11 @@
 
 #include <glib-object.h>
 
+#include "libgimpconfig/gimpconfig.h"
+
 #include "core-types.h"
 
 #include "base/temp-buf.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
-#include "config/gimpconfigwriter.h"
 
 #include "gimp-utils.h"
 #include "gimpmarshal.h"
@@ -54,9 +52,7 @@ enum
 };
 
 
-static void    gimp_viewable_class_init        (GimpViewableClass   *klass);
-static void    gimp_viewable_init              (GimpViewable        *viewable);
-static void    gimp_viewable_config_iface_init (GimpConfigInterface *config_iface);
+static void    gimp_viewable_config_iface_init (GimpConfigInterface *iface);
 
 static void    gimp_viewable_finalize               (GObject        *object);
 static void    gimp_viewable_set_property           (GObject        *object,
@@ -82,6 +78,12 @@ static void    gimp_viewable_real_get_preview_size   (GimpViewable  *viewable,
                                                       gboolean       dot_for_dot,
                                                       gint          *width,
                                                       gint          *height);
+static gboolean gimp_viewable_real_get_popup_size    (GimpViewable  *viewable,
+                                                      gint           width,
+                                                      gint           height,
+                                                      gboolean       dot_for_dot,
+                                                      gint          *popup_width,
+                                                      gint          *popup_height);
 static gchar * gimp_viewable_real_get_description    (GimpViewable  *viewable,
                                                       gchar        **tooltip);
 static gboolean gimp_viewable_serialize_property     (GimpConfig    *config,
@@ -91,50 +93,16 @@ static gboolean gimp_viewable_serialize_property     (GimpConfig    *config,
                                                       GimpConfigWriter *writer);
 
 
+G_DEFINE_TYPE_WITH_CODE (GimpViewable, gimp_viewable, GIMP_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
+                                                gimp_viewable_config_iface_init));
+
+#define parent_class gimp_viewable_parent_class
+
 static guint  viewable_signals[LAST_SIGNAL] = { 0 };
+static GQuark quark_preview_temp_buf        = 0;
+static GQuark quark_preview_pixbuf          = 0;
 
-static GimpObjectClass *parent_class = NULL;
-
-static GQuark  quark_preview_temp_buf = 0;
-static GQuark  quark_preview_pixbuf   = 0;
-
-
-GType
-gimp_viewable_get_type (void)
-{
-  static GType viewable_type = 0;
-
-  if (! viewable_type)
-    {
-      static const GTypeInfo viewable_info =
-      {
-        sizeof (GimpViewableClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_viewable_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpViewable),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_viewable_init,
-      };
-      static const GInterfaceInfo config_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_viewable_config_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      viewable_type = g_type_register_static (GIMP_TYPE_OBJECT,
-                                              "GimpViewable",
-                                              &viewable_info, 0);
-
-      g_type_add_interface_static (viewable_type, GIMP_TYPE_CONFIG,
-                                   &config_iface_info);
-    }
-
-  return viewable_type;
-}
 
 static void
 gimp_viewable_class_init (GimpViewableClass *klass)
@@ -142,13 +110,11 @@ gimp_viewable_class_init (GimpViewableClass *klass)
   GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
   GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   quark_preview_temp_buf = g_quark_from_static_string ("viewable-preview-temp-buf");
   quark_preview_pixbuf   = g_quark_from_static_string ("viewable-preview-pixbuf");
 
   viewable_signals[INVALIDATE_PREVIEW] =
-    g_signal_new ("invalidate_preview",
+    g_signal_new ("invalidate-preview",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpViewableClass, invalidate_preview),
@@ -157,7 +123,7 @@ gimp_viewable_class_init (GimpViewableClass *klass)
                   G_TYPE_NONE, 0);
 
   viewable_signals[SIZE_CHANGED] =
-    g_signal_new ("size_changed",
+    g_signal_new ("size-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpViewableClass, size_changed),
@@ -172,13 +138,14 @@ gimp_viewable_class_init (GimpViewableClass *klass)
   gimp_object_class->get_memsize = gimp_viewable_get_memsize;
 
   klass->default_stock_id        = "gimp-question";
-  klass->name_changed_signal     = "name_changed";
+  klass->name_changed_signal     = "name-changed";
 
   klass->invalidate_preview      = gimp_viewable_real_invalidate_preview;
   klass->size_changed            = NULL;
 
+  klass->get_size                = NULL;
   klass->get_preview_size        = gimp_viewable_real_get_preview_size;
-  klass->get_popup_size          = NULL;
+  klass->get_popup_size          = gimp_viewable_real_get_popup_size;
   klass->get_preview             = NULL;
   klass->get_new_preview         = NULL;
   klass->get_pixbuf              = NULL;
@@ -196,9 +163,9 @@ gimp_viewable_init (GimpViewable *viewable)
 }
 
 static void
-gimp_viewable_config_iface_init (GimpConfigInterface *config_iface)
+gimp_viewable_config_iface_init (GimpConfigInterface *iface)
 {
-  config_iface->serialize_property = gimp_viewable_serialize_property;
+  iface->serialize_property = gimp_viewable_serialize_property;
 }
 
 static void
@@ -288,8 +255,6 @@ gimp_viewable_get_memsize (GimpObject *object,
 static void
 gimp_viewable_real_invalidate_preview (GimpViewable *viewable)
 {
-  g_return_if_fail (GIMP_IS_VIEWABLE (viewable));
-
   g_object_set_qdata (G_OBJECT (viewable), quark_preview_temp_buf, NULL);
   g_object_set_qdata (G_OBJECT (viewable), quark_preview_pixbuf, NULL);
 }
@@ -306,6 +271,30 @@ gimp_viewable_real_get_preview_size (GimpViewable *viewable,
   *height = size;
 }
 
+static gboolean
+gimp_viewable_real_get_popup_size (GimpViewable *viewable,
+                                   gint          width,
+                                   gint          height,
+                                   gboolean      dot_for_dot,
+                                   gint         *popup_width,
+                                   gint         *popup_height)
+{
+  gint w, h;
+
+  if (gimp_viewable_get_size (viewable, &w, &h))
+    {
+      if (w > width || h > height)
+        {
+          *popup_width  = w;
+          *popup_height = h;
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 static GdkPixbuf *
 gimp_viewable_real_get_new_pixbuf (GimpViewable *viewable,
                                    gint          width,
@@ -313,10 +302,6 @@ gimp_viewable_real_get_new_pixbuf (GimpViewable *viewable,
 {
   TempBuf   *temp_buf;
   GdkPixbuf *pixbuf = NULL;
-
-  g_return_val_if_fail (GIMP_IS_VIEWABLE (viewable), NULL);
-  g_return_val_if_fail (width  > 0, NULL);
-  g_return_val_if_fail (height > 0, NULL);
 
   temp_buf = gimp_viewable_get_preview (viewable, width, height);
 
@@ -366,9 +351,6 @@ static gchar *
 gimp_viewable_real_get_description (GimpViewable  *viewable,
                                     gchar        **tooltip)
 {
-  if (tooltip)
-    *tooltip = NULL;
-
   return g_strdup (gimp_object_get_name (GIMP_OBJECT (viewable)));
 }
 
@@ -498,6 +480,29 @@ gimp_viewable_calc_preview_size (gint       aspect_width,
   if (scaling_up)    *scaling_up    = (xratio > 1.0) || (yratio > 1.0);
 }
 
+gboolean
+gimp_viewable_get_size (GimpViewable  *viewable,
+                        gint          *width,
+                        gint          *height)
+{
+  GimpViewableClass *viewable_class;
+  gboolean           retval = FALSE;
+  gint               w      = 0;
+  gint               h      = 0;
+
+  g_return_val_if_fail (GIMP_IS_VIEWABLE (viewable), FALSE);
+
+  viewable_class = GIMP_VIEWABLE_GET_CLASS (viewable);
+
+  if (viewable_class->get_size)
+    retval = viewable_class->get_size (viewable, &w, &h);
+
+  if (width)  *width  = w;
+  if (height) *height = h;
+
+  return retval;
+}
+
 /**
  * gimp_viewable_get_preview_size:
  * @viewable:    the object for which to calculate the preview size.
@@ -564,58 +569,52 @@ gimp_viewable_get_popup_size (GimpViewable *viewable,
                               gint         *popup_width,
                               gint         *popup_height)
 {
-  GimpViewableClass *viewable_class;
+  gint w, h;
 
   g_return_val_if_fail (GIMP_IS_VIEWABLE (viewable), FALSE);
 
-  viewable_class = GIMP_VIEWABLE_GET_CLASS (viewable);
-
-  if (viewable_class->get_popup_size)
+  if (GIMP_VIEWABLE_GET_CLASS (viewable)->get_popup_size (viewable,
+                                                          width, height,
+                                                          dot_for_dot,
+                                                          &w, &h))
     {
-      gint w, h;
+      if (w < 1) w = 1;
+      if (h < 1) h = 1;
 
-      if (viewable_class->get_popup_size (viewable,
-                                          width, height, dot_for_dot,
-                                          &w, &h))
+      /*  limit the popup to 2 * GIMP_VIEWABLE_MAX_POPUP_SIZE
+       *  on each axis.
+       */
+      if ((w > (2 * GIMP_VIEWABLE_MAX_POPUP_SIZE)) ||
+          (h > (2 * GIMP_VIEWABLE_MAX_POPUP_SIZE)))
         {
-          if (w < 1) w = 1;
-          if (h < 1) h = 1;
-
-          /*  limit the popup to 2 * GIMP_VIEWABLE_MAX_POPUP_SIZE
-           *  on each axis.
-           */
-          if ((w > (2 * GIMP_VIEWABLE_MAX_POPUP_SIZE)) ||
-              (h > (2 * GIMP_VIEWABLE_MAX_POPUP_SIZE)))
-            {
-              gimp_viewable_calc_preview_size (w, h,
-                                               2 * GIMP_VIEWABLE_MAX_POPUP_SIZE,
-                                               2 * GIMP_VIEWABLE_MAX_POPUP_SIZE,
-                                               dot_for_dot, 1.0, 1.0,
-                                               &w, &h, NULL);
-            }
-
-          /*  limit the number of pixels to
-           *  GIMP_VIEWABLE_MAX_POPUP_SIZE ^ 2
-           */
-          if ((w * h) > SQR (GIMP_VIEWABLE_MAX_POPUP_SIZE))
-            {
-              gdouble factor;
-
-              factor = sqrt (((gdouble) (w * h) /
-                              (gdouble) SQR (GIMP_VIEWABLE_MAX_POPUP_SIZE)));
-
-              w = RINT ((gdouble) w / factor);
-              h = RINT ((gdouble) h / factor);
-            }
-
-          if (w < 1) w = 1;
-          if (h < 1) h = 1;
-
-          if (popup_width)  *popup_width  = w;
-          if (popup_height) *popup_height = h;
-
-          return TRUE;
+          gimp_viewable_calc_preview_size (w, h,
+                                           2 * GIMP_VIEWABLE_MAX_POPUP_SIZE,
+                                           2 * GIMP_VIEWABLE_MAX_POPUP_SIZE,
+                                           dot_for_dot, 1.0, 1.0,
+                                           &w, &h, NULL);
         }
+
+      /*  limit the number of pixels to
+       *  GIMP_VIEWABLE_MAX_POPUP_SIZE ^ 2
+       */
+      if ((w * h) > SQR (GIMP_VIEWABLE_MAX_POPUP_SIZE))
+        {
+          gdouble factor;
+
+          factor = sqrt (((gdouble) (w * h) /
+                          (gdouble) SQR (GIMP_VIEWABLE_MAX_POPUP_SIZE)));
+
+          w = RINT ((gdouble) w / factor);
+          h = RINT ((gdouble) h / factor);
+        }
+
+      if (w < 1) w = 1;
+      if (h < 1) h = 1;
+
+      if (popup_width)  *popup_width  = w;
+      if (popup_height) *popup_height = h;
+
+      return TRUE;
     }
 
   return FALSE;
@@ -952,6 +951,9 @@ gimp_viewable_get_description (GimpViewable  *viewable,
                                gchar        **tooltip)
 {
   g_return_val_if_fail (GIMP_IS_VIEWABLE (viewable), NULL);
+
+  if (tooltip)
+    *tooltip = NULL;
 
   return GIMP_VIEWABLE_GET_CLASS (viewable)->get_description (viewable,
                                                               tooltip);

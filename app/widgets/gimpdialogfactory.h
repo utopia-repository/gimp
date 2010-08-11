@@ -25,7 +25,6 @@
 
 #include "core/gimpobject.h"
 
-
 #define GIMP_DIALOG_VISIBILITY_KEY "gimp-dialog-visibility"
 
 typedef enum

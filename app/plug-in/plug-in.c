@@ -73,6 +73,7 @@
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "core/gimpenvirontable.h"
+#include "core/gimpinterpreterdb.h"
 #include "core/gimpprogress.h"
 
 #include "plug-in.h"
@@ -114,8 +115,9 @@ plug_in_init (Gimp *gimp)
    *  write handlers.
    */
   gp_init ();
-  wire_set_writer (plug_in_write);
-  wire_set_flusher (plug_in_flush);
+
+  gimp_wire_set_writer (plug_in_write);
+  gimp_wire_set_flusher (plug_in_flush);
 
   /* allocate a piece of shared memory for use in transporting tiles
    *  to plug-ins. if we can't allocate a piece of shared memory then
@@ -178,16 +180,16 @@ plug_in_call_query (Gimp        *gimp,
 	{
 	  while (plug_in->open)
 	    {
-              WireMessage msg;
+              GimpWireMessage msg;
 
-	      if (! wire_read_msg (plug_in->my_read, &msg, plug_in))
+	      if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
                 {
                   plug_in_close (plug_in, TRUE);
                 }
 	      else
 		{
 		  plug_in_handle_message (plug_in, &msg);
-		  wire_destroy (&msg);
+		  gimp_wire_destroy (&msg);
 		}
 	    }
 	}
@@ -219,16 +221,16 @@ plug_in_call_init (Gimp        *gimp,
 	{
 	  while (plug_in->open)
 	    {
-              WireMessage msg;
+              GimpWireMessage msg;
 
-	      if (! wire_read_msg (plug_in->my_read, &msg, plug_in))
+	      if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
                 {
                   plug_in_close (plug_in, TRUE);
                 }
 	      else
 		{
 		  plug_in_handle_message (plug_in, &msg);
-		  wire_destroy (&msg);
+		  gimp_wire_destroy (&msg);
 		}
 	    }
 	}
@@ -344,7 +346,9 @@ plug_in_open (PlugIn *plug_in)
   gint       my_read[2];
   gint       my_write[2];
   gchar    **envp;
-  gchar     *args[7], **argv, **debug_argv;
+  gchar     *args[9], **argv, **debug_argv;
+  gint       argc;
+  gchar     *interp, *interp_arg;
   gchar     *read_fd, *write_fd;
   gchar     *mode, *stm;
   GError    *error = NULL;
@@ -424,13 +428,49 @@ plug_in_open (PlugIn *plug_in)
 
   stm = g_strdup_printf ("%d", plug_in->gimp->stack_trace_mode);
 
-  args[0] = plug_in->prog;
-  args[1] = "-gimp";
-  args[2] = read_fd;
-  args[3] = write_fd;
-  args[4] = mode;
-  args[5] = stm;
-  args[6] = NULL;
+  interp = gimp_interpreter_db_resolve (plug_in->gimp->interpreter_db,
+                                        plug_in->prog, &interp_arg);
+
+  argc = 0;
+
+#if defined (G_OS_WIN32) && !GLIB_CHECK_VERSION (2, 8, 2)
+  /* In GLib < 2.8.2 on Win32 the argument vector passed to g_spawn*()
+   * should be in system codepage.
+   *
+   * Checking compile-time GLib version is the right thing to do.
+   * Even if running against GLib >= 2.8.2, code compiled against
+   * headers from GLib < 2.8.2 use backward-compatible functions that
+   * still take system codepage. Only code compiled against headers
+   * from GLib >= 2.8.2 use the g_spawn versions (that actually are
+   * called g_spawn*_utf8()) that take UTF-8.
+   */
+  if (interp)
+    {
+      args[argc++] = g_locale_from_utf8 (interp, -1, NULL, NULL, NULL);
+      if (args[argc-1] == NULL)
+	g_error ("Interpreter %s is a file name with characters not in the system codepage. That doesn't work when GIMP is built against GLib 2.8.1 or earlier.", interp);
+    }
+#else
+  if (interp)
+    args[argc++] = interp;
+#endif
+
+  if (interp_arg)
+    args[argc++] = interp_arg;
+
+#if defined (G_OS_WIN32) && !GLIB_CHECK_VERSION (2, 8, 2)
+  args[argc++] = g_locale_from_utf8 (plug_in->prog, -1, NULL, NULL, NULL);
+  if (args[argc-1] == NULL)
+    g_error ("Plug-in %s is a file name with characters not in the system codepage. That doesn't work when GIMP is built against GLib 2.8.1 or earlier.", plug_in->prog);
+#else
+  args[argc++] = plug_in->prog;
+#endif
+  args[argc++] = "-gimp";
+  args[argc++] = read_fd;
+  args[argc++] = write_fd;
+  args[argc++] = mode;
+  args[argc++] = stm;
+  args[argc++] = NULL;
 
   argv = args;
   envp = gimp_environ_table_get_envp (plug_in->gimp->environ_table);
@@ -504,6 +544,20 @@ cleanup:
   g_free (write_fd);
   g_free (stm);
 
+#if defined (G_OS_WIN32) && !GLIB_CHECK_VERSION (2, 8, 2)
+  argc = 0;
+  if (interp)
+    g_free (args[argc++]);
+
+  if (interp_arg)
+    argc++;
+
+  g_free (args[argc++]);
+#endif
+
+  g_free (interp);
+  g_free (interp_arg);
+
   return plug_in->open;
 }
 
@@ -528,71 +582,74 @@ plug_in_close (PlugIn   *plug_in,
 
   plug_in->open = FALSE;
 
-  /*  Ask the filter to exit gracefully  */
-  if (kill_it && plug_in->pid)
-    {
-      gp_quit_write (plug_in->my_write, plug_in);
-
-      /*  give the plug-in some time (10 ms)  */
-#ifndef G_OS_WIN32
-      tv.tv_sec  = 0;
-      tv.tv_usec = 10 * 1000;
-      select (0, NULL, NULL, NULL, &tv);
-#else
-      Sleep (10);
-#endif
-    }
-
-  /* If necessary, kill the filter. */
-#ifndef G_OS_WIN32
-  if (kill_it && plug_in->pid)
-    {
-      if (gimp->be_verbose)
-        g_print (_("Terminating plug-in: '%s'\n"),
-                 gimp_filename_to_utf8 (plug_in->prog));
-
-      status = kill (plug_in->pid, SIGKILL);
-    }
-
-  /* Wait for the process to exit. This will happen
-   *  immediately if it was just killed.
-   */
   if (plug_in->pid)
-    waitpid (plug_in->pid, &status, 0);
-#else
-  if (kill_it && plug_in->pid)
     {
-      /* Trying to avoid TerminateProcess (does mostly work).
-       * Otherwise some of our needed DLLs may get into an unstable state
-       * (see Win32 API docs).
-       */
-      DWORD dwExitCode = STILL_ACTIVE;
-      DWORD dwTries  = 10;
-      while ((STILL_ACTIVE == dwExitCode)
-	     && GetExitCodeProcess ((HANDLE) plug_in->pid, &dwExitCode)
-	     && (dwTries > 0))
-	{
-	  Sleep(10);
-	  dwTries--;
-	}
-      if (STILL_ACTIVE == dwExitCode)
-	{
+      /*  Ask the filter to exit gracefully  */
+      if (kill_it)
+        {
+          gp_quit_write (plug_in->my_write, plug_in);
+
+          /*  give the plug-in some time (10 ms)  */
+#ifndef G_OS_WIN32
+          tv.tv_sec  = 0;
+          tv.tv_usec = 10 * 1000;
+          select (0, NULL, NULL, NULL, &tv);
+#else
+          Sleep (10);
+#endif
+        }
+
+      /* If necessary, kill the filter. */
+#ifndef G_OS_WIN32
+
+      if (kill_it)
+        {
           if (gimp->be_verbose)
             g_print (_("Terminating plug-in: '%s'\n"),
                      gimp_filename_to_utf8 (plug_in->prog));
 
-	  TerminateProcess ((HANDLE) plug_in->pid, 0);
-	}
+          status = kill (plug_in->pid, SIGKILL);
+        }
+
+      /* Wait for the process to exit. This will happen
+       *  immediately if it was just killed.
+       */
+      waitpid (plug_in->pid, &status, 0);
+
+#else /* G_OS_WIN32 */
+
+      if (kill_it)
+        {
+          /* Trying to avoid TerminateProcess (does mostly work).
+           * Otherwise some of our needed DLLs may get into an
+           * unstable state (see Win32 API docs).
+           */
+          DWORD dwExitCode = STILL_ACTIVE;
+          DWORD dwTries    = 10;
+
+          while (dwExitCode == dwExitCode &&
+                 GetExitCodeProcess ((HANDLE) plug_in->pid, &dwExitCode) &&
+                 (dwTries > 0))
+            {
+              Sleep (10);
+              dwTries--;
+            }
+
+          if (dwExitCode == STILL_ACTIVE)
+            {
+              if (gimp->be_verbose)
+                g_print (_("Terminating plug-in: '%s'\n"),
+                         gimp_filename_to_utf8 (plug_in->prog));
+
+              TerminateProcess ((HANDLE) plug_in->pid, 0);
+            }
+        }
+
+#endif /* G_OS_WIN32 */
+
+      g_spawn_close_pid (plug_in->pid);
+      plug_in->pid = 0;
     }
-
-  /* FIXME: Wait for it like on Unix? */
-
-  /* Close handle which is no longer needed */
-  if (plug_in->pid)
-    CloseHandle ((HANDLE) plug_in->pid);
-#endif
-
-  plug_in->pid = 0;
 
   /* Remove the input handler. */
   if (plug_in->input_id)
@@ -623,7 +680,7 @@ plug_in_close (PlugIn   *plug_in,
       plug_in->his_write = NULL;
     }
 
-  wire_clear_error ();
+  gimp_wire_clear_error ();
 
   for (list = plug_in->temp_proc_frames; list; list = g_list_next (list))
     {
@@ -691,10 +748,8 @@ plug_in_recv_message (GIOChannel   *channel,
 		      GIOCondition  cond,
 		      gpointer	    data)
 {
-  PlugIn   *plug_in;
+  PlugIn   *plug_in     = data;
   gboolean  got_message = FALSE;
-
-  plug_in = (PlugIn *) data;
 
 #ifdef G_OS_WIN32
   /* Workaround for GLib bug #137968: sometimes we are called for no
@@ -709,18 +764,18 @@ plug_in_recv_message (GIOChannel   *channel,
 
   if (cond & (G_IO_IN | G_IO_PRI))
     {
-      WireMessage msg;
+      GimpWireMessage msg;
 
-      memset (&msg, 0, sizeof (WireMessage));
+      memset (&msg, 0, sizeof (GimpWireMessage));
 
-      if (! wire_read_msg (plug_in->my_read, &msg, plug_in))
+      if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
 	{
 	  plug_in_close (plug_in, TRUE);
 	}
       else
 	{
 	  plug_in_handle_message (plug_in, &msg);
-	  wire_destroy (&msg);
+	  gimp_wire_destroy (&msg);
 	  got_message = TRUE;
 	}
     }
@@ -749,14 +804,12 @@ plug_in_recv_message (GIOChannel   *channel,
 
 static gboolean
 plug_in_write (GIOChannel *channel,
-	       guint8      *buf,
-	       gulong       count,
-               gpointer     user_data)
+	       guint8     *buf,
+	       gulong      count,
+               gpointer    user_data)
 {
-  PlugIn *plug_in;
+  PlugIn *plug_in = user_data;
   gulong  bytes;
-
-  plug_in = (PlugIn *) user_data;
 
   while (count > 0)
     {
@@ -766,7 +819,7 @@ plug_in_write (GIOChannel *channel,
 	  memcpy (&plug_in->write_buffer[plug_in->write_buffer_index],
                   buf, bytes);
 	  plug_in->write_buffer_index += bytes;
-	  if (! wire_flush (channel, plug_in))
+	  if (! gimp_wire_flush (channel, plug_in))
 	    return FALSE;
 	}
       else
@@ -788,9 +841,7 @@ static gboolean
 plug_in_flush (GIOChannel *channel,
                gpointer    user_data)
 {
-  PlugIn *plug_in;
-
-  plug_in = (PlugIn *) user_data;
+  PlugIn *plug_in = user_data;
 
   if (plug_in->write_buffer_index > 0)
     {
@@ -982,7 +1033,7 @@ plug_in_get_undo_desc (PlugIn *plug_in)
     }
 
   if (! undo_desc)
-    undo_desc = g_filename_to_utf8 (plug_in->name, -1, NULL, NULL, NULL);
+    undo_desc = g_filename_display_name (plug_in->name);
 
   return undo_desc;
 }

@@ -352,6 +352,7 @@ static void
 create_top_level_structure(void)
 {
   gchar *plug_in_name;
+
   /*
    * Create the main dialog
    */
@@ -364,7 +365,7 @@ create_top_level_structure(void)
                      NULL, 0,
                      gimp_standard_help_func, "file-print-gimp",
 
-		     _("About"),                    RESPONSE_ABOUT,
+		     GTK_STOCK_ABOUT,               RESPONSE_ABOUT,
                      _("Save\nSettings"),           RESPONSE_SAVE,
                      _("Print and\nSave Settings"), RESPONSE_PRINTSAVE,
                      GTK_STOCK_CANCEL,              GTK_RESPONSE_CANCEL,
@@ -373,6 +374,16 @@ create_top_level_structure(void)
                      NULL);
 
   g_free (plug_in_name);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (print_dialog),
+                                           RESPONSE_ABOUT,
+                                           RESPONSE_SAVE,
+                                           RESPONSE_PRINTSAVE,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (print_dialog));
 
   g_signal_connect (print_dialog, "response",
                     G_CALLBACK (gimp_response_callback),
@@ -423,13 +434,13 @@ create_preview (void)
   gtk_container_add (GTK_CONTAINER (event_box), preview);
   gtk_widget_show (preview);
 
-  g_signal_connect (preview, "expose_event",
+  g_signal_connect (preview, "expose-event",
                     G_CALLBACK (gimp_preview_expose), NULL);
-  g_signal_connect (preview, "button_press_event",
+  g_signal_connect (preview, "button-press-event",
                     G_CALLBACK (gimp_preview_button_callback), NULL);
-  g_signal_connect (preview, "button_release_event",
+  g_signal_connect (preview, "button-release-event",
                     G_CALLBACK (gimp_preview_button_callback), NULL);
-  g_signal_connect (preview, "motion_notify_event",
+  g_signal_connect (preview, "motion-notify-event",
                     G_CALLBACK (gimp_preview_motion_callback), NULL);
   gtk_widget_show (GTK_WIDGET (preview));
 
@@ -547,7 +558,7 @@ create_positioning_frame (void)
   right_border_entry = gtk_entry_new ();
   gtk_widget_set_size_request (right_border_entry, 60, -1);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 4,
-                             _("Right Border:"), 0.0, 0.5,
+                             _("Right border:"), 0.0, 0.5,
                              right_border_entry, 1, FALSE);
 
   gimp_help_set_help_data (right_border_entry,
@@ -575,7 +586,7 @@ create_positioning_frame (void)
   bottom_border_entry = gtk_entry_new ();
   gtk_widget_set_size_request (bottom_border_entry, 60, -1);
   gimp_table_attach_aligned (GTK_TABLE (table), 2, 4,
-                             _("Bottom Border:"), 0.0, 0.5,
+                             _("Bottom border:"), 0.0, 0.5,
                              bottom_border_entry, 1, FALSE);
 
   gimp_help_set_help_data (bottom_border_entry,
@@ -642,7 +653,7 @@ create_printer_dialog (void)
 
   setup_dialog = gimp_dialog_new (_("Setup Printer"), "print",
                                   NULL, 0,
-                                  gimp_standard_help_func, "file-print-gimp",
+                                  gimp_standard_help_func, NULL,
 
                                   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                   GTK_STOCK_OK,     GTK_RESPONSE_OK,
@@ -786,6 +797,12 @@ create_printer_dialog (void)
                                  GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                                  NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (ppd_browser),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   gtk_dialog_set_default_response (GTK_DIALOG (ppd_browser), GTK_RESPONSE_OK);
 
   g_signal_connect (ppd_browser, "response",
@@ -801,7 +818,7 @@ create_new_printer_dialog (void)
   new_printer_dialog =
     gimp_dialog_new (_("Define New Printer"), "print",
                      NULL, 0,
-                     gimp_standard_help_func, "file-print-gimp",
+                     gimp_standard_help_func, NULL,
 
                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                      GTK_STOCK_OK,     GTK_RESPONSE_OK,
@@ -841,7 +858,7 @@ create_about_dialog (void)
   about_dialog =
     gimp_dialog_new (_("About Gimp-Print " PLUG_IN_VERSION), "print",
                      NULL, 0,
-                     gimp_standard_help_func, "file-print-gimp",
+                     gimp_standard_help_func, NULL,
 
                      GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
 
@@ -934,7 +951,7 @@ create_printer_settings_frame (void)
    * Setup printer button
    */
 
-  button = gtk_button_new_with_label (_("Setup printer..."));
+  button = gtk_button_new_with_label (_("Setup Printer..."));
   gimp_help_set_help_data (button,
                            _("Choose the printer model, PPD file, and command "
                              "that is used to print to this printer"),
@@ -951,7 +968,7 @@ create_printer_settings_frame (void)
    * New printer button
    */
 
-  button = gtk_button_new_with_label (_("New printer..."));
+  button = gtk_button_new_with_label (_("New Printer..."));
   gimp_help_set_help_data (button,
                            _("Define a new logical printer. This can be used to "
                              "name a collection of settings that you wish to "
@@ -1126,7 +1143,7 @@ create_scaling_frame (void)
   set_adjustment_tooltip (scaling_adjustment,
                           _("Set the scale (size) of the image"),
                           NULL);
-  g_signal_connect (scaling_adjustment, "value_changed",
+  g_signal_connect (scaling_adjustment, "value-changed",
                     G_CALLBACK (gimp_scaling_update),
                     NULL);
 
@@ -1439,7 +1456,7 @@ create_image_settings_frame (void)
    *  Color adjust button
    */
 
-  adjust_color_button = gtk_button_new_with_label (_("Adjust output..."));
+  adjust_color_button = gtk_button_new_with_label (_("Adjust Output..."));
   gtk_misc_set_padding (GTK_MISC (GTK_BIN (adjust_color_button)->child), 4, 0);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 3,
                              NULL, 0.5, 0.5,
@@ -1488,6 +1505,12 @@ gimp_create_main_window (void)
                                  GTK_STOCK_PRINT,  GTK_RESPONSE_OK,
 
                                  NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (file_browser),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   gtk_dialog_set_default_response (GTK_DIALOG (file_browser), GTK_RESPONSE_OK);
 
   g_signal_connect (file_browser, "response",

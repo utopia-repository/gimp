@@ -18,16 +18,21 @@
 
 #include "config.h"
 
-#include <glib.h>		/* For G_OS_WIN32 */
-
-#include <stdarg.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
+
 #include <sys/types.h>
+
+#include <glib.h>
 
 #ifdef G_OS_WIN32
 #include <winsock2.h>
@@ -42,7 +47,7 @@
 #include <errno.h>
 #endif
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include "libgimp/gimp.h"
 #include "libgimp/gimpui.h"
@@ -345,7 +350,7 @@ server_start (gint         port,
 
   /*  Setup up the server log file  */
   if (logfile && *logfile)
-    server_log_file = fopen (logfile, "a");
+    server_log_file = g_fopen (logfile, "a");
   else
     server_log_file = NULL;
 
@@ -649,10 +654,15 @@ server_interface (void)
                          NULL, 0,
 			 gimp_standard_help_func, "plug-in-script-fu-server",
 
-			 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-			 GTK_STOCK_OK,     GTK_RESPONSE_OK,
+			 GTK_STOCK_CANCEL,   GTK_RESPONSE_CANCEL,
+			 _("_Start Server"), GTK_RESPONSE_OK,
 
 			 NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   g_signal_connect (dlg, "response",
                     G_CALLBACK (response_callback),
@@ -673,13 +683,13 @@ server_interface (void)
   sint.port_entry = gtk_entry_new ();
   gtk_entry_set_text (GTK_ENTRY (sint.port_entry), "10008");
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-			     _("Server Port:"), 0.0, 0.5,
+			     _("Server port:"), 0.0, 0.5,
 			     sint.port_entry, 1, FALSE);
 
   /*  The server logfile  */
   sint.log_entry = gtk_entry_new ();
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
-			     _("Server Logfile:"), 0.0, 0.5,
+			     _("Server logfile:"), 0.0, 0.5,
 			     sint.log_entry, 1, FALSE);
 
   gtk_widget_show (table);

@@ -21,17 +21,14 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
-#define PLUG_IN_NAME "plug_in_align_layers"
-#define SHORT_NAME   "align_layers"
-#define HELP_ID      "plug-in-align-layers"
-#define SCALE_WIDTH  150
+#define PLUG_IN_PROC   "plug-in-align-layers"
+#define PLUG_IN_BINARY "align_layers"
+#define SCALE_WIDTH    150
 
 enum
 {
@@ -77,7 +74,8 @@ static void              align_layers_get_align_offsets (gint32  drawable_id,
                                                          gint   *x,
                                                          gint   *y);
 
-static gint align_layers_dialog      (void);
+static gint              align_layers_dialog             (void);
+
 
 GimpPlugInInfo PLUG_IN_INFO =
 {
@@ -119,14 +117,14 @@ query (void)
 {
   static GimpParamDef args [] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive"},
-    { GIMP_PDB_IMAGE, "image", "Input image"},
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable (not used)"},
-    { GIMP_PDB_INT32, "link-afteer-alignment", "Link the visible layers after alignment"},
-    { GIMP_PDB_INT32, "use-bottom", "use the bottom layer as the base of alignment"}
+    { GIMP_PDB_INT32,    "run-mode",             "Interactive, non-interactive"},
+    { GIMP_PDB_IMAGE,    "image",                "Input image"},
+    { GIMP_PDB_DRAWABLE, "drawable",             "Input drawable (not used)"},
+    { GIMP_PDB_INT32,    "link-after-alignment", "Link the visible layers after alignment"},
+    { GIMP_PDB_INT32,    "use-bottom",           "use the bottom layer as the base of alignment"}
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Align visible layers",
                           "Align visible layers",
                           "Shuji Narazaki <narazaki@InetQ.or.jp>",
@@ -138,7 +136,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Layer");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Layer");
 }
 
 static void
@@ -173,7 +171,7 @@ run (const gchar      *name,
           g_message (_("There are not enough layers to align."));
           return;
         }
-      gimp_get_data (PLUG_IN_NAME, &VALS);
+      gimp_get_data (PLUG_IN_PROC, &VALS);
       if (! align_layers_dialog ())
         return;
       break;
@@ -182,7 +180,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data (PLUG_IN_NAME, &VALS);
+      gimp_get_data (PLUG_IN_PROC, &VALS);
       break;
     }
 
@@ -191,7 +189,7 @@ run (const gchar      *name,
   if (run_mode != GIMP_RUN_NONINTERACTIVE)
     gimp_displays_flush ();
   if (run_mode == GIMP_RUN_INTERACTIVE && status == GIMP_PDB_SUCCESS)
-    gimp_set_data (PLUG_IN_NAME, &VALS, sizeof (ValueType));
+    gimp_set_data (PLUG_IN_PROC, &VALS, sizeof (ValueType));
 
   values[0].type = GIMP_PDB_STATUS;
   values[0].data.d_status = status;
@@ -387,29 +385,36 @@ align_layers_get_align_offsets (gint32  drawable_id,
 static int
 align_layers_dialog (void)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *table;
   GtkWidget *combo;
   GtkWidget *toggle;
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init (SHORT_NAME, FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dlg = gimp_dialog_new (_("Align Visible Layers"), SHORT_NAME,
-                         NULL, 0,
-                         gimp_standard_help_func, HELP_ID,
+  dialog = gimp_dialog_new (_("Align Visible Layers"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-                         NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   table = gtk_table_new (7, 3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), table,
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
                       FALSE, FALSE, 0);
   gtk_widget_show (table);
 
@@ -479,7 +484,7 @@ align_layers_dialog (void)
                               VALS.grid_size, 0, 200, 1, 10, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &VALS.grid_size);
 
@@ -504,11 +509,11 @@ align_layers_dialog (void)
                     G_CALLBACK (gimp_toggle_button_update),
                     &VALS.base_is_bottom_layer);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }

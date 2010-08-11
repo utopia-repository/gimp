@@ -34,8 +34,12 @@
 #include "core/gimplist.h"
 #include "core/gimptoolinfo.h"
 
+#include "file/file-open.h"
+#include "file/file-utils.h"
+
 #include "gimpdevices.h"
 #include "gimpdialogfactory.h"
+#include "gimpdockseparator.h"
 #include "gimphelp-ids.h"
 #include "gimptoolbox.h"
 #include "gimptoolbox-color-area.h"
@@ -58,9 +62,6 @@
 
 /*  local function prototypes  */
 
-static void        gimp_toolbox_class_init       (GimpToolboxClass *klass);
-static void        gimp_toolbox_init             (GimpToolbox      *toolbox);
-
 static GObject   * gimp_toolbox_constructor      (GType           type,
                                                   guint           n_params,
                                                   GObjectConstructParam *params);
@@ -77,6 +78,8 @@ static void        gimp_toolbox_book_removed     (GimpDock       *dock,
                                                   GimpDockbook   *dockbook);
 static void        gimp_toolbox_set_geometry     (GimpToolbox    *toolbox);
 
+static void        toolbox_separator_expand      (GimpToolbox    *toolbox);
+static void        toolbox_separator_collapse    (GimpToolbox    *toolbox);
 static void        toolbox_create_tools          (GimpToolbox    *toolbox,
                                                   GimpContext    *context);
 static GtkWidget * toolbox_create_color_area     (GimpToolbox    *toolbox,
@@ -111,67 +114,44 @@ static gboolean    toolbox_check_device          (GtkWidget      *widget,
                                                   GdkEvent       *event,
                                                   Gimp           *gimp);
 
+static void        toolbox_paste_received        (GtkClipboard   *clipboard,
+                                                  const gchar    *text,
+                                                  gpointer        data);
 
-/*  local variables  */
 
-static GimpDockClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpToolbox, gimp_toolbox, GIMP_TYPE_IMAGE_DOCK);
 
+#define parent_class gimp_toolbox_parent_class
 
-GType
-gimp_toolbox_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo type_info =
-      {
-        sizeof (GimpToolboxClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_toolbox_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpToolbox),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_toolbox_init,
-      };
-
-      type = g_type_register_static (GIMP_TYPE_DOCK,
-                                     "GimpToolbox",
-                                     &type_info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_toolbox_class_init (GimpToolboxClass *klass)
 {
-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-  GimpDockClass  *dock_class   = GIMP_DOCK_CLASS (klass);
+  GObjectClass       *object_class     = G_OBJECT_CLASS (klass);
+  GtkWidgetClass     *widget_class     = GTK_WIDGET_CLASS (klass);
+  GimpDockClass      *dock_class       = GIMP_DOCK_CLASS (klass);
+  GimpImageDockClass *image_dock_class = GIMP_IMAGE_DOCK_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
+  object_class->constructor         = gimp_toolbox_constructor;
 
-  object_class->constructor   = gimp_toolbox_constructor;
+  widget_class->delete_event        = gimp_toolbox_delete_event;
+  widget_class->size_allocate       = gimp_toolbox_size_allocate;
+  widget_class->style_set           = gimp_toolbox_style_set;
 
-  widget_class->delete_event  = gimp_toolbox_delete_event;
-  widget_class->size_allocate = gimp_toolbox_size_allocate;
-  widget_class->style_set     = gimp_toolbox_style_set;
+  dock_class->book_added            = gimp_toolbox_book_added;
+  dock_class->book_removed          = gimp_toolbox_book_removed;
 
-  dock_class->book_added      = gimp_toolbox_book_added;
-  dock_class->book_removed    = gimp_toolbox_book_removed;
+  image_dock_class->ui_manager_name = "<Toolbox>";
 
   gtk_widget_class_install_style_property
-    (widget_class, g_param_spec_enum ("tool_icon_size",
+    (widget_class, g_param_spec_enum ("tool-icon-size",
                                       NULL, NULL,
                                       GTK_TYPE_ICON_SIZE,
                                       DEFAULT_TOOL_ICON_SIZE,
                                       G_PARAM_READABLE));
 
   gtk_widget_class_install_style_property
-    (widget_class, g_param_spec_enum ("button_relief",
+    (widget_class, g_param_spec_enum ("button-relief",
                                       NULL, NULL,
                                       GTK_TYPE_RELIEF_STYLE,
                                       DEFAULT_BUTTON_RELIEF,
@@ -196,7 +176,7 @@ gimp_toolbox_constructor (GType                  type,
   GimpToolbox   *toolbox;
   GimpContext   *context;
   GimpGuiConfig *config;
-  GimpUIManager *manager;
+  GtkUIManager  *manager;
   GtkWidget     *main_vbox;
   GtkWidget     *vbox;
   GdkDisplay    *display;
@@ -218,18 +198,15 @@ gimp_toolbox_constructor (GType                  type,
   gtk_box_reorder_child (GTK_BOX (main_vbox), vbox, 0);
   gtk_widget_show (vbox);
 
-  manager = gimp_ui_managers_from_name ("<Image>")->data;
+  manager = GTK_UI_MANAGER (GIMP_IMAGE_DOCK (toolbox)->ui_manager);
 
-  toolbox->menu_bar = gimp_ui_manager_ui_get (manager, "/toolbox-menubar");
+  toolbox->menu_bar = gtk_ui_manager_get_widget (manager, "/toolbox-menubar");
 
   if (toolbox->menu_bar)
     {
       gtk_box_pack_start (GTK_BOX (vbox), toolbox->menu_bar, FALSE, FALSE, 0);
       gtk_widget_show (toolbox->menu_bar);
     }
-
-  gtk_window_add_accel_group (GTK_WINDOW (toolbox),
-                              gtk_ui_manager_get_accel_group (GTK_UI_MANAGER (manager)));
 
   toolbox->tool_wbox = gtk_hwrap_box_new (FALSE);
   gtk_wrap_box_set_justify (GTK_WRAP_BOX (toolbox->tool_wbox), GTK_JUSTIFY_TOP);
@@ -265,7 +242,7 @@ gimp_toolbox_constructor (GType                  type,
 
   if (! list)  /* all devices have cursor */
     {
-      g_signal_connect (toolbox, "motion_notify_event",
+      g_signal_connect (toolbox, "motion-notify-event",
 			G_CALLBACK (toolbox_check_device),
 			context->gimp);
 
@@ -316,6 +293,8 @@ gimp_toolbox_constructor (GType                  type,
 
   gimp_toolbox_style_set (GTK_WIDGET (toolbox), GTK_WIDGET (toolbox)->style);
 
+  toolbox_separator_expand (toolbox);
+
   return object;
 }
 
@@ -323,7 +302,12 @@ static gboolean
 gimp_toolbox_delete_event (GtkWidget   *widget,
                            GdkEventAny *event)
 {
-  gimp_exit (GIMP_DOCK (widget)->context->gimp, FALSE);
+  GtkAction *action;
+
+  action = gimp_ui_manager_find_action (GIMP_IMAGE_DOCK (widget)->ui_manager,
+                                        "file", "file-quit");
+  if (action)
+    gtk_action_activate (action);
 
   return TRUE;
 }
@@ -451,8 +435,8 @@ gimp_toolbox_style_set (GtkWidget *widget,
   gimp = GIMP_DOCK (widget)->context->gimp;
 
   gtk_widget_style_get (widget,
-                        "tool_icon_size", &tool_icon_size,
-                        "button_relief",  &relief,
+                        "tool-icon-size", &tool_icon_size,
+                        "button-relief",  &relief,
                         NULL);
 
   for (list = GIMP_LIST (gimp->tool_info_list)->list;
@@ -487,16 +471,22 @@ gimp_toolbox_book_added (GimpDock     *dock,
                          GimpDockbook *dockbook)
 {
   if (g_list_length (dock->dockbooks) == 1)
-    gimp_toolbox_set_geometry (GIMP_TOOLBOX (dock));
+    {
+      gimp_toolbox_set_geometry (GIMP_TOOLBOX (dock));
+      toolbox_separator_collapse (GIMP_TOOLBOX (dock));
+    }
 }
 
 static void
 gimp_toolbox_book_removed (GimpDock     *dock,
                            GimpDockbook *dockbook)
 {
-  if (dock->dockbooks == NULL &&
+  if (g_list_length (dock->dockbooks) == 0 &&
       ! (GTK_OBJECT_FLAGS (dock) & GTK_IN_DESTRUCTION))
-    gimp_toolbox_set_geometry (GIMP_TOOLBOX (dock));
+    {
+      gimp_toolbox_set_geometry (GIMP_TOOLBOX (dock));
+      toolbox_separator_expand (GIMP_TOOLBOX (dock));
+    }
 }
 
 static void
@@ -556,7 +546,7 @@ gimp_toolbox_new (GimpDialogFactory *dialog_factory,
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
   toolbox = g_object_new (GIMP_TYPE_TOOLBOX,
-                          "title",          _("The GIMP"),
+                          "title",          _("GIMP"),
                           "context",        gimp_get_user_context (gimp),
                           "dialog-factory", dialog_factory,
                           NULL);
@@ -567,141 +557,45 @@ gimp_toolbox_new (GimpDialogFactory *dialog_factory,
 
 /*  private functions  */
 
-static gboolean
-gimp_toolbox_button_accel_find_func (GtkAccelKey *key,
-                                     GClosure    *closure,
-                                     gpointer     data)
+static void
+toolbox_separator_expand (GimpToolbox *toolbox)
 {
-  return (GClosure *) data == closure;
+  GimpDock  *dock = GIMP_DOCK (toolbox);
+  GList     *children;
+  GtkWidget *separator;
+
+  children = gtk_container_get_children (GTK_CONTAINER (dock->vbox));
+  separator = children->data;
+  g_list_free (children);
+
+  gtk_box_set_child_packing (GTK_BOX (dock->vbox), separator,
+                             TRUE, TRUE, 0, GTK_PACK_START);
+  gimp_dock_separator_set_show_label (GIMP_DOCK_SEPARATOR (separator), TRUE);
 }
 
 static void
-gimp_toolbox_substitute_underscores (gchar *str)
+toolbox_separator_collapse (GimpToolbox *toolbox)
 {
-  gchar *p;
+  GimpDock  *dock = GIMP_DOCK (toolbox);
+  GList     *children;
+  GtkWidget *separator;
 
-  for (p = str; *p; p++)
-    if (*p == '_')
-      *p = ' ';
-}
+  children = gtk_container_get_children (GTK_CONTAINER (dock->vbox));
+  separator = children->data;
+  g_list_free (children);
 
-static void
-gimp_toolbox_button_accel_changed (GtkAccelGroup   *accel_group,
-                                   guint            unused1,
-                                   GdkModifierType  unused2,
-                                   GClosure        *accel_closure,
-                                   GtkWidget       *tool_button)
-{
-  GClosure *button_closure;
-
-  button_closure = g_object_get_data (G_OBJECT (tool_button),
-                                      "toolbox-accel-closure");
-
-  if (accel_closure == button_closure)
-    {
-      GimpToolInfo *tool_info;
-      GtkAccelKey  *accel_key;
-      gchar        *tooltip;
-
-      tool_info = g_object_get_data (G_OBJECT (tool_button), TOOL_INFO_DATA_KEY);
-
-      accel_key = gtk_accel_group_find (accel_group,
-                                        gimp_toolbox_button_accel_find_func,
-                                        accel_closure);
-
-      if (accel_key            &&
-          accel_key->accel_key &&
-          accel_key->accel_flags & GTK_ACCEL_VISIBLE)
-        {
-          /*  mostly taken from gtk-2-0/gtk/gtkaccellabel.c:1.46
-           */
-          GtkAccelLabelClass *accel_label_class;
-          GString            *gstring;
-          gboolean            seen_mod = FALSE;
-          gunichar            ch;
-
-          accel_label_class = g_type_class_peek (GTK_TYPE_ACCEL_LABEL);
-
-          gstring = g_string_new (tool_info->help);
-          g_string_append (gstring, "     ");
-
-          if (accel_key->accel_mods & GDK_SHIFT_MASK)
-            {
-              g_string_append (gstring, accel_label_class->mod_name_shift);
-              seen_mod = TRUE;
-            }
-          if (accel_key->accel_mods & GDK_CONTROL_MASK)
-            {
-              if (seen_mod)
-                g_string_append (gstring, accel_label_class->mod_separator);
-              g_string_append (gstring, accel_label_class->mod_name_control);
-              seen_mod = TRUE;
-            }
-          if (accel_key->accel_mods & GDK_MOD1_MASK)
-            {
-              if (seen_mod)
-                g_string_append (gstring, accel_label_class->mod_separator);
-              g_string_append (gstring, accel_label_class->mod_name_alt);
-              seen_mod = TRUE;
-            }
-          if (seen_mod)
-            g_string_append (gstring, accel_label_class->mod_separator);
-
-          ch = gdk_keyval_to_unicode (accel_key->accel_key);
-          if (ch && (g_unichar_isgraph (ch) || ch == ' ') &&
-              (ch < 0x80 || accel_label_class->latin1_to_char))
-            {
-              switch (ch)
-                {
-                case ' ':
-                  g_string_append (gstring, "Space");
-                  break;
-                case '\\':
-                  g_string_append (gstring, "Backslash");
-                  break;
-                default:
-                  g_string_append_unichar (gstring, g_unichar_toupper (ch));
-                  break;
-                }
-            }
-          else
-            {
-              gchar *tmp;
-
-              tmp = gtk_accelerator_name (accel_key->accel_key, 0);
-              if (tmp[0] != 0 && tmp[1] == 0)
-                tmp[0] = g_ascii_toupper (tmp[0]);
-              gimp_toolbox_substitute_underscores (tmp);
-              g_string_append (gstring, tmp);
-              g_free (tmp);
-            }
-
-          tooltip = g_string_free (gstring, FALSE);
-        }
-      else
-        {
-          tooltip = g_strdup (tool_info->help);
-        }
-
-      gimp_help_set_help_data (tool_button, tooltip, tool_info->help_id);
-
-      g_free (tooltip);
-    }
+  gtk_box_set_child_packing (GTK_BOX (dock->vbox), separator,
+                             FALSE, FALSE, 0, GTK_PACK_START);
+  gimp_dock_separator_set_show_label (GIMP_DOCK_SEPARATOR (separator), FALSE);
 }
 
 static void
 toolbox_create_tools (GimpToolbox *toolbox,
                       GimpContext *context)
 {
-  GimpUIManager *ui_manager;
-  GimpToolInfo  *active_tool;
-  GList         *list;
-  GSList        *group = NULL;
-
-  ui_manager = gimp_ui_managers_from_name ("<Image>")->data;
-
-  if (ui_manager)
-    gimp_ui_manager_ui_get (ui_manager, "/dummy-menubar");
+  GimpToolInfo *active_tool;
+  GList        *list;
+  GSList       *group = NULL;
 
   active_tool = gimp_context_get_tool (context);
 
@@ -745,17 +639,16 @@ toolbox_create_tools (GimpToolbox *toolbox,
 			G_CALLBACK (toolbox_tool_button_toggled),
 			tool_info);
 
-      g_signal_connect (button, "button_press_event",
+      g_signal_connect (button, "button-press-event",
 			G_CALLBACK (toolbox_tool_button_press),
                         toolbox);
 
-      if (ui_manager)
+      if (GIMP_IMAGE_DOCK (toolbox)->ui_manager)
         {
           GtkAction   *action;
           const gchar *identifier;
           gchar       *tmp;
           gchar       *name;
-          GClosure    *accel_closure = NULL;
 
           identifier = gimp_object_get_name (GIMP_OBJECT (tool_info));
 
@@ -764,62 +657,15 @@ toolbox_create_tools (GimpToolbox *toolbox,
           name = g_strdup_printf ("tools-%s", tmp);
           g_free (tmp);
 
-          action = gimp_ui_manager_find_action (ui_manager, "tools", name);
-
+          action = gimp_ui_manager_find_action (GIMP_IMAGE_DOCK (toolbox)->ui_manager,
+                                                "tools", name);
           g_free (name);
 
-#if HAVE_GTK_ACTION_GET_ACCEL_CLOSURE
-          accel_closure = gtk_action_get_accel_closure (action);
-#else
-          {
-            GSList *list;
-
-            for (list = gtk_action_get_proxies (action);
-                 list;
-                 list = g_slist_next (list))
-              {
-                if (GTK_IS_MENU_ITEM (list->data))
-                  {
-                    GtkWidget *label = GTK_BIN (list->data)->child;
-
-                    if (GTK_IS_ACCEL_LABEL (label))
-                      {
-                        g_object_get (label,
-                                      "accel-closure", &accel_closure,
-                                      NULL);
-
-                        if (accel_closure)
-                          break;
-                      }
-                  }
-              }
-          }
-#endif
-
-          if (accel_closure)
-            {
-              GtkAccelGroup *accel_group;
-
-              g_object_set_data (G_OBJECT (button), "toolbox-accel-closure",
-                                 accel_closure);
-
-              accel_group =
-                gtk_accel_group_from_accel_closure (accel_closure);
-
-              g_signal_connect_object (accel_group, "accel_changed",
-                                       G_CALLBACK (gimp_toolbox_button_accel_changed),
-                                       button, 0);
-
-              gimp_toolbox_button_accel_changed (accel_group,
-                                                 0, 0,
-                                                 accel_closure,
-                                                 button);
-            }
+          if (action)
+            gimp_widget_set_accel_help (button, action);
           else
-            {
-              gimp_help_set_help_data (button,
-                                       tool_info->help, tool_info->help_id);
-            }
+            gimp_help_set_help_data (button,
+                                     tool_info->help, tool_info->help_id);
         }
     }
 
@@ -851,9 +697,9 @@ toolbox_create_color_area (GimpToolbox *toolbox,
   gtk_widget_show (col_area);
 
   gimp_help_set_help_data
-    (col_area, _("Foreground & background colors.  The black and white squares "
-                 "reset colors.  The arrows swap colors. Double click to open "
-                 "the color selection dialog."), NULL);
+    (col_area, _("Foreground & background colors.  The black and white "
+                 "squares reset colors.  The arrows swap colors. Click "
+                 "to open the color selection dialog."), NULL);
 
   return frame;
 }
@@ -923,7 +769,9 @@ toolbox_area_notify (GimpGuiConfig *config,
 
       gtk_widget_show (area->parent);
 
-      /* HACK HACK HACK */
+#ifdef __GNUC__
+#warning FIXME: fix GtkWrapBox child requisition/allocation instead of hacking badly (bug #162500).
+#endif
       gtk_widget_size_request (area, &req);
       gtk_widget_set_size_request (area->parent, req.width, req.height);
     }
@@ -1002,12 +850,22 @@ toolbox_tool_button_press (GtkWidget      *widget,
 			   GdkEventButton *event,
 			   GimpToolbox    *toolbox)
 {
-  if ((event->type == GDK_2BUTTON_PRESS) && (event->button == 1))
+  if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
     {
       gimp_dialog_factory_dialog_raise (GIMP_DOCK (toolbox)->dialog_factory,
                                         gtk_widget_get_screen (widget),
                                         "gimp-tool-options",
                                         -1);
+    }
+  else if (event->type == GDK_BUTTON_PRESS && event->button == 2)
+    {
+      GimpContext  *context = GIMP_DOCK (toolbox)->context;
+      GtkClipboard *clipboard;
+
+      clipboard = gtk_widget_get_clipboard (widget, GDK_SELECTION_PRIMARY);
+      gtk_clipboard_request_text (clipboard,
+                                  toolbox_paste_received,
+                                  g_object_ref (context));
     }
 
   return FALSE;
@@ -1021,4 +879,50 @@ toolbox_check_device (GtkWidget *widget,
   gimp_devices_check_change (gimp, event);
 
   return FALSE;
+}
+
+static void
+toolbox_paste_received (GtkClipboard *clipboard,
+                        const gchar  *text,
+                        gpointer      data)
+{
+  GimpContext *context = GIMP_CONTEXT (data);
+
+  if (text)
+    {
+      const gchar *newline = strchr (text, '\n');
+      gchar       *copy;
+
+      if (newline)
+        copy = g_strndup (text, newline - text);
+      else
+        copy = g_strdup (text);
+
+      g_strstrip (copy);
+
+      if (strlen (copy))
+        {
+          GimpImage         *image;
+          GimpPDBStatusType  status;
+          GError            *error = NULL;
+
+          image = file_open_with_display (context->gimp, context, NULL,
+                                          copy, &status, &error);
+
+          if (! image && status != GIMP_PDB_CANCEL)
+            {
+              gchar *filename = file_utils_uri_display_name (copy);
+
+              g_message (_("Opening '%s' failed:\n\n%s"),
+                         filename, error->message);
+
+              g_clear_error (&error);
+              g_free (filename);
+            }
+        }
+
+      g_free (copy);
+    }
+
+  g_object_unref (context);
 }

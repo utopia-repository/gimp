@@ -97,7 +97,7 @@ foreach (sort keys %enums) {
 
 print ENUMFILE <<HEADER;
 
-void           _gimp_enums_init          (void);
+void           gimp_enums_init           (void);
 
 const gchar ** gimp_enums_get_type_names (gint *n_type_names);
 
@@ -117,7 +117,7 @@ print ENUMFILE <<CODE;
 
 typedef GType (* GimpGetTypeFunc) (void);
 
-static GimpGetTypeFunc get_type_funcs[] =
+static const GimpGetTypeFunc get_type_funcs[] =
 {
 CODE
 
@@ -161,20 +161,37 @@ print ENUMFILE "\n" unless $first;
 print ENUMFILE <<CODE;
 };
 
-void
-_gimp_enums_init (void)
-{
-  GimpGetTypeFunc *funcs;
-  gint             i;
+static gboolean enums_initialized = FALSE;
 
-  for (i = 0, funcs = get_type_funcs;
-       i < G_N_ELEMENTS (get_type_funcs);
-       i++, funcs++)
+/**
+ * gimp_enums_init
+ *
+ * This function makes sure all the enum types are registered
+ * with the GObject type system. This is intended for use by
+ * language bindings that need the symbols early, before gimp_main
+ * is run. It's not necessary for plug-ins to call this directly,
+ * as the normal plug-in initialization code will handle it
+ * implicitly.
+ *
+ * Since: GIMP 2.4
+ **/
+void
+gimp_enums_init (void)
+{
+  const GimpGetTypeFunc *funcs = get_type_funcs;
+  gint                   i;
+
+  if (enums_initialized)
+    return;
+
+  for (i = 0; i < G_N_ELEMENTS (get_type_funcs); i++, funcs++)
     {
       GType type = (*funcs) ();
 
       g_type_class_ref (type);
     }
+
+  enums_initialized = TRUE;
 }
 
 /**

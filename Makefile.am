@@ -10,12 +10,14 @@ SUBDIRS = \
 	po-libgimp	\
 	po-plug-ins	\
 	po-script-fu	\
+	po-tips		\
 	data		\
+	desktop		\
 	menus		\
-	tips		\
 	libgimpbase	\
 	libgimpcolor	\
 	libgimpmath	\
+	libgimpconfig	\
 	libgimpmodule	\
 	libgimpthumb	\
 	libgimpwidgets	\
@@ -76,7 +78,7 @@ EXTRA_DIST = \
 	po-script-fu/update.sh
 
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gimp-console --disable-print
+DISTCHECK_CONFIGURE_FLAGS = --enable-gimp-console
 
 DISTCLEANFILES = \
 	intltool-extract	\
@@ -94,5 +96,6 @@ if HAVE_XMLLINT
 	  ( echo "* authors.xml INVALID *"; exit 1; )
 endif
 
+all-local: AUTHORS
 
 dist-hook: validate-authors

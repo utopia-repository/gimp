@@ -1,0 +1,546 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>gimpscanner</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
+<link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
+<link rel="prev" href="libgimpconfig-GimpConfigWriter.html" title="gimpconfigwriter">
+<link rel="next" href="GimpColorConfig.html" title="GimpColorConfig">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
+<link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix03.html" title="Index of deprecated symbols">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<td><a accesskey="p" href="libgimpconfig-GimpConfigWriter.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Config Library Reference Manual</th>
+<td><a accesskey="n" href="GimpColorConfig.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry" lang="en">
+<a name="libgimpconfig-GimpScanner"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle">gimpscanner</span></h2>
+<p>gimpscanner &#8212; </p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<h2>Synopsis</h2>
+<pre class="synopsis">
+
+
+
+GScanner*   <a href="libgimpconfig-GimpScanner.html#gimp-scanner-new-file">gimp_scanner_new_file</a>           (const gchar *filename,
+                                             GError **error);
+GScanner*   <a href="libgimpconfig-GimpScanner.html#gimp-scanner-new-string">gimp_scanner_new_string</a>         (const gchar *text,
+                                             gint text_len,
+                                             GError **error);
+void        <a href="libgimpconfig-GimpScanner.html#gimp-scanner-destroy">gimp_scanner_destroy</a>            (GScanner *scanner);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-token">gimp_scanner_parse_token</a>        (GScanner *scanner,
+                                             GTokenType token);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-identifier">gimp_scanner_parse_identifier</a>   (GScanner *scanner,
+                                             const gchar *identifier);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-string">gimp_scanner_parse_string</a>       (GScanner *scanner,
+                                             gchar **dest);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-string-no-validate">gimp_scanner_parse_string_no_validate</a>
+                                            (GScanner *scanner,
+                                             gchar **dest);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-data">gimp_scanner_parse_data</a>         (GScanner *scanner,
+                                             gint length,
+                                             guint8 **dest);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-int">gimp_scanner_parse_int</a>          (GScanner *scanner,
+                                             gint *dest);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-float">gimp_scanner_parse_float</a>        (GScanner *scanner,
+                                             gdouble *dest);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-color">gimp_scanner_parse_color</a>        (GScanner *scanner,
+                                             <a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+>GimpRGB</a> *dest);
+gboolean    <a href="libgimpconfig-GimpScanner.html#gimp-scanner-parse-matrix2">gimp_scanner_parse_matrix2</a>      (GScanner *scanner,
+                                             <a
+href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
+>GimpMatrix2</a> *dest);
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2563572"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="id2563584"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2563590"></a><h3>
+<a name="gimp-scanner-new-file"></a>gimp_scanner_new_file ()</h3>
+<a class="indexterm" name="id2563599"></a><pre class="programlisting">GScanner*   gimp_scanner_new_file           (const gchar *filename,
+                                             GError **error);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2515231"></a><h3>
+<a name="gimp-scanner-new-string"></a>gimp_scanner_new_string ()</h3>
+<a class="indexterm" name="id2515240"></a><pre class="programlisting">GScanner*   gimp_scanner_new_string         (const gchar *text,
+                                             gint text_len,
+                                             GError **error);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>text</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>text_len</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>error</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2515346"></a><h3>
+<a name="gimp-scanner-destroy"></a>gimp_scanner_destroy ()</h3>
+<a class="indexterm" name="id2515354"></a><pre class="programlisting">void        gimp_scanner_destroy            (GScanner *scanner);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2515408"></a><h3>
+<a name="gimp-scanner-parse-token"></a>gimp_scanner_parse_token ()</h3>
+<a class="indexterm" name="id2546899"></a><pre class="programlisting">gboolean    gimp_scanner_parse_token        (GScanner *scanner,
+                                             GTokenType token);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>token</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2546984"></a><h3>
+<a name="gimp-scanner-parse-identifier"></a>gimp_scanner_parse_identifier ()</h3>
+<a class="indexterm" name="id2546993"></a><pre class="programlisting">gboolean    gimp_scanner_parse_identifier   (GScanner *scanner,
+                                             const gchar *identifier);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2547078"></a><h3>
+<a name="gimp-scanner-parse-string"></a>gimp_scanner_parse_string ()</h3>
+<a class="indexterm" name="id2547087"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string       (GScanner *scanner,
+                                             gchar **dest);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2567089"></a><h3>
+<a name="gimp-scanner-parse-string-no-validate"></a>gimp_scanner_parse_string_no_validate ()</h3>
+<a class="indexterm" name="id2567099"></a><pre class="programlisting">gboolean    gimp_scanner_parse_string_no_validate
+                                            (GScanner *scanner,
+                                             gchar **dest);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2567177"></a><h3>
+<a name="gimp-scanner-parse-data"></a>gimp_scanner_parse_data ()</h3>
+<a class="indexterm" name="id2567186"></a><pre class="programlisting">gboolean    gimp_scanner_parse_data         (GScanner *scanner,
+                                             gint length,
+                                             guint8 **dest);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>length</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2567282"></a><h3>
+<a name="gimp-scanner-parse-int"></a>gimp_scanner_parse_int ()</h3>
+<a class="indexterm" name="id2567291"></a><pre class="programlisting">gboolean    gimp_scanner_parse_int          (GScanner *scanner,
+                                             gint *dest);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2567376"></a><h3>
+<a name="gimp-scanner-parse-float"></a>gimp_scanner_parse_float ()</h3>
+<a class="indexterm" name="id2567385"></a><pre class="programlisting">gboolean    gimp_scanner_parse_float        (GScanner *scanner,
+                                             gdouble *dest);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2567471"></a><h3>
+<a name="gimp-scanner-parse-color"></a>gimp_scanner_parse_color ()</h3>
+<a class="indexterm" name="id2567480"></a><pre class="programlisting">gboolean    gimp_scanner_parse_color        (GScanner *scanner,
+                                             <a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+>GimpRGB</a> *dest);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2567566"></a><h3>
+<a name="gimp-scanner-parse-matrix2"></a>gimp_scanner_parse_matrix2 ()</h3>
+<a class="indexterm" name="id2567575"></a><pre class="programlisting">gboolean    gimp_scanner_parse_matrix2      (GScanner *scanner,
+                                             <a
+href="../libgimpmath/libgimpmath-GimpMatrix.html#GimpMatrix2"
+>GimpMatrix2</a> *dest);</pre>
+<p>
+</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>scanner</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dest</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+</div>
+</div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimpconfig-GimpConfigWriter.html"><b>&lt;&lt;&#160;gimpconfigwriter</b></a></td>
+<td align="right"><a accesskey="n" href="GimpColorConfig.html"><b>GimpColorConfig&#160;&gt;&gt;</b></a></td>
+</tr></table>
+</body>
+</html>

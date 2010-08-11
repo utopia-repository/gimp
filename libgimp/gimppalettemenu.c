@@ -58,6 +58,17 @@ static void   gimp_palette_select_widget_clicked  (GtkWidget     *widget,
 static void   gimp_palette_select_widget_destroy  (GtkWidget     *widget,
                                                    PaletteSelect *palette_sel);
 
+static void   gimp_palette_select_drag_data_received (GtkWidget        *widget,
+                                                      GdkDragContext   *context,
+                                                      gint              x,
+                                                      gint              y,
+                                                      GtkSelectionData *selection,
+                                                      guint             info,
+                                                      guint             time);
+
+
+static const GtkTargetEntry target = { "application/x-gimp-palette-name", 0 };
+
 
 /**
  * gimp_palette_select_widget_new:
@@ -106,6 +117,17 @@ gimp_palette_select_widget_new (const gchar            *title,
   g_signal_connect (palette_sel->button, "destroy",
                     G_CALLBACK (gimp_palette_select_widget_destroy),
                     palette_sel);
+
+  gtk_drag_dest_set (GTK_WIDGET (palette_sel->button),
+                     GTK_DEST_DEFAULT_HIGHLIGHT |
+                     GTK_DEST_DEFAULT_MOTION |
+                     GTK_DEST_DEFAULT_DROP,
+                     &target, 1,
+                     GDK_ACTION_COPY);
+
+  g_signal_connect (palette_sel->button, "drag-data-received",
+                    G_CALLBACK (gimp_palette_select_drag_data_received),
+                    NULL);
 
   hbox = gtk_hbox_new (FALSE, 4);
   gtk_container_add (GTK_CONTAINER (palette_sel->button), hbox);
@@ -231,4 +253,41 @@ gimp_palette_select_widget_destroy (GtkWidget     *widget,
   g_free (palette_sel->title);
   g_free (palette_sel->palette_name);
   g_free (palette_sel);
+}
+
+static void
+gimp_palette_select_drag_data_received (GtkWidget        *widget,
+                                        GdkDragContext   *context,
+                                        gint              x,
+                                        gint              y,
+                                        GtkSelectionData *selection,
+                                        guint             info,
+                                        guint             time)
+{
+  gchar *str;
+
+  if ((selection->format != 8) || (selection->length < 1))
+    {
+      g_warning ("Received invalid palette data!");
+      return;
+    }
+
+  str = g_strndup ((const gchar *) selection->data, selection->length);
+
+  if (g_utf8_validate (str, -1, NULL))
+    {
+      gint     pid;
+      gpointer unused;
+      gint     name_offset = 0;
+
+      if (sscanf (str, "%i:%p:%n", &pid, &unused, &name_offset) >= 2 &&
+          pid == gimp_getpid () && name_offset > 0)
+        {
+          gchar *name = str + name_offset;
+
+          gimp_palette_select_widget_set (widget, name);
+        }
+    }
+
+  g_free (str);
 }

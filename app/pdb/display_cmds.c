@@ -32,6 +32,7 @@
 
 static ProcRecord display_new_proc;
 static ProcRecord display_delete_proc;
+static ProcRecord display_get_window_handle_proc;
 static ProcRecord displays_flush_proc;
 static ProcRecord displays_reconnect_proc;
 
@@ -40,6 +41,7 @@ register_display_procs (Gimp *gimp)
 {
   procedural_db_register (gimp, &display_new_proc);
   procedural_db_register (gimp, &display_delete_proc);
+  procedural_db_register (gimp, &display_get_window_handle_proc);
   procedural_db_register (gimp, &displays_flush_proc);
   procedural_db_register (gimp, &displays_reconnect_proc);
 }
@@ -98,7 +100,8 @@ static ProcArg display_new_outargs[] =
 
 static ProcRecord display_new_proc =
 {
-  "gimp_display_new",
+  "gimp-display-new",
+  "gimp-display-new",
   "Create a new display for the specified image.",
   "Creates a new display for the specified image. If the image already has a display, another is added. Multiple displays are handled transparently by the GIMP. The newly created display is returned and can be subsequently destroyed with a call to 'gimp-display-delete'. This procedure only makes sense for use with the GIMP UI.",
   "Spencer Kimball & Peter Mattis",
@@ -143,7 +146,8 @@ static ProcArg display_delete_inargs[] =
 
 static ProcRecord display_delete_proc =
 {
-  "gimp_display_delete",
+  "gimp-display-delete",
+  "gimp-display-delete",
   "Delete the specified display.",
   "This procedure removes the specified display. If this is the last remaining display for the underlying image, then the image is deleted also.",
   "Spencer Kimball & Peter Mattis",
@@ -159,6 +163,68 @@ static ProcRecord display_delete_proc =
 };
 
 static Argument *
+display_get_window_handle_invoker (Gimp         *gimp,
+                                   GimpContext  *context,
+                                   GimpProgress *progress,
+                                   Argument     *args)
+{
+  gboolean success = TRUE;
+  Argument *return_args;
+  GimpObject *display;
+  gint32 window = 0;
+
+  display = gimp_get_display_by_ID (gimp, args[0].value.pdb_int);
+  if (! GIMP_IS_OBJECT (display))
+    success = FALSE;
+
+  if (success)
+    window = (gint32) gimp_get_display_window (gimp, display);
+
+  return_args = procedural_db_return_args (&display_get_window_handle_proc, success);
+
+  if (success)
+    return_args[1].value.pdb_int = window;
+
+  return return_args;
+}
+
+static ProcArg display_get_window_handle_inargs[] =
+{
+  {
+    GIMP_PDB_DISPLAY,
+    "display",
+    "The display to get the window handle from"
+  }
+};
+
+static ProcArg display_get_window_handle_outargs[] =
+{
+  {
+    GIMP_PDB_INT32,
+    "window",
+    "The native window handle or 0"
+  }
+};
+
+static ProcRecord display_get_window_handle_proc =
+{
+  "gimp-display-get-window-handle",
+  "gimp-display-get-window-handle",
+  "Get a handle to the native window for an image display.",
+  "This procedure returns a handle to the native window for a given image display. For example in the X backend of GDK, a native window handle is an Xlib XID. A value of 0 is returned for an invalid display or if this function is unimplemented for the windowing system that is being used.",
+  "Sven Neumann",
+  "Sven Neumann",
+  "2005",
+  NULL,
+  GIMP_INTERNAL,
+  1,
+  display_get_window_handle_inargs,
+  1,
+  display_get_window_handle_outargs,
+  { { display_get_window_handle_invoker } }
+};
+
+static Argument *
 displays_flush_invoker (Gimp         *gimp,
                         GimpContext  *context,
                         GimpProgress *progress,
@@ -170,7 +236,8 @@ displays_flush_invoker (Gimp         *gimp,
 
 static ProcRecord displays_flush_proc =
 {
-  "gimp_displays_flush",
+  "gimp-displays-flush",
+  "gimp-displays-flush",
   "Flush all internal changes to the user interface",
   "This procedure takes no arguments and returns nothing except a success status. Its purpose is to flush all pending updates of image manipulations to the user interface. It should be called whenever appropriate.",
   "Spencer Kimball & Peter Mattis",
@@ -226,19 +293,20 @@ static ProcArg displays_reconnect_inargs[] =
 {
   {
     GIMP_PDB_IMAGE,
-    "old_image",
+    "old-image",
     "The old image (must have at least one display)"
   },
   {
     GIMP_PDB_IMAGE,
-    "new_image",
+    "new-image",
     "The new image (must not have a display)"
   }
 };
 
 static ProcRecord displays_reconnect_proc =
 {
-  "gimp_displays_reconnect",
+  "gimp-displays-reconnect",
+  "gimp-displays-reconnect",
   "Reconnect displays from one image to another image.",
   "This procedure connects all displays of the old_image to the new_image. If the old_image has no display or new_image already has a display the reconnect is not performed and the procedure returns without success. You should rarely need to use this function.",
   "Spencer Kimball & Peter Mattis",

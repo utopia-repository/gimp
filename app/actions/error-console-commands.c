@@ -85,6 +85,11 @@ error_console_save_cmd_callback (GtkAction *action,
 
                                  NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (console->file_dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   console->save_selection = value;
 
   g_object_add_weak_pointer (G_OBJECT (console->file_dialog),
@@ -101,7 +106,7 @@ error_console_save_cmd_callback (GtkAction *action,
   g_signal_connect (chooser, "response",
 		    G_CALLBACK (error_console_save_response),
 		    console);
-  g_signal_connect (chooser, "delete_event",
+  g_signal_connect (chooser, "delete-event",
 		    G_CALLBACK (gtk_true),
 		    NULL);
 

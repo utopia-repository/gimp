@@ -57,30 +57,23 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
 
 #define WITHIN(a, b, c) ((((a) <= (b)) && ((b) <= (c))) ? 1 : 0)
 
 
 /***** Magic numbers *****/
 
-#define PLUG_IN_NAME    "plug_in_polar_coords"
+#define PLUG_IN_PROC    "plug-in-polar-coords"
+#define PLUG_IN_BINARY  "polar"
 #define PLUG_IN_VERSION "July 1997, 0.5"
-#define HELP_ID         "plug-in-polar-coords"
 
-#define SCALE_WIDTH  200
-#define ENTRY_WIDTH   60
+#define SCALE_WIDTH     200
+#define ENTRY_WIDTH      60
 
 /***** Types *****/
 
@@ -91,7 +84,6 @@ typedef struct
   gboolean backwards;
   gboolean inverse;
   gboolean polrec;
-  gboolean preview;
 } polarize_vals_t;
 
 /***** Prototypes *****/
@@ -129,8 +121,7 @@ static polarize_vals_t pcvals =
   0.0,   /* angle */
   FALSE, /* backwards */
   TRUE,  /* inverse */
-  TRUE,  /* polar to rectangular? */
-  TRUE   /* preview */
+  TRUE   /* polar to rectangular? */
 };
 
 static gint img_width, img_height, img_has_alpha;
@@ -149,7 +140,7 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",     "Input image"                  },
     { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable"               },
     { GIMP_PDB_FLOAT,    "circle",    "Circle depth in %"            },
@@ -159,7 +150,7 @@ query (void)
     { GIMP_PDB_INT32,    "polrec",    "Polar to rectangular?"        }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Converts and image to and from polar coords",
                           "Remaps and image from rectangular coordinates "
                           "to polar coordinates "
@@ -173,7 +164,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 }
 
 static void
@@ -209,7 +200,8 @@ run (const gchar      *name,
   img_height    = gimp_drawable_height (drawable->drawable_id);
   img_has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
 
-  gimp_drawable_mask_bounds (drawable->drawable_id, &sel_x1, &sel_y1, &sel_x2, &sel_y2);
+  gimp_drawable_mask_bounds (drawable->drawable_id,
+                             &sel_x1, &sel_y1, &sel_x2, &sel_y2);
 
   /* Calculate scaling parameters */
 
@@ -244,7 +236,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /* Possibly retrieve data */
-      gimp_get_data (PLUG_IN_NAME, &pcvals);
+      gimp_get_data (PLUG_IN_PROC, &pcvals);
 
       /* Get information from the dialog */
       if (! polarize_dialog (drawable))
@@ -270,7 +262,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /* Possibly retrieve data */
-      gimp_get_data (PLUG_IN_NAME, &pcvals);
+      gimp_get_data (PLUG_IN_PROC, &pcvals);
       break;
 
     default:
@@ -295,7 +287,7 @@ run (const gchar      *name,
 
       /* Store data */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data (PLUG_IN_NAME, &pcvals, sizeof (polarize_vals_t));
+        gimp_set_data (PLUG_IN_PROC, &pcvals, sizeof (polarize_vals_t));
     }
   else if (status == GIMP_PDB_SUCCESS)
     status = GIMP_PDB_EXECUTION_ERROR;
@@ -354,7 +346,7 @@ polarize (GimpDrawable *drawable)
   gimp_context_get_background (&background);
   gimp_pixel_fetcher_set_bg_color (pft, &background);
 
-  gimp_progress_init (_("Polarizing..."));
+  gimp_progress_init (_("Polarizing"));
 
   iter = gimp_rgn_iterator_new (drawable, 0);
   gimp_rgn_iterator_dest (iter, polarize_func, pft);
@@ -584,16 +576,23 @@ polarize_dialog (GimpDrawable *drawable)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("polar", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Polarize"), "polar",
+  dialog = gimp_dialog_new (_("Polarize"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -601,7 +600,7 @@ polarize_dialog (GimpDrawable *drawable)
   gtk_widget_show (main_vbox);
 
   /* Preview */
-  preview = gimp_aspect_preview_new (drawable, &pcvals.preview);
+  preview = gimp_zoom_preview_new (drawable);
   gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",
@@ -621,10 +620,10 @@ polarize_dialog (GimpDrawable *drawable)
                               pcvals.circle, 0.0, 100.0, 1.0, 10.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pcvals.circle);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -633,10 +632,10 @@ polarize_dialog (GimpDrawable *drawable)
                               pcvals.angle, 0.0, 359.0, 1.0, 15.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &pcvals.angle);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -737,10 +736,8 @@ dialog_update_preview (GimpDrawable *drawable,
   bottom = sel_y2 - 1;
   top    = sel_y1;
 
-  gimp_preview_get_size (preview, &width, &height);
-  bpp = gimp_drawable_bpp (drawable->drawable_id);
-  preview_cache = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                                    &width, &height, &bpp);
+  preview_cache = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
+                                                &width, &height, &bpp);
   dx = (right - left) / (width - 1);
   dy = (bottom - top) / (height - 1);
 
@@ -788,4 +785,3 @@ dialog_update_preview (GimpDrawable *drawable,
   g_free (buffer);
   g_free (preview_cache);
 }
-

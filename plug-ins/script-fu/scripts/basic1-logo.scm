@@ -17,7 +17,7 @@
     (gimp-image-add-layer img shadow-layer 1)
     (gimp-image-add-layer img bg-layer 2)
     (gimp-context-set-foreground text-color)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-edit-fill logo-layer FOREGROUND-FILL)
     (gimp-context-set-background bg-color)
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
@@ -61,7 +61,7 @@
 		    SF-COLOR      _"Text color"       '(6 6 206))
 
 (script-fu-menu-register "script-fu-basic1-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-basic1-logo text
@@ -73,7 +73,6 @@
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text 10 TRUE size PIXELS font))))
 
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-basic1-logo-effect img text-layer bg-color text-color)
     (gimp-image-undo-enable img)
     (gimp-display-new img)))
@@ -92,4 +91,4 @@
 		    SF-COLOR      _"Text color"         '(6 6 206))
 
 (script-fu-menu-register "script-fu-basic1-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

@@ -23,11 +23,9 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-utils.h"
 
 #include "base/pixel-region.h"
 #include "base/tile-manager.h"
@@ -40,6 +38,7 @@
 #include "gimpimage-colormap.h"
 #include "gimpimage-grid.h"
 #include "gimpimage-guides.h"
+#include "gimpimage-sample-points.h"
 #include "gimpimage-undo.h"
 #include "gimpimage.h"
 #include "gimpitemundo.h"
@@ -309,6 +308,111 @@ undo_free_image_resolution (GimpUndo      *undo,
 
 
 /****************/
+/*  Guide Undo  */
+/****************/
+
+typedef struct _GuideUndo GuideUndo;
+
+struct _GuideUndo
+{
+  GimpGuide           *guide;
+  gint                 position;
+  GimpOrientationType  orientation;
+};
+
+static gboolean undo_pop_image_guide  (GimpUndo            *undo,
+                                       GimpUndoMode         undo_mode,
+                                       GimpUndoAccumulator *accum);
+static void     undo_free_image_guide (GimpUndo            *undo,
+                                       GimpUndoMode         undo_mode);
+
+gboolean
+gimp_image_undo_push_image_guide (GimpImage   *gimage,
+                                  const gchar *undo_desc,
+                                  GimpGuide   *guide)
+{
+  GimpUndo *new;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
+  g_return_val_if_fail (guide != NULL, FALSE);
+
+  if ((new = gimp_image_undo_push (gimage, GIMP_TYPE_UNDO,
+                                   sizeof (GuideUndo),
+                                   sizeof (GuideUndo),
+                                   GIMP_UNDO_IMAGE_GUIDE, undo_desc,
+                                   GIMP_DIRTY_IMAGE_META,
+                                   undo_pop_image_guide,
+                                   undo_free_image_guide,
+                                   NULL)))
+    {
+      GuideUndo *gu = new->data;
+
+      gu->guide       = gimp_image_guide_ref (guide);
+      gu->position    = guide->position;
+      gu->orientation = guide->orientation;
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+undo_pop_image_guide (GimpUndo            *undo,
+                      GimpUndoMode         undo_mode,
+                      GimpUndoAccumulator *accum)
+{
+  GuideUndo           *gu = undo->data;
+  gint                 old_position;
+  GimpOrientationType  old_orientation;
+
+  old_position    = gu->guide->position;
+  old_orientation = gu->guide->orientation;
+
+  /*  add and move guides manually (nor using the gimp_image_guide
+   *  API), because we might be in the middle of an image resizing
+   *  undo group and the guide's position might be temporarily out of
+   *  image.
+   */
+
+  if (gu->guide->position == -1)
+    {
+      undo->gimage->guides = g_list_prepend (undo->gimage->guides, gu->guide);
+      gu->guide->position = gu->position;
+      gimp_image_guide_ref (gu->guide);
+      gimp_image_update_guide (undo->gimage, gu->guide);
+    }
+  else if (gu->position == -1)
+    {
+      gimp_image_remove_guide (undo->gimage, gu->guide, FALSE);
+    }
+  else
+    {
+      gimp_image_update_guide (undo->gimage, gu->guide);
+      gu->guide->position = gu->position;
+      gimp_image_update_guide (undo->gimage, gu->guide);
+    }
+
+  gu->guide->orientation = gu->orientation;
+
+  gu->position    = old_position;
+  gu->orientation = old_orientation;
+
+  return TRUE;
+}
+
+static void
+undo_free_image_guide (GimpUndo     *undo,
+                       GimpUndoMode  undo_mode)
+{
+  GuideUndo *gu = undo->data;
+
+  gimp_image_guide_unref (gu->guide);
+  g_free (gu);
+}
+
+
+/****************/
 /*  Grid Undo   */
 /****************/
 
@@ -385,49 +489,49 @@ undo_free_image_grid (GimpUndo     *undo,
 }
 
 
-/****************/
-/*  Guide Undo  */
-/****************/
+/**********************/
+/*  Sampe Point Undo  */
+/**********************/
 
-typedef struct _GuideUndo GuideUndo;
+typedef struct _SamplePointUndo SamplePointUndo;
 
-struct _GuideUndo
+struct _SamplePointUndo
 {
-  GimpGuide           *guide;
-  gint                 position;
-  GimpOrientationType  orientation;
+  GimpSamplePoint *sample_point;
+  gint             x;
+  gint             y;
 };
 
-static gboolean undo_pop_image_guide  (GimpUndo            *undo,
-                                       GimpUndoMode         undo_mode,
-                                       GimpUndoAccumulator *accum);
-static void     undo_free_image_guide (GimpUndo            *undo,
-                                       GimpUndoMode         undo_mode);
+static gboolean undo_pop_image_sample_point  (GimpUndo            *undo,
+                                              GimpUndoMode         undo_mode,
+                                              GimpUndoAccumulator *accum);
+static void     undo_free_image_sample_point (GimpUndo            *undo,
+                                              GimpUndoMode         undo_mode);
 
 gboolean
-gimp_image_undo_push_image_guide (GimpImage   *gimage,
-                                  const gchar *undo_desc,
-                                  GimpGuide   *guide)
+gimp_image_undo_push_image_sample_point (GimpImage       *gimage,
+                                         const gchar     *undo_desc,
+                                         GimpSamplePoint *sample_point)
 {
   GimpUndo *new;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
-  g_return_val_if_fail (guide != NULL, FALSE);
+  g_return_val_if_fail (sample_point != NULL, FALSE);
 
   if ((new = gimp_image_undo_push (gimage, GIMP_TYPE_UNDO,
-                                   sizeof (GuideUndo),
-                                   sizeof (GuideUndo),
-                                   GIMP_UNDO_IMAGE_GUIDE, undo_desc,
+                                   sizeof (SamplePointUndo),
+                                   sizeof (SamplePointUndo),
+                                   GIMP_UNDO_IMAGE_SAMPLE_POINT, undo_desc,
                                    GIMP_DIRTY_IMAGE_META,
-                                   undo_pop_image_guide,
-                                   undo_free_image_guide,
+                                   undo_pop_image_sample_point,
+                                   undo_free_image_sample_point,
                                    NULL)))
     {
-      GuideUndo *gu = new->data;
+      SamplePointUndo *spu = new->data;
 
-      gu->guide       = gimp_image_guide_ref (guide);
-      gu->position    = guide->position;
-      gu->orientation = guide->orientation;
+      spu->sample_point = gimp_image_sample_point_ref (sample_point);
+      spu->x            = sample_point->x;
+      spu->y            = sample_point->y;
 
       return TRUE;
     }
@@ -436,50 +540,60 @@ gimp_image_undo_push_image_guide (GimpImage   *gimage,
 }
 
 static gboolean
-undo_pop_image_guide (GimpUndo            *undo,
-                      GimpUndoMode         undo_mode,
-                      GimpUndoAccumulator *accum)
+undo_pop_image_sample_point (GimpUndo            *undo,
+                             GimpUndoMode         undo_mode,
+                             GimpUndoAccumulator *accum)
 {
-  GuideUndo           *gu = undo->data;
-  gint                 old_position;
-  GimpOrientationType  old_orientation;
+  SamplePointUndo *spu = undo->data;
+  gint             old_x;
+  gint             old_y;
 
-  old_position    = gu->guide->position;
-  old_orientation = gu->guide->orientation;
+  old_x = spu->sample_point->x;
+  old_y = spu->sample_point->y;
 
-  if (gu->guide->position == -1)
+  /*  add and move sample points manually (nor using the
+   *  gimp_image_sample_point API), because we might be in the middle
+   *  of an image resizing undo group and the sample point's position
+   *  might be temporarily out of image.
+   */
+
+  if (spu->sample_point->x == -1)
     {
-      undo->gimage->guides = g_list_prepend (undo->gimage->guides, gu->guide);
-      gu->guide->position = gu->position;
-      gimp_image_guide_ref (gu->guide);
-      gimp_image_update_guide (undo->gimage, gu->guide);
+      undo->gimage->sample_points = g_list_append (undo->gimage->sample_points,
+                                                   spu->sample_point);
+
+      spu->sample_point->x = spu->x;
+      spu->sample_point->y = spu->y;
+      gimp_image_sample_point_ref (spu->sample_point);
+
+      gimp_image_sample_point_added (undo->gimage, spu->sample_point);
+      gimp_image_update_sample_point (undo->gimage, spu->sample_point);
     }
-  else if (gu->position == -1)
+  else if (spu->x == -1)
     {
-      gimp_image_remove_guide (undo->gimage, gu->guide, FALSE);
+      gimp_image_remove_sample_point (undo->gimage, spu->sample_point, FALSE);
     }
   else
     {
-      gimp_image_update_guide (undo->gimage, gu->guide);
-      gu->guide->position = gu->position;
-      gimp_image_update_guide (undo->gimage, gu->guide);
+      gimp_image_update_sample_point (undo->gimage, spu->sample_point);
+      spu->sample_point->x = spu->x;
+      spu->sample_point->y = spu->y;
+      gimp_image_update_sample_point (undo->gimage, spu->sample_point);
     }
 
-  gu->guide->orientation = gu->orientation;
-
-  gu->position    = old_position;
-  gu->orientation = old_orientation;
+  spu->x = old_x;
+  spu->y = old_y;
 
   return TRUE;
 }
 
 static void
-undo_free_image_guide (GimpUndo     *undo,
-                       GimpUndoMode  undo_mode)
+undo_free_image_sample_point (GimpUndo     *undo,
+                              GimpUndoMode  undo_mode)
 {
-  GuideUndo *gu = undo->data;
+  SamplePointUndo *gu = undo->data;
 
-  gimp_image_guide_unref (gu->guide);
+  gimp_image_sample_point_unref (gu->sample_point);
   g_free (gu);
 }
 
@@ -1471,140 +1585,6 @@ undo_free_layer (GimpUndo     *undo,
 }
 
 
-/********************************/
-/*  Layer Mask Add/Remove Undo  */
-/********************************/
-
-typedef struct _LayerMaskUndo LayerMaskUndo;
-
-struct _LayerMaskUndo
-{
-  GimpLayerMask *mask;
-};
-
-static gboolean undo_push_layer_mask (GimpImage           *gimage,
-                                      const gchar         *undo_desc,
-                                      GimpUndoType         type,
-                                      GimpLayer           *layer,
-                                      GimpLayerMask       *mask);
-static gboolean undo_pop_layer_mask  (GimpUndo            *undo,
-                                      GimpUndoMode         undo_mode,
-                                      GimpUndoAccumulator *accum);
-static void     undo_free_layer_mask (GimpUndo            *undo,
-                                      GimpUndoMode         undo_mode);
-
-gboolean
-gimp_image_undo_push_layer_mask_add (GimpImage     *gimage,
-                                     const gchar   *undo_desc,
-                                     GimpLayer     *layer,
-                                     GimpLayerMask *mask)
-{
-  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
-  g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (layer)), FALSE);
-  g_return_val_if_fail (GIMP_IS_LAYER_MASK (mask), FALSE);
-  g_return_val_if_fail (! gimp_item_is_attached (GIMP_ITEM (mask)), FALSE);
-
-  return undo_push_layer_mask (gimage, undo_desc, GIMP_UNDO_LAYER_MASK_ADD,
-                               layer, mask);
-}
-
-gboolean
-gimp_image_undo_push_layer_mask_remove (GimpImage     *gimage,
-                                        const gchar   *undo_desc,
-                                        GimpLayer     *layer,
-                                        GimpLayerMask *mask)
-{
-  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
-  g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (layer)), FALSE);
-  g_return_val_if_fail (GIMP_IS_LAYER_MASK (mask), FALSE);
-  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (mask)), FALSE);
-  g_return_val_if_fail (mask->layer == layer, FALSE);
-  g_return_val_if_fail (layer->mask == mask, FALSE);
-
-  return undo_push_layer_mask (gimage, undo_desc, GIMP_UNDO_LAYER_MASK_REMOVE,
-                               layer, mask);
-}
-
-static gboolean
-undo_push_layer_mask (GimpImage     *gimage,
-                      const gchar   *undo_desc,
-		      GimpUndoType   type,
-                      GimpLayer     *layer,
-                      GimpLayerMask *mask)
-{
-  GimpUndo *new;
-  gint64    size;
-
-  size = sizeof (LayerMaskUndo);
-
-  if (type == GIMP_UNDO_LAYER_MASK_REMOVE)
-    size += gimp_object_get_memsize (GIMP_OBJECT (mask), NULL);
-
-  if ((new = gimp_image_undo_push (gimage, GIMP_TYPE_ITEM_UNDO,
-                                   size, sizeof (LayerMaskUndo),
-                                   type, undo_desc,
-                                   GIMP_DIRTY_IMAGE_STRUCTURE,
-                                   undo_pop_layer_mask,
-                                   undo_free_layer_mask,
-                                   "item", layer,
-                                   NULL)))
-    {
-      LayerMaskUndo *lmu = new->data;
-
-      lmu->mask = g_object_ref (mask);
-
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
-static gboolean
-undo_pop_layer_mask (GimpUndo            *undo,
-                     GimpUndoMode         undo_mode,
-                     GimpUndoAccumulator *accum)
-{
-  LayerMaskUndo *lmu   = undo->data;
-  GimpLayer     *layer = GIMP_LAYER (GIMP_ITEM_UNDO (undo)->item);
-
-  if ((undo_mode       == GIMP_UNDO_MODE_UNDO &&
-       undo->undo_type == GIMP_UNDO_LAYER_MASK_ADD) ||
-      (undo_mode       == GIMP_UNDO_MODE_REDO &&
-       undo->undo_type == GIMP_UNDO_LAYER_MASK_REMOVE))
-    {
-      /*  remove layer mask  */
-
-      undo->size += gimp_object_get_memsize (GIMP_OBJECT (lmu->mask), NULL);
-
-      gimp_layer_apply_mask (layer, GIMP_MASK_DISCARD, FALSE);
-    }
-  else
-    {
-      /*  restore layer  */
-
-      undo->size -= gimp_object_get_memsize (GIMP_OBJECT (lmu->mask), NULL);
-
-      gimp_layer_add_mask (layer, lmu->mask, FALSE);
-
-      GIMP_ITEM (lmu->mask)->removed = FALSE;
-    }
-
-  return TRUE;
-}
-
-static void
-undo_free_layer_mask (GimpUndo     *undo,
-                      GimpUndoMode  undo_mode)
-{
-  LayerMaskUndo *lmu = undo->data;
-
-  g_object_unref (lmu->mask);
-  g_free (lmu);
-}
-
-
 /***************************/
 /* Layer re-position Undo  */
 /***************************/
@@ -1689,7 +1669,7 @@ struct _LayerPropertiesUndo
 {
   GimpLayerModeEffects old_mode;
   gdouble              old_opacity;
-  gboolean             old_preserve_trans;
+  gboolean             old_lock_alpha;
 };
 
 static gboolean undo_push_layer_properties (GimpImage           *gimage,
@@ -1721,11 +1701,11 @@ gimp_image_undo_push_layer_opacity (GimpImage   *gimage,
 }
 
 gboolean
-gimp_image_undo_push_layer_preserve_trans (GimpImage   *gimage,
-                                           const gchar *undo_desc,
-                                           GimpLayer   *layer)
+gimp_image_undo_push_layer_lock_alpha (GimpImage   *gimage,
+                                       const gchar *undo_desc,
+                                       GimpLayer   *layer)
 {
-  return undo_push_layer_properties (gimage, GIMP_UNDO_LAYER_PRESERVE_TRANS,
+  return undo_push_layer_properties (gimage, GIMP_UNDO_LAYER_LOCK_ALPHA,
                                      undo_desc, layer);
 }
 
@@ -1753,9 +1733,9 @@ undo_push_layer_properties (GimpImage    *gimage,
     {
       LayerPropertiesUndo *lpu = new->data;
 
-      lpu->old_mode           = gimp_layer_get_mode (layer);
-      lpu->old_opacity        = gimp_layer_get_opacity (layer);
-      lpu->old_preserve_trans = gimp_layer_get_preserve_trans (layer);
+      lpu->old_mode       = gimp_layer_get_mode (layer);
+      lpu->old_opacity    = gimp_layer_get_opacity (layer);
+      lpu->old_lock_alpha = gimp_layer_get_lock_alpha (layer);
 
       return TRUE;
     }
@@ -1771,29 +1751,41 @@ undo_pop_layer_properties (GimpUndo            *undo,
   LayerPropertiesUndo  *lpu   = undo->data;
   GimpLayer            *layer = GIMP_LAYER (GIMP_ITEM_UNDO (undo)->item);
 
-  if (undo->undo_type == GIMP_UNDO_LAYER_MODE)
+  switch (undo->undo_type)
     {
-      GimpLayerModeEffects mode;
+    case GIMP_UNDO_LAYER_MODE:
+      {
+        GimpLayerModeEffects mode;
 
-      mode = gimp_layer_get_mode (layer);
-      gimp_layer_set_mode (layer, lpu->old_mode, FALSE);
-      lpu->old_mode = mode;
-    }
-  else if (undo->undo_type == GIMP_UNDO_LAYER_OPACITY)
-    {
-      gdouble opacity;
+        mode = gimp_layer_get_mode (layer);
+        gimp_layer_set_mode (layer, lpu->old_mode, FALSE);
+        lpu->old_mode = mode;
+      }
+      break;
 
-      opacity = gimp_layer_get_opacity (layer);
-      gimp_layer_set_opacity (layer, lpu->old_opacity, FALSE);
-      lpu->old_opacity = opacity;
-    }
-  else if (undo->undo_type == GIMP_UNDO_LAYER_PRESERVE_TRANS)
-    {
-      gboolean preserve_trans;
+    case GIMP_UNDO_LAYER_OPACITY:
+      {
+        gdouble opacity;
 
-      preserve_trans = gimp_layer_get_preserve_trans (layer);
-      gimp_layer_set_preserve_trans (layer, lpu->old_preserve_trans, FALSE);
-      lpu->old_preserve_trans = preserve_trans;
+        opacity = gimp_layer_get_opacity (layer);
+        gimp_layer_set_opacity (layer, lpu->old_opacity, FALSE);
+        lpu->old_opacity = opacity;
+      }
+      break;
+
+    case GIMP_UNDO_LAYER_LOCK_ALPHA:
+      {
+        gboolean lock_alpha;
+
+        lock_alpha = gimp_layer_get_lock_alpha (layer);
+        gimp_layer_set_lock_alpha (layer, lpu->old_lock_alpha, FALSE);
+        lpu->old_lock_alpha = lock_alpha;
+      }
+      break;
+
+    default:
+      g_return_val_if_reached (FALSE);
+      break;
     }
 
   return TRUE;
@@ -1917,6 +1909,257 @@ undo_pop_text_layer_modified (GimpUndo            *undo,
 static void
 undo_free_text_layer_modified (GimpUndo     *undo,
                                GimpUndoMode  undo_mode)
+{
+  g_free (undo->data);
+}
+
+
+/********************************/
+/*  Layer Mask Add/Remove Undo  */
+/********************************/
+
+typedef struct _LayerMaskUndo LayerMaskUndo;
+
+struct _LayerMaskUndo
+{
+  GimpLayerMask *mask;
+};
+
+static gboolean undo_push_layer_mask (GimpImage           *gimage,
+                                      const gchar         *undo_desc,
+                                      GimpUndoType         type,
+                                      GimpLayer           *layer,
+                                      GimpLayerMask       *mask);
+static gboolean undo_pop_layer_mask  (GimpUndo            *undo,
+                                      GimpUndoMode         undo_mode,
+                                      GimpUndoAccumulator *accum);
+static void     undo_free_layer_mask (GimpUndo            *undo,
+                                      GimpUndoMode         undo_mode);
+
+gboolean
+gimp_image_undo_push_layer_mask_add (GimpImage     *gimage,
+                                     const gchar   *undo_desc,
+                                     GimpLayer     *layer,
+                                     GimpLayerMask *mask)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (layer)), FALSE);
+  g_return_val_if_fail (GIMP_IS_LAYER_MASK (mask), FALSE);
+  g_return_val_if_fail (! gimp_item_is_attached (GIMP_ITEM (mask)), FALSE);
+
+  return undo_push_layer_mask (gimage, undo_desc, GIMP_UNDO_LAYER_MASK_ADD,
+                               layer, mask);
+}
+
+gboolean
+gimp_image_undo_push_layer_mask_remove (GimpImage     *gimage,
+                                        const gchar   *undo_desc,
+                                        GimpLayer     *layer,
+                                        GimpLayerMask *mask)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
+  g_return_val_if_fail (GIMP_IS_LAYER (layer), FALSE);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (layer)), FALSE);
+  g_return_val_if_fail (GIMP_IS_LAYER_MASK (mask), FALSE);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (mask)), FALSE);
+  g_return_val_if_fail (mask->layer == layer, FALSE);
+  g_return_val_if_fail (layer->mask == mask, FALSE);
+
+  return undo_push_layer_mask (gimage, undo_desc, GIMP_UNDO_LAYER_MASK_REMOVE,
+                               layer, mask);
+}
+
+
+static gboolean
+undo_push_layer_mask (GimpImage     *gimage,
+                      const gchar   *undo_desc,
+		      GimpUndoType   type,
+                      GimpLayer     *layer,
+                      GimpLayerMask *mask)
+{
+  GimpUndo *new;
+  gint64    size;
+
+  size = sizeof (LayerMaskUndo);
+
+  if (type == GIMP_UNDO_LAYER_MASK_REMOVE)
+    size += gimp_object_get_memsize (GIMP_OBJECT (mask), NULL);
+
+  if ((new = gimp_image_undo_push (gimage, GIMP_TYPE_ITEM_UNDO,
+                                   size, sizeof (LayerMaskUndo),
+                                   type, undo_desc,
+                                   GIMP_DIRTY_IMAGE_STRUCTURE,
+                                   undo_pop_layer_mask,
+                                   undo_free_layer_mask,
+                                   "item", layer,
+                                   NULL)))
+    {
+      LayerMaskUndo *lmu = new->data;
+
+      lmu->mask = g_object_ref (mask);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+undo_pop_layer_mask (GimpUndo            *undo,
+                     GimpUndoMode         undo_mode,
+                     GimpUndoAccumulator *accum)
+{
+  LayerMaskUndo *lmu   = undo->data;
+  GimpLayer     *layer = GIMP_LAYER (GIMP_ITEM_UNDO (undo)->item);
+
+  if ((undo_mode       == GIMP_UNDO_MODE_UNDO &&
+       undo->undo_type == GIMP_UNDO_LAYER_MASK_ADD) ||
+      (undo_mode       == GIMP_UNDO_MODE_REDO &&
+       undo->undo_type == GIMP_UNDO_LAYER_MASK_REMOVE))
+    {
+      /*  remove layer mask  */
+
+      undo->size += gimp_object_get_memsize (GIMP_OBJECT (lmu->mask), NULL);
+
+      gimp_layer_apply_mask (layer, GIMP_MASK_DISCARD, FALSE);
+    }
+  else
+    {
+      /*  restore layer  */
+
+      undo->size -= gimp_object_get_memsize (GIMP_OBJECT (lmu->mask), NULL);
+
+      gimp_layer_add_mask (layer, lmu->mask, FALSE);
+
+      GIMP_ITEM (lmu->mask)->removed = FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+undo_free_layer_mask (GimpUndo     *undo,
+                      GimpUndoMode  undo_mode)
+{
+  LayerMaskUndo *lmu = undo->data;
+
+  g_object_unref (lmu->mask);
+  g_free (lmu);
+}
+
+
+/******************************/
+/*  Layer Mask Property Undo  */
+/******************************/
+
+typedef struct _LayerMaskPropertyUndo LayerMaskPropertyUndo;
+
+struct _LayerMaskPropertyUndo
+{
+  gboolean old_apply;
+  gboolean old_show;
+};
+
+static gboolean undo_push_layer_mask_properties (GimpImage           *gimage,
+                                                 GimpUndoType         undo_type,
+                                                 const gchar         *undo_desc,
+                                                 GimpLayerMask       *mask);
+static gboolean undo_pop_layer_mask_properties  (GimpUndo            *undo,
+                                                 GimpUndoMode         undo_mode,
+                                                 GimpUndoAccumulator *accum);
+static void     undo_free_layer_mask_properties (GimpUndo            *undo,
+                                                 GimpUndoMode         undo_mode);
+
+gboolean
+gimp_image_undo_push_layer_mask_apply (GimpImage     *gimage,
+                                       const gchar   *undo_desc,
+                                       GimpLayerMask *mask)
+{
+  return undo_push_layer_mask_properties (gimage, GIMP_UNDO_LAYER_MASK_APPLY,
+                                          undo_desc, mask);
+}
+
+gboolean
+gimp_image_undo_push_layer_mask_show (GimpImage     *gimage,
+                                      const gchar   *undo_desc,
+                                      GimpLayerMask *mask)
+{
+  return undo_push_layer_mask_properties (gimage, GIMP_UNDO_LAYER_MASK_SHOW,
+                                          undo_desc, mask);
+}
+
+static gboolean
+undo_push_layer_mask_properties (GimpImage     *gimage,
+                                 GimpUndoType   undo_type,
+                                 const gchar   *undo_desc,
+                                 GimpLayerMask *mask)
+{
+  GimpUndo *new;
+  gint64    size;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (gimage), FALSE);
+  g_return_val_if_fail (GIMP_IS_LAYER_MASK (mask), FALSE);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (mask)), FALSE);
+
+  size = sizeof (LayerMaskPropertyUndo);
+
+  if ((new = gimp_image_undo_push (gimage, GIMP_TYPE_ITEM_UNDO,
+                                   size, sizeof (LayerMaskPropertyUndo),
+                                   undo_type, undo_desc,
+                                   GIMP_DIRTY_ITEM_META,
+                                   undo_pop_layer_mask_properties,
+                                   undo_free_layer_mask_properties,
+                                   "item", mask,
+                                   NULL)))
+    {
+      LayerMaskPropertyUndo *lmp_undo = new->data;
+
+      lmp_undo->old_apply = gimp_layer_mask_get_apply (mask);
+      lmp_undo->old_show  = gimp_layer_mask_get_show (mask);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+undo_pop_layer_mask_properties (GimpUndo            *undo,
+                                GimpUndoMode         undo_mode,
+                                GimpUndoAccumulator *accum)
+{
+  LayerMaskPropertyUndo *lmp_undo = undo->data;
+  GimpLayerMask         *mask;
+  gboolean               val;
+
+  mask = GIMP_LAYER_MASK (GIMP_ITEM_UNDO (undo)->item);
+
+  switch (undo->undo_type)
+    {
+    case GIMP_UNDO_LAYER_MASK_APPLY:
+      val = gimp_layer_mask_get_apply (mask);
+      gimp_layer_mask_set_apply (mask, lmp_undo->old_apply, FALSE);
+      lmp_undo->old_apply = val;
+      break;
+
+    case GIMP_UNDO_LAYER_MASK_SHOW:
+      val = gimp_layer_mask_get_show (mask);
+      gimp_layer_mask_set_show (mask, lmp_undo->old_show, FALSE);
+      lmp_undo->old_show = val;
+      break;
+
+    default:
+      g_return_val_if_reached (FALSE);
+      break;
+    }
+
+  return TRUE;
+}
+
+static void
+undo_free_layer_mask_properties (GimpUndo     *undo,
+                                 GimpUndoMode  undo_mode)
 {
   g_free (undo->data);
 }

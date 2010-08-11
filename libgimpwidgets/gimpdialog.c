@@ -38,9 +38,6 @@ enum
 };
 
 
-static void       gimp_dialog_class_init   (GimpDialogClass *klass);
-static void       gimp_dialog_init         (GimpDialog      *dialog);
-
 static GObject  * gimp_dialog_constructor  (GType            type,
                                             guint            n_params,
                                             GObjectConstructParam *params);
@@ -54,44 +51,18 @@ static void       gimp_dialog_get_property (GObject         *object,
                                             GValue          *value,
                                             GParamSpec      *pspec);
 
-static void       gimp_dialog_hide         (GtkWidget       *widget);
 static gboolean   gimp_dialog_delete_event (GtkWidget       *widget,
                                             GdkEventAny     *event);
 static void       gimp_dialog_close        (GtkDialog       *dialog);
 static void       gimp_dialog_help         (GObject         *dialog);
 
 
-static GtkDialogClass *parent_class     = NULL;
-static gboolean        show_help_button = TRUE;
+G_DEFINE_TYPE (GimpDialog, gimp_dialog, GTK_TYPE_DIALOG);
 
+#define parent_class gimp_dialog_parent_class
 
-GType
-gimp_dialog_get_type (void)
-{
-  static GType dialog_type = 0;
+static gboolean show_help_button = TRUE;
 
-  if (! dialog_type)
-    {
-      static const GTypeInfo dialog_info =
-      {
-        sizeof (GimpDialogClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_dialog_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpDialog),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_dialog_init,
-      };
-
-      dialog_type = g_type_register_static (GTK_TYPE_DIALOG,
-                                            "GimpDialog",
-                                            &dialog_info, 0);
-    }
-
-  return dialog_type;
-}
 
 static void
 gimp_dialog_class_init (GimpDialogClass *klass)
@@ -100,14 +71,11 @@ gimp_dialog_class_init (GimpDialogClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkDialogClass *dialog_class = GTK_DIALOG_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   object_class->constructor  = gimp_dialog_constructor;
   object_class->dispose      = gimp_dialog_dispose;
   object_class->set_property = gimp_dialog_set_property;
   object_class->get_property = gimp_dialog_get_property;
 
-  widget_class->hide         = gimp_dialog_hide;
   widget_class->delete_event = gimp_dialog_delete_event;
 
   dialog_class->close        = gimp_dialog_close;
@@ -132,6 +100,12 @@ gimp_dialog_class_init (GimpDialogClass *klass)
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
+}
+
+static void
+gimp_dialog_init (GimpDialog *dialog)
+{
+  gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 }
 
 static GObject *
@@ -234,21 +208,6 @@ gimp_dialog_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
-}
-
-static void
-gimp_dialog_hide (GtkWidget *widget)
-{
-  /*  set focus to NULL so focus_out callbacks are invoked synchronously  */
-  gtk_window_set_focus (GTK_WINDOW (widget), NULL);
-
-  GTK_WIDGET_CLASS (parent_class)->hide (widget);
-}
-
-static void
-gimp_dialog_init (GimpDialog *dialog)
-{
-  gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 }
 
 static gboolean
@@ -431,7 +390,8 @@ gimp_dialog_add_buttons_valist (GimpDialog *dialog,
         {
           GtkWidget *button = g_object_get_data (G_OBJECT (dialog),
                                                  "gimp-dialog-help-button");
-          gtk_widget_hide (button);
+          if (button)
+            gtk_widget_hide (button);
         }
 
       gtk_dialog_add_button (GTK_DIALOG (dialog), button_text, response_id);
@@ -526,7 +486,7 @@ gimp_dialog_run (GimpDialog *dialog)
   unmap_handler    = g_signal_connect (dialog, "unmap",
                                        G_CALLBACK (run_unmap_handler),
                                        &ri);
-  delete_handler   = g_signal_connect (dialog, "delete_event",
+  delete_handler   = g_signal_connect (dialog, "delete-event",
                                        G_CALLBACK (run_delete_handler),
                                        &ri);
   destroy_handler  = g_signal_connect (dialog, "destroy",

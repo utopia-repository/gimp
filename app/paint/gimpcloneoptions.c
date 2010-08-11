@@ -20,9 +20,9 @@
 
 #include <glib-object.h>
 
-#include "paint-types.h"
+#include "libgimpconfig/gimpconfig.h"
 
-#include "config/gimpconfig-params.h"
+#include "paint-types.h"
 
 #include "gimpcloneoptions.h"
 
@@ -35,12 +35,11 @@ enum
 {
   PROP_0,
   PROP_CLONE_TYPE,
-  PROP_ALIGN_MODE
+  PROP_ALIGN_MODE,
+  PROP_SAMPLE_MERGED
 };
 
 
-
-static void   gimp_clone_options_class_init   (GimpCloneOptionsClass *klass);
 
 static void   gimp_clone_options_set_property (GObject      *object,
                                                guint         property_id,
@@ -52,43 +51,13 @@ static void   gimp_clone_options_get_property (GObject      *object,
                                                GParamSpec   *pspec);
 
 
-static GimpPaintOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpCloneOptions, gimp_clone_options, GIMP_TYPE_PAINT_OPTIONS);
 
-
-GType
-gimp_clone_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpCloneOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_clone_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpCloneOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) NULL
-      };
-
-      type = g_type_register_static (GIMP_TYPE_PAINT_OPTIONS,
-                                     "GimpCloneOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_clone_options_class_init (GimpCloneOptionsClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_clone_options_set_property;
   object_class->get_property = gimp_clone_options_get_property;
@@ -103,6 +72,15 @@ gimp_clone_options_class_init (GimpCloneOptionsClass *klass)
                                  GIMP_TYPE_CLONE_ALIGN_MODE,
                                  CLONE_DEFAULT_ALIGN_MODE,
                                  0);
+  GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_SAMPLE_MERGED,
+                                    "sample-merged", NULL,
+                                    FALSE,
+                                    0);
+}
+
+static void
+gimp_clone_options_init (GimpCloneOptions *options)
+{
 }
 
 static void
@@ -120,6 +98,9 @@ gimp_clone_options_set_property (GObject      *object,
       break;
     case PROP_ALIGN_MODE:
       options->align_mode = g_value_get_enum (value);
+      break;
+    case PROP_SAMPLE_MERGED:
+      options->sample_merged = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -142,6 +123,9 @@ gimp_clone_options_get_property (GObject    *object,
       break;
     case PROP_ALIGN_MODE:
       g_value_set_enum (value, options->align_mode);
+      break;
+    case PROP_SAMPLE_MERGED:
+      g_value_set_boolean (value, options->sample_merged);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);

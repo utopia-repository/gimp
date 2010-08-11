@@ -135,7 +135,7 @@
 		    SF-TOGGLE     _"Gradient reverse" FALSE)
 
 (script-fu-menu-register "script-fu-blended-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-blended-logo text
@@ -156,9 +156,8 @@
     (gimp-context-push)
 
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (gimp-context-set-foreground text-color)
-    (gimp-layer-set-preserve-trans text-layer TRUE)
+    (gimp-layer-set-lock-alpha text-layer TRUE)
     (gimp-edit-fill text-layer FOREGROUND-FILL)
     (apply-blended-logo-effect img text-layer b-size bg-color
 			       blend-mode blend-fg blend-bg
@@ -190,4 +189,4 @@
 		    SF-TOGGLE     _"Gradient reverse"   FALSE)
 
 (script-fu-menu-register "script-fu-blended-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

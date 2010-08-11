@@ -72,11 +72,10 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -84,9 +83,8 @@
 #include "libgimp/stdplugins-intl.h"
 
 #define PARAM_FILE_FORMAT_VERSION 1.0
-#define PLUG_IN_NAME              "plug_in_cml_explorer"
-#define SHORT_NAME                "CML_explorer"
-#define HELP_ID                   "plug-in-cml-explorer"
+#define PLUG_IN_PROC              "plug-in-cml-explorer"
+#define PLUG_IN_BINARY            "CML_explorer"
 #define VALS                      CML_explorer_vals
 #define PROGRESS_UPDATE_NUM        100
 #define CML_LINE_SIZE             1024
@@ -455,7 +453,7 @@ query (void)
     { GIMP_PDB_STRING,   "parameter_file_name", "The name of parameter file. CML_explorer makes an image with its settings." }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Make an image of Coupled-Map Lattice",
                           "Make an image of Coupled-Map Lattice (CML). CML is "
                           "a kind of Cellula Automata on continuous (value) "
@@ -473,7 +471,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Render/Pattern");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Pattern");
 }
 
 static void
@@ -501,7 +499,7 @@ run (const gchar      *name,
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data (PLUG_IN_NAME, &VALS);
+      gimp_get_data (PLUG_IN_PROC, &VALS);
       if (! CML_explorer_dialog ())
         return;
       break;
@@ -514,7 +512,7 @@ run (const gchar      *name,
         break;
       }
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data (PLUG_IN_NAME, &VALS);
+      gimp_get_data (PLUG_IN_PROC, &VALS);
       break;
     }
 
@@ -524,7 +522,7 @@ run (const gchar      *name,
   if (run_mode != GIMP_RUN_NONINTERACTIVE)
     gimp_displays_flush();
   if (run_mode == GIMP_RUN_INTERACTIVE && status == GIMP_PDB_SUCCESS)
-    gimp_set_data (PLUG_IN_NAME, &VALS, sizeof (ValueType));
+    gimp_set_data (PLUG_IN_PROC, &VALS, sizeof (ValueType));
 
   g_free (mem_chank0);
   g_free (mem_chank1);
@@ -757,7 +755,7 @@ CML_main_function (gboolean preview_p)
     }
 
   if (! preview_p)
-    gimp_progress_init (_("CML_explorer: evoluting..."));
+    gimp_progress_init (_("CML Explorer: evoluting"));
 
   /* rolling start */
   for (index = 0; index < VALS.start_offset; index++)
@@ -1172,7 +1170,7 @@ logistic_function (CML_PARAM *param,
 static gint
 CML_explorer_dialog (void)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *hbox;
   GtkWidget *vbox;
   GtkWidget *frame;
@@ -1181,22 +1179,30 @@ CML_explorer_dialog (void)
   GtkWidget *button;
   gboolean   run;
 
-  gimp_ui_init (SHORT_NAME, TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dlg = gimp_dialog_new (_("Coupled-Map-Lattice Explorer"), "cml_explorer",
-                         NULL, 0,
-                         gimp_standard_help_func, HELP_ID,
+  dialog = gimp_dialog_new (_("Coupled-Map-Lattice Explorer"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-                         NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   CML_preview_defer = TRUE;
 
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), hbox,
+                      FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
   vbox = gtk_vbox_new (FALSE, 12);
@@ -1222,7 +1228,7 @@ CML_explorer_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
   gtk_widget_show (bbox);
 
-  button = gtk_button_new_with_label (_("New seed"));
+  button = gtk_button_new_with_label (_("New Seed"));
   gtk_container_add (GTK_CONTAINER (bbox), button);
   gtk_widget_show (button);
 
@@ -1233,7 +1239,7 @@ CML_explorer_dialog (void)
   random_sensitives[0].widget = button;
   random_sensitives[0].logic  = TRUE;
 
-  button = gtk_button_new_with_label (_("Fix seed"));
+  button = gtk_button_new_with_label (_("Fix Seed"));
   gtk_container_add (GTK_CONTAINER (bbox), button);
   gtk_widget_show (button);
 
@@ -1244,7 +1250,7 @@ CML_explorer_dialog (void)
   random_sensitives[1].widget = button;
   random_sensitives[1].logic  = TRUE;
 
-  button = gtk_button_new_with_label (_("Random seed"));
+  button = gtk_button_new_with_label (_("Random Seed"));
   gtk_container_add (GTK_CONTAINER (bbox), button);
   gtk_widget_show (button);
 
@@ -1383,7 +1389,7 @@ CML_explorer_dialog (void)
 
       button =
         gtk_button_new_with_label
-        (_("Switch to \"From seed\" with the last seed"));
+        (_("Switch to \"From seed\" With the Last Seed"));
       gtk_table_attach_defaults (GTK_TABLE (table), button, 0, 3, 1, 2);
       gtk_widget_show (button);
 
@@ -1456,7 +1462,7 @@ CML_explorer_dialog (void)
                                          combo, 1, FALSE);
       gtk_size_group_add_widget (group, label);
 
-      button = gtk_button_new_with_label (_("Copy parameters"));
+      button = gtk_button_new_with_label (_("Copy Parameters"));
       gtk_table_attach (GTK_TABLE (table), button, 0, 2, 2, 3,
                         GTK_SHRINK | GTK_FILL, GTK_SHRINK, 0, 0);
       gtk_widget_show (button);
@@ -1515,14 +1521,14 @@ CML_explorer_dialog (void)
   /*  Displaying preview might takes a long time. Thus, first, dialog itself
    *  should be shown before making preview in it.
    */
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
   CML_preview_defer = FALSE;
   preview_update ();
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }
@@ -1674,7 +1680,7 @@ CML_dialog_channel_panel_new (CML_PARAM *param,
   chank[0] = GINT_TO_POINTER (channel_id);
   chank[1] = param;
 
-  button = gtk_button_new_with_label (_("Plot a graph of the settings"));
+  button = gtk_button_new_with_label (_("Plot a Graph of the Settings"));
   gtk_table_attach_defaults (GTK_TABLE (table), button,
                              0, 3, index, index + 1);
   gtk_widget_show (button);
@@ -1812,36 +1818,37 @@ static void
 function_graph_new (GtkWidget *widget,
                     gpointer  *data)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *frame;
   GtkWidget *preview;
 
-  dlg = gimp_dialog_new (_("Graph of the current settings"), "cml_explorer",
-                         gtk_widget_get_toplevel (widget), 0,
-                         gimp_standard_help_func, HELP_ID,
+  dialog = gimp_dialog_new (_("Graph of the Current Settings"), "cml_explorer",
+                            gtk_widget_get_toplevel (widget), 0,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+                            GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
 
-                         NULL);
+                            NULL);
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), frame, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), frame,
+                      FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   preview = gtk_drawing_area_new ();
   gtk_widget_set_size_request (preview, 256, 256);
   gtk_container_add (GTK_CONTAINER (frame), preview);
   gtk_widget_show (preview);
-  g_signal_connect (preview, "expose_event",
+  g_signal_connect (preview, "expose-event",
                     G_CALLBACK (function_graph_expose), data);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  gimp_dialog_run (GIMP_DIALOG (dlg));
+  gimp_dialog_run (GIMP_DIALOG (dialog));
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 }
 
 static void
@@ -1945,7 +1952,7 @@ CML_save_to_file_callback (GtkWidget *widget,
   if (! dialog)
     {
       dialog =
-        gtk_file_chooser_dialog_new (_("Save Parameters to"),
+        gtk_file_chooser_dialog_new (_("Save Parameters To"),
                                      GTK_WINDOW (gtk_widget_get_toplevel (widget)),
                                      GTK_FILE_CHOOSER_ACTION_SAVE,
 
@@ -1954,12 +1961,17 @@ CML_save_to_file_callback (GtkWidget *widget,
 
                                      NULL);
 
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
       g_signal_connect (dialog, "response",
                         G_CALLBACK (CML_save_to_file_response),
                         NULL);
-      g_signal_connect (dialog, "delete_event",
+      g_signal_connect (dialog, "delete-event",
                         G_CALLBACK (gtk_true),
                         NULL);
     }
@@ -1994,7 +2006,7 @@ CML_save_to_file_response (GtkWidget *dialog,
       ! force_overwrite (filename, dialog))
     return;
 
-  file = fopen (filename, "w");
+  file = g_fopen (filename, "w");
 
   if (! file)
     {
@@ -2068,23 +2080,23 @@ static gboolean
 force_overwrite (const gchar *filename,
                  GtkWidget   *parent)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
   GtkWidget *label;
   GtkWidget *hbox;
   gchar     *buffer;
   gboolean   overwrite;
 
-  dlg = gimp_dialog_new (_("CML Explorer: Overwrite File?"), "cml_explorer",
-                         parent, GTK_DIALOG_MODAL,
-                         gimp_standard_help_func, HELP_ID,
+  dialog = gimp_dialog_new (_("CML Explorer: Overwrite File?"), "cml_explorer",
+                            parent, GTK_DIALOG_MODAL,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-                         NULL);
+                            NULL);
 
   hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox),
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
                       hbox, FALSE, FALSE, 12);
   gtk_widget_show (hbox);
 
@@ -2097,11 +2109,11 @@ force_overwrite (const gchar *filename,
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 12);
   gtk_widget_show (label);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  overwrite = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  overwrite = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return overwrite;
 }
@@ -2126,20 +2138,25 @@ CML_load_from_file_callback (GtkWidget *widget,
 
                                      NULL);
 
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
       g_signal_connect (dialog, "response",
                         G_CALLBACK (CML_load_from_file_response),
                         NULL);
-      g_signal_connect (dialog, "delete_event",
+      g_signal_connect (dialog, "delete-event",
                         G_CALLBACK (gtk_true),
                         NULL);
     }
 
   if ((selective_load_source == 0) || (selective_load_destination == 0))
-    gtk_window_set_title (GTK_WINDOW (dialog), _("Load Parameters from"));
+    gtk_window_set_title (GTK_WINDOW (dialog), _("Load Parameters From"));
   else
-    gtk_window_set_title (GTK_WINDOW (dialog), _("Selective Load from"));
+    gtk_window_set_title (GTK_WINDOW (dialog), _("Selective Load From"));
 
   if (strlen (VALS.last_file_name) > 0)
     gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (dialog),
@@ -2150,8 +2167,8 @@ CML_load_from_file_callback (GtkWidget *widget,
 
 static void
 CML_load_from_file_response (GtkWidget *dialog,
-                             gint      response_id,
-                             gpointer  data)
+                             gint       response_id,
+                             gpointer   data)
 {
   if (response_id == GTK_RESPONSE_OK)
     {
@@ -2209,7 +2226,7 @@ CML_load_parameter_file (const gchar *filename,
   gint       seed = 0;
   gint       old2new_function_id[] = { 3, 4, 5, 6, 7, 9, 10, 11, 1, 2 };
 
-  file = fopen (filename, "r");
+  file = g_fopen (filename, "r");
 
   if (!file)
     {
@@ -2452,7 +2469,7 @@ CML_explorer_int_entry_init (WidgetEntry *widget_entry,
                              GtkObject   *adjustment,
                              gpointer     value_ptr)
 {
-  g_signal_connect (adjustment, "value_changed",
+  g_signal_connect (adjustment, "value-changed",
                     G_CALLBACK (CML_explorer_int_adjustment_update),
                     value_ptr);
 
@@ -2485,7 +2502,7 @@ CML_explorer_double_entry_init (WidgetEntry *widget_entry,
                                 GtkObject   *adjustment,
                                 gpointer     value_ptr)
 {
-  g_signal_connect (adjustment, "value_changed",
+  g_signal_connect (adjustment, "value-changed",
                     G_CALLBACK (CML_explorer_double_adjustment_update),
                     value_ptr);
 

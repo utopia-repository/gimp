@@ -21,7 +21,6 @@
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
@@ -48,9 +47,6 @@
 
 #include "gimp-intl.h"
 
-
-static void   gimp_rect_select_tool_class_init (GimpRectSelectToolClass *klass);
-static void   gimp_rect_select_tool_init       (GimpRectSelectTool      *rect_select);
 
 static void   gimp_rect_select_tool_button_press     (GimpTool        *tool,
                                                       GimpCoords      *coords,
@@ -79,10 +75,12 @@ static void   gimp_rect_select_tool_real_rect_select (GimpRectSelectTool *rect_t
 static void   gimp_rect_select_tool_update_options   (GimpRectSelectTool *rect_sel,
                                                       GimpDisplay        *display);
 
-static GimpSelectionToolClass *parent_class = NULL;
 
+G_DEFINE_TYPE (GimpRectSelectTool, gimp_rect_select_tool,
+               GIMP_TYPE_SELECTION_TOOL);
 
-/*  public functions  */
+#define parent_class gimp_rect_select_tool_parent_class
+
 
 void
 gimp_rect_select_tool_register (GimpToolRegisterCallback  callback,
@@ -101,44 +99,11 @@ gimp_rect_select_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_rect_select_tool_get_type (void)
-{
-  static GtkType tool_type = 0;
-
-  if (! tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpRectSelectToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_rect_select_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpRectSelectTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_rect_select_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_SELECTION_TOOL,
-                                          "GimpRectSelectTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
-
-/*  private functions  */
-
 static void
 gimp_rect_select_tool_class_init (GimpRectSelectToolClass *klass)
 {
   GimpToolClass     *tool_class      = GIMP_TOOL_CLASS (klass);
   GimpDrawToolClass *draw_tool_class = GIMP_DRAW_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   tool_class->button_press   = gimp_rect_select_tool_button_press;
   tool_class->button_release = gimp_rect_select_tool_button_release;
@@ -220,24 +185,6 @@ gimp_rect_select_tool_button_press (GimpTool        *tool,
   if (gimp_selection_tool_start_edit (sel_tool, coords))
     return;
 
-  switch (sel_tool->op)
-    {
-    case SELECTION_ADD:
-      gimp_tool_push_status (tool, _("Selection: ADD"));
-      break;
-    case SELECTION_SUBTRACT:
-      gimp_tool_push_status (tool, _("Selection: SUBTRACT"));
-      break;
-    case SELECTION_INTERSECT:
-      gimp_tool_push_status (tool, _("Selection: INTERSECT"));
-      break;
-    case SELECTION_REPLACE:
-      gimp_tool_push_status (tool, _("Selection: REPLACE"));
-      break;
-    default:
-      break;
-    }
-
   gimp_draw_tool_start (GIMP_DRAW_TOOL (tool), gdisp);
 }
 
@@ -250,7 +197,7 @@ gimp_rect_select_tool_button_release (GimpTool        *tool,
 {
   GimpRectSelectTool *rect_sel = GIMP_RECT_SELECT_TOOL (tool);
 
-  gimp_tool_pop_status (tool);
+  gimp_tool_pop_status (tool, gdisp);
 
   gimp_draw_tool_stop (GIMP_DRAW_TOOL (tool));
 
@@ -258,7 +205,7 @@ gimp_rect_select_tool_button_release (GimpTool        *tool,
 
   /*  First take care of the case where the user "cancels" the action  */
   if (! (state & GDK_BUTTON3_MASK))
-    {                                          
+    {
       if (rect_sel->w == 0 || rect_sel->h == 0)
         {
           /*  If there is a floating selection, anchor it  */
@@ -276,7 +223,7 @@ gimp_rect_select_tool_button_release (GimpTool        *tool,
       gimp_rect_select_tool_rect_select (rect_sel,
                                          rect_sel->x, rect_sel->y,
                                          rect_sel->w, rect_sel->h);
-                                         
+
       /*  show selection on all views  */
       gimp_image_flush (gdisp->gimage);
     }
@@ -303,11 +250,11 @@ gimp_rect_select_tool_motion (GimpTool        *tool,
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-  
+
   if (state & GDK_MOD1_MASK)
     {
       /*  Just move the selection rectangle around  */
-      
+
       mx = RINT(coords->x) - rect_sel->lx;
       my = RINT(coords->y) - rect_sel->ly;
 
@@ -318,7 +265,7 @@ gimp_rect_select_tool_motion (GimpTool        *tool,
     }
   else
     {
-      /* Change the selection rectangle's size, first calculate absolute 
+      /* Change the selection rectangle's size, first calculate absolute
        * width and height, then take care of quadrants.
        */
 
@@ -332,7 +279,7 @@ gimp_rect_select_tool_motion (GimpTool        *tool,
           rect_sel->w = abs(RINT(coords->x) - rect_sel->sx);
           rect_sel->h = abs(RINT(coords->y) - rect_sel->sy);
         }
-      
+
       if (rect_sel->fixed_mode == GIMP_RECT_SELECT_MODE_FIXED_RATIO)
         {
           ratio = rect_sel->fixed_height / rect_sel->fixed_width;
@@ -345,7 +292,7 @@ gimp_rect_select_tool_motion (GimpTool        *tool,
               rect_sel->h = RINT(rect_sel->w * ratio);
             }
         }
-      
+
 
       /* If the shift key is down, then make the rectangle square (or
        * ellipse circular)
@@ -405,16 +352,13 @@ gimp_rect_select_tool_motion (GimpTool        *tool,
 
   rect_sel->lx = RINT(coords->x);
   rect_sel->ly = RINT(coords->y);
-  
+
   gimp_rect_select_tool_update_options (rect_sel, gdisp);
 
-  gimp_tool_pop_status (tool);
-
-  gimp_tool_push_status_coords (tool,
+  gimp_tool_pop_status (tool, gdisp);
+  gimp_tool_push_status_coords (tool, gdisp,
                                 _("Selection: "),
-                                rect_sel->w,
-                                " x ",
-                                rect_sel->h);
+                                rect_sel->w, " x ", rect_sel->h);
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 }

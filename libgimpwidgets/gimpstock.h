@@ -62,6 +62,9 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_GRAVITY_SOUTH_WEST       "gimp-gravity-south-west"
 #define GIMP_STOCK_GRAVITY_WEST             "gimp-gravity-west"
 
+#define GIMP_STOCK_HCENTER                  "gimp-hcenter"
+#define GIMP_STOCK_VCENTER                  "gimp-vcenter"
+
 #define GIMP_STOCK_HCHAIN                   "gimp-hchain"
 #define GIMP_STOCK_HCHAIN_BROKEN            "gimp-hchain-broken"
 #define GIMP_STOCK_VCHAIN                   "gimp-vchain"
@@ -112,6 +115,7 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_TOOL_ERASER              "gimp-tool-eraser"
 #define GIMP_STOCK_TOOL_FLIP                "gimp-tool-flip"
 #define GIMP_STOCK_TOOL_FREE_SELECT         "gimp-tool-free-select"
+#define GIMP_STOCK_TOOL_FOREGROUND_SELECT   "gimp-tool-foreground-select"
 #define GIMP_STOCK_TOOL_FUZZY_SELECT        "gimp-tool-fuzzy-select"
 #define GIMP_STOCK_TOOL_HUE_SATURATION      "gimp-tool-hue-saturation"
 #define GIMP_STOCK_TOOL_INK                 "gimp-tool-ink"
@@ -181,8 +185,13 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_SELECTION_BORDER         "gimp-selection-border"
 
 #define GIMP_STOCK_NAVIGATION               "gimp-navigation"
-#define GIMP_STOCK_QMASK_OFF                "gimp-qmask-off"
-#define GIMP_STOCK_QMASK_ON                 "gimp-qmask-on"
+#define GIMP_STOCK_QUICK_MASK_OFF           "gimp-quick-mask-off"
+#define GIMP_STOCK_QUICK_MASK_ON            "gimp-quick-mask-on"
+
+#ifndef GIMP_DISABLE_DEPRECATED
+#define GIMP_STOCK_QMASK_OFF                "gimp-quick-mask-off"
+#define GIMP_STOCK_QMASK_ON                 "gimp-quick-mask-on"
+#endif /* GIMP_DISABLE_DEPRECATED */
 
 #define GIMP_STOCK_HISTOGRAM                "gimp-histogram"
 #define GIMP_STOCK_HISTOGRAM_LINEAR         "gimp-histogram-linear"
@@ -200,6 +209,8 @@ G_BEGIN_DECLS
 #define GIMP_STOCK_TOOL_OPTIONS             "gimp-tool-options"
 #define GIMP_STOCK_DEVICE_STATUS            "gimp-device-status"
 #define GIMP_STOCK_DISPLAY_FILTER           "gimp-display-filter"
+#define GIMP_STOCK_CURSOR                   "gimp-cursor"
+#define GIMP_STOCK_SAMPLE_POINT             "gimp-sample-point"
 
 #define GIMP_STOCK_LIST                     "gimp-list"
 #define GIMP_STOCK_GRID                     "gimp-grid"

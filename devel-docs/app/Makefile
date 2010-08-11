@@ -46,7 +46,12 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 subdir = devel-docs/app
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/m4macros/detectcflags.m4 \
+	$(top_srcdir)/m4macros/pythondev.m4 \
+	$(top_srcdir)/m4macros/gimpprint.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
+	$(top_srcdir)/m4macros/gtk-doc.m4 \
+	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -56,29 +61,31 @@ SOURCES =
 DIST_SOURCES =
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = aa$(EXEEXT)
-ACLOCAL = ${SHELL} /home/sven/gnomesvn/gimp-dist-2-2/missing --run aclocal-1.9 
+ACLOCAL = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run aclocal-1.9 
 ALLOCA = 
-ALL_LINGUAS = bg ca cs da de el en_CA en_GB es eu fa fi fr ga gl he hu hr id it ja ko lt mk ms nb nl oc pa pl pt pt_BR ro ru sk sr sr@Latn sv tr uk vi yi zh_CN zh_TW
 ALSA_CFLAGS = 
 ALSA_LIBS =  -lasound -lm -ldl -lpthread
+ALTIVEC_EXTRA_CFLAGS = 
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/sven/gnomesvn/gimp-dist-2-2/missing --run tar
+AMTAR = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run tar
 AR = ar
 AS = as
-AUTOCONF = ${SHELL} /home/sven/gnomesvn/gimp-dist-2-2/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/sven/gnomesvn/gimp-dist-2-2/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/sven/gnomesvn/gimp-dist-2-2/missing --run automake-1.9
-AWK = gawk
+AUTOCONF = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run automake-1.9
+AWK = mawk
+BINRELOC_CFLAGS = 
+BINRELOC_LIBS = 
 BUILD_HELPBROWSER_FALSE = #
 BUILD_HELPBROWSER_TRUE = 
 BUILD_PRINT_FALSE = 
 BUILD_PRINT_TRUE = #
-BUILD_PYTHON_FALSE = 
-BUILD_PYTHON_TRUE = #
+BUILD_PYTHON_FALSE = #
+BUILD_PYTHON_TRUE = 
 BUILD_XJT_FALSE = #
 BUILD_XJT_TRUE = 
-CATALOGS =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo eu.gmo fa.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo nl.gmo oc.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo uk.gmo vi.gmo yi.gmo zh_CN.gmo zh_TW.gmo
+CATALOGS =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo no.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 CATOBJEXT = .gmo
 CC = gcc
 CCAS = gcc
@@ -86,26 +93,27 @@ CCASFLAGS = -g -O2
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2 -Wall
 CPP = gcc -E
-CPPFLAGS =  -DGIMP_DISABLE_DEPRECATED -DGDK_MULTIHEAD_SAFE -DGTK_MULTIHEAD_SAFE
+CPPFLAGS =  -DGIMP_DISABLE_DEPRECATED -DG_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DPANGO_DISABLE_DEPRECATED -DGDK_MULTIHEAD_SAFE -DGTK_MULTIHEAD_SAFE
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DATADIRNAME = share
-DEFAULT_BINARY_FALSE = #
-DEFAULT_BINARY_TRUE = 
+DEFAULT_BINARY_FALSE = 
+DEFAULT_BINARY_TRUE = #
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
-DESKTOP_DATADIR = ${datarootdir}
+DESKTOP_DATADIR = ${prefix}/share
 DESKTOP_DATADIR_FALSE = #
 DESKTOP_DATADIR_TRUE = 
 DLLTOOL = dlltool
+DOC_SHOOTER = doc-shooter
 ECHO = echo
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
-EGREP = /bin/grep -E
+EGREP = grep -E
 ENABLE_GIMP_CONSOLE_FALSE = #
 ENABLE_GIMP_CONSOLE_TRUE = 
 ENABLE_GTK_DOC_FALSE = #
@@ -123,64 +131,69 @@ FREETYPE_LIBS = -lfreetype -lz
 GDK_PIXBUF_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GDK_PIXBUF_CSOURCE = /usr/bin/gdk-pixbuf-csource
 GDK_PIXBUF_LIBS = -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
-GDK_PIXBUF_REQUIRED_VERSION = 2.4.4
+GDK_PIXBUF_REQUIRED_VERSION = 2.6.0
 GETTEXT_PACKAGE = gimp20
 GIMPINSTALL = 
 GIMPPRINT_CFLAGS = 
-GIMPPRINT_CONFIG = 
+GIMPPRINT_CONFIG = no
 GIMPPRINT_LIBS = 
 GIMPPRINT_REQUIRED_VERSION = 4.2.0
 GIMPPRINT_TOONEW_VERSION = 4.3.0
 GIMP_API_VERSION = 2.0
-GIMP_APP_VERSION = 2.2
-GIMP_BINARY_AGE = 217
+GIMP_APP_VERSION = 2.3
+GIMP_BINARY_AGE = 306
 GIMP_DATA_VERSION = 2.0
-GIMP_DESKTOP_ICON = wilber-icon.png
-GIMP_FULL_NAME = The GIMP
-GIMP_INTERFACE_AGE = 17
+GIMP_FULL_NAME = GNU Image Manipulation Program
+GIMP_INTERFACE_AGE = 0
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 17
-GIMP_MINOR_VERSION = 2
+GIMP_MICRO_VERSION = 6
+GIMP_MINOR_VERSION = 3
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
-GIMP_MP_FLAGS = 
-GIMP_MP_LIBS = 
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.2.17
-GIMP_REMOTE = gimp-remote-2.2$(EXEEXT)
+GIMP_REAL_VERSION = 2.3.6
+GIMP_REMOTE = gimp-remote-2.3$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
-GIMP_THREAD_FLAGS = 
-GIMP_THREAD_LIBS = 
 GIMP_TOOL_VERSION = 2.0
-GIMP_UNSTABLE = no
-GIMP_USER_VERSION = 2.2
-GIMP_VERSION = 2.2.17
+GIMP_UNSTABLE = yes
+GIMP_UNSTABLE_FALSE = #
+GIMP_UNSTABLE_TRUE = 
+GIMP_USER_VERSION = 2.3
+GIMP_VERSION = 2.3.6
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
 GLIB_MKENUMS = glib-mkenums
-GLIB_REQUIRED_VERSION = 2.4.5
+GLIB_REQUIRED_VERSION = 2.8.0
 GMODULE_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GMODULE_LIBS = -Wl,--export-dynamic -lgmodule-2.0 -ldl -lgobject-2.0 -lglib-2.0  
-GMOFILES =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo eu.gmo fa.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo nl.gmo oc.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo uk.gmo vi.gmo yi.gmo zh_CN.gmo zh_TW.gmo
+GMOFILES =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo et.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo gu.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo ne.gmo nl.gmo no.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo tt.gmo uk.gmo vi.gmo xh.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 GMSGFMT = /usr/bin/msgfmt
+GNOMEPRINT = gnomeprint$(EXEEXT)
+GNOMEPRINT_CFLAGS = -DXTHREADS -I/usr/include/libgnomeprintui-2.2 -I/usr/include/libgnomeprint-2.2 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/libart-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/X11R6/include  
+GNOMEPRINT_LIBS = -Wl,--export-dynamic -L/usr/X11R6/lib -lgnomeprintui-2-2 -lgnomeprint-2-2 -lgnomecanvas-2 -lxml2 -lz -lart_lgpl_2 -lpangoft2-1.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -lXrandr -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXcursor -lpango-1.0 -lcairo -lXrender -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 GOBJECT_QUERY = gobject-query
-GREP = /bin/grep
+GTHREAD_CFLAGS = -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+GTHREAD_LIBS = -pthread -lgthread-2.0 -lglib-2.0  
 GTKDOC_REQUIRED_VERSION = 1.0
-GTKHTML2_CFLAGS = -I/usr/include/gtkhtml-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libxml2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12  
-GTKHTML2_LIBS = -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+GTKHTML2_CFLAGS = -DXTHREADS -I/usr/include/gtkhtml-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libxml2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/X11R6/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+GTKHTML2_LIBS = -L/usr/X11R6/lib -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lz -lgdk-x11-2.0 -lXrandr -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXcursor -lpango-1.0 -lcairo -lXrender -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 GTKHTML2_REQUIRED_VERSION = 2.0.0
-GTK_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12  
+GTK_CFLAGS = -DXTHREADS -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/X11R6/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GTK_DOC_USE_LIBTOOL_FALSE = #
 GTK_DOC_USE_LIBTOOL_TRUE = 
-GTK_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
-GTK_REQUIRED_VERSION = 2.4.4
+GTK_LIBS = -L/usr/X11R6/lib -lgtk-x11-2.0 -lgdk-x11-2.0 -lXrandr -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXcursor -lpango-1.0 -lcairo -lXrender -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+GTK_REQUIRED_VERSION = 2.6.0
 HAVE_FINITE = 
 HAVE_GLIBC_REGEX = 
 HAVE_GLIBC_REGEX_FALSE = #
 HAVE_GLIBC_REGEX_TRUE = 
+HAVE_GNOMEPRINT_FALSE = #
+HAVE_GNOMEPRINT_TRUE = 
+HAVE_GNOMEVFS_FALSE = #
+HAVE_GNOMEVFS_TRUE = 
 HAVE_ISFINITE = 
 HAVE_LCMS_FALSE = #
 HAVE_LCMS_TRUE = 
@@ -217,7 +230,6 @@ INTLTOOL_PONG_RULE = %.pong:      %.pong.in      $(INTLTOOL_MERGE) $(wildcard $(
 INTLTOOL_PROP_RULE = %.prop:      %.prop.in      $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_SCHEMAS_RULE = %.schemas:   %.schemas.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -s -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_SERVER_RULE = %.server:    %.server.in    $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -o -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
-INTLTOOL_SERVICE_RULE = %.service: %.service.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_SHEET_RULE = %.sheet:     %.sheet.in     $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_SOUNDLIST_RULE = %.soundlist: %.soundlist.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_THEME_RULE = %.theme:     %.theme.in     $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
@@ -233,33 +245,34 @@ LDFLAGS =
 LIBAA = -laa
 LIBART_CFLAGS = -I/usr/include/libart-2.0  
 LIBART_LIBS = -lart_lgpl_2  
+LIBGNOMEPRINT = -Wl,--export-dynamic -L/usr/X11R6/lib -lgnomeprintui-2-2 -lgnomeprint-2-2 -lgnomecanvas-2 -lxml2 -lz -lart_lgpl_2 -lpangoft2-1.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -lXrandr -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXcursor -lpango-1.0 -lcairo -lXrender -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 LIBJPEG = -ljpeg
 LIBMNG = -lmng -ljpeg -lpng -lz
 LIBOBJS = 
 LIBPNG = -lpng -lz
+LIBPOPPLER = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lglib-2.0  
 LIBS = 
-LIBSCREENSHOT =  -lX11
+LIBSCREENSHOT =  -L/usr/X11R6/lib  -lSM -lICE -lX11 -lXmu -lXt
 LIBSVG = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 LIBTIFF = -ltiff
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
-LIBWMF = 
-LIBXMU =   -lSM -lICE -lX11 -lXmu -lXt
-LIBXPM =   -lSM -lICE -lX11 -lXpm
+LIBWMF = -L/usr/lib -lwmf -lwmflite -lfreetype -lz -L/usr/X11R6/lib -lSM -lICE -lX11 -lexpat -ljpeg -lpng -lz -lm
+LIBXMU =  -L/usr/X11R6/lib  -lSM -lICE -lX11 -lXmu -lXt
+LIBXPM =  -L/usr/X11R6/lib  -lSM -lICE -lX11 -lXpm
 LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 200:17:200
+LT_VERSION_INFO = 306:0:306
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
 MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/sven/gnomesvn/gimp-dist-2-2/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/sven/gnomecvs/gimp-dist/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MMX_EXTRA_CFLAGS = -mmmx
 MNG = mng$(EXEEXT)
 MSGFMT = /usr/bin/msgfmt
-MSGFMT_OPTS = -c
 MS_LIB_AVAILABLE_FALSE = 
 MS_LIB_AVAILABLE_TRUE = #
 OBJDUMP = objdump
@@ -271,12 +284,12 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.2.17
+PACKAGE_STRING = GIMP 2.3.6
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.2.17
+PACKAGE_VERSION = 2.3.6
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
-PANGOFT2_REQUIRED_VERSION = 1.4.0
+PANGOFT2_REQUIRED_VERSION = 1.8.0
 PATHSEP = :
 PATH_SEPARATOR = :
 PERL = /usr/bin/perl
@@ -284,24 +297,31 @@ PKG_CONFIG = /usr/bin/pkg-config
 PLATFORM_WIN32_FALSE = 
 PLATFORM_WIN32_TRUE = #
 PNG = png$(EXEEXT)
-POFILES =  bg.po ca.po cs.po da.po de.po el.po en_CA.po en_GB.po es.po eu.po fa.po fi.po fr.po ga.po gl.po he.po hu.po hr.po id.po it.po ja.po ko.po lt.po mk.po ms.po nb.po nl.po oc.po pa.po pl.po pt.po pt_BR.po ro.po ru.po sk.po sr.po sr@Latn.po sv.po tr.po uk.po vi.po yi.po zh_CN.po zh_TW.po
+POFILES =  bg.po ca.po cs.po da.po de.po el.po en_CA.po en_GB.po es.po et.po eu.po fi.po fr.po ga.po gl.po gu.po he.po hu.po hr.po id.po it.po ja.po ko.po lt.po mk.po ms.po nb.po ne.po nl.po no.po pa.po pl.po pt.po pt_BR.po ro.po ru.po rw.po sk.po sr.po sr@Latn.po sv.po tr.po tt.po uk.po vi.po xh.po yi.po zh_CN.po zh_TW.po
+POPPLER = poppler$(EXEEXT)
+POPPLER_CFLAGS = -pthread -I/usr/include/poppler/glib -I/usr/include/poppler -I/usr/include/gtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+POPPLER_LIBS = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lglib-2.0  
 POSUB = po
 PO_IN_DATADIR_FALSE = 
 PO_IN_DATADIR_TRUE = 
 PRINT_CFLAGS = 
 PRINT_LIBS = 
 PSP = psp$(EXEEXT)
-PYGIMP_EXTRA_CFLAGS = 
-PYGTK_CFLAGS = 
-PYGTK_LIBS = 
-PYTHON = 
-PYTHON_EXEC_PREFIX = 
-PYTHON_INCLUDES = 
-PYTHON_PLATFORM = 
-PYTHON_PREFIX = 
-PYTHON_VERSION = 
+PYBIN_PATH = /usr/bin/python
+PYGIMP_EXTRA_CFLAGS = -fno-strict-aliasing
+PYGTK_CFLAGS = -I/usr/include/pygtk-2.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+PYGTK_CODEGEN = /usr/bin/pygtk-codegen-2.0
+PYGTK_DEFSDIR = /usr/share/pygtk/2.0/defs
+PYGTK_LIBS = -lgobject-2.0 -lglib-2.0  
+PYLINK_LIBS = 
+PYTHON = /usr/bin/python
+PYTHON_EXEC_PREFIX = ${exec_prefix}
+PYTHON_INCLUDES = -I/usr/include/python2.3
+PYTHON_PLATFORM = linux2
+PYTHON_PREFIX = ${prefix}
+PYTHON_VERSION = 2.3
 RANLIB = ranlib
-RSVG_REQUIRED_VERSION = 2.2.0
+RSVG_REQUIRED_VERSION = 2.8.0
 RT_LIBS = 
 SCREENSHOT = screenshot$(EXEEXT)
 SENDMAIL = /usr/sbin/sendmail
@@ -317,30 +337,37 @@ SVG_CFLAGS = -I/usr/include/librsvg-2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.
 SVG_LIBS = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 SYMPREFIX = 
 TIFF = tiff$(EXEEXT)
-URL = url$(EXEEXT)
+URI_CFLAGS = -pthread -DORBIT2=1 -DXTHREADS -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0 -I/usr/include/libbonobo-2.0 -I/usr/include/gconf/2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libgnomeui-2.0 -I/usr/include/libgnome-2.0 -I/usr/include/libgnomecanvas-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libart-2.0 -I/usr/include/libbonoboui-2.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/X11R6/include -I/usr/include/libxml2 -I/usr/include/gnome-keyring-1  
+URI_LIBS = -pthread -Wl,--export-dynamic -L/usr/X11R6/lib -lgnomeui-2 -lSM -lICE -lbonoboui-2 -lxml2 -lz -lgnomecanvas-2 -lgnome-2 -lpopt -lart_lgpl_2 -lpangoft2-1.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -lXrandr -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lpangocairo-1.0 -lfontconfig -lXcursor -lpango-1.0 -lcairo -lXrender -lX11 -lgobject-2.0 -lgnomevfs-2 -lbonobo-2 -lgconf-2 -lbonobo-activation -lORBit-2 -lm -lgmodule-2.0 -ldl -lgthread-2.0 -lgnome-keyring -lglib-2.0  
 USE_NLS = yes
-VERSION = 2.2.17
-WINCLIPBOARD = 
+VERSION = 2.3.6
 WINDRES = :
 WINPRINT = 
 WITH_PDBGEN_FALSE = #
 WITH_PDBGEN_TRUE = 
-WMF = 
-WMF_CFLAGS = 
-WMF_CONFIG = no
+WMF = wmf$(EXEEXT)
+WMF_CFLAGS = -I/usr/include/freetype2 -I/usr/X11R6/include -I/usr/include
+WMF_CONFIG = /usr/bin/libwmf-config
 WMF_REQUIRED_VERSION = 0.2.8
 XGETTEXT = /usr/bin/xgettext
-XMKMF = 
 XMLLINT = /usr/bin/xmllint
 XPM = xpm$(EXEEXT)
 XSLTPROC = /usr/bin/xsltproc
-X_CFLAGS = 
+X_CFLAGS =  -I/usr/X11R6/include
 X_EXTRA_LIBS = 
-X_LIBS = 
+X_LIBS =  -L/usr/X11R6/lib
 X_PRE_LIBS =  -lSM -lICE
+ac_ct_AR = ar
+ac_ct_AS = 
 ac_ct_CC = gcc
 ac_ct_CXX = g++
+ac_ct_DLLTOOL = 
 ac_ct_F77 = g77
+ac_ct_OBJDUMP = 
+ac_ct_RANLIB = ranlib
+ac_ct_STRIP = strip
+ac_ct_WINDRES = 
+ac_pt_PKG_CONFIG = 
 am__fastdepCC_FALSE = #
 am__fastdepCC_TRUE = 
 am__fastdepCXX_FALSE = #
@@ -356,13 +383,11 @@ build_alias =
 build_cpu = i686
 build_os = linux-gnu
 build_vendor = pc
-datadir = ${datarootdir}
-datarootdir = ${prefix}/share
-docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
-dvidir = ${docdir}
+datadir = ${prefix}/share
 exec_prefix = ${prefix}
-gimpdatadir = ${datarootdir}/gimp/2.0
-gimpdir = .gimp-2.2
+gimpdatadir = ${prefix}/share/gimp/2.0
+gimpdir = .gimp-2.3
+gimplocaledir = ${prefix}/share/locale
 gimpplugindir = ${exec_prefix}/lib/gimp/2.0
 gimpsysconfdir = ${prefix}/etc/gimp/2.0
 host = i686-pc-linux-gnu
@@ -370,31 +395,26 @@ host_alias =
 host_cpu = i686
 host_os = linux-gnu
 host_vendor = pc
-htmldir = ${docdir}
 includedir = ${prefix}/include
-infodir = ${datarootdir}/info
-install_sh = /home/sven/gnomesvn/gimp-dist-2-2/install-sh
+infodir = ${prefix}/info
+install_sh = /home/sven/gnomecvs/gimp-dist/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
-localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
-mandir = ${datarootdir}/man
+mandir = ${prefix}/man
 mkdir_p = mkdir -p --
 ms_librarian = 
 oldincludedir = /usr/include
-pdfdir = ${docdir}
-pkgpyexecdir = 
-pkgpythondir = 
+pkgpyexecdir = ${pyexecdir}/gimp
+pkgpythondir = ${pythondir}/gimp
 prefix = /usr/local
 program_transform_name = s,x,x,
-psdir = ${docdir}
-pyexecdir = 
-pythondir = 
+pyexecdir = ${exec_prefix}/lib/python2.3/site-packages
+pythondir = ${prefix}/lib/python2.3/site-packages
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 sysconfdir = ${prefix}/etc
 target_alias = 
-AUTOMAKE_OPTIONS = 1.6
 
 # The name of the module.
 DOC_MODULE = app
@@ -437,8 +457,7 @@ IGNORE_HFILES = \
 	gimpimage-convert-fsdither.h	\
 	gimphelp-ids.h			\
 	gimprc-blurbs.h			\
-	paint-funcs-generic.h		\
-	gimpitemfactory.h
+	paint-funcs-generic.h
 
 
 # Images to copy into HTML directory
@@ -487,14 +506,14 @@ GTKDOC_LIBS = \
         $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la       \
         $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la   \
         $(top_builddir)/libgimpthumb/libgimpthumb-$(GIMP_API_VERSION).la     \
+        $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la   \
         $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la \
         $(GTK_LIBS)                                                          \
         $(LIBART_LIBS)                                                       \
         $(PANGOFT2_LIBS)                                                     \
         $(FONTCONFIG_LIBS)                                                   \
         $(FREETYPE_LIBS)                                                     \
-        $(GIMP_THREAD_LIBS)                                                  \
-        $(GIMP_MP_LIBS)                                                      \
+        $(GTHREAD_LIBS)                                                      \
         $(INTLLIBS)                                                          \
         $(REGEXREPL)
 
@@ -698,17 +717,12 @@ uninstall-am: uninstall-info-am uninstall-local
 
 
 all-local: html-build.stamp
-#all-local:
-
-docs: html-build.stamp
 
 #### scan ####
 
 scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
-	@echo 'gtk-doc: Scanning header files'
+	@echo '*** Scanning header files ***'
 	@-chmod -R u+w $(srcdir)
-	cd $(srcdir) && \
-	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
 	if grep -l '^..*$$' $(srcdir)/$(DOC_MODULE).types > /dev/null 2>&1 ; then \
 	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj $(SCANGOBJ_OPTIONS) --module=$(DOC_MODULE) --output-dir=$(srcdir) ; \
 	else \
@@ -717,15 +731,17 @@ scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
                test -f $$i || touch $$i ; \
 	    done \
 	fi
+	cd $(srcdir) && \
+	  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)" $(SCAN_OPTIONS) $(EXTRA_HFILES)
 	touch scan-build.stamp
 
-$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt: scan-build.stamp
+$(DOC_MODULE)-decl.txt $(SCANOBJ_FILES): scan-build.stamp
 	@true
 
 #### templates ####
 
 tmpl-build.stamp: $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
-	@echo 'gtk-doc: Rebuilding template files'
+	@echo '*** Rebuilding template files ***'
 	@-chmod -R u+w $(srcdir)
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE) $(MKTMPL_OPTIONS)
 	touch tmpl-build.stamp
@@ -735,11 +751,11 @@ tmpl.stamp: tmpl-build.stamp
 
 #### xml ####
 
-sgml-build.stamp: tmpl.stamp $(HFILE_GLOB) $(CFILE_GLOB) $(DOC_MODULE)-sections.txt $(srcdir)/tmpl/*.sgml $(expand_content_files)
-	@echo 'gtk-doc: Building XML'
+sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) $(srcdir)/tmpl/*.sgml $(expand_content_files)
+	@echo '*** Building XML ***'
 	@-chmod -R u+w $(srcdir)
 	cd $(srcdir) && \
-	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --expand-content-files="$(expand_content_files)" --main-sgml-file=$(DOC_MAIN_SGML_FILE) $(MKDB_OPTIONS)
+	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --expand-content-files="$(expand_content_files)" $(MKDB_OPTIONS)
 	touch sgml-build.stamp
 
 sgml.stamp: sgml-build.stamp
@@ -748,15 +764,16 @@ sgml.stamp: sgml-build.stamp
 #### html ####
 
 html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
-	@echo 'gtk-doc: Building HTML'
+	@echo '*** Building HTML ***'
 	@-chmod -R u+w $(srcdir)
 	rm -rf $(srcdir)/html 
 	mkdir $(srcdir)/html
 	cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 	test "x$(HTML_IMAGES)" = "x" || ( cd $(srcdir) && cp $(HTML_IMAGES) html )
-	@echo 'gtk-doc: Fixing cross-references' 
+	@echo '-- Fixing Crossreferences' 
 	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 	touch html-build.stamp
+#all-local:
 
 ##############
 
@@ -798,12 +815,12 @@ dist-hook: dist-check-gtkdoc dist-hook-local
 	mkdir $(distdir)/html
 	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
 	-cp $(srcdir)/xml/*.xml $(distdir)/xml
-	cp $(srcdir)/html/* $(distdir)/html
+	-cp $(srcdir)/html/* $(distdir)/html
 	if test -f $(srcdir)/$(DOC_MODULE).types; then \
 	  cp $(srcdir)/$(DOC_MODULE).types $(distdir)/$(DOC_MODULE).types; \
 	fi
 
-.PHONY : dist-hook-local docs
+.PHONY : dist-hook-local
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

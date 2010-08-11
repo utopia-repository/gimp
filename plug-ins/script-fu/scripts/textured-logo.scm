@@ -43,7 +43,7 @@
     (gimp-image-add-layer img text-shadow-layer 0)
     (gimp-selection-all img)
     (gimp-context-set-pattern text-pattern)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-edit-bucket-fill logo-layer PATTERN-BUCKET-FILL NORMAL-MODE 100 0 FALSE 0 0)
     (gimp-selection-none img)
     (gimp-edit-clear text-shadow-layer)
@@ -129,7 +129,7 @@
 		    SF-COLOR      _"Ending blend"         '(0 0 106))
 
 (script-fu-menu-register "script-fu-textured-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-textured-logo text
@@ -145,7 +145,6 @@
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text b-size
 					      TRUE size PIXELS fontname))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-textured-logo-effect img text-layer b-size text-pattern tile-type
 				bg-color blend-fg blend-bg)
     (gimp-image-undo-enable img)
@@ -170,4 +169,4 @@
 		    SF-COLOR      _"Ending blend"       '(0 0 106))
 
 (script-fu-menu-register "script-fu-textured-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

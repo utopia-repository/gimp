@@ -22,6 +22,7 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "widgets-types.h"
@@ -48,18 +49,37 @@
 
 /*  local function prototypes  */
 
-static void   gimp_toolbox_drop_uri_list (GtkWidget    *widget,
-                                          GList        *uri_list,
-                                          gpointer      data);
-static void   gimp_toolbox_drop_drawable (GtkWidget    *widget,
-                                          GimpViewable *viewable,
-                                          gpointer      data);
-static void   gimp_toolbox_drop_tool     (GtkWidget    *widget,
-                                          GimpViewable *viewable,
-                                          gpointer      data);
-static void   gimp_toolbox_drop_buffer   (GtkWidget    *widget,
-                                          GimpViewable *viewable,
-                                          gpointer      data);
+static void   gimp_toolbox_drop_uri_list  (GtkWidget       *widget,
+                                           gint             x,
+                                           gint             y,
+                                           GList           *uri_list,
+                                           gpointer         data);
+static void   gimp_toolbox_drop_drawable  (GtkWidget       *widget,
+                                           gint             x,
+                                           gint             y,
+                                           GimpViewable    *viewable,
+                                           gpointer         data);
+static void   gimp_toolbox_drop_tool      (GtkWidget       *widget,
+                                           gint             x,
+                                           gint             y,
+                                           GimpViewable    *viewable,
+                                           gpointer         data);
+static void   gimp_toolbox_drop_buffer    (GtkWidget       *widget,
+                                           gint             x,
+                                           gint             y,
+                                           GimpViewable    *viewable,
+                                           gpointer         data);
+static void   gimp_toolbox_drop_component (GtkWidget       *widget,
+                                           gint             x,
+                                           gint             y,
+                                           GimpImage       *image,
+                                           GimpChannelType  component,
+                                           gpointer         data);
+static void   gimp_toolbox_drop_pixbuf    (GtkWidget       *widget,
+                                           gint             x,
+                                           gint             y,
+                                           GdkPixbuf       *pixbuf,
+                                           gpointer         data);
 
 
 /*  public functions  */
@@ -95,6 +115,13 @@ gimp_toolbox_dnd_init (GimpToolbox *toolbox)
   gimp_dnd_viewable_dest_add (toolbox->tool_wbox, GIMP_TYPE_BUFFER,
 			      gimp_toolbox_drop_buffer,
 			      dock->context);
+
+  gimp_dnd_component_dest_add (toolbox->tool_wbox,
+                               gimp_toolbox_drop_component,
+                               dock->context);
+  gimp_dnd_pixbuf_dest_add    (toolbox->tool_wbox,
+                               gimp_toolbox_drop_pixbuf,
+                               dock->context);
 }
 
 
@@ -102,11 +129,16 @@ gimp_toolbox_dnd_init (GimpToolbox *toolbox)
 
 static void
 gimp_toolbox_drop_uri_list (GtkWidget *widget,
+                            gint       x,
+                            gint       y,
                             GList     *uri_list,
                             gpointer   data)
 {
   GimpContext *context = GIMP_CONTEXT (data);
   GList       *list;
+
+  if (context->gimp->busy)
+    return;
 
   for (list = uri_list; list; list = g_list_next (list))
     {
@@ -120,7 +152,7 @@ gimp_toolbox_drop_uri_list (GtkWidget *widget,
 
       if (! gimage && status != GIMP_PDB_CANCEL)
         {
-          gchar *filename = file_utils_uri_to_utf8_filename (uri);
+          gchar *filename = file_utils_uri_display_name (uri);
 
           g_message (_("Opening '%s' failed:\n\n%s"),
                      filename, error->message);
@@ -133,9 +165,12 @@ gimp_toolbox_drop_uri_list (GtkWidget *widget,
 
 static void
 gimp_toolbox_drop_drawable (GtkWidget    *widget,
+                            gint          x,
+                            gint          y,
                             GimpViewable *viewable,
                             gpointer      data)
 {
+  GimpContext       *context = GIMP_CONTEXT (data);
   GimpDrawable      *drawable;
   GimpItem          *item;
   GimpImage         *gimage;
@@ -146,6 +181,9 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
   gint               off_x, off_y;
   gint               bytes;
   GimpImageBaseType  type;
+
+  if (context->gimp->busy)
+    return;
 
   drawable = GIMP_DRAWABLE (viewable);
   item     = GIMP_ITEM (viewable);
@@ -195,23 +233,136 @@ gimp_toolbox_drop_drawable (GtkWidget    *widget,
 
 static void
 gimp_toolbox_drop_tool (GtkWidget    *widget,
+                        gint          x,
+                        gint          y,
                         GimpViewable *viewable,
                         gpointer      data)
-{
-  GimpContext *context = GIMP_CONTEXT (data);
-
-  gimp_context_set_tool (context, GIMP_TOOL_INFO (viewable));
-}
-
-static void
-gimp_toolbox_drop_buffer (GtkWidget    *widget,
-                          GimpViewable *viewable,
-                          gpointer      data)
 {
   GimpContext *context = GIMP_CONTEXT (data);
 
   if (context->gimp->busy)
     return;
 
-  gimp_edit_paste_as_new (context->gimp, NULL, GIMP_BUFFER (viewable));
+  gimp_context_set_tool (context, GIMP_TOOL_INFO (viewable));
+}
+
+static void
+gimp_toolbox_drop_buffer (GtkWidget    *widget,
+                          gint          x,
+                          gint          y,
+                          GimpViewable *viewable,
+                          gpointer      data)
+{
+  GimpContext *context = GIMP_CONTEXT (data);
+  GimpImage   *image;
+
+  if (context->gimp->busy)
+    return;
+
+  image = gimp_edit_paste_as_new (context->gimp, NULL, GIMP_BUFFER (viewable));
+
+  if (image)
+    {
+      gimp_create_display (image->gimp, image, GIMP_UNIT_PIXEL, 1.0);
+      g_object_unref (image);
+    }
+}
+
+static void
+gimp_toolbox_drop_component (GtkWidget       *widget,
+                             gint             x,
+                             gint             y,
+                             GimpImage       *image,
+                             GimpChannelType  component,
+                             gpointer         data)
+{
+  GimpContext *context = GIMP_CONTEXT (data);
+  GimpChannel *channel;
+  GimpImage   *new_image;
+  GimpLayer   *new_layer;
+  const gchar *desc;
+  gchar       *name;
+
+  if (context->gimp->busy)
+    return;
+
+  new_image = gimp_create_image (image->gimp,
+                                 gimp_image_get_width  (image),
+                                 gimp_image_get_height (image),
+                                 GIMP_GRAY, FALSE);
+
+  gimp_image_undo_disable (new_image);
+
+  gimp_image_set_resolution (new_image,
+			     image->xresolution, image->yresolution);
+  gimp_image_set_unit (new_image, gimp_image_get_unit (image));
+
+  channel = gimp_channel_new_from_component (image, component, NULL, NULL);
+
+  new_layer = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (channel), new_image,
+                                             GIMP_TYPE_LAYER, FALSE));
+
+  g_object_unref (channel);
+
+  gimp_enum_get_value (GIMP_TYPE_CHANNEL_TYPE, component,
+                       NULL, NULL, &desc, NULL);
+  name = g_strdup_printf (_("%s Channel Copy"), desc);
+  gimp_object_set_name (GIMP_OBJECT (new_layer), name);
+  g_free (name);
+
+  gimp_image_add_layer (new_image, new_layer, 0);
+
+  gimp_image_undo_enable (new_image);
+
+  gimp_create_display (new_image->gimp, new_image, GIMP_UNIT_PIXEL, 1.0);
+  g_object_unref (new_image);
+}
+
+static void
+gimp_toolbox_drop_pixbuf (GtkWidget *widget,
+                          gint       x,
+                          gint       y,
+                          GdkPixbuf *pixbuf,
+                          gpointer   data)
+{
+  GimpContext   *context = GIMP_CONTEXT (data);
+  GimpImageType  image_type;
+  GimpImage     *new_image;
+  GimpLayer     *new_layer;
+
+  if (context->gimp->busy)
+    return;
+
+  switch (gdk_pixbuf_get_n_channels (pixbuf))
+    {
+    case 1: image_type = GIMP_GRAY_IMAGE;  break;
+    case 2: image_type = GIMP_GRAYA_IMAGE; break;
+    case 3: image_type = GIMP_RGB_IMAGE;   break;
+    case 4: image_type = GIMP_RGBA_IMAGE;  break;
+      break;
+
+    default:
+      g_return_if_reached ();
+      break;
+    }
+
+  new_image = gimp_create_image (context->gimp,
+                                 gdk_pixbuf_get_width  (pixbuf),
+                                 gdk_pixbuf_get_height (pixbuf),
+                                 GIMP_IMAGE_TYPE_BASE_TYPE (image_type),
+                                 FALSE);
+
+  gimp_image_undo_disable (new_image);
+
+  new_layer =
+    gimp_layer_new_from_pixbuf (pixbuf, new_image, image_type,
+                                _("Dropped Buffer"),
+                                GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+
+  gimp_image_add_layer (new_image, new_layer, 0);
+
+  gimp_image_undo_enable (new_image);
+
+  gimp_create_display (new_image->gimp, new_image, GIMP_UNIT_PIXEL, 1.0);
+  g_object_unref (new_image);
 }

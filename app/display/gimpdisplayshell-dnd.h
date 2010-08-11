@@ -20,28 +20,7 @@
 #define __GIMP_DISPLAY_SHELL_DND_H__
 
 
-void   gimp_display_shell_drop_drawable (GtkWidget     *widget,
-                                         GimpViewable  *viewable,
-                                         gpointer       data);
-void   gimp_display_shell_drop_vectors  (GtkWidget     *widget,
-                                         GimpViewable  *viewable,
-                                         gpointer       data);
-void   gimp_display_shell_drop_svg      (GtkWidget     *widget,
-                                         const guchar  *svg_data,
-                                         gsize          svg_data_length,
-                                         gpointer       data);
-void   gimp_display_shell_drop_pattern  (GtkWidget     *widget,
-                                         GimpViewable  *viewable,
-                                         gpointer       data);
-void   gimp_display_shell_drop_color    (GtkWidget     *widget,
-                                         const GimpRGB *color,
-                                         gpointer       data);
-void   gimp_display_shell_drop_buffer   (GtkWidget     *widget,
-                                         GimpViewable  *viewable,
-                                         gpointer       data);
-void   gimp_display_shell_drop_uri_list (GtkWidget     *widget,
-                                         GList         *uri_list,
-                                         gpointer       data);
+void   gimp_display_shell_dnd_init (GimpDisplayShell *shell);
 
 
 #endif /* __GIMP_DISPLAY_SHELL_DND_H__ */

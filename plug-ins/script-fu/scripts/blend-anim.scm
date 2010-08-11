@@ -123,7 +123,7 @@
 		    (if (> max-blur 0)
 			(let* ((layer-width (car (gimp-drawable-width upper-copy)))
 			       (layer-height (car (gimp-drawable-height upper-copy))))
-			  (gimp-layer-set-preserve-trans upper-copy FALSE)
+			  (gimp-layer-set-lock-alpha upper-copy FALSE)
 			  (gimp-layer-resize upper-copy
 					     (+ layer-width (* blur 2))
 					     (+ layer-height (* blur 2))
@@ -136,7 +136,7 @@
 						 blur
 						 TRUE TRUE))
 			  (set! blur (- max-blur blur))
-			  (gimp-layer-set-preserve-trans lower-copy FALSE)
+			  (gimp-layer-set-lock-alpha lower-copy FALSE)
 			  (set! layer-width (car (gimp-drawable-width
 						  lower-copy)))
 			  (set! layer-height (car (gimp-drawable-height
@@ -218,11 +218,10 @@
 
 (script-fu-register "script-fu-blend-anim"
 		    _"_Blend..."
-		    "Blend two or more layers over a background, so that an 
-                     animation can be saved"
+		    "Blend two or more layers over a background, so that an animation can be saved"
 		    "Sven Neumann <sven@gimp.org>"
 		    "Sven Neumann"
-		    "1999/12/21"
+		    "1999"
 		    "RGB* GRAY*"
 		    SF-IMAGE       "Image"               0
 		    SF-DRAWABLE    "Drawable"            0
@@ -231,4 +230,4 @@
 		    SF-TOGGLE     _"Looped"              TRUE)
 
 (script-fu-menu-register "script-fu-blend-anim"
-			 _"<Image>/Script-Fu/Animators")
+			 "<Image>/Filters/Animation/Animators")

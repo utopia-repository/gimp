@@ -46,21 +46,13 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
-
-
-#ifdef RCSID
-static char rcsid[] = "$Id: newsprint.c 17745 2005-06-21 22:11:36Z weskaggs $";
-#endif
 
 #define VERSION "v0.60"
 
@@ -72,6 +64,9 @@ static char rcsid[] = "$Id: newsprint.c 17745 2005-06-21 22:11:36Z weskaggs $";
 #endif
 
 /*#define TIMINGS*/
+
+#define PLUG_IN_PROC       "plug-in-newsprint"
+#define PLUG_IN_BINARY     "newsprint"
 
 #define TILE_CACHE_SIZE     16
 #define SCALE_WIDTH        125
@@ -97,7 +92,7 @@ static char rcsid[] = "$Id: newsprint.c 17745 2005-06-21 22:11:36Z weskaggs $";
 #define CS_GREY         0
 #define CS_RGB          1
 #define CS_CMYK         2
-#define CS_INTENSITY    3
+#define CS_LUMINANCE    3
 #define NUM_CS          4
 #define VALID_CS(x)     ((x) >= 0 && (x) <= NUM_CS-1)
 
@@ -198,7 +193,7 @@ typedef struct
   gint    cell_width;
 
   /* screening section: */
-  gint    colourspace;  /* 0: RGB, 1: CMYK, 2: Intensity */
+  gint    colourspace;  /* 0: RGB, 1: CMYK, 2: Luminance */
   gint    k_pullout;    /* percentage of black to pull out */
 
   /* grey screen (only used if greyscale drawable) */
@@ -284,7 +279,7 @@ static const NewsprintValues factory_defaults =
   10,          /* cell width */
 
   /* screen setup (default is the classic rosette pattern) */
-  CS_RGB,      /* use RGB, not CMYK or Intensity */
+  CS_RGB,      /* use RGB, not CMYK or Luminance */
   100, /* max pullout */
 
   /* grey/black */
@@ -412,10 +407,10 @@ static const chan_tmpl cmyk_tmpl[] =
   { NULL, NULL, NULL, NULL, NULL }
 };
 
-static const chan_tmpl intensity_tmpl[] =
+static const chan_tmpl luminance_tmpl[] =
 {
   {
-    N_("Intensity"),
+    N_("Luminance"),
     &pvals.gry_ang,
     &pvals.gry_spotfn,
     &factory_defaults.gry_ang,
@@ -432,7 +427,7 @@ static const chan_tmpl *cspace_chan_tmpl[] =
   grey_tmpl,
   rgb_tmpl,
   cmyk_tmpl,
-  intensity_tmpl
+  luminance_tmpl
 };
 
 #define NCHANS(x) ((sizeof(x) / sizeof(chan_tmpl)) - 1)
@@ -445,7 +440,7 @@ static const gint cspace_nchans[] =
   NCHANS (grey_tmpl),
   NCHANS (rgb_tmpl),
   NCHANS (cmyk_tmpl),
-  NCHANS (intensity_tmpl)
+  NCHANS (luminance_tmpl)
 };
 
 
@@ -499,29 +494,28 @@ query (void)
 {
   static GimpParamDef args[]=
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image (unused)" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
+    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",      "Input image (unused)" },
+    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
 
-    { GIMP_PDB_INT32, "cell_width", "screen cell width, in pixels" },
+    { GIMP_PDB_INT32,    "cell-width", "screen cell width, in pixels" },
 
-    { GIMP_PDB_INT32, "colorspace", "separate to 0:RGB, 1:CMYK, 2:Intensity" },
-    { GIMP_PDB_INT32, "k_pullout", "Percentage of black to pullout (CMYK only)" },
+    { GIMP_PDB_INT32,    "colorspace", "separate to 0:RGB, 1:CMYK, 2:Luminance" },
+    { GIMP_PDB_INT32,    "k-pullout",  "Percentage of black to pullout (CMYK only)" },
 
-    { GIMP_PDB_FLOAT, "gry_ang", "Grey/black screen angle (degrees)" },
-    { GIMP_PDB_INT32, "gry_spotfn", "Grey/black spot function (0=dots, 1=lines, 2=diamonds, 3=euclidean dot, 4=PS diamond)" },
-    { GIMP_PDB_FLOAT, "red_ang", "Red/cyan screen angle (degrees)" },
-    { GIMP_PDB_INT32, "red_spotfn", "Red/cyan spot function (values as gry_spotfn)" },
-    { GIMP_PDB_FLOAT, "grn_ang", "Green/magenta screen angle (degrees)" },
-    { GIMP_PDB_INT32, "grn_spotfn", "Green/magenta spot function (values as gry_spotfn)" },
-    { GIMP_PDB_FLOAT, "blu_ang", "Blue/yellow screen angle (degrees)" },
-    { GIMP_PDB_INT32, "blu_spotfn", "Blue/yellow spot function (values as gry_spotfn)" },
+    { GIMP_PDB_FLOAT,    "gry-ang",    "Grey/black screen angle (degrees)" },
+    { GIMP_PDB_INT32,    "gry-spotfn", "Grey/black spot function (0=dots, 1=lines, 2=diamonds, 3=euclidean dot, 4=PS diamond)" },
+    { GIMP_PDB_FLOAT,    "red-ang",    "Red/cyan screen angle (degrees)" },
+    { GIMP_PDB_INT32,    "red-spotfn", "Red/cyan spot function (values as gry_spotfn)" },
+    { GIMP_PDB_FLOAT,    "grn-ang",    "Green/magenta screen angle (degrees)" },
+    { GIMP_PDB_INT32,    "grn-spotfn", "Green/magenta spot function (values as gry_spotfn)" },
+    { GIMP_PDB_FLOAT,    "blu-ang",    "Blue/yellow screen angle (degrees)" },
+    { GIMP_PDB_INT32,    "blu-spotfn", "Blue/yellow spot function (values as gry_spotfn)" },
 
-    { GIMP_PDB_INT32, "oversample", "how many times to oversample spot fn" }
-    /* 15 args */
+    { GIMP_PDB_INT32,    "oversample", "how many times to oversample spot fn" }
   };
 
-  gimp_install_procedure ("plug_in_newsprint",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Re-sample the image to give a newspaper-like effect",
                           "Halftone the image, trading off resolution to "
                           "represent colors or grey levels using the process "
@@ -537,7 +531,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_newsprint", "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 }
 
 static void
@@ -573,8 +567,8 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_newsprint", &pvals);
-      gimp_get_data ("plug_in_newsprint_ui", &pvals_ui);
+      gimp_get_data (PLUG_IN_PROC, &pvals);
+      gimp_get_data (PLUG_IN_PROC "-ui", &pvals_ui);
 
       /*  First acquire information with a dialog  */
       if (! newsprint_dialog (drawable))
@@ -619,7 +613,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_newsprint", &pvals);
+      gimp_get_data (PLUG_IN_PROC, &pvals);
       break;
 
     default:
@@ -632,7 +626,7 @@ run (const gchar      *name,
       if (gimp_drawable_is_rgb (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id))
         {
-          gimp_progress_init (_("Newsprint..."));
+          gimp_progress_init (_("Newsprint"));
 
           /*  set the tile cache size  */
           gimp_tile_cache_ntiles (TILE_CACHE_SIZE);
@@ -646,9 +640,9 @@ run (const gchar      *name,
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
             {
-              gimp_set_data ("plug_in_newsprint",
+              gimp_set_data (PLUG_IN_PROC,
                              &pvals, sizeof (NewsprintValues));
-              gimp_set_data ("plug_in_newsprint_ui",
+              gimp_set_data (PLUG_IN_PROC "-ui",
                              &pvals_ui, sizeof (NewsprintUIValues));
             }
         }
@@ -1016,10 +1010,10 @@ new_channel (const chan_tmpl *ct, GtkWidget *preview)
   gtk_size_group_add_widget (group, GIMP_SCALE_ENTRY_LABEL (chst->angle_adj));
   g_object_unref (group);
 
-  g_signal_connect (chst->angle_adj, "value_changed",
+  g_signal_connect (chst->angle_adj, "value-changed",
                     G_CALLBACK (angle_callback),
                     chst);
-  g_signal_connect_swapped (chst->angle_adj, "value_changed",
+  g_signal_connect_swapped (chst->angle_adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1043,7 +1037,7 @@ new_channel (const chan_tmpl *ct, GtkWidget *preview)
 
   gtk_size_group_add_widget (group, label);
 
-  chst->combo = gimp_int_combo_box_new (NULL, 0);
+  chst->combo = g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL);
 
   for (sf = spotfn_list, i = 0; sf->name; sf++, i++)
     gimp_int_combo_box_append (GIMP_INT_COMBO_BOX (chst->combo),
@@ -1169,7 +1163,7 @@ newsprint_dialog (GimpDrawable *drawable)
   gdouble    xres, yres;
   gboolean   run;
 
-  gimp_ui_init ("newsprint", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
   /* flag values to say we haven't filled these channel
    * states in yet */
@@ -1193,14 +1187,21 @@ newsprint_dialog (GimpDrawable *drawable)
         pvals.colourspace = CS_RGB;
     }
 
-  dialog = gimp_dialog_new (_("Newsprint"), "newsprint",
+  dialog = gimp_dialog_new (_("Newsprint"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-newsprint",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   paned = gtk_hpaned_new ();
   gtk_container_set_border_width (GTK_CONTAINER (paned), 12);
@@ -1261,10 +1262,10 @@ newsprint_dialog (GimpDrawable *drawable)
                           1.0, 1200.0, 1.0, 10.0, 0,
                           FALSE, GIMP_MIN_RESOLUTION, GIMP_MAX_RESOLUTION,
                           NULL, NULL);
-  g_signal_connect (st.input_spi, "value_changed",
+  g_signal_connect (st.input_spi, "value-changed",
                     G_CALLBACK (spi_callback),
                     &st);
-  g_signal_connect_swapped (st.input_spi, "value_changed",
+  g_signal_connect_swapped (st.input_spi, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1275,10 +1276,10 @@ newsprint_dialog (GimpDrawable *drawable)
                           1.0, 1200.0, 1.0, 10.0, 1,
                           FALSE, GIMP_MIN_RESOLUTION, GIMP_MAX_RESOLUTION,
                           NULL, NULL);
-  g_signal_connect (st.output_lpi, "value_changed",
+  g_signal_connect (st.output_lpi, "value-changed",
                     G_CALLBACK (lpi_callback),
                     &st);
-  g_signal_connect_swapped (st.output_lpi, "value_changed",
+  g_signal_connect_swapped (st.output_lpi, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1288,10 +1289,10 @@ newsprint_dialog (GimpDrawable *drawable)
                                       3.0, 100.0, 1.0, 5.0, 0,
                                       FALSE, 3.0, GIMP_MAX_IMAGE_SIZE,
                                       NULL, NULL);
-  g_signal_connect (st.cellsize, "value_changed",
+  g_signal_connect (st.cellsize, "value-changed",
                     G_CALLBACK (cellsize_callback),
                     &st);
-  g_signal_connect_swapped (st.cellsize, "value_changed",
+  g_signal_connect_swapped (st.cellsize, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1323,14 +1324,14 @@ newsprint_dialog (GimpDrawable *drawable)
       gtk_widget_set_sensitive (st.pull_table, (pvals.colourspace == CS_CMYK));
       gtk_widget_show (st.pull_table);
 
-      g_signal_connect (st.pull, "value_changed",
+      g_signal_connect (st.pull, "value-changed",
                         G_CALLBACK (gimp_int_adjustment_update),
                         &pvals.k_pullout);
-      g_signal_connect_swapped (st.pull, "value_changed",
+      g_signal_connect_swapped (st.pull, "value-changed",
                                 G_CALLBACK (gimp_preview_invalidate),
                                 preview);
 
-      /* RGB / CMYK / Intensity select */
+      /* RGB / CMYK / Luminance select */
       hbox = gtk_hbox_new (FALSE, 6);
       gtk_box_pack_start (GTK_BOX (st.vbox), hbox, FALSE, FALSE, 0);
 
@@ -1379,7 +1380,7 @@ newsprint_dialog (GimpDrawable *drawable)
       group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (toggle));
       gtk_box_pack_start (GTK_BOX (hbox), toggle, TRUE, TRUE, 0);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-                                    (pvals.colourspace == CS_INTENSITY));
+                                    (pvals.colourspace == CS_LUMINANCE));
       gtk_widget_show (toggle);
 
       g_object_set_data (G_OBJECT (toggle), "dialog", &st);
@@ -1387,7 +1388,7 @@ newsprint_dialog (GimpDrawable *drawable)
 
       g_signal_connect (toggle, "toggled",
                         G_CALLBACK (newsprint_cspace_update),
-                        GINT_TO_POINTER (CS_INTENSITY));
+                        GINT_TO_POINTER (CS_LUMINANCE));
       g_signal_connect_swapped (toggle, "toggled",
                                 G_CALLBACK (gimp_preview_invalidate),
                                 preview);
@@ -1413,7 +1414,7 @@ newsprint_dialog (GimpDrawable *drawable)
                                 G_CALLBACK (gimp_preview_invalidate),
                                 preview);
 
-      button = gtk_button_new_with_mnemonic (_("_Factory defaults"));
+      button = gtk_button_new_with_mnemonic (_("_Factory Defaults"));
       gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
       gtk_widget_show (button);
 
@@ -1452,10 +1453,10 @@ newsprint_dialog (GimpDrawable *drawable)
                               1.0, 15.0, 1.0, 5.0, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &pvals.oversample);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1843,7 +1844,7 @@ do {                                                            \
 } while(0)
 
   /* calculate the RGB / CMYK rotations and threshold matrices */
-  if (colour_bpp == 1 || colourspace == CS_INTENSITY)
+  if (colour_bpp == 1 || colourspace == CS_LUMINANCE)
     {
       rot[0]    = DEG2RAD (pvals.gry_ang);
       thresh[0] = spot2thresh (pvals.gry_spotfn, width);
@@ -1954,9 +1955,9 @@ do {                                                            \
                           }
                           break;
 
-                        case CS_INTENSITY:
+                        case CS_LUMINANCE:
                           data[3] = data[0]; /* save orig for later */
-                          data[0] = GIMP_RGB_INTENSITY (data[0],
+                          data[0] = GIMP_RGB_LUMINANCE (data[0],
                                                         data[1],
                                                         data[2]) + 0.5;
                           break;
@@ -2015,7 +2016,7 @@ do {                                                            \
                           data[2] = 0xff - data[2];
                           break;
 
-                        case CS_INTENSITY:
+                        case CS_LUMINANCE:
                           if (has_alpha)
                             {
                               dest[colour_bpp] = data[0];

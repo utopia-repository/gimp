@@ -20,18 +20,19 @@
 
 #include <errno.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <stdio.h>
 
 #include <sys/types.h>
-#include <sys/stat.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+
 #include <fcntl.h>
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_WIN32
 #include <io.h>
@@ -45,8 +46,6 @@
 
 #include "core-types.h"
 
-#include "config/gimpbaseconfig.h"
-
 #include "base/temp-buf.h"
 
 #include "gimpimage.h"
@@ -56,82 +55,42 @@
 #include "gimp-intl.h"
 
 
-static void       gimp_pattern_class_init      (GimpPatternClass *klass);
-static void       gimp_pattern_init            (GimpPattern      *pattern);
+static void       gimp_pattern_finalize        (GObject       *object);
 
-static void       gimp_pattern_finalize        (GObject          *object);
+static gint64     gimp_pattern_get_memsize     (GimpObject    *object,
+                                                gint64        *gui_size);
 
-static gint64     gimp_pattern_get_memsize     (GimpObject       *object,
-                                                gint64           *gui_size);
-
-static gboolean   gimp_pattern_get_popup_size  (GimpViewable     *viewable,
-                                                gint              width,
-                                                gint              height,
-                                                gboolean          dot_for_dot,
-                                                gint             *popup_width,
-                                                gint             *popup_heigh);
-static TempBuf  * gimp_pattern_get_new_preview (GimpViewable     *viewable,
-                                                gint              width,
-                                                gint              height);
-static gchar    * gimp_pattern_get_description (GimpViewable     *viewable,
-                                                gchar           **tooltip);
-static gchar    * gimp_pattern_get_extension   (GimpData         *data);
-static GimpData * gimp_pattern_duplicate       (GimpData         *data,
-                                                gboolean          stingy_memory_use);
+static gboolean   gimp_pattern_get_size        (GimpViewable  *viewable,
+                                                gint          *width,
+                                                gint          *height);
+static TempBuf  * gimp_pattern_get_new_preview (GimpViewable  *viewable,
+                                                gint           width,
+                                                gint           height);
+static gchar    * gimp_pattern_get_description (GimpViewable  *viewable,
+                                                gchar        **tooltip);
+static gchar    * gimp_pattern_get_extension   (GimpData      *data);
+static GimpData * gimp_pattern_duplicate       (GimpData      *data);
 
 
-static GimpDataClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpPattern, gimp_pattern, GIMP_TYPE_DATA);
 
+#define parent_class gimp_pattern_parent_class
 
-GType
-gimp_pattern_get_type (void)
-{
-  static GType pattern_type = 0;
-
-  if (! pattern_type)
-    {
-      static const GTypeInfo pattern_info =
-      {
-        sizeof (GimpPatternClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_pattern_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data     */
-	sizeof (GimpPattern),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_pattern_init,
-      };
-
-      pattern_type = g_type_register_static (GIMP_TYPE_DATA,
-					     "GimpPattern",
-					     &pattern_info, 0);
-  }
-
-  return pattern_type;
-}
 
 static void
 gimp_pattern_class_init (GimpPatternClass *klass)
 {
-  GObjectClass      *object_class;
-  GimpObjectClass   *gimp_object_class;
-  GimpViewableClass *viewable_class;
-  GimpDataClass     *data_class;
-
-  object_class      = G_OBJECT_CLASS (klass);
-  gimp_object_class = GIMP_OBJECT_CLASS (klass);
-  viewable_class    = GIMP_VIEWABLE_CLASS (klass);
-  data_class        = GIMP_DATA_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass      *object_class      = G_OBJECT_CLASS (klass);
+  GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+  GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
+  GimpDataClass     *data_class        = GIMP_DATA_CLASS (klass);
 
   object_class->finalize           = gimp_pattern_finalize;
 
   gimp_object_class->get_memsize   = gimp_pattern_get_memsize;
 
   viewable_class->default_stock_id = "gimp-tool-bucket-fill";
-  viewable_class->get_popup_size   = gimp_pattern_get_popup_size;
+  viewable_class->get_size         = gimp_pattern_get_size;
   viewable_class->get_new_preview  = gimp_pattern_get_new_preview;
   viewable_class->get_description  = gimp_pattern_get_description;
 
@@ -174,30 +133,22 @@ gimp_pattern_get_memsize (GimpObject *object,
 }
 
 static gboolean
-gimp_pattern_get_popup_size (GimpViewable *viewable,
-                             gint          width,
-                             gint          height,
-                             gboolean      dot_for_dot,
-                             gint         *popup_width,
-                             gint         *popup_height)
+gimp_pattern_get_size (GimpViewable *viewable,
+                       gint         *width,
+                       gint         *height)
 {
   GimpPattern *pattern = GIMP_PATTERN (viewable);
 
-  if (pattern->mask->width > width || pattern->mask->height > height)
-    {
-      *popup_width  = pattern->mask->width;
-      *popup_height = pattern->mask->height;
+  *width  = pattern->mask->width;
+  *height = pattern->mask->height;
 
-      return TRUE;
-    }
-
-  return FALSE;
+  return TRUE;
 }
 
 static TempBuf *
 gimp_pattern_get_new_preview (GimpViewable *viewable,
-			      gint          width,
-			      gint          height)
+                              gint          width,
+                              gint          height)
 {
   GimpPattern *pattern = GIMP_PATTERN (viewable);
   TempBuf     *temp_buf;
@@ -208,11 +159,11 @@ gimp_pattern_get_new_preview (GimpViewable *viewable,
   copy_height = MIN (height, pattern->mask->height);
 
   temp_buf = temp_buf_new (copy_width, copy_height,
-			   pattern->mask->bytes,
-			   0, 0, NULL);
+                           pattern->mask->bytes,
+                           0, 0, NULL);
 
   temp_buf_copy_area (pattern->mask, temp_buf,
-		      0, 0, copy_width, copy_height, 0, 0);
+                      0, 0, copy_width, copy_height, 0, 0);
 
   return temp_buf;
 }
@@ -222,9 +173,6 @@ gimp_pattern_get_description (GimpViewable  *viewable,
                               gchar        **tooltip)
 {
   GimpPattern *pattern = GIMP_PATTERN (viewable);
-
-  if (tooltip)
-    *tooltip = NULL;
 
   return g_strdup_printf ("%s (%d x %d)",
                           GIMP_OBJECT (pattern)->name,
@@ -239,25 +187,17 @@ gimp_pattern_get_extension (GimpData *data)
 }
 
 static GimpData *
-gimp_pattern_duplicate (GimpData *data,
-                        gboolean  stingy_memory_use)
+gimp_pattern_duplicate (GimpData *data)
 {
-  GimpPattern *pattern;
-
-  pattern = g_object_new (GIMP_TYPE_PATTERN, NULL);
+  GimpPattern *pattern = g_object_new (GIMP_TYPE_PATTERN, NULL);
 
   pattern->mask = temp_buf_copy (GIMP_PATTERN (data)->mask, NULL);
-
-  /*  Swap the pattern to disk (if we're being stingy with memory) */
-  if (stingy_memory_use)
-    temp_buf_swap (pattern->mask);
 
   return GIMP_DATA (pattern);
 }
 
 GimpData *
-gimp_pattern_new (const gchar *name,
-                  gboolean     stingy_memory_use)
+gimp_pattern_new (const gchar *name)
 {
   GimpPattern *pattern;
   guchar      *data;
@@ -276,13 +216,9 @@ gimp_pattern_new (const gchar *name,
   for (row = 0; row < pattern->mask->height; row++)
     for (col = 0; col < pattern->mask->width; col++)
       {
-	memset (data, (col % 2) && (row % 2) ? 255 : 0, 3);
-	data += 3;
+        memset (data, (col % 2) && (row % 2) ? 255 : 0, 3);
+        data += 3;
       }
-
-  /*  Swap the pattern to disk (if we're being stingy with memory) */
-  if (stingy_memory_use)
-    temp_buf_swap (pattern->mask);
 
   return GIMP_DATA (pattern);
 }
@@ -294,7 +230,7 @@ gimp_pattern_get_standard (void)
 
   if (! standard_pattern)
     {
-      standard_pattern = gimp_pattern_new ("Standard", FALSE);
+      standard_pattern = gimp_pattern_new ("Standard");
 
       standard_pattern->dirty = FALSE;
       gimp_data_make_internal (standard_pattern);
@@ -308,7 +244,6 @@ gimp_pattern_get_standard (void)
 
 GList *
 gimp_pattern_load (const gchar  *filename,
-                   gboolean      stingy_memory_use,
                    GError      **error)
 {
   GimpPattern   *pattern = NULL;
@@ -321,7 +256,7 @@ gimp_pattern_load (const gchar  *filename,
   g_return_val_if_fail (g_path_is_absolute (filename), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  fd = open (filename, O_RDONLY | _O_BINARY);
+  fd = g_open (filename, O_RDONLY | _O_BINARY, 0);
   if (fd == -1)
     {
       g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_OPEN,
@@ -335,9 +270,8 @@ gimp_pattern_load (const gchar  *filename,
     {
       g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_READ,
                    _("Fatal parse error in pattern file '%s': "
-                     "Could not read %d bytes: %s"),
-                   gimp_filename_to_utf8 (filename),
-		   (gint) sizeof (header), g_strerror (errno));
+                     "File appears truncated."),
+                   gimp_filename_to_utf8 (filename));
       goto error;
     }
 
@@ -382,11 +316,10 @@ gimp_pattern_load (const gchar  *filename,
         {
           g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_READ,
                        _("Fatal parse error in pattern file '%s': "
-                         "Could not read %d bytes: %s"),
-                       gimp_filename_to_utf8 (filename), bn_size,
-		       g_strerror (errno));
+                         "File appears truncated."),
+                       gimp_filename_to_utf8 (filename));
           g_free (name);
-	  goto error;
+          goto error;
         }
 
       utf8 = gimp_any_to_utf8 (name, -1,
@@ -400,7 +333,8 @@ gimp_pattern_load (const gchar  *filename,
     name = g_strdup (_("Unnamed"));
 
   pattern = g_object_new (GIMP_TYPE_PATTERN,
-                          "name", name,
+                          "name",      name,
+                          "mime-type", "image/x-gimp-pat",
                           NULL);
 
   g_free (name);
@@ -413,18 +347,12 @@ gimp_pattern_load (const gchar  *filename,
     {
       g_set_error (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_READ,
                    _("Fatal parse error in pattern file '%s': "
-                     "Could not read %d bytes: %s"),
-                   gimp_filename_to_utf8 (filename),
-		   header.width * header.height * header.bytes,
-                   g_strerror (errno));
+                     "File appears truncated."),
+                   gimp_filename_to_utf8 (filename));
       goto error;
     }
 
   close (fd);
-
-  /*  Swap the pattern to disk (if we're being stingy with memory) */
-  if (stingy_memory_use)
-    temp_buf_swap (pattern->mask);
 
   return g_list_prepend (NULL, pattern);
 
@@ -439,7 +367,6 @@ gimp_pattern_load (const gchar  *filename,
 
 GList *
 gimp_pattern_load_pixbuf (const gchar  *filename,
-                          gboolean      stingy_memory_use,
                           GError      **error)
 {
   GimpPattern *pattern;
@@ -468,16 +395,11 @@ gimp_pattern_load_pixbuf (const gchar  *filename,
     name = g_strdup (gdk_pixbuf_get_option (pixbuf, "tEXt::Comment"));
 
   if (! name)
-    {
-      gchar *basename = g_path_get_basename (filename);
-
-      name = g_filename_to_utf8 (basename, -1, NULL, NULL, NULL);
-
-      g_free (basename);
-    }
+    name = g_filename_display_basename (filename);
 
   pattern = g_object_new (GIMP_TYPE_PATTERN,
-                          "name", name,
+                          "name",      name,
+                          "mime-type", NULL, /* FIXME!! */
                           NULL);
   g_free (name);
 
@@ -498,10 +420,6 @@ gimp_pattern_load_pixbuf (const gchar  *filename,
     }
 
   g_object_unref (pixbuf);
-
-  /*  Swap the pattern to disk (if we're being stingy with memory) */
-  if (stingy_memory_use)
-    temp_buf_swap (pattern->mask);
 
   return g_list_prepend (NULL, pattern);
 }

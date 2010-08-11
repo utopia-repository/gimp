@@ -81,6 +81,11 @@ file_open_dialog_new (Gimp *gimp)
                     G_CALLBACK (file_open_dialog_response),
                     gimp);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   return dialog;
 }
 
@@ -119,35 +124,40 @@ file_open_dialog_response (GtkWidget *open_dialog,
     {
       gchar *filename = file_utils_filename_from_uri (list->data);
 
-      if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+      if (filename)
         {
-          if (dialog->gimage)
-            {
-              if (file_open_dialog_open_layer (open_dialog,
-                                               dialog->gimage,
-                                               list->data,
-                                               list->data,
-                                               dialog->file_proc))
-                {
-                  success = TRUE;
-                }
-            }
-          else
-            {
-              if (file_open_dialog_open_image (open_dialog,
-                                               gimp,
-                                               list->data,
-                                               list->data,
-                                               dialog->file_proc))
-                {
-                  success = TRUE;
+          gboolean regular = g_file_test (filename, G_FILE_TEST_IS_REGULAR);
 
-                  gdk_window_raise (open_dialog->window);
-                }
-            }
+          g_free (filename);
+
+          if (! regular)
+            continue;
         }
 
-      g_free (filename);
+      if (dialog->gimage)
+        {
+          if (file_open_dialog_open_layer (open_dialog,
+                                           dialog->gimage,
+                                           list->data,
+                                           list->data,
+                                           dialog->file_proc))
+            {
+              success = TRUE;
+            }
+        }
+      else
+        {
+          if (file_open_dialog_open_image (open_dialog,
+                                           gimp,
+                                           list->data,
+                                           list->data,
+                                           dialog->file_proc))
+            {
+              success = TRUE;
+
+              gdk_window_raise (open_dialog->window);
+            }
+        }
 
       if (dialog->canceled)
         break;
@@ -193,7 +203,7 @@ file_open_dialog_open_image (GtkWidget     *open_dialog,
     }
   else if (status != GIMP_PDB_CANCEL)
     {
-      gchar *filename = file_utils_uri_to_utf8_filename (uri);
+      gchar *filename = file_utils_uri_display_name (uri);
 
       g_message (_("Opening '%s' failed:\n\n%s"),
                  filename, error->message);
@@ -219,7 +229,7 @@ file_open_dialog_open_layer (GtkWidget     *open_dialog,
   new_layer = file_open_layer (gimage->gimp,
                                gimp_get_user_context (gimage->gimp),
                                GIMP_PROGRESS (open_dialog),
-                               gimage, uri,
+                               gimage, uri, GIMP_RUN_INTERACTIVE,
                                &status, &error);
 
   if (new_layer)
@@ -244,7 +254,7 @@ file_open_dialog_open_layer (GtkWidget     *open_dialog,
     }
   else if (status != GIMP_PDB_CANCEL)
     {
-      gchar *filename = file_utils_uri_to_utf8_filename (uri);
+      gchar *filename = file_utils_uri_display_name (uri);
 
       g_message (_("Opening '%s' failed:\n\n%s"),
                  filename, error->message);

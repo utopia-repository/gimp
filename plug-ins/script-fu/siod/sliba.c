@@ -25,7 +25,7 @@ static void
 init_sliba_version (void)
 {
   setvar (cintern ("*sliba-version*"),
-	  cintern ("$Id: sliba.c 14369 2004-08-08 19:59:16Z neo $"),
+	  cintern ("$Id: sliba.c,v 1.19 2005/12/17 00:37:52 kcozens Exp $"),
 	  NIL);
 }
 

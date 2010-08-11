@@ -199,7 +199,7 @@
                     SF-ADJUSTMENT _"Shadow Y offset"          '(8 0 100 1 10 0 1))
 
 (script-fu-menu-register "script-fu-glossy-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-glossy-logo text
@@ -224,7 +224,6 @@
   (let* ((img (car (gimp-image-new 256 256 RGB)))
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text 30 TRUE size PIXELS font))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-glossy-logo-effect img text-layer
 			      blend-gradient-text
 			      blend-gradient-text-reverse
@@ -249,7 +248,7 @@
                     SF-STRING     _"Text"                     "Galaxy"
                     SF-ADJUSTMENT _"Font size (pixels)"       '(100 2 1000 1 10 0 1)
                     SF-FONT       _"Font"                     "Eras"
-                    SF-GRADIENT   _"Blend gradient (Text)"    "Shadows 2"
+                    SF-GRADIENT   _"Blend gradient (text)"    "Shadows 2"
 		    SF-TOGGLE     _"Text gradient reverse"    FALSE
                     SF-GRADIENT   _"Blend gradient (outline)" "Shadows 2"
 		    SF-TOGGLE     _"Outline gradient reverse" FALSE
@@ -267,4 +266,4 @@
                     SF-ADJUSTMENT _"Shadow Y offset"          '(8 0 100 1 10 0 1))
 
 (script-fu-menu-register "script-fu-glossy-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

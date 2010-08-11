@@ -23,22 +23,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id: emboss.c 16674 2005-02-21 16:13:07Z neo $
+ * $Id: emboss.c,v 1.60 2005/09/30 08:15:54 mitch Exp $
  */
 
 #include "config.h"
 
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <sys/types.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-emboss"
+#define PLUG_IN_BINARY "emboss"
 
 
 enum
@@ -114,16 +113,16 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "img", "The Image" },
-    { GIMP_PDB_DRAWABLE, "drw", "The Drawable" },
-    { GIMP_PDB_FLOAT, "azimuth", "The Light Angle (degrees)" },
-    { GIMP_PDB_FLOAT, "elevation", "The Elevation Angle (degrees)" },
-    { GIMP_PDB_INT32, "depth", "The Filter Width" },
-    { GIMP_PDB_INT32, "embossp", "Emboss or Bumpmap" }
+    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive"  },
+    { GIMP_PDB_IMAGE,    "image",     "The Image"                     },
+    { GIMP_PDB_DRAWABLE, "drawable",  "The Drawable"                  },
+    { GIMP_PDB_FLOAT,    "azimuth",   "The Light Angle (degrees)"     },
+    { GIMP_PDB_FLOAT,    "elevation", "The Elevation Angle (degrees)" },
+    { GIMP_PDB_INT32,    "depth",     "The Filter Width"              },
+    { GIMP_PDB_INT32,    "embossp",   "Emboss or Bumpmap"             }
   };
 
-  gimp_install_procedure ("plug_in_emboss",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Emboss filter",
                           "Emboss or Bumpmap the given drawable, specifying "
                           "the angle and elevation for the light source.",
@@ -136,7 +135,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_emboss", "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 }
 
 static void
@@ -164,7 +163,7 @@ run (const gchar      *name,
   switch (param[0].data.d_int32)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data ("plug_in_emboss", &evals);
+      gimp_get_data (PLUG_IN_PROC, &evals);
 
       if (emboss_dialog (drawable) == -1)
         {
@@ -172,7 +171,7 @@ run (const gchar      *name,
         }
       else
         {
-          gimp_set_data ("plug_in_emboss", &evals, sizeof (piArgs));
+          gimp_set_data (PLUG_IN_PROC, &evals, sizeof (piArgs));
         }
 
       break;
@@ -197,7 +196,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data ("plug_in_emboss", &evals);
+      gimp_get_data (PLUG_IN_PROC, &evals);
       /* use this image and drawable, even with last args */
       if (emboss (drawable, NULL)==-1)
         {
@@ -260,34 +259,47 @@ EmbossRow (guchar *src,
            guint   bypp,
            gint    alpha)
 {
-  glong Nx, Ny, NdotL;
-  guchar *s1, *s2, *s3;
-  gint x, shade, b;
-  gint bytes;
+  glong   Nx, Ny, NdotL;
+  guchar *s[3];
+  gint    i, j, x, shade, b;
+  gint    bytes;
+  gdouble M[3][3];
+  gdouble a;
 
   /* mung pixels, avoiding edge pixels */
-  s1 = src + bypp;
-  s2 = s1 + (xSize * bypp);
-  s3 = s2 + (xSize * bypp);
+  s[0] = src + bypp;
+  s[1] = s[0] + (xSize * bypp);
+  s[2] = s[1] + (xSize * bypp);
   dst += bypp;
 
   bytes = (alpha) ? bypp - 1 : bypp;
 
   if (texture)
-    texture += bypp;
+    texture += (xSize + 1) * bypp;
 
-  for (x = 1; x < xSize - 1; x++, s1 += bypp, s2 += bypp, s3 += bypp)
+  for (x = 1; x < xSize - 1; x++)
     {
-      /*
-       * compute the normal from the src map. the type of the
-       * expression before the cast is compiler dependent. in
-       * some cases the sum is unsigned, in others it is
-       * signed. ergo, cast to signed.
-       */
-      Nx = (int) (s1[-(int)bypp] + s2[-(int)bypp] + s3[-(int)bypp]
-                  - s1[bypp] - s2[bypp] - s3[bypp]);
-      Ny = (int) (s3[-(int)bypp] + s3[0] + s3[bypp] - s1[-(int)bypp]
-                  - s1[0] - s1[bypp]);
+      for (i = 0; i < 3; i++)
+        s[i] += bypp;
+
+      for (i = 0; i < 3; i++)
+        for (j = 0; j < 3; j++)
+          M[i][j] = 0;
+
+      for (b = 0; b < bytes; b++)
+        for (i = 0; i < 3; i++)
+          for (j = 0; j < 3; j++)
+            {
+              if (alpha)
+                a = s[i][(j - 1) * bypp + bytes] / (gdouble) 255;
+              else
+                a = 1;
+
+              M[i][j] += a * s[i][(j - 1) * bypp + b];
+            }
+
+      Nx = M[0][0] + M[1][0] + M[2][0] - M[0][2] - M[1][2] - M[2][2];
+      Ny = M[2][0] + M[2][1] + M[2][2] - M[0][0] - M[0][1] - M[0][2];
 
       /* shade with distant light source */
       if ( Nx == 0 && Ny == 0 )
@@ -306,7 +318,7 @@ EmbossRow (guchar *src,
             }
           if (alpha)
             {
-              *dst++ = s2[bytes]; /* preserve the alpha */
+              *dst++ = s[1][bytes]; /* preserve the alpha */
               texture++;
             }
         }
@@ -317,7 +329,7 @@ EmbossRow (guchar *src,
               *dst++ = shade;
             }
           if (alpha)
-            *dst++ = s2[bytes]; /* preserve the alpha */
+            *dst++ = s[1][bytes]; /* preserve the alpha */
         }
     }
   if (texture)
@@ -332,7 +344,7 @@ emboss (GimpDrawable *drawable,
   gint          p_update;
   gint          y;
   gint          x1, y1, x2, y2;
-  guint         width, height;
+  gint          width, height;
   gint          bypp, rowsize, has_alpha;
   guchar       *srcbuf, *dstbuf;
 
@@ -392,7 +404,7 @@ emboss (GimpDrawable *drawable,
   for (y = 0; y < height - 2; y++)
     {
       if (! preview && (y % p_update == 0))
-          gimp_progress_update ((gdouble) y / (gdouble) height);
+        gimp_progress_update ((gdouble) y / (gdouble) height);
 
       gimp_pixel_rgn_get_rect (&src, srcbuf, x1, y1+y, width, 3);
       EmbossRow (srcbuf, evals.embossp ? (guchar *) 0 : srcbuf,
@@ -434,16 +446,23 @@ emboss_dialog (GimpDrawable *drawable)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("emboss", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Emboss"), "emboss",
+  dialog = gimp_dialog_new (_("Emboss"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-emboss",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -486,10 +505,10 @@ emboss_dialog (GimpDrawable *drawable)
                               evals.azimuth, 0.0, 360.0, 1.0, 10.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &evals.azimuth);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -498,10 +517,10 @@ emboss_dialog (GimpDrawable *drawable)
                               evals.elevation, 0.0, 180.0, 1.0, 10.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &evals.elevation);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -510,10 +529,10 @@ emboss_dialog (GimpDrawable *drawable)
                               evals.depth, 1.0, 100.0, 1.0, 5.0, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &evals.depth);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -527,7 +546,6 @@ emboss_dialog (GimpDrawable *drawable)
 
   if (run)
     return emboss (drawable, NULL);
-  else
-    return -1;
-}
 
+  return -1;
+}

@@ -24,11 +24,16 @@
 
 #include "actions-types.h"
 
+#include "core/gimp.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpdata.h"
 #include "core/gimpdatafactory.h"
 
+#include "file/file-open.h"
+#include "file/file-utils.h"
+
+#include "widgets/gimpclipboard.h"
 #include "widgets/gimpcontainerview.h"
 #include "widgets/gimpdataeditor.h"
 #include "widgets/gimpdatafactoryview.h"
@@ -63,8 +68,52 @@ static void  data_delete_confirm_response (GtkWidget          *dialog,
 /*  public functions  */
 
 void
-data_new_data_cmd_callback (GtkAction *action,
-			    gpointer   user_data)
+data_open_as_image_cmd_callback (GtkAction *action,
+                                 gpointer   user_data)
+{
+  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+  GimpContext         *context;
+  GimpData            *data;
+
+  context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+
+  data = (GimpData *)
+    gimp_context_get_by_type (context,
+			      view->factory->container->children_type);
+
+  if (data && data->filename)
+    {
+      gchar *uri = g_filename_to_uri (data->filename, NULL, NULL);
+
+      if (uri)
+        {
+          GimpImage         *image;
+          GimpPDBStatusType  status;
+          GError            *error = NULL;
+
+          image = file_open_with_display (context->gimp, context, NULL, uri,
+                                          &status, &error);
+
+          if (! image && status != GIMP_PDB_CANCEL)
+            {
+              gchar *filename;
+
+              filename = file_utils_uri_display_name (uri);
+              g_message (_("Opening '%s' failed:\n\n%s"),
+                         filename, error->message);
+              g_clear_error (&error);
+
+              g_free (filename);
+            }
+
+          g_free (uri);
+        }
+    }
+}
+
+void
+data_new_cmd_callback (GtkAction *action,
+                       gpointer   user_data)
 {
   GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
 
@@ -90,8 +139,8 @@ data_new_data_cmd_callback (GtkAction *action,
 }
 
 void
-data_duplicate_data_cmd_callback (GtkAction *action,
-				  gpointer   user_data)
+data_duplicate_cmd_callback (GtkAction *action,
+                             gpointer   user_data)
 {
   GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
   GimpContext         *context;
@@ -122,8 +171,34 @@ data_duplicate_data_cmd_callback (GtkAction *action,
 }
 
 void
-data_delete_data_cmd_callback (GtkAction *action,
-			       gpointer   user_data)
+data_copy_location_cmd_callback (GtkAction *action,
+                                 gpointer   user_data)
+{
+  GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+  GimpContext         *context;
+  GimpData            *data;
+
+  context = gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view);
+
+  data = (GimpData *)
+    gimp_context_get_by_type (context,
+                              view->factory->container->children_type);
+
+  if (data && data->filename && *data->filename)
+    {
+      gchar *uri = g_filename_to_uri (data->filename, NULL, NULL);
+
+      if (uri)
+        {
+          gimp_clipboard_set_text (context->gimp, uri);
+          g_free (uri);
+        }
+    }
+}
+
+void
+data_delete_cmd_callback (GtkAction *action,
+                          gpointer   user_data)
 {
   GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
   GimpContext         *context;
@@ -155,6 +230,11 @@ data_delete_data_cmd_callback (GtkAction *action,
 
                                         NULL);
 
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
       g_signal_connect_object (data, "disconnect",
                                G_CALLBACK (gtk_widget_destroy),
                                dialog, G_CONNECT_SWAPPED);
@@ -172,19 +252,22 @@ data_delete_data_cmd_callback (GtkAction *action,
 }
 
 void
-data_refresh_data_cmd_callback (GtkAction *action,
-				gpointer   user_data)
+data_refresh_cmd_callback (GtkAction *action,
+                           gpointer   user_data)
 {
   GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
+  Gimp                *gimp;
+  return_if_no_gimp (gimp, user_data);
 
-  gimp_data_factory_data_save (view->factory);
-  gimp_data_factory_data_init (view->factory, FALSE);
+  gimp_set_busy (gimp);
+  gimp_data_factory_data_refresh (view->factory);
+  gimp_unset_busy (gimp);
 }
 
 void
-data_edit_data_cmd_callback (GtkAction   *action,
-                             const gchar *value,
-			     gpointer     user_data)
+data_edit_cmd_callback (GtkAction   *action,
+                        const gchar *value,
+                        gpointer     user_data)
 {
   GimpDataFactoryView *view = GIMP_DATA_FACTORY_VIEW (user_data);
   GimpContext         *context;

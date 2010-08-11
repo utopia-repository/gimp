@@ -21,25 +21,25 @@
 
 #include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
+
 #include <sys/types.h>
-#include <sys/stat.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #include "libgimpmath/gimpmath.h"
 
 #include "core/core-types.h"
-
-#include "base/temp-buf.h"
 
 #include "core/gimp.h"
 #include "core/gimpimage.h"
@@ -215,7 +215,7 @@ file_utils_find_proc (GSList       *procs,
               if (head_size == -2)
                 {
                   head_size = 0;
-                  if ((ifp = fopen (filename, "rb")) != NULL)
+                  if ((ifp = g_fopen (filename, "rb")) != NULL)
                     head_size = fread ((gchar *) head, 1, sizeof (head), ifp);
                 }
 
@@ -265,6 +265,35 @@ file_utils_find_proc_by_extension (GSList      *procs,
 }
 
 gchar *
+file_utils_uri_to_utf8_filename (const gchar *uri)
+{
+  g_return_val_if_fail (uri != NULL, NULL);
+
+  if (g_str_has_prefix (uri, "file:"))
+    {
+      gchar *filename = file_utils_filename_from_uri (uri);
+
+      if (filename)
+        {
+          GError *error = NULL;
+          gchar  *utf8;
+
+          utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, &error);
+          g_free (filename);
+
+          if (utf8)
+            return utf8;
+
+          g_warning ("%s: cannot convert filename to UTF-8: %s",
+                     G_STRLOC, error->message);
+          g_error_free (error);
+        }
+    }
+
+  return g_strdup (uri);
+}
+
+static gchar *
 file_utils_uri_to_utf8_basename (const gchar *uri)
 {
   gchar *filename;
@@ -297,7 +326,7 @@ file_utils_uri_to_utf8_basename (const gchar *uri)
 }
 
 gchar *
-file_utils_uri_to_utf8_filename (const gchar *uri)
+file_utils_uri_display_basename (const gchar *uri)
 {
   g_return_val_if_fail (uri != NULL, NULL);
 
@@ -307,24 +336,38 @@ file_utils_uri_to_utf8_filename (const gchar *uri)
 
       if (filename)
         {
-          GError *error = NULL;
-          gchar  *utf8;
+          gchar *basename = g_filename_display_basename (filename);
 
-          utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, &error);
           g_free (filename);
 
-          if (utf8)
-            return utf8;
+          return basename;
+        }
+    }
 
-          g_warning ("%s: cannot convert filename to UTF-8: %s",
-                     G_STRLOC, error->message);
-          g_error_free (error);
+  return file_utils_uri_to_utf8_basename (uri);
+}
+
+gchar *
+file_utils_uri_display_name (const gchar *uri)
+{
+  g_return_val_if_fail (uri != NULL, NULL);
+
+  if (g_str_has_prefix (uri, "file:"))
+    {
+      gchar *filename = file_utils_filename_from_uri (uri);
+
+      if (filename)
+        {
+          gchar *name = g_filename_display_name (filename);
+
+          g_free (filename);
+
+          return name;
         }
     }
 
   return g_strdup (uri);
 }
-
 
 /*  private functions  */
 
@@ -491,7 +534,7 @@ file_check_single_magic (const gchar  *offset,
   const gchar  *num_operator_ptr;
   gchar         num_operator;
   gchar         num_test;
-  guchar        mem_testval[256];
+  gchar         mem_testval[256];
 
   /* Check offset */
   if (sscanf (offset, "%ld", &offs) != 1) return (0);
@@ -606,7 +649,7 @@ file_check_single_magic (const gchar  *offset,
 
       if (offs + numbytes <= headsize)  /* We have it in memory ? */
         {
-          found = (memcmp (mem_testval, file_head+offs, numbytes) == 0);
+          found = (memcmp (mem_testval, file_head + offs, numbytes) == 0);
         }
       else   /* Read it from file */
         {
@@ -615,7 +658,7 @@ file_check_single_magic (const gchar  *offset,
           for (k = 0; found && (k < numbytes); k++)
             {
               c = getc (ifp);
-              found = (c != EOF) && (c == (int)mem_testval[k]);
+              found = (c != EOF) && (c == (int) mem_testval[k]);
             }
         }
     }

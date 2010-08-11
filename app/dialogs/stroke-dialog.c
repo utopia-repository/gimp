@@ -22,12 +22,10 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "dialogs-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-utils.h"
 
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
@@ -39,7 +37,6 @@
 
 #include "widgets/gimpcontainercombobox.h"
 #include "widgets/gimpcontainerview.h"
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpviewabledialog.h"
 #include "widgets/gimpstrokeeditor.h"
 
@@ -96,7 +93,7 @@ stroke_dialog_new (GimpItem    *item,
   saved_desc = g_object_get_data (G_OBJECT (context), "saved-stroke-desc");
 
   if (saved_desc)
-    gimp_config_sync (GIMP_CONFIG (saved_desc), GIMP_CONFIG (desc), 0);
+    gimp_config_sync (G_OBJECT (saved_desc), G_OBJECT (desc), 0);
 
   dialog = gimp_viewable_dialog_new (GIMP_VIEWABLE (item),
                                      title, "gimp-stroke-options",
@@ -111,6 +108,12 @@ stroke_dialog_new (GimpItem    *item,
                                      stock_id,         GTK_RESPONSE_OK,
 
                                      NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
@@ -206,7 +209,7 @@ stroke_dialog_new (GimpItem    *item,
                               desc->method == GIMP_STROKE_METHOD_PAINT_CORE);
     g_object_set_data (G_OBJECT (paint_radio), "set_sensitive", hbox);
 
-    label = gtk_label_new (_("Paint Tool:"));
+    label = gtk_label_new (_("Paint tool:"));
     gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
     gtk_widget_show (label);
 
@@ -217,7 +220,7 @@ stroke_dialog_new (GimpItem    *item,
     gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 0);
     gtk_widget_show (combo);
 
-    g_signal_connect (combo, "select_item",
+    g_signal_connect (combo, "select-item",
                       G_CALLBACK (stroke_dialog_paint_info_selected),
                       desc);
 
@@ -284,7 +287,7 @@ stroke_dialog_response (GtkWidget  *widget,
         else
           saved_desc = gimp_stroke_desc_new (context->gimp, context);
 
-        gimp_config_sync (GIMP_CONFIG (desc), GIMP_CONFIG (saved_desc), 0);
+        gimp_config_sync (G_OBJECT (desc), G_OBJECT (saved_desc), 0);
 
         g_object_set_data_full (G_OBJECT (context), "saved-stroke-desc",
                                 saved_desc,

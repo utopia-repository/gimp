@@ -29,9 +29,14 @@
     </menu>
     <menuitem action="dockable-view-type-list" />
     <menuitem action="dockable-view-type-grid" />
+    <menuitem action="dockable-show-button-bar"/>
     <separator />
-    <menuitem action="dockable-show-image-menu" />
-    <menuitem action="dockable-auto-follow-active" />
-    <menuitem action="dockable-move-to-screen" />
+    <menuitem action="dock-show-image-menu" />
+    <menuitem action="dock-auto-follow-active" />
+    <separator />
+    <menu action="dock-move-to-screen-menu" name="Move to Screen">
+      <menuitem action="dock-open-display" />
+      <separator />
+    </menu>
   </popup>
 </ui>

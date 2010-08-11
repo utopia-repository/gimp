@@ -40,7 +40,12 @@ subdir = app/core
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/m4macros/detectcflags.m4 \
+	$(top_srcdir)/m4macros/pythondev.m4 \
+	$(top_srcdir)/m4macros/gimpprint.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
+	$(top_srcdir)/m4macros/gtk-doc.m4 \
+	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -51,24 +56,26 @@ ARFLAGS = cru
 libappcore_a_AR = $(AR) $(ARFLAGS)
 libappcore_a_LIBADD =
 am__objects_1 = core-enums.$(OBJEXT) gimpmarshal.$(OBJEXT)
-am__objects_2 = cpercep.$(OBJEXT) gimp.$(OBJEXT) \
+am__objects_2 = gimp.$(OBJEXT) gimp-contexts.$(OBJEXT) \
 	gimp-documents.$(OBJEXT) gimp-edit.$(OBJEXT) \
 	gimp-gradients.$(OBJEXT) gimp-gui.$(OBJEXT) \
 	gimp-modules.$(OBJEXT) gimp-parasites.$(OBJEXT) \
 	gimp-templates.$(OBJEXT) gimp-transform-utils.$(OBJEXT) \
 	gimp-units.$(OBJEXT) gimp-utils.$(OBJEXT) gimparea.$(OBJEXT) \
-	gimpbrush.$(OBJEXT) gimpbrushgenerated.$(OBJEXT) \
-	gimpbrushpipe.$(OBJEXT) gimpbuffer.$(OBJEXT) \
-	gimpchannel.$(OBJEXT) gimpchannel-combine.$(OBJEXT) \
-	gimpchannel-select.$(OBJEXT) gimpcontainer.$(OBJEXT) \
-	gimpcontainer-filter.$(OBJEXT) gimpcontext.$(OBJEXT) \
-	gimpcoords.$(OBJEXT) gimpdata.$(OBJEXT) \
+	gimpbrush.$(OBJEXT) gimpbrush-load.$(OBJEXT) \
+	gimpbrushgenerated.$(OBJEXT) gimpbrushpipe.$(OBJEXT) \
+	gimpbuffer.$(OBJEXT) gimpchannel.$(OBJEXT) \
+	gimpchannel-combine.$(OBJEXT) gimpchannel-select.$(OBJEXT) \
+	gimpcontainer.$(OBJEXT) gimpcontainer-filter.$(OBJEXT) \
+	gimpcontext.$(OBJEXT) gimpcoords.$(OBJEXT) \
+	gimpdashpattern.$(OBJEXT) gimpdata.$(OBJEXT) \
 	gimpdatafactory.$(OBJEXT) gimpdocumentlist.$(OBJEXT) \
 	gimpdrawable.$(OBJEXT) gimpdrawable-blend.$(OBJEXT) \
 	gimpdrawable-bucket-fill.$(OBJEXT) \
-	gimpdrawable-combine.$(OBJEXT) \
+	gimpdrawable-combine.$(OBJEXT) gimpdrawable-convert.$(OBJEXT) \
 	gimpdrawable-desaturate.$(OBJEXT) \
 	gimpdrawable-equalize.$(OBJEXT) \
+	gimpdrawable-foreground-extract.$(OBJEXT) \
 	gimpdrawable-histogram.$(OBJEXT) gimpdrawable-invert.$(OBJEXT) \
 	gimpdrawable-levels.$(OBJEXT) gimpdrawable-offset.$(OBJEXT) \
 	gimpdrawable-preview.$(OBJEXT) gimpdrawable-stroke.$(OBJEXT) \
@@ -83,25 +90,27 @@ am__objects_2 = cpercep.$(OBJEXT) gimp.$(OBJEXT) \
 	gimpimage-grid.$(OBJEXT) gimpimage-guides.$(OBJEXT) \
 	gimpimage-merge.$(OBJEXT) gimpimage-new.$(OBJEXT) \
 	gimpimage-pick-color.$(OBJEXT) gimpimage-preview.$(OBJEXT) \
-	gimpimage-qmask.$(OBJEXT) gimpimage-resize.$(OBJEXT) \
-	gimpimage-rotate.$(OBJEXT) gimpimage-scale.$(OBJEXT) \
-	gimpimage-snap.$(OBJEXT) gimpimage-undo.$(OBJEXT) \
-	gimpimage-undo-push.$(OBJEXT) gimpimagefile.$(OBJEXT) \
-	gimpimagemap.$(OBJEXT) gimpitem.$(OBJEXT) \
-	gimpitem-linked.$(OBJEXT) gimpitem-preview.$(OBJEXT) \
-	gimpitemundo.$(OBJEXT) gimplayer.$(OBJEXT) \
-	gimplayer-floating-sel.$(OBJEXT) gimplayermask.$(OBJEXT) \
-	gimplist.$(OBJEXT) gimpobject.$(OBJEXT) \
-	gimppaintinfo.$(OBJEXT) gimppattern.$(OBJEXT) \
-	gimppalette.$(OBJEXT) gimppalette-import.$(OBJEXT) \
-	gimpparasitelist.$(OBJEXT) gimppdbprogress.$(OBJEXT) \
-	gimppickable.$(OBJEXT) gimppreviewcache.$(OBJEXT) \
-	gimpprogress.$(OBJEXT) gimpprojection.$(OBJEXT) \
-	gimpprojection-construct.$(OBJEXT) gimpscanconvert.$(OBJEXT) \
-	gimpselection.$(OBJEXT) gimpstrokedesc.$(OBJEXT) \
-	gimpstrokeoptions.$(OBJEXT) gimptemplate.$(OBJEXT) \
-	gimptoolinfo.$(OBJEXT) gimptooloptions.$(OBJEXT) \
-	gimpunit.$(OBJEXT) gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
+	gimpimage-quick-mask.$(OBJEXT) gimpimage-resize.$(OBJEXT) \
+	gimpimage-rotate.$(OBJEXT) gimpimage-sample-points.$(OBJEXT) \
+	gimpimage-scale.$(OBJEXT) gimpimage-snap.$(OBJEXT) \
+	gimpimage-undo.$(OBJEXT) gimpimage-undo-push.$(OBJEXT) \
+	gimpimagefile.$(OBJEXT) gimpimagemap.$(OBJEXT) \
+	gimpinterpreterdb.$(OBJEXT) gimpitem.$(OBJEXT) \
+	gimpitem-align.$(OBJEXT) gimpitem-linked.$(OBJEXT) \
+	gimpitem-preview.$(OBJEXT) gimpitemundo.$(OBJEXT) \
+	gimplayer.$(OBJEXT) gimplayer-floating-sel.$(OBJEXT) \
+	gimplayermask.$(OBJEXT) gimplist.$(OBJEXT) \
+	gimpobject.$(OBJEXT) gimppaintinfo.$(OBJEXT) \
+	gimppattern.$(OBJEXT) gimppalette.$(OBJEXT) \
+	gimppalette-import.$(OBJEXT) gimpparasitelist.$(OBJEXT) \
+	gimppdbprogress.$(OBJEXT) gimppickable.$(OBJEXT) \
+	gimppreviewcache.$(OBJEXT) gimpprogress.$(OBJEXT) \
+	gimpprojection.$(OBJEXT) gimpprojection-construct.$(OBJEXT) \
+	gimpscanconvert.$(OBJEXT) gimpselection.$(OBJEXT) \
+	gimpstrokedesc.$(OBJEXT) gimpstrokeoptions.$(OBJEXT) \
+	gimptemplate.$(OBJEXT) gimptoolinfo.$(OBJEXT) \
+	gimptooloptions.$(OBJEXT) gimpunit.$(OBJEXT) \
+	gimpundo.$(OBJEXT) gimpundostack.$(OBJEXT) \
 	gimpviewable.$(OBJEXT)
 am_libappcore_a_OBJECTS = $(am__objects_1) $(am__objects_2)
 libappcore_a_OBJECTS = $(am_libappcore_a_OBJECTS)
@@ -124,9 +133,9 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
-ALL_LINGUAS = @ALL_LINGUAS@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
+ALTIVEC_EXTRA_CFLAGS = @ALTIVEC_EXTRA_CFLAGS@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -136,6 +145,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
+BINRELOC_LIBS = @BINRELOC_LIBS@
 BUILD_HELPBROWSER_FALSE = @BUILD_HELPBROWSER_FALSE@
 BUILD_HELPBROWSER_TRUE = @BUILD_HELPBROWSER_TRUE@
 BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
@@ -167,6 +178,7 @@ DESKTOP_DATADIR = @DESKTOP_DATADIR@
 DESKTOP_DATADIR_FALSE = @DESKTOP_DATADIR_FALSE@
 DESKTOP_DATADIR_TRUE = @DESKTOP_DATADIR_TRUE@
 DLLTOOL = @DLLTOOL@
+DOC_SHOOTER = @DOC_SHOOTER@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -201,7 +213,6 @@ GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
-GIMP_DESKTOP_ICON = @GIMP_DESKTOP_ICON@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
 GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
@@ -209,18 +220,16 @@ GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
 GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
 GIMP_MKENUMS = @GIMP_MKENUMS@
 GIMP_MODULES = @GIMP_MODULES@
-GIMP_MP_FLAGS = @GIMP_MP_FLAGS@
-GIMP_MP_LIBS = @GIMP_MP_LIBS@
 GIMP_PKGCONFIG_VERSION = @GIMP_PKGCONFIG_VERSION@
 GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
-GIMP_THREAD_FLAGS = @GIMP_THREAD_FLAGS@
-GIMP_THREAD_LIBS = @GIMP_THREAD_LIBS@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
+GIMP_UNSTABLE_FALSE = @GIMP_UNSTABLE_FALSE@
+GIMP_UNSTABLE_TRUE = @GIMP_UNSTABLE_TRUE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
@@ -232,8 +241,12 @@ GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOMEPRINT = @GNOMEPRINT@
+GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
+GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
-GREP = @GREP@
+GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -247,6 +260,10 @@ HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
 HAVE_GLIBC_REGEX_TRUE = @HAVE_GLIBC_REGEX_TRUE@
+HAVE_GNOMEPRINT_FALSE = @HAVE_GNOMEPRINT_FALSE@
+HAVE_GNOMEPRINT_TRUE = @HAVE_GNOMEPRINT_TRUE@
+HAVE_GNOMEVFS_FALSE = @HAVE_GNOMEVFS_FALSE@
+HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
@@ -283,7 +300,6 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
-INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -299,10 +315,12 @@ LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
+LIBGNOMEPRINT = @LIBGNOMEPRINT@
 LIBJPEG = @LIBJPEG@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
+LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
 LIBSCREENSHOT = @LIBSCREENSHOT@
 LIBSVG = @LIBSVG@
@@ -325,7 +343,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
-MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -351,15 +368,22 @@ PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
 POFILES = @POFILES@
+POPPLER = @POPPLER@
+POPPLER_CFLAGS = @POPPLER_CFLAGS@
+POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PRINT_CFLAGS = @PRINT_CFLAGS@
 PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
+PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
+PYGTK_CODEGEN = @PYGTK_CODEGEN@
+PYGTK_DEFSDIR = @PYGTK_DEFSDIR@
 PYGTK_LIBS = @PYGTK_LIBS@
+PYLINK_LIBS = @PYLINK_LIBS@
 PYTHON = @PYTHON@
 PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
 PYTHON_INCLUDES = @PYTHON_INCLUDES@
@@ -383,10 +407,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URL = @URL@
+URI_CFLAGS = @URI_CFLAGS@
+URI_LIBS = @URI_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WINCLIPBOARD = @WINCLIPBOARD@
 WINDRES = @WINDRES@
 WINPRINT = @WINPRINT@
 WITH_PDBGEN_FALSE = @WITH_PDBGEN_FALSE@
@@ -396,7 +420,6 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
-XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -404,9 +427,17 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+ac_ct_AR = @ac_ct_AR@
+ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
+ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
+ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
+ac_ct_RANLIB = @ac_ct_RANLIB@
+ac_ct_STRIP = @ac_ct_STRIP@
+ac_ct_WINDRES = @ac_ct_WINDRES@
+ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -423,12 +454,10 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
-datarootdir = @datarootdir@
-docdir = @docdir@
-dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
+gimplocaledir = @gimplocaledir@
 gimpplugindir = @gimpplugindir@
 gimpsysconfdir = @gimpsysconfdir@
 host = @host@
@@ -436,24 +465,20 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
-htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
-pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -462,12 +487,12 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Core\"	\
-	-DGIMP_COMPILATION		\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GDK_PIXBUF_CFLAGS)	\
 	$(LIBART_CFLAGS)	\
@@ -477,10 +502,10 @@ noinst_LIBRARIES = libappcore.a
 libappcore_a_sources = \
 	core-enums.h			\
 	core-types.h			\
-	cpercep.c			\
-	cpercep.h			\
 	gimp.c				\
 	gimp.h				\
+	gimp-contexts.c			\
+	gimp-contexts.h			\
 	gimp-documents.c		\
 	gimp-documents.h		\
 	gimp-edit.c			\
@@ -506,6 +531,8 @@ libappcore_a_sources = \
 	gimpbrush.c			\
 	gimpbrush.h			\
 	gimpbrush-header.h		\
+	gimpbrush-load.c		\
+	gimpbrush-load.h		\
 	gimpbrushgenerated.c		\
 	gimpbrushgenerated.h		\
 	gimpbrushpipe.c			\
@@ -526,6 +553,8 @@ libappcore_a_sources = \
 	gimpcontext.h			\
 	gimpcoords.c			\
 	gimpcoords.h			\
+	gimpdashpattern.c		\
+	gimpdashpattern.h		\
 	gimpdata.c			\
 	gimpdata.h			\
 	gimpdatafactory.c		\
@@ -540,10 +569,14 @@ libappcore_a_sources = \
 	gimpdrawable-bucket-fill.h	\
 	gimpdrawable-combine.c		\
 	gimpdrawable-combine.h		\
+	gimpdrawable-convert.c		\
+	gimpdrawable-convert.h		\
 	gimpdrawable-desaturate.c	\
 	gimpdrawable-desaturate.h	\
 	gimpdrawable-equalize.c		\
 	gimpdrawable-equalize.h		\
+	gimpdrawable-foreground-extract.c\
+	gimpdrawable-foreground-extract.h\
 	gimpdrawable-histogram.c	\
 	gimpdrawable-histogram.h	\
 	gimpdrawable-invert.c		\
@@ -598,12 +631,14 @@ libappcore_a_sources = \
 	gimpimage-pick-color.h		\
 	gimpimage-preview.c		\
 	gimpimage-preview.h		\
-	gimpimage-qmask.c		\
-	gimpimage-qmask.h		\
+	gimpimage-quick-mask.c		\
+	gimpimage-quick-mask.h		\
 	gimpimage-resize.c		\
 	gimpimage-resize.h		\
 	gimpimage-rotate.c		\
 	gimpimage-rotate.h		\
+	gimpimage-sample-points.c	\
+	gimpimage-sample-points.h	\
 	gimpimage-scale.c		\
 	gimpimage-scale.h		\
 	gimpimage-snap.c		\
@@ -616,8 +651,12 @@ libappcore_a_sources = \
 	gimpimagefile.h			\
 	gimpimagemap.c			\
 	gimpimagemap.h			\
+	gimpinterpreterdb.c		\
+	gimpinterpreterdb.h		\
 	gimpitem.c			\
 	gimpitem.h			\
+	gimpitem-align.c		\
+	gimpitem-align.h		\
 	gimpitem-linked.c		\
 	gimpitem-linked.h		\
 	gimpitem-preview.c		\
@@ -748,7 +787,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core-enums.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cpercep.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-contexts.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-documents.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-edit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-gradients.Po@am__quote@
@@ -761,6 +800,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-utils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimparea.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush-load.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrush.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushgenerated.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushpipe.Po@am__quote@
@@ -772,14 +812,17 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontainer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontext.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcoords.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdashpattern.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdatafactory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdocumentlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-blend.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-bucket-fill.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-combine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-convert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-desaturate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-equalize.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-foreground-extract.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-histogram.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-invert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawable-levels.Po@am__quote@
@@ -806,9 +849,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-new.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-pick-color.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-preview.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-qmask.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-quick-mask.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-resize.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-rotate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-sample-points.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-scale.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-snap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage-undo-push.Po@am__quote@
@@ -816,6 +860,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagefile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagemap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpinterpreterdb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem-align.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem-linked.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem-preview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitem.Po@am__quote@

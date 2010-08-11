@@ -73,36 +73,6 @@ gimp_histogram_channel_get_type (void)
 }
 
 GType
-gimp_interpolation_type_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_INTERPOLATION_NONE, "GIMP_INTERPOLATION_NONE", "none" },
-    { GIMP_INTERPOLATION_LINEAR, "GIMP_INTERPOLATION_LINEAR", "linear" },
-    { GIMP_INTERPOLATION_CUBIC, "GIMP_INTERPOLATION_CUBIC", "cubic" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_INTERPOLATION_NONE, N_("None (Fastest)"), NULL },
-    { GIMP_INTERPOLATION_LINEAR, N_("Linear"), NULL },
-    { GIMP_INTERPOLATION_CUBIC, N_("Cubic (Best)"), NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (! type)
-    {
-      type = g_enum_register_static ("GimpInterpolationType", values);
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
-GType
 gimp_layer_mode_effects_get_type (void)
 {
   static const GEnumValue values[] =
@@ -135,29 +105,29 @@ gimp_layer_mode_effects_get_type (void)
 
   static const GimpEnumDesc descs[] =
   {
-    { GIMP_NORMAL_MODE, "GIMP_NORMAL_MODE", NULL },
-    { GIMP_DISSOLVE_MODE, "GIMP_DISSOLVE_MODE", NULL },
-    { GIMP_BEHIND_MODE, "GIMP_BEHIND_MODE", NULL },
-    { GIMP_MULTIPLY_MODE, "GIMP_MULTIPLY_MODE", NULL },
-    { GIMP_SCREEN_MODE, "GIMP_SCREEN_MODE", NULL },
-    { GIMP_OVERLAY_MODE, "GIMP_OVERLAY_MODE", NULL },
-    { GIMP_DIFFERENCE_MODE, "GIMP_DIFFERENCE_MODE", NULL },
-    { GIMP_ADDITION_MODE, "GIMP_ADDITION_MODE", NULL },
-    { GIMP_SUBTRACT_MODE, "GIMP_SUBTRACT_MODE", NULL },
-    { GIMP_DARKEN_ONLY_MODE, "GIMP_DARKEN_ONLY_MODE", NULL },
-    { GIMP_LIGHTEN_ONLY_MODE, "GIMP_LIGHTEN_ONLY_MODE", NULL },
-    { GIMP_HUE_MODE, "GIMP_HUE_MODE", NULL },
-    { GIMP_SATURATION_MODE, "GIMP_SATURATION_MODE", NULL },
-    { GIMP_COLOR_MODE, "GIMP_COLOR_MODE", NULL },
-    { GIMP_VALUE_MODE, "GIMP_VALUE_MODE", NULL },
-    { GIMP_DIVIDE_MODE, "GIMP_DIVIDE_MODE", NULL },
-    { GIMP_DODGE_MODE, "GIMP_DODGE_MODE", NULL },
-    { GIMP_BURN_MODE, "GIMP_BURN_MODE", NULL },
-    { GIMP_HARDLIGHT_MODE, "GIMP_HARDLIGHT_MODE", NULL },
-    { GIMP_SOFTLIGHT_MODE, "GIMP_SOFTLIGHT_MODE", NULL },
-    { GIMP_GRAIN_EXTRACT_MODE, "GIMP_GRAIN_EXTRACT_MODE", NULL },
-    { GIMP_GRAIN_MERGE_MODE, "GIMP_GRAIN_MERGE_MODE", NULL },
-    { GIMP_COLOR_ERASE_MODE, "GIMP_COLOR_ERASE_MODE", NULL },
+    { GIMP_NORMAL_MODE, N_("Normal"), NULL },
+    { GIMP_DISSOLVE_MODE, N_("Dissolve"), NULL },
+    { GIMP_BEHIND_MODE, N_("Behind"), NULL },
+    { GIMP_MULTIPLY_MODE, N_("Multiply"), NULL },
+    { GIMP_SCREEN_MODE, N_("Screen"), NULL },
+    { GIMP_OVERLAY_MODE, N_("Overlay"), NULL },
+    { GIMP_DIFFERENCE_MODE, N_("Difference"), NULL },
+    { GIMP_ADDITION_MODE, N_("Addition"), NULL },
+    { GIMP_SUBTRACT_MODE, N_("Subtract"), NULL },
+    { GIMP_DARKEN_ONLY_MODE, N_("Darken only"), NULL },
+    { GIMP_LIGHTEN_ONLY_MODE, N_("Lighten only"), NULL },
+    { GIMP_HUE_MODE, N_("Hue"), NULL },
+    { GIMP_SATURATION_MODE, N_("Saturation"), NULL },
+    { GIMP_COLOR_MODE, N_("Color"), NULL },
+    { GIMP_VALUE_MODE, N_("Value"), NULL },
+    { GIMP_DIVIDE_MODE, N_("Divide"), NULL },
+    { GIMP_DODGE_MODE, N_("Dodge"), NULL },
+    { GIMP_BURN_MODE, N_("Burn"), NULL },
+    { GIMP_HARDLIGHT_MODE, N_("Hard light"), NULL },
+    { GIMP_SOFTLIGHT_MODE, N_("Soft light"), NULL },
+    { GIMP_GRAIN_EXTRACT_MODE, N_("Grain extract"), NULL },
+    { GIMP_GRAIN_MERGE_MODE, N_("Grain merge"), NULL },
+    { GIMP_COLOR_ERASE_MODE, N_("Color erase"), NULL },
     { 0, NULL, NULL }
   };
 
@@ -166,36 +136,6 @@ gimp_layer_mode_effects_get_type (void)
   if (! type)
     {
       type = g_enum_register_static ("GimpLayerModeEffects", values);
-      gimp_enum_set_value_descriptions (type, descs);
-    }
-
-  return type;
-}
-
-GType
-gimp_transfer_mode_get_type (void)
-{
-  static const GEnumValue values[] =
-  {
-    { GIMP_SHADOWS, "GIMP_SHADOWS", "shadows" },
-    { GIMP_MIDTONES, "GIMP_MIDTONES", "midtones" },
-    { GIMP_HIGHLIGHTS, "GIMP_HIGHLIGHTS", "highlights" },
-    { 0, NULL, NULL }
-  };
-
-  static const GimpEnumDesc descs[] =
-  {
-    { GIMP_SHADOWS, N_("Shadows"), NULL },
-    { GIMP_MIDTONES, N_("Midtones"), NULL },
-    { GIMP_HIGHLIGHTS, N_("Highlights"), NULL },
-    { 0, NULL, NULL }
-  };
-
-  static GType type = 0;
-
-  if (! type)
-    {
-      type = g_enum_register_static ("GimpTransferMode", values);
       gimp_enum_set_value_descriptions (type, descs);
     }
 

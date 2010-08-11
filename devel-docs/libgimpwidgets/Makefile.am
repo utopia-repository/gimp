@@ -1,7 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = 1.6
-
 # The name of the module.
 DOC_MODULE = libgimpwidgets
 
@@ -35,10 +33,11 @@ IGNORE_HFILES = \
 IMAGES_DIR = $(top_srcdir)/themes/Default/images
 HTML_IMAGES = \
 	$(IMAGES_DIR)/stock-*.png	\
-	$(IMAGES_DIR)/tools/stock-*.png
+	$(IMAGES_DIR)/tools/stock-*.png \
+	$(srcdir)/images/gimp-*.png	
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
-content_files =
+content_files = visual-index.xml
 
 # Other files to distribute
 extra_files =
@@ -53,10 +52,11 @@ GTKDOC_CFLAGS = \
 	-DGIMP_ENABLE_CONTROLLER_UNDER_CONSTRUCTION
 
 GTKDOC_LIBS = \
-        $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la        \
-        $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la      \
-        $(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la        \
-        $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la  \
+	$(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la		\
+	$(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la	\
+	$(top_builddir)/libgimpmath/libgimpmath-$(GIMP_API_VERSION).la		\
+	$(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la	\
+	$(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la	\
 	@GTK_LIBS@
 
 

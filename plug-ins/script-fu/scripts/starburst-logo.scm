@@ -28,7 +28,7 @@
     (gimp-image-add-layer img shadow-layer 1)
     (gimp-image-add-layer img burst-layer 0)
     (gimp-layer-add-mask burst-layer layer-mask)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
 
     (gimp-context-set-background bg-color)
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
@@ -86,7 +86,7 @@
 		    SF-COLOR      _"Background color" '(255 255 255))
 
 (script-fu-menu-register "script-fu-starburst-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-starburst-logo text size fontname burst-color bg-color)
@@ -96,7 +96,6 @@
 	 (border (+ feather off))
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text border TRUE size PIXELS fontname))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-starburst-logo-effect img text-layer size burst-color bg-color)
     (gimp-image-undo-enable img)
     (gimp-display-new img)))
@@ -115,4 +114,4 @@
 		    SF-COLOR      _"Background color"   '(255 255 255))
 
 (script-fu-menu-register "script-fu-starburst-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

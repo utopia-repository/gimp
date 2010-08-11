@@ -46,6 +46,8 @@ struct _GimpEditor
   gchar           *ui_path;
   gpointer         popup_data;
 
+  gboolean         show_button_bar;
+  GtkWidget       *name_label;
   GtkWidget       *button_box;
 };
 
@@ -84,10 +86,15 @@ GtkWidget * gimp_editor_add_stock_box     (GimpEditor           *editor,
 GtkWidget * gimp_editor_add_action_button (GimpEditor           *editor,
                                            const gchar          *group_name,
                                            const gchar          *action_name,
-                                           ...);
+                                           ...) G_GNUC_NULL_TERMINATED;
 
-void        gimp_editor_set_box_style     (GimpEditor           *editor,
-                                           GtkBox               *box);
+void        gimp_editor_set_show_name       (GimpEditor         *editor,
+                                             gboolean            show);
+void        gimp_editor_set_name            (GimpEditor         *editor,
+                                             const gchar        *name);
+
+void        gimp_editor_set_box_style       (GimpEditor         *editor,
+                                             GtkBox             *box);
 
 
 #endif  /*  __GIMP_EDITOR_H__  */

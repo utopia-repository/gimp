@@ -24,20 +24,14 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
 
-#define	PLUG_IN_NAME        "plug_in_threshold_alpha"
-#define SHORT_NAME          "threshold_alpha"
-#define HELP_ID             "plug-in-threshold-alpha"
+#define PLUG_IN_PROC        "plug-in-threshold-alpha"
+#define PLUG_IN_BINARY      "threshold_alpha"
 #define PROGRESS_UPDATE_NUM 100
 #define SCALE_WIDTH         120
 
@@ -49,9 +43,10 @@ static void              run   (const gchar      *name,
                                 gint             *nreturn_vals,
                                 GimpParam       **return_vals);
 
-static GimpPDBStatusType threshold_alpha        (gint32     drawable_id);
+static void      threshold_alpha        (GimpDrawable *drawable,
+                                         GimpPreview  *preview);
 
-static gboolean          threshold_alpha_dialog (void);
+static gboolean  threshold_alpha_dialog (GimpDrawable *drawable);
 
 
 GimpPlugInInfo PLUG_IN_INFO =
@@ -64,12 +59,12 @@ GimpPlugInInfo PLUG_IN_INFO =
 
 typedef struct
 {
-  gint	threshold;
+  gint  threshold;
 } ValueType;
 
 static ValueType VALS =
 {
-  127
+  127 /* threshold */
 };
 
 
@@ -86,19 +81,19 @@ query (void)
     { GIMP_PDB_INT32,    "threshold", "Threshold"                    }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
-			  "",
-			  "",
-			  "Shuji Narazaki (narazaki@InetQ.or.jp)",
-			  "Shuji Narazaki",
-			  "1997",
-			  N_("_Threshold Alpha..."),
-			  "RGBA,GRAYA",
-			  GIMP_PLUGIN,
-			  G_N_ELEMENTS (args), 0,
-			  args, NULL);
+  gimp_install_procedure (PLUG_IN_PROC,
+                          "",
+                          "",
+                          "Shuji Narazaki (narazaki@InetQ.or.jp)",
+                          "Shuji Narazaki",
+                          "1997",
+                          N_("_Threshold Alpha..."),
+                          "RGBA,GRAYA",
+                          GIMP_PLUGIN,
+                          G_N_ELEMENTS (args), 0,
+                          args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME,
+  gimp_plugin_menu_register (PLUG_IN_PROC,
                              "<Image>/Layer/Transparency/Modify");
 }
 
@@ -112,10 +107,12 @@ run (const gchar      *name,
   static GimpParam   values[1];
   GimpPDBStatusType  status = GIMP_PDB_SUCCESS;
   GimpRunMode        run_mode;
-  gint               drawable_id;
+  GimpDrawable      *drawable;
 
-  run_mode    = param[0].data.d_int32;
-  drawable_id = param[2].data.d_int32;
+  run_mode = param[0].data.d_int32;
+  drawable = gimp_drawable_get (param[2].data.d_drawable);
+
+  gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
 
   INIT_I18N ();
 
@@ -129,46 +126,56 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /* Since a channel might be selected, we must check wheter RGB or not. */
-      if (gimp_layer_get_preserve_trans (drawable_id))
-	{
-	  g_message (_("The layer preserves transparency."));
-	  return;
-	}
-      if (!gimp_drawable_is_rgb (drawable_id) &&
-	  !gimp_drawable_is_gray (drawable_id))
-	{
-	  g_message (_("RGBA/GRAYA drawable is not selected."));
-	  return;
-	}
-      gimp_get_data (PLUG_IN_NAME, &VALS);
-      if (! threshold_alpha_dialog ())
-	return;
+      if (gimp_layer_get_lock_alpha (drawable->drawable_id))
+        {
+          g_message (_("The layer has its alpha channel locked."));
+          return;
+        }
+      if (!gimp_drawable_is_rgb (drawable->drawable_id) &&
+          !gimp_drawable_is_gray (drawable->drawable_id))
+        {
+          g_message (_("RGBA/GRAYA drawable is not selected."));
+          return;
+        }
+      gimp_get_data (PLUG_IN_PROC, &VALS);
+      if (! threshold_alpha_dialog (drawable))
+        return;
       break;
 
     case GIMP_RUN_NONINTERACTIVE:
       if (nparams != 4)
-	{
-	  status = GIMP_PDB_CALLING_ERROR;
-	}
+        {
+          status = GIMP_PDB_CALLING_ERROR;
+        }
       else
-	{
-	  VALS.threshold = param[3].data.d_int32;
-	}
+        {
+          VALS.threshold = param[3].data.d_int32;
+        }
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data (PLUG_IN_NAME, &VALS);
+      gimp_get_data (PLUG_IN_PROC, &VALS);
       break;
     }
 
   if (status == GIMP_PDB_SUCCESS)
     {
-      status = threshold_alpha (drawable_id);
+      if (gimp_drawable_has_alpha (drawable->drawable_id))
+        {
+          gimp_progress_init (_("Coloring transparency"));
 
-      if (run_mode != GIMP_RUN_NONINTERACTIVE)
-	gimp_displays_flush ();
-      if (run_mode == GIMP_RUN_INTERACTIVE && status == GIMP_PDB_SUCCESS)
-	gimp_set_data (PLUG_IN_NAME, &VALS, sizeof (ValueType));
+          threshold_alpha (drawable, NULL);
+
+          if (run_mode != GIMP_RUN_NONINTERACTIVE)
+            gimp_displays_flush ();
+          if (run_mode == GIMP_RUN_INTERACTIVE && status == GIMP_PDB_SUCCESS)
+            gimp_set_data (PLUG_IN_PROC, &VALS, sizeof (ValueType));
+        }
+      else
+        {
+          status = GIMP_PDB_EXECUTION_ERROR;
+        }
+      gimp_drawable_detach (drawable);
     }
 
   values[0].type = GIMP_PDB_STATUS;
@@ -177,78 +184,118 @@ run (const gchar      *name,
 
 static void
 threshold_alpha_func (const guchar *src,
-		      guchar       *dest,
-		      gint          bpp,
-		      gpointer      data)
+                      guchar       *dest,
+                      gint          bpp)
 {
-  gint gap;
-
-  for (gap = GPOINTER_TO_INT(data); gap; gap--)
+  for (bpp--; bpp; bpp--)
     *dest++ = *src++;
   *dest = (VALS.threshold < *src) ? 255 : 0;
 }
 
-static GimpPDBStatusType
-threshold_alpha (gint32 drawable_id)
+static void
+threshold_alpha (GimpDrawable *drawable,
+                 GimpPreview  *preview)
 {
-  GimpDrawable *drawable;
-  gint gap;
+  if (preview)
+    {
+      GimpPixelRgn  src_rgn;
+      guchar       *src, *dst;
+      gint          i;
+      gint          x1, y1;
+      gint          width, height;
+      gint          bpp;
 
-  drawable = gimp_drawable_get (drawable_id);
-  if (! gimp_drawable_has_alpha (drawable_id))
-    return GIMP_PDB_EXECUTION_ERROR;
+      gimp_preview_get_position (preview, &x1, &y1);
+      gimp_preview_get_size (preview, &width, &height);
 
-  gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
-  gimp_progress_init (_("Threshold Alpha: Coloring Transparency..."));
+      bpp = drawable->bpp;
 
-  gap = (gimp_drawable_is_rgb (drawable_id)) ? 3 : 1;
+      src = g_new (guchar, width * height * bpp);
+      dst = g_new (guchar, width * height * bpp);
 
-  gimp_rgn_iterate2 (drawable, 0 /* unused */, threshold_alpha_func,
-		     GINT_TO_POINTER(gap));
+      gimp_pixel_rgn_init (&src_rgn, drawable,
+                           x1, y1, width, height,
+                           FALSE, FALSE);
+      gimp_pixel_rgn_get_rect (&src_rgn, src, x1, y1, width, height);
 
-  gimp_drawable_detach (drawable);
+      for (i = 0; i < width * height; i++)
+        threshold_alpha_func (src + i * bpp, dst + i * bpp, bpp);
 
-  return GIMP_PDB_SUCCESS;
+      gimp_preview_draw_buffer (preview, dst, width * bpp);
+
+      g_free (src);
+      g_free (dst);
+    }
+  else
+    {
+      gimp_rgn_iterate2 (drawable, 0 /* unused */,
+                         (GimpRgnFunc2)threshold_alpha_func, NULL);
+    }
 }
 
 static gboolean
-threshold_alpha_dialog (void)
+threshold_alpha_dialog (GimpDrawable *drawable)
 {
-  GtkWidget *dlg;
+  GtkWidget *dialog;
+  GtkWidget *main_vbox;
+  GtkWidget *preview;
   GtkWidget *table;
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init (SHORT_NAME, FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dlg = gimp_dialog_new (_("Threshold Alpha"), SHORT_NAME,
-                         NULL, 0,
-                         gimp_standard_help_func, HELP_ID,
+  dialog = gimp_dialog_new (_("Threshold Alpha"), PLUG_IN_BINARY,
+                            NULL, 0,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
-                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                         GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-                         NULL);
+                            NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
+  main_vbox = gtk_vbox_new (FALSE, 12);
+  gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
+  gtk_widget_show (main_vbox);
+
+  preview = gimp_drawable_preview_new (drawable, NULL);
+  gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
+  gtk_widget_show (preview);
+  g_signal_connect_swapped (preview, "invalidated",
+                            G_CALLBACK (threshold_alpha),
+                            drawable);
 
   table = gtk_table_new (1 ,3, FALSE);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), table, FALSE, FALSE, 0);  gtk_widget_show (table);
+  gtk_box_pack_start (GTK_BOX (main_vbox), table, FALSE, FALSE, 0);
+  gtk_widget_show (table);
 
   adj = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
-			      _("Threshold:"), SCALE_WIDTH, 0,
-			      VALS.threshold, 0, 255, 1, 8, 0,
-			      TRUE, 0, 0,
-			      NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+                              _("Threshold:"), SCALE_WIDTH, 0,
+                              VALS.threshold, 0, 255, 1, 8, 0,
+                              TRUE, 0, 0,
+                              NULL, NULL);
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &VALS.threshold);
+  g_signal_connect_swapped (adj, "value-changed",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
 
-  gtk_widget_show (dlg);
+  gtk_widget_show (dialog);
 
-  run = (gimp_dialog_run (GIMP_DIALOG (dlg)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-  gtk_widget_destroy (dlg);
+  gtk_widget_destroy (dialog);
 
   return run;
 }

@@ -89,8 +89,8 @@ gimp_composite_convert_any_any_any_generic (GimpCompositeContext *ctx)
 {
   int i;
   int j;
-  char *D = ctx->D;
-  char *A = ctx->A;
+  unsigned char *D = ctx->D;
+  unsigned char *A = ctx->A;
   int bpp_A = gimp_composite_pixel_bpp[ctx->pixelformat_A];
   int bpp_D = gimp_composite_pixel_bpp[ctx->pixelformat_D];
 
@@ -375,8 +375,8 @@ gimp_composite_hue_any_any_any_generic (GimpCompositeContext * ctx)
   guint bytes2 = gimp_composite_pixel_bpp[ctx->pixelformat_B];
   const guint has_alpha1 = HAS_ALPHA(bytes1);
   const guint has_alpha2 = HAS_ALPHA(bytes2);
-  guint r1, g1, b1;
-  guint r2, g2, b2;
+  gint r1, g1, b1;
+  gint r2, g2, b2;
 
   if (bytes1 > 2)
     {
@@ -443,8 +443,8 @@ gimp_composite_saturation_any_any_any_generic (GimpCompositeContext * ctx)
   guint bytes2 = gimp_composite_pixel_bpp[ctx->pixelformat_B];
   const guint has_alpha1 = HAS_ALPHA(bytes1);
   const guint has_alpha2 = HAS_ALPHA(bytes2);
-  guint r1, g1, b1;
-  guint r2, g2, b2;
+  gint r1, g1, b1;
+  gint r2, g2, b2;
 
   if (bytes1 > 2) {
     /*  assumes inputs are only 4 byte RGBA pixels  */
@@ -502,8 +502,8 @@ gimp_composite_value_any_any_any_generic (GimpCompositeContext * ctx)
   guint bytes2 = gimp_composite_pixel_bpp[ctx->pixelformat_B];
   const guint has_alpha1 = HAS_ALPHA(bytes1);
   const guint has_alpha2 = HAS_ALPHA(bytes2);
-  guint r1, g1, b1;
-  guint r2, g2, b2;
+  gint r1, g1, b1;
+  gint r2, g2, b2;
 
   if (bytes1 > 2) {
     /*  assumes inputs are only 4 byte RGBA pixels  */
@@ -562,8 +562,8 @@ gimp_composite_color_only_any_any_any_generic (GimpCompositeContext * ctx)
   guint bytes2 = gimp_composite_pixel_bpp[ctx->pixelformat_B];
   const guint has_alpha1 = HAS_ALPHA(bytes1);
   const guint has_alpha2 = HAS_ALPHA(bytes2);
-  guint r1, g1, b1;
-  guint r2, g2, b2;
+  gint r1, g1, b1;
+  gint r2, g2, b2;
 
   if (bytes1 > 2) {
     /*  assumes inputs are only 4 byte RGBA pixels  */
@@ -769,7 +769,7 @@ gimp_composite_screen_any_any_any_generic (GimpCompositeContext * ctx)
  * Perform an RGB[A] overlay operation between the pixel sources
  * ctx->A and ctx->B, using the generalised algorithm:
  *
- * D =  A * (B + (2 * B) * (255 - A))
+ * D =  A * (A + (2 * B) * (255 - A))
  *
  **/
 void
@@ -1318,17 +1318,18 @@ gimp_composite_replace_any_any_any_generic (GimpCompositeContext *ctx)
 void
 gimp_composite_swap_any_any_any_generic (GimpCompositeContext * ctx)
 {
-  guint length;
   guchar *src = ctx->A;
   guchar *dest = ctx->B;
   guint bytes1 = gimp_composite_pixel_bpp[ctx->pixelformat_A];
-  length = ctx->n_pixels * bytes1;
+  guint length = ctx->n_pixels * bytes1;
 
   while (length--)
     {
-      *src = *src ^ *dest;
-      *dest = *dest ^ *src;
-      *src = *src ^ *dest;
+      guchar tmp = *dest;
+
+      *dest = *src;
+      *src = tmp;
+
       src++;
       dest++;
     }

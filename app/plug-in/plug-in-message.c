@@ -83,8 +83,8 @@ static GSList *blocked_plug_ins = NULL;
 /*  public functions  */
 
 void
-plug_in_handle_message (PlugIn      *plug_in,
-                        WireMessage *msg)
+plug_in_handle_message (PlugIn          *plug_in,
+                        GimpWireMessage *msg)
 {
   switch (msg->type)
     {
@@ -171,13 +171,13 @@ static void
 plug_in_handle_tile_req (PlugIn    *plug_in,
                          GPTileReq *tile_req)
 {
-  GPTileData    tile_data;
-  GPTileData   *tile_info;
-  WireMessage   msg;
-  GimpDrawable *drawable;
-  TileManager  *tm;
-  Tile         *tile;
-  gint          shm_ID;
+  GPTileData       tile_data;
+  GPTileData      *tile_info;
+  GimpWireMessage  msg;
+  GimpDrawable    *drawable;
+  TileManager     *tm;
+  Tile            *tile;
+  gint             shm_ID;
 
   shm_ID = plug_in_shm_get_ID (plug_in->gimp);
 
@@ -201,7 +201,7 @@ plug_in_handle_tile_req (PlugIn    *plug_in,
 	  return;
 	}
 
-      if (! wire_read_msg (plug_in->my_read, &msg, plug_in))
+      if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
 	{
 	  g_warning ("plug_in_handle_tile_req: ERROR");
 	  plug_in_close (plug_in, TRUE);
@@ -257,8 +257,8 @@ plug_in_handle_tile_req (PlugIn    *plug_in,
                 tile_size (tile));
 
       tile_release (tile, TRUE);
+      gimp_wire_destroy (&msg);
 
-      wire_destroy (&msg);
       if (! gp_tile_ack_write (plug_in->my_write, plug_in))
 	{
 	  g_warning ("plug_in_handle_tile_req: ERROR");
@@ -324,7 +324,7 @@ plug_in_handle_tile_req (PlugIn    *plug_in,
 
       tile_release (tile, FALSE);
 
-      if (! wire_read_msg (plug_in->my_read, &msg, plug_in))
+      if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
 	{
 	  g_message ("plug_in_handle_tile_req: ERROR");
 	  plug_in_close (plug_in, TRUE);
@@ -338,7 +338,7 @@ plug_in_handle_tile_req (PlugIn    *plug_in,
 	  return;
 	}
 
-      wire_destroy (&msg);
+      gimp_wire_destroy (&msg);
     }
 }
 
@@ -347,19 +347,22 @@ plug_in_handle_proc_run (PlugIn    *plug_in,
                          GPProcRun *proc_run)
 {
   PlugInProcFrame *proc_frame;
+  gchar           *canonical;
   const gchar     *proc_name = NULL;
   ProcRecord      *proc_rec;
   Argument        *args;
   Argument        *return_vals;
 
+  canonical = gimp_canonicalize_identifier (proc_run->name);
+
   proc_frame = plug_in_get_proc_frame (plug_in);
 
-  proc_rec = procedural_db_lookup (plug_in->gimp, proc_run->name);
+  proc_rec = procedural_db_lookup (plug_in->gimp, canonical);
 
   if (! proc_rec)
     {
       proc_name = g_hash_table_lookup (plug_in->gimp->procedural_compat_ht,
-                                       proc_run->name);
+                                       canonical);
 
       if (proc_name)
         {
@@ -372,7 +375,7 @@ plug_in_handle_proc_run (PlugIn    *plug_in,
                          "It should call '%s' instead!",
                          gimp_filename_to_utf8 (plug_in->name),
 			 gimp_filename_to_utf8 (plug_in->prog),
-                         proc_run->name, proc_name);
+                         canonical, proc_name);
             }
         }
     }
@@ -386,7 +389,7 @@ plug_in_handle_proc_run (PlugIn    *plug_in,
                          "called deprecated procedure '%s'.",
                          gimp_filename_to_utf8 (plug_in->name),
                          gimp_filename_to_utf8 (plug_in->prog),
-                         proc_run->name);
+                         canonical);
             }
           else
             {
@@ -395,7 +398,7 @@ plug_in_handle_proc_run (PlugIn    *plug_in,
                          "It should call '%s' instead!",
                          gimp_filename_to_utf8 (plug_in->name),
                          gimp_filename_to_utf8 (plug_in->prog),
-                         proc_run->name, proc_rec->deprecated);
+                         canonical, proc_rec->deprecated);
             }
         }
       else if (plug_in->gimp->pdb_compat_mode == GIMP_PDB_COMPAT_OFF)
@@ -405,7 +408,7 @@ plug_in_handle_proc_run (PlugIn    *plug_in,
     }
 
   if (! proc_name)
-    proc_name = proc_run->name;
+    proc_name = canonical;
 
   args = plug_in_params_to_args (proc_run->params, proc_run->nparams, FALSE);
 
@@ -423,12 +426,15 @@ plug_in_handle_proc_run (PlugIn    *plug_in,
 
   plug_in_pop (plug_in->gimp);
 
+  g_free (canonical);
+
   if (return_vals)
     {
       GPProcReturn proc_return;
 
-      /*  Return the name we got called with, *not* proc_name, since
-       *  proc_name may have been remapped by gimp->procedural_compat_ht
+      /*  Return the name we got called with, *not* proc_name or canonical,
+       *  since proc_name may have been remapped by gimp->procedural_compat_ht
+       *  and canonical may be different too.
        */
       proc_return.name = proc_run->name;
 
@@ -570,10 +576,12 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
   PlugInDef     *plug_in_def = NULL;
   PlugInProcDef *proc_def    = NULL;
   ProcRecord    *proc        = NULL;
-  GSList        *tmp         = NULL;
+  gchar         *canonical;
   gchar         *prog        = NULL;
   gboolean       valid_utf8  = FALSE;
   gint           i;
+
+  canonical = gimp_canonicalize_identifier (proc_install->name);
 
   /*  Argument checking
    *   --only sanity check arguments when the procedure requests a menu path
@@ -585,7 +593,7 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
 
       if (! plug_in_param_defs_check (plug_in->name,
                                       plug_in->prog,
-                                      proc_install->name,
+                                      canonical,
                                       proc_install->menu_path,
                                       proc_install->params,
                                       proc_install->nparams,
@@ -595,6 +603,8 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
         {
           g_message (error->message);
           g_clear_error (&error);
+
+          g_free (canonical);
 
           return;
         }
@@ -617,7 +627,8 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
                      "passing standard.  Argument %d is noncompliant.",
                      gimp_filename_to_utf8 (plug_in->name),
 		     gimp_filename_to_utf8 (plug_in->prog),
-                     proc_install->name, i);
+                     canonical, i);
+          g_free (canonical);
 	  return;
 	}
     }
@@ -626,7 +637,7 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
 
   if ((proc_install->menu_path == NULL ||
        g_utf8_validate (proc_install->menu_path, -1, NULL)) &&
-      (g_utf8_validate (proc_install->name, -1, NULL))      &&
+      (g_utf8_validate (canonical, -1, NULL))               &&
       (proc_install->blurb == NULL ||
        g_utf8_validate (proc_install->blurb, -1, NULL))     &&
       (proc_install->help == NULL ||
@@ -663,6 +674,7 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
                  "attempted to install a procedure with invalid UTF-8 strings.",
                  gimp_filename_to_utf8 (plug_in->name),
 		 gimp_filename_to_utf8 (plug_in->prog));
+      g_free (canonical);
       return;
     }
 
@@ -675,42 +687,29 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
       plug_in_def = plug_in->plug_in_def;
       prog        = plug_in_def->prog;
 
-      tmp = plug_in_def->proc_defs;
+      proc_def = plug_in_proc_def_find (plug_in_def->proc_defs, canonical);
+
+      if (proc_def)
+        {
+          plug_in_def->proc_defs = g_slist_remove (plug_in_def->proc_defs,
+                                                   proc_def);
+          plug_in_proc_def_free (proc_def);
+        }
       break;
 
     case GIMP_TEMPORARY:
       plug_in_def = NULL;
       prog        = "none";
 
-      tmp = plug_in->temp_proc_defs;
+      proc_def = plug_in_proc_def_find (plug_in->temp_proc_defs, canonical);
+
+      if (proc_def)
+        {
+          plug_in->temp_proc_defs = g_slist_remove (plug_in->temp_proc_defs,
+                                                    proc_def);
+          plug_ins_temp_proc_def_remove (plug_in->gimp, proc_def);
+        }
       break;
-    }
-
-  while (tmp)
-    {
-      proc_def = tmp->data;
-      tmp = tmp->next;
-
-      if (strcmp (proc_def->db_info.name, proc_install->name) == 0)
-	{
-          switch (proc_install->type)
-            {
-            case GIMP_PLUGIN:
-            case GIMP_EXTENSION:
-              plug_in_def->proc_defs = g_slist_remove (plug_in_def->proc_defs,
-                                                       proc_def);
-              plug_in_proc_def_free (proc_def);
-              break;
-
-            case GIMP_TEMPORARY:
-              plug_in->temp_proc_defs = g_slist_remove (plug_in->temp_proc_defs,
-                                                        proc_def);
-              plug_ins_temp_proc_def_remove (plug_in->gimp, proc_def);
-              break;
-            }
-
-	  break;
-	}
     }
 
   proc_def = plug_in_proc_def_new ();
@@ -741,13 +740,14 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
 
   proc = &proc_def->db_info;
 
-  proc->name      = g_strdup (proc_install->name);
-  proc->blurb     = g_strdup (proc_install->blurb);
-  proc->help      = g_strdup (proc_install->help);
-  proc->author    = g_strdup (proc_install->author);
-  proc->copyright = g_strdup (proc_install->copyright);
-  proc->date      = g_strdup (proc_install->date);
-  proc->proc_type = proc_install->type;
+  proc->name          = g_strdup (canonical);
+  proc->original_name = g_strdup (proc_install->name);
+  proc->blurb         = g_strdup (proc_install->blurb);
+  proc->help          = g_strdup (proc_install->help);
+  proc->author        = g_strdup (proc_install->author);
+  proc->copyright     = g_strdup (proc_install->copyright);
+  proc->date          = g_strdup (proc_install->date);
+  proc->proc_type     = proc_install->type;
 
   proc->num_args   = proc_install->nparams;
   proc->num_values = proc_install->nreturn_vals;
@@ -758,14 +758,14 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
   for (i = 0; i < proc->num_args; i++)
     {
       proc->args[i].arg_type    = proc_install->params[i].type;
-      proc->args[i].name        = g_strdup (proc_install->params[i].name);
+      proc->args[i].name        = gimp_canonicalize_identifier (proc_install->params[i].name);
       proc->args[i].description = g_strdup (proc_install->params[i].description);
     }
 
   for (i = 0; i < proc->num_values; i++)
     {
       proc->values[i].arg_type    = proc_install->return_vals[i].type;
-      proc->values[i].name        = g_strdup (proc_install->return_vals[i].name);
+      proc->values[i].name        = gimp_canonicalize_identifier (proc_install->return_vals[i].name);
       proc->values[i].description = g_strdup (proc_install->return_vals[i].description);
     }
 
@@ -786,28 +786,29 @@ plug_in_handle_proc_install (PlugIn        *plug_in,
       plug_ins_temp_proc_def_add (plug_in->gimp, proc_def);
       break;
     }
+
+  g_free (canonical);
 }
 
 static void
 plug_in_handle_proc_uninstall (PlugIn          *plug_in,
                                GPProcUninstall *proc_uninstall)
 {
-  GSList *tmp;
+  PlugInProcDef *proc_def;
+  gchar         *canonical;
 
-  for (tmp = plug_in->temp_proc_defs; tmp; tmp = g_slist_next (tmp))
+  canonical = gimp_canonicalize_identifier (proc_uninstall->name);
+
+  proc_def = plug_in_proc_def_find (plug_in->temp_proc_defs, canonical);
+
+  if (proc_def)
     {
-      PlugInProcDef *proc_def;
-
-      proc_def = tmp->data;
-
-      if (! strcmp (proc_def->db_info.name, proc_uninstall->name))
-	{
-	  plug_in->temp_proc_defs = g_slist_remove (plug_in->temp_proc_defs,
-                                                    proc_def);
-	  plug_ins_temp_proc_def_remove (plug_in->gimp, proc_def);
-	  break;
-	}
+      plug_in->temp_proc_defs = g_slist_remove (plug_in->temp_proc_defs,
+                                                proc_def);
+      plug_ins_temp_proc_def_remove (plug_in->gimp, proc_def);
     }
+
+  g_free (canonical);
 }
 
 static void

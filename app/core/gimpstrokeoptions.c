@@ -24,13 +24,15 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
 
-#include "config/gimpconfig-params.h"
-
+#include "gimpdashpattern.h"
 #include "gimpmarshal.h"
 #include "gimpstrokeoptions.h"
+
+#include "gimp-intl.h"
 
 
 enum
@@ -41,7 +43,7 @@ enum
   PROP_UNIT,
   PROP_CAP_STYLE,
   PROP_JOIN_STYLE,
-  PROP_MITER,
+  PROP_MITER_LIMIT,
   PROP_ANTIALIAS,
   PROP_DASH_UNIT,
   PROP_DASH_OFFSET,
@@ -55,49 +57,20 @@ enum
 };
 
 
-static void   gimp_stroke_options_class_init   (GimpStrokeOptionsClass *klass);
-
-static void   gimp_stroke_options_set_property (GObject         *object,
-                                                guint            property_id,
-                                                const GValue    *value,
-                                                GParamSpec      *pspec);
-static void   gimp_stroke_options_get_property (GObject         *object,
-                                                guint            property_id,
-                                                GValue          *value,
-                                                GParamSpec      *pspec);
-
-static guint  stroke_options_signals[LAST_SIGNAL] = { 0 };
-
-static GimpContextClass *parent_class = NULL;
+static void   gimp_stroke_options_set_property  (GObject      *object,
+                                                 guint         property_id,
+                                                 const GValue *value,
+                                                 GParamSpec   *pspec);
+static void   gimp_stroke_options_get_property  (GObject      *object,
+                                                 guint         property_id,
+                                                 GValue       *value,
+                                                 GParamSpec   *pspec);
 
 
-GType
-gimp_stroke_options_get_type (void)
-{
-  static GType type = 0;
+G_DEFINE_TYPE (GimpStrokeOptions, gimp_stroke_options, GIMP_TYPE_CONTEXT);
 
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpStrokeOptionsClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_stroke_options_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpStrokeOptions),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
-      };
+static guint stroke_options_signals[LAST_SIGNAL] = { 0 };
 
-      type = g_type_register_static (GIMP_TYPE_CONTEXT,
-                                     "GimpStrokeOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_stroke_options_class_init (GimpStrokeOptionsClass *klass)
@@ -105,15 +78,13 @@ gimp_stroke_options_class_init (GimpStrokeOptionsClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamSpec   *array_spec;
 
-  parent_class = g_type_class_peek_parent (klass);
-
   object_class->set_property = gimp_stroke_options_set_property;
   object_class->get_property = gimp_stroke_options_get_property;
 
   klass->dash_info_changed = NULL;
 
   stroke_options_signals[DASH_INFO_CHANGED] =
-    g_signal_new ("dash_info_changed",
+    g_signal_new ("dash-info-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpStrokeOptionsClass, dash_info_changed),
@@ -143,8 +114,12 @@ gimp_stroke_options_class_init (GimpStrokeOptionsClass *klass)
                                  "join-style", NULL,
                                  GIMP_TYPE_JOIN_STYLE, GIMP_JOIN_MITER,
                                  0);
-  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_MITER,
-                                   "miter", NULL,
+  GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_MITER_LIMIT,
+                                   "miter-limit",
+                                   _("Convert a mitered join to a bevelled "
+                                     "join if the miter would extend to a "
+                                     "distance of more than miter-limit * "
+                                     "line-width from the actual join point."),
                                    0.0, 100.0, 10.0,
                                    0);
   GIMP_CONFIG_INSTALL_PROP_BOOLEAN (object_class, PROP_ANTIALIAS,
@@ -164,6 +139,11 @@ gimp_stroke_options_class_init (GimpStrokeOptionsClass *klass)
                                                              array_spec,
                                                              GIMP_CONFIG_PARAM_FLAGS));
 
+}
+
+static void
+gimp_stroke_options_init (GimpStrokeOptions *options)
+{
 }
 
 static void
@@ -191,8 +171,8 @@ gimp_stroke_options_set_property (GObject      *object,
     case PROP_JOIN_STYLE:
       options->join_style = g_value_get_enum (value);
       break;
-    case PROP_MITER:
-      options->miter = g_value_get_double (value);
+    case PROP_MITER_LIMIT:
+      options->miter_limit = g_value_get_double (value);
       break;
     case PROP_ANTIALIAS:
       options->antialias = g_value_get_boolean (value);
@@ -201,42 +181,9 @@ gimp_stroke_options_set_property (GObject      *object,
       options->dash_offset = g_value_get_double (value);
       break;
     case PROP_DASH_INFO:
-      {
-        GValueArray *val_array;
-        GValue      *item;
-        gint         i;
-        gdouble      val;
-
-        if (options->dash_info)
-          g_array_free (options->dash_info, TRUE);
-
-        val_array = g_value_get_boxed (value);
-        if (val_array == NULL || val_array->n_values == 0)
-          {
-            options->dash_info = NULL;
-          }
-        else
-          {
-            options->dash_info = g_array_sized_new (FALSE, FALSE,
-                                                    sizeof (gdouble),
-                                                    val_array->n_values);
-
-            for (i=0; i < val_array->n_values; i++)
-              {
-                item = g_value_array_get_nth (val_array, i);
-
-                g_return_if_fail (G_VALUE_HOLDS_DOUBLE (item));
-
-                val = g_value_get_double (item);
-
-                options->dash_info = g_array_append_val (options->dash_info,
-                                                         val);
-              }
-          }
-        g_signal_emit (options,
-                       stroke_options_signals [DASH_INFO_CHANGED], 0,
-                       GIMP_DASH_CUSTOM);
-      }
+      gimp_stroke_options_set_dash_pattern (options,
+                                            GIMP_DASH_CUSTOM,
+                                            gimp_dash_pattern_from_value (value));
       break;
 
     default:
@@ -270,8 +217,8 @@ gimp_stroke_options_get_property (GObject    *object,
     case PROP_JOIN_STYLE:
       g_value_set_enum (value, options->join_style);
       break;
-    case PROP_MITER:
-      g_value_set_double (value, options->miter);
+    case PROP_MITER_LIMIT:
+      g_value_set_double (value, options->miter_limit);
       break;
     case PROP_ANTIALIAS:
       g_value_set_boolean (value, options->antialias);
@@ -280,33 +227,7 @@ gimp_stroke_options_get_property (GObject    *object,
       g_value_set_double (value, options->dash_offset);
       break;
     case PROP_DASH_INFO:
-      {
-        GValueArray *val_array;
-        GValue       item = { 0, };
-        gint         i;
-
-        g_value_init (&item, G_TYPE_DOUBLE);
-
-        if (options->dash_info == NULL || options->dash_info->len == 0)
-          {
-            g_value_set_boxed (value, NULL);
-          }
-        else
-          {
-            val_array = g_value_array_new (options->dash_info->len);
-
-            for (i=0; i < options->dash_info->len; i++)
-              {
-                g_value_set_double (&item, g_array_index (options->dash_info,
-                                                          gdouble,
-                                                          i));
-
-                g_value_array_append (val_array, &item);
-              }
-
-            g_value_set_boxed (value, val_array);
-          }
-      }
+      gimp_dash_pattern_value_set (options->dash_info, value);
       break;
 
     default:
@@ -315,89 +236,36 @@ gimp_stroke_options_get_property (GObject    *object,
     }
 }
 
+/**
+ * gimp_stroke_options_set_dash_pattern:
+ * @options: a #GimpStrokeOptions object
+ * @preset: a value out of the #GimpDashPreset enum
+ * @pattern: a #GArray or %NULL if @preset is not %GIMP_DASH_CUSTOM
+ *
+ * Sets the dash pattern. Either a @preset is passed and @pattern is
+ * %NULL or @preset is %GIMP_DASH_CUSTOM and @pattern is the #GArray
+ * to use as the dash pattern. Note that this function takes ownership
+ * of the passed pattern.
+ */
 void
-gimp_stroke_options_set_dash_preset (GimpStrokeOptions *options,
-                                     GimpDashPreset     preset)
+gimp_stroke_options_set_dash_pattern (GimpStrokeOptions *options,
+                                      GimpDashPreset     preset,
+                                      GArray            *pattern)
 {
-  GArray *new_pattern;
-  gdouble dash;
-  gint    i;
+  g_return_if_fail (GIMP_IS_STROKE_OPTIONS (options));
+  g_return_if_fail (preset == GIMP_DASH_CUSTOM || pattern == NULL);
 
-  if (preset == GIMP_DASH_CUSTOM)
-    return;
+  if (preset != GIMP_DASH_CUSTOM)
+    pattern = gimp_dash_pattern_from_preset (preset);
 
-  new_pattern = g_array_new (FALSE, FALSE, sizeof (gdouble));
-
-  switch (preset)
-    {
-      case GIMP_DASH_LINE:
-        break;
-      case GIMP_DASH_LONG_DASH:
-        dash = 9.0; g_array_append_val (new_pattern, dash);
-        dash = 3.0; g_array_append_val (new_pattern, dash);
-        break;
-      case GIMP_DASH_MEDIUM_DASH:
-        dash = 6.0; g_array_append_val (new_pattern, dash);
-        dash = 6.0; g_array_append_val (new_pattern, dash);
-        break;
-      case GIMP_DASH_SHORT_DASH:
-        dash = 3.0; g_array_append_val (new_pattern, dash);
-        dash = 9.0; g_array_append_val (new_pattern, dash);
-        break;
-      case GIMP_DASH_SPARSE_DOTS:
-        for (i = 0; i < 2; i++)
-          {
-            dash = 1.0; g_array_append_val (new_pattern, dash);
-            dash = 5.0; g_array_append_val (new_pattern, dash);
-          }
-        break;
-      case GIMP_DASH_NORMAL_DOTS:
-        for (i = 0; i < 3; i++)
-          {
-            dash = 1.0; g_array_append_val (new_pattern, dash);
-            dash = 3.0; g_array_append_val (new_pattern, dash);
-          }
-        break;
-      case GIMP_DASH_DENSE_DOTS:
-        for (i = 0; i < 12; i++)
-          {
-            dash = 1.0; g_array_append_val (new_pattern, dash);
-          }
-        break;
-      case GIMP_DASH_STIPPLES:
-        for (i = 0; i < 24; i++)
-          {
-            dash = 0.5; g_array_append_val (new_pattern, dash);
-          }
-        break;
-      case GIMP_DASH_DASH_DOT:
-        dash = 7.0; g_array_append_val (new_pattern, dash);
-        dash = 2.0; g_array_append_val (new_pattern, dash);
-        dash = 1.0; g_array_append_val (new_pattern, dash);
-        dash = 2.0; g_array_append_val (new_pattern, dash);
-        break;
-      case GIMP_DASH_DASH_DOT_DOT:
-        dash = 7.0; g_array_append_val (new_pattern, dash);
-        for (i=0; i < 5; i++)
-          {
-            dash = 1.0; g_array_append_val (new_pattern, dash);
-          }
-        break;
-      default:
-        g_printerr ("Unknown Dash pattern: %d\n", preset);
-    }
-
-  if (options->dash_info != NULL)
+  if (options->dash_info)
     g_array_free (options->dash_info, TRUE);
-  options->dash_info = NULL;
 
-  if (new_pattern->len >= 2)
-    options->dash_info = new_pattern;
-  else
-    g_array_free (new_pattern, TRUE);
+  options->dash_info = pattern;
+
+  g_object_notify (G_OBJECT (options), "dash-info");
 
   g_signal_emit (options,
                  stroke_options_signals [DASH_INFO_CHANGED], 0,
                  preset);
-  g_object_notify (G_OBJECT (options), "dash-info");
 }

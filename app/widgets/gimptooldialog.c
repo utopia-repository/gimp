@@ -34,32 +34,17 @@
 #include "gimptooldialog.h"
 
 
-GType
-gimp_tool_dialog_get_type (void)
+G_DEFINE_TYPE (GimpToolDialog, gimp_tool_dialog, GIMP_TYPE_VIEWABLE_DIALOG);
+
+
+static void
+gimp_tool_dialog_class_init (GimpToolDialogClass *klass)
 {
-  static GType dialog_type = 0;
+}
 
-  if (! dialog_type)
-    {
-      static const GTypeInfo dialog_info =
-      {
-        sizeof (GimpToolDialogClass),
-        (GBaseInitFunc)     NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc)    NULL,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpToolDialog),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) NULL
-      };
-
-      dialog_type = g_type_register_static (GIMP_TYPE_VIEWABLE_DIALOG,
-					    "GimpToolDialog",
-					    &dialog_info, 0);
-    }
-
-  return dialog_type;
+static void
+gimp_tool_dialog_init (GimpToolDialog *dialog)
+{
 }
 
 
@@ -95,13 +80,14 @@ gimp_tool_dialog_new (GimpToolInfo *tool_info,
   stock_id = gimp_viewable_get_stock_id (GIMP_VIEWABLE (tool_info));
 
   dialog = g_object_new (GIMP_TYPE_TOOL_DIALOG,
-                         "title",       tool_info->blurb,
-                         "role",        GIMP_OBJECT (tool_info)->name,
-                         "help-func",   gimp_standard_help_func,
-                         "help-id",     tool_info->help_id,
-                         "stock-id",    stock_id,
-                         "description", desc ? desc : tool_info->help,
-                         "parent",      parent,
+                         "title",        tool_info->blurb,
+                         "role",         GIMP_OBJECT (tool_info)->name,
+                         "help-func",    gimp_standard_help_func,
+                         "help-id",      tool_info->help_id,
+                         "stock-id",     stock_id,
+                         "description",  desc ? desc : tool_info->help,
+                         "parent",       parent,
+                         "focus-on-map", FALSE,
                          NULL);
 
   va_start (args, desc);

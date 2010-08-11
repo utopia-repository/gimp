@@ -26,11 +26,9 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
 
 #include "gimp.h"
 #include "gimpcontext.h"
@@ -39,6 +37,7 @@
 #include "gimptemplate.h"
 
 #include "gimp-intl.h"
+
 
 /*  The default image aspect ratio is the golden mean. We use
  *  two adjacent fibonacci numbers for the unstable series and
@@ -70,73 +69,32 @@ enum
 };
 
 
-static void      gimp_template_class_init    (GimpTemplateClass *klass);
-
-static void      gimp_template_finalize      (GObject           *object);
-static void      gimp_template_set_property  (GObject           *object,
-                                              guint              property_id,
-                                              const GValue      *value,
-                                              GParamSpec        *pspec);
-static void      gimp_template_get_property  (GObject           *object,
-                                              guint              property_id,
-                                              GValue            *value,
-                                              GParamSpec        *pspec);
-static void      gimp_template_notify        (GObject           *object,
-                                              GParamSpec        *pspec);
+static void      gimp_template_finalize     (GObject      *object);
+static void      gimp_template_set_property (GObject      *object,
+                                             guint         property_id,
+                                             const GValue *value,
+                                             GParamSpec   *pspec);
+static void      gimp_template_get_property (GObject      *object,
+                                             guint         property_id,
+                                             GValue       *value,
+                                             GParamSpec   *pspec);
+static void      gimp_template_notify       (GObject      *object,
+                                             GParamSpec   *pspec);
 
 
-static GimpViewableClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpTemplate, gimp_template, GIMP_TYPE_VIEWABLE,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
 
+#define parent_class gimp_template_parent_class
 
-GType
-gimp_template_get_type (void)
-{
-  static GType template_type = 0;
-
-  if (! template_type)
-    {
-      static const GTypeInfo template_info =
-      {
-        sizeof (GimpTemplateClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_template_class_init,
-	NULL,		/* class_finalize */
-	NULL,		/* class_data     */
-	sizeof (GimpTemplate),
-	0,              /* n_preallocs    */
-	NULL            /* instance_init  */
-      };
-      static const GInterfaceInfo config_iface_info =
-      {
-        NULL,           /* iface_init     */
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      template_type = g_type_register_static (GIMP_TYPE_VIEWABLE,
-                                              "GimpTemplate",
-                                              &template_info, 0);
-
-      g_type_add_interface_static (template_type, GIMP_TYPE_CONFIG,
-                                   &config_iface_info);
-    }
-
-  return template_type;
-}
 
 static void
 gimp_template_class_init (GimpTemplateClass *klass)
 {
-  GObjectClass      *object_class;
-  GimpViewableClass *viewable_class;
+  GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
+  GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
 
-  object_class   = G_OBJECT_CLASS (klass);
-  viewable_class = GIMP_VIEWABLE_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
-
-  object_class->finalize = gimp_template_finalize;
+  object_class->finalize     = gimp_template_finalize;
 
   object_class->set_property = gimp_template_set_property;
   object_class->get_property = gimp_template_get_property;
@@ -198,6 +156,11 @@ gimp_template_class_init (GimpTemplateClass *klass)
                                    NULL,
                                    NULL,
                                    0);
+}
+
+static void
+gimp_template_init (GimpTemplate *template)
+{
 }
 
 static void
@@ -320,10 +283,8 @@ static void
 gimp_template_notify (GObject    *object,
                       GParamSpec *pspec)
 {
-  GimpTemplate *template;
+  GimpTemplate *template = GIMP_TEMPLATE (object);
   gint          channels;
-
-  template = GIMP_TEMPLATE (object);
 
   if (G_OBJECT_CLASS (parent_class)->notify)
     G_OBJECT_CLASS (parent_class)->notify (object, pspec);
@@ -450,10 +411,10 @@ gimp_template_create_image (Gimp         *gimp,
                           _("Background"),
 			  GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
 
-  gimp_image_add_layer (gimage, layer, 0);
+  gimp_drawable_fill_by_type (GIMP_DRAWABLE (layer),
+                              context, template->fill_type);
 
-  gimp_drawable_fill_by_type (GIMP_DRAWABLE (layer), context,
-                              template->fill_type);
+  gimp_image_add_layer (gimage, layer, 0);
 
   gimp_image_undo_enable (gimage);
   gimp_image_clean_all (gimage);

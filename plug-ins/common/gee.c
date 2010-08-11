@@ -1,23 +1,40 @@
 /*
  * (c) Adam D. Moss : 1998-2000 : adam@gimp.org : adam@foxbox.org
  *
- * Enjoy.
+ * The GIMP -- an image manipulation program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/*
- * Version 1.01 : 2000-12-12
- *
- */
 #include "config.h"
 
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-the-slimy-egg"
+#define PLUG_IN_BINARY "gee"
+
+/* These aren't really redefinable, easily. */
+#define IWIDTH  256
+#define IHEIGHT 256
 
 
 /* Declare local functions. */
@@ -48,11 +65,6 @@ GimpPlugInInfo PLUG_IN_INFO =
 };
 
 
-/* These aren't really redefinable, easily. */
-#define IWIDTH  256
-#define IHEIGHT 256
-
-
 /* Global widgets'n'stuff */
 static guchar     *disp;      /* RGBX preview data      */
 static guchar     *env;	      /* src warping image data */
@@ -80,24 +92,22 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Must be interactive (1)" },
+    { GIMP_PDB_INT32,    "run-mode", "Must be interactive (1)" },
     { GIMP_PDB_IMAGE,    "image",    "Input Image"             },
     { GIMP_PDB_DRAWABLE, "drawable", "Input Drawable"          }
   };
 
-  gimp_install_procedure ("plug_in_the_slimy_egg",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "A big hello from the GIMP team!",
                           "Beyond help.",
                           "Adam D. Moss <adam@gimp.org>",
                           "Adam D. Moss <adam@gimp.org>",
                           "2000",
-                          N_("Gee-_Slime"),
+                          N_("Gee Slime"),
                           "RGB*, INDEXED*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
-
-  gimp_plugin_menu_register ("plug_in_the_slimy_egg", "<Image>/Filters/Toys");
 }
 
 static void
@@ -112,7 +122,7 @@ run (const gchar      *name,
   GimpPDBStatusType status = GIMP_PDB_SUCCESS;
 
   *nreturn_vals = 1;
-  *return_vals = values;
+  *return_vals  = values;
 
   run_mode = param[0].data.d_int32;
 
@@ -139,33 +149,34 @@ run (const gchar      *name,
   values[0].data.d_status = status;
 }
 
-
 static void
 build_dialog (void)
 {
   GtkWidget *dlg;
   GtkWidget *button;
   GtkWidget *frame;
+  gchar     *tmp;
 
-  gimp_ui_init ("gee", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dlg = gimp_dialog_new (_("GEE-SLIME"), "gee",
+  dlg = gimp_dialog_new (_("Gee Slime"), PLUG_IN_BINARY,
                          NULL, 0,
-                         gimp_standard_help_func, "plug-in-the-slimy-egg",
+                         gimp_standard_help_func, PLUG_IN_PROC,
                          NULL);
 
   button = gtk_dialog_add_button (GTK_DIALOG (dlg),
-                                  _("Thank you for choosing GIMP"),
+                                  _("Thank You for Choosing GIMP"),
                                   GTK_RESPONSE_OK);
 
   g_signal_connect (dlg, "response",
                     G_CALLBACK (window_response_callback),
                     NULL);
 
-  gimp_help_set_help_data (button,
-                           _("A less-obsolete creation of Adam D. Moss / "
-                             "adam@gimp.org / adam@foxbox.org / 1998-2000"),
-                           NULL);
+  tmp = g_strdup_printf (_("A less obsolete creation by %s"),
+                         "Adam D. Moss / adam@gimp.org / adam@foxbox.org "
+                         "/ 1998-2000");
+  gimp_help_set_help_data (button, tmp, NULL);
+  g_free (tmp);
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
@@ -186,7 +197,6 @@ build_dialog (void)
                               NULL,
                               NULL);
 }
-
 
 /* #define LIGHT 0x19
 #define LIGHT 0x1a
@@ -212,7 +222,6 @@ gen_llut (void)
       llut[i] = k;
     }
 }
-
 
 static void
 do_fun (void)
@@ -246,7 +255,6 @@ do_fun (void)
 
   gtk_main ();
 }
-
 
 static void
 show (void)
@@ -291,7 +299,6 @@ bumpbob (int x, int y, int size)
       /* memset(&destbump[x+(y+o)*IWIDTH], 131, size); */
     }
 }
-
 
 /* Adam's sillier algorithm. */
 static void
@@ -524,7 +531,6 @@ iterate (void)
   }
 }
 
-
 static void
 render_frame (void)
 {
@@ -549,7 +555,6 @@ render_frame (void)
 
   frame++;
 }
-
 
 static void
 init_preview_misc (void)
@@ -630,7 +635,6 @@ init_preview_misc (void)
     }
 
   gimp_drawable_detach(drawable);
-
 
   /* convert the image data of varying types into flat grey or rgb. */
   switch (imagetype)

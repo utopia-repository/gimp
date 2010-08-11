@@ -172,7 +172,7 @@ module_dialog_new (Gimp *gimp)
   gtk_tree_view_append_column (GTK_TREE_VIEW (tv), col);
 
   gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tv), 1,
-                                               _("Module path"),
+                                               _("Module Path"),
                                                gtk_cell_renderer_text_new (),
                                                "text", PATH_COLUMN,
                                                NULL);
@@ -222,7 +222,7 @@ module_dialog_new (Gimp *gimp)
   g_signal_connect (gimp->module_db, "remove",
                     G_CALLBACK (dialog_info_remove),
                     dialog);
-  g_signal_connect (gimp->module_db, "module_modified",
+  g_signal_connect (gimp->module_db, "module-modified",
                     G_CALLBACK (dialog_info_update),
                     dialog);
 
@@ -503,8 +503,8 @@ dialog_info_init (ModuleDialog *dialog,
     N_("Date:"),
     N_("Location:"),
     N_("State:"),
-    N_("Last Error:"),
-    N_("Available Types:")
+    N_("Last error:"),
+    N_("Available types:")
   };
 
   for (i = 0; i < G_N_ELEMENTS (text); i++)

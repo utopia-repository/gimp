@@ -50,7 +50,7 @@ gimp_gimprc_query (const gchar *token)
   gint nreturn_vals;
   gchar *value = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_gimprc_query",
+  return_vals = gimp_run_procedure ("gimp-gimprc-query",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, token,
 				    GIMP_PDB_END);
@@ -86,7 +86,7 @@ gimp_gimprc_set (const gchar *token,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_gimprc_set",
+  return_vals = gimp_run_procedure ("gimp-gimprc-set",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, token,
 				    GIMP_PDB_STRING, value,
@@ -115,7 +115,7 @@ gimp_get_default_comment (void)
   gint nreturn_vals;
   gchar *comment = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_get_default_comment",
+  return_vals = gimp_run_procedure ("gimp-get-default-comment",
 				    &nreturn_vals,
 				    GIMP_PDB_END);
 
@@ -149,7 +149,7 @@ gimp_get_monitor_resolution (gdouble *xres,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_get_monitor_resolution",
+  return_vals = gimp_run_procedure ("gimp-get-monitor-resolution",
 				    &nreturn_vals,
 				    GIMP_PDB_END);
 
@@ -185,7 +185,7 @@ gimp_get_theme_dir (void)
   gint nreturn_vals;
   gchar *theme_dir = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_get_theme_dir",
+  return_vals = gimp_run_procedure ("gimp-get-theme-dir",
 				    &nreturn_vals,
 				    GIMP_PDB_END);
 
@@ -195,6 +195,37 @@ gimp_get_theme_dir (void)
   gimp_destroy_params (return_vals, nreturn_vals);
 
   return theme_dir;
+}
+
+/**
+ * _gimp_get_color_configuration:
+ *
+ * Get a serialized version of the color management configuration.
+ *
+ * Returns a string that can be deserialized into a GimpColorConfig
+ * object representing the current color management configuration.
+ *
+ * Returns: Serialized color management configuration.
+ *
+ * Since: GIMP 2.4
+ */
+gchar *
+_gimp_get_color_configuration (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gchar *config = NULL;
+
+  return_vals = gimp_run_procedure ("gimp-get-color-configuration",
+				    &nreturn_vals,
+				    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    config = g_strdup (return_vals[1].data.d_string);
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return config;
 }
 
 /**
@@ -213,7 +244,7 @@ gimp_get_module_load_inhibit (void)
   gint nreturn_vals;
   gchar *load_inhibit = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_get_module_load_inhibit",
+  return_vals = gimp_run_procedure ("gimp-get-module-load-inhibit",
 				    &nreturn_vals,
 				    GIMP_PDB_END);
 

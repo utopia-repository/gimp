@@ -4,27 +4,24 @@
 
 <refentry id="libgimpmath-GimpMD5">
 <refmeta>
-<refentrytitle role="top_of_page">GimpMD5</refentrytitle>
+<refentrytitle>GimpMD5</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPMATH Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpMD5</refname>
-<refpurpose>the MD5 message-digest algorithm</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>GimpMD5</refname><refpurpose>the MD5 message-digest algorithm</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="void">void</link>                <link linkend="gimp-md5-get-digest">gimp_md5_get_digest</link>                 (const <link linkend="gchar">gchar</link> *buffer,
-                                                         <link linkend="gint">gint</link> buffer_size,
-                                                         <link linkend="guchar">guchar</link> digest[16]);
+<link linkend="void">void</link>        <link linkend="gimp-md5-get-digest">gimp_md5_get_digest</link>             (const <link linkend="gchar">gchar</link> *buffer,
+                                             <link linkend="gint">gint</link> buffer_size,
+                                             <link linkend="guchar">guchar</link> digest[16]);
 </synopsis>
 </refsynopsisdiv>
 
@@ -36,20 +33,20 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="gimp-md5-get-digest" role="function"/>gimp_md5_get_digest ()</title>
-<indexterm><primary>gimp_md5_get_digest</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_md5_get_digest                 (const <link linkend="gchar">gchar</link> *buffer,
-                                                         <link linkend="gint">gint</link> buffer_size,
-                                                         <link linkend="guchar">guchar</link> digest[16]);</programlisting>
+<title><anchor id="gimp-md5-get-digest"/>gimp_md5_get_digest ()</title>
+<indexterm><primary>gimp_md5_get_digest</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_md5_get_digest             (const <link linkend="gchar">gchar</link> *buffer,
+                                             <link linkend="gint">gint</link> buffer_size,
+                                             <link linkend="guchar">guchar</link> digest[16]);</programlisting>
 <para>
 Get the md5 hash of a buffer. The result is put in the 16 bytes
 buffer <parameter>digest</parameter>.

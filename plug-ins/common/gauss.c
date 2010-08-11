@@ -18,16 +18,21 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define GAUSS_PROC      "plug-in-gauss"
+#define GAUSS_IIR_PROC  "plug-in-gauss-iir"
+#define GAUSS_IIR2_PROC "plug-in-gauss-iir2"
+#define GAUSS_RLE_PROC  "plug-in-gauss-rle"
+#define GAUSS_RLE2_PROC "plug-in-gauss-rle2"
+#define PLUG_IN_BINARY  "gauss"
+
 
 typedef enum
 {
@@ -102,7 +107,7 @@ static BlurValues bvals =
 {
   5.0,  /*  x radius  */
   5.0,  /*  y radius  */
-  BLUR_IIR
+  BLUR_RLE
 };
 
 
@@ -113,34 +118,34 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_FLOAT, "horizontal", "Horizontal radius of gaussian blur (in pixels, > 0.0)" },
-    { GIMP_PDB_FLOAT, "vertical",   "Vertical radius of gaussian blur (in pixels, > 0.0)" },
-    { GIMP_PDB_INT32, "method",   "IIR (0) or RLE (1)" }
+    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",      "Input image" },
+    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
+    { GIMP_PDB_FLOAT,    "horizontal", "Horizontal radius of gaussian blur (in pixels, > 0.0)" },
+    { GIMP_PDB_FLOAT,    "vertical",   "Vertical radius of gaussian blur (in pixels, > 0.0)" },
+    { GIMP_PDB_INT32,    "method",     "IIR (0) or RLE (1)" }
   };
 
   static GimpParamDef args1[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image (unused)" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_FLOAT, "radius", "Radius of gaussian blur (in pixels, > 0.0)" },
-    { GIMP_PDB_INT32, "horizontal", "Blur in horizontal direction" },
-    { GIMP_PDB_INT32, "vertical", "Blur in vertical direction" }
+    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",      "Input image (unused)" },
+    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
+    { GIMP_PDB_FLOAT,    "radius",     "Radius of gaussian blur (in pixels, > 0.0)" },
+    { GIMP_PDB_INT32,    "horizontal", "Blur in horizontal direction" },
+    { GIMP_PDB_INT32,    "vertical",   "Blur in vertical direction" }
   };
 
   static GimpParamDef args2[] =
   {
-    { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE, "image", "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_FLOAT, "horizontal", "Horizontal radius of gaussian blur (in pixels, > 0.0)" },
-    { GIMP_PDB_FLOAT, "vertical",   "Vertical radius of gaussian blur (in pixels, > 0.0)" }
+    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",      "Input image" },
+    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
+    { GIMP_PDB_FLOAT,    "horizontal", "Horizontal radius of gaussian blur (in pixels, > 0.0)" },
+    { GIMP_PDB_FLOAT,    "vertical",   "Vertical radius of gaussian blur (in pixels, > 0.0)" }
   };
 
-  gimp_install_procedure ("plug_in_gauss",
+  gimp_install_procedure (GAUSS_PROC,
                           "Applies a gaussian blur to the specified drawable.",
                           "Applies a gaussian blur to the drawable, with "
                           "specified radius of affect.  The standard deviation "
@@ -160,7 +165,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_install_procedure ("plug_in_gauss_iir",
+  gimp_install_procedure (GAUSS_IIR_PROC,
                           "Applies a gaussian blur to the specified drawable.",
                           "Applies a gaussian blur to the drawable, with "
                           "specified radius of affect.  The standard deviation "
@@ -180,7 +185,7 @@ query (void)
                           G_N_ELEMENTS (args1), 0,
                           args1, NULL);
 
-  gimp_install_procedure ("plug_in_gauss_iir2",
+  gimp_install_procedure (GAUSS_IIR2_PROC,
                           "Applies a gaussian blur to the specified drawable.",
                           "Applies a gaussian blur to the drawable, with "
                           "specified radius of affect.  The standard deviation "
@@ -200,7 +205,7 @@ query (void)
                           G_N_ELEMENTS (args2), 0,
                           args2, NULL);
 
-  gimp_install_procedure ("plug_in_gauss_rle",
+  gimp_install_procedure (GAUSS_RLE_PROC,
                           "Applies a gaussian blur to the specified drawable.",
                           "Applies a gaussian blur to the drawable, with "
                           "specified radius of affect.  The standard deviation "
@@ -220,7 +225,7 @@ query (void)
                           G_N_ELEMENTS (args1), 0,
                           args1, NULL);
 
-  gimp_install_procedure ("plug_in_gauss_rle2",
+  gimp_install_procedure (GAUSS_RLE2_PROC,
                           "Applies a gaussian blur to the specified drawable.",
                           "Applies a gaussian blur to the drawable, with "
                           "specified radius of affect.  The standard deviation "
@@ -240,7 +245,7 @@ query (void)
                           G_N_ELEMENTS (args2), 0,
                           args2, NULL);
 
-  gimp_plugin_menu_register ("plug_in_gauss", "<Image>/Filters/Blur");
+  gimp_plugin_menu_register (GAUSS_PROC, "<Image>/Filters/Blur");
 }
 
 static void
@@ -277,13 +282,13 @@ run (const gchar      *name,
                            gimp_tile_width () + 1));
 
 
-  if (strcmp (name, "plug_in_gauss") == 0)
+  if (strcmp (name, GAUSS_PROC) == 0)
     {
       switch (run_mode)
         {
         case GIMP_RUN_INTERACTIVE:
           /*  Possibly retrieve data  */
-          gimp_get_data ("plug_in_gauss", &bvals);
+          gimp_get_data (GAUSS_PROC, &bvals);
 
           /*  First acquire information with a dialog  */
           if (! gauss_dialog (image_ID, drawable))
@@ -308,14 +313,14 @@ run (const gchar      *name,
 
         case GIMP_RUN_WITH_LAST_VALS:
           /*  Possibly retrieve data  */
-          gimp_get_data ("plug_in_gauss", &bvals);
+          gimp_get_data (GAUSS_PROC, &bvals);
           break;
 
         default:
           break;
         }
     }
-  else if (strcmp (name, "plug_in_gauss_iir") == 0)
+  else if (strcmp (name, GAUSS_IIR_PROC) == 0)
     {
       if (nparams != 6)
         status = GIMP_PDB_CALLING_ERROR;
@@ -337,7 +342,7 @@ run (const gchar      *name,
             return;
         }
     }
-  else if (strcmp (name, "plug_in_gauss_iir2") == 0)
+  else if (strcmp (name, GAUSS_IIR2_PROC) == 0)
     {
       if (nparams != 5)
         status = GIMP_PDB_CALLING_ERROR;
@@ -358,7 +363,7 @@ run (const gchar      *name,
             return;
         }
     }
-  else if (strcmp (name, "plug_in_gauss_rle") == 0)
+  else if (strcmp (name, GAUSS_RLE_PROC) == 0)
     {
       if (nparams != 6)
         status = GIMP_PDB_CALLING_ERROR;
@@ -380,7 +385,7 @@ run (const gchar      *name,
             return;
         }
     }
-  else if (strcmp (name, "plug_in_gauss_rle2") == 0)
+  else if (strcmp (name, GAUSS_RLE2_PROC) == 0)
     {
       if (nparams != 5)
         status = GIMP_PDB_CALLING_ERROR;
@@ -410,7 +415,7 @@ run (const gchar      *name,
       if (gimp_drawable_is_rgb (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id))
         {
-          gimp_progress_init (_("Gaussian Blur..."));
+          gimp_progress_init (_("Gaussian Blur"));
 
           /*  run the gaussian blur  */
           gauss (drawable,
@@ -420,8 +425,7 @@ run (const gchar      *name,
 
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data ("plug_in_gauss",
-                           &bvals, sizeof (BlurValues));
+            gimp_set_data (GAUSS_PROC, &bvals, sizeof (BlurValues));
 
           if (run_mode != GIMP_RUN_NONINTERACTIVE)
             gimp_displays_flush ();
@@ -449,6 +453,7 @@ gauss_dialog (gint32        image_ID,
   GtkWidget *frame;
   GtkWidget *size;
   GtkWidget *hbox;
+  GtkWidget *button;
   GtkWidget *preview;
 
   GimpUnit   unit;
@@ -456,16 +461,23 @@ gauss_dialog (gint32        image_ID,
   gdouble    yres;
   gboolean   run;
 
-  gimp_ui_init ("gaussian_blur", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Gaussian Blur"), "gaussian_blur",
+  dialog = gimp_dialog_new (_("Gaussian Blur"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-gauss",
+                            gimp_standard_help_func, GAUSS_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -482,7 +494,7 @@ gauss_dialog (gint32        image_ID,
 
   /*  parameter settings  */
   frame = gimp_frame_new (_("Blur Radius"));
-  gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   /*  Get the image resolution and unit  */
@@ -511,10 +523,10 @@ gauss_dialog (gint32        image_ID,
 
   /*  FIXME: Shouldn't need two signal connections here,
              gimp_coordinates_new() seems to be severily broken.  */
-  g_signal_connect_swapped (size, "value_changed",
+  g_signal_connect_swapped (size, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
-  g_signal_connect_swapped (size, "refval_changed",
+  g_signal_connect_swapped (size, "refval-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -526,10 +538,14 @@ gauss_dialog (gint32        image_ID,
                                     G_CALLBACK (gimp_radio_button_update),
                                     &bvals.method, bvals.method,
 
-                                    _("_IIR"), BLUR_IIR, NULL,
+                                    _("_IIR"), BLUR_IIR, &button,
                                     _("_RLE"), BLUR_RLE, NULL,
 
                                     NULL);
+
+  g_signal_connect_swapped (button, "toggled",
+                            G_CALLBACK (gimp_preview_invalidate),
+                            preview);
 
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
@@ -636,8 +652,8 @@ gauss (GimpDrawable *drawable,
   gint          pixels;
   gint          total = 1;
   gint          start, end;
-  gint         *curve;
-  gint         *sum = NULL;
+  gint         *curve = NULL;
+  gint         *sum   = NULL;
   gint          val;
   gint          length;
   gint          initial_pp, initial_mm;
@@ -901,6 +917,12 @@ gauss (GimpDrawable *drawable,
               break;
 
             case BLUR_RLE:
+              if (vert > 0.0)
+                {
+                  g_free (sum - length);
+                  g_free (curve - length);
+                }
+
               curve = make_curve (std_dev, &length);
               sum = g_new (gint, 2 * length + 1);
 
@@ -1080,6 +1102,11 @@ gauss (GimpDrawable *drawable,
       break;
 
     case BLUR_RLE:
+      if (horz > 0.0 || vert > 0.0)
+        {
+          g_free (sum - length);
+          g_free (curve - length);
+        }
       g_free (buf);
       break;
     }
@@ -1271,4 +1298,3 @@ run_length_encode (guchar *src,
       *dest++ = last;
     }
 }
-

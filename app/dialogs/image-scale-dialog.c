@@ -76,6 +76,7 @@ image_scale_dialog_new (GimpImage                *image,
                         ImageScaleDialogCallback  callback)
 {
   ImageScaleDialog *dialog;
+  GimpUnit          unit;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_DISPLAY (display), NULL);
@@ -83,6 +84,11 @@ image_scale_dialog_new (GimpImage                *image,
   g_return_val_if_fail (callback != NULL, NULL);
 
   dialog = g_new0 (ImageScaleDialog, 1);
+
+  unit = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (image),
+                                             "scale-dialog-unit"));
+  if (! unit)
+    unit = GIMP_DISPLAY_SHELL (display->shell)->unit;
 
   dialog->gimage  = image;
   dialog->gdisp   = display;
@@ -92,7 +98,7 @@ image_scale_dialog_new (GimpImage                *image,
                                       parent,
                                       gimp_standard_help_func,
                                       GIMP_HELP_IMAGE_SCALE,
-                                      GIMP_DISPLAY_SHELL (display->shell)->unit,
+                                      unit,
                                       image->gimp->config->interpolation_type,
                                       image_scale_callback,
                                       dialog);
@@ -152,6 +158,10 @@ image_scale_callback (GtkWidget             *widget,
       /* If all is well, return directly after scaling image. */
       dialog->callback (dialog);
       gtk_widget_destroy (widget);
+
+      /* remember the last used unit */
+      g_object_set_data (G_OBJECT (image),
+                         "scale-dialog-unit", GINT_TO_POINTER (unit));
       break;
     }
 }
@@ -177,6 +187,11 @@ image_scale_confirm_dialog (ImageScaleDialog *dialog)
                     G_CALLBACK (image_scale_confirm_response),
                     dialog);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (widget),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   return widget;
 }
 
@@ -196,7 +211,7 @@ image_scale_confirm_large (ImageScaleDialog *dialog,
 
   size = gimp_memsize_to_string (max_memsize);
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (widget)->box,
-                             _("Scaling the image to the choosen size will "
+                             _("Scaling the image to the chosen size will "
                                "make it use more memory than what is "
                                "configured as \"Maximum Image Size\" in the "
                                "Preferences dialog (currently %s)."), size);
@@ -211,7 +226,7 @@ image_scale_confirm_small (ImageScaleDialog *dialog)
   GtkWidget *widget = image_scale_confirm_dialog (dialog);
 
   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (widget)->box,
-                                     _("Scaling the image to the choosen size "
+                                     _("Scaling the image to the chosen size "
                                        "will shrink some layers completely "
                                        "away."));
   gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (widget)->box,

@@ -57,14 +57,14 @@ static GimpActionEntry tool_options_actions[] =
     GIMP_HELP_TOOL_OPTIONS_DIALOG },
 
   { "tool-options-save-menu", GTK_STOCK_SAVE,
-    N_("_Save Options to"), "", NULL, NULL,
+    N_("_Save Options To"), "", NULL, NULL,
     GIMP_HELP_TOOL_OPTIONS_SAVE },
 
   { "tool-options-restore-menu", GTK_STOCK_REVERT_TO_SAVED,
-    N_("_Restore Options from"), "", NULL, NULL,
+    N_("_Restore Options From"), "", NULL, NULL,
     GIMP_HELP_TOOL_OPTIONS_RESTORE },
 
-  { "tool-options-rename-menu", GIMP_STOCK_EDIT,
+  { "tool-options-rename-menu", GTK_STOCK_EDIT,
     N_("Re_name Saved Options"), NULL, NULL, NULL,
     GIMP_HELP_TOOL_OPTIONS_RENAME },
 
@@ -84,7 +84,7 @@ static GimpActionEntry tool_options_actions[] =
     GIMP_HELP_TOOL_OPTIONS_RESET },
 
   { "tool-options-reset-all", GIMP_STOCK_RESET,
-    N_("Reset _all Tool Options..."), "",
+    N_("Reset _all Tool Options"), "",
     N_("Reset all tool options"),
     G_CALLBACK (tool_options_reset_all_cmd_callback),
     GIMP_HELP_TOOL_OPTIONS_RESET }
@@ -95,8 +95,8 @@ static GimpActionEntry tool_options_actions[] =
 
 #define SET_VISIBLE(action,condition) \
         gimp_action_group_set_action_visible (group, action, (condition) != 0)
-#define SET_IMPORTANT(action,condition) \
-        gimp_action_group_set_action_important (group, action, (condition) != 0)
+#define SET_HIDE_EMPTY(action,condition) \
+        gimp_action_group_set_action_hide_empty (group, action, (condition) != 0)
 
 void
 tool_options_actions_setup (GimpActionGroup *group)
@@ -105,9 +105,9 @@ tool_options_actions_setup (GimpActionGroup *group)
                                  tool_options_actions,
                                  G_N_ELEMENTS (tool_options_actions));
 
-  SET_IMPORTANT ("tool-options-restore-menu", TRUE);
-  SET_IMPORTANT ("tool-options-rename-menu",  TRUE);
-  SET_IMPORTANT ("tool-options-delete-menu",  TRUE);
+  SET_HIDE_EMPTY ("tool-options-restore-menu", FALSE);
+  SET_HIDE_EMPTY ("tool-options-rename-menu",  FALSE);
+  SET_HIDE_EMPTY ("tool-options-delete-menu",  FALSE);
 }
 
 void
@@ -136,7 +136,7 @@ tool_options_actions_update (GimpActionGroup *group,
 
   tool_options_actions_update_presets (group, "tool-options-rename-",
                                        G_CALLBACK (tool_options_rename_saved_cmd_callback),
-                                       GIMP_STOCK_EDIT,
+                                       GTK_STOCK_EDIT,
                                        GIMP_HELP_TOOL_OPTIONS_RENAME,
                                        tool_info->options_presets);
 
@@ -148,7 +148,7 @@ tool_options_actions_update (GimpActionGroup *group,
 }
 
 
-/*  privat function  */
+/*  private function  */
 
 static void
 tool_options_actions_update_presets (GimpActionGroup *group,
@@ -212,4 +212,4 @@ tool_options_actions_update_presets (GimpActionGroup *group,
 }
 
 #undef SET_VISIBLE
-#undef SET_IMPORTANT
+#undef SET_HIDE_EMPTY

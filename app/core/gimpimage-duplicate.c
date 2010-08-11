@@ -24,8 +24,6 @@
 
 #include "base/pixel-region.h"
 
-#include "config/gimpconfig.h"
-
 #include "paint-funcs/paint-funcs.h"
 
 #include "gimp.h"
@@ -35,6 +33,7 @@
 #include "gimpimage-duplicate.h"
 #include "gimpimage-grid.h"
 #include "gimpimage-guides.h"
+#include "gimpimage-sample-points.h"
 #include "gimplayer.h"
 #include "gimplayer-floating-sel.h"
 #include "gimplist.h"
@@ -237,13 +236,25 @@ gimp_image_duplicate (GimpImage *gimage)
 	}
     }
 
+  /*  Copy any sample points  */
+  for (list = gimage->sample_points; list; list = g_list_next (list))
+    {
+      GimpSamplePoint *sample_point = list->data;
+
+      gimp_image_add_sample_point_at_pos (new_gimage,
+                                          sample_point->x,
+                                          sample_point->y,
+                                          FALSE);
+    }
+
   /*  Copy the grid  */
   if (gimage->grid)
     gimp_image_set_grid (new_gimage, gimage->grid, FALSE);
 
-  /*  Copy the qmask info  */
-  new_gimage->qmask_state = gimage->qmask_state;
-  new_gimage->qmask_color = gimage->qmask_color;
+  /*  Copy the quick mask info  */
+  new_gimage->quick_mask_state    = gimage->quick_mask_state;
+  new_gimage->quick_mask_inverted = gimage->quick_mask_inverted;
+  new_gimage->quick_mask_color    = gimage->quick_mask_color;
 
   /*  Copy parasites  */
   if (gimage->parasites)

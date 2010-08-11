@@ -36,15 +36,13 @@
 #include "gimpcontainerview.h"
 #include "gimpdnd.h"
 #include "gimpdocked.h"
+#include "gimppropwidgets.h"
 #include "gimpview.h"
 #include "gimpviewrenderer.h"
-#include "gimppropwidgets.h"
 
 
-static void   gimp_container_box_class_init      (GimpContainerBoxClass *klass);
-static void   gimp_container_box_init            (GimpContainerBox      *box);
-static void   gimp_container_box_view_iface_init   (GimpContainerViewInterface *view_iface);
-static void   gimp_container_box_docked_iface_init (GimpDockedInterface *docked_iface);
+static void   gimp_container_box_view_iface_init   (GimpContainerViewInterface *iface);
+static void   gimp_container_box_docked_iface_init (GimpDockedInterface *iface);
 
 static GtkWidget * gimp_container_box_get_preview  (GimpDocked   *docked,
                                                     GimpContext  *context,
@@ -53,80 +51,25 @@ static void        gimp_container_box_set_context  (GimpDocked   *docked,
                                                     GimpContext  *context);
 
 
-static GimpEditorClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpContainerBox, gimp_container_box,
+                         GIMP_TYPE_EDITOR,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONTAINER_VIEW,
+                                                gimp_container_box_view_iface_init)
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
+                                                gimp_container_box_docked_iface_init));
 
+#define parent_class gimp_container_box_parent_class
 
-GType
-gimp_container_box_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo box_info =
-      {
-        sizeof (GimpContainerBoxClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_container_box_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpContainerBox),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_container_box_init,
-      };
-
-      static const GInterfaceInfo view_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_container_box_view_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-      static const GInterfaceInfo docked_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_container_box_docked_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      type = g_type_register_static (GIMP_TYPE_EDITOR,
-                                     "GimpContainerBox",
-                                     &box_info, 0);
-
-      g_type_add_interface_static (type, GIMP_TYPE_CONTAINER_VIEW,
-                                   &view_iface_info);
-      g_type_add_interface_static (type, GIMP_TYPE_DOCKED,
-                                   &docked_iface_info);
-    }
-
-  return type;
-}
 
 static void
 gimp_container_box_class_init (GimpContainerBoxClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   object_class->set_property = gimp_container_view_set_property;
   object_class->get_property = gimp_container_view_get_property;
 
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_CONTAINER,
-                                    "container");
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_CONTEXT,
-                                    "context");
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_REORDERABLE,
-                                    "reorderable");
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_PREVIEW_SIZE,
-                                    "preview-size");
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_PREVIEW_BORDER_WIDTH,
-                                    "preview-border-width");
+  gimp_container_view_install_properties (object_class);
 }
 
 static void
@@ -145,15 +88,15 @@ gimp_container_box_init (GimpContainerBox *box)
 }
 
 static void
-gimp_container_box_view_iface_init (GimpContainerViewInterface *view_iface)
+gimp_container_box_view_iface_init (GimpContainerViewInterface *iface)
 {
 }
 
 static void
-gimp_container_box_docked_iface_init (GimpDockedInterface *docked_iface)
+gimp_container_box_docked_iface_init (GimpDockedInterface *iface)
 {
-  docked_iface->get_preview = gimp_container_box_get_preview;
-  docked_iface->set_context = gimp_container_box_set_context;
+  iface->get_preview = gimp_container_box_get_preview;
+  iface->set_context = gimp_container_box_set_context;
 }
 
 void
@@ -184,15 +127,18 @@ gimp_container_box_set_size_request (GimpContainerBox *box,
     scrollbar_width = sw_class->scrollbar_spacing;
   else
     gtk_widget_style_get (GTK_WIDGET (box->scrolled_win),
-                          "scrollbar_spacing", &scrollbar_width,
+                          "scrollbar-spacing", &scrollbar_width,
                           NULL);
 
   gtk_widget_size_request (GTK_SCROLLED_WINDOW (box->scrolled_win)->vscrollbar,
                            &req);
   scrollbar_width += req.width;
 
-  border_x = box->scrolled_win->style->xthickness * 2 + scrollbar_width;
-  border_y = box->scrolled_win->style->ythickness * 2;
+  border_x = GTK_CONTAINER (box)->border_width;
+  border_y = GTK_CONTAINER (box)->border_width;
+
+  border_x += box->scrolled_win->style->xthickness * 2 + scrollbar_width;
+  border_y += box->scrolled_win->style->ythickness * 2;
 
   gtk_widget_set_size_request (box->scrolled_win,
                                width  > 0 ? width  + border_x : -1,
@@ -215,7 +161,6 @@ gimp_container_box_get_preview (GimpDocked   *docked,
   GimpContainerView *view = GIMP_CONTAINER_VIEW (docked);
   GimpContainer     *container;
   GtkWidget         *preview;
-  GdkScreen         *screen;
   gint               width;
   gint               height;
   gint               border_width = 1;
@@ -225,8 +170,7 @@ gimp_container_box_get_preview (GimpDocked   *docked,
 
   g_return_val_if_fail (container != NULL, NULL);
 
-  screen = gtk_widget_get_screen (GTK_WIDGET (box));
-  gtk_icon_size_lookup_for_settings (gtk_settings_get_for_screen (screen),
+  gtk_icon_size_lookup_for_settings (gtk_widget_get_settings (GTK_WIDGET (box)),
                                      size, &width, &height);
 
   prop_name = gimp_context_type_to_prop_name (container->children_type);

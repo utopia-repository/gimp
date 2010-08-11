@@ -93,7 +93,7 @@
     ; Color and position text
 
     (gimp-context-set-background text-color)
-    (gimp-layer-set-preserve-trans textl TRUE)
+    (gimp-layer-set-lock-alpha textl TRUE)
     (gimp-edit-fill textl BACKGROUND-FILL)
 
     (gimp-layer-set-offsets textl
@@ -127,4 +127,4 @@
 		    SF-TOGGLE     _"Pressed"            FALSE)
 
 (script-fu-menu-register "script-fu-beveled-pattern-button"
-			 _"<Toolbox>/Xtns/Script-Fu/Web Page Themes/Beveled Pattern")
+			 "<Toolbox>/Xtns/Web Page Themes/Beveled Pattern")

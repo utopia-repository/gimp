@@ -6,18 +6,21 @@ libapppaint_funcs_a_SOURCES = \
 	paint-funcs-types.h	\
 	paint-funcs.c		\
 	paint-funcs.h		\
-	paint-funcs-generic.h
+	paint-funcs-generic.h \
+	scale-funcs.c		\
+	scale-funcs.h
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GLIB_CFLAGS)		\
 	-I$(includedir)
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Paint-Funcs\"	\
-	@GIMP_THREAD_FLAGS@ 			\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 AM_CCASFLAGS = \
 	-I$(top_builddir)	\

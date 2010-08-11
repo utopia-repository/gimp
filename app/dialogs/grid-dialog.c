@@ -24,12 +24,11 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimplimits.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "dialogs-types.h"
 
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-utils.h"
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
@@ -92,6 +91,12 @@ grid_dialog_new (GimpImage *gimage,
 
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GRID_RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   g_signal_connect (dialog, "response",
                     G_CALLBACK (grid_dialog_response),
                     dialog);
@@ -133,8 +138,8 @@ grid_dialog_response (GtkWidget  *widget,
   switch (response_id)
     {
     case GRID_RESPONSE_RESET:
-      gimp_config_sync (GIMP_CONFIG (gimage->gimp->config->default_grid),
-                        GIMP_CONFIG (grid), 0);
+      gimp_config_sync (G_OBJECT (gimage->gimp->config->default_grid),
+                        G_OBJECT (grid), 0);
       break;
 
     case GTK_RESPONSE_OK:

@@ -113,9 +113,15 @@ offset_dialog_new (GimpDrawable *drawable,
                               GIMP_HELP_LAYER_OFFSET,
 
                               GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                              GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                              /*  offset, used as a verb  */
+                              _("_Offset"),     GTK_RESPONSE_OK,
 
                               NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog->dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   gtk_window_set_resizable (GTK_WINDOW (dialog->dialog), FALSE);
 
@@ -202,8 +208,8 @@ offset_dialog_new (GimpDrawable *drawable,
 		    G_CALLBACK (offset_halfheight_callback),
 		    dialog);
 
-  /*  The edge behaviour frame  */
-  frame = gimp_int_radio_group_new (TRUE, _("Edge Behaviour"),
+  /*  The edge behavior frame  */
+  frame = gimp_int_radio_group_new (TRUE, _("Edge Behavior"),
                                     G_CALLBACK (gimp_radio_button_update),
                                     &dialog->fill_type, dialog->fill_type,
 

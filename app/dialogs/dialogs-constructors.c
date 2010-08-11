@@ -40,6 +40,7 @@
 #include "widgets/gimpcontainergridview.h"
 #include "widgets/gimpcontainertreeview.h"
 #include "widgets/gimpcontainerview-utils.h"
+#include "widgets/gimpcursorview.h"
 #include "widgets/gimpdataeditor.h"
 #include "widgets/gimpdevicestatus.h"
 #include "widgets/gimpdialogfactory.h"
@@ -51,11 +52,12 @@
 #include "widgets/gimpgradienteditor.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimphistogrameditor.h"
-#include "widgets/gimpimagedock.h"
 #include "widgets/gimpimageview.h"
 #include "widgets/gimplayertreeview.h"
+#include "widgets/gimpmenudock.h"
 #include "widgets/gimppaletteeditor.h"
 #include "widgets/gimppatternfactoryview.h"
+#include "widgets/gimpsamplepointeditor.h"
 #include "widgets/gimpselectioneditor.h"
 #include "widgets/gimptemplateview.h"
 #include "widgets/gimptoolbox.h"
@@ -73,6 +75,7 @@
 #include "file-open-location-dialog.h"
 #include "file-save-dialog.h"
 #include "image-new-dialog.h"
+#include "keyboard-shortcuts-dialog.h"
 #include "module-dialog.h"
 #include "preferences-dialog.h"
 #include "quit-dialog.h"
@@ -133,6 +136,14 @@ dialogs_preferences_get (GimpDialogFactory *factory,
 }
 
 GtkWidget *
+dialogs_keyboard_shortcuts_get (GimpDialogFactory *factory,
+                                GimpContext       *context,
+                                gint               preview_size)
+{
+  return keyboard_shortcuts_dialog_new (context->gimp);
+}
+
+GtkWidget *
 dialogs_module_get (GimpDialogFactory *factory,
                     GimpContext       *context,
                     gint               preview_size)
@@ -153,7 +164,7 @@ dialogs_about_get (GimpDialogFactory *factory,
 		   GimpContext       *context,
                    gint               preview_size)
 {
-  return about_dialog_create ();
+  return about_dialog_create (context);
 }
 
 GtkWidget *
@@ -161,7 +172,15 @@ dialogs_error_get (GimpDialogFactory *factory,
                    GimpContext       *context,
                    gint               preview_size)
 {
-  return gimp_error_dialog_new (_("GIMP Message"), GIMP_STOCK_WARNING);
+  return gimp_error_dialog_new (_("GIMP Message"));
+}
+
+GtkWidget *
+dialogs_close_all_get (GimpDialogFactory *factory,
+                       GimpContext       *context,
+                       gint               preview_size)
+{
+  return close_all_dialog_new (context->gimp);
 }
 
 GtkWidget *
@@ -194,9 +213,9 @@ dialogs_dock_new (GimpDialogFactory *factory,
 		  GimpContext       *context,
                   gint               preview_size)
 {
-  return gimp_image_dock_new (factory,
-                              context->gimp->images,
-                              context->gimp->displays);
+  return gimp_menu_dock_new (factory,
+                             context->gimp->images,
+                             context->gimp->displays);
 }
 
 
@@ -223,6 +242,10 @@ dialogs_dockable_constructor (GimpDialogFactory      *factory,
                                     entry->stock_id, entry->help_id);
       gtk_container_add (GTK_CONTAINER (dockable), widget);
       gtk_widget_show (widget);
+
+      /* EEK */
+      g_object_set_data (G_OBJECT (dockable), "gimp-dialog-identifier",
+                         entry->identifier);
     }
 
   return dockable;
@@ -232,7 +255,7 @@ dialogs_dockable_constructor (GimpDialogFactory      *factory,
 /*****  singleton dialogs  *****/
 
 GtkWidget *
-dialogs_tool_options_get (GimpDialogFactory *factory,
+dialogs_tool_options_new (GimpDialogFactory *factory,
 			  GimpContext       *context,
                           gint               preview_size)
 {
@@ -241,7 +264,7 @@ dialogs_tool_options_get (GimpDialogFactory *factory,
 }
 
 GtkWidget *
-dialogs_device_status_get (GimpDialogFactory *factory,
+dialogs_device_status_new (GimpDialogFactory *factory,
                            GimpContext       *context,
                            gint               preview_size)
 {
@@ -249,12 +272,20 @@ dialogs_device_status_get (GimpDialogFactory *factory,
 }
 
 GtkWidget *
-dialogs_error_console_get (GimpDialogFactory *factory,
+dialogs_error_console_new (GimpDialogFactory *factory,
 			   GimpContext       *context,
                            gint               preview_size)
 {
   return gimp_error_console_new (context->gimp,
                                  factory->menu_factory);
+}
+
+GtkWidget *
+dialogs_cursor_view_new (GimpDialogFactory *factory,
+                         GimpContext       *context,
+                         gint               preview_size)
+{
+  return gimp_cursor_view_new (factory->menu_factory);
 }
 
 
@@ -602,6 +633,14 @@ dialogs_undo_editor_new (GimpDialogFactory *factory,
                                factory->menu_factory);
 }
 
+GtkWidget *
+dialogs_sample_point_editor_new (GimpDialogFactory *factory,
+                                 GimpContext       *context,
+                                 gint               preview_size)
+{
+  return gimp_sample_point_editor_new (factory->menu_factory);
+}
+
 
 /*****  display related dialogs  *****/
 
@@ -634,7 +673,8 @@ dialogs_brush_editor_get (GimpDialogFactory *factory,
 			  GimpContext       *context,
                           gint               preview_size)
 {
-  return gimp_brush_editor_new (context->gimp);
+  return gimp_brush_editor_new (context->gimp,
+                                factory->menu_factory);
 }
 
 GtkWidget *

@@ -24,19 +24,18 @@
 
 #include <stdlib.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
+
 /*===========================================================================*/
 /* DEFINES                                                                   */
 /*===========================================================================*/
 
-#define PLUGIN_PROCEDURE_NAME "plug_in_papertile"
-#define HELP_ID               "plug-in-papertile"
+#define PLUG_IN_PROC   "plug-in-papertile"
+#define PLUG_IN_BINARY "papertile"
 
 /*===========================================================================*/
 /* TYPES                                                                     */
@@ -126,13 +125,13 @@ static struct
 static void
 params_save_to_gimp (void)
 {
-  gimp_set_data (PLUGIN_PROCEDURE_NAME, &p.params, sizeof p.params);
+  gimp_set_data (PLUG_IN_PROC, &p.params, sizeof p.params);
 }
 
 static void
 params_load_from_gimp (void)
 {
-  gimp_get_data (PLUGIN_PROCEDURE_NAME, &p.params);
+  gimp_get_data (PLUG_IN_PROC, &p.params);
 
   if (0 < p.params.division_x)
     {
@@ -230,16 +229,23 @@ open_dialog (void)
   GtkWidget *frame;
   GtkWidget *color_button;
 
-  gimp_ui_init ("papertile", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Paper Tile"), "papertile",
+  dialog = gimp_dialog_new (_("Paper Tile"), PLUG_IN_BINARY,
                             NULL, 0,
-			    gimp_standard_help_func, HELP_ID,
+			    gimp_standard_help_func, PLUG_IN_PROC,
 
 			    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			    GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
 			    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
@@ -266,7 +272,7 @@ open_dialog (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
 			     _("_X:"), 0.0, 0.5,
 			     button, 1, TRUE);
-  g_signal_connect (w.division_x_adj, "value_changed",
+  g_signal_connect (w.division_x_adj, "value-changed",
                     G_CALLBACK (division_x_adj_changed),
                     NULL);
 
@@ -275,7 +281,7 @@ open_dialog (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 1,
 			     _("_Y:"), 0.0, 0.5,
 			     button, 1, TRUE);
-  g_signal_connect (w.division_y_adj, "value_changed",
+  g_signal_connect (w.division_y_adj, "value-changed",
                     G_CALLBACK (division_y_adj_changed),
                     NULL);
 
@@ -286,7 +292,7 @@ open_dialog (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
 			     _("_Size:"), 0.0, 0.5,
 			     button, 1, TRUE);
-  g_signal_connect (w.tile_size_adj, "value_changed",
+  g_signal_connect (w.tile_size_adj, "value-changed",
                     G_CALLBACK (tile_size_adj_changed),
                     NULL);
 
@@ -336,7 +342,7 @@ open_dialog (void)
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
 			     _("_Max (%):"), 0.0, 0.5,
 			     button, 1, TRUE);
-  g_signal_connect (adjustment, "value_changed",
+  g_signal_connect (adjustment, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &p.params.move_max_rate);
 
@@ -385,7 +391,7 @@ open_dialog (void)
 			    p.params.background_type == BACKGROUND_TYPE_COLOR);
   g_object_set_data (G_OBJECT (button), "set_sensitive", color_button);
 
-  g_signal_connect (color_button, "color_changed",
+  g_signal_connect (color_button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &p.params.background_color);
 
@@ -524,7 +530,7 @@ filter (void)
 
   overlap = p.drawable_has_alpha ? overlap_RGBA : overlap_RGB;
 
-  gimp_progress_init (_("Paper Tile..."));
+  gimp_progress_init (_("Paper Tile"));
 
   gimp_drawable_mask_bounds (p.drawable->drawable_id,
 			     &p.selection.x0, &p.selection.y0,
@@ -789,23 +795,22 @@ filter (void)
 static void
 plugin_query (void)
 {
-  static GimpParamDef     args[]            =
+  static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",         "run mode"                         },
-    { GIMP_PDB_IMAGE,    "image",            "input image"                      },
-    { GIMP_PDB_DRAWABLE, "drawable",         "input drawable"                   },
-    { GIMP_PDB_INT32,    "tile_size",        "tile size (pixels)"               },
-    { GIMP_PDB_FLOAT,    "move_max",         "max move rate (%)"                },
-    { GIMP_PDB_INT32,    "fractional_type",  "0:Background 1:Ignore 2:Force"    },
-    { GIMP_PDB_INT32,    "wrap_around",      "wrap around (bool)"               },
-    { GIMP_PDB_INT32,    "centering",        "centering (bool)"                 },
-    { GIMP_PDB_INT32,    "background_type",
-      "0:Transparent 1:Inverted 2:Image? 3:FG 4:BG 5:Color"                  },
-    { GIMP_PDB_INT32,    "background_color", "background color (for bg-type 5)" },
-    { GIMP_PDB_INT32,    "background_alpha", "opacity (for bg-type 5)"          }
+    { GIMP_PDB_INT32,    "run-mode",         "run mode"                       },
+    { GIMP_PDB_IMAGE,    "image",            "input image"                    },
+    { GIMP_PDB_DRAWABLE, "drawable",         "input drawable"                 },
+    { GIMP_PDB_INT32,    "tile-size",        "tile size (pixels)"             },
+    { GIMP_PDB_FLOAT,    "move-max",         "max move rate (%)"              },
+    { GIMP_PDB_INT32,    "fractional-type",  "0:Background 1:Ignore 2:Force"  },
+    { GIMP_PDB_INT32,    "wrap-around",      "wrap around (bool)"             },
+    { GIMP_PDB_INT32,    "centering",        "centering (bool)"               },
+    { GIMP_PDB_INT32,    "background-type",  "0:Transparent 1:Inverted 2:Image? 3:FG 4:BG 5:Color"                  },
+    { GIMP_PDB_INT32,    "background-color", "background color (for bg-type 5)" },
+    { GIMP_PDB_INT32,    "background-alpha", "opacity (for bg-type 5)"        }
   };
 
-  gimp_install_procedure (PLUGIN_PROCEDURE_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
 			  "Cuts an image into paper tiles, and slides each "
                           "paper tile.",
 			  "This plug-in cuts an image into paper tiles and "
@@ -819,7 +824,7 @@ plugin_query (void)
 			  G_N_ELEMENTS (args), 0,
 			  args, NULL);
 
-  gimp_plugin_menu_register (PLUGIN_PROCEDURE_NAME, "<Image>/Filters/Map");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Map");
 }
 
 static void

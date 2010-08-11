@@ -31,6 +31,7 @@
 #include "core/gimpdrawable.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
+#include "core/gimppickable.h"
 #include "core/gimpselection.h"
 #include "gimp-intl.h"
 
@@ -123,7 +124,7 @@ static ProcArg selection_bounds_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "non_empty",
+    "non-empty",
     "True if there is a selection"
   },
   {
@@ -150,7 +151,8 @@ static ProcArg selection_bounds_outargs[] =
 
 static ProcRecord selection_bounds_proc =
 {
-  "gimp_selection_bounds",
+  "gimp-selection-bounds",
+  "gimp-selection-bounds",
   "Find the bounding box of the current selection.",
   "This procedure returns whether there is a selection for the specified image. If there is one, the upper left and lower right corners of the bounding box are returned. These coordinates are relative to the image. Please note that the pixel specified by the lower righthand coordinate of the bounding box is not part of the selection. The selection ends at the upper left corner of this pixel. This means the width of the selection can be calculated as (x2 - x1), its height as (y2 - y1).",
   "Spencer Kimball & Peter Mattis",
@@ -188,7 +190,7 @@ selection_value_invoker (Gimp         *gimp,
   return_args = procedural_db_return_args (&selection_value_proc, success);
 
   if (success)
-    return_args[1].value.pdb_int = gimp_channel_value (gimp_image_get_mask (gimage), x, y);
+    return_args[1].value.pdb_int = gimp_pickable_get_opacity_at (GIMP_PICKABLE (gimp_image_get_mask (gimage)), x, y);
 
   return return_args;
 }
@@ -223,7 +225,8 @@ static ProcArg selection_value_outargs[] =
 
 static ProcRecord selection_value_proc =
 {
-  "gimp_selection_value",
+  "gimp-selection-value",
+  "gimp-selection-value",
   "Find the value of the selection at the specified coordinates.",
   "This procedure returns the value of the selection at the specified coordinates. If the coordinates lie out of bounds, 0 is returned.",
   "Spencer Kimball & Peter Mattis",
@@ -273,14 +276,15 @@ static ProcArg selection_is_empty_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "is_empty",
+    "is-empty",
     "Is the selection empty?"
   }
 };
 
 static ProcRecord selection_is_empty_proc =
 {
-  "gimp_selection_is_empty",
+  "gimp-selection-is-empty",
+  "gimp-selection-is-empty",
   "Determine whether the selection is empty.",
   "This procedure returns non-zero if the selection for the specified image is not empty.",
   "Spencer Kimball & Peter Mattis",
@@ -341,7 +345,8 @@ static ProcArg selection_translate_inargs[] =
 
 static ProcRecord selection_translate_proc =
 {
-  "gimp_selection_translate",
+  "gimp-selection-translate",
+  "gimp-selection-translate",
   "Translate the selection by the specified offsets.",
   "This procedure actually translates the selection for the specified image by the specified offsets. Regions that are translated from beyond the bounds of the image are set to empty. Valid regions of the selection which are translated beyond the bounds of the image because of this call are lost.",
   "Spencer Kimball & Peter Mattis",
@@ -430,7 +435,8 @@ static ProcArg selection_float_outargs[] =
 
 static ProcRecord selection_float_proc =
 {
-  "gimp_selection_float",
+  "gimp-selection-float",
+  "gimp-selection-float",
   "Float the selection from the specified drawable with initial offsets as specified.",
   "This procedure determines the region of the specified drawable that lies beneath the current selection. The region is then cut from the drawable and the resulting data is made into a new layer which is instantiated as a floating selection. The offsets allow initial positioning of the new floating selection.",
   "Spencer Kimball & Peter Mattis",
@@ -475,7 +481,8 @@ static ProcArg selection_invert_inargs[] =
 
 static ProcRecord selection_invert_proc =
 {
-  "gimp_selection_invert",
+  "gimp-selection-invert",
+  "gimp-selection-invert",
   "Invert the selection mask.",
   "This procedure inverts the selection mask. For every pixel in the selection channel, its new value is calculated as (255 - old_value).",
   "Spencer Kimball & Peter Mattis",
@@ -520,7 +527,8 @@ static ProcArg selection_sharpen_inargs[] =
 
 static ProcRecord selection_sharpen_proc =
 {
-  "gimp_selection_sharpen",
+  "gimp-selection-sharpen",
+  "gimp-selection-sharpen",
   "Sharpen the selection mask.",
   "This procedure sharpens the selection mask. For every pixel in the selection channel, if the value is > 0, the new pixel is assigned a value of 255. This removes any \"anti-aliasing\" that might exist in the selection mask's boundary.",
   "Spencer Kimball & Peter Mattis",
@@ -565,7 +573,8 @@ static ProcArg selection_all_inargs[] =
 
 static ProcRecord selection_all_proc =
 {
-  "gimp_selection_all",
+  "gimp-selection-all",
+  "gimp-selection-all",
   "Select all of the image.",
   "This procedure sets the selection mask to completely encompass the image. Every pixel in the selection channel is set to 255.",
   "Spencer Kimball & Peter Mattis",
@@ -610,7 +619,8 @@ static ProcArg selection_none_inargs[] =
 
 static ProcRecord selection_none_proc =
 {
-  "gimp_selection_none",
+  "gimp-selection-none",
+  "gimp-selection-none",
   "Deselect the entire image.",
   "This procedure deselects the entire image. Every pixel in the selection channel is set to 0.",
   "Spencer Kimball & Peter Mattis",
@@ -665,7 +675,8 @@ static ProcArg selection_feather_inargs[] =
 
 static ProcRecord selection_feather_proc =
 {
-  "gimp_selection_feather",
+  "gimp-selection-feather",
+  "gimp-selection-feather",
   "Feather the image's selection",
   "This procedure feathers the selection. Feathering is implemented using a gaussian blur.",
   "Spencer Kimball & Peter Mattis",
@@ -720,7 +731,8 @@ static ProcArg selection_border_inargs[] =
 
 static ProcRecord selection_border_proc =
 {
-  "gimp_selection_border",
+  "gimp-selection-border",
+  "gimp-selection-border",
   "Border the image's selection",
   "This procedure borders the selection. Bordering creates a new selection which is defined along the boundary of the previous selection at every point within the specified radius.",
   "Spencer Kimball & Peter Mattis",
@@ -775,7 +787,8 @@ static ProcArg selection_grow_inargs[] =
 
 static ProcRecord selection_grow_proc =
 {
-  "gimp_selection_grow",
+  "gimp-selection-grow",
+  "gimp-selection-grow",
   "Grow the image's selection",
   "This procedure grows the selection. Growing involves expanding the boundary in all directions by the specified pixel amount.",
   "Spencer Kimball & Peter Mattis",
@@ -830,7 +843,8 @@ static ProcArg selection_shrink_inargs[] =
 
 static ProcRecord selection_shrink_proc =
 {
-  "gimp_selection_shrink",
+  "gimp-selection-shrink",
+  "gimp-selection-shrink",
   "Shrink the image's selection",
   "This procedure shrinks the selection. Shrinking invovles trimming the existing selection boundary on all sides by the specified number of pixels.",
   "Spencer Kimball & Peter Mattis",
@@ -881,7 +895,8 @@ static ProcArg selection_layer_alpha_inargs[] =
 
 static ProcRecord selection_layer_alpha_proc =
 {
-  "gimp_selection_layer_alpha",
+  "gimp-selection-layer-alpha",
+  "gimp-selection-layer-alpha",
   "Transfer the specified layer's alpha channel to the selection mask.",
   "This procedure requires a layer with an alpha channel. The alpha channel information is used to create a selection mask such that for any pixel in the image defined in the specified layer, that layer pixel's alpha value is transferred to the selection mask. If the layer is undefined at a particular image pixel, the associated selection mask value is set to 0.",
   "Spencer Kimball & Peter Mattis",
@@ -939,7 +954,8 @@ static ProcArg selection_load_inargs[] =
 
 static ProcRecord selection_load_proc =
 {
-  "gimp_selection_load",
+  "gimp-selection-load",
+  "gimp-selection-load",
   "Transfer the specified channel to the selection mask.",
   "This procedure loads the specified channel into the selection mask.",
   "Spencer Kimball & Peter Mattis",
@@ -1000,7 +1016,8 @@ static ProcArg selection_save_outargs[] =
 
 static ProcRecord selection_save_proc =
 {
-  "gimp_selection_save",
+  "gimp-selection-save",
+  "gimp-selection-save",
   "Copy the selection mask to a new channel.",
   "This procedure copies the selection mask and stores the content in a new channel. The new channel is automatically inserted into the image's list of channels.",
   "Spencer Kimball & Peter Mattis",
@@ -1068,7 +1085,8 @@ static ProcArg selection_combine_inargs[] =
 
 static ProcRecord selection_combine_proc =
 {
-  "gimp_selection_combine",
+  "gimp-selection-combine",
+  "gimp-selection-combine",
   "Combines the specified channel with the selection mask.",
   "This procedure combines the specified channel into the selection mask.",
   "Spencer Kimball & Peter Mattis",

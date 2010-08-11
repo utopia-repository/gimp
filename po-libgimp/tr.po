@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GIMP 1.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-08 12:28+0200\n"
+"POT-Creation-Date: 2005-02-02 19:54+0100\n"
 "PO-Revision-Date: 2001-07-16 06:51+0300\n"
 "Last-Translator: Alper Ersoy <aersoy@tfz.net>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -197,7 +197,7 @@ msgstr "Birim Seçimi"
 msgid "Gradient Selection"
 msgstr "Birim Seçimi"
 
-#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:167
+#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:181
 msgid "(Empty)"
 msgstr ""
 
@@ -215,74 +215,323 @@ msgstr "Birim Seçimi"
 msgid "percent"
 msgstr "yüzdelik"
 
-#: ../libgimpbase/gimpbaseenums.c:23
-msgid "Small"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:26
+#, fuzzy
+msgid "_White (full opacity)"
+msgstr "_Beyaz (Tam Saydamsız)"
 
-#: ../libgimpbase/gimpbaseenums.c:24
-msgid "Medium"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:27
+#, fuzzy
+msgid "_Black (full transparency)"
+msgstr "_Siyah (Tam Şeffaf)"
 
-#: ../libgimpbase/gimpbaseenums.c:25
-msgid "Large"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:28
+#, fuzzy
+msgid "Layer's _alpha channel"
+msgstr "_Katmanın Alfa Kanalı"
 
-#: ../libgimpbase/gimpbaseenums.c:57
-msgid "Light Checks"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:29
+#, fuzzy
+msgid "_Transfer layer's alpha channel"
+msgstr "Katmanı_n Alfa Kanalını Transfer Et"
 
-#: ../libgimpbase/gimpbaseenums.c:58
-msgid "Mid-Tone Checks"
-msgstr ""
+#: ../libgimpbase/gimpbaseenums.c:30
+msgid "_Selection"
+msgstr "S_eçim"
 
-#: ../libgimpbase/gimpbaseenums.c:59
-msgid "Dark Checks"
-msgstr ""
-
-#: ../libgimpbase/gimpbaseenums.c:60
-msgid "White Only"
+#: ../libgimpbase/gimpbaseenums.c:31
+msgid "_Grayscale copy of layer"
 msgstr ""
 
 #: ../libgimpbase/gimpbaseenums.c:61
-msgid "Gray Only"
-msgstr ""
+msgid "FG to BG (RGB)"
+msgstr "Önplandan Arkaplana (RGB)"
 
 #: ../libgimpbase/gimpbaseenums.c:62
+msgid "FG to BG (HSV)"
+msgstr "Önplandan Arkaplana (RDD)"
+
+#: ../libgimpbase/gimpbaseenums.c:63
+#, fuzzy
+msgid "FG to transparent"
+msgstr "Önplandan Şeffafa"
+
+#: ../libgimpbase/gimpbaseenums.c:64
+#, fuzzy
+msgid "Custom gradient"
+msgstr "Seçilen Gradyan"
+
+#: ../libgimpbase/gimpbaseenums.c:93
+#, fuzzy
+msgid "FG color fill"
+msgstr "Önplan Rengiyle Doldur"
+
+#: ../libgimpbase/gimpbaseenums.c:94
+#, fuzzy
+msgid "BG color fill"
+msgstr "Arkaplan Rengiyle Doldur"
+
+#: ../libgimpbase/gimpbaseenums.c:95
+#, fuzzy
+msgid "Pattern fill"
+msgstr "Desenle Doldur"
+
+#: ../libgimpbase/gimpbaseenums.c:125
+msgid "Add to the current selection"
+msgstr "Geçerli seçime ekle"
+
+#: ../libgimpbase/gimpbaseenums.c:126
+msgid "Subtract from the current selection"
+msgstr "Geçerli seçimden çıkar"
+
+#: ../libgimpbase/gimpbaseenums.c:127
+msgid "Replace the current selection"
+msgstr "Geçerli seçimin yerine yaz"
+
+#: ../libgimpbase/gimpbaseenums.c:128
+msgid "Intersect with the current selection"
+msgstr "Geçerli seçimle kesiştir"
+
+#: ../libgimpbase/gimpbaseenums.c:160 ../libgimpwidgets/gimpcolorscales.c:168
+#: ../libgimpwidgets/gimpcolorselect.c:352
+msgid "Red"
+msgstr "Kırmızı"
+
+#: ../libgimpbase/gimpbaseenums.c:161 ../libgimpwidgets/gimpcolorscales.c:169
+#: ../libgimpwidgets/gimpcolorselect.c:353
+msgid "Green"
+msgstr "Yeşil"
+
+#: ../libgimpbase/gimpbaseenums.c:162 ../libgimpwidgets/gimpcolorscales.c:170
+#: ../libgimpwidgets/gimpcolorselect.c:354
+msgid "Blue"
+msgstr "Mavi"
+
+#: ../libgimpbase/gimpbaseenums.c:163
+msgid "Gray"
+msgstr "Gri"
+
+#: ../libgimpbase/gimpbaseenums.c:164 ../libgimpbase/gimpbaseenums.c:436
+msgid "Indexed"
+msgstr "İndisli"
+
+#: ../libgimpbase/gimpbaseenums.c:165 ../libgimpwidgets/gimpcolorscales.c:171
+#: ../libgimpwidgets/gimpcolorselect.c:355
+msgid "Alpha"
+msgstr "Alfa"
+
+#: ../libgimpbase/gimpbaseenums.c:194
+msgid "Small"
+msgstr "Ufak"
+
+#: ../libgimpbase/gimpbaseenums.c:195
+msgid "Medium"
+msgstr "Orta"
+
+#: ../libgimpbase/gimpbaseenums.c:196
+msgid "Large"
+msgstr "Büyük"
+
+#: ../libgimpbase/gimpbaseenums.c:228
+msgid "Light Checks"
+msgstr "Açık Kareler"
+
+#: ../libgimpbase/gimpbaseenums.c:229
+msgid "Mid-Tone Checks"
+msgstr "Orta-Tonda Kareler"
+
+#: ../libgimpbase/gimpbaseenums.c:230
+msgid "Dark Checks"
+msgstr "Koyu Kareler"
+
+#: ../libgimpbase/gimpbaseenums.c:231
+msgid "White Only"
+msgstr "Sadece Beyaz"
+
+#: ../libgimpbase/gimpbaseenums.c:232
+msgid "Gray Only"
+msgstr "Sadece Gri"
+
+#: ../libgimpbase/gimpbaseenums.c:233
 msgid "Black Only"
+msgstr "Sadece Siyah"
+
+#: ../libgimpbase/gimpbaseenums.c:261
+#, fuzzy
+msgid "Image source"
+msgstr "Resim Kaynak"
+
+#: ../libgimpbase/gimpbaseenums.c:262
+#, fuzzy
+msgid "Pattern source"
+msgstr "Desen Kaynak"
+
+#: ../libgimpbase/gimpbaseenums.c:290
+msgid "Dodge"
+msgstr "Temizleme"
+
+#: ../libgimpbase/gimpbaseenums.c:291
+msgid "Burn"
+msgstr "Yakma"
+
+#: ../libgimpbase/gimpbaseenums.c:328 ../libgimpbase/gimpbaseenums.c:468
+msgid "Linear"
+msgstr "Doğrusal"
+
+#: ../libgimpbase/gimpbaseenums.c:329
+#, fuzzy
+msgid "Bi-linear"
+msgstr "Çift-yönlü"
+
+#: ../libgimpbase/gimpbaseenums.c:330
+msgid "Radial"
+msgstr "Dairesel"
+
+#: ../libgimpbase/gimpbaseenums.c:331
+msgid "Square"
+msgstr "Kare"
+
+#: ../libgimpbase/gimpbaseenums.c:332
+#, fuzzy
+msgid "Conical (sym)"
+msgstr "Konik (simetrik)"
+
+#: ../libgimpbase/gimpbaseenums.c:333
+#, fuzzy
+msgid "Conical (asym)"
+msgstr "Konik (asimetrik)"
+
+#: ../libgimpbase/gimpbaseenums.c:334
+#, fuzzy
+msgid "Shaped (angular)"
+msgstr "Şekil patlatma (açısal)"
+
+#: ../libgimpbase/gimpbaseenums.c:335
+#, fuzzy
+msgid "Shaped (spherical)"
+msgstr "Şekil patlatma (küresel)"
+
+#: ../libgimpbase/gimpbaseenums.c:336
+#, fuzzy
+msgid "Shaped (dimpled)"
+msgstr "Şekil patlatma (gamzeli)"
+
+#: ../libgimpbase/gimpbaseenums.c:337
+#, fuzzy
+msgid "Spiral (cw)"
+msgstr "Spiral (saat yönü)"
+
+#: ../libgimpbase/gimpbaseenums.c:338
+#, fuzzy
+msgid "Spiral (ccw)"
+msgstr "Spiral (saat yönü)"
+
+#: ../libgimpbase/gimpbaseenums.c:367
+msgid "Stock ID"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:91
+#: ../libgimpbase/gimpbaseenums.c:368
+msgid "Inline pixbuf"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:369
+#, fuzzy
+msgid "Image file"
+msgstr "Resim Boyutu"
+
+#: ../libgimpbase/gimpbaseenums.c:398
 msgid "RGB color"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:92 ../libgimpbase/gimpbaseenums.c:127
-#, fuzzy
+#: ../libgimpbase/gimpbaseenums.c:399 ../libgimpbase/gimpbaseenums.c:434
 msgid "Grayscale"
-msgstr "Griölçekliye çevir"
+msgstr "Griölçekli"
 
-#: ../libgimpbase/gimpbaseenums.c:93
+#: ../libgimpbase/gimpbaseenums.c:400
 msgid "Indexed color"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:125
+#: ../libgimpbase/gimpbaseenums.c:432
 msgid "RGB"
-msgstr ""
+msgstr "RGB"
 
-#: ../libgimpbase/gimpbaseenums.c:126
+#: ../libgimpbase/gimpbaseenums.c:433
 msgid "RGB-alpha"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:128
+#: ../libgimpbase/gimpbaseenums.c:435
 msgid "Grayscale-alpha"
 msgstr ""
 
-#: ../libgimpbase/gimpbaseenums.c:129
-msgid "Indexed"
-msgstr ""
-
-#: ../libgimpbase/gimpbaseenums.c:130
+#: ../libgimpbase/gimpbaseenums.c:437
 msgid "Indexed-alpha"
 msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:467
+msgid "None (Fastest)"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:469
+msgid "Cubic"
+msgstr ""
+
+#: ../libgimpbase/gimpbaseenums.c:470
+#, fuzzy
+msgid "Lanczos (Best)"
+msgstr "Kübik (En iyi)"
+
+#: ../libgimpbase/gimpbaseenums.c:498
+msgid "Constant"
+msgstr "Sabit"
+
+#: ../libgimpbase/gimpbaseenums.c:499
+msgid "Incremental"
+msgstr "Artımlı"
+
+#: ../libgimpbase/gimpbaseenums.c:528
+msgid "None"
+msgstr "Yok"
+
+#: ../libgimpbase/gimpbaseenums.c:529
+#, fuzzy
+msgid "Sawtooth wave"
+msgstr "Testere Dişleri Dalga"
+
+#: ../libgimpbase/gimpbaseenums.c:530
+#, fuzzy
+msgid "Triangular wave"
+msgstr "Üçgensel Dalga"
+
+#: ../libgimpbase/gimpbaseenums.c:558
+msgid "Pixels"
+msgstr "Piksel"
+
+#: ../libgimpbase/gimpbaseenums.c:559
+#, fuzzy
+msgid "Points"
+msgstr "punto"
+
+#: ../libgimpbase/gimpbaseenums.c:588
+msgid "Shadows"
+msgstr "Gölgeler"
+
+#: ../libgimpbase/gimpbaseenums.c:589
+msgid "Midtones"
+msgstr "Ortatonlar"
+
+#: ../libgimpbase/gimpbaseenums.c:590
+msgid "Highlights"
+msgstr "Yüksektonlar"
+
+#: ../libgimpbase/gimpbaseenums.c:618
+#, fuzzy
+msgid "Forward (traditional)"
+msgstr "İleri (Geleneksel)"
+
+#: ../libgimpbase/gimpbaseenums.c:619
+#, fuzzy
+msgid "Backward (corrective)"
+msgstr "Geri (Düzeltici)"
 
 #: ../libgimpbase/gimpmemsize.c:177
 #, fuzzy, c-format
@@ -336,7 +585,92 @@ msgstr "Bayt"
 
 #: ../libgimpbase/gimputils.c:169 ../libgimpbase/gimputils.c:174
 msgid "(invalid UTF-8 string)"
+msgstr "(geçersiz UTF-8 satırı)"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:95
+#, c-format
+msgid "value for token %s is not a valid UTF-8 string"
+msgstr "%s anahtarına verilen değer geçerli bir UTF-8 dizgesi değil"
+
+#. please don't translate 'yes' and 'no'
+#: ../libgimpconfig/gimpconfig-deserialize.c:423
+#, c-format
+msgid "expected 'yes' or 'no' for boolean token %s, got '%s'"
+msgstr "Boole anahtar %s için 'yes' veya 'no' bekleniyordu, '%s' alındı"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:497
+#, c-format
+msgid "invalid value '%s' for token %s"
+msgstr "Geçersiz seçenek '%s' (anahtar %s)"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:512
+#, fuzzy, c-format
+msgid "invalid value '%ld' for token %s"
+msgstr "Geçersiz seçenek '%s' (anahtar %s)"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:581
+#, fuzzy, c-format
+msgid "while parsing token '%s': %s"
+msgstr "Dosya %s acılamadı: %s"
+
+#: ../libgimpconfig/gimpconfig-iface.c:454
+#: ../libgimpconfig/gimpconfig-iface.c:467 ../libgimpconfig/gimpscanner.c:513
+#: ../libgimpconfig/gimpscanner.c:594
+msgid "fatal parse error"
 msgstr ""
+
+#: ../libgimpconfig/gimpconfig-path.c:349
+#, fuzzy, c-format
+msgid "Cannot expand ${%s}"
+msgstr "Geriye alınamıyor: %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:134
+#, fuzzy, c-format
+msgid "Could not create temporary file for '%s': %s"
+msgstr "'%s' palet dosyası açılamıyor: %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:147
+#, fuzzy, c-format
+msgid "Could not open '%s' for writing: %s"
+msgstr "'%s' dosyası açılamadı"
+
+#: ../libgimpconfig/gimpconfigwriter.c:666
+#, fuzzy, c-format
+msgid ""
+"Error writing to temporary file for '%s': %s\n"
+"The original file has not been touched."
+msgstr "Dosya %s acılamadı: %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:674
+#, fuzzy, c-format
+msgid ""
+"Error writing to temporary file for '%s': %s\n"
+"No file has been created."
+msgstr "Dosya %s acılamadı: %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:685
+#, fuzzy, c-format
+msgid "Error writing to '%s': %s"
+msgstr "taranırken hata oldu: \"%s\"\n"
+
+#: ../libgimpconfig/gimpconfigwriter.c:703
+#, fuzzy, c-format
+msgid "Could not create '%s': %s"
+msgstr "'%s' dosyası açılamadı"
+
+#: ../libgimpconfig/gimpscanner.c:100
+#, fuzzy, c-format
+msgid "Could not open '%s' for reading: %s"
+msgstr "'%s' dosyası açılamadı"
+
+#: ../libgimpconfig/gimpscanner.c:270
+msgid "invalid UTF-8 string"
+msgstr "Geçersiz UTF-8 dizgesi"
+
+#: ../libgimpconfig/gimpscanner.c:621
+#, fuzzy, c-format
+msgid "Error while parsing '%s' in line %d: %s"
+msgstr "Dosya %s acılamadı: %s"
 
 #: ../libgimpmodule/gimpmodule.c:177
 #, c-format
@@ -371,14 +705,7 @@ msgstr ""
 msgid "Not loaded"
 msgstr ""
 
-#: ../libgimpthumb/gimpthumb-utils.c:125
-#, c-format
-msgid ""
-"Cannot determine a valid home directory.\n"
-"Thumbnails will be stored in the folder for temporary files (%s) instead."
-msgstr ""
-
-#: ../libgimpthumb/gimpthumb-utils.c:249 ../libgimpthumb/gimpthumb-utils.c:317
+#: ../libgimpthumb/gimpthumb-utils.c:227 ../libgimpthumb/gimpthumb-utils.c:295
 #, c-format
 msgid "Failed to create thumbnail folder '%s'."
 msgstr ""
@@ -411,74 +738,53 @@ msgid "Scales"
 msgstr ""
 
 #: ../libgimpwidgets/gimpcolorscales.c:155
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_H"
 msgstr ""
 
 #: ../libgimpwidgets/gimpcolorscales.c:156
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_S"
 msgstr ""
 
 #: ../libgimpwidgets/gimpcolorscales.c:157
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_V"
 msgstr ""
 
 #: ../libgimpwidgets/gimpcolorscales.c:158
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_R"
-msgstr ""
+msgstr "_R"
 
 #: ../libgimpwidgets/gimpcolorscales.c:159
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_G"
-msgstr ""
+msgstr "_G"
 
 #: ../libgimpwidgets/gimpcolorscales.c:160
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_B"
-msgstr ""
+msgstr "_B"
 
 #: ../libgimpwidgets/gimpcolorscales.c:161
 msgid "_A"
 msgstr ""
 
 #: ../libgimpwidgets/gimpcolorscales.c:165
-#: ../libgimpwidgets/gimpcolorselect.c:347
+#: ../libgimpwidgets/gimpcolorselect.c:349
 msgid "Hue"
-msgstr ""
+msgstr "Renk"
 
 #: ../libgimpwidgets/gimpcolorscales.c:166
-#: ../libgimpwidgets/gimpcolorselect.c:348 ../modules/cdisplay_proof.c:49
-#: ../modules/cdisplay_proof.c:444
+#: ../libgimpwidgets/gimpcolorselect.c:350 ../modules/cdisplay_proof.c:59
 msgid "Saturation"
-msgstr ""
+msgstr "Doygunluk"
 
 #: ../libgimpwidgets/gimpcolorscales.c:167
-#: ../libgimpwidgets/gimpcolorselect.c:349
-msgid "Value"
-msgstr ""
-
-#: ../libgimpwidgets/gimpcolorscales.c:168
-#: ../libgimpwidgets/gimpcolorselect.c:350
-msgid "Red"
-msgstr ""
-
-#: ../libgimpwidgets/gimpcolorscales.c:169
 #: ../libgimpwidgets/gimpcolorselect.c:351
-msgid "Green"
-msgstr ""
-
-#: ../libgimpwidgets/gimpcolorscales.c:170
-#: ../libgimpwidgets/gimpcolorselect.c:352
-msgid "Blue"
-msgstr ""
-
-#: ../libgimpwidgets/gimpcolorscales.c:171
-#: ../libgimpwidgets/gimpcolorselect.c:353
-msgid "Alpha"
-msgstr ""
+msgid "Value"
+msgstr "Değer"
 
 #: ../libgimpwidgets/gimpcolorscales.c:243
 msgid "Hexadecimal color notation as used in HTML and CSS"
@@ -525,9 +831,8 @@ msgid "Writable"
 msgstr ""
 
 #: ../libgimpwidgets/gimppatheditor.c:252
-#, fuzzy
 msgid "Folder"
-msgstr "Dosya Seç"
+msgstr "Dizin"
 
 #: ../libgimpwidgets/gimppickbutton.c:138
 msgid ""
@@ -546,7 +851,7 @@ msgstr ""
 #. toggle button to (des)activate the instant preview
 #: ../libgimpwidgets/gimppreview.c:240
 msgid "_Preview"
-msgstr ""
+msgstr "Öniz_leme"
 
 #: ../libgimpwidgets/gimpstock.c:113
 #, fuzzy
@@ -555,12 +860,11 @@ msgstr "inç"
 
 #: ../libgimpwidgets/gimpstock.c:114
 msgid "C_enter"
-msgstr ""
+msgstr "M_erkez"
 
 #: ../libgimpwidgets/gimpstock.c:115
-#, fuzzy
 msgid "_Duplicate"
-msgstr "pika"
+msgstr "Çoğal_t"
 
 #: ../libgimpwidgets/gimpstock.c:116
 msgid "_Edit"
@@ -608,11 +912,11 @@ msgstr ""
 
 #: ../libgimpwidgets/gimpstock.c:271
 msgid "Crop"
-msgstr ""
+msgstr "Kırp"
 
 #: ../libgimpwidgets/gimpstock.c:288
 msgid "_Transform"
-msgstr ""
+msgstr "_Dönüştür"
 
 #: ../libgimpwidgets/gimpstock.c:291
 msgid "_Rotate"
@@ -662,27 +966,27 @@ msgstr ""
 msgid "_Randomize"
 msgstr ""
 
-#: ../modules/cdisplay_colorblind.c:57 ../modules/cdisplay_colorblind.c:545
-msgid "Protanopia (insensitivity to red)"
+#: ../modules/cdisplay_colorblind.c:68
+msgid "Protanopia (insensitivity to red"
 msgstr ""
 
-#: ../modules/cdisplay_colorblind.c:59 ../modules/cdisplay_colorblind.c:547
+#: ../modules/cdisplay_colorblind.c:70
 msgid "Deuteranopia (insensitivity to green)"
 msgstr ""
 
-#: ../modules/cdisplay_colorblind.c:61 ../modules/cdisplay_colorblind.c:549
+#: ../modules/cdisplay_colorblind.c:72
 msgid "Tritanopia (insensitivity to blue)"
 msgstr ""
 
-#: ../modules/cdisplay_colorblind.c:153
+#: ../modules/cdisplay_colorblind.c:163
 msgid "Color deficit simulation filter (Brettel-Vienot-Mollon algorithm)"
 msgstr ""
 
-#: ../modules/cdisplay_colorblind.c:242
+#: ../modules/cdisplay_colorblind.c:256
 msgid "Color Deficient Vision"
 msgstr ""
 
-#: ../modules/cdisplay_colorblind.c:540
+#: ../modules/cdisplay_colorblind.c:554
 msgid "Color _Deficiency Type:"
 msgstr ""
 
@@ -692,7 +996,7 @@ msgstr ""
 
 #: ../modules/cdisplay_gamma.c:178
 msgid "Gamma"
-msgstr ""
+msgstr "Gamma"
 
 #: ../modules/cdisplay_gamma.c:352
 msgid "_Gamma:"
@@ -710,39 +1014,39 @@ msgstr ""
 msgid "Contrast C_ycles:"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:45 ../modules/cdisplay_proof.c:440
+#: ../modules/cdisplay_proof.c:57
 msgid "Perceptual"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:47 ../modules/cdisplay_proof.c:442
+#: ../modules/cdisplay_proof.c:58
 msgid "Relative Colorimetric"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:51 ../modules/cdisplay_proof.c:446
+#: ../modules/cdisplay_proof.c:60
 msgid "Absolute Colorimetric"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:138
+#: ../modules/cdisplay_proof.c:147
 msgid "Color proof filter using ICC color profile"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:238
+#: ../modules/cdisplay_proof.c:251
 msgid "Color Proof"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:457
+#: ../modules/cdisplay_proof.c:462
 msgid "_Intent:"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:460
+#: ../modules/cdisplay_proof.c:465
 msgid "Choose an ICC Color Profile"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:463
+#: ../modules/cdisplay_proof.c:468
 msgid "_Profile:"
 msgstr ""
 
-#: ../modules/cdisplay_proof.c:471
+#: ../modules/cdisplay_proof.c:476
 msgid "_Black Point Compensation"
 msgstr ""
 
@@ -756,36 +1060,35 @@ msgstr ""
 
 #: ../modules/colorsel_cmyk.c:147
 msgid "_C"
-msgstr ""
+msgstr "_C"
 
 #: ../modules/colorsel_cmyk.c:148
 msgid "_M"
-msgstr ""
+msgstr "_M"
 
 #: ../modules/colorsel_cmyk.c:149
 msgid "_Y"
-msgstr ""
+msgstr "_Y"
 
 #: ../modules/colorsel_cmyk.c:150
 msgid "_K"
 msgstr ""
 
 #: ../modules/colorsel_cmyk.c:154
-#, fuzzy
 msgid "Cyan"
-msgstr "Iptal"
+msgstr "Turkuaz"
 
 #: ../modules/colorsel_cmyk.c:155
 msgid "Magenta"
-msgstr ""
+msgstr "Pembe"
 
 #: ../modules/colorsel_cmyk.c:156
 msgid "Yellow"
-msgstr ""
+msgstr "Sarı"
 
 #: ../modules/colorsel_cmyk.c:157
 msgid "Black"
-msgstr ""
+msgstr "Siyah"
 
 #: ../modules/colorsel_cmyk.c:191
 msgid "Black _Pullout:"
@@ -814,42 +1117,3 @@ msgstr ""
 #: ../modules/colorsel_water.c:220
 msgid "Pressure"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Parameter Settings"
-#~ msgstr "Birim Seçimi"
-
-#, fuzzy
-#~ msgid "_Time"
-#~ msgstr "Zaman"
-
-#~ msgid "pixel"
-#~ msgstr "piksel"
-
-#~ msgid "pixels"
-#~ msgstr "piksel"
-
-#~ msgid "inches"
-#~ msgstr "inç"
-
-#~ msgid "millimeter"
-#~ msgstr "milimetre"
-
-#~ msgid "millimeters"
-#~ msgstr "milimetre"
-
-#~ msgid "point"
-#~ msgstr "punto"
-
-#~ msgid "points"
-#~ msgstr "punto"
-
-#~ msgid "picas"
-#~ msgstr "pika"
-
-#, fuzzy
-#~ msgid "Select Directory"
-#~ msgstr "Dosya Seç"
-
-#~ msgid "OK"
-#~ msgstr "Tamam"

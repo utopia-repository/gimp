@@ -17,6 +17,110 @@ Functions for embedding the progress bar into a plug-in's GUI.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### STRUCT GimpProgressVtable ##### -->
+<para>
+
+</para>
+
+@start: 
+@end: 
+@set_text: 
+@set_value: 
+@pulse: 
+@get_window: 
+@_gimp_reserved1: 
+@_gimp_reserved2: 
+@_gimp_reserved3: 
+@_gimp_reserved4: 
+@_gimp_reserved5: 
+@_gimp_reserved6: 
+@_gimp_reserved7: 
+@_gimp_reserved8: 
+
+<!-- ##### FUNCTION gimp_progress_init ##### -->
+<para>
+
+</para>
+
+@message: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_progress_init_printf ##### -->
+<para>
+
+</para>
+
+@format: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_progress_update ##### -->
+<para>
+
+</para>
+
+@percentage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_progress_pulse ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_progress_set_text ##### -->
+<para>
+
+</para>
+
+@message: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@format: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION gimp_progress_set_text_printf ##### -->
+<para>
+
+</para>
+
+@format: 
+@Varargs: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_progress_uninstall ##### -->
+<para>
+
+</para>
+
+@progress_callback: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_progress_cancel ##### -->
+<para>
+
+</para>
+
+@progress_callback: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_progress_get_window_handle ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION GimpProgressStartCallback ##### -->
 <para>
 
@@ -53,22 +157,16 @@ Functions for embedding the progress bar into a plug-in's GUI.
 @user_data: 
 
 
-<!-- ##### FUNCTION gimp_progress_init ##### -->
+<!-- ##### FUNCTION gimp_progress_install_vtable ##### -->
 <para>
 
 </para>
 
-@message: 
+@vtable: 
+@user_data: 
 @Returns: 
-
-
-<!-- ##### FUNCTION gimp_progress_update ##### -->
-<para>
-
-</para>
-
-@percentage: 
-@Returns: 
+<!-- # Unused Parameters # -->
+@funcs: 
 
 
 <!-- ##### FUNCTION gimp_progress_install ##### -->
@@ -81,24 +179,6 @@ Functions for embedding the progress bar into a plug-in's GUI.
 @text_callback: 
 @value_callback: 
 @user_data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION gimp_progress_uninstall ##### -->
-<para>
-
-</para>
-
-@progress_callback: 
-@Returns: 
-
-
-<!-- ##### FUNCTION gimp_progress_cancel ##### -->
-<para>
-
-</para>
-
-@progress_callback: 
 @Returns: 
 
 

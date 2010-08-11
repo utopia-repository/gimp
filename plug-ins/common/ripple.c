@@ -20,12 +20,8 @@
  *
  * You can contact the original The Gimp authors at gimp@xcf.berkeley.edu
  */
+
 #include "config.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -34,6 +30,9 @@
 
 
 /* Some useful macros */
+#define PLUG_IN_PROC    "plug-in-ripple"
+#define PLUG_IN_BINARY  "ripple"
+
 #define SCALE_WIDTH     200
 #define TILE_CACHE_SIZE  16
 
@@ -117,7 +116,7 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
     { GIMP_PDB_INT32,    "period",      "period; number of pixels for one wave to complete" },
@@ -129,9 +128,11 @@ query (void)
     { GIMP_PDB_INT32,    "tile",        "tile; if this is true, the image will retain it's tilability" }
   };
 
-  gimp_install_procedure ("plug_in_ripple",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Ripple the contents of the specified drawable",
-                          "Ripples the pixels of the specified drawable. Each row or column will be displaced a certain number of pixels coinciding with the given wave form",
+                          "Ripples the pixels of the specified drawable. "
+                          "Each row or column will be displaced a certain "
+                          "number of pixels coinciding with the given wave form",
                           "Brian Degenhardt <bdegenha@ucsd.edu>",
                           "Brian Degenhardt",
                           "1997",
@@ -141,7 +142,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_ripple", "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 }
 
 static void
@@ -176,7 +177,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_ripple", &rvals);
+      gimp_get_data (PLUG_IN_PROC, &rvals);
 
       /*  First acquire information with a dialog  */
       if (! ripple_dialog (drawable))
@@ -199,12 +200,6 @@ run (const gchar      *name,
           rvals.antialias = (param[8].data.d_int32) ? TRUE : FALSE;
           rvals.tile = (param[9].data.d_int32) ? TRUE : FALSE;
 
-          if (rvals.period < 1)
-            {
-              gimp_message ("Ripple: period must be at least 1.\n");
-              status = GIMP_PDB_CALLING_ERROR;
-            }
-
           if (rvals.edges < SMEAR || rvals.edges > BLACK)
             status = GIMP_PDB_CALLING_ERROR;
         }
@@ -212,7 +207,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_ripple", &rvals);
+      gimp_get_data (PLUG_IN_PROC, &rvals);
       break;
 
     default:
@@ -225,7 +220,7 @@ run (const gchar      *name,
       if (gimp_drawable_is_rgb (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id))
         {
-          gimp_progress_init (_("Rippling..."));
+          gimp_progress_init (_("Rippling"));
 
           /*  run the ripple effect  */
           ripple (drawable, NULL);
@@ -235,7 +230,7 @@ run (const gchar      *name,
 
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data ("plug_in_ripple", &rvals, sizeof (RippleValues));
+            gimp_set_data (PLUG_IN_PROC, &rvals, sizeof (RippleValues));
         }
       else
         {
@@ -473,16 +468,23 @@ ripple_dialog (GimpDrawable *drawable)
   GtkWidget *sine;
   gboolean   run;
 
-  gimp_ui_init ("ripple", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Ripple"), "ripple",
+  dialog = gimp_dialog_new (_("Ripple"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-ripple",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   /*  The main vbox  */
   main_vbox = gtk_vbox_new (FALSE, 12);
@@ -616,13 +618,13 @@ ripple_dialog (GimpDrawable *drawable)
   /*  Period  */
   scale_data = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
                                      _("_Period:"), SCALE_WIDTH, 0,
-                                     rvals.period, 1, 200, 1, 10, 0,
+                                     rvals.period, 0, 200, 1, 10, 0,
                                      TRUE, 0, 0,
                                      NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &rvals.period);
-  g_signal_connect_swapped (scale_data, "value_changed",
+  g_signal_connect_swapped (scale_data, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -632,10 +634,10 @@ ripple_dialog (GimpDrawable *drawable)
                                      rvals.amplitude, 0, 200, 1, 10, 0,
                                      TRUE, 0, 0,
                                      NULL, NULL);
-  g_signal_connect (scale_data, "value_changed",
+  g_signal_connect (scale_data, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &rvals.amplitude);
-  g_signal_connect_swapped (scale_data, "value_changed",
+  g_signal_connect_swapped (scale_data, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

@@ -30,6 +30,7 @@
 #include "core/gimpimage.h"
 
 #include "widgets/gimpactiongroup.h"
+#include "widgets/gimprender.h"
 #include "widgets/gimpuimanager.h"
 #include "widgets/gimpwidgets-utils.h"
 
@@ -40,7 +41,6 @@
 #include "gimpdisplayshell-appearance.h"
 #include "gimpdisplayshell-callbacks.h"
 #include "gimpdisplayshell-selection.h"
-#include "gimpdisplayshell-render.h"
 
 
 #define GET_OPTIONS(shell) \
@@ -91,15 +91,12 @@ gimp_display_shell_set_show_menubar (GimpDisplayShell *shell,
                                      gboolean          show)
 {
   GimpDisplayOptions *options;
-  GtkContainer       *vbox;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   options = GET_OPTIONS (shell);
 
   g_object_set (options, "show-menubar", show, NULL);
-
-  vbox = GTK_CONTAINER (shell->qmask_button->parent->parent);
 
   if (shell->menubar)
     {
@@ -108,11 +105,6 @@ gimp_display_shell_set_show_menubar (GimpDisplayShell *shell,
       else
         gtk_widget_hide (shell->menubar);
     }
-
-  if (options->show_menubar || options->show_statusbar)
-    gtk_container_set_border_width (vbox, 2);
-  else
-    gtk_container_set_border_width (vbox, 0);
 
   SET_ACTIVE (shell->menubar_manager, "view-show-menubar", show);
 
@@ -198,7 +190,7 @@ gimp_display_shell_set_show_scrollbars (GimpDisplayShell *shell,
       gtk_widget_show (shell->nav_ebox);
       gtk_widget_show (shell->hsb);
       gtk_widget_show (shell->vsb);
-      gtk_widget_show (shell->qmask_button);
+      gtk_widget_show (shell->quick_mask_button);
       gtk_widget_show (shell->zoom_button);
 
       gtk_box_set_spacing (hbox, 1);
@@ -209,7 +201,7 @@ gimp_display_shell_set_show_scrollbars (GimpDisplayShell *shell,
       gtk_widget_hide (shell->nav_ebox);
       gtk_widget_hide (shell->hsb);
       gtk_widget_hide (shell->vsb);
-      gtk_widget_hide (shell->qmask_button);
+      gtk_widget_hide (shell->quick_mask_button);
       gtk_widget_hide (shell->zoom_button);
 
       gtk_box_set_spacing (hbox, 0);
@@ -235,7 +227,6 @@ gimp_display_shell_set_show_statusbar (GimpDisplayShell *shell,
                                        gboolean          show)
 {
   GimpDisplayOptions *options;
-  GtkContainer       *vbox;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
@@ -243,17 +234,10 @@ gimp_display_shell_set_show_statusbar (GimpDisplayShell *shell,
 
   g_object_set (options, "show-statusbar", show, NULL);
 
-  vbox = GTK_CONTAINER (shell->qmask_button->parent->parent);
-
   if (show)
     gtk_widget_show (shell->statusbar);
   else
     gtk_widget_hide (shell->statusbar);
-
-  if (options->show_menubar || options->show_statusbar)
-    gtk_container_set_border_width (vbox, 2);
-  else
-    gtk_container_set_border_width (vbox, 0);
 
   SET_ACTIVE (shell->menubar_manager, "view-show-statusbar", show);
 
@@ -345,60 +329,6 @@ gimp_display_shell_get_show_transform (GimpDisplayShell *shell)
 }
 
 void
-gimp_display_shell_set_show_grid (GimpDisplayShell *shell,
-                                  gboolean          show)
-{
-  GimpDisplayOptions *options;
-
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  options = GET_OPTIONS (shell);
-
-  g_object_set (options, "show-grid", show, NULL);
-
-  if (shell->gdisp->gimage->grid)
-    gimp_display_shell_expose_full (shell);
-
-  SET_ACTIVE (shell->menubar_manager, "view-show-grid", show);
-
-  if (IS_ACTIVE_DISPLAY (shell))
-    SET_ACTIVE (shell->popup_manager, "view-show-grid", show);
-}
-
-gboolean
-gimp_display_shell_get_show_grid (GimpDisplayShell *shell)
-{
-  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
-
-  return GET_OPTIONS (shell)->show_grid;
-}
-
-void
-gimp_display_shell_set_snap_to_grid (GimpDisplayShell *shell,
-                                     gboolean          snap)
-{
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  if (snap != shell->snap_to_grid)
-    {
-      shell->snap_to_grid = snap ? TRUE : FALSE;
-
-      SET_ACTIVE (shell->menubar_manager, "view-snap-to-grid", snap);
-
-      if (IS_ACTIVE_DISPLAY (shell))
-        SET_ACTIVE (shell->popup_manager, "view-snap-to-grid", snap);
-    }
-}
-
-gboolean
-gimp_display_shell_get_snap_to_grid (GimpDisplayShell *shell)
-{
-  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
-
-  return shell->snap_to_grid;
-}
-
-void
 gimp_display_shell_set_show_guides (GimpDisplayShell *shell,
                                     gboolean          show)
 {
@@ -428,6 +358,89 @@ gimp_display_shell_get_show_guides (GimpDisplayShell *shell)
 }
 
 void
+gimp_display_shell_set_show_grid (GimpDisplayShell *shell,
+                                  gboolean          show)
+{
+  GimpDisplayOptions *options;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  options = GET_OPTIONS (shell);
+
+  g_object_set (options, "show-grid", show, NULL);
+
+  if (shell->gdisp->gimage->grid)
+    gimp_display_shell_expose_full (shell);
+
+  SET_ACTIVE (shell->menubar_manager, "view-show-grid", show);
+
+  if (IS_ACTIVE_DISPLAY (shell))
+    SET_ACTIVE (shell->popup_manager, "view-show-grid", show);
+}
+
+gboolean
+gimp_display_shell_get_show_grid (GimpDisplayShell *shell)
+{
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  return GET_OPTIONS (shell)->show_grid;
+}
+
+void
+gimp_display_shell_set_show_sample_points (GimpDisplayShell *shell,
+                                           gboolean          show)
+{
+  GimpDisplayOptions *options;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  options = GET_OPTIONS (shell);
+
+  g_object_set (options, "show-sample-points", show, NULL);
+
+  if (shell->gdisp->gimage->sample_points)
+    gimp_display_shell_expose_full (shell);
+
+  SET_ACTIVE (shell->menubar_manager, "view-show-sample-points", show);
+
+  if (IS_ACTIVE_DISPLAY (shell))
+    SET_ACTIVE (shell->popup_manager, "view-show-sample-points", show);
+}
+
+gboolean
+gimp_display_shell_get_show_sample_points (GimpDisplayShell *shell)
+{
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  return GET_OPTIONS (shell)->show_sample_points;
+}
+
+void
+gimp_display_shell_set_snap_to_grid (GimpDisplayShell *shell,
+                                     gboolean          snap)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  if (snap != shell->snap_to_grid)
+    {
+      shell->snap_to_grid = snap ? TRUE : FALSE;
+
+      SET_ACTIVE (shell->menubar_manager, "view-snap-to-grid", snap);
+
+      if (IS_ACTIVE_DISPLAY (shell))
+        SET_ACTIVE (shell->popup_manager, "view-snap-to-grid", snap);
+    }
+}
+
+gboolean
+gimp_display_shell_get_snap_to_grid (GimpDisplayShell *shell)
+{
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  return shell->snap_to_grid;
+}
+
+void
 gimp_display_shell_set_snap_to_guides (GimpDisplayShell *shell,
                                        gboolean          snap)
 {
@@ -450,6 +463,56 @@ gimp_display_shell_get_snap_to_guides (GimpDisplayShell *shell)
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
 
   return shell->snap_to_guides;
+}
+
+void
+gimp_display_shell_set_snap_to_canvas (GimpDisplayShell *shell,
+                                       gboolean          snap)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  if (snap != shell->snap_to_canvas)
+    {
+      shell->snap_to_canvas = snap ? TRUE : FALSE;
+
+      SET_ACTIVE (shell->menubar_manager, "view-snap-to-canvas", snap);
+
+      if (IS_ACTIVE_DISPLAY (shell))
+        SET_ACTIVE (shell->popup_manager, "view-snap-to-canvas", snap);
+    }
+}
+
+gboolean
+gimp_display_shell_get_snap_to_canvas (GimpDisplayShell *shell)
+{
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  return shell->snap_to_canvas;
+}
+
+void
+gimp_display_shell_set_snap_to_vectors (GimpDisplayShell *shell,
+                                        gboolean          snap)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  if (snap != shell->snap_to_vectors)
+    {
+      shell->snap_to_vectors = snap ? TRUE : FALSE;
+
+      SET_ACTIVE (shell->menubar_manager, "view-snap-to-vectors", snap);
+
+      if (IS_ACTIVE_DISPLAY (shell))
+        SET_ACTIVE (shell->popup_manager, "view-snap-to-vectors", snap);
+    }
+}
+
+gboolean
+gimp_display_shell_get_snap_to_vectors (GimpDisplayShell *shell)
+{
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  return shell->snap_to_vectors;
 }
 
 void
@@ -479,16 +542,16 @@ gimp_display_shell_set_padding (GimpDisplayShell      *shell,
 
     case GIMP_CANVAS_PADDING_MODE_LIGHT_CHECK:
       gimp_rgb_set_uchar (&color,
-                          render_blend_light_check[0],
-                          render_blend_light_check[1],
-                          render_blend_light_check[2]);
+                          gimp_render_blend_light_check[0],
+                          gimp_render_blend_light_check[1],
+                          gimp_render_blend_light_check[2]);
       break;
 
     case GIMP_CANVAS_PADDING_MODE_DARK_CHECK:
       gimp_rgb_set_uchar (&color,
-                          render_blend_dark_check[0],
-                          render_blend_dark_check[1],
-                          render_blend_dark_check[2]);
+                          gimp_render_blend_dark_check[0],
+                          gimp_render_blend_dark_check[1],
+                          gimp_render_blend_dark_check[2]);
       break;
 
     case GIMP_CANVAS_PADDING_MODE_CUSTOM:

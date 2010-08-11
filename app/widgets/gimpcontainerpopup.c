@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpcontainerpopup.c
- * Copyright (C) 2003 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2003-2005 Michael Natterer <mitch@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,15 +52,14 @@ enum
 };
 
 
-static void     gimp_container_popup_class_init (GimpContainerPopupClass *klass);
-static void     gimp_container_popup_init       (GimpContainerPopup      *view);
-
 static void     gimp_container_popup_finalize     (GObject            *object);
+
 static void     gimp_container_popup_map          (GtkWidget          *widget);
 static gboolean gimp_container_popup_button_press (GtkWidget          *widget,
                                                    GdkEventButton     *bevent);
 static gboolean gimp_container_popup_key_press    (GtkWidget          *widget,
                                                    GdkEventKey        *kevent);
+
 static void     gimp_container_popup_real_cancel  (GimpContainerPopup *popup);
 static void     gimp_container_popup_real_confirm (GimpContainerPopup *popup);
 
@@ -76,38 +75,12 @@ static void gimp_container_popup_dialog_clicked   (GtkWidget          *button,
                                                    GimpContainerPopup *popup);
 
 
-static GtkWindowClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpContainerPopup, gimp_container_popup, GTK_TYPE_WINDOW);
+
+#define parent_class gimp_container_popup_parent_class
 
 static guint popup_signals[LAST_SIGNAL];
 
-
-GType
-gimp_container_popup_get_type (void)
-{
-  static GType popup_type = 0;
-
-  if (! popup_type)
-    {
-      static const GTypeInfo popup_info =
-      {
-        sizeof (GimpContainerPopupClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_container_popup_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpContainerPopup),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_container_popup_init,
-      };
-
-      popup_type = g_type_register_static (GTK_TYPE_WINDOW,
-                                           "GimpContainerPopup",
-                                           &popup_info, 0);
-    }
-
-  return popup_type;
-}
 
 static void
 gimp_container_popup_class_init (GimpContainerPopupClass *klass)
@@ -115,8 +88,6 @@ gimp_container_popup_class_init (GimpContainerPopupClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkBindingSet  *binding_set;
-
-  parent_class = g_type_class_peek_parent (klass);
 
   popup_signals[CANCEL] =
     g_signal_new ("cancel",
@@ -466,6 +437,68 @@ gimp_container_popup_show (GimpContainerPopup *popup,
   gtk_widget_show (GTK_WIDGET (popup));
 }
 
+GimpViewType
+gimp_container_popup_get_view_type (GimpContainerPopup *popup)
+{
+  g_return_val_if_fail (GIMP_IS_CONTAINER_POPUP (popup), GIMP_VIEW_TYPE_LIST);
+
+  return popup->view_type;
+}
+
+void
+gimp_container_popup_set_view_type (GimpContainerPopup *popup,
+                                    GimpViewType        view_type)
+{
+  g_return_if_fail (GIMP_IS_CONTAINER_POPUP (popup));
+
+  if (view_type != popup->view_type)
+    {
+      popup->view_type = view_type;
+
+      gtk_container_remove (GTK_CONTAINER (popup->frame),
+                            GTK_WIDGET (popup->editor));
+      gimp_container_popup_create_view (popup);
+    }
+}
+
+gint
+gimp_container_popup_get_preview_size (GimpContainerPopup *popup)
+{
+  g_return_val_if_fail (GIMP_IS_CONTAINER_POPUP (popup), GIMP_VIEW_SIZE_SMALL);
+
+  return popup->preview_size;
+}
+
+void
+gimp_container_popup_set_preview_size (GimpContainerPopup *popup,
+                                       gint                preview_size)
+{
+  GtkWidget *scrolled_win;
+  gint       viewport_width;
+
+  g_return_if_fail (GIMP_IS_CONTAINER_POPUP (popup));
+
+  scrolled_win = GIMP_CONTAINER_BOX (popup->editor->view)->scrolled_win;
+
+  viewport_width = GTK_BIN (scrolled_win)->child->allocation.width;
+
+  preview_size = CLAMP (preview_size, GIMP_VIEW_SIZE_TINY,
+                        MIN (GIMP_VIEW_SIZE_GIGANTIC,
+                             viewport_width - 2 * popup->preview_border_width));
+
+  if (preview_size != popup->preview_size)
+    {
+      popup->preview_size = preview_size;
+
+      gimp_container_view_set_preview_size (popup->editor->view,
+                                            popup->preview_size,
+                                            popup->preview_border_width);
+    }
+}
+
+
+/*  private functions  */
+
 static void
 gimp_container_popup_create_view (GimpContainerPopup *popup)
 {
@@ -490,8 +523,8 @@ gimp_container_popup_create_view (GimpContainerPopup *popup)
                                        10 * (popup->default_preview_size +
                                              2 * popup->preview_border_width));
 
-  if (GIMP_IS_CONTAINER_GRID_VIEW (popup->editor->view))
-    gtk_widget_hide (GIMP_CONTAINER_GRID_VIEW (popup->editor->view)->name_label);
+  if (GIMP_IS_EDITOR (popup->editor->view))
+    gimp_editor_set_show_name (GIMP_EDITOR (popup->editor->view), FALSE);
 
   gtk_container_add (GTK_CONTAINER (popup->frame), GTK_WIDGET (popup->editor));
   gtk_widget_show (GTK_WIDGET (popup->editor));
@@ -533,16 +566,7 @@ gimp_container_popup_smaller_clicked (GtkWidget          *button,
   preview_size = gimp_container_view_get_preview_size (popup->editor->view,
                                                        NULL);
 
-  preview_size = MAX (GIMP_VIEW_SIZE_TINY, preview_size * 0.8);
-
-  if (preview_size != popup->preview_size)
-    {
-      popup->preview_size = preview_size;
-
-      gimp_container_view_set_preview_size (popup->editor->view,
-                                            popup->preview_size,
-                                            popup->preview_border_width);
-    }
+  gimp_container_popup_set_preview_size (popup, preview_size * 0.8);
 }
 
 static void
@@ -554,16 +578,7 @@ gimp_container_popup_larger_clicked (GtkWidget          *button,
   preview_size = gimp_container_view_get_preview_size (popup->editor->view,
                                                        NULL);
 
-  preview_size = MAX (GIMP_VIEW_SIZE_TINY, preview_size * 1.2);
-
-  if (preview_size != popup->preview_size)
-    {
-      popup->preview_size = preview_size;
-
-      gimp_container_view_set_preview_size (popup->editor->view,
-                                            popup->preview_size,
-                                            popup->preview_border_width);
-    }
+  gimp_container_popup_set_preview_size (popup, preview_size * 1.2);
 }
 
 static void
@@ -577,14 +592,7 @@ gimp_container_popup_view_type_toggled (GtkWidget          *button,
       view_type = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button),
                                                       "gimp-item-data"));
 
-      if (view_type != popup->view_type)
-        {
-          popup->view_type = view_type;
-
-          gtk_container_remove (GTK_CONTAINER (popup->frame),
-                                GTK_WIDGET (popup->editor));
-          gimp_container_popup_create_view (popup);
-        }
+      gimp_container_popup_set_view_type (popup, view_type);
     }
 }
 

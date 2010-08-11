@@ -22,12 +22,10 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "actions-types.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-utils.h"
 
 #include "core/gimp.h"
 #include "core/gimplist.h"
@@ -100,8 +98,8 @@ tool_options_save_to_cmd_callback (GtkAction *action,
 
       name = g_strdup (gimp_object_get_name (GIMP_OBJECT (options)));
 
-      gimp_config_sync (GIMP_CONFIG (tool_info->tool_options),
-                        GIMP_CONFIG (options), 0);
+      gimp_config_sync (G_OBJECT (tool_info->tool_options),
+                        G_OBJECT (options), 0);
       gimp_object_set_name (GIMP_OBJECT (options), name);
 
       g_free (name);
@@ -122,8 +120,8 @@ tool_options_restore_from_cmd_callback (GtkAction *action,
     gimp_container_get_child_by_index (tool_info->options_presets, value);
 
   if (options)
-    gimp_config_sync (GIMP_CONFIG (options),
-                      GIMP_CONFIG (tool_info->tool_options), 0);
+    gimp_config_sync (G_OBJECT (options),
+                      G_OBJECT (tool_info->tool_options), 0);
 }
 
 void
@@ -183,15 +181,41 @@ tool_options_reset_cmd_callback (GtkAction *action,
   gimp_tool_options_reset (tool_info->tool_options);
 }
 
-static void
-tool_options_reset_all_response (GtkWidget *dialog,
-                                 gint       response_id,
-                                 Gimp      *gimp)
+void
+tool_options_reset_all_cmd_callback (GtkAction *action,
+                                     gpointer   data)
 {
-  gtk_widget_destroy (dialog);
+  GimpEditor *editor = GIMP_EDITOR (data);
+  GtkWidget  *dialog;
 
-  if (response_id == GTK_RESPONSE_OK)
+  dialog = gimp_message_dialog_new (_("Reset Tool Options"), GIMP_STOCK_QUESTION,
+                                    GTK_WIDGET (editor),
+                                    GTK_DIALOG_MODAL |
+                                    GTK_DIALOG_DESTROY_WITH_PARENT,
+                                    gimp_standard_help_func, NULL,
+
+                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                    GIMP_STOCK_RESET, GTK_RESPONSE_OK,
+
+                                    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  g_signal_connect_object (gtk_widget_get_toplevel (GTK_WIDGET (editor)),
+                           "unmap",
+                           G_CALLBACK (gtk_widget_destroy),
+                           dialog, G_CONNECT_SWAPPED);
+
+  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                     _("Do you really want to reset all "
+                                       "tool options to default values?"));
+
+  if (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK)
     {
+      Gimp  *gimp = editor->ui_manager->gimp;
       GList *list;
 
       for (list = GIMP_LIST (gimp->tool_info_list)->list;
@@ -203,37 +227,8 @@ tool_options_reset_all_response (GtkWidget *dialog,
           gimp_tool_options_reset (tool_info->tool_options);
         }
     }
-}
 
-void
-tool_options_reset_all_cmd_callback (GtkAction *action,
-                                     gpointer   data)
-{
-  GimpEditor *editor = GIMP_EDITOR (data);
-  GtkWidget  *dialog;
-
-  dialog = gimp_message_dialog_new (_("Reset Tool Options"), GIMP_STOCK_QUESTION,
-                                    GTK_WIDGET (editor), 0,
-                                    gimp_standard_help_func, NULL,
-
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    GIMP_STOCK_RESET, GTK_RESPONSE_OK,
-
-                                    NULL);
-
-  g_signal_connect_object (editor, "unmap",
-                           G_CALLBACK (gtk_widget_destroy),
-                           dialog, G_CONNECT_SWAPPED);
-
-  g_signal_connect (dialog, "response",
-                    G_CALLBACK (tool_options_reset_all_response),
-                    editor->ui_manager->gimp);
-
-  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
-                                     _("Do you really want to reset all "
-                                       "tool options to default values?"));
-
-  gtk_widget_show (dialog);
+  gtk_widget_destroy (dialog);
 }
 
 

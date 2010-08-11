@@ -20,11 +20,11 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig-params.h"
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
@@ -33,7 +33,6 @@
 
 #include "display/gimpdisplay.h"
 
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpviewablebox.h"
 #include "widgets/gimpwidgets-utils.h"
 
@@ -54,8 +53,6 @@ enum
 };
 
 
-static void   gimp_bucket_fill_options_class_init   (GimpBucketFillOptionsClass *klass);
-
 static void   gimp_bucket_fill_options_set_property (GObject         *object,
                                                      guint            property_id,
                                                      const GValue    *value,
@@ -71,44 +68,17 @@ static void   gimp_bucket_fill_options_notify (GimpBucketFillOptions *options,
                                                GtkWidget             *widget);
 
 
-static GimpPaintOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpBucketFillOptions, gimp_bucket_fill_options,
+               GIMP_TYPE_PAINT_OPTIONS);
 
+#define parent_class gimp_bucket_fill_options_parent_class
 
-GType
-gimp_bucket_fill_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpBucketFillOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_bucket_fill_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpBucketFillOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) NULL
-      };
-
-      type = g_type_register_static (GIMP_TYPE_PAINT_OPTIONS,
-                                     "GimpBucketFillOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_bucket_fill_options_class_init (GimpBucketFillOptionsClass *klass)
 {
   GObjectClass         *object_class  = G_OBJECT_CLASS (klass);
   GimpToolOptionsClass *options_class = GIMP_TOOL_OPTIONS_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_bucket_fill_options_set_property;
   object_class->get_property = gimp_bucket_fill_options_get_property;
@@ -141,6 +111,11 @@ gimp_bucket_fill_options_class_init (GimpBucketFillOptionsClass *klass)
                                    N_("Maximum color difference"),
                                    0.0, 255.0, 15.0,
                                    0);
+}
+
+static void
+gimp_bucket_fill_options_init (GimpBucketFillOptions *options)
+{
 }
 
 static void
@@ -235,7 +210,7 @@ gimp_bucket_fill_options_gui (GimpToolOptions *tool_options)
   vbox = gimp_paint_options_gui (tool_options);
 
   /*  fill type  */
-  str = g_strdup_printf (_("Fill Type  %s"),
+  str = g_strdup_printf (_("Fill Type  (%s)"),
                          gimp_get_mod_string (GDK_CONTROL_MASK)),
   frame = gimp_prop_enum_radio_frame_new (config, "fill-mode", str, 0, 0);
   g_free (str);
@@ -247,13 +222,16 @@ gimp_bucket_fill_options_gui (GimpToolOptions *tool_options)
   gimp_enum_radio_frame_add (GTK_FRAME (frame), hbox, GIMP_PATTERN_BUCKET_FILL);
 
   /*  fill selection  */
-  str = g_strdup_printf (_("Affected Area  %s"),
+  str = g_strdup_printf (_("Affected Area  (%s)"),
                          gimp_get_mod_string (GDK_SHIFT_MASK));
   frame = gimp_prop_boolean_radio_frame_new (config, "fill-selection",
                                              str,
                                              _("Fill whole selection"),
                                              _("Fill similar colors"));
   g_free (str);
+  gtk_box_reorder_child (GTK_BOX (gtk_bin_get_child (GTK_BIN (frame))),
+                         g_object_get_data (G_OBJECT (frame), "radio-button"),
+                         1);
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);

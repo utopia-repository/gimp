@@ -1,48 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpColorSelect</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
 <link rel="prev" href="GimpColorScales.html" title="GimpColorScales">
 <link rel="next" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
+<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
 <link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
 <link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
 <link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
 <link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="GimpColorScales.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-colorselector.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-controller.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582591" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2623381" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id2569564" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id2595262" class="shortcut">Implemented Interfaces</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="GimpColorSelect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2582591"></a><span class="refentrytitle">GimpColorSelect</span>
-</h2>
+<h2><span class="refentrytitle">GimpColorSelect</span></h2>
 <p>GimpColorSelect &#8212; A <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a> implementation.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -53,33 +46,42 @@
 
 
 
-                    <a href="GimpColorSelect.html#GimpColorSelect-struct">GimpColorSelect</a>;
+            <a href="GimpColorSelect.html#GimpColorSelect-struct">GimpColorSelect</a>;
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569564"></a><h2>Object Hierarchy</h2>
+<a name="id2562613"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBox
-                                 +----GtkVBox
-                                       +----<a href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a>
-                                             +----GimpColorSelect
+   +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+         +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+               +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                     +----<a
+href="../gtk/GtkBox.html"
+>GtkBox</a>
+                           +----<a
+href="../gtk/GtkVBox.html"
+>GtkVBox</a>
+                                 +----<a href="GimpColorSelector.html" title="GimpColorSelector">GimpColorSelector</a>
+                                       +----GimpColorSelect
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2595262"></a><h2>Implemented Interfaces</h2>
+<a name="id2534611"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorSelect implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2623381"></a><h2>Description</h2>
+<a name="id2550788"></a><h2>Description</h2>
 <p>
 The <a href="GimpColorSelect.html" title="GimpColorSelect"><span class="type">GimpColorSelect</span></a> widget is an implementation of a <a href="GimpColorSelector.html" title="GimpColorSelector"><span class="type">GimpColorSelector</span></a>.
 It shows a square area that allows to interactively change two color channels
@@ -89,16 +91,20 @@ will then change the other two channels accordingly.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2623424"></a><h2>Details</h2>
+<a name="id2585686"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2623435"></a><h3>
+<a name="id2585693"></a><h3>
 <a name="GimpColorSelect-struct"></a>GimpColorSelect</h3>
-<a class="indexterm" name="id2623446"></a><pre class="programlisting">typedef struct _GimpColorSelect GimpColorSelect;</pre>
+<a class="indexterm" name="id2585702"></a><pre class="programlisting">typedef struct _GimpColorSelect GimpColorSelect;</pre>
 <p>
 
 </p>
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="GimpColorScales.html"><b>&lt;&lt;&#160;GimpColorScales</b></a></td>
+<td align="right"><a accesskey="n" href="libgimpwidgets-controller.html"><b>Part&#160;IV.&#160;GIMP Controllers&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

@@ -25,12 +25,13 @@
 
 #include <stdlib.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+#define PLUG_IN_PROC       "plug-in-filter-pack"
+#define PLUG_IN_BINARY     "fp"
 
 #define MAX_PREVIEW_SIZE   125
 #define MAX_ROUGHNESS      128
@@ -39,14 +40,12 @@
 #define ALL                255
 #define MARGIN             4
 
-#define HELP_ID            "plug-in-filter-pack"
-
 #define RANGE_ADJUST_MASK GDK_EXPOSURE_MASK | \
-                        GDK_ENTER_NOTIFY_MASK | \
-                        GDK_BUTTON_PRESS_MASK | \
-                        GDK_BUTTON_RELEASE_MASK | \
-                        GDK_BUTTON1_MOTION_MASK | \
-                        GDK_POINTER_MOTION_HINT_MASK
+                          GDK_ENTER_NOTIFY_MASK | \
+                          GDK_BUTTON_PRESS_MASK | \
+                          GDK_BUTTON_RELEASE_MASK | \
+                          GDK_BUTTON1_MOTION_MASK | \
+                          GDK_POINTER_MOTION_HINT_MASK
 
 
 typedef struct
@@ -316,12 +315,12 @@ query (void)
 {
   GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive"          },
     { GIMP_PDB_IMAGE,    "image",    "Input image (used for indexed images)" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"                        }
   };
 
-  gimp_install_procedure ("plug_in_filter_pack",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Allows the user to change H, S, or C with many previews",
                           "No help available",
                           "Pavel Grinfeld (pavel@ml.com)",
@@ -333,7 +332,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_filter_pack", "<Image>/Filters/Colors");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Modify");
 }
 
 /********************************STANDARD RUN*************************/
@@ -368,7 +367,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_filter_pack", &fpvals);
+      gimp_get_data (PLUG_IN_PROC, &fpvals);
 
       if (gimp_drawable_is_indexed (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id) )
@@ -389,7 +388,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_filter_pack", &fpvals);
+      gimp_get_data (PLUG_IN_PROC, &fpvals);
       break;
 
     default:
@@ -401,14 +400,13 @@ run (const gchar      *name,
       /*  Make sure that the drawable is gray or RGB color  */
       if (gimp_drawable_is_rgb (drawable->drawable_id))
         {
-          gimp_progress_init (_("Applying Filter Pack..."));
+          gimp_progress_init (_("Applying filter pack"));
           gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
           fp (drawable);
 
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data ("plug_in_filter_pack",
-                           &fpvals, sizeof (FPValues));
+            gimp_set_data (PLUG_IN_PROC, &fpvals, sizeof (FPValues));
 
           gimp_displays_flush ();
         }
@@ -571,11 +569,11 @@ fp_create_circle_palette (void)
 
   win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-  gimp_help_connect (win, gimp_standard_help_func, HELP_ID, NULL);
+  gimp_help_connect (win, gimp_standard_help_func, PLUG_IN_PROC, NULL);
 
   gtk_window_set_title (GTK_WINDOW (win), _("Hue Variations"));
 
-  g_signal_connect (win, "delete_event",
+  g_signal_connect (win, "delete-event",
                     G_CALLBACK (sub_dialog_destroy),
                     NULL);
 
@@ -642,7 +640,7 @@ fp_create_rough (void)
   gtk_scale_set_digits (GTK_SCALE (scale), 2);
   gtk_widget_show (scale);
 
-  g_signal_connect (data, "value_changed",
+  g_signal_connect (data, "value-changed",
                     G_CALLBACK (fp_scale_update),
                     &fpvals.roughness);
 
@@ -726,11 +724,11 @@ fp_create_lnd (void)
 
   win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-  gimp_help_connect (win, gimp_standard_help_func, HELP_ID, NULL);
+  gimp_help_connect (win, gimp_standard_help_func, PLUG_IN_PROC, NULL);
 
   gtk_window_set_title (GTK_WINDOW (win), _("Value Variations"));
 
-  g_signal_connect (win, "delete_event",
+  g_signal_connect (win, "delete-event",
                     G_CALLBACK (sub_dialog_destroy),
                     NULL);
 
@@ -770,11 +768,11 @@ fp_create_msnls (void)
 
   win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-  gimp_help_connect (win, gimp_standard_help_func, HELP_ID, NULL);
+  gimp_help_connect (win, gimp_standard_help_func, PLUG_IN_PROC, NULL);
 
   gtk_window_set_title (GTK_WINDOW (win), _("Saturation Variations"));
 
-  g_signal_connect (win, "delete_event",
+  g_signal_connect (win, "delete-event",
                     G_CALLBACK (sub_dialog_destroy),
                     NULL);
 
@@ -824,7 +822,7 @@ fp_create_pixels_select_by (void)
 {
   GtkWidget *frame;
 
-  frame = gimp_int_radio_group_new (TRUE, _("Select Pixels by"),
+  frame = gimp_int_radio_group_new (TRUE, _("Select Pixels By"),
                                     G_CALLBACK (fp_change_current_pixels_by),
                                     &fpvals.value_by,
                                     fpvals.value_by,
@@ -862,9 +860,9 @@ fp_create_show (void)
                                     &fpvals.selection_only,
                                     fpvals.selection_only,
 
-                                    _("_Entire Image"),  0, NULL,
-                                    _("Se_lection Only"), 1, NULL,
-                                    _("Selec_tion In Context"), 2, NULL,
+                                    _("_Entire image"),  0, NULL,
+                                    _("Se_lection only"), 1, NULL,
+                                    _("Selec_tion in context"), 2, NULL,
 
                                     NULL);
 
@@ -1177,17 +1175,25 @@ fp_dialog (void)
                               fpvals.preview_size,
                               fpvals.selection_only);
 
-  gimp_ui_init ("fp", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dlg = gimp_dialog_new (_("Filter Pack Simulation"), "fp",
+  dlg = gimp_dialog_new (_("Filter Pack Simulation"), PLUG_IN_BINARY,
                          NULL, 0,
-                         gimp_standard_help_func, HELP_ID,
+                         gimp_standard_help_func, PLUG_IN_PROC,
 
                          GIMP_STOCK_RESET, RESPONSE_RESET,
                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                          GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                          NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+                                           RESPONSE_RESET,
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dlg));
 
   g_signal_connect (dlg, "response",
                     G_CALLBACK (fp_response),
@@ -1207,7 +1213,7 @@ fp_dialog (void)
   fp_frames.show         = show         = fp_create_show();
   fp_frames.satur        = satur        = fp_create_msnls();
   fp_frames.pixelsBy     = pixelsBy     = fp_create_pixels_select_by();
-                          control      = fp_create_control();
+                           control      = fp_create_control();
   /********************************************************************/
   /********************   PUT EVERYTHING TOGETHER    ******************/
 
@@ -1300,12 +1306,12 @@ fp_advanced_dialog (void)
 
   AW.window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-  gimp_help_connect (AW.window, gimp_standard_help_func, HELP_ID, NULL);
+  gimp_help_connect (AW.window, gimp_standard_help_func, PLUG_IN_PROC, NULL);
 
   gtk_window_set_title (GTK_WINDOW (AW.window),
                         _("Advanced Filter Pack Options"));
 
-  g_signal_connect (AW.window, "delete_event",
+  g_signal_connect (AW.window, "delete-event",
                     G_CALLBACK (sub_dialog_destroy),
                     NULL);
 
@@ -1404,7 +1410,7 @@ fp_advanced_dialog (void)
                     0, 0, 0, 0);
   gtk_widget_show (scale);
 
-  g_signal_connect (smoothnessData, "value_changed",
+  g_signal_connect (smoothnessData, "value-changed",
                     G_CALLBACK (fp_scale_update),
                     &fpvals.aliasing);
 
@@ -1434,7 +1440,7 @@ fp_advanced_dialog (void)
   gtk_range_set_update_policy (GTK_RANGE (scale), 0);
   gtk_widget_show (scale);
 
-  g_signal_connect (smoothnessData, "value_changed",
+  g_signal_connect (smoothnessData, "value-changed",
                     G_CALLBACK (fp_preview_scale_update),
                     &fpvals.preview_size);
 

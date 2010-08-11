@@ -43,7 +43,12 @@ DIST_COMMON = $(gimpinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in COPYING
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/m4macros/detectcflags.m4 \
+	$(top_srcdir)/m4macros/pythondev.m4 \
+	$(top_srcdir)/m4macros/gimpprint.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
+	$(top_srcdir)/m4macros/gtk-doc.m4 \
+	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -58,17 +63,20 @@ am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(gimpincludedir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
-am__DEPENDENCIES_1 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_2 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_3 =
-am__objects_1 = gimpbrush_pdb.lo gimpbrushes_pdb.lo \
-	gimpbrushselect_pdb.lo gimpchannel_pdb.lo gimpcolor_pdb.lo \
-	gimpcontext_pdb.lo gimpconvert_pdb.lo gimpdisplay_pdb.lo \
-	gimpdrawable_pdb.lo gimpdrawabletransform_pdb.lo \
-	gimpedit_pdb.lo gimpfileops_pdb.lo gimpfloatingsel_pdb.lo \
-	gimpfonts_pdb.lo gimpfontselect_pdb.lo gimpgimprc_pdb.lo \
-	gimpgradient_pdb.lo gimpgradients_pdb.lo \
-	gimpgradientselect_pdb.lo gimpguides_pdb.lo gimphelp_pdb.lo \
+am__DEPENDENCIES_1 = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_2 = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_3 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_4 =
+am__objects_1 = gimpenums.lo
+am__objects_2 = gimpbrush_pdb.lo gimpbrushes_pdb.lo \
+	gimpbrushselect_pdb.lo gimpbuffer_pdb.lo gimpchannel_pdb.lo \
+	gimpcolor_pdb.lo gimpcontext_pdb.lo gimpconvert_pdb.lo \
+	gimpdisplay_pdb.lo gimpdrawable_pdb.lo \
+	gimpdrawabletransform_pdb.lo gimpedit_pdb.lo \
+	gimpfileops_pdb.lo gimpfloatingsel_pdb.lo gimpfonts_pdb.lo \
+	gimpfontselect_pdb.lo gimpgimprc_pdb.lo gimpgradient_pdb.lo \
+	gimpgradients_pdb.lo gimpgradientselect_pdb.lo \
+	gimpguides_pdb.lo gimpgrid_pdb.lo gimphelp_pdb.lo \
 	gimpimage_pdb.lo gimplayer_pdb.lo gimpmessage_pdb.lo \
 	gimpmisc_pdb.lo gimppainttools_pdb.lo gimppalette_pdb.lo \
 	gimppalettes_pdb.lo gimppaletteselect_pdb.lo \
@@ -77,29 +85,30 @@ am__objects_1 = gimpbrush_pdb.lo gimpbrushes_pdb.lo \
 	gimpproceduraldb_pdb.lo gimpprogress_pdb.lo \
 	gimpselection_pdb.lo gimpselectiontools_pdb.lo \
 	gimptexttool_pdb.lo gimptransformtools_pdb.lo gimpundo_pdb.lo \
-	gimpunit_pdb.lo
-am__objects_2 =
-am__objects_3 = gimp.lo $(am__objects_1) $(am__objects_2) \
+	gimpunit_pdb.lo gimpvectors_pdb.lo
+am__objects_3 =
+am__objects_4 = gimp.lo $(am__objects_2) $(am__objects_3) \
 	gimpbrushes.lo gimpbrushselect.lo gimpchannel.lo \
-	gimpdrawable.lo gimpfontselect.lo gimpgradients.lo \
-	gimpgradientselect.lo gimpimage.lo gimplayer.lo gimppalette.lo \
-	gimppalettes.lo gimppaletteselect.lo gimppatterns.lo \
-	gimppatternselect.lo gimppixelfetcher.lo gimppixelrgn.lo \
-	gimpplugin.lo gimpproceduraldb.lo gimpprogress.lo \
-	gimpregioniterator.lo gimpselection.lo gimptile.lo \
-	gimpunitcache.lo
-am__objects_4 = gimpenums.lo
-am_libgimp_2_0_la_OBJECTS = $(am__objects_3) $(am__objects_4)
+	gimpdrawable.lo gimpfontselect.lo gimpgimprc.lo \
+	gimpgradients.lo gimpgradientselect.lo gimpimage.lo \
+	gimplayer.lo gimppalette.lo gimppalettes.lo \
+	gimppaletteselect.lo gimppatterns.lo gimppatternselect.lo \
+	gimppixelfetcher.lo gimppixelrgn.lo gimpplugin.lo \
+	gimpproceduraldb.lo gimpprogress.lo gimpregioniterator.lo \
+	gimpselection.lo gimptile.lo gimpunitcache.lo
+am_libgimp_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_4)
 libgimp_2_0_la_OBJECTS = $(am_libgimp_2_0_la_OBJECTS)
-am__DEPENDENCIES_4 = ./libgimp-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_5 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
-am__DEPENDENCIES_6 = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
-am_libgimpui_2_0_la_OBJECTS = gimpui.lo gimpmenu.lo \
-	gimpaspectpreview.lo gimpbrushmenu.lo gimpdrawablepreview.lo \
-	gimpfontmenu.lo gimpgradientmenu.lo gimppalettemenu.lo \
-	gimppatternmenu.lo gimpdrawablecombobox.lo \
-	gimpimagecombobox.lo gimppixbuf.lo gimpprogressbar.lo \
-	gimpexport.lo
+am__DEPENDENCIES_5 = ./libgimp-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_6 = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
+am__DEPENDENCIES_7 = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
+am__objects_5 = gimpuimarshal.lo
+am__objects_6 = gimpui.lo gimpaspectpreview.lo gimpbrushmenu.lo \
+	gimpdrawablecombobox.lo gimpdrawablepreview.lo gimpexport.lo \
+	gimpfontmenu.lo gimpfontselectbutton.lo gimpgradientmenu.lo \
+	gimpimagecombobox.lo gimpmenu.lo gimppalettemenu.lo \
+	gimppatternmenu.lo gimppixbuf.lo gimpprocbrowserdialog.lo \
+	gimpprocview.lo gimpprogressbar.lo gimpzoompreview.lo
+am_libgimpui_2_0_la_OBJECTS = $(am__objects_5) $(am__objects_6)
 libgimpui_2_0_la_OBJECTS = $(am_libgimpui_2_0_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -123,9 +132,9 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
-ALL_LINGUAS = @ALL_LINGUAS@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
+ALTIVEC_EXTRA_CFLAGS = @ALTIVEC_EXTRA_CFLAGS@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -135,6 +144,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
+BINRELOC_LIBS = @BINRELOC_LIBS@
 BUILD_HELPBROWSER_FALSE = @BUILD_HELPBROWSER_FALSE@
 BUILD_HELPBROWSER_TRUE = @BUILD_HELPBROWSER_TRUE@
 BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
@@ -166,6 +177,7 @@ DESKTOP_DATADIR = @DESKTOP_DATADIR@
 DESKTOP_DATADIR_FALSE = @DESKTOP_DATADIR_FALSE@
 DESKTOP_DATADIR_TRUE = @DESKTOP_DATADIR_TRUE@
 DLLTOOL = @DLLTOOL@
+DOC_SHOOTER = @DOC_SHOOTER@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -200,7 +212,6 @@ GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
-GIMP_DESKTOP_ICON = @GIMP_DESKTOP_ICON@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
 GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
@@ -208,18 +219,16 @@ GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
 GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
 GIMP_MKENUMS = @GIMP_MKENUMS@
 GIMP_MODULES = @GIMP_MODULES@
-GIMP_MP_FLAGS = @GIMP_MP_FLAGS@
-GIMP_MP_LIBS = @GIMP_MP_LIBS@
 GIMP_PKGCONFIG_VERSION = @GIMP_PKGCONFIG_VERSION@
 GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
-GIMP_THREAD_FLAGS = @GIMP_THREAD_FLAGS@
-GIMP_THREAD_LIBS = @GIMP_THREAD_LIBS@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
+GIMP_UNSTABLE_FALSE = @GIMP_UNSTABLE_FALSE@
+GIMP_UNSTABLE_TRUE = @GIMP_UNSTABLE_TRUE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
@@ -231,8 +240,12 @@ GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOMEPRINT = @GNOMEPRINT@
+GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
+GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
-GREP = @GREP@
+GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -246,6 +259,10 @@ HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
 HAVE_GLIBC_REGEX_TRUE = @HAVE_GLIBC_REGEX_TRUE@
+HAVE_GNOMEPRINT_FALSE = @HAVE_GNOMEPRINT_FALSE@
+HAVE_GNOMEPRINT_TRUE = @HAVE_GNOMEPRINT_TRUE@
+HAVE_GNOMEVFS_FALSE = @HAVE_GNOMEVFS_FALSE@
+HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
@@ -282,7 +299,6 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
-INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -298,10 +314,12 @@ LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
+LIBGNOMEPRINT = @LIBGNOMEPRINT@
 LIBJPEG = @LIBJPEG@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
+LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
 LIBSCREENSHOT = @LIBSCREENSHOT@
 LIBSVG = @LIBSVG@
@@ -324,7 +342,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
-MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -350,15 +367,22 @@ PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
 POFILES = @POFILES@
+POPPLER = @POPPLER@
+POPPLER_CFLAGS = @POPPLER_CFLAGS@
+POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PRINT_CFLAGS = @PRINT_CFLAGS@
 PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
+PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
+PYGTK_CODEGEN = @PYGTK_CODEGEN@
+PYGTK_DEFSDIR = @PYGTK_DEFSDIR@
 PYGTK_LIBS = @PYGTK_LIBS@
+PYLINK_LIBS = @PYLINK_LIBS@
 PYTHON = @PYTHON@
 PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
 PYTHON_INCLUDES = @PYTHON_INCLUDES@
@@ -382,10 +406,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URL = @URL@
+URI_CFLAGS = @URI_CFLAGS@
+URI_LIBS = @URI_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WINCLIPBOARD = @WINCLIPBOARD@
 WINDRES = @WINDRES@
 WINPRINT = @WINPRINT@
 WITH_PDBGEN_FALSE = @WITH_PDBGEN_FALSE@
@@ -395,7 +419,6 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
-XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -403,9 +426,17 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+ac_ct_AR = @ac_ct_AR@
+ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
+ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
+ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
+ac_ct_RANLIB = @ac_ct_RANLIB@
+ac_ct_STRIP = @ac_ct_STRIP@
+ac_ct_WINDRES = @ac_ct_WINDRES@
+ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -422,12 +453,10 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
-datarootdir = @datarootdir@
-docdir = @docdir@
-dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
+gimplocaledir = @gimplocaledir@
 gimpplugindir = @gimpplugindir@
 gimpsysconfdir = @gimpsysconfdir@
 host = @host@
@@ -435,24 +464,20 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
-htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
-pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -461,6 +486,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpmodule = $(top_builddir)/libgimpmodule/libgimpmodule-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = ./libgimp-$(GIMP_API_VERSION).la
@@ -473,7 +499,7 @@ libgimp = ./libgimp-$(GIMP_API_VERSION).la
 gimpincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimp
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"LibGimp\"	\
-	@GIMP_THREAD_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
 	-I$(top_srcdir)	\
@@ -485,6 +511,7 @@ PDB_WRAPPERS_C = \
 	gimpbrush_pdb.c			\
 	gimpbrushes_pdb.c		\
 	gimpbrushselect_pdb.c		\
+	gimpbuffer_pdb.c		\
 	gimpchannel_pdb.c		\
 	gimpcolor_pdb.c			\
 	gimpcontext_pdb.c		\
@@ -502,6 +529,7 @@ PDB_WRAPPERS_C = \
 	gimpgradients_pdb.c		\
 	gimpgradientselect_pdb.c	\
 	gimpguides_pdb.c		\
+	gimpgrid_pdb.c			\
 	gimphelp_pdb.c			\
 	gimpimage_pdb.c			\
 	gimplayer_pdb.c			\
@@ -524,13 +552,15 @@ PDB_WRAPPERS_C = \
 	gimptexttool_pdb.c		\
 	gimptransformtools_pdb.c	\
 	gimpundo_pdb.c			\
-	gimpunit_pdb.c
+	gimpunit_pdb.c			\
+	gimpvectors_pdb.c
 
 PDB_WRAPPERS_H = \
 	gimp_pdb.h			\
 	gimpbrush_pdb.h			\
 	gimpbrushes_pdb.h		\
 	gimpbrushselect_pdb.h		\
+	gimpbuffer_pdb.h		\
 	gimpchannel_pdb.h		\
 	gimpcolor_pdb.h			\
 	gimpcontext_pdb.h		\
@@ -547,6 +577,7 @@ PDB_WRAPPERS_H = \
 	gimpgradient_pdb.h		\
 	gimpgradients_pdb.h		\
 	gimpgradientselect_pdb.h	\
+	gimpgrid_pdb.h			\
 	gimpguides_pdb.h		\
 	gimphelp_pdb.h			\
 	gimpimage_pdb.h			\
@@ -570,7 +601,8 @@ PDB_WRAPPERS_H = \
 	gimptexttool_pdb.h		\
 	gimptransformtools_pdb.h	\
 	gimpundo_pdb.h			\
-	gimpunit_pdb.h
+	gimpunit_pdb.h			\
+	gimpvectors_pdb.h
 
 libgimp_2_0_la_sources = \
 	gimp.c			\
@@ -590,6 +622,8 @@ libgimp_2_0_la_sources = \
 	gimpdrawable.h		\
 	gimpfontselect.c	\
 	gimpfontselect.h	\
+	gimpgimprc.c		\
+	gimpgimprc.h		\
 	gimpgradients.c		\
 	gimpgradients.h		\
 	gimpgradientselect.c	\
@@ -633,47 +667,57 @@ libgimp_2_0_la_built_sources = \
 	gimpenums.c
 
 libgimp_2_0_la_extra_sources = gimpenums.c.tail
-EXTRA_DIST = \
-	COPYING				\
-	makefile.msc			\
-	gimp.def			\
-	gimpui.def			\
-	$(libgimp_2_0_la_extra_sources)
-
 libgimp_2_0_la_SOURCES = \
-	$(libgimp_2_0_la_sources)	\
-	$(libgimp_2_0_la_built_sources)
+	$(libgimp_2_0_la_built_sources)	\
+	$(libgimp_2_0_la_sources)
 
-libgimpui_2_0_la_SOURCES = \
+libgimpui_2_0_la_sources = \
 	gimpui.c		\
 	gimpui.h		\
 	gimpuitypes.h		\
-	gimpmenu.c		\
-	gimpmenu.h		\
 	gimpaspectpreview.c     \
 	gimpaspectpreview.h     \
 	gimpbrushmenu.c		\
 	gimpbrushmenu.h		\
+	gimpdrawablecombobox.c	\
+	gimpdrawablecombobox.h	\
 	gimpdrawablepreview.c	\
 	gimpdrawablepreview.h	\
+	gimpexport.c		\
+	gimpexport.h		\
 	gimpfontmenu.c		\
 	gimpfontmenu.h		\
+	gimpfontselectbutton.c	\
+	gimpfontselectbutton.h	\
 	gimpgradientmenu.c 	\
 	gimpgradientmenu.h 	\
+	gimpimagecombobox.c	\
+	gimpimagecombobox.h	\
+	gimpmenu.c		\
+	gimpmenu.h		\
 	gimppalettemenu.c	\
 	gimppalettemenu.h	\
 	gimppatternmenu.c	\
 	gimppatternmenu.h	\
-	gimpdrawablecombobox.c	\
-	gimpdrawablecombobox.h	\
-	gimpimagecombobox.c	\
-	gimpimagecombobox.h	\
 	gimppixbuf.c		\
 	gimppixbuf.h		\
+	gimpprocbrowserdialog.c	\
+	gimpprocbrowserdialog.h	\
+	gimpprocview.c		\
+	gimpprocview.h		\
 	gimpprogressbar.c	\
 	gimpprogressbar.h	\
-	gimpexport.c		\
-	gimpexport.h
+	gimpzoompreview.c	\
+	gimpzoompreview.h
+
+libgimpui_2_0_la_built_sources = \
+	gimpuimarshal.c			\
+	gimpuimarshal.h
+
+libgimpui_2_0_la_extra_sources = gimpuimarshal.list
+libgimpui_2_0_la_SOURCES = \
+	$(libgimpui_2_0_la_built_sources)	\
+	$(libgimpui_2_0_la_sources)
 
 gimpinclude_HEADERS = \
 	gimp.h			\
@@ -686,6 +730,7 @@ gimpinclude_HEADERS = \
 	gimpchannel.h		\
 	gimpdrawable.h		\
 	gimpfontselect.h	\
+	gimpgimprc.h		\
 	gimpgradients.h		\
 	gimpgradientselect.h	\
 	gimpimage.h		\
@@ -706,27 +751,31 @@ gimpinclude_HEADERS = \
 	\
 	gimpui.h		\
 	gimpuitypes.h		\
-	gimpmenu.h		\
 	gimpaspectpreview.h	\
 	gimpbrushmenu.h		\
+	gimpdrawablecombobox.h	\
 	gimpdrawablepreview.h   \
+	gimpexport.h		\
 	gimpfontmenu.h		\
+	gimpfontselectbutton.h	\
 	gimpgradientmenu.h	\
+	gimpimagecombobox.h	\
+	gimpmenu.h		\
 	gimppalettemenu.h	\
 	gimppatternmenu.h	\
 	gimppixbuf.h		\
+	gimpprocbrowserdialog.h	\
+	gimpprocview.h		\
 	gimpprogressbar.h	\
-	gimpdrawablecombobox.h	\
-	gimpimagecombobox.h	\
-	gimpexport.h
+	gimpzoompreview.h
 
 libgimp_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined)				\
 	$(libgimp_export_symbols)
 
-libgimp_2_0_la_LIBADD = $(libgimpcolor) $(libgimpbase) $(GLIB_LIBS) $(RT_LIBS)
-libgimp_2_0_la_DEPENDENCIES = $(gimp_def) $(libgimpcolor) $(libgimpbase)
+libgimp_2_0_la_LIBADD = $(libgimpconfig) $(libgimpcolor) $(libgimpbase) $(GLIB_LIBS) $(RT_LIBS)
+libgimp_2_0_la_DEPENDENCIES = $(gimp_def) $(libgimpconfig) $(libgimpcolor) $(libgimpbase)
 libgimpui_2_0_la_LDFLAGS = \
 	-version-info $(LT_VERSION_INFO)	\
 	$(no_undefined)				\
@@ -736,12 +785,20 @@ libgimpui_2_0_la_LIBADD = $(libgimp) $(libgimpwidgets) $(libgimpcolor) \
 	 $(libgimpbase) $(libgimpmodule) $(GTK_LIBS) $(RT_LIBS)
 
 libgimpui_2_0_la_DEPENDENCIES = $(gimpui_def) $(libgimp) $(libgimpwidgets) $(libgimpbase)
+EXTRA_DIST = \
+	COPYING					\
+	makefile.msc				\
+	gimp.def				\
+	gimpui.def				\
+	$(libgimp_2_0_la_extra_sources)		\
+	$(libgimpui_2_0_la_extra_sources)
+
 
 #
 # rules to generate built sources
 #
 # setup autogeneration dependencies
-gen_sources = xgen-cec
+gen_sources = xgen-cec xgen-umh xgen-umc
 CLEANFILES = $(gen_sources)
 all: all-am
 
@@ -822,6 +879,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushmenu.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushselect.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushselect_pdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbuffer_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchannel_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcolor_pdb.Plo@am__quote@
@@ -842,6 +900,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfonts_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfontselect.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfontselect_pdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfontselectbutton.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgimprc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgimprc_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgradient_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgradientmenu.Plo@am__quote@
@@ -849,6 +909,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgradients_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgradientselect.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgradientselect_pdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpgrid_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpguides_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphelp_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimage.Plo@am__quote@
@@ -880,8 +941,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppixelrgn.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin_pdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprocbrowserdialog.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpproceduraldb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpproceduraldb_pdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprocview.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprogress.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprogress_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprogressbar.Plo@am__quote@
@@ -893,9 +956,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptransformtools_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpui.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpuimarshal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpundo_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunit_pdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunitcache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectors_pdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpzoompreview.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -1168,6 +1234,17 @@ $(srcdir)/gimpenums.c: $(srcdir)/gimpenums.h $(srcdir)/gimpenums.c.tail $(GIMP_M
 	&& cat $(srcdir)/gimpenums.c.tail >> xgen-cec \
 	&& cp xgen-cec $(@F) \
 	&& rm -f xgen-cec
+
+$(srcdir)/gimpuimarshal.h: $(srcdir)/gimpuimarshal.list
+	$(GLIB_GENMARSHAL) --prefix=_gimpui_marshal $(srcdir)/gimpuimarshal.list --header >> xgen-umh \
+	&& (cmp -s xgen-umh $(@F) || cp xgen-umh $(@F)) \
+	&& rm -f xgen-umh xgen-umh~
+
+$(srcdir)/gimpuimarshal.c: $(srcdir)/gimpuimarshal.h
+	echo "#include \"gimpuimarshal.h\"" >> xgen-umc \
+	&& $(GLIB_GENMARSHAL) --prefix=_gimpui_marshal $(srcdir)/gimpuimarshal.list --body >> xgen-umc \
+	&& cp xgen-umc $(@F) \
+	&& rm -f xgen-umc xgen-umc~
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

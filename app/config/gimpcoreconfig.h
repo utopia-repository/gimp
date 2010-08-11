@@ -43,6 +43,7 @@ struct _GimpCoreConfig
   GimpInterpolationType  interpolation_type;
   gchar                 *plug_in_path;
   gchar                 *module_path;
+  gchar                 *interpreter_path;
   gchar                 *environ_path;
   gchar                 *brush_path;
   gchar                 *brush_path_writable;
@@ -53,7 +54,7 @@ struct _GimpCoreConfig
   gchar                 *gradient_path;
   gchar                 *gradient_path_writable;
   gchar                 *font_path;
-  gchar                 *font_path_writable;
+  gchar                 *font_path_writable;  /*  unused  */
   gchar                 *default_brush;
   gchar                 *default_pattern;
   gchar                 *default_palette;
@@ -76,6 +77,8 @@ struct _GimpCoreConfig
   guint64                thumbnail_filesize_limit;
   gboolean               install_cmap;
   gint                   min_colors;
+  GimpColorConfig       *color_management;
+  gboolean               save_document_history;
 };
 
 struct _GimpCoreConfigClass

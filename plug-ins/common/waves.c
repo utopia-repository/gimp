@@ -22,21 +22,18 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * $Id: waves.c 15087 2004-10-12 21:48:39Z mitch $
  */
 
 #include "config.h"
-
-#include <string.h>
-#include <stdlib.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-waves"
+#define PLUG_IN_BINARY "waves"
 
 enum
 {
@@ -51,7 +48,6 @@ typedef struct
   gdouble  wavelength;
   gint32   type;
   gboolean reflective;
-  gboolean preview;
 } piArgs;
 
 static piArgs wvals =
@@ -60,8 +56,7 @@ static piArgs wvals =
   0.0,        /* phase      */
   10.0,       /* wavelength */
   MODE_SMEAR, /* type       */
-  FALSE,      /* reflective */
-  TRUE        /* preview    */
+  FALSE       /* reflective */
 };
 
 static void query (void);
@@ -108,7 +103,7 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",   "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",      "The Image"                    },
     { GIMP_PDB_DRAWABLE, "drawable",   "The Drawable"                 },
     { GIMP_PDB_FLOAT,    "amplitude",  "The Amplitude of the Waves"   },
@@ -118,7 +113,7 @@ query (void)
     { GIMP_PDB_INT32,    "reflective", "Use Reflection"               }
   };
 
-  gimp_install_procedure ("plug_in_waves",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Distort the image with waves",
                           "none yet",
                           "Eric L. Hernes, Stephen Norris",
@@ -130,7 +125,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_waves", "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 }
 
 static void
@@ -158,7 +153,7 @@ run (const gchar      *name,
     {
 
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data ("plug_in_waves", &wvals);
+      gimp_get_data (PLUG_IN_PROC, &wvals);
 
       if (! waves_dialog (drawable))
         return;
@@ -181,7 +176,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data ("plug_in_waves", &wvals);
+      gimp_get_data (PLUG_IN_PROC, &wvals);
       break;
 
     default:
@@ -192,7 +187,7 @@ run (const gchar      *name,
     {
       waves (drawable);
 
-      gimp_set_data ("plug_in_waves", &wvals, sizeof (piArgs));
+      gimp_set_data (PLUG_IN_PROC, &wvals, sizeof (piArgs));
       values[0].data.d_status = status;
     }
 }
@@ -244,23 +239,30 @@ waves_dialog (GimpDrawable *drawable)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("waves", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Waves"), "waves",
+  dialog = gimp_dialog_new (_("Waves"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-waves",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, &wvals.preview);
+  preview = gimp_zoom_preview_new (drawable);
   gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",
@@ -307,10 +309,10 @@ waves_dialog (GimpDrawable *drawable)
                               wvals.amplitude, 0.0, 101.0, 1.0, 5.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &wvals.amplitude);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -319,10 +321,10 @@ waves_dialog (GimpDrawable *drawable)
                               wvals.phase, 0.0, 360.0, 2.0, 5.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &wvals.phase);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -331,10 +333,10 @@ waves_dialog (GimpDrawable *drawable)
                               wvals.wavelength, 0.1, 50.0, 1.0, 5.0, 2,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &wvals.wavelength);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -355,9 +357,8 @@ waves_preview (GimpDrawable *drawable,
   gint    width, height;
   gint    bpp;
 
-  gimp_preview_get_size (preview, &width, &height);
-  src = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                          &width, &height, &bpp);
+  src = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
+                                      &width, &height, &bpp);
   dest = g_new (guchar, width * height * bpp);
 
   wave (src, dest, width, height, bpp,
@@ -428,7 +429,7 @@ wave (guchar  *src,
 
   if (verbose)
     {
-      gimp_progress_init (_("Waving..."));
+      gimp_progress_init (_("Waving"));
       prog_interval=height/10;
     }
 

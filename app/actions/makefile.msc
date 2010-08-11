@@ -34,11 +34,15 @@ OBJECTS = \
 	colormap-editor-commands.obj \
 	context-actions.obj \
 	context-commands.obj \
+	cursor-info-actions.obj \
+	cursor-info-commands.obj \
 	data-commands.obj \
 	debug-actions.obj \
 	debug-commands.obj \
 	dialogs-actions.obj \
 	dialogs-commands.obj \
+	dock-actions.obj \
+	dock-commands.obj \
 	dockable-actions.obj \
 	dockable-commands.obj \
 	documents-actions.obj \
@@ -72,8 +76,10 @@ OBJECTS = \
 	patterns-actions.obj \
 	plug-in-actions.obj \
 	plug-in-commands.obj \
-	qmask-actions.obj \
-	qmask-commands.obj \
+	quick-mask-actions.obj \
+	quick-mask-commands.obj \
+	sample-point-editor-actions.obj \
+	sample-point-editor-commands.obj \
 	select-actions.obj \
 	select-commands.obj \
 	templates-actions.obj \
@@ -88,6 +94,7 @@ OBJECTS = \
 	vectors-commands.obj \
 	view-actions.obj \
 	view-commands.obj \
+	window-actions.obj \
 
 
 $(PRJ_TOP)\config.h: $(PRJ_TOP)\config.h.win32

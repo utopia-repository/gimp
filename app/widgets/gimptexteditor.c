@@ -45,52 +45,33 @@ enum
 };
 
 
-static void      gimp_text_editor_class_init    (GimpTextEditorClass *klass);
-static void      gimp_text_editor_init          (GimpTextEditor      *editor);
+static void   gimp_text_editor_finalize     (GObject         *object);
 
-static void      gimp_text_editor_text_changed  (GtkTextBuffer       *buffer,
-                                                 GimpTextEditor      *editor);
-
-
-static GimpDialogClass *parent_class = NULL;
-static guint            text_editor_signals[LAST_SIGNAL] = { 0 };
+static void   gimp_text_editor_text_changed (GtkTextBuffer   *buffer,
+                                             GimpTextEditor  *editor);
+static void   gimp_text_editor_font_toggled (GtkToggleButton *button,
+                                             GimpTextEditor  *editor);
 
 
-GType
-gimp_text_editor_get_type (void)
-{
-  static GType type = 0;
+G_DEFINE_TYPE (GimpTextEditor, gimp_text_editor, GIMP_TYPE_DIALOG);
 
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpTextEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_text_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpTextEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_text_editor_init,
-      };
+#define parent_class gimp_text_editor_parent_class
 
-      type = g_type_register_static (GIMP_TYPE_DIALOG,
-                                     "GimpTextEditor",
-                                     &info, 0);
-    }
+static guint text_editor_signals[LAST_SIGNAL] = { 0 };
 
-  return type;
-}
 
 static void
 gimp_text_editor_class_init (GimpTextEditorClass *klass)
 {
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = gimp_text_editor_finalize;
+
+  klass->text_changed    = NULL;
+  klass->dir_changed     = NULL;
 
   text_editor_signals[TEXT_CHANGED] =
-    g_signal_new ("text_changed",
+    g_signal_new ("text-changed",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (GimpTextEditorClass, text_changed),
@@ -99,20 +80,17 @@ gimp_text_editor_class_init (GimpTextEditorClass *klass)
 		  G_TYPE_NONE, 0);
 
   text_editor_signals[DIR_CHANGED] =
-    g_signal_new ("dir_changed",
+    g_signal_new ("dir-changed",
 		  G_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (GimpTextEditorClass, dir_changed),
 		  NULL, NULL,
 		  gimp_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
-  klass->text_changed = NULL;
-  klass->dir_changed  = NULL;
 }
 
 static void
-gimp_text_editor_init (GimpTextEditor  *editor)
+gimp_text_editor_init (GimpTextEditor *editor)
 {
   editor->view        = NULL;
   editor->file_dialog = NULL;
@@ -128,6 +106,20 @@ gimp_text_editor_init (GimpTextEditor  *editor)
       editor->base_dir = GIMP_TEXT_DIRECTION_RTL;
       break;
     }
+}
+
+static void
+gimp_text_editor_finalize (GObject *object)
+{
+  GimpTextEditor *editor = GIMP_TEXT_EDITOR (object);
+
+  if (editor->font_name)
+    g_free (editor->font_name);
+
+  if (editor->ui_manager)
+    g_object_unref (editor->ui_manager);
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 
@@ -163,8 +155,8 @@ gimp_text_editor_new (const gchar     *title,
                                                       "<TextEditor>",
                                                       editor, FALSE);
 
-  toolbar = gimp_ui_manager_ui_get (editor->ui_manager,
-                                    "/text-editor-toolbar");
+  toolbar = gtk_ui_manager_get_widget (GTK_UI_MANAGER (editor->ui_manager),
+                                       "/text-editor-toolbar");
 
   if (toolbar)
     {
@@ -203,6 +195,16 @@ gimp_text_editor_new (const gchar     *title,
     }
 
   gtk_widget_set_size_request (editor->view, 128, 64);
+
+  editor->font_toggle =
+    gtk_check_button_new_with_mnemonic (_("_Use selected font"));
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (editor)->vbox),
+                      editor->font_toggle, FALSE, FALSE, 0);
+  gtk_widget_show (editor->font_toggle);
+
+  g_signal_connect (editor->font_toggle, "toggled",
+                    G_CALLBACK (gimp_text_editor_font_toggled),
+                    editor);
 
   gtk_widget_grab_focus (editor->view);
 
@@ -282,6 +284,39 @@ gimp_text_editor_get_direction (GimpTextEditor *editor)
   return editor->base_dir;
 }
 
+void
+gimp_text_editor_set_font_name (GimpTextEditor *editor,
+                                const gchar    *font_name)
+{
+  g_return_if_fail (GIMP_IS_TEXT_EDITOR (editor));
+
+  if (editor->font_name)
+    g_free (editor->font_name);
+
+  editor->font_name = g_strdup (font_name);
+
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (editor->font_toggle)))
+    {
+      PangoFontDescription *font_desc = NULL;
+
+      if (font_name)
+        font_desc = pango_font_description_from_string (font_name);
+
+      gtk_widget_modify_font (editor->view, font_desc);
+
+      if (font_desc)
+        pango_font_description_free (font_desc);
+    }
+}
+
+const gchar *
+gimp_text_editor_get_font_name (GimpTextEditor *editor)
+{
+  g_return_val_if_fail (GIMP_IS_TEXT_EDITOR (editor), NULL);
+
+  return editor->font_name;
+}
+
 
 /*  private functions  */
 
@@ -290,4 +325,19 @@ gimp_text_editor_text_changed (GtkTextBuffer  *buffer,
                                GimpTextEditor *editor)
 {
   g_signal_emit (editor, text_editor_signals[TEXT_CHANGED], 0);
+}
+
+static void
+gimp_text_editor_font_toggled (GtkToggleButton *button,
+                               GimpTextEditor  *editor)
+{
+  PangoFontDescription *font_desc = NULL;
+
+  if (gtk_toggle_button_get_active (button) && editor->font_name)
+    font_desc = pango_font_description_from_string (editor->font_name);
+
+  gtk_widget_modify_font (editor->view, font_desc);
+
+  if (font_desc)
+    pango_font_description_free (font_desc);
 }

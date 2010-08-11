@@ -61,6 +61,8 @@ struct _GimpContainerTreeView
 
   GQuark             invalidate_preview_handler_id;
 
+  gboolean           dnd_drop_to_empty;
+  Gimp              *dnd_gimp; /* eek */
   GimpViewable      *dnd_viewable;
 
   guint              scroll_timeout_id;
@@ -72,30 +74,39 @@ struct _GimpContainerTreeViewClass
 {
   GimpContainerBoxClass  parent_class;
 
-  gboolean (* drop_possible) (GimpContainerTreeView   *tree_view,
-                              GimpDndType              src_type,
-                              GimpViewable            *src_viewable,
-                              GimpViewable            *dest_viewable,
-                              GtkTreeViewDropPosition  drop_pos,
-                              GtkTreeViewDropPosition *return_drop_pos,
-                              GdkDragAction           *return_drag_action);
-  void     (* drop_viewable) (GimpContainerTreeView   *tree_view,
-                              GimpViewable            *src_viewable,
-                              GimpViewable            *dest_viewable,
-                              GtkTreeViewDropPosition  drop_pos);
-  void     (* drop_color)    (GimpContainerTreeView   *tree_view,
-                              const GimpRGB           *src_color,
-                              GimpViewable            *dest_viewable,
-                              GtkTreeViewDropPosition  drop_pos);
-  void     (* drop_uri_list) (GimpContainerTreeView   *tree_view,
-                              GList                   *uri_list,
-                              GimpViewable            *dest_viewable,
-                              GtkTreeViewDropPosition  drop_pos);
-  void     (* drop_svg)      (GimpContainerTreeView   *tree_view,
-                              const gchar             *svg_data,
-                              gsize                    svg_data_length,
-                              GimpViewable            *dest_viewable,
-                              GtkTreeViewDropPosition  drop_pos);
+  gboolean (* drop_possible)  (GimpContainerTreeView   *tree_view,
+                               GimpDndType              src_type,
+                               GimpViewable            *src_viewable,
+                               GimpViewable            *dest_viewable,
+                               GtkTreeViewDropPosition  drop_pos,
+                               GtkTreeViewDropPosition *return_drop_pos,
+                               GdkDragAction           *return_drag_action);
+  void     (* drop_viewable)  (GimpContainerTreeView   *tree_view,
+                               GimpViewable            *src_viewable,
+                               GimpViewable            *dest_viewable,
+                               GtkTreeViewDropPosition  drop_pos);
+  void     (* drop_color)     (GimpContainerTreeView   *tree_view,
+                               const GimpRGB           *src_color,
+                               GimpViewable            *dest_viewable,
+                               GtkTreeViewDropPosition  drop_pos);
+  void     (* drop_uri_list)  (GimpContainerTreeView   *tree_view,
+                               GList                   *uri_list,
+                               GimpViewable            *dest_viewable,
+                               GtkTreeViewDropPosition  drop_pos);
+  void     (* drop_svg)       (GimpContainerTreeView   *tree_view,
+                               const gchar             *svg_data,
+                               gsize                    svg_data_length,
+                               GimpViewable            *dest_viewable,
+                               GtkTreeViewDropPosition  drop_pos);
+  void     (* drop_component) (GimpContainerTreeView   *tree_view,
+                               GimpImage               *image,
+                               GimpChannelType          component,
+                               GimpViewable            *dest_viewable,
+                               GtkTreeViewDropPosition  drop_pos);
+  void     (* drop_pixbuf)    (GimpContainerTreeView   *tree_view,
+                               GdkPixbuf               *pixbuf,
+                               GimpViewable            *dest_viewable,
+                               GtkTreeViewDropPosition  drop_pos);
 };
 
 

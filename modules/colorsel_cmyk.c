@@ -144,9 +144,13 @@ colorsel_cmyk_init (ColorselCmyk *module)
 
   static const gchar *cmyk_labels[] =
   {
+    /* Cyan        */
     N_("_C"),
+    /* Magenta     */
     N_("_M"),
+    /* Yellow      */
     N_("_Y"),
+    /* Key (Black) */
     N_("_K")
   };
   static const gchar *cmyk_tips[] =
@@ -181,14 +185,14 @@ colorsel_cmyk_init (ColorselCmyk *module)
 				  gettext (cmyk_tips[i]),
 				  NULL);
 
-      g_signal_connect (adj, "value_changed",
+      g_signal_connect (adj, "value-changed",
 			G_CALLBACK (colorsel_cmyk_adj_update),
 			module);
 
       module->adj[i] = GTK_ADJUSTMENT (adj);
     }
 
-  label = gtk_label_new_with_mnemonic (_("Black _Pullout:"));
+  label = gtk_label_new_with_mnemonic (_("Black _pullout:"));
   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
   gtk_table_attach (GTK_TABLE (table), label,
                     1, 3, i, i + 1,
@@ -209,7 +213,7 @@ colorsel_cmyk_init (ColorselCmyk *module)
                              "of the colored inks."), NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinbutton);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (colorsel_cmyk_pullout_update),
                     module);
 

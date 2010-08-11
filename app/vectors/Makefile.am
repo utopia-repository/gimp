@@ -2,11 +2,12 @@
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Vectors\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GDK_PIXBUF_CFLAGS)	\
 	$(LIBART_CFLAGS)	\
@@ -31,6 +32,8 @@ libappvectors_a_SOURCES = \
 	gimpvectors-import.c	\
 	gimpvectors-import.h	\
 	gimpvectors-preview.c	\
-	gimpvectors-preview.h
+	gimpvectors-preview.h	\
+	gimpvectors-warp.c	\
+	gimpvectors-warp.h
 
 EXTRA_DIST = makefile.msc

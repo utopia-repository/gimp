@@ -1,19 +1,18 @@
-# translation of ru.po to russian
 # translation of gimp.LIBGIMP.ru.po to russian
 # translation of gimp.LIBGIMP.po to russian
-# Copyright (C) 1999-2002, 2003, 2004, 2005 Free Software Foundation, Inc.
+# Copyright (C) 1999-2002, 2003, 2004 Free Software Foundation, Inc.
 # Valek Filippov <frob@df.ru>, 1999-2002.
-# Roxana Chernogolova <mavka@justos.org>, 2003, 2004, 2005.
+# Roxana Chernogolova <mavka@justos.org>, 2003-2005.
 # Anatoly A. Yakushin <jaa@altlinux.ru>, 2003, 2004.
-# AnatolyA. Yakushin <jaa@altlinux.ru>, 2004, 2005.
+# AnatolyA. Yakushin <jaa@altlinux.ru>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ru\n"
+"Project-Id-Version: gimp.LIBGIMP.ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-08 12:28+0200\n"
-"PO-Revision-Date: 2005-04-10 00:17+0400\n"
-"Last-Translator: AnatolyA. Yakushin <jaa@altlinux.ru>\n"
+"POT-Creation-Date: 2005-04-09 21:56+0200\n"
+"PO-Revision-Date: 2005-04-22 22:48+0400\n"
+"Last-Translator: Roxana Chernogolova <mavka@justos.org>\n"
 "Language-Team: russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -204,13 +203,13 @@ msgstr "Выбор шрифта"
 msgid "Gradient Selection"
 msgstr "Выбор градиента"
 
-#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:167
+#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:181
 msgid "(Empty)"
 msgstr "(Пусто)"
 
 #: ../libgimp/gimppalettemenu.c:91
 msgid "Palette Selection"
-msgstr "Выбор пабитры"
+msgstr "Выбор палитры"
 
 #: ../libgimp/gimppatternmenu.c:113
 msgid "Pattern Selection"
@@ -254,15 +253,15 @@ msgstr "Только серый"
 
 #: ../libgimpbase/gimpbaseenums.c:62
 msgid "Black Only"
-msgstr "Только черный"
+msgstr "Только чёрный"
 
 #: ../libgimpbase/gimpbaseenums.c:91
 msgid "RGB color"
-msgstr "Цвет RGB"
+msgstr "Цвета RGB"
 
 #: ../libgimpbase/gimpbaseenums.c:92 ../libgimpbase/gimpbaseenums.c:127
 msgid "Grayscale"
-msgstr "Оттенок серого"
+msgstr "Серый"
 
 #: ../libgimpbase/gimpbaseenums.c:93
 msgid "Indexed color"
@@ -286,7 +285,7 @@ msgstr "Индексированный"
 
 #: ../libgimpbase/gimpbaseenums.c:130
 msgid "Indexed-alpha"
-msgstr "Индексир.-альфа"
+msgstr "Индексированный-альфа"
 
 #: ../libgimpbase/gimpmemsize.c:177
 #, c-format
@@ -383,8 +382,8 @@ msgid ""
 "Cannot determine a valid home directory.\n"
 "Thumbnails will be stored in the folder for temporary files (%s) instead."
 msgstr ""
-"Невозможно определить правильный домашний каталог.\n"
-"Файлы предпросмотра будут помещены в каталог для временных файлов (%s) ."
+"Невозможно определить домашний каталог.\n"
+"Файлы предварительного просмотра будут храниться в каталоге для временных файлов (%s)."
 
 #: ../libgimpthumb/gimpthumb-utils.c:249 ../libgimpthumb/gimpthumb-utils.c:317
 #, c-format
@@ -394,7 +393,7 @@ msgstr "Не удалось создать каталог файлов пред�
 #: ../libgimpthumb/gimpthumbnail.c:919
 #, c-format
 msgid "Could not create thumbnail for %s: %s"
-msgstr "Не удалось создать каталог файлов предварительного просмотра %s %s ."
+msgstr "Не удалось создать файлы предварительного просмотра  %s:  %s."
 
 #: ../libgimpwidgets/gimpcolorbutton.c:99
 msgid "_Foreground Color"
@@ -488,11 +487,11 @@ msgstr "Альфа"
 
 #: ../libgimpwidgets/gimpcolorscales.c:243
 msgid "Hexadecimal color notation as used in HTML and CSS"
-msgstr "Шестнадцатеричная запись цвета, используемая в HTML и CSS"
+msgstr "Шестнадцатеричная запись цвета используемая в HTML и CSS"
 
 #: ../libgimpwidgets/gimpcolorscales.c:248
 msgid "HTML _Notation:"
-msgstr "Для HTML:"
+msgstr "Нотация HTML"
 
 #: ../libgimpwidgets/gimpcolorselection.c:203
 msgid "Current:"
@@ -512,19 +511,19 @@ msgstr "Выбрать файл"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:232
 msgid "Kilobytes"
-msgstr "Килобайт"
+msgstr "Килобайты"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:233
 msgid "Megabytes"
-msgstr "Мегабайт"
+msgstr "Мегабайты"
 
 #: ../libgimpwidgets/gimpmemsizeentry.c:234
 msgid "Gigabytes"
-msgstr "Гигабайт"
+msgstr "Гигабайты"
 
 #: ../libgimpwidgets/gimppatheditor.c:243
 msgid "Writable"
-msgstr "Запись"
+msgstr "Перезаписываемый"
 
 #: ../libgimpwidgets/gimppatheditor.c:252
 msgid "Folder"
@@ -539,16 +538,16 @@ msgstr ""
 
 #: ../libgimpwidgets/gimppreviewarea.c:126
 msgid "Check Size"
-msgstr "Размер клеток"
+msgstr "Проверить размер"
 
 #: ../libgimpwidgets/gimppreviewarea.c:133
 msgid "Check Style"
-msgstr "Стиль отображения"
+msgstr "Проверить стиль"
 
 #. toggle button to (des)activate the instant preview
 #: ../libgimpwidgets/gimppreview.c:240
 msgid "_Preview"
-msgstr "Просмотр"
+msgstr "_Просмотр"
 
 #: ../libgimpwidgets/gimpstock.c:113
 msgid "Anchor"
@@ -556,7 +555,7 @@ msgstr "Прикрепить"
 
 #: ../libgimpwidgets/gimpstock.c:114
 msgid "C_enter"
-msgstr "Центрировать"
+msgstr "Центр"
 
 #: ../libgimpwidgets/gimpstock.c:115
 msgid "_Duplicate"
@@ -564,7 +563,7 @@ msgstr "Сделать копию"
 
 #: ../libgimpwidgets/gimpstock.c:116
 msgid "_Edit"
-msgstr "Редактировать"
+msgstr "Исправить"
 
 #: ../libgimpwidgets/gimpstock.c:117
 msgid "Linked"
@@ -624,7 +623,7 @@ msgstr "Наклонить"
 
 #: ../libgimpwidgets/gimpunitmenu.c:302
 msgid "More..."
-msgstr "Дополнительно..."
+msgstr "Ещё..."
 
 #: ../libgimpwidgets/gimpunitmenu.c:612
 msgid "Unit Selection"

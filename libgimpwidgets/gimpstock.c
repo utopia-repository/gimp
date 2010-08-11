@@ -141,6 +141,9 @@ static GtkStockItem gimp_stock_items[] =
   { GIMP_STOCK_GRAVITY_SOUTH_WEST,       NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_GRAVITY_WEST,             NULL,        0, 0, LIBGIMP_DOMAIN },
 
+  { GIMP_STOCK_HCENTER,                  NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_VCENTER,                  NULL,        0, 0, LIBGIMP_DOMAIN },
+
   { GIMP_STOCK_HCHAIN,                   NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_HCHAIN_BROKEN,            NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_VCHAIN,                   NULL,        0, 0, LIBGIMP_DOMAIN },
@@ -197,6 +200,8 @@ static GtkStockItem gimp_stock_items[] =
   { GIMP_STOCK_TOOL_OPTIONS,             NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_DEVICE_STATUS,            NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_DISPLAY_FILTER,           NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_CURSOR,                   NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_SAMPLE_POINT,             NULL,        0, 0, LIBGIMP_DOMAIN },
 
   { GIMP_STOCK_IMAGE,                    NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_LAYER,                    NULL,        0, 0, LIBGIMP_DOMAIN },
@@ -226,8 +231,10 @@ static GtkStockItem gimp_stock_items[] =
   { GIMP_STOCK_SELECTION_BORDER,         NULL,        0, 0, LIBGIMP_DOMAIN },
 
   { GIMP_STOCK_NAVIGATION,               NULL,        0, 0, LIBGIMP_DOMAIN },
-  { GIMP_STOCK_QMASK_OFF,                NULL,        0, 0, LIBGIMP_DOMAIN },
-  { GIMP_STOCK_QMASK_ON,                 NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_QUICK_MASK_OFF,           NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_QUICK_MASK_ON,            NULL,        0, 0, LIBGIMP_DOMAIN },
+  { "gimp-qmask-off", /* compat */       NULL,        0, 0, LIBGIMP_DOMAIN },
+  { "gimp-qmask-on",  /* compat */       NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_LIST,                     NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_GRID,                     NULL,        0, 0, LIBGIMP_DOMAIN },
 
@@ -275,6 +282,7 @@ static GtkStockItem gimp_stock_items[] =
   { GIMP_STOCK_TOOL_ERASER,              NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_FLIP,                NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_FREE_SELECT,         NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_TOOL_FOREGROUND_SELECT,   NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_FUZZY_SELECT,        NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_HUE_SATURATION,      NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_TOOL_INK,                 NULL,        0, 0, LIBGIMP_DOMAIN },
@@ -321,6 +329,9 @@ gimp_stock_button_pixbufs[] =
   { GIMP_STOCK_GRAVITY_SOUTH_WEST,       stock_gravity_south_west_24       },
   { GIMP_STOCK_GRAVITY_WEST,             stock_gravity_west_24             },
 
+  { GIMP_STOCK_HCENTER,                  stock_hcenter_24                  },
+  { GIMP_STOCK_VCENTER,                  stock_vcenter_24                  },
+
   { GIMP_STOCK_HCHAIN,                   stock_hchain_24                   },
   { GIMP_STOCK_HCHAIN_BROKEN,            stock_hchain_broken_24            },
   { GIMP_STOCK_VCHAIN,                   stock_vchain_24                   },
@@ -361,6 +372,8 @@ gimp_stock_button_pixbufs[] =
   { GIMP_STOCK_TOOL_OPTIONS,             stock_tool_options_24             },
   { GIMP_STOCK_DEVICE_STATUS,            stock_device_status_24            },
   { GIMP_STOCK_DISPLAY_FILTER,           stock_display_filter_24           },
+  { GIMP_STOCK_CURSOR,                   stock_cursor_24                   },
+  { GIMP_STOCK_SAMPLE_POINT,             stock_sample_point_24             },
 
   { GIMP_STOCK_CHANNEL,                  stock_channel_24                  },
   { GIMP_STOCK_CHANNEL_RED,              stock_channel_red_24              },
@@ -403,6 +416,7 @@ gimp_stock_button_pixbufs[] =
   { GIMP_STOCK_TOOL_ERASER,              stock_tool_eraser_22              },
   { GIMP_STOCK_TOOL_FLIP,                stock_tool_flip_22                },
   { GIMP_STOCK_TOOL_FREE_SELECT,         stock_tool_free_select_22         },
+  { GIMP_STOCK_TOOL_FOREGROUND_SELECT,   stock_tool_foreground_select_22   },
   { GIMP_STOCK_TOOL_FUZZY_SELECT,        stock_tool_fuzzy_select_22        },
   { GIMP_STOCK_TOOL_HUE_SATURATION,      stock_tool_hue_saturation_22      },
   { GIMP_STOCK_TOOL_INK,                 stock_tool_ink_22                 },
@@ -466,6 +480,8 @@ gimp_stock_menu_pixbufs[] =
   { GIMP_STOCK_TOOL_OPTIONS,             stock_tool_options_16             },
   { GIMP_STOCK_DEVICE_STATUS,            stock_device_status_16            },
   { GIMP_STOCK_DISPLAY_FILTER,           stock_display_filter_16           },
+  { GIMP_STOCK_CURSOR,                   stock_cursor_16                   },
+  { GIMP_STOCK_SAMPLE_POINT,             stock_sample_point_16             },
 
   { GIMP_STOCK_CHANNEL,                  stock_channel_16                  },
   { GIMP_STOCK_CHANNEL_RED,              stock_channel_red_16              },
@@ -498,8 +514,10 @@ gimp_stock_menu_pixbufs[] =
   { GIMP_STOCK_SELECTION_BORDER,         stock_selection_border_16         },
 
   { GIMP_STOCK_NAVIGATION,               stock_navigation_16               },
-  { GIMP_STOCK_QMASK_OFF,                stock_qmask_off_16                },
-  { GIMP_STOCK_QMASK_ON,                 stock_qmask_on_16                 },
+  { GIMP_STOCK_QUICK_MASK_OFF,           stock_quick_mask_off_16           },
+  { GIMP_STOCK_QUICK_MASK_ON,            stock_quick_mask_on_16            },
+  { "gimp-qmask-off", /* compat */       stock_quick_mask_off_16           },
+  { "gimp-qmask-on",  /* compat */       stock_quick_mask_on_16            },
 
   { GIMP_STOCK_LIST,                     stock_list_16                     },
   { GIMP_STOCK_GRID,                     stock_grid_16                     },
@@ -542,6 +560,7 @@ gimp_stock_menu_pixbufs[] =
   { GIMP_STOCK_TOOL_ERASER,              stock_tool_eraser_16              },
   { GIMP_STOCK_TOOL_FLIP,                stock_tool_flip_16                },
   { GIMP_STOCK_TOOL_FREE_SELECT,         stock_tool_free_select_16         },
+  { GIMP_STOCK_TOOL_FOREGROUND_SELECT,   stock_tool_foreground_select_16   },
   { GIMP_STOCK_TOOL_FUZZY_SELECT,        stock_tool_fuzzy_select_16        },
   { GIMP_STOCK_TOOL_HUE_SATURATION,      stock_tool_hue_saturation_16      },
   { GIMP_STOCK_TOOL_INK,                 stock_tool_ink_16                 },

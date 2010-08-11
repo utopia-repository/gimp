@@ -106,9 +106,13 @@ static void   gimp_container_view_context_changed  (GimpContext        *context,
                                                     GimpViewable       *viewable,
                                                     GimpContainerView  *view);
 static void   gimp_container_view_viewable_dropped (GtkWidget          *widget,
+                                                    gint                x,
+                                                    gint                y,
                                                     GimpViewable       *viewable,
                                                     gpointer            data);
 static void  gimp_container_view_button_viewable_dropped (GtkWidget    *widget,
+                                                          gint          x,
+                                                          gint          y,
                                                           GimpViewable *viewable,
                                                           gpointer      data);
 
@@ -148,7 +152,7 @@ gimp_container_view_iface_base_init (GimpContainerViewInterface *view_iface)
     return;
 
   view_signals[SELECT_ITEM] =
-    g_signal_new ("select_item",
+    g_signal_new ("select-item",
                   G_TYPE_FROM_INTERFACE (view_iface),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GimpContainerViewInterface, select_item),
@@ -159,7 +163,7 @@ gimp_container_view_iface_base_init (GimpContainerViewInterface *view_iface)
                   G_TYPE_POINTER);
 
   view_signals[ACTIVATE_ITEM] =
-    g_signal_new ("activate_item",
+    g_signal_new ("activate-item",
                   G_TYPE_FROM_INTERFACE (view_iface),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpContainerViewInterface, activate_item),
@@ -170,7 +174,7 @@ gimp_container_view_iface_base_init (GimpContainerViewInterface *view_iface)
                   G_TYPE_POINTER);
 
   view_signals[CONTEXT_ITEM] =
-    g_signal_new ("context_item",
+    g_signal_new ("context-item",
                   G_TYPE_FROM_INTERFACE (view_iface),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpContainerViewInterface, context_item),
@@ -217,14 +221,16 @@ gimp_container_view_iface_base_init (GimpContainerViewInterface *view_iface)
                                                          NULL, NULL,
                                                          1, GIMP_VIEWABLE_MAX_PREVIEW_SIZE,
                                                          GIMP_VIEW_SIZE_MEDIUM,
-                                                         G_PARAM_READWRITE));
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT));
 
   g_object_interface_install_property (view_iface,
-                                       g_param_spec_int ("preview-border_width",
+                                       g_param_spec_int ("preview-border-width",
                                                          NULL, NULL,
                                                          0, GIMP_VIEW_MAX_BORDER_WIDTH,
                                                          1,
-                                                         G_PARAM_READWRITE));
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT));
 }
 
 static void
@@ -283,6 +289,37 @@ gimp_container_view_get_private (GimpContainerView *view)
     }
 
   return private;
+}
+
+/**
+ * gimp_container_view_install_properties:
+ * @klass: the class structure for a type deriving from #GObject
+ *
+ * Installs the necessary properties for a class implementing
+ * #GimpContainerView. A #GimpContainerViewProp property is installed
+ * for each property, using the values from the #GimpContainerViewProp
+ * enumeration. The caller must make sure itself that the enumeration
+ * values don't collide with some other property values they
+ * are using (that's what %GIMP_CONTAINER_VIEW_PROP_LAST is good for).
+ **/
+void
+gimp_container_view_install_properties (GObjectClass *klass)
+{
+  g_object_class_override_property (klass,
+                                    GIMP_CONTAINER_VIEW_PROP_CONTAINER,
+                                    "container");
+  g_object_class_override_property (klass,
+                                    GIMP_CONTAINER_VIEW_PROP_CONTEXT,
+                                    "context");
+  g_object_class_override_property (klass,
+                                    GIMP_CONTAINER_VIEW_PROP_REORDERABLE,
+                                    "reorderable");
+  g_object_class_override_property (klass,
+                                    GIMP_CONTAINER_VIEW_PROP_PREVIEW_SIZE,
+                                    "preview-size");
+  g_object_class_override_property (klass,
+                                    GIMP_CONTAINER_VIEW_PROP_PREVIEW_BORDER_WIDTH,
+                                    "preview-border-width");
 }
 
 GimpContainer *
@@ -1038,6 +1075,8 @@ gimp_container_view_context_changed (GimpContext       *context,
 
 static void
 gimp_container_view_viewable_dropped (GtkWidget    *widget,
+                                      gint          x,
+                                      gint          y,
                                       GimpViewable *viewable,
                                       gpointer      data)
 {
@@ -1053,6 +1092,8 @@ gimp_container_view_viewable_dropped (GtkWidget    *widget,
 
 static void
 gimp_container_view_button_viewable_dropped (GtkWidget    *widget,
+                                             gint          x,
+                                             gint          y,
                                              GimpViewable *viewable,
                                              gpointer      data)
 {

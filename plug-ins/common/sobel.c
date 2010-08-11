@@ -24,12 +24,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC   "plug-in-sobel"
+#define PLUG_IN_BINARY "sobel"
 
 
 typedef struct
@@ -94,15 +96,15 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",   "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",      "Input image (unused)" },
-    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable" },
+    { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive"  },
+    { GIMP_PDB_IMAGE,    "image",      "Input image (unused)"          },
+    { GIMP_PDB_DRAWABLE, "drawable",   "Input drawable"                },
     { GIMP_PDB_INT32,    "horizontal", "Sobel in horizontal direction" },
-    { GIMP_PDB_INT32,    "vertical",   "Sobel in vertical direction" },
-    { GIMP_PDB_INT32,    "keep_sign",  "Keep sign of result (one direction only)" }
+    { GIMP_PDB_INT32,    "vertical",   "Sobel in vertical direction"   },
+    { GIMP_PDB_INT32,    "keep-sign",  "Keep sign of result (one direction only)" }
   };
 
-  gimp_install_procedure ("plug_in_sobel",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Edge Detection with Sobel Operation",
                           "This plugin calculates the gradient with a sobel "
                           "operator. The user can specify which direction to "
@@ -122,7 +124,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_sobel", "<Image>/Filters/Edge-Detect");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Edge-Detect");
 }
 
 static void
@@ -156,7 +158,7 @@ run (const gchar      *name,
    {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_sobel", &bvals);
+      gimp_get_data (PLUG_IN_PROC, &bvals);
 
       /*  First acquire information with a dialog  */
       if (! sobel_dialog (drawable))
@@ -179,7 +181,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_sobel", &bvals);
+      gimp_get_data (PLUG_IN_PROC, &bvals);
       break;
 
     default:
@@ -200,7 +202,7 @@ run (const gchar      *name,
 
       /*  Store data  */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_sobel", &bvals, sizeof (bvals));
+        gimp_set_data (PLUG_IN_PROC, &bvals, sizeof (bvals));
     }
   else
     {
@@ -222,16 +224,23 @@ sobel_dialog (GimpDrawable *drawable)
   GtkWidget *toggle;
   gboolean   run;
 
-  gimp_ui_init ("sobel", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Sobel Edge Detection"), "sobel",
+  dialog = gimp_dialog_new (_("Sobel Edge Detection"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-sobel",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -246,7 +255,7 @@ sobel_dialog (GimpDrawable *drawable)
                     G_CALLBACK (sobel_preview_update),
                     NULL);
 
-  toggle = gtk_check_button_new_with_mnemonic (_("Sobel _Horizontally"));
+  toggle = gtk_check_button_new_with_mnemonic (_("Sobel _horizontally"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), bvals.horizontal);
   gtk_box_pack_start (GTK_BOX (main_vbox), toggle, FALSE, FALSE, 0);
   gtk_widget_show (toggle);
@@ -258,7 +267,7 @@ sobel_dialog (GimpDrawable *drawable)
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
-  toggle = gtk_check_button_new_with_mnemonic (_("Sobel _Vertically"));
+  toggle = gtk_check_button_new_with_mnemonic (_("Sobel _vertically"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), bvals.vertical);
   gtk_box_pack_start (GTK_BOX (main_vbox), toggle, FALSE, FALSE, 0);
   gtk_widget_show (toggle);
@@ -356,7 +365,7 @@ sobel (GimpDrawable *drawable,
   else
     {
       gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
-      gimp_progress_init (_("Sobel Edge Detecting..."));
+      gimp_progress_init (_("Sobel edge detecting"));
       width  = x2 - x1;
       height = y2 - y1;
     }
@@ -446,7 +455,7 @@ sobel (GimpDrawable *drawable,
         {
           gimp_pixel_rgn_set_row (&destPR, dest, x1, row, width);
 
-          if ((row % 5) == 0)
+          if ((row % 20) == 0)
             gimp_progress_update ((double) row / (double) (y2 - y1));
         }
     }

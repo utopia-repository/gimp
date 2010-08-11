@@ -83,8 +83,8 @@
 		    SF-ADJUSTMENT _"Granularity"      '(4 0 15 1 1 0 0)
 		    SF-GRADIENT   _"Gradient"         "Land and Sea"
 		    SF-TOGGLE     _"Gradient reverse" FALSE
-		    SF-OPTION     _"Behaviour"        '(_"Tile"
-							_"Detail in Middle"))
+		    SF-OPTION     _"Behavior"         '(_"Tile"
+							_"Detail in middle"))
 
 (script-fu-menu-register "script-fu-render-map"
-			 _"<Toolbox>/Xtns/Script-Fu/Patterns")
+			 "<Toolbox>/Xtns/Patterns")

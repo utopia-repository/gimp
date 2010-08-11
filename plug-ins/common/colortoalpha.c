@@ -23,17 +23,16 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
 
-#define PRV_WIDTH  40
-#define PRV_HEIGHT 20
+#define PLUG_IN_PROC   "plug-in-colortoalpha"
+#define PLUG_IN_BINARY "colortoaplha"
+#define PRV_WIDTH      40
+#define PRV_HEIGHT     20
 
 
 typedef struct
@@ -52,7 +51,7 @@ static void        run                    (const gchar       *name,
                                            gint              *nreturn_vals,
                                            GimpParam        **return_vals);
 
-static void inline color_to_alpha         (GimpRGB           *src,
+static inline void color_to_alpha         (GimpRGB           *src,
                                            const GimpRGB     *color);
 static void        to_alpha_func          (const guchar      *src,
                                            guchar            *dest,
@@ -87,13 +86,13 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image (unused)" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-    { GIMP_PDB_COLOR,    "color",    "Color to remove" }
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image (unused)"         },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               },
+    { GIMP_PDB_COLOR,    "color",    "Color to remove"              }
   };
 
-  gimp_install_procedure ("plug_in_colortoalpha",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Convert the color in an image to alpha",
                           "This replaces as much of a given color as possible "
                           "in each pixel with a corresponding amount of alpha, "
@@ -108,7 +107,7 @@ query (void)
                           args, NULL);
 
   gimp_plugin_menu_register ("plug_in_colortoalpha",
-                             "<Image>/Filters/Colors");
+                             "<Image>/Colors/Modify");
   gimp_plugin_menu_register ("plug_in_colortoalpha",
                              "<Image>/Layer/Transparency/Modify");
 }
@@ -142,7 +141,7 @@ run (const gchar      *name,
   switch (run_mode)
     {
     case GIMP_RUN_INTERACTIVE:
-      gimp_get_data ("plug_in_colortoalpha", &pvals);
+      gimp_get_data (PLUG_IN_PROC, &pvals);
       if (! color_to_alpha_dialog (drawable))
         {
           gimp_drawable_detach (drawable);
@@ -159,7 +158,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_WITH_LAST_VALS:
-      gimp_get_data ("plug_in_colortoalpha", &pvals);
+      gimp_get_data (PLUG_IN_PROC, &pvals);
       break;
 
     default:
@@ -170,7 +169,7 @@ run (const gchar      *name,
       gimp_drawable_is_rgb (drawable->drawable_id) &&
       gimp_drawable_is_layer (drawable->drawable_id))
     {
-      gboolean preserve_trans;
+      gboolean lock_alpha;
 
       gimp_image_undo_group_start (image_ID);
 
@@ -180,14 +179,14 @@ run (const gchar      *name,
       /*  Reget the drawable, bpp might have changed  */
       drawable = gimp_drawable_get (drawable->drawable_id);
 
-      /*  Unset 'Keep transparency'  */
-      preserve_trans = gimp_layer_get_preserve_trans (drawable->drawable_id);
-      gimp_layer_set_preserve_trans (drawable->drawable_id, FALSE);
+      /*  Unset 'Lock alpha'  */
+      lock_alpha = gimp_layer_get_lock_alpha (drawable->drawable_id);
+      gimp_layer_set_lock_alpha (drawable->drawable_id, FALSE);
 
-      gimp_progress_init (_("Removing color..."));
+      gimp_progress_init (_("Removing color"));
       gimp_rgn_iterate2 (drawable, 0 /* unused */, to_alpha_func, NULL);
 
-      gimp_layer_set_preserve_trans (drawable->drawable_id, preserve_trans);
+      gimp_layer_set_lock_alpha (drawable->drawable_id, lock_alpha);
 
       gimp_image_undo_group_end (image_ID);
 
@@ -198,7 +197,7 @@ run (const gchar      *name,
   gimp_drawable_detach (drawable);
 
   if (run_mode == GIMP_RUN_INTERACTIVE)
-    gimp_set_data ("plug_in_colortoalpha", &pvals, sizeof (pvals));
+    gimp_set_data (PLUG_IN_PROC, &pvals, sizeof (pvals));
 
   values[0].data.d_status = status;
 }
@@ -375,16 +374,23 @@ color_to_alpha_dialog (GimpDrawable *drawable)
   GtkWidget *label;
   gboolean   run;
 
-  gimp_ui_init ("colortoalpha", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Color to Alpha"), "colortoalpha",
+  dialog = gimp_dialog_new (_("Color to Alpha"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-colortoalpha",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -410,13 +416,14 @@ color_to_alpha_dialog (GimpDrawable *drawable)
                                   PRV_WIDTH, PRV_HEIGHT,
                                   &pvals.color,
                                   GIMP_COLOR_AREA_FLAT);
+  gimp_color_button_set_update (GIMP_COLOR_BUTTON (button), TRUE);
   gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
   gtk_widget_show (button);
 
-  g_signal_connect (button, "color_changed",
+  g_signal_connect (button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &pvals.color);
-  g_signal_connect_swapped (button, "color_changed",
+  g_signal_connect_swapped (button, "color-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

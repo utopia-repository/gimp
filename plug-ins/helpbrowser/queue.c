@@ -2,8 +2,8 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * The GIMP Help Browser
- * Copyright (C) 1999 Sven Neumann <sven@gimp.org>
- *                    Michael Natterer <mitschel@cs.tu-berlin.de>
+ * Copyright (C) 1999-2005 Sven Neumann <sven@gimp.org>
+ *                         Michael Natterer <mitch@gimp.org>
  *
  * queue.c - a history queue
  *
@@ -28,23 +28,45 @@
 
 #include "queue.h"
 
+
 struct _Queue
 {
   GList *queue;
   GList *current;
 };
 
+typedef struct
+{
+  gchar   *uri;
+  gchar   *title;
+  gdouble  pos;
+} Item;
+
+
+static Item *
+item_new (const gchar *uri)
+{
+  Item *item = g_new0 (Item, 1);
+
+  item->uri = g_strdup (uri);
+
+  return item;
+}
+
+static void
+item_free (Item *item)
+{
+  g_free (item->uri);
+  g_free (item->title);
+
+  g_free (item);
+}
+
+
 Queue *
 queue_new (void)
 {
-  Queue *h;
-
-  h = g_malloc (sizeof (Queue));
-  
-  h->queue = NULL;
-  h->current = NULL;
-
-  return (h);
+  return g_new0 (Queue, 1);
 }
 
 void
@@ -63,57 +85,93 @@ queue_free (Queue *h)
 }
 
 void
-queue_move_prev (Queue *h)
+queue_move_prev (Queue *h,
+                 gint   skip)
 {
   if (!h || !h->queue || (h->current == g_list_first (h->queue)))
     return;
 
   h->current = g_list_previous (h->current);
+
+  while (h->current && skip--)
+    h->current = g_list_previous (h->current);
 }
 
 void
-queue_move_next (Queue *h)
+queue_move_next (Queue *h,
+                 gint   skip)
 {
   if (!h || !h->queue || (h->current == g_list_last (h->queue)))
     return;
 
   h->current = g_list_next (h->current);
+
+  while (h->current && skip--)
+    h->current = g_list_next (h->current);
 }
 
 const gchar *
-queue_prev (Queue *h)
+queue_prev (Queue   *h,
+            gint     skip,
+            gdouble *pos)
 {
   GList *p;
+  Item  *item;
 
   if (!h || !h->queue || (h->current == g_list_first (h->queue)))
     return NULL;
 
   p = g_list_previous (h->current);
 
-  return (const gchar *) p->data;
+  while (p && skip--)
+    p = g_list_previous (p);
+
+  if (!p)
+    return NULL;
+
+  item = p->data;
+
+  if (pos)
+    *pos = item->pos;
+
+  return (const gchar *) item->uri;
 }
 
 const gchar *
-queue_next (Queue *h)
+queue_next (Queue   *h,
+            gint     skip,
+            gdouble *pos)
 {
   GList *p;
+  Item  *item;
 
   if (!h || !h->queue || (h->current == g_list_last(h->queue)))
     return NULL;
 
   p = g_list_next (h->current);
 
-  return (const gchar *) p->data;
+  while (p && skip--)
+    p = g_list_next (p);
+
+  if (!p)
+    return NULL;
+
+  item = p->data;
+
+  if (pos)
+    *pos = item->pos;
+
+  return (const gchar *) item->uri;
 }
 
-void 
+void
 queue_add (Queue       *h,
-	   const gchar *ref)
+	   const gchar *uri)
 {
   GList *trash = NULL;
 
   g_return_if_fail (h != NULL);
-  g_return_if_fail (ref != NULL);
+  g_return_if_fail (uri != NULL);
 
   if (h->current)
     {
@@ -121,22 +179,59 @@ queue_add (Queue       *h,
       h->current->next = NULL;
     }
 
-  h->queue   = g_list_append (h->queue, g_strdup (ref));
+  h->queue   = g_list_append (h->queue, item_new (uri));
   h->current = g_list_last (h->queue);
 
   if (trash)
     {
-      g_list_foreach (trash, (GFunc) g_free, NULL);
+      g_list_foreach (trash, (GFunc) item_free, NULL);
       g_list_free (trash);
-    }	
+    }
 }
+
+void
+queue_set_title (Queue       *h,
+                 const gchar *title)
+{
+  Item *item;
+
+  g_return_if_fail (h != NULL);
+  g_return_if_fail (title != NULL);
+
+  if (! h->current || ! h->current->data)
+    return;
+
+  item = h->current->data;
+
+  if (item->title)
+    g_free (item->title);
+
+  item->title = g_strdup (title);
+}
+
+void
+queue_set_scroll_offset (Queue   *h,
+                         gdouble  pos)
+{
+  Item *item;
+
+  g_return_if_fail (h != NULL);
+
+  if (! h->current || ! h->current->data)
+    return;
+
+  item = h->current->data;
+
+  item->pos = pos;
+}
+
 
 gboolean
 queue_has_next (Queue *h)
 {
   if (!h || !h->queue || (h->current == g_list_last (h->queue)))
     return FALSE;
-  
+
   return (g_list_next (h->current) != NULL);
 }
 
@@ -145,6 +240,52 @@ queue_has_prev (Queue *h)
 {
   if (!h || !h->queue || (h->current == g_list_first (h->queue)))
     return FALSE;
-  
+
   return (g_list_previous (h->current) != NULL);
+}
+
+GList *
+queue_list_next (Queue *h)
+{
+  GList *result = NULL;
+
+  if (queue_has_next (h))
+    {
+      GList *list;
+
+      for (list = g_list_next (h->current);
+           list;
+           list = g_list_next (list))
+        {
+          Item *item = list->data;
+
+          result = g_list_prepend (result,
+                                   item->title ? item->title : item->uri);
+        }
+    }
+
+  return g_list_reverse (result);
+}
+
+GList *
+queue_list_prev (Queue *h)
+{
+  GList *result = NULL;
+
+  if (queue_has_prev (h))
+    {
+      GList *list;
+
+      for (list = g_list_previous (h->current);
+           list;
+           list = g_list_previous (list))
+        {
+          Item *item = list->data;
+
+          result = g_list_prepend (result,
+                                   item->title ? item->title : item->uri);
+        }
+    }
+
+  return g_list_reverse (result);
 }

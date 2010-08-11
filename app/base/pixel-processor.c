@@ -21,10 +21,8 @@
 #include "config.h"
 
 #ifdef ENABLE_MP
-#include <pthread.h>
-#endif
-
 #include <string.h>
+#endif
 
 #include <glib-object.h>
 
@@ -35,409 +33,465 @@
 #include "pixel-processor.h"
 #include "pixel-region.h"
 
-#ifdef ENABLE_MP
 #include "tile.h"
-#endif
-
-#ifdef __GNUC__
-#warning FIXME: extern GimpBaseConfig *base_config;
-#endif
-extern GimpBaseConfig *base_config;
 
 
-typedef void (* p1_func) (gpointer     ,
-			  PixelRegion *);
-typedef void (* p2_func) (gpointer     ,
-			  PixelRegion * ,
-			  PixelRegion *);
-typedef void (* p3_func) (gpointer     ,
-			  PixelRegion *,
-			  PixelRegion *,
-			  PixelRegion *);
-typedef void (* p4_func) (gpointer     ,
-			  PixelRegion *,
-			  PixelRegion *,
-			  PixelRegion *,
-			  PixelRegion *);
+#define TILES_PER_THREAD  8
+#define PROGRESS_TIMEOUT  64
 
+
+static GThreadPool *pool       = NULL;
+static GMutex      *pool_mutex = NULL;
+static GCond       *pool_cond  = NULL;
+
+
+typedef void  (* p1_func) (gpointer      data,
+                           PixelRegion  *region1);
+typedef void  (* p2_func) (gpointer      data,
+                           PixelRegion  *region1,
+                           PixelRegion  *region2);
+typedef void  (* p3_func) (gpointer      data,
+                           PixelRegion  *region1,
+                           PixelRegion  *region2,
+                           PixelRegion  *region3);
+typedef void  (* p4_func) (gpointer      data,
+                           PixelRegion  *region1,
+                           PixelRegion  *region2,
+                           PixelRegion  *region3,
+                           PixelRegion  *region4);
+
+
+typedef struct _PixelProcessor PixelProcessor;
 
 struct _PixelProcessor
 {
+  PixelProcessorFunc   func;
   gpointer             data;
-  p_func               f;
-  PixelRegionIterator *PRI;
 
 #ifdef ENABLE_MP
-  pthread_mutex_t      mutex;
-  gint                 nthreads;
+  GMutex              *mutex;
+  gint                 threads;
+  gboolean             first;
 #endif
 
-  gint                 n_regions;
-  PixelRegion         *r[4];
+  PixelRegionIterator *PRI;
+  gint                 num_regions;
+  PixelRegion         *regions[4];
 
-  void                *progress_report_data;
-  ProgressReportFunc   progress_report_func;
+  gulong               progress;
 };
 
 
 #ifdef ENABLE_MP
-static void *
-do_parallel_regions (PixelProcessor *p_s)
+static void
+do_parallel_regions (PixelProcessor *processor)
 {
   PixelRegion tr[4];
-  gint        n_tiles = 0;
   gint        i;
-  gint        cont = 1;
 
-  pthread_mutex_lock (&p_s->mutex);
+  g_mutex_lock (processor->mutex);
 
-  if (p_s->nthreads != 0 && p_s->PRI)
-    p_s->PRI = pixel_regions_process (p_s->PRI);
+  /*  the first thread getting here must not call pixel_regions_process()  */
+  if (!processor->first && processor->PRI)
+    processor->PRI = pixel_regions_process (processor->PRI);
+  else
+    processor->first = FALSE;
 
-  if (p_s->PRI == NULL)
+  while (processor->PRI)
     {
-      pthread_mutex_unlock (&p_s->mutex);
-      return NULL;
-    }
+      guint pixels = (processor->PRI->portion_width *
+                      processor->PRI->portion_height);
 
-  p_s->nthreads++;
-
-  do
-    {
-      for (i = 0; i < p_s->n_regions; i++)
-	if (p_s->r[i])
+      for (i = 0; i < processor->num_regions; i++)
+	if (processor->regions[i])
 	  {
-	    memcpy(&tr[i], p_s->r[i], sizeof(PixelRegion));
+	    memcpy (&tr[i], processor->regions[i], sizeof (PixelRegion));
 	    if (tr[i].tiles)
-	      tile_lock(tr[i].curtile);
+	      tile_lock (tr[i].curtile);
 	  }
 
-      pthread_mutex_unlock (&p_s->mutex);
-      n_tiles++;
+      g_mutex_unlock (processor->mutex);
 
-      switch(p_s->n_regions)
+      switch(processor->num_regions)
 	{
 	case 1:
-	  ((p1_func) p_s->f) (p_s->data,
-                              p_s->r[0] ? &tr[0] : NULL);
+	  ((p1_func) processor->func) (processor->data,
+                                       processor->regions[0] ? &tr[0] : NULL);
 	  break;
 
 	case 2:
-	  ((p2_func) p_s->f) (p_s->data,
-                              p_s->r[0] ? &tr[0] : NULL,
-                              p_s->r[1] ? &tr[1] : NULL);
+	  ((p2_func) processor->func) (processor->data,
+                                       processor->regions[0] ? &tr[0] : NULL,
+                                       processor->regions[1] ? &tr[1] : NULL);
 	  break;
 
 	case 3:
-	  ((p3_func) p_s->f) (p_s->data,
-                              p_s->r[0] ? &tr[0] : NULL,
-                              p_s->r[1] ? &tr[1] : NULL,
-                              p_s->r[2] ? &tr[2] : NULL);
+	  ((p3_func) processor->func) (processor->data,
+                                       processor->regions[0] ? &tr[0] : NULL,
+                                       processor->regions[1] ? &tr[1] : NULL,
+                                       processor->regions[2] ? &tr[2] : NULL);
 	  break;
 
 	case 4:
-	  ((p4_func) p_s->f) (p_s->data,
-                              p_s->r[0] ? &tr[0] : NULL,
-                              p_s->r[1] ? &tr[1] : NULL,
-                              p_s->r[2] ? &tr[2] : NULL,
-                              p_s->r[3] ? &tr[3] : NULL);
+	  ((p4_func) processor->func) (processor->data,
+                                       processor->regions[0] ? &tr[0] : NULL,
+                                       processor->regions[1] ? &tr[1] : NULL,
+                                       processor->regions[2] ? &tr[2] : NULL,
+                                       processor->regions[3] ? &tr[3] : NULL);
 	  break;
 
 	default:
 	  g_warning ("do_parallel_regions: Bad number of regions %d\n",
-                     p_s->n_regions);
+                     processor->num_regions);
           break;
+        }
+
+      g_mutex_lock (processor->mutex);
+
+      for (i = 0; i < processor->num_regions; i++)
+        if (processor->regions[i])
+          {
+            if (tr[i].tiles)
+              tile_release (tr[i].curtile, tr[i].dirty);
+          }
+
+      processor->progress += pixels;
+
+      if (processor->PRI)
+	processor->PRI = pixel_regions_process (processor->PRI);
     }
 
-    pthread_mutex_lock (&p_s->mutex);
+  processor->threads--;
 
-    for (i = 0; i < p_s->n_regions; i++)
-      if (p_s->r[i])
-	{
-	  if (tr[i].tiles)
-	    tile_release (tr[i].curtile, tr[i].dirty);
-	}
+  if (processor->threads == 0)
+    {
+      g_mutex_unlock (processor->mutex);
 
-    if (p_s->progress_report_func && 
-	!p_s->progress_report_func (p_s->progress_report_data,
-                                    p_s->r[0]->x, p_s->r[0]->y, 
-                                    p_s->r[0]->w, p_s->r[0]->h))
-      cont = 0;
-
-    } 
-
-  while (cont && p_s->PRI &&
-	 (p_s->PRI = pixel_regions_process (p_s->PRI)));
-
-  p_s->nthreads--;
-
-  pthread_mutex_unlock (&p_s->mutex);
-
-  return NULL;
+      g_mutex_lock (pool_mutex);
+      g_cond_signal  (pool_cond);
+      g_mutex_unlock (pool_mutex);
+    }
+  else
+    {
+      g_mutex_unlock (processor->mutex);
+    }
 }
 #endif
 
-/*  do_parallel_regions_single is just like do_parallel_regions 
+/*  do_parallel_regions_single is just like do_parallel_regions
  *   except that all the mutex and tile locks have been removed
  *
- * If we are processing with only a single thread we don't need to do the
- * mutex locks etc. and aditional tile locks even if we were
+ * If we are processing with only a single thread we don't need to do
+ * the mutex locks etc. and aditional tile locks even if we were
  * configured --with-mp
  */
 
 static gpointer
-do_parallel_regions_single (PixelProcessor *p_s)
+do_parallel_regions_single (PixelProcessor             *processor,
+                            PixelProcessorProgressFunc  progress_func,
+                            gpointer                    progress_data,
+                            gulong                      total)
 {
-  gint cont = 1;
+  GTimeVal  last_time;
+
+  if (progress_func)
+    g_get_current_time (&last_time);
 
   do
     {
-      switch (p_s->n_regions)
+      switch (processor->num_regions)
         {
         case 1:
-          ((p1_func) p_s->f) (p_s->data,
-                              p_s->r[0]);
+          ((p1_func) processor->func) (processor->data,
+                                       processor->regions[0]);
           break;
-          
+
         case 2:
-          ((p2_func) p_s->f) (p_s->data,
-                              p_s->r[0],
-                              p_s->r[1]);
+          ((p2_func) processor->func) (processor->data,
+                                       processor->regions[0],
+                                       processor->regions[1]);
           break;
 
         case 3:
-          ((p3_func) p_s->f) (p_s->data,
-                              p_s->r[0],
-                              p_s->r[1],
-                              p_s->r[2]);
+          ((p3_func) processor->func) (processor->data,
+                                       processor->regions[0],
+                                       processor->regions[1],
+                                       processor->regions[2]);
           break;
-          
+
         case 4:
-          ((p4_func) p_s->f) (p_s->data,
-                              p_s->r[0],
-                              p_s->r[1],
-                              p_s->r[2],
-                              p_s->r[3]);
+          ((p4_func) processor->func) (processor->data,
+                                       processor->regions[0],
+                                       processor->regions[1],
+                                       processor->regions[2],
+                                       processor->regions[3]);
           break;
 
         default:
           g_warning ("do_parallel_regions_single: Bad number of regions %d\n",
-                     p_s->n_regions);
+                     processor->num_regions);
         }
 
-      if (p_s->progress_report_func && 
-          !p_s->progress_report_func (p_s->progress_report_data,
-                                      p_s->r[0]->x, p_s->r[0]->y, 
-                                      p_s->r[0]->w, p_s->r[0]->h))
-        cont = 0;
-    }
+      if (progress_func)
+        {
+          GTimeVal  now;
 
-  while (cont && p_s->PRI &&
-	 (p_s->PRI = pixel_regions_process (p_s->PRI)));
+          processor->progress += (processor->PRI->portion_width *
+                                  processor->PRI->portion_height);
+
+          g_get_current_time (&now);
+
+          if (((now.tv_sec - last_time.tv_sec) * 1024 +
+               (now.tv_usec - last_time.tv_usec) / 1024) > PROGRESS_TIMEOUT)
+            {
+              progress_func (progress_data,
+                             (gdouble) processor->progress / (gdouble) total);
+
+              last_time = now;
+            }
+        }
+    }
+  while (processor->PRI &&
+	 (processor->PRI = pixel_regions_process (processor->PRI)));
 
   return NULL;
 }
 
-#define MAX_THREADS 30
-
 static void
-pixel_regions_do_parallel (PixelProcessor *p_s)
+pixel_regions_do_parallel (PixelProcessor             *processor,
+                           PixelProcessorProgressFunc  progress_func,
+                           gpointer                    progress_data)
 {
+  gulong pixels = (processor->PRI->region_width *
+                   processor->PRI->region_height);
+  gulong tiles  = pixels / (TILE_WIDTH * TILE_HEIGHT);
+
 #ifdef ENABLE_MP
-  gint nthreads;
-
-  nthreads = MIN (base_config->num_processors, MAX_THREADS);
-
-  /* make sure we have at least one tile per thread */
-  nthreads = MIN (nthreads,
-		  (p_s->PRI->region_width * p_s->PRI->region_height)
-		  / (TILE_WIDTH * TILE_HEIGHT));
-
-  if (nthreads > 1)
+  if (pool && tiles > TILES_PER_THREAD)
     {
-      gint           i;
-      pthread_t      threads[MAX_THREADS];
-      pthread_attr_t pthread_attr;
+      GError *error = NULL;
+      gint    tasks = MIN (tiles / TILES_PER_THREAD,
+                           g_thread_pool_get_max_threads (pool));
 
-      pthread_attr_init (&pthread_attr);
+      /*
+       * g_printerr ("pushing %d tasks into the thread pool (for %lu tiles)\n",
+       *             tasks, tiles);
+       */
 
-      for (i = 0; i < nthreads; i++)
+      processor->first = TRUE;
+      processor->threads = tasks;
+      processor->mutex = g_mutex_new();
+
+      g_mutex_lock (pool_mutex);
+
+      while (tasks--)
         {
-	  pthread_create (&threads[i], &pthread_attr,
-			  (void *(*)(void *)) do_parallel_regions,
-			  p_s);
-	}
-      for (i = 0; i < nthreads; i++)
-	{
-	  gint ret;
+          g_thread_pool_push (pool, processor, &error);
 
-	  if ((ret = pthread_join (threads[i], NULL)))
-	    {
-	      g_printerr ("pixel_regions_do_parallel: "
-                          "pthread_join returned: %d\n", ret);
-	    }
-	}
+          if (error)
+            {
+              g_warning ("thread creation failed: %s", error->message);
+              g_clear_error (&error);
+	      processor->threads--;
+            }
+        }
 
-      if (p_s->nthreads != 0)
-	g_printerr ("pixel_regions_do_prarallel: we lost a thread\n");
+      if (progress_func)
+        {
+          while (processor->threads != 0)
+            {
+	      GTimeVal timeout;
+              gulong   progress;
+
+	      g_get_current_time (&timeout);
+	      g_time_val_add (&timeout, PROGRESS_TIMEOUT * 1024);
+
+	      g_cond_timed_wait (pool_cond, pool_mutex, &timeout);
+
+              g_mutex_lock (processor->mutex);
+              progress = processor->progress;
+              g_mutex_unlock (processor->mutex);
+
+              progress_func (progress_data,
+                             (gdouble) progress / (gdouble) pixels);
+            }
+        }
+      else
+        {
+          while (processor->threads != 0)
+            g_cond_wait (pool_cond, pool_mutex);
+        }
+
+      g_mutex_unlock (pool_mutex);
+
+      g_mutex_free (processor->mutex);
     }
   else
 #endif
+    {
+      do_parallel_regions_single (processor,
+                                  progress_func, progress_data, pixels);
+    }
 
-    do_parallel_regions_single (p_s);
+  if (progress_func)
+    progress_func (progress_data, 1.0);
 }
 
-static PixelProcessor *
-pixel_regions_real_process_parallel (p_func             f, 
-				     gpointer           data,
-				     ProgressReportFunc report_func,
-				     gpointer           report_data,
-				     gint               num_regions, 
-				     va_list            ap)
+static void
+pixel_regions_process_parallel_valist (PixelProcessorFunc         func,
+                                       gpointer                   data,
+                                       PixelProcessorProgressFunc progress_func,
+                                       gpointer                   progress_data,
+                                       gint                       num_regions,
+                                       va_list                    ap)
 {
+  PixelProcessor  processor = { NULL, };
   gint            i;
-  PixelProcessor *p_s;
-
-  p_s = g_new (PixelProcessor, 1);
 
   for (i = 0; i < num_regions; i++)
-    p_s->r[i] = va_arg (ap, PixelRegion *);
+    processor.regions[i] = va_arg (ap, PixelRegion *);
 
-  switch(num_regions)
+  switch (num_regions)
     {
     case 1:
-      p_s->PRI = pixel_regions_register (num_regions,
-                                         p_s->r[0]);
+      processor.PRI = pixel_regions_register (num_regions,
+                                              processor.regions[0]);
       break;
 
     case 2:
-      p_s->PRI = pixel_regions_register (num_regions,
-                                         p_s->r[0],
-                                         p_s->r[1]);
+      processor.PRI = pixel_regions_register (num_regions,
+                                              processor.regions[0],
+                                              processor.regions[1]);
       break;
 
     case 3:
-      p_s->PRI = pixel_regions_register (num_regions,
-                                         p_s->r[0],
-                                         p_s->r[1],
-                                         p_s->r[2]);
+      processor.PRI = pixel_regions_register (num_regions,
+                                              processor.regions[0],
+                                              processor.regions[1],
+                                              processor.regions[2]);
       break;
 
     case 4:
-      p_s->PRI = pixel_regions_register (num_regions,
-                                         p_s->r[0],
-                                         p_s->r[1],
-                                         p_s->r[2],
-                                         p_s->r[3]);
+      processor.PRI = pixel_regions_register (num_regions,
+                                              processor.regions[0],
+                                              processor.regions[1],
+                                              processor.regions[2],
+                                              processor.regions[3]);
       break;
 
     default:
-      g_warning ("pixel_regions_real_process_parallel:"
-                 "Bad number of regions %d\n", p_s->n_regions);
-  }
-
-  if (!p_s->PRI)
-    {
-      pixel_processor_free (p_s);
-      return NULL;
+      g_warning ("pixel_regions_process_parallel: "
+                 "bad number of regions (%d)", processor.num_regions);
     }
 
-  p_s->f = f;
-  p_s->data = data;
-  p_s->n_regions = num_regions;
+  if (! processor.PRI)
+    return;
+
+  processor.func        = func;
+  processor.data        = data;
+  processor.num_regions = num_regions;
 
 #ifdef ENABLE_MP
-  pthread_mutex_init (&p_s->mutex, NULL);
-  p_s->nthreads = 0;
+  processor.threads     = 0;
 #endif
 
-  p_s->progress_report_data = report_data;
-  p_s->progress_report_func = report_func;
+  processor.progress    = 0;
 
-  pixel_regions_do_parallel (p_s);
-
-  if (p_s->PRI)
-    return p_s;
-
-#ifdef ENABLE_MP
-  pthread_mutex_destroy (&p_s->mutex);
-#endif
-
-  pixel_processor_free (p_s);
-
-  return NULL;
+  pixel_regions_do_parallel (&processor, progress_func, progress_data);
 }
 
 void
-pixel_regions_process_parallel (p_func   f, 
-				gpointer data, 
-				gint     num_regions, 
+pixel_processor_init (gint num_threads)
+{
+  pixel_processor_set_num_threads (num_threads);
+}
+
+void
+pixel_processor_set_num_threads (gint num_threads)
+{
+#ifdef ENABLE_MP
+
+  g_return_if_fail (num_threads > 0 && num_threads <= GIMP_MAX_NUM_THREADS);
+
+  if (num_threads < 2)
+    {
+      if (pool)
+        {
+          g_thread_pool_free (pool, TRUE, TRUE);
+          pool = NULL;
+
+          g_cond_free (pool_cond);
+          pool_cond = NULL;
+
+          g_mutex_free (pool_mutex);
+          pool_mutex = NULL;
+        }
+    }
+  else
+    {
+      GError *error = NULL;
+
+      if (pool)
+        {
+          g_thread_pool_set_max_threads (pool, num_threads, &error);
+        }
+      else
+        {
+          pool = g_thread_pool_new ((GFunc) do_parallel_regions, NULL,
+                                    num_threads, TRUE, &error);
+
+          pool_mutex = g_mutex_new ();
+          pool_cond  = g_cond_new ();
+        }
+
+      if (error)
+        {
+          g_warning ("changing the number of threads to %d failed: %s",
+                     num_threads, error->message);
+          g_clear_error (&error);
+        }
+    }
+#endif
+}
+
+void
+pixel_processor_exit (void)
+{
+  pixel_processor_set_num_threads (1);
+}
+
+void
+pixel_regions_process_parallel (PixelProcessorFunc  func,
+				gpointer            data,
+				gint                num_regions,
 				...)
 {
   va_list va;
 
   va_start (va, num_regions);
 
-  pixel_regions_real_process_parallel (f, data, NULL, NULL, num_regions, va);
+  pixel_regions_process_parallel_valist (func, data,
+                                         NULL, NULL,
+                                         num_regions, va);
 
   va_end (va);
 }
 
-PixelProcessor *
-pixel_regions_process_parallel_progress (p_func             f, 
-					 gpointer           data,
-					 ProgressReportFunc progress_func,
-					 gpointer           progress_data, 
-					 gint               num_regions,
-					 ...)
+void
+pixel_regions_process_parallel_progress (PixelProcessorFunc          func,
+                                         gpointer                    data,
+                                         PixelProcessorProgressFunc  progress_func,
+                                         gpointer                    progress_data,
+                                         gint                        num_regions,
+                                         ...)
 {
-  PixelProcessor *ret;
-  va_list         va;
+  va_list va;
 
   va_start (va, num_regions);
 
-  ret = pixel_regions_real_process_parallel (f, data,
-					     progress_func, progress_data,
-					     num_regions, va);
+  pixel_regions_process_parallel_valist (func, data,
+                                         progress_func, progress_data,
+                                         num_regions, va);
 
   va_end (va);
-
-  return ret;
-}
-
-void
-pixel_processor_stop (PixelProcessor *pp)
-{
-  if (!pp)
-    return;
-
-  if (pp->PRI)
-    {
-      pixel_regions_process_stop (pp->PRI);
-      pp->PRI = NULL;
-    }
-
-  pixel_processor_free (pp);
-}
-
-PixelProcessor *
-pixel_processor_cont (PixelProcessor *pp)
-{
-  pixel_regions_do_parallel (pp);
-
-  if (pp->PRI)
-    return pp;
-
-  pixel_processor_free (pp);
-
-  return NULL;
-}
-
-void
-pixel_processor_free (PixelProcessor *pp)
-{
-  if (pp->PRI)
-    pixel_processor_stop (pp);
-  else
-    g_free(pp);
 }

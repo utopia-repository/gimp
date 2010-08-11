@@ -24,11 +24,11 @@
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "widgets-types.h"
 
-#include "config/gimpconfig-params.h"
-
+#include "core/gimpdashpattern.h"
 #include "core/gimpstrokeoptions.h"
 
 #include "gimpdasheditor.h"
@@ -48,9 +48,6 @@ enum
   PROP_LENGTH
 };
 
-
-static void gimp_dash_editor_class_init    (GimpDashEditorClass *klass);
-static void gimp_dash_editor_init          (GimpDashEditor      *editor);
 
 static void gimp_dash_editor_finalize           (GObject        *object);
 static void gimp_dash_editor_set_property       (GObject        *object,
@@ -81,44 +78,16 @@ static gint dash_x_to_index                     (GimpDashEditor *editor,
                                                  gint            x);
 
 
-static GtkDrawingAreaClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpDashEditor, gimp_dash_editor, GTK_TYPE_DRAWING_AREA);
 
+#define parent_class gimp_dash_editor_parent_class
 
-GType
-gimp_dash_editor_get_type (void)
-{
-  static GType editor_type = 0;
-
-  if (! editor_type)
-    {
-      static const GTypeInfo editor_info =
-      {
-        sizeof (GimpDashEditorClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_dash_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpDashEditor),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_dash_editor_init,
-      };
-
-      editor_type = g_type_register_static (GTK_TYPE_DRAWING_AREA,
-                                            "GimpDashEditor",
-                                            &editor_info, 0);
-    }
-
-  return editor_type;
-}
 
 static void
 gimp_dash_editor_class_init (GimpDashEditorClass *klass)
 {
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize     = gimp_dash_editor_finalize;
   object_class->get_property = gimp_dash_editor_get_property;
@@ -472,11 +441,6 @@ gimp_dash_editor_shift_left (GimpDashEditor *editor)
 static void
 update_segments_from_options (GimpDashEditor *editor)
 {
-  gdouble   factor, sum = 0;
-  gint      i, j;
-  gboolean  paint;
-  GArray   *dash_info;
-
   if (editor->stroke_options == NULL || editor->segments == NULL)
     return;
 
@@ -484,97 +448,19 @@ update_segments_from_options (GimpDashEditor *editor)
 
   gtk_widget_queue_draw (GTK_WIDGET (editor));
 
-  dash_info = editor->stroke_options->dash_info;
-
-  if (dash_info == NULL || dash_info->len <= 1)
-    {
-      for (i = 0; i < editor->n_segments; i++)
-        editor->segments[i] = TRUE;
-
-      return;
-    }
-
-  for (i = 0; i < dash_info->len ; i++)
-    {
-      sum += g_array_index (dash_info, gdouble, i);
-    }
-
-  factor = ((gdouble) editor->n_segments) / sum;
-
-  j = 0;
-  sum = g_array_index (dash_info, gdouble, j) * factor;
-  paint = TRUE;
-
-  for (i = 0; i < editor->n_segments ; i++)
-    {
-      while (j < dash_info->len && sum <= i)
-        {
-          paint = ! paint;
-          j++;
-          sum += g_array_index (dash_info, gdouble, j) * factor;
-        }
-
-      editor->segments[i] = paint;
-    }
+  gimp_dash_pattern_segments_set (editor->stroke_options->dash_info,
+                                  editor->segments, editor->n_segments);
 }
 
 static void
 update_options_from_segments (GimpDashEditor *editor)
 {
-  gint      i, count = 0;
-  gboolean  state;
-  GArray   *dash_array;
+  GArray *pattern = gimp_dash_pattern_from_segments (editor->segments,
+                                                     editor->n_segments,
+                                                     editor->dash_length);
 
-  dash_array = g_array_new (FALSE, FALSE, sizeof (gdouble));
-
-  state = TRUE;
-
-  for (i = 0; i <= editor->n_segments; i++)
-    {
-      if (i < editor->n_segments && editor->segments[i] == state)
-        {
-          count++;
-        }
-      else
-        {
-          gdouble l = (editor->dash_length * count) / editor->n_segments;
-          dash_array = g_array_append_val (dash_array, l);
-
-          count = 1;
-          state = ! state;
-        }
-    }
-
-  if (dash_array->len > 1)
-    {
-      GValueArray *val_array;
-      GValue       item = { 0, };
-
-      val_array = g_value_array_new (dash_array->len);
-
-      g_value_init (&item, G_TYPE_DOUBLE);
-
-      for (i = 0; i < dash_array->len; i++)
-        {
-          g_value_set_double (&item,
-                              g_array_index (dash_array, gdouble, i));
-          g_value_array_append (val_array, &item);
-        }
-
-      g_object_set (editor->stroke_options,
-                    "dash-info", val_array,
-                    NULL);
-
-      g_value_array_free (val_array);
-    }
-  else
-    {
-      g_object_set (editor->stroke_options,
-                    "dash-info", NULL,
-                    NULL);
-    }
-
-  g_array_free (dash_array, TRUE);
+  gimp_stroke_options_set_dash_pattern (editor->stroke_options,
+                                        GIMP_DASH_CUSTOM, pattern);
 }
 
 static void

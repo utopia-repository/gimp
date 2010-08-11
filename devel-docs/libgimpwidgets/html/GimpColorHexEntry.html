@@ -1,53 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>GimpColorHexEntry</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpColorButton.html" title="GimpColorButton">
 <link rel="next" href="GimpColorScale.html" title="GimpColorScale">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
+<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
 <link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
 <link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
 <link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
 <link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
 <link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="GimpColorButton.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpColorScale.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2597168" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2569049" class="shortcut">Description</a>
-                  &#160;|&#160;
-                  <a href="#id2571570" class="shortcut">Object Hierarchy</a>
-                  &#160;|&#160;
-                  <a href="#id2571618" class="shortcut">Implemented Interfaces</a>
-                  &#160;|&#160;
-                  <a href="#id2571652" class="shortcut">Signals</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="GimpColorHexEntry"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2597168"></a><span class="refentrytitle">GimpColorHexEntry</span>
-</h2>
+<h2><span class="refentrytitle">GimpColorHexEntry</span></h2>
 <p>GimpColorHexEntry &#8212; Widget for entering a color's hex triplet.</p>
 </td>
-<td valign="top" align="right"></td>
+<td valign="top" align="right"><img src="gimp-color-hex-entry.png"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
@@ -55,65 +46,80 @@
 
 
 
-                    <a href="GimpColorHexEntry.html#GimpColorHexEntry-struct">GimpColorHexEntry</a>;
-GtkWidget*          <a href="GimpColorHexEntry.html#gimp-color-hex-entry-new">gimp_color_hex_entry_new</a>            (void);
-void                <a href="GimpColorHexEntry.html#gimp-color-hex-entry-set-color">gimp_color_hex_entry_set_color</a>      (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
-                                                         const <a
+            <a href="GimpColorHexEntry.html#GimpColorHexEntry-struct">GimpColorHexEntry</a>;
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  <a href="GimpColorHexEntry.html#gimp-color-hex-entry-new">gimp_color_hex_entry_new</a>        (void);
+void        <a href="GimpColorHexEntry.html#gimp-color-hex-entry-set-color">gimp_color_hex_entry_set_color</a>  (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
+                                             const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-void                <a href="GimpColorHexEntry.html#gimp-color-hex-entry-get-color">gimp_color_hex_entry_get_color</a>      (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
-                                                         <a
+void        <a href="GimpColorHexEntry.html#gimp-color-hex-entry-get-color">gimp_color_hex_entry_get_color</a>  (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
+                                             <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571570"></a><h2>Object Hierarchy</h2>
+<a name="id2559477"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkEntry
-                           +----GimpColorHexEntry
+   +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+         +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+               +----<a
+href="../gtk/GtkEntry.html"
+>GtkEntry</a>
+                     +----GimpColorHexEntry
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571618"></a><h2>Implemented Interfaces</h2>
+<a name="id2559515"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorHexEntry implements
- AtkImplementorIface,  GtkEditable and  GtkCellEditable.</p>
+ AtkImplementorIface,  <a
+href="../gtk/GtkEditable.html"
+>GtkEditable</a> and  <a
+href="../gtk/GtkCellEditable.html"
+>GtkCellEditable</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571652"></a><h2>Signals</h2>
+<a name="id2559544"></a><h2>Signal Prototypes</h2>
 <pre class="synopsis">
 
-  "<a href="GimpColorHexEntry.html#GimpColorHexEntry-color-changed">color-changed</a>"                                  : Run First
+"<a href="GimpColorHexEntry.html#GimpColorHexEntry-color-changed">color-changed</a>"
+            void        user_function      (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *gimpcolorhexentry,
+                                            gpointer user_data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569049"></a><h2>Description</h2>
+<a name="id2559583"></a><h2>Description</h2>
 <p>
 Widget for entering a color's hex triplet.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569065"></a><h2>Details</h2>
+<a name="id2558568"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2569076"></a><h3>
+<a name="id2558575"></a><h3>
 <a name="GimpColorHexEntry-struct"></a>GimpColorHexEntry</h3>
-<a class="indexterm" name="id2569088"></a><pre class="programlisting">typedef struct _GimpColorHexEntry GimpColorHexEntry;</pre>
+<a class="indexterm" name="id2558584"></a><pre class="programlisting">typedef struct _GimpColorHexEntry GimpColorHexEntry;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569104"></a><h3>
+<a name="id2558600"></a><h3>
 <a name="gimp-color-hex-entry-new"></a>gimp_color_hex_entry_new ()</h3>
-<a class="indexterm" name="id2569118"></a><pre class="programlisting">GtkWidget*          gimp_color_hex_entry_new            (void);</pre>
+<a class="indexterm" name="id2558609"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*  gimp_color_hex_entry_new        (void);</pre>
 <p>
 </p>
 <p>
@@ -122,26 +128,27 @@ Widget for entering a color's hex triplet.
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a new <a href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a> widget
 
 </td>
 </tr></tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569172"></a><h3>
+<a name="id2558660"></a><h3>
 <a name="gimp-color-hex-entry-set-color"></a>gimp_color_hex_entry_set_color ()</h3>
-<a class="indexterm" name="id2569186"></a><pre class="programlisting">void                gimp_color_hex_entry_set_color      (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
-                                                         const <a
+<a class="indexterm" name="id2558669"></a><pre class="programlisting">void        gimp_color_hex_entry_set_color  (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
+                                             const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
 <p>
 Sets the color displayed by a <a href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a>. If the new color
-is different to the previously set color, the "color_changed"
+is different to the previously set color, the "color-changed"
 signal is emitted.</p>
 <p>
 
@@ -150,12 +157,14 @@ signal is emitted.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>entry</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>entry</code></em>&#160;:</span></td>
 <td> a <a href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a> widget
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> pointer to a <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 ><span class="type">GimpRGB</span></a>
@@ -163,15 +172,15 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598431"></a><h3>
+<a name="id2517898"></a><h3>
 <a name="gimp-color-hex-entry-get-color"></a>gimp_color_hex_entry_get_color ()</h3>
-<a class="indexterm" name="id2598446"></a><pre class="programlisting">void                gimp_color_hex_entry_get_color      (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
-                                                         <a
+<a class="indexterm" name="id2517909"></a><pre class="programlisting">void        gimp_color_hex_entry_get_color  (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *entry,
+                                             <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>
 <p>
@@ -183,12 +192,14 @@ Retrieves the color value displayed by a <a href="GimpColorHexEntry.html" title=
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>entry</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>entry</code></em>&#160;:</span></td>
 <td> a <a href="GimpColorHexEntry.html" title="GimpColorHexEntry"><span class="type">GimpColorHexEntry</span></a> widget
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
 <td> pointer to a <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 ><span class="type">GimpRGB</span></a>
@@ -196,17 +207,17 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </tr>
 </tbody>
 </table></div>
-<p class="since">Since  GIMP 2.2
+<p>Since  GIMP 2.2
 </p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2579672"></a><h2>Signal Details</h2>
+<a name="id2518007"></a><h2>Signals</h2>
 <div class="refsect2" lang="en">
-<a name="id2579683"></a><h3>
+<a name="id2518013"></a><h3>
 <a name="GimpColorHexEntry-color-changed"></a>The "color-changed" signal</h3>
-<a class="indexterm" name="id2579693"></a><pre class="programlisting">void                user_function                      (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *gimpcolorhexentry,
-                                                        gpointer           user_data)              : Run First</pre>
+<pre class="programlisting">void        user_function                  (<a href="GimpColorHexEntry.html" title="GimpColorHexEntry">GimpColorHexEntry</a> *gimpcolorhexentry,
+                                            gpointer user_data);</pre>
 <p>
 
 </p>
@@ -214,13 +225,15 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>gimpcolorhexentry</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>gimpcolorhexentry</code></em>&#160;:</span></td>
 <td>the object which received the signal.
 
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
 <td>user data set when the signal handler was connected.</td>
 </tr>
 </tbody>
@@ -228,5 +241,9 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="GimpColorButton.html"><b>&lt;&lt;&#160;GimpColorButton</b></a></td>
+<td align="right"><a accesskey="n" href="GimpColorScale.html"><b>GimpColorScale&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

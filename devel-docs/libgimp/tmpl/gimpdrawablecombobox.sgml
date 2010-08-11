@@ -17,6 +17,12 @@ A widget providing a popup menu of drawables.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### STRUCT GimpDrawableComboBox ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### USER_FUNCTION GimpDrawableConstraintFunc ##### -->
 <para>
 
@@ -38,6 +44,12 @@ A widget providing a popup menu of drawables.
 @Returns: 
 
 
+<!-- ##### STRUCT GimpChannelComboBox ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION gimp_channel_combo_box_new ##### -->
 <para>
 
@@ -46,6 +58,12 @@ A widget providing a popup menu of drawables.
 @constraint: 
 @data: 
 @Returns: 
+
+
+<!-- ##### STRUCT GimpLayerComboBox ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### FUNCTION gimp_layer_combo_box_new ##### -->

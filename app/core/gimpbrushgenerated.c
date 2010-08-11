@@ -21,7 +21,6 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -30,6 +29,7 @@
 #endif
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -60,9 +60,6 @@ enum
 
 /*  local function prototypes  */
 
-static void   gimp_brush_generated_class_init (GimpBrushGeneratedClass *klass);
-static void   gimp_brush_generated_init       (GimpBrushGenerated      *brush);
-
 static void       gimp_brush_generated_set_property  (GObject      *object,
                                                       guint         property_id,
                                                       const GValue *value,
@@ -75,48 +72,19 @@ static gboolean   gimp_brush_generated_save          (GimpData     *data,
                                                       GError      **error);
 static void       gimp_brush_generated_dirty         (GimpData     *data);
 static gchar    * gimp_brush_generated_get_extension (GimpData     *data);
-static GimpData * gimp_brush_generated_duplicate     (GimpData     *data,
-                                                      gboolean      stingy_memory_use);
+static GimpData * gimp_brush_generated_duplicate     (GimpData     *data);
 
 
-static GimpBrushClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpBrushGenerated, gimp_brush_generated, GIMP_TYPE_BRUSH);
 
+#define parent_class gimp_brush_generated_parent_class
 
-GType
-gimp_brush_generated_get_type (void)
-{
-  static GType brush_type = 0;
-
-  if (! brush_type)
-    {
-      static const GTypeInfo brush_info =
-      {
-        sizeof (GimpBrushGeneratedClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_brush_generated_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpBrushGenerated),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_brush_generated_init,
-      };
-
-      brush_type = g_type_register_static (GIMP_TYPE_BRUSH,
-                                           "GimpBrushGenerated",
-                                           &brush_info, 0);
-    }
-
-  return brush_type;
-}
 
 static void
 gimp_brush_generated_class_init (GimpBrushGeneratedClass *klass)
 {
   GObjectClass  *object_class = G_OBJECT_CLASS (klass);
   GimpDataClass *data_class   = GIMP_DATA_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_brush_generated_set_property;
   object_class->get_property = gimp_brush_generated_get_property;
@@ -247,7 +215,7 @@ gimp_brush_generated_save (GimpData  *data,
   gchar               buf[G_ASCII_DTOSTR_BUF_SIZE];
   gboolean            have_shape = FALSE;
 
-  file  = fopen (data->filename, "wb");
+  file = g_fopen (data->filename, "wb");
 
   if (! file)
     {
@@ -330,8 +298,7 @@ gimp_brush_generated_get_extension (GimpData *data)
 }
 
 static GimpData *
-gimp_brush_generated_duplicate (GimpData *data,
-                                gboolean  stingy_memory_use)
+gimp_brush_generated_duplicate (GimpData *data)
 {
   GimpBrushGenerated *brush = GIMP_BRUSH_GENERATED (data);
 
@@ -341,8 +308,7 @@ gimp_brush_generated_duplicate (GimpData *data,
                                    brush->spikes,
                                    brush->hardness,
                                    brush->aspect_ratio,
-                                   brush->angle,
-                                   stingy_memory_use);
+                                   brush->angle);
 }
 
 static gdouble
@@ -542,8 +508,7 @@ gimp_brush_generated_new (const gchar             *name,
                           gint                     spikes,
                           gfloat                   hardness,
                           gfloat                   aspect_ratio,
-                          gfloat                   angle,
-                          gboolean                 stingy_memory_use)
+                          gfloat                   angle)
 {
   GimpBrushGenerated *brush;
 
@@ -552,6 +517,7 @@ gimp_brush_generated_new (const gchar             *name,
 
   brush = g_object_new (GIMP_TYPE_BRUSH_GENERATED,
                         "name",         name,
+                        "mime-type",    "application/x-gimp-brush-generated",
                         "shape",        shape,
                         "radius",       radius,
                         "spikes",       spikes,
@@ -562,21 +528,14 @@ gimp_brush_generated_new (const gchar             *name,
 
   GIMP_BRUSH (brush)->spacing = 20;
 
-  /* render brush mask */
-  gimp_data_dirty (GIMP_DATA (brush));
-
-  if (stingy_memory_use)
-    temp_buf_swap (GIMP_BRUSH (brush)->mask);
-
   return GIMP_DATA (brush);
 }
 
 GList *
 gimp_brush_generated_load (const gchar  *filename,
-                           gboolean      stingy_memory_use,
                            GError      **error)
 {
-  GimpBrushGenerated      *brush;
+  GimpBrush               *brush;
   FILE                    *file;
   gchar                    string[256];
   gchar                   *name       = NULL;
@@ -593,7 +552,7 @@ gimp_brush_generated_load (const gchar  *filename,
   g_return_val_if_fail (g_path_is_absolute (filename), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  file = fopen (filename, "rb");
+  file = g_fopen (filename, "rb");
 
   if (! file)
     {
@@ -716,25 +675,11 @@ gimp_brush_generated_load (const gchar  *filename,
 
   fclose (file);
 
-  /* create new brush */
-  brush = g_object_new (GIMP_TYPE_BRUSH_GENERATED,
-                        "name",         name,
-                        "shape",        shape,
-                        "radius",       radius,
-                        "spikes",       spikes,
-                        "hardness",     hardness,
-                        "aspect-ratio", aspect_ratio,
-                        "angle",        angle,
-                        NULL);
+  brush = GIMP_BRUSH (gimp_brush_generated_new (name, shape, radius, spikes,
+                                                hardness, aspect_ratio, angle));
   g_free (name);
 
-  GIMP_BRUSH (brush)->spacing = spacing;
-
-  /* render brush mask */
-  gimp_data_dirty (GIMP_DATA (brush));
-
-  if (stingy_memory_use)
-    temp_buf_swap (GIMP_BRUSH (brush)->mask);
+  brush->spacing = spacing;
 
   return g_list_prepend (NULL, brush);
 

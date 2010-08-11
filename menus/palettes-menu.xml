@@ -9,8 +9,10 @@
     <menuitem action="palettes-import" />
     <menuitem action="palettes-duplicate" />
     <menuitem action="palettes-merge" />
+    <menuitem action="palettes-copy-location" />
     <menuitem action="palettes-delete" />
     <separator />
     <menuitem action="palettes-refresh" />
+    <separator />
   </popup>
 </ui>

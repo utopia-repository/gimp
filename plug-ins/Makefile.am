@@ -23,6 +23,8 @@ endif
 if OS_WIN32
 twain = twain
 winsnap = winsnap
+else
+uri = uri
 endif
 
 if BUILD_XJT
@@ -31,7 +33,6 @@ endif
 
 
 SUBDIRS = \
-	dbbrowser		\
 	script-fu		\
 	FractalExplorer		\
 	Lighting		\
@@ -48,7 +49,9 @@ SUBDIRS = \
 	$(helpbrowser)		\
 	ifscompose		\
 	imagemap		\
+	jpeg                    \
 	maze			\
+	metadata		\
 	pagecurl		\
 	$(print)		\
 	$(pygimp)		\
@@ -56,6 +59,7 @@ SUBDIRS = \
 	sgi			\
 	sel2path		\
 	$(twain)		\
+	$(uri)			\
 	winicon			\
 	$(winsnap)		\
 	$(xjt)			\

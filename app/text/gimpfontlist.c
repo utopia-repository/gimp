@@ -52,55 +52,23 @@
 typedef char * (* GimpFontDescToStringFunc) (const PangoFontDescription *desc);
 
 
-static void   gimp_font_list_class_init   (GimpFontListClass    *klass);
-static void   gimp_font_list_init         (GimpFontList         *list);
+static void   gimp_font_list_add_font   (GimpFontList         *list,
+                                         PangoContext         *context,
+                                         PangoFontDescription *desc);
 
-static void   gimp_font_list_add_font     (GimpFontList         *list,
-                                           PangoContext         *context,
-                                           PangoFontDescription *desc);
-
-static void   gimp_font_list_load_names   (GimpFontList         *list,
-                                           PangoFontMap         *fontmap,
-                                           PangoContext         *context);
+static void   gimp_font_list_load_names (GimpFontList         *list,
+                                         PangoFontMap         *fontmap,
+                                         PangoContext         *context);
 
 
-static GimpListClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpFontList, gimp_font_list, GIMP_TYPE_LIST);
 
 static GimpFontDescToStringFunc font_desc_to_string = NULL;
 
 
-GType
-gimp_font_list_get_type (void)
-{
-  static GType list_type = 0;
-
-  if (! list_type)
-    {
-      static const GTypeInfo list_info =
-      {
-        sizeof (GimpFontListClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_font_list_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_font     */
-        sizeof (GimpFontList),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_font_list_init,
-      };
-
-      list_type = g_type_register_static (GIMP_TYPE_LIST,
-                                          "GimpFontList",
-                                          &list_info, 0);
-    }
-
-  return list_type;
-}
-
 static void
 gimp_font_list_class_init (GimpFontListClass *klass)
 {
-  parent_class = g_type_class_peek_parent (klass);
 }
 
 static void
@@ -181,23 +149,17 @@ gimp_font_list_add_font (GimpFontList         *list,
 {
   GimpFont *font;
   gchar    *name;
-  gsize     len;
 
   if (! desc)
     return;
 
   name = font_desc_to_string (desc);
 
-  len = strlen (name);
-
-  if (! g_utf8_validate (name, len, NULL))
+  if (! g_utf8_validate (name, -1, NULL))
     {
       g_free (name);
       return;
     }
-
-  if (g_str_has_suffix (name, " Not-Rotated"))
-    name[len - strlen (" Not-Rotated")] = '\0';
 
   font = g_object_new (GIMP_TYPE_FONT,
                        "name",          name,

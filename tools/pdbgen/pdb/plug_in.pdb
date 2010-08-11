@@ -36,23 +36,23 @@ sub plugins_query {
     @outargs = (
 	{ name => 'menu_path', type => 'stringarray',
 	  desc => 'The menu path of the plugin',
-	  alias => 'menu_strs', init => 1 },
+	  alias => 'menu_strs' },
 	{ name => 'plugin_accelerator', type => 'stringarray',
 	  desc => 'String representing keyboard accelerator (could be empty
 		   string)',
-	  alias => 'accel_strs', init => 1 },
+	  alias => 'accel_strs' },
 	{ name => 'plugin_location', type => 'stringarray',
 	  desc => 'Location of the plugin program',
-	  alias => 'prog_strs', init => 1 },
+	  alias => 'prog_strs' },
 	{ name => 'plugin_image_type', type => 'stringarray',
 	  desc => 'Type of image that this plugin will work on',
-	  alias => 'types_strs', init => 1 },
+	  alias => 'types_strs' },
 	{ name => 'plugin_install_time', type => 'int32array',
 	  desc => 'Time that the plugin was installed',
-	  alias => 'time_ints', init => 1 },
+	  alias => 'time_ints' },
 	{ name => 'plugin_real_name', type => 'stringarray',
 	  desc => 'The internal name of the plugin',
-	  alias => 'realname_strs', init => 1 }
+	  alias => 'realname_strs' }
     );
 
     foreach (@outargs) {
@@ -64,93 +64,15 @@ sub plugins_query {
     delete $outargs[0]->{array}->{no_declare};
 
     %invoke = (
-	headers => [ qw("libgimpbase/gimpbase.h") ],
-	vars => [ 'GSList *list', 'GSList *matched = NULL', 'gint i = 0',
-                  'regex_t sregex' ],
 	code => <<'CODE'
 {
-  if (search_str && ! strlen (search_str))
-    search_str = NULL;
-
-  if (! (search_str && regcomp (&sregex, search_str, REG_ICASE)))
-    {
-      /* count number of plugin entries, then allocate arrays of correct size
-       * where we can store the strings.
-       */
-
-      for (list = gimp->plug_in_proc_defs; list; list = g_slist_next (list))
-        {
-          PlugInProcDef *proc_def = list->data;
-
-          if (proc_def->prog && proc_def->menu_paths)
-    	    {
-	      gchar *name;
-
-              if (proc_def->menu_label)
-                {
-                  name = proc_def->menu_label;
-                }
-              else
-                {
-                  name = strrchr (proc_def->menu_paths->data, '/');
-
-                  if (name)
-                    name = name + 1;
-                  else
-                    name = proc_def->menu_paths->data;
-                }
-
-              name = gimp_strip_uline (name);
-
-	      if (! search_str || ! match_strings (&sregex, name))
-                {
-                  num_plugins++;
-                  matched = g_slist_prepend (matched, proc_def);
-                }
-
-              g_free (name);
-	    }
-        }
-
-      menu_strs     = g_new (gchar *, num_plugins);
-      accel_strs    = g_new (gchar *, num_plugins);
-      prog_strs     = g_new (gchar *, num_plugins);
-      types_strs    = g_new (gchar *, num_plugins);
-      realname_strs = g_new (gchar *, num_plugins);
-      time_ints     = g_new (gint   , num_plugins);
-
-      matched = g_slist_reverse (matched);
-
-      for (list = matched; list; list = g_slist_next (list))
-        {
-          PlugInProcDef *proc_def = list->data;
-          ProcRecord    *proc_rec = &proc_def->db_info;
-          gchar         *name;
-
-          if (proc_def->menu_label)
-            name = g_strdup_printf ("%s/%s",
-                                    (gchar *) proc_def->menu_paths->data,
-                                    proc_def->menu_label);
-          else
-            name = g_strdup (proc_def->menu_paths->data);
-
-          menu_strs[i]     = gimp_strip_uline (name);
-          accel_strs[i]    = NULL;
-          prog_strs[i]     = g_strdup (proc_def->prog);
-          types_strs[i]    = g_strdup (proc_def->image_types);
-          realname_strs[i] = g_strdup (proc_rec->name);
-          time_ints[i]     = proc_def->mtime;
-
-          g_free (name);
-
-          i++;
-        }
-
-      g_slist_free (matched);
-
-      if (search_str)
-        regfree (&sregex);
-   }
+  num_plugins = plug_ins_query (gimp, search_str,
+                                &menu_strs,
+                                &accel_strs,
+                                &prog_strs,
+                                &types_strs,
+                                &realname_strs,
+                                &time_ints);
 }
 CODE
     );
@@ -259,39 +181,17 @@ HELP
   if (gimp->current_plug_in)
     {
       PlugInProcDef *proc_def = NULL;
-      GSList        *list;
+      gchar         *canonical;
+
+      canonical = gimp_canonicalize_identifier (procedure_name);
 
       if (gimp->current_plug_in->plug_in_def)
-        {
-          for (list = gimp->current_plug_in->plug_in_def->proc_defs;
-               list;
-               list = g_slist_next (list))
-            {
-              PlugInProcDef *pd = list->data;
-
-              if (! strcmp (procedure_name, pd->db_info.name))
-                {
-                  proc_def = pd;
-                  break;
-                }
-            }
-        }
+        proc_def = plug_in_proc_def_find (gimp->current_plug_in->plug_in_def->proc_defs,
+                                          canonical);
 
       if (! proc_def)
-        {
-          for (list = gimp->current_plug_in->temp_proc_defs;
-               list;
-               list = g_slist_next (list))
-            {
-              PlugInProcDef *pd = list->data;
-
-              if (! strcmp (procedure_name, pd->db_info.name))
-                {
-                  proc_def = pd;
-                  break;
-                }
-            }
-        }
+        proc_def = plug_in_proc_def_find (gimp->current_plug_in->temp_proc_defs,
+                                          canonical);
 
       if (proc_def)
         {
@@ -301,7 +201,7 @@ HELP
 
               if (! plug_in_proc_args_check (gimp->current_plug_in->name,
                                              gimp->current_plug_in->prog,
-                                             procedure_name,
+                                             canonical,
                                              menu_path,
                                              proc_def->db_info.args,
                                              proc_def->db_info.num_args,
@@ -341,7 +241,7 @@ HELP
                       if (! gimp->no_interface &&
                           proc_def->db_info.proc_type == GIMP_TEMPORARY)
                         {
-                          gimp_menus_create_entry (gimp, proc_def, menu_path);
+                          gimp_menus_create_item (gimp, proc_def, menu_path);
                         }
                     }
                 }
@@ -357,10 +257,53 @@ HELP
                          "label to gimp_install_procedure().",
                          gimp_filename_to_utf8 (gimp->current_plug_in->name),
                          gimp_filename_to_utf8 (gimp->current_plug_in->prog),
-                         menu_path, procedure_name);
+                         menu_path, canonical);
 
               success = FALSE;
             }
+        }
+      else
+        success = FALSE;
+
+      g_free (canonical);
+    }
+  else
+    success = FALSE;
+}
+CODE
+    );
+}
+
+sub plugin_menu_branch_register {
+    $blurb = "Register a sub-menu.";
+
+    $help = <<HELP;
+This procedure installs an sub-menu which does not belong to any procedure.
+HELP
+
+    $author = $copyright = 'Michael Natterer <mitch@gimp.org>';
+    $date = '2005';
+    $since = '2.4';
+
+    @inargs = (
+	{ name => 'menu_path', type => 'string',
+	  desc => "The sub-menu's menu path" },
+	{ name => 'menu_name', type => 'string',
+	  desc => 'The name of the sub-menu' }
+    );
+
+    %invoke = (
+        code => <<'CODE',
+{
+  if (gimp->current_plug_in)
+    {
+      plug_ins_menu_branch_add (gimp, gimp->current_plug_in->prog,
+                                menu_path, menu_name);
+
+      if (! gimp->no_interface)
+        {
+          gimp_menus_create_branch (gimp, gimp->current_plug_in->prog,
+                                    menu_path, menu_name);
         }
       else
         success = FALSE;
@@ -399,45 +342,20 @@ HELP
 {
   if (gimp->current_plug_in && gimp->current_plug_in->query)
     {
-      GSList *list;
+      PlugInProcDef *proc_def;
+      gchar         *canonical;
 
-      for (list = gimp->current_plug_in->plug_in_def->proc_defs;
-           list;
-           list = g_slist_next (list))
-        {
-          PlugInProcDef *proc_def = list->data;
+      canonical = gimp_canonicalize_identifier (procedure_name);
 
-          if (! strcmp (procedure_name, proc_def->db_info.name))
-            {
-              if (proc_def->icon_data)
-                {
-                  g_free (proc_def->icon_data);
-                  proc_def->icon_data_length = -1;
-                  proc_def->icon_data        = NULL;
-                }
+      proc_def = plug_in_proc_def_find (gimp->current_plug_in->plug_in_def->proc_defs,
+                                        canonical);
 
-              proc_def->icon_type = icon_type;
+      g_free (canonical);
 
-              switch (proc_def->icon_type)
-                {
-                case GIMP_ICON_TYPE_STOCK_ID:
-                case GIMP_ICON_TYPE_IMAGE_FILE:
-                  proc_def->icon_data_length = -1;
-                  proc_def->icon_data        = g_strdup (icon_data);
-                  break;
-
-                case GIMP_ICON_TYPE_INLINE_PIXBUF:
-                  proc_def->icon_data_length = icon_data_length;
-                  proc_def->icon_data        = g_memdup (icon_data,
-                                                         icon_data_length);
-                  break;
-                }
-
-              break;
-            }
-        }
-
-      if (! list)
+      if (proc_def)
+        plug_in_proc_def_set_icon (proc_def, icon_type,
+                                   icon_data, icon_data_length);
+      else
         success = FALSE;
     }
   else
@@ -448,25 +366,19 @@ CODE
 }
 
 
-$extra{app}->{code} = <<'CODE';
-static int
-match_strings (regex_t *preg,
-               gchar   *a)
-{
-  return regexec (preg, a, 0, NULL, 0);
-}
-CODE
-
-@headers = qw(<string.h> <stdlib.h> "regexrepl/regex.h"
-              "libgimpbase/gimpprotocol.h" "core/gimp.h" 
+@headers = qw(<string.h> <stdlib.h>
+              "libgimpbase/gimpbase.h" "libgimpbase/gimpprotocol.h"
+              "core/gimp.h"
               "plug-in/plug-in.h" "plug-in/plug-ins.h"
+              "plug-in/plug-ins-query.h"
               "plug-in/plug-in-def.h" "plug-in/plug-in-params.h"
               "plug-in/plug-in-proc-def.h");
 
 @procs = qw(plugins_query
 	    plugin_domain_register plugin_help_register
-            plugin_menu_register plugin_icon_register);
-%exports = (app => [@procs], lib => [@procs[1,2,3,4]]);
+            plugin_menu_register plugin_menu_branch_register
+            plugin_icon_register);
+%exports = (app => [@procs], lib => [@procs[1,2,3,4,5]]);
 
 $desc = 'Plug-in';
 

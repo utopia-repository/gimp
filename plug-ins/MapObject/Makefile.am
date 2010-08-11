@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 libgimpui = $(top_builddir)/libgimp/libgimpui-$(GIMP_API_VERSION).la
+libgimpconfig = $(top_builddir)/libgimpconfig/libgimpconfig-$(GIMP_API_VERSION).la
 libgimpwidgets = $(top_builddir)/libgimpwidgets/libgimpwidgets-$(GIMP_API_VERSION).la
 libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
@@ -18,6 +19,7 @@ libexecdir = $(gimpplugindir)/plug-ins
 libexec_PROGRAMS = MapObject
 
 MapObject_SOURCES = \
+	arcball.c		\
 	arcball.h		\
 	mapobject_apply.c	\
 	mapobject_apply.h	\
@@ -42,6 +44,7 @@ INCLUDES = \
 LDADD = \
 	$(libgimpui)		\
 	$(libgimpwidgets)	\
+	$(libgimpconfig)	\
 	$(libgimp)		\
 	$(libgimpcolor)		\
 	$(libgimpmath)		\

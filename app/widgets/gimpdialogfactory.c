@@ -58,9 +58,6 @@ typedef enum
 } GimpDialogShowState;
 
 
-static void   gimp_dialog_factory_class_init (GimpDialogFactoryClass *klass);
-static void   gimp_dialog_factory_init       (GimpDialogFactory      *factory);
-
 static void   gimp_dialog_factory_dispose             (GObject           *object);
 static void   gimp_dialog_factory_finalize            (GObject           *object);
 
@@ -100,46 +97,19 @@ static void   gimp_dialog_factories_unset_busy_foreach(gconstpointer      key,
                                                        GimpDialogFactory *factory,
                                                        gpointer           data);
 
+static GtkWidget *
+              gimp_dialog_factory_get_toolbox     (GimpDialogFactory *toolbox_factory);
 
-static GimpObjectClass *parent_class = NULL;
 
+G_DEFINE_TYPE (GimpDialogFactory, gimp_dialog_factory, GIMP_TYPE_OBJECT);
 
-GType
-gimp_dialog_factory_get_type (void)
-{
-  static GType factory_type = 0;
+#define parent_class gimp_dialog_factory_parent_class
 
-  if (! factory_type)
-    {
-      static const GTypeInfo factory_info =
-      {
-        sizeof (GimpDialogFactoryClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_dialog_factory_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpDialogFactory),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_dialog_factory_init,
-      };
-
-      factory_type = g_type_register_static (GIMP_TYPE_OBJECT,
-                                             "GimpDialogFactory",
-                                             &factory_info, 0);
-    }
-
-  return factory_type;
-}
 
 static void
 gimp_dialog_factory_class_init (GimpDialogFactoryClass *klass)
 {
-  GObjectClass *object_class;
-
-  object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->dispose  = gimp_dialog_factory_dispose;
   object_class->finalize = gimp_dialog_factory_finalize;
@@ -161,10 +131,8 @@ gimp_dialog_factory_init (GimpDialogFactory *factory)
 static void
 gimp_dialog_factory_dispose (GObject *object)
 {
-  GimpDialogFactory *factory;
+  GimpDialogFactory *factory = GIMP_DIALOG_FACTORY (object);
   GList             *list;
-
-  factory = GIMP_DIALOG_FACTORY (object);
 
   /*  start iterating from the beginning each time we destroyed a
    *  toplevel because destroying a dock may cause lots of items
@@ -198,19 +166,15 @@ gimp_dialog_factory_dispose (GObject *object)
 static void
 gimp_dialog_factory_finalize (GObject *object)
 {
-  GimpDialogFactory *factory;
+  GimpDialogFactory *factory = GIMP_DIALOG_FACTORY (object);
   GList             *list;
-
-  factory = GIMP_DIALOG_FACTORY (object);
 
   g_hash_table_remove (GIMP_DIALOG_FACTORY_GET_CLASS (object)->factories,
                        GIMP_OBJECT (factory)->name);
 
   for (list = factory->registered_dialogs; list; list = g_list_next (list))
     {
-      GimpDialogFactoryEntry *entry;
-
-      entry = (GimpDialogFactoryEntry *) list->data;
+      GimpDialogFactoryEntry *entry = list->data;
 
       g_free (entry->identifier);
       g_free (entry->name);
@@ -849,7 +813,7 @@ gimp_dialog_factory_add_dialog (GimpDialogFactory *factory,
                *  position when hidden/shown within this(!) session.
                */
               if (entry->session_managed)
-                g_signal_connect (dialog, "configure_event",
+                g_signal_connect (dialog, "configure-event",
                                   G_CALLBACK (gimp_dialog_factory_set_user_pos),
                                   NULL);
             }
@@ -901,7 +865,7 @@ gimp_dialog_factory_add_dialog (GimpDialogFactory *factory,
            *  dialog needs GDK_HINT_USER_POS so it keeps its
            *  position when hidden/shown within this(!) session.
            */
-          g_signal_connect (dialog, "configure_event",
+          g_signal_connect (dialog, "configure-event",
                             G_CALLBACK (gimp_dialog_factory_set_user_pos),
                             NULL);
 
@@ -917,7 +881,7 @@ gimp_dialog_factory_add_dialog (GimpDialogFactory *factory,
                            G_CONNECT_SWAPPED);
 
   if (entry && entry->session_managed && toplevel)
-    g_signal_connect_object (dialog, "configure_event",
+    g_signal_connect_object (dialog, "configure-event",
                              G_CALLBACK (gimp_dialog_factory_dialog_configure),
                              factory,
                              0);
@@ -1085,13 +1049,10 @@ gimp_dialog_factories_toggle (GimpDialogFactory *toolbox_factory,
 
   if (ensure_visibility && toggle_state != GIMP_DIALOG_HIDE_ALL)
     {
-      GList *list;
+      GtkWidget *toolbox = gimp_dialog_factory_get_toolbox (toolbox_factory);
 
-      for (list = toolbox_factory->open_dialogs; list; list = list->next)
-        {
-          if (GTK_IS_WIDGET (list->data) && GTK_WIDGET_TOPLEVEL (list->data))
-            gtk_window_present (GTK_WINDOW (list->data));
-        }
+      if (toolbox)
+        gtk_window_present (GTK_WINDOW (toolbox));
 
       return;
     }
@@ -1464,4 +1425,19 @@ gimp_dialog_factories_unset_busy_foreach (gconstpointer      key,
             gdk_window_set_cursor (widget->window, NULL);
         }
     }
+}
+
+/*  The only toplevel widget in the toolbox factory is the toolbox  */
+static GtkWidget *
+gimp_dialog_factory_get_toolbox (GimpDialogFactory *toolbox_factory)
+{
+  GList *list;
+
+  for (list = toolbox_factory->open_dialogs; list; list = list->next)
+    {
+      if (GTK_IS_WIDGET (list->data) && GTK_WIDGET_TOPLEVEL (list->data))
+        return list->data;
+    }
+
+  return NULL;
 }

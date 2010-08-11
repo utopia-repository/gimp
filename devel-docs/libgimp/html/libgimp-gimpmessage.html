@@ -1,14 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpmessage</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimphelp.html" title="gimphelp">
 <link rel="next" href="libgimp-gimpplugin.html" title="gimpplugin">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -18,27 +17,24 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimphelp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpplugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582856" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2596610" class="shortcut">Description</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpmessage"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2582856"></a><span class="refentrytitle">gimpmessage</span>
-</h2>
+<h2><span class="refentrytitle">gimpmessage</span></h2>
 <p>gimpmessage &#8212; Display a dialog box with a message.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -49,28 +45,29 @@
 
 
 
-gboolean            <a href="libgimp-gimpmessage.html#gimp-message">gimp_message</a>                        (const gchar *message);
+gboolean    <a href="libgimp-gimpmessage.html#gimp-message">gimp_message</a>                    (const gchar *message);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
->GimpMessageHandlerType</a> <a href="libgimp-gimpmessage.html#gimp-message-get-handler">gimp_message_get_handler</a>         (void);
-gboolean            <a href="libgimp-gimpmessage.html#gimp-message-set-handler">gimp_message_set_handler</a>            (<a
+>GimpMessageHandlerType</a> <a href="libgimp-gimpmessage.html#gimp-message-get-handler">gimp_message_get_handler</a>
+                                            (void);
+gboolean    <a href="libgimp-gimpmessage.html#gimp-message-set-handler">gimp_message_set_handler</a>        (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2596610"></a><h2>Description</h2>
+<a name="id2519302"></a><h2>Description</h2>
 <p>
 Display a dialog box with a message.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2596625"></a><h2>Details</h2>
+<a name="id2519838"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2596636"></a><h3>
+<a name="id2558807"></a><h3>
 <a name="gimp-message"></a>gimp_message ()</h3>
-<a class="indexterm" name="id2596648"></a><pre class="programlisting">gboolean            gimp_message                        (const gchar *message);</pre>
+<a class="indexterm" name="id2521707"></a><pre class="programlisting">gboolean    gimp_message                    (const gchar *message);</pre>
 <p>
 Displays a dialog box with a message.
 </p>
@@ -84,12 +81,14 @@ reporting. The message must be in UTF-8 encoding.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>message</code></em>&#160;:</span></td>
 <td> Message to display in the dialog.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -98,11 +97,12 @@ reporting. The message must be in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596714"></a><h3>
+<a name="id2547493"></a><h3>
 <a name="gimp-message-get-handler"></a>gimp_message_get_handler ()</h3>
-<a class="indexterm" name="id2596725"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2547502"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
->GimpMessageHandlerType</a> gimp_message_get_handler         (void);</pre>
+>GimpMessageHandlerType</a> gimp_message_get_handler
+                                            (void);</pre>
 <p>
 Returns the current state of where warning messages are displayed.
 </p>
@@ -116,7 +116,8 @@ gimp was started.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The current handler type.
 </td>
 </tr></tbody>
@@ -124,9 +125,9 @@ gimp was started.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2587928"></a><h3>
+<a name="id2536039"></a><h3>
 <a name="gimp-message-set-handler"></a>gimp_message_set_handler ()</h3>
-<a class="indexterm" name="id2587939"></a><pre class="programlisting">gboolean            gimp_message_set_handler            (<a
+<a class="indexterm" name="id2536048"></a><pre class="programlisting">gboolean    gimp_message_set_handler        (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);</pre>
 <p>
@@ -143,12 +144,14 @@ was started.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>handler</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>handler</code></em>&#160;:</span></td>
 <td> The new handler type.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -157,5 +160,9 @@ was started.</p>
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimphelp.html"><b>&lt;&lt;&#160;gimphelp</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-gimpplugin.html"><b>gimpplugin&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

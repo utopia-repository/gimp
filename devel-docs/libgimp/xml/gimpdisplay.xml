@@ -4,29 +4,27 @@
 
 <refentry id="libgimp-gimpdisplay">
 <refmeta>
-<refentrytitle role="top_of_page">gimpdisplay</refentrytitle>
+<refentrytitle>gimpdisplay</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpdisplay</refname>
-<refpurpose>Functions to create, delete and flush new displays (views) on an image.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimpdisplay</refname><refpurpose>Functions to create, delete and flush new displays (views) on an image.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-<link linkend="gint32">gint32</link>              <link linkend="gimp-display-new">gimp_display_new</link>                    (<link linkend="gint32">gint32</link> image_ID);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-display-delete">gimp_display_delete</link>                 (<link linkend="gint32">gint32</link> display_ID);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-displays-flush">gimp_displays_flush</link>                 (void);
-<link linkend="gboolean">gboolean</link>            <link linkend="gimp-displays-reconnect">gimp_displays_reconnect</link>             (<link linkend="gint32">gint32</link> old_image_ID,
-                                                         <link linkend="gint32">gint32</link> new_image_ID);
+<link linkend="gint32">gint32</link>      <link linkend="gimp-display-new">gimp_display_new</link>                (<link linkend="gint32">gint32</link> image_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-display-delete">gimp_display_delete</link>             (<link linkend="gint32">gint32</link> display_ID);
+<link linkend="gint">gint</link>        <link linkend="gimp-display-get-window-handle">gimp_display_get_window_handle</link>  (<link linkend="gint32">gint32</link> display_ID);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-displays-flush">gimp_displays_flush</link>             (void);
+<link linkend="gboolean">gboolean</link>    <link linkend="gimp-displays-reconnect">gimp_displays_reconnect</link>         (<link linkend="gint32">gint32</link> old_image_ID,
+                                             <link linkend="gint32">gint32</link> new_image_ID);
 </synopsis>
 </refsynopsisdiv>
 
@@ -38,19 +36,19 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Functions to create, delete and flush new displays (views) on an image.
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="gimp-display-new" role="function"/>gimp_display_new ()</title>
-<indexterm><primary>gimp_display_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_display_new                    (<link linkend="gint32">gint32</link> image_ID);</programlisting>
+<title><anchor id="gimp-display-new"/>gimp_display_new ()</title>
+<indexterm><primary>gimp_display_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_display_new                (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Create a new display for the specified image.
 </para>
@@ -70,8 +68,8 @@ This procedure only makes sense for use with the GIMP UI.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-display-delete" role="function"/>gimp_display_delete ()</title>
-<indexterm><primary>gimp_display_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_display_delete                 (<link linkend="gint32">gint32</link> display_ID);</programlisting>
+<title><anchor id="gimp-display-delete"/>gimp_display_delete ()</title>
+<indexterm><primary>gimp_display_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_display_delete             (<link linkend="gint32">gint32</link> display_ID);</programlisting>
 <para>
 Delete the specified display.
 </para>
@@ -89,8 +87,31 @@ deleted also.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-displays-flush" role="function"/>gimp_displays_flush ()</title>
-<indexterm><primary>gimp_displays_flush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_displays_flush                 (void);</programlisting>
+<title><anchor id="gimp-display-get-window-handle"/>gimp_display_get_window_handle ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_display_get_window_handle</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_display_get_window_handle  (<link linkend="gint32">gint32</link> display_ID);</programlisting>
+<para>
+Get a handle to the native window for an image display.
+</para>
+<para>
+This procedure returns a handle to the native window for a given
+image display. For example in the X backend of GDK, a native window
+handle is an Xlib XID. A value of 0 is returned for an invalid
+display or if this function is unimplemented for the windowing
+system that is being used.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>display_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The display to get the window handle from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The native window handle or 0.
+
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-displays-flush"/>gimp_displays_flush ()</title>
+<indexterm><primary>gimp_displays_flush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_displays_flush             (void);</programlisting>
 <para>
 Flush all internal changes to the user interface
 </para>
@@ -106,9 +127,9 @@ appropriate.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-displays-reconnect" role="function"/>gimp_displays_reconnect ()</title>
-<indexterm><primary>gimp_displays_reconnect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_displays_reconnect             (<link linkend="gint32">gint32</link> old_image_ID,
-                                                         <link linkend="gint32">gint32</link> new_image_ID);</programlisting>
+<title><anchor id="gimp-displays-reconnect"/>gimp_displays_reconnect ()</title>
+<indexterm><primary>gimp_displays_reconnect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_displays_reconnect         (<link linkend="gint32">gint32</link> old_image_ID,
+                                             <link linkend="gint32">gint32</link> new_image_ID);</programlisting>
 <para>
 Reconnect displays from one image to another image.
 </para>

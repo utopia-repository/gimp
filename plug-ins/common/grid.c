@@ -39,17 +39,16 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
+
+#define PLUG_IN_PROC        "plug-in-grid"
+#define PLUG_IN_BINARY      "grid"
 #define SPIN_BUTTON_WIDTH    8
 #define COLOR_BUTTON_WIDTH  55
 
@@ -116,30 +115,30 @@ void query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive"   },
+    { GIMP_PDB_IMAGE,    "image",    "Input image"                    },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"                 },
 
-    { GIMP_PDB_INT32,    "hwidth",   "Horizontal Width   (>= 0)" },
-    { GIMP_PDB_INT32,    "hspace",   "Horizontal Spacing (>= 1)" },
-    { GIMP_PDB_INT32,    "hoffset",  "Horizontal Offset  (>= 0)" },
-    { GIMP_PDB_COLOR,    "hcolor",   "Horizontal Colour" },
-    { GIMP_PDB_INT8,     "hopacity", "Horizontal Opacity (0...255)" },
+    { GIMP_PDB_INT32,    "hwidth",   "Horizontal Width   (>= 0)"      },
+    { GIMP_PDB_INT32,    "hspace",   "Horizontal Spacing (>= 1)"      },
+    { GIMP_PDB_INT32,    "hoffset",  "Horizontal Offset  (>= 0)"      },
+    { GIMP_PDB_COLOR,    "hcolor",   "Horizontal Colour"              },
+    { GIMP_PDB_INT8,     "hopacity", "Horizontal Opacity (0...255)"   },
 
-    { GIMP_PDB_INT32,    "vwidth",   "Vertical Width   (>= 0)" },
-    { GIMP_PDB_INT32,    "vspace",   "Vertical Spacing (>= 1)" },
-    { GIMP_PDB_INT32,    "voffset",  "Vertical Offset  (>= 0)" },
-    { GIMP_PDB_COLOR,    "vcolor",   "Vertical Colour" },
-    { GIMP_PDB_INT8,     "vopacity", "Vertical Opacity (0...255)" },
+    { GIMP_PDB_INT32,    "vwidth",   "Vertical Width   (>= 0)"        },
+    { GIMP_PDB_INT32,    "vspace",   "Vertical Spacing (>= 1)"        },
+    { GIMP_PDB_INT32,    "voffset",  "Vertical Offset  (>= 0)"        },
+    { GIMP_PDB_COLOR,    "vcolor",   "Vertical Colour"                },
+    { GIMP_PDB_INT8,     "vopacity", "Vertical Opacity (0...255)"     },
 
-    { GIMP_PDB_INT32,    "iwidth",   "Intersection Width   (>= 0)" },
-    { GIMP_PDB_INT32,    "ispace",   "Intersection Spacing (>= 0)" },
-    { GIMP_PDB_INT32,    "ioffset",  "Intersection Offset  (>= 0)" },
-    { GIMP_PDB_COLOR,    "icolor",   "Intersection Colour" },
+    { GIMP_PDB_INT32,    "iwidth",   "Intersection Width   (>= 0)"    },
+    { GIMP_PDB_INT32,    "ispace",   "Intersection Spacing (>= 0)"    },
+    { GIMP_PDB_INT32,    "ioffset",  "Intersection Offset  (>= 0)"    },
+    { GIMP_PDB_COLOR,    "icolor",   "Intersection Colour"            },
     { GIMP_PDB_INT8,     "iopacity", "Intersection Opacity (0...255)" }
   };
 
-  gimp_install_procedure ("plug_in_grid",
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Draws a grid.",
                           "Draws a grid using the specified colors. "
                           "The grid origin is the upper left corner.",
@@ -152,7 +151,7 @@ void query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_grid", "<Image>/Filters/Render/Pattern");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Render/Pattern");
 }
 
 static void
@@ -220,7 +219,7 @@ run (const gchar      *name,
       grid_cfg.vcolor = grid_cfg.icolor = grid_cfg.hcolor;
 
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_grid", &grid_cfg);
+      gimp_get_data (PLUG_IN_PROC, &grid_cfg);
     }
 
   if (run_mode == GIMP_RUN_INTERACTIVE)
@@ -239,7 +238,7 @@ run (const gchar      *name,
 
   if (status == GIMP_PDB_SUCCESS)
     {
-      gimp_progress_init (_("Drawing Grid..."));
+      gimp_progress_init (_("Drawing grid"));
       gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
 
       grid (image_ID, drawable, NULL);
@@ -248,7 +247,7 @@ run (const gchar      *name,
         gimp_displays_flush ();
 
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_grid", &grid_cfg, sizeof (grid_cfg));
+        gimp_set_data (PLUG_IN_PROC, &grid_cfg, sizeof (grid_cfg));
 
       gimp_drawable_detach (drawable);
     }
@@ -300,13 +299,11 @@ pix_composite (guchar   *p1,
 {
   gint b;
 
-  if (alpha)
-    {
-      bytes--;
-    }
-
   if (blend)
     {
+      if (alpha)
+        bytes--;
+
       for (b = 0; b < bytes; b++)
         {
           *p1 = *p1 * (1.0 - p2[3]/255.0) + p2[b] * p2[3]/255.0;
@@ -321,7 +318,8 @@ pix_composite (guchar   *p1,
 
   if (alpha && *p1 < 255)
     {
-      b = *p1 + 255.0 * ((double)p2[3] / (255.0 - *p1));
+      b = *p1 + 255.0 * ((gdouble) p2[3] / (255.0 - *p1));
+
       *p1 = b > 255 ? 255 : b;
     }
 }
@@ -358,9 +356,9 @@ grid (gint32        image_ID,
       break;
 
     case GIMP_GRAY:
-      hcolor[0] = gimp_rgb_intensity_uchar (&grid_cfg.hcolor);
-      vcolor[0] = gimp_rgb_intensity_uchar (&grid_cfg.vcolor);
-      icolor[0] = gimp_rgb_intensity_uchar (&grid_cfg.icolor);
+      hcolor[0] = gimp_rgb_luminance_uchar (&grid_cfg.hcolor);
+      vcolor[0] = gimp_rgb_luminance_uchar (&grid_cfg.vcolor);
+      icolor[0] = gimp_rgb_luminance_uchar (&grid_cfg.icolor);
       blend = TRUE;
       break;
 
@@ -488,8 +486,10 @@ grid (gint32        image_ID,
         }
       else
         {
-          gimp_pixel_rgn_set_row (&destPR, dest, sx1, y, (sx2 - sx1) );
-          gimp_progress_update ((double) y / (double) (sy2 - sy1));
+          gimp_pixel_rgn_set_row (&destPR, dest, sx1, y, (sx2 - sx1));
+
+          if (y % 16 == 0)
+            gimp_progress_update ((gdouble) y / (gdouble) (sy2 - sy1));
         }
     }
 
@@ -630,16 +630,23 @@ dialog (gint32        image_ID,
 
   g_return_val_if_fail (main_dialog == NULL, FALSE);
 
-  gimp_ui_init ("grid", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  main_dialog = dlg = gimp_dialog_new (_("Grid"), "grid",
+  main_dialog = dlg = gimp_dialog_new (_("Grid"), PLUG_IN_BINARY,
                                        NULL, 0,
-                                       gimp_standard_help_func, "plug-in-grid",
+                                       gimp_standard_help_func, PLUG_IN_PROC,
 
                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                        GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                                        NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dlg),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dlg));
 
   /*  Get the image resolution and unit  */
   gimp_image_get_resolution (image_ID, &xres, &yres);
@@ -731,10 +738,10 @@ dialog (gint32        image_ID,
   /* connect to the 'value_changed' signal because we have to take care
    * of keeping the entries in sync when the chainbutton is active
    */
-  g_signal_connect (width, "value_changed",
+  g_signal_connect (width, "value-changed",
                     G_CALLBACK (entry_callback),
                     chain_button);
-  g_signal_connect_swapped (width, "value_changed",
+  g_signal_connect_swapped (width, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -759,15 +766,15 @@ dialog (gint32        image_ID,
   gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (space), 2, xres, TRUE);
 
   /*  set the size (in pixels) that will be treated as 0% and 100%  */
-  gimp_size_entry_set_size (GIMP_SIZE_ENTRY (space), 0, 0.0, drawable->width);
-  gimp_size_entry_set_size (GIMP_SIZE_ENTRY (space), 1, 0.0, drawable->height);
+  gimp_size_entry_set_size (GIMP_SIZE_ENTRY (space), 0, 0.0, drawable->height);
+  gimp_size_entry_set_size (GIMP_SIZE_ENTRY (space), 1, 0.0, drawable->width);
   gimp_size_entry_set_size (GIMP_SIZE_ENTRY (space), 2, 0.0, drawable->width);
 
   /*  set upper and lower limits (in pixels)  */
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (space), 0, 1.0,
-                                         drawable->width);
-  gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (space), 1, 1.0,
                                          drawable->height);
+  gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (space), 1, 1.0,
+                                         drawable->width);
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (space), 2, 0.0,
                                          MAX (drawable->width,
                                               drawable->height));
@@ -795,13 +802,13 @@ dialog (gint32        image_ID,
    * we have to take care of keeping the entries in sync when the
    * chainbutton is active
    */
-  g_signal_connect (space, "value_changed",
+  g_signal_connect (space, "value-changed",
                     G_CALLBACK (entry_callback),
                     chain_button);
   g_signal_connect (space, "unit_changed",
                     G_CALLBACK (entry_callback),
                     chain_button);
-  g_signal_connect_swapped (space, "value_changed",
+  g_signal_connect_swapped (space, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -826,15 +833,15 @@ dialog (gint32        image_ID,
   gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (offset), 2, xres, TRUE);
 
   /*  set the size (in pixels) that will be treated as 0% and 100%  */
-  gimp_size_entry_set_size (GIMP_SIZE_ENTRY (offset), 0, 0.0, drawable->width);
-  gimp_size_entry_set_size (GIMP_SIZE_ENTRY (offset), 1, 0.0, drawable->height);
+  gimp_size_entry_set_size (GIMP_SIZE_ENTRY (offset), 0, 0.0, drawable->height);
+  gimp_size_entry_set_size (GIMP_SIZE_ENTRY (offset), 1, 0.0, drawable->width);
   gimp_size_entry_set_size (GIMP_SIZE_ENTRY (offset), 2, 0.0, drawable->width);
 
   /*  set upper and lower limits (in pixels)  */
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (offset), 0, 0.0,
-                                         drawable->width);
-  gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (offset), 1, 0.0,
                                          drawable->height);
+  gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (offset), 1, 0.0,
+                                         drawable->width);
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (offset), 2, 0.0,
                                          MAX (drawable->width,
                                               drawable->height));
@@ -868,13 +875,13 @@ dialog (gint32        image_ID,
    * we have to take care of keeping the entries in sync when the
    * chainbutton is active
    */
-  g_signal_connect (offset, "value_changed",
+  g_signal_connect (offset, "value-changed",
                     G_CALLBACK (entry_callback),
                     chain_button);
   g_signal_connect (offset, "unit_changed",
                     G_CALLBACK (entry_callback),
                     chain_button);
-  g_signal_connect_swapped (offset, "value_changed",
+  g_signal_connect_swapped (offset, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -894,13 +901,13 @@ dialog (gint32        image_ID,
   gtk_table_attach_defaults (GTK_TABLE (table), hcolor_button, 0, 1, 1, 2);
   gtk_widget_show (hcolor_button);
 
-  g_signal_connect (hcolor_button, "color_changed",
+  g_signal_connect (hcolor_button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &grid_cfg.hcolor);
-  g_signal_connect (hcolor_button, "color_changed",
+  g_signal_connect (hcolor_button, "color-changed",
                     G_CALLBACK (color_callback),
                     chain_button);
-  g_signal_connect_swapped (hcolor_button, "color_changed",
+  g_signal_connect_swapped (hcolor_button, "color-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -912,13 +919,13 @@ dialog (gint32        image_ID,
   gtk_table_attach_defaults (GTK_TABLE (table), vcolor_button, 1, 2, 1, 2);
   gtk_widget_show (vcolor_button);
 
-  g_signal_connect (vcolor_button, "color_changed",
+  g_signal_connect (vcolor_button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &grid_cfg.vcolor);
-  g_signal_connect (vcolor_button, "color_changed",
+  g_signal_connect (vcolor_button, "color-changed",
                     G_CALLBACK (color_callback),
                     chain_button);
-  g_signal_connect_swapped (vcolor_button, "color_changed",
+  g_signal_connect_swapped (vcolor_button, "color-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -930,10 +937,10 @@ dialog (gint32        image_ID,
   gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 1, 2);
   gtk_widget_show (button);
 
-  g_signal_connect (button, "color_changed",
+  g_signal_connect (button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &grid_cfg.icolor);
-  g_signal_connect_swapped (button, "color_changed",
+  g_signal_connect_swapped (button, "color-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 

@@ -4,28 +4,31 @@ libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Composite\"	\
-	@GIMP_THREAD_FLAGS@			\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GLIB_CFLAGS)		\
 	-I$(includedir)
 
 composite_libraries = \
-        libcomposite3dnow.a	\
-        libcompositealtivec.a	\
-        libcompositemmx.a	\
-        libcompositesse.a	\
-        libcompositesse2.a	\
-        libcompositevis.a
+	libcomposite3dnow.a	\
+	libcompositealtivec.a	\
+	libcompositemmx.a	\
+	libcompositesse.a	\
+	libcompositesse2.a	\
+	libcompositevis.a
 
 noinst_LIBRARIES = $(composite_libraries) libcomposite.a
 
 libcomposite3dnow_a_SOURCES = \
 	gimp-composite-3dnow.c		\
 	gimp-composite-3dnow.h
+
+libcompositealtivec_a_CFLAGS = $(ALTIVEC_EXTRA_CFLAGS)
 
 libcompositealtivec_a_SOURCES = \
 	gimp-composite-altivec.c	\

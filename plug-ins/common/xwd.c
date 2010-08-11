@@ -48,24 +48,23 @@
                           specified as big-endian). Trim magic header
  * V 1.95, PK, 02-Jul-01: Fix problem with 8 bit image
  */
-static char ident[] = "@(#) GIMP XWD file-plugin v1.95  02-Jul-2001";
 
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
-#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define LOAD_PROC      "file-xwd-load"
+#define SAVE_PROC      "file-xwd-save"
+#define PLUG_IN_BINARY "xwd"
 
 
 typedef gulong  L_CARD32;
@@ -247,9 +246,9 @@ query (void)
 {
   static GimpParamDef load_args[] =
   {
-    { GIMP_PDB_INT32,  "run_mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
-    { GIMP_PDB_STRING, "raw_filename", "The name of the file to load" }
+    { GIMP_PDB_STRING, "raw-filename", "The name of the file to load" }
   };
 
   static GimpParamDef load_return_vals[] =
@@ -259,14 +258,14 @@ query (void)
 
   static GimpParamDef save_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",     "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
     { GIMP_PDB_DRAWABLE, "drawable",     "Drawable to save" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to save the image in" },
-    { GIMP_PDB_STRING,   "raw_filename", "The name of the file to save the image in" }
+    { GIMP_PDB_STRING,   "raw-filename", "The name of the file to save the image in" }
   };
 
-  gimp_install_procedure ("file_xwd_load",
+  gimp_install_procedure (LOAD_PROC,
                           "Loads files in the XWD (X Window Dump) format",
                           "Loads files in the XWD (X Window Dump) format. "
                           "XWD image files are produced by the program xwd. "
@@ -281,13 +280,13 @@ query (void)
                           G_N_ELEMENTS (load_return_vals),
                           load_args, load_return_vals);
 
-  gimp_register_file_handler_mime ("file_xwd_load", "image/x-xwindowdump");
-  gimp_register_magic_load_handler ("file_xwd_load",
+  gimp_register_file_handler_mime (LOAD_PROC, "image/x-xwindowdump");
+  gimp_register_magic_load_handler (LOAD_PROC,
                                     "xwd",
                                     "",
                                     "4,long,0x00000007");
 
-  gimp_install_procedure ("file_xwd_save",
+  gimp_install_procedure (SAVE_PROC,
                           "Saves files in the XWD (X Window Dump) format",
                           "XWD saving handles all image types except "
                           "those with alpha channels.",
@@ -300,8 +299,8 @@ query (void)
                           G_N_ELEMENTS (save_args), 0,
                           save_args, NULL);
 
-  gimp_register_file_handler_mime ("file_xwd_save", "image/x-xwindowdump");
-  gimp_register_save_handler ("file_xwd_save", "xwd", "");
+  gimp_register_file_handler_mime (SAVE_PROC, "image/x-xwindowdump");
+  gimp_register_save_handler (SAVE_PROC, "xwd", "");
 }
 
 
@@ -329,7 +328,7 @@ run (const gchar      *name,
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 
-  if (strcmp (name, "file_xwd_load") == 0)
+  if (strcmp (name, LOAD_PROC) == 0)
     {
       image_ID = load_image (param[1].data.d_string);
 
@@ -344,7 +343,7 @@ run (const gchar      *name,
           status = GIMP_PDB_EXECUTION_ERROR;
         }
     }
-  else if (strcmp (name, "file_xwd_save") == 0)
+  else if (strcmp (name, SAVE_PROC) == 0)
     {
       image_ID    = param[1].data.d_int32;
       drawable_ID = param[2].data.d_int32;
@@ -354,7 +353,7 @@ run (const gchar      *name,
         {
         case GIMP_RUN_INTERACTIVE:
         case GIMP_RUN_WITH_LAST_VALS:
-          gimp_ui_init ("xwd", FALSE);
+          gimp_ui_init (PLUG_IN_BINARY, FALSE);
           export = gimp_export_image (&image_ID, &drawable_ID, "XWD",
                                       (GIMP_EXPORT_CAN_HANDLE_RGB |
                                        GIMP_EXPORT_CAN_HANDLE_GRAY |
@@ -411,12 +410,11 @@ load_image (const gchar *filename)
 {
   FILE            *ifp;
   gint             depth, bpp;
-  gchar           *temp;
   gint32           image_ID;
   L_XWDFILEHEADER  xwdhdr;
   L_XWDCOLOR      *xwdcolmap = NULL;
 
-  ifp = fopen (filename, "rb");
+  ifp = g_fopen (filename, "rb");
   if (!ifp)
     {
       g_message (_("Could not open '%s' for reading: %s"),
@@ -472,43 +470,8 @@ load_image (const gchar *filename)
         }
     }
 
-  if (xwdhdr.l_pixmap_width <= 0)
-    {
-      g_message (_("'%s':\nNo image width specified"),
-                 gimp_filename_to_utf8 (filename));
-      fclose (ifp);
-      return (-1);
-    }
-
-  if (xwdhdr.l_pixmap_width > GIMP_MAX_IMAGE_SIZE
-      || xwdhdr.l_bytes_per_line > GIMP_MAX_IMAGE_SIZE * 3)
-    {
-      g_message (_("'%s':\nImage width is larger than GIMP can handle"),
-                 gimp_filename_to_utf8 (filename));
-      fclose (ifp);
-      return (-1);
-    }
-
-  if (xwdhdr.l_pixmap_height <= 0)
-    {
-      g_message (_("'%s':\nNo image height specified"),
-                 gimp_filename_to_utf8 (filename));
-      fclose (ifp);
-      return (-1);
-    }
-
-  if (xwdhdr.l_pixmap_height > GIMP_MAX_IMAGE_SIZE)
-    {
-      g_message (_("'%s':\nImage height is larger than GIMP can handle"),
-                 gimp_filename_to_utf8 (filename));
-      fclose (ifp);
-      return (-1);
-    }
-
-  temp = g_strdup_printf (_("Opening '%s'..."),
-                          gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp);
-  g_free (temp);
+  gimp_progress_init_printf (_("Opening '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   depth = xwdhdr.l_pixmap_depth;
   bpp   = xwdhdr.l_bits_per_pixel;
@@ -556,17 +519,10 @@ load_image (const gchar *filename)
     g_free (xwdcolmap);
 
   if (image_ID == -1)
-    {
-      temp = g_strdup_printf (_("XWD-file %s has format %d, depth %d\n"
-                                "and bits per pixel %d.\n"
-                                "Currently this is not supported."),
-                              gimp_filename_to_utf8 (filename),
-                              (gint) xwdhdr.l_pixmap_format, depth, bpp);
-      g_message (temp);
-      g_free (temp);
-
-      return -1;
-    }
+    g_message (_("XWD-file %s has format %d, depth %d and bits per pixel %d. "
+                 "Currently this is not supported."),
+               gimp_filename_to_utf8 (filename),
+               (gint) xwdhdr.l_pixmap_format, depth, bpp);
 
   return image_ID;
 }
@@ -580,7 +536,6 @@ save_image (const gchar *filename,
   FILE          *ofp;
   GimpImageType  drawable_type;
   gint           retval;
-  gchar         *temp;
 
   drawable_type = gimp_drawable_type (drawable_ID);
 
@@ -604,7 +559,7 @@ save_image (const gchar *filename,
     }
 
   /* Open the output file. */
-  ofp = fopen (filename, "wb");
+  ofp = g_fopen (filename, "wb");
   if (!ofp)
     {
       g_message (_("Could not open '%s' for writing: %s"),
@@ -612,10 +567,8 @@ save_image (const gchar *filename,
       return FALSE;
     }
 
-  temp = g_strdup_printf (_("Saving '%s'..."),
-                          gimp_filename_to_utf8 (filename));
-  gimp_progress_init (temp);
-  g_free (temp);
+  gimp_progress_init_printf (_("Saving '%s'"),
+                             gimp_filename_to_utf8 (filename));
 
   if (drawable_type == GIMP_INDEXED_IMAGE)
     retval = save_index (ofp, image_ID, drawable_ID, 0);
@@ -1218,7 +1171,7 @@ load_xwd_f2_d1_b1 (const gchar     *filename,
   guchar           c1, c2, c3, c4;
   gint             width, height, linepad, scan_lines, tile_height;
   gint             i, j, ncols;
-  gchar           *temp = ident;  /* Just to satisfy lint/gcc */
+  gchar           *temp;
   guchar           bit2byte[256 * 8];
   guchar          *data, *scanline;
   gint             err = 0;

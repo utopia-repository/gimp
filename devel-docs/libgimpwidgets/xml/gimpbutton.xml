@@ -4,53 +4,49 @@
 
 <refentry id="GimpButton">
 <refmeta>
-<refentrytitle role="top_of_page">GimpButton</refentrytitle>
+<refentrytitle>GimpButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpButton</refname>
-<refpurpose>A <link linkend="GtkButton"><type>GtkButton</type></link> with a little extra functionality.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>GimpButton</refname><refpurpose>A <link linkend="GtkButton"><type>GtkButton</type></link> with a little extra functionality.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-                    <link linkend="GimpButton-struct">GimpButton</link>;
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-button-new">gimp_button_new</link>                     (void);
-<link linkend="void">void</link>                <link linkend="gimp-button-extended-clicked">gimp_button_extended_clicked</link>        (<link linkend="GimpButton">GimpButton</link> *button,
-                                                         <link linkend="GdkModifierType">GdkModifierType</link> state);
+            <link linkend="GimpButton-struct">GimpButton</link>;
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-button-new">gimp_button_new</link>                 (void);
+<link linkend="void">void</link>        <link linkend="gimp-button-extended-clicked">gimp_button_extended_clicked</link>    (<link linkend="GimpButton">GimpButton</link> *button,
+                                             <link linkend="GdkModifierType">GdkModifierType</link> state);
 
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
-<title role="object_hierarchy.title">Object Hierarchy</title>
+<refsect1>
+<title>Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
-         +----<link linkend="GtkObject">GtkObject</link>
-               +----<link linkend="GtkWidget">GtkWidget</link>
-                     +----<link linkend="GtkContainer">GtkContainer</link>
-                           +----<link linkend="GtkBin">GtkBin</link>
-                                 +----<link linkend="GtkButton">GtkButton</link>
-                                       +----GimpButton
-                                             +----<link linkend="GimpColorButton">GimpColorButton</link>
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkContainer">GtkContainer</link>
+                     +----<link linkend="GtkBin">GtkBin</link>
+                           +----<link linkend="GtkButton">GtkButton</link>
+                                 +----GimpButton
+                                       +----<link linkend="GimpColorButton">GimpColorButton</link>
 </synopsis>
 
 </refsect1>
 
 
 
-<refsect1 role="impl_interfaces">
-<title role="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1>
+<title>Implemented Interfaces</title>
 <para>
 GimpButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -59,17 +55,20 @@ GimpButton implements
 
 
 
-<refsect1 role="signal_proto">
-<title role="signal_proto.title">Signals</title>
+<refsect1>
+<title>Signal Prototypes</title>
 <synopsis>
 
-  &quot;<link linkend="GimpButton-extended-clicked">extended-clicked</link>&quot;                               : Run First
+&quot;<link linkend="GimpButton-extended-clicked">extended-clicked</link>&quot;
+            <link linkend="void">void</link>        user_function      (<link linkend="GimpButton">GimpButton</link> *gimpbutton,
+                                            <link linkend="GdkModifierType">GdkModifierType</link> arg1,
+                                            <link linkend="gpointer">gpointer</link> user_data);
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 <link linkend="GimpButton"><type>GimpButton</type></link> adds an extra signal to the <link linkend="GtkButton"><type>GtkButton</type></link> widget that allows
 to distinguish a normal click from a click that was performed with
@@ -77,17 +76,17 @@ modifier keys pressed.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpButton-struct" role="struct"/>GimpButton</title>
+<title><anchor id="GimpButton-struct"/>GimpButton</title>
 <indexterm><primary>GimpButton</primary></indexterm><programlisting>typedef struct _GimpButton GimpButton;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-button-new" role="function"/>gimp_button_new ()</title>
-<indexterm><primary>gimp_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_button_new                     (void);</programlisting>
+<title><anchor id="gimp-button-new"/>gimp_button_new ()</title>
+<indexterm><primary>gimp_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_button_new                 (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpButton"><type>GimpButton</type></link> widget.</para>
 <para>
@@ -97,9 +96,9 @@ Creates a new <link linkend="GimpButton"><type>GimpButton</type></link> widget.<
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-button-extended-clicked" role="function"/>gimp_button_extended_clicked ()</title>
-<indexterm><primary>gimp_button_extended_clicked</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_button_extended_clicked        (<link linkend="GimpButton">GimpButton</link> *button,
-                                                         <link linkend="GdkModifierType">GdkModifierType</link> state);</programlisting>
+<title><anchor id="gimp-button-extended-clicked"/>gimp_button_extended_clicked ()</title>
+<indexterm><primary>gimp_button_extended_clicked</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_button_extended_clicked    (<link linkend="GimpButton">GimpButton</link> *button,
+                                             <link linkend="GdkModifierType">GdkModifierType</link> state);</programlisting>
 <para>
 Emits the button's "extended_clicked" signal.</para>
 <para>
@@ -115,12 +114,12 @@ Emits the button's "extended_clicked" signal.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
-<title role="signals.title">Signal Details</title>
+<refsect1>
+<title>Signals</title>
 <refsect2><title><anchor id="GimpButton-extended-clicked"/>The &quot;extended-clicked&quot; signal</title>
-<indexterm><primary>GimpButton::extended-clicked</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpButton">GimpButton</link>     *gimpbutton,
-                                                        <link linkend="GdkModifierType">GdkModifierType</link> arg1,
-                                                        <link linkend="gpointer">gpointer</link>        user_data)       : Run First</programlisting>
+<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpButton">GimpButton</link> *gimpbutton,
+                                            <link linkend="GdkModifierType">GdkModifierType</link> arg1,
+                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
 <para>
 
 </para><variablelist role="params">

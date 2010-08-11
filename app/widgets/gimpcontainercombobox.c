@@ -45,10 +45,9 @@ enum
 };
 
 
-static void     gimp_container_combo_box_class_init   (GimpContainerComboBoxClass *klass);
-static void     gimp_container_combo_box_init         (GimpContainerComboBox  *view);
+static void     gimp_container_combo_box_view_iface_init (GimpContainerViewInterface *iface);
 
-static void     gimp_container_combo_box_view_iface_init (GimpContainerViewInterface *view_iface);
+static void     gimp_container_combo_box_unrealize    (GtkWidget              *widget);
 
 static gpointer gimp_container_combo_box_insert_item  (GimpContainerView      *view,
                                                        GimpViewable           *viewable,
@@ -75,73 +74,28 @@ static void gimp_container_combo_box_renderer_update  (GimpViewRenderer       *r
                                                        GimpContainerView      *view);
 
 
-static GtkComboBoxClass           *parent_class      = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpContainerComboBox, gimp_container_combo_box,
+                         GTK_TYPE_COMBO_BOX,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONTAINER_VIEW,
+                                                gimp_container_combo_box_view_iface_init));
+
+#define parent_class gimp_container_combo_box_parent_class
+
 static GimpContainerViewInterface *parent_view_iface = NULL;
 
-
-GType
-gimp_container_combo_box_get_type (void)
-{
-  static GType view_type = 0;
-
-  if (! view_type)
-    {
-      static const GTypeInfo view_info =
-      {
-        sizeof (GimpContainerComboBoxClass),
-        NULL,           /* base_init      */
-        NULL,           /* base_finalize  */
-        (GClassInitFunc) gimp_container_combo_box_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpContainerComboBox),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_container_combo_box_init,
-      };
-
-      static const GInterfaceInfo view_iface_info =
-      {
-        (GInterfaceInitFunc) gimp_container_combo_box_view_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      view_type = g_type_register_static (GTK_TYPE_COMBO_BOX,
-                                          "GimpContainerComboBox",
-                                          &view_info, 0);
-
-      g_type_add_interface_static (view_type, GIMP_TYPE_CONTAINER_VIEW,
-                                   &view_iface_info);
-    }
-
-  return view_type;
-}
 
 static void
 gimp_container_combo_box_class_init (GimpContainerComboBoxClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->set_property = gimp_container_view_set_property;
   object_class->get_property = gimp_container_view_get_property;
 
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_CONTAINER,
-                                    "container");
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_CONTEXT,
-                                    "context");
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_REORDERABLE,
-                                    "reorderable");
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_PREVIEW_SIZE,
-                                    "preview-size");
-  g_object_class_override_property (object_class,
-                                    GIMP_CONTAINER_VIEW_PROP_PREVIEW_BORDER_WIDTH,
-                                    "preview-border-width");
+  widget_class->unrealize    = gimp_container_combo_box_unrealize;
+
+  gimp_container_view_install_properties (object_class);
 }
 
 static void
@@ -169,7 +123,9 @@ gimp_container_combo_box_init (GimpContainerComboBox *combo_box)
 
   combo_box->viewable_renderer = cell;
 
-  cell = gtk_cell_renderer_text_new ();
+  cell = g_object_new (GTK_TYPE_CELL_RENDERER_TEXT,
+                       "ellipsize", PANGO_ELLIPSIZE_MIDDLE,
+                       NULL);
   gtk_cell_layout_pack_start (layout, cell, TRUE);
   gtk_cell_layout_set_attributes (layout, cell,
                                   "text", COLUMN_NAME,
@@ -182,23 +138,22 @@ gimp_container_combo_box_init (GimpContainerComboBox *combo_box)
 }
 
 static void
-gimp_container_combo_box_view_iface_init (GimpContainerViewInterface *view_iface)
+gimp_container_combo_box_view_iface_init (GimpContainerViewInterface *iface)
 {
-  parent_view_iface = g_type_interface_peek_parent (view_iface);
+  parent_view_iface = g_type_interface_peek_parent (iface);
 
   if (! parent_view_iface)
     parent_view_iface = g_type_default_interface_peek (GIMP_TYPE_CONTAINER_VIEW);
 
-  view_iface->insert_item      = gimp_container_combo_box_insert_item;
-  view_iface->remove_item      = gimp_container_combo_box_remove_item;
-  view_iface->reorder_item     = gimp_container_combo_box_reorder_item;
-  view_iface->rename_item      = gimp_container_combo_box_rename_item;
-  view_iface->select_item      = gimp_container_combo_box_select_item;
-  view_iface->clear_items      = gimp_container_combo_box_clear_items;
-  view_iface->set_preview_size = gimp_container_combo_box_set_preview_size;
+  iface->insert_item      = gimp_container_combo_box_insert_item;
+  iface->remove_item      = gimp_container_combo_box_remove_item;
+  iface->reorder_item     = gimp_container_combo_box_reorder_item;
+  iface->rename_item      = gimp_container_combo_box_rename_item;
+  iface->select_item      = gimp_container_combo_box_select_item;
+  iface->clear_items      = gimp_container_combo_box_clear_items;
+  iface->set_preview_size = gimp_container_combo_box_set_preview_size;
 
-  view_iface->insert_data_free = (GDestroyNotify) g_free;
-
+  iface->insert_data_free = (GDestroyNotify) g_free;
 }
 
 GtkWidget *
@@ -265,6 +220,30 @@ gimp_container_combo_box_set (GimpContainerComboBox *combo_box,
 
   g_object_unref (renderer);
   g_free (name);
+}
+
+static void
+gimp_container_combo_box_unrealize (GtkWidget *widget)
+{
+  GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (widget));
+  GtkTreeIter   iter;
+  gboolean      iter_valid;
+
+  for (iter_valid = gtk_tree_model_get_iter_first (model, &iter);
+       iter_valid;
+       iter_valid = gtk_tree_model_iter_next (model, &iter))
+    {
+      GimpViewRenderer *renderer;
+
+      gtk_tree_model_get (model, &iter,
+                          COLUMN_RENDERER, &renderer,
+                          -1);
+
+      gimp_view_renderer_unrealize (renderer);
+      g_object_unref (renderer);
+    }
+
+  GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
 }
 
 /*  GimpContainerView methods  */
@@ -451,8 +430,8 @@ gimp_container_combo_box_changed (GtkComboBox       *combo_box,
 {
   GtkTreeIter iter;
 
-  if (parent_class->changed)
-    parent_class->changed (combo_box);
+  if (GTK_COMBO_BOX_CLASS (parent_class)->changed)
+    GTK_COMBO_BOX_CLASS (parent_class)->changed (combo_box);
 
   if (gtk_combo_box_get_active_iter (combo_box, &iter))
     {

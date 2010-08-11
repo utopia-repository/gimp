@@ -52,8 +52,6 @@ enum
 };
 
 
-static void   gimp_brush_select_class_init (GimpBrushSelectClass *klass);
-
 static GObject  * gimp_brush_select_constructor  (GType            type,
                                                   guint            n_params,
                                                   GObjectConstructParam *params);
@@ -82,44 +80,16 @@ static void   gimp_brush_select_spacing_update   (GtkAdjustment   *adj,
                                                   GimpBrushSelect *select);
 
 
-static GimpPdbDialogClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpBrushSelect, gimp_brush_select, GIMP_TYPE_PDB_DIALOG);
 
+#define parent_class gimp_brush_select_parent_class
 
-GType
-gimp_brush_select_get_type (void)
-{
-  static GType dialog_type = 0;
-
-  if (! dialog_type)
-    {
-      static const GTypeInfo dialog_info =
-      {
-        sizeof (GimpBrushSelectClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_brush_select_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpBrushSelect),
-        0,              /* n_preallocs    */
-        NULL            /* instance_init  */
-      };
-
-      dialog_type = g_type_register_static (GIMP_TYPE_PDB_DIALOG,
-                                            "GimpBrushSelect",
-                                            &dialog_info, 0);
-    }
-
-  return dialog_type;
-}
 
 static void
 gimp_brush_select_class_init (GimpBrushSelectClass *klass)
 {
   GObjectClass       *object_class = G_OBJECT_CLASS (klass);
   GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor  = gimp_brush_select_constructor;
   object_class->set_property = gimp_brush_select_set_property;
@@ -148,6 +118,11 @@ gimp_brush_select_class_init (GimpBrushSelectClass *klass)
                                                      G_PARAM_CONSTRUCT));
 }
 
+static void
+gimp_brush_select_init (GimpBrushSelect *select)
+{
+}
+
 static GObject *
 gimp_brush_select_constructor (GType                  type,
                                guint                  n_params,
@@ -167,10 +142,10 @@ gimp_brush_select_constructor (GType                  type,
   gimp_context_set_opacity    (dialog->context, select->initial_opacity);
   gimp_context_set_paint_mode (dialog->context, select->initial_mode);
 
-  g_signal_connect (dialog->context, "opacity_changed",
+  g_signal_connect (dialog->context, "opacity-changed",
                     G_CALLBACK (gimp_brush_select_opacity_changed),
                     dialog);
-  g_signal_connect (dialog->context, "paint_mode_changed",
+  g_signal_connect (dialog->context, "paint-mode-changed",
                     G_CALLBACK (gimp_brush_select_mode_changed),
                     dialog);
 
@@ -204,19 +179,20 @@ gimp_brush_select_constructor (GType                  type,
                                           TRUE, 0.0, 0.0,
                                           NULL, NULL));
 
-  g_signal_connect (select->opacity_data, "value_changed",
+  g_signal_connect (select->opacity_data, "value-changed",
                     G_CALLBACK (gimp_brush_select_opacity_update),
                     select);
 
   /*  Create the paint mode option menu  */
-  select->paint_mode_menu =
-    gimp_paint_mode_menu_new (G_CALLBACK (gimp_brush_select_mode_update),
-			      select,
-			      TRUE,
-			      gimp_context_get_paint_mode (dialog->context));
+  select->paint_mode_menu = gimp_paint_mode_menu_new (TRUE);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
 			     _("Mode:"), 0.0, 0.5,
 			     select->paint_mode_menu, 2, FALSE);
+
+  gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (select->paint_mode_menu),
+                              gimp_context_get_paint_mode (dialog->context),
+                              G_CALLBACK (gimp_brush_select_mode_update),
+			      select);
 
   spacing_adj = GIMP_BRUSH_FACTORY_VIEW (dialog->view)->spacing_adjustment;
 
@@ -224,7 +200,7 @@ gimp_brush_select_constructor (GType                  type,
   if (select->spacing >= 0)
     gtk_adjustment_set_value (spacing_adj, select->spacing);
 
-  g_signal_connect (spacing_adj, "value_changed",
+  g_signal_connect (spacing_adj, "value-changed",
                     G_CALLBACK (gimp_brush_select_spacing_update),
                     select);
 
@@ -325,8 +301,16 @@ gimp_brush_select_mode_changed (GimpContext          *context,
                                 GimpLayerModeEffects  paint_mode,
                                 GimpBrushSelect      *select)
 {
-  gimp_paint_mode_menu_set_history (GTK_OPTION_MENU (select->paint_mode_menu),
-				    paint_mode);
+  g_signal_handlers_block_by_func (select->paint_mode_menu,
+                                   gimp_brush_select_mode_update,
+				   select);
+
+  gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (select->paint_mode_menu),
+                                 paint_mode);
+
+  g_signal_handlers_unblock_by_func (select->paint_mode_menu,
+                                     gimp_brush_select_mode_update,
+                                     select);
 
   gimp_pdb_dialog_run_callback (GIMP_PDB_DIALOG (select), FALSE);
 }
@@ -343,12 +327,14 @@ static void
 gimp_brush_select_mode_update (GtkWidget       *widget,
                                GimpBrushSelect *select)
 {
-  GimpLayerModeEffects  paint_mode;
+  gint paint_mode;
 
-  paint_mode = (GimpLayerModeEffects)
-    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "gimp-item-data"));
-
-  gimp_context_set_paint_mode (GIMP_PDB_DIALOG (select)->context, paint_mode);
+  if (gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget),
+                                     &paint_mode))
+    {
+      gimp_context_set_paint_mode (GIMP_PDB_DIALOG (select)->context,
+                                   (GimpLayerModeEffects) paint_mode);
+    }
 }
 
 static void

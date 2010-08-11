@@ -61,6 +61,8 @@ gint*             gimp_image_get_layers               (gint32                ima
 						       gint                 *num_layers);
 gint*             gimp_image_get_channels             (gint32                image_ID,
 						       gint                 *num_channels);
+gint*             gimp_image_get_vectors              (gint32                image_ID,
+						       gint                 *num_vectors);
 gint32            gimp_image_get_active_drawable      (gint32                image_ID);
 gboolean          gimp_image_unset_active_channel     (gint32                image_ID);
 gint32            gimp_image_get_floating_sel         (gint32                image_ID);
@@ -105,10 +107,10 @@ gint32            gimp_image_merge_down               (gint32                ima
 						       gint32                merge_layer_ID,
 						       GimpMergeType         merge_type);
 guint8*           _gimp_image_get_colormap            (gint32                image_ID,
-						       gint                 *num_bytes);
+						       gint                 *num_bytes) G_GNUC_INTERNAL;
 gboolean          _gimp_image_set_colormap            (gint32                image_ID,
 						       gint                  num_bytes,
-						       const guint8         *colormap);
+						       const guint8         *colormap) G_GNUC_INTERNAL;
 gboolean          gimp_image_clean_all                (gint32                image_ID);
 gboolean          gimp_image_is_dirty                 (gint32                image_ID);
 gboolean          _gimp_image_thumbnail               (gint32                image_ID,
@@ -118,7 +120,7 @@ gboolean          _gimp_image_thumbnail               (gint32                ima
 						       gint                 *ret_height,
 						       gint                 *bpp,
 						       gint                 *thumbnail_data_count,
-						       guint8              **thumbnail_data);
+						       guint8              **thumbnail_data) G_GNUC_INTERNAL;
 gint32            gimp_image_get_active_layer         (gint32                image_ID);
 gboolean          gimp_image_set_active_layer         (gint32                image_ID,
 						       gint32                active_layer_ID);

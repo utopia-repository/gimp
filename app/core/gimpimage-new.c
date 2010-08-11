@@ -20,13 +20,11 @@
 
 #include <glib-object.h>
 
+#include "libgimpconfig/gimpconfig.h"
+
 #include "core-types.h"
 
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-utils.h"
-
 #include "gimp.h"
-#include "gimpbuffer.h"
 #include "gimpimage.h"
 #include "gimpimage-new.h"
 #include "gimptemplate.h"
@@ -48,16 +46,8 @@ gimp_image_new_get_last_template (Gimp      *gimp,
   if (gimage)
     gimp_template_set_from_image (template, gimage);
   else
-    gimp_config_sync (GIMP_CONFIG (gimp->image_new_last_template),
-                      GIMP_CONFIG (template), 0);
-
-  if (gimp->global_buffer && gimp->have_current_cut_buffer)
-    {
-      g_object_set (template,
-                    "width",  gimp_buffer_get_width (gimp->global_buffer),
-                    "height", gimp_buffer_get_height (gimp->global_buffer),
-                    NULL);
-    }
+    gimp_config_sync (G_OBJECT (gimp->image_new_last_template),
+                      G_OBJECT (template), 0);
 
   return template;
 }
@@ -69,8 +59,6 @@ gimp_image_new_set_last_template (Gimp         *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (GIMP_IS_TEMPLATE (template));
 
-  gimp_config_sync (GIMP_CONFIG (template),
-                    GIMP_CONFIG (gimp->image_new_last_template), 0);
-
-  gimp->have_current_cut_buffer = FALSE;
+  gimp_config_sync (G_OBJECT (template),
+                    G_OBJECT (gimp->image_new_last_template), 0);
 }

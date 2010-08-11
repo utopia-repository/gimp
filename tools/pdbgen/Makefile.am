@@ -5,6 +5,7 @@ pdb_sources = \
 	pdb/brush.pdb			\
 	pdb/brush_select.pdb		\
 	pdb/brushes.pdb			\
+	pdb/buffer.pdb			\
 	pdb/channel.pdb			\
 	pdb/color.pdb			\
 	pdb/context.pdb			\
@@ -21,6 +22,7 @@ pdb_sources = \
 	pdb/gradient.pdb		\
 	pdb/gradient_select.pdb		\
 	pdb/gradients.pdb		\
+	pdb/grid.pdb			\
 	pdb/guides.pdb			\
 	pdb/help.pdb			\
 	pdb/image.pdb			\
@@ -44,13 +46,13 @@ pdb_sources = \
 	pdb/text_tool.pdb		\
 	pdb/transform_tools.pdb		\
 	pdb/undo.pdb			\
-	pdb/unit.pdb
+	pdb/unit.pdb			\
+	pdb/vectors.pdb
 
 EXTRA_DIST = \
 	README		\
 	app.pl		\
 	enumcode.pl	\
-	enumcode-py.pl	\
 	enumgen.pl	\
 	groups.pl	\
 	lib.pl		\
@@ -66,7 +68,7 @@ enum_headers = \
 	../../app/core/core-enums.h		\
 	../../app/text/text-enums.h		\
 	../../app/paint/paint-enums.h		\
-	../../app/plug-in/plug-in-types.h
+	../../app/plug-in/plug-in-enums.h
 
 pdb_scripts = \
 	pdbgen.pl	\
@@ -136,12 +138,4 @@ stamp-enum-code: $(srcdir)/enumcode.pl $(enum_deps)
 	  $(PERL) enumcode.pl \
 	 && echo timestamp > $$rootme/stamp-enum-code
 
-stamp-enum-code-py: $(srcdir)/enumcode-py.pl $(enum_deps)
-	rootme=`pwd`; \
-	destdir=`cd $(top_srcdir) && pwd`; export destdir; \
-	cd $(srcdir) && \
-	  PDBGEN_BACKUP=$(PDBGEN_BACKUP) \
-	  $(PERL) enumcode-py.pl \
-	 && echo timestamp > $$rootme/stamp-enum-code-py
-
-all-local: stamp-pdbgen stamp-enum-code stamp-enum-code-py
+all-local: stamp-pdbgen stamp-enum-code

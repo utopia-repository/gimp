@@ -23,11 +23,7 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -39,11 +35,11 @@
  * Constants...
  */
 
-#define PLUG_IN_NAME     "plug_in_destripe"
-#define PLUG_IN_VERSION  "0.2"
-#define HELP_ID          "plug-in-destripe"
-#define SCALE_WIDTH      140
-#define MAX_AVG          100
+#define PLUG_IN_PROC    "plug-in-destripe"
+#define PLUG_IN_BINARY  "destripe"
+#define PLUG_IN_VERSION "0.2"
+#define SCALE_WIDTH     140
+#define MAX_AVG         100
 
 
 /*
@@ -96,13 +92,13 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",  "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",     "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable" },
-    { GIMP_PDB_INT32,    "avg_width", "Averaging filter width (default = 36)" }
+    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive"          },
+    { GIMP_PDB_IMAGE,    "image",     "Input image"                           },
+    { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable"                        },
+    { GIMP_PDB_INT32,    "avg-width", "Averaging filter width (default = 36)" }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Destripe filter, used to remove vertical stripes "
                           "caused by cheap scanners.",
                           "This plug-in tries to remove vertical stripes from "
@@ -116,7 +112,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Enhance");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Enhance");
 }
 
 static void
@@ -162,7 +158,7 @@ run (const gchar      *name,
       /*
        * Possibly retrieve data...
        */
-      gimp_get_data (PLUG_IN_NAME, &vals);
+      gimp_get_data (PLUG_IN_PROC, &vals);
 
       /*
        * Get information from the dialog...
@@ -185,7 +181,7 @@ run (const gchar      *name,
       /*
        * Possibly retrieve data...
        */
-      gimp_get_data (PLUG_IN_NAME, &vals);
+      gimp_get_data (PLUG_IN_PROC, &vals);
       break;
 
     default :
@@ -223,7 +219,7 @@ run (const gchar      *name,
            * Store data...
            */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data (PLUG_IN_NAME, &vals, sizeof (vals));
+            gimp_set_data (PLUG_IN_PROC, &vals, sizeof (vals));
         }
       else
         status = GIMP_PDB_EXECUTION_ERROR;
@@ -273,7 +269,7 @@ destripe (GimpDrawable *drawable,
     }
   else
     {
-      gimp_progress_init (_("Destriping..."));
+      gimp_progress_init (_("Destriping"));
       gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
 
       width  = x2 - x1;
@@ -437,16 +433,23 @@ destripe_dialog (GimpDrawable *drawable)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("destripe", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Destripe"), "destripe",
+  dialog = gimp_dialog_new (_("Destripe"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, HELP_ID,
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -470,10 +473,10 @@ destripe_dialog (GimpDrawable *drawable)
                               vals.avg_width, 2, MAX_AVG, 1, 10, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &vals.avg_width);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -497,4 +500,3 @@ destripe_dialog (GimpDrawable *drawable)
 
   return run;
 }
-

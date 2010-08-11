@@ -44,7 +44,7 @@ gimp_progress_init (const gchar *message)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_progress_init",
+  return_vals = gimp_run_procedure ("gimp-progress-init",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, message,
 				    GIMP_PDB_INT32, gimp_default_display (),
@@ -75,7 +75,7 @@ gimp_progress_update (gdouble percentage)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_progress_update",
+  return_vals = gimp_run_procedure ("gimp-progress-update",
 				    &nreturn_vals,
 				    GIMP_PDB_FLOAT, percentage,
 				    GIMP_PDB_END);
@@ -85,6 +85,104 @@ gimp_progress_update (gdouble percentage)
   gimp_destroy_params (return_vals, nreturn_vals);
 
   return success;
+}
+
+/**
+ * gimp_progress_pulse:
+ *
+ * Pulses the progress bar for the current plug-in.
+ *
+ * Updates the progress bar for the current plug-in. It is only valid
+ * to call this procedure from a plug-in. Use this function instead of
+ * gimp_progress_update() if you cannot tell how much progress has been
+ * made. This usually causes the the progress bar to enter \"activity
+ * mode\", where a block bounces back and forth.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_progress_pulse (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-progress-pulse",
+				    &nreturn_vals,
+				    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_progress_set_text:
+ * @message: Message to use in the progress dialog.
+ *
+ * Changes the text in the progress bar for the current plug-in.
+ *
+ * This function allows to change the text in the progress bar for the
+ * current plug-in. Unlike gimp_progress_init() it does not change the
+ * displayed value.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: GIMP 2.4
+ */
+gboolean
+gimp_progress_set_text (const gchar *message)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-progress-set-text",
+				    &nreturn_vals,
+				    GIMP_PDB_STRING, message,
+				    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_progress_get_window_handle:
+ *
+ * Returns the native window ID of the toplevel window this plug-in's
+ * progress is displayed in.
+ *
+ * This function returns the native window ID of the toplevel window
+ * this plug-in\'s progress is displayed in.
+ *
+ * Returns: The progress bar's toplevel window.
+ *
+ * Since: GIMP 2.2
+ */
+gint
+gimp_progress_get_window_handle (void)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gint window = 0;
+
+  return_vals = gimp_run_procedure ("gimp-progress-get-window-handle",
+				    &nreturn_vals,
+				    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    window = return_vals[1].data.d_int32;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return window;
 }
 
 /**
@@ -109,7 +207,7 @@ _gimp_progress_install (const gchar *progress_callback)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_progress_install",
+  return_vals = gimp_run_procedure ("gimp-progress-install",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, progress_callback,
 				    GIMP_PDB_END);
@@ -141,7 +239,7 @@ _gimp_progress_uninstall (const gchar *progress_callback)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_progress_uninstall",
+  return_vals = gimp_run_procedure ("gimp-progress-uninstall",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, progress_callback,
 				    GIMP_PDB_END);
@@ -172,7 +270,7 @@ gimp_progress_cancel (const gchar *progress_callback)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_progress_cancel",
+  return_vals = gimp_run_procedure ("gimp-progress-cancel",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, progress_callback,
 				    GIMP_PDB_END);

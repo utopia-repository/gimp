@@ -30,8 +30,6 @@
  * feature freeze for Gimp 1.2 and adding a completely new communication
  * infrastructure for remote controlling Gimp is definitely a new
  * feature...
- * Think about sockets or Corba when you want to do something similiar.
- * We definitely consider this for Gimp 2.0.
  *                                                Simon
  */
 
@@ -45,6 +43,8 @@
 #include <unistd.h>
 #endif
 
+#include <locale.h>
+
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
@@ -52,19 +52,53 @@
 
 #include "libgimpbase/gimpversion.h"
 
+#include <glib/gi18n.h>
+
 
 #define GIMP_BINARY "gimp-" GIMP_APP_VERSION
 
 
-static void start_new_gimp (GdkScreen   *screen,
-                            const gchar *argv0,
-                            const gchar *startup_id,
-                            GString     *file_list) G_GNUC_NORETURN;
+static void  start_new_gimp (GdkScreen   *screen,
+                             const gchar *argv0,
+                             const gchar *startup_id,
+                             GString     *file_list) G_GNUC_NORETURN;
+
+static void  show_version   (void) G_GNUC_NORETURN;
 
 
-static gboolean  existing  = FALSE;
-static gboolean  query     = FALSE;
-static gboolean  no_splash = FALSE;
+static gboolean      existing  = FALSE;
+static gboolean      query     = FALSE;
+static gboolean      no_splash = FALSE;
+static const gchar **filenames = NULL;
+
+static const GOptionEntry main_entries[] =
+{
+  { "version", 'v', G_OPTION_FLAG_NO_ARG,
+    G_OPTION_ARG_CALLBACK, (GOptionArgFunc) show_version,
+    N_("Show version information and exit"), NULL
+  },
+  {
+    "existing", 'e', 0,
+    G_OPTION_ARG_NONE, &existing,
+    N_("Use a running GIMP only, never start a new one"), NULL
+  },
+  {
+    "query", 'q', 0,
+    G_OPTION_ARG_NONE, &query,
+    N_("Only check if GIMP is running, then quit"), NULL
+  },
+  {
+    "no-splash", 's', 0,
+    G_OPTION_ARG_NONE, &no_splash,
+    N_("Start GIMP without showing the startup window"), NULL
+  },
+  {
+    G_OPTION_REMAINING, 0, 0,
+    G_OPTION_ARG_FILENAME_ARRAY, &filenames,
+    NULL, NULL
+  },
+  { NULL }
+};
 
 
 static GdkWindow *
@@ -84,18 +118,15 @@ gimp_remote_find_window (GdkDisplay *display,
 
   xdisplay = gdk_x11_display_get_xdisplay (display);
 
-  role_atom   = XInternAtom (xdisplay, "WM_WINDOW_ROLE", TRUE);
-  string_atom = XInternAtom (xdisplay, "STRING",         TRUE);
-
-  if (role_atom == None || string_atom == None)
-    return NULL;
-
   if (XQueryTree (xdisplay, GDK_WINDOW_XID (root_window),
                   &root, &parent, &children, &nchildren) == 0)
     return NULL;
 
   if (! (children && nchildren))
     return NULL;
+
+  role_atom   = XInternAtom (xdisplay, "WM_WINDOW_ROLE", TRUE);
+  string_atom = XInternAtom (xdisplay, "STRING",         TRUE);
 
   for (i = nchildren - 1; i >= 0; i--)
     {
@@ -129,7 +160,8 @@ gimp_remote_find_window (GdkDisplay *display,
                               &data) == Success &&
           ret_type)
         {
-          if (nitems > 11 && strcmp (data, "gimp-toolbox") == 0)
+          if (nitems > 11 &&
+              strcmp ((const gchar *) data, "gimp-toolbox") == 0)
             {
               XFree (data);
               result = gdk_window_foreign_new_for_display (display, window);
@@ -154,36 +186,19 @@ source_selection_get (GtkWidget        *widget,
 {
   gtk_selection_data_set (selection_data,
                           selection_data->target,
-                          8, uri, strlen (uri));
+                          8, (const guchar *) uri, strlen (uri));
   gtk_main_quit ();
 }
 
 static gboolean
 toolbox_hidden (gpointer data)
 {
-  g_printerr ("Could not connect to the Gimp.\n"
-              "Make sure that the Toolbox is visible!\n");
+  g_printerr ("%s\n%s\n",
+              _("Could not connect to GIMP."),
+              _("Make sure that the Toolbox is visible!"));
   gtk_main_quit ();
 
   return FALSE;
-}
-
-static void
-usage (const gchar *name)
-{
-  g_print ("gimp-remote version %s\n\n", GIMP_VERSION);
-  g_print ("Tells a running Gimp to open a (local or remote) image file.\n\n"
-	   "Usage: %s [options] [FILE|URI]...\n\n", name);
-  g_print ("Valid options are:\n"
-	   "  -h, --help            Output this help.\n"
-	   "  -v, --version         Output version info.\n"
-           "  --display <display>   Use the designated X display.\n"
-           "  -e, --existing        Use a running GIMP only, never start a new one.\n"
-           "  -q, --query           Query if a GIMP is running, then quit.\n"
-           "  -s, --no-splash       Start GIMP w/o showing the startup window.\n"
-           "\n");
-  g_print ("Example:  %s http://www.gimp.org/icons/frontpage-small.gif\n"
-	   "     or:  %s localfile.png\n\n", name, name);
 }
 
 static void
@@ -281,8 +296,9 @@ start_new_gimp (GdkScreen   *screen,
       execvp (GIMP_BINARY, argv);
 
       /*  if execv and execvp return, there was an error  */
-      g_printerr ("Couldn't start %s for the following reason: %s\n",
-		      GIMP_BINARY, g_strerror (errno));
+      g_printerr (_("Couldn't start '%s': %s"),
+                  GIMP_BINARY, g_strerror (errno));
+      g_printerr ("\n");
 
       exit (EXIT_FAILURE);
 
@@ -294,61 +310,41 @@ start_new_gimp (GdkScreen   *screen,
 }
 
 static void
-parse_option (const gchar *progname,
-              const gchar *arg)
+show_version (void)
 {
-  if (strcmp (arg, "-v") == 0 ||
-      strcmp (arg, "--version") == 0)
-    {
-      g_print ("gimp-remote version %s\n", GIMP_VERSION);
-      exit (EXIT_SUCCESS);
-    }
-  else if (strcmp (arg, "-h") == 0 ||
-	   strcmp (arg, "-?") == 0 ||
-	   strcmp (arg, "--help") == 0 ||
-	   strcmp (arg, "--usage") == 0)
-    {
-      usage (progname);
-      exit (EXIT_SUCCESS);
-    }
-  else if (strcmp (arg, "-e") == 0 || strcmp (arg, "--existing") == 0)
-    {
-      existing = TRUE;
-    }
-  else if (strcmp (arg, "-q") == 0 || strcmp (arg, "--query") == 0)
-    {
-      query = TRUE;
-    }
-  else if (strcmp (arg, "-s") == 0 || strcmp (arg, "--no-splash") == 0)
-    {
-      no_splash = TRUE;
-    }
-  else if (strcmp (arg, "-n") == 0 || strcmp (arg, "--new") == 0)
-    {
-      /*  accepted for backward compatibility; this is now the default  */
-    }
-  else
-    {
-      g_printerr ("Unknown option %s\n", arg);
-      g_printerr ("Try %s --help to get detailed usage instructions.\n",
-                  progname);
+  g_print (_("%s version %s"), "gimp-remote", GIMP_VERSION);
+  g_print ("\n");
 
-      exit (EXIT_FAILURE);
-    }
+  exit (EXIT_SUCCESS);
+}
+
+static void
+init_i18n (void)
+{
+  setlocale (LC_ALL, "");
+
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+#endif
+
+  textdomain (GETTEXT_PACKAGE);
 }
 
 gint
 main (gint    argc,
       gchar **argv)
 {
-  GdkDisplay  *display;
-  GdkScreen   *screen;
-  GdkWindow   *gimp_window;
-  const gchar *startup_id;
-  gchar       *desktop_startup_id = NULL;
-  GString     *file_list          = g_string_new (NULL);
-  gchar       *cwd                = g_get_current_dir ();
-  gint         i;
+  GOptionContext *context;
+  GError         *error = NULL;
+  GdkDisplay     *display;
+  GdkScreen      *screen;
+  GdkWindow      *gimp_window;
+  const gchar    *startup_id;
+  gchar          *desktop_startup_id = NULL;
+  GString        *file_list          = g_string_new (NULL);
+
+  init_i18n ();
 
   /* we save the startup_id before calling gtk_init()
      because GTK+ will unset it  */
@@ -357,63 +353,65 @@ main (gint    argc,
   if (startup_id && *startup_id)
     desktop_startup_id = g_strdup (startup_id);
 
+  /* parse the command-line options */
+  context = g_option_context_new ("[FILE|URI...]");
+  g_option_context_add_main_entries (context, main_entries, NULL);
+  g_option_context_add_group (context, gtk_get_option_group (TRUE));
+
+  if (! g_option_context_parse (context, &argc, &argv, &error))
+    {
+      g_printerr ("%s\n", error->message);
+      g_error_free (error);
+
+      exit (EXIT_FAILURE);
+    }
+
   gtk_init (&argc, &argv);
 
-  for (i = 1; i < argc; i++)
+  if (filenames)
     {
-      gchar    *file_uri = NULL;
-      gboolean  options  = TRUE;
+      gchar *cwd = g_get_current_dir ();
+      gint   i;
 
-      if (strlen (argv[i]) == 0)
-        continue;
-
-      if (options && *argv[i] == '-')
+      for (i = 0; filenames[i]; i++)
         {
-          if (strcmp (argv[i], "--"))
+          const gchar *name = filenames[i];
+          gchar       *uri;
+
+          /* If not already a valid URI */
+          if (g_ascii_strncasecmp ("file:",  name, 5) &&
+              g_ascii_strncasecmp ("ftp:",   name, 4) &&
+              g_ascii_strncasecmp ("http:",  name, 5) &&
+              g_ascii_strncasecmp ("https:", name, 6))
             {
-              parse_option (argv[0], argv[i]);
-              continue;
+              if (g_path_is_absolute (name))
+                {
+                  uri = g_filename_to_uri (name, NULL, NULL);
+                }
+              else
+                {
+                  gchar *abs = g_build_filename (cwd, name, NULL);
+
+                  uri = g_filename_to_uri (abs, NULL, NULL);
+                  g_free (abs);
+                }
             }
           else
             {
-              /*  everything following a -- is interpreted as arguments  */
-              options = FALSE;
-              continue;
+              uri = g_strdup (name);
             }
-        }
 
-      /* If not already a valid URI */
-      if (g_ascii_strncasecmp ("file:",  argv[i], 5) &&
-          g_ascii_strncasecmp ("ftp:",   argv[i], 4) &&
-          g_ascii_strncasecmp ("http:",  argv[i], 5) &&
-          g_ascii_strncasecmp ("https:", argv[i], 6))
-        {
-          if (g_path_is_absolute (argv[i]))
+          if (uri)
             {
-              file_uri = g_filename_to_uri (argv[i], NULL, NULL);
-            }
-          else
-            {
-              gchar *abs = g_build_filename (cwd, argv[i], NULL);
+              if (file_list->len > 0)
+                file_list = g_string_append_c (file_list, '\n');
 
-              file_uri = g_filename_to_uri (abs, NULL, NULL);
-
-              g_free (abs);
+              file_list = g_string_append (file_list, uri);
+              g_free (uri);
             }
         }
-      else
-        {
-          file_uri = g_strdup (argv[i]);
-        }
 
-      if (file_uri)
-        {
-          if (file_list->len > 0)
-            file_list = g_string_append_c (file_list, '\n');
-
-          file_list = g_string_append (file_list, file_uri);
-          g_free (file_uri);
-        }
+      g_free (cwd);
     }
 
   display = gdk_display_get_default ();
@@ -460,7 +458,7 @@ main (gint    argc,
 
           /*  set up an DND-source  */
           source = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-          g_signal_connect (source, "selection_get",
+          g_signal_connect (source, "selection-get",
                             G_CALLBACK (source_selection_get),
                             file_list->str);
           gtk_widget_realize (source);
@@ -497,6 +495,8 @@ main (gint    argc,
     }
 
   gdk_notify_startup_complete ();
+
+  g_option_context_free (context);
 
   g_string_free (file_list, TRUE);
   g_free (desktop_startup_id);

@@ -30,11 +30,14 @@ typedef enum
   GIMP_CANVAS_STYLE_RENDER,
   GIMP_CANVAS_STYLE_XOR,
   GIMP_CANVAS_STYLE_XOR_DASHED,
+  GIMP_CANVAS_STYLE_XOR_DOTTED,
   GIMP_CANVAS_STYLE_SELECTION_IN,
   GIMP_CANVAS_STYLE_SELECTION_OUT,
   GIMP_CANVAS_STYLE_LAYER_BOUNDARY,
   GIMP_CANVAS_STYLE_GUIDE_NORMAL,
   GIMP_CANVAS_STYLE_GUIDE_ACTIVE,
+  GIMP_CANVAS_STYLE_SAMPLE_POINT_NORMAL,
+  GIMP_CANVAS_STYLE_SAMPLE_POINT_ACTIVE,
   GIMP_CANVAS_STYLE_CUSTOM,
   GIMP_CANVAS_NUM_STYLES
 } GimpCanvasStyle;
@@ -59,6 +62,7 @@ struct _GimpCanvas
 
   GdkGC          *gc[GIMP_CANVAS_NUM_STYLES];
   GdkBitmap      *stipple[GIMP_CANVAS_NUM_STIPPLES];
+  PangoLayout    *layout;
 };
 
 struct _GimpCanvasClass
@@ -117,6 +121,12 @@ void         gimp_canvas_draw_segments     (GimpCanvas      *canvas,
                                             GimpCanvasStyle  style,
                                             GdkSegment      *segments,
                                             gint             num_segments);
+void         gimp_canvas_draw_text         (GimpCanvas      *canvas,
+                                            GimpCanvasStyle  style,
+                                            gint             x,
+                                            gint             y,
+                                            const gchar     *format,
+                                            ...) G_GNUC_PRINTF (5, 6);
 void         gimp_canvas_draw_rgb          (GimpCanvas      *canvas,
                                             GimpCanvasStyle  style,
                                             gint             x,

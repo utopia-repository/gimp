@@ -28,62 +28,80 @@
 #include "core/gimpimage.h"
 
 #include "gimpcolorframe.h"
-#include "gimpenumcombobox.h"
 
 #include "gimp-intl.h"
 
 
+enum
+{
+  PROP_0,
+  PROP_MODE,
+  PROP_HAS_NUMBER,
+  PROP_NUMBER,
+  PROP_HAS_COLOR_AREA
+};
+
+
 /*  local function prototypes  */
 
-static void   gimp_color_frame_class_init    (GimpColorFrameClass *klass);
-static void   gimp_color_frame_init          (GimpColorFrame      *frame);
+static void   gimp_color_frame_get_property  (GObject        *object,
+                                              guint           property_id,
+                                              GValue         *value,
+                                              GParamSpec     *pspec);
+static void   gimp_color_frame_set_property  (GObject        *object,
+                                              guint           property_id,
+                                              const GValue   *value,
+                                              GParamSpec     *pspec);
+static void   gimp_color_frame_menu_callback (GtkWidget      *widget,
+                                              GimpColorFrame *frame);
+static void   gimp_color_frame_update        (GimpColorFrame *frame);
 
-static void   gimp_color_frame_menu_callback (GtkWidget           *widget,
-                                              GimpColorFrame      *frame);
-static void   gimp_color_frame_update        (GimpColorFrame      *frame);
 
+G_DEFINE_TYPE (GimpColorFrame, gimp_color_frame, GIMP_TYPE_FRAME);
 
-static GimpFrameClass *parent_class = NULL;
+#define parent_class gimp_color_frame_parent_class
 
-
-GType
-gimp_color_frame_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo frame_info =
-      {
-        sizeof (GimpColorFrameClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_color_frame_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpColorFrame),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gimp_color_frame_init,
-      };
-
-      type = g_type_register_static (GIMP_TYPE_FRAME,
-                                     "GimpColorFrame",
-                                     &frame_info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_color_frame_class_init (GimpColorFrameClass *klass)
 {
-  parent_class = g_type_class_peek_parent (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->get_property = gimp_color_frame_get_property;
+  object_class->set_property = gimp_color_frame_set_property;
+
+  g_object_class_install_property (object_class, PROP_MODE,
+                                   g_param_spec_enum ("mode",
+                                                      NULL, NULL,
+                                                      GIMP_TYPE_COLOR_FRAME_MODE,
+                                                      GIMP_COLOR_FRAME_MODE_PIXEL,
+                                                      G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_HAS_NUMBER,
+                                   g_param_spec_boolean ("has-number",
+                                                         NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_NUMBER,
+                                   g_param_spec_int ("number",
+                                                     NULL, NULL,
+                                                     0, 256, 0,
+                                                     G_PARAM_READWRITE));
+
+  g_object_class_install_property (object_class, PROP_HAS_COLOR_AREA,
+                                   g_param_spec_boolean ("has-color-area",
+                                                         NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 }
 
 static void
 gimp_color_frame_init (GimpColorFrame *frame)
 {
-  GtkWidget *table;
+  GtkWidget *vbox;
+  GtkWidget *vbox2;
+  GtkWidget *hbox;
   gint       i;
 
   frame->sample_valid = FALSE;
@@ -92,34 +110,125 @@ gimp_color_frame_init (GimpColorFrame *frame)
   gimp_rgba_set (&frame->color, 0.0, 0.0, 0.0, GIMP_OPACITY_OPAQUE);
 
   frame->menu = gimp_enum_combo_box_new (GIMP_TYPE_COLOR_FRAME_MODE);
-  g_signal_connect (frame->menu, "changed",
-                    G_CALLBACK (gimp_color_frame_menu_callback),
-                    frame);
   gtk_frame_set_label_widget (GTK_FRAME (frame), frame->menu);
   gtk_widget_show (frame->menu);
 
-  table = gtk_table_new (GIMP_COLOR_FRAME_ROWS, 2, FALSE);
-  gtk_table_set_row_spacings (GTK_TABLE (table), 2);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_widget_show (table);
+  g_signal_connect (frame->menu, "changed",
+                    G_CALLBACK (gimp_color_frame_menu_callback),
+                    frame);
+
+  vbox = gtk_vbox_new (FALSE, 2);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_widget_show (vbox);
+
+  hbox = gtk_hbox_new (FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  frame->number_label = gtk_label_new ("0");
+  gimp_label_set_attributes (GTK_LABEL (frame->number_label),
+                             PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
+                             -1);
+  gtk_misc_set_alignment (GTK_MISC (frame->number_label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (hbox), frame->number_label, FALSE, FALSE, 0);
+
+  frame->color_area =
+    g_object_new (GIMP_TYPE_COLOR_AREA,
+                  "color",          &frame->color,
+                  "type",           GIMP_COLOR_AREA_SMALL_CHECKS,
+                  "drag-mask",      GDK_BUTTON1_MASK,
+                  "draw-border",    TRUE,
+                  "height-request", 20,
+                  NULL);
+
+  gtk_box_pack_end (GTK_BOX (hbox), frame->color_area, TRUE, TRUE, 0);
+
+  vbox2 = gtk_vbox_new (TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (vbox), vbox2, FALSE, FALSE, 0);
+  gtk_widget_show (vbox2);
 
   for (i = 0; i < GIMP_COLOR_FRAME_ROWS; i++)
     {
+      hbox = gtk_hbox_new (FALSE, 6);
+      gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, FALSE, 0);
+      gtk_widget_show (hbox);
+
       frame->name_labels[i] = gtk_label_new (" ");
       gtk_misc_set_alignment (GTK_MISC (frame->name_labels[i]), 0.0, 0.5);
-      gtk_table_attach (GTK_TABLE (table), frame->name_labels[i],
-                        0, 1, i, i + 1,
-                        GTK_FILL, GTK_FILL, 0, 0);
+      gtk_box_pack_start (GTK_BOX (hbox), frame->name_labels[i],
+                          FALSE, FALSE, 0);
       gtk_widget_show (frame->name_labels[i]);
 
       frame->value_labels[i] = gtk_label_new (" ");
       gtk_label_set_selectable (GTK_LABEL (frame->value_labels[i]), TRUE);
       gtk_misc_set_alignment (GTK_MISC (frame->value_labels[i]), 1.0, 0.5);
-      gtk_table_attach (GTK_TABLE (table), frame->value_labels[i],
-                        1, 2, i, i + 1,
-                        GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+      gtk_box_pack_end (GTK_BOX (hbox), frame->value_labels[i],
+                        FALSE, FALSE, 0);
       gtk_widget_show (frame->value_labels[i]);
+    }
+}
+
+static void
+gimp_color_frame_get_property (GObject    *object,
+                               guint       property_id,
+                               GValue     *value,
+                               GParamSpec *pspec)
+{
+  GimpColorFrame *frame = GIMP_COLOR_FRAME (object);
+
+  switch (property_id)
+    {
+    case PROP_MODE:
+      g_value_set_enum (value, frame->frame_mode);
+      break;
+
+    case PROP_HAS_NUMBER:
+      g_value_set_boolean (value, frame->has_number);
+      break;
+
+    case PROP_NUMBER:
+      g_value_set_int (value, frame->number);
+      break;
+
+    case PROP_HAS_COLOR_AREA:
+      g_value_set_boolean (value, frame->has_color_area);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_color_frame_set_property (GObject      *object,
+                               guint         property_id,
+                               const GValue *value,
+                               GParamSpec   *pspec)
+{
+  GimpColorFrame *frame = GIMP_COLOR_FRAME (object);
+
+  switch (property_id)
+    {
+    case PROP_MODE:
+      gimp_color_frame_set_mode (frame, g_value_get_enum (value));
+      break;
+
+    case PROP_HAS_NUMBER:
+      gimp_color_frame_set_has_number (frame, g_value_get_boolean (value));
+      break;
+
+    case PROP_NUMBER:
+      gimp_color_frame_set_number (frame, g_value_get_int (value));
+      break;
+
+    case PROP_HAS_COLOR_AREA:
+      gimp_color_frame_set_has_color_area (frame, g_value_get_boolean (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
     }
 }
 
@@ -136,6 +245,7 @@ gimp_color_frame_new (void)
   return g_object_new (GIMP_TYPE_COLOR_FRAME, NULL);
 }
 
+
 /**
  * gimp_color_frame_set_mode:
  * @frame: The #GimpColorFrame.
@@ -151,9 +261,59 @@ gimp_color_frame_set_mode (GimpColorFrame     *frame,
   g_return_if_fail (GIMP_IS_COLOR_FRAME (frame));
 
   gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (frame->menu), mode);
-  frame->frame_mode = mode;
 
-  gimp_color_frame_update (frame);
+  g_object_notify (G_OBJECT (frame), "mode");
+}
+
+void
+gimp_color_frame_set_has_number (GimpColorFrame *frame,
+                                 gboolean        has_number)
+{
+  g_return_if_fail (GIMP_IS_COLOR_FRAME (frame));
+
+  if (has_number != frame->has_number)
+    {
+      frame->has_number = has_number ? TRUE : FALSE;
+
+      g_object_set (frame->number_label, "visible", frame->has_number, NULL);
+
+      g_object_notify (G_OBJECT (frame), "has-number");
+    }
+}
+
+void
+gimp_color_frame_set_number (GimpColorFrame *frame,
+                             gint            number)
+{
+  g_return_if_fail (GIMP_IS_COLOR_FRAME (frame));
+
+  if (number != frame->number)
+    {
+      gchar str[8];
+
+      frame->number = number;
+
+      g_snprintf (str, sizeof (str), "%d", number);
+      gtk_label_set_text (GTK_LABEL (frame->number_label), str);
+
+      g_object_notify (G_OBJECT (frame), "number");
+    }
+}
+
+void
+gimp_color_frame_set_has_color_area (GimpColorFrame *frame,
+                                     gboolean        has_color_area)
+{
+  g_return_if_fail (GIMP_IS_COLOR_FRAME (frame));
+
+  if (has_color_area != frame->has_color_area)
+    {
+      frame->has_color_area = has_color_area ? TRUE : FALSE;
+
+      g_object_set (frame->color_area, "visible", frame->has_color_area, NULL);
+
+      g_object_notify (G_OBJECT (frame), "has-color-area");
+    }
 }
 
 /**
@@ -177,6 +337,15 @@ gimp_color_frame_set_color (GimpColorFrame *frame,
   g_return_if_fail (GIMP_IS_COLOR_FRAME (frame));
   g_return_if_fail (color != NULL);
 
+  if (frame->sample_valid               &&
+      frame->sample_type == sample_type &&
+      frame->color_index == color_index &&
+      gimp_rgb_distance (&frame->color, color) < 0.0001)
+    {
+      frame->color = *color;
+      return;
+    }
+
   frame->sample_valid = TRUE;
   frame->sample_type  = sample_type;
   frame->color        = *color;
@@ -199,6 +368,9 @@ void
 gimp_color_frame_set_invalid (GimpColorFrame *frame)
 {
   g_return_if_fail (GIMP_IS_COLOR_FRAME (frame));
+
+  if (! frame->sample_valid)
+    return;
 
   frame->sample_valid = FALSE;
 
@@ -230,6 +402,9 @@ gimp_color_frame_update (GimpColorFrame *frame)
   has_alpha = GIMP_IMAGE_TYPE_HAS_ALPHA (frame->sample_type);
 
   gimp_rgba_get_uchar (&frame->color, &r, &g, &b, &a);
+
+  gimp_color_area_set_color (GIMP_COLOR_AREA (frame->color_area),
+                             &frame->color);
 
   switch (frame->frame_mode)
     {
@@ -317,7 +492,7 @@ gimp_color_frame_update (GimpColorFrame *frame)
 
   if (has_alpha)
     {
-      names[alpha_row]  = _("Alpha:");
+      names[alpha_row] = _("Alpha:");
 
       if (frame->frame_mode == GIMP_COLOR_FRAME_MODE_PIXEL)
         values[alpha_row] = g_strdup_printf ("%d", a);

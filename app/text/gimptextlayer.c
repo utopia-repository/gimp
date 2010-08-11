@@ -26,16 +26,14 @@
 #include <glib-object.h>
 #include <pango/pangoft2.h>
 
+#include "libgimpconfig/gimpconfig.h"
+
 #include "text-types.h"
 
 #include "base/pixel-region.h"
 #include "base/tile-manager.h"
 
 #include "paint-funcs/paint-funcs.h"
-
-#include "config/gimpconfig.h"
-#include "config/gimpconfig-params.h"
-#include "config/gimpconfig-utils.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
@@ -63,8 +61,6 @@ enum
   PROP_MODIFIED
 };
 
-static void       gimp_text_layer_class_init     (GimpTextLayerClass *klass);
-static void       gimp_text_layer_init           (GimpTextLayer  *layer);
 static void       gimp_text_layer_finalize       (GObject        *object);
 static void       gimp_text_layer_get_property   (GObject        *object,
                                                   guint           property_id,
@@ -107,36 +103,10 @@ static void       gimp_text_layer_render_layout  (GimpTextLayer  *layer,
                                                   GimpTextLayout *layout);
 
 
-static GimpLayerClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpTextLayer, gimp_text_layer, GIMP_TYPE_LAYER);
 
+#define parent_class gimp_text_layer_parent_class
 
-GType
-gimp_text_layer_get_type (void)
-{
-  static GType layer_type = 0;
-
-  if (! layer_type)
-    {
-      static const GTypeInfo layer_info =
-      {
-        sizeof (GimpTextLayerClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) gimp_text_layer_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpTextLayer),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_text_layer_init,
-      };
-
-      layer_type = g_type_register_static (GIMP_TYPE_LAYER,
-					   "GimpTextLayer",
-					   &layer_info, 0);
-    }
-
-  return layer_type;
-}
 
 static void
 gimp_text_layer_class_init (GimpTextLayerClass *klass)
@@ -146,8 +116,6 @@ gimp_text_layer_class_init (GimpTextLayerClass *klass)
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
   GimpItemClass     *item_class        = GIMP_ITEM_CLASS (klass);
   GimpDrawableClass *drawable_class    = GIMP_DRAWABLE_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize           = gimp_text_layer_finalize;
   object_class->get_property       = gimp_text_layer_get_property;
@@ -276,9 +244,7 @@ gimp_text_layer_duplicate (GimpItem *item,
                            GType     new_type,
                            gboolean  add_alpha)
 {
-  GimpTextLayer *layer;
-  GimpTextLayer *new_layer;
-  GimpItem      *new_item;
+  GimpItem *new_item;
 
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_DRAWABLE), NULL);
 
@@ -286,26 +252,26 @@ gimp_text_layer_duplicate (GimpItem *item,
                                                         new_type,
                                                         add_alpha);
 
-  if (! GIMP_IS_TEXT_LAYER (new_item))
-    return new_item;
-
-  layer     = GIMP_TEXT_LAYER (item);
-  new_layer = GIMP_TEXT_LAYER (new_item);
-
-  gimp_config_sync (GIMP_CONFIG (layer), GIMP_CONFIG (new_layer), 0);
-
-  if (layer->text)
+  if (GIMP_IS_TEXT_LAYER (new_item))
     {
-      GimpText *text = gimp_config_duplicate (GIMP_CONFIG (layer->text));
+      GimpTextLayer *layer     = GIMP_TEXT_LAYER (item);
+      GimpTextLayer *new_layer = GIMP_TEXT_LAYER (new_item);
 
-      gimp_text_layer_set_text (new_layer, text);
+      gimp_config_sync (G_OBJECT (layer), G_OBJECT (new_layer), 0);
 
-      g_object_unref (text);
+      if (layer->text)
+        {
+          GimpText *text = gimp_config_duplicate (GIMP_CONFIG (layer->text));
+
+          gimp_text_layer_set_text (new_layer, text);
+
+          g_object_unref (text);
+        }
+
+      /*  this is just the parasite name, not a pointer to the parasite  */
+      if (layer->text_parasite)
+        new_layer->text_parasite = layer->text_parasite;
     }
-
-  /*  this is just the parasite name, not a pointer to the parasite  */
-  if (layer->text_parasite)
-    new_layer->text_parasite = layer->text_parasite;
 
   return new_item;
 }
@@ -576,7 +542,7 @@ gimp_text_layer_render (GimpTextLayer *layer)
   item     = GIMP_ITEM (layer);
   image    = gimp_item_get_image (item);
 
-  if (gimp_container_num_children (image->gimp->fonts) == 0)
+  if (gimp_container_is_empty (image->gimp->fonts))
     {
       g_message (_("Due to lack of any fonts, "
                    "text functionality is not available."));

@@ -29,7 +29,6 @@
 #include "paint/gimpdodgeburnoptions.h"
 
 #include "widgets/gimphelp-ids.h"
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpdodgeburntool.h"
@@ -38,9 +37,6 @@
 
 #include "gimp-intl.h"
 
-
-static void   gimp_dodge_burn_tool_class_init (GimpDodgeBurnToolClass *klass);
-static void   gimp_dodge_burn_tool_init       (GimpDodgeBurnTool      *dodgeburn);
 
 static void   gimp_dodge_burn_tool_modifier_key  (GimpTool        *tool,
                                                   GdkModifierType  key,
@@ -55,7 +51,9 @@ static void   gimp_dodge_burn_tool_cursor_update (GimpTool        *tool,
 static GtkWidget * gimp_dodge_burn_options_gui   (GimpToolOptions *tool_options);
 
 
-static GimpPaintToolClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpDodgeBurnTool, gimp_dodge_burn_tool, GIMP_TYPE_PAINT_TOOL);
+
+#define parent_class gimp_dodge_burn_tool_parent_class
 
 
 void
@@ -75,40 +73,10 @@ gimp_dodge_burn_tool_register (GimpToolRegisterCallback  callback,
                 data);
 }
 
-GType
-gimp_dodge_burn_tool_get_type (void)
-{
-  static GType tool_type = 0;
-
-  if (!tool_type)
-    {
-      static const GTypeInfo tool_info =
-      {
-        sizeof (GimpDodgeBurnToolClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_dodge_burn_tool_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpDodgeBurnTool),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_dodge_burn_tool_init,
-      };
-
-      tool_type = g_type_register_static (GIMP_TYPE_PAINT_TOOL,
-                                          "GimpDodgeBurnTool",
-                                          &tool_info, 0);
-    }
-
-  return tool_type;
-}
-
 static void
 gimp_dodge_burn_tool_class_init (GimpDodgeBurnToolClass *klass)
 {
   GimpToolClass	*tool_class = GIMP_TOOL_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   tool_class->modifier_key  = gimp_dodge_burn_tool_modifier_key;
   tool_class->cursor_update = gimp_dodge_burn_tool_cursor_update;
@@ -167,7 +135,7 @@ gimp_dodge_burn_tool_cursor_update (GimpTool        *tool,
 
   options = GIMP_DODGE_BURN_OPTIONS (tool->tool_info->tool_options);
 
-  gimp_tool_control_set_toggle (tool->control, (options->type == GIMP_BURN));
+  gimp_tool_control_set_toggled (tool->control, (options->type == GIMP_BURN));
 
   GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, gdisp);
 }
@@ -189,7 +157,7 @@ gimp_dodge_burn_options_gui (GimpToolOptions *tool_options)
   vbox = gimp_paint_options_gui (tool_options);
 
   /* the type (dodge or burn) */
-  str = g_strdup_printf (_("Type  %s"),
+  str = g_strdup_printf (_("Type  (%s)"),
                          gimp_get_mod_string (GDK_CONTROL_MASK));
 
   frame = gimp_prop_enum_radio_frame_new (config, "type",

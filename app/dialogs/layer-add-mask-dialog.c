@@ -26,7 +26,6 @@
 
 #include "core/gimplayer.h"
 
-#include "widgets/gimpenumwidgets.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpviewabledialog.h"
 
@@ -67,7 +66,7 @@ layer_add_mask_dialog_new (GimpLayer       *layer,
                               GIMP_HELP_LAYER_MASK_ADD,
 
                               GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                              GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                              GTK_STOCK_ADD,    GTK_RESPONSE_OK,
 
                               NULL);
 
@@ -75,6 +74,11 @@ layer_add_mask_dialog_new (GimpLayer       *layer,
 
   g_object_weak_ref (G_OBJECT (dialog->dialog),
 		     (GWeakNotify) g_free, dialog);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog->dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
@@ -93,7 +97,7 @@ layer_add_mask_dialog_new (GimpLayer       *layer,
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  button = gtk_check_button_new_with_mnemonic (_("In_vert Mask"));
+  button = gtk_check_button_new_with_mnemonic (_("In_vert mask"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), dialog->invert);
   gtk_box_pack_end (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);

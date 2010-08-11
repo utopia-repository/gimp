@@ -35,12 +35,7 @@ static char dversio[] =                          "v1.03  22-May-00";
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -48,8 +43,11 @@ static char dversio[] =                          "v1.03  22-May-00";
 #include "libgimp/stdplugins-intl.h"
 
 
-#define PRV_WIDTH  50
-#define PRV_HEIGHT 20
+#define COLOR_MAP_PROC    "plug-in-color-map"
+#define COLOR_ADJUST_PROC "plug-in-color-adjust"
+#define PLUG_IN_BINARY    "mapcolor"
+#define PRV_WIDTH         50
+#define PRV_HEIGHT        20
 
 typedef struct
 {
@@ -141,7 +139,7 @@ query (void)
     { GIMP_PDB_INT32,    "map_mode",   "Mapping mode (0: linear, others reserved)" }
   };
 
-  gimp_install_procedure ("plug_in_color_adjust",
+  gimp_install_procedure (COLOR_ADJUST_PROC,
                           "Adjust color range given by foreground/background "
                           "color to black/white",
                           "The current foreground color is mapped to black "
@@ -157,10 +155,9 @@ query (void)
                           G_N_ELEMENTS (adjust_args), 0,
                           adjust_args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_color_adjust",
-                             "<Image>/Filters/Colors/Map");
+  gimp_plugin_menu_register (COLOR_ADJUST_PROC, "<Image>/Colors/Map");
 
-  gimp_install_procedure ("plug_in_color_map",
+  gimp_install_procedure (COLOR_MAP_PROC,
                           "Map color range specified by two colors"
                           "to color range specified by two other color.",
                           "Map color range specified by two colors"
@@ -175,8 +172,7 @@ query (void)
                           G_N_ELEMENTS (map_args), 0,
                           map_args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_color_map",
-                             "<Image>/Filters/Colors/Map");
+  gimp_plugin_menu_register (COLOR_MAP_PROC, "<Image>/Colors/Map");
 }
 
 
@@ -221,7 +217,7 @@ run (const gchar      *name,
           break;
         }
 
-      if (strcmp (name, "plug_in_color_adjust") == 0)
+      if (strcmp (name, COLOR_ADJUST_PROC) == 0)
         {
           if (nparams != 3)  /* Make sure all the arguments are there */
             {
@@ -237,13 +233,13 @@ run (const gchar      *name,
 
           plvals.map_mode = 0;
 
-          gimp_progress_init (_("Adjusting Foreground/Background..."));
+          gimp_progress_init (_("Adjusting FG-BG"));
 
           color_mapping (drawable);
           break;
         }
 
-      if (strcmp (name, "plug_in_color_map") == 0)
+      if (strcmp (name, COLOR_MAP_PROC) == 0)
         {
           if (run_mode == GIMP_RUN_NONINTERACTIVE)
             {
@@ -279,7 +275,7 @@ run (const gchar      *name,
               break;
             }
 
-          gimp_progress_init (_("Mapping colors..."));
+          gimp_progress_init (_("Mapping colors"));
 
           color_mapping (drawable);
 
@@ -318,10 +314,8 @@ update_img_preview (GimpDrawable *drawable,
                plvals.map_mode,
                redmap, greenmap, bluemap);
 
-  gimp_preview_get_size (preview, &width, &height);
-  bpp = gimp_drawable_bpp (drawable->drawable_id);
-  src = gimp_drawable_get_thumbnail_data (drawable->drawable_id,
-                                          &width, &height, &bpp);
+  src = gimp_zoom_preview_get_source (GIMP_ZOOM_PREVIEW (preview),
+                                      &width, &height, &bpp);
   has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
 
   j = width * height;
@@ -354,23 +348,30 @@ mapcolor_dialog (GimpDrawable *drawable)
   gint       j;
   gboolean   run;
 
-  gimp_ui_init ("mapcolor", TRUE);
+  gimp_ui_init (PLUG_IN_BINARY, TRUE);
 
-  dialog = gimp_dialog_new (_("Map Color Range"), "mapcolor",
+  dialog = gimp_dialog_new (_("Map Color Range"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-color-map",
+                            gimp_standard_help_func, COLOR_MAP_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
+
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, NULL);
+  preview = gimp_zoom_preview_new (drawable);
   gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",
@@ -380,8 +381,8 @@ mapcolor_dialog (GimpDrawable *drawable)
   for (j = 0; j < 2; j++)
     {
       frame = gimp_frame_new ((j == 0) ?
-                              _("Source color range") :
-                              _("Destination color range"));
+                              _("Source Color Range") :
+                              _("Destination Color Range"));
       gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
       gtk_widget_show (frame);
 
@@ -425,10 +426,10 @@ add_color_button (gint       csel_index,
                              0.0, 0.5,
                              button, 1, TRUE);
 
-  g_signal_connect (button, "color_changed",
+  g_signal_connect (button, "color-changed",
                     G_CALLBACK (gimp_color_button_get_color),
                     &plvals.colors[csel_index]);
-  g_signal_connect_swapped (button, "color_changed",
+  g_signal_connect_swapped (button, "color-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 }

@@ -88,11 +88,11 @@
 
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-#line 47 "imap_csim.y"
+#line 49 "imap_csim.y"
 typedef union YYSTYPE {
-   int val;
-   double value;
-   char id[1024];
+  int val;
+  double value;
+  char id[1024];		/* Large enough to hold all polygon points! */
 } YYSTYPE;
 /* Line 1318 of yacc.c.  */
 #line 99 "y.tab.h"

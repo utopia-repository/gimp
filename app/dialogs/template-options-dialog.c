@@ -20,11 +20,11 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "dialogs-types.h"
 
-#include "config/gimpconfig.h"
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
@@ -90,6 +90,11 @@ template_options_dialog_new (Gimp         *gimp,
                               GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                               NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (options->dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   g_object_weak_ref (G_OBJECT (options->dialog),
                      (GWeakNotify) g_free, options);

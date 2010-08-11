@@ -32,7 +32,6 @@
 #include "text/gimptext.h"
 #include "text/gimptextlayer.h"
 
-#include "widgets/gimpenumwidgets.h"
 #include "widgets/gimpviewabledialog.h"
 
 #include "layer-options-dialog.h"
@@ -95,8 +94,12 @@ layer_options_dialog_new (GimpImage    *gimage,
                               NULL);
 
   g_object_weak_ref (G_OBJECT (options->dialog),
-		     (GWeakNotify) g_free,
-		     options);
+		     (GWeakNotify) g_free, options);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (options->dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
   vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
@@ -113,13 +116,11 @@ layer_options_dialog_new (GimpImage    *gimage,
   /*  The name label and entry  */
   options->name_entry = gtk_entry_new ();
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 0,
-                             _("Layer _Name:"), 0.0, 0.5,
+                             _("Layer _name:"), 0.0, 0.5,
                              options->name_entry, 1, FALSE);
 
+  gtk_entry_set_activates_default (GTK_ENTRY (options->name_entry), TRUE);
   gtk_entry_set_text (GTK_ENTRY (options->name_entry), layer_name);
-
-  if (layer)
-    gtk_entry_set_activates_default (GTK_ENTRY (options->name_entry), TRUE);
 
   if (! layer)
     {
@@ -202,7 +203,7 @@ layer_options_dialog_new (GimpImage    *gimage,
       if (gimp_drawable_is_text_layer (GIMP_DRAWABLE (layer)))
         {
           options->rename_toggle =
-            gtk_check_button_new_with_mnemonic (_("Set Name from _Text"));
+            gtk_check_button_new_with_mnemonic (_("Set name from _text"));
 
           gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (options->rename_toggle),
                                         GIMP_TEXT_LAYER (layer)->auto_rename);

@@ -22,25 +22,28 @@
 #include "config.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
 #include <glib-object.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_WIN32
 #include <io.h>
 #define R_OK 4
-#define access(f,p) _access(f,p)
 #endif
 
 #include "core/core-types.h"
+
+#include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
@@ -121,7 +124,7 @@ file_open_image (Gimp               *gimp,
               return NULL;
             }
 
-          if (access (filename, R_OK) != 0)
+          if (g_access (filename, R_OK) != 0)
             {
               g_free (filename);
               g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_ACCES,
@@ -330,7 +333,8 @@ file_open_with_proc_and_display (Gimp               *gimp,
             }
         }
 
-      gimp_recent_list_add_uri (uri, mime_type);
+      if (gimp->config->save_document_history)
+        gimp_recent_list_add_uri (uri, mime_type);
 
       /*  the display owns the image now  */
       g_object_unref (gimage);
@@ -345,6 +349,7 @@ file_open_layer (Gimp               *gimp,
                  GimpProgress       *progress,
                  GimpImage          *dest_image,
                  const gchar        *uri,
+                 GimpRunMode         run_mode,
                  GimpPDBStatusType  *status,
                  GError            **error)
 {
@@ -362,7 +367,7 @@ file_open_layer (Gimp               *gimp,
 
   new_image = file_open_image (gimp, context, progress,
                                uri, uri,
-                               NULL, GIMP_RUN_INTERACTIVE,
+                               NULL, run_mode,
                                status, &mime_type, error);
 
   if (new_image)
@@ -398,17 +403,18 @@ file_open_layer (Gimp               *gimp,
 
           if (item)
             {
-              gchar *basename;
+              gchar *basename = file_utils_uri_display_basename (uri);
 
               new_layer = GIMP_LAYER (item);
 
-              basename = file_utils_uri_to_utf8_basename (uri);
               gimp_object_set_name (GIMP_OBJECT (new_layer), basename);
               g_free (basename);
 
               gimp_document_list_add_uri (GIMP_DOCUMENT_LIST (gimp->documents),
                                           uri, mime_type);
-              gimp_recent_list_add_uri (uri, mime_type);
+
+              if (gimp->config->save_document_history)
+                gimp_recent_list_add_uri (uri, mime_type);
             }
         }
       else

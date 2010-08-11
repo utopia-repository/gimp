@@ -26,17 +26,15 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "config-types.h"
 
-#include "gimpconfig.h"
-#include "gimpconfig-deserialize.h"
-#include "gimpconfig-error.h"
-#include "gimpconfig-params.h"
-#include "gimpconfig-path.h"
-#include "gimpconfig-serialize.h"
-#include "gimpconfig-utils.h"
+#include "gimpconfig-file.h"
 #include "gimprc.h"
+#include "gimprc-deserialize.h"
+#include "gimprc-serialize.h"
+#include "gimprc-unknown.h"
 
 #include "gimp-intl.h"
 
@@ -50,81 +48,38 @@ enum
 };
 
 
-static void         gimp_rc_class_init        (GimpRcClass      *klass);
-static void         gimp_rc_config_iface_init (gpointer          iface,
-                                               gpointer          iface_data);
-static void         gimp_rc_init              (GimpRc           *rc);
-static void         gimp_rc_dispose           (GObject          *object);
-static void         gimp_rc_finalize          (GObject          *object);
-static void         gimp_rc_set_property      (GObject          *object,
-                                               guint             property_id,
-                                               const GValue     *value,
-                                               GParamSpec       *pspec);
-static void         gimp_rc_get_property      (GObject          *object,
-                                               guint             property_id,
-                                               GValue           *value,
-                                               GParamSpec       *pspec);
-static gboolean     gimp_rc_serialize         (GimpConfig       *object,
-                                               GimpConfigWriter *writer,
-                                               gpointer          data);
-static gboolean     gimp_rc_deserialize       (GimpConfig       *object,
-                                               GScanner         *scanner,
-                                               gint              nest_level,
-                                               gpointer          data);
-static GimpConfig * gimp_rc_duplicate         (GimpConfig       *object);
-static void         gimp_rc_load              (GimpRc           *rc);
-static gboolean     gimp_rc_idle_save         (GimpRc           *rc);
-static void         gimp_rc_notify            (GimpRc           *rc,
-                                               GParamSpec       *param,
-                                               gpointer          data);
+static void         gimp_rc_config_iface_init (GimpConfigInterface *iface);
+
+static void         gimp_rc_dispose           (GObject      *object);
+static void         gimp_rc_finalize          (GObject      *object);
+static void         gimp_rc_set_property      (GObject      *object,
+                                               guint         property_id,
+                                               const GValue *value,
+                                               GParamSpec   *pspec);
+static void         gimp_rc_get_property      (GObject      *object,
+                                               guint         property_id,
+                                               GValue       *value,
+                                               GParamSpec   *pspec);
+
+static GimpConfig * gimp_rc_duplicate         (GimpConfig   *object);
+static void         gimp_rc_load              (GimpRc       *rc);
+static gboolean     gimp_rc_idle_save         (GimpRc       *rc);
+static void         gimp_rc_notify            (GimpRc       *rc,
+                                               GParamSpec   *param,
+                                               gpointer      data);
 
 
-static GObjectClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpRc, gimp_rc, GIMP_TYPE_PLUGIN_CONFIG,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
+                                                gimp_rc_config_iface_init));
 
+#define parent_class gimp_rc_parent_class
 
-GType
-gimp_rc_get_type (void)
-{
-  static GType rc_type = 0;
-
-  if (! rc_type)
-    {
-      static const GTypeInfo rc_info =
-      {
-        sizeof (GimpRcClass),
-	NULL,           /* base_init      */
-        NULL,           /* base_finalize  */
-        (GClassInitFunc) gimp_rc_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data     */
-	sizeof (GimpRc),
-	0,              /* n_preallocs    */
-	(GInstanceInitFunc) gimp_rc_init
-      };
-      static const GInterfaceInfo rc_iface_info =
-      {
-        gimp_rc_config_iface_init,
-        NULL,           /* iface_finalize */
-        NULL            /* iface_data     */
-      };
-
-      rc_type = g_type_register_static (GIMP_TYPE_PLUGIN_CONFIG,
-                                        "GimpRc", &rc_info, 0);
-
-      g_type_add_interface_static (rc_type, GIMP_TYPE_CONFIG, &rc_iface_info);
-    }
-
-  return rc_type;
-}
 
 static void
 gimp_rc_class_init (GimpRcClass *klass)
 {
-  GObjectClass *object_class;
-
-  parent_class = g_type_class_peek_parent (klass);
-
-  object_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->dispose      = gimp_rc_dispose;
   object_class->finalize     = gimp_rc_finalize;
@@ -137,12 +92,14 @@ gimp_rc_class_init (GimpRcClass *klass)
 							 FALSE,
 							 G_PARAM_READWRITE |
 							 G_PARAM_CONSTRUCT));
+
   g_object_class_install_property (object_class, PROP_SYSTEM_GIMPRC,
 				   g_param_spec_string ("system-gimprc",
                                                         NULL, NULL,
 							NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
+
   g_object_class_install_property (object_class, PROP_USER_GIMPRC,
 				   g_param_spec_string ("user-gimprc",
                                                         NULL, NULL,
@@ -263,44 +220,11 @@ gimp_rc_get_property (GObject    *object,
 }
 
 static void
-gimp_rc_config_iface_init (gpointer  iface,
-                           gpointer  iface_data)
+gimp_rc_config_iface_init (GimpConfigInterface *iface)
 {
-  GimpConfigInterface *config_iface = (GimpConfigInterface *) iface;
-
-  config_iface->serialize   = gimp_rc_serialize;
-  config_iface->deserialize = gimp_rc_deserialize;
-  config_iface->duplicate   = gimp_rc_duplicate;
-}
-
-static gboolean
-gimp_rc_serialize (GimpConfig       *config,
-                   GimpConfigWriter *writer,
-                   gpointer          data)
-{
-  if (data && GIMP_IS_RC (data))
-    {
-      if (! gimp_config_serialize_properties_diff (config, GIMP_CONFIG (data),
-                                                   writer))
-        return FALSE;
-    }
-  else
-    {
-      if (! gimp_config_serialize_properties (config, writer))
-        return FALSE;
-    }
-
-  return gimp_config_serialize_unknown_tokens (config, writer);
-}
-
-static gboolean
-gimp_rc_deserialize (GimpConfig *config,
-                     GScanner   *scanner,
-                     gint        nest_level,
-                     gpointer    data)
-{
-  return gimp_config_deserialize_properties (config,
-                                             scanner, nest_level, TRUE);
+  iface->serialize   = gimp_rc_serialize;
+  iface->deserialize = gimp_rc_deserialize;
+  iface->duplicate   = gimp_rc_duplicate;
 }
 
 static void
@@ -308,7 +232,7 @@ gimp_rc_duplicate_unknown_token (const gchar *key,
                                  const gchar *value,
                                  gpointer     user_data)
 {
-  gimp_config_add_unknown_token (GIMP_CONFIG (user_data), key, value);
+  gimp_rc_add_unknown_token (GIMP_CONFIG (user_data), key, value);
 }
 
 static GimpConfig *
@@ -316,10 +240,10 @@ gimp_rc_duplicate (GimpConfig *config)
 {
   GimpConfig *dup = g_object_new (GIMP_TYPE_RC, NULL);
 
-  gimp_config_sync (config, dup, 0);
+  gimp_config_sync (G_OBJECT (config), G_OBJECT (dup), 0);
 
-  gimp_config_foreach_unknown_token (config,
-                                     gimp_rc_duplicate_unknown_token, dup);
+  gimp_rc_foreach_unknown_token (config,
+                                 gimp_rc_duplicate_unknown_token, dup);
 
   return dup;
 }
@@ -474,7 +398,7 @@ gimp_rc_query (GimpRc      *rc,
     {
       prop_spec = property_specs[i];
 
-      if (! (prop_spec->flags & GIMP_PARAM_SERIALIZE) ||
+      if (! (prop_spec->flags & GIMP_CONFIG_PARAM_SERIALIZE) ||
           strcmp (prop_spec->name, key))
         {
           prop_spec = NULL;
@@ -498,8 +422,7 @@ gimp_rc_query (GimpRc      *rc,
     }
   else
     {
-      retval = g_strdup (gimp_config_lookup_unknown_token (GIMP_CONFIG (rc),
-                                                           key));
+      retval = g_strdup (gimp_rc_lookup_unknown_token (GIMP_CONFIG (rc), key));
     }
 
   g_free (property_specs);
@@ -540,7 +463,7 @@ gimp_rc_query (GimpRc      *rc,
  * @token:
  * @value:
  *
- * Calls gimp_config_add_unknown_token() and triggers an idle-save if
+ * Calls gimp_rc_add_unknown_token() and triggers an idle-save if
  * autosave is enabled on @gimprc.
  **/
 void
@@ -550,7 +473,7 @@ gimp_rc_set_unknown_token (GimpRc      *rc,
 {
   g_return_if_fail (GIMP_IS_RC (rc));
 
-  gimp_config_add_unknown_token (GIMP_CONFIG (rc), token, value);
+  gimp_rc_add_unknown_token (GIMP_CONFIG (rc), token, value);
 
   if (rc->autosave)
     gimp_rc_notify (rc, NULL, NULL);

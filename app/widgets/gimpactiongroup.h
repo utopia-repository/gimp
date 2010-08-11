@@ -131,7 +131,8 @@ struct _GimpPlugInActionEntry
 };
 
 
-GType            gimp_action_group_get_type (void);
+GType            gimp_action_group_get_type (void) G_GNUC_CONST;
+
 GimpActionGroup *gimp_action_group_new      (Gimp                  *gimp,
                                              const gchar           *name,
                                              const gchar           *label,
@@ -151,11 +152,12 @@ void   gimp_action_group_add_actions        (GimpActionGroup       *group,
 void   gimp_action_group_add_toggle_actions (GimpActionGroup       *group,
                                              GimpToggleActionEntry *entries,
                                              guint                  n_entries);
-void   gimp_action_group_add_radio_actions  (GimpActionGroup       *group,
+GSList *gimp_action_group_add_radio_actions (GimpActionGroup       *group,
                                              GimpRadioActionEntry  *entries,
                                              guint                  n_entries,
+                                             GSList                *radio_group,
                                              gint                   value,
-                                             GCallback              on_change);
+                                             GCallback              callback);
 
 void   gimp_action_group_add_enum_actions   (GimpActionGroup       *group,
                                              GimpEnumActionEntry   *entries,
@@ -189,7 +191,7 @@ void   gimp_action_group_set_action_color     (GimpActionGroup     *group,
 void   gimp_action_group_set_action_viewable  (GimpActionGroup     *group,
                                                const gchar         *action_name,
                                                GimpViewable        *viewable);
-void   gimp_action_group_set_action_important (GimpActionGroup     *group,
+void   gimp_action_group_set_action_hide_empty(GimpActionGroup     *group,
                                                const gchar         *action_name,
                                                gboolean             is_important);
 

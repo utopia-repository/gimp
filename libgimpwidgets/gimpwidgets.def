@@ -1,4 +1,9 @@
 EXPORTS
+	gimp_browser_add_search_types
+	gimp_browser_get_type
+	gimp_browser_new
+	gimp_browser_set_widget
+	gimp_browser_show_message
 	gimp_button_extended_clicked
 	gimp_button_get_type
 	gimp_button_new
@@ -18,6 +23,7 @@ EXPORTS
 	gimp_color_area_set_color
 	gimp_color_area_set_draw_border
 	gimp_color_area_set_type
+	gimp_color_area_type_get_type
 	gimp_color_button_get_color
 	gimp_color_button_get_type
 	gimp_color_button_get_update
@@ -70,6 +76,7 @@ EXPORTS
 	gimp_color_selection_set_old_color
 	gimp_color_selection_set_show_alpha
 	gimp_color_selector_channel_changed
+	gimp_color_selector_channel_get_type
 	gimp_color_selector_color_changed
 	gimp_color_selector_get_type
 	gimp_color_selector_new
@@ -94,6 +101,26 @@ EXPORTS
 	gimp_dialog_run
 	gimp_dialogs_show_help_button
 	gimp_double_adjustment_update
+	gimp_enum_combo_box_get_type
+	gimp_enum_combo_box_new
+	gimp_enum_combo_box_new_with_model
+	gimp_enum_combo_box_set_stock_prefix
+	gimp_enum_label_get_type
+	gimp_enum_label_new
+	gimp_enum_label_set_value
+	gimp_enum_radio_box_new 
+	gimp_enum_radio_box_new_with_range
+	gimp_enum_radio_frame_new
+	gimp_enum_radio_frame_new_with_range
+	gimp_enum_stock_box_new
+	gimp_enum_stock_box_new_with_range
+	gimp_enum_stock_box_set_child_padding
+	gimp_enum_store_get_type
+	gimp_enum_store_new
+	gimp_enum_store_new_with_range
+	gimp_enum_store_new_with_values
+	gimp_enum_store_new_with_values_valist
+	gimp_enum_store_set_stock_prefix
 	gimp_file_entry_get_filename
 	gimp_file_entry_get_type
 	gimp_file_entry_new
@@ -116,6 +143,7 @@ EXPORTS
 	gimp_int_combo_box_new_valist
 	gimp_int_combo_box_prepend
 	gimp_int_combo_box_set_active
+	gimp_int_combo_box_set_sensitivity
 	gimp_int_option_menu_new
 	gimp_int_option_menu_set_history
 	gimp_int_option_menu_set_sensitive
@@ -139,6 +167,24 @@ EXPORTS
 	gimp_option_menu_new2
 	gimp_option_menu_set_history
 	gimp_option_menu_set_sensitive
+	gimp_page_selector_get_n_pages
+	gimp_page_selector_get_page_label
+	gimp_page_selector_get_page_thumbnail
+	gimp_page_selector_get_selected_pages
+	gimp_page_selector_get_selected_range
+	gimp_page_selector_get_target
+	gimp_page_selector_get_type
+	gimp_page_selector_new
+	gimp_page_selector_page_is_selected
+	gimp_page_selector_select_all
+	gimp_page_selector_select_page
+	gimp_page_selector_select_range
+	gimp_page_selector_set_n_pages
+	gimp_page_selector_set_page_label
+	gimp_page_selector_set_page_thumbnail
+	gimp_page_selector_set_target
+	gimp_page_selector_unselect_all
+	gimp_page_selector_unselect_page
 	gimp_path_editor_get_dir_writable
 	gimp_path_editor_get_path
 	gimp_path_editor_get_type
@@ -165,6 +211,8 @@ EXPORTS
 	gimp_preview_area_set_offsets
 	gimp_preview_draw
 	gimp_preview_draw_buffer
+	gimp_preview_get_area
+	gimp_preview_get_controls
 	gimp_preview_get_position
 	gimp_preview_get_size
 	gimp_preview_get_type
@@ -173,6 +221,34 @@ EXPORTS
 	gimp_preview_set_bounds
 	gimp_preview_set_default_cursor
 	gimp_preview_set_update
+	gimp_prop_boolean_combo_box_new
+	gimp_prop_boolean_radio_frame_new
+	gimp_prop_check_button_new
+	gimp_prop_color_area_new
+	gimp_prop_coordinates_connect
+	gimp_prop_coordinates_new
+	gimp_prop_entry_new
+	gimp_prop_enum_check_button_new
+	gimp_prop_enum_combo_box_new
+	gimp_prop_enum_label_new
+	gimp_prop_enum_radio_box_new
+	gimp_prop_enum_radio_frame_new
+	gimp_prop_enum_stock_box_new
+	gimp_prop_expander_new
+	gimp_prop_file_chooser_button_new
+	gimp_prop_file_entry_new
+	gimp_prop_hscale_new
+	gimp_prop_int_combo_box_new
+	gimp_prop_label_new
+	gimp_prop_memsize_entry_new
+	gimp_prop_opacity_entry_new
+	gimp_prop_path_editor_new
+	gimp_prop_scale_entry_new
+	gimp_prop_size_entry_new
+	gimp_prop_spin_button_new
+	gimp_prop_stock_image_new
+	gimp_prop_text_buffer_new
+	gimp_prop_unit_menu_new
 	gimp_query_boolean_box
 	gimp_query_double_box
 	gimp_query_int_box
@@ -183,11 +259,42 @@ EXPORTS
 	gimp_radio_group_new2
 	gimp_radio_group_set_active
 	gimp_random_seed_new
+	gimp_resolution_entry_attach_label 
+	gimp_resolution_entry_get_height_help_widget
+	gimp_resolution_entry_get_type 
+	gimp_resolution_entry_get_unit     
+	gimp_resolution_entry_get_width           
+	gimp_resolution_entry_get_width_help_widget 
+	gimp_resolution_entry_get_x            
+	gimp_resolution_entry_get_x_help_widget
+	gimp_resolution_entry_get_x_in_dpi     
+	gimp_resolution_entry_get_y            
+	gimp_resolution_entry_get_y_help_widget
+	gimp_resolution_entry_get_y_in_dpi     
+	gimp_resolution_entry_grab_focus  
+	gimp_resolution_entry_new          
+	gimp_resolution_entry_set_activates_default           
+	gimp_resolution_entry_set_pixel_digits
+	gimp_resolution_entry_set_unit     
+	gimp_resolution_entry_set_width           
+	gimp_resolution_entry_set_x               
+	gimp_resolution_entry_set_x_boundaries    
+	gimp_resolution_entry_set_y               
+	gimp_resolution_entry_set_y_boundaries    
+	gimp_resolution_entry_show_unit_menu
+	gimp_resolution_entry_update_height   
+	gimp_resolution_entry_update_width    
+	gimp_resolution_entry_update_x        
+	gimp_resolution_entry_update_x_in_dpi 
+	gimp_resolution_entry_update_y        
+	gimp_resolution_entry_update_y_in_dpi 
 	gimp_scale_entry_get_logarithmic
 	gimp_scale_entry_new
 	gimp_scale_entry_set_logarithmic
 	gimp_scale_entry_set_sensitive
 	gimp_scrolled_preview_get_type
+	gimp_scrolled_preview_set_position
+	gimp_scrolled_preview_set_policy
 	gimp_size_entry_add_field
 	gimp_size_entry_attach_label
 	gimp_size_entry_get_help_widget
@@ -197,6 +304,7 @@ EXPORTS
 	gimp_size_entry_get_value
 	gimp_size_entry_grab_focus
 	gimp_size_entry_new
+	gimp_size_entry_set_activates_default
 	gimp_size_entry_set_pixel_digits
 	gimp_size_entry_set_refval
 	gimp_size_entry_set_refval_boundaries
@@ -206,6 +314,7 @@ EXPORTS
 	gimp_size_entry_set_unit
 	gimp_size_entry_set_value
 	gimp_size_entry_set_value_boundaries
+	gimp_size_entry_show_unit_menu
 	gimp_spin_button_new
 	gimp_standard_help_func
 	gimp_stock_init
@@ -221,3 +330,13 @@ EXPORTS
 	gimp_unit_menu_set_unit
 	gimp_unit_menu_update
 	gimp_widgets_init
+	gimp_zoom_button_new
+	gimp_zoom_model_get_factor
+	gimp_zoom_model_get_fraction
+	gimp_zoom_model_get_type
+	gimp_zoom_model_new
+	gimp_zoom_model_set_range
+	gimp_zoom_model_zoom
+	gimp_zoom_model_zoom_step
+	gimp_zoom_type_get_type
+

@@ -36,19 +36,28 @@
 #include <libgimp/gimppalettemenu.h>
 #include <libgimp/gimppatternmenu.h>
 #include <libgimp/gimppixbuf.h>
+#include <libgimp/gimpprocbrowserdialog.h>
+#include <libgimp/gimpprocview.h>
 #include <libgimp/gimpprogressbar.h>
 #include <libgimp/gimpdrawablecombobox.h>
 #include <libgimp/gimpimagecombobox.h>
-
+#include <libgimp/gimpfontselectbutton.h>
+#include <libgimp/gimpzoompreview.h>
 
 G_BEGIN_DECLS
 
 /* For information look into the C source or the html documentation */
 
 
-void gimp_ui_init (const gchar *prog_name,
-                   gboolean     preview);
+void        gimp_ui_init                          (const gchar *prog_name,
+                                                   gboolean     preview);
 
+GdkWindow * gimp_ui_get_display_window            (guint32      gdisp_ID);
+GdkWindow * gimp_ui_get_progress_window           (void);
+
+void        gimp_window_set_transient_for_display (GtkWindow   *window,
+                                                   guint32      gdisp_ID);
+void        gimp_window_set_transient             (GtkWindow   *window);
 
 G_END_DECLS
 

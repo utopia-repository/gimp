@@ -22,11 +22,11 @@
 
 #include <glib-object.h>
 
+#include "libgimpconfig/gimpconfig.h"
+
 #include "core-types.h"
 
 #include "base/temp-buf.h"
-
-#include "config/gimpconfig-params.h"
 
 #include "gimp.h"
 #include "gimpcontainer.h"
@@ -44,60 +44,29 @@ enum
 };
 
 
-static void    gimp_tool_info_class_init      (GimpToolInfoClass *klass);
-static void    gimp_tool_info_init            (GimpToolInfo      *tool_info);
-
-static void    gimp_tool_info_finalize        (GObject           *object);
-static void    gimp_tool_info_get_property    (GObject           *object,
-                                               guint              property_id,
-                                               GValue            *value,
-                                               GParamSpec        *pspec);
-static void    gimp_tool_info_set_property    (GObject           *object,
-                                               guint              property_id,
-                                               const GValue      *value,
-                                               GParamSpec        *pspec);
-static gchar * gimp_tool_info_get_description (GimpViewable      *viewable,
-                                               gchar            **tooltip);
+static void    gimp_tool_info_finalize        (GObject       *object);
+static void    gimp_tool_info_get_property    (GObject       *object,
+                                               guint          property_id,
+                                               GValue        *value,
+                                               GParamSpec    *pspec);
+static void    gimp_tool_info_set_property    (GObject       *object,
+                                               guint          property_id,
+                                               const GValue  *value,
+                                               GParamSpec    *pspec);
+static gchar * gimp_tool_info_get_description (GimpViewable  *viewable,
+                                               gchar        **tooltip);
 
 
-static GimpViewableClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpToolInfo, gimp_tool_info, GIMP_TYPE_VIEWABLE);
 
+#define parent_class gimp_tool_info_parent_class
 
-GType
-gimp_tool_info_get_type (void)
-{
-  static GType tool_info_type = 0;
-
-  if (! tool_info_type)
-    {
-      static const GTypeInfo tool_info_info =
-      {
-        sizeof (GimpToolInfoClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_tool_info_class_init,
-        NULL,		/* class_finalize */
-        NULL,		/* class_data     */
-        sizeof (GimpToolInfo),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_tool_info_init,
-      };
-
-      tool_info_type = g_type_register_static (GIMP_TYPE_VIEWABLE,
-                                               "GimpToolInfo",
-                                               &tool_info_info, 0);
-    }
-
-  return tool_info_type;
-}
 
 static void
 gimp_tool_info_class_init (GimpToolInfoClass *klass)
 {
   GObjectClass      *object_class   = G_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class = GIMP_VIEWABLE_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize          = gimp_tool_info_finalize;
   object_class->get_property      = gimp_tool_info_get_property;
@@ -229,9 +198,6 @@ gimp_tool_info_get_description (GimpViewable  *viewable,
 {
   GimpToolInfo *tool_info = GIMP_TOOL_INFO (viewable);
 
-  if (tooltip)
-    *tooltip = NULL;
-
   return g_strdup (tool_info->blurb);
 }
 
@@ -290,8 +256,6 @@ gimp_tool_info_new (Gimp                *gimp,
 
   if (tool_info->tool_options_type == paint_info->paint_options_type)
     {
-      gimp_viewable_set_stock_id (GIMP_VIEWABLE (paint_info), stock_id);
-
       tool_info->tool_options = g_object_ref (paint_info->paint_options);
     }
   else
@@ -307,10 +271,6 @@ gimp_tool_info_new (Gimp                *gimp,
     {
       gimp_context_define_properties (GIMP_CONTEXT (tool_info->tool_options),
                                       tool_info->context_props, FALSE);
-
-      gimp_context_copy_properties (gimp_get_user_context (gimp),
-                                    GIMP_CONTEXT (tool_info->tool_options),
-                                    GIMP_CONTEXT_ALL_PROPS_MASK);
     }
 
   gimp_context_set_serialize_properties (GIMP_CONTEXT (tool_info->tool_options),

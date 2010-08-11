@@ -40,9 +40,6 @@
 #include "gimp-intl.h"
 
 
-static void   gimp_dodge_burn_class_init (GimpDodgeBurnClass *klass);
-static void   gimp_dodge_burn_init       (GimpDodgeBurn      *dodgeburn);
-
 static void   gimp_dodge_burn_finalize   (GObject            *object);
 
 static void   gimp_dodge_burn_paint      (GimpPaintCore      *paint_core,
@@ -74,7 +71,9 @@ static gfloat gimp_dodge_burn_shadows_lut_func    (gpointer   user_data,
                                                    gfloat     value);
 
 
-static GimpBrushCoreClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpDodgeBurn, gimp_dodge_burn, GIMP_TYPE_BRUSH_CORE);
+
+#define parent_class gimp_dodge_burn_parent_class
 
 
 void
@@ -84,35 +83,9 @@ gimp_dodge_burn_register (Gimp                      *gimp,
   (* callback) (gimp,
                 GIMP_TYPE_DODGE_BURN,
                 GIMP_TYPE_DODGE_BURN_OPTIONS,
-                _("Dodge/Burn"));
-}
-
-GType
-gimp_dodge_burn_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpDodgeBurnClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_dodge_burn_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpDodgeBurn),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_dodge_burn_init,
-      };
-
-      type = g_type_register_static (GIMP_TYPE_BRUSH_CORE,
-                                     "GimpDodgeBurn",
-                                     &info, 0);
-    }
-
-  return type;
+                "gimp-dodge-burn",
+                _("Dodge/Burn"),
+                "gimp-tool-dodge");
 }
 
 static void
@@ -121,8 +94,6 @@ gimp_dodge_burn_class_init (GimpDodgeBurnClass *klass)
   GObjectClass       *object_class     = G_OBJECT_CLASS (klass);
   GimpPaintCoreClass *paint_core_class = GIMP_PAINT_CORE_CLASS (klass);
   GimpBrushCoreClass *brush_core_class = GIMP_BRUSH_CORE_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize  = gimp_dodge_burn_finalize;
 
@@ -233,37 +204,27 @@ gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
     /*  get the original untouched image  */
     orig = gimp_paint_core_get_orig_image (paint_core, drawable, x1, y1, x2, y2);
 
-    srcPR.bytes     = orig->bytes;
-    srcPR.x         = 0;
-    srcPR.y         = 0;
-    srcPR.w         = x2 - x1;
-    srcPR.h         = y2 - y1;
-    srcPR.rowstride = srcPR.bytes * orig->width;
-    srcPR.data      = temp_buf_data (orig);
+    pixel_region_init_temp_buf (&srcPR, orig,
+                                0, 0, x2 - x1, y2 - y1);
   }
 
   /* tempPR will hold the dodgeburned region */
-  tempPR.bytes     = srcPR.bytes;
-  tempPR.x         = srcPR.x;
-  tempPR.y         = srcPR.y;
-  tempPR.w         = srcPR.w;
-  tempPR.h         = srcPR.h;
-  tempPR.rowstride = tempPR.bytes * tempPR.w;
-  tempPR.data      = g_malloc (tempPR.h * tempPR.rowstride);
+  temp_data = g_malloc (srcPR.h * srcPR.bytes * srcPR.w);
 
-  temp_data        = tempPR.data;
+  pixel_region_init_data (&tempPR, temp_data,
+                          srcPR.bytes,
+                          srcPR.bytes * srcPR.w,
+                          srcPR.x,
+                          srcPR.y,
+                          srcPR.w,
+                          srcPR.h);
 
   /*  DodgeBurn the region  */
   gimp_lut_process (dodgeburn->lut, &srcPR, &tempPR);
 
   /* The dest is the paint area we got above (= canvas_buf) */
-  destPR.bytes     = area->bytes;
-  destPR.x         = 0;
-  destPR.y         = 0;
-  destPR.w         = area->width;
-  destPR.h         = area->height;
-  destPR.rowstride = area->width * destPR.bytes;
-  destPR.data      = temp_buf_data (area);
+  pixel_region_init_temp_buf (&destPR, area,
+                              0, 0, area->width, area->height);
 
   /* Now add an alpha to the dodgeburned region
    * and put this in area = canvas_buf

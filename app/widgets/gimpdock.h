@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimpdock.h
- * Copyright (C) 2001 Michael Natterer <mitch@gimp.org>
+ * Copyright (C) 2001-2005 Michael Natterer <mitch@gimp.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,26 +68,26 @@ struct _GimpDockClass
 };
 
 
-GType       gimp_dock_get_type     (void) G_GNUC_CONST;
+GType   gimp_dock_get_type     (void) G_GNUC_CONST;
 
-void        gimp_dock_setup        (GimpDock          *dock,
-                                    const GimpDock    *template);
-void        gimp_dock_set_aux_info (GimpDock          *dock,
-                                    GList             *aux_info);
-GList     * gimp_dock_get_aux_info (GimpDock          *dock);
+void    gimp_dock_setup        (GimpDock       *dock,
+                                const GimpDock *template);
+void    gimp_dock_set_aux_info (GimpDock       *dock,
+                                GList          *aux_info);
+GList * gimp_dock_get_aux_info (GimpDock       *dock);
 
-void        gimp_dock_add          (GimpDock          *dock,
-                                    GimpDockable      *dockable,
-                                    gint               book,
-                                    gint               index);
-void        gimp_dock_remove       (GimpDock          *dock,
-                                    GimpDockable      *dockable);
+void    gimp_dock_add          (GimpDock       *dock,
+                                GimpDockable   *dockable,
+                                gint            book,
+                                gint            index);
+void    gimp_dock_remove       (GimpDock       *dock,
+                                GimpDockable   *dockable);
 
-void        gimp_dock_add_book     (GimpDock          *dock,
-                                    GimpDockbook      *dockbook,
-                                    gint               index);
-void        gimp_dock_remove_book  (GimpDock          *dock,
-                                    GimpDockbook      *dockbook);
+void    gimp_dock_add_book     (GimpDock       *dock,
+                                GimpDockbook   *dockbook,
+                                gint            index);
+void    gimp_dock_remove_book  (GimpDock       *dock,
+                                GimpDockbook   *dockbook);
 
 
 #endif /* __GIMP_DOCK_H__ */

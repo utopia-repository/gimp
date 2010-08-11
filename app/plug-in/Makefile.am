@@ -2,11 +2,12 @@
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Plug-In\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
+	-I$(top_builddir)	\
 	-I$(top_srcdir)		\
+	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GDK_PIXBUF_CFLAGS)	\
 	-I$(includedir)
@@ -14,11 +15,10 @@ INCLUDES = \
 noinst_LIBRARIES = libappplug-in.a
 
 libappplug_in_a_SOURCES = \
+	plug-in-enums.h 	\
 	plug-in-types.h 	\
 	plug-in.c		\
 	plug-in.h		\
-	plug-ins.c		\
-	plug-ins.h		\
 	plug-in-context.c	\
 	plug-in-context.h	\
 	plug-in-debug.c		\
@@ -40,6 +40,10 @@ libappplug_in_a_SOURCES = \
 	plug-in-run.c		\
 	plug-in-run.h		\
 	plug-in-shm.c		\
-	plug-in-shm.h
+	plug-in-shm.h		\
+	plug-ins.c		\
+	plug-ins.h		\
+	plug-ins-query.c	\
+	plug-ins-query.h
 
 EXTRA_DIST = makefile.msc

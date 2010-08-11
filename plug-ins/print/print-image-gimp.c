@@ -1,5 +1,5 @@
 /*
- * "$Id: print-image-gimp.c 7527 2002-05-06 23:27:49Z neo $"
+ * "$Id: print-image-gimp.c,v 1.5 2005/09/30 08:16:07 mitch Exp $"
  *
  *   Print plug-in for the GIMP.
  *
@@ -317,7 +317,7 @@ Image_get_row(stp_image_t *image, unsigned char *data, int row)
 static void
 Image_progress_init(stp_image_t *image)
 {
-  gimp_progress_init(_("Printing..."));
+  gimp_progress_init(_("Printing"));
 }
 
 static void
@@ -341,5 +341,5 @@ Image_get_appname(stp_image_t *image)
 }
 
 /*
- * End of "$Id: print-image-gimp.c 7527 2002-05-06 23:27:49Z neo $".
+ * End of "$Id: print-image-gimp.c,v 1.5 2005/09/30 08:16:07 mitch Exp $".
  */

@@ -4,56 +4,54 @@
 
 <refentry id="GimpDrawablePreview">
 <refmeta>
-<refentrytitle role="top_of_page">GimpDrawablePreview</refentrytitle>
+<refentrytitle>GimpDrawablePreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpDrawablePreview</refname>
-<refpurpose>A widget providing a preview of a <link linkend="GimpDrawable"><type>GimpDrawable</type></link>.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>GimpDrawablePreview</refname><refpurpose>A widget providing a preview of a <link linkend="GimpDrawable"><type>GimpDrawable</type></link>.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-                    <link linkend="GimpDrawablePreview-struct">GimpDrawablePreview</link>;
-<link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-drawable-preview-new">gimp_drawable_preview_new</link>           (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                                         <link linkend="gboolean">gboolean</link> *toggle);
-<link linkend="GimpDrawable">GimpDrawable</link>*       <link linkend="gimp-drawable-preview-get-drawable">gimp_drawable_preview_get_drawable</link>  (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview);
-<link linkend="void">void</link>                <link linkend="gimp-drawable-preview-draw-region">gimp_drawable_preview_draw_region</link>   (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview,
-                                                         const <link linkend="GimpPixelRgn">GimpPixelRgn</link> *region);
+            <link linkend="GimpDrawablePreview-struct">GimpDrawablePreview</link>;
+<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-drawable-preview-new">gimp_drawable_preview_new</link>       (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+                                             <link linkend="gboolean">gboolean</link> *toggle);
+<link linkend="GimpDrawable">GimpDrawable</link>* <link linkend="gimp-drawable-preview-get-drawable">gimp_drawable_preview_get_drawable</link>
+                                            (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview);
+<link linkend="void">void</link>        <link linkend="gimp-drawable-preview-draw-region">gimp_drawable_preview_draw_region</link>
+                                            (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview,
+                                             const <link linkend="GimpPixelRgn">GimpPixelRgn</link> *region);
 
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
-<title role="object_hierarchy.title">Object Hierarchy</title>
+<refsect1>
+<title>Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
-         +----<link linkend="GtkObject">GtkObject</link>
-               +----<link linkend="GtkWidget">GtkWidget</link>
-                     +----<link linkend="GtkContainer">GtkContainer</link>
-                           +----<link linkend="GtkBox">GtkBox</link>
-                                 +----<link linkend="GtkVBox">GtkVBox</link>
-                                       +----<link linkend="GimpPreview">GimpPreview</link>
-                                             +----<link linkend="GimpScrolledPreview">GimpScrolledPreview</link>
-                                                   +----GimpDrawablePreview
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkContainer">GtkContainer</link>
+                     +----<link linkend="GtkBox">GtkBox</link>
+                           +----<link linkend="GtkVBox">GtkVBox</link>
+                                 +----<link linkend="GimpPreview">GimpPreview</link>
+                                       +----<link linkend="GimpScrolledPreview">GimpScrolledPreview</link>
+                                             +----GimpDrawablePreview
 </synopsis>
 
 </refsect1>
 
 
 
-<refsect1 role="impl_interfaces">
-<title role="impl_interfaces.title">Implemented Interfaces</title>
+<refsect1>
+<title>Implemented Interfaces</title>
 <para>
 GimpDrawablePreview implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -64,25 +62,25 @@ GimpDrawablePreview implements
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 A widget providing a preview of a <link linkend="GimpDrawable"><type>GimpDrawable</type></link>.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpDrawablePreview-struct" role="struct"/>GimpDrawablePreview</title>
+<title><anchor id="GimpDrawablePreview-struct"/>GimpDrawablePreview</title>
 <indexterm><primary>GimpDrawablePreview</primary></indexterm><programlisting>typedef struct _GimpDrawablePreview GimpDrawablePreview;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-drawable-preview-new" role="function" condition="since:GIMP 2.2"/>gimp_drawable_preview_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_drawable_preview_new           (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
-                                                         <link linkend="gboolean">gboolean</link> *toggle);</programlisting>
+<title><anchor id="gimp-drawable-preview-new"/>gimp_drawable_preview_new ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_drawable_preview_new       (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
+                                             <link linkend="gboolean">gboolean</link> *toggle);</programlisting>
 <para>
 Creates a new <link linkend="GimpDrawablePreview"><type>GimpDrawablePreview</type></link> widget for <parameter>drawable</parameter>. If
 updating the preview takes considerable time, you will want to
@@ -97,16 +95,17 @@ data. For convenience you can pass a pointer to the <link linkend="gboolean"><ty
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>toggle</parameter>&nbsp;:</term>
 <listitem><simpara>   pointer to a <link linkend="gboolean"><type>gboolean</type></link> variable to sync with the "Preview"
-           check-button or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
+           check-button or <literal>NULL</literal>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GimpDrawablePreview"><type>GimpDrawablePreview</type></link> widget.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
+</variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-drawable-preview-get-drawable" role="function" condition="since:GIMP 2.2"/>gimp_drawable_preview_get_drawable ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_get_drawable</primary></indexterm><programlisting><link linkend="GimpDrawable">GimpDrawable</link>*       gimp_drawable_preview_get_drawable  (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview);</programlisting>
+<title><anchor id="gimp-drawable-preview-get-drawable"/>gimp_drawable_preview_get_drawable ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_get_drawable</primary></indexterm><programlisting><link linkend="GimpDrawable">GimpDrawable</link>* gimp_drawable_preview_get_drawable
+                                            (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview);</programlisting>
 <para>
 </para>
 <para>
@@ -119,12 +118,13 @@ data. For convenience you can pass a pointer to the <link linkend="gboolean"><ty
               <link linkend="gimp-drawable-preview-new"><function>gimp_drawable_preview_new()</function></link>.
 
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
+</variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-drawable-preview-draw-region" role="function" condition="since:GIMP 2.2"/>gimp_drawable_preview_draw_region ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_draw_region</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_drawable_preview_draw_region   (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview,
-                                                         const <link linkend="GimpPixelRgn">GimpPixelRgn</link> *region);</programlisting>
+<title><anchor id="gimp-drawable-preview-draw-region"/>gimp_drawable_preview_draw_region ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_drawable_preview_draw_region</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_drawable_preview_draw_region
+                                            (<link linkend="GimpDrawablePreview">GimpDrawablePreview</link> *preview,
+                                             const <link linkend="GimpPixelRgn">GimpPixelRgn</link> *region);</programlisting>
 <para>
 </para>
 <para>
@@ -136,7 +136,7 @@ data. For convenience you can pass a pointer to the <link linkend="gboolean"><ty
 <varlistentry><term><parameter>region</parameter>&nbsp;:</term>
 <listitem><simpara>  a <link linkend="GimpPixelRgn"><type>GimpPixelRgn</type></link>
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
+</variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>

@@ -35,14 +35,15 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "libgimp/stdplugins-intl.h"
 
-#define PLUG_IN_NAME  "plug_in_apply_canvas"
+
+#define PLUG_IN_PROC   "plug-in-apply-canvas"
+#define PLUG_IN_BINARY "struc"
+
 
 static const gchar sdata[] =
 {
@@ -1130,14 +1131,14 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",  "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",     "Input image (unused)"         },
     { GIMP_PDB_DRAWABLE, "drawable",  "Input drawable"               },
     { GIMP_PDB_INT32,    "direction", "Light direction (0 - 3)"      },
     { GIMP_PDB_INT32,    "depth",     "Texture depth (1 - 50)"       }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
                           "Adds a canvas texture map to the picture",
                           "This function applies a canvas texture map to the drawable.",
                           "Karl-Johan Andersson", /* Author */
@@ -1149,7 +1150,7 @@ query (void)
                           G_N_ELEMENTS (args), 0,
                           args, NULL);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Artistic");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Artistic");
 }
 
 static void
@@ -1181,7 +1182,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data (PLUG_IN_NAME, &svals);
+      gimp_get_data (PLUG_IN_PROC, &svals);
 
       /*  First acquire information with a dialog  */
       if (! struc_dialog (drawable))
@@ -1211,7 +1212,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data (PLUG_IN_NAME, &svals);
+      gimp_get_data (PLUG_IN_PROC, &svals);
       break;
 
     default:
@@ -1224,7 +1225,7 @@ run (const gchar      *name,
       if (gimp_drawable_is_rgb (drawable->drawable_id) ||
           gimp_drawable_is_gray (drawable->drawable_id))
         {
-          gimp_progress_init (_("Applying Canvas..."));
+          gimp_progress_init (_("Applying canvas"));
           gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
 
           strucpi (drawable, NULL);
@@ -1233,7 +1234,7 @@ run (const gchar      *name,
             gimp_displays_flush ();
           /*  Store data  */
           if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data (PLUG_IN_NAME, &svals, sizeof (StrucValues));
+            gimp_set_data (PLUG_IN_PROC, &svals, sizeof (StrucValues));
         }
       else
         {
@@ -1259,16 +1260,23 @@ struc_dialog (GimpDrawable *drawable)
   GtkObject *adj;
   gboolean   run;
 
-  gimp_ui_init ("struc", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Apply Canvas"), "struc",
+  dialog = gimp_dialog_new (_("Apply Canvas"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-apply-canvas",
+                            gimp_standard_help_func, PLUG_IN_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);
@@ -1319,10 +1327,10 @@ struc_dialog (GimpDrawable *drawable)
                               svals.depth, 1, 50, 1, 5, 0,
                               TRUE, 0, 0,
                               NULL, NULL);
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &svals.depth);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -1367,7 +1375,9 @@ strucpi (GimpDrawable *drawable,
        *  need to be done for correct operation. (It simply makes it go
        *  faster, since fewer pixels need to be operated on).
        */
-      gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
+      if (! gimp_drawable_mask_intersect (drawable->drawable_id,
+                                          &x1, &y1, &x2, &y2))
+        return;
 
       /* Get the size of the input image. (This will/must be the same
        *  as the size of the output image.

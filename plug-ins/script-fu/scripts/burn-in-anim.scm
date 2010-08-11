@@ -31,8 +31,7 @@
 	(set! speed (* -1 speed)) )
 
     ;--- check image and work on a copy
-    (if (and (= (car (gimp-image-get-layers org-img)) 2)
-             (= (car (gimp-image-get-floating-sel org-img)) -1))
+    (if (= (car (gimp-image-get-layers org-img)) 2)
 
         ;--- main program structure starts here, begin of "if-1"
 	(begin
@@ -59,7 +58,7 @@
 		 (gimp-image-add-layer img bl-layer -2)
 		 (gimp-drawable-set-name bl-layer bl-layer-name)
 		 (gimp-drawable-set-visible bl-layer TRUE)
-		 (gimp-layer-set-preserve-trans bl-layer TRUE)
+		 (gimp-layer-set-lock-alpha bl-layer TRUE)
 		 (gimp-layer-add-alpha bl-layer)
 
                  ;--- add an alpha mask for blending and select it
@@ -126,7 +125,7 @@
 		     (gimp-selection-layer-alpha bl-layer)
 		     (gimp-selection-sharpen img)
 		     (gimp-selection-grow img corona-width)
-		     (gimp-layer-set-preserve-trans bl-layer FALSE)
+		     (gimp-layer-set-lock-alpha bl-layer FALSE)
 		     (gimp-selection-feather img corona-width)
 		     (gimp-context-set-foreground glow-color)
 		     (gimp-edit-blend bl-layer FG-TRANSPARENT-MODE NORMAL-MODE
@@ -202,4 +201,4 @@
 		    SF-VALUE    _"Speed (pixels/frame)" "50")
 
 (script-fu-menu-register "script-fu-burn-in-anim"
-			 _"<Image>/Script-Fu/Animators")
+			 "<Image>/Filters/Animation/Animators")

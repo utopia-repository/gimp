@@ -193,6 +193,24 @@ Definitions and Functions relating to RGB colors.
 @gamma: 
 
 
+<!-- ##### FUNCTION gimp_rgb_luminance ##### -->
+<para>
+
+</para>
+
+@rgb: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gimp_rgb_luminance_uchar ##### -->
+<para>
+
+</para>
+
+@rgb: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gimp_rgb_intensity ##### -->
 <para>
 
@@ -305,6 +323,37 @@ Definitions and Functions relating to RGB colors.
 @Returns: 
 
 
+<!-- ##### MACRO GIMP_RGB_LUMINANCE ##### -->
+<para>
+
+</para>
+
+@r: 
+@g: 
+@b: 
+
+
+<!-- ##### MACRO GIMP_RGB_LUMINANCE_RED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO GIMP_RGB_LUMINANCE_GREEN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO GIMP_RGB_LUMINANCE_BLUE ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO GIMP_RGB_INTENSITY ##### -->
 <para>
 This macro calculates the intensity of an RGB value based on
@@ -342,6 +391,26 @@ coefficients taken from the NTSC analog television standard.
 #GIMP_TYPE_RGB is a #GType derived from #G_TYPE_BOXED.
 </para>
 
+
+
+<!-- ##### MACRO GIMP_TYPE_PARAM_RGB ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION gimp_param_spec_rgb ##### -->
+<para>
+
+</para>
+
+@name: 
+@nick: 
+@blurb: 
+@default_value: 
+@flags: 
+@Returns: 
 
 
 <!-- ##### MACRO GIMP_VALUE_HOLDS_RGB ##### -->

@@ -52,8 +52,11 @@ static ProcRecord path_set_tattoo_proc;
 static ProcRecord get_path_by_tattoo_proc;
 static ProcRecord path_get_locked_proc;
 static ProcRecord path_set_locked_proc;
+static ProcRecord path_get_visible_proc;
+static ProcRecord path_set_visible_proc;
 static ProcRecord path_to_selection_proc;
 static ProcRecord path_import_proc;
+static ProcRecord path_import_string_proc;
 
 void
 register_paths_procs (Gimp *gimp)
@@ -71,8 +74,11 @@ register_paths_procs (Gimp *gimp)
   procedural_db_register (gimp, &get_path_by_tattoo_proc);
   procedural_db_register (gimp, &path_get_locked_proc);
   procedural_db_register (gimp, &path_set_locked_proc);
+  procedural_db_register (gimp, &path_get_visible_proc);
+  procedural_db_register (gimp, &path_set_visible_proc);
   procedural_db_register (gimp, &path_to_selection_proc);
   procedural_db_register (gimp, &path_import_proc);
+  procedural_db_register (gimp, &path_import_string_proc);
 }
 
 static Argument *
@@ -118,19 +124,20 @@ static ProcArg path_list_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "num_paths",
+    "num-paths",
     "The number of paths returned."
   },
   {
     GIMP_PDB_STRINGARRAY,
-    "path_list",
+    "path-list",
     "List of the paths belonging to this image."
   }
 };
 
 static ProcRecord path_list_proc =
 {
-  "gimp_path_list",
+  "gimp-path-list",
+  "gimp-path-list",
   "List the paths associated with the passed image.",
   "List the paths associated with the passed image.",
   "Andy Thomas",
@@ -199,7 +206,8 @@ static ProcArg path_get_current_outargs[] =
 
 static ProcRecord path_get_current_proc =
 {
-  "gimp_path_get_current",
+  "gimp-path-get-current",
+  "gimp-path-get-current",
   "The name of the current path. Error if no paths.",
   "The name of the current path. Error if no paths.",
   "Andy Thomas",
@@ -262,7 +270,8 @@ static ProcArg path_set_current_inargs[] =
 
 static ProcRecord path_set_current_proc =
 {
-  "gimp_path_set_current",
+  "gimp-path-set-current",
+  "gimp-path-set-current",
   "Sets the current path associated with the passed image.",
   "Sets a named path as the current path.",
   "Andy Thomas",
@@ -325,7 +334,8 @@ static ProcArg path_delete_inargs[] =
 
 static ProcRecord path_delete_proc =
 {
-  "gimp_path_delete",
+  "gimp-path-delete",
+  "gimp-path-delete",
   "Delete the named path associated with the passed image.",
   "Delete the named path.",
   "Andy Thomas",
@@ -436,29 +446,30 @@ static ProcArg path_get_points_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "path_type",
+    "path-type",
     "The type of the path. Currently only one type (1 = Bezier) is supported"
   },
   {
     GIMP_PDB_INT32,
-    "path_closed",
+    "path-closed",
     "Return if the path is closed. (0 = path open, 1 = path closed)"
   },
   {
     GIMP_PDB_INT32,
-    "num_path_point_details",
+    "num-path-point-details",
     "The number of points returned. Each point is made up of (x, y, pnt_type) of floats."
   },
   {
     GIMP_PDB_FLOATARRAY,
-    "points_pairs",
+    "points-pairs",
     "The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0 = BEZIER_MOVE). Note all points are returned in pixel resolution."
   }
 };
 
 static ProcRecord path_get_points_proc =
 {
-  "gimp_path_get_points",
+  "gimp-path-get-points",
+  "gimp-path-get-points",
   "List the points associated with the named path.",
   "List the points associated with the named path.",
   "Andy Thomas",
@@ -565,19 +576,20 @@ static ProcArg path_set_points_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "num_path_points",
+    "num-path-points",
     "The number of elements in the array, i.e. the number of points in the path * 3. Each point is made up of (x, y, type) of floats. Currently only the creation of bezier curves is allowed. The type parameter must be set to (1) to indicate a BEZIER type curve. Note that for BEZIER curves, points must be given in the following order: ACCACCAC... If the path is not closed the last control point is missed off. Points consist of three control points (control/anchor/control) so for a curve that is not closed there must be at least two points passed (2 x,y pairs). If (num_path_points/3) % 3 = 0 then the path is assumed to be closed and the points are ACCACCACCACC."
   },
   {
     GIMP_PDB_FLOATARRAY,
-    "points_pairs",
+    "points-pairs",
     "The points in the path represented as 3 floats. The first is the x pos, next is the y pos, last is the type of the pnt. The type field is dependant on the path type. For beziers (type 1 paths) the type can either be (1.0 = BEZIER_ANCHOR, 2.0 = BEZIER_CONTROL, 3.0= BEZIER_MOVE). Note all points are returned in pixel resolution."
   }
 };
 
 static ProcRecord path_set_points_proc =
 {
-  "gimp_path_set_points",
+  "gimp-path-set-points",
+  "gimp-path-set-points",
   "Set the points associated with the named path.",
   "Set the points associated with the named path.",
   "Andy Thomas",
@@ -639,7 +651,8 @@ static ProcArg path_stroke_current_inargs[] =
 
 static ProcRecord path_stroke_current_proc =
 {
-  "gimp_path_stroke_current",
+  "gimp-path-stroke-current",
+  "gimp-path-stroke-current",
   "Stroke the current path in the passed image.",
   "Stroke the current path in the passed image.",
   "Andy Thomas",
@@ -756,12 +769,12 @@ static ProcArg path_get_point_at_dist_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "x_point",
+    "x-point",
     "The x position of the point."
   },
   {
     GIMP_PDB_INT32,
-    "y_point",
+    "y-point",
     "The y position of the point."
   },
   {
@@ -773,7 +786,8 @@ static ProcArg path_get_point_at_dist_outargs[] =
 
 static ProcRecord path_get_point_at_dist_proc =
 {
-  "gimp_path_get_point_at_dist",
+  "gimp-path-get-point-at-dist",
+  "gimp-path-get-point-at-dist",
   "Get point on a path at a specified distance along the path.",
   "This will return the x,y position of a point at a given distance along the bezier curve. The distance will be obtained by first digitizing the curve internally and then walking along the curve. For a closed curve the start of the path is the first point on the path that was created. This might not be obvious. Note the current path is used.",
   "Andy Thomas",
@@ -852,7 +866,8 @@ static ProcArg path_get_tattoo_outargs[] =
 
 static ProcRecord path_get_tattoo_proc =
 {
-  "gimp_path_get_tattoo",
+  "gimp-path-get-tattoo",
+  "gimp-path-get-tattoo",
   "Returns the tattoo associated with the name path.",
   "This procedure returns the tattoo associated with the specified path. A tattoo is a unique and permanent identifier attached to a path that can be used to uniquely identify a path within an image even between sessions.",
   "Andy Thomas",
@@ -923,7 +938,8 @@ static ProcArg path_set_tattoo_inargs[] =
 
 static ProcRecord path_set_tattoo_proc =
 {
-  "gimp_path_set_tattoo",
+  "gimp-path-set-tattoo",
+  "gimp-path-set-tattoo",
   "Sets the tattoo associated with the named path.",
   "This procedure sets the tattoo associated with the specified path. A tattoo is a unique and permenant identifier attached to a path that can be used to uniquely identify a path within an image even between sessions. Note that the value passed to this function must have been obtained from a previous call to path_get_tattoo.",
   "Andy Thomas",
@@ -1000,7 +1016,8 @@ static ProcArg get_path_by_tattoo_outargs[] =
 
 static ProcRecord get_path_by_tattoo_proc =
 {
-  "gimp_get_path_by_tattoo",
+  "gimp-get-path-by-tattoo",
+  "gimp-get-path-by-tattoo",
   "Return the name of the path with the given tattoo.",
   "The procedure returns the name of the path in the specified image which has the passed tattoo. The tattoos are unique within the image and will be preserved across sessions and through renaming of the path. An error is returned if no path with the specified tattoo can be found.",
   "Andy Thomas",
@@ -1025,7 +1042,7 @@ path_get_locked_invoker (Gimp         *gimp,
   Argument *return_args;
   GimpImage *gimage;
   gchar *name;
-  gint32 lockstatus = 0;
+  gboolean locked = FALSE;
   GimpVectors *vectors;
 
   gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
@@ -1041,7 +1058,7 @@ path_get_locked_invoker (Gimp         *gimp,
       vectors = gimp_image_get_vectors_by_name (gimage, name);
 
       if (vectors)
-        lockstatus = gimp_item_get_linked (GIMP_ITEM (vectors));
+        locked = gimp_item_get_linked (GIMP_ITEM (vectors));
       else
         success = FALSE;
     }
@@ -1049,7 +1066,7 @@ path_get_locked_invoker (Gimp         *gimp,
   return_args = procedural_db_return_args (&path_get_locked_proc, success);
 
   if (success)
-    return_args[1].value.pdb_int = lockstatus;
+    return_args[1].value.pdb_int = locked;
 
   return return_args;
 }
@@ -1072,14 +1089,15 @@ static ProcArg path_get_locked_outargs[] =
 {
   {
     GIMP_PDB_INT32,
-    "lockstatus",
-    "The lock status associated with the name path. 0 is returned if the path is not locked. 1 is returned if the path is locked."
+    "locked",
+    "TRUE if the path is locked, FALSE otherwise"
   }
 };
 
 static ProcRecord path_get_locked_proc =
 {
-  "gimp_path_get_locked",
+  "gimp-path-get-locked",
+  "gimp-path-get-locked",
   "Returns the locked status associated with the named path.",
   "This procedure returns the lock status associated with the specified path. A path can be \"locked\" which means that the transformation tool operations will also apply to the path.",
   "Andy Thomas",
@@ -1103,7 +1121,7 @@ path_set_locked_invoker (Gimp         *gimp,
   gboolean success = TRUE;
   GimpImage *gimage;
   gchar *name;
-  gint32 lockstatus = 0;
+  gboolean locked = FALSE;
   GimpVectors *vectors;
 
   gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
@@ -1114,14 +1132,14 @@ path_set_locked_invoker (Gimp         *gimp,
   if (name == NULL || !g_utf8_validate (name, -1, NULL))
     success = FALSE;
 
-  lockstatus = args[2].value.pdb_int;
+  locked = args[2].value.pdb_int ? TRUE : FALSE;
 
   if (success)
     {
       vectors = gimp_image_get_vectors_by_name (gimage, name);
 
       if (vectors)
-        gimp_item_set_linked (GIMP_ITEM (vectors), lockstatus, TRUE);
+        gimp_item_set_linked (GIMP_ITEM (vectors), locked, TRUE);
       else
         success = FALSE;
     }
@@ -1143,14 +1161,15 @@ static ProcArg path_set_locked_inargs[] =
   },
   {
     GIMP_PDB_INT32,
-    "lockstatus",
-    "The lock status associated with the name path. 0 if the path is not locked. 1 if the path is to be locked"
+    "locked",
+    "Whether the path is locked"
   }
 };
 
 static ProcRecord path_set_locked_proc =
 {
-  "gimp_path_set_locked",
+  "gimp-path-set-locked",
+  "gimp-path-set-locked",
   "Set the locked status associated with the named path.",
   "This procedure sets the lock status associated with the specified path. A path can be \"locked\" which means that the transformation tool operations will also apply to the path.",
   "Andy Thomas",
@@ -1163,6 +1182,158 @@ static ProcRecord path_set_locked_proc =
   0,
   NULL,
   { { path_set_locked_invoker } }
+};
+
+static Argument *
+path_get_visible_invoker (Gimp         *gimp,
+                          GimpContext  *context,
+                          GimpProgress *progress,
+                          Argument     *args)
+{
+  gboolean success = TRUE;
+  Argument *return_args;
+  GimpImage *gimage;
+  gchar *name;
+  gboolean visible = FALSE;
+  GimpVectors *vectors;
+
+  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
+  if (! GIMP_IS_IMAGE (gimage))
+    success = FALSE;
+
+  name = (gchar *) args[1].value.pdb_pointer;
+  if (name == NULL || !g_utf8_validate (name, -1, NULL))
+    success = FALSE;
+
+  if (success)
+    {
+      vectors = gimp_image_get_vectors_by_name (gimage, name);
+
+      if (vectors)
+        visible = gimp_item_get_visible (GIMP_ITEM (vectors));
+      else
+        success = FALSE;
+    }
+
+  return_args = procedural_db_return_args (&path_get_visible_proc, success);
+
+  if (success)
+    return_args[1].value.pdb_int = visible;
+
+  return return_args;
+}
+
+static ProcArg path_get_visible_inargs[] =
+{
+  {
+    GIMP_PDB_IMAGE,
+    "image",
+    "The image"
+  },
+  {
+    GIMP_PDB_STRING,
+    "name",
+    "The name of the path whose visibility should be obtained."
+  }
+};
+
+static ProcArg path_get_visible_outargs[] =
+{
+  {
+    GIMP_PDB_INT32,
+    "visible",
+    "TRUE if the path is visible, FALSE otherwise"
+  }
+};
+
+static ProcRecord path_get_visible_proc =
+{
+  "gimp-path-get-visible",
+  "gimp-path-get-visible",
+  "Get the visibility of the named path.",
+  "This procedure returns the visibility of the specified path.",
+  "Andy Thomas",
+  "Andy Thomas",
+  "1999",
+  NULL,
+  GIMP_INTERNAL,
+  2,
+  path_get_visible_inargs,
+  1,
+  path_get_visible_outargs,
+  { { path_get_visible_invoker } }
+};
+
+static Argument *
+path_set_visible_invoker (Gimp         *gimp,
+                          GimpContext  *context,
+                          GimpProgress *progress,
+                          Argument     *args)
+{
+  gboolean success = TRUE;
+  GimpImage *gimage;
+  gchar *name;
+  gboolean visible = FALSE;
+  GimpVectors *vectors;
+
+  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
+  if (! GIMP_IS_IMAGE (gimage))
+    success = FALSE;
+
+  name = (gchar *) args[1].value.pdb_pointer;
+  if (name == NULL || !g_utf8_validate (name, -1, NULL))
+    success = FALSE;
+
+  visible = args[2].value.pdb_int ? TRUE : FALSE;
+
+  if (success)
+    {
+      vectors = gimp_image_get_vectors_by_name (gimage, name);
+
+      if (vectors)
+        gimp_item_set_visible (GIMP_ITEM (vectors), visible, TRUE);
+      else
+        success = FALSE;
+    }
+
+  return procedural_db_return_args (&path_set_visible_proc, success);
+}
+
+static ProcArg path_set_visible_inargs[] =
+{
+  {
+    GIMP_PDB_IMAGE,
+    "image",
+    "The image"
+  },
+  {
+    GIMP_PDB_STRING,
+    "name",
+    "The name of the path whose visibility should be set"
+  },
+  {
+    GIMP_PDB_INT32,
+    "visible",
+    "The new path visibility"
+  }
+};
+
+static ProcRecord path_set_visible_proc =
+{
+  "gimp-path-set-visible",
+  "gimp-path-set-visible",
+  "Sets the visibility of the named path.",
+  "This procedure sets the specified path's visibility.",
+  "Sven Neumann",
+  "Sven Neumann",
+  "2005",
+  NULL,
+  GIMP_INTERNAL,
+  3,
+  path_set_visible_inargs,
+  0,
+  NULL,
+  { { path_set_visible_invoker } }
 };
 
 static Argument *
@@ -1250,19 +1421,20 @@ static ProcArg path_to_selection_inargs[] =
   },
   {
     GIMP_PDB_FLOAT,
-    "feather_radius_x",
+    "feather-radius-x",
     "Feather radius x."
   },
   {
     GIMP_PDB_FLOAT,
-    "feather_radius_y",
+    "feather-radius-y",
     "Feather radius y."
   }
 };
 
 static ProcRecord path_to_selection_proc =
 {
-  "gimp_path_to_selection",
+  "gimp-path-to-selection",
+  "gimp-path-to-selection",
   "Transforms the active path into a selection",
   "This procedure renders the desired path into the current selection.",
   "Joao S. O. Bueno",
@@ -1333,9 +1505,10 @@ static ProcArg path_import_inargs[] =
 
 static ProcRecord path_import_proc =
 {
-  "gimp_path_import",
+  "gimp-path-import",
+  "gimp-path-import",
   "Import paths from an SVG file.",
-  "This procedure imports paths from an SVG file. This is a temporary solution until the new vectors PDB API is in place. Don't rely on this function being available in future GIMP releases.",
+  "This procedure imports paths from an SVG file. SVG elements other than paths and basic shapes are ignored.",
   "Sven Neumann",
   "Sven Neumann",
   "2003",
@@ -1346,4 +1519,84 @@ static ProcRecord path_import_proc =
   0,
   NULL,
   { { path_import_invoker } }
+};
+
+static Argument *
+path_import_string_invoker (Gimp         *gimp,
+                            GimpContext  *context,
+                            GimpProgress *progress,
+                            Argument     *args)
+{
+  gboolean success = TRUE;
+  GimpImage *gimage;
+  gchar *string;
+  gint32 length;
+  gboolean merge;
+  gboolean scale;
+
+  gimage = gimp_image_get_by_ID (gimp, args[0].value.pdb_int);
+  if (! GIMP_IS_IMAGE (gimage))
+    success = FALSE;
+
+  string = (gchar *) args[1].value.pdb_pointer;
+  if (string == NULL)
+    success = FALSE;
+
+  length = args[2].value.pdb_int;
+
+  merge = args[3].value.pdb_int ? TRUE : FALSE;
+
+  scale = args[4].value.pdb_int ? TRUE : FALSE;
+
+  if (success)
+    success = gimp_vectors_import_buffer (gimage, string, length, merge, scale, -1, NULL);
+
+  return procedural_db_return_args (&path_import_string_proc, success);
+}
+
+static ProcArg path_import_string_inargs[] =
+{
+  {
+    GIMP_PDB_IMAGE,
+    "image",
+    "The image"
+  },
+  {
+    GIMP_PDB_STRING,
+    "string",
+    "A string that must be a complete and valid SVG document."
+  },
+  {
+    GIMP_PDB_INT32,
+    "length",
+    "Number of bytes in string or -1 if the string is NULL terminated."
+  },
+  {
+    GIMP_PDB_INT32,
+    "merge",
+    "Merge paths into a single vectors object."
+  },
+  {
+    GIMP_PDB_INT32,
+    "scale",
+    "Scale the SVG to image dimensions."
+  }
+};
+
+static ProcRecord path_import_string_proc =
+{
+  "gimp-path-import-string",
+  "gimp-path-import-string",
+  "Import paths from an SVG string.",
+  "This procedure works like gimp_path_import() but takes a string rather than reading the SVG from a file. This allows you to write scripts that generate SVG and feed it to GIMP.",
+  "Sven Neumann",
+  "Sven Neumann",
+  "2005",
+  NULL,
+  GIMP_INTERNAL,
+  5,
+  path_import_string_inargs,
+  0,
+  NULL,
+  { { path_import_string_invoker } }
 };

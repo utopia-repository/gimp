@@ -116,7 +116,7 @@
     ; Text layer
 
     (gimp-drawable-set-visible text-layer TRUE)
-    (gimp-layer-set-preserve-trans text-layer TRUE)
+    (gimp-layer-set-lock-alpha text-layer TRUE)
 
     (gimp-edit-blend text-layer CUSTOM-MODE NORMAL-MODE
 		     GRADIENT-LINEAR 100 0 REPEAT-NONE gradient-reverse
@@ -170,4 +170,4 @@
 		    SF-TOGGLE     _"Gradient reverse"   FALSE)
 
 (script-fu-menu-register "script-fu-title-header"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

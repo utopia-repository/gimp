@@ -1,3 +1,767 @@
+2005-12-14  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/Makefile.am
+	* libgimpbase/libgimpbase-docs.sgml
+	* libgimpbase/libgimpbase-sections.txt: do not generate API docs
+	for the private wire protocol API.
+
+	* libgimp/libgimp-sections.txt: added new path API.
+
+	* libgimpbase/tmpl/gimpprotocol.sgml
+	* libgimpbase/tmpl/gimpwire.sgml: removed from CVS.
+
+	* libgimp/tmpl/gimppaths.sgml
+	* libgimpbase/tmpl/gimpenv.sgml: regenerated.
+
+2005-11-06  Sven Neumann  <sven@gimp.org>
+
+	* devel-docs/libgimpbase/Makefile.am: ignore gimpreloc.h.
+
+2005-11-04  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/libgimpbase-sections.txt: added GimpGridStyle.
+
+	* libgimpbase/tmpl/gimpbaseenums.sgml
+	* libgimpwidgets/tmpl/gimppageselector.sgml: regenerated.
+
+2005-10-17  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimp/tmpl/gimpfileops.sgml: updated.
+
+2005-10-05  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-docs.sgml
+	* libgimp/libgimp-sections.txt
+	* libgimp/tmpl/gimpgrid.sgml: added new Grid PDB API.
+
+	* libgimp/tmpl/gimpzoompreview.sgml: updated.
+
+2005-09-30  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimp/tmpl/gimpbuffer.sgml
+	* libgimp/tmpl/gimpprogress.sgml: updated.
+
+2005-09-28  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimppreview.sgml
+	* libgimpwidgets/tmpl/gimpscrolledpreview.sgml
+	* libgimpwidgets/tmpl/gimpstock.sgml: updated.
+
+2005-09-27  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpwidgets/tmpl/gimpstock.sgml: removed one '../' from
+	xml:base. Fixes inlinegraphics of stock images.
+
+2005-09-27  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-docs.sgml
+	* libgimp/libgimp-sections.txt
+	* libgimp/libgimp.types
+	* libgimp/tmpl/gimpbuffer.sgml
+	* libgimp/tmpl/gimpedit.sgml
+	* libgimp/tmpl/gimpzoompreview.sgml
+	* libgimp/libgimp-docs.sgml: added new buffer API and GimpZoomPreview.
+
+2005-09-25  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimpstock.sgml
+	* libgimpwidgets/tmpl/gimpzoommodel.sgml: updated.
+
+2005-09-25  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/libgimpwidgets.types
+	* libgimpwidgets/tmpl/gimpzoommodel.sgml: added API docs for
+	GimpZoomModel.
+
+2005-09-24  DindinX  <dindinx@gimp.org>
+
+	* app/app-sections.txt: removed gimp_display_shell_scale_zoom_step
+	and gimp_display_shell_scale_get_fraction.
+
+2005-09-20  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml: 
+	* app/app-sections.txt: qmask became quick-mask.
+
+2005-09-12  Michael Natterer  <mitch@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types: some updates.
+
+2005-09-10  Michael Natterer  <mitch@gimp.org>
+
+	* tools/units.c (units_init): GimpUnitVTable -> GimpUnitVtable.
+
+2005-09-10  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt: updated.
+
+	* libgimp/tmpl/gimpprogress.sgml
+	* libgimp/tmpl/gimpui.sgml
+	* libgimpbase/tmpl/gimpbaseenums.sgml: regenerated.
+
+2005-09-05  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt: added new functions.
+
+	* libgimp/tmpl/gimpdisplay.sgml
+	* libgimp/tmpl/gimpedit.sgml
+	* libgimp/tmpl/gimpui.sgml: regenerated.
+
+2005-09-03  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt: added new functions.
+
+	* libgimp/tmpl/gimpedit.sgml: regenerated.
+
+2005-08-25  Sven Neumann  <sven@gimp.org>
+
+	* app/app-sections.txt
+	* app/app.types: minor updates.
+
+	* libgimpbase/tmpl/gimputils.sgml: regenerated.
+
+2005-08-21  Michael Natterer  <mitch@gimp.org>
+
+	* app/Makefile.am
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types: lots of updates and fixes, still not completely
+	up-to-date.
+
+2005-08-03  Michael Natterer  <mitch@gimp.org>
+
+	* libgimp/libgimp-sections.txt: added the proc browser and view
+	stuff.
+
+	* libgimp/libgimp.types: added gimp_proc_browser_dialog_get_type.
+
+	* libgimp/libgimp-docs.sgml: added their sections, added some
+	missing symbols.
+
+	* libgimp/tmpl/gimpprocbrowserdialog.sgml
+	* libgimp/tmpl/gimpprocview.sgml: new files.
+
+	* libgimp/tmpl/gimp.sgml
+	* libgimp/tmpl/gimpdrawable.sgml
+	* libgimp/tmpl/gimplayer.sgml: regenerated.
+
+2005-08-03  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpbase/libgimpbase-sections.txt: added
+	GimpForegroundSelectMode stuff and gimp_canonicalize_identifier().
+
+	* libgimpbase/tmpl/gimpbaseenums.sgml
+	* libgimpbase/tmpl/gimputils.sgml: regenerated.
+
+2005-08-03  Sven Neumann  <sven@gimp.org>
+
+	* libgimpcolor/libgimpcolor-sections.txt
+	* libgimpcolor/tmpl/gimprgb.sgml: added gimp_rgb_luminance() and
+	friends.
+
+2005-07-22  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimppreview.sgml: added gimp_preview_get_area().
+
+2005-07-17  Sven Neumann  <sven@gimp.org>
+
+	* tools/shooter.c (find_toplevel_window): fixed signedness of
+	argument in call to XQueryTree().
+
+2005-07-14  Sven Neumann  <sven@gimp.org>
+
+	* tools/Makefile.am: only build the doc-shooter if --enable-gtk-doc
+	was passed to configure.
+
+2005-07-08  Michael Natterer  <mitch@gimp.org>
+
+	* libgimpwidgets/Makefile.am: converted spaces to tabs.
+
+	* libgimpwidgets/libgimpwidgets.types: added GimpBrowser and
+	GimpScrolledPreview.
+
+	* libgimpwidgets/tmpl/gimpbrowser.sgml
+	* libgimpwidgets/tmpl/gimpscrolledpreview.sgml: regenerated.
+
+2005-07-08  Michael Natterer  <mitch@gimp.org>
+
+	* tools/widgets.c
+	* libgimpwidgets/visual-index.xml
+	* libgimpwidgets/images/gimp-page-selector.png: added
+	GimpPageSelector to doc-shooter.
+
+2005-07-07  Michael Natterer  <mitch@gimp.org>
+
+	* libgimp*/tmpl/*.sgml: gtk-doc 1.4 added the Stability_Level
+	section all over the place.
+
+2005-07-05  Manish Singh  <yosh@gimp.org>
+
+	* tools/shooter.c: Reorder #includes so things compile everywhere.
+	Fixes bug #309562.
+
+2005-07-01  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/libgimpwidgets.types
+	* libgimpwidgets/tmpl/gimppageselector.sgml: added GimpPageSelector.
+
+2005-06-27  Sven Neumann  <sven@gimp.org>
+
+	* tools/widgets.c: added an explanatory label to GimpBrowser.
+
+	* libgimpwidgets/images: updated screenshots.
+
+2005-06-27  Sven Neumann  <sven@gimp.org>
+
+	* tools/Makefile.am: always build the doc-shooter; keeps it from
+	bit-rotting.
+
+	* tools/widgets.c: added GimpEnumLabel. 
+
+2005-06-27  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimpenumcombobox.sgml: updated.
+
+2005-06-26  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-docs.sgml
+	* libgimp/libgimp-sections.txt
+	* libgimp/libgimp.types: updated.
+
+	* libgimp/tmpl/gimpfontselectbutton.sgml: added new file.
+
+	* libgimp/tmpl/gimpgimprc.sgml: regenerated.
+
+2005-06-25  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/libgimpwidgets.types
+	* libgimpwidgets/tmpl/gimpenumlabel.sgml
+	* libgimpwidgets/tmpl/gimppropwidgets.sgml: added GimpEnumLabel.
+
+2005-06-24  Sven Neumann  <sven@gimp.org>
+
+	* libgimpconfig/tmpl/gimpcolorconfig.sgml
+	* libgimpwidgets/tmpl/gimpbrowser.sgml: regenerated.
+
+2005-06-14  Sven Neumann  <sven@gimp.org>
+
+	* */Makefile.am: removed obsolete AUTOMAKE_OPTIONS. 
+
+2005-06-04  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimp/libgimp.types
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimpstock.sgml: updated.
+
+	* libgimp/tmpl/gimpdrawablecombobox.sgml
+	* libgimp/tmpl/gimpenums.sgml
+	* libgimp/tmpl/gimpvectors.sgml
+	* libgimpwidgets/tmpl/gimpcolorarea.sgml: regenerated.
+
+2005-05-29  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-docs.sgml
+	* libgimp/libgimp-sections.txt
+	* libgimp/libgimp.types
+	* libgimp/tmpl/gimpimagecombobox.sgml
+	* libgimp/tmpl/gimpvectors.sgml: updated.
+
+2005-05-25  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types: updated.
+
+2005-05-21  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimpcolorarea.sgml
+	* libgimpwidgets/tmpl/gimpcolorbutton.sgml: updated.
+
+	* libgimpwidgets/tmpl/gimpbrowser.sgml: new file.
+
+	* tools/widgets.c: added GimpBrowser, changed widget packing.
+
+2005-05-12  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types: updated.
+
+2005-05-07  Sven Neumann  <sven@gimp.org>
+
+	* app/app-sections.txt: minor update.
+
+2005-04-28  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/visual-index.xml
+	* libgimpwidgets/images/gimp-pixmap.png: removed placeholder for
+	GimpPixmap illustration. This widget is about to be deprecated
+	anyway.
+
+2005-04-28  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt: updated.
+
+2005-04-28  Sven Neumann  <sven@gimp.org>
+
+	* tools/Makefile.am
+	* tools/units.[ch]: added a very basic GimpUnit implementation.
+
+	* tools/shooter.c
+	* tools/widgets.c: initialize the units and enable GimpUnitMenu.
+
+	* libgimpwidgets/images/*.png: regenerated.
+
+2005-04-23  Sven Neumann  <sven@gimp.org>
+
+	* tools/shooter.c: read the GIMP gtkrc file.
+
+2005-04-23  Sven Neumann  <sven@gimp.org>
+
+	* tools/shooter.c
+	* tools/widgets.c: tweaked spacings.
+
+2005-04-20  DindinX  <dindinx@gimp.org>
+
+	* tools/widgets.c: added all but the GimpPixmap widget.
+	The unit menu shot is also very buggy.
+
+	* libgimpwidgets/images/gimp-color-area.png
+	* libgimpwidgets/images/gimp-color-button.png
+	* libgimpwidgets/images/gimp-color-hex-entry.png
+	* libgimpwidgets/images/gimp-color-scale.png
+	* libgimpwidgets/images/gimp-color-selection.png
+	* libgimpwidgets/images/gimp-dialog.png
+	* libgimpwidgets/images/gimp-enum-combo-box.png
+	* libgimpwidgets/images/gimp-int-combo-box.png
+	* libgimpwidgets/images/gimp-memsize-entry.png
+	* libgimpwidgets/images/gimp-offset-area.png
+	* libgimpwidgets/images/gimp-path-editor.png
+	* libgimpwidgets/images/gimp-pick-button.png
+	* libgimpwidgets/images/gimp-preview-area.png
+	* libgimpwidgets/images/gimp-unit-menu.png: updated all
+	these files.
+
+2005-04-20  Sven Neumann  <sven@gimp.org>
+
+	* tools/README.shooter: adapted for GIMP.
+
+	* tools/Makefile.am (EXTRA_DIST): include it in the tarball.
+
+2005-04-20  Sven Neumann  <sven@gimp.org>
+
+	* tools/Makefile.am
+	* tools/shooter.c
+	* tools/widgets.c: fixed includes and dependencies, expand the path
+	returned from gimp_config_build_data_path(), use common color code.
+
+2005-04-20  Sven Neumann  <sven@gimp.org>
+
+	* tools/shooter.c: set an application name, pass the default
+	module path to gimp_module_db_load().
+
+2005-04-20  DindinX  <dindinx@gimp.org>
+
+	* tools/shooter.c: cleanup
+	* tools/widgets.c: cleanup and added two new widgets: frame and path
+	editor.
+
+	* libgimpwidgets/images/gimp-chain-button.png
+	* libgimpwidgets/images/gimp-color-button.png
+	* libgimpwidgets/images/gimp-color-hex-entry.png
+	* libgimpwidgets/images/gimp-color-scale.png
+	* libgimpwidgets/images/gimp-color-selection.png: updated.
+	
+	* libgimpwidgets/images/gimp-frame.png
+	* libgimpwidgets/images/gimp-path-editor.png: new shots.
+
+2005-04-20  Sven Neumann  <sven@gimp.org>
+
+	* tools/Makefile.am: do not build doc-shooter by default.
+
+2005-04-20  Sven Neumann  <sven@gimp.org>
+
+	* tools/Makefile.am
+	* tools/shooter.c
+	* tools/widgets.[ch]: some minor cleanups, removed unused includes,
+	made code multihead-safe.
+
+2005-04-20  DindinX  <dindinx@gimp.org>
+
+	* tools/*: new tools to generate screenshots for the widget gallery.
+	* Makefile.am: added the tools subdir.
+	* ../configure.in: modified accordingly.
+
+2005-04-20  DindinX  <dindinx@gimp.org>
+
+	* libgimpwidgets/images/gimp-button.png
+	* libgimpwidgets/images/gimp-chain-button.png
+	* libgimpwidgets/images/gimp-color-area.png
+	* libgimpwidgets/images/gimp-color-button.png
+	* libgimpwidgets/images/gimp-color-hex-entry.png
+	* libgimpwidgets/images/gimp-color-scale.png
+	* libgimpwidgets/images/gimp-file-entry.png: updated.
+
+2005-04-20  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt: reordered a stock icon.
+
+	* libgimpwidgets/visual-index.xml: let the xml:base attribute
+	point to the file itself.
+
+	* libgimpwidgets/tmpl/gimpstock.sgml: do nasty things with
+	xml:base attributes that seem to persuade the XSLT processor to
+	generate HTML that points to icon images.
+
+2005-04-19  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt: added new functions.
+
+	* libgimp/tmpl/gimpcolor.sgml
+	* libgimp/tmpl/gimpimage.sgml: regenerated.
+
+2005-04-19  DindinX  <dindinx@gimp.org>
+
+	* libgimpwidgets/images/gimp-color-hex-entry.png
+	* libgimpwidgets/images/gimp-color-scale.png
+	* libgimpwidgets/images/gimp-color-selection.png
+	* libgimpwidgets/images/gimp-file-entry.png: real screenshot for
+	these widgets.
+
+2005-04-19  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/visual-index.xml: added an XML header and a DOCTYPE
+	declaration and specify an xml:base for the images.
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml: specify a chapter id so
+	that we get a nicer filename for the generated HTML file.
+
+2005-04-19  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/Makefile.am
+	* libgimpwidgets/libgimpwidgets-docs.sgml: fixed the build, use
+	XInclude to include visual-index.xml.
+
+2005-04-19  DindinX  <dindinx@gimp.org>
+
+	* libgimpwidgets/visual-index.xml: added this file so we have a
+	"visual widget gallery" in our docs.
+
+	* libgimpwidgets/Makefile.am
+	* libgimpwidgets/libgimpwidgets-docs.sgml: added visual-index.xml.
+
+	* devel-docs/libgimpwidgets/images/gimp-*.png: placeholders for real
+	widget screenshots.
+
+2005-04-16  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/libgimpbase-sections.txt
+	* libgimpbase/tmpl/gimpbaseenums.sgml: added new enum.
+
+2005-04-13  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types: udpated.
+
+2005-04-04  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimpstock.sgml: added new stock icons.
+
+2005-03-31  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types: updated.
+
+2005-03-25  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt: updated.
+
+2005-03-25  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimppropwidgets.sgml
+	* libgimpwidgets/tmpl/gimpsizeentry.sgml: updated.
+
+2005-03-24  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimp/tmpl/gimpplugin.sgml: updated.
+
+2005-03-23  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt: updated.
+
+2005-03-03  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types: updated.
+
+2005-03-03  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-docs.sgml
+	* libgimpbase/libgimpbase-docs.sgml
+	* libgimpcolor/libgimpcolor-docs.sgml
+	* libgimpconfig/libgimpconfig-docs.sgml
+	* libgimpmath/libgimpmath-docs.sgml
+	* libgimpmodule/libgimpmodule-docs.sgml
+	* libgimpthumb/libgimpthumb-docs.sgml
+	* libgimpwidgets/libgimpwidgets-docs.sgml: added several indices,
+	one for all symbols, and lists of new symbols for GIMP 2.2 and
+	2.4.  For this to work correctly, you need gtk-doc from CVS (see
+	bug #168384). But don't worry, you can still build the docs with
+	older versions.
+
+2005-03-03  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt: added new function.
+
+	* libgimp/tmpl/gimp.sgml
+	* libgimpconfig/tmpl/gimpconfig-params.sgml
+	* libgimpwidgets/tmpl/gimppropwidgets.sgml: removed unused
+	parameters.
+
+	* libgimp/tmpl/gimpdrawable.sgml
+	* libgimp/tmpl/gimpimage.sgml
+	* libgimp/tmpl/gimppaths.sgml: regenerated.
+
+2005-03-01  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimpenumcombobox.sgml
+	* libgimpwidgets/tmpl/gimpintcombobox.sgml: updated.
+
+2005-02-25  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt: updated internal docs.
+
+2005-02-22  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/tmpl/gimpchannel.sgml: regenerated.
+
+2005-02-22  Shlomi Fish   <shlomif@iglu.org.il>
+
+	* libgimp/libgimp-sections.txt: added new function
+
+2005-02-14  Sven Neumann  <sven@gimp.org>
+
+	* app/Makefile.am
+	* app/app-docs.sgml
+	* app/app-sections.txt: some updates, there's still a lot to do here.
+
+2005-02-12  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt: updated.
+
+	* libgimp/tmpl/gimpprogress.sgml
+	* libgimpbase/tmpl/gimpbaseenums.sgml: regenerated.
+
+2005-02-09  Sven Neumann  <sven@gimp.org>
+
+	* */Makefile.am: set AUTOMAKE_OPTIONS to 1.7.
+
+	* libgimpconfig/libgimpconfig-docs.sgml
+	* libgimpconfig/libgimpconfig.types: let gtk-doc do introspection
+	on GimpColorConfig.
+
+	* libgimpconfig/tmpl/gimpcolorconfig.sgml
+	* libgimpconfig/tmpl/gimpconfig-iface.sgml
+	* libgimpconfig/tmpl/gimpconfig-params.sgml: regenerated.
+
+	* libgimpwidgets/libgimpwidgets-sections.txt: added new function.
+
+	* libgimpwidgets/tmpl/gimpsizeentry.sgml: regenerated.
+
+2005-02-07  Sven Neumann  <sven@gimp.org>
+
+	* libgimpconfig/libgimpconfig-docs.sgml
+	* libgimpconfig/libgimpconfig-sections.txt: updated.
+
+	* libgimpconfig/tmpl/gimpcolorconfig.sgml: added this new file.
+
+	* libgimpconfig/tmpl/gimpconfig-iface.sgml
+	* libgimpconfig/tmpl/gimpconfig-params.sgml
+	* libgimpconfig/tmpl/gimpconfigwriter.sgml: regenerated.
+
+2005-02-05  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-sections.txt: updated.
+
+	* libgimpwidgets/tmpl/gimppropwidgets.sgml: added this new file.
+
+2005-02-04 Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* libgimp/Makefile.am:
+	* libgimpwidgets/Makefile.am: fix build after moving
+	gimppropwidgets
+
+	* libgimpconfig/tmpl/gimpconfig-params.sgml:
+	* libgimpwidgets/libgimpwidgets-docs.sgml: modified.
+
+2005-01-29  Sven Neumann  <sven@gimp.org>
+
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimpenumwidgets.sgml: updated.
+
+2005-01-28  Sven Neumann  <sven@gimp.org>
+
+	* libgimpconfig/libgimpconfig-docs.sgml
+	* libgimpconfig/libgimpconfig-sections.txt: updated.
+
+	* libgimpconfig/tmpl/gimpconfig-iface.sgml
+	* libgimpconfig/tmpl/gimpconfig-params.sgml
+	* libgimpconfig/tmpl/gimpconfig-path.sgml: regenerated.
+
+2005-01-26  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/libgimpbase-docs.sgml
+	* libgimpbase/libgimpbase-sections.txt: removed references to
+	gimp_path functions that moved to libgimpconfig.
+
+	* libgimpbase/tmpl/gimppath.sgml: removed.
+
+	* libgimpbase/tmpl/gimpbasetypes.sgml: regenerated.
+
+2005-01-25  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* Makefile.am: add libgimpconfig to subdirs
+	
+	* libgimpconfig/libgimpconfig-docs.sgml
+	* libgimpconfig/libgimpconfig-sections.txt
+	* libgimpconfig/tmpl/gimpconfig-deserialize.sgml
+	* libgimpconfig/tmpl/gimpconfig-error.sgml
+	* libgimpconfig/tmpl/gimpconfig-iface.sgml
+	* libgimpconfig/tmpl/gimpconfig-params.sgml
+	* libgimpconfig/tmpl/gimpconfig-path.sgml
+	* libgimpconfig/tmpl/gimpconfig-serialize.sgml
+	* libgimpconfig/tmpl/gimpconfig-utils.sgml
+	* libgimpconfig/tmpl/gimpconfigtypes.sgml
+	* libgimpconfig/tmpl/gimpconfigwriter.sgml
+	* libgimpconfig/tmpl/gimpscanner.sgml
+	* libgimpconfig/tmpl/libgimpconfig-unused.sgml: added or
+	corrected
+
+2005-01-25  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* libgimpconfig/version: oop, removed
+	* libgimpconfig/.cvsignore: added
+
+2005-01-25  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* libgimpconfig/version:
+	* libgimpconfig/version.in: added
+	
+2005-01-24  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* libgimpconfig/tmpl/gimpconfig-error.sgml: removed, no need
+	for this.
+
+	* libgimpconfig/tmpl/gimpconfig-deserialize.sgml:
+	* libgimpconfig/tmpl/gimpconfig-iface.sgml:
+	* libgimpconfig/tmpl/gimpconfig-serialize.sgml:
+	* libgimpconfig/tmpl/gimpconfig-utils.sgml:
+	* libgimpconfig/tmpl/gimpconfigwriter.sgml: gtkdoc templates
+	for libgimpconfig.
+
+2005-01-24  Bill Skaggs  <weskaggs@primate.ucdavis.edu>
+
+	* libgimpconfig/Makefile.am
+	* libgimpconfig/libgimpconfig-docs.sgml
+	* libgimpconfig/libgimpconfig-overrides.txt
+	* libgimpconfig/libgimpconfig-sections.txt
+	* libgimpconfig/libgimpconfig.types
+	* libgimpconfig/tmpl/gimpconfig-error.sgml: created, setting
+	up migration from app/config to libgimpconfig.
+
+2005-01-23  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt: updated for moves to libgimpbase.
+
+2005-01-23  Sven Neumann  <sven@gimp.org>
+
+	* libgimpbase/libgimpbase-docs.sgml
+	* libgimpbase/libgimpbase-sections.txt
+	* libgimpcolor/libgimpcolor-sections.txt
+	* libgimpmath/libgimpmath-sections.txt: updated for new param-specs.
+
+	* libgimpbase/tmpl/gimpbasetypes.sgml
+	* libgimpbase/tmpl/gimpmemsize.sgml
+	* libgimpbase/tmpl/gimpunit.sgml
+	* libgimpcolor/tmpl/gimprgb.sgml
+	* libgimpmath/tmpl/gimpmatrix.sgml: regenerated.
+
+	* libgimpbase/tmpl/gimppath.sgml: new file.
+
+2005-01-23  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimp/tmpl/gimpenums.sgml
+	* libgimpbase/libgimpbase-sections.txt
+	* libgimpbase/tmpl/gimpbaseenums.sgml: updated for moved enums.
+
+2005-01-22  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt
+	* app/app.types
+	* libgimpwidgets/libgimpwidgets-docs.sgml
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/libgimpwidgets.types: GimpEnumStore and
+	GimpEnumComboBox moved to libgimpwidgets.
+
+	* libgimpwidgets/tmpl/gimpenumcombobox.sgml
+	* libgimpwidgets/tmpl/gimpenumstore.sgml: new files.
+
+2005-01-07  Sven Neumann  <sven@gimp.org>
+
+	* app/app-docs.sgml
+	* app/app-sections.txt: updated.
+
+	* libgimpwidgets/libgimpwidgets-sections.txt
+	* libgimpwidgets/tmpl/gimpscrolledpreview.sgml: added
+	gimp_scrolled_preview_set_position().
+
+2004-12-31  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimp/tmpl/gimpgradient.sgml: added gimp_brush_is_editable().
+
+2004-12-31  Sven Neumann  <sven@gimp.org>
+
+	* libgimp/libgimp-sections.txt
+	* libgimp/tmpl/gimpbrush.sgml
+	* libgimp/tmpl/gimppalette.sgml: updated for new brush API.
+
+2004-12-28  Bill Skaggs <weskaggs@primate.ucdavis.edu>
+
+	* parasites.txt:  added information about "decompose-data"
+	parasite now added by the decompose plug-in.
+
 2004-12-23  Sven Neumann  <sven@gimp.org>
 
 	* app/app-sections.txt: updated.

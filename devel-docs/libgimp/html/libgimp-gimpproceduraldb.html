@@ -1,14 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpproceduraldb</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpplugin.html" title="gimpplugin">
 <link rel="next" href="libgimp-gimpprogress.html" title="gimpprogress">
-<meta name="generator" content="GTK-Doc V1.8 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -18,27 +17,24 @@
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
-<tr valign="middle">
+<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpplugin.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpprogress.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2571431" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2607763" class="shortcut">Description</a></nobr></td></tr>
-</table>
+</tr></table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpproceduraldb"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2571431"></a><span class="refentrytitle">gimpproceduraldb</span>
-</h2>
+<h2><span class="refentrytitle">gimpproceduraldb</span></h2>
 <p>gimpproceduraldb &#8212; Functions for querying and changing procedural database (PDB) entries.</p>
 </td>
 <td valign="top" align="right"></td>
@@ -49,71 +45,72 @@
 
 
 
-gchar*              <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-temp-name">gimp_procedural_db_temp_name</a>        (void);
-gboolean            <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info">gimp_procedural_db_proc_info</a>        (const gchar *procedure,
-                                                         gchar **blurb,
-                                                         gchar **help,
-                                                         gchar **author,
-                                                         gchar **copyright,
-                                                         gchar **date,
-                                                         <a
+gchar*      <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-temp-name">gimp_procedural_db_temp_name</a>    (void);
+gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info">gimp_procedural_db_proc_info</a>    (const gchar *procedure,
+                                             gchar **blurb,
+                                             gchar **help,
+                                             gchar **author,
+                                             gchar **copyright,
+                                             gchar **date,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 >GimpPDBProcType</a> *proc_type,
-                                                         gint *num_args,
-                                                         gint *num_values,
-                                                         <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **args,
-                                                         <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **return_vals);
-gboolean            <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data">gimp_procedural_db_get_data</a>         (const gchar *identifier,
-                                                         gpointer data);
-gboolean            <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-set-data">gimp_procedural_db_set_data</a>         (const gchar *identifier,
-                                                         gpointer data,
-                                                         guint32 bytes);
-gboolean            <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-dump">gimp_procedural_db_dump</a>             (const gchar *filename);
-gboolean            <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-query">gimp_procedural_db_query</a>            (const gchar *name,
-                                                         const gchar *blurb,
-                                                         const gchar *help,
-                                                         const gchar *author,
-                                                         const gchar *copyright,
-                                                         const gchar *date,
-                                                         const gchar *proc_type,
-                                                         gint *num_matches,
-                                                         gchar ***procedure_names);
-gboolean            <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-arg">gimp_procedural_db_proc_arg</a>         (const gchar *procedure,
-                                                         gint arg_num,
-                                                         <a
+                                             gint *num_args,
+                                             gint *num_values,
+                                             <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **args,
+                                             <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **return_vals);
+gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data">gimp_procedural_db_get_data</a>     (const gchar *identifier,
+                                             gpointer data);
+gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-set-data">gimp_procedural_db_set_data</a>     (const gchar *identifier,
+                                             gpointer data,
+                                             guint32 bytes);
+gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-dump">gimp_procedural_db_dump</a>         (const gchar *filename);
+gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-query">gimp_procedural_db_query</a>        (const gchar *name,
+                                             const gchar *blurb,
+                                             const gchar *help,
+                                             const gchar *author,
+                                             const gchar *copyright,
+                                             const gchar *date,
+                                             const gchar *proc_type,
+                                             gint *num_matches,
+                                             gchar ***procedure_names);
+gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-arg">gimp_procedural_db_proc_arg</a>     (const gchar *procedure,
+                                             gint arg_num,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
 >GimpPDBArgType</a> *arg_type,
-                                                         gchar **arg_name,
-                                                         gchar **arg_desc);
-gboolean            <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-val">gimp_procedural_db_proc_val</a>         (const gchar *procedure,
-                                                         gint val_num,
-                                                         <a
+                                             gchar **arg_name,
+                                             gchar **arg_desc);
+gboolean    <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-val">gimp_procedural_db_proc_val</a>     (const gchar *procedure,
+                                             gint val_num,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
 >GimpPDBArgType</a> *val_type,
-                                                         gchar **val_name,
-                                                         gchar **val_desc);
-gint                <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-size">gimp_procedural_db_get_data_size</a>    (const gchar *identifier);
+                                             gchar **val_name,
+                                             gchar **val_desc);
+gint        <a href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-size">gimp_procedural_db_get_data_size</a>
+                                            (const gchar *identifier);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2607763"></a><h2>Description</h2>
+<a name="id2560998"></a><h2>Description</h2>
 <p>
 Functions for querying and changing procedural database (PDB) entries.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2607780"></a><h2>Details</h2>
+<a name="id2561010"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2607791"></a><h3>
+<a name="id2561016"></a><h3>
 <a name="gimp-procedural-db-temp-name"></a>gimp_procedural_db_temp_name ()</h3>
-<a class="indexterm" name="id2607802"></a><pre class="programlisting">gchar*              gimp_procedural_db_temp_name        (void);</pre>
+<a class="indexterm" name="id2561025"></a><pre class="programlisting">gchar*      gimp_procedural_db_temp_name    (void);</pre>
 <p>
 Generates a unique temporary PDB name.
 </p>
 <p>
 This procedure generates a temporary PDB entry name that is
-guaranteed to be unique. It is many used by the interactive popup
+guaranteed to be unique. It is mainly used by the interactive popup
 dialogs to generate a PDB entry name.</p>
 <p>
 
@@ -121,7 +118,8 @@ dialogs to generate a PDB entry name.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> A unique temporary name for a temporary PDB entry.
 </td>
 </tr></tbody>
@@ -129,21 +127,21 @@ dialogs to generate a PDB entry name.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2607849"></a><h3>
+<a name="id2561072"></a><h3>
 <a name="gimp-procedural-db-proc-info"></a>gimp_procedural_db_proc_info ()</h3>
-<a class="indexterm" name="id2607860"></a><pre class="programlisting">gboolean            gimp_procedural_db_proc_info        (const gchar *procedure,
-                                                         gchar **blurb,
-                                                         gchar **help,
-                                                         gchar **author,
-                                                         gchar **copyright,
-                                                         gchar **date,
-                                                         <a
+<a class="indexterm" name="id2561081"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_info    (const gchar *procedure,
+                                             gchar **blurb,
+                                             gchar **help,
+                                             gchar **author,
+                                             gchar **copyright,
+                                             gchar **date,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBProcType"
 >GimpPDBProcType</a> *proc_type,
-                                                         gint *num_args,
-                                                         gint *num_values,
-                                                         <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **args,
-                                                         <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **return_vals);</pre>
+                                             gint *num_args,
+                                             gint *num_values,
+                                             <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **args,
+                                             <a href="libgimp-gimp.html#GimpParamDef">GimpParamDef</a> **return_vals);</pre>
 <p>
 Queries the procedural database for information on the specified
 procedure.
@@ -161,62 +159,74 @@ about each input argument and return value.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>procedure</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>procedure</code></em>&#160;:</span></td>
 <td> The procedure name.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td> A short blurb.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>help</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>help</code></em>&#160;:</span></td>
 <td> Detailed procedure help.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>author</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>author</code></em>&#160;:</span></td>
 <td> Author(s) of the procedure.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>copyright</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>copyright</code></em>&#160;:</span></td>
 <td> The copyright.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>date</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>date</code></em>&#160;:</span></td>
 <td> Copyright date.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>proc_type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>proc_type</code></em>&#160;:</span></td>
 <td> The procedure type.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_args</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_args</code></em>&#160;:</span></td>
 <td> The number of input arguments.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_values</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_values</code></em>&#160;:</span></td>
 <td> The number of return values.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>args</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>args</code></em>&#160;:</span></td>
 <td> The input arguments.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>return_vals</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>return_vals</code></em>&#160;:</span></td>
 <td> The return values.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -225,10 +235,10 @@ about each input argument and return value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602602"></a><h3>
+<a name="id2515345"></a><h3>
 <a name="gimp-procedural-db-get-data"></a>gimp_procedural_db_get_data ()</h3>
-<a class="indexterm" name="id2602614"></a><pre class="programlisting">gboolean            gimp_procedural_db_get_data         (const gchar *identifier,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2515354"></a><pre class="programlisting">gboolean    gimp_procedural_db_get_data     (const gchar *identifier,
+                                             gpointer data);</pre>
 <p>
 Returns data associated with the specified identifier.
 </p>
@@ -243,17 +253,20 @@ location.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
 <td> The identifier associated with data.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td> A byte array containing data.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success, FALSE if no data has been associated with
 the identifier
 </td>
@@ -263,11 +276,11 @@ the identifier
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602703"></a><h3>
+<a name="id2515442"></a><h3>
 <a name="gimp-procedural-db-set-data"></a>gimp_procedural_db_set_data ()</h3>
-<a class="indexterm" name="id2602715"></a><pre class="programlisting">gboolean            gimp_procedural_db_set_data         (const gchar *identifier,
-                                                         gpointer data,
-                                                         guint32 bytes);</pre>
+<a class="indexterm" name="id2515452"></a><pre class="programlisting">gboolean    gimp_procedural_db_set_data     (const gchar *identifier,
+                                             gpointer data,
+                                             guint32 bytes);</pre>
 <p>
 Associates the specified identifier with the supplied data.
 </p>
@@ -282,22 +295,26 @@ identifier. The data may be subsequently retrieved by a call to
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
 <td> The identifier associated with data.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>data</code></em>&#160;:</span></td>
 <td> A byte array containing data.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>bytes</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>bytes</code></em>&#160;:</span></td>
 <td> The number of bytes in the data
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -306,9 +323,9 @@ identifier. The data may be subsequently retrieved by a call to
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2609691"></a><h3>
+<a name="id2568986"></a><h3>
 <a name="gimp-procedural-db-dump"></a>gimp_procedural_db_dump ()</h3>
-<a class="indexterm" name="id2609701"></a><pre class="programlisting">gboolean            gimp_procedural_db_dump             (const gchar *filename);</pre>
+<a class="indexterm" name="id2568994"></a><pre class="programlisting">gboolean    gimp_procedural_db_dump         (const gchar *filename);</pre>
 <p>
 Dumps the current contents of the procedural database
 </p>
@@ -325,12 +342,14 @@ script, which generates a texinfo document.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>filename</code></em>&#160;:</span></td>
 <td> The dump filename.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -339,17 +358,17 @@ script, which generates a texinfo document.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2609766"></a><h3>
+<a name="id2569056"></a><h3>
 <a name="gimp-procedural-db-query"></a>gimp_procedural_db_query ()</h3>
-<a class="indexterm" name="id2609777"></a><pre class="programlisting">gboolean            gimp_procedural_db_query            (const gchar *name,
-                                                         const gchar *blurb,
-                                                         const gchar *help,
-                                                         const gchar *author,
-                                                         const gchar *copyright,
-                                                         const gchar *date,
-                                                         const gchar *proc_type,
-                                                         gint *num_matches,
-                                                         gchar ***procedure_names);</pre>
+<a class="indexterm" name="id2569065"></a><pre class="programlisting">gboolean    gimp_procedural_db_query        (const gchar *name,
+                                             const gchar *blurb,
+                                             const gchar *help,
+                                             const gchar *author,
+                                             const gchar *copyright,
+                                             const gchar *date,
+                                             const gchar *proc_type,
+                                             gint *num_matches,
+                                             gchar ***procedure_names);</pre>
 <p>
 Queries the procedural database for its contents using regular
 expression matching.
@@ -374,52 +393,62 @@ entries is 0.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td> The regex for procedure name.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td> The regex for procedure blurb.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>help</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>help</code></em>&#160;:</span></td>
 <td> The regex for procedure help.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>author</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>author</code></em>&#160;:</span></td>
 <td> The regex for procedure author.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>copyright</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>copyright</code></em>&#160;:</span></td>
 <td> The regex for procedure copyright.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>date</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>date</code></em>&#160;:</span></td>
 <td> The regex for procedure date.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>proc_type</code></em>&#160;:</span></td>
-<td> The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-in', 'GIMP Extension' }.
+<td>
+<span class="term"><em class="parameter"><code>proc_type</code></em>&#160;:</span></td>
+<td> The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-In', 'GIMP Extension', 'Temporary Procedure' }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_matches</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>num_matches</code></em>&#160;:</span></td>
 <td> The number of matching procedures.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>procedure_names</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>procedure_names</code></em>&#160;:</span></td>
 <td> The list of procedure names.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -428,15 +457,15 @@ entries is 0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2609997"></a><h3>
+<a name="id2569293"></a><h3>
 <a name="gimp-procedural-db-proc-arg"></a>gimp_procedural_db_proc_arg ()</h3>
-<a class="indexterm" name="id2610008"></a><pre class="programlisting">gboolean            gimp_procedural_db_proc_arg         (const gchar *procedure,
-                                                         gint arg_num,
-                                                         <a
+<a class="indexterm" name="id2569302"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_arg     (const gchar *procedure,
+                                             gint arg_num,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
 >GimpPDBArgType</a> *arg_type,
-                                                         gchar **arg_name,
-                                                         gchar **arg_desc);</pre>
+                                             gchar **arg_name,
+                                             gchar **arg_desc);</pre>
 <p>
 Queries the procedural database for information on the specified
 procedure's argument.
@@ -451,32 +480,38 @@ argument. The argument type, name, and a description are retrieved.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>procedure</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>procedure</code></em>&#160;:</span></td>
 <td> The procedure name.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>arg_num</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>arg_num</code></em>&#160;:</span></td>
 <td> The argument number.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>arg_type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>arg_type</code></em>&#160;:</span></td>
 <td> The type of argument.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>arg_name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>arg_name</code></em>&#160;:</span></td>
 <td> The name of the argument.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>arg_desc</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>arg_desc</code></em>&#160;:</span></td>
 <td> A description of the argument.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -485,15 +520,15 @@ argument. The argument type, name, and a description are retrieved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2610146"></a><h3>
+<a name="id2569439"></a><h3>
 <a name="gimp-procedural-db-proc-val"></a>gimp_procedural_db_proc_val ()</h3>
-<a class="indexterm" name="id2610157"></a><pre class="programlisting">gboolean            gimp_procedural_db_proc_val         (const gchar *procedure,
-                                                         gint val_num,
-                                                         <a
+<a class="indexterm" name="id2569448"></a><pre class="programlisting">gboolean    gimp_procedural_db_proc_val     (const gchar *procedure,
+                                             gint val_num,
+                                             <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPDBArgType"
 >GimpPDBArgType</a> *val_type,
-                                                         gchar **val_name,
-                                                         gchar **val_desc);</pre>
+                                             gchar **val_name,
+                                             gchar **val_desc);</pre>
 <p>
 Queries the procedural database for information on the specified
 procedure's return value.
@@ -509,32 +544,38 @@ retrieved.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>procedure</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>procedure</code></em>&#160;:</span></td>
 <td> The procedure name.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val_num</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>val_num</code></em>&#160;:</span></td>
 <td> The return value number.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val_type</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>val_type</code></em>&#160;:</span></td>
 <td> The type of return value.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val_name</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>val_name</code></em>&#160;:</span></td>
 <td> The name of the return value.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>val_desc</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>val_desc</code></em>&#160;:</span></td>
 <td> A description of the return value.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -543,9 +584,10 @@ retrieved.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2610296"></a><h3>
+<a name="id2569586"></a><h3>
 <a name="gimp-procedural-db-get-data-size"></a>gimp_procedural_db_get_data_size ()</h3>
-<a class="indexterm" name="id2610309"></a><pre class="programlisting">gint                gimp_procedural_db_get_data_size    (const gchar *identifier);</pre>
+<a class="indexterm" name="id2569596"></a><pre class="programlisting">gint        gimp_procedural_db_get_data_size
+                                            (const gchar *identifier);</pre>
 <p>
 Returns size of data associated with the specified identifier.
 </p>
@@ -560,12 +602,14 @@ associated with the identifier, an error is returned.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
+<td>
+<span class="term"><em class="parameter"><code>identifier</code></em>&#160;:</span></td>
 <td> The identifier associated with data.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> The number of bytes in the data.
 </td>
 </tr>
@@ -574,5 +618,9 @@ associated with the identifier, an error is returned.</p>
 </div>
 </div>
 </div>
+<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
+<td align="left"><a accesskey="p" href="libgimp-gimpplugin.html"><b>&lt;&lt;&#160;gimpplugin</b></a></td>
+<td align="right"><a accesskey="n" href="libgimp-gimpprogress.html"><b>gimpprogress&#160;&gt;&gt;</b></a></td>
+</tr></table>
 </body>
 </html>

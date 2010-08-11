@@ -50,12 +50,10 @@ static GimpActionEntry layers_actions[] =
 
   { "layers-menu",              NULL,                    N_("_Layer")        },
   { "layers-stack-menu",        NULL,                    N_("Stac_k")        },
-  { "layers-colors-menu",       NULL,                    N_("_Colors")       },
-  { "layers-colors-auto-menu",  NULL,                    N_("_Auto")         },
   { "layers-mask-menu",         NULL,                    N_("_Mask")         },
   { "layers-transparency-menu", NULL,                    N_("Tr_ansparency") },
   { "layers-transform-menu",    NULL,                    N_("_Transform")    },
-  { "layers-properties-menu",   NULL,                    N_("_Properties")   },
+  { "layers-properties-menu",   GTK_STOCK_PROPERTIES,    N_("_Properties")   },
   { "layers-opacity-menu",      GIMP_STOCK_TRANSPARENCY, N_("_Opacity")      },
   { "layers-mode-menu",         GIMP_STOCK_TOOL_PENCIL,  N_("Layer _Mode")   },
 
@@ -64,14 +62,14 @@ static GimpActionEntry layers_actions[] =
     G_CALLBACK (layers_text_tool_cmd_callback),
     GIMP_HELP_TOOL_TEXT },
 
-  { "layers-edit-attributes", GIMP_STOCK_EDIT,
+  { "layers-edit-attributes", GTK_STOCK_EDIT,
     N_("_Edit Layer Attributes..."), NULL,
     N_("Edit layer attributes"),
     G_CALLBACK (layers_edit_attributes_cmd_callback),
     GIMP_HELP_LAYER_EDIT },
 
   { "layers-new", GTK_STOCK_NEW,
-    N_("_New Layer..."), "",
+    N_("_New Layer..."), "<control><shift>N",
     N_("New layer..."),
     G_CALLBACK (layers_new_cmd_callback),
     GIMP_HELP_LAYER_NEW },
@@ -83,7 +81,7 @@ static GimpActionEntry layers_actions[] =
     GIMP_HELP_LAYER_NEW },
 
   { "layers-duplicate", GIMP_STOCK_DUPLICATE,
-    N_("D_uplicate Layer"), NULL,
+    N_("D_uplicate Layer"), "<control><shift>D",
     N_("Duplicate layer"),
     G_CALLBACK (layers_duplicate_cmd_callback),
     GIMP_HELP_LAYER_DUPLICATE },
@@ -172,31 +170,36 @@ static GimpActionEntry layers_actions[] =
   { "layers-alpha-add", GIMP_STOCK_TRANSPARENCY,
     N_("Add Alpha C_hannel"), NULL, NULL,
     G_CALLBACK (layers_alpha_add_cmd_callback),
-    GIMP_HELP_LAYER_ALPHA_ADD }
+    GIMP_HELP_LAYER_ALPHA_ADD },
+
+  { "layers-alpha-remove", NULL,
+    N_("_Remove Alpha Channel"), NULL, NULL,
+    G_CALLBACK (layers_alpha_remove_cmd_callback),
+    GIMP_HELP_LAYER_ALPHA_REMOVE }
 };
 
 static GimpToggleActionEntry layers_toggle_actions[] =
 {
-  { "layers-preserve-transparency", GIMP_STOCK_TRANSPARENCY,
-    N_("Keep Transparency"), NULL, NULL,
-    G_CALLBACK (layers_preserve_trans_cmd_callback),
+  { "layers-lock-alpha", GIMP_STOCK_TRANSPARENCY,
+    N_("Lock Alph_a Channel"), NULL, NULL,
+    G_CALLBACK (layers_lock_alpha_cmd_callback),
     FALSE,
-    GIMP_HELP_LAYER_KEEP_TRANSPARENCY },
+    GIMP_HELP_LAYER_LOCK_ALPHA },
 
-  { "layers-mask-edit", GIMP_STOCK_EDIT,
-    N_("Edit Layer Mask"), NULL, NULL,
+  { "layers-mask-edit", GTK_STOCK_EDIT,
+    N_("_Edit Layer Mask"), NULL, NULL,
     G_CALLBACK (layers_mask_edit_cmd_callback),
     FALSE,
     GIMP_HELP_LAYER_MASK_EDIT },
 
   { "layers-mask-show", GIMP_STOCK_VISIBLE,
-    N_("Show Layer Mask"), NULL, NULL,
+    N_("S_how Layer Mask"), NULL, NULL,
     G_CALLBACK (layers_mask_show_cmd_callback),
     FALSE,
     GIMP_HELP_LAYER_MASK_SHOW },
 
   { "layers-mask-disable", NULL,
-    N_("Disable Layer Mask"), NULL, NULL,
+    N_("_Disable Layer Mask"), NULL, NULL,
     G_CALLBACK (layers_mask_disable_cmd_callback),
     FALSE,
     GIMP_HELP_LAYER_MASK_DISABLE }
@@ -391,8 +394,7 @@ layers_actions_update (GimpActionGroup *group,
   gboolean       sel        = FALSE;
   gboolean       alpha      = FALSE;    /*  alpha channel present  */
   gboolean       indexed    = FALSE;    /*  is indexed             */
-  gboolean       preserve   = FALSE;
-  gboolean       next_alpha = FALSE;
+  gboolean       lock_alpha = FALSE;
   gboolean       text_layer = FALSE;
   GList         *next       = NULL;
   GList         *prev       = NULL;
@@ -410,9 +412,9 @@ layers_actions_update (GimpActionGroup *group,
         {
           GList *list;
 
-          mask     = gimp_layer_get_mask (layer);
-          preserve = gimp_layer_get_preserve_trans (layer);
-          alpha    = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
+          mask       = gimp_layer_get_mask (layer);
+          lock_alpha = gimp_layer_get_lock_alpha (layer);
+          alpha      = gimp_drawable_has_alpha (GIMP_DRAWABLE (layer));
 
           list = g_list_find (GIMP_LIST (gimage->layers)->list, layer);
 
@@ -421,9 +423,6 @@ layers_actions_update (GimpActionGroup *group,
               prev = g_list_previous (list);
               next = g_list_next (list);
             }
-
-          if (next)
-            next_alpha = gimp_drawable_has_alpha (GIMP_DRAWABLE (next->data));
 
           if (layer)
             text_layer = gimp_drawable_is_text_layer (GIMP_DRAWABLE (layer));
@@ -450,10 +449,10 @@ layers_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("layers-select-previous", layer && !fs && !ac && prev);
   SET_SENSITIVE ("layers-select-next",     layer && !fs && !ac && next);
 
-  SET_SENSITIVE ("layers-raise",           layer && !fs && !ac && alpha && prev);
-  SET_SENSITIVE ("layers-raise-to-top",    layer && !fs && !ac && alpha && prev);
-  SET_SENSITIVE ("layers-lower",           layer && !fs && !ac && next && next_alpha);
-  SET_SENSITIVE ("layers-lower-to-bottom", layer && !fs && !ac && next && next_alpha);
+  SET_SENSITIVE ("layers-raise",           layer && !fs && !ac && prev);
+  SET_SENSITIVE ("layers-raise-to-top",    layer && !fs && !ac && prev);
+  SET_SENSITIVE ("layers-lower",           layer && !fs && !ac && next);
+  SET_SENSITIVE ("layers-lower-to-bottom", layer && !fs && !ac && next);
 
   SET_SENSITIVE ("layers-anchor",        layer &&  fs && !ac);
   SET_SENSITIVE ("layers-merge-down",    layer && !fs && !ac && next);
@@ -467,10 +466,11 @@ layers_actions_update (GimpActionGroup *group,
 
   SET_SENSITIVE ("layers-crop",            layer && sel);
 
-  SET_SENSITIVE ("layers-alpha-add", layer && !fs && !alpha);
+  SET_SENSITIVE ("layers-alpha-add",       layer && !fs && !alpha);
+  SET_SENSITIVE ("layers-alpha-remove",    layer && !fs &&  alpha);
 
-  SET_SENSITIVE ("layers-preserve-transparency", layer);
-  SET_ACTIVE    ("layers-preserve-transparency", preserve);
+  SET_SENSITIVE ("layers-lock-alpha", layer);
+  SET_ACTIVE    ("layers-lock-alpha", lock_alpha);
 
   SET_SENSITIVE ("layers-mask-add",    layer && !fs && !ac && !mask);
   SET_SENSITIVE ("layers-mask-apply",  layer && !fs && !ac &&  mask);

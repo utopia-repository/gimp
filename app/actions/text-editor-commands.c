@@ -68,6 +68,11 @@ text_editor_load_cmd_callback (GtkAction *action,
 
   chooser = GTK_FILE_CHOOSER (editor->file_dialog);
 
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (editor->file_dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
   g_object_add_weak_pointer (G_OBJECT (chooser),
                              (gpointer) &editor->file_dialog);
 
@@ -78,7 +83,7 @@ text_editor_load_cmd_callback (GtkAction *action,
   g_signal_connect (chooser, "response",
                     G_CALLBACK (text_editor_load_response),
                     editor);
-  g_signal_connect (chooser, "delete_event",
+  g_signal_connect (chooser, "delete-event",
                     G_CALLBACK (gtk_true),
                     NULL);
 

@@ -41,6 +41,8 @@
   <menuitem action="dialogs-selection-editor"/>
   <menuitem action="dialogs-navigation"/>
   <menuitem action="dialogs-undo-history"/>
+  <menuitem action="dialogs-cursor"/>
+  <menuitem action="dialogs-sample-points"/>
   <separator/>
   <menuitem action="dialogs-colors"/>
   <menuitem action="dialogs-brushes"/>
@@ -58,17 +60,15 @@
 
       </menu>
 
-<!-- FIXME solve this as param to xsltproc
-
+<!--  The debug-menu is automatically excluded for stable releases  -->
       <menu action="debug-menu" name="Debug">
-        <menuitem action="debug-mem-profile" />
-        <menuitem action="debug-dump-items" />
-        <menuitem action="debug-dump-managers" />
+        <menuitem action="debug-mem-profile"/>
+        <menuitem action="debug-dump-items"/>
+        <menuitem action="debug-dump-managers"/>
       </menu>
 
--->
-
       <separator/>
+      <menuitem action="file-close-all"/>
       <menuitem action="file-quit"/>
     </menu>
 
@@ -76,6 +76,7 @@
       <placeholder name="Extensions">
 	<menuitem action="dialogs-module-dialog"/>
       </placeholder>
+      <placeholder name="Languages"/>
       <separator/>
     </menu>
 
@@ -88,5 +89,7 @@
     </menu>
 
   </menubar>
+
+  <accelerator action="edit-paste"/>
 
 </ui>

@@ -22,6 +22,7 @@
 #ifndef __GIMP_DATA_H__
 #define __GIMP_DATA_H__
 
+#include <time.h>      /* time_t */
 
 #include "gimpviewable.h"
 
@@ -50,11 +51,13 @@ struct _GimpData
   GimpViewable  parent_instance;
 
   gchar        *filename;
+  GQuark        mime_type;
   guint         writable  : 1;
   guint         deletable : 1;
   guint         dirty     : 1;
   guint         internal  : 1;
   gint          freeze_count;
+  time_t        mtime;
 };
 
 struct _GimpDataClass
@@ -68,8 +71,7 @@ struct _GimpDataClass
   gboolean   (* save)          (GimpData  *data,
                                 GError   **error);
   gchar    * (* get_extension) (GimpData  *data);
-  GimpData * (* duplicate)     (GimpData  *data,
-                                gboolean   stingy_memory_use);
+  GimpData * (* duplicate)     (GimpData  *data);
 };
 
 
@@ -94,8 +96,9 @@ void          gimp_data_set_filename     (GimpData     *data,
 void          gimp_data_create_filename  (GimpData     *data,
 					  const gchar  *dest_dir);
 
-GimpData    * gimp_data_duplicate        (GimpData     *data,
-                                          gboolean      stingy_memory_use);
+const gchar * gimp_data_get_mime_type    (GimpData     *data);
+
+GimpData    * gimp_data_duplicate        (GimpData     *data);
 
 void          gimp_data_make_internal    (GimpData     *data);
 

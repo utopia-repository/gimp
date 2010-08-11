@@ -33,7 +33,7 @@
  * Generates a unique temporary PDB name.
  *
  * This procedure generates a temporary PDB entry name that is
- * guaranteed to be unique. It is many used by the interactive popup
+ * guaranteed to be unique. It is mainly used by the interactive popup
  * dialogs to generate a PDB entry name.
  *
  * Returns: A unique temporary name for a temporary PDB entry.
@@ -45,7 +45,7 @@ gimp_procedural_db_temp_name (void)
   gint nreturn_vals;
   gchar *temp_name = NULL;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_temp_name",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-temp-name",
 				    &nreturn_vals,
 				    GIMP_PDB_END);
 
@@ -78,7 +78,7 @@ gimp_procedural_db_dump (const gchar *filename)
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_dump",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-dump",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, filename,
 				    GIMP_PDB_END);
@@ -98,7 +98,7 @@ gimp_procedural_db_dump (const gchar *filename)
  * @author: The regex for procedure author.
  * @copyright: The regex for procedure copyright.
  * @date: The regex for procedure date.
- * @proc_type: The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-in', 'GIMP Extension' }.
+ * @proc_type: The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-In', 'GIMP Extension', 'Temporary Procedure' }.
  * @num_matches: The number of matching procedures.
  * @procedure_names: The list of procedure names.
  *
@@ -136,7 +136,7 @@ gimp_procedural_db_query (const gchar   *name,
   gboolean success = TRUE;
   gint i;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_query",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-query",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, name,
 				    GIMP_PDB_STRING, blurb,
@@ -204,7 +204,7 @@ _gimp_procedural_db_proc_info (const gchar      *procedure,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_proc_info",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-proc-info",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, procedure,
 				    GIMP_PDB_END);
@@ -264,7 +264,7 @@ gimp_procedural_db_proc_arg (const gchar     *procedure,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_proc_arg",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-proc-arg",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, procedure,
 				    GIMP_PDB_INT32, arg_num,
@@ -316,7 +316,7 @@ gimp_procedural_db_proc_val (const gchar     *procedure,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_proc_val",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-proc-val",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, procedure,
 				    GIMP_PDB_INT32, val_num,
@@ -364,7 +364,7 @@ _gimp_procedural_db_get_data (const gchar  *identifier,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_get_data",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-get-data",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, identifier,
 				    GIMP_PDB_END);
@@ -406,7 +406,7 @@ gimp_procedural_db_get_data_size (const gchar *identifier)
   gint nreturn_vals;
   gint bytes = 0;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_get_data_size",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-get-data-size",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, identifier,
 				    GIMP_PDB_END);
@@ -442,7 +442,7 @@ _gimp_procedural_db_set_data (const gchar  *identifier,
   gint nreturn_vals;
   gboolean success = TRUE;
 
-  return_vals = gimp_run_procedure ("gimp_procedural_db_set_data",
+  return_vals = gimp_run_procedure ("gimp-procedural-db-set-data",
 				    &nreturn_vals,
 				    GIMP_PDB_STRING, identifier,
 				    GIMP_PDB_INT32, bytes,

@@ -15,6 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+sub bill_misc {
+    $author = 'Bill Skaggs <weskaggs@primate.ucdavis.edu';
+    $copyright = 'Bill Skaggs';
+    $date = '2004';
+    $since = '2.4';
+}
+
 sub shlomi_misc {
     $author = $copyright = 'Shlomi Fish';
     $date   = '2003';
@@ -317,6 +324,39 @@ CODE
     );
 }
 
+sub gradient_is_editable {
+    $blurb = "Tests if gradient can be edited";
+    $help  = "Returns True if you have permission to change the gradient";
+
+    &bill_misc;
+
+    @inargs = (
+        &gradient_arg
+    );
+
+    @outargs = (
+	{ name => 'editable', type => 'boolean',
+	  desc => "True if the gradient can be edited",
+	  alias => 'GIMP_DATA (gradient)->writable',
+          no_declare => 1 }
+    );
+
+    %invoke = (
+	vars => [ 'GimpGradient *gradient = NULL' ],
+        code => <<'CODE'
+{
+  gradient = (GimpGradient *)
+    gimp_container_get_child_by_name (gimp->gradient_factory->container, name);
+
+  if (gradient)
+    success = TRUE;
+  else
+    success = FALSE;
+}
+CODE
+    );
+}
+
 sub gradient_rename {
     $blurb = "Rename a gradient";
     $help  = "This procedure renames a gradient";
@@ -441,9 +481,10 @@ HELP
 
   if (gradient)
     {
-      gdouble  pos   = 0.0;
-      gdouble  delta = 1.0 / (num_samples - 1);
-      gdouble *sample;
+      GimpGradientSegment *seg   = NULL;
+      gdouble              pos   = 0.0;
+      gdouble              delta = 1.0 / (num_samples - 1);
+      gdouble             *sample;
 
       num_color_samples = num_samples * 4;
 
@@ -453,7 +494,7 @@ HELP
         {
           GimpRGB color;
 
-          gimp_gradient_get_color_at (gradient, pos, reverse, &color);
+	  seg = gimp_gradient_get_color_at (gradient, seg, pos, reverse, &color);
 
           *sample++ = color.r;
           *sample++ = color.g;
@@ -505,7 +546,8 @@ HELP
 
   if (gradient)
     {
-      gdouble *sample;
+      GimpGradientSegment *seg = NULL;
+      gdouble             *sample;
 
       num_color_samples = num_samples * 4;
 
@@ -515,7 +557,7 @@ HELP
         {
           GimpRGB color;
 
-          gimp_gradient_get_color_at (gradient, *pos, reverse, &color);
+          seg = gimp_gradient_get_color_at (gradient, seg, *pos, reverse, &color);
 
           *sample++ = color.r;
           *sample++ = color.g;
@@ -953,7 +995,8 @@ CODE
               "core/gimpgradient.h" "core/gimpcontainer.h"
               "core/gimpdatafactory.h" "core/gimplist.h");
 
-@procs = qw(gradient_new gradient_duplicate gradient_rename gradient_delete
+@procs = qw(gradient_new gradient_duplicate  gradient_is_editable
+	    gradient_rename gradient_delete
             gradient_get_uniform_samples gradient_get_custom_samples
             gradient_segment_get_left_color gradient_segment_set_left_color
             gradient_segment_get_right_color gradient_segment_set_right_color

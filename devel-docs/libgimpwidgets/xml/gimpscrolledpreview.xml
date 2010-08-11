@@ -2,56 +2,124 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
 
-<refentry id="libgimpwidgets-GimpScrolledPreview">
+<refentry id="GimpScrolledPreview">
 <refmeta>
-<refentrytitle role="top_of_page">GimpScrolledPreview</refentrytitle>
+<refentrytitle>GimpScrolledPreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpScrolledPreview</refname>
-<refpurpose>A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>GimpScrolledPreview</refname><refpurpose>A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-                    <link linkend="GimpScrolledPreview">GimpScrolledPreview</link>;
+            <link linkend="GimpScrolledPreview-struct">GimpScrolledPreview</link>;
+<link linkend="void">void</link>        <link linkend="gimp-scrolled-preview-set-position">gimp_scrolled_preview_set_position</link>
+                                            (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y);
+<link linkend="void">void</link>        <link linkend="gimp-scrolled-preview-set-policy">gimp_scrolled_preview_set_policy</link>
+                                            (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
+                                             <link linkend="GtkPolicyType">GtkPolicyType</link> hscrollbar_policy,
+                                             <link linkend="GtkPolicyType">GtkPolicyType</link> vscrollbar_policy);
 
 </synopsis>
 </refsynopsisdiv>
 
+<refsect1>
+<title>Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GObject">GObject</link>
+   +----<link linkend="GtkObject">GtkObject</link>
+         +----<link linkend="GtkWidget">GtkWidget</link>
+               +----<link linkend="GtkContainer">GtkContainer</link>
+                     +----<link linkend="GtkBox">GtkBox</link>
+                           +----<link linkend="GtkVBox">GtkVBox</link>
+                                 +----<link linkend="GimpPreview">GimpPreview</link>
+                                       +----GimpScrolledPreview
+</synopsis>
+
+</refsect1>
+
+
+
+<refsect1>
+<title>Implemented Interfaces</title>
+<para>
+GimpScrolledPreview implements
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+
+</refsect1>
 
 
 
 
 
-
-
-
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GimpScrolledPreview" role="struct"/>GimpScrolledPreview</title>
-<indexterm><primary>GimpScrolledPreview</primary></indexterm><programlisting>typedef struct {
-  GimpPreview   parent_instance;
-} GimpScrolledPreview;
-</programlisting>
+<title><anchor id="GimpScrolledPreview-struct"/>GimpScrolledPreview</title>
+<indexterm><primary>GimpScrolledPreview</primary></indexterm><programlisting>typedef struct _GimpScrolledPreview GimpScrolledPreview;</programlisting>
 <para>
 
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-scrolled-preview-set-position"/>gimp_scrolled_preview_set_position ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_scrolled_preview_set_position</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_scrolled_preview_set_position
+                                            (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
+                                             <link linkend="gint">gint</link> x,
+                                             <link linkend="gint">gint</link> y);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GimpScrolledPreview"><type>GimpScrolledPreview</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>x</parameter>&nbsp;:</term>
+<listitem><simpara>       horizontal scroll offset
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>y</parameter>&nbsp;:</term>
+<listitem><simpara>       vertical scroll offset
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
+</para></refsect2>
+<refsect2>
+<title><anchor id="gimp-scrolled-preview-set-policy"/>gimp_scrolled_preview_set_policy ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_scrolled_preview_set_policy</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_scrolled_preview_set_policy
+                                            (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
+                                             <link linkend="GtkPolicyType">GtkPolicyType</link> hscrollbar_policy,
+                                             <link linkend="GtkPolicyType">GtkPolicyType</link> vscrollbar_policy);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>preview</parameter>&nbsp;:</term>
+<listitem><simpara>           a <link linkend="GimpScrolledPreview"><type>GimpScrolledPreview</type></link>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>hscrollbar_policy</parameter>&nbsp;:</term>
+<listitem><simpara> policy for horizontal scrollbar
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>vscrollbar_policy</parameter>&nbsp;:</term>
+<listitem><simpara> policy for vertical scrollbar
+</simpara></listitem></varlistentry>
+</variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 
 </refsect1>

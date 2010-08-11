@@ -30,6 +30,7 @@
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
+#include "core/gimp-documents.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpimagefile.h"
@@ -37,8 +38,11 @@
 #include "file/file-open.h"
 #include "file/file-utils.h"
 
+#include "widgets/gimpclipboard.h"
 #include "widgets/gimpcontainerview.h"
 #include "widgets/gimpdocumentview.h"
+#include "widgets/gimpmessagebox.h"
+#include "widgets/gimpmessagedialog.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplay-foreach.h"
@@ -69,8 +73,8 @@ static void   documents_raise_display (gpointer       data,
 /*  public functions */
 
 void
-documents_open_document_cmd_callback (GtkAction *action,
-                                      gpointer   data)
+documents_open_cmd_callback (GtkAction *action,
+                             gpointer   data)
 {
   GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
   GimpContext         *context;
@@ -93,8 +97,8 @@ documents_open_document_cmd_callback (GtkAction *action,
 }
 
 void
-documents_raise_or_open_document_cmd_callback (GtkAction *action,
-                                               gpointer   data)
+documents_raise_or_open_cmd_callback (GtkAction *action,
+                                      gpointer   data)
 {
   GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
   GimpContext         *context;
@@ -145,8 +149,24 @@ documents_file_open_dialog_cmd_callback (GtkAction *action,
 }
 
 void
-documents_remove_document_cmd_callback (GtkAction *action,
-                                        gpointer   data)
+documents_copy_location_cmd_callback (GtkAction *action,
+                                      gpointer   data)
+{
+  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+  GimpContext         *context;
+  GimpImagefile       *imagefile;
+
+  context   = gimp_container_view_get_context (editor->view);
+  imagefile = gimp_context_get_imagefile (context);
+
+  if (imagefile)
+    gimp_clipboard_set_text (context->gimp,
+                             gimp_object_get_name (GIMP_OBJECT (imagefile)));
+}
+
+void
+documents_remove_cmd_callback (GtkAction *action,
+                               gpointer   data)
 {
   GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
   GimpContext         *context;
@@ -162,6 +182,55 @@ documents_remove_document_cmd_callback (GtkAction *action,
     {
       gimp_container_remove (container, GIMP_OBJECT (imagefile));
     }
+}
+
+void
+documents_clear_cmd_callback (GtkAction *action,
+                              gpointer   data)
+{
+  GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
+  GimpContext         *context;
+  GtkWidget           *dialog;
+
+  context = gimp_container_view_get_context (editor->view);
+
+  dialog = gimp_message_dialog_new (_("Clear Document History"),
+                                    GIMP_STOCK_QUESTION,
+                                    GTK_WIDGET (editor),
+                                    GTK_DIALOG_MODAL |
+                                    GTK_DIALOG_DESTROY_WITH_PARENT,
+                                    gimp_standard_help_func, NULL,
+
+                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                    GTK_STOCK_CLEAR,  GTK_RESPONSE_OK,
+
+                                    NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  g_signal_connect_object (gtk_widget_get_toplevel (GTK_WIDGET (editor)),
+                           "unmap",
+                           G_CALLBACK (gtk_widget_destroy),
+                           dialog, G_CONNECT_SWAPPED);
+
+  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                     _("Remove all entries from the "
+                                       "document history?"));
+
+  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                             _("Clearing the document history will permanently "
+                               "remove all currently listed entries."));
+
+  if (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK)
+    {
+      gimp_container_clear (context->gimp->documents);
+      gimp_documents_save (context->gimp);
+    }
+
+  gtk_widget_destroy (dialog);
 }
 
 void
@@ -202,7 +271,7 @@ documents_reload_previews_cmd_callback (GtkAction *action,
 }
 
 static void
-documents_delete_dangling_foreach (GimpImagefile *imagefile,
+documents_remove_dangling_foreach (GimpImagefile *imagefile,
                                    GimpContainer *container)
 {
   if (gimp_thumbnail_peek_image (imagefile->thumbnail) ==
@@ -213,8 +282,8 @@ documents_delete_dangling_foreach (GimpImagefile *imagefile,
 }
 
 void
-documents_delete_dangling_documents_cmd_callback (GtkAction *action,
-                                                  gpointer   data)
+documents_remove_dangling_cmd_callback (GtkAction *action,
+                                        gpointer   data)
 {
   GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (data);
   GimpContainer       *container;
@@ -222,7 +291,7 @@ documents_delete_dangling_documents_cmd_callback (GtkAction *action,
   container = gimp_container_view_get_container (editor->view);
 
   gimp_container_foreach (container,
-                          (GFunc) documents_delete_dangling_foreach,
+                          (GFunc) documents_remove_dangling_foreach,
                           container);
 }
 
@@ -247,7 +316,7 @@ documents_open_image (GimpContext   *context,
     {
       gchar *filename;
 
-      filename = file_utils_uri_to_utf8_filename (uri);
+      filename = file_utils_uri_display_name (uri);
       g_message (_("Opening '%s' failed:\n\n%s"),
                  filename, error->message);
       g_clear_error (&error);

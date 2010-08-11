@@ -20,17 +20,21 @@
 #define __DATA_COMMANDS_H__
 
 
-void   data_new_data_cmd_callback       (GtkAction   *action,
-					 gpointer     data);
-void   data_duplicate_data_cmd_callback (GtkAction   *action,
-					 gpointer     data);
-void   data_delete_data_cmd_callback    (GtkAction   *action,
-					 gpointer     data);
-void   data_refresh_data_cmd_callback   (GtkAction   *action,
-					 gpointer     data);
-void   data_edit_data_cmd_callback      (GtkAction   *action,
-                                         const gchar *value,
-					 gpointer     data);
+void   data_open_as_image_cmd_callback (GtkAction   *action,
+                                        gpointer     data);
+void   data_new_cmd_callback           (GtkAction   *action,
+                                        gpointer     data);
+void   data_duplicate_cmd_callback     (GtkAction   *action,
+                                        gpointer     data);
+void   data_copy_location_cmd_callback (GtkAction   *action,
+                                        gpointer     user_data);
+void   data_delete_cmd_callback        (GtkAction   *action,
+                                        gpointer     data);
+void   data_refresh_cmd_callback       (GtkAction   *action,
+                                        gpointer     data);
+void   data_edit_cmd_callback          (GtkAction   *action,
+                                        const gchar *value,
+                                        gpointer     data);
 
 
 #endif /* __DATA_COMMANDS_H__ */

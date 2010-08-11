@@ -22,10 +22,6 @@
 #include "gimpdrawable.h"
 
 
-/*  Half way point where a region is no longer visible in a selection  */
-#define HALF_WAY 127
-
-
 #define GIMP_TYPE_CHANNEL            (gimp_channel_get_type ())
 #define GIMP_CHANNEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CHANNEL, GimpChannel))
 #define GIMP_CHANNEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CHANNEL, GimpChannelClass))
@@ -79,9 +75,6 @@ struct _GimpChannelClass
                               gint            *x2,
                               gint            *y2);
   gboolean (* is_empty)      (GimpChannel     *channel);
-  gint     (* value)         (GimpChannel     *channel,
-                              gint             x,
-                              gint             y);
 
   void     (* feather)       (GimpChannel     *channel,
                               gdouble          radius_x,
@@ -180,9 +173,6 @@ gboolean      gimp_channel_bounds             (GimpChannel       *mask,
                                                gint              *x2,
                                                gint              *y2);
 gboolean      gimp_channel_is_empty           (GimpChannel       *mask);
-gint          gimp_channel_value              (GimpChannel       *mask,
-                                               gint               x,
-                                               gint               y);
 
 void          gimp_channel_feather            (GimpChannel       *mask,
                                                gdouble            radius_x,

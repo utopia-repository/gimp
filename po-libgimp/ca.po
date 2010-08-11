@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp-libgimp\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-12 16:16+0100\n"
-"PO-Revision-Date: 2006-11-12 16:17+0100\n"
+"POT-Creation-Date: 2005-02-02 19:52+0100\n"
+"PO-Revision-Date: 2005-05-15 17:33+0200\n"
 "Last-Translator: Xavier Beà <xbea@pie.xtec.es>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: ../libgimp/gimpbrushmenu.c:129
 msgid "Brush Selection"
@@ -42,7 +42,7 @@ msgstr "%s no pot gestionar desplaçaments de capa, mida o opacitat"
 #: ../libgimp/gimpexport.c:233 ../libgimp/gimpexport.c:242
 #, c-format
 msgid "%s can only handle layers as animation frames"
-msgstr "%s només pot gestionar les capes com a fotogrames de l'animació"
+msgstr "%s només pot gestionar les capes com a marcs d'animació"
 
 #: ../libgimp/gimpexport.c:234 ../libgimp/gimpexport.c:243
 msgid "Save as Animation"
@@ -141,7 +141,7 @@ msgstr "Afegeix un canal alfa"
 
 #: ../libgimp/gimpexport.c:381
 msgid "Confirm Save"
-msgstr "Confirmeu que voleu desar"
+msgstr "Comfirmeu que voleu desar"
 
 #: ../libgimp/gimpexport.c:387
 msgid "Confirm"
@@ -198,9 +198,9 @@ msgstr "Selecció de tipus de lletra"
 
 #: ../libgimp/gimpgradientmenu.c:104
 msgid "Gradient Selection"
-msgstr "Selecció de degradat"
+msgstr "Selecció de gradient"
 
-#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:167
+#: ../libgimp/gimpmenu.c:406 ../libgimpwidgets/gimpintstore.c:181
 msgid "(Empty)"
 msgstr "(Buit)"
 
@@ -216,73 +216,297 @@ msgstr "Selecció de patró"
 msgid "percent"
 msgstr "percentatge"
 
-#: ../libgimpbase/gimpbaseenums.c:23
-msgid "Small"
-msgstr "Petita"
+#: ../libgimpbase/gimpbaseenums.c:26
+msgid "_White (full opacity)"
+msgstr "_Blanc (opac del tot)"
 
-#: ../libgimpbase/gimpbaseenums.c:24
-msgid "Medium"
-msgstr "Mitjana"
+#: ../libgimpbase/gimpbaseenums.c:27
+msgid "_Black (full transparency)"
+msgstr "_Negre (transparent del tot)"
 
-#: ../libgimpbase/gimpbaseenums.c:25
-msgid "Large"
-msgstr "Gran"
+#: ../libgimpbase/gimpbaseenums.c:28
+msgid "Layer's _alpha channel"
+msgstr "Canal _alfa de la capa"
 
-#: ../libgimpbase/gimpbaseenums.c:57
-msgid "Light Checks"
-msgstr "Quadres clars"
+#: ../libgimpbase/gimpbaseenums.c:29
+msgid "_Transfer layer's alpha channel"
+msgstr "_Tranfereix canal alfa de la capa"
 
-#: ../libgimpbase/gimpbaseenums.c:58
-msgid "Mid-Tone Checks"
-msgstr "Quadres a mig to"
+#: ../libgimpbase/gimpbaseenums.c:30
+msgid "_Selection"
+msgstr "_Selecció"
 
-#: ../libgimpbase/gimpbaseenums.c:59
-msgid "Dark Checks"
-msgstr "Quadres foscos"
-
-#: ../libgimpbase/gimpbaseenums.c:60
-msgid "White Only"
-msgstr "Només blanc"
+#: ../libgimpbase/gimpbaseenums.c:31
+msgid "_Grayscale copy of layer"
+msgstr "Còpia de capa en escala de _grisos"
 
 #: ../libgimpbase/gimpbaseenums.c:61
-msgid "Gray Only"
-msgstr "Només gris"
+msgid "FG to BG (RGB)"
+msgstr "De primer pla a fons (RGB)"
 
 #: ../libgimpbase/gimpbaseenums.c:62
-msgid "Black Only"
-msgstr "Només negre"
+msgid "FG to BG (HSV)"
+msgstr "De primer pla a fons (HSV)"
 
-#: ../libgimpbase/gimpbaseenums.c:91
-msgid "RGB color"
-msgstr "Color RGB"
+#: ../libgimpbase/gimpbaseenums.c:63
+msgid "FG to transparent"
+msgstr "De primer pla a transparent"
 
-#: ../libgimpbase/gimpbaseenums.c:92 ../libgimpbase/gimpbaseenums.c:127
-msgid "Grayscale"
-msgstr "Escala de grisos"
+#: ../libgimpbase/gimpbaseenums.c:64
+msgid "Custom gradient"
+msgstr "Degradat personalitzat"
 
 #: ../libgimpbase/gimpbaseenums.c:93
-msgid "Indexed color"
-msgstr "Color indexat"
+msgid "FG color fill"
+msgstr "Omple amb el color del primer pla"
+
+#: ../libgimpbase/gimpbaseenums.c:94
+msgid "BG color fill"
+msgstr "Omple amb el color de fons"
+
+#: ../libgimpbase/gimpbaseenums.c:95
+msgid "Pattern fill"
+msgstr "Omple amb el patró"
 
 #: ../libgimpbase/gimpbaseenums.c:125
-msgid "RGB"
-msgstr "RGB"
+msgid "Add to the current selection"
+msgstr "Afegeix a la selecció actual"
 
 #: ../libgimpbase/gimpbaseenums.c:126
-msgid "RGB-alpha"
-msgstr "RGB-alfa"
+msgid "Subtract from the current selection"
+msgstr "Sostreu de la selecció actual"
+
+#: ../libgimpbase/gimpbaseenums.c:127
+msgid "Replace the current selection"
+msgstr "Canvia la selecció actual"
 
 #: ../libgimpbase/gimpbaseenums.c:128
-msgid "Grayscale-alpha"
-msgstr "Escala de grisos-alfa"
+msgid "Intersect with the current selection"
+msgstr "Creua amb la selecció"
 
-#: ../libgimpbase/gimpbaseenums.c:129
+#: ../libgimpbase/gimpbaseenums.c:160 ../libgimpwidgets/gimpcolorscales.c:168
+#: ../libgimpwidgets/gimpcolorselect.c:352
+msgid "Red"
+msgstr "Vermell"
+
+#: ../libgimpbase/gimpbaseenums.c:161 ../libgimpwidgets/gimpcolorscales.c:169
+#: ../libgimpwidgets/gimpcolorselect.c:353
+msgid "Green"
+msgstr "Verd"
+
+#: ../libgimpbase/gimpbaseenums.c:162 ../libgimpwidgets/gimpcolorscales.c:170
+#: ../libgimpwidgets/gimpcolorselect.c:354
+msgid "Blue"
+msgstr "Blau"
+
+#: ../libgimpbase/gimpbaseenums.c:163
+msgid "Gray"
+msgstr "Gris"
+
+#: ../libgimpbase/gimpbaseenums.c:164 ../libgimpbase/gimpbaseenums.c:436
 msgid "Indexed"
 msgstr "Indexat"
 
-#: ../libgimpbase/gimpbaseenums.c:130
+#: ../libgimpbase/gimpbaseenums.c:165 ../libgimpwidgets/gimpcolorscales.c:171
+#: ../libgimpwidgets/gimpcolorselect.c:355
+msgid "Alpha"
+msgstr "Alfa"
+
+#: ../libgimpbase/gimpbaseenums.c:194
+msgid "Small"
+msgstr "Petita"
+
+#: ../libgimpbase/gimpbaseenums.c:195
+msgid "Medium"
+msgstr "Mitjana"
+
+#: ../libgimpbase/gimpbaseenums.c:196
+msgid "Large"
+msgstr "Gran"
+
+#: ../libgimpbase/gimpbaseenums.c:228
+msgid "Light Checks"
+msgstr "Quadres clars"
+
+#: ../libgimpbase/gimpbaseenums.c:229
+msgid "Mid-Tone Checks"
+msgstr "Quadres a mig to"
+
+#: ../libgimpbase/gimpbaseenums.c:230
+msgid "Dark Checks"
+msgstr "Quadres foscos"
+
+#: ../libgimpbase/gimpbaseenums.c:231
+msgid "White Only"
+msgstr "Només blanc"
+
+#: ../libgimpbase/gimpbaseenums.c:232
+msgid "Gray Only"
+msgstr "Només gris"
+
+#: ../libgimpbase/gimpbaseenums.c:233
+msgid "Black Only"
+msgstr "Només negre"
+
+#: ../libgimpbase/gimpbaseenums.c:261
+msgid "Image source"
+msgstr "Copia d'una altra imatge"
+
+#: ../libgimpbase/gimpbaseenums.c:262
+msgid "Pattern source"
+msgstr "Un patró de la llista"
+
+#: ../libgimpbase/gimpbaseenums.c:290
+msgid "Dodge"
+msgstr "Esvaeix"
+
+#: ../libgimpbase/gimpbaseenums.c:291
+msgid "Burn"
+msgstr "Crema"
+
+#: ../libgimpbase/gimpbaseenums.c:328 ../libgimpbase/gimpbaseenums.c:468
+msgid "Linear"
+msgstr "Lineal"
+
+#: ../libgimpbase/gimpbaseenums.c:329
+msgid "Bi-linear"
+msgstr "Bilineal"
+
+#: ../libgimpbase/gimpbaseenums.c:330
+msgid "Radial"
+msgstr "Radial"
+
+#: ../libgimpbase/gimpbaseenums.c:331
+msgid "Square"
+msgstr "Quadrat"
+
+#: ../libgimpbase/gimpbaseenums.c:332
+msgid "Conical (sym)"
+msgstr "Cònic (simètric)"
+
+#: ../libgimpbase/gimpbaseenums.c:333
+msgid "Conical (asym)"
+msgstr "Cònic (asimètric)"
+
+#: ../libgimpbase/gimpbaseenums.c:334
+msgid "Shaped (angular)"
+msgstr "Adaptació angular"
+
+#: ../libgimpbase/gimpbaseenums.c:335
+msgid "Shaped (spherical)"
+msgstr "Adaptació esfèrica"
+
+#: ../libgimpbase/gimpbaseenums.c:336
+msgid "Shaped (dimpled)"
+msgstr "Adaptació foradada"
+
+#: ../libgimpbase/gimpbaseenums.c:337
+msgid "Spiral (cw)"
+msgstr "Espiral (horari)"
+
+#: ../libgimpbase/gimpbaseenums.c:338
+msgid "Spiral (ccw)"
+msgstr "Espiral (antihorari)"
+
+#: ../libgimpbase/gimpbaseenums.c:367
+msgid "Stock ID"
+msgstr "ID d'element"
+
+#: ../libgimpbase/gimpbaseenums.c:368
+msgid "Inline pixbuf"
+msgstr "Pixbuf en línia"
+
+#: ../libgimpbase/gimpbaseenums.c:369
+msgid "Image file"
+msgstr "Fitxer d'imatge"
+
+#: ../libgimpbase/gimpbaseenums.c:398
+msgid "RGB color"
+msgstr "Color RGB"
+
+#: ../libgimpbase/gimpbaseenums.c:399 ../libgimpbase/gimpbaseenums.c:434
+msgid "Grayscale"
+msgstr "Escala de grisos"
+
+#: ../libgimpbase/gimpbaseenums.c:400
+msgid "Indexed color"
+msgstr "Color indexat"
+
+#: ../libgimpbase/gimpbaseenums.c:432
+msgid "RGB"
+msgstr "RGB"
+
+#: ../libgimpbase/gimpbaseenums.c:433
+msgid "RGB-alpha"
+msgstr "RGB-alfa"
+
+#: ../libgimpbase/gimpbaseenums.c:435
+msgid "Grayscale-alpha"
+msgstr "Escala de grisos-alfa"
+
+#: ../libgimpbase/gimpbaseenums.c:437
 msgid "Indexed-alpha"
 msgstr "Indexat-alfa"
+
+#: ../libgimpbase/gimpbaseenums.c:467
+msgid "None (Fastest)"
+msgstr "Cap (el més ràpid)"
+
+#: ../libgimpbase/gimpbaseenums.c:469
+msgid "Cubic"
+msgstr "Cúbic"
+
+#: ../libgimpbase/gimpbaseenums.c:470
+msgid "Lanczos (Best)"
+msgstr "Lanczos (millor)"
+
+#: ../libgimpbase/gimpbaseenums.c:498
+msgid "Constant"
+msgstr "Constant"
+
+#: ../libgimpbase/gimpbaseenums.c:499
+msgid "Incremental"
+msgstr "Incremental"
+
+#: ../libgimpbase/gimpbaseenums.c:528
+msgid "None"
+msgstr "Cap"
+
+#: ../libgimpbase/gimpbaseenums.c:529
+msgid "Sawtooth wave"
+msgstr "Ona de dents de serra"
+
+#: ../libgimpbase/gimpbaseenums.c:530
+msgid "Triangular wave"
+msgstr "Ona triangular"
+
+#: ../libgimpbase/gimpbaseenums.c:558
+msgid "Pixels"
+msgstr "Píxels"
+
+#: ../libgimpbase/gimpbaseenums.c:559
+msgid "Points"
+msgstr "Punts"
+
+#: ../libgimpbase/gimpbaseenums.c:588
+msgid "Shadows"
+msgstr "Ombres"
+
+#: ../libgimpbase/gimpbaseenums.c:589
+msgid "Midtones"
+msgstr "Tons mitjans"
+
+#: ../libgimpbase/gimpbaseenums.c:590
+msgid "Highlights"
+msgstr "Ressaltats"
+
+#: ../libgimpbase/gimpbaseenums.c:618
+msgid "Forward (traditional)"
+msgstr "Endavant (tradicional)"
+
+#: ../libgimpbase/gimpbaseenums.c:619
+msgid "Backward (corrective)"
+msgstr "Endarrere (corregeix)"
 
 #: ../libgimpbase/gimpmemsize.c:177
 #, c-format
@@ -338,6 +562,95 @@ msgstr "%d GB"
 msgid "(invalid UTF-8 string)"
 msgstr "(la cadena de text UTF-8 no és vàlida)"
 
+#: ../libgimpconfig/gimpconfig-deserialize.c:95
+#, c-format
+msgid "value for token %s is not a valid UTF-8 string"
+msgstr "el valor per a l'element %s no és una cadena de text UTF-8 vàlida"
+
+#. please don't translate 'yes' and 'no'
+#: ../libgimpconfig/gimpconfig-deserialize.c:423
+#, c-format
+msgid "expected 'yes' or 'no' for boolean token %s, got '%s'"
+msgstr "S'esperava 'yes' o 'no' per a l'element booleà %s. S'obtingué '%s'"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:497
+#, c-format
+msgid "invalid value '%s' for token %s"
+msgstr "El valor '%s' no és vàlid per a l'element %s"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:512
+#, c-format
+msgid "invalid value '%ld' for token %s"
+msgstr "El valor '%ld' no és vàlid per a l'element %s"
+
+#: ../libgimpconfig/gimpconfig-deserialize.c:581
+#, c-format
+msgid "while parsing token '%s': %s"
+msgstr "en analitzar l'element '%s': %s"
+
+#: ../libgimpconfig/gimpconfig-iface.c:454
+#: ../libgimpconfig/gimpconfig-iface.c:467 ../libgimpconfig/gimpscanner.c:513
+#: ../libgimpconfig/gimpscanner.c:594
+msgid "fatal parse error"
+msgstr "s'ha produït un error fatal d'anàlisi"
+
+#: ../libgimpconfig/gimpconfig-path.c:349
+#, c-format
+msgid "Cannot expand ${%s}"
+msgstr "No es pot expandir ${%s}"
+
+#: ../libgimpconfig/gimpconfigwriter.c:134
+#, c-format
+msgid "Could not create temporary file for '%s': %s"
+msgstr "No s'ha pogut crear el fitxer temporal per a '%s': %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:147
+#, c-format
+msgid "Could not open '%s' for writing: %s"
+msgstr "No s'ha pogut obrir '%s' per a l'escriptura: %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:666
+#, c-format
+msgid ""
+"Error writing to temporary file for '%s': %s\n"
+"The original file has not been touched."
+msgstr ""
+"S'ha produït un error en escriure el fitxer temporal per a '%s': %s\n"
+"No s'ha tocat el fitxer original."
+
+#: ../libgimpconfig/gimpconfigwriter.c:674
+#, c-format
+msgid ""
+"Error writing to temporary file for '%s': %s\n"
+"No file has been created."
+msgstr ""
+"S'ha produït un error en escriure el fitxer temporal per a '%s': %s\n"
+"No s'ha creat cap fitxer"
+
+#: ../libgimpconfig/gimpconfigwriter.c:685
+#, c-format
+msgid "Error writing to '%s': %s"
+msgstr "S'ha produït un error en escriure '%s': %s"
+
+#: ../libgimpconfig/gimpconfigwriter.c:703
+#, c-format
+msgid "Could not create '%s': %s"
+msgstr "No s'ha pogut crear '%s': %s"
+
+#: ../libgimpconfig/gimpscanner.c:100
+#, c-format
+msgid "Could not open '%s' for reading: %s"
+msgstr "No s'ha pogut obrir '%s' per a la lectura: %s"
+
+#: ../libgimpconfig/gimpscanner.c:270
+msgid "invalid UTF-8 string"
+msgstr "cadena de text UTF-8 invàlida"
+
+#: ../libgimpconfig/gimpscanner.c:621
+#, c-format
+msgid "Error while parsing '%s' in line %d: %s"
+msgstr "S'ha produït un error en analitzar '%s' a la línia %d: %s"
+
 #: ../libgimpmodule/gimpmodule.c:177
 #, c-format
 msgid "Loading module: '%s'\n"
@@ -372,16 +685,7 @@ msgstr "S'ha produït un error en carregar"
 msgid "Not loaded"
 msgstr "No s'ha carregat"
 
-#: ../libgimpthumb/gimpthumb-utils.c:125
-#, c-format
-msgid ""
-"Cannot determine a valid home directory.\n"
-"Thumbnails will be stored in the folder for temporary files (%s) instead."
-msgstr ""
-"No es pot determinar un directori d'inici vàlid.\n"
-"Les miniatures s'emmagatzemaran en la carpeta per a fitxers temporals (%s)."
-
-#: ../libgimpthumb/gimpthumb-utils.c:249 ../libgimpthumb/gimpthumb-utils.c:317
+#: ../libgimpthumb/gimpthumb-utils.c:227 ../libgimpthumb/gimpthumb-utils.c:295
 #, c-format
 msgid "Failed to create thumbnail folder '%s'."
 msgstr "No s'ha pogut crear la carpeta de miniatures '%s'."
@@ -412,32 +716,32 @@ msgid "Scales"
 msgstr "Escales"
 
 #: ../libgimpwidgets/gimpcolorscales.c:155
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_H"
 msgstr "_H"
 
 #: ../libgimpwidgets/gimpcolorscales.c:156
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_S"
 msgstr "_S"
 
 #: ../libgimpwidgets/gimpcolorscales.c:157
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_V"
 msgstr "_V"
 
 #: ../libgimpwidgets/gimpcolorscales.c:158
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_R"
 msgstr "_R"
 
 #: ../libgimpwidgets/gimpcolorscales.c:159
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_G"
 msgstr "_G"
 
 #: ../libgimpwidgets/gimpcolorscales.c:160
-#: ../libgimpwidgets/gimpcolorselect.c:343
+#: ../libgimpwidgets/gimpcolorselect.c:345
 msgid "_B"
 msgstr "_B"
 
@@ -446,40 +750,19 @@ msgid "_A"
 msgstr "_A"
 
 #: ../libgimpwidgets/gimpcolorscales.c:165
-#: ../libgimpwidgets/gimpcolorselect.c:347
+#: ../libgimpwidgets/gimpcolorselect.c:349
 msgid "Hue"
 msgstr "To"
 
 #: ../libgimpwidgets/gimpcolorscales.c:166
-#: ../libgimpwidgets/gimpcolorselect.c:348 ../modules/cdisplay_proof.c:49
-#: ../modules/cdisplay_proof.c:444
+#: ../libgimpwidgets/gimpcolorselect.c:350 ../modules/cdisplay_proof.c:59
 msgid "Saturation"
 msgstr "Saturació"
 
 #: ../libgimpwidgets/gimpcolorscales.c:167
-#: ../libgimpwidgets/gimpcolorselect.c:349
+#: ../libgimpwidgets/gimpcolorselect.c:351
 msgid "Value"
 msgstr "Valor"
-
-#: ../libgimpwidgets/gimpcolorscales.c:168
-#: ../libgimpwidgets/gimpcolorselect.c:350
-msgid "Red"
-msgstr "Vermell"
-
-#: ../libgimpwidgets/gimpcolorscales.c:169
-#: ../libgimpwidgets/gimpcolorselect.c:351
-msgid "Green"
-msgstr "Verd"
-
-#: ../libgimpwidgets/gimpcolorscales.c:170
-#: ../libgimpwidgets/gimpcolorselect.c:352
-msgid "Blue"
-msgstr "Blau"
-
-#: ../libgimpwidgets/gimpcolorscales.c:171
-#: ../libgimpwidgets/gimpcolorselect.c:353
-msgid "Alpha"
-msgstr "Alfa"
 
 #: ../libgimpwidgets/gimpcolorscales.c:243
 msgid "Hexadecimal color notation as used in HTML and CSS"
@@ -577,7 +860,7 @@ msgstr "Enganxa-ho a dins"
 
 #: ../libgimpwidgets/gimpstock.c:120
 msgid "_Reset"
-msgstr "_Recupera"
+msgstr "_Redefineix"
 
 #: ../libgimpwidgets/gimpstock.c:121
 msgid "Visible"
@@ -585,7 +868,7 @@ msgstr "Visible"
 
 #: ../libgimpwidgets/gimpstock.c:154 ../libgimpwidgets/gimpstock.c:158
 msgid "_Stroke"
-msgstr "_Pinta el traçat"
+msgstr "_Traça"
 
 #: ../libgimpwidgets/gimpstock.c:170
 msgid "L_etter Spacing"
@@ -641,7 +924,7 @@ msgid ""
 "a given \"random\" operation"
 msgstr ""
 "Utilitzeu aquest valor com a generador de nombres aleatoris. Això us "
-"permetrà repetir una operació «aleatòria» ja feta"
+"permetrà repetir una operació \"aleatòria\" ja feta"
 
 #: ../libgimpwidgets/gimpwidgets.c:1005
 msgid "_New Seed"
@@ -656,28 +939,28 @@ msgstr ""
 msgid "_Randomize"
 msgstr "Aleato_ritza"
 
-#: ../modules/cdisplay_colorblind.c:57 ../modules/cdisplay_colorblind.c:545
-msgid "Protanopia (insensitivity to red)"
-msgstr "Protanòpsia (insensible al vermell)"
+#: ../modules/cdisplay_colorblind.c:68
+msgid "Protanopia (insensitivity to red"
+msgstr "Protanòpia (insensible al vermell)"
 
-#: ../modules/cdisplay_colorblind.c:59 ../modules/cdisplay_colorblind.c:547
+#: ../modules/cdisplay_colorblind.c:70
 msgid "Deuteranopia (insensitivity to green)"
 msgstr "Deuteranòpia (insensible al verd)"
 
-#: ../modules/cdisplay_colorblind.c:61 ../modules/cdisplay_colorblind.c:549
+#: ../modules/cdisplay_colorblind.c:72
 msgid "Tritanopia (insensitivity to blue)"
 msgstr "Tritanòpia (insensible al blau)"
 
-#: ../modules/cdisplay_colorblind.c:153
+#: ../modules/cdisplay_colorblind.c:163
 msgid "Color deficit simulation filter (Brettel-Vienot-Mollon algorithm)"
 msgstr ""
 "Filtre de simulació de dèficit de color (algorisme de Brettel-Vienot-Mollon)"
 
-#: ../modules/cdisplay_colorblind.c:242
+#: ../modules/cdisplay_colorblind.c:256
 msgid "Color Deficient Vision"
 msgstr "Visió amb dèficit de color"
 
-#: ../modules/cdisplay_colorblind.c:540
+#: ../modules/cdisplay_colorblind.c:554
 msgid "Color _Deficiency Type:"
 msgstr "Tipus _de dèficit de color:"
 
@@ -705,39 +988,39 @@ msgstr "Contrast"
 msgid "Contrast C_ycles:"
 msgstr "C_icles de contrast:"
 
-#: ../modules/cdisplay_proof.c:45 ../modules/cdisplay_proof.c:440
+#: ../modules/cdisplay_proof.c:57
 msgid "Perceptual"
 msgstr "Perceptual"
 
-#: ../modules/cdisplay_proof.c:47 ../modules/cdisplay_proof.c:442
+#: ../modules/cdisplay_proof.c:58
 msgid "Relative Colorimetric"
 msgstr "Mètrica de color relativa"
 
-#: ../modules/cdisplay_proof.c:51 ../modules/cdisplay_proof.c:446
+#: ../modules/cdisplay_proof.c:60
 msgid "Absolute Colorimetric"
 msgstr "Mètrica de color absoluta"
 
-#: ../modules/cdisplay_proof.c:138
+#: ../modules/cdisplay_proof.c:147
 msgid "Color proof filter using ICC color profile"
-msgstr "Filtre de prova de color que empra un perfil de color ICC"
+msgstr "Filtre de prova de color que usa un perfil de color ICC"
 
-#: ../modules/cdisplay_proof.c:238
+#: ../modules/cdisplay_proof.c:251
 msgid "Color Proof"
 msgstr "Prova de color"
 
-#: ../modules/cdisplay_proof.c:457
+#: ../modules/cdisplay_proof.c:462
 msgid "_Intent:"
 msgstr "_Propòsit:"
 
-#: ../modules/cdisplay_proof.c:460
+#: ../modules/cdisplay_proof.c:465
 msgid "Choose an ICC Color Profile"
 msgstr "Escolliu un perfil de color ICC"
 
-#: ../modules/cdisplay_proof.c:463
+#: ../modules/cdisplay_proof.c:468
 msgid "_Profile:"
 msgstr "_Perfil:"
 
-#: ../modules/cdisplay_proof.c:471
+#: ../modules/cdisplay_proof.c:476
 msgid "_Black Point Compensation"
 msgstr "Co_mpensació de punt negre"
 
@@ -809,282 +1092,82 @@ msgstr "Aquarel·la"
 msgid "Pressure"
 msgstr "Pressió"
 
-#~ msgid "_White (full opacity)"
-#~ msgstr "_Blanc (opac del tot)"
-
-#~ msgid "_Black (full transparency)"
-#~ msgstr "_Negre (transparent del tot)"
-
-#~ msgid "Layer's _alpha channel"
-#~ msgstr "Canal _alfa de la capa"
-
-#~ msgid "_Transfer layer's alpha channel"
-#~ msgstr "_Tranfereix canal alfa de la capa"
-
-#~ msgid "_Selection"
-#~ msgstr "_Selecció"
-
-#~ msgid "_Grayscale copy of layer"
-#~ msgstr "Còpia de capa en escala de _grisos"
-
-#~ msgid "FG to BG (RGB)"
-#~ msgstr "De primer pla a fons (RGB)"
-
-#~ msgid "FG to BG (HSV)"
-#~ msgstr "De primer pla a fons (HSV)"
-
-#~ msgid "FG to transparent"
-#~ msgstr "De primer pla a transparent"
-
-#~ msgid "Custom gradient"
-#~ msgstr "Degradat personalitzat"
-
-#~ msgid "FG color fill"
-#~ msgstr "Omple amb el color del primer pla"
-
-#~ msgid "BG color fill"
-#~ msgstr "Omple amb el color de fons"
-
-#~ msgid "Pattern fill"
-#~ msgstr "Omple amb el patró"
-
-#~ msgid "Add to the current selection"
-#~ msgstr "Afegeix a la selecció actual"
-
-#~ msgid "Subtract from the current selection"
-#~ msgstr "Sostreu de la selecció actual"
-
-#~ msgid "Replace the current selection"
-#~ msgstr "Canvia la selecció actual"
-
-#~ msgid "Intersect with the current selection"
-#~ msgstr "Creua amb la selecció"
-
-#~ msgid "Gray"
-#~ msgstr "Gris"
-
-#~ msgid "Image source"
-#~ msgstr "Copia d'una altra imatge"
-
-#~ msgid "Pattern source"
-#~ msgstr "Un patró de la llista"
-
-#~ msgid "Dodge"
-#~ msgstr "Esvaeix"
-
-#~ msgid "Burn"
-#~ msgstr "Crema"
-
-#~ msgid "Linear"
-#~ msgstr "Lineal"
-
-#~ msgid "Bi-linear"
-#~ msgstr "Bilineal"
-
-#~ msgid "Radial"
-#~ msgstr "Radial"
-
-#~ msgid "Square"
-#~ msgstr "Quadrat"
-
-#~ msgid "Conical (sym)"
-#~ msgstr "Cònic (simètric)"
-
-#~ msgid "Conical (asym)"
-#~ msgstr "Cònic (asimètric)"
-
-#~ msgid "Shaped (angular)"
-#~ msgstr "Adaptació angular"
-
-#~ msgid "Shaped (spherical)"
-#~ msgstr "Adaptació esfèrica"
-
-#~ msgid "Shaped (dimpled)"
-#~ msgstr "Adaptació foradada"
-
-#~ msgid "Spiral (cw)"
-#~ msgstr "Espiral (horari)"
-
-#~ msgid "Spiral (ccw)"
-#~ msgstr "Espiral (antihorari)"
-
-#~ msgid "Stock ID"
-#~ msgstr "ID d'element"
-
-#~ msgid "Inline pixbuf"
-#~ msgstr "Pixbuf en línia"
-
-#~ msgid "Image file"
-#~ msgstr "Fitxer d'imatge"
-
-#~ msgid "None (Fastest)"
-#~ msgstr "Cap (el més ràpid)"
-
-#~ msgid "Cubic"
-#~ msgstr "Cúbic"
-
-#~ msgid "Lanczos (Best)"
-#~ msgstr "Lanczos (millor)"
-
-#~ msgid "Constant"
-#~ msgstr "Constant"
-
-#~ msgid "Incremental"
-#~ msgstr "Incremental"
-
-#~ msgid "None"
-#~ msgstr "Cap"
-
-#~ msgid "Sawtooth wave"
-#~ msgstr "Ona de dents de serra"
-
-#~ msgid "Triangular wave"
-#~ msgstr "Ona triangular"
-
-#~ msgid "Pixels"
-#~ msgstr "Píxels"
-
-#~ msgid "Points"
-#~ msgstr "Punts"
-
-#~ msgid "Shadows"
-#~ msgstr "Ombres"
-
-#~ msgid "Midtones"
-#~ msgstr "Tons mitjans"
-
-#~ msgid "Highlights"
-#~ msgstr "Ressaltats"
-
-#~ msgid "Forward (traditional)"
-#~ msgstr "Endavant (tradicional)"
-
-#~ msgid "Backward (corrective)"
-#~ msgstr "Endarrere (corregeix)"
-
-#~ msgid "value for token %s is not a valid UTF-8 string"
-#~ msgstr "el valor per a l'element %s no és una cadena de text UTF-8 vàlida"
-
-#~ msgid "expected 'yes' or 'no' for boolean token %s, got '%s'"
-#~ msgstr "S'esperava 'yes' o 'no' per a l'element booleà %s. S'obtingué '%s'"
-
-#~ msgid "invalid value '%s' for token %s"
-#~ msgstr "El valor '%s' no és vàlid per a l'element %s"
-
-#~ msgid "invalid value '%ld' for token %s"
-#~ msgstr "El valor '%ld' no és vàlid per a l'element %s"
-
-#~ msgid "while parsing token '%s': %s"
-#~ msgstr "en analitzar l'element '%s': %s"
-
-#~ msgid "fatal parse error"
-#~ msgstr "s'ha produït un error fatal d'anàlisi"
-
-#~ msgid "Cannot expand ${%s}"
-#~ msgstr "No es pot expandir ${%s}"
-
-#~ msgid "Could not create temporary file for '%s': %s"
-#~ msgstr "No s'ha pogut crear el fitxer temporal per a '%s': %s"
-
-#~ msgid "Could not open '%s' for writing: %s"
-#~ msgstr "No s'ha pogut obrir '%s' per a l'escriptura: %s"
-
-#~ msgid ""
-#~ "Error writing to temporary file for '%s': %s\n"
-#~ "The original file has not been touched."
-#~ msgstr ""
-#~ "S'ha produït un error en escriure el fitxer temporal per a '%s': %s\n"
-#~ "No s'ha tocat el fitxer original."
-
-#~ msgid ""
-#~ "Error writing to temporary file for '%s': %s\n"
-#~ "No file has been created."
-#~ msgstr ""
-#~ "S'ha produït un error en escriure el fitxer temporal per a '%s': %s\n"
-#~ "No s'ha creat cap fitxer"
-
-#~ msgid "Error writing to '%s': %s"
-#~ msgstr "S'ha produït un error en escriure '%s': %s"
-
-#~ msgid "Could not create '%s': %s"
-#~ msgstr "No s'ha pogut crear '%s': %s"
-
-#~ msgid "Could not open '%s' for reading: %s"
-#~ msgstr "No s'ha pogut obrir '%s' per a la lectura: %s"
-
-#~ msgid "invalid UTF-8 string"
-#~ msgstr "cadena de text UTF-8 invàlida"
-
-#~ msgid "Error while parsing '%s' in line %d: %s"
-#~ msgstr "S'ha produït un error en analitzar '%s' a la línia %d: %s"
-
-# #####################################################
+######################################################
 # EN DESUS A PARTIR DE GIMP 2.2.7
-# #####################################################
-#~ msgid "Lightness"
-#~ msgstr "Claredat"
+######################################################
 
-#~ msgid "Luminosity"
-#~ msgstr "Lluminositat"
+msgid "Lightness"
+msgstr "Claredat"
 
-#~ msgid "Average"
-#~ msgstr "Mitja"
+msgid "Luminosity"
+msgstr "Lluminositat"
 
-#~ msgid "Forward"
-#~ msgstr "Endavant"
+msgid "Average"
+msgstr "Mitja"
 
-#~ msgid "Backward"
-#~ msgstr "Endarrere"
+msgid "Forward"
+msgstr "Endavant"
 
-#~ msgid "Mode of operation for color management."
-#~ msgstr "Mode d'operació per a la gestió del color."
+msgid "Backward"
+msgstr "Endarrere"
 
-#~ msgid "Sets the color profile for the display."
-#~ msgstr "Estableix el perfil de color per a la pantalla."
+msgid "Mode of operation for color management."
+msgstr "Mode d'operació per a la gestió del color."
 
-#~ msgid "Sets default RGB workspace color profile."
-#~ msgstr ""
-#~ "Estableix el perfil de color predeterminat de l'espai de treball RGB"
+msgid "Sets the color profile for the display."
+msgstr "Estableix el perfil de color per a la pantalla."
 
-#~ msgid "Sets the CMYK color profile used to convert between RGB and CMYK."
-#~ msgstr ""
-#~ "Estableix el perfil de color CMYK usat per convertir entre RGB i CMYK."
+msgid "Sets default RGB workspace color profile."
+msgstr ""
+"Estableix el perfil de color predeterminat de l'espai de treball RGB"
 
-#~ msgid "Sets the color profile used when printing."
-#~ msgstr "Estableix el perfil de color per a la impressió."
+msgid "Sets the CMYK color profile used to convert between RGB and CMYK."
+msgstr ""
+"Estableix el perfil de color CMYK usat per convertir entre RGB i CMYK."
 
-#~ msgid "Sets how colors are mapped for your display."
-#~ msgstr "Estableix com estan mapejats els colors en la vostra pantalla."
+msgid "Sets the color profile used when printing."
+msgstr "Estableix el perfil de color per a la impressió."
 
-#~ msgid "Sets how colors are converted from workspace to simulation device."
-#~ msgstr ""
-#~ "Estableix com es converteixen els colors de l'espai de treball al "
-#~ "dispositiu de simulació."
+msgid "Sets how colors are mapped for your display."
+msgstr "Estableix com estan mapejats els colors en la vostra pantalla."
 
-#~ msgid "No color management"
-#~ msgstr "Sense gestió del color"
+msgid "Sets how colors are converted from workspace to simulation device."
+msgstr ""
+"Estableix com es converteixen els colors de l'espai de treball al "
+"dispositiu de simulació."
 
-#~ msgid "Color managed display"
-#~ msgstr "Pantalla amb colors gestionats"
+msgid "No color management"
+msgstr "Sense gestió del color"
 
-#~ msgid "Print simulation"
-#~ msgstr "Simulació d'impressió"
+msgid "Color managed display"
+msgstr "Pantalla amb colors gestionats"
 
-#~ msgid "Ask"
-#~ msgstr "Demana-ho"
+msgid "Print simulation"
+msgstr "Simulació d'impressió"
 
-#~ msgid "Use embedded profile"
-#~ msgstr "Usa el perfil inclòs"
+msgid "Ask"
+msgstr "Demana-ho"
 
-#~ msgid "Convert to RGB workspace"
-#~ msgstr "Converteix a espai de treball RGB"
+msgid "Use embedded profile"
+msgstr "Usa el perfil inclòs"
 
-#~ msgid "This text input field is limited to %d characters."
-#~ msgstr "Aquest camp d'entrada de text està limitat a %d caràcters."
+msgid "Convert to RGB workspace"
+msgstr "Converteix a espai de treball RGB"
 
-#~ msgid "Color management display filter using ICC color profiles"
-#~ msgstr ""
-#~ "Filtre de gestió de color de pantalles que fa serivr perfils de color ICC"
+msgid ""
+"Cannot determine a valid home directory.\n"
+"Thumbnails will be stored in the folder for temporary files (%s) instead."
+msgstr ""
+"No es pot determinar un directori d'inici vàlid.\n"
+"Les miniatures s'emmagatzemaran en la carpeta per a fitxers temporals (%"
+"s)."
 
-#~ msgid "Color Management"
-#~ msgstr "Gestió del color"
+msgid "This text input field is limited to %d characters."
+msgstr "Aquest camp d'entrada de text està limitat a %d caràcters."
+
+msgid "Color management display filter using ICC color profiles"
+msgstr ""
+"Filtre de gestió de color de pantalles que fa serivr perfils de color ICC"
+
+msgid "Color Management"
+msgstr "Gestió del color"

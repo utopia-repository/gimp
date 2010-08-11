@@ -61,63 +61,39 @@ typedef enum
 } GimpHistogramChannel;
 
 
-#define GIMP_TYPE_INTERPOLATION_TYPE (gimp_interpolation_type_get_type ())
-
-GType gimp_interpolation_type_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_INTERPOLATION_NONE,   /*< desc="None (Fastest)" >*/
-  GIMP_INTERPOLATION_LINEAR, /*< desc="Linear"         >*/
-  GIMP_INTERPOLATION_CUBIC   /*< desc="Cubic (Best)"   >*/
-} GimpInterpolationType;
-
-
 #define GIMP_TYPE_LAYER_MODE_EFFECTS (gimp_layer_mode_effects_get_type ())
 
 GType gimp_layer_mode_effects_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_NORMAL_MODE,
-  GIMP_DISSOLVE_MODE,
-  GIMP_BEHIND_MODE,
-  GIMP_MULTIPLY_MODE,
-  GIMP_SCREEN_MODE,
-  GIMP_OVERLAY_MODE,
-  GIMP_DIFFERENCE_MODE,
-  GIMP_ADDITION_MODE,
-  GIMP_SUBTRACT_MODE,
-  GIMP_DARKEN_ONLY_MODE,
-  GIMP_LIGHTEN_ONLY_MODE,
-  GIMP_HUE_MODE,
-  GIMP_SATURATION_MODE,
-  GIMP_COLOR_MODE,
-  GIMP_VALUE_MODE,
-  GIMP_DIVIDE_MODE,
-  GIMP_DODGE_MODE,
-  GIMP_BURN_MODE,
-  GIMP_HARDLIGHT_MODE,
-  GIMP_SOFTLIGHT_MODE,
-  GIMP_GRAIN_EXTRACT_MODE,
-  GIMP_GRAIN_MERGE_MODE,
-  GIMP_COLOR_ERASE_MODE,
-  GIMP_ERASE_MODE,           /*< pdb-skip, skip >*/
-  GIMP_REPLACE_MODE,         /*< pdb-skip, skip >*/
-  GIMP_ANTI_ERASE_MODE       /*< pdb-skip, skip >*/
+  GIMP_NORMAL_MODE,          /*< desc="Normal"        >*/
+  GIMP_DISSOLVE_MODE,        /*< desc="Dissolve"      >*/
+  GIMP_BEHIND_MODE,          /*< desc="Behind"        >*/
+  GIMP_MULTIPLY_MODE,        /*< desc="Multiply"      >*/
+  GIMP_SCREEN_MODE,          /*< desc="Screen"        >*/
+  GIMP_OVERLAY_MODE,         /*< desc="Overlay"       >*/
+  GIMP_DIFFERENCE_MODE,      /*< desc="Difference"    >*/
+  GIMP_ADDITION_MODE,        /*< desc="Addition"      >*/
+  GIMP_SUBTRACT_MODE,        /*< desc="Subtract"      >*/
+  GIMP_DARKEN_ONLY_MODE,     /*< desc="Darken only"   >*/
+  GIMP_LIGHTEN_ONLY_MODE,    /*< desc="Lighten only"  >*/
+  GIMP_HUE_MODE,             /*< desc="Hue"           >*/
+  GIMP_SATURATION_MODE,      /*< desc="Saturation"    >*/
+  GIMP_COLOR_MODE,           /*< desc="Color"         >*/
+  GIMP_VALUE_MODE,           /*< desc="Value"         >*/
+  GIMP_DIVIDE_MODE,          /*< desc="Divide"        >*/
+  GIMP_DODGE_MODE,           /*< desc="Dodge"         >*/
+  GIMP_BURN_MODE,            /*< desc="Burn"          >*/
+  GIMP_HARDLIGHT_MODE,       /*< desc="Hard light"    >*/
+  GIMP_SOFTLIGHT_MODE,       /*< desc="Soft light"    >*/
+  GIMP_GRAIN_EXTRACT_MODE,   /*< desc="Grain extract" >*/
+  GIMP_GRAIN_MERGE_MODE,     /*< desc="Grain merge"   >*/
+  GIMP_COLOR_ERASE_MODE,     /*< desc="Color erase"   >*/
+  GIMP_ERASE_MODE,           /*< pdb-skip, skip       >*/
+  GIMP_REPLACE_MODE,         /*< pdb-skip, skip       >*/
+  GIMP_ANTI_ERASE_MODE       /*< pdb-skip, skip       >*/
 } GimpLayerModeEffects;
-
-
-#define GIMP_TYPE_TRANSFER_MODE (gimp_transfer_mode_get_type ())
-
-GType gimp_transfer_mode_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_SHADOWS,     /*< desc="Shadows"    >*/
-  GIMP_MIDTONES,    /*< desc="Midtones"   >*/
-  GIMP_HIGHLIGHTS   /*< desc="Highlights" >*/
-} GimpTransferMode;
 
 
 /*
@@ -142,5 +118,15 @@ typedef enum  /*< skip >*/
   GIMP_MAGENTA_HUES
 } GimpHueRange;
 
+typedef enum  /*< pdb-skip, skip >*/
+{
+  SIOX_REFINEMENT_NO_CHANGE          = 0,
+  SIOX_REFINEMENT_ADD_FOREGROUND     = (1 << 0),
+  SIOX_REFINEMENT_ADD_BACKGROUND     = (1 << 1),
+  SIOX_REFINEMENT_CHANGE_SENSITIVITY = (1 << 2),
+  SIOX_REFINEMENT_CHANGE_SMOOTHNESS  = (1 << 3),
+  SIOX_REFINEMENT_CHANGE_MULTIBLOB   = (1 << 4),
+  SIOX_REFINEMENT_RECALCULATE        = 0xFF
+} SioxRefinementType;
 
 #endif /* __BASE_ENUMS_H__ */

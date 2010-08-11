@@ -24,8 +24,6 @@
 
 #include "libgimpbase/gimpenv.h"
 
-#include "core/gimp-utils.h"
-
 #include "sanity.h"
 
 #include "gimp-intl.h"
@@ -65,22 +63,22 @@ sanity_check_glib (void)
   const gchar *mismatch;
 
 #define GLIB_REQUIRED_MAJOR 2
-#define GLIB_REQUIRED_MINOR 4
-#define GLIB_REQUIRED_MICRO 5
+#define GLIB_REQUIRED_MINOR 8
+#define GLIB_REQUIRED_MICRO 0
 
-  mismatch = gimp_check_glib_version (GLIB_REQUIRED_MAJOR,
-                                      GLIB_REQUIRED_MINOR,
-                                      GLIB_REQUIRED_MICRO);
+  mismatch = glib_check_version (GLIB_REQUIRED_MAJOR,
+                                 GLIB_REQUIRED_MINOR,
+                                 GLIB_REQUIRED_MICRO);
 
   if (mismatch)
     {
       return g_strdup_printf
         ("%s\n\n"
-         "The GIMP requires GLib+ version %d.%d.%d or later.\n"
-         "Installed GLib+ version is %d.%d.%d.\n\n"
+         "GIMP requires GLib version %d.%d.%d or later.\n"
+         "Installed GLib version is %d.%d.%d.\n\n"
          "Somehow you or your software packager managed\n"
-         "to install The GIMP with an older GLib+ version.\n\n"
-         "Please upgrade to GLib+ version %d.%d.%d or later.",
+         "to install GIMP with an older GLib version.\n\n"
+         "Please upgrade to GLib version %d.%d.%d or later.",
          mismatch,
          GLIB_REQUIRED_MAJOR, GLIB_REQUIRED_MINOR, GLIB_REQUIRED_MICRO,
          glib_major_version, glib_minor_version, glib_micro_version,
@@ -112,8 +110,8 @@ sanity_check_fontconfig (void)
     {
       return g_strdup_printf
         ("The Fontconfig version being used is too old!\n\n"
-         "The GIMP requires Fontconfig version %d.%d.%d or later.\n"
-         "The Fontconfig version loaded by The GIMP is %d.%d.%d.\n\n"
+         "GIMP requires Fontconfig version %d.%d.%d or later.\n"
+         "The Fontconfig version loaded by GIMP is %d.%d.%d.\n\n"
          "This may be caused by another instance of libfontconfig.so.1\n"
          "being installed in the system, probably in /usr/X11R6/lib.\n"
          "Please correct the situation or report it to someone who can.",
@@ -162,10 +160,10 @@ sanity_check_freetype (void)
     {
       return g_strdup_printf
         ("FreeType version too old!\n\n"
-         "The GIMP requires FreeType version %d.%d.%d or later.\n"
+         "GIMP requires FreeType version %d.%d.%d or later.\n"
          "Installed FreeType version is %d.%d.%d.\n\n"
          "Somehow you or your software packager managed\n"
-         "to install The GIMP with an older FreeType version.\n\n"
+         "to install GIMP with an older FreeType version.\n\n"
          "Please upgrade to FreeType version %d.%d.%d or later.",
          FT_REQUIRED_MAJOR, FT_REQUIRED_MINOR, FT_REQUIRED_MICRO,
          ft_major_version, ft_minor_version, ft_micro_version,
@@ -213,8 +211,8 @@ sanity_check_filename_encoding (void)
         (_("The name of the directory holding the GIMP user configuration "
            "cannot be converted to UTF-8: "
            "%s\n\n"
-           "Most probably your filesystem stores files in an encoding "
-           "different from UTF-8 and you didn't tell GLib about this. "
+           "Your filesystem probably stores files in an encoding "
+           "other than UTF-8 and you didn't tell GLib about this. "
            "Please set the environment variable G_FILENAME_ENCODING."),
          error->message);
 

@@ -17,8 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
- * $Id: noisify.c 16026 2004-12-23 23:58:35Z weskaggs $
  */
 
 /*
@@ -34,11 +32,7 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-
-#include <gtk/gtk.h>
 
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
@@ -46,6 +40,9 @@
 #include "libgimp/stdplugins-intl.h"
 
 
+#define RGB_NOISE_PROC   "plug-in-rgb-noise"
+#define NOISIFY_PROC     "plug-in-noisify"
+#define PLUG_IN_BINARY   "noisify"
 #define SCALE_WIDTH      125
 #define TILE_CACHE_SIZE  16
 
@@ -120,30 +117,30 @@ query (void)
 {
   static GimpParamDef scatter_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
     { GIMP_PDB_INT32,    "independent", "Noise in channels independent" },
     { GIMP_PDB_INT32,    "correlated",  "Noise correlated (i.e. multiplicative not additive)" },
-    { GIMP_PDB_FLOAT,    "noise_1",     "Noise in the first channel (red, gray)" },
-    { GIMP_PDB_FLOAT,    "noise_2",     "Noise in the second channel (green, gray_alpha)" },
-    { GIMP_PDB_FLOAT,    "noise_3",     "Noise in the third channel (blue)" },
-    { GIMP_PDB_FLOAT,    "noise_4",     "Noise in the fourth channel (alpha)" }
+    { GIMP_PDB_FLOAT,    "noise-1",     "Noise in the first channel (red, gray)" },
+    { GIMP_PDB_FLOAT,    "noise-2",     "Noise in the second channel (green, gray_alpha)" },
+    { GIMP_PDB_FLOAT,    "noise-3",     "Noise in the third channel (blue)" },
+    { GIMP_PDB_FLOAT,    "noise-4",     "Noise in the fourth channel (alpha)" }
   };
   static GimpParamDef noisify_args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode",    "Interactive, non-interactive" },
+    { GIMP_PDB_INT32,    "run-mode",    "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",       "Input image (unused)" },
     { GIMP_PDB_DRAWABLE, "drawable",    "Input drawable" },
     { GIMP_PDB_INT32,    "independent", "Noise in channels independent" },
-    { GIMP_PDB_FLOAT,    "noise_1",     "Noise in the first channel (red, gray)" },
-    { GIMP_PDB_FLOAT,    "noise_2",     "Noise in the second channel (green, gray_alpha)" },
-    { GIMP_PDB_FLOAT,    "noise_3",     "Noise in the third channel (blue)" },
-    { GIMP_PDB_FLOAT,    "noise_4",     "Noise in the fourth channel (alpha)" }
+    { GIMP_PDB_FLOAT,    "noise-1",     "Noise in the first channel (red, gray)" },
+    { GIMP_PDB_FLOAT,    "noise-2",     "Noise in the second channel (green, gray_alpha)" },
+    { GIMP_PDB_FLOAT,    "noise-3",     "Noise in the third channel (blue)" },
+    { GIMP_PDB_FLOAT,    "noise-4",     "Noise in the fourth channel (alpha)" }
   };
 
 
-  gimp_install_procedure ("plug_in_scatter_rgb",
+  gimp_install_procedure (RGB_NOISE_PROC,
                           "Adds random noise to image channels ",
                           "Add normally distributed (zero mean) random values "
                           "to image channels.  Noise may be additive "
@@ -154,15 +151,15 @@ query (void)
                           "Torsten Martinsen",
                           "Torsten Martinsen",
                           "May 2000",
-                          N_("_Scatter RGB..."),
+                          N_("_RGB Noise..."),
                           "RGB*, GRAY*",
                           GIMP_PLUGIN,
                           G_N_ELEMENTS (scatter_args), 0,
                           scatter_args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_scatter_rgb", "<Image>/Filters/Noise");
+  gimp_plugin_menu_register (RGB_NOISE_PROC, "<Image>/Filters/Noise");
 
-  gimp_install_procedure ("plug_in_noisify",
+  gimp_install_procedure (NOISIFY_PROC,
                           "Adds random noise to image channels ",
                           "Add normally distributed random values to "
                           "image channels. For colour images each "
@@ -213,7 +210,7 @@ run (const gchar      *name,
     {
     case GIMP_RUN_INTERACTIVE:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_scatter_rgb", &nvals);
+      gimp_get_data (RGB_NOISE_PROC, &nvals);
 
       /*  First acquire information with a dialog  */
       if (! noisify_dialog (drawable, drawable->bpp))
@@ -225,7 +222,7 @@ run (const gchar      *name,
       break;
 
     case GIMP_RUN_NONINTERACTIVE:
-      if (strcmp (name, "plug_in_noisify") == 0)
+      if (strcmp (name, NOISIFY_PROC) == 0)
         {
           /*  Make sure all the arguments are there!  */
           if (nparams != 8)
@@ -243,7 +240,7 @@ run (const gchar      *name,
               nvals.noise[3]    = param[7].data.d_float;
             }
         }
-      else if (strcmp (name, "plug_in_scatter_rgb") == 0)
+      else if (strcmp (name, RGB_NOISE_PROC) == 0)
         {
           if (nparams != 9)
             {
@@ -269,7 +266,7 @@ run (const gchar      *name,
 
     case GIMP_RUN_WITH_LAST_VALS:
       /*  Possibly retrieve data  */
-      gimp_get_data ("plug_in_scatter_rgb", &nvals);
+      gimp_get_data (RGB_NOISE_PROC, &nvals);
       break;
 
     default:
@@ -282,7 +279,7 @@ run (const gchar      *name,
 
   if (status == GIMP_PDB_SUCCESS)
     {
-      gimp_progress_init (_("Adding Noise..."));
+      gimp_progress_init (_("Adding noise"));
 
       /*  compute the luminosity which exceeds the luminosity threshold  */
       gimp_rgn_iterate2 (drawable, 0 /* unused */, noisify_func, noise_gr);
@@ -292,7 +289,7 @@ run (const gchar      *name,
 
       /*  Store data  */
       if (run_mode == GIMP_RUN_INTERACTIVE)
-        gimp_set_data ("plug_in_scatter_rgb", &nvals, sizeof (NoisifyVals));
+        gimp_set_data (RGB_NOISE_PROC, &nvals, sizeof (NoisifyVals));
     }
   else
     {
@@ -397,10 +394,10 @@ noisify_add_channel (GtkWidget    *table,
 
   g_object_set_data (G_OBJECT (adj), "drawable", drawable);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (noisify_double_adjustment_update),
                     &nvals.noise[channel]);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -424,10 +421,10 @@ noisify_add_alpha_channel (GtkWidget    *table,
 
   g_object_set_data (G_OBJECT (adj), "drawable", drawable);
 
-  g_signal_connect (adj, "value_changed",
+  g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_double_adjustment_update),
                     &nvals.noise[channel]);
-  g_signal_connect_swapped (adj, "value_changed",
+  g_signal_connect_swapped (adj, "value-changed",
                             G_CALLBACK (gimp_preview_invalidate),
                             preview);
 
@@ -446,16 +443,23 @@ noisify_dialog (GimpDrawable *drawable,
   GtkWidget *table;
   gboolean   run;
 
-  gimp_ui_init ("noisify", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Scatter RGB"), "noisify",
+  dialog = gimp_dialog_new (_("RGB Noise"), PLUG_IN_BINARY,
                             NULL, 0,
-                            gimp_standard_help_func, "plug-in-noisify",
+                            gimp_standard_help_func, RGB_NOISE_PROC,
 
                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
                             NULL);
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 12);

@@ -47,9 +47,6 @@ struct _GimpFileDialog
   GtkWidget            *thumb_box;
   GtkWidget            *proc_expander;
   GtkWidget            *proc_view;
-
-  gboolean              progress_active;
-  gboolean              progress_cancelable;
   GtkWidget            *progress;
 
   gboolean              busy;
@@ -81,6 +78,8 @@ void        gimp_file_dialog_set_image     (GimpFileDialog       *dialog,
                                             GimpImage            *gimage,
                                             gboolean              save_a_copy);
 
+gboolean    gimp_file_overwrite_dialog     (GtkWidget            *parent,
+                                            const gchar          *uri);
 
 G_END_DECLS
 

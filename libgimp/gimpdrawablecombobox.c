@@ -22,26 +22,103 @@
 
 #include "config.h"
 
+#include <stdlib.h>
+
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "gimp.h"
 
+#include "gimpuitypes.h"
 #include "gimpdrawablecombobox.h"
 #include "gimppixbuf.h"
 
 
-#define MENU_THUMBNAIL_SIZE  24
+#define THUMBNAIL_SIZE  24
+#define WIDTH_REQUEST  200
 
 
-static gint  gimp_drawable_combo_box_model_add (GtkListStore               *store,
+typedef struct _GimpDrawableComboBoxClass GimpDrawableComboBoxClass;
+typedef struct _GimpChannelComboBoxClass  GimpChannelComboBoxClass;
+typedef struct _GimpLayerComboBoxClass    GimpLayerComboBoxClass;
+
+struct _GimpDrawableComboBox
+{
+  GimpIntComboBox  parent_instance;
+};
+
+struct _GimpDrawableComboBoxClass
+{
+  GimpIntComboBoxClass  parent_class;
+};
+
+struct _GimpChannelComboBox
+{
+  GimpIntComboBox  parent_instance;
+};
+
+struct _GimpChannelComboBoxClass
+{
+  GimpIntComboBoxClass  parent_class;
+};
+
+struct _GimpLayerComboBox
+{
+  GimpIntComboBox  parent_instance;
+};
+
+struct _GimpLayerComboBoxClass
+{
+  GimpIntComboBoxClass  parent_class;
+};
+
+
+static void  gimp_drawable_combo_box_model_add (GtkListStore               *store,
                                                 gint32                      image,
                                                 gint                        num_drawables,
                                                 gint32                     *drawables,
                                                 GimpDrawableConstraintFunc  constraint,
                                                 gpointer                    data);
 
+static void  gimp_drawable_combo_box_drag_data_received (GtkWidget        *widget,
+                                                         GdkDragContext   *context,
+                                                         gint              x,
+                                                         gint              y,
+                                                         GtkSelectionData *selection,
+                                                         guint             info,
+                                                         guint             time);
+
+
+static const GtkTargetEntry targets[] =
+{
+  { "application/x-gimp-channel-id", 0 },
+  { "application/x-gimp-layer-id",   0 }
+};
+
+
+G_DEFINE_TYPE(GimpDrawableComboBox,
+              gimp_drawable_combo_box,
+              GIMP_TYPE_INT_COMBO_BOX);
+
+static void
+gimp_drawable_combo_box_class_init (GimpDrawableComboBoxClass *klass)
+{
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  widget_class->drag_data_received = gimp_drawable_combo_box_drag_data_received;
+}
+
+static void
+gimp_drawable_combo_box_init (GimpDrawableComboBox *combo_box)
+{
+  gtk_drag_dest_set (GTK_WIDGET (combo_box),
+                     GTK_DEST_DEFAULT_HIGHLIGHT |
+                     GTK_DEST_DEFAULT_MOTION |
+                     GTK_DEST_DEFAULT_DROP,
+                     targets, 2,
+                     GDK_ACTION_COPY);
+}
 
 /**
  * gimp_drawable_combo_box_new:
@@ -73,7 +150,10 @@ gimp_drawable_combo_box_new (GimpDrawableConstraintFunc constraint,
   gint          num_images;
   gint          i;
 
-  combo_box = g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL);
+  combo_box = g_object_new (GIMP_TYPE_DRAWABLE_COMBO_BOX,
+                            "width-request", WIDTH_REQUEST,
+                            "ellipsize",     PANGO_ELLIPSIZE_MIDDLE,
+                            NULL);
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo_box));
 
@@ -105,6 +185,32 @@ gimp_drawable_combo_box_new (GimpDrawableConstraintFunc constraint,
     gtk_combo_box_set_active_iter (GTK_COMBO_BOX (combo_box), &iter);
 
   return combo_box;
+}
+
+
+G_DEFINE_TYPE(GimpChannelComboBox,
+              gimp_channel_combo_box,
+	      GIMP_TYPE_INT_COMBO_BOX);
+
+static void
+gimp_channel_combo_box_class_init (GimpChannelComboBoxClass *klass)
+{
+  GtkWidgetClass *widget_class;
+
+  widget_class = GTK_WIDGET_CLASS (klass);
+
+  widget_class->drag_data_received = gimp_drawable_combo_box_drag_data_received;
+}
+
+static void
+gimp_channel_combo_box_init (GimpChannelComboBox *combo_box)
+{
+  gtk_drag_dest_set (GTK_WIDGET (combo_box),
+                     GTK_DEST_DEFAULT_HIGHLIGHT |
+                     GTK_DEST_DEFAULT_MOTION |
+                     GTK_DEST_DEFAULT_DROP,
+                     targets, 1,
+                     GDK_ACTION_COPY);
 }
 
 /**
@@ -130,7 +236,10 @@ gimp_channel_combo_box_new (GimpDrawableConstraintFunc constraint,
   gint          num_images;
   gint          i;
 
-  combo_box = g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL);
+  combo_box = g_object_new (GIMP_TYPE_CHANNEL_COMBO_BOX,
+                            "width-request", WIDTH_REQUEST,
+                            "ellipsize",     PANGO_ELLIPSIZE_MIDDLE,
+                            NULL);
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo_box));
 
@@ -157,6 +266,30 @@ gimp_channel_combo_box_new (GimpDrawableConstraintFunc constraint,
   return combo_box;
 }
 
+
+G_DEFINE_TYPE(GimpLayerComboBox,
+              gimp_layer_combo_box,
+	      GIMP_TYPE_INT_COMBO_BOX);
+
+static void
+gimp_layer_combo_box_class_init (GimpLayerComboBoxClass *klass)
+{
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  widget_class->drag_data_received = gimp_drawable_combo_box_drag_data_received;
+}
+
+static void
+gimp_layer_combo_box_init (GimpLayerComboBox *combo_box)
+{
+  gtk_drag_dest_set (GTK_WIDGET (combo_box),
+                     GTK_DEST_DEFAULT_HIGHLIGHT |
+                     GTK_DEST_DEFAULT_MOTION |
+                     GTK_DEST_DEFAULT_DROP,
+                     targets + 1, 1,
+                     GDK_ACTION_COPY);
+}
+
 /**
  * gimp_layer_combo_box_new:
  * @constraint: a #GimpDrawableConstraintFunc or %NULL
@@ -180,7 +313,10 @@ gimp_layer_combo_box_new (GimpDrawableConstraintFunc constraint,
   gint          num_images;
   gint          i;
 
-  combo_box = g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL);
+  combo_box = g_object_new (GIMP_TYPE_LAYER_COMBO_BOX,
+                            "width-request", WIDTH_REQUEST,
+                            "ellipsize",     PANGO_ELLIPSIZE_MIDDLE,
+                            NULL);
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo_box));
 
@@ -207,7 +343,7 @@ gimp_layer_combo_box_new (GimpDrawableConstraintFunc constraint,
   return combo_box;
 }
 
-static gint
+static void
 gimp_drawable_combo_box_model_add (GtkListStore               *store,
                                    gint32                      image,
                                    gint                        num_drawables,
@@ -216,7 +352,6 @@ gimp_drawable_combo_box_model_add (GtkListStore               *store,
                                    gpointer                    data)
 {
   GtkTreeIter  iter;
-  gint         added = 0;
   gint         i;
 
   for (i = 0; i < num_drawables; i++)
@@ -236,8 +371,7 @@ gimp_drawable_combo_box_model_add (GtkListStore               *store,
           g_free (image_name);
 
           thumb = gimp_drawable_get_thumbnail (drawables[i],
-                                               MENU_THUMBNAIL_SIZE,
-                                               MENU_THUMBNAIL_SIZE,
+                                               THUMBNAIL_SIZE, THUMBNAIL_SIZE,
                                                GIMP_PIXBUF_SMALL_CHECKS);
 
           gtk_list_store_append (store, &iter);
@@ -246,7 +380,6 @@ gimp_drawable_combo_box_model_add (GtkListStore               *store,
                               GIMP_INT_STORE_LABEL,  label,
                               GIMP_INT_STORE_PIXBUF, thumb,
                               -1);
-          added++;
 
           if (thumb)
             g_object_unref (thumb);
@@ -254,6 +387,38 @@ gimp_drawable_combo_box_model_add (GtkListStore               *store,
           g_free (label);
         }
     }
+}
 
-  return added;
+static void
+gimp_drawable_combo_box_drag_data_received (GtkWidget        *widget,
+                                            GdkDragContext   *context,
+                                            gint              x,
+                                            gint              y,
+                                            GtkSelectionData *selection,
+                                            guint             info,
+                                            guint             time)
+{
+  gchar *str;
+
+  if ((selection->format != 8) || (selection->length < 1))
+    {
+      g_warning ("Received invalid drawable ID data!");
+      return;
+    }
+
+  str = g_strndup ((const gchar *) selection->data, selection->length);
+
+  if (g_utf8_validate (str, -1, NULL))
+    {
+      gint pid;
+      gint ID;
+
+      if (sscanf (str, "%i:%i", &pid, &ID) == 2 &&
+          pid == gimp_getpid ())
+        {
+          gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (widget), ID);
+        }
+    }
+
+  g_free (str);
 }

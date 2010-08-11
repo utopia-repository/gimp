@@ -25,12 +25,9 @@
 
 #include "libgimpbase/gimpbase.h"
 #include "libgimpbase/gimpprotocol.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "plug-in-types.h"
-
-#include "config/gimpconfig-error.h"
-#include "config/gimpconfigwriter.h"
-#include "config/gimpscanner.h"
 
 #include "core/gimp.h"
 
@@ -55,10 +52,10 @@ static GTokenType plug_in_menu_path_deserialize  (GScanner      *scanner,
                                                   PlugInProcDef *proc_def);
 static GTokenType plug_in_icon_deserialize       (GScanner      *scanner,
                                                   PlugInProcDef *proc_def);
+static GTokenType plug_in_file_proc_deserialize  (GScanner      *scanner,
+                                                  PlugInProcDef *proc_def);
 static GTokenType plug_in_proc_arg_deserialize   (GScanner      *scanner,
                                                   ProcArg       *arg);
-static GTokenType plug_in_extra_deserialize      (GScanner      *scanner,
-                                                  PlugInProcDef *proc_def);
 static GTokenType plug_in_locale_def_deserialize (GScanner      *scanner,
                                                   PlugInDef     *plug_in_def);
 static GTokenType plug_in_help_def_deserialize   (GScanner      *scanner,
@@ -78,6 +75,11 @@ enum
   PROC_ARG,
   MENU_PATH,
   ICON,
+  LOAD_PROC,
+  SAVE_PROC,
+  EXTENSION,
+  PREFIX,
+  MAGIC,
   MIME_TYPE,
   THUMB_LOADER
 };
@@ -110,6 +112,7 @@ plug_in_rc_parse (Gimp         *gimp,
                               GINT_TO_POINTER (PROTOCOL_VERSION));
   g_scanner_scope_add_symbol (scanner, 0,
                               "plug-in-def", GINT_TO_POINTER (PLUG_IN_DEF));
+
   g_scanner_scope_add_symbol (scanner, PLUG_IN_DEF,
                               "proc-def", GINT_TO_POINTER (PROC_DEF));
   g_scanner_scope_add_symbol (scanner, PLUG_IN_DEF,
@@ -125,9 +128,27 @@ plug_in_rc_parse (Gimp         *gimp,
   g_scanner_scope_add_symbol (scanner, PLUG_IN_DEF,
                               "icon", GINT_TO_POINTER (ICON));
   g_scanner_scope_add_symbol (scanner, PLUG_IN_DEF,
-                              "mime-type", GINT_TO_POINTER (MIME_TYPE));
+                              "load-proc", GINT_TO_POINTER (LOAD_PROC));
   g_scanner_scope_add_symbol (scanner, PLUG_IN_DEF,
+                              "save-proc", GINT_TO_POINTER (SAVE_PROC));
+
+  g_scanner_scope_add_symbol (scanner, LOAD_PROC,
+                              "extension", GINT_TO_POINTER (EXTENSION));
+  g_scanner_scope_add_symbol (scanner, LOAD_PROC,
+                              "prefix", GINT_TO_POINTER (PREFIX));
+  g_scanner_scope_add_symbol (scanner, LOAD_PROC,
+                              "magic", GINT_TO_POINTER (MAGIC));
+  g_scanner_scope_add_symbol (scanner, LOAD_PROC,
+                              "mime-type", GINT_TO_POINTER (MIME_TYPE));
+  g_scanner_scope_add_symbol (scanner, LOAD_PROC,
                               "thumb-loader", GINT_TO_POINTER (THUMB_LOADER));
+
+  g_scanner_scope_add_symbol (scanner, SAVE_PROC,
+                              "extension", GINT_TO_POINTER (EXTENSION));
+  g_scanner_scope_add_symbol (scanner, SAVE_PROC,
+                              "prefix", GINT_TO_POINTER (PREFIX));
+  g_scanner_scope_add_symbol (scanner, SAVE_PROC,
+                              "mime-type", GINT_TO_POINTER (MIME_TYPE));
 
   token = G_TOKEN_LEFT_PAREN;
 
@@ -290,8 +311,12 @@ plug_in_proc_def_deserialize (GScanner      *scanner,
   gint       n_menu_paths;
   gint       i;
 
-  if (! gimp_scanner_parse_string (scanner, &proc_def->db_info.name))
+  if (! gimp_scanner_parse_string (scanner, &proc_def->db_info.original_name))
     return G_TOKEN_STRING;
+
+  proc_def->db_info.name =
+    gimp_canonicalize_identifier (proc_def->db_info.original_name);
+
   if (! gimp_scanner_parse_int (scanner, (gint *) &proc_def->db_info.proc_type))
     return G_TOKEN_INT;
   if (! gimp_scanner_parse_string (scanner, &proc_def->db_info.blurb))
@@ -321,12 +346,10 @@ plug_in_proc_def_deserialize (GScanner      *scanner,
   if (token != G_TOKEN_LEFT_PAREN)
     return token;
 
-  if (! gimp_scanner_parse_string (scanner, &proc_def->extensions))
-    return G_TOKEN_STRING;
-  if (! gimp_scanner_parse_string (scanner, &proc_def->prefixes))
-    return G_TOKEN_STRING;
-  if (! gimp_scanner_parse_string_no_validate (scanner, &proc_def->magics))
-    return G_TOKEN_STRING;
+  token = plug_in_file_proc_deserialize (scanner, proc_def);
+  if (token != G_TOKEN_LEFT_PAREN)
+    return token;
+
   if (! gimp_scanner_parse_string (scanner, &proc_def->image_types))
     return G_TOKEN_STRING;
 
@@ -359,11 +382,6 @@ plug_in_proc_def_deserialize (GScanner      *scanner,
       if (token != G_TOKEN_LEFT_PAREN)
         return token;
     }
-
-  token = plug_in_extra_deserialize (scanner, proc_def);
-
-  if (token != G_TOKEN_LEFT_PAREN)
-    return token;
 
   if (! gimp_scanner_parse_token (scanner, G_TOKEN_RIGHT_PAREN))
     return G_TOKEN_RIGHT_PAREN;
@@ -490,14 +508,27 @@ plug_in_icon_deserialize (GScanner      *scanner,
   return G_TOKEN_LEFT_PAREN;
 }
 
-
-/*  Handle extra info such as mime-type and thumb-loader.  */
 static GTokenType
-plug_in_extra_deserialize (GScanner      *scanner,
-                           PlugInProcDef *proc_def)
+plug_in_file_proc_deserialize (GScanner      *scanner,
+                               PlugInProcDef *proc_def)
 {
   GTokenType  token;
+  gint        symbol;
   gchar      *value;
+
+  if (! gimp_scanner_parse_token (scanner, G_TOKEN_LEFT_PAREN))
+    return G_TOKEN_LEFT_PAREN;
+
+  if (! gimp_scanner_parse_token (scanner, G_TOKEN_SYMBOL))
+    return G_TOKEN_SYMBOL;
+
+  symbol = GPOINTER_TO_INT (scanner->value.v_symbol);
+  if (symbol != LOAD_PROC && symbol != SAVE_PROC)
+    return G_TOKEN_SYMBOL;
+
+  proc_def->file_proc = TRUE;
+
+  g_scanner_set_scope (scanner, symbol);
 
   while (g_scanner_peek_next_token (scanner) == G_TOKEN_LEFT_PAREN)
     {
@@ -509,20 +540,42 @@ plug_in_extra_deserialize (GScanner      *scanner,
       if (! gimp_scanner_parse_token (scanner, G_TOKEN_SYMBOL))
         return G_TOKEN_SYMBOL;
 
-      switch (GPOINTER_TO_INT (scanner->value.v_symbol))
+      symbol = GPOINTER_TO_INT (scanner->value.v_symbol);
+
+      if (symbol == MAGIC)
         {
-        case MIME_TYPE:
+          if (! gimp_scanner_parse_string_no_validate (scanner, &value))
+            return G_TOKEN_STRING;
+        }
+      else
+        {
           if (! gimp_scanner_parse_string (scanner, &value))
             return G_TOKEN_STRING;
+        }
 
+      switch (symbol)
+        {
+        case EXTENSION:
+          g_free (proc_def->extensions);
+          proc_def->extensions = value;
+          break;
+
+        case PREFIX:
+          g_free (proc_def->prefixes);
+          proc_def->prefixes = value;
+          break;
+
+        case MAGIC:
+          g_free (proc_def->magics);
+          proc_def->magics = value;
+          break;
+
+        case MIME_TYPE:
           g_free (proc_def->mime_type);
           proc_def->mime_type = value;
           break;
 
         case THUMB_LOADER:
-          if (! gimp_scanner_parse_string (scanner, &value))
-            return G_TOKEN_STRING;
-
           g_free (proc_def->thumb_loader);
           proc_def->thumb_loader = value;
           break;
@@ -530,10 +583,14 @@ plug_in_extra_deserialize (GScanner      *scanner,
         default:
            return G_TOKEN_SYMBOL;
         }
-
       if (! gimp_scanner_parse_token (scanner, G_TOKEN_RIGHT_PAREN))
         return G_TOKEN_RIGHT_PAREN;
     }
+
+  if (! gimp_scanner_parse_token (scanner, G_TOKEN_RIGHT_PAREN))
+    return G_TOKEN_RIGHT_PAREN;
+
+  g_scanner_set_scope (scanner, PLUG_IN_DEF);
 
   return G_TOKEN_LEFT_PAREN;
 }
@@ -677,7 +734,7 @@ plug_in_rc_write (GSList       *plug_in_defs,
 
               gimp_config_writer_open (writer, "proc-def");
               gimp_config_writer_printf (writer, "\"%s\" %d",
-                                         proc_def->db_info.name,
+                                         proc_def->db_info.original_name,
                                          proc_def->db_info.proc_type);
               gimp_config_writer_linefeed (writer);
               gimp_config_writer_string (writer, proc_def->db_info.blurb);
@@ -723,14 +780,57 @@ plug_in_rc_write (GSList       *plug_in_defs,
 
               gimp_config_writer_close (writer);
 
+              if (proc_def->file_proc)
+                {
+                  gimp_config_writer_open (writer,
+                                           proc_def->image_types ?
+                                           "save-proc" : "load-proc");
+
+                  if (proc_def->extensions && *proc_def->extensions)
+                    {
+                      gimp_config_writer_open (writer, "extension");
+                      gimp_config_writer_string (writer,
+                                                 proc_def->extensions);
+                      gimp_config_writer_close (writer);
+                    }
+
+                  if (proc_def->prefixes && *proc_def->prefixes)
+                    {
+                      gimp_config_writer_open (writer, "prefix");
+                      gimp_config_writer_string (writer,
+                                                 proc_def->prefixes);
+                      gimp_config_writer_close (writer);
+                    }
+
+                  if (proc_def->magics && *proc_def->magics)
+                    {
+                      gimp_config_writer_open (writer, "magic");
+                      gimp_config_writer_string (writer,
+                                                 proc_def->magics);
+                      gimp_config_writer_close (writer);
+                    }
+
+                  if (proc_def->mime_type)
+                    {
+                      gimp_config_writer_open (writer, "mime-type");
+                      gimp_config_writer_string (writer,
+                                                 proc_def->mime_type);
+                      gimp_config_writer_close (writer);
+                    }
+
+                  if (proc_def->thumb_loader)
+                    {
+                      gimp_config_writer_open (writer, "thumb-loader");
+                      gimp_config_writer_string (writer,
+                                                 proc_def->thumb_loader);
+                      gimp_config_writer_close (writer);
+                    }
+
+                  gimp_config_writer_close (writer);
+                }
+
               gimp_config_writer_linefeed (writer);
 
-	      gimp_config_writer_string (writer, proc_def->extensions);
-	      gimp_config_writer_linefeed (writer);
-	      gimp_config_writer_string (writer, proc_def->prefixes);
-	      gimp_config_writer_linefeed (writer);
-	      gimp_config_writer_string (writer, proc_def->magics);
-	      gimp_config_writer_linefeed (writer);
 	      gimp_config_writer_string (writer, proc_def->image_types);
 	      gimp_config_writer_linefeed (writer);
 
@@ -765,20 +865,6 @@ plug_in_rc_write (GSList       *plug_in_defs,
 
                   gimp_config_writer_close (writer);
 		}
-
-              if (proc_def->mime_type)
-                {
-                  gimp_config_writer_open (writer, "mime-type");
-		  gimp_config_writer_string (writer, proc_def->mime_type);
-                  gimp_config_writer_close (writer);
-                }
-
-              if (proc_def->thumb_loader)
-                {
-                  gimp_config_writer_open (writer, "thumb-loader");
-		  gimp_config_writer_string (writer, proc_def->thumb_loader);
-                  gimp_config_writer_close (writer);
-                }
 
 	      gimp_config_writer_close (writer);
 	    }

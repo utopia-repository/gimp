@@ -74,6 +74,12 @@ browse_cb (GtkWidget      *widget,
 				      GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
 				      NULL);
+
+       gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                                GTK_RESPONSE_OK,
+                                                GTK_RESPONSE_CANCEL,
+                                                -1);
+
        gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
        g_signal_connect (dialog, "destroy",
@@ -90,16 +96,17 @@ static void
 handle_drop(GtkWidget *widget, GdkDragContext *context, gint x, gint y,
 	    GtkSelectionData *data, guint info, guint time)
 {
-   gboolean success;
+   gboolean success = FALSE;
 
    if (data->length >= 0 && data->format == 8)
      {
-       gtk_entry_set_text(GTK_ENTRY(widget), data->data);
-       success = TRUE;
-     }
-   else
-     {
-       success = FALSE;
+       const gchar *text = (const gchar *) data->data;
+
+       if (g_utf8_validate (text, -1, NULL))
+         {
+           gtk_entry_set_text (GTK_ENTRY (widget), text);
+           success = TRUE;
+         }
      }
 
    gtk_drag_finish(context, success, FALSE, time);

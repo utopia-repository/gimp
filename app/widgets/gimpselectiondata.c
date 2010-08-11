@@ -19,9 +19,18 @@
 #include "config.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include <gtk/gtk.h>
+
+#ifdef G_OS_WIN32
+#include <process.h> /* getpid() : defined from _getpid by GLib */
+#endif
 
 #include "libgimpcolor/gimpcolor.h"
 
@@ -55,16 +64,28 @@
 #endif
 
 
+/*  local function prototypes  */
+
+static gchar      * gimp_selection_data_get_name   (GtkSelectionData *selection);
+static GimpObject * gimp_selection_data_get_object (GtkSelectionData *selection,
+                                                    GimpContainer    *container,
+                                                    GimpObject       *additional);
+static gchar      * gimp_unescape_uri_string       (const char       *escaped,
+                                                    int               len,
+                                                    const char       *illegal_escaped_characters,
+                                                    gboolean          ascii_must_not_be_escaped);
+
+
+/*  public functions  */
+
 void
 gimp_selection_data_set_uri_list (GtkSelectionData *selection,
-                                  GdkAtom           atom,
                                   GList            *uri_list)
 {
   GList *list;
   gchar *vals = NULL;
 
   g_return_if_fail (selection != NULL);
-  g_return_if_fail (atom != GDK_NONE);
   g_return_if_fail (uri_list != NULL);
 
   for (list = uri_list; list; list = g_list_next (list))
@@ -86,101 +107,19 @@ gimp_selection_data_set_uri_list (GtkSelectionData *selection,
         }
     }
 
-  gtk_selection_data_set (selection, atom,
+  gtk_selection_data_set (selection, selection->target,
                           8, (guchar *) vals, strlen (vals) + 1);
 
   g_free (vals);
 }
 
-/*  the next two functions are straight cut'n'paste from glib/glib/gconvert.c,
- *  except that gimp_unescape_uri_string() does not try to UTF-8 validate
- *  the unescaped result.
- */
-static int
-unescape_character (const char *scanner)
-{
-  int first_digit;
-  int second_digit;
-
-  first_digit = g_ascii_xdigit_value (scanner[0]);
-  if (first_digit < 0)
-    return -1;
-
-  second_digit = g_ascii_xdigit_value (scanner[1]);
-  if (second_digit < 0)
-    return -1;
-
-  return (first_digit << 4) | second_digit;
-}
-
-static gchar *
-gimp_unescape_uri_string (const char *escaped,
-                          int         len,
-                          const char *illegal_escaped_characters,
-                          gboolean    ascii_must_not_be_escaped)
-{
-  const gchar *in, *in_end;
-  gchar *out, *result;
-  int c;
-
-  if (escaped == NULL)
-    return NULL;
-
-  if (len < 0)
-    len = strlen (escaped);
-
-  result = g_malloc (len + 1);
-
-  out = result;
-  for (in = escaped, in_end = escaped + len; in < in_end; in++)
-    {
-      c = *in;
-
-      if (c == '%')
-        {
-          /* catch partial escape sequences past the end of the substring */
-          if (in + 3 > in_end)
-            break;
-
-          c = unescape_character (in + 1);
-
-          /* catch bad escape sequences and NUL characters */
-          if (c <= 0)
-            break;
-
-          /* catch escaped ASCII */
-          if (ascii_must_not_be_escaped && c <= 0x7F)
-            break;
-
-          /* catch other illegal escaped characters */
-          if (strchr (illegal_escaped_characters, c) != NULL)
-            break;
-
-          in += 2;
-        }
-
-      *out++ = c;
-    }
-
-  g_assert (out - result <= len);
-  *out = '\0';
-
-  if (in != in_end)
-    {
-      g_free (result);
-      return NULL;
-    }
-
-  return result;
-}
-
 GList *
 gimp_selection_data_get_uri_list (GtkSelectionData *selection)
 {
-  GList    *crap_list = NULL;
-  GList    *uri_list  = NULL;
-  GList    *list;
-  gchar    *buffer;
+  GList       *crap_list = NULL;
+  GList       *uri_list  = NULL;
+  GList       *list;
+  const gchar *buffer;
 
   g_return_val_if_fail (selection != NULL, NULL);
 
@@ -190,7 +129,7 @@ gimp_selection_data_get_uri_list (GtkSelectionData *selection)
       return NULL;
     }
 
-  buffer = (gchar *) selection->data;
+  buffer = (const gchar *) selection->data;
 
   D (g_print ("%s: raw buffer >>%s<<\n", G_STRFUNC, buffer));
 
@@ -350,14 +289,12 @@ gimp_selection_data_get_uri_list (GtkSelectionData *selection)
 
 void
 gimp_selection_data_set_color (GtkSelectionData *selection,
-                               GdkAtom           atom,
                                const GimpRGB    *color)
 {
   guint16 *vals;
   guchar   r, g, b, a;
 
   g_return_if_fail (selection != NULL);
-  g_return_if_fail (atom != GDK_NONE);
   g_return_if_fail (color != NULL);
 
   vals = g_new (guint16, 4);
@@ -369,7 +306,7 @@ gimp_selection_data_set_color (GtkSelectionData *selection,
   vals[2] = b + (b << 8);
   vals[3] = a + (a << 8);
 
-  gtk_selection_data_set (selection, atom,
+  gtk_selection_data_set (selection, selection->target,
                           16, (guchar *) vals, 8);
 
   g_free (vals);
@@ -403,16 +340,14 @@ gimp_selection_data_get_color (GtkSelectionData *selection,
 
 void
 gimp_selection_data_set_stream (GtkSelectionData *selection,
-                                GdkAtom           atom,
                                 const guchar     *stream,
                                 gsize             stream_length)
 {
   g_return_if_fail (selection != NULL);
-  g_return_if_fail (atom != GDK_NONE);
   g_return_if_fail (stream != NULL);
   g_return_if_fail (stream_length > 0);
 
-  gtk_selection_data_set (selection, atom,
+  gtk_selection_data_set (selection, selection->target,
                           8, (guchar *) stream, stream_length);
 }
 
@@ -435,386 +370,274 @@ gimp_selection_data_get_stream (GtkSelectionData *selection,
 }
 
 void
-gimp_selection_data_set_pixbuf (GtkSelectionData *selection,
-                                GdkAtom           atom,
-                                GdkPixbuf        *pixbuf,
-                                const gchar      *format)
-{
-  gchar  *buffer;
-  gsize   buffer_size;
-  GError *error = NULL;
-
-  g_return_if_fail (selection != NULL);
-  g_return_if_fail (atom != GDK_NONE);
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-  g_return_if_fail (format != NULL);
-
-  if (gdk_pixbuf_save_to_buffer (pixbuf,
-                                 &buffer, &buffer_size, format,
-                                 &error, NULL))
-    {
-      gtk_selection_data_set (selection, atom,
-                              8, (guchar *) buffer, buffer_size);
-      g_free (buffer);
-    }
-  else
-    {
-      g_warning ("%s: %s", G_STRFUNC, error->message);
-      g_error_free (error);
-    }
-}
-
-GdkPixbuf *
-gimp_selection_data_get_pixbuf (GtkSelectionData *selection)
-{
-  GdkPixbufLoader *loader;
-  GdkPixbuf       *pixbuf = NULL;
-  GError          *error  = NULL;
-
-  g_return_val_if_fail (selection != NULL, NULL);
-
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid image data!");
-      return NULL;
-    }
-
-  loader = gdk_pixbuf_loader_new ();
-
-  if (gdk_pixbuf_loader_write (loader,
-                               selection->data, selection->length, &error) &&
-      gdk_pixbuf_loader_close (loader, &error))
-    {
-      pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-      g_object_ref (pixbuf);
-    }
-  else
-    {
-      g_warning ("%s: %s", G_STRFUNC, error->message);
-      g_error_free (error);
-    }
-
-  g_object_unref (loader);
-
-  return pixbuf;
-}
-
-void
 gimp_selection_data_set_image (GtkSelectionData *selection,
-                               GdkAtom           atom,
                                GimpImage        *gimage)
 {
-  gchar *id;
+  gchar *str;
 
   g_return_if_fail (selection != NULL);
-  g_return_if_fail (atom != GDK_NONE);
   g_return_if_fail (GIMP_IS_IMAGE (gimage));
 
-  id = g_strdup_printf ("%d", gimp_image_get_ID (gimage));
+  str = g_strdup_printf ("%d:%d", getpid (), gimp_image_get_ID (gimage));
 
-  gtk_selection_data_set (selection, atom,
-                          8, (guchar *) id, strlen (id) + 1);
+  gtk_selection_data_set (selection, selection->target,
+                          8, (guchar *) str, strlen (str) + 1);
 
-  g_free (id);
+  g_free (str);
 }
 
 GimpImage *
 gimp_selection_data_get_image (GtkSelectionData *selection,
                                Gimp             *gimp)
 {
-  gchar *id;
-  gint   ID;
+  GimpImage *image = NULL;
+  gchar     *str;
+  gint       pid;
+  gint       ID;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid image ID data!");
-      return NULL;
-    }
-
-  id = (gchar *) selection->data;
-  ID = atoi (id);
-
-  if (! ID)
+  str = gimp_selection_data_get_name (selection);
+  if (! str)
     return NULL;
 
-  return gimp_image_get_by_ID (gimp, ID);
+  if (sscanf (str, "%i:%i", &pid, &ID) == 2 &&
+      pid == getpid ())
+    {
+      image = gimp_image_get_by_ID (gimp, ID);
+    }
+
+  g_free (str);
+
+  return image;
+}
+
+void
+gimp_selection_data_set_component (GtkSelectionData *selection,
+                                   GimpImage        *gimage,
+                                   GimpChannelType   channel)
+{
+  gchar *str;
+
+  g_return_if_fail (selection != NULL);
+  g_return_if_fail (GIMP_IS_IMAGE (gimage));
+
+  str = g_strdup_printf ("%d:%d:%d", getpid (), gimp_image_get_ID (gimage),
+                         (gint) channel);
+
+  gtk_selection_data_set (selection, selection->target,
+                          8, (guchar *) str, strlen (str) + 1);
+
+  g_free (str);
+}
+
+GimpImage *
+gimp_selection_data_get_component (GtkSelectionData *selection,
+                                   Gimp             *gimp,
+                                   GimpChannelType  *channel)
+{
+  GimpImage *image = NULL;
+  gchar     *str;
+  gint       pid;
+  gint       ID;
+  gint       ch;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (selection != NULL, NULL);
+
+  if (channel)
+    *channel = 0;
+
+  str = gimp_selection_data_get_name (selection);
+  if (! str)
+    return NULL;
+
+  if (sscanf (str, "%i:%i:%i", &pid, &ID, &ch) == 3 &&
+      pid == getpid ())
+    {
+      image = gimp_image_get_by_ID (gimp, ID);
+
+      if (image && channel)
+        *channel = ch;
+    }
+
+  g_free (str);
+
+  return image;
 }
 
 void
 gimp_selection_data_set_item (GtkSelectionData *selection,
-                              GdkAtom           atom,
                               GimpItem         *item)
 {
-  gchar *id;
+  gchar *str;
 
   g_return_if_fail (selection != NULL);
-  g_return_if_fail (atom != GDK_NONE);
   g_return_if_fail (GIMP_IS_ITEM (item));
 
-  id = g_strdup_printf ("%d", gimp_item_get_ID (item));
+  str = g_strdup_printf ("%d:%d", getpid (), gimp_item_get_ID (item));
 
-  gtk_selection_data_set (selection, atom,
-                          8, (guchar *) id, strlen (id) + 1);
+  gtk_selection_data_set (selection, selection->target,
+                          8, (guchar *) str, strlen (str) + 1);
 
-  g_free (id);
+  g_free (str);
 }
 
 GimpItem *
 gimp_selection_data_get_item (GtkSelectionData *selection,
                               Gimp             *gimp)
 {
-  gchar *id;
-  gint   ID;
+  GimpItem *item = NULL;
+  gchar    *str;
+  gint      pid;
+  gint      ID;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid item ID data!");
-      return NULL;
-    }
-
-  id = (gchar *) selection->data;
-  ID = atoi (id);
-
-  if (! ID)
+  str = gimp_selection_data_get_name (selection);
+  if (! str)
     return NULL;
 
-  return gimp_item_get_by_ID (gimp, ID);
+  if (sscanf (str, "%i:%i", &pid, &ID) == 2 &&
+      pid == getpid ())
+    {
+      item = gimp_item_get_by_ID (gimp, ID);
+    }
+
+  g_free (str);
+
+  return item;
 }
 
 void
-gimp_selection_data_set_viewable (GtkSelectionData *selection,
-                                  GdkAtom           atom,
-                                  GimpViewable     *viewable)
+gimp_selection_data_set_object (GtkSelectionData *selection,
+                                GimpObject       *object)
 {
   const gchar *name;
 
   g_return_if_fail (selection != NULL);
-  g_return_if_fail (atom != GDK_NONE);
-  g_return_if_fail (GIMP_IS_VIEWABLE (viewable));
+  g_return_if_fail (GIMP_IS_OBJECT (object));
 
-  name = gimp_object_get_name (GIMP_OBJECT (viewable));
+  name = gimp_object_get_name (object);
 
   if (name)
-    gtk_selection_data_set (selection, atom,
-                            8, (const guchar *) name, strlen (name) + 1);
+    {
+      gchar *str;
+
+      str = g_strdup_printf ("%d:%p:%s", getpid (), object, name);
+      gtk_selection_data_set (selection, selection->target,
+                              8, (guchar *) str, strlen (str) + 1);
+      g_free (str);
+    }
 }
 
 GimpBrush *
 gimp_selection_data_get_brush (GtkSelectionData *selection,
                                Gimp             *gimp)
 {
-  GimpBrush *brush;
-  gchar     *name;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid brush data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
-
-  if (strcmp (name, "Standard") == 0)
-    brush = GIMP_BRUSH (gimp_brush_get_standard ());
-  else
-    brush = (GimpBrush *)
-      gimp_container_get_child_by_name (gimp->brush_factory->container, name);
-
-  return brush;
+  return (GimpBrush *)
+    gimp_selection_data_get_object (selection,
+                                    gimp->brush_factory->container,
+                                    GIMP_OBJECT (gimp_brush_get_standard ()));
 }
 
 GimpPattern *
 gimp_selection_data_get_pattern (GtkSelectionData *selection,
                                  Gimp             *gimp)
 {
-  GimpPattern *pattern;
-  gchar       *name;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid pattern data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
-
-  if (strcmp (name, "Standard") == 0)
-    pattern = GIMP_PATTERN (gimp_pattern_get_standard ());
-  else
-    pattern = (GimpPattern *)
-      gimp_container_get_child_by_name (gimp->pattern_factory->container, name);
-
-  return pattern;
+  return (GimpPattern *)
+    gimp_selection_data_get_object (selection,
+                                    gimp->pattern_factory->container,
+                                    GIMP_OBJECT (gimp_pattern_get_standard ()));
 }
 
 GimpGradient *
 gimp_selection_data_get_gradient (GtkSelectionData *selection,
                                   Gimp             *gimp)
 {
-  GimpGradient *gradient;
-  gchar        *name;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid gradient data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
-
-  if (strcmp (name, "Standard") == 0)
-    gradient = GIMP_GRADIENT (gimp_gradient_get_standard ());
-  else
-    gradient = (GimpGradient *)
-      gimp_container_get_child_by_name (gimp->gradient_factory->container, name);
-
-  return gradient;
+  return (GimpGradient *)
+    gimp_selection_data_get_object (selection,
+                                    gimp->gradient_factory->container,
+                                    GIMP_OBJECT (gimp_gradient_get_standard ()));
 }
 
 GimpPalette *
 gimp_selection_data_get_palette (GtkSelectionData *selection,
                                  Gimp             *gimp)
 {
-  GimpPalette *palette;
-  gchar       *name;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid palette data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
-
-  if (strcmp (name, "Standard") == 0)
-    palette = GIMP_PALETTE (gimp_palette_get_standard ());
-  else
-    palette = (GimpPalette *)
-      gimp_container_get_child_by_name (gimp->palette_factory->container, name);
-
-  return palette;
+  return (GimpPalette *)
+    gimp_selection_data_get_object (selection,
+                                    gimp->palette_factory->container,
+                                    GIMP_OBJECT (gimp_palette_get_standard ()));
 }
 
 GimpFont *
 gimp_selection_data_get_font (GtkSelectionData *selection,
                               Gimp             *gimp)
 {
-  GimpFont *font;
-  gchar    *name;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid font data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
-
-  if (strcmp (name, "Standard") == 0)
-    font = gimp_font_get_standard ();
-  else
-    font = (GimpFont *)
-      gimp_container_get_child_by_name (gimp->fonts, name);
-
-  return font;
+  return (GimpFont *)
+    gimp_selection_data_get_object (selection,
+                                    gimp->fonts,
+                                    GIMP_OBJECT (gimp_font_get_standard ()));
 }
 
 GimpBuffer *
 gimp_selection_data_get_buffer (GtkSelectionData *selection,
                                 Gimp             *gimp)
 {
-  GimpBuffer *buffer;
-  gchar      *name;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid buffer data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
-
-  buffer = (GimpBuffer *)
-    gimp_container_get_child_by_name (gimp->named_buffers, name);
-
-  return buffer;
+  return (GimpBuffer *)
+    gimp_selection_data_get_object (selection,
+                                    gimp->named_buffers,
+                                    GIMP_OBJECT (gimp->global_buffer));
 }
 
 GimpImagefile *
 gimp_selection_data_get_imagefile (GtkSelectionData *selection,
                                    Gimp             *gimp)
 {
-  GimpImagefile *imagefile;
-  gchar         *name;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid imagefile data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
-
-  imagefile = (GimpImagefile *)
-    gimp_container_get_child_by_name (gimp->documents, name);
-
-  return imagefile;
+  return (GimpImagefile *) gimp_selection_data_get_object (selection,
+                                                           gimp->documents,
+                                                           NULL);
 }
 
 GimpTemplate *
 gimp_selection_data_get_template (GtkSelectionData *selection,
                                   Gimp             *gimp)
 {
-  GimpTemplate *template;
-  gchar        *name;
-
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid template data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
-
-  template = (GimpTemplate *)
-    gimp_container_get_child_by_name (gimp->templates, name);
-
-  return template;
+  return (GimpTemplate *) gimp_selection_data_get_object (selection,
+                                                          gimp->templates,
+                                                          NULL);
 }
 
 GimpToolInfo *
-gimp_selection_data_get_tool (GtkSelectionData *selection,
-                              Gimp             *gimp)
+gimp_selection_data_get_tool_info (GtkSelectionData *selection,
+                                   Gimp             *gimp)
 {
   GimpToolInfo *tool_info;
   gchar        *name;
@@ -822,13 +645,9 @@ gimp_selection_data_get_tool (GtkSelectionData *selection,
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (selection != NULL, NULL);
 
-  if ((selection->format != 8) || (selection->length < 1))
-    {
-      g_warning ("Received invalid tool data!");
-      return NULL;
-    }
-
-  name = (gchar *) selection->data;
+  name = gimp_selection_data_get_name (selection);
+  if (! name)
+    return NULL;
 
   if (strcmp (name, "gimp-standard-tool") == 0)
     tool_info = gimp_tool_info_get_standard (gimp);
@@ -836,5 +655,161 @@ gimp_selection_data_get_tool (GtkSelectionData *selection,
     tool_info = (GimpToolInfo *)
       gimp_container_get_child_by_name (gimp->tool_info_list, name);
 
+  g_free (name);
+
   return tool_info;
+}
+
+
+/*  private functions  */
+
+static gchar *
+gimp_selection_data_get_name (GtkSelectionData *selection)
+{
+  gchar *name;
+
+  if ((selection->format != 8) || (selection->length < 1))
+    {
+      g_warning ("Received invalid selection data");
+      return NULL;
+    }
+
+  name = g_strndup ((const gchar *) selection->data, selection->length);
+
+  if (! g_utf8_validate (name, -1, NULL))
+    {
+      g_warning ("Received invalid selection data "
+                 "(doesn't validate as UTF-8)!");
+      g_free (name);
+      return NULL;
+    }
+
+  g_printerr ("%s: name = '%s'\n", G_STRFUNC, name);
+
+  return name;
+}
+
+static GimpObject *
+gimp_selection_data_get_object (GtkSelectionData *selection,
+                                GimpContainer    *container,
+                                GimpObject       *additional)
+{
+  GimpObject *object = NULL;
+  gchar      *str;
+  gint        pid;
+  gpointer    object_addr;
+  gint        name_offset = 0;
+
+  str = gimp_selection_data_get_name (selection);
+  if (! str)
+    return NULL;
+
+  if (sscanf (str, "%i:%p:%n", &pid, &object_addr, &name_offset) >= 2 &&
+      pid == getpid () && name_offset > 0)
+    {
+      gchar *name = str + name_offset;
+
+      g_printerr ("%s: pid = %d, addr = %p, name = '%s'\n",
+                  G_STRFUNC, pid, object_addr, name);
+
+      if (additional &&
+          strcmp (name, gimp_object_get_name (additional)) == 0 &&
+          object_addr == (gpointer) additional)
+        {
+          object = additional;
+        }
+      else
+        {
+          object = gimp_container_get_child_by_name (container, name);
+
+          if (object && object_addr != (gpointer) object)
+            object = NULL;
+        }
+    }
+
+  g_free (str);
+
+  return object;
+}
+
+/*  the next two functions are straight cut'n'paste from glib/glib/gconvert.c,
+ *  except that gimp_unescape_uri_string() does not try to UTF-8 validate
+ *  the unescaped result.
+ */
+static int
+unescape_character (const char *scanner)
+{
+  int first_digit;
+  int second_digit;
+
+  first_digit = g_ascii_xdigit_value (scanner[0]);
+  if (first_digit < 0)
+    return -1;
+
+  second_digit = g_ascii_xdigit_value (scanner[1]);
+  if (second_digit < 0)
+    return -1;
+
+  return (first_digit << 4) | second_digit;
+}
+
+static gchar *
+gimp_unescape_uri_string (const char *escaped,
+                          int         len,
+                          const char *illegal_escaped_characters,
+                          gboolean    ascii_must_not_be_escaped)
+{
+  const gchar *in, *in_end;
+  gchar *out, *result;
+  int c;
+
+  if (escaped == NULL)
+    return NULL;
+
+  if (len < 0)
+    len = strlen (escaped);
+
+  result = g_malloc (len + 1);
+
+  out = result;
+  for (in = escaped, in_end = escaped + len; in < in_end; in++)
+    {
+      c = *in;
+
+      if (c == '%')
+        {
+          /* catch partial escape sequences past the end of the substring */
+          if (in + 3 > in_end)
+            break;
+
+          c = unescape_character (in + 1);
+
+          /* catch bad escape sequences and NUL characters */
+          if (c <= 0)
+            break;
+
+          /* catch escaped ASCII */
+          if (ascii_must_not_be_escaped && c <= 0x7F)
+            break;
+
+          /* catch other illegal escaped characters */
+          if (strchr (illegal_escaped_characters, c) != NULL)
+            break;
+
+          in += 2;
+        }
+
+      *out++ = c;
+    }
+
+  g_assert (out - result <= len);
+  *out = '\0';
+
+  if (in != in_end)
+    {
+      g_free (result);
+      return NULL;
+    }
+
+  return result;
 }

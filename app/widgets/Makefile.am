@@ -2,8 +2,7 @@
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Widgets\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
 	-I$(top_builddir)	\
@@ -39,6 +38,8 @@ libappwidgets_a_sources = \
 	gimpbufferview.h		\
 	gimpcellrendereraccel.c		\
 	gimpcellrendereraccel.h		\
+	gimpcellrendererdashes.c	\
+	gimpcellrendererdashes.h	\
 	gimpcellrendererviewable.c	\
 	gimpcellrendererviewable.h	\
 	gimpchanneltreeview.c		\
@@ -85,6 +86,8 @@ libappwidgets_a_sources = \
 	gimpcontrollereditor.h		\
 	gimpcontrollerinfo.c		\
 	gimpcontrollerinfo.h		\
+	gimpcontrollerlist.c		\
+	gimpcontrollerlist.h		\
 	gimpcontrollers.c		\
 	gimpcontrollers.h		\
 	gimpcontrollerkeyboard.c	\
@@ -93,6 +96,8 @@ libappwidgets_a_sources = \
 	gimpcontrollerwheel.h		\
 	gimpcursor.c			\
 	gimpcursor.h			\
+	gimpcursorview.c		\
+	gimpcursorview.h		\
 	gimpdasheditor.c		\
 	gimpdasheditor.h		\
 	gimpdataeditor.c		\
@@ -109,6 +114,8 @@ libappwidgets_a_sources = \
 	gimpdialogfactory.h		\
 	gimpdnd.c			\
 	gimpdnd.h			\
+	gimpdnd-xds.c			\
+	gimpdnd-xds.h			\
 	gimpdock.c			\
 	gimpdock.h			\
 	gimpdockable.c			\
@@ -117,6 +124,8 @@ libappwidgets_a_sources = \
 	gimpdockbook.h			\
 	gimpdocked.c			\
 	gimpdocked.h			\
+	gimpdockseparator.c		\
+	gimpdockseparator.h		\
 	gimpdocumentview.c		\
 	gimpdocumentview.h		\
 	gimpdrawabletreeview.c		\
@@ -125,18 +134,14 @@ libappwidgets_a_sources = \
 	gimpeditor.h			\
 	gimpenumaction.c		\
 	gimpenumaction.h		\
-	gimpenumcombobox.c		\
-	gimpenumcombobox.h		\
-	gimpenumstore.c			\
-	gimpenumstore.h			\
-	gimpenumwidgets.c		\
-	gimpenumwidgets.h		\
 	gimperrorconsole.c		\
 	gimperrorconsole.h		\
 	gimperrordialog.c		\
 	gimperrordialog.h		\
 	gimpfgbgeditor.c		\
 	gimpfgbgeditor.h		\
+	gimpfgbgview.c			\
+	gimpfgbgview.h			\
 	gimpfiledialog.c		\
 	gimpfiledialog.h		\
 	gimpfileprocview.c		\
@@ -164,12 +169,16 @@ libappwidgets_a_sources = \
 	gimpimagedock.h			\
 	gimpimageeditor.c		\
 	gimpimageeditor.h		\
+	gimpimagepropview.c		\
+	gimpimagepropview.h		\
 	gimpimageview.c			\
 	gimpimageview.h			\
 	gimpitemtreeview.c		\
 	gimpitemtreeview.h		\
 	gimplayertreeview.c		\
 	gimplayertreeview.h		\
+	gimpmenudock.c			\
+	gimpmenudock.h			\
 	gimpmenufactory.c		\
 	gimpmenufactory.h		\
 	gimpmessagebox.c		\
@@ -182,12 +191,16 @@ libappwidgets_a_sources = \
 	gimppaletteeditor.h		\
 	gimppaletteselect.c		\
 	gimppaletteselect.h		\
+	gimppaletteview.c		\
+	gimppaletteview.h		\
 	gimppatternfactoryview.c	\
 	gimppatternfactoryview.h	\
 	gimppatternselect.c		\
 	gimppatternselect.h		\
 	gimppdbdialog.c			\
 	gimppdbdialog.h			\
+	gimppixbuf.c			\
+	gimppixbuf.h			\
 	gimppluginaction.c		\
 	gimppluginaction.h		\
 	gimpprogressbox.c		\
@@ -196,6 +209,10 @@ libappwidgets_a_sources = \
 	gimpprogressdialog.h		\
 	gimppropwidgets.c		\
 	gimppropwidgets.h		\
+	gimprender.c			\
+	gimprender.h			\
+	gimpsamplepointeditor.c		\
+	gimpsamplepointeditor.h		\
 	gimpselectiondata.c		\
 	gimpselectiondata.h		\
 	gimpselectioneditor.c		\
@@ -272,6 +289,8 @@ libappwidgets_a_sources = \
 	gimpviewrendererimagefile.h	\
 	gimpviewrendererlayer.c		\
 	gimpviewrendererlayer.h		\
+	gimpviewrendererpalette.c	\
+	gimpviewrendererpalette.h	\
 	gimpviewrenderervectors.c	\
 	gimpviewrenderervectors.h	\
 	gimpwidgets-constructors.c	\

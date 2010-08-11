@@ -2,8 +2,7 @@
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Dialogs\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
 	-I$(top_builddir)	\
@@ -29,6 +28,8 @@ libappdialogs_a_sources = \
 	channel-options-dialog.h	\
 	convert-dialog.c		\
 	convert-dialog.h		\
+	desaturate-dialog.c		\
+	desaturate-dialog.h		\
 	file-open-dialog.c		\
 	file-open-dialog.h		\
 	file-open-location-dialog.c	\
@@ -41,12 +42,14 @@ libappdialogs_a_sources = \
 	image-merge-layers-dialog.h	\
 	image-new-dialog.c		\
 	image-new-dialog.h		\
+	image-properties-dialog.c	\
+	image-properties-dialog.h	\
 	image-scale-dialog.c		\
 	image-scale-dialog.h		\
 	info-dialog.c			\
 	info-dialog.h			\
-	info-window.c			\
-	info-window.h			\
+	keyboard-shortcuts-dialog.c	\
+	keyboard-shortcuts-dialog.h	\
 	layer-add-mask-dialog.c		\
 	layer-add-mask-dialog.h		\
 	layer-options-dialog.c		\

@@ -52,12 +52,25 @@ enum
   LAST_SIGNAL
 };
 
+enum
+{
+  PROP_0,
+  PROP_ID,
+  PROP_WIDTH,
+  PROP_HEIGHT
+};
+
 
 /*  local function prototypes  */
 
-static void       gimp_item_class_init        (GimpItemClass *klass);
-static void       gimp_item_init              (GimpItem      *item);
-
+static void       gimp_item_set_property      (GObject       *object,
+                                               guint          property_id,
+                                               const GValue  *value,
+                                               GParamSpec    *pspec);
+static void       gimp_item_get_property      (GObject       *object,
+                                               guint          property_id,
+                                               GValue        *value,
+                                               GParamSpec    *pspec);
 static void       gimp_item_finalize          (GObject       *object);
 
 static gint64     gimp_item_get_memsize       (GimpObject    *object,
@@ -90,40 +103,12 @@ static void       gimp_item_real_resize       (GimpItem      *item,
                                                gint           offset_y);
 
 
-/*  private variables  */
+G_DEFINE_TYPE (GimpItem, gimp_item, GIMP_TYPE_VIEWABLE);
+
+#define parent_class gimp_item_parent_class
 
 static guint gimp_item_signals[LAST_SIGNAL] = { 0 };
 
-static GimpViewableClass *parent_class = NULL;
-
-
-GType
-gimp_item_get_type (void)
-{
-  static GType item_type = 0;
-
-  if (! item_type)
-    {
-      static const GTypeInfo item_info =
-      {
-        sizeof (GimpItemClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_item_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpItem),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_item_init,
-      };
-
-      item_type = g_type_register_static (GIMP_TYPE_VIEWABLE,
-                                          "GimpItem",
-                                          &item_info, 0);
-    }
-
-  return item_type;
-}
 
 static void
 gimp_item_class_init (GimpItemClass *klass)
@@ -131,8 +116,6 @@ gimp_item_class_init (GimpItemClass *klass)
   GObjectClass      *object_class      = G_OBJECT_CLASS (klass);
   GimpObjectClass   *gimp_object_class = GIMP_OBJECT_CLASS (klass);
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   gimp_item_signals[REMOVED] =
     g_signal_new ("removed",
@@ -144,7 +127,7 @@ gimp_item_class_init (GimpItemClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_item_signals[VISIBILITY_CHANGED] =
-    g_signal_new ("visibility_changed",
+    g_signal_new ("visibility-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpItemClass, visibility_changed),
@@ -153,7 +136,7 @@ gimp_item_class_init (GimpItemClass *klass)
                   G_TYPE_NONE, 0);
 
   gimp_item_signals[LINKED_CHANGED] =
-    g_signal_new ("linked_changed",
+    g_signal_new ("linked-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GimpItemClass, linked_changed),
@@ -161,6 +144,8 @@ gimp_item_class_init (GimpItemClass *klass)
                   gimp_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  object_class->set_property       = gimp_item_set_property;
+  object_class->get_property       = gimp_item_get_property;
   object_class->finalize           = gimp_item_finalize;
 
   gimp_object_class->get_memsize   = gimp_item_get_memsize;
@@ -192,6 +177,21 @@ gimp_item_class_init (GimpItemClass *klass)
   klass->flip_desc                 = NULL;
   klass->rotate_desc               = NULL;
   klass->transform_desc            = NULL;
+
+  g_object_class_install_property (object_class, PROP_ID,
+                                   g_param_spec_int ("id", NULL, NULL,
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class, PROP_WIDTH,
+                                   g_param_spec_int ("width", NULL, NULL,
+                                                     1, GIMP_MAX_IMAGE_SIZE, 1,
+                                                     G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class, PROP_HEIGHT,
+                                   g_param_spec_int ("height", NULL, NULL,
+                                                     1, GIMP_MAX_IMAGE_SIZE, 1,
+                                                     G_PARAM_READABLE));
 }
 
 static void
@@ -209,6 +209,45 @@ gimp_item_init (GimpItem *item)
   item->linked    = FALSE;
   item->floating  = TRUE;
   item->removed   = FALSE;
+}
+
+static void
+gimp_item_set_property (GObject      *object,
+                        guint         property_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
+{
+  switch (property_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gimp_item_get_property (GObject    *object,
+                        guint       property_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
+{
+  GimpItem *item = GIMP_ITEM (object);
+
+  switch (property_id)
+    {
+    case PROP_ID:
+      g_value_set_int (value, item->ID);
+      break;
+    case PROP_WIDTH:
+      g_value_set_int (value, item->width);
+      break;
+    case PROP_HEIGHT:
+      g_value_set_int (value, item->height);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -342,10 +381,13 @@ gimp_item_real_scale (GimpItem              *item,
                       GimpInterpolationType  interpolation,
                       GimpProgress          *progress)
 {
-  item->width     = new_width;
-  item->height    = new_height;
-  item->offset_x  = new_offset_x;
-  item->offset_y  = new_offset_y;
+  item->width    = new_width;
+  item->height   = new_height;
+  item->offset_x = new_offset_x;
+  item->offset_y = new_offset_y;
+
+  g_object_notify (G_OBJECT (item), "width");
+  g_object_notify (G_OBJECT (item), "height");
 }
 
 static void
@@ -360,6 +402,9 @@ gimp_item_real_resize (GimpItem    *item,
   item->offset_y = item->offset_y - offset_y;
   item->width    = new_width;
   item->height   = new_height;
+
+  g_object_notify (G_OBJECT (item), "width");
+  g_object_notify (G_OBJECT (item), "height");
 }
 
 /**
@@ -456,6 +501,8 @@ gimp_item_configure (GimpItem    *item,
   g_return_if_fail (GIMP_IS_ITEM (item));
   g_return_if_fail (GIMP_IS_IMAGE (gimage));
 
+  g_object_freeze_notify (G_OBJECT (item));
+
   if (item->ID == 0)
     {
       item->ID = gimage->gimp->next_item_ID++;
@@ -465,6 +512,8 @@ gimp_item_configure (GimpItem    *item,
                            item);
 
       gimp_item_set_image (item, gimage);
+
+      g_object_notify (G_OBJECT (item), "id");
     }
 
   item->width    = width;
@@ -472,7 +521,12 @@ gimp_item_configure (GimpItem    *item,
   item->offset_x = offset_x;
   item->offset_y = offset_y;
 
+  g_object_notify (G_OBJECT (item), "width");
+  g_object_notify (G_OBJECT (item), "height");
+
   gimp_object_set_name (GIMP_OBJECT (item), name ? name : _("Unnamed"));
+
+  g_object_thaw_notify (G_OBJECT (item));
 }
 
 /**
@@ -702,7 +756,6 @@ gimp_item_scale (GimpItem              *item,
   GimpImage     *gimage;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
-  g_return_if_fail (gimp_item_is_attached (item));
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
   if (new_width < 1 || new_height < 1)
@@ -711,13 +764,15 @@ gimp_item_scale (GimpItem              *item,
   item_class = GIMP_ITEM_GET_CLASS (item);
   gimage     = gimp_item_get_image (item);
 
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_ITEM_SCALE,
-                               item_class->scale_desc);
+  if (gimp_item_is_attached (item))
+    gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_ITEM_SCALE,
+                                 item_class->scale_desc);
 
   item_class->scale (item, new_width, new_height, new_offset_x, new_offset_y,
                      interpolation, progress);
 
-  gimp_image_undo_group_end (gimage);
+  if (gimp_item_is_attached (item))
+    gimp_image_undo_group_end (gimage);
 }
 
 /**
@@ -761,7 +816,6 @@ gimp_item_scale_by_factors (GimpItem              *item,
   gint new_offset_x, new_offset_y;
 
   g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
-  g_return_val_if_fail (gimp_item_is_attached (item), FALSE);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
 
   if (w_factor == 0.0 || h_factor == 0.0)
@@ -826,7 +880,6 @@ gimp_item_scale_by_origin (GimpItem              *item,
   gint new_offset_x, new_offset_y;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
-  g_return_if_fail (gimp_item_is_attached (item));
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
   if (new_width == 0 || new_height == 0)
@@ -869,7 +922,6 @@ gimp_item_resize (GimpItem    *item,
   GimpImage     *gimage;
 
   g_return_if_fail (GIMP_IS_ITEM (item));
-  g_return_if_fail (gimp_item_is_attached (item));
   g_return_if_fail (GIMP_IS_CONTEXT (context));
 
   if (new_width < 1 || new_height < 1)
@@ -878,12 +930,14 @@ gimp_item_resize (GimpItem    *item,
   item_class = GIMP_ITEM_GET_CLASS (item);
   gimage     = gimp_item_get_image (item);
 
-  gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_ITEM_RESIZE,
-                               item_class->resize_desc);
+  if (gimp_item_is_attached (item))
+    gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_ITEM_RESIZE,
+                                 item_class->resize_desc);
 
   item_class->resize (item, context, new_width, new_height, offset_x, offset_y);
 
-  gimp_image_undo_group_end (gimage);
+  if (gimp_item_is_attached (item))
+    gimp_image_undo_group_end (gimage);
 }
 
 void
@@ -999,7 +1053,7 @@ gimp_item_stroke (GimpItem       *item,
       gimp_image_undo_group_start (gimage, GIMP_UNDO_GROUP_PAINT,
                                    item_class->stroke_desc);
 
-      retval = item_class->stroke (item, drawable, context, stroke_desc);
+      retval = item_class->stroke (item, drawable, stroke_desc);
 
       gimp_image_undo_group_end (gimage);
 
@@ -1081,24 +1135,29 @@ gimp_item_parasite_attach (GimpItem     *item,
 {
   g_return_if_fail (GIMP_IS_ITEM (item));
 
-  /*  only set the dirty bit manually if we can be saved and the new
-   *  parasite differs from the current one and we arn't undoable
-   */
-  if (gimp_parasite_is_undoable (parasite))
+  if (gimp_item_is_attached (item))
     {
-      /* do a group in case we have attach_parent set */
-      gimp_image_undo_group_start (item->gimage, GIMP_UNDO_GROUP_PARASITE_ATTACH,
-                                   _("Attach Parasite"));
+      /*  only set the dirty bit manually if we can be saved and the new
+       *  parasite differs from the current one and we aren't undoable
+       */
+      if (gimp_parasite_is_undoable (parasite))
+        {
+          /* do a group in case we have attach_parent set */
+          gimp_image_undo_group_start (item->gimage,
+                                       GIMP_UNDO_GROUP_PARASITE_ATTACH,
+                                       _("Attach Parasite"));
 
-      gimp_image_undo_push_item_parasite (item->gimage, NULL, item, parasite);
-    }
-  else if (gimp_parasite_is_persistent (parasite) &&
-           ! gimp_parasite_compare (parasite,
-                                    gimp_item_parasite_find
-                                    (item, gimp_parasite_name (parasite))))
-    {
-      gimp_image_undo_push_cantundo (item->gimage,
-                                     _("Attach Parasite to Item"));
+          gimp_image_undo_push_item_parasite (item->gimage, NULL, item,
+                                              parasite);
+        }
+      else if (gimp_parasite_is_persistent (parasite) &&
+               ! gimp_parasite_compare (parasite,
+                                        gimp_item_parasite_find
+                                        (item, gimp_parasite_name (parasite))))
+        {
+          gimp_image_undo_push_cantundo (item->gimage,
+                                         _("Attach Parasite to Item"));
+        }
     }
 
   gimp_parasite_list_add (item->parasites, parasite);
@@ -1115,7 +1174,8 @@ gimp_item_parasite_attach (GimpItem     *item,
       gimp_parasite_attach (item->gimage->gimp, parasite);
     }
 
-  if (gimp_parasite_is_undoable (parasite))
+  if (gimp_item_is_attached (item) &&
+      gimp_parasite_is_undoable (parasite))
     {
       gimp_image_undo_group_end (item->gimage);
     }

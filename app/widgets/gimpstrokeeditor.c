@@ -25,11 +25,11 @@
 
 #include "widgets-types.h"
 
+#include "core/gimpdashpattern.h"
 #include "core/gimpstrokeoptions.h"
 
+#include "gimpcellrendererdashes.h"
 #include "gimpdasheditor.h"
-#include "gimpenumcombobox.h"
-#include "gimppropwidgets.h"
 #include "gimpstrokeeditor.h"
 
 #include "gimp-intl.h"
@@ -42,64 +42,38 @@ enum
   PROP_RESOLUTION
 };
 
-static void      gimp_stroke_editor_class_init   (GimpStrokeEditorClass *klass);
-static GObject * gimp_stroke_editor_constructor  (GType                  type,
-                                                  guint                  n_params,
+
+static GObject * gimp_stroke_editor_constructor  (GType              type,
+                                                  guint              n_params,
                                                   GObjectConstructParam *params);
-static void      gimp_stroke_editor_set_property (GObject         *object,
-                                                  guint            property_id,
-                                                  const GValue    *value,
-                                                  GParamSpec      *pspec);
-static void      gimp_stroke_editor_get_property (GObject         *object,
-                                                  guint            property_id,
-                                                  GValue          *value,
-                                                  GParamSpec      *pspec);
-static void      gimp_stroke_editor_finalize     (GObject         *object);
-static gboolean  gimp_stroke_editor_paint_button (GtkWidget       *widget,
-                                                  GdkEventExpose  *event,
-                                                  gpointer         data);
-static void      gimp_stroke_editor_dash_preset  (GtkWidget       *widget,
-                                                  gpointer         data);
+static void      gimp_stroke_editor_set_property (GObject           *object,
+                                                  guint              property_id,
+                                                  const GValue      *value,
+                                                  GParamSpec        *pspec);
+static void      gimp_stroke_editor_get_property (GObject           *object,
+                                                  guint              property_id,
+                                                  GValue            *value,
+                                                  GParamSpec        *pspec);
+static void      gimp_stroke_editor_finalize     (GObject           *object);
+static gboolean  gimp_stroke_editor_paint_button (GtkWidget         *widget,
+                                                  GdkEventExpose    *event,
+                                                  gpointer           data);
+static void      gimp_stroke_editor_dash_preset  (GtkWidget         *widget,
+                                                  GimpStrokeOptions *options);
+
+static void      gimp_stroke_editor_combo_fill   (GimpStrokeOptions *options,
+                                                  GtkComboBox       *box);
 
 
+G_DEFINE_TYPE (GimpStrokeEditor, gimp_stroke_editor, GTK_TYPE_VBOX);
 
-static GtkVBoxClass *parent_class = NULL;
+#define parent_class gimp_stroke_editor_parent_class
 
-
-GType
-gimp_stroke_editor_get_type (void)
-{
-  static GType view_type = 0;
-
-  if (! view_type)
-    {
-      static const GTypeInfo view_info =
-      {
-        sizeof (GimpStrokeEditorClass),
-        NULL,           /* base_init      */
-        NULL,           /* base_finalize  */
-        (GClassInitFunc) gimp_stroke_editor_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpStrokeEditor),
-        0,              /* n_preallocs    */
-        NULL            /* instance_init  */
-      };
-
-      view_type = g_type_register_static (GTK_TYPE_VBOX,
-                                          "GimpStrokeEditor",
-                                          &view_info, 0);
-    }
-
-  return view_type;
-}
 
 static void
 gimp_stroke_editor_class_init (GimpStrokeEditorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor  = gimp_stroke_editor_constructor;
   object_class->set_property = gimp_stroke_editor_set_property;
@@ -118,6 +92,11 @@ gimp_stroke_editor_class_init (GimpStrokeEditorClass *klass)
                                                         72.0,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
+}
+
+static void
+gimp_stroke_editor_init (GimpStrokeEditor *editor)
+{
 }
 
 static void
@@ -180,6 +159,7 @@ gimp_stroke_editor_constructor (GType                   type,
   GtkWidget        *expander;
   GtkWidget        *dash_editor;
   GtkWidget        *button;
+  GtkCellRenderer  *cell;
   GObject          *object;
   gint              row = 0;
 
@@ -195,7 +175,7 @@ gimp_stroke_editor_constructor (GType                   type,
   gtk_box_pack_start (GTK_BOX (editor), box, FALSE, FALSE, 0);
   gtk_widget_show (box);
 
-  label = gtk_label_new (_("Line Width:"));
+  label = gtk_label_new (_("Line width:"));
   gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
 
@@ -234,7 +214,7 @@ gimp_stroke_editor_constructor (GType                   type,
                              _("_Join style:"), 0.0, 0.5,
                              box, 2, TRUE);
 
-  gimp_prop_scale_entry_new (G_OBJECT (editor->options), "miter",
+  gimp_prop_scale_entry_new (G_OBJECT (editor->options), "miter-limit",
                              GTK_TABLE (table), 0, row++,
                              _("_Miter limit:"),
                              1.0, 1.0, 1,
@@ -285,20 +265,29 @@ gimp_stroke_editor_constructor (GType                   type,
   box = gimp_enum_combo_box_new (GIMP_TYPE_DASH_PRESET);
   gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (box), GIMP_DASH_CUSTOM);
   gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
-                             _("Dash preset:"), 0.0, 0.5,
-                             box, 2, TRUE);
+                             _("Dash _preset:"), 0.0, 0.5,
+                             box, 2, FALSE);
+
+  cell = g_object_new (GIMP_TYPE_CELL_RENDERER_DASHES,
+                       "xpad", 2,
+                       NULL);
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (box), cell, FALSE);
+  gtk_cell_layout_add_attribute (GTK_CELL_LAYOUT (box), cell,
+                                 "pattern", GIMP_INT_STORE_USER_DATA);
+
+  gimp_stroke_editor_combo_fill (editor->options, GTK_COMBO_BOX (box));
 
   g_signal_connect (box, "changed",
                     G_CALLBACK (gimp_stroke_editor_dash_preset),
                     editor->options);
-  g_signal_connect_object (editor->options, "dash_info_changed",
+  g_signal_connect_object (editor->options, "dash-info-changed",
                            G_CALLBACK (gimp_int_combo_box_set_active),
                            box, G_CONNECT_SWAPPED);
 
 
   button = gimp_prop_check_button_new (G_OBJECT (editor->options), "antialias",
                                        _("_Antialiasing"));
-  gtk_table_attach (GTK_TABLE (table), button, 0, 2, row, row + 1,
+  gtk_table_attach (GTK_TABLE (table), button, 0, 3, row, row + 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
   gtk_widget_show (button);
   row++;
@@ -356,11 +345,81 @@ gimp_stroke_editor_paint_button (GtkWidget       *widget,
 }
 
 static void
-gimp_stroke_editor_dash_preset (GtkWidget *widget,
-                                gpointer   data)
+gimp_stroke_editor_dash_preset (GtkWidget         *widget,
+                                GimpStrokeOptions *options)
 {
   gint value;
 
-  if (gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget), &value))
-    gimp_stroke_options_set_dash_preset (GIMP_STROKE_OPTIONS (data), value);
+  if (gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget), &value) &&
+      value != GIMP_DASH_CUSTOM)
+    {
+      gimp_stroke_options_set_dash_pattern (options, value, NULL);
+    }
+}
+
+static void
+gimp_stroke_editor_combo_update (GtkTreeModel      *model,
+                                 GParamSpec        *pspec,
+                                 GimpStrokeOptions *options)
+{
+  GtkTreeIter  iter;
+
+  if (gimp_int_store_lookup_by_value  (model, GIMP_DASH_CUSTOM, &iter))
+    {
+      GArray *pattern;
+
+      gtk_tree_model_get (model, &iter,
+                          GIMP_INT_STORE_USER_DATA, &pattern,
+                          -1);
+      gimp_dash_pattern_free (pattern);
+
+      pattern = gimp_dash_pattern_copy (options->dash_info);
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                          GIMP_INT_STORE_USER_DATA, pattern,
+                          -1);
+    }
+}
+
+static void
+gimp_stroke_editor_combo_fill (GimpStrokeOptions *options,
+                               GtkComboBox       *box)
+{
+  GtkTreeModel *model = gtk_combo_box_get_model (box);
+  GtkTreeIter   iter;
+  gboolean      iter_valid;
+
+  for (iter_valid = gtk_tree_model_get_iter_first (model, &iter);
+       iter_valid;
+       iter_valid = gtk_tree_model_iter_next (model, &iter))
+    {
+      GArray *pattern;
+      gint    value;
+
+      gtk_tree_model_get (model, &iter,
+                          GIMP_INT_STORE_VALUE, &value,
+                          -1);
+
+      if (value == GIMP_DASH_CUSTOM)
+        {
+          pattern = gimp_dash_pattern_copy (options->dash_info);
+
+          g_signal_connect_object (options, "notify::dash-info",
+                                   G_CALLBACK (gimp_stroke_editor_combo_update),
+                                   model, G_CONNECT_SWAPPED);
+        }
+      else
+        {
+          pattern = gimp_dash_pattern_from_preset (value);
+        }
+
+      if (pattern)
+        {
+          gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                              GIMP_INT_STORE_USER_DATA, pattern,
+                              -1);
+
+          g_object_weak_ref (G_OBJECT (box),
+                             (GWeakNotify) gimp_dash_pattern_free, pattern);
+        }
+    }
 }

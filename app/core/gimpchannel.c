@@ -42,8 +42,9 @@
 #include "gimp.h"
 #include "gimp-utils.h"
 #include "gimpcontainer.h"
+#include "gimpdrawable-convert.h"
 #include "gimpimage.h"
-#include "gimpimage-qmask.h"
+#include "gimpimage-quick-mask.h"
 #include "gimpimage-undo.h"
 #include "gimpimage-undo-push.h"
 #include "gimpchannel.h"
@@ -51,6 +52,7 @@
 #include "gimpdrawable-stroke.h"
 #include "gimpmarshal.h"
 #include "gimppaintinfo.h"
+#include "gimppickable.h"
 #include "gimpprojection.h"
 #include "gimpstrokedesc.h"
 
@@ -64,8 +66,7 @@ enum
 };
 
 
-static void       gimp_channel_class_init    (GimpChannelClass *klass);
-static void       gimp_channel_init          (GimpChannel      *channel);
+static void gimp_channel_pickable_iface_init (GimpPickableInterface *iface);
 
 static void       gimp_channel_finalize      (GObject          *object);
 
@@ -79,6 +80,8 @@ static gboolean   gimp_channel_is_attached   (GimpItem         *item);
 static GimpItem * gimp_channel_duplicate     (GimpItem         *item,
                                               GType             new_type,
                                               gboolean          add_alpha);
+static void       gimp_channel_convert       (GimpItem         *item,
+                                              GimpImage        *dest_image);
 static void       gimp_channel_translate     (GimpItem         *item,
                                               gint              off_x,
                                               gint              off_y,
@@ -118,7 +121,6 @@ static void       gimp_channel_transform     (GimpItem         *item,
                                               GimpProgress     *progress);
 static gboolean   gimp_channel_stroke        (GimpItem         *item,
                                               GimpDrawable     *drawable,
-                                              GimpContext      *context,
                                               GimpStrokeDesc   *stroke_desc);
 
 static void gimp_channel_invalidate_boundary   (GimpDrawable       *drawable);
@@ -157,6 +159,10 @@ static void      gimp_channel_swap_pixels    (GimpDrawable     *drawable,
                                               gint              width,
                                               gint              height);
 
+static gint      gimp_channel_get_opacity_at (GimpPickable     *pickable,
+                                              gint              x,
+                                              gint              y);
+
 static gboolean   gimp_channel_real_boundary (GimpChannel      *channel,
                                               const BoundSeg  **segs_in,
                                               const BoundSeg  **segs_out,
@@ -172,9 +178,6 @@ static gboolean   gimp_channel_real_bounds   (GimpChannel      *channel,
                                               gint             *x2,
                                               gint             *y2);
 static gboolean   gimp_channel_real_is_empty (GimpChannel      *channel);
-static gint       gimp_channel_real_value    (GimpChannel      *channel,
-                                              gint              x,
-                                              gint              y);
 static void       gimp_channel_real_feather  (GimpChannel      *channel,
                                               gdouble           radius_x,
                                               gdouble           radius_y,
@@ -206,40 +209,14 @@ static void       gimp_channel_validate      (TileManager      *tm,
                                               Tile             *tile);
 
 
-/*  private variables  */
+G_DEFINE_TYPE_WITH_CODE (GimpChannel, gimp_channel, GIMP_TYPE_DRAWABLE,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_PICKABLE,
+                                                gimp_channel_pickable_iface_init));
+
+#define parent_class gimp_channel_parent_class
 
 static guint channel_signals[LAST_SIGNAL] = { 0 };
 
-static GimpDrawableClass *parent_class = NULL;
-
-
-GType
-gimp_channel_get_type (void)
-{
-  static GType channel_type = 0;
-
-  if (! channel_type)
-    {
-      static const GTypeInfo channel_info =
-      {
-        sizeof (GimpChannelClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_channel_class_init,
-        NULL,		/* class_finalize */
-        NULL,		/* class_data     */
-        sizeof (GimpChannel),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) gimp_channel_init,
-      };
-
-      channel_type = g_type_register_static (GIMP_TYPE_DRAWABLE,
-                                             "GimpChannel",
-                                             &channel_info, 0);
-    }
-
-  return channel_type;
-}
 
 static void
 gimp_channel_class_init (GimpChannelClass *klass)
@@ -249,8 +226,6 @@ gimp_channel_class_init (GimpChannelClass *klass)
   GimpViewableClass *viewable_class    = GIMP_VIEWABLE_CLASS (klass);
   GimpItemClass     *item_class        = GIMP_ITEM_CLASS (klass);
   GimpDrawableClass *drawable_class    = GIMP_DRAWABLE_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   channel_signals[COLOR_CHANGED] =
     g_signal_new ("color-changed",
@@ -270,6 +245,7 @@ gimp_channel_class_init (GimpChannelClass *klass)
 
   item_class->is_attached    = gimp_channel_is_attached;
   item_class->duplicate      = gimp_channel_duplicate;
+  item_class->convert        = gimp_channel_convert;
   item_class->translate      = gimp_channel_translate;
   item_class->scale          = gimp_channel_scale;
   item_class->resize         = gimp_channel_resize;
@@ -297,7 +273,6 @@ gimp_channel_class_init (GimpChannelClass *klass)
   klass->boundary       = gimp_channel_real_boundary;
   klass->bounds         = gimp_channel_real_bounds;
   klass->is_empty       = gimp_channel_real_is_empty;
-  klass->value          = gimp_channel_real_value;
   klass->feather        = gimp_channel_real_feather;
   klass->sharpen        = gimp_channel_real_sharpen;
   klass->clear          = gimp_channel_real_clear;
@@ -339,6 +314,12 @@ gimp_channel_init (GimpChannel *channel)
 }
 
 static void
+gimp_channel_pickable_iface_init (GimpPickableInterface *iface)
+{
+  iface->get_opacity_at = gimp_channel_get_opacity_at;
+}
+
+static void
 gimp_channel_finalize (GObject *object)
 {
   GimpChannel *channel = GIMP_CHANNEL (object);
@@ -374,12 +355,9 @@ static gchar *
 gimp_channel_get_description (GimpViewable  *viewable,
                               gchar        **tooltip)
 {
-  if (! strcmp (GIMP_IMAGE_QMASK_NAME,
+  if (! strcmp (GIMP_IMAGE_QUICK_MASK_NAME,
                 gimp_object_get_name (GIMP_OBJECT (viewable))))
     {
-      if (tooltip)
-        *tooltip = NULL;
-
       return g_strdup (_("Quick Mask"));
     }
 
@@ -399,9 +377,7 @@ gimp_channel_duplicate (GimpItem *item,
                         GType     new_type,
                         gboolean  add_alpha)
 {
-  GimpChannel *channel;
-  GimpItem    *new_item;
-  GimpChannel *new_channel;
+  GimpItem *new_item;
 
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_DRAWABLE), NULL);
 
@@ -411,24 +387,105 @@ gimp_channel_duplicate (GimpItem *item,
   new_item = GIMP_ITEM_CLASS (parent_class)->duplicate (item, new_type,
                                                         add_alpha);
 
-  if (! GIMP_IS_CHANNEL (new_item))
-    return new_item;
+  if (GIMP_IS_CHANNEL (new_item))
+    {
+      GimpChannel *channel     = GIMP_CHANNEL (item);
+      GimpChannel *new_channel = GIMP_CHANNEL (new_item);
 
-  channel     = GIMP_CHANNEL (item);
-  new_channel = GIMP_CHANNEL (new_item);
+      new_channel->color        = channel->color;
+      new_channel->show_masked  = channel->show_masked;
 
-  new_channel->color        = channel->color;
-  new_channel->show_masked  = channel->show_masked;
-
-  /*  selection mask variables  */
-  new_channel->bounds_known = channel->bounds_known;
-  new_channel->empty        = channel->empty;
-  new_channel->x1           = channel->x1;
-  new_channel->y1           = channel->y1;
-  new_channel->x2           = channel->x2;
-  new_channel->y2           = channel->y2;
+      /*  selection mask variables  */
+      new_channel->bounds_known = channel->bounds_known;
+      new_channel->empty        = channel->empty;
+      new_channel->x1           = channel->x1;
+      new_channel->y1           = channel->y1;
+      new_channel->x2           = channel->x2;
+      new_channel->y2           = channel->y2;
+    }
 
   return new_item;
+}
+
+static void
+gimp_channel_convert (GimpItem  *item,
+                      GimpImage *dest_image)
+{
+  GimpChannel       *channel  = GIMP_CHANNEL (item);
+  GimpDrawable      *drawable = GIMP_DRAWABLE (item);
+  GimpImageBaseType  old_base_type;
+
+  old_base_type = GIMP_IMAGE_TYPE_BASE_TYPE (gimp_drawable_type (drawable));
+
+  if (old_base_type != GIMP_GRAY)
+    {
+      TileManager   *new_tiles;
+      GimpImageType  new_type = GIMP_GRAY_IMAGE;
+
+      if (gimp_drawable_has_alpha (drawable))
+        new_type = GIMP_IMAGE_TYPE_WITH_ALPHA (new_type);
+
+      new_tiles = tile_manager_new (gimp_item_width (item),
+                                    gimp_item_height (item),
+                                    GIMP_IMAGE_TYPE_BYTES (new_type));
+
+      gimp_drawable_convert_grayscale (drawable, new_tiles, old_base_type);
+
+      gimp_drawable_set_tiles_full (drawable, FALSE, NULL,
+                                    new_tiles, new_type,
+                                    item->offset_x,
+                                    item->offset_y);
+      tile_manager_unref (new_tiles);
+    }
+
+  if (gimp_drawable_has_alpha (drawable))
+    {
+      TileManager *new_tiles;
+      PixelRegion  srcPR;
+      PixelRegion  destPR;
+      guchar       bg[1] = { 0 };
+
+      new_tiles = tile_manager_new (gimp_item_width (item),
+                                    gimp_item_height (item),
+                                    GIMP_IMAGE_TYPE_BYTES (GIMP_GRAY_IMAGE));
+
+      pixel_region_init (&srcPR, drawable->tiles,
+                         0, 0,
+                         gimp_item_width (item),
+                         gimp_item_height (item),
+                         FALSE);
+      pixel_region_init (&destPR, new_tiles,
+                         0, 0,
+                         gimp_item_width (item),
+                         gimp_item_height (item),
+                         TRUE);
+
+      flatten_region (&srcPR, &destPR, bg);
+
+      gimp_drawable_set_tiles_full (drawable, FALSE, NULL,
+                                    new_tiles, GIMP_GRAY_IMAGE,
+                                    item->offset_x,
+                                    item->offset_y);
+      tile_manager_unref (new_tiles);
+    }
+
+  if (G_TYPE_FROM_INSTANCE (channel) == GIMP_TYPE_CHANNEL)
+    {
+      gint width  = gimp_image_get_width  (dest_image);
+      gint height = gimp_image_get_height (dest_image);
+
+      item->offset_x = 0;
+      item->offset_y = 0;
+
+      if (gimp_item_width  (item) != width ||
+          gimp_item_height (item) != height)
+        {
+          gimp_item_resize (item, gimp_get_user_context (dest_image->gimp),
+                            width, height, 0, 0);
+        }
+    }
+
+  GIMP_ITEM_CLASS (parent_class)->convert (item, dest_image);
 }
 
 static void
@@ -612,7 +669,6 @@ gimp_channel_transform (GimpItem               *item,
 static gboolean
 gimp_channel_stroke (GimpItem       *item,
                      GimpDrawable   *drawable,
-                     GimpContext    *context,
                      GimpStrokeDesc *stroke_desc)
 
 {
@@ -758,6 +814,39 @@ gimp_channel_swap_pixels (GimpDrawable *drawable,
   GIMP_CHANNEL (drawable)->bounds_known = FALSE;
 }
 
+static gint
+gimp_channel_get_opacity_at (GimpPickable *pickable,
+                             gint          x,
+                             gint          y)
+{
+  GimpChannel *channel = GIMP_CHANNEL (pickable);
+  Tile        *tile;
+  gint         val;
+
+  /*  Some checks to cut back on unnecessary work  */
+  if (channel->bounds_known)
+    {
+      if (channel->empty)
+	return 0;
+      else if (x < channel->x1 || x >= channel->x2 ||
+               y < channel->y1 || y >= channel->y2)
+        return 0;
+    }
+  else
+    {
+      if (x < 0 || x >= GIMP_ITEM (channel)->width ||
+          y < 0 || y >= GIMP_ITEM (channel)->height)
+        return 0;
+    }
+
+  tile = tile_manager_get_tile (GIMP_DRAWABLE (channel)->tiles, x, y,
+                                TRUE, FALSE);
+  val = *(guchar *) (tile_data_pointer (tile, x % TILE_WIDTH, y % TILE_HEIGHT));
+  tile_release (tile, FALSE);
+
+  return val;
+}
+
 static gboolean
 gimp_channel_real_boundary (GimpChannel     *channel,
                             const BoundSeg **segs_in,
@@ -785,11 +874,10 @@ gimp_channel_real_boundary (GimpChannel     *channel,
           pixel_region_init (&bPR, GIMP_DRAWABLE (channel)->tiles,
                              x3, y3, x4 - x3, y4 - y3, FALSE);
 
-          channel->segs_out = find_mask_boundary (&bPR, &channel->num_segs_out,
-                                                  IgnoreBounds,
-                                                  x1, y1,
-                                                  x2, y2,
-                                                  HALF_WAY);
+          channel->segs_out = boundary_find (&bPR, BOUNDARY_IGNORE_BOUNDS,
+                                             x1, y1, x2, y2,
+                                             BOUNDARY_HALF_WAY,
+                                             &channel->num_segs_out);
           x1 = MAX (x1, x3);
           y1 = MAX (y1, y3);
           x2 = MIN (x2, x4);
@@ -802,11 +890,10 @@ gimp_channel_real_boundary (GimpChannel     *channel,
                                  GIMP_ITEM (channel)->width,
                                  GIMP_ITEM (channel)->height, FALSE);
 
-              channel->segs_in = find_mask_boundary (&bPR, &channel->num_segs_in,
-                                                     WithinBounds,
-                                                     x1, y1,
-                                                     x2, y2,
-                                                     HALF_WAY);
+              channel->segs_in = boundary_find (&bPR, BOUNDARY_WITHIN_BOUNDS,
+                                                x1, y1, x2, y2,
+                                                BOUNDARY_HALF_WAY,
+                                                &channel->num_segs_in);
             }
           else
             {
@@ -1011,38 +1098,6 @@ gimp_channel_real_is_empty (GimpChannel *channel)
   return TRUE;
 }
 
-static gint
-gimp_channel_real_value (GimpChannel *channel,
-                         gint         x,
-                         gint         y)
-{
-  Tile *tile;
-  gint  val;
-
-  /*  Some checks to cut back on unnecessary work  */
-  if (channel->bounds_known)
-    {
-      if (channel->empty)
-	return 0;
-      else if (x < channel->x1 || x >= channel->x2 ||
-               y < channel->y1 || y >= channel->y2)
-        return 0;
-    }
-  else
-    {
-      if (x < 0 || x >= GIMP_ITEM (channel)->width ||
-          y < 0 || y >= GIMP_ITEM (channel)->height)
-        return 0;
-    }
-
-  tile = tile_manager_get_tile (GIMP_DRAWABLE (channel)->tiles, x, y,
-                                TRUE, FALSE);
-  val = *(guchar *) (tile_data_pointer (tile, x % TILE_WIDTH, y % TILE_HEIGHT));
-  tile_release (tile, FALSE);
-
-  return val;
-}
-
 static void
 gimp_channel_real_feather (GimpChannel *channel,
                            gdouble      radius_x,
@@ -1061,7 +1116,7 @@ gimp_channel_real_feather (GimpChannel *channel,
                      0, 0,
                      gimp_item_width  (GIMP_ITEM (channel)),
                      gimp_item_height (GIMP_ITEM (channel)),
-                     FALSE);
+                     TRUE);
   gaussian_blur_region (&srcPR, radius_x, radius_y);
 
   channel->bounds_known = FALSE;
@@ -1091,7 +1146,7 @@ gimp_channel_real_sharpen (GimpChannel *channel,
                      TRUE);
   lut = threshold_lut_new (0.5, 1);
 
-  pixel_regions_process_parallel ((p_func) gimp_lut_process_inline,
+  pixel_regions_process_parallel ((PixelProcessorFunc) gimp_lut_process_inline,
                                   lut, 1, &maskPR);
   gimp_lut_free (lut);
 
@@ -1212,8 +1267,9 @@ gimp_channel_real_invert (GimpChannel *channel,
 
       lut = invert_lut_new (1);
 
-      pixel_regions_process_parallel ((p_func) gimp_lut_process_inline, lut,
-                                      1, &maskPR);
+      pixel_regions_process_parallel ((PixelProcessorFunc)
+                                      gimp_lut_process_inline,
+                                      lut, 1, &maskPR);
 
       gimp_lut_free (lut);
 
@@ -1419,7 +1475,6 @@ gimp_channel_new (GimpImage     *gimage,
   GimpChannel *channel;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
-  g_return_val_if_fail (color != NULL, NULL);
 
   channel = g_object_new (GIMP_TYPE_CHANNEL, NULL);
 
@@ -1428,7 +1483,9 @@ gimp_channel_new (GimpImage     *gimage,
                            0, 0, width, height,
                            GIMP_GRAY_IMAGE, name);
 
-  channel->color       = *color;
+  if (color)
+    channel->color = *color;
+
   channel->show_masked = TRUE;
 
   /*  selection mask variables  */
@@ -1452,7 +1509,6 @@ gimp_channel_new_from_alpha (GimpImage     *gimage,
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (gimp_drawable_has_alpha (drawable), NULL);
-  g_return_val_if_fail (color != NULL, NULL);
 
   width  = gimp_item_width  (GIMP_ITEM (drawable));
   height = gimp_item_height (GIMP_ITEM (drawable));
@@ -1488,14 +1544,10 @@ gimp_channel_new_from_component (GimpImage       *gimage,
   gint         pixel;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
-  g_return_val_if_fail (color != NULL, NULL);
 
   pixel = gimp_image_get_component_index (gimage, type);
 
   g_return_val_if_fail (pixel != -1, NULL);
-
-  gimp_projection_finish_draw (gimage->projection);
-  gimp_projection_flush_now (gimage->projection);
 
   projection = gimp_projection_get_tiles (gimage->projection);
   width  = tile_manager_width  (projection);
@@ -1638,13 +1690,12 @@ gimp_channel_new_mask (GimpImage *gimage,
                        gint       width,
                        gint       height)
 {
-  GimpRGB      black = { 0.0, 0.0, 0.0, 0.5 };
   GimpChannel *new_channel;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (gimage), NULL);
 
   new_channel = gimp_channel_new (gimage, width, height,
-                                  _("Selection Mask"), &black);
+                                  _("Selection Mask"), NULL);
 
   tile_manager_set_validate_proc (GIMP_DRAWABLE (new_channel)->tiles,
                                   gimp_channel_validate);
@@ -1698,16 +1749,6 @@ gimp_channel_is_empty (GimpChannel *channel)
   g_return_val_if_fail (GIMP_IS_CHANNEL (channel), FALSE);
 
   return GIMP_CHANNEL_GET_CLASS (channel)->is_empty (channel);
-}
-
-gint
-gimp_channel_value (GimpChannel *channel,
-                    gint         x,
-                    gint         y)
-{
-  g_return_val_if_fail (GIMP_IS_CHANNEL (channel), 0);
-
-  return GIMP_CHANNEL_GET_CLASS (channel)->value (channel, x, y);
 }
 
 void

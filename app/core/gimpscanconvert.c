@@ -33,45 +33,74 @@
 #include "base/tile-manager.h"
 
 #include "gimpscanconvert.h"
+#include "gimp-utils.h"
 
 
 struct _GimpScanConvert
 {
-  gdouble      ratio_xy;
+  gdouble         ratio_xy;
+
+  gboolean        clip;
+  gint            clip_x;
+  gint            clip_y;
+  gint            clip_w;
+  gint            clip_h;
 
   /* stuff necessary for the _add_polygons API...  :-/  */
-  gboolean     got_first;
-  gboolean     need_closing;
-  GimpVector2  first;
-  GimpVector2  prev;
+  gboolean        got_first;
+  gboolean        need_closing;
+  GimpVector2     first;
+  GimpVector2     prev;
 
-  gboolean     have_open;
-  guint        num_nodes;
-  ArtVpath    *vpath;
+  gboolean        have_open;
+  guint           num_nodes;
+  ArtVpath       *vpath;
 
-  ArtSVP      *svp;         /* Sorted vector path
+  ArtSVP         *svp;      /* Sorted vector path
                                (extension no longer possible)          */
 
   /* stuff necessary for the rendering callback */
-  guchar      *buf;
-  gint         rowstride;
-  gint         x0, x1;
-  gboolean     antialias;
+  GimpChannelOps  op;
+  guchar         *buf;
+  gint            rowstride;
+  gint            x0, x1;
+  gboolean        antialias;
+  gboolean        value;
 };
+
 
 /* private functions */
 
+static void   gimp_scan_convert_render_internal  (GimpScanConvert *sc,
+                                                  GimpChannelOps   op,
+                                                  TileManager     *tile_manager,
+                                                  gint             off_x,
+                                                  gint             off_y,
+                                                  gboolean         antialias,
+                                                  guchar           value);
 static void   gimp_scan_convert_finish           (GimpScanConvert *sc);
 static void   gimp_scan_convert_close_add_points (GimpScanConvert *sc);
 
-static void   gimp_scan_convert_render_callback (gpointer          user_data,
-                                                 gint              y,
-                                                 gint              start_value,
-                                                 ArtSVPRenderAAStep *steps,
-                                                 gint              n_steps);
+static void   gimp_scan_convert_render_callback  (gpointer            user_data,
+                                                  gint                y,
+                                                  gint                start_value,
+                                                  ArtSVPRenderAAStep *steps,
+                                                  gint                n_steps);
+static void   gimp_scan_convert_compose_callback (gpointer            user_data,
+                                                  gint                y,
+                                                  gint                start_value,
+                                                  ArtSVPRenderAAStep *steps,
+                                                  gint                n_steps);
 
 /*  public functions  */
 
+/**
+ * gimp_scan_convert_new:
+ *
+ * Create a new scan conversion context.
+ *
+ * Return value: a newly allocated #GimpScanConvert context.
+ */
 GimpScanConvert *
 gimp_scan_convert_new (void)
 {
@@ -79,11 +108,17 @@ gimp_scan_convert_new (void)
 
   sc = g_new0 (GimpScanConvert, 1);
 
-  sc->ratio_xy  = 1.0;
+  sc->ratio_xy = 1.0;
 
   return sc;
 }
 
+/**
+ * gimp_scan_convert_free:
+ * @sc: a #GimpScanConvert context
+ *
+ * Frees the resources allocated for @sc.
+ */
 void
 gimp_scan_convert_free (GimpScanConvert *sc)
 {
@@ -97,7 +132,12 @@ gimp_scan_convert_free (GimpScanConvert *sc)
   g_free (sc);
 }
 
-/* set the Pixel-Ratio (width / height) for the pixels.
+/**
+ * gimp_scan_convert_set_pixel_ratio:
+ * @sc:       a #GimpScanConvert context
+ * @ratio_xy: the aspect ratio of the major coordinate axes
+ *
+ * Sets the pixel aspect ratio.
  */
 void
 gimp_scan_convert_set_pixel_ratio (GimpScanConvert *sc,
@@ -109,9 +149,43 @@ gimp_scan_convert_set_pixel_ratio (GimpScanConvert *sc,
   sc->ratio_xy = ratio_xy;
 }
 
+/**
+ * gimp_scan_convert_set_clip_rectangle
+ * @sc:     a #GimpScanConvert context
+ * @x:      horizontal offset of clip rectangle
+ * @y:      vertical offset of clip rectangle
+ * @width:  width of clip rectangle
+ * @height: height of clip rectangle
+ *
+ * Sets a clip rectangle on @sc. Subsequent render operations will be
+ * restricted to this area.
+ */
+void
+gimp_scan_convert_set_clip_rectangle (GimpScanConvert *sc,
+                                      gint             x,
+                                      gint             y,
+                                      gint             width,
+                                      gint             height)
+{
+  g_return_if_fail (sc != NULL);
 
-/* Add "n_points" from "points" to the polygon currently being
- * described by "scan_converter". DEPRECATED.
+  sc->clip   = TRUE;
+  sc->clip_x = x;
+  sc->clip_y = y;
+  sc->clip_w = width;
+  sc->clip_h = height;
+}
+
+/**
+ * gimp_scan_convert_add_points:
+ * @sc:          a #GimpScanConvert context
+ * @n_points:    number of points to add
+ * @points:      array of points to add
+ * @new_polygon: whether to start a new polygon or append to the last one
+ *
+ * Adds @n_points from @points to the polygon currently being
+ * described by @sc. This function is DEPRECATED, please use
+ * gimp_scan_convert_add_polyline() instead.
  */
 void
 gimp_scan_convert_add_points (GimpScanConvert *sc,
@@ -187,22 +261,28 @@ gimp_scan_convert_close_add_points (GimpScanConvert *sc)
 }
 
 
-/* Add a polygon with "npoints" "points" that may be open or closed.
- * It is not recommended to mix gimp_scan_convert_add_polyline with
- * gimp_scan_convert_add_points.
+/**
+ * gimp_scan_convert_add_polyline:
+ * @sc:       a #GimpScanConvert context
+ * @n_points: number of points to add
+ * @points:   array of points to add
+ * @closed:   whether to close the polyline and make it a polygon
+ *
+ * Add a polyline with @n_points @points that may be open or closed.
+ * It is not recommended to mix gimp_scan_convert_add_polyline() with
+ * gimp_scan_convert_add_points().
  *
  * Please note that you should use gimp_scan_convert_stroke() if you
  * specify open polygons.
  */
-
 void
 gimp_scan_convert_add_polyline (GimpScanConvert *sc,
                                 guint            n_points,
                                 GimpVector2     *points,
                                 gboolean         closed)
 {
-  GimpVector2  prev;
-  gint i;
+  GimpVector2  prev = { 0.0, 0.0, };
+  gint         i;
 
   g_return_if_fail (sc != NULL);
   g_return_if_fail (points != NULL);
@@ -259,12 +339,28 @@ gimp_scan_convert_add_polyline (GimpScanConvert *sc,
 }
 
 
-
-/* Stroke the content of a GimpScanConvert. The next
- * gimp_scan_convert_render() will result in the outline of the polygon
- * defined with the commands above.
+/**
+ * gimp_scan_convert_stroke:
+ * @sc:          a #GimpScanConvert context
+ * @width:       line width in pixels
+ * @join:        how lines should be joined
+ * @cap:         how to render the end of lines
+ * @miter:       convert a mitered join to a bevelled join if the miter would
+ *               extend to a distance of more than @miter times @width from
+ *               the actual join point
+ * @dash_offset: offset to apply on the dash pattern
+ * @dash_info:   dash pattern or %NULL for a solid line
+ *
+ * Stroke the content of a GimpScanConvert. The next
+ * gimp_scan_convert_render() will result in the outline of the
+ * polygon defined with the commands above.
  *
  * You cannot add additional polygons after this command.
+ *
+ * Note that if you have nonstandard resolution, "width" gives the
+ * width (in pixels) for a vertical stroke, i.e. use the X resolution
+ * to calculate the width of a stroke when operating with real world
+ * units.
  */
 void
 gimp_scan_convert_stroke (GimpScanConvert *sc,
@@ -329,7 +425,7 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
 
       dashes = g_new (gdouble, dash_info->len);
 
-      for (i=0; i < dash_info->len ; i++)
+      for (i = 0; i < dash_info->len ; i++)
         dashes[i] = MAX (width, 1.0) * g_array_index (dash_info, gdouble, i);
 
       dash.n_dash = dash_info->len;
@@ -346,7 +442,7 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
           /* shift the pattern to really starts with a dash and
            * use the offset to skip into it.
            */
-          for (i=0; i < dash_info->len - 2; i++)
+          for (i = 0; i < dash_info->len - 2; i++)
             {
               dash.dash[i] = dash.dash[i+2];
               dash.offset += dash.dash[i];
@@ -413,7 +509,7 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
               segment->bbox.x0 /= sc->ratio_xy;
               segment->bbox.x1 /= sc->ratio_xy;
 
-              for (j=0; j < segment->n_points  ; j++)
+              for (j = 0; j < segment->n_points; j++)
                 {
                   point = segment->points + j;
                   point->x /= sc->ratio_xy;
@@ -426,7 +522,16 @@ gimp_scan_convert_stroke (GimpScanConvert *sc,
 }
 
 
-/* This is a more low level version. Expects a tile manager of depth 1.
+/**
+ * gimp_scan_convert_render:
+ * @sc:           a #GimpScanConvert context
+ * @tile_manager: the #TileManager to render to
+ * @off_x:        horizontal offset into the @tile_manager
+ * @off_y:        vertical offset into the @tile_manager
+ * @antialias:    whether to apply antialiasiing
+ *
+ * Actually renders the @sc to a mask. This function expects a tile
+ * manager of depth 1.
  *
  * You cannot add additional polygons after this command.
  */
@@ -437,45 +542,130 @@ gimp_scan_convert_render (GimpScanConvert *sc,
                           gint             off_y,
                           gboolean         antialias)
 {
-  PixelRegion  maskPR;
-  gpointer     pr;
-
   g_return_if_fail (sc != NULL);
   g_return_if_fail (tile_manager != NULL);
+
+  gimp_scan_convert_render_internal (sc, GIMP_CHANNEL_OP_REPLACE,
+                                     tile_manager, off_x, off_y,
+                                     antialias, 255);
+}
+
+/**
+ * gimp_scan_convert_render_value:
+ * @sc:           a #GimpScanConvert context
+ * @tile_manager: the #TileManager to render to
+ * @off_x:        horizontal offset into the @tile_manager
+ * @off_y:        vertical offset into the @tile_manager
+ * @value:        value to use for covered pixels
+ *
+ * A variant of gimp_scan_convert_render() that doesn't do
+ * antialiasing but gives control over the value that should be used
+ * for pixels covered by the scan conversion . Uncovered pixels are
+ * set to zero.
+ *
+ * You cannot add additional polygons after this command.
+ */
+void
+gimp_scan_convert_render_value (GimpScanConvert *sc,
+                                TileManager     *tile_manager,
+                                gint             off_x,
+                                gint             off_y,
+                                guchar           value)
+{
+  g_return_if_fail (sc != NULL);
+  g_return_if_fail (tile_manager != NULL);
+
+  gimp_scan_convert_render_internal (sc, GIMP_CHANNEL_OP_REPLACE,
+                                     tile_manager, off_x, off_y,
+                                     FALSE, value);
+}
+
+/**
+ * gimp_scan_convert_compose:
+ * @sc:           a #GimpScanConvert context
+ * @tile_manager: the #TileManager to render to
+ * @off_x:        horizontal offset into the @tile_manager
+ * @off_y:        vertical offset into the @tile_manager
+ *
+ * This is a variant of gimp_scan_convert_render() that composes the
+ * (aliased) scan conversion with the content of the @tile_manager.
+ *
+ * You cannot add additional polygons after this command.
+ */
+void
+gimp_scan_convert_compose (GimpScanConvert *sc,
+                           GimpChannelOps   op,
+                           TileManager     *tile_manager,
+                           gint             off_x,
+                           gint             off_y)
+{
+  g_return_if_fail (sc != NULL);
+  g_return_if_fail (tile_manager != NULL);
+
+  gimp_scan_convert_render_internal (sc, op,
+                                     tile_manager, off_x, off_y,
+                                     FALSE, 255);
+}
+
+static void
+gimp_scan_convert_render_internal (GimpScanConvert *sc,
+                                   GimpChannelOps   op,
+                                   TileManager     *tile_manager,
+                                   gint             off_x,
+                                   gint             off_y,
+                                   gboolean         antialias,
+                                   guchar           value)
+{
+  PixelRegion  maskPR;
+  gpointer     pr;
+  gpointer     callback;
+  gint         x, y;
+  gint         width, height;
 
   gimp_scan_convert_finish (sc);
 
   if (!sc->svp)
     return;
 
-  pixel_region_init (&maskPR, tile_manager, 0, 0,
-                     tile_manager_width (tile_manager),
-                     tile_manager_height (tile_manager),
-                     TRUE);
+  x = 0;
+  y = 0;
+  width  = tile_manager_width (tile_manager);
+  height = tile_manager_height (tile_manager);
+
+  if (sc->clip &&
+      ! gimp_rectangle_intersect (x, y, width, height,
+                                  sc->clip_x, sc->clip_y,
+                                  sc->clip_w, sc->clip_h,
+                                  &x, &y, &width, &height))
+    return;
+
+  pixel_region_init (&maskPR, tile_manager, x, y, width, height, TRUE);
 
   g_return_if_fail (maskPR.bytes == 1);
 
   sc->antialias = antialias;
+  sc->value     = value;
+  sc->op        = op;
+
+  callback = (op == GIMP_CHANNEL_OP_REPLACE ?
+              gimp_scan_convert_render_callback :
+              gimp_scan_convert_compose_callback);
 
   for (pr = pixel_regions_register (1, &maskPR);
        pr != NULL;
        pr = pixel_regions_process (pr))
     {
-      sc->buf = maskPR.data;
+      sc->buf       = maskPR.data;
       sc->rowstride = maskPR.rowstride;
-      sc->x0 = off_x + maskPR.x;
-      sc->x1 = off_x + maskPR.x + maskPR.w;
+      sc->x0        = off_x + maskPR.x;
+      sc->x1        = off_x + maskPR.x + maskPR.w;
 
       art_svp_render_aa (sc->svp,
-                         sc->x0,
-                         off_y + maskPR.y,
-                         sc->x1,
-                         off_y + maskPR.y + maskPR.h,
-                         gimp_scan_convert_render_callback, sc);
-
+                         sc->x0, off_y + maskPR.y,
+                         sc->x1, off_y + maskPR.y + maskPR.h,
+                         callback, sc);
     }
 }
-
 
 /* private function to convert the vpath to a svp when not using
  * gimp_scan_convert_stroke
@@ -499,7 +689,7 @@ gimp_scan_convert_finish (GimpScanConvert *sc)
   /* Debug output of libart path */
   /* {
    *   gint i;
-   *   for (i=0; i < sc->num_nodes + 1; i++)
+   *   for (i = 0; i < sc->num_nodes + 1; i++)
    *     {
    *       g_printerr ("X: %f, Y: %f, Type: %d\n", sc->vpath[i].x,
    *                                               sc->vpath[i].y,
@@ -556,11 +746,13 @@ gimp_scan_convert_render_callback (gpointer            user_data,
 {
   GimpScanConvert *sc        = user_data;
   gint             cur_value = start_value;
-  gint             k, run_x0, run_x1;
+  gint             run_x0;
+  gint             run_x1;
+  gint             k;
 
 #define VALUE_TO_PIXEL(x) (sc->antialias ? \
                            ((x) >> 16)   : \
-                           (((x) & (1 << 23) ? 255 : 0)))
+                           (((x) & (1 << 23) ? sc->value : 0)))
 
   if (n_steps > 0)
     {
@@ -603,3 +795,87 @@ gimp_scan_convert_render_callback (gpointer            user_data,
 #undef VALUE_TO_PIXEL
 }
 
+static inline void
+compose (GimpChannelOps  op,
+         guchar         *buf,
+         guchar          value,
+         gint            len)
+{
+  switch (op)
+    {
+    case GIMP_CHANNEL_OP_ADD:
+      if (value)
+        memset (buf, value, len);
+      break;
+    case GIMP_CHANNEL_OP_SUBTRACT:
+      if (value)
+        memset (buf, 0, len);
+      break;
+    case GIMP_CHANNEL_OP_REPLACE:
+      memset (buf, value, len);
+      break;
+    case GIMP_CHANNEL_OP_INTERSECT:
+      do
+        {
+          if (*buf)
+            *buf = value;
+          buf++;
+        }
+      while (--len);
+      break;
+    }
+}
+
+static void
+gimp_scan_convert_compose_callback (gpointer            user_data,
+                                    gint                y,
+                                    gint                start_value,
+                                    ArtSVPRenderAAStep *steps,
+                                    gint                n_steps)
+{
+  GimpScanConvert *sc        = user_data;
+  gint             cur_value = start_value;
+  gint             k, run_x0, run_x1;
+
+#define VALUE_TO_PIXEL(x) (((x) & (1 << 23) ? 255 : 0))
+
+  if (n_steps > 0)
+    {
+      run_x1 = steps[0].x;
+
+      if (run_x1 > sc->x0)
+        compose (sc->op, sc->buf,
+                 VALUE_TO_PIXEL (cur_value),
+                 run_x1 - sc->x0);
+
+      for (k = 0; k < n_steps - 1; k++)
+        {
+          cur_value += steps[k].delta;
+
+          run_x0 = run_x1;
+          run_x1 = steps[k + 1].x;
+
+          if (run_x1 > run_x0)
+            compose (sc->op, sc->buf + run_x0 - sc->x0,
+                     VALUE_TO_PIXEL (cur_value),
+                     run_x1 - run_x0);
+        }
+
+      cur_value += steps[k].delta;
+
+      if (sc->x1 > run_x1)
+        compose (sc->op, sc->buf + run_x1 - sc->x0,
+                 VALUE_TO_PIXEL (cur_value),
+                 sc->x1 - run_x1);
+    }
+  else
+    {
+      compose (sc->op, sc->buf,
+               VALUE_TO_PIXEL (cur_value),
+               sc->x1 - sc->x0);
+    }
+
+  sc->buf += sc->rowstride;
+
+#undef VALUE_TO_PIXEL
+}

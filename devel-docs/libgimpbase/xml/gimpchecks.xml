@@ -4,31 +4,28 @@
 
 <refentry id="libgimpbase-gimpchecks">
 <refmeta>
-<refentrytitle role="top_of_page">gimpchecks</refentrytitle>
+<refentrytitle>gimpchecks</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpchecks</refname>
-<refpurpose>Constants and functions related to rendering checkerboards.</refpurpose>
-<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+<refname>gimpchecks</refname><refpurpose>Constants and functions related to rendering checkerboards.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
-<title role="synopsis.title">Synopsis</title>
+<refsynopsisdiv><title>Synopsis</title>
 
 <synopsis>
 
 
 
-#define             <link linkend="GIMP-CHECK-SIZE:CAPS">GIMP_CHECK_SIZE</link>
-#define             <link linkend="GIMP-CHECK-SIZE-SM:CAPS">GIMP_CHECK_SIZE_SM</link>
-#define             <link linkend="GIMP-CHECK-DARK:CAPS">GIMP_CHECK_DARK</link>
-#define             <link linkend="GIMP-CHECK-LIGHT:CAPS">GIMP_CHECK_LIGHT</link>
-<link linkend="void">void</link>                <link linkend="gimp-checks-get-shades">gimp_checks_get_shades</link>              (<link linkend="GimpCheckType">GimpCheckType</link> type,
-                                                         <link linkend="guchar">guchar</link> *light,
-                                                         <link linkend="guchar">guchar</link> *dark);
+#define     <link linkend="GIMP-CHECK-SIZE:CAPS">GIMP_CHECK_SIZE</link>
+#define     <link linkend="GIMP-CHECK-SIZE-SM:CAPS">GIMP_CHECK_SIZE_SM</link>
+#define     <link linkend="GIMP-CHECK-DARK:CAPS">GIMP_CHECK_DARK</link>
+#define     <link linkend="GIMP-CHECK-LIGHT:CAPS">GIMP_CHECK_LIGHT</link>
+<link linkend="void">void</link>        <link linkend="gimp-checks-get-shades">gimp_checks_get_shades</link>          (<link linkend="GimpCheckType">GimpCheckType</link> type,
+                                             <link linkend="guchar">guchar</link> *light,
+                                             <link linkend="guchar">guchar</link> *dark);
 </synopsis>
 </refsynopsisdiv>
 
@@ -40,17 +37,17 @@
 
 
 
-<refsect1 role="desc">
-<title role="desc.title">Description</title>
+<refsect1>
+<title>Description</title>
 <para>
 Constants and functions related to rendering checkerboards.
 </para>
 </refsect1>
 
-<refsect1 role="details">
-<title role="details.title">Details</title>
+<refsect1>
+<title>Details</title>
 <refsect2>
-<title><anchor id="GIMP-CHECK-SIZE:CAPS" role="macro"/>GIMP_CHECK_SIZE</title>
+<title><anchor id="GIMP-CHECK-SIZE:CAPS"/>GIMP_CHECK_SIZE</title>
 <indexterm><primary>GIMP_CHECK_SIZE</primary></indexterm><programlisting>#define GIMP_CHECK_SIZE      8
 </programlisting>
 <para>
@@ -59,31 +56,31 @@ core but GIMP plug-ins can't access the user preference and should use
 this constant instead.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-CHECK-SIZE-SM:CAPS" role="macro"/>GIMP_CHECK_SIZE_SM</title>
+<title><anchor id="GIMP-CHECK-SIZE-SM:CAPS"/>GIMP_CHECK_SIZE_SM</title>
 <indexterm><primary>GIMP_CHECK_SIZE_SM</primary></indexterm><programlisting>#define GIMP_CHECK_SIZE_SM   4
 </programlisting>
 <para>
 The default small checkerboard size in pixels.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-CHECK-DARK:CAPS" role="macro"/>GIMP_CHECK_DARK</title>
+<title><anchor id="GIMP-CHECK-DARK:CAPS"/>GIMP_CHECK_DARK</title>
 <indexterm><primary>GIMP_CHECK_DARK</primary></indexterm><programlisting>#define GIMP_CHECK_DARK      0.4
 </programlisting>
 <para>
 The dark gray value for the default checkerboard pattern.
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-CHECK-LIGHT:CAPS" role="macro"/>GIMP_CHECK_LIGHT</title>
+<title><anchor id="GIMP-CHECK-LIGHT:CAPS"/>GIMP_CHECK_LIGHT</title>
 <indexterm><primary>GIMP_CHECK_LIGHT</primary></indexterm><programlisting>#define GIMP_CHECK_LIGHT     0.6
 </programlisting>
 <para>
 The light gray value for the default checkerboard pattern.
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-checks-get-shades" role="function" condition="since:GIMP 2.2"/>gimp_checks_get_shades ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_checks_get_shades</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_checks_get_shades              (<link linkend="GimpCheckType">GimpCheckType</link> type,
-                                                         <link linkend="guchar">guchar</link> *light,
-                                                         <link linkend="guchar">guchar</link> *dark);</programlisting>
+<title><anchor id="gimp-checks-get-shades"/>gimp_checks_get_shades ()</title>
+<indexterm role="GIMP 2.2"><primary>gimp_checks_get_shades</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_checks_get_shades          (<link linkend="GimpCheckType">GimpCheckType</link> type,
+                                             <link linkend="guchar">guchar</link> *light,
+                                             <link linkend="guchar">guchar</link> *dark);</programlisting>
 <para>
 Retrieves the actual shades of gray to use when drawing a
 checkerboard for a certain <link linkend="GimpCheckType"><type>GimpCheckType</type></link>.</para>
@@ -99,7 +96,7 @@ checkerboard for a certain <link linkend="GimpCheckType"><type>GimpCheckType</ty
 <varlistentry><term><parameter>dark</parameter>&nbsp;:</term>
 <listitem><simpara>  return location for the dark shade
 </simpara></listitem></varlistentry>
-</variablelist><para role="since">Since  GIMP 2.2
+</variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>

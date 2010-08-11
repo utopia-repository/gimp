@@ -50,9 +50,6 @@ enum
 };
 
 
-static void   gimp_action_group_init           (GimpActionGroup       *group);
-static void   gimp_action_group_class_init     (GimpActionGroupClass  *klass);
-
 static GObject * gimp_action_group_constructor (GType                  type,
                                                 guint                  n_params,
                                                 GObjectConstructParam *params);
@@ -68,43 +65,15 @@ static void   gimp_action_group_get_property   (GObject               *object,
                                                 GParamSpec            *pspec);
 
 
-static GtkActionGroupClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpActionGroup, gimp_action_group, GTK_TYPE_ACTION_GROUP);
 
+#define parent_class gimp_action_group_parent_class
 
-GType
-gimp_action_group_get_type (void)
-{
-  static GType type = 0;
-
-  if (!type)
-    {
-      static const GTypeInfo type_info =
-      {
-        sizeof (GimpActionGroupClass),
-	NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gimp_action_group_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GimpActionGroup),
-        0, /* n_preallocs */
-        (GInstanceInitFunc) gimp_action_group_init,
-      };
-
-      type = g_type_register_static (GTK_TYPE_ACTION_GROUP,
-                                     "GimpActionGroup",
-				     &type_info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_action_group_class_init (GimpActionGroupClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->constructor  = gimp_action_group_constructor;
   object_class->dispose      = gimp_action_group_dispose;
@@ -455,18 +424,18 @@ gimp_action_group_add_toggle_actions (GimpActionGroup       *group,
     }
 }
 
-void
+GSList *
 gimp_action_group_add_radio_actions (GimpActionGroup      *group,
                                      GimpRadioActionEntry *entries,
                                      guint                 n_entries,
+                                     GSList               *radio_group,
                                      gint                  value,
                                      GCallback             callback)
 {
   GtkRadioAction *first_action = NULL;
-  GSList         *radio_group  = NULL;
   gint            i;
 
-  g_return_if_fail (GIMP_IS_ACTION_GROUP (group));
+  g_return_val_if_fail (GIMP_IS_ACTION_GROUP (group), NULL);
 
   for (i = 0; i < n_entries; i++)
     {
@@ -512,6 +481,8 @@ gimp_action_group_add_radio_actions (GimpActionGroup      *group,
     g_signal_connect (first_action, "changed",
                       callback,
                       group->user_data);
+
+  return radio_group;
 }
 
 void
@@ -676,7 +647,7 @@ gimp_action_group_set_action_visible (GimpActionGroup *group,
       return;
     }
 
-  g_object_set (action, "visible", visible ? TRUE : FALSE, NULL);
+  gtk_action_set_visible (action, visible);
 }
 
 void
@@ -699,7 +670,7 @@ gimp_action_group_set_action_sensitive (GimpActionGroup *group,
       return;
     }
 
-  g_object_set (action, "sensitive", sensitive ? TRUE : FALSE, NULL);
+  gtk_action_set_sensitive (action, sensitive);
 }
 
 void
@@ -850,9 +821,9 @@ gimp_action_group_set_action_viewable (GimpActionGroup *group,
 }
 
 void
-gimp_action_group_set_action_important (GimpActionGroup *group,
-                                        const gchar     *action_name,
-                                        gboolean         is_important)
+gimp_action_group_set_action_hide_empty (GimpActionGroup *group,
+                                         const gchar     *action_name,
+                                         gboolean         hide_empty)
 {
   GtkAction *action;
 
@@ -863,11 +834,11 @@ gimp_action_group_set_action_important (GimpActionGroup *group,
 
   if (! action)
     {
-      g_warning ("%s: Unable to set \"is-important\" of action "
+      g_warning ("%s: Unable to set \"hide-if-empty\" of action "
                  "which doesn't exist: %s",
                  G_STRFUNC, action_name);
       return;
     }
 
-  g_object_set (action, "is-important", is_important ? TRUE : FALSE, NULL);
+  g_object_set (action, "hide-if-empty", hide_empty ? TRUE : FALSE, NULL);
 }

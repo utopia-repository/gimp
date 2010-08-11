@@ -22,17 +22,34 @@
 
 #include "config.h"
 
+#include <stdlib.h>
+
 #include <gtk/gtk.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "gimp.h"
 
+#include "gimpuitypes.h"
 #include "gimpimagecombobox.h"
 #include "gimppixbuf.h"
 
 
-#define MENU_THUMBNAIL_SIZE  24
+#define THUMBNAIL_SIZE   24
+#define WIDTH_REQUEST   200
+
+
+typedef struct _GimpImageComboBoxClass GimpImageComboBoxClass;
+
+struct _GimpImageComboBox
+{
+  GimpIntComboBox  parent_instance;
+};
+
+struct _GimpImageComboBoxClass
+{
+  GimpIntComboBoxClass  parent_class;
+};
 
 
 static void  gimp_image_combo_box_model_add (GtkListStore            *store,
@@ -41,6 +58,40 @@ static void  gimp_image_combo_box_model_add (GtkListStore            *store,
                                              GimpImageConstraintFunc  constraint,
                                              gpointer                 data);
 
+static void  gimp_image_combo_box_drag_data_received (GtkWidget        *widget,
+                                                      GdkDragContext   *context,
+                                                      gint              x,
+                                                      gint              y,
+                                                      GtkSelectionData *selection,
+                                                      guint             info,
+                                                      guint             time);
+
+
+static const GtkTargetEntry target = { "application/x-gimp-image-id", 0 };
+
+
+G_DEFINE_TYPE(GimpImageComboBox,
+              gimp_image_combo_box,
+              GIMP_TYPE_INT_COMBO_BOX);
+
+static void
+gimp_image_combo_box_class_init (GimpImageComboBoxClass *klass)
+{
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  widget_class->drag_data_received = gimp_image_combo_box_drag_data_received;
+}
+
+static void
+gimp_image_combo_box_init (GimpImageComboBox *combo_box)
+{
+  gtk_drag_dest_set (GTK_WIDGET (combo_box),
+                     GTK_DEST_DEFAULT_HIGHLIGHT |
+                     GTK_DEST_DEFAULT_MOTION |
+                     GTK_DEST_DEFAULT_DROP,
+                     &target, 1,
+                     GDK_ACTION_COPY);
+}
 
 /**
  * gimp_image_combo_box_new:
@@ -71,7 +122,10 @@ gimp_image_combo_box_new (GimpImageConstraintFunc constraint,
   gint32       *images;
   gint          num_images;
 
-  combo_box = g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL);
+  combo_box = g_object_new (GIMP_TYPE_IMAGE_COMBO_BOX,
+                            "width-request", WIDTH_REQUEST,
+                            "ellipsize",     PANGO_ELLIPSIZE_MIDDLE,
+                            NULL);
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo_box));
 
@@ -111,8 +165,7 @@ gimp_image_combo_box_model_add (GtkListStore            *store,
           g_free (image_name);
 
           thumb = gimp_image_get_thumbnail (images[i],
-                                            MENU_THUMBNAIL_SIZE,
-                                            MENU_THUMBNAIL_SIZE,
+                                            THUMBNAIL_SIZE, THUMBNAIL_SIZE,
                                             GIMP_PIXBUF_SMALL_CHECKS);
 
           gtk_list_store_append (store, &iter);
@@ -128,4 +181,38 @@ gimp_image_combo_box_model_add (GtkListStore            *store,
           g_free (label);
         }
     }
+}
+
+static void
+gimp_image_combo_box_drag_data_received (GtkWidget        *widget,
+                                         GdkDragContext   *context,
+                                         gint              x,
+                                         gint              y,
+                                         GtkSelectionData *selection,
+                                         guint             info,
+                                         guint             time)
+{
+  gchar *str;
+
+  if ((selection->format != 8) || (selection->length < 1))
+    {
+      g_warning ("Received invalid image ID data!");
+      return;
+    }
+
+  str = g_strndup ((const gchar *) selection->data, selection->length);
+
+  if (g_utf8_validate (str, -1, NULL))
+    {
+      gint pid;
+      gint ID;
+
+      if (sscanf (str, "%i:%i", &pid, &ID) == 2 &&
+          pid == gimp_getpid ())
+        {
+          gimp_int_combo_box_set_active (GIMP_INT_COMBO_BOX (widget), ID);
+        }
+    }
+
+  g_free (str);
 }

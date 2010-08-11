@@ -29,9 +29,10 @@ GType gimp_color_pick_mode_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_COLOR_PICK_MODE_NONE,       /*< desc="Pick only" >*/
+  GIMP_COLOR_PICK_MODE_NONE,       /*< desc="Pick only"            >*/
   GIMP_COLOR_PICK_MODE_FOREGROUND, /*< desc="Set foreground color" >*/
-  GIMP_COLOR_PICK_MODE_BACKGROUND  /*< desc="Set background color" >*/
+  GIMP_COLOR_PICK_MODE_BACKGROUND, /*< desc="Set background color" >*/
+  GIMP_COLOR_PICK_MODE_PALETTE     /*< desc="Add to palette"       >*/
 } GimpColorPickMode;
 
 
@@ -44,6 +45,17 @@ typedef enum
   GIMP_CROP_MODE_CROP,   /*< desc="Crop"   >*/
   GIMP_CROP_MODE_RESIZE  /*< desc="Resize" >*/
 } GimpCropMode;
+
+
+#define GIMP_TYPE_RECTANGLE_MODE (gimp_rectangle_mode_get_type ())
+
+GType gimp_rectangle_mode_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_RECTANGLE_MODE_EXECUTE,   /*< desc="Execute"   >*/
+  GIMP_RECTANGLE_MODE_RESIZE     /*< desc="Resize" >*/
+} GimpRectangleMode;
 
 
 #define GIMP_TYPE_RECT_SELECT_MODE (gimp_rect_select_mode_get_type ())

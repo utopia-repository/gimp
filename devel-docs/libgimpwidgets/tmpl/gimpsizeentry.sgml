@@ -247,12 +247,30 @@ gimp_coordinates_new()
 @digits: 
 
 
+<!-- ##### FUNCTION gimp_size_entry_show_unit_menu ##### -->
+<para>
+
+</para>
+
+@gse: 
+@show: 
+
+
 <!-- ##### FUNCTION gimp_size_entry_grab_focus ##### -->
 <para>
 
 </para>
 
 @gse: 
+
+
+<!-- ##### FUNCTION gimp_size_entry_set_activates_default ##### -->
+<para>
+
+</para>
+
+@gse: 
+@setting: 
 
 
 <!-- ##### FUNCTION gimp_size_entry_get_help_widget ##### -->

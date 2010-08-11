@@ -55,7 +55,7 @@
 
     (script-fu-util-image-resize-from-layer img logo-layer)
     (gimp-image-add-layer img bg-layer 1)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
     (gimp-context-set-pattern pattern)
 
     (gimp-context-set-background '(255 255 255))
@@ -75,7 +75,7 @@
     (gimp-edit-bucket-fill logo-layer 2 NORMAL-MODE 100 255 FALSE 1 1)
     (gimp-selection-none img)
 
-    (gimp-layer-set-preserve-trans bump-layer FALSE)
+    (gimp-layer-set-lock-alpha bump-layer FALSE)
     (plug-in-spread 1 img bump-layer spread-amount spread-amount)
     (gimp-selection-layer-alpha bump-layer)
     (plug-in-gauss-rle 1 img bump-layer blur-amount TRUE TRUE)
@@ -145,7 +145,7 @@
 		    SF-PATTERN    _"Pattern"              "Burlwood")
 
 (script-fu-menu-register "script-fu-chip-away-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-chip-away-logo text
@@ -163,7 +163,6 @@
 	 (text-layer (car (gimp-text-fontname img -1 0 0
 				     text 30 TRUE font-size PIXELS font))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-chip-away-logo-effect img text-layer spread-amount blur-amount
 				 invert drop-shadow keep-bump bg-fill
 				 keep-back pattern)
@@ -190,4 +189,4 @@
 		    SF-PATTERN    _"Pattern"              "Burlwood")
 
 (script-fu-menu-register "script-fu-chip-away-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

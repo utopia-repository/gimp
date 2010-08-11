@@ -21,17 +21,16 @@
 #include <gtk/gtk.h>
 
 #include "libgimpmath/gimpmath.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpconfig-params.h"
 #include "config/gimpcoreconfig.h"
 
 #include "core/gimp.h"
 #include "core/gimptoolinfo.h"
 
-#include "widgets/gimppropwidgets.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimprotatetool.h"
@@ -59,8 +58,6 @@ enum
 };
 
 
-static void   gimp_transform_options_class_init (GimpTransformOptionsClass *options_class);
-
 static void   gimp_transform_options_set_property   (GObject         *object,
                                                      guint            property_id,
                                                      const GValue    *value,
@@ -82,44 +79,17 @@ static void   gimp_scale_options_constrain_notify   (GimpTransformOptions *optio
                                                      GtkWidget            *vbox);
 
 
-static GimpToolOptionsClass *parent_class = NULL;
+G_DEFINE_TYPE (GimpTransformOptions, gimp_transform_options,
+               GIMP_TYPE_TOOL_OPTIONS);
 
+#define parent_class gimp_transform_options_parent_class
 
-GType
-gimp_transform_options_get_type (void)
-{
-  static GType type = 0;
-
-  if (! type)
-    {
-      static const GTypeInfo info =
-      {
-        sizeof (GimpTransformOptionsClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_transform_options_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpTransformOptions),
-        0,              /* n_preallocs    */
-        (GInstanceInitFunc) NULL
-      };
-
-      type = g_type_register_static (GIMP_TYPE_TOOL_OPTIONS,
-                                     "GimpTransformOptions",
-                                     &info, 0);
-    }
-
-  return type;
-}
 
 static void
 gimp_transform_options_class_init (GimpTransformOptionsClass *klass)
 {
   GObjectClass         *object_class  = G_OBJECT_CLASS (klass);
   GimpToolOptionsClass *options_class = GIMP_TOOL_OPTIONS_CLASS (klass);
-
-  parent_class = g_type_class_peek_parent (klass);
 
   object_class->set_property = gimp_transform_options_set_property;
   object_class->get_property = gimp_transform_options_get_property;
@@ -186,6 +156,11 @@ gimp_transform_options_class_init (GimpTransformOptionsClass *klass)
                                     "constrain-2", NULL,
                                     FALSE,
                                     0);
+}
+
+static void
+gimp_transform_options_init (GimpTransformOptions *options)
+{
 }
 
 static void
@@ -422,7 +397,7 @@ gimp_transform_options_gui (GimpToolOptions *tool_options)
         {
           gchar *str;
 
-          str = g_strdup_printf (_("15 degrees  %s"),
+          str = g_strdup_printf (_("15 degrees  (%s)"),
                                  gimp_get_mod_string (GDK_CONTROL_MASK));
 
           button = gimp_prop_check_button_new (config, "constrain-1", str);
@@ -442,11 +417,11 @@ gimp_transform_options_gui (GimpToolOptions *tool_options)
           initial = ((options->constrain_1 ? 1 : 0) +
                      (options->constrain_2 ? 2 : 0));
 
-          str1 = g_strdup_printf (_("Keep height  %s"),
+          str1 = g_strdup_printf (_("Keep height  (%s)"),
                                   gimp_get_mod_string (GDK_CONTROL_MASK));
-          str2 = g_strdup_printf (_("Keep width  %s"),
+          str2 = g_strdup_printf (_("Keep width  (%s)"),
                                   gimp_get_mod_string (GDK_MOD1_MASK));
-          str3 = g_strdup_printf (_("Keep aspect  %s"),
+          str3 = g_strdup_printf (_("Keep aspect  (%s)"),
                                   gimp_get_mod_string (GDK_CONTROL_MASK |
                                                        GDK_MOD1_MASK));
 

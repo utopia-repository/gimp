@@ -30,11 +30,13 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include <libgimp/gimp.h>
 
 #include "libgimp/stdplugins-intl.h"
+
+
+#define PLUG_IN_PROC "plug-in-normalize"
 
 
 /* Declare local functions.
@@ -66,12 +68,12 @@ query (void)
 {
   static GimpParamDef args[] =
   {
-    { GIMP_PDB_INT32,    "run_mode", "Interactive, non-interactive" },
-    { GIMP_PDB_IMAGE,    "image",    "Input image" },
-    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" }
+    { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
+    { GIMP_PDB_IMAGE,    "image",    "Input image"                  },
+    { GIMP_PDB_DRAWABLE, "drawable", "Input drawable"               }
   };
 
-  gimp_install_procedure ("plug_in_normalize",
+  gimp_install_procedure (PLUG_IN_PROC,
 			  "Normalize the contrast of the specified drawable to "
 			  "cover all possible ranges.",
 			  "This plugin performs almost the same operation as "
@@ -91,7 +93,7 @@ query (void)
 			  G_N_ELEMENTS (args), 0,
 			  args, NULL);
 
-  gimp_plugin_menu_register ("plug_in_normalize", "<Image>/Layer/Colors/Auto");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Colors/Auto");
 }
 
 static void
@@ -119,7 +121,7 @@ run (const gchar      *name,
   if (gimp_drawable_is_rgb (drawable->drawable_id) ||
       gimp_drawable_is_gray (drawable->drawable_id))
     {
-      gimp_progress_init (_("Normalizing..."));
+      gimp_progress_init (_("Normalizing"));
       gimp_tile_cache_ntiles (2 * (drawable->width / gimp_tile_width () + 1));
 
       normalize (drawable);
@@ -136,7 +138,6 @@ run (const gchar      *name,
     }
   else
     {
-      /* gimp_message ("normalize: cannot operate on indexed color images"); */
       status = GIMP_PDB_EXECUTION_ERROR;
     }
 
@@ -161,7 +162,7 @@ indexed_normalize (gint32 image_ID)  /* a.d.m. */
 
   if (cmap==NULL)
     {
-      printf ("normalize: cmap was NULL!  Quitting...\n");
+      g_printerr ("normalize: cmap was NULL!  Quitting...\n");
       return;
     }
 
@@ -257,4 +258,3 @@ normalize (GimpDrawable *drawable)
 
   gimp_rgn_iterate2 (drawable, 0 /* unused */, normalize_func, &param);
 }
-

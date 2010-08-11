@@ -40,7 +40,12 @@ subdir = app/widgets
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/m4macros/detectcflags.m4 \
+	$(top_srcdir)/m4macros/pythondev.m4 \
+	$(top_srcdir)/m4macros/gimpprint.m4 \
+	$(top_srcdir)/m4macros/alsa.m4 \
+	$(top_srcdir)/m4macros/gtk-doc.m4 \
+	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -56,6 +61,7 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpblobeditor.$(OBJEXT) gimpbrusheditor.$(OBJEXT) \
 	gimpbrushfactoryview.$(OBJEXT) gimpbrushselect.$(OBJEXT) \
 	gimpbufferview.$(OBJEXT) gimpcellrendereraccel.$(OBJEXT) \
+	gimpcellrendererdashes.$(OBJEXT) \
 	gimpcellrendererviewable.$(OBJEXT) \
 	gimpchanneltreeview.$(OBJEXT) gimpclipboard.$(OBJEXT) \
 	gimpcolorbar.$(OBJEXT) gimpcolordialog.$(OBJEXT) \
@@ -69,34 +75,38 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpcontainertreeview-dnd.$(OBJEXT) \
 	gimpcontainerview.$(OBJEXT) gimpcontainerview-utils.$(OBJEXT) \
 	gimpcontrollereditor.$(OBJEXT) gimpcontrollerinfo.$(OBJEXT) \
-	gimpcontrollers.$(OBJEXT) gimpcontrollerkeyboard.$(OBJEXT) \
-	gimpcontrollerwheel.$(OBJEXT) gimpcursor.$(OBJEXT) \
+	gimpcontrollerlist.$(OBJEXT) gimpcontrollers.$(OBJEXT) \
+	gimpcontrollerkeyboard.$(OBJEXT) gimpcontrollerwheel.$(OBJEXT) \
+	gimpcursor.$(OBJEXT) gimpcursorview.$(OBJEXT) \
 	gimpdasheditor.$(OBJEXT) gimpdataeditor.$(OBJEXT) \
 	gimpdatafactoryview.$(OBJEXT) gimpdeviceinfo.$(OBJEXT) \
 	gimpdevices.$(OBJEXT) gimpdevicestatus.$(OBJEXT) \
 	gimpdialogfactory.$(OBJEXT) gimpdnd.$(OBJEXT) \
-	gimpdock.$(OBJEXT) gimpdockable.$(OBJEXT) \
-	gimpdockbook.$(OBJEXT) gimpdocked.$(OBJEXT) \
+	gimpdnd-xds.$(OBJEXT) gimpdock.$(OBJEXT) \
+	gimpdockable.$(OBJEXT) gimpdockbook.$(OBJEXT) \
+	gimpdocked.$(OBJEXT) gimpdockseparator.$(OBJEXT) \
 	gimpdocumentview.$(OBJEXT) gimpdrawabletreeview.$(OBJEXT) \
 	gimpeditor.$(OBJEXT) gimpenumaction.$(OBJEXT) \
-	gimpenumcombobox.$(OBJEXT) gimpenumstore.$(OBJEXT) \
-	gimpenumwidgets.$(OBJEXT) gimperrorconsole.$(OBJEXT) \
-	gimperrordialog.$(OBJEXT) gimpfgbgeditor.$(OBJEXT) \
+	gimperrorconsole.$(OBJEXT) gimperrordialog.$(OBJEXT) \
+	gimpfgbgeditor.$(OBJEXT) gimpfgbgview.$(OBJEXT) \
 	gimpfiledialog.$(OBJEXT) gimpfileprocview.$(OBJEXT) \
 	gimpfontselect.$(OBJEXT) gimpfontview.$(OBJEXT) \
 	gimpgradienteditor.$(OBJEXT) gimpgradientselect.$(OBJEXT) \
 	gimpgrideditor.$(OBJEXT) gimphelp.$(OBJEXT) \
 	gimphistogrambox.$(OBJEXT) gimphistogrameditor.$(OBJEXT) \
 	gimphistogramview.$(OBJEXT) gimpimagedock.$(OBJEXT) \
-	gimpimageeditor.$(OBJEXT) gimpimageview.$(OBJEXT) \
-	gimpitemtreeview.$(OBJEXT) gimplayertreeview.$(OBJEXT) \
+	gimpimageeditor.$(OBJEXT) gimpimagepropview.$(OBJEXT) \
+	gimpimageview.$(OBJEXT) gimpitemtreeview.$(OBJEXT) \
+	gimplayertreeview.$(OBJEXT) gimpmenudock.$(OBJEXT) \
 	gimpmenufactory.$(OBJEXT) gimpmessagebox.$(OBJEXT) \
 	gimpmessagedialog.$(OBJEXT) gimpnavigationview.$(OBJEXT) \
 	gimppaletteeditor.$(OBJEXT) gimppaletteselect.$(OBJEXT) \
-	gimppatternfactoryview.$(OBJEXT) gimppatternselect.$(OBJEXT) \
-	gimppdbdialog.$(OBJEXT) gimppluginaction.$(OBJEXT) \
+	gimppaletteview.$(OBJEXT) gimppatternfactoryview.$(OBJEXT) \
+	gimppatternselect.$(OBJEXT) gimppdbdialog.$(OBJEXT) \
+	gimppixbuf.$(OBJEXT) gimppluginaction.$(OBJEXT) \
 	gimpprogressbox.$(OBJEXT) gimpprogressdialog.$(OBJEXT) \
-	gimppropwidgets.$(OBJEXT) gimpselectiondata.$(OBJEXT) \
+	gimppropwidgets.$(OBJEXT) gimprender.$(OBJEXT) \
+	gimpsamplepointeditor.$(OBJEXT) gimpselectiondata.$(OBJEXT) \
 	gimpselectioneditor.$(OBJEXT) gimpsessioninfo.$(OBJEXT) \
 	gimpsizebox.$(OBJEXT) gimpstringaction.$(OBJEXT) \
 	gimpstrokeeditor.$(OBJEXT) gimptemplateeditor.$(OBJEXT) \
@@ -120,6 +130,7 @@ am__objects_2 = gimpaction.$(OBJEXT) gimpactionfactory.$(OBJEXT) \
 	gimpviewrendererimage.$(OBJEXT) \
 	gimpviewrendererimagefile.$(OBJEXT) \
 	gimpviewrendererlayer.$(OBJEXT) \
+	gimpviewrendererpalette.$(OBJEXT) \
 	gimpviewrenderervectors.$(OBJEXT) \
 	gimpwidgets-constructors.$(OBJEXT) gimpwidgets-utils.$(OBJEXT) \
 	gtkwrapbox.$(OBJEXT) gtkhwrapbox.$(OBJEXT) \
@@ -145,9 +156,9 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
-ALL_LINGUAS = @ALL_LINGUAS@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
+ALTIVEC_EXTRA_CFLAGS = @ALTIVEC_EXTRA_CFLAGS@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -157,6 +168,8 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
+BINRELOC_LIBS = @BINRELOC_LIBS@
 BUILD_HELPBROWSER_FALSE = @BUILD_HELPBROWSER_FALSE@
 BUILD_HELPBROWSER_TRUE = @BUILD_HELPBROWSER_TRUE@
 BUILD_PRINT_FALSE = @BUILD_PRINT_FALSE@
@@ -188,6 +201,7 @@ DESKTOP_DATADIR = @DESKTOP_DATADIR@
 DESKTOP_DATADIR_FALSE = @DESKTOP_DATADIR_FALSE@
 DESKTOP_DATADIR_TRUE = @DESKTOP_DATADIR_TRUE@
 DLLTOOL = @DLLTOOL@
+DOC_SHOOTER = @DOC_SHOOTER@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -222,7 +236,6 @@ GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
 GIMP_DATA_VERSION = @GIMP_DATA_VERSION@
-GIMP_DESKTOP_ICON = @GIMP_DESKTOP_ICON@
 GIMP_FULL_NAME = @GIMP_FULL_NAME@
 GIMP_INTERFACE_AGE = @GIMP_INTERFACE_AGE@
 GIMP_MAJOR_VERSION = @GIMP_MAJOR_VERSION@
@@ -230,18 +243,16 @@ GIMP_MICRO_VERSION = @GIMP_MICRO_VERSION@
 GIMP_MINOR_VERSION = @GIMP_MINOR_VERSION@
 GIMP_MKENUMS = @GIMP_MKENUMS@
 GIMP_MODULES = @GIMP_MODULES@
-GIMP_MP_FLAGS = @GIMP_MP_FLAGS@
-GIMP_MP_LIBS = @GIMP_MP_LIBS@
 GIMP_PKGCONFIG_VERSION = @GIMP_PKGCONFIG_VERSION@
 GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
-GIMP_THREAD_FLAGS = @GIMP_THREAD_FLAGS@
-GIMP_THREAD_LIBS = @GIMP_THREAD_LIBS@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
+GIMP_UNSTABLE_FALSE = @GIMP_UNSTABLE_FALSE@
+GIMP_UNSTABLE_TRUE = @GIMP_UNSTABLE_TRUE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
@@ -253,8 +264,12 @@ GMODULE_CFLAGS = @GMODULE_CFLAGS@
 GMODULE_LIBS = @GMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOMEPRINT = @GNOMEPRINT@
+GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
+GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
-GREP = @GREP@
+GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
 GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
 GTKHTML2_LIBS = @GTKHTML2_LIBS@
@@ -268,6 +283,10 @@ HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
 HAVE_GLIBC_REGEX_TRUE = @HAVE_GLIBC_REGEX_TRUE@
+HAVE_GNOMEPRINT_FALSE = @HAVE_GNOMEPRINT_FALSE@
+HAVE_GNOMEPRINT_TRUE = @HAVE_GNOMEPRINT_TRUE@
+HAVE_GNOMEVFS_FALSE = @HAVE_GNOMEVFS_FALSE@
+HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HAVE_LCMS_FALSE = @HAVE_LCMS_FALSE@
 HAVE_LCMS_TRUE = @HAVE_LCMS_TRUE@
@@ -304,7 +323,6 @@ INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
 INTLTOOL_SERVER_RULE = @INTLTOOL_SERVER_RULE@
-INTLTOOL_SERVICE_RULE = @INTLTOOL_SERVICE_RULE@
 INTLTOOL_SHEET_RULE = @INTLTOOL_SHEET_RULE@
 INTLTOOL_SOUNDLIST_RULE = @INTLTOOL_SOUNDLIST_RULE@
 INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
@@ -320,10 +338,12 @@ LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
+LIBGNOMEPRINT = @LIBGNOMEPRINT@
 LIBJPEG = @LIBJPEG@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
 LIBPNG = @LIBPNG@
+LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
 LIBSCREENSHOT = @LIBSCREENSHOT@
 LIBSVG = @LIBSVG@
@@ -346,7 +366,6 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
 MNG = @MNG@
 MSGFMT = @MSGFMT@
-MSGFMT_OPTS = @MSGFMT_OPTS@
 MS_LIB_AVAILABLE_FALSE = @MS_LIB_AVAILABLE_FALSE@
 MS_LIB_AVAILABLE_TRUE = @MS_LIB_AVAILABLE_TRUE@
 OBJDUMP = @OBJDUMP@
@@ -372,15 +391,22 @@ PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
 POFILES = @POFILES@
+POPPLER = @POPPLER@
+POPPLER_CFLAGS = @POPPLER_CFLAGS@
+POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
 PRINT_CFLAGS = @PRINT_CFLAGS@
 PRINT_LIBS = @PRINT_LIBS@
 PSP = @PSP@
+PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
+PYGTK_CODEGEN = @PYGTK_CODEGEN@
+PYGTK_DEFSDIR = @PYGTK_DEFSDIR@
 PYGTK_LIBS = @PYGTK_LIBS@
+PYLINK_LIBS = @PYLINK_LIBS@
 PYTHON = @PYTHON@
 PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
 PYTHON_INCLUDES = @PYTHON_INCLUDES@
@@ -404,10 +430,10 @@ SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
 TIFF = @TIFF@
-URL = @URL@
+URI_CFLAGS = @URI_CFLAGS@
+URI_LIBS = @URI_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
-WINCLIPBOARD = @WINCLIPBOARD@
 WINDRES = @WINDRES@
 WINPRINT = @WINPRINT@
 WITH_PDBGEN_FALSE = @WITH_PDBGEN_FALSE@
@@ -417,7 +443,6 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
-XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -425,9 +450,17 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+ac_ct_AR = @ac_ct_AR@
+ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
+ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
+ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
+ac_ct_RANLIB = @ac_ct_RANLIB@
+ac_ct_STRIP = @ac_ct_STRIP@
+ac_ct_WINDRES = @ac_ct_WINDRES@
+ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -444,12 +477,10 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
-datarootdir = @datarootdir@
-docdir = @docdir@
-dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
+gimplocaledir = @gimplocaledir@
 gimpplugindir = @gimpplugindir@
 gimpsysconfdir = @gimpsysconfdir@
 host = @host@
@@ -457,24 +488,20 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
-htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
-localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
-pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -483,8 +510,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Gimp-Widgets\"	\
-	@GIMP_THREAD_FLAGS@ 		\
-	@GIMP_MP_FLAGS@
+	@GTHREAD_CFLAGS@
 
 INCLUDES = \
 	-I$(top_builddir)	\
@@ -519,6 +545,8 @@ libappwidgets_a_sources = \
 	gimpbufferview.h		\
 	gimpcellrendereraccel.c		\
 	gimpcellrendereraccel.h		\
+	gimpcellrendererdashes.c	\
+	gimpcellrendererdashes.h	\
 	gimpcellrendererviewable.c	\
 	gimpcellrendererviewable.h	\
 	gimpchanneltreeview.c		\
@@ -565,6 +593,8 @@ libappwidgets_a_sources = \
 	gimpcontrollereditor.h		\
 	gimpcontrollerinfo.c		\
 	gimpcontrollerinfo.h		\
+	gimpcontrollerlist.c		\
+	gimpcontrollerlist.h		\
 	gimpcontrollers.c		\
 	gimpcontrollers.h		\
 	gimpcontrollerkeyboard.c	\
@@ -573,6 +603,8 @@ libappwidgets_a_sources = \
 	gimpcontrollerwheel.h		\
 	gimpcursor.c			\
 	gimpcursor.h			\
+	gimpcursorview.c		\
+	gimpcursorview.h		\
 	gimpdasheditor.c		\
 	gimpdasheditor.h		\
 	gimpdataeditor.c		\
@@ -589,6 +621,8 @@ libappwidgets_a_sources = \
 	gimpdialogfactory.h		\
 	gimpdnd.c			\
 	gimpdnd.h			\
+	gimpdnd-xds.c			\
+	gimpdnd-xds.h			\
 	gimpdock.c			\
 	gimpdock.h			\
 	gimpdockable.c			\
@@ -597,6 +631,8 @@ libappwidgets_a_sources = \
 	gimpdockbook.h			\
 	gimpdocked.c			\
 	gimpdocked.h			\
+	gimpdockseparator.c		\
+	gimpdockseparator.h		\
 	gimpdocumentview.c		\
 	gimpdocumentview.h		\
 	gimpdrawabletreeview.c		\
@@ -605,18 +641,14 @@ libappwidgets_a_sources = \
 	gimpeditor.h			\
 	gimpenumaction.c		\
 	gimpenumaction.h		\
-	gimpenumcombobox.c		\
-	gimpenumcombobox.h		\
-	gimpenumstore.c			\
-	gimpenumstore.h			\
-	gimpenumwidgets.c		\
-	gimpenumwidgets.h		\
 	gimperrorconsole.c		\
 	gimperrorconsole.h		\
 	gimperrordialog.c		\
 	gimperrordialog.h		\
 	gimpfgbgeditor.c		\
 	gimpfgbgeditor.h		\
+	gimpfgbgview.c			\
+	gimpfgbgview.h			\
 	gimpfiledialog.c		\
 	gimpfiledialog.h		\
 	gimpfileprocview.c		\
@@ -644,12 +676,16 @@ libappwidgets_a_sources = \
 	gimpimagedock.h			\
 	gimpimageeditor.c		\
 	gimpimageeditor.h		\
+	gimpimagepropview.c		\
+	gimpimagepropview.h		\
 	gimpimageview.c			\
 	gimpimageview.h			\
 	gimpitemtreeview.c		\
 	gimpitemtreeview.h		\
 	gimplayertreeview.c		\
 	gimplayertreeview.h		\
+	gimpmenudock.c			\
+	gimpmenudock.h			\
 	gimpmenufactory.c		\
 	gimpmenufactory.h		\
 	gimpmessagebox.c		\
@@ -662,12 +698,16 @@ libappwidgets_a_sources = \
 	gimppaletteeditor.h		\
 	gimppaletteselect.c		\
 	gimppaletteselect.h		\
+	gimppaletteview.c		\
+	gimppaletteview.h		\
 	gimppatternfactoryview.c	\
 	gimppatternfactoryview.h	\
 	gimppatternselect.c		\
 	gimppatternselect.h		\
 	gimppdbdialog.c			\
 	gimppdbdialog.h			\
+	gimppixbuf.c			\
+	gimppixbuf.h			\
 	gimppluginaction.c		\
 	gimppluginaction.h		\
 	gimpprogressbox.c		\
@@ -676,6 +716,10 @@ libappwidgets_a_sources = \
 	gimpprogressdialog.h		\
 	gimppropwidgets.c		\
 	gimppropwidgets.h		\
+	gimprender.c			\
+	gimprender.h			\
+	gimpsamplepointeditor.c		\
+	gimpsamplepointeditor.h		\
 	gimpselectiondata.c		\
 	gimpselectiondata.h		\
 	gimpselectioneditor.c		\
@@ -752,6 +796,8 @@ libappwidgets_a_sources = \
 	gimpviewrendererimagefile.h	\
 	gimpviewrendererlayer.c		\
 	gimpviewrendererlayer.h		\
+	gimpviewrendererpalette.c	\
+	gimpviewrendererpalette.h	\
 	gimpviewrenderervectors.c	\
 	gimpviewrenderervectors.h	\
 	gimpwidgets-constructors.c	\
@@ -834,6 +880,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbrushselect.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbufferview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcellrendereraccel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcellrendererdashes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcellrendererviewable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchanneltreeview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpclipboard.Po@am__quote@
@@ -858,9 +905,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontrollereditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontrollerinfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontrollerkeyboard.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontrollerlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontrollers.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcontrollerwheel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcursor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcursorview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdasheditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdataeditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdatafactoryview.Po@am__quote@
@@ -868,21 +917,21 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdevices.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdevicestatus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdialogfactory.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdnd-xds.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdnd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdockable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdockbook.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdocked.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdockseparator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdocumentview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdrawabletreeview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpeditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumaction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumcombobox.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumstore.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenumwidgets.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimperrorconsole.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimperrordialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfgbgeditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfgbgview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfiledialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfileprocview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpfontselect.Po@am__quote@
@@ -896,22 +945,28 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimphistogramview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagedock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageeditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimagepropview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpimageview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpitemtreeview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimplayertreeview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmenudock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmenufactory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmessagebox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmessagedialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpnavigationview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaletteeditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaletteselect.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaletteview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppatternfactoryview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppatternselect.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppdbdialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppixbuf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginaction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprogressbox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpprogressdialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppropwidgets.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprender.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsamplepointeditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpselectiondata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpselectioneditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsessioninfo.Po@am__quote@
@@ -950,6 +1005,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpviewrendererimage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpviewrendererimagefile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpviewrendererlayer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpviewrendererpalette.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpviewrenderervectors.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwidgets-constructors.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwidgets-utils.Po@am__quote@

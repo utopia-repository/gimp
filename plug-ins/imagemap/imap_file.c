@@ -3,7 +3,7 @@
  *
  * Generates clickable image maps.
  *
- * Copyright (C) 1998-2004 Maurits Rijk  m.rijk@chello.nl
+ * Copyright (C) 1998-2005 Maurits Rijk  m.rijk@chello.nl
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@
 
 #include "imap_file.h"
 #include "imap_main.h"
-#include "imap_misc.h"
 
 #include "libgimp/stdplugins-intl.h"
 
@@ -74,6 +73,11 @@ do_file_open_dialog (void)
                                      GTK_STOCK_OPEN,   GTK_RESPONSE_OK,
 
                                      NULL);
+
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
 
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
@@ -172,6 +176,11 @@ do_file_save_as_dialog (void)
 
                                      NULL);
 
+      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                               GTK_RESPONSE_OK,
+                                               GTK_RESPONSE_CANCEL,
+                                               -1);
+
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
       g_signal_connect (dialog, "destroy",
@@ -189,12 +198,19 @@ void
 do_file_error_dialog (const char *error,
                       const char *filename)
 {
-  static Alert_t *alert;
+   GtkWidget *dialog;
 
-  if (!alert)
-    alert = create_alert (GTK_STOCK_DIALOG_ERROR);
+   dialog = gtk_message_dialog_new_with_markup 
+     (NULL,
+      GTK_DIALOG_DESTROY_WITH_PARENT,
+      GTK_MESSAGE_ERROR,
+      GTK_BUTTONS_CLOSE,
+      "<span weight=\"bold\" size=\"larger\">%s</span>\n\n%s",
+      error,
+      gimp_filename_to_utf8 (filename));
 
-  alert_set_text(alert, error, gimp_filename_to_utf8 (filename));
-
-  default_dialog_show (alert->dialog);
+   g_signal_connect_swapped (dialog, "response",
+			     G_CALLBACK (gtk_widget_destroy),
+			     dialog);
+   gtk_dialog_run (GTK_DIALOG (dialog));
 }

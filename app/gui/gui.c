@@ -51,6 +51,7 @@
 #include "widgets/gimpdevicestatus.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpdnd.h"
+#include "widgets/gimprender.h"
 #include "widgets/gimphelp.h"
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpmenufactory.h"
@@ -108,6 +109,8 @@ static void       gui_tearoff_menus_notify      (GimpGuiConfig      *gui_config,
                                                  GtkUIManager       *manager);
 static void       gui_device_change_notify      (Gimp               *gimp);
 
+static void       gui_global_buffer_changed     (Gimp               *gimp);
+
 static void       gui_display_changed           (GimpContext        *context,
                                                  GimpDisplay        *display,
                                                  Gimp               *gimp);
@@ -124,30 +127,12 @@ static GimpUIManager *image_ui_manager            = NULL;
 
 /*  public functions  */
 
-gboolean
-gui_libs_init (gint    *argc,
-	       gchar ***argv)
+void
+gui_libs_init (GOptionContext *context)
 {
-  gchar *abort_message;
+  g_return_if_fail (context != NULL);
 
-  g_return_val_if_fail (argc != NULL, FALSE);
-  g_return_val_if_fail (argv != NULL, FALSE);
-
-  if (! gtk_init_check (argc, argv))
-    return FALSE;
-
-  abort_message = gui_sanity_check ();
-  if (abort_message)
-    gui_abort (abort_message);
-
-  gimp_widgets_init (gui_help_func,
-                     gui_get_foreground_func,
-                     gui_get_background_func,
-                     NULL);
-
-  g_type_class_ref (GIMP_TYPE_COLOR_SELECT);
-
-  return TRUE;
+  g_option_context_add_group (context, gtk_get_option_group (TRUE));
 }
 
 void
@@ -166,8 +151,8 @@ gui_abort (const gchar *abort_message)
   gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 
   box = g_object_new (GIMP_TYPE_MESSAGE_BOX,
-                      "stock_id",     GIMP_STOCK_WILBER_EEK,
-                      "border_width", 12,
+                      "stock-id",     GIMP_STOCK_WILBER_EEK,
+                      "border-width", 12,
                       NULL);
 
   gimp_message_box_set_text (GIMP_MESSAGE_BOX (box), abort_message);
@@ -186,9 +171,21 @@ gui_init (Gimp     *gimp,
 {
   GimpInitStatusFunc  status_callback = NULL;
   GdkScreen          *screen;
+  gchar              *abort_message;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (the_gui_gimp == NULL, NULL);
+
+  abort_message = gui_sanity_check ();
+  if (abort_message)
+    gui_abort (abort_message);
+
+  gimp_widgets_init (gui_help_func,
+                     gui_get_foreground_func,
+                     gui_get_background_func,
+                     NULL);
+
+  g_type_class_ref (GIMP_TYPE_COLOR_SELECT);
 
   the_gui_gimp = gimp;
 
@@ -249,8 +246,8 @@ gui_sanity_check (void)
   const gchar *mismatch;
 
 #define GTK_REQUIRED_MAJOR 2
-#define GTK_REQUIRED_MINOR 4
-#define GTK_REQUIRED_MICRO 4
+#define GTK_REQUIRED_MINOR 6
+#define GTK_REQUIRED_MICRO 0
 
   mismatch = gtk_check_version (GTK_REQUIRED_MAJOR,
                                 GTK_REQUIRED_MINOR,
@@ -376,7 +373,7 @@ gui_restore_callback (Gimp               *gimp,
                     G_CALLBACK (gui_show_help_button_notify),
                     gimp);
 
-  g_signal_connect (gimp_get_user_context (gimp), "display_changed",
+  g_signal_connect (gimp_get_user_context (gimp), "display-changed",
 		    G_CALLBACK (gui_display_changed),
 		    gimp);
 
@@ -398,11 +395,18 @@ gui_restore_callback (Gimp               *gimp,
 
   actions_init (gimp);
   menus_init (gimp, global_action_factory);
-  render_init (gimp);
+  gimp_render_init (gimp);
+  gimp_display_shell_render_init (gimp);
 
   dialogs_init (gimp, global_menu_factory);
 
   gimp_clipboard_init (gimp);
+  gimp_clipboard_set_buffer (gimp, gimp->global_buffer);
+
+  g_signal_connect (gimp, "buffer-changed",
+                    G_CALLBACK (gui_global_buffer_changed),
+                    NULL);
+
   gimp_devices_init (gimp, gui_device_change_notify);
   gimp_controllers_init (gimp);
   session_init (gimp);
@@ -440,7 +444,7 @@ gui_restore_after_callback (Gimp               *gimp,
   if (status_callback == splash_update)
     splash_destroy ();
 
-  color_history_restore ();
+  color_history_restore (gimp);
 
   if (gui_config->restore_session)
     session_restore (gimp);
@@ -471,7 +475,7 @@ gui_exit_callback (Gimp     *gimp,
   if (gui_config->save_session_info)
     session_save (gimp, FALSE);
 
-  color_history_save ();
+  color_history_save (gimp);
 
   if (gui_config->save_accels)
     menus_save (gimp, FALSE);
@@ -484,7 +488,7 @@ gui_exit_callback (Gimp     *gimp,
 
   gimp_displays_delete (gimp);
 
-  gimp_tools_save (gimp);
+  gimp_tools_save (gimp, gui_config->save_tool_options, FALSE);
   gimp_tools_exit (gimp);
 
   return FALSE; /* continue exiting */
@@ -514,11 +518,16 @@ gui_exit_after_callback (Gimp     *gimp,
   session_exit (gimp);
   menus_exit (gimp);
   actions_exit (gimp);
-  render_exit (gimp);
+  gimp_display_shell_render_exit (gimp);
+  gimp_render_exit (gimp);
 
   dialogs_exit (gimp);
   gimp_controllers_exit (gimp);
   gimp_devices_exit (gimp);
+
+  g_signal_handlers_disconnect_by_func (gimp,
+                                        G_CALLBACK (gui_global_buffer_changed),
+                                        NULL);
   gimp_clipboard_exit (gimp);
 
   themes_exit (gimp);
@@ -575,6 +584,12 @@ gui_device_change_notify (Gimp *gimp)
 }
 
 static void
+gui_global_buffer_changed (Gimp *gimp)
+{
+  gimp_clipboard_set_buffer (gimp, gimp->global_buffer);
+}
+
+static void
 gui_display_changed (GimpContext *context,
 		     GimpDisplay *display,
 		     Gimp        *gimp)
@@ -596,6 +611,11 @@ gui_display_changed (GimpContext *context,
               if (display2->gimage == image)
                 {
                   gimp_context_set_display (context, display2);
+
+                  /*  stop the emission of the original signal (the emission of
+                   *  the recursive signal is finished)
+                   */
+                  g_signal_stop_emission_by_name (context, "display-changed");
                   return;
                 }
             }

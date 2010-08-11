@@ -27,12 +27,11 @@
 #include "libgimpbase/gimpbase.h"
 #include "libgimpbase/gimpprotocol.h"
 #include "libgimpbase/gimpwire.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "plug-in-types.h"
 
 #include "config/gimpcoreconfig.h"
-#include "config/gimpconfig-error.h"
-#include "config/gimpconfig-path.h"
 
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
@@ -54,17 +53,17 @@
 #define STD_PLUGINS_DOMAIN  GETTEXT_PACKAGE "-std-plug-ins"
 
 
-typedef struct _PlugInLocaleDomainDef PlugInLocaleDomainDef;
-typedef struct _PlugInHelpDomainDef   PlugInHelpDomainDef;
+typedef struct _PlugInLocaleDomain PlugInLocaleDomain;
+typedef struct _PlugInHelpDomain   PlugInHelpDomain;
 
-struct _PlugInLocaleDomainDef
+struct _PlugInLocaleDomain
 {
   gchar *prog_name;
   gchar *domain_name;
   gchar *domain_path;
 };
 
-struct _PlugInHelpDomainDef
+struct _PlugInHelpDomain
 {
   gchar *prog_name;
   gchar *domain_name;
@@ -95,9 +94,9 @@ plug_ins_init (Gimp               *gimp,
   gchar   *path;
   GSList  *list;
   GList   *extensions = NULL;
-  gdouble  n_plugins;
-  gdouble  n_extensions;
-  gdouble  nth;
+  gint     n_plugins;
+  gint     n_extensions;
+  gint     nth;
   GError  *error = NULL;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
@@ -115,7 +114,6 @@ plug_ins_init (Gimp               *gimp,
                                    &gimp->plug_in_defs);
 
   g_free (path);
-
 
   /* read the pluginrc file for cached data */
   if (gimp->config->plug_in_rc_path)
@@ -136,8 +134,11 @@ plug_ins_init (Gimp               *gimp,
       filename = gimp_personal_rc_file ("pluginrc");
     }
 
-  (* status_callback) (_("Resource configuration"),
-		       gimp_filename_to_utf8 (filename), -1);
+  status_callback (_("Resource configuration"),
+                   gimp_filename_to_utf8 (filename), 0.0);
+
+  if (gimp->be_verbose)
+    g_print (_("Parsing '%s'\n"), gimp_filename_to_utf8 (filename));
 
   if (! plug_in_rc_parse (gimp, filename, &error))
     {
@@ -147,24 +148,34 @@ plug_ins_init (Gimp               *gimp,
       g_clear_error (&error);
     }
 
-  /*  Query any plug-ins that have changed since we last wrote out
-   *  the pluginrc file.
+  /*  query any plug-ins that have changed since we last wrote out
+   *  the pluginrc file
    */
-  (* status_callback) (_("Querying new Plug-ins"), "", 0);
-  n_plugins = g_slist_length (gimp->plug_in_defs);
+  status_callback (_("Querying new Plug-ins"), "", 0.0);
 
-  for (list = gimp->plug_in_defs, nth = 0; list; list = list->next, nth++)
+  for (list = gimp->plug_in_defs, n_plugins = 0; list; list = list->next)
     {
       PlugInDef *plug_in_def = list->data;
 
-      basename = g_path_get_basename (plug_in_def->prog);
-      (* status_callback) (NULL, gimp_filename_to_utf8 (basename),
-			   nth / n_plugins);
-      g_free (basename);
-
       if (plug_in_def->needs_query)
-	{
-	  gimp->write_pluginrc = TRUE;
+        n_plugins++;
+    }
+
+  if (n_plugins)
+    {
+      gimp->write_pluginrc = TRUE;
+
+      for (list = gimp->plug_in_defs, nth = 0; list; list = list->next)
+        {
+          PlugInDef *plug_in_def = list->data;
+
+          if (! plug_in_def->needs_query)
+            continue;
+
+          basename = g_filename_display_basename (plug_in_def->prog);
+          status_callback (NULL, basename,
+			   (gdouble) nth++ / (gdouble) n_plugins);
+          g_free (basename);
 
 	  if (gimp->be_verbose)
 	    g_print (_("Querying plug-in: '%s'\n"),
@@ -174,31 +185,40 @@ plug_ins_init (Gimp               *gimp,
 	}
     }
 
-  (* status_callback) (NULL, NULL, 1.0);
-
   /* initialize the plug-ins */
-  (* status_callback) (_("Initializing Plug-ins"), "", 0);
+  status_callback (_("Initializing Plug-ins"), "", 0.0);
 
-  for (list = gimp->plug_in_defs, nth = 0; list; list = list->next, nth++)
+  for (list = gimp->plug_in_defs, n_plugins = 0; list; list = list->next)
     {
       PlugInDef *plug_in_def = list->data;
 
-      basename = g_path_get_basename (plug_in_def->prog);
-      (* status_callback) (NULL, gimp_filename_to_utf8 (basename),
-			   nth / n_plugins);
-      g_free (basename);
-
       if (plug_in_def->has_init)
-	{
-	  if (gimp->be_verbose)
-	    g_print (_("Initializing plug-in: '%s'\n"),
-                     gimp_filename_to_utf8 (plug_in_def->prog));
-
-	  plug_in_call_init (gimp, context, plug_in_def);
-	}
+        n_plugins++;
     }
 
-  (* status_callback) (NULL, NULL, 1.0);
+  if (n_plugins)
+    {
+      for (list = gimp->plug_in_defs, nth = 0; list; list = list->next)
+        {
+          PlugInDef *plug_in_def = list->data;
+
+          if (! plug_in_def->has_init)
+            continue;
+
+          basename = g_filename_display_basename (plug_in_def->prog);
+          status_callback (NULL, basename,
+			   (gdouble) nth++ / (gdouble) n_plugins);
+          g_free (basename);
+
+          if (gimp->be_verbose)
+            g_print (_("Initializing plug-in: '%s'\n"),
+                     gimp_filename_to_utf8 (plug_in_def->prog));
+
+          plug_in_call_init (gimp, context, plug_in_def);
+        }
+    }
+
+  status_callback (NULL, "", 1.0);
 
   /* insert the proc defs */
   for (list = gimp->plug_in_defs; list; list = list->next)
@@ -251,8 +271,7 @@ plug_ins_init (Gimp               *gimp,
   if (gimp->write_pluginrc)
     {
       if (gimp->be_verbose)
-	g_print (_("Writing '%s'\n"),
-		 gimp_filename_to_utf8 (filename));
+	g_print (_("Writing '%s'\n"), gimp_filename_to_utf8 (filename));
 
       if (! plug_in_rc_write (gimp->plug_in_defs, filename, &error))
         {
@@ -274,57 +293,28 @@ plug_ins_init (Gimp               *gimp,
       PlugInDef *plug_in_def = list->data;
 
       if (plug_in_def->locale_domain_name)
-	{
-	  PlugInLocaleDomainDef *def;
-
-	  def = g_new (PlugInLocaleDomainDef, 1);
-
-	  def->prog_name   = g_strdup (plug_in_def->prog);
-	  def->domain_name = g_strdup (plug_in_def->locale_domain_name);
-          def->domain_path = g_strdup (plug_in_def->locale_domain_path);
-
-	  gimp->plug_in_locale_domains =
-            g_slist_prepend (gimp->plug_in_locale_domains, def);
-
-#ifdef VERBOSE
-          g_print ("added locale domain \"%s\" for path \"%s\"\n",
-                   def->domain_name ? def->domain_name : "(null)",
-                   def->domain_path ?
-                   gimp_filename_to_utf8 (def->domain_path) : "(null)");
-#endif
-	}
+        plug_ins_locale_domain_add (gimp,
+                                    plug_in_def->prog,
+                                    plug_in_def->locale_domain_name,
+                                    plug_in_def->locale_domain_path);
 
       if (plug_in_def->help_domain_name)
-	{
-	  PlugInHelpDomainDef *def;
-
-	  def = g_new (PlugInHelpDomainDef, 1);
-
-	  def->prog_name   = g_strdup (plug_in_def->prog);
-	  def->domain_name = g_strdup (plug_in_def->help_domain_name);
-	  def->domain_uri  = g_strdup (plug_in_def->help_domain_uri);
-
-	  gimp->plug_in_help_domains =
-            g_slist_prepend (gimp->plug_in_help_domains, def);
-
-#ifdef VERBOSE
-          g_print ("added help domain \"%s\" for base uri \"%s\"\n",
-                   def->domain_name ? def->domain_name : "(null)",
-                   def->domain_uri  ? def->domain_uri  : "(null)");
-#endif
-	}
+        plug_ins_help_domain_add (gimp,
+                                  plug_in_def->prog,
+                                  plug_in_def->help_domain_name,
+                                  plug_in_def->help_domain_uri);
     }
 
   if (! gimp->no_interface)
     {
-      gimp_menus_init (gimp, gimp->plug_in_defs, STD_PLUGINS_DOMAIN);
-
       gimp->load_procs = g_slist_sort_with_data (gimp->load_procs,
                                                  plug_ins_file_proc_compare,
                                                  gimp);
       gimp->save_procs = g_slist_sort_with_data (gimp->save_procs,
                                                  plug_ins_file_proc_compare,
                                                  gimp);
+
+      gimp_menus_init (gimp, gimp->plug_in_defs, STD_PLUGINS_DOMAIN);
     }
 
   /* build list of automatically started extensions */
@@ -348,7 +338,7 @@ plug_ins_init (Gimp               *gimp,
     {
       GList *list;
 
-      (* status_callback) (_("Starting Extensions"), "", 0);
+      status_callback (_("Starting Extensions"), "", 0.0);
 
       for (list = extensions, nth = 0; list; list = g_list_next (list), nth++)
         {
@@ -357,16 +347,17 @@ plug_ins_init (Gimp               *gimp,
 	  if (gimp->be_verbose)
 	    g_print (_("Starting extension: '%s'\n"), proc_def->db_info.name);
 
-	  (* status_callback) (NULL, proc_def->db_info.name, nth / n_plugins);
+	  status_callback (NULL, proc_def->db_info.name,
+                           (gdouble) nth / (gdouble) n_extensions);
 
 	  plug_in_run (gimp, context, NULL, &proc_def->db_info,
                        NULL, 0, FALSE, TRUE, -1);
 	}
 
-      (* status_callback) (NULL, NULL, 1.0);
-
       g_list_free (extensions);
     }
+
+  status_callback ("", "", 1.0);
 
   /* free up stuff */
   for (list = gimp->plug_in_defs; list; list = list->next)
@@ -383,14 +374,27 @@ plug_ins_exit (Gimp *gimp)
 
   plug_in_exit (gimp);
 
+  for (list = gimp->plug_in_menu_branches; list; list = list->next)
+    {
+      PlugInMenuBranch *branch = list->data;
+
+      g_free (branch->prog_name);
+      g_free (branch->menu_path);
+      g_free (branch->menu_label);
+      g_free (branch);
+    }
+
+  g_slist_free (gimp->plug_in_menu_branches);
+  gimp->plug_in_menu_branches = NULL;
+
   for (list = gimp->plug_in_locale_domains; list; list = list->next)
     {
-      PlugInLocaleDomainDef *def = list->data;
+      PlugInLocaleDomain *domain = list->data;
 
-      g_free (def->prog_name);
-      g_free (def->domain_name);
-      g_free (def->domain_path);
-      g_free (def);
+      g_free (domain->prog_name);
+      g_free (domain->domain_name);
+      g_free (domain->domain_path);
+      g_free (domain);
     }
 
   g_slist_free (gimp->plug_in_locale_domains);
@@ -398,12 +402,12 @@ plug_ins_exit (Gimp *gimp)
 
   for (list = gimp->plug_in_help_domains; list; list = list->next)
     {
-      PlugInHelpDomainDef *def = list->data;
+      PlugInHelpDomain *domain = list->data;
 
-      g_free (def->prog_name);
-      g_free (def->domain_name);
-      g_free (def->domain_uri);
-      g_free (def);
+      g_free (domain->prog_name);
+      g_free (domain->domain_name);
+      g_free (domain->domain_uri);
+      g_free (domain);
     }
 
   g_slist_free (gimp->plug_in_help_domains);
@@ -428,7 +432,8 @@ plug_ins_file_register_magic (Gimp        *gimp,
                               const gchar *prefixes,
                               const gchar *magics)
 {
-  GSList *list;
+  PlugInProcDef *proc_def;
+  GSList        *list;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -438,47 +443,44 @@ plug_ins_file_register_magic (Gimp        *gimp,
   else
     list = gimp->plug_in_proc_defs;
 
-  for (; list; list = list->next)
+  proc_def = plug_in_proc_def_find (list, name);
+
+  if (proc_def)
     {
-      PlugInProcDef *proc_def = list->data;
+      proc_def->file_proc = TRUE;
 
-      if (strcmp (proc_def->db_info.name, name) == 0)
-	{
-	  if (proc_def->extensions != extensions)
-	    {
-              if (proc_def->extensions)
-                g_free (proc_def->extensions);
-	      proc_def->extensions = g_strdup (extensions);
-	    }
+      if (proc_def->extensions != extensions)
+        {
+          if (proc_def->extensions)
+            g_free (proc_def->extensions);
+          proc_def->extensions = g_strdup (extensions);
+        }
 
-	  proc_def->extensions_list =
-            plug_ins_extensions_parse (proc_def->extensions);
+      proc_def->extensions_list =
+        plug_ins_extensions_parse (proc_def->extensions);
 
-	  if (proc_def->prefixes != prefixes)
-	    {
-              if (proc_def->prefixes)
-                g_free (proc_def->prefixes);
-	      proc_def->prefixes = g_strdup (prefixes);
-	    }
+      if (proc_def->prefixes != prefixes)
+        {
+          if (proc_def->prefixes)
+            g_free (proc_def->prefixes);
+          proc_def->prefixes = g_strdup (prefixes);
+        }
 
-	  proc_def->prefixes_list =
-            plug_ins_extensions_parse (proc_def->prefixes);
+      proc_def->prefixes_list =
+        plug_ins_extensions_parse (proc_def->prefixes);
 
-	  if (proc_def->magics != magics)
-	    {
-              if (proc_def->magics)
-                g_free (proc_def->magics);
-	      proc_def->magics = g_strdup (magics);
-	    }
+      if (proc_def->magics != magics)
+        {
+          if (proc_def->magics)
+            g_free (proc_def->magics);
+          proc_def->magics = g_strdup (magics);
+        }
 
-	  proc_def->magics_list =
-            plug_ins_extensions_parse (proc_def->magics);
-
-	  return proc_def;
-	}
+      proc_def->magics_list =
+        plug_ins_extensions_parse (proc_def->magics);
     }
 
-  return NULL;
+  return proc_def;
 }
 
 PlugInProcDef *
@@ -486,7 +488,8 @@ plug_ins_file_register_mime (Gimp        *gimp,
                              const gchar *name,
                              const gchar *mime_type)
 {
-  GSList *list;
+  PlugInProcDef *proc_def;
+  GSList        *list;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -497,21 +500,16 @@ plug_ins_file_register_mime (Gimp        *gimp,
   else
     list = gimp->plug_in_proc_defs;
 
-  for (; list; list = list->next)
+  proc_def = plug_in_proc_def_find (list, name);
+
+  if (proc_def)
     {
-      PlugInProcDef *proc_def = list->data;
-
-      if (strcmp (proc_def->db_info.name, name) == 0)
-	{
-          if (proc_def->mime_type)
-            g_free (proc_def->mime_type);
-          proc_def->mime_type = g_strdup (mime_type);
-
-          return proc_def;
-        }
+      if (proc_def->mime_type)
+        g_free (proc_def->mime_type);
+      proc_def->mime_type = g_strdup (mime_type);
     }
 
-  return NULL;
+  return proc_def;
 }
 
 PlugInProcDef *
@@ -519,7 +517,8 @@ plug_ins_file_register_thumb_loader (Gimp        *gimp,
                                      const gchar *load_proc,
                                      const gchar *thumb_proc)
 {
-  GSList *list;
+  PlugInProcDef *proc_def;
+  GSList        *list;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (load_proc, NULL);
@@ -530,21 +529,17 @@ plug_ins_file_register_thumb_loader (Gimp        *gimp,
   else
     list = gimp->plug_in_proc_defs;
 
-  for (; list; list = list->next)
+  proc_def = plug_in_proc_def_find (list, load_proc);
+
+  if (proc_def)
     {
-      PlugInProcDef *proc_def = list->data;
+      if (proc_def->thumb_loader)
+        g_free (proc_def->thumb_loader);
 
-      if (strcmp (proc_def->db_info.name, load_proc) == 0)
-        {
-          if (proc_def->thumb_loader)
-            g_free (proc_def->thumb_loader);
-          proc_def->thumb_loader = g_strdup (thumb_proc);
-
-          return proc_def;
-        }
+      proc_def->thumb_loader = g_strdup (thumb_proc);
     }
 
-  return NULL;
+  return proc_def;
 }
 
 void
@@ -642,7 +637,7 @@ plug_ins_temp_proc_def_add (Gimp          *gimp,
   if (! gimp->no_interface)
     {
       if (proc_def->menu_label || proc_def->menu_paths)
-        gimp_menus_create_entry (gimp, proc_def, NULL);
+        gimp_menus_create_item (gimp, proc_def, NULL);
     }
 
   /*  Register the procedural database entry  */
@@ -662,7 +657,7 @@ plug_ins_temp_proc_def_remove (Gimp          *gimp,
   if (! gimp->no_interface)
     {
       if (proc_def->menu_label || proc_def->menu_paths)
-        gimp_menus_delete_entry (gimp, proc_def);
+        gimp_menus_delete_item (gimp, proc_def);
     }
 
   /*  Unregister the procedural database entry  */
@@ -673,6 +668,63 @@ plug_ins_temp_proc_def_remove (Gimp          *gimp,
 
   /*  Destroy the definition  */
   plug_in_proc_def_free (proc_def);
+}
+
+void
+plug_ins_menu_branch_add (Gimp        *gimp,
+                          const gchar *prog_name,
+                          const gchar *menu_path,
+                          const gchar *menu_label)
+{
+  PlugInMenuBranch *branch;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (prog_name != NULL);
+  g_return_if_fail (menu_path != NULL);
+  g_return_if_fail (menu_label != NULL);
+
+  branch = g_new (PlugInMenuBranch, 1);
+
+  branch->prog_name  = g_strdup (prog_name);
+  branch->menu_path  = g_strdup (menu_path);
+  branch->menu_label = g_strdup (menu_label);
+
+  gimp->plug_in_menu_branches = g_slist_append (gimp->plug_in_menu_branches,
+                                                branch);
+
+#ifdef VERBOSE
+  g_print ("added menu branch \"%s\" at path \"%s\"\n",
+           branch->menu_label, branch->menu_path);
+#endif
+}
+
+void
+plug_ins_locale_domain_add (Gimp        *gimp,
+                            const gchar *prog_name,
+                            const gchar *domain_name,
+                            const gchar *domain_path)
+{
+  PlugInLocaleDomain *domain;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (prog_name != NULL);
+  g_return_if_fail (domain_name != NULL);
+
+  domain = g_new (PlugInLocaleDomain, 1);
+
+  domain->prog_name   = g_strdup (prog_name);
+  domain->domain_name = g_strdup (domain_name);
+  domain->domain_path = g_strdup (domain_path);
+
+  gimp->plug_in_locale_domains = g_slist_prepend (gimp->plug_in_locale_domains,
+                                                  domain);
+
+#ifdef VERBOSE
+  g_print ("added locale domain \"%s\" for path \"%s\"\n",
+           domain->domain_name ? domain->domain_name : "(null)",
+           domain->domain_path ?
+           gimp_filename_to_utf8 (domain->domain_path) : "(null)");
+#endif
 }
 
 const gchar *
@@ -693,18 +745,47 @@ plug_ins_locale_domain (Gimp         *gimp,
 
   for (list = gimp->plug_in_locale_domains; list; list = list->next)
     {
-      PlugInLocaleDomainDef *def = list->data;
+      PlugInLocaleDomain *domain = list->data;
 
-      if (def && def->prog_name && ! strcmp (def->prog_name, prog_name))
+      if (domain && domain->prog_name &&
+          ! strcmp (domain->prog_name, prog_name))
         {
-          if (domain_path && def->domain_path)
-            *domain_path = def->domain_path;
+          if (domain_path && domain->domain_path)
+            *domain_path = domain->domain_path;
 
-          return def->domain_name;
+          return domain->domain_name;
         }
     }
 
   return STD_PLUGINS_DOMAIN;
+}
+
+void
+plug_ins_help_domain_add (Gimp        *gimp,
+                          const gchar *prog_name,
+                          const gchar *domain_name,
+                          const gchar *domain_uri)
+{
+  PlugInHelpDomain *domain;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (prog_name != NULL);
+  g_return_if_fail (domain_name != NULL);
+
+  domain = g_new (PlugInHelpDomain, 1);
+
+  domain->prog_name   = g_strdup (prog_name);
+  domain->domain_name = g_strdup (domain_name);
+  domain->domain_uri  = g_strdup (domain_uri);
+
+  gimp->plug_in_help_domains = g_slist_prepend (gimp->plug_in_help_domains,
+                                                domain);
+
+#ifdef VERBOSE
+  g_print ("added help domain \"%s\" for base uri \"%s\"\n",
+           domain->domain_name ? domain->domain_name : "(null)",
+           domain->domain_uri  ? domain->domain_uri  : "(null)");
+#endif
 }
 
 const gchar *
@@ -725,14 +806,15 @@ plug_ins_help_domain (Gimp         *gimp,
 
   for (list = gimp->plug_in_help_domains; list; list = list->next)
     {
-      PlugInHelpDomainDef *def = list->data;
+      PlugInHelpDomain *domain = list->data;
 
-      if (def && def->prog_name && ! strcmp (def->prog_name, prog_name))
+      if (domain && domain->prog_name &&
+          ! strcmp (domain->prog_name, prog_name))
         {
-          if (domain_uri && def->domain_uri)
-            *domain_uri = def->domain_uri;
+          if (domain_uri && domain->domain_uri)
+            *domain_uri = domain->domain_uri;
 
-          return def->domain_name;
+          return domain->domain_name;
         }
     }
 
@@ -759,10 +841,10 @@ plug_ins_help_domains (Gimp    *gimp,
 
   for (list = gimp->plug_in_help_domains, i = 0; list; list = list->next, i++)
     {
-      PlugInHelpDomainDef *def = list->data;
+      PlugInHelpDomain *domain = list->data;
 
-      (*help_domains)[i] = g_strdup (def->domain_name);
-      (*help_uris)[i]    = g_strdup (def->domain_uri);
+      (*help_domains)[i] = g_strdup (domain->domain_name);
+      (*help_uris)[i]    = g_strdup (domain->domain_uri);
     }
 
   return n_domains;
@@ -779,9 +861,7 @@ plug_ins_proc_def_find (Gimp       *gimp,
 
   for (list = gimp->plug_in_proc_defs; list; list = list->next)
     {
-      PlugInProcDef *proc_def;
-
-      proc_def = (PlugInProcDef *) list->data;
+      PlugInProcDef *proc_def = list->data;
 
       if (proc_rec == &proc_def->db_info)
         return proc_def;
@@ -924,8 +1004,7 @@ plug_ins_init_file (const GimpDatafileData *file_data,
     {
       gchar *plug_in_name;
 
-      plug_in_def = (PlugInDef *) list->data;
-
+      plug_in_def  = list->data;
       plug_in_name = g_path_get_basename (plug_in_def->prog);
 
       if (g_ascii_strcasecmp (file_data->basename, plug_in_name) == 0)
@@ -971,7 +1050,7 @@ plug_ins_add_to_db (Gimp        *gimp,
     {
       proc_def = list->data;
 
-      if (proc_def->extensions || proc_def->prefixes || proc_def->magics)
+      if (proc_def->file_proc)
         {
           Argument args[4];
 
@@ -989,8 +1068,8 @@ plug_ins_add_to_db (Gimp        *gimp,
 
           g_free (procedural_db_execute (gimp, context, NULL,
                                          proc_def->image_types ?
-                                         "gimp_register_save_handler" :
-                                         "gimp_register_magic_load_handler",
+                                         "gimp-register-save-handler" :
+                                         "gimp-register-magic-load-handler",
                                          args));
 	}
     }
@@ -1032,9 +1111,10 @@ plug_ins_file_proc_compare (gconstpointer a,
   gchar               *label_b;
   gint                 retval = 0;
 
-  if (strncmp (proc_a->prog, "gimp_xcf", 8) == 0)
+  if (strncmp (proc_a->prog, "gimp-xcf", 8) == 0)
     return -1;
-  if (strncmp (proc_b->prog, "gimp_xcf", 8) == 0)
+
+  if (strncmp (proc_b->prog, "gimp-xcf", 8) == 0)
     return 1;
 
   label_a = plug_in_proc_def_get_label (proc_a,

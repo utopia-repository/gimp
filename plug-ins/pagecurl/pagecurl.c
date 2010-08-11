@@ -43,9 +43,6 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
@@ -54,9 +51,9 @@
 #include "pagecurl-icons.h"
 
 
-#define PLUG_IN_NAME    "plug_in_pagecurl"
+#define PLUG_IN_PROC    "plug-in-pagecurl"
+#define PLUG_IN_BINARY  "pagecurl"
 #define PLUG_IN_VERSION "July 2004, 1.0"
-#define HELP_ID         "plug-in-pagecurl"
 #define NGRADSAMPLES    256
 
 
@@ -215,7 +212,7 @@ query (void)
     { GIMP_PDB_LAYER, "Curl Layer", "The new layer with the curl." }
   };
 
-  gimp_install_procedure (PLUG_IN_NAME,
+  gimp_install_procedure (PLUG_IN_PROC,
 			  "Pagecurl effect",
 			  "This plug-in creates a pagecurl-effect.",
 			  "Federico Mena Quintero and Simon Budig",
@@ -229,7 +226,7 @@ query (void)
 			  args,
 			  return_vals);
 
-  gimp_plugin_menu_register (PLUG_IN_NAME, "<Image>/Filters/Distorts");
+  gimp_plugin_menu_register (PLUG_IN_PROC, "<Image>/Filters/Distorts");
 }
 
 static void
@@ -251,7 +248,7 @@ run (const gchar      *name,
   set_default_params ();
 
   /*  Possibly retrieve data  */
-  gimp_get_data (PLUG_IN_NAME, &curl);
+  gimp_get_data (PLUG_IN_PROC, &curl);
 
   *nreturn_vals = 2;
   *return_vals = values;
@@ -308,7 +305,7 @@ run (const gchar      *name,
             gimp_displays_flush ();
 
 	  if (run_mode == GIMP_RUN_INTERACTIVE)
-            gimp_set_data (PLUG_IN_NAME, &curl, sizeof (CurlParams));
+            gimp_set_data (PLUG_IN_PROC, &curl, sizeof (CurlParams));
 	}
     }
   else
@@ -438,186 +435,193 @@ dialog (void)
   GtkObject *adjustment;
   gboolean   run;
 
-  gimp_ui_init ("pagecurl", FALSE);
+  gimp_ui_init (PLUG_IN_BINARY, FALSE);
 
-  dialog = gimp_dialog_new (_("Pagecurl Effect"), "pagecurl",
+  dialog = gimp_dialog_new (_("Pagecurl Effect"), PLUG_IN_BINARY,
                             NULL, 0,
-			    gimp_standard_help_func, HELP_ID,
+			    gimp_standard_help_func, PLUG_IN_PROC,
 
 			    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			    GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
 			    NULL);
 
-   vbox = gtk_vbox_new (FALSE, 12);
-   gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
-   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
-                       vbox, TRUE, TRUE, 0);
-   gtk_widget_show (vbox);
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_OK,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
 
-   frame = gimp_frame_new (_("Curl Location"));
-   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  gimp_window_set_transient (GTK_WINDOW (dialog));
 
-   table = gtk_table_new (3, 2, TRUE);
-   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-   gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-   gtk_container_add (GTK_CONTAINER (frame), table);
+  vbox = gtk_vbox_new (FALSE, 12);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+                      vbox, TRUE, TRUE, 0);
+  gtk_widget_show (vbox);
 
-   curl_image = gtk_image_new ();
+  frame = gimp_frame_new (_("Curl Location"));
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-   gtk_table_attach (GTK_TABLE (table), curl_image, 0, 2, 1, 2,
-		     GTK_SHRINK, GTK_SHRINK, 0, 0);
-   gtk_widget_show (curl_image);
+  table = gtk_table_new (3, 2, TRUE);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 6);
+  gtk_container_add (GTK_CONTAINER (frame), table);
 
-   curl_pixbuf_update ();
+  curl_image = gtk_image_new ();
 
-   {
-     static const gchar *name[] =
-     {
-       N_("Lower right"),
-       N_("Lower left"),
-       N_("Upper left"),
-       N_("Upper right")
-     };
-     gint i;
+  gtk_table_attach (GTK_TABLE (table), curl_image, 0, 2, 1, 2,
+                    GTK_SHRINK, GTK_SHRINK, 0, 0);
+  gtk_widget_show (curl_image);
 
-     button = NULL;
-     for (i = CURL_EDGE_FIRST; i <= CURL_EDGE_LAST; i++)
-       {
-	 button =
-           gtk_radio_button_new_with_label (button == NULL ?
-                                            NULL :
-                                            gtk_radio_button_get_group (GTK_RADIO_BUTTON (button)),
-                                            gettext (name[i - CURL_EDGE_FIRST]));
+  curl_pixbuf_update ();
 
-	 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
-                                       curl.edge == i);
+  {
+    static const gchar *name[] =
+    {
+      N_("Lower right"),
+      N_("Lower left"),
+      N_("Upper left"),
+      N_("Upper right")
+    };
+    gint i;
 
-         g_object_set_data (G_OBJECT (button),
-                            "gimp-item-data", GINT_TO_POINTER (i));
+    button = NULL;
+    for (i = CURL_EDGE_FIRST; i <= CURL_EDGE_LAST; i++)
+      {
+        button =
+          gtk_radio_button_new_with_label (button == NULL ?
+                                           NULL :
+                                           gtk_radio_button_get_group (GTK_RADIO_BUTTON (button)),
+                                           gettext (name[i - CURL_EDGE_FIRST]));
 
-	 gtk_table_attach (GTK_TABLE (table), button,
-			   CURL_EDGE_LEFT  (i) ? 0 : 1,
-                           CURL_EDGE_LEFT  (i) ? 1 : 2,
-                           CURL_EDGE_UPPER (i) ? 0 : 2,
-                           CURL_EDGE_UPPER (i) ? 1 : 3,
-			   GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-	 gtk_widget_show (button);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                      curl.edge == i);
 
-	 g_signal_connect (button, "toggled",
-                           G_CALLBACK (gimp_radio_button_update),
-                           &curl.edge);
+        g_object_set_data (G_OBJECT (button),
+                           "gimp-item-data", GINT_TO_POINTER (i));
 
-	 g_signal_connect (button, "toggled",
-                           G_CALLBACK (curl_pixbuf_update),
+        gtk_table_attach (GTK_TABLE (table), button,
+                          CURL_EDGE_LEFT  (i) ? 0 : 1,
+                          CURL_EDGE_LEFT  (i) ? 1 : 2,
+                          CURL_EDGE_UPPER (i) ? 0 : 2,
+                          CURL_EDGE_UPPER (i) ? 1 : 3,
+                          GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
+        gtk_widget_show (button);
+
+        g_signal_connect (button, "toggled",
+                          G_CALLBACK (gimp_radio_button_update),
+                          &curl.edge);
+
+        g_signal_connect (button, "toggled",
+                          G_CALLBACK (curl_pixbuf_update),
                            NULL);
-       }
-   }
+      }
+  }
 
-   gtk_widget_show (table);
-   gtk_widget_show (frame);
+  gtk_widget_show (table);
+  gtk_widget_show (frame);
 
-   frame = gimp_frame_new (_("Curl Orientation"));
-   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  frame = gimp_frame_new (_("Curl Orientation"));
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-   hbox = gtk_hbox_new (TRUE, 6);
-   gtk_container_add (GTK_CONTAINER (frame), hbox);
+  hbox = gtk_hbox_new (TRUE, 6);
+  gtk_container_add (GTK_CONTAINER (frame), hbox);
 
-   {
-     static const gchar *name[] =
-     {
-       N_("_Vertical"),
-       N_("_Horizontal")
-     };
-     gint i;
+  {
+    static const gchar *name[] =
+    {
+      N_("_Vertical"),
+      N_("_Horizontal")
+    };
+    gint i;
 
-     button = NULL;
-     for (i = 0; i <= CURL_ORIENTATION_LAST; i++)
-       {
-	 button = gtk_radio_button_new_with_mnemonic (button == NULL ?
-                                                      NULL :
-                                                      gtk_radio_button_get_group (GTK_RADIO_BUTTON (button)),
-                                                      gettext (name[i]));
+    button = NULL;
+    for (i = 0; i <= CURL_ORIENTATION_LAST; i++)
+      {
+        button = gtk_radio_button_new_with_mnemonic (button == NULL ?
+                                                     NULL :
+                                                     gtk_radio_button_get_group (GTK_RADIO_BUTTON (button)),
+                                                     gettext (name[i]));
 
-	 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
-                                       curl.orientation == i);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                      curl.orientation == i);
 
-         g_object_set_data (G_OBJECT (button),
-                            "gimp-item-data", GINT_TO_POINTER (i));
+        g_object_set_data (G_OBJECT (button),
+                           "gimp-item-data", GINT_TO_POINTER (i));
 
-	 gtk_box_pack_end (GTK_BOX (hbox), button, TRUE, TRUE, 0);
-	 gtk_widget_show (button);
+        gtk_box_pack_end (GTK_BOX (hbox), button, TRUE, TRUE, 0);
+        gtk_widget_show (button);
 
-	 g_signal_connect (button, "toggled",
-                           G_CALLBACK (gimp_radio_button_update),
-                           &curl.orientation);
+        g_signal_connect (button, "toggled",
+                          G_CALLBACK (gimp_radio_button_update),
+                          &curl.orientation);
 
-	 g_signal_connect (button, "toggled",
-                           G_CALLBACK (curl_pixbuf_update),
-                           NULL);
-       }
-   }
+        g_signal_connect (button, "toggled",
+                          G_CALLBACK (curl_pixbuf_update),
+                          NULL);
+      }
+  }
 
-   gtk_widget_show (hbox);
-   gtk_widget_show (frame);
+  gtk_widget_show (hbox);
+  gtk_widget_show (frame);
 
-   button = gtk_check_button_new_with_mnemonic (_("_Shade under curl"));
-   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), curl.shade);
-   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-   gtk_widget_show (button);
+  button = gtk_check_button_new_with_mnemonic (_("_Shade under curl"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), curl.shade);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_widget_show (button);
 
-   g_signal_connect (button, "toggled",
-                     G_CALLBACK (gimp_toggle_button_update),
-                     &curl.shade);
+  g_signal_connect (button, "toggled",
+                    G_CALLBACK (gimp_toggle_button_update),
+                    &curl.shade);
 
-   combo = gimp_int_combo_box_new (NULL, -1);
+  combo = g_object_new (GIMP_TYPE_INT_COMBO_BOX, NULL);
 
-   gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
-                               GIMP_INT_STORE_VALUE,    CURL_COLORS_GRADIENT_REVERSE,
-                               GIMP_INT_STORE_LABEL,    _("Current gradient (reversed)"),
-                               GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_GRADIENT,
-                               -1);
-   gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
-                               GIMP_INT_STORE_VALUE,    CURL_COLORS_GRADIENT,
-                               GIMP_INT_STORE_LABEL,    _("Current gradient"),
-                               GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_GRADIENT,
-                               -1);
-   gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
-                               GIMP_INT_STORE_VALUE,    CURL_COLORS_FG_BG,
-                               GIMP_INT_STORE_LABEL,    _("Foreground / background colors"),
-                               GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_DEFAULT_COLORS,
-                               -1);
+  gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
+                              GIMP_INT_STORE_VALUE,    CURL_COLORS_GRADIENT_REVERSE,
+                              GIMP_INT_STORE_LABEL,    _("Current gradient (reversed)"),
+                              GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_GRADIENT,
+                              -1);
+  gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
+                              GIMP_INT_STORE_VALUE,    CURL_COLORS_GRADIENT,
+                              GIMP_INT_STORE_LABEL,    _("Current gradient"),
+                              GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_GRADIENT,
+                              -1);
+  gimp_int_combo_box_prepend (GIMP_INT_COMBO_BOX (combo),
+                              GIMP_INT_STORE_VALUE,    CURL_COLORS_FG_BG,
+                              GIMP_INT_STORE_LABEL,    _("Foreground / background colors"),
+                              GIMP_INT_STORE_STOCK_ID, GIMP_STOCK_DEFAULT_COLORS,
+                              -1);
 
-   gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
-   gtk_widget_show (combo);
+  gtk_box_pack_start (GTK_BOX (vbox), combo, FALSE, FALSE, 0);
+  gtk_widget_show (combo);
 
-   gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (combo),
-                               curl.colors,
-                               G_CALLBACK (gimp_int_combo_box_get_active),
-                               &curl.colors);
+  gimp_int_combo_box_connect (GIMP_INT_COMBO_BOX (combo),
+                              curl.colors,
+                              G_CALLBACK (gimp_int_combo_box_get_active),
+                              &curl.colors);
 
-   gtk_widget_show (dialog);
+  gtk_widget_show (dialog);
 
-   table = gtk_table_new (1, 3, FALSE);
-   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
-   gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
-   gtk_widget_show (table);
+  table = gtk_table_new (1, 3, FALSE);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
+  gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
+  gtk_widget_show (table);
 
-   adjustment = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
-                                      _("_Opacity:"), 100, 0,
-                                      curl.opacity * 100.0, 0.0, 100.0,
-                                      1.0, 1.0, 0.0,
-                                      TRUE, 0, 0,
-                                      NULL, NULL);
-   g_signal_connect (adjustment, "value_changed",
-                     G_CALLBACK (dialog_scale_update),
-                     &curl.opacity);
+  adjustment = gimp_scale_entry_new (GTK_TABLE (table), 0, 0,
+                                     _("_Opacity:"), 100, 0,
+                                     curl.opacity * 100.0, 0.0, 100.0,
+                                     1.0, 1.0, 0.0,
+                                     TRUE, 0, 0,
+                                     NULL, NULL);
+  g_signal_connect (adjustment, "value-changed",
+                    G_CALLBACK (dialog_scale_update),
+                    &curl.opacity);
 
-   run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
+  run = (gimp_dialog_run (GIMP_DIALOG (dialog)) == GTK_RESPONSE_OK);
 
-   gtk_widget_destroy (dialog);
+  gtk_widget_destroy (dialog);
 
-   return run;
+  return run;
 }
 
 static void
@@ -758,10 +762,10 @@ do_curl_effect (gint32 drawable_id)
 
   /* Init shade_curl */
 
-  fore_grayval = GIMP_RGB_INTENSITY (fore_color[0],
+  fore_grayval = GIMP_RGB_LUMINANCE (fore_color[0],
                                      fore_color[1],
                                      fore_color[2]) + 0.5;
-  back_grayval = GIMP_RGB_INTENSITY (back_color[0],
+  back_grayval = GIMP_RGB_LUMINANCE (back_color[0],
                                      back_color[1],
                                      back_color[2]) + 0.5;
 
@@ -1015,7 +1019,7 @@ page_curl (gint32 drawable_id)
 
   gimp_image_undo_group_start (image_id);
 
-  gimp_progress_init (_("Page Curl..."));
+  gimp_progress_init (_("Page Curl"));
 
   init_calculation (drawable_id);
 
@@ -1067,7 +1071,7 @@ get_gradient_samples (gint32    drawable_id,
         for (j = 0; j < 3; j++)
           b_samp[j] = f_samp[j] * 255;
       else
-        b_samp[0] = GIMP_RGB_INTENSITY (f_samp[0], f_samp[1], f_samp[2]) * 255;
+        b_samp[0] = GIMP_RGB_LUMINANCE (f_samp[0], f_samp[1], f_samp[2]) * 255;
 
       if (has_alpha)
         b_samp[alpha] = f_samp[3] * 255;

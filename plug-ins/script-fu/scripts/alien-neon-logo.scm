@@ -132,7 +132,7 @@
 		    SF-TOGGLE     _"Fade away"        TRUE)
 
 (script-fu-menu-register "script-fu-alien-neon-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-alien-neon-logo text 
@@ -148,7 +148,6 @@
 	 (fade-size (- (* (+ band-size gap-size) num-bands) 1))
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text (+ fade-size 10) TRUE size PIXELS fontname))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-alien-neon-logo-effect img text-layer fg-color bg-color
 				  band-size gap-size num-bands do-fade)
     (gimp-image-undo-enable img)
@@ -172,4 +171,4 @@
 		    SF-TOGGLE     _"Fade away"          TRUE)
 
 (script-fu-menu-register "script-fu-alien-neon-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

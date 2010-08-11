@@ -36,7 +36,7 @@
     (gimp-image-add-layer img bg-layer 1)
     (gimp-image-add-layer img reflect-layer 1)
     (gimp-image-add-layer img shadow-layer 1)
-    (gimp-layer-set-preserve-trans logo-layer TRUE)
+    (gimp-layer-set-lock-alpha logo-layer TRUE)
 
     (gimp-context-set-background bg-color)
     (gimp-edit-fill bg-layer BACKGROUND-FILL)
@@ -136,7 +136,7 @@
 		    SF-TOGGLE     _"Gradient reverse"     FALSE)
 
 (script-fu-menu-register "script-fu-cool-metal-logo-alpha"
-			 _"<Image>/Script-Fu/Alpha to Logo")
+			 "<Image>/Filters/Alpha to Logo")
 
 
 (define (script-fu-cool-metal-logo text
@@ -149,7 +149,6 @@
 	 (text-layer (car (gimp-text-fontname img -1 0 0 text 0 TRUE
 					      size PIXELS font))))
     (gimp-image-undo-disable img)
-    (gimp-drawable-set-name text-layer text)
     (apply-cool-metal-logo-effect img text-layer size bg-color
 				  gradient gradient-reverse)
     (gimp-image-undo-enable img)
@@ -170,4 +169,4 @@
 		    SF-TOGGLE     _"Gradient reverse"   FALSE)
 
 (script-fu-menu-register "script-fu-cool-metal-logo"
-			 _"<Toolbox>/Xtns/Script-Fu/Logos")
+			 "<Toolbox>/Xtns/Logos")

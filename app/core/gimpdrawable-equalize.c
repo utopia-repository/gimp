@@ -28,8 +28,6 @@
 #include "base/pixel-processor.h"
 #include "base/pixel-region.h"
 
-#include "config/gimpbaseconfig.h"
-
 #include "gimp.h"
 #include "gimpdrawable.h"
 #include "gimpdrawable-equalize.h"
@@ -59,7 +57,7 @@ gimp_drawable_equalize (GimpDrawable *drawable,
   if (! gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
     return;
 
-  hist = gimp_histogram_new (GIMP_BASE_CONFIG (gimage->gimp->config));
+  hist = gimp_histogram_new ();
   gimp_drawable_calculate_histogram (drawable, hist);
 
   /* Build equalization LUT */
@@ -71,8 +69,8 @@ gimp_drawable_equalize (GimpDrawable *drawable,
   pixel_region_init (&destPR, gimp_drawable_shadow (drawable),
 		     x, y, width, height, TRUE);
 
-  pixel_regions_process_parallel ((p_func) gimp_lut_process, lut,
-				  2, &srcPR, &destPR);
+  pixel_regions_process_parallel ((PixelProcessorFunc) gimp_lut_process,
+                                  lut, 2, &srcPR, &destPR);
 
   gimp_lut_free (lut);
   gimp_histogram_free (hist);

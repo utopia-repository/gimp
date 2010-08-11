@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Library Reference Manual" link="index.html" author="" name="libgimp">
   <chapters>
     <sub name="GIMP Constants" link="gimpdefinitions.html">
@@ -8,6 +7,7 @@
     <sub name="GIMP Library" link="libgimp.html">
       <sub name="Functions not Related to Specific Images" link="libgimp-general.html">
         <sub name="gimp" link="libgimp-gimp.html"/>
+        <sub name="gimpbuffer" link="libgimp-gimpbuffer.html"/>
         <sub name="gimpcontext" link="libgimp-gimpcontext.html"/>
         <sub name="gimpgimprc" link="libgimp-gimpgimprc.html"/>
         <sub name="gimphelp" link="libgimp-gimphelp.html"/>
@@ -26,6 +26,7 @@
         <sub name="gimpedit" link="libgimp-gimpedit.html"/>
         <sub name="gimpfileops" link="libgimp-gimpfileops.html"/>
         <sub name="gimpfloatingsel" link="libgimp-gimpfloatingsel.html"/>
+        <sub name="gimpgrid" link="libgimp-gimpgrid.html"/>
         <sub name="gimpguides" link="libgimp-gimpguides.html"/>
         <sub name="gimpimage" link="libgimp-gimpimage.html"/>
         <sub name="gimplayer" link="libgimp-gimplayer.html"/>
@@ -38,6 +39,7 @@
         <sub name="gimptile" link="libgimp-gimptile.html"/>
         <sub name="gimptools" link="libgimp-gimptools.html"/>
         <sub name="gimpundo" link="libgimp-gimpundo.html"/>
+        <sub name="gimpvectors" link="libgimp-gimpvectors.html"/>
       </sub>
       <sub name="Data Objects" link="libgimp-data.html">
         <sub name="gimpbrush" link="libgimp-gimpbrush.html"/>
@@ -52,6 +54,7 @@
       </sub>
       <sub name="Controlling the Core's Selection Dialogs" link="libgimp-selectors.html">
         <sub name="gimpbrushselect" link="libgimp-gimpbrushselect.html"/>
+        <sub name="GimpFontSelectButton" link="GimpFontSelectButton.html"/>
         <sub name="gimpfontselect" link="libgimp-gimpfontselect.html"/>
         <sub name="gimpgradientselect" link="libgimp-gimpgradientselect.html"/>
         <sub name="gimppaletteselect" link="libgimp-gimppaletteselect.html"/>
@@ -62,10 +65,11 @@
       <sub name="Object Hierarchy" link="libgimpui-hierarchy.html"/>
       <sub name="gimpui" link="libgimp-gimpui.html"/>
       <sub name="gimpexport" link="libgimp-gimpexport.html"/>
-      <sub name="GimpAspectPreview" link="GimpAspectPreview.html"/>
       <sub name="GimpDrawablePreview" link="GimpDrawablePreview.html"/>
-      <sub name="gimpdrawablecombobox" link="libgimp-gimpdrawablecombobox.html"/>
-      <sub name="gimpimagecombobox" link="libgimp-gimpimagecombobox.html"/>
+      <sub name="GimpAspectPreview" link="GimpAspectPreview.html"/>
+      <sub name="GimpZoomPreview" link="GimpZoomPreview.html"/>
+      <sub name="gimpdrawablecombobox" link="GimpDrawableComboBox.html"/>
+      <sub name="gimpimagecombobox" link="GimpImageComboBox.html"/>
       <sub name="gimppixbuf" link="libgimp-gimppixbuf.html"/>
       <sub name="GimpProgressBar" link="GimpProgressBar.html"/>
       <sub name="gimpmenu" link="libgimp-gimpmenu.html"/>
@@ -74,44 +78,37 @@
       <sub name="gimpgradientmenu" link="libgimp-gimpgradientmenu.html"/>
       <sub name="gimppalettemenu" link="libgimp-gimppalettemenu.html"/>
       <sub name="gimppatternmenu" link="libgimp-gimppatternmenu.html"/>
+      <sub name="GimpProcBrowserDialog" link="GimpProcBrowserDialog.html"/>
+      <sub name="gimpprocview" link="libgimp-gimpprocview.html"/>
     </sub>
+    <sub name="Index" link="ix01.html"/>
+    <sub name="Index of new symbols in GIMP 2.2" link="ix02.html"/>
+    <sub name="Index of new symbols in GIMP 2.4" link="ix03.html"/>
+    <sub name="Index of deprecated symbols" link="ix04.html"/>
   </chapters>
   <functions>
-    <function name="enum GimpAddMaskType" link="libgimp-gimpenums.html#GimpAddMaskType"/>
-    <function name="enum GimpBlendMode" link="libgimp-gimpenums.html#GimpBlendMode"/>
+    <function name="gimp_enums_init ()" link="libgimp-gimpenums.html#gimp-enums-init"/>
     <function name="enum GimpBrushApplicationMode" link="libgimp-gimpenums.html#GimpBrushApplicationMode"/>
-    <function name="enum GimpBucketFillMode" link="libgimp-gimpenums.html#GimpBucketFillMode"/>
-    <function name="enum GimpChannelOps" link="libgimp-gimpenums.html#GimpChannelOps"/>
-    <function name="enum GimpChannelType" link="libgimp-gimpenums.html#GimpChannelType"/>
-    <function name="enum GimpCloneType" link="libgimp-gimpenums.html#GimpCloneType"/>
     <function name="enum GimpConvertDitherType" link="libgimp-gimpenums.html#GimpConvertDitherType"/>
     <function name="enum GimpConvertPaletteType" link="libgimp-gimpenums.html#GimpConvertPaletteType"/>
     <function name="enum GimpConvolutionType" link="libgimp-gimpenums.html#GimpConvolutionType"/>
     <function name="enum GimpConvolveType" link="libgimp-gimpenums.html#GimpConvolveType"/>
-    <function name="enum GimpDodgeBurnType" link="libgimp-gimpenums.html#GimpDodgeBurnType"/>
     <function name="enum GimpFillType" link="libgimp-gimpenums.html#GimpFillType"/>
     <function name="enum GimpGradientSegmentColor" link="libgimp-gimpenums.html#GimpGradientSegmentColor"/>
     <function name="enum GimpGradientSegmentType" link="libgimp-gimpenums.html#GimpGradientSegmentType"/>
-    <function name="enum GimpGradientType" link="libgimp-gimpenums.html#GimpGradientType"/>
     <function name="enum GimpHistogramChannel" link="libgimp-gimpenums.html#GimpHistogramChannel"/>
     <function name="enum GimpHueRange" link="libgimp-gimpenums.html#GimpHueRange"/>
-    <function name="enum GimpIconType" link="libgimp-gimpenums.html#GimpIconType"/>
-    <function name="enum GimpInterpolationType" link="libgimp-gimpenums.html#GimpInterpolationType"/>
     <function name="enum GimpLayerModeEffects" link="libgimp-gimpenums.html#GimpLayerModeEffects"/>
     <function name="enum GimpMaskApplyMode" link="libgimp-gimpenums.html#GimpMaskApplyMode"/>
     <function name="enum GimpMergeType" link="libgimp-gimpenums.html#GimpMergeType"/>
     <function name="enum GimpOffsetType" link="libgimp-gimpenums.html#GimpOffsetType"/>
     <function name="enum GimpOrientationType" link="libgimp-gimpenums.html#GimpOrientationType"/>
-    <function name="enum GimpPaintApplicationMode" link="libgimp-gimpenums.html#GimpPaintApplicationMode"/>
-    <function name="enum GimpRepeatMode" link="libgimp-gimpenums.html#GimpRepeatMode"/>
     <function name="enum GimpRotationType" link="libgimp-gimpenums.html#GimpRotationType"/>
     <function name="enum GimpRunMode" link="libgimp-gimpenums.html#GimpRunMode"/>
-    <function name="enum GimpSizeType" link="libgimp-gimpenums.html#GimpSizeType"/>
-    <function name="enum GimpTransferMode" link="libgimp-gimpenums.html#GimpTransferMode"/>
-    <function name="enum GimpTransformDirection" link="libgimp-gimpenums.html#GimpTransformDirection"/>
     <function name="gimp_enums_get_type_names ()" link="libgimp-gimpenums.html#gimp-enums-get-type-names"/>
     <function name="GIMPVAR" link="libgimp-gimp.html#GIMPVAR:CAPS"/>
     <function name="gimp_version ()" link="libgimp-gimp.html#gimp-version"/>
+    <function name="gimp_getpid ()" link="libgimp-gimp.html#gimp-getpid"/>
     <function name="gimp_major_version" link="libgimp-gimp.html#gimp-major-version"/>
     <function name="gimp_minor_version" link="libgimp-gimp.html#gimp-minor-version"/>
     <function name="gimp_micro_version" link="libgimp-gimp.html#gimp-micro-version"/>
@@ -161,6 +158,13 @@
     <function name="gimp_parasite_attach ()" link="libgimp-gimp.html#gimp-parasite-attach"/>
     <function name="gimp_parasite_detach ()" link="libgimp-gimp.html#gimp-parasite-detach"/>
     <function name="gimp_attach_new_parasite ()" link="libgimp-gimp.html#gimp-attach-new-parasite"/>
+    <function name="gimp_buffers_get_list ()" link="libgimp-gimpbuffer.html#gimp-buffers-get-list"/>
+    <function name="gimp_buffer_rename ()" link="libgimp-gimpbuffer.html#gimp-buffer-rename"/>
+    <function name="gimp_buffer_delete ()" link="libgimp-gimpbuffer.html#gimp-buffer-delete"/>
+    <function name="gimp_buffer_get_width ()" link="libgimp-gimpbuffer.html#gimp-buffer-get-width"/>
+    <function name="gimp_buffer_get_height ()" link="libgimp-gimpbuffer.html#gimp-buffer-get-height"/>
+    <function name="gimp_buffer_get_bytes ()" link="libgimp-gimpbuffer.html#gimp-buffer-get-bytes"/>
+    <function name="gimp_buffer_get_image_type ()" link="libgimp-gimpbuffer.html#gimp-buffer-get-image-type"/>
     <function name="gimp_context_push ()" link="libgimp-gimpcontext.html#gimp-context-push"/>
     <function name="gimp_context_pop ()" link="libgimp-gimpcontext.html#gimp-context-pop"/>
     <function name="gimp_context_get_foreground ()" link="libgimp-gimpcontext.html#gimp-context-get-foreground"/>
@@ -185,6 +189,7 @@
     <function name="gimp_context_set_font ()" link="libgimp-gimpcontext.html#gimp-context-set-font"/>
     <function name="gimp_gimprc_query ()" link="libgimp-gimpgimprc.html#gimp-gimprc-query"/>
     <function name="gimp_gimprc_set ()" link="libgimp-gimpgimprc.html#gimp-gimprc-set"/>
+    <function name="gimp_get_color_configuration ()" link="libgimp-gimpgimprc.html#gimp-get-color-configuration"/>
     <function name="gimp_get_default_comment ()" link="libgimp-gimpgimprc.html#gimp-get-default-comment"/>
     <function name="gimp_get_module_load_inhibit ()" link="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit"/>
     <function name="gimp_get_monitor_resolution ()" link="libgimp-gimpgimprc.html#gimp-get-monitor-resolution"/>
@@ -197,6 +202,7 @@
     <function name="gimp_plugin_help_register ()" link="libgimp-gimpplugin.html#gimp-plugin-help-register"/>
     <function name="gimp_plugin_icon_register ()" link="libgimp-gimpplugin.html#gimp-plugin-icon-register"/>
     <function name="gimp_plugin_menu_register ()" link="libgimp-gimpplugin.html#gimp-plugin-menu-register"/>
+    <function name="gimp_plugin_menu_branch_register ()" link="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register"/>
     <function name="gimp_procedural_db_temp_name ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-temp-name"/>
     <function name="gimp_procedural_db_proc_info ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info"/>
     <function name="gimp_procedural_db_get_data ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data"/>
@@ -206,16 +212,24 @@
     <function name="gimp_procedural_db_proc_arg ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-arg"/>
     <function name="gimp_procedural_db_proc_val ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-val"/>
     <function name="gimp_procedural_db_get_data_size ()" link="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-size"/>
+    <function name="GimpProgressVtable" link="libgimp-gimpprogress.html#GimpProgressVtable"/>
+    <function name="gimp_progress_init ()" link="libgimp-gimpprogress.html#gimp-progress-init"/>
+    <function name="gimp_progress_init_printf ()" link="libgimp-gimpprogress.html#gimp-progress-init-printf"/>
+    <function name="gimp_progress_update ()" link="libgimp-gimpprogress.html#gimp-progress-update"/>
+    <function name="gimp_progress_pulse ()" link="libgimp-gimpprogress.html#gimp-progress-pulse"/>
+    <function name="gimp_progress_set_text ()" link="libgimp-gimpprogress.html#gimp-progress-set-text"/>
+    <function name="gimp_progress_set_text_printf ()" link="libgimp-gimpprogress.html#gimp-progress-set-text-printf"/>
+    <function name="gimp_progress_uninstall ()" link="libgimp-gimpprogress.html#gimp-progress-uninstall"/>
+    <function name="gimp_progress_cancel ()" link="libgimp-gimpprogress.html#gimp-progress-cancel"/>
+    <function name="gimp_progress_get_window_handle ()" link="libgimp-gimpprogress.html#gimp-progress-get-window-handle"/>
     <function name="GimpProgressStartCallback ()" link="libgimp-gimpprogress.html#GimpProgressStartCallback"/>
     <function name="GimpProgressEndCallback ()" link="libgimp-gimpprogress.html#GimpProgressEndCallback"/>
     <function name="GimpProgressTextCallback ()" link="libgimp-gimpprogress.html#GimpProgressTextCallback"/>
     <function name="GimpProgressValueCallback ()" link="libgimp-gimpprogress.html#GimpProgressValueCallback"/>
-    <function name="gimp_progress_init ()" link="libgimp-gimpprogress.html#gimp-progress-init"/>
-    <function name="gimp_progress_update ()" link="libgimp-gimpprogress.html#gimp-progress-update"/>
+    <function name="gimp_progress_install_vtable ()" link="libgimp-gimpprogress.html#gimp-progress-install-vtable"/>
     <function name="gimp_progress_install ()" link="libgimp-gimpprogress.html#gimp-progress-install"/>
-    <function name="gimp_progress_uninstall ()" link="libgimp-gimpprogress.html#gimp-progress-uninstall"/>
-    <function name="gimp_progress_cancel ()" link="libgimp-gimpprogress.html#gimp-progress-cancel"/>
     <function name="gimp_channel_new ()" link="libgimp-gimpchannel.html#gimp-channel-new"/>
+    <function name="gimp_channel_new_from_component ()" link="libgimp-gimpchannel.html#gimp-channel-new-from-component"/>
     <function name="gimp_channel_copy ()" link="libgimp-gimpchannel.html#gimp-channel-copy"/>
     <function name="gimp_channel_get_show_masked ()" link="libgimp-gimpchannel.html#gimp-channel-get-show-masked"/>
     <function name="gimp_channel_set_show_masked ()" link="libgimp-gimpchannel.html#gimp-channel-set-show-masked"/>
@@ -230,6 +244,7 @@
     <function name="gimp_levels_stretch ()" link="libgimp-gimpcolor.html#gimp-levels-stretch"/>
     <function name="gimp_posterize ()" link="libgimp-gimpcolor.html#gimp-posterize"/>
     <function name="gimp_desaturate ()" link="libgimp-gimpcolor.html#gimp-desaturate"/>
+    <function name="gimp_desaturate_full ()" link="libgimp-gimpcolor.html#gimp-desaturate-full"/>
     <function name="gimp_equalize ()" link="libgimp-gimpcolor.html#gimp-equalize"/>
     <function name="gimp_invert ()" link="libgimp-gimpcolor.html#gimp-invert"/>
     <function name="gimp_curves_spline ()" link="libgimp-gimpcolor.html#gimp-curves-spline"/>
@@ -244,6 +259,7 @@
     <function name="gimp_image_convert_indexed ()" link="libgimp-gimpconvert.html#gimp-image-convert-indexed"/>
     <function name="gimp_display_new ()" link="libgimp-gimpdisplay.html#gimp-display-new"/>
     <function name="gimp_display_delete ()" link="libgimp-gimpdisplay.html#gimp-display-delete"/>
+    <function name="gimp_display_get_window_handle ()" link="libgimp-gimpdisplay.html#gimp-display-get-window-handle"/>
     <function name="gimp_displays_flush ()" link="libgimp-gimpdisplay.html#gimp-displays-flush"/>
     <function name="gimp_displays_reconnect ()" link="libgimp-gimpdisplay.html#gimp-displays-reconnect"/>
     <function name="GimpDrawable" link="libgimp-gimpdrawable.html#GimpDrawable"/>
@@ -287,6 +303,7 @@
     <function name="gimp_drawable_is_layer_mask ()" link="libgimp-gimpdrawable.html#gimp-drawable-is-layer-mask"/>
     <function name="gimp_drawable_is_channel ()" link="libgimp-gimpdrawable.html#gimp-drawable-is-channel"/>
     <function name="gimp_drawable_offset ()" link="libgimp-gimpdrawable.html#gimp-drawable-offset"/>
+    <function name="gimp_drawable_foreground_extract ()" link="libgimp-gimpdrawable.html#gimp-drawable-foreground-extract"/>
     <function name="gimp_drawable_parasite_find ()" link="libgimp-gimpdrawable.html#gimp-drawable-parasite-find"/>
     <function name="gimp_drawable_parasite_list ()" link="libgimp-gimpdrawable.html#gimp-drawable-parasite-list"/>
     <function name="gimp_drawable_parasite_attach ()" link="libgimp-gimpdrawable.html#gimp-drawable-parasite-attach"/>
@@ -312,6 +329,12 @@
     <function name="gimp_edit_copy ()" link="libgimp-gimpedit.html#gimp-edit-copy"/>
     <function name="gimp_edit_copy_visible ()" link="libgimp-gimpedit.html#gimp-edit-copy-visible"/>
     <function name="gimp_edit_paste ()" link="libgimp-gimpedit.html#gimp-edit-paste"/>
+    <function name="gimp_edit_paste_as_new ()" link="libgimp-gimpedit.html#gimp-edit-paste-as-new"/>
+    <function name="gimp_edit_named_cut ()" link="libgimp-gimpedit.html#gimp-edit-named-cut"/>
+    <function name="gimp_edit_named_copy ()" link="libgimp-gimpedit.html#gimp-edit-named-copy"/>
+    <function name="gimp_edit_named_copy_visible ()" link="libgimp-gimpedit.html#gimp-edit-named-copy-visible"/>
+    <function name="gimp_edit_named_paste ()" link="libgimp-gimpedit.html#gimp-edit-named-paste"/>
+    <function name="gimp_edit_named_paste_as_new ()" link="libgimp-gimpedit.html#gimp-edit-named-paste-as-new"/>
     <function name="gimp_edit_clear ()" link="libgimp-gimpedit.html#gimp-edit-clear"/>
     <function name="gimp_edit_fill ()" link="libgimp-gimpedit.html#gimp-edit-fill"/>
     <function name="gimp_edit_bucket_fill ()" link="libgimp-gimpedit.html#gimp-edit-bucket-fill"/>
@@ -319,6 +342,7 @@
     <function name="gimp_edit_stroke ()" link="libgimp-gimpedit.html#gimp-edit-stroke"/>
     <function name="gimp_temp_name ()" link="libgimp-gimpfileops.html#gimp-temp-name"/>
     <function name="gimp_file_load ()" link="libgimp-gimpfileops.html#gimp-file-load"/>
+    <function name="gimp_file_load_layer ()" link="libgimp-gimpfileops.html#gimp-file-load-layer"/>
     <function name="gimp_file_save ()" link="libgimp-gimpfileops.html#gimp-file-save"/>
     <function name="gimp_register_magic_load_handler ()" link="libgimp-gimpfileops.html#gimp-register-magic-load-handler"/>
     <function name="gimp_register_load_handler ()" link="libgimp-gimpfileops.html#gimp-register-load-handler"/>
@@ -331,6 +355,16 @@
     <function name="gimp_floating_sel_attach ()" link="libgimp-gimpfloatingsel.html#gimp-floating-sel-attach"/>
     <function name="gimp_floating_sel_rigor ()" link="libgimp-gimpfloatingsel.html#gimp-floating-sel-rigor"/>
     <function name="gimp_floating_sel_relax ()" link="libgimp-gimpfloatingsel.html#gimp-floating-sel-relax"/>
+    <function name="gimp_image_grid_get_spacing ()" link="libgimp-gimpgrid.html#gimp-image-grid-get-spacing"/>
+    <function name="gimp_image_grid_set_spacing ()" link="libgimp-gimpgrid.html#gimp-image-grid-set-spacing"/>
+    <function name="gimp_image_grid_get_offset ()" link="libgimp-gimpgrid.html#gimp-image-grid-get-offset"/>
+    <function name="gimp_image_grid_set_offset ()" link="libgimp-gimpgrid.html#gimp-image-grid-set-offset"/>
+    <function name="gimp_image_grid_get_foreground_color ()" link="libgimp-gimpgrid.html#gimp-image-grid-get-foreground-color"/>
+    <function name="gimp_image_grid_set_foreground_color ()" link="libgimp-gimpgrid.html#gimp-image-grid-set-foreground-color"/>
+    <function name="gimp_image_grid_get_background_color ()" link="libgimp-gimpgrid.html#gimp-image-grid-get-background-color"/>
+    <function name="gimp_image_grid_set_background_color ()" link="libgimp-gimpgrid.html#gimp-image-grid-set-background-color"/>
+    <function name="gimp_image_grid_get_style ()" link="libgimp-gimpgrid.html#gimp-image-grid-get-style"/>
+    <function name="gimp_image_grid_set_style ()" link="libgimp-gimpgrid.html#gimp-image-grid-set-style"/>
     <function name="gimp_image_add_hguide ()" link="libgimp-gimpguides.html#gimp-image-add-hguide"/>
     <function name="gimp_image_add_vguide ()" link="libgimp-gimpguides.html#gimp-image-add-vguide"/>
     <function name="gimp_image_delete_guide ()" link="libgimp-gimpguides.html#gimp-image-delete-guide"/>
@@ -398,6 +432,7 @@
     <function name="gimp_image_set_cmap ()" link="libgimp-gimpimage.html#gimp-image-set-cmap"/>
     <function name="gimp_image_get_colormap ()" link="libgimp-gimpimage.html#gimp-image-get-colormap"/>
     <function name="gimp_image_set_colormap ()" link="libgimp-gimpimage.html#gimp-image-set-colormap"/>
+    <function name="gimp_image_get_vectors ()" link="libgimp-gimpimage.html#gimp-image-get-vectors"/>
     <function name="gimp_image_get_thumbnail_data ()" link="libgimp-gimpimage.html#gimp-image-get-thumbnail-data"/>
     <function name="gimp_image_parasite_find ()" link="libgimp-gimpimage.html#gimp-image-parasite-find"/>
     <function name="gimp_image_parasite_list ()" link="libgimp-gimpimage.html#gimp-image-parasite-list"/>
@@ -418,6 +453,8 @@
     <function name="gimp_layer_add_mask ()" link="libgimp-gimplayer.html#gimp-layer-add-mask"/>
     <function name="gimp_layer_remove_mask ()" link="libgimp-gimplayer.html#gimp-layer-remove-mask"/>
     <function name="gimp_layer_new_from_drawable ()" link="libgimp-gimplayer.html#gimp-layer-new-from-drawable"/>
+    <function name="gimp_layer_get_lock_alpha ()" link="libgimp-gimplayer.html#gimp-layer-get-lock-alpha"/>
+    <function name="gimp_layer_set_lock_alpha ()" link="libgimp-gimplayer.html#gimp-layer-set-lock-alpha"/>
     <function name="gimp_layer_get_preserve_trans ()" link="libgimp-gimplayer.html#gimp-layer-get-preserve-trans"/>
     <function name="gimp_layer_set_preserve_trans ()" link="libgimp-gimplayer.html#gimp-layer-set-preserve-trans"/>
     <function name="gimp_layer_get_apply_mask ()" link="libgimp-gimplayer.html#gimp-layer-get-apply-mask"/>
@@ -443,9 +480,12 @@
     <function name="gimp_path_delete ()" link="libgimp-gimppaths.html#gimp-path-delete"/>
     <function name="gimp_path_get_locked ()" link="libgimp-gimppaths.html#gimp-path-get-locked"/>
     <function name="gimp_path_set_locked ()" link="libgimp-gimppaths.html#gimp-path-set-locked"/>
+    <function name="gimp_path_get_visible ()" link="libgimp-gimppaths.html#gimp-path-get-visible"/>
+    <function name="gimp_path_set_visible ()" link="libgimp-gimppaths.html#gimp-path-set-visible"/>
     <function name="gimp_path_set_tattoo ()" link="libgimp-gimppaths.html#gimp-path-set-tattoo"/>
     <function name="gimp_path_to_selection ()" link="libgimp-gimppaths.html#gimp-path-to-selection"/>
     <function name="gimp_path_import ()" link="libgimp-gimppaths.html#gimp-path-import"/>
+    <function name="gimp_path_import_string ()" link="libgimp-gimppaths.html#gimp-path-import-string"/>
     <function name="enum GimpPixelFetcherEdgeMode" link="libgimp-gimppixelfetcher.html#GimpPixelFetcherEdgeMode"/>
     <function name="GimpPixelFetcher" link="libgimp-gimppixelfetcher.html#GimpPixelFetcher"/>
     <function name="gimp_pixel_fetcher_new ()" link="libgimp-gimppixelfetcher.html#gimp-pixel-fetcher-new"/>
@@ -543,6 +583,10 @@
     <function name="gimp_image_undo_enable ()" link="libgimp-gimpundo.html#gimp-image-undo-enable"/>
     <function name="gimp_image_undo_freeze ()" link="libgimp-gimpundo.html#gimp-image-undo-freeze"/>
     <function name="gimp_image_undo_thaw ()" link="libgimp-gimpundo.html#gimp-image-undo-thaw"/>
+    <function name="gimp_vectors_get_strokes ()" link="libgimp-gimpvectors.html#gimp-vectors-get-strokes"/>
+    <function name="gimp_vectors_stroke_interpolate ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-interpolate"/>
+    <function name="gimp_vectors_stroke_remove ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-remove"/>
+    <function name="gimp_vectors_stroke_translate ()" link="libgimp-gimpvectors.html#gimp-vectors-stroke-translate"/>
     <function name="gimp_brush_new ()" link="libgimp-gimpbrush.html#gimp-brush-new"/>
     <function name="gimp_brush_duplicate ()" link="libgimp-gimpbrush.html#gimp-brush-duplicate"/>
     <function name="gimp_brush_rename ()" link="libgimp-gimpbrush.html#gimp-brush-rename"/>
@@ -551,6 +595,20 @@
     <function name="gimp_brush_get_pixels ()" link="libgimp-gimpbrush.html#gimp-brush-get-pixels"/>
     <function name="gimp_brush_get_spacing ()" link="libgimp-gimpbrush.html#gimp-brush-get-spacing"/>
     <function name="gimp_brush_set_spacing ()" link="libgimp-gimpbrush.html#gimp-brush-set-spacing"/>
+    <function name="gimp_brush_get_shape ()" link="libgimp-gimpbrush.html#gimp-brush-get-shape"/>
+    <function name="gimp_brush_set_shape ()" link="libgimp-gimpbrush.html#gimp-brush-set-shape"/>
+    <function name="gimp_brush_get_spikes ()" link="libgimp-gimpbrush.html#gimp-brush-get-spikes"/>
+    <function name="gimp_brush_set_spikes ()" link="libgimp-gimpbrush.html#gimp-brush-set-spikes"/>
+    <function name="gimp_brush_get_angle ()" link="libgimp-gimpbrush.html#gimp-brush-get-angle"/>
+    <function name="gimp_brush_set_angle ()" link="libgimp-gimpbrush.html#gimp-brush-set-angle"/>
+    <function name="gimp_brush_get_radius ()" link="libgimp-gimpbrush.html#gimp-brush-get-radius"/>
+    <function name="gimp_brush_set_radius ()" link="libgimp-gimpbrush.html#gimp-brush-set-radius"/>
+    <function name="gimp_brush_get_aspect_ratio ()" link="libgimp-gimpbrush.html#gimp-brush-get-aspect-ratio"/>
+    <function name="gimp_brush_set_aspect_ratio ()" link="libgimp-gimpbrush.html#gimp-brush-set-aspect-ratio"/>
+    <function name="gimp_brush_get_hardness ()" link="libgimp-gimpbrush.html#gimp-brush-get-hardness"/>
+    <function name="gimp_brush_set_hardness ()" link="libgimp-gimpbrush.html#gimp-brush-set-hardness"/>
+    <function name="gimp_brush_is_generated ()" link="libgimp-gimpbrush.html#gimp-brush-is-generated"/>
+    <function name="gimp_brush_is_editable ()" link="libgimp-gimpbrush.html#gimp-brush-is-editable"/>
     <function name="gimp_brushes_refresh ()" link="libgimp-gimpbrushes.html#gimp-brushes-refresh"/>
     <function name="gimp_brushes_get_list ()" link="libgimp-gimpbrushes.html#gimp-brushes-get-list"/>
     <function name="gimp_brushes_get_brush ()" link="libgimp-gimpbrushes.html#gimp-brushes-get-brush"/>
@@ -568,6 +626,7 @@
     <function name="gimp_gradient_duplicate ()" link="libgimp-gimpgradient.html#gimp-gradient-duplicate"/>
     <function name="gimp_gradient_rename ()" link="libgimp-gimpgradient.html#gimp-gradient-rename"/>
     <function name="gimp_gradient_delete ()" link="libgimp-gimpgradient.html#gimp-gradient-delete"/>
+    <function name="gimp_gradient_is_editable ()" link="libgimp-gimpgradient.html#gimp-gradient-is-editable"/>
     <function name="gimp_gradient_get_uniform_samples ()" link="libgimp-gimpgradient.html#gimp-gradient-get-uniform-samples"/>
     <function name="gimp_gradient_get_custom_samples ()" link="libgimp-gimpgradient.html#gimp-gradient-get-custom-samples"/>
     <function name="gimp_gradient_segment_get_left_color ()" link="libgimp-gimpgradient.html#gimp-gradient-segment-get-left-color"/>
@@ -605,6 +664,8 @@
     <function name="gimp_palette_rename ()" link="libgimp-gimppalette.html#gimp-palette-rename"/>
     <function name="gimp_palette_delete ()" link="libgimp-gimppalette.html#gimp-palette-delete"/>
     <function name="gimp_palette_get_info ()" link="libgimp-gimppalette.html#gimp-palette-get-info"/>
+    <function name="gimp_palette_get_columns ()" link="libgimp-gimppalette.html#gimp-palette-get-columns"/>
+    <function name="gimp_palette_set_columns ()" link="libgimp-gimppalette.html#gimp-palette-set-columns"/>
     <function name="gimp_palette_add_entry ()" link="libgimp-gimppalette.html#gimp-palette-add-entry"/>
     <function name="gimp_palette_delete_entry ()" link="libgimp-gimppalette.html#gimp-palette-delete-entry"/>
     <function name="gimp_palette_entry_get_color ()" link="libgimp-gimppalette.html#gimp-palette-entry-get-color"/>
@@ -617,6 +678,7 @@
     <function name="gimp_palette_set_background ()" link="libgimp-gimppalette.html#gimp-palette-set-background"/>
     <function name="gimp_palette_set_default_colors ()" link="libgimp-gimppalette.html#gimp-palette-set-default-colors"/>
     <function name="gimp_palette_swap_colors ()" link="libgimp-gimppalette.html#gimp-palette-swap-colors"/>
+    <function name="gimp_palette_is_editable ()" link="libgimp-gimppalette.html#gimp-palette-is-editable"/>
     <function name="gimp_palettes_refresh ()" link="libgimp-gimppalettes.html#gimp-palettes-refresh"/>
     <function name="gimp_palettes_get_list ()" link="libgimp-gimppalettes.html#gimp-palettes-get-list"/>
     <function name="gimp_palettes_get_palette ()" link="libgimp-gimppalettes.html#gimp-palettes-get-palette"/>
@@ -635,6 +697,14 @@
     <function name="gimp_brushes_popup ()" link="libgimp-gimpbrushselect.html#gimp-brushes-popup"/>
     <function name="gimp_brushes_close_popup ()" link="libgimp-gimpbrushselect.html#gimp-brushes-close-popup"/>
     <function name="gimp_brushes_set_popup ()" link="libgimp-gimpbrushselect.html#gimp-brushes-set-popup"/>
+    <function name="GimpFontSelectButton" link="GimpFontSelectButton.html#GimpFontSelectButton-struct"/>
+    <function name="gimp_font_select_button_new ()" link="GimpFontSelectButton.html#gimp-font-select-button-new"/>
+    <function name="gimp_font_select_button_get_font_name ()" link="GimpFontSelectButton.html#gimp-font-select-button-get-font-name"/>
+    <function name="gimp_font_select_button_set_font_name ()" link="GimpFontSelectButton.html#gimp-font-select-button-set-font-name"/>
+    <function name="gimp_font_select_button_close_popup ()" link="GimpFontSelectButton.html#gimp-font-select-button-close-popup"/>
+    <function name="The &quot;font-name&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--font-name"/>
+    <function name="The &quot;title&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--title"/>
+    <function name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
     <function name="GimpRunFontCallback ()" link="libgimp-gimpfontselect.html#GimpRunFontCallback"/>
     <function name="gimp_font_select_new ()" link="libgimp-gimpfontselect.html#gimp-font-select-new"/>
     <function name="gimp_font_select_destroy ()" link="libgimp-gimpfontselect.html#gimp-font-select-destroy"/>
@@ -660,21 +730,34 @@
     <function name="gimp_patterns_close_popup ()" link="libgimp-gimppatternselect.html#gimp-patterns-close-popup"/>
     <function name="gimp_patterns_set_popup ()" link="libgimp-gimppatternselect.html#gimp-patterns-set-popup"/>
     <function name="gimp_ui_init ()" link="libgimp-gimpui.html#gimp-ui-init"/>
+    <function name="gimp_ui_get_display_window ()" link="libgimp-gimpui.html#gimp-ui-get-display-window"/>
+    <function name="gimp_ui_get_progress_window ()" link="libgimp-gimpui.html#gimp-ui-get-progress-window"/>
+    <function name="gimp_window_set_transient ()" link="libgimp-gimpui.html#gimp-window-set-transient"/>
+    <function name="gimp_window_set_transient_for_display ()" link="libgimp-gimpui.html#gimp-window-set-transient-for-display"/>
     <function name="enum GimpExportCapabilities" link="libgimp-gimpexport.html#GimpExportCapabilities"/>
     <function name="enum GimpExportReturn" link="libgimp-gimpexport.html#GimpExportReturn"/>
     <function name="gimp_export_image ()" link="libgimp-gimpexport.html#gimp-export-image"/>
-    <function name="GimpAspectPreview" link="GimpAspectPreview.html#GimpAspectPreview-struct"/>
-    <function name="gimp_aspect_preview_new ()" link="GimpAspectPreview.html#gimp-aspect-preview-new"/>
     <function name="GimpDrawablePreview" link="GimpDrawablePreview.html#GimpDrawablePreview-struct"/>
     <function name="gimp_drawable_preview_new ()" link="GimpDrawablePreview.html#gimp-drawable-preview-new"/>
     <function name="gimp_drawable_preview_get_drawable ()" link="GimpDrawablePreview.html#gimp-drawable-preview-get-drawable"/>
     <function name="gimp_drawable_preview_draw_region ()" link="GimpDrawablePreview.html#gimp-drawable-preview-draw-region"/>
-    <function name="GimpDrawableConstraintFunc ()" link="libgimp-gimpdrawablecombobox.html#GimpDrawableConstraintFunc"/>
-    <function name="gimp_drawable_combo_box_new ()" link="libgimp-gimpdrawablecombobox.html#gimp-drawable-combo-box-new"/>
-    <function name="gimp_channel_combo_box_new ()" link="libgimp-gimpdrawablecombobox.html#gimp-channel-combo-box-new"/>
-    <function name="gimp_layer_combo_box_new ()" link="libgimp-gimpdrawablecombobox.html#gimp-layer-combo-box-new"/>
-    <function name="GimpImageConstraintFunc ()" link="libgimp-gimpimagecombobox.html#GimpImageConstraintFunc"/>
-    <function name="gimp_image_combo_box_new ()" link="libgimp-gimpimagecombobox.html#gimp-image-combo-box-new"/>
+    <function name="GimpAspectPreview" link="GimpAspectPreview.html#GimpAspectPreview-struct"/>
+    <function name="gimp_aspect_preview_new ()" link="GimpAspectPreview.html#gimp-aspect-preview-new"/>
+    <function name="GimpZoomPreview" link="GimpZoomPreview.html#GimpZoomPreview-struct"/>
+    <function name="gimp_zoom_preview_new ()" link="GimpZoomPreview.html#gimp-zoom-preview-new"/>
+    <function name="gimp_zoom_preview_get_source ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-source"/>
+    <function name="gimp_zoom_preview_get_drawable ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-drawable"/>
+    <function name="gimp_zoom_preview_get_factor ()" link="GimpZoomPreview.html#gimp-zoom-preview-get-factor"/>
+    <function name="GimpDrawableComboBox" link="GimpDrawableComboBox.html#GimpDrawableComboBox-struct"/>
+    <function name="GimpDrawableConstraintFunc ()" link="GimpDrawableComboBox.html#GimpDrawableConstraintFunc"/>
+    <function name="gimp_drawable_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-drawable-combo-box-new"/>
+    <function name="GimpChannelComboBox" link="GimpDrawableComboBox.html#GimpChannelComboBox-struct"/>
+    <function name="gimp_channel_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-channel-combo-box-new"/>
+    <function name="GimpLayerComboBox" link="GimpDrawableComboBox.html#GimpLayerComboBox-struct"/>
+    <function name="gimp_layer_combo_box_new ()" link="GimpDrawableComboBox.html#gimp-layer-combo-box-new"/>
+    <function name="GimpImageComboBox" link="GimpImageComboBox.html#GimpImageComboBox-struct"/>
+    <function name="GimpImageConstraintFunc ()" link="GimpImageComboBox.html#GimpImageConstraintFunc"/>
+    <function name="gimp_image_combo_box_new ()" link="GimpImageComboBox.html#gimp-image-combo-box-new"/>
     <function name="enum GimpPixbufTransparency" link="libgimp-gimppixbuf.html#GimpPixbufTransparency"/>
     <function name="gimp_image_get_thumbnail ()" link="libgimp-gimppixbuf.html#gimp-image-get-thumbnail"/>
     <function name="gimp_drawable_get_thumbnail ()" link="libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail"/>
@@ -702,5 +785,11 @@
     <function name="gimp_pattern_select_widget_new ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new"/>
     <function name="gimp_pattern_select_widget_close ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close"/>
     <function name="gimp_pattern_select_widget_set ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set"/>
+    <function name="GimpProcBrowserDialog" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-struct"/>
+    <function name="gimp_proc_browser_dialog_new ()" link="GimpProcBrowserDialog.html#gimp-proc-browser-dialog-new"/>
+    <function name="gimp_proc_browser_dialog_get_selected ()" link="GimpProcBrowserDialog.html#gimp-proc-browser-dialog-get-selected"/>
+    <function name="The &quot;row-activated&quot; signal" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-row-activated"/>
+    <function name="The &quot;selection-changed&quot; signal" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-selection-changed"/>
+    <function name="gimp_proc_view_new ()" link="libgimp-gimpprocview.html#gimp-proc-view-new"/>
   </functions>
 </book>

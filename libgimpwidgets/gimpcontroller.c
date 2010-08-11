@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "gimpwidgetstypes.h"
 
@@ -47,50 +48,24 @@ enum
 };
 
 
-static void   gimp_controller_class_init   (GimpControllerClass *klass);
-static void   gimp_controller_finalize     (GObject             *object);
-static void   gimp_controller_set_property (GObject             *object,
-                                            guint                property_id,
-                                            const GValue        *value,
-                                            GParamSpec          *pspec);
-static void   gimp_controller_get_property (GObject             *object,
-                                            guint                property_id,
-                                            GValue              *value,
-                                            GParamSpec          *pspec);
+static void   gimp_controller_finalize     (GObject      *object);
+static void   gimp_controller_set_property (GObject      *object,
+                                            guint         property_id,
+                                            const GValue *value,
+                                            GParamSpec   *pspec);
+static void   gimp_controller_get_property (GObject      *object,
+                                            guint         property_id,
+                                            GValue       *value,
+                                            GParamSpec   *pspec);
 
 
-static GObjectClass *parent_class = NULL;
+G_DEFINE_TYPE_WITH_CODE (GimpController, gimp_controller, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
 
-static guint  controller_signals[LAST_SIGNAL] = { 0 };
+#define parent_class gimp_controller_parent_class
 
+static guint controller_signals[LAST_SIGNAL] = { 0 };
 
-GType
-gimp_controller_get_type (void)
-{
-  static GType controller_type = 0;
-
-  if (! controller_type)
-    {
-      static const GTypeInfo controller_info =
-      {
-        sizeof (GimpControllerClass),
-        (GBaseInitFunc) NULL,
-        (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gimp_controller_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data     */
-        sizeof (GimpController),
-        0,              /* n_preallocs    */
-        NULL            /* instance_init  */
-      };
-
-      controller_type = g_type_register_static (G_TYPE_OBJECT,
-                                                "GimpController",
-                                                &controller_info, 0);
-    }
-
-  return controller_type;
-}
 
 gboolean
 gimp_controller_boolean_handled_accumulator (GSignalInvocationHint *ihint,
@@ -113,11 +88,17 @@ gimp_controller_class_init (GimpControllerClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  parent_class = g_type_class_peek_parent (klass);
-
   object_class->finalize     = gimp_controller_finalize;
   object_class->set_property = gimp_controller_set_property;
   object_class->get_property = gimp_controller_get_property;
+
+  klass->name                = "Unnamed";
+  klass->help_domain         = NULL;
+  klass->help_id             = NULL;
+
+  klass->get_n_events        = NULL;
+  klass->get_event_name      = NULL;
+  klass->event               = NULL;
 
   g_object_class_install_property (object_class, PROP_NAME,
                                    g_param_spec_string ("name", NULL, NULL,
@@ -140,14 +121,11 @@ gimp_controller_class_init (GimpControllerClass *klass)
                   _gimp_widgets_marshal_BOOLEAN__POINTER,
                   G_TYPE_BOOLEAN, 1,
                   G_TYPE_POINTER);
+}
 
-  klass->name           = "Unnamed";
-  klass->help_domain    = NULL;
-  klass->help_id        = NULL;
-
-  klass->get_n_events   = NULL;
-  klass->get_event_name = NULL;
-  klass->event          = NULL;
+static void
+gimp_controller_init (GimpController *controller)
+{
 }
 
 static void
@@ -156,10 +134,16 @@ gimp_controller_finalize (GObject *object)
   GimpController *controller = GIMP_CONTROLLER (object);
 
   if (controller->name)
-    g_free (controller->name);
+    {
+      g_free (controller->name);
+      controller->name = NULL;
+    }
 
   if (controller->state)
-    g_free (controller->state);
+    {
+      g_free (controller->state);
+      controller->state = NULL;
+    }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpFileEntry.html" title="GimpFileEntry">
 <link rel="next" href="GimpIntComboBox.html" title="GimpIntComboBox">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -19,68 +20,64 @@
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="GimpFileEntry.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpIntComboBox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#style_properties" class="shortcut">Style Properties</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpFrame"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpFrame</span></h2>
-<p>GimpFrame &#8212; A widget providing a HIG-compliant subclass of <a
-href="../gtk/GtkFrame.html"
-><span class="type">GtkFrame</span></a>.</p>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpFrame</span></h2>
+<p>GimpFrame &#8212; A widget providing a HIG-compliant subclass of <span class="type">GtkFrame</span>.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
             <a href="GimpFrame.html#GimpFrame-struct">GimpFrame</a>;
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="GimpFrame.html#gimp-frame-new">gimp_frame_new</a>                  (const gchar *label);
+GtkWidget*  <a href="GimpFrame.html#gimp-frame-new">gimp_frame_new</a>                  (const gchar *label);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2546286"></a><h2>Object Hierarchy</h2>
+<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
-href="../gtk/GtkObject.html"
->GtkObject</a>
-         +----<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>
-               +----<a
-href="../gtk/GtkContainer.html"
->GtkContainer</a>
-                     +----<a
-href="../gtk/GtkBin.html"
->GtkBin</a>
-                           +----<a
-href="../gtk/GtkFrame.html"
->GtkFrame</a>
-                                 +----GimpFrame
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBin
+                                 +----GtkFrame
+                                       +----GimpFrame
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560966"></a><h2>Implemented Interfaces</h2>
+<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpFrame implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2560983"></a><h2>Style Properties</h2>
+<a name="style_properties"></a><h2>Style Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpFrame.html#GimpFrame--label-bold">label-bold</a>"           gboolean              : Read
@@ -88,35 +85,29 @@ GimpFrame implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561020"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
-A widget providing a HIG-compliant subclass of <a
-href="../gtk/GtkFrame.html"
-><span class="type">GtkFrame</span></a>.
+A widget providing a HIG-compliant subclass of <span class="type">GtkFrame</span>.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2561039"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2561045"></a><h3>
+<a name="id2572689"></a><h3>
 <a name="GimpFrame-struct"></a>GimpFrame</h3>
-<a class="indexterm" name="id2561056"></a><pre class="programlisting">typedef struct _GimpFrame GimpFrame;</pre>
+<a class="indexterm" name="id2572701"></a><pre class="programlisting">typedef struct _GimpFrame GimpFrame;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2518922"></a><h3>
+<a name="id2572716"></a><h3>
 <a name="gimp-frame-new"></a>gimp_frame_new ()</h3>
-<a class="indexterm" name="id2518931"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_frame_new                  (const gchar *label);</pre>
+<a class="indexterm" name="id2572731"></a><pre class="programlisting">GtkWidget*  gimp_frame_new                  (const gchar *label);</pre>
 <p>
 Creates a <a href="GimpFrame.html" title="GimpFrame"><span class="type">GimpFrame</span></a> widget. A <a href="GimpFrame.html" title="GimpFrame"><span class="type">GimpFrame</span></a> is a HIG-compliant
-variant of <a
-href="../gtk/GtkFrame.html"
-><span class="type">GtkFrame</span></a>. It doesn't render a frame at all but
+variant of <span class="type">GtkFrame</span>. It doesn't render a frame at all but
 otherwise behaves like a frame. The frame's title is rendered in
 bold and the frame content is indented four spaces as suggested by
 the GNOME HIG (see http://developer.gnome.org/projects/gup/hig/).</p>
@@ -146,28 +137,24 @@ the GNOME HIG (see http://developer.gnome.org/projects/gup/hig/).</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2519035"></a><h2>Style Properties</h2>
+<a name="style_properties_details"></a><h2>Style Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2519041"></a><h3>
+<a name="id2525439"></a><h3>
 <a name="GimpFrame--label-bold"></a>The "<code class="literal">label-bold</code>" style property</h3>
-<pre class="programlisting">  "label-bold"           gboolean              : Read</pre>
+<a class="indexterm" name="id2525453"></a><pre class="programlisting">  "label-bold"           gboolean              : Read</pre>
 <p></p>
 <p>Default value: TRUE</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2519073"></a><h3>
+<a name="id2525476"></a><h3>
 <a name="GimpFrame--label-spacing"></a>The "<code class="literal">label-spacing</code>" style property</h3>
-<pre class="programlisting">  "label-spacing"        gint                  : Read</pre>
+<a class="indexterm" name="id2525490"></a><pre class="programlisting">  "label-spacing"        gint                  : Read</pre>
 <p></p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 6</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="GimpFileEntry.html"><b>&lt;&lt;&#160;GimpFileEntry</b></a></td>
-<td align="right"><a accesskey="n" href="GimpIntComboBox.html"><b>GimpIntComboBox&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

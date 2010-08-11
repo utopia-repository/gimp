@@ -4,16 +4,19 @@
 
 <refentry id="GimpPickButton">
 <refmeta>
-<refentrytitle>GimpPickButton</refentrytitle>
+<refentrytitle id="top_of_page">GimpPickButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpPickButton</refname><refpurpose>Widget to pick a color from screen.</refpurpose>
+<refname>GimpPickButton</refname>
+<refpurpose>Widget to pick a color from screen.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -25,25 +28,26 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBin">GtkBin</link>
-                           +----<link linkend="GtkButton">GtkButton</link>
-                                 +----GimpPickButton
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBin">GtkBin</link>
+                                 +----<link linkend="GtkButton">GtkButton</link>
+                                       +----GimpPickButton
 </synopsis>
 
 </refsect1>
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPickButton implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -52,20 +56,20 @@ GimpPickButton implements
 
 
 
-<refsect1>
-<title>Signal Prototypes</title>
+<refsect1 id="signal_proto">
+<title id="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpPickButton-color-picked">color-picked</link>&quot;
             <link linkend="void">void</link>        user_function      (<link linkend="GimpPickButton">GimpPickButton</link> *gimppickbutton,
-                                            <link linkend="gpointer">gpointer</link> arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gpointer">gpointer</link>        arg1,
+                                            <link linkend="gpointer">gpointer</link>        user_data)           : Run first
 </synopsis>
 </refsect1>
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 <link linkend="GimpPickButton"><type>GimpPickButton</type></link> is a specialized button. When clicked, it changes the
 cursor to a color-picker pipette and allows the user to pick a color
@@ -73,16 +77,16 @@ from any point on the screen.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpPickButton-struct"/>GimpPickButton</title>
+<title><anchor id="GimpPickButton-struct" role="struct"/>GimpPickButton</title>
 <indexterm><primary>GimpPickButton</primary></indexterm><programlisting>typedef struct _GimpPickButton GimpPickButton;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-pick-button-new"/>gimp_pick_button_new ()</title>
+<title><anchor id="gimp-pick-button-new" role="function"/>gimp_pick_button_new ()</title>
 <indexterm><primary>gimp_pick_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_pick_button_new            (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpPickButton"><type>GimpPickButton</type></link> widget.</para>
@@ -95,12 +99,12 @@ Creates a new <link linkend="GimpPickButton"><type>GimpPickButton</type></link> 
 
 </refsect1>
 
-<refsect1>
-<title>Signals</title>
+<refsect1 id="signals">
+<title id="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpPickButton-color-picked"/>The &quot;color-picked&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPickButton">GimpPickButton</link> *gimppickbutton,
-                                            <link linkend="gpointer">gpointer</link> arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpPickButton::color-picked</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPickButton">GimpPickButton</link> *gimppickbutton,
+                                            <link linkend="gpointer">gpointer</link>        arg1,
+                                            <link linkend="gpointer">gpointer</link>        user_data)           : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">

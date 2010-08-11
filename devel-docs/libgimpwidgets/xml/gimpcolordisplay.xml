@@ -4,16 +4,19 @@
 
 <refentry id="GimpColorDisplay">
 <refmeta>
-<refentrytitle>GimpColorDisplay</refentrytitle>
+<refentrytitle id="top_of_page">GimpColorDisplay</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpColorDisplay</refname><refpurpose>Pluggable GIMP display color correction modules.</refpurpose>
+<refname>GimpColorDisplay</refname>
+<refpurpose>Pluggable GIMP display color correction modules.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -42,8 +45,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -56,42 +59,42 @@
 
 
 
-<refsect1>
-<title>Properties</title>
+<refsect1 id="properties">
+<title id="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpColorDisplay--enabled">enabled</link>&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
 </synopsis>
 </refsect1>
 
-<refsect1>
-<title>Signal Prototypes</title>
+<refsect1 id="signal_proto">
+<title id="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpColorDisplay-changed">changed</link>&quot;   <link linkend="void">void</link>        user_function      (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *gimpcolordisplay,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gpointer">gpointer</link>          user_data)             : Run first
 </synopsis>
 </refsect1>
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions and definitions for creating pluggable GIMP
 display color correction modules.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpColorDisplay-struct"/>GimpColorDisplay</title>
+<title><anchor id="GimpColorDisplay-struct" role="struct"/>GimpColorDisplay</title>
 <indexterm><primary>GimpColorDisplay</primary></indexterm><programlisting>typedef struct _GimpColorDisplay GimpColorDisplay;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-new"/>gimp_color_display_new ()</title>
+<title><anchor id="gimp-color-display-new" role="function"/>gimp_color_display_new ()</title>
 <indexterm><primary>gimp_color_display_new</primary></indexterm><programlisting><link linkend="GimpColorDisplay">GimpColorDisplay</link>* gimp_color_display_new    (<link linkend="GType">GType</link> display_type);</programlisting>
 <para>
 
@@ -105,7 +108,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-clone"/>gimp_color_display_clone ()</title>
+<title><anchor id="gimp-color-display-clone" role="function"/>gimp_color_display_clone ()</title>
 <indexterm><primary>gimp_color_display_clone</primary></indexterm><programlisting><link linkend="GimpColorDisplay">GimpColorDisplay</link>* gimp_color_display_clone  (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
 
@@ -119,7 +122,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-set-enabled"/>gimp_color_display_set_enabled ()</title>
+<title><anchor id="gimp-color-display-set-enabled" role="function"/>gimp_color_display_set_enabled ()</title>
 <indexterm><primary>gimp_color_display_set_enabled</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_display_set_enabled  (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display,
                                              <link linkend="gboolean">gboolean</link> enabled);</programlisting>
 <para>
@@ -135,7 +138,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-get-enabled"/>gimp_color_display_get_enabled ()</title>
+<title><anchor id="gimp-color-display-get-enabled" role="function"/>gimp_color_display_get_enabled ()</title>
 <indexterm><primary>gimp_color_display_get_enabled</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_color_display_get_enabled  (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
 
@@ -149,7 +152,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-convert"/>gimp_color_display_convert ()</title>
+<title><anchor id="gimp-color-display-convert" role="function"/>gimp_color_display_convert ()</title>
 <indexterm><primary>gimp_color_display_convert</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_display_convert      (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display,
                                              <link linkend="guchar">guchar</link> *buf,
                                              <link linkend="gint">gint</link> width,
@@ -181,7 +184,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-load-state"/>gimp_color_display_load_state ()</title>
+<title><anchor id="gimp-color-display-load-state" role="function"/>gimp_color_display_load_state ()</title>
 <indexterm><primary>gimp_color_display_load_state</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_display_load_state   (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display,
                                              <link linkend="GimpParasite">GimpParasite</link> *state);</programlisting>
 <para>
@@ -197,7 +200,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-save-state"/>gimp_color_display_save_state ()</title>
+<title><anchor id="gimp-color-display-save-state" role="function"/>gimp_color_display_save_state ()</title>
 <indexterm><primary>gimp_color_display_save_state</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>* gimp_color_display_save_state (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
 
@@ -211,7 +214,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-configure"/>gimp_color_display_configure ()</title>
+<title><anchor id="gimp-color-display-configure" role="function"/>gimp_color_display_configure ()</title>
 <indexterm><primary>gimp_color_display_configure</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_color_display_configure    (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
 
@@ -225,7 +228,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-configure-reset"/>gimp_color_display_configure_reset ()</title>
+<title><anchor id="gimp-color-display-configure-reset" role="function"/>gimp_color_display_configure_reset ()</title>
 <indexterm><primary>gimp_color_display_configure_reset</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_display_configure_reset
                                             (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
@@ -238,7 +241,7 @@ display color correction modules.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-display-changed"/>gimp_color_display_changed ()</title>
+<title><anchor id="gimp-color-display-changed" role="function"/>gimp_color_display_changed ()</title>
 <indexterm><primary>gimp_color_display_changed</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_color_display_changed      (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
 
@@ -251,20 +254,20 @@ display color correction modules.
 </variablelist></refsect2>
 
 </refsect1>
-<refsect1>
-<title>Properties</title>
+<refsect1 id="property_details">
+<title id="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpColorDisplay--enabled"/>The &quot;<literal>enabled</literal>&quot; property</title>
-<programlisting>  &quot;enabled&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<indexterm><primary>GimpColorDisplay:enabled</primary></indexterm><programlisting>  &quot;enabled&quot;              <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para></para><para>Default value: TRUE</para>
 </refsect2>
 
 </refsect1>
 
-<refsect1>
-<title>Signals</title>
+<refsect1 id="signals">
+<title id="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpColorDisplay-changed"/>The &quot;changed&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *gimpcolordisplay,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpColorDisplay::changed</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpColorDisplay">GimpColorDisplay</link> *gimpcolordisplay,
+                                            <link linkend="gpointer">gpointer</link>          user_data)             : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">

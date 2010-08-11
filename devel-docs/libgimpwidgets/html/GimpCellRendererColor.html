@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
 <link rel="prev" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
 <link rel="next" href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -19,52 +20,56 @@
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpwidgets-cell-renderers.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-cell-renderers.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpCellRendererToggle.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#properties" class="shortcut">Properties</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpCellRendererColor"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpCellRendererColor</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpCellRendererColor</span></h2>
 <p>GimpCellRendererColor &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
             <a href="GimpCellRendererColor.html#GimpCellRendererColor-struct">GimpCellRendererColor</a>;
-<a
-href="../gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>* <a href="GimpCellRendererColor.html#gimp-cell-renderer-color-new">gimp_cell_renderer_color_new</a>
+GtkCellRenderer* <a href="GimpCellRendererColor.html#gimp-cell-renderer-color-new">gimp_cell_renderer_color_new</a>
                                             (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2546583"></a><h2>Object Hierarchy</h2>
+<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
-href="../gtk/GtkObject.html"
->GtkObject</a>
-         +----<a
-href="../gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>
-               +----GimpCellRendererColor
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkCellRenderer
+                     +----GimpCellRendererColor
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2573184"></a><h2>Properties</h2>
+<a name="properties"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpCellRendererColor.html#GimpCellRendererColor--color">color</a>"                <a
@@ -75,33 +80,29 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2572522"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2572533"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2572539"></a><h3>
+<a name="id2581141"></a><h3>
 <a name="GimpCellRendererColor-struct"></a>GimpCellRendererColor</h3>
-<a class="indexterm" name="id2572548"></a><pre class="programlisting">typedef struct _GimpCellRendererColor GimpCellRendererColor;</pre>
+<a class="indexterm" name="id2581152"></a><pre class="programlisting">typedef struct _GimpCellRendererColor GimpCellRendererColor;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572563"></a><h3>
+<a name="id2581167"></a><h3>
 <a name="gimp-cell-renderer-color-new"></a>gimp_cell_renderer_color_new ()</h3>
-<a class="indexterm" name="id2572572"></a><pre class="programlisting"><a
-href="../gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>* gimp_cell_renderer_color_new
+<a class="indexterm" name="id2581180"></a><pre class="programlisting">GtkCellRenderer* gimp_cell_renderer_color_new
                                             (void);</pre>
 <p>
-Creates a <a
-href="../gtk/GtkCellRenderer.html"
-><span class="type">GtkCellRenderer</span></a> that displays a color.</p>
+Creates a <span class="type">GtkCellRenderer</span> that displays a color.</p>
 <p>
 
 </p>
@@ -120,37 +121,33 @@ href="../gtk/GtkCellRenderer.html"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2573597"></a><h2>Properties</h2>
+<a name="property_details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2573603"></a><h3>
+<a name="id2584432"></a><h3>
 <a name="GimpCellRendererColor--color"></a>The "<code class="literal">color</code>" property</h3>
-<pre class="programlisting">  "color"                <a
+<a class="indexterm" name="id2584448"></a><pre class="programlisting">  "color"                <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a>               : Read / Write</pre>
 <p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573631"></a><h3>
+<a name="id2584467"></a><h3>
 <a name="GimpCellRendererColor--icon-size"></a>The "<code class="literal">icon-size</code>" property</h3>
-<pre class="programlisting">  "icon-size"            gint                  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2584483"></a><pre class="programlisting">  "icon-size"            gint                  : Read / Write / Construct</pre>
 <p></p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 1</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2573668"></a><h3>
+<a name="id2582294"></a><h3>
 <a name="GimpCellRendererColor--opaque"></a>The "<code class="literal">opaque</code>" property</h3>
-<pre class="programlisting">  "opaque"               gboolean              : Read / Write / Construct</pre>
+<a class="indexterm" name="id2582309"></a><pre class="programlisting">  "opaque"               gboolean              : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: TRUE</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpwidgets-cell-renderers.html"><b>&lt;&lt;&#160;Cell Renderers for GtkTreeView</b></a></td>
-<td align="right"><a accesskey="n" href="GimpCellRendererToggle.html"><b>GimpCellRendererToggle&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

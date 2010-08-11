@@ -58,6 +58,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = aa$(EXEEXT)
 ACLOCAL = ${SHELL} /home/sven/gnomecvs/gimp-dist-2-2/missing --run aclocal-1.9 
 ALLOCA = 
+ALL_LINGUAS = bg ca cs da de el en_CA en_GB es eu fi fr ga gl he hu hr id it ja ko lt mk ms nb nl no pa pl pt pt_BR ro ru sk sr sr@Latn sv tr uk vi yi zh_CN zh_TW
 ALSA_CFLAGS = 
 ALSA_LIBS =  -lasound -lm -ldl -lpthread
 AMDEP_FALSE = #
@@ -96,7 +97,7 @@ DEFAULT_BINARY_FALSE = #
 DEFAULT_BINARY_TRUE = 
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
-DESKTOP_DATADIR = ${prefix}/share
+DESKTOP_DATADIR = ${datarootdir}
 DESKTOP_DATADIR_FALSE = #
 DESKTOP_DATADIR_TRUE = 
 DLLTOOL = dlltool
@@ -104,7 +105,7 @@ ECHO = echo
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
-EGREP = grep -E
+EGREP = /bin/grep -E
 ENABLE_GIMP_CONSOLE_FALSE = #
 ENABLE_GIMP_CONSOLE_TRUE = 
 ENABLE_GTK_DOC_FALSE = #
@@ -132,13 +133,13 @@ GIMPPRINT_REQUIRED_VERSION = 4.2.0
 GIMPPRINT_TOONEW_VERSION = 4.3.0
 GIMP_API_VERSION = 2.0
 GIMP_APP_VERSION = 2.2
-GIMP_BINARY_AGE = 211
+GIMP_BINARY_AGE = 212
 GIMP_DATA_VERSION = 2.0
 GIMP_DESKTOP_ICON = wilber-icon.png
 GIMP_FULL_NAME = The GIMP
-GIMP_INTERFACE_AGE = 11
+GIMP_INTERFACE_AGE = 12
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 11
+GIMP_MICRO_VERSION = 12
 GIMP_MINOR_VERSION = 2
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
@@ -147,7 +148,7 @@ GIMP_MP_LIBS =
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.2.11
+GIMP_REAL_VERSION = 2.2.12
 GIMP_REMOTE = gimp-remote-2.2$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
 GIMP_THREAD_FLAGS = 
@@ -155,7 +156,7 @@ GIMP_THREAD_LIBS =
 GIMP_TOOL_VERSION = 2.0
 GIMP_UNSTABLE = no
 GIMP_USER_VERSION = 2.2
-GIMP_VERSION = 2.2.11
+GIMP_VERSION = 2.2.12
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
@@ -166,14 +167,15 @@ GMODULE_LIBS = -Wl,--export-dynamic -lgmodule-2.0 -ldl -lgobject-2.0 -lglib-2.0
 GMOFILES =  bg.gmo ca.gmo cs.gmo da.gmo de.gmo el.gmo en_CA.gmo en_GB.gmo es.gmo eu.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hu.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo mk.gmo ms.gmo nb.gmo nl.gmo no.gmo pa.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sk.gmo sr.gmo sr@Latn.gmo sv.gmo tr.gmo uk.gmo vi.gmo yi.gmo zh_CN.gmo zh_TW.gmo
 GMSGFMT = /usr/bin/msgfmt
 GOBJECT_QUERY = gobject-query
+GREP = /bin/grep
 GTKDOC_REQUIRED_VERSION = 1.0
-GTKHTML2_CFLAGS = -DXTHREADS -I/usr/include/gtkhtml-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libxml2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/X11R6/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
-GTKHTML2_LIBS = -L/usr/X11R6/lib -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lz -lgdk-x11-2.0 -lXrandr -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXcursor -lpango-1.0 -lcairo -lXrender -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+GTKHTML2_CFLAGS = -I/usr/include/gtkhtml-2.0 -I/usr/include/gtk-2.0 -I/usr/include/libxml2 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+GTKHTML2_LIBS = -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lz -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 GTKHTML2_REQUIRED_VERSION = 2.0.0
-GTK_CFLAGS = -DXTHREADS -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/X11R6/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+GTK_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GTK_DOC_USE_LIBTOOL_FALSE = #
 GTK_DOC_USE_LIBTOOL_TRUE = 
-GTK_LIBS = -L/usr/X11R6/lib -lgtk-x11-2.0 -lgdk-x11-2.0 -lXrandr -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXcursor -lpango-1.0 -lcairo -lXrender -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+GTK_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 GTK_REQUIRED_VERSION = 2.4.4
 HAVE_FINITE = 
 HAVE_GLIBC_REGEX = 
@@ -236,18 +238,18 @@ LIBMNG = -lmng -ljpeg -lpng -lz
 LIBOBJS = 
 LIBPNG = -lpng -lz
 LIBS = 
-LIBSCREENSHOT =  -L/usr/X11R6/lib -lX11
+LIBSCREENSHOT =  -lX11
 LIBSVG = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 LIBTIFF = -ltiff
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIBWMF = -L/usr/lib -lwmf -lwmflite -lfreetype -lz -L/usr/X11R6/lib -lSM -lICE -lX11 -lexpat -ljpeg -lpng -lz -lm
-LIBXMU =  -L/usr/X11R6/lib  -lSM -lICE -lX11 -lXmu -lXt
-LIBXPM =  -L/usr/X11R6/lib  -lSM -lICE -lX11 -lXpm
+LIBXMU =   -lSM -lICE -lX11 -lXmu -lXt
+LIBXPM =   -lSM -lICE -lX11 -lXpm
 LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 200:11:200
+LT_VERSION_INFO = 200:12:200
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
@@ -268,9 +270,9 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.2.11
+PACKAGE_STRING = GIMP 2.2.12
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.2.11
+PACKAGE_VERSION = 2.2.12
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PANGOFT2_REQUIRED_VERSION = 1.4.0
@@ -316,7 +318,7 @@ SYMPREFIX =
 TIFF = tiff$(EXEEXT)
 URL = url$(EXEEXT)
 USE_NLS = yes
-VERSION = 2.2.11
+VERSION = 2.2.12
 WINCLIPBOARD = 
 WINDRES = :
 WINPRINT = 
@@ -327,24 +329,17 @@ WMF_CFLAGS = -I/usr/include/freetype2 -I/usr/include
 WMF_CONFIG = /usr/bin/libwmf-config
 WMF_REQUIRED_VERSION = 0.2.8
 XGETTEXT = /usr/bin/xgettext
+XMKMF = 
 XMLLINT = /usr/bin/xmllint
 XPM = xpm$(EXEEXT)
 XSLTPROC = /usr/bin/xsltproc
-X_CFLAGS =  -I/usr/X11R6/include
+X_CFLAGS = 
 X_EXTRA_LIBS = 
-X_LIBS =  -L/usr/X11R6/lib
+X_LIBS = 
 X_PRE_LIBS =  -lSM -lICE
-ac_ct_AR = ar
-ac_ct_AS = 
 ac_ct_CC = gcc
 ac_ct_CXX = g++
-ac_ct_DLLTOOL = 
 ac_ct_F77 = g77
-ac_ct_OBJDUMP = 
-ac_ct_RANLIB = ranlib
-ac_ct_STRIP = strip
-ac_ct_WINDRES = 
-ac_pt_PKG_CONFIG = 
 am__fastdepCC_FALSE = #
 am__fastdepCC_TRUE = 
 am__fastdepCXX_FALSE = #
@@ -360,9 +355,12 @@ build_alias =
 build_cpu = i686
 build_os = linux-gnu
 build_vendor = pc
-datadir = ${prefix}/share
+datadir = ${datarootdir}
+datarootdir = ${prefix}/share
+docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
+dvidir = ${docdir}
 exec_prefix = ${prefix}
-gimpdatadir = ${prefix}/share/gimp/2.0
+gimpdatadir = ${datarootdir}/gimp/2.0
 gimpdir = .gimp-2.2
 gimpplugindir = ${exec_prefix}/lib/gimp/2.0
 gimpsysconfdir = ${prefix}/etc/gimp/2.0
@@ -371,21 +369,24 @@ host_alias =
 host_cpu = i686
 host_os = linux-gnu
 host_vendor = pc
+htmldir = ${docdir}
 includedir = ${prefix}/include
-infodir = ${prefix}/info
+infodir = ${datarootdir}/info
 install_sh = /home/sven/gnomecvs/gimp-dist-2-2/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
-localedir = ${prefix}/share/locale
+localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
-mandir = ${prefix}/man
+mandir = ${datarootdir}/man
 mkdir_p = mkdir -p --
 ms_librarian = 
 oldincludedir = /usr/include
+pdfdir = ${docdir}
 pkgpyexecdir = ${pyexecdir}/gimp
 pkgpythondir = ${pythondir}/gimp
 prefix = /usr/local
 program_transform_name = s,x,x,
+psdir = ${docdir}
 pyexecdir = ${exec_prefix}/lib/python2.3/site-packages
 pythondir = ${prefix}/lib/python2.3/site-packages
 sbindir = ${exec_prefix}/sbin
@@ -700,7 +701,7 @@ all-local: html-build.stamp
 #### scan ####
 
 scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
-	@echo '*** Scanning header files ***'
+	@echo 'gtk-doc: Scanning header files'
 	@-chmod -R u+w $(srcdir)
 	if grep -l '^..*$$' $(srcdir)/$(DOC_MODULE).types > /dev/null 2>&1 ; then \
 	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" CFLAGS="$(GTKDOC_CFLAGS)" LDFLAGS="$(GTKDOC_LIBS)" gtkdoc-scangobj $(SCANGOBJ_OPTIONS) --module=$(DOC_MODULE) --output-dir=$(srcdir) ; \
@@ -720,7 +721,7 @@ $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES): scan-build.stamp
 #### templates ####
 
 tmpl-build.stamp: $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt
-	@echo '*** Rebuilding template files ***'
+	@echo 'gtk-doc: Rebuilding template files'
 	@-chmod -R u+w $(srcdir)
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE) $(MKTMPL_OPTIONS)
 	touch tmpl-build.stamp
@@ -731,10 +732,10 @@ tmpl.stamp: tmpl-build.stamp
 #### xml ####
 
 sgml-build.stamp: tmpl.stamp $(CFILE_GLOB) $(srcdir)/tmpl/*.sgml $(expand_content_files)
-	@echo '*** Building XML ***'
+	@echo 'gtk-doc: Building XML'
 	@-chmod -R u+w $(srcdir)
 	cd $(srcdir) && \
-	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --expand-content-files="$(expand_content_files)" $(MKDB_OPTIONS)
+	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --output-format=xml --expand-content-files="$(expand_content_files)" --main-sgml-file=$(DOC_MAIN_SGML_FILE) $(MKDB_OPTIONS)
 	touch sgml-build.stamp
 
 sgml.stamp: sgml-build.stamp
@@ -743,13 +744,13 @@ sgml.stamp: sgml-build.stamp
 #### html ####
 
 html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
-	@echo '*** Building HTML ***'
+	@echo 'gtk-doc: Building HTML'
 	@-chmod -R u+w $(srcdir)
 	rm -rf $(srcdir)/html 
 	mkdir $(srcdir)/html
 	cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 	test "x$(HTML_IMAGES)" = "x" || ( cd $(srcdir) && cp $(HTML_IMAGES) html )
-	@echo '-- Fixing Crossreferences' 
+	@echo 'gtk-doc: Fixing cross-references' 
 	cd $(srcdir) && gtkdoc-fixxref --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 	touch html-build.stamp
 #all-local:

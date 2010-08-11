@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpIntStore.html" title="GimpIntStore">
 <link rel="next" href="GimpOffsetArea.html" title="GimpOffsetArea">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -19,32 +20,39 @@
 <link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="GimpIntStore.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpOffsetArea.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#signal_proto" class="shortcut">Signals</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpMemsizeEntry"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpMemsizeEntry</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpMemsizeEntry</span></h2>
 <p>GimpMemsizeEntry &#8212; A composite widget that allows to enter a memory size.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
             <a href="GimpMemsizeEntry.html#GimpMemsizeEntry-struct">GimpMemsizeEntry</a>;
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="GimpMemsizeEntry.html#gimp-memsize-entry-new">gimp_memsize_entry_new</a>          (guint64 value,
+GtkWidget*  <a href="GimpMemsizeEntry.html#gimp-memsize-entry-new">gimp_memsize_entry_new</a>          (guint64 value,
                                              guint64 lower,
                                              guint64 upper);
 void        <a href="GimpMemsizeEntry.html#gimp-memsize-entry-set-value">gimp_memsize_entry_set_value</a>    (<a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a> *entry,
@@ -54,45 +62,36 @@ guint64     <a href="GimpMemsizeEntry.html#gimp-memsize-entry-get-value">gimp_me
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2565867"></a><h2>Object Hierarchy</h2>
+<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
-href="../gtk/GtkObject.html"
->GtkObject</a>
-         +----<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>
-               +----<a
-href="../gtk/GtkContainer.html"
->GtkContainer</a>
-                     +----<a
-href="../gtk/GtkBox.html"
->GtkBox</a>
-                           +----<a
-href="../gtk/GtkHBox.html"
->GtkHBox</a>
-                                 +----GimpMemsizeEntry
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBox
+                                 +----GtkHBox
+                                       +----GimpMemsizeEntry
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2565918"></a><h2>Implemented Interfaces</h2>
+<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpMemsizeEntry implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2565934"></a><h2>Signal Prototypes</h2>
+<a name="signal_proto"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpMemsizeEntry.html#GimpMemsizeEntry-value-changed">value-changed</a>"
             void        user_function      (<a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a> *gimpmemsizeentry,
-                                            gpointer user_data);
+                                            gpointer          user_data)             : Run first
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2552658"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Similar to a <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> but instead of lengths, this widget is used to let
 the user enter memory sizes. An option menu allows to switch between
@@ -100,33 +99,25 @@ Kilobytes, Megabytes and Gigabytes. Used in the GIMP preferences dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2552680"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2552686"></a><h3>
+<a name="id2568456"></a><h3>
 <a name="GimpMemsizeEntry-struct"></a>GimpMemsizeEntry</h3>
-<a class="indexterm" name="id2552695"></a><pre class="programlisting">typedef struct _GimpMemsizeEntry GimpMemsizeEntry;</pre>
+<a class="indexterm" name="id2568468"></a><pre class="programlisting">typedef struct _GimpMemsizeEntry GimpMemsizeEntry;</pre>
 <p>
 The <a href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> struct is considered private.
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552719"></a><h3>
+<a name="id2568491"></a><h3>
 <a name="gimp-memsize-entry-new"></a>gimp_memsize_entry_new ()</h3>
-<a class="indexterm" name="id2552728"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_memsize_entry_new          (guint64 value,
+<a class="indexterm" name="id2568502"></a><pre class="programlisting">GtkWidget*  gimp_memsize_entry_new          (guint64 value,
                                              guint64 lower,
                                              guint64 upper);</pre>
 <p>
-Creates a new <a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry"><span class="type">GimpMemsizeEntry</span></a> which is a <a
-href="../gtk/GtkHBox.html"
-><span class="type">GtkHBox</span></a> with a <a
-href="../gtk/GtkSpinButton.html"
-><span class="type">GtkSpinButton</span></a>
-and a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> all setup to allow the user to enter memory sizes.</p>
+Creates a new <a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry"><span class="type">GimpMemsizeEntry</span></a> which is a <span class="type">GtkHBox</span> with a <span class="type">GtkSpinButton</span>
+and a <span class="type">GtkOptionMenu</span> all setup to allow the user to enter memory sizes.</p>
 <p>
 
 </p>
@@ -162,9 +153,9 @@ href="../gtk/GtkOptionMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2567496"></a><h3>
+<a name="id2574898"></a><h3>
 <a name="gimp-memsize-entry-set-value"></a>gimp_memsize_entry_set_value ()</h3>
-<a class="indexterm" name="id2567505"></a><pre class="programlisting">void        gimp_memsize_entry_set_value    (<a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a> *entry,
+<a class="indexterm" name="id2574910"></a><pre class="programlisting">void        gimp_memsize_entry_set_value    (<a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a> *entry,
                                              guint64 value);</pre>
 <p>
 Sets the <em class="parameter"><code>entry</code></em>'s value. Please note that the <a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry"><span class="type">GimpMemsizeEntry</span></a> rounds
@@ -192,9 +183,9 @@ the value to full Kilobytes.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2558387"></a><h3>
+<a name="id2575001"></a><h3>
 <a name="gimp-memsize-entry-get-value"></a>gimp_memsize_entry_get_value ()</h3>
-<a class="indexterm" name="id2558398"></a><pre class="programlisting">guint64     gimp_memsize_entry_get_value    (<a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a> *entry);</pre>
+<a class="indexterm" name="id2575013"></a><pre class="programlisting">guint64     gimp_memsize_entry_get_value    (<a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a> *entry);</pre>
 <p>
 Retrieves the current value from a <a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry"><span class="type">GimpMemsizeEntry</span></a>.</p>
 <p>
@@ -220,12 +211,12 @@ Retrieves the current value from a <a href="GimpMemsizeEntry.html" title="GimpMe
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2558481"></a><h2>Signals</h2>
+<a name="signals"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2558487"></a><h3>
+<a name="id2575108"></a><h3>
 <a name="GimpMemsizeEntry-value-changed"></a>The "value-changed" signal</h3>
-<pre class="programlisting">void        user_function                  (<a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a> *gimpmemsizeentry,
-                                            gpointer user_data);</pre>
+<a class="indexterm" name="id2571551"></a><pre class="programlisting">void        user_function                  (<a href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">GimpMemsizeEntry</a> *gimpmemsizeentry,
+                                            gpointer          user_data)             : Run first</pre>
 <p>
 
 </p>
@@ -249,9 +240,5 @@ Retrieves the current value from a <a href="GimpMemsizeEntry.html" title="GimpMe
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="GimpIntStore.html"><b>&lt;&lt;&#160;GimpIntStore</b></a></td>
-<td align="right"><a accesskey="n" href="GimpOffsetArea.html"><b>GimpOffsetArea&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

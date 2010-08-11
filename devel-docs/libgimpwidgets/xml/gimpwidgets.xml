@@ -4,17 +4,20 @@
 
 <refentry id="libgimpwidgets-GimpWidgets">
 <refmeta>
-<refentrytitle>GimpWidgets</refentrytitle>
+<refentrytitle id="top_of_page">GimpWidgets</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpWidgets</refname><refpurpose>A collection of convenient widget constructors, standard callbacks and
+<refname>GimpWidgets</refname>
+<refpurpose>A collection of convenient widget constructors, standard callbacks and
 helper functions.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -159,17 +162,17 @@ helper functions.</refpurpose>
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-radio-group-new"/>gimp_radio_group_new ()</title>
+<title><anchor id="gimp-radio-group-new" role="function"/>gimp_radio_group_new ()</title>
 <indexterm><primary>gimp_radio_group_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_radio_group_new            (<link linkend="gboolean">gboolean</link> in_frame,
                                              const <link linkend="gchar">gchar</link> *frame_title,
                                              ...);</programlisting>
@@ -180,19 +183,19 @@ a <link linkend="GtkFrame"><type>GtkFrame</type></link> or <link linkend="GtkVbo
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>in_frame</parameter>&nbsp;:</term>
-<listitem><simpara>    <literal>TRUE</literal> if you want a <link linkend="GtkFrame"><type>GtkFrame</type></link> around the radio button group.
+<listitem><simpara>    <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if you want a <link linkend="GtkFrame"><type>GtkFrame</type></link> around the radio button group.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>frame_title</parameter>&nbsp;:</term>
-<listitem><simpara> The title of the Frame or <literal>NULL</literal> if you don't want a title.
+<listitem><simpara> The title of the Frame or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if you don't want a title.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>...</parameter>&nbsp;:</term>
-<listitem><simpara>         A <literal>NULL</literal>-terminated <parameter>va_list</parameter> describing the radio buttons.
+<listitem><simpara>         A <link linkend="NULL:CAPS"><literal>NULL</literal></link>-terminated <parameter>va_list</parameter> describing the radio buttons.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GtkFrame"><type>GtkFrame</type></link> or <link linkend="GtkVbox"><type>GtkVbox</type></link> (depending on <parameter>in_frame</parameter>).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-radio-group-new2"/>gimp_radio_group_new2 ()</title>
+<title><anchor id="gimp-radio-group-new2" role="function"/>gimp_radio_group_new2 ()</title>
 <indexterm><primary>gimp_radio_group_new2</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_radio_group_new2           (<link linkend="gboolean">gboolean</link> in_frame,
                                              const <link linkend="gchar">gchar</link> *frame_title,
                                              <link linkend="GCallback">GCallback</link> radio_button_callback,
@@ -206,11 +209,11 @@ a <link linkend="GtkFrame"><type>GtkFrame</type></link> or <link linkend="GtkVbo
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>in_frame</parameter>&nbsp;:</term>
-<listitem><simpara>              <literal>TRUE</literal> if you want a <link linkend="GtkFrame"><type>GtkFrame</type></link> around the
+<listitem><simpara>              <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if you want a <link linkend="GtkFrame"><type>GtkFrame</type></link> around the
                         radio button group.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>frame_title</parameter>&nbsp;:</term>
-<listitem><simpara>           The title of the Frame or <literal>NULL</literal> if you don't want
+<listitem><simpara>           The title of the Frame or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if you don't want
                         a title.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>radio_button_callback</parameter>&nbsp;:</term>
@@ -225,14 +228,14 @@ a <link linkend="GtkFrame"><type>GtkFrame</type></link> or <link linkend="GtkVbo
 <listitem><simpara>               The <parameter>item_data</parameter> of the initially pressed radio button.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>...</parameter>&nbsp;:</term>
-<listitem><simpara>                   A <literal>NULL</literal>-terminated <parameter>va_list</parameter> describing
+<listitem><simpara>                   A <link linkend="NULL:CAPS"><literal>NULL</literal></link>-terminated <parameter>va_list</parameter> describing
                         the radio buttons.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GtkFrame"><type>GtkFrame</type></link> or <link linkend="GtkVbox"><type>GtkVbox</type></link> (depending on <parameter>in_frame</parameter>).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-radio-group-set-active"/>gimp_radio_group_set_active ()</title>
+<title><anchor id="gimp-radio-group-set-active" role="function"/>gimp_radio_group_set_active ()</title>
 <indexterm><primary>gimp_radio_group_set_active</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_radio_group_set_active     (<link linkend="GtkRadioButton">GtkRadioButton</link> *radio_button,
                                              <link linkend="gpointer">gpointer</link> item_data);</programlisting>
 <para>
@@ -249,7 +252,7 @@ created with a matching <parameter>item_data</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-int-radio-group-new"/>gimp_int_radio_group_new ()</title>
+<title><anchor id="gimp-int-radio-group-new" role="function"/>gimp_int_radio_group_new ()</title>
 <indexterm><primary>gimp_int_radio_group_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_int_radio_group_new        (<link linkend="gboolean">gboolean</link> in_frame,
                                              const <link linkend="gchar">gchar</link> *frame_title,
                                              <link linkend="GCallback">GCallback</link> radio_button_callback,
@@ -266,11 +269,11 @@ group).</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>in_frame</parameter>&nbsp;:</term>
-<listitem><simpara>              <literal>TRUE</literal> if you want a <link linkend="GtkFrame"><type>GtkFrame</type></link> around the
+<listitem><simpara>              <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if you want a <link linkend="GtkFrame"><type>GtkFrame</type></link> around the
                         radio button group.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>frame_title</parameter>&nbsp;:</term>
-<listitem><simpara>           The title of the Frame or <literal>NULL</literal> if you don't want
+<listitem><simpara>           The title of the Frame or <link linkend="NULL:CAPS"><literal>NULL</literal></link> if you don't want
                         a title.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>radio_button_callback</parameter>&nbsp;:</term>
@@ -285,14 +288,14 @@ group).</para>
 <listitem><simpara>               The <parameter>item_data</parameter> of the initially pressed radio button.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>...</parameter>&nbsp;:</term>
-<listitem><simpara>                   A <literal>NULL</literal>-terminated <parameter>va_list</parameter> describing
+<listitem><simpara>                   A <link linkend="NULL:CAPS"><literal>NULL</literal></link>-terminated <parameter>va_list</parameter> describing
                         the radio buttons.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GtkFrame"><type>GtkFrame</type></link> or <link linkend="GtkVbox"><type>GtkVbox</type></link> (depending on <parameter>in_frame</parameter>).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-int-radio-group-set-active"/>gimp_int_radio_group_set_active ()</title>
+<title><anchor id="gimp-int-radio-group-set-active" role="function"/>gimp_int_radio_group_set_active ()</title>
 <indexterm><primary>gimp_int_radio_group_set_active</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_int_radio_group_set_active (<link linkend="GtkRadioButton">GtkRadioButton</link> *radio_button,
                                              <link linkend="gint">gint</link> item_data);</programlisting>
 <para>
@@ -311,7 +314,7 @@ of pointers.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-spin-button-new"/>gimp_spin_button_new ()</title>
+<title><anchor id="gimp-spin-button-new" role="function"/>gimp_spin_button_new ()</title>
 <indexterm><primary>gimp_spin_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_spin_button_new            (<link linkend="GtkObject">GtkObject</link> **adjustment,
                                              <link linkend="gdouble">gdouble</link> value,
                                              <link linkend="gdouble">gdouble</link> lower,
@@ -359,7 +362,7 @@ setting a standard minimum horizontal size.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-SCALE-ENTRY-LABEL:CAPS"/>GIMP_SCALE_ENTRY_LABEL()</title>
+<title><anchor id="GIMP-SCALE-ENTRY-LABEL:CAPS" role="macro"/>GIMP_SCALE_ENTRY_LABEL()</title>
 <indexterm><primary>GIMP_SCALE_ENTRY_LABEL</primary></indexterm><programlisting>#define     GIMP_SCALE_ENTRY_LABEL(adj)</programlisting>
 <para>
 Returns the scale_entry's <link linkend="GtkLabel"><type>GtkLabel</type></link>.
@@ -371,7 +374,7 @@ Returns the scale_entry's <link linkend="GtkLabel"><type>GtkLabel</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-SCALE-ENTRY-SCALE:CAPS"/>GIMP_SCALE_ENTRY_SCALE()</title>
+<title><anchor id="GIMP-SCALE-ENTRY-SCALE:CAPS" role="macro"/>GIMP_SCALE_ENTRY_SCALE()</title>
 <indexterm><primary>GIMP_SCALE_ENTRY_SCALE</primary></indexterm><programlisting>#define     GIMP_SCALE_ENTRY_SCALE(adj)</programlisting>
 <para>
 Returns the scale_entry's <link linkend="GtkHScale"><type>GtkHScale</type></link>.
@@ -383,7 +386,7 @@ Returns the scale_entry's <link linkend="GtkHScale"><type>GtkHScale</type></link
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-SCALE-ENTRY-SCALE-ADJ:CAPS"/>GIMP_SCALE_ENTRY_SCALE_ADJ()</title>
+<title><anchor id="GIMP-SCALE-ENTRY-SCALE-ADJ:CAPS" role="macro"/>GIMP_SCALE_ENTRY_SCALE_ADJ()</title>
 <indexterm><primary>GIMP_SCALE_ENTRY_SCALE_ADJ</primary></indexterm><programlisting>#define     GIMP_SCALE_ENTRY_SCALE_ADJ(adj)</programlisting>
 <para>
 Returns the <link linkend="GtkAdjustment"><type>GtkAdjustment</type></link> of the scale_entry's <link linkend="GtkHScale"><type>GtkHScale</type></link>.
@@ -395,7 +398,7 @@ Returns the <link linkend="GtkAdjustment"><type>GtkAdjustment</type></link> of t
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-SCALE-ENTRY-SPINBUTTON:CAPS"/>GIMP_SCALE_ENTRY_SPINBUTTON()</title>
+<title><anchor id="GIMP-SCALE-ENTRY-SPINBUTTON:CAPS" role="macro"/>GIMP_SCALE_ENTRY_SPINBUTTON()</title>
 <indexterm><primary>GIMP_SCALE_ENTRY_SPINBUTTON</primary></indexterm><programlisting>#define     GIMP_SCALE_ENTRY_SPINBUTTON(adj)</programlisting>
 <para>
 Returns the scale_entry's <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link>.
@@ -407,7 +410,7 @@ Returns the scale_entry's <link linkend="GtkSpinButton"><type>GtkSpinButton</typ
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-SCALE-ENTRY-SPINBUTTON-ADJ:CAPS"/>GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()</title>
+<title><anchor id="GIMP-SCALE-ENTRY-SPINBUTTON-ADJ:CAPS" role="macro"/>GIMP_SCALE_ENTRY_SPINBUTTON_ADJ()</title>
 <indexterm><primary>GIMP_SCALE_ENTRY_SPINBUTTON_ADJ</primary></indexterm><programlisting>#define     GIMP_SCALE_ENTRY_SPINBUTTON_ADJ(adj)</programlisting>
 <para>
 Returns the <link linkend="GtkAdjustment"><type>GtkAdjustment</type></link> of the scale_entry's <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link>.
@@ -419,7 +422,7 @@ Returns the <link linkend="GtkAdjustment"><type>GtkAdjustment</type></link> of t
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-scale-entry-new"/>gimp_scale_entry_new ()</title>
+<title><anchor id="gimp-scale-entry-new" role="function"/>gimp_scale_entry_new ()</title>
 <indexterm><primary>gimp_scale_entry_new</primary></indexterm><programlisting><link linkend="GtkObject">GtkObject</link>*  gimp_scale_entry_new            (<link linkend="GtkTable">GtkTable</link> *table,
                                              <link linkend="gint">gint</link> column,
                                              <link linkend="gint">gint</link> row,
@@ -481,16 +484,16 @@ attaches them to a 3-column <link linkend="GtkTable"><type>GtkTable</type></link
 <listitem><simpara>              The number of decimal digits.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>constrain</parameter>&nbsp;:</term>
-<listitem><simpara>           <literal>TRUE</literal> if the range of possible values of the
+<listitem><simpara>           <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the range of possible values of the
                       <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link> should be the same as of the <link linkend="GtkHScale"><type>GtkHScale</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>unconstrained_lower</parameter>&nbsp;:</term>
 <listitem><simpara> The spinbutton's lower boundary
-                      if <parameter>constrain</parameter> == <literal>FALSE</literal>.
+                      if <parameter>constrain</parameter> == <link linkend="FALSE:CAPS"><literal>FALSE</literal></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>unconstrained_upper</parameter>&nbsp;:</term>
 <listitem><simpara> The spinbutton's upper boundary
-                      if <parameter>constrain</parameter> == <literal>FALSE</literal>.
+                      if <parameter>constrain</parameter> == <link linkend="FALSE:CAPS"><literal>FALSE</literal></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>tooltip</parameter>&nbsp;:</term>
 <listitem><simpara>             A tooltip message for the scale and the spinbutton.
@@ -502,7 +505,7 @@ attaches them to a 3-column <link linkend="GtkTable"><type>GtkTable</type></link
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-scale-entry-set-sensitive"/>gimp_scale_entry_set_sensitive ()</title>
+<title><anchor id="gimp-scale-entry-set-sensitive" role="function"/>gimp_scale_entry_set_sensitive ()</title>
 <indexterm><primary>gimp_scale_entry_set_sensitive</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_scale_entry_set_sensitive  (<link linkend="GtkObject">GtkObject</link> *adjustment,
                                              <link linkend="gboolean">gboolean</link> sensitive);</programlisting>
 <para>
@@ -520,7 +523,7 @@ Sets the sensitivity of the scale_entry's <link linkend="GtkLabel"><type>GtkLabe
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-scale-entry-set-logarithmic"/>gimp_scale_entry_set_logarithmic ()</title>
+<title><anchor id="gimp-scale-entry-set-logarithmic" role="function" condition="since:GIMP 2.2"/>gimp_scale_entry_set_logarithmic ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_scale_entry_set_logarithmic</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_scale_entry_set_logarithmic
                                             (<link linkend="GtkObject">GtkObject</link> *adjustment,
                                              <link linkend="gboolean">gboolean</link> logarithmic);</programlisting>
@@ -542,7 +545,7 @@ adjustment.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-scale-entry-get-logarithmic"/>gimp_scale_entry_get_logarithmic ()</title>
+<title><anchor id="gimp-scale-entry-get-logarithmic" role="function" condition="since:GIMP 2.2"/>gimp_scale_entry_get_logarithmic ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_scale_entry_get_logarithmic</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_scale_entry_get_logarithmic
                                             (<link linkend="GtkObject">GtkObject</link> *adjustment);</programlisting>
 <para>
@@ -553,14 +556,14 @@ adjustment.</para>
 <varlistentry><term><parameter>adjustment</parameter>&nbsp;:</term>
 <listitem><simpara> a  <link linkend="GtkAdjustment"><type>GtkAdjustment</type></link> as returned by <link linkend="gimp-scale-entry-new"><function>gimp_scale_entry_new()</function></link>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if the the entry's scale widget will behave in
-              logharithmic fashion, <literal>FALSE</literal> for linear behaviour.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the the entry's scale widget will behave in
+              logharithmic fashion, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> for linear behaviour.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-color-scale-entry-new"/>gimp_color_scale_entry_new ()</title>
+<title><anchor id="gimp-color-scale-entry-new" role="function"/>gimp_color_scale_entry_new ()</title>
 <indexterm><primary>gimp_color_scale_entry_new</primary></indexterm><programlisting><link linkend="GtkObject">GtkObject</link>*  gimp_color_scale_entry_new      (<link linkend="GtkTable">GtkTable</link> *table,
                                              <link linkend="gint">gint</link> column,
                                              <link linkend="gint">gint</link> row,
@@ -628,7 +631,7 @@ This function creates a <link linkend="GtkLabel"><type>GtkLabel</type></link>, a
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RANDOM-SEED-SPINBUTTON:CAPS"/>GIMP_RANDOM_SEED_SPINBUTTON()</title>
+<title><anchor id="GIMP-RANDOM-SEED-SPINBUTTON:CAPS" role="macro"/>GIMP_RANDOM_SEED_SPINBUTTON()</title>
 <indexterm><primary>GIMP_RANDOM_SEED_SPINBUTTON</primary></indexterm><programlisting>#define     GIMP_RANDOM_SEED_SPINBUTTON(hbox)</programlisting>
 <para>
 Returns the random_seed's <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link>.
@@ -640,7 +643,7 @@ Returns the random_seed's <link linkend="GtkSpinButton"><type>GtkSpinButton</typ
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RANDOM-SEED-SPINBUTTON-ADJ:CAPS"/>GIMP_RANDOM_SEED_SPINBUTTON_ADJ()</title>
+<title><anchor id="GIMP-RANDOM-SEED-SPINBUTTON-ADJ:CAPS" role="macro"/>GIMP_RANDOM_SEED_SPINBUTTON_ADJ()</title>
 <indexterm><primary>GIMP_RANDOM_SEED_SPINBUTTON_ADJ</primary></indexterm><programlisting>#define     GIMP_RANDOM_SEED_SPINBUTTON_ADJ(hbox)</programlisting>
 <para>
 Returns the <link linkend="GtkAdjustment"><type>GtkAdjustment</type></link> of the random_seed's <link linkend="GtkSpinButton"><type>GtkSpinButton</type></link>.
@@ -652,7 +655,7 @@ Returns the <link linkend="GtkAdjustment"><type>GtkAdjustment</type></link> of t
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-RANDOM-SEED-TOGGLE:CAPS"/>GIMP_RANDOM_SEED_TOGGLE()</title>
+<title><anchor id="GIMP-RANDOM-SEED-TOGGLE:CAPS" role="macro"/>GIMP_RANDOM_SEED_TOGGLE()</title>
 <indexterm><primary>GIMP_RANDOM_SEED_TOGGLE</primary></indexterm><programlisting>#define     GIMP_RANDOM_SEED_TOGGLE(hbox)</programlisting>
 <para>
 
@@ -664,7 +667,7 @@ Returns the <link linkend="GtkAdjustment"><type>GtkAdjustment</type></link> of t
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-random-seed-new"/>gimp_random_seed_new ()</title>
+<title><anchor id="gimp-random-seed-new" role="function"/>gimp_random_seed_new ()</title>
 <indexterm><primary>gimp_random_seed_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_random_seed_new            (<link linkend="guint32">guint32</link> *seed,
                                              <link linkend="gboolean">gboolean</link> *random_seed);</programlisting>
 <para>
@@ -685,7 +688,7 @@ generator is initialized.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-COORDINATES-CHAINBUTTON:CAPS"/>GIMP_COORDINATES_CHAINBUTTON()</title>
+<title><anchor id="GIMP-COORDINATES-CHAINBUTTON:CAPS" role="macro"/>GIMP_COORDINATES_CHAINBUTTON()</title>
 <indexterm><primary>GIMP_COORDINATES_CHAINBUTTON</primary></indexterm><programlisting>#define     GIMP_COORDINATES_CHAINBUTTON(sizeentry)</programlisting>
 <para>
 Returns the <link linkend="GimpChainButton"><type>GimpChainButton</type></link> which is attached to the <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link>.
@@ -697,7 +700,7 @@ Returns the <link linkend="GimpChainButton"><type>GimpChainButton</type></link> 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-coordinates-new"/>gimp_coordinates_new ()</title>
+<title><anchor id="gimp-coordinates-new" role="function"/>gimp_coordinates_new ()</title>
 <indexterm><primary>gimp_coordinates_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_coordinates_new            (<link linkend="GimpUnit">GimpUnit</link> unit,
                                              const <link linkend="gchar">gchar</link> *unit_format,
                                              <link linkend="gboolean">gboolean</link> menu_show_pixels,
@@ -735,11 +738,11 @@ two fields' values or the ratio between them.</para>
                          <link linkend="gimp-unit-menu-new"><function>gimp_unit_menu_new()</function></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>menu_show_pixels</parameter>&nbsp;:</term>
-<listitem><simpara>       <literal>TRUE</literal> if the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> should contain an item
+<listitem><simpara>       <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> should contain an item
                          for GIMP_UNIT_PIXEL.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>menu_show_percent</parameter>&nbsp;:</term>
-<listitem><simpara>      <literal>TRUE</literal> if the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> should contain an item
+<listitem><simpara>      <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> should contain an item
                          for GIMP_UNIT_PERCENT.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>spinbutton_width</parameter>&nbsp;:</term>
@@ -750,12 +753,12 @@ two fields' values or the ratio between them.</para>
 <listitem><simpara>          The update policy for the <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>chainbutton_active</parameter>&nbsp;:</term>
-<listitem><simpara>     <literal>TRUE</literal> if the attached <link linkend="GimpChainButton"><type>GimpChainButton</type></link> should be
+<listitem><simpara>     <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the attached <link linkend="GimpChainButton"><type>GimpChainButton</type></link> should be
                          active.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>chain_constrains_ratio</parameter>&nbsp;:</term>
-<listitem><simpara> <literal>TRUE</literal> if the chainbutton should constrain the
-                         fields' aspect ratio. If <literal>FALSE</literal>, the values will
+<listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the chainbutton should constrain the
+                         fields' aspect ratio. If <link linkend="FALSE:CAPS"><literal>FALSE</literal></link>, the values will
                          be constrained.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>xlabel</parameter>&nbsp;:</term>
@@ -804,7 +807,7 @@ two fields' values or the ratio between them.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-pixmap-button-new"/>gimp_pixmap_button_new ()</title>
+<title><anchor id="gimp-pixmap-button-new" role="function" condition="deprecated:"/>gimp_pixmap_button_new ()</title>
 <indexterm role="deprecated"><primary>gimp_pixmap_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_pixmap_button_new          (<link linkend="gchar">gchar</link> **xpm_data,
                                              const <link linkend="gchar">gchar</link> *text);</programlisting>
 <warning><para><literal>gimp_pixmap_button_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
@@ -824,7 +827,7 @@ and an optional <link linkend="GtkLabel"><type>GtkLabel</type></link>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-toggle-button-sensitive-update"/>gimp_toggle_button_sensitive_update ()</title>
+<title><anchor id="gimp-toggle-button-sensitive-update" role="function"/>gimp_toggle_button_sensitive_update ()</title>
 <indexterm><primary>gimp_toggle_button_sensitive_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_toggle_button_sensitive_update
                                             (<link linkend="GtkToggleButton">GtkToggleButton</link> *toggle_button);</programlisting>
 <para>
@@ -850,7 +853,7 @@ button's inverse "active" state by attaching widgets with the
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-toggle-button-update"/>gimp_toggle_button_update ()</title>
+<title><anchor id="gimp-toggle-button-update" role="function"/>gimp_toggle_button_update ()</title>
 <indexterm><primary>gimp_toggle_button_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_toggle_button_update       (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -867,7 +870,7 @@ Note that this function calls <link linkend="gimp-toggle-button-sensitive-update
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-radio-button-update"/>gimp_radio_button_update ()</title>
+<title><anchor id="gimp-radio-button-update" role="function"/>gimp_radio_button_update ()</title>
 <indexterm><primary>gimp_radio_button_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_radio_button_update        (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -884,7 +887,7 @@ Note that this function calls <link linkend="gimp-toggle-button-sensitive-update
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-int-adjustment-update"/>gimp_int_adjustment_update ()</title>
+<title><anchor id="gimp-int-adjustment-update" role="function"/>gimp_int_adjustment_update ()</title>
 <indexterm><primary>gimp_int_adjustment_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_int_adjustment_update      (<link linkend="GtkAdjustment">GtkAdjustment</link> *adjustment,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -902,7 +905,7 @@ rounded with <link linkend="RINT:CAPS"><function>RINT()</function></link>.</para
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-uint-adjustment-update"/>gimp_uint_adjustment_update ()</title>
+<title><anchor id="gimp-uint-adjustment-update" role="function"/>gimp_uint_adjustment_update ()</title>
 <indexterm><primary>gimp_uint_adjustment_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_uint_adjustment_update     (<link linkend="GtkAdjustment">GtkAdjustment</link> *adjustment,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -920,7 +923,7 @@ with (<link linkend="guint"><type>guint</type></link>) (value + 0.5).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-float-adjustment-update"/>gimp_float_adjustment_update ()</title>
+<title><anchor id="gimp-float-adjustment-update" role="function"/>gimp_float_adjustment_update ()</title>
 <indexterm><primary>gimp_float_adjustment_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_float_adjustment_update    (<link linkend="GtkAdjustment">GtkAdjustment</link> *adjustment,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -937,7 +940,7 @@ with (<link linkend="guint"><type>guint</type></link>) (value + 0.5).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-double-adjustment-update"/>gimp_double_adjustment_update ()</title>
+<title><anchor id="gimp-double-adjustment-update" role="function"/>gimp_double_adjustment_update ()</title>
 <indexterm><primary>gimp_double_adjustment_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_double_adjustment_update   (<link linkend="GtkAdjustment">GtkAdjustment</link> *adjustment,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -954,7 +957,7 @@ with (<link linkend="guint"><type>guint</type></link>) (value + 0.5).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-unit-menu-update"/>gimp_unit_menu_update ()</title>
+<title><anchor id="gimp-unit-menu-update" role="function"/>gimp_unit_menu_update ()</title>
 <indexterm><primary>gimp_unit_menu_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_unit_menu_update           (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -978,7 +981,7 @@ to set up the list.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-table-attach-aligned"/>gimp_table_attach_aligned ()</title>
+<title><anchor id="gimp-table-attach-aligned" role="function"/>gimp_table_attach_aligned ()</title>
 <indexterm><primary>gimp_table_attach_aligned</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_table_attach_aligned       (<link linkend="GtkTable">GtkTable</link> *table,
                                              <link linkend="gint">gint</link> column,
                                              <link linkend="gint">gint</link> row,
@@ -989,7 +992,7 @@ to set up the list.</para>
                                              <link linkend="gint">gint</link> colspan,
                                              <link linkend="gboolean">gboolean</link> left_align);</programlisting>
 <para>
-Note that the <parameter>label_text</parameter> can be <literal>NULL</literal> and that the widget will be
+Note that the <parameter>label_text</parameter> can be <link linkend="NULL:CAPS"><literal>NULL</literal></link> and that the widget will be
 attached starting at (<parameter>column</parameter> + 1) in this case, too.</para>
 <para>
 
@@ -1020,13 +1023,13 @@ attached starting at (<parameter>column</parameter> + 1) in this case, too.</par
 <listitem><simpara>    The number of columns the widget will use.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>left_align</parameter>&nbsp;:</term>
-<listitem><simpara> <literal>TRUE</literal> if the widget should be left-aligned.
+<listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the widget should be left-aligned.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The created <link linkend="GtkLabel"><type>GtkLabel</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-label-set-attributes"/>gimp_label_set_attributes ()</title>
+<title><anchor id="gimp-label-set-attributes" role="function" condition="since:GIMP 2.2"/>gimp_label_set_attributes ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_label_set_attributes</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_label_set_attributes       (<link linkend="GtkLabel">GtkLabel</link> *label,
                                              ...);</programlisting>
 <para>

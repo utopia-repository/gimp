@@ -4,16 +4,19 @@
 
 <refentry id="libgimpwidgets-GimpStock">
 <refmeta>
-<refentrytitle>GimpStock</refentrytitle>
+<refentrytitle id="top_of_page">GimpStock</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpStock</refname><refpurpose>Prebuilt common menu/toolbar items and corresponding icons</refpurpose>
+<refname>GimpStock</refname>
+<refpurpose>Prebuilt common menu/toolbar items and corresponding icons</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -210,8 +213,8 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 GIMP registers a set of menu/toolbar items and corresponding icons in
 addition to the standard GTK+ stock items. These can be used just like
@@ -224,10 +227,10 @@ locales.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-stock-init"/>gimp_stock_init ()</title>
+<title><anchor id="gimp-stock-init" role="function"/>gimp_stock_init ()</title>
 <indexterm><primary>gimp_stock_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_stock_init                 (void);</programlisting>
 <para>
 Initializes the GIMP stock icon factory.
@@ -239,14 +242,14 @@ this for you.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-ANCHOR:CAPS"/>GIMP_STOCK_ANCHOR</title>
+<title><anchor id="GIMP-STOCK-ANCHOR:CAPS" role="macro"/>GIMP_STOCK_ANCHOR</title>
 <indexterm><primary>GIMP_STOCK_ANCHOR</primary></indexterm><programlisting>#define GIMP_STOCK_ANCHOR                   "gimp-anchor"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-anchor-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CENTER:CAPS"/>GIMP_STOCK_CENTER</title>
+<title><anchor id="GIMP-STOCK-CENTER:CAPS" role="macro"/>GIMP_STOCK_CENTER</title>
 <indexterm><primary>GIMP_STOCK_CENTER</primary></indexterm><programlisting>#define GIMP_STOCK_CENTER                   "gimp-center"
 </programlisting>
 <para>
@@ -254,35 +257,35 @@ this for you.</para>
 <inlinegraphic fileref="stock-center-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-DUPLICATE:CAPS"/>GIMP_STOCK_DUPLICATE</title>
+<title><anchor id="GIMP-STOCK-DUPLICATE:CAPS" role="macro"/>GIMP_STOCK_DUPLICATE</title>
 <indexterm><primary>GIMP_STOCK_DUPLICATE</primary></indexterm><programlisting>#define GIMP_STOCK_DUPLICATE                "gimp-duplicate"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-duplicate-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-EDIT:CAPS"/>GIMP_STOCK_EDIT</title>
+<title><anchor id="GIMP-STOCK-EDIT:CAPS" role="macro"/>GIMP_STOCK_EDIT</title>
 <indexterm><primary>GIMP_STOCK_EDIT</primary></indexterm><programlisting>#define GIMP_STOCK_EDIT                     "gimp-edit"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-edit-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-RESET:CAPS"/>GIMP_STOCK_RESET</title>
+<title><anchor id="GIMP-STOCK-RESET:CAPS" role="macro"/>GIMP_STOCK_RESET</title>
 <indexterm><primary>GIMP_STOCK_RESET</primary></indexterm><programlisting>#define GIMP_STOCK_RESET                    "gimp-reset"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-reset-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CLOSE:CAPS"/>GIMP_STOCK_CLOSE</title>
+<title><anchor id="GIMP-STOCK-CLOSE:CAPS" role="macro"/>GIMP_STOCK_CLOSE</title>
 <indexterm><primary>GIMP_STOCK_CLOSE</primary></indexterm><programlisting>#define GIMP_STOCK_CLOSE                    "gimp-close"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-close-12.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-MENU-LEFT:CAPS"/>GIMP_STOCK_MENU_LEFT</title>
+<title><anchor id="GIMP-STOCK-MENU-LEFT:CAPS" role="macro"/>GIMP_STOCK_MENU_LEFT</title>
 <indexterm><primary>GIMP_STOCK_MENU_LEFT</primary></indexterm><programlisting>#define GIMP_STOCK_MENU_LEFT                "gimp-menu-left"
 </programlisting>
 <para>
@@ -291,7 +294,7 @@ RTL variant
 <inlinegraphic fileref="stock-menu-right-12.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-MENU-RIGHT:CAPS"/>GIMP_STOCK_MENU_RIGHT</title>
+<title><anchor id="GIMP-STOCK-MENU-RIGHT:CAPS" role="macro"/>GIMP_STOCK_MENU_RIGHT</title>
 <indexterm><primary>GIMP_STOCK_MENU_RIGHT</primary></indexterm><programlisting>#define GIMP_STOCK_MENU_RIGHT               "gimp-menu-right"
 </programlisting>
 <para>
@@ -300,7 +303,7 @@ RTL variant
 <inlinegraphic fileref="stock-menu-left-12.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-MOVE-TO-SCREEN:CAPS"/>GIMP_STOCK_MOVE_TO_SCREEN</title>
+<title><anchor id="GIMP-STOCK-MOVE-TO-SCREEN:CAPS" role="macro"/>GIMP_STOCK_MOVE_TO_SCREEN</title>
 <indexterm><primary>GIMP_STOCK_MOVE_TO_SCREEN</primary></indexterm><programlisting>#define GIMP_STOCK_MOVE_TO_SCREEN           "gimp_move-to-screen"
 </programlisting>
 <para>
@@ -308,77 +311,77 @@ RTL variant
 <inlinegraphic fileref="stock-move-to-screen-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-INVERT:CAPS"/>GIMP_STOCK_INVERT</title>
+<title><anchor id="GIMP-STOCK-INVERT:CAPS" role="macro"/>GIMP_STOCK_INVERT</title>
 <indexterm><primary>GIMP_STOCK_INVERT</primary></indexterm><programlisting>#define GIMP_STOCK_INVERT                   "gimp-invert"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-invert-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LAYER-TO-IMAGESIZE:CAPS"/>GIMP_STOCK_LAYER_TO_IMAGESIZE</title>
+<title><anchor id="GIMP-STOCK-LAYER-TO-IMAGESIZE:CAPS" role="macro"/>GIMP_STOCK_LAYER_TO_IMAGESIZE</title>
 <indexterm><primary>GIMP_STOCK_LAYER_TO_IMAGESIZE</primary></indexterm><programlisting>#define GIMP_STOCK_LAYER_TO_IMAGESIZE       "gimp-layer-to-imagesize"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-layer-to-imagesize-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-MERGE-DOWN:CAPS"/>GIMP_STOCK_MERGE_DOWN</title>
+<title><anchor id="GIMP-STOCK-MERGE-DOWN:CAPS" role="macro"/>GIMP_STOCK_MERGE_DOWN</title>
 <indexterm><primary>GIMP_STOCK_MERGE_DOWN</primary></indexterm><programlisting>#define GIMP_STOCK_MERGE_DOWN               "gimp-merge-down"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-merge-down-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-NAVIGATION:CAPS"/>GIMP_STOCK_NAVIGATION</title>
+<title><anchor id="GIMP-STOCK-NAVIGATION:CAPS" role="macro"/>GIMP_STOCK_NAVIGATION</title>
 <indexterm><primary>GIMP_STOCK_NAVIGATION</primary></indexterm><programlisting>#define GIMP_STOCK_NAVIGATION               "gimp-navigation"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-navigation-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PASTE-AS-NEW:CAPS"/>GIMP_STOCK_PASTE_AS_NEW</title>
+<title><anchor id="GIMP-STOCK-PASTE-AS-NEW:CAPS" role="macro"/>GIMP_STOCK_PASTE_AS_NEW</title>
 <indexterm><primary>GIMP_STOCK_PASTE_AS_NEW</primary></indexterm><programlisting>#define GIMP_STOCK_PASTE_AS_NEW             "gimp-paste-as-new"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-paste-as-new-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PASTE-INTO:CAPS"/>GIMP_STOCK_PASTE_INTO</title>
+<title><anchor id="GIMP-STOCK-PASTE-INTO:CAPS" role="macro"/>GIMP_STOCK_PASTE_INTO</title>
 <indexterm><primary>GIMP_STOCK_PASTE_INTO</primary></indexterm><programlisting>#define GIMP_STOCK_PASTE_INTO               "gimp-paste-into"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-paste-into-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PATH-STROKE:CAPS"/>GIMP_STOCK_PATH_STROKE</title>
+<title><anchor id="GIMP-STOCK-PATH-STROKE:CAPS" role="macro"/>GIMP_STOCK_PATH_STROKE</title>
 <indexterm><primary>GIMP_STOCK_PATH_STROKE</primary></indexterm><programlisting>#define GIMP_STOCK_PATH_STROKE              "gimp-path-stroke"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-path-stroke-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PLUGIN:CAPS"/>GIMP_STOCK_PLUGIN</title>
+<title><anchor id="GIMP-STOCK-PLUGIN:CAPS" role="macro"/>GIMP_STOCK_PLUGIN</title>
 <indexterm><primary>GIMP_STOCK_PLUGIN</primary></indexterm><programlisting>#define GIMP_STOCK_PLUGIN                   "gimp-plugin"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-plugin-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-QMASK-OFF:CAPS"/>GIMP_STOCK_QMASK_OFF</title>
+<title><anchor id="GIMP-STOCK-QMASK-OFF:CAPS" role="macro"/>GIMP_STOCK_QMASK_OFF</title>
 <indexterm><primary>GIMP_STOCK_QMASK_OFF</primary></indexterm><programlisting>#define GIMP_STOCK_QMASK_OFF                "gimp-qmask-off"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-qmask-off-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-QMASK-ON:CAPS"/>GIMP_STOCK_QMASK_ON</title>
+<title><anchor id="GIMP-STOCK-QMASK-ON:CAPS" role="macro"/>GIMP_STOCK_QMASK_ON</title>
 <indexterm><primary>GIMP_STOCK_QMASK_ON</primary></indexterm><programlisting>#define GIMP_STOCK_QMASK_ON                 "gimp-qmask-on"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-qmask-on-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-HISTOGRAM:CAPS"/>GIMP_STOCK_HISTOGRAM</title>
+<title><anchor id="GIMP-STOCK-HISTOGRAM:CAPS" role="macro"/>GIMP_STOCK_HISTOGRAM</title>
 <indexterm><primary>GIMP_STOCK_HISTOGRAM</primary></indexterm><programlisting>#define GIMP_STOCK_HISTOGRAM                "gimp-histogram"
 </programlisting>
 <para>
@@ -386,77 +389,77 @@ RTL variant
 <inlinegraphic fileref="stock-histogram-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-HISTOGRAM-LINEAR:CAPS"/>GIMP_STOCK_HISTOGRAM_LINEAR</title>
+<title><anchor id="GIMP-STOCK-HISTOGRAM-LINEAR:CAPS" role="macro"/>GIMP_STOCK_HISTOGRAM_LINEAR</title>
 <indexterm><primary>GIMP_STOCK_HISTOGRAM_LINEAR</primary></indexterm><programlisting>#define GIMP_STOCK_HISTOGRAM_LINEAR         "gimp-histogram-linear"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-histogram-linear-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-HISTOGRAM-LOGARITHMIC:CAPS"/>GIMP_STOCK_HISTOGRAM_LOGARITHMIC</title>
+<title><anchor id="GIMP-STOCK-HISTOGRAM-LOGARITHMIC:CAPS" role="macro"/>GIMP_STOCK_HISTOGRAM_LOGARITHMIC</title>
 <indexterm><primary>GIMP_STOCK_HISTOGRAM_LOGARITHMIC</primary></indexterm><programlisting>#define GIMP_STOCK_HISTOGRAM_LOGARITHMIC    "gimp-histogram-logarithmic"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-histogram-logarithmic-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-RESHOW-FILTER:CAPS"/>GIMP_STOCK_RESHOW_FILTER</title>
+<title><anchor id="GIMP-STOCK-RESHOW-FILTER:CAPS" role="macro"/>GIMP_STOCK_RESHOW_FILTER</title>
 <indexterm><primary>GIMP_STOCK_RESHOW_FILTER</primary></indexterm><programlisting>#define GIMP_STOCK_RESHOW_FILTER            "gimp-reshow-filter"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-reshow-filter-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-RESIZE:CAPS"/>GIMP_STOCK_RESIZE</title>
+<title><anchor id="GIMP-STOCK-RESIZE:CAPS" role="macro"/>GIMP_STOCK_RESIZE</title>
 <indexterm><primary>GIMP_STOCK_RESIZE</primary></indexterm><programlisting>#define GIMP_STOCK_RESIZE                   "gimp-resize"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-resize-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-FLIP-HORIZONTAL:CAPS"/>GIMP_STOCK_FLIP_HORIZONTAL</title>
+<title><anchor id="GIMP-STOCK-FLIP-HORIZONTAL:CAPS" role="macro"/>GIMP_STOCK_FLIP_HORIZONTAL</title>
 <indexterm><primary>GIMP_STOCK_FLIP_HORIZONTAL</primary></indexterm><programlisting>#define GIMP_STOCK_FLIP_HORIZONTAL          "gimp-flip-horizontal"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-flip-horizontal-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-FLIP-VERTICAL:CAPS"/>GIMP_STOCK_FLIP_VERTICAL</title>
+<title><anchor id="GIMP-STOCK-FLIP-VERTICAL:CAPS" role="macro"/>GIMP_STOCK_FLIP_VERTICAL</title>
 <indexterm><primary>GIMP_STOCK_FLIP_VERTICAL</primary></indexterm><programlisting>#define GIMP_STOCK_FLIP_VERTICAL            "gimp-flip-vertical"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-flip-vertical-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-ROTATE-180:CAPS"/>GIMP_STOCK_ROTATE_180</title>
+<title><anchor id="GIMP-STOCK-ROTATE-180:CAPS" role="macro"/>GIMP_STOCK_ROTATE_180</title>
 <indexterm><primary>GIMP_STOCK_ROTATE_180</primary></indexterm><programlisting>#define GIMP_STOCK_ROTATE_180               "gimp-rotate-180"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-rotate-180-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-ROTATE-270:CAPS"/>GIMP_STOCK_ROTATE_270</title>
+<title><anchor id="GIMP-STOCK-ROTATE-270:CAPS" role="macro"/>GIMP_STOCK_ROTATE_270</title>
 <indexterm><primary>GIMP_STOCK_ROTATE_270</primary></indexterm><programlisting>#define GIMP_STOCK_ROTATE_270               "gimp-rotate-270"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-rotate-270-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-ROTATE-90:CAPS"/>GIMP_STOCK_ROTATE_90</title>
+<title><anchor id="GIMP-STOCK-ROTATE-90:CAPS" role="macro"/>GIMP_STOCK_ROTATE_90</title>
 <indexterm><primary>GIMP_STOCK_ROTATE_90</primary></indexterm><programlisting>#define GIMP_STOCK_ROTATE_90                "gimp-rotate-90"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-rotate-90-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SCALE:CAPS"/>GIMP_STOCK_SCALE</title>
+<title><anchor id="GIMP-STOCK-SCALE:CAPS" role="macro"/>GIMP_STOCK_SCALE</title>
 <indexterm><primary>GIMP_STOCK_SCALE</primary></indexterm><programlisting>#define GIMP_STOCK_SCALE                    "gimp-scale"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-scale-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LINKED:CAPS"/>GIMP_STOCK_LINKED</title>
+<title><anchor id="GIMP-STOCK-LINKED:CAPS" role="macro"/>GIMP_STOCK_LINKED</title>
 <indexterm><primary>GIMP_STOCK_LINKED</primary></indexterm><programlisting>#define GIMP_STOCK_LINKED                   "gimp-linked"
 </programlisting>
 <para>
@@ -464,7 +467,7 @@ RTL variant
 <inlinegraphic fileref="stock-linked-12.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-VISIBLE:CAPS"/>GIMP_STOCK_VISIBLE</title>
+<title><anchor id="GIMP-STOCK-VISIBLE:CAPS" role="macro"/>GIMP_STOCK_VISIBLE</title>
 <indexterm><primary>GIMP_STOCK_VISIBLE</primary></indexterm><programlisting>#define GIMP_STOCK_VISIBLE                  "gimp-visible"
 </programlisting>
 <para>
@@ -472,35 +475,35 @@ RTL variant
 <inlinegraphic fileref="stock-eye-12.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LIST:CAPS"/>GIMP_STOCK_LIST</title>
+<title><anchor id="GIMP-STOCK-LIST:CAPS" role="macro"/>GIMP_STOCK_LIST</title>
 <indexterm><primary>GIMP_STOCK_LIST</primary></indexterm><programlisting>#define GIMP_STOCK_LIST                     "gimp-list"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-list-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRID:CAPS"/>GIMP_STOCK_GRID</title>
+<title><anchor id="GIMP-STOCK-GRID:CAPS" role="macro"/>GIMP_STOCK_GRID</title>
 <indexterm><primary>GIMP_STOCK_GRID</primary></indexterm><programlisting>#define GIMP_STOCK_GRID                     "gimp-grid"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-grid-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PORTRAIT:CAPS"/>GIMP_STOCK_PORTRAIT</title>
+<title><anchor id="GIMP-STOCK-PORTRAIT:CAPS" role="macro"/>GIMP_STOCK_PORTRAIT</title>
 <indexterm><primary>GIMP_STOCK_PORTRAIT</primary></indexterm><programlisting>#define GIMP_STOCK_PORTRAIT                 "gimp-portrait"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-portrait-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LANDSCAPE:CAPS"/>GIMP_STOCK_LANDSCAPE</title>
+<title><anchor id="GIMP-STOCK-LANDSCAPE:CAPS" role="macro"/>GIMP_STOCK_LANDSCAPE</title>
 <indexterm><primary>GIMP_STOCK_LANDSCAPE</primary></indexterm><programlisting>#define GIMP_STOCK_LANDSCAPE                "gimp-landscape"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-landscape-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-VIDEO:CAPS"/>GIMP_STOCK_VIDEO</title>
+<title><anchor id="GIMP-STOCK-VIDEO:CAPS" role="macro"/>GIMP_STOCK_VIDEO</title>
 <indexterm><primary>GIMP_STOCK_VIDEO</primary></indexterm><programlisting>#define GIMP_STOCK_VIDEO                    "gimp-video"
 </programlisting>
 <para>
@@ -508,7 +511,7 @@ RTL variant
 <inlinegraphic fileref="stock-video-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-WEB:CAPS"/>GIMP_STOCK_WEB</title>
+<title><anchor id="GIMP-STOCK-WEB:CAPS" role="macro"/>GIMP_STOCK_WEB</title>
 <indexterm><primary>GIMP_STOCK_WEB</primary></indexterm><programlisting>#define GIMP_STOCK_WEB                      "gimp-web"
 </programlisting>
 <para>
@@ -516,7 +519,7 @@ RTL variant
 <inlinegraphic fileref="stock-web-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-IMAGE:CAPS"/>GIMP_STOCK_IMAGE</title>
+<title><anchor id="GIMP-STOCK-IMAGE:CAPS" role="macro"/>GIMP_STOCK_IMAGE</title>
 <indexterm><primary>GIMP_STOCK_IMAGE</primary></indexterm><programlisting>#define GIMP_STOCK_IMAGE                    "gimp-image"
 </programlisting>
 <para>
@@ -526,7 +529,7 @@ RTL variant
 <inlinegraphic fileref="stock-image-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LAYER:CAPS"/>GIMP_STOCK_LAYER</title>
+<title><anchor id="GIMP-STOCK-LAYER:CAPS" role="macro"/>GIMP_STOCK_LAYER</title>
 <indexterm><primary>GIMP_STOCK_LAYER</primary></indexterm><programlisting>#define GIMP_STOCK_LAYER                    "gimp-layer"
 </programlisting>
 <para>
@@ -536,7 +539,7 @@ RTL variant
 <inlinegraphic fileref="stock-layer-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LAYER-MASK:CAPS"/>GIMP_STOCK_LAYER_MASK</title>
+<title><anchor id="GIMP-STOCK-LAYER-MASK:CAPS" role="macro"/>GIMP_STOCK_LAYER_MASK</title>
 <indexterm><primary>GIMP_STOCK_LAYER_MASK</primary></indexterm><programlisting>#define GIMP_STOCK_LAYER_MASK               "gimp-layer-mask"
 </programlisting>
 <para>
@@ -546,7 +549,7 @@ RTL variant
 <inlinegraphic fileref="stock-layer-mask-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHANNEL:CAPS"/>GIMP_STOCK_CHANNEL</title>
+<title><anchor id="GIMP-STOCK-CHANNEL:CAPS" role="macro"/>GIMP_STOCK_CHANNEL</title>
 <indexterm><primary>GIMP_STOCK_CHANNEL</primary></indexterm><programlisting>#define GIMP_STOCK_CHANNEL                  "gimp-channel"
 </programlisting>
 <para>
@@ -556,7 +559,7 @@ RTL variant
 <inlinegraphic fileref="stock-channel-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHANNEL-RED:CAPS"/>GIMP_STOCK_CHANNEL_RED</title>
+<title><anchor id="GIMP-STOCK-CHANNEL-RED:CAPS" role="macro"/>GIMP_STOCK_CHANNEL_RED</title>
 <indexterm><primary>GIMP_STOCK_CHANNEL_RED</primary></indexterm><programlisting>#define GIMP_STOCK_CHANNEL_RED              "gimp-channel-red"
 </programlisting>
 <para>
@@ -566,7 +569,7 @@ RTL variant
 <inlinegraphic fileref="stock-channel-red-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHANNEL-GREEN:CAPS"/>GIMP_STOCK_CHANNEL_GREEN</title>
+<title><anchor id="GIMP-STOCK-CHANNEL-GREEN:CAPS" role="macro"/>GIMP_STOCK_CHANNEL_GREEN</title>
 <indexterm><primary>GIMP_STOCK_CHANNEL_GREEN</primary></indexterm><programlisting>#define GIMP_STOCK_CHANNEL_GREEN            "gimp-channel-green"
 </programlisting>
 <para>
@@ -576,7 +579,7 @@ RTL variant
 <inlinegraphic fileref="stock-channel-green-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHANNEL-BLUE:CAPS"/>GIMP_STOCK_CHANNEL_BLUE</title>
+<title><anchor id="GIMP-STOCK-CHANNEL-BLUE:CAPS" role="macro"/>GIMP_STOCK_CHANNEL_BLUE</title>
 <indexterm><primary>GIMP_STOCK_CHANNEL_BLUE</primary></indexterm><programlisting>#define GIMP_STOCK_CHANNEL_BLUE             "gimp-channel-blue"
 </programlisting>
 <para>
@@ -586,7 +589,7 @@ RTL variant
 <inlinegraphic fileref="stock-channel-blue-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHANNEL-GRAY:CAPS"/>GIMP_STOCK_CHANNEL_GRAY</title>
+<title><anchor id="GIMP-STOCK-CHANNEL-GRAY:CAPS" role="macro"/>GIMP_STOCK_CHANNEL_GRAY</title>
 <indexterm><primary>GIMP_STOCK_CHANNEL_GRAY</primary></indexterm><programlisting>#define GIMP_STOCK_CHANNEL_GRAY             "gimp-channel-gray"
 </programlisting>
 <para>
@@ -596,7 +599,7 @@ RTL variant
 <inlinegraphic fileref="stock-channel-gray-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHANNEL-INDEXED:CAPS"/>GIMP_STOCK_CHANNEL_INDEXED</title>
+<title><anchor id="GIMP-STOCK-CHANNEL-INDEXED:CAPS" role="macro"/>GIMP_STOCK_CHANNEL_INDEXED</title>
 <indexterm><primary>GIMP_STOCK_CHANNEL_INDEXED</primary></indexterm><programlisting>#define GIMP_STOCK_CHANNEL_INDEXED          "gimp-channel-indexed"
 </programlisting>
 <para>
@@ -606,7 +609,7 @@ RTL variant
 <inlinegraphic fileref="stock-channel-indexed-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHANNEL-ALPHA:CAPS"/>GIMP_STOCK_CHANNEL_ALPHA</title>
+<title><anchor id="GIMP-STOCK-CHANNEL-ALPHA:CAPS" role="macro"/>GIMP_STOCK_CHANNEL_ALPHA</title>
 <indexterm><primary>GIMP_STOCK_CHANNEL_ALPHA</primary></indexterm><programlisting>#define GIMP_STOCK_CHANNEL_ALPHA            "gimp-channel-alpha"
 </programlisting>
 <para>
@@ -616,7 +619,7 @@ RTL variant
 <inlinegraphic fileref="stock-channel-alpha-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PATH:CAPS"/>GIMP_STOCK_PATH</title>
+<title><anchor id="GIMP-STOCK-PATH:CAPS" role="macro"/>GIMP_STOCK_PATH</title>
 <indexterm><primary>GIMP_STOCK_PATH</primary></indexterm><programlisting>#define GIMP_STOCK_PATH                     "gimp-path"
 </programlisting>
 <para>
@@ -624,7 +627,7 @@ RTL variant
 <inlinegraphic fileref="stock-path-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TEXT-LAYER:CAPS"/>GIMP_STOCK_TEXT_LAYER</title>
+<title><anchor id="GIMP-STOCK-TEXT-LAYER:CAPS" role="macro"/>GIMP_STOCK_TEXT_LAYER</title>
 <indexterm><primary>GIMP_STOCK_TEXT_LAYER</primary></indexterm><programlisting>#define GIMP_STOCK_TEXT_LAYER               "gimp-text-layer"
 </programlisting>
 <para>
@@ -634,7 +637,7 @@ RTL variant
 <inlinegraphic fileref="stock-text-layer-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-FLOATING-SELECTION:CAPS"/>GIMP_STOCK_FLOATING_SELECTION</title>
+<title><anchor id="GIMP-STOCK-FLOATING-SELECTION:CAPS" role="macro"/>GIMP_STOCK_FLOATING_SELECTION</title>
 <indexterm><primary>GIMP_STOCK_FLOATING_SELECTION</primary></indexterm><programlisting>#define GIMP_STOCK_FLOATING_SELECTION       "gimp-floating-selection"
 </programlisting>
 <para>
@@ -644,7 +647,7 @@ RTL variant
 <inlinegraphic fileref="stock-floating-selection-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TEMPLATE:CAPS"/>GIMP_STOCK_TEMPLATE</title>
+<title><anchor id="GIMP-STOCK-TEMPLATE:CAPS" role="macro"/>GIMP_STOCK_TEMPLATE</title>
 <indexterm><primary>GIMP_STOCK_TEMPLATE</primary></indexterm><programlisting>#define GIMP_STOCK_TEMPLATE                 "gimp-template"
 </programlisting>
 <para>
@@ -652,7 +655,7 @@ RTL variant
 <inlinegraphic fileref="stock-template-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-IMAGES:CAPS"/>GIMP_STOCK_IMAGES</title>
+<title><anchor id="GIMP-STOCK-IMAGES:CAPS" role="macro"/>GIMP_STOCK_IMAGES</title>
 <indexterm><primary>GIMP_STOCK_IMAGES</primary></indexterm><programlisting>#define GIMP_STOCK_IMAGES                   "gimp-images"
 </programlisting>
 <para>
@@ -660,7 +663,7 @@ RTL variant
 <inlinegraphic fileref="stock-images-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LAYERS:CAPS"/>GIMP_STOCK_LAYERS</title>
+<title><anchor id="GIMP-STOCK-LAYERS:CAPS" role="macro"/>GIMP_STOCK_LAYERS</title>
 <indexterm><primary>GIMP_STOCK_LAYERS</primary></indexterm><programlisting>#define GIMP_STOCK_LAYERS                   "gimp-layers"
 </programlisting>
 <para>
@@ -668,7 +671,7 @@ RTL variant
 <inlinegraphic fileref="stock-layers-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHANNELS:CAPS"/>GIMP_STOCK_CHANNELS</title>
+<title><anchor id="GIMP-STOCK-CHANNELS:CAPS" role="macro"/>GIMP_STOCK_CHANNELS</title>
 <indexterm><primary>GIMP_STOCK_CHANNELS</primary></indexterm><programlisting>#define GIMP_STOCK_CHANNELS                 "gimp-channels"
 </programlisting>
 <para>
@@ -676,7 +679,7 @@ RTL variant
 <inlinegraphic fileref="stock-channels-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PATHS:CAPS"/>GIMP_STOCK_PATHS</title>
+<title><anchor id="GIMP-STOCK-PATHS:CAPS" role="macro"/>GIMP_STOCK_PATHS</title>
 <indexterm><primary>GIMP_STOCK_PATHS</primary></indexterm><programlisting>#define GIMP_STOCK_PATHS                    "gimp-paths"
 </programlisting>
 <para>
@@ -684,7 +687,7 @@ RTL variant
 <inlinegraphic fileref="stock-paths-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-INDEXED-PALETTE:CAPS"/>GIMP_STOCK_INDEXED_PALETTE</title>
+<title><anchor id="GIMP-STOCK-INDEXED-PALETTE:CAPS" role="macro"/>GIMP_STOCK_INDEXED_PALETTE</title>
 <indexterm><primary>GIMP_STOCK_INDEXED_PALETTE</primary></indexterm><programlisting>#define GIMP_STOCK_INDEXED_PALETTE          "gimp-indexed-palette"
 </programlisting>
 <para>
@@ -692,329 +695,329 @@ RTL variant
 <inlinegraphic fileref="stock-indexed-palette-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SHAPE-CIRCLE:CAPS"/>GIMP_STOCK_SHAPE_CIRCLE</title>
+<title><anchor id="GIMP-STOCK-SHAPE-CIRCLE:CAPS" role="macro"/>GIMP_STOCK_SHAPE_CIRCLE</title>
 <indexterm><primary>GIMP_STOCK_SHAPE_CIRCLE</primary></indexterm><programlisting>#define GIMP_STOCK_SHAPE_CIRCLE             "gimp-shape-circle"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-shape-circle-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SHAPE-SQUARE:CAPS"/>GIMP_STOCK_SHAPE_SQUARE</title>
+<title><anchor id="GIMP-STOCK-SHAPE-SQUARE:CAPS" role="macro"/>GIMP_STOCK_SHAPE_SQUARE</title>
 <indexterm><primary>GIMP_STOCK_SHAPE_SQUARE</primary></indexterm><programlisting>#define GIMP_STOCK_SHAPE_SQUARE             "gimp-shape-square"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-shape-square-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SHAPE-DIAMOND:CAPS"/>GIMP_STOCK_SHAPE_DIAMOND</title>
+<title><anchor id="GIMP-STOCK-SHAPE-DIAMOND:CAPS" role="macro"/>GIMP_STOCK_SHAPE_DIAMOND</title>
 <indexterm><primary>GIMP_STOCK_SHAPE_DIAMOND</primary></indexterm><programlisting>#define GIMP_STOCK_SHAPE_DIAMOND            "gimp-shape-diamond"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-shape-diamond-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CAP-BUTT:CAPS"/>GIMP_STOCK_CAP_BUTT</title>
+<title><anchor id="GIMP-STOCK-CAP-BUTT:CAPS" role="macro"/>GIMP_STOCK_CAP_BUTT</title>
 <indexterm><primary>GIMP_STOCK_CAP_BUTT</primary></indexterm><programlisting>#define GIMP_STOCK_CAP_BUTT                 "gimp-cap-butt"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-cap-butt-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CAP-ROUND:CAPS"/>GIMP_STOCK_CAP_ROUND</title>
+<title><anchor id="GIMP-STOCK-CAP-ROUND:CAPS" role="macro"/>GIMP_STOCK_CAP_ROUND</title>
 <indexterm><primary>GIMP_STOCK_CAP_ROUND</primary></indexterm><programlisting>#define GIMP_STOCK_CAP_ROUND                "gimp-cap-round"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-cap-round-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CAP-SQUARE:CAPS"/>GIMP_STOCK_CAP_SQUARE</title>
+<title><anchor id="GIMP-STOCK-CAP-SQUARE:CAPS" role="macro"/>GIMP_STOCK_CAP_SQUARE</title>
 <indexterm><primary>GIMP_STOCK_CAP_SQUARE</primary></indexterm><programlisting>#define GIMP_STOCK_CAP_SQUARE               "gimp-cap-square"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-cap-square-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-JOIN-MITER:CAPS"/>GIMP_STOCK_JOIN_MITER</title>
+<title><anchor id="GIMP-STOCK-JOIN-MITER:CAPS" role="macro"/>GIMP_STOCK_JOIN_MITER</title>
 <indexterm><primary>GIMP_STOCK_JOIN_MITER</primary></indexterm><programlisting>#define GIMP_STOCK_JOIN_MITER               "gimp-join-miter"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-join-miter-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-JOIN-ROUND:CAPS"/>GIMP_STOCK_JOIN_ROUND</title>
+<title><anchor id="GIMP-STOCK-JOIN-ROUND:CAPS" role="macro"/>GIMP_STOCK_JOIN_ROUND</title>
 <indexterm><primary>GIMP_STOCK_JOIN_ROUND</primary></indexterm><programlisting>#define GIMP_STOCK_JOIN_ROUND               "gimp-join-round"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-join-round-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-JOIN-BEVEL:CAPS"/>GIMP_STOCK_JOIN_BEVEL</title>
+<title><anchor id="GIMP-STOCK-JOIN-BEVEL:CAPS" role="macro"/>GIMP_STOCK_JOIN_BEVEL</title>
 <indexterm><primary>GIMP_STOCK_JOIN_BEVEL</primary></indexterm><programlisting>#define GIMP_STOCK_JOIN_BEVEL               "gimp-join-bevel"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-join-bevel-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION:CAPS"/>GIMP_STOCK_SELECTION</title>
+<title><anchor id="GIMP-STOCK-SELECTION:CAPS" role="macro"/>GIMP_STOCK_SELECTION</title>
 <indexterm><primary>GIMP_STOCK_SELECTION</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION                "gimp-selection"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-ALL:CAPS"/>GIMP_STOCK_SELECTION_ALL</title>
+<title><anchor id="GIMP-STOCK-SELECTION-ALL:CAPS" role="macro"/>GIMP_STOCK_SELECTION_ALL</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_ALL</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_ALL            "gimp-selection-all"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-all-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-NONE:CAPS"/>GIMP_STOCK_SELECTION_NONE</title>
+<title><anchor id="GIMP-STOCK-SELECTION-NONE:CAPS" role="macro"/>GIMP_STOCK_SELECTION_NONE</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_NONE</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_NONE           "gimp-selection-none"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-none-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-GROW:CAPS"/>GIMP_STOCK_SELECTION_GROW</title>
+<title><anchor id="GIMP-STOCK-SELECTION-GROW:CAPS" role="macro"/>GIMP_STOCK_SELECTION_GROW</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_GROW</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_GROW           "gimp-selection-grow"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-grow-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-SHRINK:CAPS"/>GIMP_STOCK_SELECTION_SHRINK</title>
+<title><anchor id="GIMP-STOCK-SELECTION-SHRINK:CAPS" role="macro"/>GIMP_STOCK_SELECTION_SHRINK</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_SHRINK</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_SHRINK         "gimp-selection-shrink"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-shrink-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-BORDER:CAPS"/>GIMP_STOCK_SELECTION_BORDER</title>
+<title><anchor id="GIMP-STOCK-SELECTION-BORDER:CAPS" role="macro"/>GIMP_STOCK_SELECTION_BORDER</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_BORDER</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_BORDER         "gimp-selection-border"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-border-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-ADD:CAPS"/>GIMP_STOCK_SELECTION_ADD</title>
+<title><anchor id="GIMP-STOCK-SELECTION-ADD:CAPS" role="macro"/>GIMP_STOCK_SELECTION_ADD</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_ADD</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_ADD            "gimp-selection-add"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-add-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-SUBTRACT:CAPS"/>GIMP_STOCK_SELECTION_SUBTRACT</title>
+<title><anchor id="GIMP-STOCK-SELECTION-SUBTRACT:CAPS" role="macro"/>GIMP_STOCK_SELECTION_SUBTRACT</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_SUBTRACT</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_SUBTRACT       "gimp-selection-subtract"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-subtract-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-REPLACE:CAPS"/>GIMP_STOCK_SELECTION_REPLACE</title>
+<title><anchor id="GIMP-STOCK-SELECTION-REPLACE:CAPS" role="macro"/>GIMP_STOCK_SELECTION_REPLACE</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_REPLACE</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_REPLACE        "gimp-selection-replace"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-replace-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-INTERSECT:CAPS"/>GIMP_STOCK_SELECTION_INTERSECT</title>
+<title><anchor id="GIMP-STOCK-SELECTION-INTERSECT:CAPS" role="macro"/>GIMP_STOCK_SELECTION_INTERSECT</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_INTERSECT</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_INTERSECT      "gimp-selection-intersect"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-intersect-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-STROKE:CAPS"/>GIMP_STOCK_SELECTION_STROKE</title>
+<title><anchor id="GIMP-STOCK-SELECTION-STROKE:CAPS" role="macro"/>GIMP_STOCK_SELECTION_STROKE</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_STROKE</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_STROKE         "gimp-selection-stroke"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-stroke-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-TO-CHANNEL:CAPS"/>GIMP_STOCK_SELECTION_TO_CHANNEL</title>
+<title><anchor id="GIMP-STOCK-SELECTION-TO-CHANNEL:CAPS" role="macro"/>GIMP_STOCK_SELECTION_TO_CHANNEL</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_TO_CHANNEL</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_TO_CHANNEL     "gimp-selection-to-channel"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-to-channel-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SELECTION-TO-PATH:CAPS"/>GIMP_STOCK_SELECTION_TO_PATH</title>
+<title><anchor id="GIMP-STOCK-SELECTION-TO-PATH:CAPS" role="macro"/>GIMP_STOCK_SELECTION_TO_PATH</title>
 <indexterm><primary>GIMP_STOCK_SELECTION_TO_PATH</primary></indexterm><programlisting>#define GIMP_STOCK_SELECTION_TO_PATH        "gimp-selection-to-path"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-selection-to-path-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-LINEAR:CAPS"/>GIMP_STOCK_GRADIENT_LINEAR</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-LINEAR:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_LINEAR</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_LINEAR</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_LINEAR               "gimp-gradient-linear"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-linear-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-BILINEAR:CAPS"/>GIMP_STOCK_GRADIENT_BILINEAR</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-BILINEAR:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_BILINEAR</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_BILINEAR</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_BILINEAR             "gimp-gradient-bilinear"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-bilinear-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-RADIAL:CAPS"/>GIMP_STOCK_GRADIENT_RADIAL</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-RADIAL:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_RADIAL</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_RADIAL</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_RADIAL               "gimp-gradient-radial"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-radial-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-SQUARE:CAPS"/>GIMP_STOCK_GRADIENT_SQUARE</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-SQUARE:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_SQUARE</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_SQUARE</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_SQUARE               "gimp-gradient-square"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-square-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-CONICAL-SYMMETRIC:CAPS"/>GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-CONICAL-SYMMETRIC:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC    "gimp-gradient-conical-symmetric"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-conical-symmetric-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-CONICAL-ASYMMETRIC:CAPS"/>GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-CONICAL-ASYMMETRIC:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC   "gimp-gradient-conical-asymmetric"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-conical-asymmetric-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-SHAPEBURST-SPHERICAL:CAPS"/>GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-SHAPEBURST-SPHERICAL:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL "gimp-gradient-shapeburst-spherical"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-shapeburst-spherical-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-SHAPEBURST-ANGULAR:CAPS"/>GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-SHAPEBURST-ANGULAR:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR   "gimp-gradient-shapeburst-angular"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-shapeburst-angular-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-SHAPEBURST-DIMPLED:CAPS"/>GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-SHAPEBURST-DIMPLED:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED   "gimp-gradient-shapeburst-dimpled"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-shapeburst-dimpled-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-SPIRAL-CLOCKWISE:CAPS"/>GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-SPIRAL-CLOCKWISE:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE     "gimp-gradient-spiral-clockwise"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-spiral-clockwise-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT-SPIRAL-ANTICLOCKWISE:CAPS"/>GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE</title>
+<title><anchor id="GIMP-STOCK-GRADIENT-SPIRAL-ANTICLOCKWISE:CAPS" role="macro"/>GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE "gimp-gradient-spiral-anticlockwise"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gradient-spiral-anticlockwise-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRAVITY-NORTH-WEST:CAPS"/>GIMP_STOCK_GRAVITY_NORTH_WEST</title>
+<title><anchor id="GIMP-STOCK-GRAVITY-NORTH-WEST:CAPS" role="macro"/>GIMP_STOCK_GRAVITY_NORTH_WEST</title>
 <indexterm><primary>GIMP_STOCK_GRAVITY_NORTH_WEST</primary></indexterm><programlisting>#define GIMP_STOCK_GRAVITY_NORTH_WEST       "gimp-gravity-north-west"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gravity-north-west-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRAVITY-NORTH:CAPS"/>GIMP_STOCK_GRAVITY_NORTH</title>
+<title><anchor id="GIMP-STOCK-GRAVITY-NORTH:CAPS" role="macro"/>GIMP_STOCK_GRAVITY_NORTH</title>
 <indexterm><primary>GIMP_STOCK_GRAVITY_NORTH</primary></indexterm><programlisting>#define GIMP_STOCK_GRAVITY_NORTH            "gimp-gravity-north"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gravity-north-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRAVITY-NORTH-EAST:CAPS"/>GIMP_STOCK_GRAVITY_NORTH_EAST</title>
+<title><anchor id="GIMP-STOCK-GRAVITY-NORTH-EAST:CAPS" role="macro"/>GIMP_STOCK_GRAVITY_NORTH_EAST</title>
 <indexterm><primary>GIMP_STOCK_GRAVITY_NORTH_EAST</primary></indexterm><programlisting>#define GIMP_STOCK_GRAVITY_NORTH_EAST       "gimp-gravity-north-east"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gravity-north-east-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRAVITY-WEST:CAPS"/>GIMP_STOCK_GRAVITY_WEST</title>
+<title><anchor id="GIMP-STOCK-GRAVITY-WEST:CAPS" role="macro"/>GIMP_STOCK_GRAVITY_WEST</title>
 <indexterm><primary>GIMP_STOCK_GRAVITY_WEST</primary></indexterm><programlisting>#define GIMP_STOCK_GRAVITY_WEST             "gimp-gravity-west"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gravity-west-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRAVITY-EAST:CAPS"/>GIMP_STOCK_GRAVITY_EAST</title>
+<title><anchor id="GIMP-STOCK-GRAVITY-EAST:CAPS" role="macro"/>GIMP_STOCK_GRAVITY_EAST</title>
 <indexterm><primary>GIMP_STOCK_GRAVITY_EAST</primary></indexterm><programlisting>#define GIMP_STOCK_GRAVITY_EAST             "gimp-gravity-east"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gravity-east-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRAVITY-SOUTH-WEST:CAPS"/>GIMP_STOCK_GRAVITY_SOUTH_WEST</title>
+<title><anchor id="GIMP-STOCK-GRAVITY-SOUTH-WEST:CAPS" role="macro"/>GIMP_STOCK_GRAVITY_SOUTH_WEST</title>
 <indexterm><primary>GIMP_STOCK_GRAVITY_SOUTH_WEST</primary></indexterm><programlisting>#define GIMP_STOCK_GRAVITY_SOUTH_WEST       "gimp-gravity-south-west"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gravity-south-west-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRAVITY-SOUTH:CAPS"/>GIMP_STOCK_GRAVITY_SOUTH</title>
+<title><anchor id="GIMP-STOCK-GRAVITY-SOUTH:CAPS" role="macro"/>GIMP_STOCK_GRAVITY_SOUTH</title>
 <indexterm><primary>GIMP_STOCK_GRAVITY_SOUTH</primary></indexterm><programlisting>#define GIMP_STOCK_GRAVITY_SOUTH            "gimp-gravity-south"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gravity-south-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRAVITY-SOUTH-EAST:CAPS"/>GIMP_STOCK_GRAVITY_SOUTH_EAST</title>
+<title><anchor id="GIMP-STOCK-GRAVITY-SOUTH-EAST:CAPS" role="macro"/>GIMP_STOCK_GRAVITY_SOUTH_EAST</title>
 <indexterm><primary>GIMP_STOCK_GRAVITY_SOUTH_EAST</primary></indexterm><programlisting>#define GIMP_STOCK_GRAVITY_SOUTH_EAST       "gimp-gravity-south-east"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-gravity-south-east-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CHAR-PICKER:CAPS"/>GIMP_STOCK_CHAR_PICKER</title>
+<title><anchor id="GIMP-STOCK-CHAR-PICKER:CAPS" role="macro"/>GIMP_STOCK_CHAR_PICKER</title>
 <indexterm><primary>GIMP_STOCK_CHAR_PICKER</primary></indexterm><programlisting>#define GIMP_STOCK_CHAR_PICKER              "gimp-char-picker"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-char-picker-22.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LETTER-SPACING:CAPS"/>GIMP_STOCK_LETTER_SPACING</title>
+<title><anchor id="GIMP-STOCK-LETTER-SPACING:CAPS" role="macro"/>GIMP_STOCK_LETTER_SPACING</title>
 <indexterm><primary>GIMP_STOCK_LETTER_SPACING</primary></indexterm><programlisting>#define GIMP_STOCK_LETTER_SPACING           "gimp-letter-spacing"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-letter-spacing-22.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-LINE-SPACING:CAPS"/>GIMP_STOCK_LINE_SPACING</title>
+<title><anchor id="GIMP-STOCK-LINE-SPACING:CAPS" role="macro"/>GIMP_STOCK_LINE_SPACING</title>
 <indexterm><primary>GIMP_STOCK_LINE_SPACING</primary></indexterm><programlisting>#define GIMP_STOCK_LINE_SPACING             "gimp-line-spacing"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-line-spacing-22.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TEXT-DIR-LTR:CAPS"/>GIMP_STOCK_TEXT_DIR_LTR</title>
+<title><anchor id="GIMP-STOCK-TEXT-DIR-LTR:CAPS" role="macro"/>GIMP_STOCK_TEXT_DIR_LTR</title>
 <indexterm><primary>GIMP_STOCK_TEXT_DIR_LTR</primary></indexterm><programlisting>#define GIMP_STOCK_TEXT_DIR_LTR             "gimp-text-dir-ltr"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-text-dir-ltr-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TEXT-DIR-RTL:CAPS"/>GIMP_STOCK_TEXT_DIR_RTL</title>
+<title><anchor id="GIMP-STOCK-TEXT-DIR-RTL:CAPS" role="macro"/>GIMP_STOCK_TEXT_DIR_RTL</title>
 <indexterm><primary>GIMP_STOCK_TEXT_DIR_RTL</primary></indexterm><programlisting>#define GIMP_STOCK_TEXT_DIR_RTL             "gimp-text-dir-rtl"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-text-dir-rtl-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PRINT-RESOLUTION:CAPS"/>GIMP_STOCK_PRINT_RESOLUTION</title>
+<title><anchor id="GIMP-STOCK-PRINT-RESOLUTION:CAPS" role="macro"/>GIMP_STOCK_PRINT_RESOLUTION</title>
 <indexterm><primary>GIMP_STOCK_PRINT_RESOLUTION</primary></indexterm><programlisting>#define GIMP_STOCK_PRINT_RESOLUTION         "gimp-print-resolution"
 </programlisting>
 <para>
@@ -1022,7 +1025,7 @@ RTL variant
 <inlinegraphic fileref="stock-print-resolution-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOLS:CAPS"/>GIMP_STOCK_TOOLS</title>
+<title><anchor id="GIMP-STOCK-TOOLS:CAPS" role="macro"/>GIMP_STOCK_TOOLS</title>
 <indexterm><primary>GIMP_STOCK_TOOLS</primary></indexterm><programlisting>#define GIMP_STOCK_TOOLS                    "gimp-tools"
 </programlisting>
 <para>
@@ -1030,7 +1033,7 @@ RTL variant
 <inlinegraphic fileref="stock-tools-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-OPTIONS:CAPS"/>GIMP_STOCK_TOOL_OPTIONS</title>
+<title><anchor id="GIMP-STOCK-TOOL-OPTIONS:CAPS" role="macro"/>GIMP_STOCK_TOOL_OPTIONS</title>
 <indexterm><primary>GIMP_STOCK_TOOL_OPTIONS</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_OPTIONS             "gimp-tool-options"
 </programlisting>
 <para>
@@ -1038,7 +1041,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-options-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-DEVICE-STATUS:CAPS"/>GIMP_STOCK_DEVICE_STATUS</title>
+<title><anchor id="GIMP-STOCK-DEVICE-STATUS:CAPS" role="macro"/>GIMP_STOCK_DEVICE_STATUS</title>
 <indexterm><primary>GIMP_STOCK_DEVICE_STATUS</primary></indexterm><programlisting>#define GIMP_STOCK_DEVICE_STATUS            "gimp-device-status"
 </programlisting>
 <para>
@@ -1046,7 +1049,7 @@ RTL variant
 <inlinegraphic fileref="stock-device-status-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-DISPLAY-FILTER:CAPS"/>GIMP_STOCK_DISPLAY_FILTER</title>
+<title><anchor id="GIMP-STOCK-DISPLAY-FILTER:CAPS" role="macro"/>GIMP_STOCK_DISPLAY_FILTER</title>
 <indexterm><primary>GIMP_STOCK_DISPLAY_FILTER</primary></indexterm><programlisting>#define GIMP_STOCK_DISPLAY_FILTER           "gimp-display-filter"
 </programlisting>
 <para>
@@ -1054,105 +1057,105 @@ RTL variant
 <inlinegraphic fileref="stock-display-filter-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CURVE-FREE:CAPS"/>GIMP_STOCK_CURVE_FREE</title>
+<title><anchor id="GIMP-STOCK-CURVE-FREE:CAPS" role="macro"/>GIMP_STOCK_CURVE_FREE</title>
 <indexterm><primary>GIMP_STOCK_CURVE_FREE</primary></indexterm><programlisting>#define GIMP_STOCK_CURVE_FREE               "gimp-curve-free"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-curve-free-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CURVE-SMOOTH:CAPS"/>GIMP_STOCK_CURVE_SMOOTH</title>
+<title><anchor id="GIMP-STOCK-CURVE-SMOOTH:CAPS" role="macro"/>GIMP_STOCK_CURVE_SMOOTH</title>
 <indexterm><primary>GIMP_STOCK_CURVE_SMOOTH</primary></indexterm><programlisting>#define GIMP_STOCK_CURVE_SMOOTH             "gimp-curve-smooth"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-curve-smooth-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-COLOR-PICKER-BLACK:CAPS"/>GIMP_STOCK_COLOR_PICKER_BLACK</title>
+<title><anchor id="GIMP-STOCK-COLOR-PICKER-BLACK:CAPS" role="macro"/>GIMP_STOCK_COLOR_PICKER_BLACK</title>
 <indexterm><primary>GIMP_STOCK_COLOR_PICKER_BLACK</primary></indexterm><programlisting>#define GIMP_STOCK_COLOR_PICKER_BLACK       "gimp-color-picker-black"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-color-picker-black-18.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-COLOR-PICKER-GRAY:CAPS"/>GIMP_STOCK_COLOR_PICKER_GRAY</title>
+<title><anchor id="GIMP-STOCK-COLOR-PICKER-GRAY:CAPS" role="macro"/>GIMP_STOCK_COLOR_PICKER_GRAY</title>
 <indexterm><primary>GIMP_STOCK_COLOR_PICKER_GRAY</primary></indexterm><programlisting>#define GIMP_STOCK_COLOR_PICKER_GRAY        "gimp-color-picker-gray"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-color-picker-gray-18.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-COLOR-PICKER-WHITE:CAPS"/>GIMP_STOCK_COLOR_PICKER_WHITE</title>
+<title><anchor id="GIMP-STOCK-COLOR-PICKER-WHITE:CAPS" role="macro"/>GIMP_STOCK_COLOR_PICKER_WHITE</title>
 <indexterm><primary>GIMP_STOCK_COLOR_PICKER_WHITE</primary></indexterm><programlisting>#define GIMP_STOCK_COLOR_PICKER_WHITE       "gimp-color-picker-white"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-color-picker-white-18.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-COLOR-TRIANGLE:CAPS"/>GIMP_STOCK_COLOR_TRIANGLE</title>
+<title><anchor id="GIMP-STOCK-COLOR-TRIANGLE:CAPS" role="macro"/>GIMP_STOCK_COLOR_TRIANGLE</title>
 <indexterm><primary>GIMP_STOCK_COLOR_TRIANGLE</primary></indexterm><programlisting>#define GIMP_STOCK_COLOR_TRIANGLE           "gimp-color-triangle"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-color-triangle-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-COLOR-PICK-FROM-SCREEN:CAPS"/>GIMP_STOCK_COLOR_PICK_FROM_SCREEN</title>
+<title><anchor id="GIMP-STOCK-COLOR-PICK-FROM-SCREEN:CAPS" role="macro"/>GIMP_STOCK_COLOR_PICK_FROM_SCREEN</title>
 <indexterm><primary>GIMP_STOCK_COLOR_PICK_FROM_SCREEN</primary></indexterm><programlisting>#define GIMP_STOCK_COLOR_PICK_FROM_SCREEN   "gimp-color-pick-from-screen"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-color-pick-from-screen-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CONVERT-GRAYSCALE:CAPS"/>GIMP_STOCK_CONVERT_GRAYSCALE</title>
+<title><anchor id="GIMP-STOCK-CONVERT-GRAYSCALE:CAPS" role="macro"/>GIMP_STOCK_CONVERT_GRAYSCALE</title>
 <indexterm><primary>GIMP_STOCK_CONVERT_GRAYSCALE</primary></indexterm><programlisting>#define GIMP_STOCK_CONVERT_GRAYSCALE        "gimp-convert-grayscale"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-convert-grayscale-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CONVERT-INDEXED:CAPS"/>GIMP_STOCK_CONVERT_INDEXED</title>
+<title><anchor id="GIMP-STOCK-CONVERT-INDEXED:CAPS" role="macro"/>GIMP_STOCK_CONVERT_INDEXED</title>
 <indexterm><primary>GIMP_STOCK_CONVERT_INDEXED</primary></indexterm><programlisting>#define GIMP_STOCK_CONVERT_INDEXED          "gimp-convert-indexed"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-convert-indexed-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-CONVERT-RGB:CAPS"/>GIMP_STOCK_CONVERT_RGB</title>
+<title><anchor id="GIMP-STOCK-CONVERT-RGB:CAPS" role="macro"/>GIMP_STOCK_CONVERT_RGB</title>
 <indexterm><primary>GIMP_STOCK_CONVERT_RGB</primary></indexterm><programlisting>#define GIMP_STOCK_CONVERT_RGB              "gimp-convert-rgb"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-convert-rgb-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TRANSPARENCY:CAPS"/>GIMP_STOCK_TRANSPARENCY</title>
+<title><anchor id="GIMP-STOCK-TRANSPARENCY:CAPS" role="macro"/>GIMP_STOCK_TRANSPARENCY</title>
 <indexterm><primary>GIMP_STOCK_TRANSPARENCY</primary></indexterm><programlisting>#define GIMP_STOCK_TRANSPARENCY             "gimp-transparency"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-transparency-24.png" format="png"></inlinegraphic><inlinegraphic fileref="stock-transparency-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-DEFAULT-COLORS:CAPS"/>GIMP_STOCK_DEFAULT_COLORS</title>
+<title><anchor id="GIMP-STOCK-DEFAULT-COLORS:CAPS" role="macro"/>GIMP_STOCK_DEFAULT_COLORS</title>
 <indexterm><primary>GIMP_STOCK_DEFAULT_COLORS</primary></indexterm><programlisting>#define GIMP_STOCK_DEFAULT_COLORS           "gimp-default-colors"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-default-colors-12.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-SWAP-COLORS:CAPS"/>GIMP_STOCK_SWAP_COLORS</title>
+<title><anchor id="GIMP-STOCK-SWAP-COLORS:CAPS" role="macro"/>GIMP_STOCK_SWAP_COLORS</title>
 <indexterm><primary>GIMP_STOCK_SWAP_COLORS</primary></indexterm><programlisting>#define GIMP_STOCK_SWAP_COLORS              "gimp-swap-colors"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-swap-colors-12.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-UNDO-HISTORY:CAPS"/>GIMP_STOCK_UNDO_HISTORY</title>
+<title><anchor id="GIMP-STOCK-UNDO-HISTORY:CAPS" role="macro"/>GIMP_STOCK_UNDO_HISTORY</title>
 <indexterm><primary>GIMP_STOCK_UNDO_HISTORY</primary></indexterm><programlisting>#define GIMP_STOCK_UNDO_HISTORY             "gimp-undo-history"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-undo-history-24.png" format="png"></inlinegraphic><inlinegraphic fileref="stock-undo-history-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-AIRBRUSH:CAPS"/>GIMP_STOCK_TOOL_AIRBRUSH</title>
+<title><anchor id="GIMP-STOCK-TOOL-AIRBRUSH:CAPS" role="macro"/>GIMP_STOCK_TOOL_AIRBRUSH</title>
 <indexterm><primary>GIMP_STOCK_TOOL_AIRBRUSH</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_AIRBRUSH            "gimp-tool-airbrush"
 </programlisting>
 <para>
@@ -1160,7 +1163,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-airbrush-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-BLEND:CAPS"/>GIMP_STOCK_TOOL_BLEND</title>
+<title><anchor id="GIMP-STOCK-TOOL-BLEND:CAPS" role="macro"/>GIMP_STOCK_TOOL_BLEND</title>
 <indexterm><primary>GIMP_STOCK_TOOL_BLEND</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_BLEND               "gimp-tool-blend"
 </programlisting>
 <para>
@@ -1168,7 +1171,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-blend-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-BLUR:CAPS"/>GIMP_STOCK_TOOL_BLUR</title>
+<title><anchor id="GIMP-STOCK-TOOL-BLUR:CAPS" role="macro"/>GIMP_STOCK_TOOL_BLUR</title>
 <indexterm><primary>GIMP_STOCK_TOOL_BLUR</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_BLUR                "gimp-tool-blur"
 </programlisting>
 <para>
@@ -1176,7 +1179,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-blur-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS"/>GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST</title>
+<title><anchor id="GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS" role="macro"/>GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST</title>
 <indexterm><primary>GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST "gimp-tool-brightness-contrast"
 </programlisting>
 <para>
@@ -1184,7 +1187,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-brightness-contrast-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-BUCKET-FILL:CAPS"/>GIMP_STOCK_TOOL_BUCKET_FILL</title>
+<title><anchor id="GIMP-STOCK-TOOL-BUCKET-FILL:CAPS" role="macro"/>GIMP_STOCK_TOOL_BUCKET_FILL</title>
 <indexterm><primary>GIMP_STOCK_TOOL_BUCKET_FILL</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_BUCKET_FILL         "gimp-tool-bucket-fill"
 </programlisting>
 <para>
@@ -1192,7 +1195,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-bucket-fill-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-BY-COLOR-SELECT:CAPS"/>GIMP_STOCK_TOOL_BY_COLOR_SELECT</title>
+<title><anchor id="GIMP-STOCK-TOOL-BY-COLOR-SELECT:CAPS" role="macro"/>GIMP_STOCK_TOOL_BY_COLOR_SELECT</title>
 <indexterm><primary>GIMP_STOCK_TOOL_BY_COLOR_SELECT</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_BY_COLOR_SELECT     "gimp-tool-by-color-select"
 </programlisting>
 <para>
@@ -1200,7 +1203,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-by-color-select-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-CLONE:CAPS"/>GIMP_STOCK_TOOL_CLONE</title>
+<title><anchor id="GIMP-STOCK-TOOL-CLONE:CAPS" role="macro"/>GIMP_STOCK_TOOL_CLONE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_CLONE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_CLONE               "gimp-tool-clone"
 </programlisting>
 <para>
@@ -1208,7 +1211,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-clone-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-COLOR-BALANCE:CAPS"/>GIMP_STOCK_TOOL_COLOR_BALANCE</title>
+<title><anchor id="GIMP-STOCK-TOOL-COLOR-BALANCE:CAPS" role="macro"/>GIMP_STOCK_TOOL_COLOR_BALANCE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_COLOR_BALANCE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_COLOR_BALANCE       "gimp-tool-color-balance"
 </programlisting>
 <para>
@@ -1216,7 +1219,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-color-balance-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-COLOR-PICKER:CAPS"/>GIMP_STOCK_TOOL_COLOR_PICKER</title>
+<title><anchor id="GIMP-STOCK-TOOL-COLOR-PICKER:CAPS" role="macro"/>GIMP_STOCK_TOOL_COLOR_PICKER</title>
 <indexterm><primary>GIMP_STOCK_TOOL_COLOR_PICKER</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_COLOR_PICKER        "gimp-tool-color-picker"
 </programlisting>
 <para>
@@ -1224,7 +1227,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-color-picker-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-COLORIZE:CAPS"/>GIMP_STOCK_TOOL_COLORIZE</title>
+<title><anchor id="GIMP-STOCK-TOOL-COLORIZE:CAPS" role="macro"/>GIMP_STOCK_TOOL_COLORIZE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_COLORIZE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_COLORIZE            "gimp-tool-colorize"
 </programlisting>
 <para>
@@ -1232,7 +1235,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-colorize-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-CROP:CAPS"/>GIMP_STOCK_TOOL_CROP</title>
+<title><anchor id="GIMP-STOCK-TOOL-CROP:CAPS" role="macro"/>GIMP_STOCK_TOOL_CROP</title>
 <indexterm><primary>GIMP_STOCK_TOOL_CROP</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_CROP                "gimp-tool-crop"
 </programlisting>
 <para>
@@ -1240,7 +1243,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-crop-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-CURVES:CAPS"/>GIMP_STOCK_TOOL_CURVES</title>
+<title><anchor id="GIMP-STOCK-TOOL-CURVES:CAPS" role="macro"/>GIMP_STOCK_TOOL_CURVES</title>
 <indexterm><primary>GIMP_STOCK_TOOL_CURVES</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_CURVES              "gimp-tool-curves"
 </programlisting>
 <para>
@@ -1248,7 +1251,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-curves-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-DODGE:CAPS"/>GIMP_STOCK_TOOL_DODGE</title>
+<title><anchor id="GIMP-STOCK-TOOL-DODGE:CAPS" role="macro"/>GIMP_STOCK_TOOL_DODGE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_DODGE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_DODGE               "gimp-tool-dodge"
 </programlisting>
 <para>
@@ -1256,7 +1259,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-dodge-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS"/>GIMP_STOCK_TOOL_ELLIPSE_SELECT</title>
+<title><anchor id="GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS" role="macro"/>GIMP_STOCK_TOOL_ELLIPSE_SELECT</title>
 <indexterm><primary>GIMP_STOCK_TOOL_ELLIPSE_SELECT</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_ELLIPSE_SELECT      "gimp-tool-ellipse-select"
 </programlisting>
 <para>
@@ -1264,7 +1267,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-ellipse-select-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-ERASER:CAPS"/>GIMP_STOCK_TOOL_ERASER</title>
+<title><anchor id="GIMP-STOCK-TOOL-ERASER:CAPS" role="macro"/>GIMP_STOCK_TOOL_ERASER</title>
 <indexterm><primary>GIMP_STOCK_TOOL_ERASER</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_ERASER              "gimp-tool-eraser"
 </programlisting>
 <para>
@@ -1272,7 +1275,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-eraser-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-FLIP:CAPS"/>GIMP_STOCK_TOOL_FLIP</title>
+<title><anchor id="GIMP-STOCK-TOOL-FLIP:CAPS" role="macro"/>GIMP_STOCK_TOOL_FLIP</title>
 <indexterm><primary>GIMP_STOCK_TOOL_FLIP</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_FLIP                "gimp-tool-flip"
 </programlisting>
 <para>
@@ -1280,7 +1283,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-flip-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-FREE-SELECT:CAPS"/>GIMP_STOCK_TOOL_FREE_SELECT</title>
+<title><anchor id="GIMP-STOCK-TOOL-FREE-SELECT:CAPS" role="macro"/>GIMP_STOCK_TOOL_FREE_SELECT</title>
 <indexterm><primary>GIMP_STOCK_TOOL_FREE_SELECT</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_FREE_SELECT         "gimp-tool-free-select"
 </programlisting>
 <para>
@@ -1288,7 +1291,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-free-select-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS"/>GIMP_STOCK_TOOL_FUZZY_SELECT</title>
+<title><anchor id="GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS" role="macro"/>GIMP_STOCK_TOOL_FUZZY_SELECT</title>
 <indexterm><primary>GIMP_STOCK_TOOL_FUZZY_SELECT</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_FUZZY_SELECT        "gimp-tool-fuzzy-select"
 </programlisting>
 <para>
@@ -1296,7 +1299,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-fuzzy-select-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-HUE-SATURATION:CAPS"/>GIMP_STOCK_TOOL_HUE_SATURATION</title>
+<title><anchor id="GIMP-STOCK-TOOL-HUE-SATURATION:CAPS" role="macro"/>GIMP_STOCK_TOOL_HUE_SATURATION</title>
 <indexterm><primary>GIMP_STOCK_TOOL_HUE_SATURATION</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_HUE_SATURATION      "gimp-tool-hue-saturation"
 </programlisting>
 <para>
@@ -1304,7 +1307,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-hue-saturation-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-INK:CAPS"/>GIMP_STOCK_TOOL_INK</title>
+<title><anchor id="GIMP-STOCK-TOOL-INK:CAPS" role="macro"/>GIMP_STOCK_TOOL_INK</title>
 <indexterm><primary>GIMP_STOCK_TOOL_INK</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_INK                 "gimp-tool-ink"
 </programlisting>
 <para>
@@ -1312,7 +1315,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-ink-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-ISCISSORS:CAPS"/>GIMP_STOCK_TOOL_ISCISSORS</title>
+<title><anchor id="GIMP-STOCK-TOOL-ISCISSORS:CAPS" role="macro"/>GIMP_STOCK_TOOL_ISCISSORS</title>
 <indexterm><primary>GIMP_STOCK_TOOL_ISCISSORS</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_ISCISSORS           "gimp-tool-iscissors"
 </programlisting>
 <para>
@@ -1320,7 +1323,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-iscissors-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-LEVELS:CAPS"/>GIMP_STOCK_TOOL_LEVELS</title>
+<title><anchor id="GIMP-STOCK-TOOL-LEVELS:CAPS" role="macro"/>GIMP_STOCK_TOOL_LEVELS</title>
 <indexterm><primary>GIMP_STOCK_TOOL_LEVELS</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_LEVELS              "gimp-tool-levels"
 </programlisting>
 <para>
@@ -1328,7 +1331,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-levels-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-MEASURE:CAPS"/>GIMP_STOCK_TOOL_MEASURE</title>
+<title><anchor id="GIMP-STOCK-TOOL-MEASURE:CAPS" role="macro"/>GIMP_STOCK_TOOL_MEASURE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_MEASURE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_MEASURE             "gimp-tool-measure"
 </programlisting>
 <para>
@@ -1336,7 +1339,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-measure-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-MOVE:CAPS"/>GIMP_STOCK_TOOL_MOVE</title>
+<title><anchor id="GIMP-STOCK-TOOL-MOVE:CAPS" role="macro"/>GIMP_STOCK_TOOL_MOVE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_MOVE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_MOVE                "gimp-tool-move"
 </programlisting>
 <para>
@@ -1344,7 +1347,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-move-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-PAINTBRUSH:CAPS"/>GIMP_STOCK_TOOL_PAINTBRUSH</title>
+<title><anchor id="GIMP-STOCK-TOOL-PAINTBRUSH:CAPS" role="macro"/>GIMP_STOCK_TOOL_PAINTBRUSH</title>
 <indexterm><primary>GIMP_STOCK_TOOL_PAINTBRUSH</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_PAINTBRUSH          "gimp-tool-paintbrush"
 </programlisting>
 <para>
@@ -1352,7 +1355,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-paintbrush-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-PATH:CAPS"/>GIMP_STOCK_TOOL_PATH</title>
+<title><anchor id="GIMP-STOCK-TOOL-PATH:CAPS" role="macro"/>GIMP_STOCK_TOOL_PATH</title>
 <indexterm><primary>GIMP_STOCK_TOOL_PATH</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_PATH                "gimp-tool-path"
 </programlisting>
 <para>
@@ -1360,7 +1363,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-path-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-PENCIL:CAPS"/>GIMP_STOCK_TOOL_PENCIL</title>
+<title><anchor id="GIMP-STOCK-TOOL-PENCIL:CAPS" role="macro"/>GIMP_STOCK_TOOL_PENCIL</title>
 <indexterm><primary>GIMP_STOCK_TOOL_PENCIL</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_PENCIL              "gimp-tool-pencil"
 </programlisting>
 <para>
@@ -1368,7 +1371,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-pencil-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-PERSPECTIVE:CAPS"/>GIMP_STOCK_TOOL_PERSPECTIVE</title>
+<title><anchor id="GIMP-STOCK-TOOL-PERSPECTIVE:CAPS" role="macro"/>GIMP_STOCK_TOOL_PERSPECTIVE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_PERSPECTIVE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_PERSPECTIVE         "gimp-tool-perspective"
 </programlisting>
 <para>
@@ -1376,7 +1379,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-perspective-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-POSTERIZE:CAPS"/>GIMP_STOCK_TOOL_POSTERIZE</title>
+<title><anchor id="GIMP-STOCK-TOOL-POSTERIZE:CAPS" role="macro"/>GIMP_STOCK_TOOL_POSTERIZE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_POSTERIZE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_POSTERIZE           "gimp-tool-posterize"
 </programlisting>
 <para>
@@ -1384,7 +1387,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-posterize-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-RECT-SELECT:CAPS"/>GIMP_STOCK_TOOL_RECT_SELECT</title>
+<title><anchor id="GIMP-STOCK-TOOL-RECT-SELECT:CAPS" role="macro"/>GIMP_STOCK_TOOL_RECT_SELECT</title>
 <indexterm><primary>GIMP_STOCK_TOOL_RECT_SELECT</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_RECT_SELECT         "gimp-tool-rect-select"
 </programlisting>
 <para>
@@ -1392,7 +1395,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-rect-select-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-ROTATE:CAPS"/>GIMP_STOCK_TOOL_ROTATE</title>
+<title><anchor id="GIMP-STOCK-TOOL-ROTATE:CAPS" role="macro"/>GIMP_STOCK_TOOL_ROTATE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_ROTATE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_ROTATE              "gimp-tool-rotate"
 </programlisting>
 <para>
@@ -1400,7 +1403,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-rotate-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-SCALE:CAPS"/>GIMP_STOCK_TOOL_SCALE</title>
+<title><anchor id="GIMP-STOCK-TOOL-SCALE:CAPS" role="macro"/>GIMP_STOCK_TOOL_SCALE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_SCALE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_SCALE               "gimp-tool-scale"
 </programlisting>
 <para>
@@ -1408,7 +1411,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-scale-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-SHEAR:CAPS"/>GIMP_STOCK_TOOL_SHEAR</title>
+<title><anchor id="GIMP-STOCK-TOOL-SHEAR:CAPS" role="macro"/>GIMP_STOCK_TOOL_SHEAR</title>
 <indexterm><primary>GIMP_STOCK_TOOL_SHEAR</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_SHEAR               "gimp-tool-shear"
 </programlisting>
 <para>
@@ -1416,7 +1419,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-shear-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-SMUDGE:CAPS"/>GIMP_STOCK_TOOL_SMUDGE</title>
+<title><anchor id="GIMP-STOCK-TOOL-SMUDGE:CAPS" role="macro"/>GIMP_STOCK_TOOL_SMUDGE</title>
 <indexterm><primary>GIMP_STOCK_TOOL_SMUDGE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_SMUDGE              "gimp-tool-smudge"
 </programlisting>
 <para>
@@ -1424,7 +1427,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-smudge-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-TEXT:CAPS"/>GIMP_STOCK_TOOL_TEXT</title>
+<title><anchor id="GIMP-STOCK-TOOL-TEXT:CAPS" role="macro"/>GIMP_STOCK_TOOL_TEXT</title>
 <indexterm><primary>GIMP_STOCK_TOOL_TEXT</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_TEXT                "gimp-tool-text"
 </programlisting>
 <para>
@@ -1432,7 +1435,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-text-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-THRESHOLD:CAPS"/>GIMP_STOCK_TOOL_THRESHOLD</title>
+<title><anchor id="GIMP-STOCK-TOOL-THRESHOLD:CAPS" role="macro"/>GIMP_STOCK_TOOL_THRESHOLD</title>
 <indexterm><primary>GIMP_STOCK_TOOL_THRESHOLD</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_THRESHOLD           "gimp-tool-threshold"
 </programlisting>
 <para>
@@ -1440,7 +1443,7 @@ RTL variant
 <inlinegraphic fileref="stock-tool-threshold-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TOOL-ZOOM:CAPS"/>GIMP_STOCK_TOOL_ZOOM</title>
+<title><anchor id="GIMP-STOCK-TOOL-ZOOM:CAPS" role="macro"/>GIMP_STOCK_TOOL_ZOOM</title>
 <indexterm><primary>GIMP_STOCK_TOOL_ZOOM</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_ZOOM                "gimp-tool-zoom"
 </programlisting>
 <para>
@@ -1448,56 +1451,56 @@ RTL variant
 <inlinegraphic fileref="stock-tool-zoom-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-HCHAIN:CAPS"/>GIMP_STOCK_HCHAIN</title>
+<title><anchor id="GIMP-STOCK-HCHAIN:CAPS" role="macro"/>GIMP_STOCK_HCHAIN</title>
 <indexterm><primary>GIMP_STOCK_HCHAIN</primary></indexterm><programlisting>#define GIMP_STOCK_HCHAIN                   "gimp-hchain"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-hchain-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-HCHAIN-BROKEN:CAPS"/>GIMP_STOCK_HCHAIN_BROKEN</title>
+<title><anchor id="GIMP-STOCK-HCHAIN-BROKEN:CAPS" role="macro"/>GIMP_STOCK_HCHAIN_BROKEN</title>
 <indexterm><primary>GIMP_STOCK_HCHAIN_BROKEN</primary></indexterm><programlisting>#define GIMP_STOCK_HCHAIN_BROKEN            "gimp-hchain-broken"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-hchain-broken-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-VCHAIN:CAPS"/>GIMP_STOCK_VCHAIN</title>
+<title><anchor id="GIMP-STOCK-VCHAIN:CAPS" role="macro"/>GIMP_STOCK_VCHAIN</title>
 <indexterm><primary>GIMP_STOCK_VCHAIN</primary></indexterm><programlisting>#define GIMP_STOCK_VCHAIN                   "gimp-vchain"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-vchain-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-VCHAIN-BROKEN:CAPS"/>GIMP_STOCK_VCHAIN_BROKEN</title>
+<title><anchor id="GIMP-STOCK-VCHAIN-BROKEN:CAPS" role="macro"/>GIMP_STOCK_VCHAIN_BROKEN</title>
 <indexterm><primary>GIMP_STOCK_VCHAIN_BROKEN</primary></indexterm><programlisting>#define GIMP_STOCK_VCHAIN_BROKEN            "gimp-vchain-broken"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-vchain-broken-24.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-TEXTURE:CAPS"/>GIMP_STOCK_TEXTURE</title>
+<title><anchor id="GIMP-STOCK-TEXTURE:CAPS" role="macro"/>GIMP_STOCK_TEXTURE</title>
 <indexterm><primary>GIMP_STOCK_TEXTURE</primary></indexterm><programlisting>#define GIMP_STOCK_TEXTURE                  "gimp-texture"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-texture-64.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-FRAME:CAPS"/>GIMP_STOCK_FRAME</title>
+<title><anchor id="GIMP-STOCK-FRAME:CAPS" role="macro"/>GIMP_STOCK_FRAME</title>
 <indexterm><primary>GIMP_STOCK_FRAME</primary></indexterm><programlisting>#define GIMP_STOCK_FRAME                    "gimp-frame"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-frame-64.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-ERROR:CAPS"/>GIMP_STOCK_ERROR</title>
+<title><anchor id="GIMP-STOCK-ERROR:CAPS" role="macro"/>GIMP_STOCK_ERROR</title>
 <indexterm><primary>GIMP_STOCK_ERROR</primary></indexterm><programlisting>#define GIMP_STOCK_ERROR                    "gimp-error"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-error-64.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-INFO:CAPS"/>GIMP_STOCK_INFO</title>
+<title><anchor id="GIMP-STOCK-INFO:CAPS" role="macro"/>GIMP_STOCK_INFO</title>
 <indexterm><primary>GIMP_STOCK_INFO</primary></indexterm><programlisting>#define GIMP_STOCK_INFO                     "gimp-info"
 </programlisting>
 <para>
@@ -1506,14 +1509,14 @@ RTL variant
 <inlinegraphic fileref="stock-info-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-QUESTION:CAPS"/>GIMP_STOCK_QUESTION</title>
+<title><anchor id="GIMP-STOCK-QUESTION:CAPS" role="macro"/>GIMP_STOCK_QUESTION</title>
 <indexterm><primary>GIMP_STOCK_QUESTION</primary></indexterm><programlisting>#define GIMP_STOCK_QUESTION                 "gimp-question"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-question-64.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-WARNING:CAPS"/>GIMP_STOCK_WARNING</title>
+<title><anchor id="GIMP-STOCK-WARNING:CAPS" role="macro"/>GIMP_STOCK_WARNING</title>
 <indexterm><primary>GIMP_STOCK_WARNING</primary></indexterm><programlisting>#define GIMP_STOCK_WARNING                  "gimp-warning"
 </programlisting>
 <para>
@@ -1522,7 +1525,7 @@ RTL variant
 <inlinegraphic fileref="stock-warning-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-WILBER:CAPS"/>GIMP_STOCK_WILBER</title>
+<title><anchor id="GIMP-STOCK-WILBER:CAPS" role="macro"/>GIMP_STOCK_WILBER</title>
 <indexterm><primary>GIMP_STOCK_WILBER</primary></indexterm><programlisting>#define GIMP_STOCK_WILBER                   "gimp-wilber"
 </programlisting>
 <para>
@@ -1530,56 +1533,56 @@ RTL variant
 <inlinegraphic fileref="stock-wilber-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-WILBER-EEK:CAPS"/>GIMP_STOCK_WILBER_EEK</title>
+<title><anchor id="GIMP-STOCK-WILBER-EEK:CAPS" role="macro"/>GIMP_STOCK_WILBER_EEK</title>
 <indexterm><primary>GIMP_STOCK_WILBER_EEK</primary></indexterm><programlisting>#define GIMP_STOCK_WILBER_EEK               "gimp-wilber-eek"
 </programlisting>
 <para>
 <inlinegraphic fileref="stock-wilber-eek-64.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-BRUSH:CAPS"/>GIMP_STOCK_BRUSH</title>
+<title><anchor id="GIMP-STOCK-BRUSH:CAPS" role="macro"/>GIMP_STOCK_BRUSH</title>
 <indexterm><primary>GIMP_STOCK_BRUSH</primary></indexterm><programlisting>#define GIMP_STOCK_BRUSH                    GIMP_STOCK_TOOL_PAINTBRUSH
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-BUFFER:CAPS"/>GIMP_STOCK_BUFFER</title>
+<title><anchor id="GIMP-STOCK-BUFFER:CAPS" role="macro"/>GIMP_STOCK_BUFFER</title>
 <indexterm><primary>GIMP_STOCK_BUFFER</primary></indexterm><programlisting>#define GIMP_STOCK_BUFFER                   GTK_STOCK_PASTE
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-FONT:CAPS"/>GIMP_STOCK_FONT</title>
+<title><anchor id="GIMP-STOCK-FONT:CAPS" role="macro"/>GIMP_STOCK_FONT</title>
 <indexterm><primary>GIMP_STOCK_FONT</primary></indexterm><programlisting>#define GIMP_STOCK_FONT                     GTK_STOCK_SELECT_FONT
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-GRADIENT:CAPS"/>GIMP_STOCK_GRADIENT</title>
+<title><anchor id="GIMP-STOCK-GRADIENT:CAPS" role="macro"/>GIMP_STOCK_GRADIENT</title>
 <indexterm><primary>GIMP_STOCK_GRADIENT</primary></indexterm><programlisting>#define GIMP_STOCK_GRADIENT                 GIMP_STOCK_TOOL_BLEND
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PALETTE:CAPS"/>GIMP_STOCK_PALETTE</title>
+<title><anchor id="GIMP-STOCK-PALETTE:CAPS" role="macro"/>GIMP_STOCK_PALETTE</title>
 <indexterm><primary>GIMP_STOCK_PALETTE</primary></indexterm><programlisting>#define GIMP_STOCK_PALETTE                  GTK_STOCK_SELECT_COLOR
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-PATTERN:CAPS"/>GIMP_STOCK_PATTERN</title>
+<title><anchor id="GIMP-STOCK-PATTERN:CAPS" role="macro"/>GIMP_STOCK_PATTERN</title>
 <indexterm><primary>GIMP_STOCK_PATTERN</primary></indexterm><programlisting>#define GIMP_STOCK_PATTERN                  GIMP_STOCK_TOOL_BUCKET_FILL
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS"/>GIMP_STOCK_ZOOM_FOLLOW_WINDOW</title>
+<title><anchor id="GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS" role="macro"/>GIMP_STOCK_ZOOM_FOLLOW_WINDOW</title>
 <indexterm><primary>GIMP_STOCK_ZOOM_FOLLOW_WINDOW</primary></indexterm><programlisting>#define GIMP_STOCK_ZOOM_FOLLOW_WINDOW       "gimp-zoom-follow-window"
 </programlisting>
 <para>

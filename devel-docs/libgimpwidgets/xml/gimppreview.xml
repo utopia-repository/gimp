@@ -4,16 +4,19 @@
 
 <refentry id="GimpPreview">
 <refmeta>
-<refentrytitle>GimpPreview</refentrytitle>
+<refentrytitle id="top_of_page">GimpPreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpPreview</refname><refpurpose>A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> plus framework to update the preview.</refpurpose>
+<refname>GimpPreview</refname>
+<refpurpose>A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> plus framework to update the preview.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -45,25 +48,26 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkContainer">GtkContainer</link>
-                     +----<link linkend="GtkBox">GtkBox</link>
-                           +----<link linkend="GtkVBox">GtkVBox</link>
-                                 +----GimpPreview
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkContainer">GtkContainer</link>
+                           +----<link linkend="GtkBox">GtkBox</link>
+                                 +----<link linkend="GtkVBox">GtkVBox</link>
+                                       +----GimpPreview
 </synopsis>
 
 </refsect1>
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPreview implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -71,49 +75,49 @@ GimpPreview implements
 </refsect1>
 
 
-<refsect1>
-<title>Properties</title>
+<refsect1 id="properties">
+<title id="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpPreview--update">update</link>&quot;               <link linkend="gboolean">gboolean</link>              : Read / Write / Construct
 </synopsis>
 </refsect1>
-<refsect1>
-<title>Style Properties</title>
+<refsect1 id="style_properties">
+<title id="style_properties.title">Style Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpPreview--size">size</link>&quot;                 <link linkend="gint">gint</link>                  : Read
 </synopsis>
 </refsect1>
 
-<refsect1>
-<title>Signal Prototypes</title>
+<refsect1 id="signal_proto">
+<title id="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpPreview-invalidated">invalidated</link>&quot;
             <link linkend="void">void</link>        user_function      (<link linkend="GimpPreview">GimpPreview</link> *gimppreview,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gpointer">gpointer</link>     user_data)        : Run first
 </synopsis>
 </refsect1>
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type></link> plus framework to update the preview.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpPreview-struct"/>GimpPreview</title>
+<title><anchor id="GimpPreview-struct" role="struct"/>GimpPreview</title>
 <indexterm><primary>GimpPreview</primary></indexterm><programlisting>typedef struct _GimpPreview GimpPreview;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-get-update"/>gimp_preview_get_update ()</title>
+<title><anchor id="gimp-preview-get-update" role="function" condition="since:GIMP 2.2"/>gimp_preview_get_update ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_get_update</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_preview_get_update         (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
 <para>
 </para>
@@ -129,7 +133,7 @@ A widget providing a <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-set-update"/>gimp_preview_set_update ()</title>
+<title><anchor id="gimp-preview-set-update" role="function" condition="since:GIMP 2.2"/>gimp_preview_set_update ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_set_update</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_update         (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gboolean">gboolean</link> update);</programlisting>
 <para>
@@ -141,13 +145,13 @@ Sets the state of the "Preview" check button.</para>
 <listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>update</parameter>&nbsp;:</term>
-<listitem><simpara> <literal>TRUE</literal> if the preview should invalidate itself when being
+<listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the preview should invalidate itself when being
          scrolled or when <link linkend="gimp-preview-invalidate"><function>gimp_preview_invalidate()</function></link> is being called
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-set-bounds"/>gimp_preview_set_bounds ()</title>
+<title><anchor id="gimp-preview-set-bounds" role="function" condition="since:GIMP 2.2"/>gimp_preview_set_bounds ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_set_bounds</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_bounds         (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gint">gint</link> xmin,
                                              <link linkend="gint">gint</link> ymin,
@@ -178,7 +182,7 @@ maximum size of the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-get-size"/>gimp_preview_get_size ()</title>
+<title><anchor id="gimp-preview-get-size" role="function" condition="since:GIMP 2.2"/>gimp_preview_get_size ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_get_size</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_get_size           (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height);</programlisting>
@@ -199,7 +203,7 @@ maximum size of the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-get-position"/>gimp_preview_get_position ()</title>
+<title><anchor id="gimp-preview-get-position" role="function" condition="since:GIMP 2.2"/>gimp_preview_get_position ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_get_position</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_get_position       (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="gint">gint</link> *x,
                                              <link linkend="gint">gint</link> *y);</programlisting>
@@ -220,7 +224,7 @@ maximum size of the <link linkend="GimpPreviewArea"><type>GimpPreviewArea</type>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-draw"/>gimp_preview_draw ()</title>
+<title><anchor id="gimp-preview-draw" role="function" condition="since:GIMP 2.2"/>gimp_preview_draw ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_draw</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_draw               (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
 <para>
 Calls the GimpPreview::draw method. GimpPreview itself doesn't
@@ -239,7 +243,7 @@ original, unmodified drawable to the <parameter>preview</parameter>.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-draw-buffer"/>gimp_preview_draw_buffer ()</title>
+<title><anchor id="gimp-preview-draw-buffer" role="function" condition="since:GIMP 2.2"/>gimp_preview_draw_buffer ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_draw_buffer</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_draw_buffer        (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              const <link linkend="guchar">guchar</link> *buffer,
                                              <link linkend="gint">gint</link> rowstride);</programlisting>
@@ -262,7 +266,7 @@ derived class implementing this method.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-invalidate"/>gimp_preview_invalidate ()</title>
+<title><anchor id="gimp-preview-invalidate" role="function" condition="since:GIMP 2.2"/>gimp_preview_invalidate ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_invalidate</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_invalidate         (<link linkend="GimpPreview">GimpPreview</link> *preview);</programlisting>
 <para>
 This function starts or renews a short low-priority timeout. When
@@ -285,13 +289,13 @@ itself.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-preview-set-default-cursor"/>gimp_preview_set_default_cursor ()</title>
+<title><anchor id="gimp-preview-set-default-cursor" role="function" condition="since:GIMP 2.2"/>gimp_preview_set_default_cursor ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_preview_set_default_cursor</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_preview_set_default_cursor (<link linkend="GimpPreview">GimpPreview</link> *preview,
                                              <link linkend="GdkCursor">GdkCursor</link> *cursor);</programlisting>
 <para>
 Sets the default mouse cursor for the preview.  Note that this will
-be overriden by a <literal>GDK_FLEUR</literal> if the preview has scrollbars, or by a
-<literal>GDK_WATCH</literal> when the preview is invalidated.</para>
+be overriden by a <link linkend="GDK-FLEUR:CAPS"><literal>GDK_FLEUR</literal></link> if the preview has scrollbars, or by a
+<link linkend="GDK-WATCH:CAPS"><literal>GDK_WATCH</literal></link> when the preview is invalidated.</para>
 <para>
 
 </para><variablelist role="params">
@@ -299,35 +303,35 @@ be overriden by a <literal>GDK_FLEUR</literal> if the preview has scrollbars, or
 <listitem><simpara> a <link linkend="GimpPreview"><type>GimpPreview</type></link> widget
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cursor</parameter>&nbsp;:</term>
-<listitem><simpara>  a <link linkend="GdkCursor"><type>GdkCursor</type></link> or <literal>NULL</literal>
+<listitem><simpara>  a <link linkend="GdkCursor"><type>GdkCursor</type></link> or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 
 </refsect1>
-<refsect1>
-<title>Properties</title>
+<refsect1 id="property_details">
+<title id="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpPreview--update"/>The &quot;<literal>update</literal>&quot; property</title>
-<programlisting>  &quot;update&quot;               <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
+<indexterm><primary>GimpPreview:update</primary></indexterm><programlisting>  &quot;update&quot;               <link linkend="gboolean">gboolean</link>              : Read / Write / Construct</programlisting>
 <para></para><para>Default value: TRUE</para>
 </refsect2>
 
 </refsect1>
-<refsect1>
-<title>Style Properties</title>
+<refsect1 id="style_properties_details">
+<title id="style_properties_details.title">Style Property Details</title>
 <refsect2><title><anchor id="GimpPreview--size"/>The &quot;<literal>size</literal>&quot; style property</title>
-<programlisting>  &quot;size&quot;                 <link linkend="gint">gint</link>                  : Read</programlisting>
+<indexterm><primary>GimpPreview:size</primary></indexterm><programlisting>  &quot;size&quot;                 <link linkend="gint">gint</link>                  : Read</programlisting>
 <para></para><para>Allowed values: [1,1024]</para>
 <para>Default value: 150</para>
 </refsect2>
 
 </refsect1>
 
-<refsect1>
-<title>Signals</title>
+<refsect1 id="signals">
+<title id="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpPreview-invalidated"/>The &quot;invalidated&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPreview">GimpPreview</link> *gimppreview,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpPreview::invalidated</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpPreview">GimpPreview</link> *gimppreview,
+                                            <link linkend="gpointer">gpointer</link>     user_data)        : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">

@@ -4,16 +4,19 @@
 
 <refentry id="GimpCellRendererToggle">
 <refmeta>
-<refentrytitle>GimpCellRendererToggle</refentrytitle>
+<refentrytitle id="top_of_page">GimpCellRendererToggle</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpCellRendererToggle</refname><refpurpose></refpurpose>
+<refname>GimpCellRendererToggle</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -30,15 +33,16 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkCellRenderer">GtkCellRenderer</link>
-               +----<link linkend="GtkCellRendererToggle">GtkCellRendererToggle</link>
-                     +----GimpCellRendererToggle
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkCellRenderer">GtkCellRenderer</link>
+                     +----<link linkend="GtkCellRendererToggle">GtkCellRendererToggle</link>
+                           +----GimpCellRendererToggle
 </synopsis>
 
 </refsect1>
@@ -47,8 +51,8 @@
 
 
 
-<refsect1>
-<title>Properties</title>
+<refsect1 id="properties">
+<title id="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpCellRendererToggle--stock-id">stock-id</link>&quot;             <link linkend="gchararray">gchararray</link>            : Read / Write / Construct
@@ -56,35 +60,35 @@
 </synopsis>
 </refsect1>
 
-<refsect1>
-<title>Signal Prototypes</title>
+<refsect1 id="signal_proto">
+<title id="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpCellRendererToggle-clicked">clicked</link>&quot;   <link linkend="void">void</link>        user_function      (<link linkend="GimpCellRendererToggle">GimpCellRendererToggle</link> *gimpcellrenderertoggle,
-                                            <link linkend="gchar">gchar</link> *arg1,
-                                            <link linkend="GdkModifierType">GdkModifierType</link> arg2,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="gchar">gchar</link>                  *arg1,
+                                            <link linkend="GdkModifierType">GdkModifierType</link>        *arg2,
+                                            <link linkend="gpointer">gpointer</link>                user_data)                   : Run last
 </synopsis>
 </refsect1>
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpCellRendererToggle-struct"/>GimpCellRendererToggle</title>
+<title><anchor id="GimpCellRendererToggle-struct" role="struct"/>GimpCellRendererToggle</title>
 <indexterm><primary>GimpCellRendererToggle</primary></indexterm><programlisting>typedef struct _GimpCellRendererToggle GimpCellRendererToggle;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-cell-renderer-toggle-new"/>gimp_cell_renderer_toggle_new ()</title>
+<title><anchor id="gimp-cell-renderer-toggle-new" role="function" condition="since:GIMP 2.2"/>gimp_cell_renderer_toggle_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_cell_renderer_toggle_new</primary></indexterm><programlisting><link linkend="GtkCellRenderer">GtkCellRenderer</link>* gimp_cell_renderer_toggle_new
                                             (const <link linkend="gchar">gchar</link> *stock_id);</programlisting>
 <para>
@@ -92,7 +96,7 @@ Creates a custom version of the <link linkend="GtkCellRendererToggle"><type>GtkC
 showing the standard toggle button, it shows a stock icon if the
 cell is active and no icon otherwise. This cell renderer is for
 example used in the Layers treeview to indicate and control the
-layer's visibility by showing <literal>GIMP_STOCK_VISIBLE</literal>.</para>
+layer's visibility by showing <link linkend="GIMP-STOCK-VISIBLE:CAPS"><literal>GIMP_STOCK_VISIBLE</literal></link>.</para>
 <para>
 
 </para><variablelist role="params">
@@ -105,7 +109,7 @@ layer's visibility by showing <literal>GIMP_STOCK_VISIBLE</literal>.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-cell-renderer-toggle-clicked"/>gimp_cell_renderer_toggle_clicked ()</title>
+<title><anchor id="gimp-cell-renderer-toggle-clicked" role="function" condition="since:GIMP 2.2"/>gimp_cell_renderer_toggle_clicked ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_cell_renderer_toggle_clicked</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_cell_renderer_toggle_clicked
                                             (<link linkend="GimpCellRendererToggle">GimpCellRendererToggle</link> *cell,
                                              const <link linkend="gchar">gchar</link> *path,
@@ -128,27 +132,27 @@ Emits the "clicked" signal from a <link linkend="GimpCellRendererToggle"><type>G
 </para></refsect2>
 
 </refsect1>
-<refsect1>
-<title>Properties</title>
+<refsect1 id="property_details">
+<title id="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpCellRendererToggle--stock-id"/>The &quot;<literal>stock-id</literal>&quot; property</title>
-<programlisting>  &quot;stock-id&quot;             <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
+<indexterm><primary>GimpCellRendererToggle:stock-id</primary></indexterm><programlisting>  &quot;stock-id&quot;             <link linkend="gchararray">gchararray</link>            : Read / Write / Construct</programlisting>
 <para></para><para>Default value: NULL</para>
 </refsect2>
 <refsect2><title><anchor id="GimpCellRendererToggle--stock-size"/>The &quot;<literal>stock-size</literal>&quot; property</title>
-<programlisting>  &quot;stock-size&quot;           <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
+<indexterm><primary>GimpCellRendererToggle:stock-size</primary></indexterm><programlisting>  &quot;stock-size&quot;           <link linkend="gint">gint</link>                  : Read / Write / Construct</programlisting>
 <para></para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 4</para>
 </refsect2>
 
 </refsect1>
 
-<refsect1>
-<title>Signals</title>
+<refsect1 id="signals">
+<title id="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpCellRendererToggle-clicked"/>The &quot;clicked&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpCellRendererToggle">GimpCellRendererToggle</link> *gimpcellrenderertoggle,
-                                            <link linkend="gchar">gchar</link> *arg1,
-                                            <link linkend="GdkModifierType">GdkModifierType</link> arg2,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpCellRendererToggle::clicked</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpCellRendererToggle">GimpCellRendererToggle</link> *gimpcellrenderertoggle,
+                                            <link linkend="gchar">gchar</link>                  *arg1,
+                                            <link linkend="GdkModifierType">GdkModifierType</link>        *arg2,
+                                            <link linkend="gpointer">gpointer</link>                user_data)                   : Run last</programlisting>
 <para>
 
 </para><variablelist role="params">

@@ -1,5 +1,5 @@
 /*
- * "$Id: png.c,v 1.118 2004/11/23 14:28:43 mitch Exp $"
+ * "$Id: png.c,v 1.118.2.2 2006/06/05 04:30:17 kcozens Exp $"
  *
  *   Portable Network Graphics (PNG) plug-in for The GIMP -- an image
  *   manipulation program
@@ -502,7 +502,7 @@ run (const gchar      *name,
     {
       load_defaults ();
 
-      *nreturn_vals = 9;
+      *nreturn_vals = 10;
 
 #define SET_VALUE(index, field)	G_STMT_START { \
  values[(index)].type = GIMP_PDB_INT32;        \
@@ -523,17 +523,17 @@ run (const gchar      *name,
     }
   else if (strcmp (name, "file_png_set_defaults") == 0)
     {
-      if (nparams == 10)
+      if (nparams == 9)
         {
-          pngvals.interlaced          = param[1].data.d_int32;
-          pngvals.compression_level   = param[2].data.d_int32;
-          pngvals.bkgd                = param[3].data.d_int32;
-          pngvals.gama                = param[4].data.d_int32;
-          pngvals.offs                = param[5].data.d_int32;
-          pngvals.phys                = param[6].data.d_int32;
-          pngvals.time                = param[7].data.d_int32;
-          pngvals.comment             = param[8].data.d_int32;
-          pngvals.save_transp_pixels  = param[9].data.d_int32;
+          pngvals.interlaced          = param[0].data.d_int32;
+          pngvals.compression_level   = param[1].data.d_int32;
+          pngvals.bkgd                = param[2].data.d_int32;
+          pngvals.gama                = param[3].data.d_int32;
+          pngvals.offs                = param[4].data.d_int32;
+          pngvals.phys                = param[5].data.d_int32;
+          pngvals.time                = param[6].data.d_int32;
+          pngvals.comment             = param[7].data.d_int32;
+          pngvals.save_transp_pixels  = param[8].data.d_int32;
 
           save_defaults ();
         }
@@ -1012,7 +1012,11 @@ load_image (const gchar *filename,
    * Done with the file...
    */
 
+#if PNG_LIBPNG_VER > 99
+  png_destroy_read_struct (&pp, &info, NULL);
+#else
   png_read_destroy (pp, info, NULL);
+#endif
 
   g_free (pixel);
   g_free (pixels);
@@ -1441,7 +1445,12 @@ save_image (const gchar *filename,
     };
 
   png_write_end (pp, info);
+
+#if PNG_LIBPNG_VER > 99
+  png_destroy_write_struct (&pp, &info);
+#else
   png_write_destroy (pp);
+#endif
 
   g_free (pixel);
   g_free (pixels);

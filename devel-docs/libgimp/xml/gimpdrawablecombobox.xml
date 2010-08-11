@@ -72,7 +72,7 @@ A widget providing a popup menu of drawables.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-drawable-combo-box-new"/>gimp_drawable_combo_box_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_drawable_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_drawable_combo_box_new     (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
+<indexterm role="GIMP"><primary>gimp_drawable_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_drawable_combo_box_new     (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
@@ -101,7 +101,7 @@ of the selected drawable.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-channel-combo-box-new"/>gimp_channel_combo_box_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_channel_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_channel_combo_box_new      (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
+<indexterm role="GIMP"><primary>gimp_channel_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_channel_combo_box_new      (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
@@ -122,7 +122,7 @@ channels. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_co
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-combo-box-new"/>gimp_layer_combo_box_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_layer_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_layer_combo_box_new        (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
+<indexterm role="GIMP"><primary>gimp_layer_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_layer_combo_box_new        (<link linkend="GimpDrawableConstraintFunc">GimpDrawableConstraintFunc</link> constraint,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened

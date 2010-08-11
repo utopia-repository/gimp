@@ -1,37 +1,27 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpmessage</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="prev" href="libgimp-gimphelp.html" title="gimphelp"><link rel="next" href="libgimp-gimpplugin.html" title="gimpplugin"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimphelp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimpplugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimpmessage"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpmessage</span></h2><p>gimpmessage &#8212; Display a dialog box with a message.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpmessage</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="prev" href="libgimp-gimphelp.html" title="gimphelp"><link rel="next" href="libgimp-gimpplugin.html" title="gimpplugin"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimphelp.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimpplugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimpmessage"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpmessage</span></h2><p>gimpmessage &#8212; Display a dialog box with a message.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimpmessage.html#gimp-message">gimp_message</a>                    (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *message);
+gboolean    <a href="libgimp-gimpmessage.html#gimp-message">gimp_message</a>                    (const gchar *message);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> <a href="libgimp-gimpmessage.html#gimp-message-get-handler">gimp_message_get_handler</a>
                                             (void);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimpmessage.html#gimp-message-set-handler">gimp_message_set_handler</a>        (<a
+gboolean    <a href="libgimp-gimpmessage.html#gimp-message-set-handler">gimp_message_set_handler</a>        (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);
-</pre></div><div class="refsect1" lang="en"><a name="id2573810"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2572817"></a><h2>Description</h2><p>
 Display a dialog box with a message.
 
-</p></div><div class="refsect1" lang="en"><a name="id2573820"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2535090"></a><h3><a name="gimp-message"></a>gimp_message ()</h3><a class="indexterm" name="id2535098"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_message                    (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *message);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2572826"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2533043"></a><h3><a name="gimp-message"></a>gimp_message ()</h3><a class="indexterm" name="id2533051"></a><pre class="programlisting">gboolean    gimp_message                    (const gchar *message);</pre><p>
 Displays a dialog box with a message.
 </p><p>
 Displays a dialog box with a message. Useful for status or error
 reporting. The message must be in UTF-8 encoding.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>message</tt></i> :</span></td><td> Message to display in the dialog.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>message</code></em> :</span></td><td> Message to display in the dialog.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2535150"></a><h3><a name="gimp-message-get-handler"></a>gimp_message_get_handler ()</h3><a class="indexterm" name="id2535159"></a><pre class="programlisting"><a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2533103"></a><h3><a name="gimp-message-get-handler"></a>gimp_message_get_handler ()</h3><a class="indexterm" name="id2533111"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> gimp_message_get_handler
                                             (void);</pre><p>
@@ -42,9 +32,7 @@ They can be shown in a dialog box or printed on the console where
 gimp was started.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The current handler type.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2535198"></a><h3><a name="gimp-message-set-handler"></a>gimp_message_set_handler ()</h3><a class="indexterm" name="id2535206"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_message_set_handler        (<a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2533151"></a><h3><a name="gimp-message-set-handler"></a>gimp_message_set_handler ()</h3><a class="indexterm" name="id2533159"></a><pre class="programlisting">gboolean    gimp_message_set_handler        (<a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpMessageHandlerType"
 >GimpMessageHandlerType</a> handler);</pre><p>
 Controls where warning messages are displayed.
@@ -53,6 +41,6 @@ This procedure controls how g_message warnings are displayed. They
 can be shown in a dialog box or printed on the console where gimp
 was started.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>handler</tt></i> :</span></td><td> The new handler type.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>handler</code></em> :</span></td><td> The new handler type.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 </td></tr></tbody></table></div></div></div></div><table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle"><td align="left"><a accesskey="p" href="libgimp-gimphelp.html"><b>&lt;&lt; gimphelp</b></a></td><td align="right"><a accesskey="n" href="libgimp-gimpplugin.html"><b>gimpplugin &gt;&gt;</b></a></td></tr></table></body></html>

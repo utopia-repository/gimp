@@ -51,7 +51,7 @@ Functions operating on a single pattern.
 <title>Details</title>
 <refsect2>
 <title><anchor id="gimp-pattern-get-info"/>gimp_pattern_get_info ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_pattern_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_pattern_get_info           (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_pattern_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_pattern_get_info           (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,
                                              <link linkend="gint">gint</link> *bpp);</programlisting>
@@ -83,7 +83,7 @@ This includes the pattern extents (width and height).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-pattern-get-pixels"/>gimp_pattern_get_pixels ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_pattern_get_pixels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_pattern_get_pixels         (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_pattern_get_pixels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_pattern_get_pixels         (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,
                                              <link linkend="gint">gint</link> *bpp,

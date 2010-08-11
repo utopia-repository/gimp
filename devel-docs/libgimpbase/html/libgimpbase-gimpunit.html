@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpunit</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Base Library Reference Manual"><link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library"><link rel="prev" href="libgimpbase-gimpsignal.html" title="gimpsignal"><link rel="next" href="libgimpbase-gimputils.html" title="gimputils"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpbase-gimpsignal.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Base Library Reference Manual</th><td><a accesskey="n" href="libgimpbase-gimputils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpbase-gimpunit"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpunit</span></h2><p>gimpunit &#8212; Provides a collection of predefined units and functions for creating
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimpunit</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Base Library Reference Manual"><link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library"><link rel="prev" href="libgimpbase-gimpsignal.html" title="gimpsignal"><link rel="next" href="libgimpbase-gimputils.html" title="gimputils"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimpbase-gimpsignal.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Base Library Reference Manual</th><td><a accesskey="n" href="libgimpbase-gimputils.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimpbase-gimpunit"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimpunit</span></h2><p>gimpunit &#8212; Provides a collection of predefined units and functions for creating
 user-defined units.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
@@ -27,11 +27,11 @@ const gchar* <a href="libgimpbase-gimpunit.html#gimp-unit-get-plural">gimp_unit_
 #define     <a href="libgimpbase-gimpunit.html#GIMP-TYPE-UNIT:CAPS">GIMP_TYPE_UNIT</a>
 #define     <a href="libgimpbase-gimpunit.html#GIMP-VALUE-HOLDS-UNIT:CAPS">GIMP_VALUE_HOLDS_UNIT</a>           (value)
 
-</pre></div><div class="refsect1" lang="en"><a name="id2550950"></a><h2>Description</h2><p>
+</pre></div><div class="refsect1" lang="en"><a name="id2588146"></a><h2>Description</h2><p>
 Provides a collection of predefined units and functions for creating
 user-defined units.
 
-</p></div><div class="refsect1" lang="en"><a name="id2550961"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2550966"></a><h3><a name="GimpUnit"></a>enum GimpUnit</h3><a class="indexterm" name="id2550975"></a><pre class="programlisting">typedef enum /*&lt; skip &gt;*/
+</p></div><div class="refsect1" lang="en"><a name="id2588157"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2588163"></a><h3><a name="GimpUnit"></a>enum GimpUnit</h3><a class="indexterm" name="id2588171"></a><pre class="programlisting">typedef enum /*&lt; skip &gt;*/
 {
   GIMP_UNIT_PIXEL   = 0,
 
@@ -46,18 +46,18 @@ user-defined units.
 } GimpUnit;
 </pre><p>
 
-</p></div><hr><div class="refsect2" lang="en"><a name="id2550988"></a><h3><a name="gimp-unit-get-number-of-units"></a>gimp_unit_get_number_of_units ()</h3><a class="indexterm" name="id2550997"></a><pre class="programlisting">gint        gimp_unit_get_number_of_units   (void);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2588185"></a><h3><a name="gimp-unit-get-number-of-units"></a>gimp_unit_get_number_of_units ()</h3><a class="indexterm" name="id2588193"></a><pre class="programlisting">gint        gimp_unit_get_number_of_units   (void);</pre><p>
 Returns the number of units which are known to the <a href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> system.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The number of defined units.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2567994"></a><h3><a name="gimp-unit-get-number-of-built-in-units"></a>gimp_unit_get_number_of_built_in_units ()</h3><a class="indexterm" name="id2568002"></a><pre class="programlisting">gint        gimp_unit_get_number_of_built_in_units
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588741"></a><h3><a name="gimp-unit-get-number-of-built-in-units"></a>gimp_unit_get_number_of_built_in_units ()</h3><a class="indexterm" name="id2588750"></a><pre class="programlisting">gint        gimp_unit_get_number_of_built_in_units
                                             (void);</pre><p>
 Returns the number of <a href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s which are hardcoded in the unit system
 (UNIT_INCH, UNIT_MM, UNIT_POINT, UNIT_PICA and the two "pseudo unit"
  UNIT_PIXEL).</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The number of built-in units.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2568043"></a><h3><a name="gimp-unit-new"></a>gimp_unit_new ()</h3><a class="indexterm" name="id2568051"></a><pre class="programlisting"><a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a>    gimp_unit_new                   (gchar *identifier,
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2588791"></a><h3><a name="gimp-unit-new"></a>gimp_unit_new ()</h3><a class="indexterm" name="id2588800"></a><pre class="programlisting"><a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a>    gimp_unit_new                   (gchar *identifier,
                                              gdouble factor,
                                              gint digits,
                                              gchar *symbol,
@@ -67,96 +67,96 @@ Returns the number of <a href="libgimpbase-gimpunit.html#GimpUnit"><span class="
 Returns the integer ID of the new <a href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>.
 </p><p>
 Note that a new unit is always created with it's deletion flag
-set to <tt class="literal">TRUE</tt>. You will have to set it to <tt class="literal">FALSE</tt> with
-<a href="libgimpbase-gimpunit.html#gimp-unit-set-deletion-flag"><tt class="function">gimp_unit_set_deletion_flag()</tt></a> to make the unit definition persistent.</p><p>
+set to <code class="literal">TRUE</code>. You will have to set it to <code class="literal">FALSE</code> with
+<a href="libgimpbase-gimpunit.html#gimp-unit-set-deletion-flag"><code class="function">gimp_unit_set_deletion_flag()</code></a> to make the unit definition persistent.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>identifier</tt></i> :</span></td><td> The unit's identifier string.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>factor</tt></i> :</span></td><td> The unit's factor (how many units are in one inch).
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>digits</tt></i> :</span></td><td> The unit's suggested number of digits (see <a href="libgimpbase-gimpunit.html#gimp-unit-get-digits"><tt class="function">gimp_unit_get_digits()</tt></a>).
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>symbol</tt></i> :</span></td><td> The symbol of the unit (e.g. "''" for inch).
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>abbreviation</tt></i> :</span></td><td> The abbreviation of the unit.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>singular</tt></i> :</span></td><td> The singular form of the unit.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>plural</tt></i> :</span></td><td> The plural form of the unit.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>identifier</code></em> :</span></td><td> The unit's identifier string.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>factor</code></em> :</span></td><td> The unit's factor (how many units are in one inch).
+</td></tr><tr><td><span class="term"><em class="parameter"><code>digits</code></em> :</span></td><td> The unit's suggested number of digits (see <a href="libgimpbase-gimpunit.html#gimp-unit-get-digits"><code class="function">gimp_unit_get_digits()</code></a>).
+</td></tr><tr><td><span class="term"><em class="parameter"><code>symbol</code></em> :</span></td><td> The symbol of the unit (e.g. "''" for inch).
+</td></tr><tr><td><span class="term"><em class="parameter"><code>abbreviation</code></em> :</span></td><td> The abbreviation of the unit.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>singular</code></em> :</span></td><td> The singular form of the unit.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>plural</code></em> :</span></td><td> The plural form of the unit.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The ID of the new unit.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2569164"></a><h3><a name="gimp-unit-get-deletion-flag"></a>gimp_unit_get_deletion_flag ()</h3><a class="indexterm" name="id2569173"></a><pre class="programlisting">gboolean    gimp_unit_get_deletion_flag     (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2538677"></a><h3><a name="gimp-unit-get-deletion-flag"></a>gimp_unit_get_deletion_flag ()</h3><a class="indexterm" name="id2538686"></a><pre class="programlisting">gboolean    gimp_unit_get_deletion_flag     (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
 </p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to know the <i class="parameter"><tt>deletion_flag</tt></i> of.
-</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit's <i class="parameter"><tt>deletion_flag</tt></i>.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2569226"></a><h3><a name="gimp-unit-set-deletion-flag"></a>gimp_unit_set_deletion_flag ()</h3><a class="indexterm" name="id2569235"></a><pre class="programlisting">void        gimp_unit_set_deletion_flag     (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit,
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to know the <em class="parameter"><code>deletion_flag</code></em> of.
+</td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit's <em class="parameter"><code>deletion_flag</code></em>.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2538740"></a><h3><a name="gimp-unit-set-deletion-flag"></a>gimp_unit_set_deletion_flag ()</h3><a class="indexterm" name="id2538749"></a><pre class="programlisting">void        gimp_unit_set_deletion_flag     (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit,
                                              gboolean deletion_flag);</pre><p>
-Sets a <a href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s <i class="parameter"><tt>deletion_flag</tt></i>. If the <i class="parameter"><tt>deletion_flag</tt></i> of a unit is
-<tt class="literal">TRUE</tt> when GIMP exits, this unit will not be saved in the users's
+Sets a <a href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s <em class="parameter"><code>deletion_flag</code></em>. If the <em class="parameter"><code>deletion_flag</code></em> of a unit is
+<code class="literal">TRUE</code> when GIMP exits, this unit will not be saved in the users's
 "unitrc" file.
 </p><p>
-Trying to change the <i class="parameter"><tt>deletion_flag</tt></i> of a built-in unit will be silently
+Trying to change the <em class="parameter"><code>deletion_flag</code></em> of a built-in unit will be silently
 ignored.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to set the <i class="parameter"><tt>deletion_flag</tt></i> for.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>deletion_flag</tt></i> :</span></td><td> The new deletion_flag.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2569318"></a><h3><a name="gimp-unit-get-factor"></a>gimp_unit_get_factor ()</h3><a class="indexterm" name="id2569327"></a><pre class="programlisting">gdouble     gimp_unit_get_factor            (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
-A <a href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s <i class="parameter"><tt>factor</tt></i> is defined to be:
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to set the <em class="parameter"><code>deletion_flag</code></em> for.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>deletion_flag</code></em> :</span></td><td> The new deletion_flag.
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2538832"></a><h3><a name="gimp-unit-get-factor"></a>gimp_unit_get_factor ()</h3><a class="indexterm" name="id2538841"></a><pre class="programlisting">gdouble     gimp_unit_get_factor            (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
+A <a href="libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a>'s <em class="parameter"><code>factor</code></em> is defined to be:
 </p><p>
-distance_in_units == (<i class="parameter"><tt>factor</tt></i> * distance_in_inches)
+distance_in_units == (<em class="parameter"><code>factor</code></em> * distance_in_inches)
 </p><p>
-Returns 0 for <i class="parameter"><tt>unit</tt></i> == GIMP_UNIT_PIXEL.</p><p>
+Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to know the factor of.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to know the factor of.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit's factor.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2569397"></a><h3><a name="gimp-unit-get-digits"></a>gimp_unit_get_digits ()</h3><a class="indexterm" name="id2569406"></a><pre class="programlisting">gint        gimp_unit_get_digits            (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2538911"></a><h3><a name="gimp-unit-get-digits"></a>gimp_unit_get_digits ()</h3><a class="indexterm" name="id2538920"></a><pre class="programlisting">gint        gimp_unit_get_digits            (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
 Returns the number of digits an entry field should provide to get
 approximately the same accuracy as an inch input field with two digits.
 </p><p>
-Returns 0 for <i class="parameter"><tt>unit</tt></i> == GIMP_UNIT_PIXEL.</p><p>
+Returns 0 for <em class="parameter"><code>unit</code></em> == GIMP_UNIT_PIXEL.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to know the digits.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to know the digits.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The suggested number of digits.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587232"></a><h3><a name="gimp-unit-get-identifier"></a>gimp_unit_get_identifier ()</h3><a class="indexterm" name="id2587241"></a><pre class="programlisting">const gchar* gimp_unit_get_identifier       (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591587"></a><h3><a name="gimp-unit-get-identifier"></a>gimp_unit_get_identifier ()</h3><a class="indexterm" name="id2591596"></a><pre class="programlisting">const gchar* gimp_unit_get_identifier       (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
 This is an unstranslated string and must not be changed or freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to know the identifier of.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to know the identifier of.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit's identifier.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587291"></a><h3><a name="gimp-unit-get-symbol"></a>gimp_unit_get_symbol ()</h3><a class="indexterm" name="id2587299"></a><pre class="programlisting">const gchar* gimp_unit_get_symbol           (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591646"></a><h3><a name="gimp-unit-get-symbol"></a>gimp_unit_get_symbol ()</h3><a class="indexterm" name="id2591654"></a><pre class="programlisting">const gchar* gimp_unit_get_symbol           (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
 This is e.g. "''" for UNIT_INCH.
 </p><p>
 NOTE: This string must not be changed or freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to know the symbol of.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to know the symbol of.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit's symbol.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587353"></a><h3><a name="gimp-unit-get-abbreviation"></a>gimp_unit_get_abbreviation ()</h3><a class="indexterm" name="id2587362"></a><pre class="programlisting">const gchar* gimp_unit_get_abbreviation     (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591708"></a><h3><a name="gimp-unit-get-abbreviation"></a>gimp_unit_get_abbreviation ()</h3><a class="indexterm" name="id2591717"></a><pre class="programlisting">const gchar* gimp_unit_get_abbreviation     (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
 For built-in units, this function returns the translated abbreviation
 of the unit.
 </p><p>
 NOTE: This string must not be changed or freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to know the abbreviation of.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to know the abbreviation of.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit's abbreviation.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587417"></a><h3><a name="gimp-unit-get-singular"></a>gimp_unit_get_singular ()</h3><a class="indexterm" name="id2587426"></a><pre class="programlisting">const gchar* gimp_unit_get_singular         (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591772"></a><h3><a name="gimp-unit-get-singular"></a>gimp_unit_get_singular ()</h3><a class="indexterm" name="id2591781"></a><pre class="programlisting">const gchar* gimp_unit_get_singular         (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
 For built-in units, this function returns the translated singular form
 of the unit's name.
 </p><p>
 NOTE: This string must not be changed or freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to know the singular form of.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to know the singular form of.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit's singular form.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2587481"></a><h3><a name="gimp-unit-get-plural"></a>gimp_unit_get_plural ()</h3><a class="indexterm" name="id2587489"></a><pre class="programlisting">const gchar* gimp_unit_get_plural           (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2540842"></a><h3><a name="gimp-unit-get-plural"></a>gimp_unit_get_plural ()</h3><a class="indexterm" name="id2576839"></a><pre class="programlisting">const gchar* gimp_unit_get_plural           (<a href="libgimpbase-gimpunit.html#GimpUnit">GimpUnit</a> unit);</pre><p>
 For built-in units, this function returns the translated plural form
 of the unit's name.
 </p><p>
 NOTE: This string must not be changed or freed.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>unit</tt></i> :</span></td><td> The unit you want to know the plural form of.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>unit</code></em> :</span></td><td> The unit you want to know the plural form of.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The unit's plural form.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2554617"></a><h3><a name="GIMP-TYPE-UNIT:CAPS"></a>GIMP_TYPE_UNIT</h3><a class="indexterm" name="id2548872"></a><pre class="programlisting">#define GIMP_TYPE_UNIT               (gimp_unit_get_type ())
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2591836"></a><h3><a name="GIMP-TYPE-UNIT:CAPS"></a>GIMP_TYPE_UNIT</h3><a class="indexterm" name="id2591843"></a><pre class="programlisting">#define GIMP_TYPE_UNIT               (gimp_unit_get_type ())
 </pre><p>
 <a href="libgimpbase-gimpunit.html#GIMP-TYPE-UNIT:CAPS"><span class="type">GIMP_TYPE_UNIT</span></a> is a <span class="type">GType</span> derived from <span class="type">G_TYPE_INT</span>.
-</p></div><hr><div class="refsect2" lang="en"><a name="id2587526"></a><h3><a name="GIMP-VALUE-HOLDS-UNIT:CAPS"></a>GIMP_VALUE_HOLDS_UNIT()</h3><a class="indexterm" name="id2587534"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_UNIT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_UNIT))
+</p></div><hr><div class="refsect2" lang="en"><a name="id2591870"></a><h3><a name="GIMP-VALUE-HOLDS-UNIT:CAPS"></a>GIMP_VALUE_HOLDS_UNIT()</h3><a class="indexterm" name="id2591878"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_UNIT(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_UNIT))
 </pre><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>value</tt></i> :</span></td><td>
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>value</code></em> :</span></td><td>
 
 
-</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2587560"></a><h2>See Also</h2><p>
+</td></tr></tbody></table></div></div></div><div class="refsect1" lang="en"><a name="id2591904"></a><h2>See Also</h2><p>
 <a
 href="../libgimpwidgets/GimpUnitMenu.html"
 ><span class="type">GimpUnitMenu</span></a>

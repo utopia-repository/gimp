@@ -189,7 +189,7 @@
 /* Define to 1 if shared memory segments are released deferred. */
 #undef IPC_RMID_DEFERRED_RELEASE
 
-/* Define to 1 if you don't have the fd_set function. */
+/* Define to 1 if you don't have the fd_set typedef. */
 #undef NO_FD_SET
 
 /* Define to the address where bug reports for this package should be sent. */

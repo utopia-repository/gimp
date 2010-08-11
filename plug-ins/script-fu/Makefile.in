@@ -378,7 +378,7 @@ libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 libgimpprocbrowser = $(top_builddir)/plug-ins/dbbrowser/libgimpprocbrowser.la
 
 @OS_WIN32_TRUE@mwindows = -mwindows
-@OS_WIN32_TRUE@WINSOCK_LIBS = -lwsock32
+@OS_WIN32_TRUE@WINSOCK_LIBS = -lws2_32
 
 AM_LDFLAGS = $(mwindows)
 

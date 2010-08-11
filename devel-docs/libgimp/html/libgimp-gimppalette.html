@@ -1,258 +1,136 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimppalette</title><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimp-data.html" title="Data Objects"><link rel="prev" href="libgimp-gimpgradients.html" title="gimpgradients"><link rel="next" href="libgimp-gimppalettes.html" title="gimppalettes"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpgradients.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimp-data.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimppalettes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimppalette"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimppalette</span></h2><p>gimppalette &#8212; Functions operating on a single palette.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gimppalette</title><meta name="generator" content="DocBook XSL Stylesheets V1.68.1"><link rel="start" href="index.html" title="GIMP Library Reference Manual"><link rel="up" href="libgimp-data.html" title="Data Objects"><link rel="prev" href="libgimp-gimpgradients.html" title="gimpgradients"><link rel="next" href="libgimp-gimppalettes.html" title="gimppalettes"><meta name="generator" content="GTK-Doc V1.3 (XML mode)"><link rel="stylesheet" href="style.css" type="text/css"><link rel="part" href="gimpdefinitions.html" title="Part I. GIMP Constants"><link rel="part" href="libgimp.html" title="Part II. GIMP Library"><link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images"><link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties"><link rel="chapter" href="libgimp-data.html" title="Data Objects"><link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs"><link rel="part" href="libgimpui.html" title="Part III. GIMP User Interface Library"><link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle"><td><a accesskey="p" href="libgimp-gimpgradients.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td><td><a accesskey="u" href="libgimp-data.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td><td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td><th width="100%" align="center">GIMP Library Reference Manual</th><td><a accesskey="n" href="libgimp-gimppalettes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td></tr></table><div class="refentry" lang="en"><a name="libgimp-gimppalette"></a><div class="titlepage"></div><div class="refnamediv"><table width="100%"><tr><td valign="top"><h2><span class="refentrytitle">gimppalette</span></h2><p>gimppalette &#8212; Functions operating on a single palette.</p></td><td valign="top" align="right"></td></tr></table></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 
 
 
-<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      <a href="libgimp-gimppalette.html#gimp-palette-new">gimp_palette_new</a>                (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      <a href="libgimp-gimppalette.html#gimp-palette-duplicate">gimp_palette_duplicate</a>          (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      <a href="libgimp-gimppalette.html#gimp-palette-rename">gimp_palette_rename</a>             (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *new_name);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-delete">gimp_palette_delete</a>             (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-get-info">gimp_palette_get_info</a>           (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> *num_colors);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-add-entry">gimp_palette_add_entry</a>          (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *entry_name,
+gchar*      <a href="libgimp-gimppalette.html#gimp-palette-new">gimp_palette_new</a>                (const gchar *name);
+gchar*      <a href="libgimp-gimppalette.html#gimp-palette-duplicate">gimp_palette_duplicate</a>          (const gchar *name);
+gchar*      <a href="libgimp-gimppalette.html#gimp-palette-rename">gimp_palette_rename</a>             (const gchar *name,
+                                             const gchar *new_name);
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-delete">gimp_palette_delete</a>             (const gchar *name);
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-get-info">gimp_palette_get_info</a>           (const gchar *name,
+                                             gint *num_colors);
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-add-entry">gimp_palette_add_entry</a>          (const gchar *name,
+                                             const gchar *entry_name,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> *entry_num);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-delete-entry">gimp_palette_delete_entry</a>       (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-entry-get-color">gimp_palette_entry_get_color</a>    (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
+                                             gint *entry_num);
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-delete-entry">gimp_palette_delete_entry</a>       (const gchar *name,
+                                             gint entry_num);
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-entry-get-color">gimp_palette_entry_get_color</a>    (const gchar *name,
+                                             gint entry_num,
                                              <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-entry-set-color">gimp_palette_entry_set_color</a>    (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-entry-set-color">gimp_palette_entry_set_color</a>    (const gchar *name,
+                                             gint entry_num,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-entry-get-name">gimp_palette_entry_get_name</a>     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
-                                             <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> **entry_name);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-entry-set-name">gimp_palette_entry_set_name</a>     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *entry_name);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-get-foreground">gimp_palette_get_foreground</a>     (<a
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-entry-get-name">gimp_palette_entry_get_name</a>     (const gchar *name,
+                                             gint entry_num,
+                                             gchar **entry_name);
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-entry-set-name">gimp_palette_entry_set_name</a>     (const gchar *name,
+                                             gint entry_num,
+                                             const gchar *entry_name);
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-get-foreground">gimp_palette_get_foreground</a>     (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-get-background">gimp_palette_get_background</a>     (<a
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-get-background">gimp_palette_get_background</a>     (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-set-foreground">gimp_palette_set_foreground</a>     (const <a
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-set-foreground">gimp_palette_set_foreground</a>     (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-set-background">gimp_palette_set_background</a>     (const <a
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-set-background">gimp_palette_set_background</a>     (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-set-default-colors">gimp_palette_set_default_colors</a> (void);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    <a href="libgimp-gimppalette.html#gimp-palette-swap-colors">gimp_palette_swap_colors</a>        (void);
-</pre></div><div class="refsect1" lang="en"><a name="id2640441"></a><h2>Description</h2><p>
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-set-default-colors">gimp_palette_set_default_colors</a> (void);
+gboolean    <a href="libgimp-gimppalette.html#gimp-palette-swap-colors">gimp_palette_swap_colors</a>        (void);
+</pre></div><div class="refsect1" lang="en"><a name="id2641111"></a><h2>Description</h2><p>
 Functions operating on a single palette.
-</p></div><div class="refsect1" lang="en"><a name="id2640451"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2640456"></a><h3><a name="gimp-palette-new"></a>gimp_palette_new ()</h3><a class="indexterm" name="id2640464"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      gimp_palette_new                (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre><p>
+</p></div><div class="refsect1" lang="en"><a name="id2641120"></a><h2>Details</h2><div class="refsect2" lang="en"><a name="id2641126"></a><h3><a name="gimp-palette-new"></a>gimp_palette_new ()</h3><a class="indexterm" name="id2641134"></a><pre class="programlisting">gchar*      gimp_palette_new                (const gchar *name);</pre><p>
 Creates a new palette
 </p><p>
 This procedure creates a new, uninitialized palette</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The requested name of the new palette.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The requested name of the new palette.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The actual new palette name.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2640520"></a><h3><a name="gimp-palette-duplicate"></a>gimp_palette_duplicate ()</h3><a class="indexterm" name="id2640529"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      gimp_palette_duplicate          (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2641190"></a><h3><a name="gimp-palette-duplicate"></a>gimp_palette_duplicate ()</h3><a class="indexterm" name="id2641198"></a><pre class="programlisting">gchar*      gimp_palette_duplicate          (const gchar *name);</pre><p>
 Duplicates a palette
 </p><p>
 This procedure creates an identical palette by a different name</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The name of the palette's copy.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2640585"></a><h3><a name="gimp-palette-rename"></a>gimp_palette_rename ()</h3><a class="indexterm" name="id2640593"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*      gimp_palette_rename             (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *new_name);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2641254"></a><h3><a name="gimp-palette-rename"></a>gimp_palette_rename ()</h3><a class="indexterm" name="id2641263"></a><pre class="programlisting">gchar*      gimp_palette_rename             (const gchar *name,
+                                             const gchar *new_name);</pre><p>
 Rename a palette
 </p><p>
 This procedure renames a palette</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>new_name</tt></i> :</span></td><td> The new name of the palette.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>new_name</code></em> :</span></td><td> The new name of the palette.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> The actual new name of the palette.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2647471"></a><h3><a name="gimp-palette-delete"></a>gimp_palette_delete ()</h3><a class="indexterm" name="id2647479"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_delete             (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2639336"></a><h3><a name="gimp-palette-delete"></a>gimp_palette_delete ()</h3><a class="indexterm" name="id2639344"></a><pre class="programlisting">gboolean    gimp_palette_delete             (const gchar *name);</pre><p>
 Deletes a palette
 </p><p>
 This procedure deletes a palette</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2647534"></a><h3><a name="gimp-palette-get-info"></a>gimp_palette_get_info ()</h3><a class="indexterm" name="id2647542"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_get_info           (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> *num_colors);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2639399"></a><h3><a name="gimp-palette-get-info"></a>gimp_palette_get_info ()</h3><a class="indexterm" name="id2639408"></a><pre class="programlisting">gboolean    gimp_palette_get_info           (const gchar *name,
+                                             gint *num_colors);</pre><p>
 Retrieve information about the specified palette.
 </p><p>
 This procedure retrieves information about the specified palette.
 This includes the name, and the number of colors.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>num_colors</tt></i> :</span></td><td> The number of colors in the palette.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>num_colors</code></em> :</span></td><td> The number of colors in the palette.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2647618"></a><h3><a name="gimp-palette-add-entry"></a>gimp_palette_add_entry ()</h3><a class="indexterm" name="id2647626"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_add_entry          (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *entry_name,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2639483"></a><h3><a name="gimp-palette-add-entry"></a>gimp_palette_add_entry ()</h3><a class="indexterm" name="id2639491"></a><pre class="programlisting">gboolean    gimp_palette_add_entry          (const gchar *name,
+                                             const gchar *entry_name,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> *entry_num);</pre><p>
+                                             gint *entry_num);</pre><p>
 Adds a palette entry to the specified palette.
 </p><p>
 This procedure adds an entry to the specifed palette. It returns an
 error if the entry palette does not exist.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_name</tt></i> :</span></td><td> The name of the entry.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>color</tt></i> :</span></td><td> The new entry's color color.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_num</tt></i> :</span></td><td> The index of the added entry.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_name</code></em> :</span></td><td> The name of the entry.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>color</code></em> :</span></td><td> The new entry's color color.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_num</code></em> :</span></td><td> The index of the added entry.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2649744"></a><h3><a name="gimp-palette-delete-entry"></a>gimp_palette_delete_entry ()</h3><a class="indexterm" name="id2649753"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_delete_entry       (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2654155"></a><h3><a name="gimp-palette-delete-entry"></a>gimp_palette_delete_entry ()</h3><a class="indexterm" name="id2654164"></a><pre class="programlisting">gboolean    gimp_palette_delete_entry       (const gchar *name,
+                                             gint entry_num);</pre><p>
 Deletes a palette entry from the specified palette.
 </p><p>
 This procedure deletes an entry from the specifed palette. It
 returns an error if the entry palette does not exist.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_num</tt></i> :</span></td><td> The index of the added entry.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_num</code></em> :</span></td><td> The index of the added entry.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2649827"></a><h3><a name="gimp-palette-entry-get-color"></a>gimp_palette_entry_get_color ()</h3><a class="indexterm" name="id2649835"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_entry_get_color    (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2654238"></a><h3><a name="gimp-palette-entry-get-color"></a>gimp_palette_entry_get_color ()</h3><a class="indexterm" name="id2654246"></a><pre class="programlisting">gboolean    gimp_palette_entry_get_color    (const gchar *name,
+                                             gint entry_num,
                                              <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre><p>
@@ -262,20 +140,14 @@ This procedure retrieves the color of the zero-based entry specifed
 for the specified palette. It returns an error if the entry does not
 exist.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_num</tt></i> :</span></td><td> The entry to retrieve.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>color</tt></i> :</span></td><td> The color requested.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_num</code></em> :</span></td><td> The entry to retrieve.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>color</code></em> :</span></td><td> The color requested.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2649928"></a><h3><a name="gimp-palette-entry-set-color"></a>gimp_palette_entry_set_color ()</h3><a class="indexterm" name="id2649939"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_entry_set_color    (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
+</p></div><hr><div class="refsect2" lang="en"><a name="id2654338"></a><h3><a name="gimp-palette-entry-set-color"></a>gimp_palette_entry_set_color ()</h3><a class="indexterm" name="id2654347"></a><pre class="programlisting">gboolean    gimp_palette_entry_set_color    (const gchar *name,
+                                             gint entry_num,
                                              const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre><p>
@@ -285,102 +157,78 @@ This procedure sets the color of the zero-based entry specifed for
 the specified palette. It returns an error if the entry does not
 exist.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_num</tt></i> :</span></td><td> The entry to retrieve.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>color</tt></i> :</span></td><td> The new color.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_num</code></em> :</span></td><td> The entry to retrieve.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>color</code></em> :</span></td><td> The new color.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2650032"></a><h3><a name="gimp-palette-entry-get-name"></a>gimp_palette_entry_get_name ()</h3><a class="indexterm" name="id2650041"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_entry_get_name     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
-                                             <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> **entry_name);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2654439"></a><h3><a name="gimp-palette-entry-get-name"></a>gimp_palette_entry_get_name ()</h3><a class="indexterm" name="id2654448"></a><pre class="programlisting">gboolean    gimp_palette_entry_get_name     (const gchar *name,
+                                             gint entry_num,
+                                             gchar **entry_name);</pre><p>
 Gets the specified palette entry from the specified palette.
 </p><p>
 This procedure retrieves the name of the zero-based entry specifed
 for the specified palette. It returns an error if the entry does not
 exist.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_num</tt></i> :</span></td><td> The entry to retrieve.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_name</tt></i> :</span></td><td> The name requested.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_num</code></em> :</span></td><td> The entry to retrieve.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_name</code></em> :</span></td><td> The name requested.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2650133"></a><h3><a name="gimp-palette-entry-set-name"></a>gimp_palette_entry_set_name ()</h3><a class="indexterm" name="id2650142"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_entry_set_name     (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                             <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
-                                             const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *entry_name);</pre><p>
+</p></div><hr><div class="refsect2" lang="en"><a name="id2654540"></a><h3><a name="gimp-palette-entry-set-name"></a>gimp_palette_entry_set_name ()</h3><a class="indexterm" name="id2654548"></a><pre class="programlisting">gboolean    gimp_palette_entry_set_name     (const gchar *name,
+                                             gint entry_num,
+                                             const gchar *entry_name);</pre><p>
 Sets the specified palette entry in the specified palette.
 </p><p>
 This procedure sets the name of the zero-based entry specifed for
 the specified palette. It returns an error if the entry does not
 exist.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>name</tt></i> :</span></td><td> The palette name.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_num</tt></i> :</span></td><td> The entry to retrieve.
-</td></tr><tr><td><span class="term"><i class="parameter"><tt>entry_name</tt></i> :</span></td><td> The new name.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>name</code></em> :</span></td><td> The palette name.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_num</code></em> :</span></td><td> The entry to retrieve.
+</td></tr><tr><td><span class="term"><em class="parameter"><code>entry_name</code></em> :</span></td><td> The new name.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
 
 </td></tr></tbody></table></div><p>Since  GIMP 2.2
-</p></div><hr><div class="refsect2" lang="en"><a name="id2563925"></a><h3><a name="gimp-palette-get-foreground"></a>gimp_palette_get_foreground ()</h3><a class="indexterm" name="id2556146"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_get_foreground     (<a
+</p></div><hr><div class="refsect2" lang="en"><a name="id2657921"></a><h3><a name="gimp-palette-get-foreground"></a>gimp_palette_get_foreground ()</h3><a class="indexterm" name="id2657929"></a><pre class="programlisting">gboolean    gimp_palette_get_foreground     (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
->GimpRGB</a> *foreground);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_palette_get_foreground</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+>GimpRGB</a> *foreground);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">gimp_palette_get_foreground</code> is deprecated and should not be used in newly-written code.</p></div><p>
 Get the current GIMP foreground color.
 </p><p>
 This procedure retrieves the current GIMP foreground color. The
 foreground color is used in a variety of tools such as paint tools,
 blending, and bucket fill.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>foreground</tt></i> :</span></td><td> The foreground color.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>foreground</code></em> :</span></td><td> The foreground color.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2653547"></a><h3><a name="gimp-palette-get-background"></a>gimp_palette_get_background ()</h3><a class="indexterm" name="id2653554"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_get_background     (<a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2657993"></a><h3><a name="gimp-palette-get-background"></a>gimp_palette_get_background ()</h3><a class="indexterm" name="id2658001"></a><pre class="programlisting">gboolean    gimp_palette_get_background     (<a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
->GimpRGB</a> *background);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_palette_get_background</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+>GimpRGB</a> *background);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">gimp_palette_get_background</code> is deprecated and should not be used in newly-written code.</p></div><p>
 Get the current GIMP background color.
 </p><p>
 This procedure retrieves the current GIMP background color. The
 background color is used in a variety of tools such as blending,
 erasing (with non-alpha images), and image filling.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>background</tt></i> :</span></td><td> The background color.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>background</code></em> :</span></td><td> The background color.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2653613"></a><h3><a name="gimp-palette-set-foreground"></a>gimp_palette_set_foreground ()</h3><a class="indexterm" name="id2653621"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_set_foreground     (const <a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2658065"></a><h3><a name="gimp-palette-set-foreground"></a>gimp_palette_set_foreground ()</h3><a class="indexterm" name="id2658074"></a><pre class="programlisting">gboolean    gimp_palette_set_foreground     (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
->GimpRGB</a> *foreground);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_palette_set_foreground</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+>GimpRGB</a> *foreground);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">gimp_palette_set_foreground</code> is deprecated and should not be used in newly-written code.</p></div><p>
 Set the current GIMP foreground color.
 </p><p>
 This procedure sets the current GIMP foreground color. After this is
 set, operations which use foreground such as paint tools, blending,
 and bucket fill will use the new value.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>foreground</tt></i> :</span></td><td> The foreground color.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>foreground</code></em> :</span></td><td> The foreground color.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2653679"></a><h3><a name="gimp-palette-set-background"></a>gimp_palette_set_background ()</h3><a class="indexterm" name="id2653687"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_set_background     (const <a
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2658138"></a><h3><a name="gimp-palette-set-background"></a>gimp_palette_set_background ()</h3><a class="indexterm" name="id2658146"></a><pre class="programlisting">gboolean    gimp_palette_set_background     (const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
->GimpRGB</a> *background);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_palette_set_background</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+>GimpRGB</a> *background);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">gimp_palette_set_background</code> is deprecated and should not be used in newly-written code.</p></div><p>
 Set the current GIMP background color.
 </p><p>
 This procedure sets the current GIMP background color. After this is
@@ -388,11 +236,9 @@ set, operations which use background such as blending, filling
 images, clearing, and erasing (in non-alpha images) will use the new
 value.</p><p>
 
-</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><i class="parameter"><tt>background</tt></i> :</span></td><td> The background color.
+</p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><em class="parameter"><code>background</code></em> :</span></td><td> The background color.
 </td></tr><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2653748"></a><h3><a name="gimp-palette-set-default-colors"></a>gimp_palette_set_default_colors ()</h3><a class="indexterm" name="id2653756"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_set_default_colors (void);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_palette_set_default_colors</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2658211"></a><h3><a name="gimp-palette-set-default-colors"></a>gimp_palette_set_default_colors ()</h3><a class="indexterm" name="id2658219"></a><pre class="programlisting">gboolean    gimp_palette_set_default_colors (void);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">gimp_palette_set_default_colors</code> is deprecated and should not be used in newly-written code.</p></div><p>
 Set the current GIMP foreground and background colors to black and
 white.
 </p><p>
@@ -400,9 +246,7 @@ This procedure sets the current GIMP foreground and background
 colors to their initial default values, black and white.</p><p>
 
 </p><div class="variablelist"><table border="0"><col align="left" valign="top"><tbody><tr><td><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></td><td> TRUE on success.
-</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2653803"></a><h3><a name="gimp-palette-swap-colors"></a>gimp_palette_swap_colors ()</h3><a class="indexterm" name="id2653812"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>    gimp_palette_swap_colors        (void);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><tt class="literal">gimp_palette_swap_colors</tt> is deprecated and should not be used in newly-written code.</p></div><p>
+</td></tr></tbody></table></div></div><hr><div class="refsect2" lang="en"><a name="id2658267"></a><h3><a name="gimp-palette-swap-colors"></a>gimp_palette_swap_colors ()</h3><a class="indexterm" name="id2658275"></a><pre class="programlisting">gboolean    gimp_palette_swap_colors        (void);</pre><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Warning</h3><p><code class="literal">gimp_palette_swap_colors</code> is deprecated and should not be used in newly-written code.</p></div><p>
 Swap the current GIMP foreground and background colors.
 </p><p>
 This procedure swaps the current GIMP foreground and background

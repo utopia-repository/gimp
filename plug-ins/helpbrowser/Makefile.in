@@ -376,6 +376,10 @@ libgimp = $(top_builddir)/libgimp/libgimp-$(GIMP_API_VERSION).la
 libgimpcolor = $(top_builddir)/libgimpcolor/libgimpcolor-$(GIMP_API_VERSION).la
 libgimpbase = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 
+@OS_WIN32_TRUE@mwindows = -mwindows
+
+AM_LDFLAGS = $(mwindows)
+
 libexec_PROGRAMS = helpbrowser
 
 helpbrowser_SOURCES = \

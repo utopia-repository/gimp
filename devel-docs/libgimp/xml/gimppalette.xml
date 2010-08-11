@@ -72,7 +72,7 @@ Functions operating on a single palette.
 <title>Details</title>
 <refsect2>
 <title><anchor id="gimp-palette-new"/>gimp_palette_new ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_new                (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="GIMP"><primary>gimp_palette_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_new                (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a new palette
 </para>
@@ -91,7 +91,7 @@ This procedure creates a new, uninitialized palette</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-duplicate"/>gimp_palette_duplicate ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_duplicate</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_duplicate          (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="GIMP"><primary>gimp_palette_duplicate</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_duplicate          (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Duplicates a palette
 </para>
@@ -110,7 +110,7 @@ This procedure creates an identical palette by a different name</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-rename"/>gimp_palette_rename ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_rename             (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_palette_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_rename             (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *new_name);</programlisting>
 <para>
 Rename a palette
@@ -133,7 +133,7 @@ This procedure renames a palette</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-delete"/>gimp_palette_delete ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_delete             (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<indexterm role="GIMP"><primary>gimp_palette_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_delete             (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Deletes a palette
 </para>
@@ -152,7 +152,7 @@ This procedure deletes a palette</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-get-info"/>gimp_palette_get_info ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_get_info           (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_palette_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_get_info           (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *num_colors);</programlisting>
 <para>
 Retrieve information about the specified palette.
@@ -176,7 +176,7 @@ This includes the name, and the number of colors.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-add-entry"/>gimp_palette_add_entry ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_add_entry</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_add_entry          (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_palette_add_entry</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_add_entry          (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *entry_name,
                                              const <link linkend="GimpRGB">GimpRGB</link> *color,
                                              <link linkend="gint">gint</link> *entry_num);</programlisting>
@@ -208,7 +208,7 @@ error if the entry palette does not exist.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-delete-entry"/>gimp_palette_delete_entry ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_delete_entry</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_delete_entry       (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_palette_delete_entry</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_delete_entry       (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num);</programlisting>
 <para>
 Deletes a palette entry from the specified palette.
@@ -232,7 +232,7 @@ returns an error if the entry palette does not exist.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-entry-get-color"/>gimp_palette_entry_get_color ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_entry_get_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_get_color    (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_palette_entry_get_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_get_color    (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
@@ -261,7 +261,7 @@ exist.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-entry-set-color"/>gimp_palette_entry_set_color ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_entry_set_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_set_color    (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_palette_entry_set_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_set_color    (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
 <para>
@@ -290,7 +290,7 @@ exist.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-entry-get-name"/>gimp_palette_entry_get_name ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_entry_get_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_get_name     (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_palette_entry_get_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_get_name     (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              <link linkend="gchar">gchar</link> **entry_name);</programlisting>
 <para>
@@ -319,7 +319,7 @@ exist.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="gimp-palette-entry-set-name"/>gimp_palette_entry_set_name ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_palette_entry_set_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_set_name     (const <link linkend="gchar">gchar</link> *name,
+<indexterm role="GIMP"><primary>gimp_palette_entry_set_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_set_name     (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              const <link linkend="gchar">gchar</link> *entry_name);</programlisting>
 <para>

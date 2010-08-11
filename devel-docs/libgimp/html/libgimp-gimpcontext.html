@@ -47,106 +47,40 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimpcontext.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-push" title="gimp_context_push ()">gimp_context_push</a>                   (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-pop" title="gimp_context_pop ()">gimp_context_pop</a>                    (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-foreground" title="gimp_context_get_foreground ()">gimp_context_get_foreground</a>         (<a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-push" title="gimp_context_push ()">gimp_context_push</a>                   (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-pop" title="gimp_context_pop ()">gimp_context_pop</a>                    (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-foreground" title="gimp_context_get_foreground ()">gimp_context_get_foreground</a>         (<a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-foreground" title="gimp_context_set_foreground ()">gimp_context_set_foreground</a>         (const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-foreground" title="gimp_context_set_foreground ()">gimp_context_set_foreground</a>         (const <a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-background" title="gimp_context_get_background ()">gimp_context_get_background</a>         (<a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-background" title="gimp_context_get_background ()">gimp_context_get_background</a>         (<a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-background" title="gimp_context_set_background ()">gimp_context_set_background</a>         (const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-background" title="gimp_context_set_background ()">gimp_context_set_background</a>         (const <a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-default-colors" title="gimp_context_set_default_colors ()">gimp_context_set_default_colors</a>     (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-swap-colors" title="gimp_context_swap_colors ()">gimp_context_swap_colors</a>            (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-opacity" title="gimp_context_get_opacity ()">gimp_context_get_opacity</a>            (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-opacity" title="gimp_context_set_opacity ()">gimp_context_set_opacity</a>            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-default-colors" title="gimp_context_set_default_colors ()">gimp_context_set_default_colors</a>     (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-swap-colors" title="gimp_context_swap_colors ()">gimp_context_swap_colors</a>            (void);
+gdouble             <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-opacity" title="gimp_context_get_opacity ()">gimp_context_get_opacity</a>            (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-opacity" title="gimp_context_set_opacity ()">gimp_context_set_opacity</a>            (gdouble opacity);
 <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-paint-mode" title="gimp_context_get_paint_mode ()">gimp_context_get_paint_mode</a>        (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-paint-mode" title="gimp_context_set_paint_mode ()">gimp_context_set_paint_mode</a>         (<a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush" title="gimp_context_get_brush ()">gimp_context_get_brush</a>              (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush" title="gimp_context_set_brush ()">gimp_context_set_brush</a>              (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-pattern" title="gimp_context_get_pattern ()">gimp_context_get_pattern</a>            (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-pattern" title="gimp_context_set_pattern ()">gimp_context_set_pattern</a>            (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-gradient" title="gimp_context_get_gradient ()">gimp_context_get_gradient</a>           (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-gradient" title="gimp_context_set_gradient ()">gimp_context_set_gradient</a>           (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-palette" title="gimp_context_get_palette ()">gimp_context_get_palette</a>            (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-palette" title="gimp_context_set_palette ()">gimp_context_set_palette</a>            (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-font" title="gimp_context_get_font ()">gimp_context_get_font</a>               (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-font" title="gimp_context_set_font ()">gimp_context_set_font</a>               (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-paint-method" title="gimp_context_get_paint_method ()">gimp_context_get_paint_method</a>       (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-paint-method" title="gimp_context_set_paint_method ()">gimp_context_set_paint_method</a>       (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpcontext.html#gimp-context-list-paint-methods" title="gimp_context_list_paint_methods ()">gimp_context_list_paint_methods</a>     (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *num_paint_methods,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> ***paint_methods);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-paint-mode" title="gimp_context_set_paint_mode ()">gimp_context_set_paint_mode</a>         (<a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
+gchar*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-brush" title="gimp_context_get_brush ()">gimp_context_get_brush</a>              (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-brush" title="gimp_context_set_brush ()">gimp_context_set_brush</a>              (const gchar *name);
+gchar*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-pattern" title="gimp_context_get_pattern ()">gimp_context_get_pattern</a>            (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-pattern" title="gimp_context_set_pattern ()">gimp_context_set_pattern</a>            (const gchar *name);
+gchar*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-gradient" title="gimp_context_get_gradient ()">gimp_context_get_gradient</a>           (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-gradient" title="gimp_context_set_gradient ()">gimp_context_set_gradient</a>           (const gchar *name);
+gchar*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-palette" title="gimp_context_get_palette ()">gimp_context_get_palette</a>            (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-palette" title="gimp_context_set_palette ()">gimp_context_set_palette</a>            (const gchar *name);
+gchar*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-font" title="gimp_context_get_font ()">gimp_context_get_font</a>               (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-font" title="gimp_context_set_font ()">gimp_context_set_font</a>               (const gchar *name);
+gchar*              <a class="link" href="libgimp-gimpcontext.html#gimp-context-get-paint-method" title="gimp_context_get_paint_method ()">gimp_context_get_paint_method</a>       (void);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-set-paint-method" title="gimp_context_set_paint_method ()">gimp_context_set_paint_method</a>       (const gchar *name);
+gboolean            <a class="link" href="libgimp-gimpcontext.html#gimp-context-list-paint-methods" title="gimp_context_list_paint_methods ()">gimp_context_list_paint_methods</a>     (gint *num_paint_methods,
+                                                         gchar ***paint_methods);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -159,9 +93,7 @@ Functions to manipulate a plug-in's context.
 <a name="libgimp-gimpcontext.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-context-push"></a><h3>gimp_context_push ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_push                   (void);</pre>
+<pre class="programlisting">gboolean            gimp_context_push                   (void);</pre>
 <p>
 Pushes a context to the top of the plug-in's context stack.
 </p>
@@ -187,9 +119,7 @@ until it is popped again using <a class="link" href="libgimp-gimpcontext.html#gi
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-pop"></a><h3>gimp_context_pop ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_pop                    (void);</pre>
+<pre class="programlisting">gboolean            gimp_context_pop                    (void);</pre>
 <p>
 Pops the topmost context from the plug-in's context stack.
 </p>
@@ -216,10 +146,8 @@ plug-in.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-foreground"></a><h3>gimp_context_get_foreground ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_get_foreground         (<a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+<pre class="programlisting">gboolean            gimp_context_get_foreground         (<a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);</pre>
 <p>
 Get the current GIMP foreground color.
@@ -253,10 +181,8 @@ blending, and bucket fill.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-foreground"></a><h3>gimp_context_set_foreground ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_foreground         (const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+<pre class="programlisting">gboolean            gimp_context_set_foreground         (const <a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *foreground);</pre>
 <p>
 Set the current GIMP foreground color.
@@ -290,10 +216,8 @@ and bucket fill will use the new value.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-background"></a><h3>gimp_context_get_background ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_get_background         (<a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+<pre class="programlisting">gboolean            gimp_context_get_background         (<a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);</pre>
 <p>
 Get the current GIMP background color.
@@ -327,10 +251,8 @@ erasing (with non-alpha images), and image filling.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-background"></a><h3>gimp_context_set_background ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_background         (const <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+<pre class="programlisting">gboolean            gimp_context_set_background         (const <a
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *background);</pre>
 <p>
 Set the current GIMP background color.
@@ -365,9 +287,7 @@ value.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-default-colors"></a><h3>gimp_context_set_default_colors ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_default_colors     (void);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_default_colors     (void);</pre>
 <p>
 Set the current GIMP foreground and background colors to black and
 white.
@@ -393,9 +313,7 @@ colors to their initial default values, black and white.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-swap-colors"></a><h3>gimp_context_swap_colors ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_swap_colors            (void);</pre>
+<pre class="programlisting">gboolean            gimp_context_swap_colors            (void);</pre>
 <p>
 Swap the current GIMP foreground and background colors.
 </p>
@@ -421,9 +339,7 @@ color and vice versa.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-opacity"></a><h3>gimp_context_get_opacity ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_context_get_opacity            (void);</pre>
+<pre class="programlisting">gdouble             gimp_context_get_opacity            (void);</pre>
 <p>
 Get the opacity.
 </p>
@@ -448,11 +364,7 @@ floating point number between 0 and 100.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-opacity"></a><h3>gimp_context_set_opacity ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_opacity            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_opacity            (gdouble opacity);</pre>
 <p>
 Set the opacity.
 </p>
@@ -510,9 +422,7 @@ description.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-paint-mode"></a><h3>gimp_context_set_paint_mode ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_paint_mode         (<a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_paint_mode         (<a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
 <p>
 Set the paint mode.
 </p>
@@ -543,9 +453,7 @@ This procedure modifies the paint_mode setting.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-brush"></a><h3>gimp_context_get_brush ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_context_get_brush              (void);</pre>
+<pre class="programlisting">gchar*              gimp_context_get_brush              (void);</pre>
 <p>
 Retrieve the currently active brush.
 </p>
@@ -571,11 +479,7 @@ application of paint to the image.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-brush"></a><h3>gimp_context_set_brush ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_brush              (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_brush              (const gchar *name);</pre>
 <p>
 Set the specified brush as the active brush.
 </p>
@@ -610,9 +514,7 @@ becomes active and will be used in all subsequent paint operations.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-pattern"></a><h3>gimp_context_get_pattern ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_context_get_pattern            (void);</pre>
+<pre class="programlisting">gchar*              gimp_context_get_pattern            (void);</pre>
 <p>
 Retrieve the currently active pattern.
 </p>
@@ -638,11 +540,7 @@ to control the application of paint to the image.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-pattern"></a><h3>gimp_context_set_pattern ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_pattern            (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_pattern            (const gchar *name);</pre>
 <p>
 Set the specified pattern as the active pattern.
 </p>
@@ -678,9 +576,7 @@ operations.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-gradient"></a><h3>gimp_context_get_gradient ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_context_get_gradient           (void);</pre>
+<pre class="programlisting">gchar*              gimp_context_get_gradient           (void);</pre>
 <p>
 Retrieve the currently active gradient.
 </p>
@@ -704,11 +600,7 @@ This procedure returns the name of the currently active gradient.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-gradient"></a><h3>gimp_context_set_gradient ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_gradient           (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_gradient           (const gchar *name);</pre>
 <p>
 Sets the specified gradient as the active gradient.
 </p>
@@ -744,9 +636,7 @@ operations.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-palette"></a><h3>gimp_context_get_palette ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_context_get_palette            (void);</pre>
+<pre class="programlisting">gchar*              gimp_context_get_palette            (void);</pre>
 <p>
 Retrieve the currently active palette.
 </p>
@@ -770,11 +660,7 @@ This procedure returns the name of the the currently active palette.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-palette"></a><h3>gimp_context_set_palette ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_palette            (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_palette            (const gchar *name);</pre>
 <p>
 Set the specified palette as the active palette.
 </p>
@@ -810,9 +696,7 @@ operations.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-font"></a><h3>gimp_context_get_font ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_context_get_font               (void);</pre>
+<pre class="programlisting">gchar*              gimp_context_get_font               (void);</pre>
 <p>
 Retrieve the currently active font.
 </p>
@@ -836,11 +720,7 @@ This procedure returns the name of the currently active font.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-font"></a><h3>gimp_context_set_font ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_font               (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_font               (const gchar *name);</pre>
 <p>
 Set the specified font as the active font.
 </p>
@@ -875,9 +755,7 @@ becomes active and will be used in all subsequent font operations.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-get-paint-method"></a><h3>gimp_context_get_paint_method ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_context_get_paint_method       (void);</pre>
+<pre class="programlisting">gchar*              gimp_context_get_paint_method       (void);</pre>
 <p>
 Retrieve the currently active paint method.
 </p>
@@ -902,11 +780,7 @@ method.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-set-paint-method"></a><h3>gimp_context_set_paint_method ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_set_paint_method       (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre>
+<pre class="programlisting">gboolean            gimp_context_set_paint_method       (const gchar *name);</pre>
 <p>
 Set the specified paint method as the active paint method.
 </p>
@@ -942,14 +816,8 @@ all subsequent paint operations.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-context-list-paint-methods"></a><h3>gimp_context_list_paint_methods ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_context_list_paint_methods     (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *num_paint_methods,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> ***paint_methods);</pre>
+<pre class="programlisting">gboolean            gimp_context_list_paint_methods     (gint *num_paint_methods,
+                                                         gchar ***paint_methods);</pre>
 <p>
 Lists the available paint methods.
 </p>

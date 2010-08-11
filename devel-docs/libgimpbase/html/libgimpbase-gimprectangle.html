@@ -41,44 +41,18 @@
 <div class="refsynopsisdiv">
 <a name="libgimpbase-gimprectangle.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpbase-gimprectangle.html#gimp-rectangle-intersect" title="gimp_rectangle_intersect ()">gimp_rectangle_intersect</a>            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x2,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y2,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width2,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height2,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *dest_x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *dest_y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *dest_width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *dest_height);
+gboolean            <a class="link" href="libgimpbase-gimprectangle.html#gimp-rectangle-intersect" title="gimp_rectangle_intersect ()">gimp_rectangle_intersect</a>            (gint x1,
+                                                         gint y1,
+                                                         gint width1,
+                                                         gint height1,
+                                                         gint x2,
+                                                         gint y2,
+                                                         gint width2,
+                                                         gint height2,
+                                                         gint *dest_x,
+                                                         gint *dest_y,
+                                                         gint *dest_width,
+                                                         gint *dest_height);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -91,44 +65,18 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 <a name="libgimpbase-gimprectangle.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-rectangle-intersect"></a><h3>gimp_rectangle_intersect ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_rectangle_intersect            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x2,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y2,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width2,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height2,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *dest_x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *dest_y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *dest_width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *dest_height);</pre>
+<pre class="programlisting">gboolean            gimp_rectangle_intersect            (gint x1,
+                                                         gint y1,
+                                                         gint width1,
+                                                         gint height1,
+                                                         gint x2,
+                                                         gint y2,
+                                                         gint width2,
+                                                         gint height2,
+                                                         gint *dest_x,
+                                                         gint *dest_y,
+                                                         gint *dest_width,
+                                                         gint *dest_height);</pre>
 <p>
 Calculates the intersection of two rectangles.</p>
 <p>
@@ -179,39 +127,27 @@ Calculates the intersection of two rectangles.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dest_x</code></em> :</span></p></td>
-<td>      return location for origin of intersection (may be <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>)
+<td>      return location for origin of intersection (may be <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dest_y</code></em> :</span></p></td>
-<td>      return location for origin of intersection (may be <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>)
+<td>      return location for origin of intersection (may be <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dest_width</code></em> :</span></p></td>
-<td>  return location for width of intersection (may be <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>)
+<td>  return location for width of intersection (may be <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dest_height</code></em> :</span></p></td>
-<td> return location for height of intersection (may be <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for height of intersection (may be <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if the intersection is non-empty, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td> <code class="literal">TRUE</code> if the intersection is non-empty, <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>

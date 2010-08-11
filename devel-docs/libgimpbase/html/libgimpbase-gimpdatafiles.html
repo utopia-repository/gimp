@@ -43,27 +43,13 @@
 <pre class="synopsis">
                     <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileData" title="GimpDatafileData">GimpDatafileData</a>;
 void                (<a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc" title="GimpDatafileLoaderFunc ()">*GimpDatafileLoaderFunc</a>)           (const <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileData" title="GimpDatafileData">GimpDatafileData</a> *file_data,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-check-extension" title="gimp_datafiles_check_extension ()">gimp_datafiles_check_extension</a>      (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *extension);
-void                <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-read-directories" title="gimp_datafiles_read_directories ()">gimp_datafiles_read_directories</a>     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *path_str,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-File-Utilities.html#GFileTest"
->GFileTest</a> flags,
+                                                         gpointer user_data);
+gboolean            <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-check-extension" title="gimp_datafiles_check_extension ()">gimp_datafiles_check_extension</a>      (const gchar *filename,
+                                                         const gchar *extension);
+void                <a class="link" href="libgimpbase-gimpdatafiles.html#gimp-datafiles-read-directories" title="gimp_datafiles_read_directories ()">gimp_datafiles_read_directories</a>     (const gchar *path_str,
+                                                         GFileTest flags,
                                                          <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc" title="GimpDatafileLoaderFunc ()">GimpDatafileLoaderFunc</a> loader_func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);
+                                                         gpointer user_data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -94,9 +80,7 @@ Functions to handle GIMP data files.
 <div class="refsect2" lang="en">
 <a name="GimpDatafileLoaderFunc"></a><h3>GimpDatafileLoaderFunc ()</h3>
 <pre class="programlisting">void                (*GimpDatafileLoaderFunc)           (const <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileData" title="GimpDatafileData">GimpDatafileData</a> *file_data,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);</pre>
+                                                         gpointer user_data);</pre>
 <p>
 
 </p>
@@ -121,14 +105,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-datafiles-check-extension"></a><h3>gimp_datafiles_check_extension ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_datafiles_check_extension      (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *filename,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *extension);</pre>
+<pre class="programlisting">gboolean            gimp_datafiles_check_extension      (const gchar *filename,
+                                                         const gchar *extension);</pre>
 <p>
 
 </p>
@@ -158,16 +136,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-datafiles-read-directories"></a><h3>gimp_datafiles_read_directories ()</h3>
-<pre class="programlisting">void                gimp_datafiles_read_directories     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *path_str,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-File-Utilities.html#GFileTest"
->GFileTest</a> flags,
+<pre class="programlisting">void                gimp_datafiles_read_directories     (const gchar *path_str,
+                                                         GFileTest flags,
                                                          <a class="link" href="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc" title="GimpDatafileLoaderFunc ()">GimpDatafileLoaderFunc</a> loader_func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> user_data);</pre>
+                                                         gpointer user_data);</pre>
 <p>
 
 </p>

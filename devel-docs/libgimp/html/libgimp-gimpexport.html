@@ -49,15 +49,9 @@
 <pre class="synopsis">
 enum                <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities">GimpExportCapabilities</a>;
 enum                <a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>;
-<a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    <a class="link" href="libgimp-gimpexport.html#gimp-export-image" title="gimp_export_image ()">gimp_export_image</a>                   (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> *image_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> *drawable_ID,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *format_name,
+<a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    <a class="link" href="libgimp-gimpexport.html#gimp-export-image" title="gimp_export_image ()">gimp_export_image</a>                   (gint32 *image_ID,
+                                                         gint32 *drawable_ID,
+                                                         const gchar *format_name,
                                                          <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities">GimpExportCapabilities</a> capabilities);
 </pre>
 </div>
@@ -116,15 +110,9 @@ as it will most probably have to open a dialog.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-export-image"></a><h3>gimp_export_image ()</h3>
-<pre class="programlisting"><a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> *image_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> *drawable_ID,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *format_name,
+<pre class="programlisting"><a class="link" href="libgimp-gimpexport.html#GimpExportReturn" title="enum GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (gint32 *image_ID,
+                                                         gint32 *drawable_ID,
+                                                         const gchar *format_name,
                                                          <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities" title="enum GimpExportCapabilities">GimpExportCapabilities</a> capabilities);</pre>
 <p>
 Takes an image and a drawable to be saved together with a

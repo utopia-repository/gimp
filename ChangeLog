@@ -1,3 +1,116 @@
+2008-08-21  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.4.7 release.
+
+2008-08-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+        * configure.in: use AM_PROG_CC_C_O to fix warning with automake 1.10.
+        Removed obsolete call to AM_PROG_CC_STDC.
+
+2008-08-15  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/winicon/icosave.c: applied patch from Aurimas Juška
+	that fixes an endianness issue (bug #529629).
+
+2008-08-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/gui/gimpdbusservice.[ch]: keep a queue of D-Bus requests and
+	work on them one after another instead of handling them all in
+	parallel. Complements the fix for bug #546426.
+
+2008-08-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/widgets/gimpdbusservice.c: open the files from an idle
+	handler.  Opening a file may take a while (in particular if it
+	involves asking the user for input) and we need to respond to the
+	D-Bus call before it times out.
+
+2008-07-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/text/gimptext-compat.c (text_get_extents): applied the same
+	workaround for a memory leak in PangoFT2 (bug #143542) as was
+	applied long ago in gimptextlayout.c.
+
+2008-07-10  Manish Singh  <yosh@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/pygimp/pygimp-pdb.c: Allow None to be passed for
+	PDB_DISPLAY.
+
+2008-07-03  Lars-Peter Clausen  <lars@metafoo.de>
+
+	Merged from trunk:
+
+	* plug-ins/pygimp/pygimp-drawable.c
+	* plug-ins/pygimp/pygimp-vectors.c
+	* plug-ins/pygimp/pygimp-display.c
+	* plug-ins/pygimp/pygimp-image.c: Added checks to ensure that a
+	python object only is created if its id is valid. Fixes bug #536403.
+
+	* plug-ins/pygimp/pygimp-pdb.c
+	* plug-ins/pygimp/pygimp-tile.c
+	* plug-ins/pygimp/pygimp-colors.c
+	* plug-ins/pygimp/pygimp.h: Fix crashing when pygimp is used with
+	python-2.5 on 64 bit systems. Fixes bug #540629.
+	
+2008-07-02  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/pygimp/gimpui.py: reverted this change, we don't add
+	new features in a stable release series.
+
+2008-06-16  Akkana Peck  <akkana@svn.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/pygimp/gimpui.py: allow passing in color names
+	as strings (backporting discussed with joao).
+
+2008-06-12  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* modules/controller_midi.c: applied patch from S. Fielding which
+	passes the right MIDI channel from the ALSA event to midi_event().
+	Fixes bug #537960.
+
+2008-06-04  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/tools/gimpcropoptions.c
+	* app/tools/gimprectangleoptions.c
+	* app/tools/gimprectangleselectoptions.c: fixed handling of the
+	"highlight" property that needs different default values for the
+	Crop and Rectangle Select tools (bug #536582).
+
+2008-06-01  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	* plug-ins/common/gif-load.c (GetCode): Applied patch from 
+	Rik Snel that fixes loading of .gif files that contains 1-byte
+	data blocks. (Bug #535888.)
+
+2008-05-29  Manish Singh  <yosh@gimp.org>
+
+	* plug-ins/pygimp/gimpshelf.py: fix _vectors_id to return a tuple
+	for the ID. Spotted and fixed by Joao.
+
+2008-05-29  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.4.7 (interface age 7).
+
 2008-05-29  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.4.6 release.

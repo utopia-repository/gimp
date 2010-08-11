@@ -48,111 +48,55 @@
 <a name="libgimp-gimpregioniterator.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a>;
-void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFunc1" title="GimpRgnFunc1 ()">*GimpRgnFunc1</a>)                     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *src,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFunc2" title="GimpRgnFunc2 ()">*GimpRgnFunc2</a>)                     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *src,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *dest,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncSrc" title="GimpRgnFuncSrc ()">*GimpRgnFuncSrc</a>)                   (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *src,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncDest" title="GimpRgnFuncDest ()">*GimpRgnFuncDest</a>)                  (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *dest,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncSrcDest" title="GimpRgnFuncSrcDest ()">*GimpRgnFuncSrcDest</a>)               (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *src,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *dest,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
+void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFunc1" title="GimpRgnFunc1 ()">*GimpRgnFunc1</a>)                     (const guchar *src,
+                                                         gint bpp,
+                                                         gpointer data);
+void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFunc2" title="GimpRgnFunc2 ()">*GimpRgnFunc2</a>)                     (const guchar *src,
+                                                         guchar *dest,
+                                                         gint bpp,
+                                                         gpointer data);
+void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncSrc" title="GimpRgnFuncSrc ()">*GimpRgnFuncSrc</a>)                   (gint x,
+                                                         gint y,
+                                                         const guchar *src,
+                                                         gint bpp,
+                                                         gpointer data);
+void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncDest" title="GimpRgnFuncDest ()">*GimpRgnFuncDest</a>)                  (gint x,
+                                                         gint y,
+                                                         guchar *dest,
+                                                         gint bpp,
+                                                         gpointer data);
+void                (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncSrcDest" title="GimpRgnFuncSrcDest ()">*GimpRgnFuncSrcDest</a>)               (gint x,
+                                                         gint y,
+                                                         const guchar *src,
+                                                         guchar *dest,
+                                                         gint bpp,
+                                                         gpointer data);
 <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a>*    <a class="link" href="libgimp-gimpregioniterator.html#gimp-rgn-iterator-new" title="gimp_rgn_iterator_new ()">gimp_rgn_iterator_new</a>               (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> unused);
 void                <a class="link" href="libgimp-gimpregioniterator.html#gimp-rgn-iterator-free" title="gimp_rgn_iterator_free ()">gimp_rgn_iterator_free</a>              (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a> *iter);
 void                <a class="link" href="libgimp-gimpregioniterator.html#gimp-rgn-iterator-src" title="gimp_rgn_iterator_src ()">gimp_rgn_iterator_src</a>               (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a> *iter,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncSrc" title="GimpRgnFuncSrc ()">GimpRgnFuncSrc</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
+                                                         gpointer data);
 void                <a class="link" href="libgimp-gimpregioniterator.html#gimp-rgn-iterator-dest" title="gimp_rgn_iterator_dest ()">gimp_rgn_iterator_dest</a>              (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a> *iter,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncDest" title="GimpRgnFuncDest ()">GimpRgnFuncDest</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
+                                                         gpointer data);
 void                <a class="link" href="libgimp-gimpregioniterator.html#gimp-rgn-iterator-src-dest" title="gimp_rgn_iterator_src_dest ()">gimp_rgn_iterator_src_dest</a>          (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a> *iter,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncSrcDest" title="GimpRgnFuncSrcDest ()">GimpRgnFuncSrcDest</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
+                                                         gpointer data);
 void                <a class="link" href="libgimp-gimpregioniterator.html#gimp-rgn-iterate1" title="gimp_rgn_iterate1 ()">gimp_rgn_iterate1</a>                   (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> unused,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFunc1" title="GimpRgnFunc1 ()">GimpRgnFunc1</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
+                                                         gpointer data);
 void                <a class="link" href="libgimp-gimpregioniterator.html#gimp-rgn-iterate2" title="gimp_rgn_iterate2 ()">gimp_rgn_iterate2</a>                   (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> unused,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFunc2" title="GimpRgnFunc2 ()">GimpRgnFunc2</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
+                                                         gpointer data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -175,15 +119,9 @@ using a pre-defined function pointer per pixel.
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRgnFunc1"></a><h3>GimpRgnFunc1 ()</h3>
-<pre class="programlisting">void                (*GimpRgnFunc1)                     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *src,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting">void                (*GimpRgnFunc1)                     (const guchar *src,
+                                                         gint bpp,
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -213,18 +151,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRgnFunc2"></a><h3>GimpRgnFunc2 ()</h3>
-<pre class="programlisting">void                (*GimpRgnFunc2)                     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *src,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *dest,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting">void                (*GimpRgnFunc2)                     (const guchar *src,
+                                                         guchar *dest,
+                                                         gint bpp,
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -259,21 +189,11 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRgnFuncSrc"></a><h3>GimpRgnFuncSrc ()</h3>
-<pre class="programlisting">void                (*GimpRgnFuncSrc)                   (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *src,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting">void                (*GimpRgnFuncSrc)                   (gint x,
+                                                         gint y,
+                                                         const guchar *src,
+                                                         gint bpp,
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -313,21 +233,11 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRgnFuncDest"></a><h3>GimpRgnFuncDest ()</h3>
-<pre class="programlisting">void                (*GimpRgnFuncDest)                  (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *dest,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting">void                (*GimpRgnFuncDest)                  (gint x,
+                                                         gint y,
+                                                         guchar *dest,
+                                                         gint bpp,
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -367,24 +277,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRgnFuncSrcDest"></a><h3>GimpRgnFuncSrcDest ()</h3>
-<pre class="programlisting">void                (*GimpRgnFuncSrcDest)               (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *src,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *dest,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> bpp,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting">void                (*GimpRgnFuncSrcDest)               (gint x,
+                                                         gint y,
+                                                         const guchar *src,
+                                                         guchar *dest,
+                                                         gint bpp,
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -431,11 +329,11 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="gimp-rgn-iterator-new"></a><h3>gimp_rgn_iterator_new ()</h3>
 <pre class="programlisting"><a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a>*    gimp_rgn_iterator_new               (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> unused);</pre>
 <p>
 Creates a new <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator"><span class="type">GimpRgnIterator</span></a> for <em class="parameter"><code>drawable</code></em>. The <a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 ><span class="type">GimpRunMode</span></a>
 parameter is ignored. Use <a class="link" href="libgimp-gimpregioniterator.html#gimp-rgn-iterator-free" title="gimp_rgn_iterator_free ()"><code class="function">gimp_rgn_iterator_free()</code></a> to free thsi
 iterator.</p>
@@ -486,9 +384,7 @@ Frees the resources allocated for <em class="parameter"><code>iter</code></em>.<
 <a name="gimp-rgn-iterator-src"></a><h3>gimp_rgn_iterator_src ()</h3>
 <pre class="programlisting">void                gimp_rgn_iterator_src               (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a> *iter,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncSrc" title="GimpRgnFuncSrc ()">GimpRgnFuncSrc</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -520,9 +416,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="gimp-rgn-iterator-dest"></a><h3>gimp_rgn_iterator_dest ()</h3>
 <pre class="programlisting">void                gimp_rgn_iterator_dest              (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a> *iter,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncDest" title="GimpRgnFuncDest ()">GimpRgnFuncDest</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -554,9 +448,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="gimp-rgn-iterator-src-dest"></a><h3>gimp_rgn_iterator_src_dest ()</h3>
 <pre class="programlisting">void                gimp_rgn_iterator_src_dest          (<a class="link" href="libgimp-gimpregioniterator.html#GimpRgnIterator" title="GimpRgnIterator">GimpRgnIterator</a> *iter,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFuncSrcDest" title="GimpRgnFuncSrcDest ()">GimpRgnFuncSrcDest</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -588,12 +480,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="gimp-rgn-iterate1"></a><h3>gimp_rgn_iterate1 ()</h3>
 <pre class="programlisting">void                gimp_rgn_iterate1                   (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> unused,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFunc1" title="GimpRgnFunc1 ()">GimpRgnFunc1</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+                                                         gpointer data);</pre>
 <p>
 
 </p>
@@ -630,12 +520,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <a name="gimp-rgn-iterate2"></a><h3>gimp_rgn_iterate2 ()</h3>
 <pre class="programlisting">void                gimp_rgn_iterate2                   (<a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
                                                          <a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRunMode"
 >GimpRunMode</a> unused,
                                                          <a class="link" href="libgimp-gimpregioniterator.html#GimpRgnFunc2" title="GimpRgnFunc2 ()">GimpRgnFunc2</a> func,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+                                                         gpointer data);</pre>
 <p>
 
 </p>

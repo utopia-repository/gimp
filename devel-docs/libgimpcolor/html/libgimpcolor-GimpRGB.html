@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpRGB</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Color Library Reference Manual">
-<link rel="up" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
-<link rel="prev" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
+<link rel="up" href="libgimpcolor.html" title="Part I. GIMP Color Library">
+<link rel="prev" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="next" href="libgimpcolor-GimpHSV.html" title="GimpHSV">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpcolor.html" title="Part&#160;I.&#160;GIMP Color Library">
+<link rel="part" href="libgimpcolor.html" title="Part I. GIMP Color Library">
 <link rel="index" href="libgimpcolor-index.html" title="Index">
 <link rel="index" href="libgimpcolor-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpcolor-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
@@ -25,251 +25,130 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpHSV.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2601320" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2619886" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpcolor-GimpRGB.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimpcolor-GimpRGB.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpRGB"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2601320"></a><span class="refentrytitle">GimpRGB</span>
-</h2>
-<p>GimpRGB &#8212; Definitions and Functions relating to RGB colors.</p>
+<h2><span class="refentrytitle"><a name="libgimpcolor-GimpRGB.top_of_page"></a>GimpRGB</span></h2>
+<p>GimpRGB — Definitions and Functions relating to RGB colors.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimpcolor-GimpRGB.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
-                    <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a>;
-enum                <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode">GimpRGBCompositeMode</a>;
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-set">gimp_rgb_set</a>                        (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> blue);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-set-alpha">gimp_rgb_set_alpha</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-set-uchar">gimp_rgb_set_uchar</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> blue);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-get-uchar">gimp_rgb_get_uchar</a>                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *blue);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-name">gimp_rgb_parse_name</a>                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> len);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-hex">gimp_rgb_parse_hex</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *hex,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> len);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-css">gimp_rgb_parse_css</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *css,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> len);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-list-names">gimp_rgb_list_names</a>                 (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> ***names,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> **colors);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-add">gimp_rgb_add</a>                        (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-subtract">gimp_rgb_subtract</a>                   (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-multiply">gimp_rgb_multiply</a>                   (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-distance">gimp_rgb_distance</a>                   (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-max">gimp_rgb_max</a>                        (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-min">gimp_rgb_min</a>                        (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-clamp">gimp_rgb_clamp</a>                      (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-gamma">gimp_rgb_gamma</a>                      (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> gamma);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance">gimp_rgb_luminance</a>                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a>              <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance-uchar">gimp_rgb_luminance_uchar</a>            (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-intensity">gimp_rgb_intensity</a>                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a>              <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-intensity-uchar">gimp_rgb_intensity_uchar</a>            (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-composite">gimp_rgb_composite</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color2,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode">GimpRGBCompositeMode</a> mode);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-set">gimp_rgba_set</a>                       (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> blue,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-set-uchar">gimp_rgba_set_uchar</a>                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> blue,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> alpha);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-get-uchar">gimp_rgba_get_uchar</a>                 (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *blue,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *alpha);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-parse-css">gimp_rgba_parse_css</a>                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *css,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> len);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-add">gimp_rgba_add</a>                       (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-subtract">gimp_rgba_subtract</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-multiply">gimp_rgba_multiply</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-distance">gimp_rgba_distance</a>                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE:CAPS">GIMP_RGB_LUMINANCE</a>                  (r,g,b)
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-RED:CAPS">GIMP_RGB_LUMINANCE_RED</a>
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-GREEN:CAPS">GIMP_RGB_LUMINANCE_GREEN</a>
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-BLUE:CAPS">GIMP_RGB_LUMINANCE_BLUE</a>
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY:CAPS">GIMP_RGB_INTENSITY</a>                  (r,g,b)
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-RED:CAPS">GIMP_RGB_INTENSITY_RED</a>
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-GREEN:CAPS">GIMP_RGB_INTENSITY_GREEN</a>
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-BLUE:CAPS">GIMP_RGB_INTENSITY_BLUE</a>
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS">GIMP_TYPE_RGB</a>
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-TYPE-PARAM-RGB:CAPS">GIMP_TYPE_PARAM_RGB</a>
-<a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
->GParamSpec</a>*         <a class="link" href="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb">gimp_param_spec_rgb</a>                 (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *nick,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *blurb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> has_alpha,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *default_value,
-                                                         <a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
->GParamFlags</a> flags);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb-has-alpha">gimp_param_spec_rgb_has_alpha</a>       (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
->GParamSpec</a> *pspec);
-#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB:CAPS">GIMP_VALUE_HOLDS_RGB</a>                (value)
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-value-get-rgb">gimp_value_get_rgb</a>                  (const <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *value,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-value-set-rgb">gimp_value_set_rgb</a>                  (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *value,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);
-
+                    <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a>;
+enum                <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode" title="enum GimpRGBCompositeMode">GimpRGBCompositeMode</a>;
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-set" title="gimp_rgb_set ()">gimp_rgb_set</a>                        (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         gdouble red,
+                                                         gdouble green,
+                                                         gdouble blue);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-set-alpha" title="gimp_rgb_set_alpha ()">gimp_rgb_set_alpha</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         gdouble alpha);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-set-uchar" title="gimp_rgb_set_uchar ()">gimp_rgb_set_uchar</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         guchar red,
+                                                         guchar green,
+                                                         guchar blue);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-get-uchar" title="gimp_rgb_get_uchar ()">gimp_rgb_get_uchar</a>                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         guchar *red,
+                                                         guchar *green,
+                                                         guchar *blue);
+gboolean            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-name" title="gimp_rgb_parse_name ()">gimp_rgb_parse_name</a>                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         const gchar *name,
+                                                         gint len);
+gboolean            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-hex" title="gimp_rgb_parse_hex ()">gimp_rgb_parse_hex</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         const gchar *hex,
+                                                         gint len);
+gboolean            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-css" title="gimp_rgb_parse_css ()">gimp_rgb_parse_css</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         const gchar *css,
+                                                         gint len);
+gint                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-list-names" title="gimp_rgb_list_names ()">gimp_rgb_list_names</a>                 (const gchar ***names,
+                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> **colors);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-add" title="gimp_rgb_add ()">gimp_rgb_add</a>                        (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb2);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-subtract" title="gimp_rgb_subtract ()">gimp_rgb_subtract</a>                   (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb2);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-multiply" title="gimp_rgb_multiply ()">gimp_rgb_multiply</a>                   (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb1,
+                                                         gdouble factor);
+gdouble             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-distance" title="gimp_rgb_distance ()">gimp_rgb_distance</a>                   (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb2);
+gdouble             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-max" title="gimp_rgb_max ()">gimp_rgb_max</a>                        (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
+gdouble             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-min" title="gimp_rgb_min ()">gimp_rgb_min</a>                        (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-clamp" title="gimp_rgb_clamp ()">gimp_rgb_clamp</a>                      (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-gamma" title="gimp_rgb_gamma ()">gimp_rgb_gamma</a>                      (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         gdouble gamma);
+gdouble             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance" title="gimp_rgb_luminance ()">gimp_rgb_luminance</a>                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
+guchar              <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance-uchar" title="gimp_rgb_luminance_uchar ()">gimp_rgb_luminance_uchar</a>            (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
+gdouble             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-intensity" title="gimp_rgb_intensity ()">gimp_rgb_intensity</a>                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
+guchar              <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-intensity-uchar" title="gimp_rgb_intensity_uchar ()">gimp_rgb_intensity_uchar</a>            (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-composite" title="gimp_rgb_composite ()">gimp_rgb_composite</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *color1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *color2,
+                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode" title="enum GimpRGBCompositeMode">GimpRGBCompositeMode</a> mode);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-set" title="gimp_rgba_set ()">gimp_rgba_set</a>                       (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         gdouble red,
+                                                         gdouble green,
+                                                         gdouble blue,
+                                                         gdouble alpha);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-set-uchar" title="gimp_rgba_set_uchar ()">gimp_rgba_set_uchar</a>                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         guchar red,
+                                                         guchar green,
+                                                         guchar blue,
+                                                         guchar alpha);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-get-uchar" title="gimp_rgba_get_uchar ()">gimp_rgba_get_uchar</a>                 (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         guchar *red,
+                                                         guchar *green,
+                                                         guchar *blue,
+                                                         guchar *alpha);
+gboolean            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-parse-css" title="gimp_rgba_parse_css ()">gimp_rgba_parse_css</a>                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         const gchar *css,
+                                                         gint len);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-add" title="gimp_rgba_add ()">gimp_rgba_add</a>                       (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba2);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-subtract" title="gimp_rgba_subtract ()">gimp_rgba_subtract</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba2);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-multiply" title="gimp_rgba_multiply ()">gimp_rgba_multiply</a>                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         gdouble factor);
+gdouble             <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgba-distance" title="gimp_rgba_distance ()">gimp_rgba_distance</a>                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba2);
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE:CAPS" title="GIMP_RGB_LUMINANCE()">GIMP_RGB_LUMINANCE</a>                  (r,g,b)
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-RED:CAPS" title="GIMP_RGB_LUMINANCE_RED">GIMP_RGB_LUMINANCE_RED</a>
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-GREEN:CAPS" title="GIMP_RGB_LUMINANCE_GREEN">GIMP_RGB_LUMINANCE_GREEN</a>
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-LUMINANCE-BLUE:CAPS" title="GIMP_RGB_LUMINANCE_BLUE">GIMP_RGB_LUMINANCE_BLUE</a>
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY:CAPS" title="GIMP_RGB_INTENSITY()">GIMP_RGB_INTENSITY</a>                  (r,g,b)
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-RED:CAPS" title="GIMP_RGB_INTENSITY_RED">GIMP_RGB_INTENSITY_RED</a>
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-GREEN:CAPS" title="GIMP_RGB_INTENSITY_GREEN">GIMP_RGB_INTENSITY_GREEN</a>
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-RGB-INTENSITY-BLUE:CAPS" title="GIMP_RGB_INTENSITY_BLUE">GIMP_RGB_INTENSITY_BLUE</a>
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS" title="GIMP_TYPE_RGB">GIMP_TYPE_RGB</a>
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-TYPE-PARAM-RGB:CAPS" title="GIMP_TYPE_PARAM_RGB">GIMP_TYPE_PARAM_RGB</a>
+GParamSpec*         <a class="link" href="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb" title="gimp_param_spec_rgb ()">gimp_param_spec_rgb</a>                 (const gchar *name,
+                                                         const gchar *nick,
+                                                         const gchar *blurb,
+                                                         gboolean has_alpha,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *default_value,
+                                                         GParamFlags flags);
+gboolean            <a class="link" href="libgimpcolor-GimpRGB.html#gimp-param-spec-rgb-has-alpha" title="gimp_param_spec_rgb_has_alpha ()">gimp_param_spec_rgb_has_alpha</a>       (GParamSpec *pspec);
+#define             <a class="link" href="libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB:CAPS" title="GIMP_VALUE_HOLDS_RGB()">GIMP_VALUE_HOLDS_RGB</a>                (value)
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-value-get-rgb" title="gimp_value_get_rgb ()">gimp_value_get_rgb</a>                  (const GValue *value,
+                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
+void                <a class="link" href="libgimpcolor-GimpRGB.html#gimp-value-set-rgb" title="gimp_value_set_rgb ()">gimp_value_set_rgb</a>                  (GValue *value,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619886"></a><h2>Description</h2>
+<a name="libgimpcolor-GimpRGB.description"></a><h2>Description</h2>
 <p>
 Definitions and Functions relating to RGB colors.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2619900"></a><h2>Details</h2>
+<a name="libgimpcolor-GimpRGB.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2619909"></a><h3>
-<a name="GimpRGB"></a>GimpRGB</h3>
-<a class="indexterm" name="id2619920"></a><pre class="programlisting">typedef struct {
+<a name="GimpRGB"></a><h3>GimpRGB</h3>
+<pre class="programlisting">typedef struct {
   gdouble r, g, b, a;
 } GimpRGB;
 </pre>
@@ -279,9 +158,8 @@ Definitions and Functions relating to RGB colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619935"></a><h3>
-<a name="GimpRGBCompositeMode"></a>enum GimpRGBCompositeMode</h3>
-<a class="indexterm" name="id2619946"></a><pre class="programlisting">typedef enum
+<a name="GimpRGBCompositeMode"></a><h3>enum GimpRGBCompositeMode</h3>
+<pre class="programlisting">typedef enum
 {
   GIMP_RGB_COMPOSITE_NONE = 0,
   GIMP_RGB_COMPOSITE_NORMAL,
@@ -294,18 +172,11 @@ Definitions and Functions relating to RGB colors.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619964"></a><h3>
-<a name="gimp-rgb-set"></a>gimp_rgb_set ()</h3>
-<a class="indexterm" name="id2619976"></a><pre class="programlisting">void                gimp_rgb_set                        (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> blue);</pre>
+<a name="gimp-rgb-set"></a><h3>gimp_rgb_set ()</h3>
+<pre class="programlisting">void                gimp_rgb_set                        (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         gdouble red,
+                                                         gdouble green,
+                                                         gdouble blue);</pre>
 <p>
 Sets the red, green and blue components of <em class="parameter"><code>rgb</code></em> and leaves the
 alpha component unchanged. The color values should be between 0.0
@@ -318,22 +189,22 @@ set exactly as they are passed in.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
+<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -342,12 +213,9 @@ set exactly as they are passed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620088"></a><h3>
-<a name="gimp-rgb-set-alpha"></a>gimp_rgb_set_alpha ()</h3>
-<a class="indexterm" name="id2620098"></a><pre class="programlisting">void                gimp_rgb_set_alpha                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha);</pre>
+<a name="gimp-rgb-set-alpha"></a><h3>gimp_rgb_set_alpha ()</h3>
+<pre class="programlisting">void                gimp_rgb_set_alpha                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         gdouble alpha);</pre>
 <p>
 Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leaves the RGB components unchanged.</p>
 <p>
@@ -357,12 +225,12 @@ Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leav
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
+<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -371,18 +239,11 @@ Sets the alpha component of <em class="parameter"><code>rgb</code></em> and leav
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620172"></a><h3>
-<a name="gimp-rgb-set-uchar"></a>gimp_rgb_set_uchar ()</h3>
-<a class="indexterm" name="id2620183"></a><pre class="programlisting">void                gimp_rgb_set_uchar                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> blue);</pre>
+<a name="gimp-rgb-set-uchar"></a><h3>gimp_rgb_set_uchar ()</h3>
+<pre class="programlisting">void                gimp_rgb_set_uchar                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         guchar red,
+                                                         guchar green,
+                                                         guchar blue);</pre>
 <p>
 Sets the red, green and blue components of <em class="parameter"><code>rgb</code></em> from 8bit values
 (0 to 255) and leaves the alpha component unchanged.</p>
@@ -393,22 +254,22 @@ Sets the red, green and blue components of <em class="parameter"><code>rgb</code
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
+<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -417,18 +278,11 @@ Sets the red, green and blue components of <em class="parameter"><code>rgb</code
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620298"></a><h3>
-<a name="gimp-rgb-get-uchar"></a>gimp_rgb_get_uchar ()</h3>
-<a class="indexterm" name="id2620308"></a><pre class="programlisting">void                gimp_rgb_get_uchar                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *blue);</pre>
+<a name="gimp-rgb-get-uchar"></a><h3>gimp_rgb_get_uchar ()</h3>
+<pre class="programlisting">void                gimp_rgb_get_uchar                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         guchar *red,
+                                                         guchar *green,
+                                                         guchar *blue);</pre>
 <p>
 
 </p>
@@ -436,22 +290,22 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
 <td>
 
 
@@ -462,17 +316,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620406"></a><h3>
-<a name="gimp-rgb-parse-name"></a>gimp_rgb_parse_name ()</h3>
-<a class="indexterm" name="id2620419"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_rgb_parse_name                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> len);</pre>
+<a name="gimp-rgb-parse-name"></a><h3>gimp_rgb_parse_name ()</h3>
+<pre class="programlisting">gboolean            gimp_rgb_parse_name                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         const gchar *name,
+                                                         gint len);</pre>
 <p>
 Attempts to parse a color name. This function accepts <a class="ulink" href="http://www.w3.org/TR/SVG/types.html" target="_top">SVG 1.0 color keywords</a>.
 </p>
@@ -485,28 +332,24 @@ This function does not touch the alpha component of <em class="parameter"><code>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
-<td>  a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
+<td>  a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td> a color name (in UTF-8 encoding)
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
 <td>  the length of <em class="parameter"><code>name</code></em>, in bytes. or -1 if <em class="parameter"><code>name</code></em> is nul-terminated
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if <em class="parameter"><code>name</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has
-              been set, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>name</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has
+              been set, <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>
@@ -517,17 +360,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620578"></a><h3>
-<a name="gimp-rgb-parse-hex"></a>gimp_rgb_parse_hex ()</h3>
-<a class="indexterm" name="id2620590"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_rgb_parse_hex                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *hex,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> len);</pre>
+<a name="gimp-rgb-parse-hex"></a><h3>gimp_rgb_parse_hex ()</h3>
+<pre class="programlisting">gboolean            gimp_rgb_parse_hex                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         const gchar *hex,
+                                                         gint len);</pre>
 <p>
 Attempts to parse a string describing an RGB color in hexadecimal
 notation (optionally prefixed with a '#').
@@ -541,28 +377,24 @@ This function does not touch the alpha component of <em class="parameter"><code>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
+<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>hex</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>hex</code></em> :</span></p></td>
 <td> a string describing a color in hexadecimal notation
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
 <td> the length of <em class="parameter"><code>hex</code></em>, in bytes. or -1 if <em class="parameter"><code>hex</code></em> is nul-terminated
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if <em class="parameter"><code>hex</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has
-              been set, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>hex</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has
+              been set, <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>
@@ -573,24 +405,17 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620746"></a><h3>
-<a name="gimp-rgb-parse-css"></a>gimp_rgb_parse_css ()</h3>
-<a class="indexterm" name="id2620759"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_rgb_parse_css                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *css,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> len);</pre>
+<a name="gimp-rgb-parse-css"></a><h3>gimp_rgb_parse_css ()</h3>
+<pre class="programlisting">gboolean            gimp_rgb_parse_css                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         const gchar *css,
+                                                         gint len);</pre>
 <p>
 Attempts to parse a string describing an RGB color in CSS
 notation. This can be either a numerical representation
 (<code class="code">rgb(255,0,0)</code> or <code class="code">rgb(100%,0%,0%)</code>)
-or a hexadecimal notation as parsed by <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-hex"><code class="function">gimp_rgb_parse_hex()</code></a>
+or a hexadecimal notation as parsed by <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-hex" title="gimp_rgb_parse_hex ()"><code class="function">gimp_rgb_parse_hex()</code></a>
 (<code class="code">#<span class="type">ff0000</span></code>) or a color name as parsed by
-<a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-name"><code class="function">gimp_rgb_parse_name()</code></a> (<code class="code">red</code>).
+<a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-name" title="gimp_rgb_parse_name ()"><code class="function">gimp_rgb_parse_name()</code></a> (<code class="code">red</code>).
 </p>
 <p>
 This function does not touch the alpha component of <em class="parameter"><code>rgb</code></em>.</p>
@@ -601,28 +426,24 @@ This function does not touch the alpha component of <em class="parameter"><code>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
+<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>css</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>css</code></em> :</span></p></td>
 <td> a string describing a color in CSS notation
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
 <td> the length of <em class="parameter"><code>hex</code></em>, in bytes. or -1 if <em class="parameter"><code>hex</code></em> is nul-terminated
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if <em class="parameter"><code>css</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has been
-              set, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>css</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has been
+              set, <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>
@@ -633,23 +454,16 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620951"></a><h3>
-<a name="gimp-rgb-list-names"></a>gimp_rgb_list_names ()</h3>
-<a class="indexterm" name="id2620963"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>                gimp_rgb_list_names                 (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> ***names,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> **colors);</pre>
+<a name="gimp-rgb-list-names"></a><h3>gimp_rgb_list_names ()</h3>
+<pre class="programlisting">gint                gimp_rgb_list_names                 (const gchar ***names,
+                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> **colors);</pre>
 <p>
 Allows to retrieve the list of <a class="ulink" href="http://www.w3.org/TR/SVG/types.html" target="_top">SVG 1.0 color
-keywords</a> that is used by <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-name"><code class="function">gimp_rgb_parse_name()</code></a>.
+keywords</a> that is used by <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-name" title="gimp_rgb_parse_name ()"><code class="function">gimp_rgb_parse_name()</code></a>.
 </p>
 <p>
 The returned strings are const and must not be freed. Only the two
-arrays are allocated dynamically. You must call <a
-href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
-><code class="function">g_free()</code></a> on the
+arrays are allocated dynamically. You must call <code class="function">g_free()</code> on the
 <em class="parameter"><code>names</code></em> and <em class="parameter"><code>colors</code></em> arrays when they are not any longer needed.</p>
 <p>
 
@@ -658,17 +472,17 @@ href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>names</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>names</code></em> :</span></p></td>
 <td>  return location for an array of color names
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>colors</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>colors</code></em> :</span></p></td>
 <td> return location for an array of GimpRGB structs
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the number of named colors
               (i.e. the length of the returned arrays)
 
@@ -681,10 +495,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621085"></a><h3>
-<a name="gimp-rgb-add"></a>gimp_rgb_add ()</h3>
-<a class="indexterm" name="id2621096"></a><pre class="programlisting">void                gimp_rgb_add                        (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
+<a name="gimp-rgb-add"></a><h3>gimp_rgb_add ()</h3>
+<pre class="programlisting">void                gimp_rgb_add                        (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
 </p>
@@ -692,12 +505,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb2</code></em> :</span></p></td>
 <td>
 
 
@@ -708,10 +521,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621156"></a><h3>
-<a name="gimp-rgb-subtract"></a>gimp_rgb_subtract ()</h3>
-<a class="indexterm" name="id2621166"></a><pre class="programlisting">void                gimp_rgb_subtract                   (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
+<a name="gimp-rgb-subtract"></a><h3>gimp_rgb_subtract ()</h3>
+<pre class="programlisting">void                gimp_rgb_subtract                   (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
 </p>
@@ -719,12 +531,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb2</code></em> :</span></p></td>
 <td>
 
 
@@ -735,12 +547,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621226"></a><h3>
-<a name="gimp-rgb-multiply"></a>gimp_rgb_multiply ()</h3>
-<a class="indexterm" name="id2621237"></a><pre class="programlisting">void                gimp_rgb_multiply                   (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);</pre>
+<a name="gimp-rgb-multiply"></a><h3>gimp_rgb_multiply ()</h3>
+<pre class="programlisting">void                gimp_rgb_multiply                   (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb1,
+                                                         gdouble factor);</pre>
 <p>
 
 </p>
@@ -748,12 +557,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>factor</code></em> :</span></p></td>
 <td>
 
 
@@ -764,12 +573,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621296"></a><h3>
-<a name="gimp-rgb-distance"></a>gimp_rgb_distance ()</h3>
-<a class="indexterm" name="id2621307"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_rgb_distance                   (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb2);</pre>
+<a name="gimp-rgb-distance"></a><h3>gimp_rgb_distance ()</h3>
+<pre class="programlisting">gdouble             gimp_rgb_distance                   (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb2);</pre>
 <p>
 
 </p>
@@ -777,17 +583,17 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb2</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -798,11 +604,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621376"></a><h3>
-<a name="gimp-rgb-max"></a>gimp_rgb_max ()</h3>
-<a class="indexterm" name="id2621387"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_rgb_max                        (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-rgb-max"></a><h3>gimp_rgb_max ()</h3>
+<pre class="programlisting">gdouble             gimp_rgb_max                        (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -810,12 +613,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -826,11 +629,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621437"></a><h3>
-<a name="gimp-rgb-min"></a>gimp_rgb_min ()</h3>
-<a class="indexterm" name="id2621448"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_rgb_min                        (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-rgb-min"></a><h3>gimp_rgb_min ()</h3>
+<pre class="programlisting">gdouble             gimp_rgb_min                        (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -838,12 +638,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -854,16 +654,15 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621498"></a><h3>
-<a name="gimp-rgb-clamp"></a>gimp_rgb_clamp ()</h3>
-<a class="indexterm" name="id2621508"></a><pre class="programlisting">void                gimp_rgb_clamp                      (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-rgb-clamp"></a><h3>gimp_rgb_clamp ()</h3>
+<pre class="programlisting">void                gimp_rgb_clamp                      (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 
 
@@ -873,12 +672,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621549"></a><h3>
-<a name="gimp-rgb-gamma"></a>gimp_rgb_gamma ()</h3>
-<a class="indexterm" name="id2621560"></a><pre class="programlisting">void                gimp_rgb_gamma                      (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> gamma);</pre>
+<a name="gimp-rgb-gamma"></a><h3>gimp_rgb_gamma ()</h3>
+<pre class="programlisting">void                gimp_rgb_gamma                      (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb,
+                                                         gdouble gamma);</pre>
 <p>
 
 </p>
@@ -886,12 +682,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>gamma</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>gamma</code></em> :</span></p></td>
 <td>
 
 
@@ -902,11 +698,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621620"></a><h3>
-<a name="gimp-rgb-luminance"></a>gimp_rgb_luminance ()</h3>
-<a class="indexterm" name="id2621632"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_rgb_luminance                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-rgb-luminance"></a><h3>gimp_rgb_luminance ()</h3>
+<pre class="programlisting">gdouble             gimp_rgb_luminance                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 </p>
 <p>
@@ -916,12 +709,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the luminous intensity of the range from 0.0 to 1.0.
 
 </td>
@@ -933,11 +726,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621693"></a><h3>
-<a name="gimp-rgb-luminance-uchar"></a>gimp_rgb_luminance_uchar ()</h3>
-<a class="indexterm" name="id2621705"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a>              gimp_rgb_luminance_uchar            (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-rgb-luminance-uchar"></a><h3>gimp_rgb_luminance_uchar ()</h3>
+<pre class="programlisting">guchar              gimp_rgb_luminance_uchar            (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 </p>
 <p>
@@ -947,12 +737,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the luminous intensity in the range from 0 to 255.
 
 </td>
@@ -964,17 +754,14 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621766"></a><h3>
-<a name="gimp-rgb-intensity"></a>gimp_rgb_intensity ()</h3>
-<a class="indexterm" name="id2621778"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_rgb_intensity                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-rgb-intensity"></a><h3>gimp_rgb_intensity ()</h3>
+<pre class="programlisting">gdouble             gimp_rgb_intensity                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_rgb_intensity</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance"><code class="function">gimp_rgb_luminance()</code></a> instead.</p>
+This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance" title="gimp_rgb_luminance ()"><code class="function">gimp_rgb_luminance()</code></a> instead.</p>
 <p>
 
 </p>
@@ -982,12 +769,12 @@ This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the intensity in the range from 0.0 to 1.0.
 </td>
 </tr>
@@ -996,17 +783,14 @@ This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621853"></a><h3>
-<a name="gimp-rgb-intensity-uchar"></a>gimp_rgb_intensity_uchar ()</h3>
-<a class="indexterm" name="id2621866"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a>              gimp_rgb_intensity_uchar            (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-rgb-intensity-uchar"></a><h3>gimp_rgb_intensity_uchar ()</h3>
+<pre class="programlisting">guchar              gimp_rgb_intensity_uchar            (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_rgb_intensity_uchar</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance-uchar"><code class="function">gimp_rgb_luminance_uchar()</code></a> instead.</p>
+This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-luminance-uchar" title="gimp_rgb_luminance_uchar ()"><code class="function">gimp_rgb_luminance_uchar()</code></a> instead.</p>
 <p>
 
 </p>
@@ -1014,12 +798,12 @@ This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> the intensity in the range from 0 to 255.
 </td>
 </tr>
@@ -1028,11 +812,10 @@ This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621941"></a><h3>
-<a name="gimp-rgb-composite"></a>gimp_rgb_composite ()</h3>
-<a class="indexterm" name="id2621951"></a><pre class="programlisting">void                gimp_rgb_composite                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color2,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode">GimpRGBCompositeMode</a> mode);</pre>
+<a name="gimp-rgb-composite"></a><h3>gimp_rgb_composite ()</h3>
+<pre class="programlisting">void                gimp_rgb_composite                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *color1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *color2,
+                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGBCompositeMode" title="enum GimpRGBCompositeMode">GimpRGBCompositeMode</a> mode);</pre>
 <p>
 
 </p>
@@ -1040,17 +823,17 @@ This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>color2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>color2</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
 <td>
 
 
@@ -1061,21 +844,12 @@ This function is deprecated! Use <a class="link" href="libgimpcolor-GimpRGB.html
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622030"></a><h3>
-<a name="gimp-rgba-set"></a>gimp_rgba_set ()</h3>
-<a class="indexterm" name="id2622041"></a><pre class="programlisting">void                gimp_rgba_set                       (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> blue,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> alpha);</pre>
+<a name="gimp-rgba-set"></a><h3>gimp_rgba_set ()</h3>
+<pre class="programlisting">void                gimp_rgba_set                       (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         gdouble red,
+                                                         gdouble green,
+                                                         gdouble blue,
+                                                         gdouble alpha);</pre>
 <p>
 Sets the red, green, blue and alpha components of <em class="parameter"><code>rgb</code></em>. The values
 should be between 0.0 and 1.0 but there is no check to enforce this
@@ -1087,27 +861,27 @@ and the values are set exactly as they are passed in.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
+<td><p><span class="term"><em class="parameter"><code>rgba</code></em> :</span></p></td>
+<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -1116,21 +890,12 @@ and the values are set exactly as they are passed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622176"></a><h3>
-<a name="gimp-rgba-set-uchar"></a>gimp_rgba_set_uchar ()</h3>
-<a class="indexterm" name="id2622186"></a><pre class="programlisting">void                gimp_rgba_set_uchar                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> blue,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> alpha);</pre>
+<a name="gimp-rgba-set-uchar"></a><h3>gimp_rgba_set_uchar ()</h3>
+<pre class="programlisting">void                gimp_rgba_set_uchar                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         guchar red,
+                                                         guchar green,
+                                                         guchar blue,
+                                                         guchar alpha);</pre>
 <p>
 Sets the red, green, blue and alpha components of <em class="parameter"><code>rgb</code></em> from 8bit
 values (0 to 255).</p>
@@ -1141,27 +906,27 @@ values (0 to 255).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct
+<td><p><span class="term"><em class="parameter"><code>rgba</code></em> :</span></p></td>
+<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
@@ -1170,21 +935,12 @@ values (0 to 255).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622319"></a><h3>
-<a name="gimp-rgba-get-uchar"></a>gimp_rgba_get_uchar ()</h3>
-<a class="indexterm" name="id2622330"></a><pre class="programlisting">void                gimp_rgba_get_uchar                 (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *red,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *green,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *blue,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *alpha);</pre>
+<a name="gimp-rgba-get-uchar"></a><h3>gimp_rgba_get_uchar ()</h3>
+<pre class="programlisting">void                gimp_rgba_get_uchar                 (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         guchar *red,
+                                                         guchar *green,
+                                                         guchar *blue,
+                                                         guchar *alpha);</pre>
 <p>
 
 </p>
@@ -1192,27 +948,27 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgba</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>red</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>green</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blue</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>alpha</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
 <td>
 
 
@@ -1223,19 +979,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622447"></a><h3>
-<a name="gimp-rgba-parse-css"></a>gimp_rgba_parse_css ()</h3>
-<a class="indexterm" name="id2622459"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_rgba_parse_css                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *css,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> len);</pre>
+<a name="gimp-rgba-parse-css"></a><h3>gimp_rgba_parse_css ()</h3>
+<pre class="programlisting">gboolean            gimp_rgba_parse_css                 (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         const gchar *css,
+                                                         gint len);</pre>
 <p>
-Similar to <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-css"><code class="function">gimp_rgb_parse_css()</code></a> but handles RGB colors with alpha
+Similar to <a class="link" href="libgimpcolor-GimpRGB.html#gimp-rgb-parse-css" title="gimp_rgb_parse_css ()"><code class="function">gimp_rgb_parse_css()</code></a> but handles RGB colors with alpha
 channel in the numerical CSS notation (<code class="code">rgba(255,0,0,255)</code>
 or <code class="code">rgba(100%,0%,0%,1000%)</code>).
 </p>
@@ -1249,28 +998,24 @@ they leave the alpha channel unspecified.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></p></td>
-<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
+<td><p><span class="term"><em class="parameter"><code>rgba</code></em> :</span></p></td>
+<td> a <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> struct used to return the parsed color
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>css</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>css</code></em> :</span></p></td>
 <td> a string describing a color in CSS notation
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>len</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
 <td> the length of <em class="parameter"><code>hex</code></em>, in bytes. or -1 if <em class="parameter"><code>hex</code></em> is nul-terminated
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if <em class="parameter"><code>css</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has been
-              set, <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>css</code></em> was parsed successfully and <em class="parameter"><code>rgb</code></em> has been
+              set, <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>
@@ -1281,10 +1026,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622639"></a><h3>
-<a name="gimp-rgba-add"></a>gimp_rgba_add ()</h3>
-<a class="indexterm" name="id2622652"></a><pre class="programlisting">void                gimp_rgba_add                       (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
+<a name="gimp-rgba-add"></a><h3>gimp_rgba_add ()</h3>
+<pre class="programlisting">void                gimp_rgba_add                       (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
 </p>
@@ -1292,12 +1036,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgba1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgba2</code></em> :</span></p></td>
 <td>
 
 
@@ -1308,10 +1052,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622719"></a><h3>
-<a name="gimp-rgba-subtract"></a>gimp_rgba_subtract ()</h3>
-<a class="indexterm" name="id2622733"></a><pre class="programlisting">void                gimp_rgba_subtract                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
+<a name="gimp-rgba-subtract"></a><h3>gimp_rgba_subtract ()</h3>
+<pre class="programlisting">void                gimp_rgba_subtract                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
 </p>
@@ -1319,12 +1062,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgba1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgba2</code></em> :</span></p></td>
 <td>
 
 
@@ -1335,12 +1078,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622800"></a><h3>
-<a name="gimp-rgba-multiply"></a>gimp_rgba_multiply ()</h3>
-<a class="indexterm" name="id2622813"></a><pre class="programlisting">void                gimp_rgba_multiply                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> factor);</pre>
+<a name="gimp-rgba-multiply"></a><h3>gimp_rgba_multiply ()</h3>
+<pre class="programlisting">void                gimp_rgba_multiply                  (<a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba,
+                                                         gdouble factor);</pre>
 <p>
 
 </p>
@@ -1348,12 +1088,12 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgba</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>factor</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>factor</code></em> :</span></p></td>
 <td>
 
 
@@ -1364,12 +1104,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622880"></a><h3>
-<a name="gimp-rgba-distance"></a>gimp_rgba_distance ()</h3>
-<a class="indexterm" name="id2622894"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a>             gimp_rgba_distance                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba1,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgba2);</pre>
+<a name="gimp-rgba-distance"></a><h3>gimp_rgba_distance ()</h3>
+<pre class="programlisting">gdouble             gimp_rgba_distance                  (const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba1,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgba2);</pre>
 <p>
 
 </p>
@@ -1377,17 +1114,17 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgba1</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgba2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgba2</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 
 
@@ -1398,9 +1135,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2622971"></a><h3>
-<a name="GIMP-RGB-LUMINANCE:CAPS"></a>GIMP_RGB_LUMINANCE()</h3>
-<a class="indexterm" name="id2622985"></a><pre class="programlisting">#define             GIMP_RGB_LUMINANCE(r,g,b)</pre>
+<a name="GIMP-RGB-LUMINANCE:CAPS"></a><h3>GIMP_RGB_LUMINANCE()</h3>
+<pre class="programlisting">#define             GIMP_RGB_LUMINANCE(r,g,b)</pre>
 <p>
 
 </p>
@@ -1408,17 +1144,17 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>r</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>r</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>g</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>g</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
 <td>
 
 
@@ -1429,9 +1165,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623049"></a><h3>
-<a name="GIMP-RGB-LUMINANCE-RED:CAPS"></a>GIMP_RGB_LUMINANCE_RED</h3>
-<a class="indexterm" name="id2623062"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_RED    (0.2126)
+<a name="GIMP-RGB-LUMINANCE-RED:CAPS"></a><h3>GIMP_RGB_LUMINANCE_RED</h3>
+<pre class="programlisting">#define GIMP_RGB_LUMINANCE_RED    (0.2126)
 </pre>
 <p>
 
@@ -1439,9 +1174,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623078"></a><h3>
-<a name="GIMP-RGB-LUMINANCE-GREEN:CAPS"></a>GIMP_RGB_LUMINANCE_GREEN</h3>
-<a class="indexterm" name="id2623093"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_GREEN  (0.7152)
+<a name="GIMP-RGB-LUMINANCE-GREEN:CAPS"></a><h3>GIMP_RGB_LUMINANCE_GREEN</h3>
+<pre class="programlisting">#define GIMP_RGB_LUMINANCE_GREEN  (0.7152)
 </pre>
 <p>
 
@@ -1449,9 +1183,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623109"></a><h3>
-<a name="GIMP-RGB-LUMINANCE-BLUE:CAPS"></a>GIMP_RGB_LUMINANCE_BLUE</h3>
-<a class="indexterm" name="id2623123"></a><pre class="programlisting">#define GIMP_RGB_LUMINANCE_BLUE   (0.0722)
+<a name="GIMP-RGB-LUMINANCE-BLUE:CAPS"></a><h3>GIMP_RGB_LUMINANCE_BLUE</h3>
+<pre class="programlisting">#define GIMP_RGB_LUMINANCE_BLUE   (0.0722)
 </pre>
 <p>
 
@@ -1459,9 +1192,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623139"></a><h3>
-<a name="GIMP-RGB-INTENSITY:CAPS"></a>GIMP_RGB_INTENSITY()</h3>
-<a class="indexterm" name="id2623155"></a><pre class="programlisting">#define             GIMP_RGB_INTENSITY(r,g,b)</pre>
+<a name="GIMP-RGB-INTENSITY:CAPS"></a><h3>GIMP_RGB_INTENSITY()</h3>
+<pre class="programlisting">#define             GIMP_RGB_INTENSITY(r,g,b)</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GIMP_RGB_INTENSITY</code> is deprecated and should not be used in newly-written code.</p>
@@ -1474,17 +1206,17 @@ coefficients taken from the NTSC analog television standard.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>r</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>r</code></em> :</span></p></td>
 <td>red
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>g</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>g</code></em> :</span></p></td>
 <td>green
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>b</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
 <td>blue
 
 
@@ -1495,9 +1227,8 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623233"></a><h3>
-<a name="GIMP-RGB-INTENSITY-RED:CAPS"></a>GIMP_RGB_INTENSITY_RED</h3>
-<a class="indexterm" name="id2623249"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_RED    (0.30)
+<a name="GIMP-RGB-INTENSITY-RED:CAPS"></a><h3>GIMP_RGB_INTENSITY_RED</h3>
+<pre class="programlisting">#define GIMP_RGB_INTENSITY_RED    (0.30)
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1509,9 +1240,8 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623278"></a><h3>
-<a name="GIMP-RGB-INTENSITY-GREEN:CAPS"></a>GIMP_RGB_INTENSITY_GREEN</h3>
-<a class="indexterm" name="id2623294"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_GREEN  (0.59)
+<a name="GIMP-RGB-INTENSITY-GREEN:CAPS"></a><h3>GIMP_RGB_INTENSITY_GREEN</h3>
+<pre class="programlisting">#define GIMP_RGB_INTENSITY_GREEN  (0.59)
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1523,9 +1253,8 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623324"></a><h3>
-<a name="GIMP-RGB-INTENSITY-BLUE:CAPS"></a>GIMP_RGB_INTENSITY_BLUE</h3>
-<a class="indexterm" name="id2623340"></a><pre class="programlisting">#define GIMP_RGB_INTENSITY_BLUE   (0.11)
+<a name="GIMP-RGB-INTENSITY-BLUE:CAPS"></a><h3>GIMP_RGB_INTENSITY_BLUE</h3>
+<pre class="programlisting">#define GIMP_RGB_INTENSITY_BLUE   (0.11)
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -1537,23 +1266,17 @@ coefficients taken from the NTSC analog television standard.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623369"></a><h3>
-<a name="GIMP-TYPE-RGB:CAPS"></a>GIMP_TYPE_RGB</h3>
-<a class="indexterm" name="id2623382"></a><pre class="programlisting">#define GIMP_TYPE_RGB               (gimp_rgb_get_type ())
+<a name="GIMP-TYPE-RGB:CAPS"></a><h3>GIMP_TYPE_RGB</h3>
+<pre class="programlisting">#define GIMP_TYPE_RGB               (gimp_rgb_get_type ())
 </pre>
 <p>
-<a class="link" href="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS"><span class="type">GIMP_TYPE_RGB</span></a> is a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
-><span class="type">GType</span></a> derived from <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#G-TYPE-BOXED:CAPS"
-><span class="type">G_TYPE_BOXED</span></a>.
+<a class="link" href="libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS" title="GIMP_TYPE_RGB"><span class="type">GIMP_TYPE_RGB</span></a> is a <span class="type">GType</span> derived from <span class="type">G_TYPE_BOXED</span>.
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623420"></a><h3>
-<a name="GIMP-TYPE-PARAM-RGB:CAPS"></a>GIMP_TYPE_PARAM_RGB</h3>
-<a class="indexterm" name="id2623434"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_RGB           (gimp_param_rgb_get_type ())
+<a name="GIMP-TYPE-PARAM-RGB:CAPS"></a><h3>GIMP_TYPE_PARAM_RGB</h3>
+<pre class="programlisting">#define GIMP_TYPE_PARAM_RGB           (gimp_param_rgb_get_type ())
 </pre>
 <p>
 
@@ -1561,31 +1284,16 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#G-TYPE-BOXED
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623451"></a><h3>
-<a name="gimp-param-spec-rgb"></a>gimp_param_spec_rgb ()</h3>
-<a class="indexterm" name="id2623466"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
->GParamSpec</a>*         gimp_param_spec_rgb                 (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *nick,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *blurb,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> has_alpha,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *default_value,
-                                                         <a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
->GParamFlags</a> flags);</pre>
+<a name="gimp-param-spec-rgb"></a><h3>gimp_param_spec_rgb ()</h3>
+<pre class="programlisting">GParamSpec*         gimp_param_spec_rgb                 (const gchar *name,
+                                                         const gchar *nick,
+                                                         const gchar *blurb,
+                                                         gboolean has_alpha,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *default_value,
+                                                         GParamFlags flags);</pre>
 <p>
-Creates a param spec to hold an <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> value.
-See <a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#g-param-spec-internal"
-><code class="function">g_param_spec_internal()</code></a> for more information.</p>
+Creates a param spec to hold an <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> value.
+See <code class="function">g_param_spec_internal()</code> for more information.</p>
 <p>
 
 </p>
@@ -1593,44 +1301,38 @@ href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#g-param-spec-inter
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
 <td>          Canonical name of the param
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>nick</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>nick</code></em> :</span></p></td>
 <td>          Nickname of the param
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>blurb</code></em> :</span></p></td>
 <td>         Brief desciption of param.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>has_alpha</code></em>&#160;:</span></p></td>
-<td>     <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if the alpha channel has relevance.
+<td><p><span class="term"><em class="parameter"><code>has_alpha</code></em> :</span></p></td>
+<td>     <code class="literal">TRUE</code> if the alpha channel has relevance.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default_value</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>default_value</code></em> :</span></p></td>
 <td> Value to use if none is assigned.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
-<td>         a combination of <a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamFlags"
-><span class="type">GParamFlags</span></a>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
+<td>         a combination of <span class="type">GParamFlags</span>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> a newly allocated <a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
-><span class="type">GParamSpec</span></a> instance
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a newly allocated <span class="type">GParamSpec</span> instance
 
 </td>
 </tr>
@@ -1641,13 +1343,8 @@ href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623683"></a><h3>
-<a name="gimp-param-spec-rgb-has-alpha"></a>gimp_param_spec_rgb_has_alpha ()</h3>
-<a class="indexterm" name="id2623699"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_param_spec_rgb_has_alpha       (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
->GParamSpec</a> *pspec);</pre>
+<a name="gimp-param-spec-rgb-has-alpha"></a><h3>gimp_param_spec_rgb_has_alpha ()</h3>
+<pre class="programlisting">gboolean            gimp_param_spec_rgb_has_alpha       (GParamSpec *pspec);</pre>
 <p>
 </p>
 <p>
@@ -1657,17 +1354,13 @@ href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>pspec</code></em>&#160;:</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/gobject/gobject-GParamSpec.html#GParamSpec"
-><span class="type">GParamSpec</span></a> to hold an <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> value.
+<td><p><span class="term"><em class="parameter"><code>pspec</code></em> :</span></p></td>
+<td> a <span class="type">GParamSpec</span> to hold an <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB"><span class="type">GimpRGB</span></a> value.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if the alpha channel is relevant.
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <code class="literal">TRUE</code> if the alpha channel is relevant.
 
 </td>
 </tr>
@@ -1678,9 +1371,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623791"></a><h3>
-<a name="GIMP-VALUE-HOLDS-RGB:CAPS"></a>GIMP_VALUE_HOLDS_RGB()</h3>
-<a class="indexterm" name="id2623805"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))
+<a name="GIMP-VALUE-HOLDS-RGB:CAPS"></a><h3>GIMP_VALUE_HOLDS_RGB()</h3>
+<pre class="programlisting">#define GIMP_VALUE_HOLDS_RGB(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_RGB))
 </pre>
 <p>
 
@@ -1688,7 +1380,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td>
 
 
@@ -1698,12 +1390,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623841"></a><h3>
-<a name="gimp-value-get-rgb"></a>gimp_value_get_rgb ()</h3>
-<a class="indexterm" name="id2623854"></a><pre class="programlisting">void                gimp_value_get_rgb                  (const <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *value,
-                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-value-get-rgb"></a><h3>gimp_value_get_rgb ()</h3>
+<pre class="programlisting">void                gimp_value_get_rgb                  (const GValue *value,
+                                                         <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -1711,12 +1400,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 
 
@@ -1727,12 +1416,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2623921"></a><h3>
-<a name="gimp-value-set-rgb"></a>gimp_value_set_rgb ()</h3>
-<a class="indexterm" name="id2623935"></a><pre class="programlisting">void                gimp_value_set_rgb                  (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
->GValue</a> *value,
-                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *rgb);</pre>
+<a name="gimp-value-set-rgb"></a><h3>gimp_value_set_rgb ()</h3>
+<pre class="programlisting">void                gimp_value_set_rgb                  (GValue *value,
+                                                         const <a class="link" href="libgimpcolor-GimpRGB.html#GimpRGB" title="GimpRGB">GimpRGB</a> *rgb);</pre>
 <p>
 
 </p>
@@ -1740,12 +1426,12 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>value</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>rgb</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
 <td>
 
 
@@ -1755,11 +1441,9 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Generic-values.html#GValue"
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2624003"></a><div class="refsect2" lang="en"><a name="id2624004"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2624005"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

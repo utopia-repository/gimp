@@ -59,39 +59,21 @@
 <pre class="synopsis">
                     <a class="link" href="GimpChainButton.html#GimpChainButton-struct" title="GimpChainButton">GimpChainButton</a>;
 enum                <a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpChainButton.html#gimp-chain-button-new" title="gimp_chain_button_new ()">gimp_chain_button_new</a>               (<a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a> position);
+GtkWidget*          <a class="link" href="GimpChainButton.html#gimp-chain-button-new" title="gimp_chain_button_new ()">gimp_chain_button_new</a>               (<a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a> position);
 void                <a class="link" href="GimpChainButton.html#gimp-chain-button-set-active" title="gimp_chain_button_set_active ()">gimp_chain_button_set_active</a>        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> active);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="GimpChainButton.html#gimp-chain-button-get-active" title="gimp_chain_button_get_active ()">gimp_chain_button_get_active</a>        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);
+                                                         gboolean active);
+gboolean            <a class="link" href="GimpChainButton.html#gimp-chain-button-get-active" title="gimp_chain_button_get_active ()">gimp_chain_button_get_active</a>        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpChainButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkTable.html"
->GtkTable</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkTable
                                  +----GimpChainButton
 </pre>
 </div>
@@ -157,9 +139,7 @@ necessary.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-chain-button-new"></a><h3>gimp_chain_button_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_chain_button_new               (<a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a> position);</pre>
+<pre class="programlisting">GtkWidget*          gimp_chain_button_new               (<a class="link" href="GimpChainButton.html#GimpChainPosition" title="enum GimpChainPosition">GimpChainPosition</a> position);</pre>
 <p>
 Creates a new <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> widget.
 </p>
@@ -196,16 +176,10 @@ for more than two widgets, but the look is optimized for two.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-chain-button-set-active"></a><h3>gimp_chain_button_set_active ()</h3>
 <pre class="programlisting">void                gimp_chain_button_set_active        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> active);</pre>
+                                                         gboolean active);</pre>
 <p>
-Sets the state of the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> to be either locked (<a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a>) or
-unlocked (<a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a>) and changes the showed pixmap to reflect the new state.</p>
+Sets the state of the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> to be either locked (<code class="literal">TRUE</code>) or
+unlocked (<code class="literal">FALSE</code>) and changes the showed pixmap to reflect the new state.</p>
 <p>
 
 </p>
@@ -228,9 +202,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-chain-button-get-active"></a><h3>gimp_chain_button_get_active ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_chain_button_get_active        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);</pre>
+<pre class="programlisting">gboolean            gimp_chain_button_get_active        (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *button);</pre>
 <p>
 Checks the state of the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a>.</p>
 <p>
@@ -246,9 +218,7 @@ Checks the state of the <a class="link" href="GimpChainButton.html" title="GimpC
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> is active (locked).
+<td> <code class="literal">TRUE</code> if the <a class="link" href="GimpChainButton.html" title="GimpChainButton"><span class="type">GimpChainButton</span></a> is active (locked).
 </td>
 </tr>
 </tbody>
@@ -275,9 +245,7 @@ The position in which the chain button will be used.</p>
 <div class="refsect2" lang="en">
 <a name="GimpChainButton-toggled"></a><h3>The <code class="literal">"toggled"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpChainButton.html" title="GimpChainButton">GimpChainButton</a> *gimpchainbutton,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>         user_data)            : Run First</pre>
+                                                        gpointer         user_data)            : Run First</pre>
 <p>
 
 </p>

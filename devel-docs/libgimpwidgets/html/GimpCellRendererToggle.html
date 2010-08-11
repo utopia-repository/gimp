@@ -56,50 +56,28 @@
 <a name="GimpCellRendererToggle.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpCellRendererToggle.html#GimpCellRendererToggle-struct" title="GimpCellRendererToggle">GimpCellRendererToggle</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>*    <a class="link" href="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-new" title="gimp_cell_renderer_toggle_new ()">gimp_cell_renderer_toggle_new</a>       (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *stock_id);
+GtkCellRenderer*    <a class="link" href="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-new" title="gimp_cell_renderer_toggle_new ()">gimp_cell_renderer_toggle_new</a>       (const gchar *stock_id);
 void                <a class="link" href="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-clicked" title="gimp_cell_renderer_toggle_clicked ()">gimp_cell_renderer_toggle_clicked</a>   (<a class="link" href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a> *cell,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *path,
-                                                         <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> state);
+                                                         const gchar *path,
+                                                         GdkModifierType state);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpCellRendererToggle.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkCellRendererToggle.html"
->GtkCellRendererToggle</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkCellRenderer
+                     +----GtkCellRendererToggle
                            +----GimpCellRendererToggle
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpCellRendererToggle.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpCellRendererToggle.html#GimpCellRendererToggle--stock-id" title='The "stock-id" property'>stock-id</a>"                 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*                : Read / Write / Construct
-  "<a class="link" href="GimpCellRendererToggle.html#GimpCellRendererToggle--stock-size" title='The "stock-size" property'>stock-size</a>"               <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>                  : Read / Write / Construct
+  "<a class="link" href="GimpCellRendererToggle.html#GimpCellRendererToggle--stock-id" title='The "stock-id" property'>stock-id</a>"                 gchar*                : Read / Write / Construct
+  "<a class="link" href="GimpCellRendererToggle.html#GimpCellRendererToggle--stock-size" title='The "stock-size" property'>stock-size</a>"               gint                  : Read / Write / Construct
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -126,15 +104,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-cell-renderer-toggle-new"></a><h3>gimp_cell_renderer_toggle_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>*    gimp_cell_renderer_toggle_new       (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *stock_id);</pre>
+<pre class="programlisting">GtkCellRenderer*    gimp_cell_renderer_toggle_new       (const gchar *stock_id);</pre>
 <p>
-Creates a custom version of the <a
-href="/usr/share/gtk-doc/html/gtk/GtkCellRendererToggle.html"
-><span class="type">GtkCellRendererToggle</span></a>. Instead of
+Creates a custom version of the <span class="type">GtkCellRendererToggle</span>. Instead of
 showing the standard toggle button, it shows a stock icon if the
 cell is active and no icon otherwise. This cell renderer is for
 example used in the Layers treeview to indicate and control the
@@ -165,12 +137,8 @@ layer's visibility by showing <a class="link" href="libgimpwidgets-GimpStock.htm
 <div class="refsect2" lang="en">
 <a name="gimp-cell-renderer-toggle-clicked"></a><h3>gimp_cell_renderer_toggle_clicked ()</h3>
 <pre class="programlisting">void                gimp_cell_renderer_toggle_clicked   (<a class="link" href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a> *cell,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *path,
-                                                         <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> state);</pre>
+                                                         const gchar *path,
+                                                         GdkModifierType state);</pre>
 <p>
 Emits the "clicked" signal from a <a class="link" href="GimpCellRendererToggle.html" title="GimpCellRendererToggle"><span class="type">GimpCellRendererToggle</span></a>.</p>
 <p>
@@ -204,18 +172,14 @@ Emits the "clicked" signal from a <a class="link" href="GimpCellRendererToggle.h
 <a name="GimpCellRendererToggle.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpCellRendererToggle--stock-id"></a><h3>The <code class="literal">"stock-id"</code> property</h3>
-<pre class="programlisting">  "stock-id"                 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*                : Read / Write / Construct</pre>
+<pre class="programlisting">  "stock-id"                 gchar*                : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpCellRendererToggle--stock-size"></a><h3>The <code class="literal">"stock-size"</code> property</h3>
-<pre class="programlisting">  "stock-size"               <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>                  : Read / Write / Construct</pre>
+<pre class="programlisting">  "stock-size"               gint                  : Read / Write / Construct</pre>
 <p></p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 4</p>
@@ -226,15 +190,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 <div class="refsect2" lang="en">
 <a name="GimpCellRendererToggle-clicked"></a><h3>The <code class="literal">"clicked"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a> *gimpcellrenderertoggle,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>                  *arg1,
-                                                        <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a>         arg2,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>                user_data)                   : Run Last</pre>
+                                                        gchar                  *arg1,
+                                                        GdkModifierType         arg2,
+                                                        gpointer                user_data)                   : Run Last</pre>
 <p>
 
 </p>

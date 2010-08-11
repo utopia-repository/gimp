@@ -55,9 +55,7 @@ enum                <a class="link" href="GimpColorConfig.html#GimpColorRenderin
 <div class="refsect1" lang="en">
 <a name="GimpColorConfig.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
+  GObject
    +----GimpColorConfig
 </pre>
 </div>
@@ -71,23 +69,17 @@ GimpColorConfig implements
 <a name="GimpColorConfig.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
   "<a class="link" href="GimpColorConfig.html#GimpColorConfig--cmyk-profile" title='The "cmyk-profile" property'>cmyk-profile</a>"             GimpConfigPath        : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-module" title='The "display-module" property'>display-module</a>"           <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*                : Read / Write / Construct
+  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-module" title='The "display-module" property'>display-module</a>"           gchar*                : Read / Write / Construct
   "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-profile" title='The "display-profile" property'>display-profile</a>"          GimpConfigPath        : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk" title='The "display-profile-from-gdk" property'>display-profile-from-gdk</a>" <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct
+  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-profile-from-gdk" title='The "display-profile-from-gdk" property'>display-profile-from-gdk</a>" gboolean              : Read / Write / Construct
   "<a class="link" href="GimpColorConfig.html#GimpColorConfig--display-rendering-intent" title='The "display-rendering-intent" property'>display-rendering-intent</a>" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct
   "<a class="link" href="GimpColorConfig.html#GimpColorConfig--mode" title='The "mode" property'>mode</a>"                     <a class="link" href="GimpColorConfig.html#GimpColorManagementMode" title="enum GimpColorManagementMode">GimpColorManagementMode</a>  : Read / Write / Construct
   "<a class="link" href="GimpColorConfig.html#GimpColorConfig--out-of-gamut-color" title='The "out-of-gamut-color" property'>out-of-gamut-color</a>"       <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a>*              : Read / Write / Construct
   "<a class="link" href="GimpColorConfig.html#GimpColorConfig--printer-profile" title='The "printer-profile" property'>printer-profile</a>"          GimpConfigPath        : Read / Write / Construct
   "<a class="link" href="GimpColorConfig.html#GimpColorConfig--rgb-profile" title='The "rgb-profile" property'>rgb-profile</a>"              GimpConfigPath        : Read / Write / Construct
-  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check" title='The "simulation-gamut-check" property'>simulation-gamut-check</a>"   <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct
+  "<a class="link" href="GimpColorConfig.html#GimpColorConfig--simulation-gamut-check" title='The "simulation-gamut-check" property'>simulation-gamut-check</a>"   gboolean              : Read / Write / Construct
   "<a class="link" href="GimpColorConfig.html#GimpColorConfig--simulation-rendering-intent" title='The "simulation-rendering-intent" property'>simulation-rendering-intent</a>" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent" title="enum GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct
 </pre>
 </div>
@@ -162,9 +154,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpColorConfig--display-module"></a><h3>The <code class="literal">"display-module"</code> property</h3>
-<pre class="programlisting">  "display-module"           <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*                : Read / Write / Construct</pre>
+<pre class="programlisting">  "display-module"           gchar*                : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: "CdisplayLcms"</p>
 </div>
@@ -178,9 +168,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpColorConfig--display-profile-from-gdk"></a><h3>The <code class="literal">"display-profile-from-gdk"</code> property</h3>
-<pre class="programlisting">  "display-profile-from-gdk" <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct</pre>
+<pre class="programlisting">  "display-profile-from-gdk" gboolean              : Read / Write / Construct</pre>
 <p>When enabled, GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</p>
 <p>Default value: FALSE</p>
 </div>
@@ -202,7 +190,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <div class="refsect2" lang="en">
 <a name="GimpColorConfig--out-of-gamut-color"></a><h3>The <code class="literal">"out-of-gamut-color"</code> property</h3>
 <pre class="programlisting">  "out-of-gamut-color"       <a
-href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
+href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a>*              : Read / Write / Construct</pre>
 <p>The color to use for marking colors which are out of gamut.</p>
 </div>
@@ -223,9 +211,7 @@ href="/usr/share/gtk-doc/html/libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpColorConfig--simulation-gamut-check"></a><h3>The <code class="literal">"simulation-gamut-check"</code> property</h3>
-<pre class="programlisting">  "simulation-gamut-check"   <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>              : Read / Write / Construct</pre>
+<pre class="programlisting">  "simulation-gamut-check"   gboolean              : Read / Write / Construct</pre>
 <p>When enabled, the print simulation will mark colors which can not be represented in the target color space.</p>
 <p>Default value: FALSE</p>
 </div>

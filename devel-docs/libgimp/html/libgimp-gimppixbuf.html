@@ -48,75 +48,29 @@
 <a name="libgimp-gimppixbuf.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 enum                <a class="link" href="libgimp-gimppixbuf.html#GimpPixbufTransparency" title="enum GimpPixbufTransparency">GimpPixbufTransparency</a>;
-<a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a>*          <a class="link" href="libgimp-gimppixbuf.html#gimp-image-get-thumbnail" title="gimp_image_get_thumbnail ()">gimp_image_get_thumbnail</a>            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height,
+GdkPixbuf*          <a class="link" href="libgimp-gimppixbuf.html#gimp-image-get-thumbnail" title="gimp_image_get_thumbnail ()">gimp_image_get_thumbnail</a>            (gint32 image_ID,
+                                                         gint width,
+                                                         gint height,
                                                          <a class="link" href="libgimp-gimppixbuf.html#GimpPixbufTransparency" title="enum GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
-<a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a>*          <a class="link" href="libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail" title="gimp_drawable_get_thumbnail ()">gimp_drawable_get_thumbnail</a>         (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height,
+GdkPixbuf*          <a class="link" href="libgimp-gimppixbuf.html#gimp-drawable-get-thumbnail" title="gimp_drawable_get_thumbnail ()">gimp_drawable_get_thumbnail</a>         (gint32 drawable_ID,
+                                                         gint width,
+                                                         gint height,
                                                          <a class="link" href="libgimp-gimppixbuf.html#GimpPixbufTransparency" title="enum GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
-<a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a>*          <a class="link" href="libgimp-gimppixbuf.html#gimp-drawable-get-sub-thumbnail" title="gimp_drawable_get_sub_thumbnail ()">gimp_drawable_get_sub_thumbnail</a>     (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> src_x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> src_y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> src_width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> src_height,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> dest_width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> dest_height,
+GdkPixbuf*          <a class="link" href="libgimp-gimppixbuf.html#gimp-drawable-get-sub-thumbnail" title="gimp_drawable_get_sub_thumbnail ()">gimp_drawable_get_sub_thumbnail</a>     (gint32 drawable_ID,
+                                                         gint src_x,
+                                                         gint src_y,
+                                                         gint src_width,
+                                                         gint src_height,
+                                                         gint dest_width,
+                                                         gint dest_height,
                                                          <a class="link" href="libgimp-gimppixbuf.html#GimpPixbufTransparency" title="enum GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimppixbuf.html#gimp-layer-new-from-pixbuf" title="gimp_layer_new_from_pixbuf ()">gimp_layer_new_from_pixbuf</a>          (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         <a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a> *pixbuf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity,
+gint32              <a class="link" href="libgimp-gimppixbuf.html#gimp-layer-new-from-pixbuf" title="gimp_layer_new_from_pixbuf ()">gimp_layer_new_from_pixbuf</a>          (gint32 image_ID,
+                                                         const gchar *name,
+                                                         GdkPixbuf *pixbuf,
+                                                         gdouble opacity,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> mode,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> progress_start,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> progress_end);
+                                                         gdouble progress_start,
+                                                         gdouble progress_end);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -143,17 +97,9 @@ Get a thumbnail pixbuf for a drawable or image.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-image-get-thumbnail"></a><h3>gimp_image_get_thumbnail ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a>*          gimp_image_get_thumbnail            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height,
+<pre class="programlisting">GdkPixbuf*          gimp_image_get_thumbnail            (gint32 image_ID,
+                                                         gint width,
+                                                         gint height,
                                                          <a class="link" href="libgimp-gimppixbuf.html#GimpPixbufTransparency" title="enum GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre>
 <p>
 Retrieves a thumbnail pixbuf for the image identified by <em class="parameter"><code>image_ID</code></em>.
@@ -186,9 +132,7 @@ The thumbnail will be not larger than the requested size.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
-><span class="type">GdkPixbuf</span></a>
+<td> a new <span class="type">GdkPixbuf</span>
 
 </td>
 </tr>
@@ -200,17 +144,9 @@ href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-drawable-get-thumbnail"></a><h3>gimp_drawable_get_thumbnail ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a>*          gimp_drawable_get_thumbnail         (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height,
+<pre class="programlisting">GdkPixbuf*          gimp_drawable_get_thumbnail         (gint32 drawable_ID,
+                                                         gint width,
+                                                         gint height,
                                                          <a class="link" href="libgimp-gimppixbuf.html#GimpPixbufTransparency" title="enum GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre>
 <p>
 Retrieves a thumbnail pixbuf for the drawable identified by
@@ -244,9 +180,7 @@ size.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
-><span class="type">GdkPixbuf</span></a>
+<td> a new <span class="type">GdkPixbuf</span>
 
 </td>
 </tr>
@@ -258,29 +192,13 @@ href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-drawable-get-sub-thumbnail"></a><h3>gimp_drawable_get_sub_thumbnail ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a>*          gimp_drawable_get_sub_thumbnail     (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> src_x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> src_y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> src_width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> src_height,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> dest_width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> dest_height,
+<pre class="programlisting">GdkPixbuf*          gimp_drawable_get_sub_thumbnail     (gint32 drawable_ID,
+                                                         gint src_x,
+                                                         gint src_y,
+                                                         gint src_width,
+                                                         gint src_height,
+                                                         gint dest_width,
+                                                         gint dest_height,
                                                          <a class="link" href="libgimp-gimppixbuf.html#GimpPixbufTransparency" title="enum GimpPixbufTransparency">GimpPixbufTransparency</a> alpha);</pre>
 <p>
 Retrieves a thumbnail pixbuf for the drawable identified by
@@ -334,9 +252,7 @@ size.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a new <a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
-><span class="type">GdkPixbuf</span></a>
+<td> a new <span class="type">GdkPixbuf</span>
 
 </td>
 </tr>
@@ -348,36 +264,18 @@ href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-layer-new-from-pixbuf"></a><h3>gimp_layer_new_from_pixbuf ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_layer_new_from_pixbuf          (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         <a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a> *pixbuf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity,
+<pre class="programlisting">gint32              gimp_layer_new_from_pixbuf          (gint32 image_ID,
+                                                         const gchar *name,
+                                                         GdkPixbuf *pixbuf,
+                                                         gdouble opacity,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> mode,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> progress_start,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> progress_end);</pre>
+                                                         gdouble progress_start,
+                                                         gdouble progress_end);</pre>
 <p>
-Create a new layer from a <a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
-><code class="literal">GdkPixbuf</code></a>.
+Create a new layer from a <code class="literal">GdkPixbuf</code>.
 </p>
 <p>
-This procedure creates a new layer from the given <a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
-><code class="literal">GdkPixbuf</code></a>.  The
+This procedure creates a new layer from the given <code class="literal">GdkPixbuf</code>.  The
 image has to be an RGB image and just like with <a class="link" href="libgimp-gimplayer.html#gimp-layer-new" title="gimp_layer_new ()"><code class="function">gimp_layer_new()</code></a>
 you will still need to add the layer to it.
 </p>

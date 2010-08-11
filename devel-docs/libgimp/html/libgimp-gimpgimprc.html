@@ -47,42 +47,20 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimpgimprc.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
+gchar*              <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query" title="gimp_gimprc_query ()">gimp_gimprc_query</a>                   (const gchar *token);
+gboolean            <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-set" title="gimp_gimprc_set ()">gimp_gimprc_set</a>                     (const gchar *token,
+                                                         const gchar *value);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-query" title="gimp_gimprc_query ()">gimp_gimprc_query</a>                   (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *token);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-gimprc-set" title="gimp_gimprc_set ()">gimp_gimprc_set</a>                     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *token,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *value);
-<a
-href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
+href="../libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a>*    <a class="link" href="libgimp-gimpgimprc.html#gimp-get-color-configuration" title="gimp_get_color_configuration ()">gimp_get_color_configuration</a>        (void);
+gchar*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-default-comment" title="gimp_get_default_comment ()">gimp_get_default_comment</a>            (void);
 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-default-comment" title="gimp_get_default_comment ()">gimp_get_default_comment</a>            (void);
-<a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-get-default-unit" title="gimp_get_default_unit ()">gimp_get_default_unit</a>               (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit" title="gimp_get_module_load_inhibit ()">gimp_get_module_load_inhibit</a>        (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution" title="gimp_get_monitor_resolution ()">gimp_get_monitor_resolution</a>         (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *xres,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *yres);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-theme-dir" title="gimp_get_theme_dir ()">gimp_get_theme_dir</a>                  (void);
+gchar*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit" title="gimp_get_module_load_inhibit ()">gimp_get_module_load_inhibit</a>        (void);
+gboolean            <a class="link" href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution" title="gimp_get_monitor_resolution ()">gimp_get_monitor_resolution</a>         (gdouble *xres,
+                                                         gdouble *yres);
+gchar*              <a class="link" href="libgimp-gimpgimprc.html#gimp-get-theme-dir" title="gimp_get_theme_dir ()">gimp_get_theme_dir</a>                  (void);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -96,11 +74,7 @@ Interactions with settings from .gimprc.
 <a name="libgimp-gimpgimprc.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-gimprc-query"></a><h3>gimp_gimprc_query ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_gimprc_query                   (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *token);</pre>
+<pre class="programlisting">gchar*              gimp_gimprc_query                   (const gchar *token);</pre>
 <p>
 Queries the gimprc file parser for information on a specified token.
 </p>
@@ -136,14 +110,8 @@ to be issued on gimprc parsing and will not be queryable.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-gimprc-set"></a><h3>gimp_gimprc_set ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_gimprc_set                     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *token,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *value);</pre>
+<pre class="programlisting">gboolean            gimp_gimprc_set                     (const gchar *token,
+                                                         const gchar *value);</pre>
 <p>
 Sets a gimprc token to a value and saves it in the gimprc.
 </p>
@@ -181,7 +149,7 @@ will accept _only_ string values in UTF-8 encoding.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-get-color-configuration"></a><h3>gimp_get_color_configuration ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
+href="../libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a>*    gimp_get_color_configuration        (void);</pre>
 <p>
 Retrieve a copy of the current color management configuration.</p>
@@ -193,7 +161,7 @@ Retrieve a copy of the current color management configuration.</p>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> A copy of the core's <a
-href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
+href="../libgimpconfig/GimpColorConfig.html"
 ><span class="type">GimpColorConfig</span></a>. You should unref
          this copy if you don't need it any longer.
 
@@ -206,9 +174,7 @@ href="/usr/share/gtk-doc/html/libgimpconfig/GimpColorConfig.html"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-get-default-comment"></a><h3>gimp_get_default_comment ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_get_default_comment            (void);</pre>
+<pre class="programlisting">gchar*              gimp_get_default_comment            (void);</pre>
 <p>
 Get the default image comment as specified in the Preferences.
 </p>
@@ -230,7 +196,7 @@ Returns a copy of the default image comment.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-get-default-unit"></a><h3>gimp_get_default_unit ()</h3>
 <pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
+href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>            gimp_get_default_unit               (void);</pre>
 <p>
 Get the default unit (taken from the user's locale).
@@ -255,9 +221,7 @@ Returns the default unit's integer ID.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-get-module-load-inhibit"></a><h3>gimp_get_module_load_inhibit ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_get_module_load_inhibit        (void);</pre>
+<pre class="programlisting">gchar*              gimp_get_module_load_inhibit        (void);</pre>
 <p>
 Get the list of modules which should not be loaded.
 </p>
@@ -278,14 +242,8 @@ Returns a copy of the list of modules which should not be loaded.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-get-monitor-resolution"></a><h3>gimp_get_monitor_resolution ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_get_monitor_resolution         (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *xres,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *yres);</pre>
+<pre class="programlisting">gboolean            gimp_get_monitor_resolution         (gdouble *xres,
+                                                         gdouble *yres);</pre>
 <p>
 Get the monitor resolution as specified in the Preferences.
 </p>
@@ -321,9 +279,7 @@ reasonable.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-get-theme-dir"></a><h3>gimp_get_theme_dir ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_get_theme_dir                  (void);</pre>
+<pre class="programlisting">gchar*              gimp_get_theme_dir                  (void);</pre>
 <p>
 Get the directory of the current GUI theme.
 </p>

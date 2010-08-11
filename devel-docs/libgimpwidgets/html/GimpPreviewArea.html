@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpPreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2587166" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2592950" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2635380" class="shortcut">Description</a>
+                  <a href="#id2640987" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2635262" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2635701" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2635310" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2635750" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2635338" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2635778" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpPreviewArea"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2587166"></a><span class="refentrytitle">GimpPreviewArea</span>
+<a name="id2592950"></a><span class="refentrytitle">GimpPreviewArea</span>
 </h2>
 <p>GimpPreviewArea &#8212; A general purpose preview widget which caches its pixel data.</p>
 </td>
@@ -61,86 +61,176 @@
 
 
                     <a class="link" href="GimpPreviewArea.html#GimpPreviewArea-struct">GimpPreviewArea</a>;
-GtkWidget*          <a class="link" href="GimpPreviewArea.html#gimp-preview-area-new">gimp_preview_area_new</a>               (void);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpPreviewArea.html#gimp-preview-area-new">gimp_preview_area_new</a>               (void);
 void                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-draw">gimp_preview_area_draw</a>              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y,
-                                                         gint width,
-                                                         gint height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a> type,
-                                                         const guchar *buf,
-                                                         gint rowstride);
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride);
 void                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-fill">gimp_preview_area_fill</a>              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y,
-                                                         gint width,
-                                                         gint height,
-                                                         guchar red,
-                                                         guchar green,
-                                                         guchar blue);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> red,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> green,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> blue);
 void                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-blend">gimp_preview_area_blend</a>             (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y,
-                                                         gint width,
-                                                         gint height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a> type,
-                                                         const guchar *buf1,
-                                                         gint rowstride1,
-                                                         const guchar *buf2,
-                                                         gint rowstride2,
-                                                         guchar opacity);
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride1,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> opacity);
 void                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-mask">gimp_preview_area_mask</a>              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y,
-                                                         gint width,
-                                                         gint height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a> type,
-                                                         const guchar *buf1,
-                                                         gint rowstride1,
-                                                         const guchar *buf2,
-                                                         gint rowstride2,
-                                                         const guchar *mask,
-                                                         gint rowstride_mask);
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride1,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride2,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *mask,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride_mask);
 void                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-set-offsets">gimp_preview_area_set_offsets</a>       (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y);
 void                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-set-colormap">gimp_preview_area_set_colormap</a>      (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         const guchar *colormap,
-                                                         gint num_colors);
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *colormap,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_colors);
 void                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-set-max-size">gimp_preview_area_set_max_size</a>      (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint width,
-                                                         gint height);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height);
 void                <a class="link" href="GimpPreviewArea.html#gimp-preview-area-menu-popup">gimp_preview_area_menu_popup</a>        (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         GdkEventButton *event);
+                                                         <a
+href="../gdk/gdk-Event-Structures.html#GdkEventButton"
+>GdkEventButton</a> *event);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2635262"></a><h2>Object Hierarchy</h2>
+<a name="id2635701"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkDrawingArea
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkDrawingArea.html"
+>GtkDrawingArea</a>
                            +----GimpPreviewArea
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2635310"></a><h2>Implemented Interfaces</h2>
+<a name="id2635750"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPreviewArea implements
  AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2635338"></a><h2>Properties</h2>
+<a name="id2635778"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a class="link" href="GimpPreviewArea.html#GimpPreviewArea--check-size">check-size</a>"               <a
@@ -152,26 +242,28 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2635380"></a><h2>Description</h2>
+<a name="id2640987"></a><h2>Description</h2>
 <p>
 A general purpose preview widget which caches its pixel data.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2635397"></a><h2>Details</h2>
+<a name="id2641004"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2635408"></a><h3>
+<a name="id2641015"></a><h3>
 <a name="GimpPreviewArea-struct"></a>GimpPreviewArea</h3>
-<a class="indexterm" name="id2635419"></a><pre class="programlisting">typedef struct _GimpPreviewArea GimpPreviewArea;</pre>
+<a class="indexterm" name="id2641026"></a><pre class="programlisting">typedef struct _GimpPreviewArea GimpPreviewArea;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635436"></a><h3>
+<a name="id2641043"></a><h3>
 <a name="gimp-preview-area-new"></a>gimp_preview_area_new ()</h3>
-<a class="indexterm" name="id2635447"></a><pre class="programlisting">GtkWidget*          gimp_preview_area_new               (void);</pre>
+<a class="indexterm" name="id2641054"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_preview_area_new               (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget.</p>
 <p>
@@ -190,18 +282,30 @@ Since GIMP 2.2
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2635501"></a><h3>
+<a name="id2641108"></a><h3>
 <a name="gimp-preview-area-draw"></a>gimp_preview_area_draw ()</h3>
-<a class="indexterm" name="id2635512"></a><pre class="programlisting">void                gimp_preview_area_draw              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y,
-                                                         gint width,
-                                                         gint height,
+<a class="indexterm" name="id2641119"></a><pre class="programlisting">void                gimp_preview_area_draw              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a> type,
-                                                         const guchar *buf,
-                                                         gint rowstride);</pre>
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride);</pre>
 <p>
 Draws <em class="parameter"><code>buf</code></em> on <em class="parameter"><code>area</code></em> and queues a redraw on the given rectangle.
 </p>
@@ -247,7 +351,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em>&#160;:</span></p></td>
-<td>       a <span class="type">guchar</span> buffer that contains the preview pixel data.
+<td>       a <a
+href="../glib/glib-Basic-Types.html#guchar"
+><span class="type">guchar</span></a> buffer that contains the preview pixel data.
 </td>
 </tr>
 <tr>
@@ -260,16 +366,30 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647048"></a><h3>
+<a name="id2647079"></a><h3>
 <a name="gimp-preview-area-fill"></a>gimp_preview_area_fill ()</h3>
-<a class="indexterm" name="id2647058"></a><pre class="programlisting">void                gimp_preview_area_fill              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y,
-                                                         gint width,
-                                                         gint height,
-                                                         guchar red,
-                                                         guchar green,
-                                                         guchar blue);</pre>
+<a class="indexterm" name="id2647089"></a><pre class="programlisting">void                gimp_preview_area_fill              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> red,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> green,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> blue);</pre>
 <p>
 Fills the given rectangle of <em class="parameter"><code>area</code></em> in the given color and queues a
 redraw.
@@ -327,21 +447,39 @@ Since GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647272"></a><h3>
+<a name="id2647299"></a><h3>
 <a name="gimp-preview-area-blend"></a>gimp_preview_area_blend ()</h3>
-<a class="indexterm" name="id2647283"></a><pre class="programlisting">void                gimp_preview_area_blend             (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y,
-                                                         gint width,
-                                                         gint height,
+<a class="indexterm" name="id2647311"></a><pre class="programlisting">void                gimp_preview_area_blend             (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a> type,
-                                                         const guchar *buf1,
-                                                         gint rowstride1,
-                                                         const guchar *buf2,
-                                                         gint rowstride2,
-                                                         guchar opacity);</pre>
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride1,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> opacity);</pre>
 <p>
 Composites <em class="parameter"><code>buf1</code></em> on <em class="parameter"><code>buf2</code></em> with the given <em class="parameter"><code>opacity</code></em>, draws the result
 to <em class="parameter"><code>area</code></em> and queues a redraw on the given rectangle.
@@ -388,7 +526,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf1</code></em>&#160;:</span></p></td>
-<td>       a <span class="type">guchar</span> buffer that contains the pixel data for
+<td>       a <a
+href="../glib/glib-Basic-Types.html#guchar"
+><span class="type">guchar</span></a> buffer that contains the pixel data for
              the lower layer
 </td>
 </tr>
@@ -399,7 +539,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf2</code></em>&#160;:</span></p></td>
-<td>       a <span class="type">guchar</span> buffer that contains the pixel data for
+<td>       a <a
+href="../glib/glib-Basic-Types.html#guchar"
+><span class="type">guchar</span></a> buffer that contains the pixel data for
              the upper layer
 </td>
 </tr>
@@ -418,22 +560,42 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2647630"></a><h3>
+<a name="id2647658"></a><h3>
 <a name="gimp-preview-area-mask"></a>gimp_preview_area_mask ()</h3>
-<a class="indexterm" name="id2647641"></a><pre class="programlisting">void                gimp_preview_area_mask              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y,
-                                                         gint width,
-                                                         gint height,
+<a class="indexterm" name="id2647669"></a><pre class="programlisting">void                gimp_preview_area_mask              (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a> type,
-                                                         const guchar *buf1,
-                                                         gint rowstride1,
-                                                         const guchar *buf2,
-                                                         gint rowstride2,
-                                                         const guchar *mask,
-                                                         gint rowstride_mask);</pre>
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride1,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *buf2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride2,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *mask,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> rowstride_mask);</pre>
 <p>
 Composites <em class="parameter"><code>buf1</code></em> on <em class="parameter"><code>buf2</code></em> with the given <em class="parameter"><code>mask</code></em>, draws the result on
 <em class="parameter"><code>area</code></em> and queues a redraw on the given rectangle.
@@ -480,7 +642,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf1</code></em>&#160;:</span></p></td>
-<td>           a <span class="type">guchar</span> buffer that contains the pixel data for
+<td>           a <a
+href="../glib/glib-Basic-Types.html#guchar"
+><span class="type">guchar</span></a> buffer that contains the pixel data for
                  the lower layer
 </td>
 </tr>
@@ -491,7 +655,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf2</code></em>&#160;:</span></p></td>
-<td>           a <span class="type">guchar</span> buffer that contains the pixel data for
+<td>           a <a
+href="../glib/glib-Basic-Types.html#guchar"
+><span class="type">guchar</span></a> buffer that contains the pixel data for
                  the upper layer
 </td>
 </tr>
@@ -502,7 +668,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mask</code></em>&#160;:</span></p></td>
-<td>           a <span class="type">guchar</span> buffer representing the mask of the second
+<td>           a <a
+href="../glib/glib-Basic-Types.html#guchar"
+><span class="type">guchar</span></a> buffer representing the mask of the second
                  layer.
 </td>
 </tr>
@@ -516,11 +684,15 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648018"></a><h3>
+<a name="id2648046"></a><h3>
 <a name="gimp-preview-area-set-offsets"></a>gimp_preview_area_set_offsets ()</h3>
-<a class="indexterm" name="id2648033"></a><pre class="programlisting">void                gimp_preview_area_set_offsets       (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint x,
-                                                         gint y);</pre>
+<a class="indexterm" name="id2648061"></a><pre class="programlisting">void                gimp_preview_area_set_offsets       (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y);</pre>
 <p>
 Sets the offsets of the previewed area. This information is used
 when drawing the checkerboard and to determine the dither offsets.</p>
@@ -552,11 +724,15 @@ when drawing the checkerboard and to determine the dither offsets.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648142"></a><h3>
+<a name="id2648170"></a><h3>
 <a name="gimp-preview-area-set-colormap"></a>gimp_preview_area_set_colormap ()</h3>
-<a class="indexterm" name="id2648155"></a><pre class="programlisting">void                gimp_preview_area_set_colormap      (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         const guchar *colormap,
-                                                         gint num_colors);</pre>
+<a class="indexterm" name="id2648183"></a><pre class="programlisting">void                gimp_preview_area_set_colormap      (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *colormap,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_colors);</pre>
 <p>
 Sets the colormap for the <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> widget. You need to
 call this function before you use <a class="link" href="GimpPreviewArea.html#gimp-preview-area-draw"><code class="function">gimp_preview_area_draw()</code></a> with
@@ -577,7 +753,9 @@ Since GIMP 2.2</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>colormap</code></em>&#160;:</span></p></td>
-<td>   a <span class="type">guchar</span> buffer that contains the colormap
+<td>   a <a
+href="../glib/glib-Basic-Types.html#guchar"
+><span class="type">guchar</span></a> buffer that contains the colormap
 </td>
 </tr>
 <tr>
@@ -590,11 +768,15 @@ Since GIMP 2.2</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648302"></a><h3>
+<a name="id2648330"></a><h3>
 <a name="gimp-preview-area-set-max-size"></a>gimp_preview_area_set_max_size ()</h3>
-<a class="indexterm" name="id2648317"></a><pre class="programlisting">void                gimp_preview_area_set_max_size      (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         gint width,
-                                                         gint height);</pre>
+<a class="indexterm" name="id2573202"></a><pre class="programlisting">void                gimp_preview_area_set_max_size      (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height);</pre>
 <p>
 Usually a <a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea"><span class="type">GimpPreviewArea</span></a> fills the size that it is
 allocated. This funtion allows you to limit the preview area to a
@@ -628,10 +810,12 @@ preview will draw itself centered into the allocated area.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648409"></a><h3>
+<a name="id2648435"></a><h3>
 <a name="gimp-preview-area-menu-popup"></a>gimp_preview_area_menu_popup ()</h3>
-<a class="indexterm" name="id2648424"></a><pre class="programlisting">void                gimp_preview_area_menu_popup        (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
-                                                         GdkEventButton *event);</pre>
+<a class="indexterm" name="id2648450"></a><pre class="programlisting">void                gimp_preview_area_menu_popup        (<a class="link" href="GimpPreviewArea.html" title="GimpPreviewArea">GimpPreviewArea</a> *area,
+                                                         <a
+href="../gdk/gdk-Event-Structures.html#GdkEventButton"
+>GdkEventButton</a> *event);</pre>
 <p>
 Creates a popup menu that allows to configure the size and type of
 the checkerboard pattern that the <em class="parameter"><code>area</code></em> uses to visualize transparency.</p>
@@ -648,7 +832,9 @@ the checkerboard pattern that the <em class="parameter"><code>area</code></em> u
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>event</code></em>&#160;:</span></p></td>
-<td> the button event that causes the menu to popup or <code class="literal">NULL</code>
+<td> the button event that causes the menu to popup or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -658,11 +844,11 @@ the checkerboard pattern that the <em class="parameter"><code>area</code></em> u
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2648518"></a><h2>Property Details</h2>
+<a name="id2648544"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2648527"></a><h3>
+<a name="id2648553"></a><h3>
 <a name="GimpPreviewArea--check-size"></a>The "<code class="literal">check-size</code>" property</h3>
-<a class="indexterm" name="id2648540"></a><pre class="programlisting">  "check-size"               <a
+<a class="indexterm" name="id2648566"></a><pre class="programlisting">  "check-size"               <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"
 >GimpCheckSize</a>         : Read / Write</pre>
 <p></p>
@@ -670,9 +856,9 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckSize"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2648562"></a><h3>
+<a name="id2648588"></a><h3>
 <a name="GimpPreviewArea--check-type"></a>The "<code class="literal">check-type</code>" property</h3>
-<a class="indexterm" name="id2648575"></a><pre class="programlisting">  "check-type"               <a
+<a class="indexterm" name="id2648601"></a><pre class="programlisting">  "check-type"               <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCheckType"
 >GimpCheckType</a>         : Read / Write</pre>
 <p></p>

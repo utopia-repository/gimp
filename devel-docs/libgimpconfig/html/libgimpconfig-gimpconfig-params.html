@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpconfig-params</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
 <link rel="start" href="index.html" title="GIMP Config Library Reference Manual">
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpConfigError.html" title="gimpconfig-error">
@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpconfig-gimpconfig-path.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2598896" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2588524" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2614831" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2576003" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpconfig-gimpconfig-params"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2598896"></a><span class="refentrytitle">gimpconfig-params</span>
+<a name="id2588524"></a><span class="refentrytitle">gimpconfig-params</span>
 </h2>
 <p>gimpconfig-params</p>
 </td>
@@ -46,42 +46,42 @@
 
 
 
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE:CAPS">GIMP_CONFIG_PARAM_SERIALIZE</a>
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE:CAPS">GIMP_CONFIG_PARAM_AGGREGATE</a>
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-RESTART:CAPS">GIMP_CONFIG_PARAM_RESTART</a>
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-CONFIRM:CAPS">GIMP_CONFIG_PARAM_CONFIRM</a>
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-DEFAULTS:CAPS">GIMP_CONFIG_PARAM_DEFAULTS</a>
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-IGNORE:CAPS">GIMP_CONFIG_PARAM_IGNORE</a>
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-FLAGS:CAPS">GIMP_CONFIG_PARAM_FLAGS</a>
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS">GIMP_CONFIG_INSTALL_PROP_BOOLEAN</a>    (class, id, name, blurb, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS">GIMP_CONFIG_INSTALL_PROP_BOXED</a>      (class, id, name, blurb, boxed_type, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RGB:CAPS">GIMP_CONFIG_INSTALL_PROP_RGB</a>        (class, id, name, blurb, has_alpha, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-DOUBLE:CAPS">GIMP_CONFIG_INSTALL_PROP_DOUBLE</a>     (class, id, name, blurb, min, max, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RESOLUTION:CAPS">GIMP_CONFIG_INSTALL_PROP_RESOLUTION</a> (class, id, name, blurb, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-ENUM:CAPS">GIMP_CONFIG_INSTALL_PROP_ENUM</a>       (class, id, name, blurb, enum_type, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-INT:CAPS">GIMP_CONFIG_INSTALL_PROP_INT</a>        (class, id, name, blurb, min, max, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-MATRIX2:CAPS">GIMP_CONFIG_INSTALL_PROP_MATRIX2</a>    (class, id, name, blurb, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-MEMSIZE:CAPS">GIMP_CONFIG_INSTALL_PROP_MEMSIZE</a>    (class, id, name, blurb, min, max, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-PATH:CAPS">GIMP_CONFIG_INSTALL_PROP_PATH</a>       (class, id, name, blurb, path_type, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-STRING:CAPS">GIMP_CONFIG_INSTALL_PROP_STRING</a>     (class, id, name, blurb, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UINT:CAPS">GIMP_CONFIG_INSTALL_PROP_UINT</a>       (class, id, name, blurb, min, max, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UNIT:CAPS">GIMP_CONFIG_INSTALL_PROP_UNIT</a>       (class, id, name, blurb, pixels, percent, default, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-OBJECT:CAPS">GIMP_CONFIG_INSTALL_PROP_OBJECT</a>     (class, id, name, blurb, object_type, flags)
-#define             <a class="link" href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-POINTER:CAPS">GIMP_CONFIG_INSTALL_PROP_POINTER</a>    (class, id, name, blurb, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-SERIALIZE:CAPS">GIMP_CONFIG_PARAM_SERIALIZE</a>
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-AGGREGATE:CAPS">GIMP_CONFIG_PARAM_AGGREGATE</a>
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-RESTART:CAPS">GIMP_CONFIG_PARAM_RESTART</a>
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-CONFIRM:CAPS">GIMP_CONFIG_PARAM_CONFIRM</a>
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-DEFAULTS:CAPS">GIMP_CONFIG_PARAM_DEFAULTS</a>
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-IGNORE:CAPS">GIMP_CONFIG_PARAM_IGNORE</a>
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-PARAM-FLAGS:CAPS">GIMP_CONFIG_PARAM_FLAGS</a>
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS">GIMP_CONFIG_INSTALL_PROP_BOOLEAN</a>    (class, id, name, blurb, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS">GIMP_CONFIG_INSTALL_PROP_BOXED</a>      (class, id, name, blurb, boxed_type, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RGB:CAPS">GIMP_CONFIG_INSTALL_PROP_RGB</a>        (class, id, name, blurb, has_alpha, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-DOUBLE:CAPS">GIMP_CONFIG_INSTALL_PROP_DOUBLE</a>     (class, id, name, blurb, min, max, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-RESOLUTION:CAPS">GIMP_CONFIG_INSTALL_PROP_RESOLUTION</a> (class, id, name, blurb, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-ENUM:CAPS">GIMP_CONFIG_INSTALL_PROP_ENUM</a>       (class, id, name, blurb, enum_type, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-INT:CAPS">GIMP_CONFIG_INSTALL_PROP_INT</a>        (class, id, name, blurb, min, max, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-MATRIX2:CAPS">GIMP_CONFIG_INSTALL_PROP_MATRIX2</a>    (class, id, name, blurb, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-MEMSIZE:CAPS">GIMP_CONFIG_INSTALL_PROP_MEMSIZE</a>    (class, id, name, blurb, min, max, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-PATH:CAPS">GIMP_CONFIG_INSTALL_PROP_PATH</a>       (class, id, name, blurb, path_type, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-STRING:CAPS">GIMP_CONFIG_INSTALL_PROP_STRING</a>     (class, id, name, blurb, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UINT:CAPS">GIMP_CONFIG_INSTALL_PROP_UINT</a>       (class, id, name, blurb, min, max, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-UNIT:CAPS">GIMP_CONFIG_INSTALL_PROP_UNIT</a>       (class, id, name, blurb, pixels, percent, default, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-OBJECT:CAPS">GIMP_CONFIG_INSTALL_PROP_OBJECT</a>     (class, id, name, blurb, object_type, flags)
+#define             <a href="libgimpconfig-gimpconfig-params.html#GIMP-CONFIG-INSTALL-PROP-POINTER:CAPS">GIMP_CONFIG_INSTALL_PROP_POINTER</a>    (class, id, name, blurb, flags)
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614831"></a><h2>Description</h2>
+<a name="id2576003"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614847"></a><h2>Details</h2>
+<a name="id2576019"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2583113"></a><h3>
+<a name="id2595467"></a><h3>
 <a name="GIMP-CONFIG-PARAM-SERIALIZE:CAPS"></a>GIMP_CONFIG_PARAM_SERIALIZE</h3>
-<a class="indexterm" name="id2583126"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_SERIALIZE    (1 &lt;&lt; (0 + G_PARAM_USER_SHIFT))
+<a class="indexterm" name="id2595480"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_SERIALIZE    (1 &lt;&lt; (0 + G_PARAM_USER_SHIFT))
 </pre>
 <p>
 
@@ -89,9 +89,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583143"></a><h3>
+<a name="id2595496"></a><h3>
 <a name="GIMP-CONFIG-PARAM-AGGREGATE:CAPS"></a>GIMP_CONFIG_PARAM_AGGREGATE</h3>
-<a class="indexterm" name="id2583155"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_AGGREGATE    (1 &lt;&lt; (1 + G_PARAM_USER_SHIFT))
+<a class="indexterm" name="id2595509"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_AGGREGATE    (1 &lt;&lt; (1 + G_PARAM_USER_SHIFT))
 </pre>
 <p>
 
@@ -99,9 +99,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583172"></a><h3>
+<a name="id2595525"></a><h3>
 <a name="GIMP-CONFIG-PARAM-RESTART:CAPS"></a>GIMP_CONFIG_PARAM_RESTART</h3>
-<a class="indexterm" name="id2583184"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_RESTART      (1 &lt;&lt; (2 + G_PARAM_USER_SHIFT))
+<a class="indexterm" name="id2595538"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_RESTART      (1 &lt;&lt; (2 + G_PARAM_USER_SHIFT))
 </pre>
 <p>
 
@@ -109,9 +109,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583200"></a><h3>
+<a name="id2595554"></a><h3>
 <a name="GIMP-CONFIG-PARAM-CONFIRM:CAPS"></a>GIMP_CONFIG_PARAM_CONFIRM</h3>
-<a class="indexterm" name="id2583213"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_CONFIRM      (1 &lt;&lt; (3 + G_PARAM_USER_SHIFT))
+<a class="indexterm" name="id2595567"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_CONFIRM      (1 &lt;&lt; (3 + G_PARAM_USER_SHIFT))
 </pre>
 <p>
 
@@ -119,9 +119,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583229"></a><h3>
+<a name="id2595583"></a><h3>
 <a name="GIMP-CONFIG-PARAM-DEFAULTS:CAPS"></a>GIMP_CONFIG_PARAM_DEFAULTS</h3>
-<a class="indexterm" name="id2583242"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_DEFAULTS     (1 &lt;&lt; (4 + G_PARAM_USER_SHIFT))
+<a class="indexterm" name="id2595596"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_DEFAULTS     (1 &lt;&lt; (4 + G_PARAM_USER_SHIFT))
 </pre>
 <p>
 
@@ -129,9 +129,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2583258"></a><h3>
+<a name="id2595612"></a><h3>
 <a name="GIMP-CONFIG-PARAM-IGNORE:CAPS"></a>GIMP_CONFIG_PARAM_IGNORE</h3>
-<a class="indexterm" name="id2613658"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_IGNORE       (1 &lt;&lt; (5 + G_PARAM_USER_SHIFT))
+<a class="indexterm" name="id2515023"></a><pre class="programlisting">#define GIMP_CONFIG_PARAM_IGNORE       (1 &lt;&lt; (5 + G_PARAM_USER_SHIFT))
 </pre>
 <p>
 
@@ -139,18 +139,18 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613674"></a><h3>
+<a name="id2515040"></a><h3>
 <a name="GIMP-CONFIG-PARAM-FLAGS:CAPS"></a>GIMP_CONFIG_PARAM_FLAGS</h3>
-<a class="indexterm" name="id2613687"></a><pre class="programlisting">#define             GIMP_CONFIG_PARAM_FLAGS</pre>
+<a class="indexterm" name="id2515053"></a><pre class="programlisting">#define             GIMP_CONFIG_PARAM_FLAGS</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613703"></a><h3>
+<a name="id2515068"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-BOOLEAN:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_BOOLEAN()</h3>
-<a class="indexterm" name="id2613716"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_BOOLEAN(class, id, name, blurb, default, flags)</pre>
+<a class="indexterm" name="id2515082"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_BOOLEAN(class, id, name, blurb, default, flags)</pre>
 <p>
 
 </p>
@@ -158,32 +158,32 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -194,9 +194,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613824"></a><h3>
+<a name="id2515189"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-BOXED:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_BOXED()</h3>
-<a class="indexterm" name="id2613837"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_BOXED(class, id, name, blurb, boxed_type, flags)</pre>
+<a class="indexterm" name="id2515203"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_BOXED(class, id, name, blurb, boxed_type, flags)</pre>
 <p>
 
 </p>
@@ -204,32 +204,32 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>boxed_type</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>boxed_type</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -240,9 +240,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2526852"></a><h3>
+<a name="id2590605"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-RGB:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_RGB()</h3>
-<a class="indexterm" name="id2526865"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_RGB(class, id, name, blurb, has_alpha, default, flags)</pre>
+<a class="indexterm" name="id2590618"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_RGB(class, id, name, blurb, has_alpha, default, flags)</pre>
 <p>
 
 </p>
@@ -250,37 +250,37 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>has_alpha</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>has_alpha</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -291,9 +291,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2526987"></a><h3>
+<a name="id2590740"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-DOUBLE:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_DOUBLE()</h3>
-<a class="indexterm" name="id2527000"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_DOUBLE(class, id, name, blurb, min, max, default, flags)</pre>
+<a class="indexterm" name="id2590753"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_DOUBLE(class, id, name, blurb, min, max, default, flags)</pre>
 <p>
 
 </p>
@@ -301,42 +301,42 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -347,9 +347,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619711"></a><h3>
+<a name="id2602558"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-RESOLUTION:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_RESOLUTION()</h3>
-<a class="indexterm" name="id2619723"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_RESOLUTION(class, id, name, blurb, default, flags)</pre>
+<a class="indexterm" name="id2602570"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_RESOLUTION(class, id, name, blurb, default, flags)</pre>
 <p>
 
 </p>
@@ -357,32 +357,32 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -393,9 +393,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619819"></a><h3>
+<a name="id2602666"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-ENUM:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_ENUM()</h3>
-<a class="indexterm" name="id2619831"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_ENUM(class, id, name, blurb, enum_type, default, flags)</pre>
+<a class="indexterm" name="id2602679"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_ENUM(class, id, name, blurb, enum_type, default, flags)</pre>
 <p>
 
 </p>
@@ -403,37 +403,37 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>enum_type</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>enum_type</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -444,9 +444,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619953"></a><h3>
+<a name="id2602801"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-INT:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_INT()</h3>
-<a class="indexterm" name="id2619966"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_INT(class, id, name, blurb, min, max, default, flags)</pre>
+<a class="indexterm" name="id2602815"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_INT(class, id, name, blurb, min, max, default, flags)</pre>
 <p>
 
 </p>
@@ -454,42 +454,42 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -500,9 +500,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620102"></a><h3>
+<a name="id2602951"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-MATRIX2:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_MATRIX2()</h3>
-<a class="indexterm" name="id2620116"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_MATRIX2(class, id, name, blurb, default, flags)</pre>
+<a class="indexterm" name="id2602965"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_MATRIX2(class, id, name, blurb, default, flags)</pre>
 <p>
 
 </p>
@@ -510,32 +510,32 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -546,9 +546,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620224"></a><h3>
+<a name="id2603073"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-MEMSIZE:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_MEMSIZE()</h3>
-<a class="indexterm" name="id2620238"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_MEMSIZE(class, id, name, blurb, min, max, default, flags)</pre>
+<a class="indexterm" name="id2603086"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_MEMSIZE(class, id, name, blurb, min, max, default, flags)</pre>
 <p>
 
 </p>
@@ -556,42 +556,42 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -602,9 +602,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620374"></a><h3>
+<a name="id2603223"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-PATH:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_PATH()</h3>
-<a class="indexterm" name="id2620387"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_PATH(class, id, name, blurb, path_type, default, flags)</pre>
+<a class="indexterm" name="id2603236"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_PATH(class, id, name, blurb, path_type, default, flags)</pre>
 <p>
 
 </p>
@@ -612,37 +612,37 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>path_type</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>path_type</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -653,9 +653,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620509"></a><h3>
+<a name="id2603358"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-STRING:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_STRING()</h3>
-<a class="indexterm" name="id2620523"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_STRING(class, id, name, blurb, default, flags)</pre>
+<a class="indexterm" name="id2603372"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_STRING(class, id, name, blurb, default, flags)</pre>
 <p>
 
 </p>
@@ -663,32 +663,32 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -699,9 +699,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620630"></a><h3>
+<a name="id2603479"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-UINT:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_UINT()</h3>
-<a class="indexterm" name="id2620644"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_UINT(class, id, name, blurb, min, max, default, flags)</pre>
+<a class="indexterm" name="id2603492"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_UINT(class, id, name, blurb, min, max, default, flags)</pre>
 <p>
 
 </p>
@@ -709,42 +709,42 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>min</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>max</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -755,9 +755,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620780"></a><h3>
+<a name="id2559980"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-UNIT:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_UNIT()</h3>
-<a class="indexterm" name="id2620793"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_UNIT(class, id, name, blurb, pixels, percent, default, flags)</pre>
+<a class="indexterm" name="id2603622"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_UNIT(class, id, name, blurb, pixels, percent, default, flags)</pre>
 <p>
 
 </p>
@@ -765,42 +765,42 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>pixels</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>pixels</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>percent</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>percent</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>default</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -811,9 +811,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620930"></a><h3>
+<a name="id2603744"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-OBJECT:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_OBJECT()</h3>
-<a class="indexterm" name="id2620943"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_OBJECT(class, id, name, blurb, object_type, flags)</pre>
+<a class="indexterm" name="id2603757"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_OBJECT(class, id, name, blurb, object_type, flags)</pre>
 <p>
 
 </p>
@@ -821,32 +821,32 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>object_type</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>object_type</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 
@@ -857,9 +857,9 @@
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621051"></a><h3>
+<a name="id2603853"></a><h3>
 <a name="GIMP-CONFIG-INSTALL-PROP-POINTER:CAPS"></a>GIMP_CONFIG_INSTALL_PROP_POINTER()</h3>
-<a class="indexterm" name="id2621064"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_POINTER(class, id, name, blurb, flags)</pre>
+<a class="indexterm" name="id2603866"></a><pre class="programlisting">#define             GIMP_CONFIG_INSTALL_PROP_POINTER(class, id, name, blurb, flags)</pre>
 <p>
 
 </p>
@@ -867,27 +867,27 @@
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>class</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>id</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>name</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>blurb</code></em>&#160;:</span></td>
 <td>
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></p></td>
+<td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
 <td>
 
 

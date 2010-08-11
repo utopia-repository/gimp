@@ -1,7 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-GUI\"
+	-DG_LOG_DOMAIN=\"Gimp-GUI\"	\
+	-DGIMP_COMMAND=\"@GIMP_COMMAND@\"
 
 INCLUDES = \
 	-I$(top_builddir)	\
@@ -30,7 +31,7 @@ libappgui_a_SOURCES = \
 	splash.h		\
 	themes.c		\
 	themes.h		\
-	gtk-macmenu.c		\
-	gtk-macmenu.h
+	ige-mac-menu.c		\
+	ige-mac-menu.h
 
 EXTRA_DIST = makefile.msc

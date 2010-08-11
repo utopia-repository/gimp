@@ -33,24 +33,26 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpChainButton.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2580573" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2588123" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2582678" class="shortcut">Description</a>
+                  <a href="#id2607248" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2582558" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2607128" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2582625" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2607196" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2582653" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2607223" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2580573"></a><span class="refentrytitle">GimpButton</span>
+<a name="id2588123"></a><span class="refentrytitle">GimpButton</span>
 </h2>
-<p>GimpButton &#8212; A <span class="type">GtkButton</span> with a little extra functionality.</p>
+<p>GimpButton &#8212; A <a
+href="../gtk/GtkButton.html"
+><span class="type">GtkButton</span></a> with a little extra functionality.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-button.png"></td>
 </tr></table></div>
@@ -61,63 +63,85 @@
 
 
                     <a class="link" href="GimpButton.html#GimpButton-struct">GimpButton</a>;
-GtkWidget*          <a class="link" href="GimpButton.html#gimp-button-new">gimp_button_new</a>                     (void);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpButton.html#gimp-button-new">gimp_button_new</a>                     (void);
 void                <a class="link" href="GimpButton.html#gimp-button-extended-clicked">gimp_button_extended_clicked</a>        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
-                                                         GdkModifierType state);
+                                                         <a
+href="../gdk/gdk-Windows.html#GdkModifierType"
+>GdkModifierType</a> state);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2582558"></a><h2>Object Hierarchy</h2>
+<a name="id2607128"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkButton
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="../gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="../gtk/GtkButton.html"
+>GtkButton</a>
                                        +----GimpButton
                                              +----<a class="link" href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a>
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2582625"></a><h2>Implemented Interfaces</h2>
+<a name="id2607196"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpButton implements
  AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2582653"></a><h2>Signals</h2>
+<a name="id2607223"></a><h2>Signals</h2>
 <pre class="synopsis">
 
   "<a class="link" href="GimpButton.html#GimpButton-extended-clicked">extended-clicked</a>"                               : Run First
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2582678"></a><h2>Description</h2>
+<a name="id2607248"></a><h2>Description</h2>
 <p>
-<a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> adds an extra signal to the <span class="type">GtkButton</span> widget that allows
+<a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> adds an extra signal to the <a
+href="../gtk/GtkButton.html"
+><span class="type">GtkButton</span></a> widget that allows
 to distinguish a normal click from a click that was performed with
 modifier keys pressed.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585373"></a><h2>Details</h2>
+<a name="id2605781"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2585384"></a><h3>
+<a name="id2605792"></a><h3>
 <a name="GimpButton-struct"></a>GimpButton</h3>
-<a class="indexterm" name="id2585396"></a><pre class="programlisting">typedef struct _GimpButton GimpButton;</pre>
+<a class="indexterm" name="id2605804"></a><pre class="programlisting">typedef struct _GimpButton GimpButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585411"></a><h3>
+<a name="id2605819"></a><h3>
 <a name="gimp-button-new"></a>gimp_button_new ()</h3>
-<a class="indexterm" name="id2585424"></a><pre class="programlisting">GtkWidget*          gimp_button_new                     (void);</pre>
+<a class="indexterm" name="id2605832"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_button_new                     (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> widget.</p>
 <p>
@@ -134,10 +158,12 @@ Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span cl
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585478"></a><h3>
+<a name="id2605886"></a><h3>
 <a name="gimp-button-extended-clicked"></a>gimp_button_extended_clicked ()</h3>
-<a class="indexterm" name="id2585489"></a><pre class="programlisting">void                gimp_button_extended_clicked        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
-                                                         GdkModifierType state);</pre>
+<a class="indexterm" name="id2605897"></a><pre class="programlisting">void                gimp_button_extended_clicked        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
+                                                         <a
+href="../gdk/gdk-Windows.html#GdkModifierType"
+>GdkModifierType</a> state);</pre>
 <p>
 Emits the button's "extended_clicked" signal.</p>
 <p>
@@ -153,7 +179,9 @@ Emits the button's "extended_clicked" signal.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>state</code></em>&#160;:</span></p></td>
-<td>  a state as found in <span class="type">GdkEventButton-</span>&gt;state, e.g. <span class="type">GDK_SHIFT_MASK</span>.
+<td>  a state as found in <span class="type">GdkEventButton-</span>&gt;state, e.g. <a
+href="../gdk/gdk-Windows.html#GDK-SHIFT-MASK:CAPS"
+><span class="type">GDK_SHIFT_MASK</span></a>.
 </td>
 </tr>
 </tbody>
@@ -161,13 +189,17 @@ Emits the button's "extended_clicked" signal.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2592303"></a><h2>Signal Details</h2>
+<a name="id2592298"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2592314"></a><h3>
+<a name="id2592309"></a><h3>
 <a name="GimpButton-extended-clicked"></a>The "extended-clicked" signal</h3>
-<a class="indexterm" name="id2592322"></a><pre class="programlisting">void                user_function                      (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a>     *gimpbutton,
-                                                        GdkModifierType arg1,
-                                                        gpointer        user_data)       : Run First</pre>
+<a class="indexterm" name="id2592317"></a><pre class="programlisting">void                user_function                      (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a>     *gimpbutton,
+                                                        <a
+href="../gdk/gdk-Windows.html#GdkModifierType"
+>GdkModifierType</a> arg1,
+                                                        <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a>        user_data)       : Run First</pre>
 <p>
 
 </p>

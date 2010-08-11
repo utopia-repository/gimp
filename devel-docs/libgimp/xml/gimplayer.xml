@@ -44,6 +44,7 @@
                                                          <link linkend="gint">gint</link> offx,
                                                          <link linkend="gint">gint</link> offy);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-add-alpha">gimp_layer_add_alpha</link>                (<link linkend="gint32">gint32</link> layer_ID);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-flatten">gimp_layer_flatten</link>                  (<link linkend="gint32">gint32</link> layer_ID);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-offsets">gimp_layer_set_offsets</link>              (<link linkend="gint32">gint32</link> layer_ID,
                                                          <link linkend="gint">gint</link> offx,
                                                          <link linkend="gint">gint</link> offy);
@@ -293,10 +294,9 @@ Add an alpha channel to the layer if it doesn't already have one.
 <para>
 This procedure adds an additional component to the specified layer
 if it does not already possess an alpha channel. An alpha channel
-makes it possible to move a layer from the bottom of the layer stack
-and to clear and erase to transparency, instead of the background
-color. This transforms images of type RGB to RGBA, GRAY to GRAYA,
-and INDEXED to INDEXEDA.</para>
+makes it possible to clear and erase to transparency, instead of the
+background color. This transforms layers of type RGB to RGBA, GRAY
+to GRAYA, and INDEXED to INDEXEDA.</para>
 <para>
 
 </para><variablelist role="params">
@@ -306,6 +306,28 @@ and INDEXED to INDEXEDA.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="gimp-layer-flatten" role="function" condition="since:GIMP 2.4"/>gimp_layer_flatten ()</title>
+<indexterm role="GIMP 2.4"><primary>gimp_layer_flatten</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_flatten                  (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
+<para>
+Remove the alpha channel from the layer if it has one.
+</para>
+<para>
+This procedure removes the alpha channel from a layer, blending all
+(partially) transparent pixels in the layer against the background
+color. This transforms layers of type RGBA to RGB, GRAYA to GRAY,
+and INDEXEDA to INDEXED.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The layer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.4
+</para></refsect2>
 <refsect2>
 <title><anchor id="gimp-layer-set-offsets" role="function"/>gimp_layer_set_offsets ()</title>
 <indexterm><primary>gimp_layer_set_offsets</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_set_offsets              (<link linkend="gint32">gint32</link> layer_ID,

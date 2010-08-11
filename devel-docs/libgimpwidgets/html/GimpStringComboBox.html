@@ -33,22 +33,22 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpUnitMenu.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2604648" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577212" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2649303" class="shortcut">Description</a>
+                  <a href="#id2654433" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2648724" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2640508" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2654392" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2640569" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2654432" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2654378" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpStringComboBox"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2604648"></a><span class="refentrytitle">GimpStringComboBox</span>
+<a name="id2577212"></a><span class="refentrytitle">GimpStringComboBox</span>
 </h2>
 <p>GimpStringComboBox</p>
 </td>
@@ -61,67 +61,113 @@
 
 
                     <a class="link" href="GimpStringComboBox.html#GimpStringComboBox-struct">GimpStringComboBox</a>;
-GtkWidget*          <a class="link" href="GimpStringComboBox.html#gimp-string-combo-box-new">gimp_string_combo_box_new</a>           (GtkTreeModel *model,
-                                                         gint id_column,
-                                                         gint label_column);
-gboolean            <a class="link" href="GimpStringComboBox.html#gimp-string-combo-box-set-active">gimp_string_combo_box_set_active</a>    (<a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox">GimpStringComboBox</a> *combo_box,
-                                                         const gchar *id);
-gchar*              <a class="link" href="GimpStringComboBox.html#gimp-string-combo-box-get-active">gimp_string_combo_box_get_active</a>    (<a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox">GimpStringComboBox</a> *combo_box);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpStringComboBox.html#gimp-string-combo-box-new">gimp_string_combo_box_new</a>           (<a
+href="../gtk/GtkTreeModel.html"
+>GtkTreeModel</a> *model,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> id_column,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> label_column);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="GimpStringComboBox.html#gimp-string-combo-box-set-active">gimp_string_combo_box_set_active</a>    (<a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox">GimpStringComboBox</a> *combo_box,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *id);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="GimpStringComboBox.html#gimp-string-combo-box-get-active">gimp_string_combo_box_get_active</a>    (<a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox">GimpStringComboBox</a> *combo_box);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2648724"></a><h2>Object Hierarchy</h2>
+<a name="id2640508"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkComboBox
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="../gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="../gtk/GtkComboBox.html"
+>GtkComboBox</a>
                                        +----GimpStringComboBox
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2654392"></a><h2>Implemented Interfaces</h2>
+<a name="id2640569"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpStringComboBox implements
- AtkImplementorIface,  GtkBuildable,  GtkCellEditable and  GtkCellLayout.</p>
+ AtkImplementorIface,  GtkBuildable,  <a
+href="../gtk/GtkCellEditable.html"
+>GtkCellEditable</a> and  <a
+href="../gtk/GtkCellLayout.html"
+>GtkCellLayout</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2654432"></a><h2>Properties</h2>
+<a name="id2654378"></a><h2>Properties</h2>
 <pre class="synopsis">
 
-  "<a class="link" href="GimpStringComboBox.html#GimpStringComboBox--ellipsize">ellipsize</a>"                PangoEllipsizeMode    : Read / Write
-  "<a class="link" href="GimpStringComboBox.html#GimpStringComboBox--id-column">id-column</a>"                gint                  : Read / Write / Construct Only
-  "<a class="link" href="GimpStringComboBox.html#GimpStringComboBox--label-column">label-column</a>"             gint                  : Read / Write / Construct Only
+  "<a class="link" href="GimpStringComboBox.html#GimpStringComboBox--ellipsize">ellipsize</a>"                <a
+href="../pango/pango-Layout-Objects.html#PangoEllipsizeMode"
+>PangoEllipsizeMode</a>    : Read / Write
+  "<a class="link" href="GimpStringComboBox.html#GimpStringComboBox--id-column">id-column</a>"                <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write / Construct Only
+  "<a class="link" href="GimpStringComboBox.html#GimpStringComboBox--label-column">label-column</a>"             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write / Construct Only
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2649303"></a><h2>Description</h2>
+<a name="id2654433"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2649319"></a><h2>Details</h2>
+<a name="id2654449"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2649329"></a><h3>
+<a name="id2654460"></a><h3>
 <a name="GimpStringComboBox-struct"></a>GimpStringComboBox</h3>
-<a class="indexterm" name="id2649341"></a><pre class="programlisting">typedef struct _GimpStringComboBox GimpStringComboBox;</pre>
+<a class="indexterm" name="id2654471"></a><pre class="programlisting">typedef struct _GimpStringComboBox GimpStringComboBox;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649358"></a><h3>
+<a name="id2654488"></a><h3>
 <a name="gimp-string-combo-box-new"></a>gimp_string_combo_box_new ()</h3>
-<a class="indexterm" name="id2649371"></a><pre class="programlisting">GtkWidget*          gimp_string_combo_box_new           (GtkTreeModel *model,
-                                                         gint id_column,
-                                                         gint label_column);</pre>
+<a class="indexterm" name="id2654502"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_string_combo_box_new           (<a
+href="../gtk/GtkTreeModel.html"
+>GtkTreeModel</a> *model,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> id_column,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> label_column);</pre>
 <p>
 </p>
 <p>
@@ -158,10 +204,14 @@ GimpStringComboBox implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640696"></a><h3>
+<a name="id2651506"></a><h3>
 <a name="gimp-string-combo-box-set-active"></a>gimp_string_combo_box_set_active ()</h3>
-<a class="indexterm" name="id2640710"></a><pre class="programlisting">gboolean            gimp_string_combo_box_set_active    (<a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox">GimpStringComboBox</a> *combo_box,
-                                                         const gchar *id);</pre>
+<a class="indexterm" name="id2651520"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_string_combo_box_set_active    (<a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox">GimpStringComboBox</a> *combo_box,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *id);</pre>
 <p>
 Looks up the item that belongs to the given <em class="parameter"><code>id</code></em> and makes it the
 selected item in the <em class="parameter"><code>combo_box</code></em>.</p>
@@ -183,7 +233,11 @@ selected item in the <em class="parameter"><code>combo_box</code></em>.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> <code class="literal">TRUE</code> on success or <code class="literal">FALSE</code> if there was no item for
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> on success or <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> if there was no item for
               this value.
 
 </td>
@@ -195,9 +249,11 @@ selected item in the <em class="parameter"><code>combo_box</code></em>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2640838"></a><h3>
+<a name="id2651648"></a><h3>
 <a name="gimp-string-combo-box-get-active"></a>gimp_string_combo_box_get_active ()</h3>
-<a class="indexterm" name="id2640851"></a><pre class="programlisting">gchar*              gimp_string_combo_box_get_active    (<a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox">GimpStringComboBox</a> *combo_box);</pre>
+<a class="indexterm" name="id2651662"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_string_combo_box_get_active    (<a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox">GimpStringComboBox</a> *combo_box);</pre>
 <p>
 Retrieves the value of the selected (active) item in the <em class="parameter"><code>combo_box</code></em>.</p>
 <p>
@@ -213,7 +269,9 @@ Retrieves the value of the selected (active) item in the <em class="parameter"><
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
-<td> newly allocated ID string or <code class="literal">NULL</code> if nothing was selected
+<td> newly allocated ID string or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> if nothing was selected
 
 </td>
 </tr>
@@ -224,11 +282,13 @@ Retrieves the value of the selected (active) item in the <em class="parameter"><
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2649009"></a><h2>Property Details</h2>
+<a name="id2645510"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2649019"></a><h3>
+<a name="id2645520"></a><h3>
 <a name="GimpStringComboBox--ellipsize"></a>The "<code class="literal">ellipsize</code>" property</h3>
-<a class="indexterm" name="id2649034"></a><pre class="programlisting">  "ellipsize"                PangoEllipsizeMode    : Read / Write</pre>
+<a class="indexterm" name="id2645536"></a><pre class="programlisting">  "ellipsize"                <a
+href="../pango/pango-Layout-Objects.html#PangoEllipsizeMode"
+>PangoEllipsizeMode</a>    : Read / Write</pre>
 <p>
 Specifies the preferred place to ellipsize text in the combo-box,
 if the cell renderer does not have enough room to display the
@@ -242,9 +302,11 @@ entire string.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649072"></a><h3>
+<a name="id2645575"></a><h3>
 <a name="GimpStringComboBox--id-column"></a>The "<code class="literal">id-column</code>" property</h3>
-<a class="indexterm" name="id2649088"></a><pre class="programlisting">  "id-column"                gint                  : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2645590"></a><pre class="programlisting">  "id-column"                <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write / Construct Only</pre>
 <p>
 The column in the associated GtkTreeModel that holds strings to
 be used as labels in the combo-box.</p>
@@ -258,9 +320,11 @@ be used as labels in the combo-box.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2649129"></a><h3>
+<a name="id2645632"></a><h3>
 <a name="GimpStringComboBox--label-column"></a>The "<code class="literal">label-column</code>" property</h3>
-<a class="indexterm" name="id2649145"></a><pre class="programlisting">  "label-column"             gint                  : Read / Write / Construct Only</pre>
+<a class="indexterm" name="id2645648"></a><pre class="programlisting">  "label-column"             <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write / Construct Only</pre>
 <p></p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0</p>

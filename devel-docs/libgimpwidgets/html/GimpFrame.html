@@ -33,24 +33,26 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-GimpHintBox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589532" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2603379" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2577162" class="shortcut">Description</a>
+                  <a href="#id2626733" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2628985" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2626604" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2577093" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2626664" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2577120" class="shortcut">Style Properties</a></nobr></td></tr>
+                  <a href="#id2626692" class="shortcut">Style Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpFrame"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2589532"></a><span class="refentrytitle">GimpFrame</span>
+<a name="id2603379"></a><span class="refentrytitle">GimpFrame</span>
 </h2>
-<p>GimpFrame &#8212; A widget providing a HIG-compliant subclass of <span class="type">GtkFrame</span>.</p>
+<p>GimpFrame &#8212; A widget providing a HIG-compliant subclass of <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a>.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-frame.png"></td>
 </tr></table></div>
@@ -61,62 +63,92 @@
 
 
                     <a class="link" href="GimpFrame.html#GimpFrame-struct">GimpFrame</a>;
-GtkWidget*          <a class="link" href="GimpFrame.html#gimp-frame-new">gimp_frame_new</a>                      (const gchar *label);
+<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpFrame.html#gimp-frame-new">gimp_frame_new</a>                      (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *label);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2628985"></a><h2>Object Hierarchy</h2>
+<a name="id2626604"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
-                     +----GtkContainer
-                           +----GtkBin
-                                 +----GtkFrame
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>
+                     +----<a
+href="../gtk/GtkContainer.html"
+>GtkContainer</a>
+                           +----<a
+href="../gtk/GtkBin.html"
+>GtkBin</a>
+                                 +----<a
+href="../gtk/GtkFrame.html"
+>GtkFrame</a>
                                        +----GimpFrame
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577093"></a><h2>Implemented Interfaces</h2>
+<a name="id2626664"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpFrame implements
  AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577120"></a><h2>Style Properties</h2>
+<a name="id2626692"></a><h2>Style Properties</h2>
 <pre class="synopsis">
 
-  "<a class="link" href="GimpFrame.html#GimpFrame--label-bold">label-bold</a>"               gboolean              : Read
-  "<a class="link" href="GimpFrame.html#GimpFrame--label-spacing">label-spacing</a>"            gint                  : Read
+  "<a class="link" href="GimpFrame.html#GimpFrame--label-bold">label-bold</a>"               <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>              : Read
+  "<a class="link" href="GimpFrame.html#GimpFrame--label-spacing">label-spacing</a>"            <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577162"></a><h2>Description</h2>
+<a name="id2626733"></a><h2>Description</h2>
 <p>
-A widget providing a HIG-compliant subclass of <span class="type">GtkFrame</span>.
+A widget providing a HIG-compliant subclass of <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a>.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2577185"></a><h2>Details</h2>
+<a name="id2628838"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2577196"></a><h3>
+<a name="id2628848"></a><h3>
 <a name="GimpFrame-struct"></a>GimpFrame</h3>
-<a class="indexterm" name="id2577209"></a><pre class="programlisting">typedef struct _GimpFrame GimpFrame;</pre>
+<a class="indexterm" name="id2628861"></a><pre class="programlisting">typedef struct _GimpFrame GimpFrame;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2628199"></a><h3>
+<a name="id2628876"></a><h3>
 <a name="gimp-frame-new"></a>gimp_frame_new ()</h3>
-<a class="indexterm" name="id2628214"></a><pre class="programlisting">GtkWidget*          gimp_frame_new                      (const gchar *label);</pre>
+<a class="indexterm" name="id2628891"></a><pre class="programlisting"><a
+href="../gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_frame_new                      (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *label);</pre>
 <p>
 Creates a <a class="link" href="GimpFrame.html" title="GimpFrame"><span class="type">GimpFrame</span></a> widget. A <a class="link" href="GimpFrame.html" title="GimpFrame"><span class="type">GimpFrame</span></a> is a HIG-compliant
-variant of <span class="type">GtkFrame</span>. It doesn't render a frame at all but
+variant of <a
+href="../gtk/GtkFrame.html"
+><span class="type">GtkFrame</span></a>. It doesn't render a frame at all but
 otherwise behaves like a frame. The frame's title is rendered in
 bold and the frame content is indented four spaces as suggested by
 the GNOME HIG (see http://developer.gnome.org/projects/gup/hig/).</p>
@@ -128,7 +160,9 @@ the GNOME HIG (see http://developer.gnome.org/projects/gup/hig/).</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label</code></em>&#160;:</span></p></td>
-<td> text to set as the frame's title label (or <code class="literal">NULL</code> for no title)
+<td> text to set as the frame's title label (or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> for no title)
 </td>
 </tr>
 <tr>
@@ -144,19 +178,23 @@ the GNOME HIG (see http://developer.gnome.org/projects/gup/hig/).</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2628325"></a><h2>Style Property Details</h2>
+<a name="id2630896"></a><h2>Style Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2628334"></a><h3>
+<a name="id2630906"></a><h3>
 <a name="GimpFrame--label-bold"></a>The "<code class="literal">label-bold</code>" style property</h3>
-<a class="indexterm" name="id2630721"></a><pre class="programlisting">  "label-bold"               gboolean              : Read</pre>
+<a class="indexterm" name="id2630920"></a><pre class="programlisting">  "label-bold"               <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>              : Read</pre>
 <p></p>
 <p>Default value: TRUE</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2630744"></a><h3>
+<a name="id2630944"></a><h3>
 <a name="GimpFrame--label-spacing"></a>The "<code class="literal">label-spacing</code>" style property</h3>
-<a class="indexterm" name="id2630758"></a><pre class="programlisting">  "label-spacing"            gint                  : Read</pre>
+<a class="indexterm" name="id2630958"></a><pre class="programlisting">  "label-spacing"            <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read</pre>
 <p></p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 6</p>

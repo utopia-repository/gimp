@@ -69,7 +69,6 @@
 #include "file-open.h"
 #include "file-procedure.h"
 #include "file-utils.h"
-#include "gimprecentlist.h"
 
 #include "gimp-intl.h"
 
@@ -166,6 +165,12 @@ file_open_image (Gimp                *gimp,
         {
           file_open_sanitize_image (image, as_new);
 
+          /* Only set the load procedure if it hasn't already been set. */
+          if (! gimp_image_get_load_proc (image))
+            gimp_image_set_load_proc (image, file_proc);
+
+          file_proc = gimp_image_get_load_proc (image);
+
           if (mime_type)
             *mime_type = file_proc->mime_type;
         }
@@ -189,9 +194,7 @@ file_open_image (Gimp                *gimp,
 
   if (image)
     {
-      gimp_image_undo_disable (image);
       file_open_handle_color_profile (image, context, progress, run_mode);
-      gimp_image_undo_enable (image);
     }
 
   return image;
@@ -353,7 +356,7 @@ file_open_with_proc_and_display (Gimp                *gimp,
             }
 
           if (gimp->config->save_document_history)
-            gimp_recent_list_add_uri (uri, mime_type);
+            gimp_recent_list_add_uri (gimp, uri, mime_type);
         }
 
       /*  the display owns the image now  */
@@ -463,7 +466,7 @@ file_open_layers (Gimp                *gimp,
                                       uri, mime_type);
 
           if (gimp->config->save_document_history)
-            gimp_recent_list_add_uri (uri, mime_type);
+            gimp_recent_list_add_uri (gimp, uri, mime_type);
         }
       else
         {
@@ -619,6 +622,8 @@ file_open_handle_color_profile (GimpImage    *image,
 {
   if (gimp_image_parasite_find (image, "icc-profile"))
     {
+      gimp_image_undo_disable (image);
+
       switch (image->gimp->config->color_profile_policy)
         {
         case GIMP_COLOR_PROFILE_POLICY_ASK:
@@ -635,5 +640,8 @@ file_open_handle_color_profile (GimpImage    *image,
                                        GIMP_RUN_NONINTERACTIVE);
           break;
         }
+
+      gimp_image_clean_all (image);
+      gimp_image_undo_enable (image);
     }
 }

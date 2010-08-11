@@ -88,7 +88,13 @@ A widget providing a preview with fixed aspect ratio.
                                                          <link linkend="gboolean">gboolean</link> *toggle);</programlisting>
 <para>
 Creates a new <link linkend="GimpAspectPreview"><type>GimpAspectPreview</type></link> widget for <parameter>drawable</parameter>. See also
-<link linkend="gimp-drawable-preview-new"><function>gimp_drawable_preview_new()</function></link>.</para>
+<link linkend="gimp-drawable-preview-new"><function>gimp_drawable_preview_new()</function></link>.
+</para>
+<para>
+In GIMP 2.2 the <parameter>toggle</parameter> parameter was provided to conviently access
+the state of the "Preview" check-button. This is not any longer
+necessary as the preview itself now stores this state, as well as
+the scroll offset.</para>
 <para>
 
 </para><variablelist role="params">
@@ -96,8 +102,7 @@ Creates a new <link linkend="GimpAspectPreview"><type>GimpAspectPreview</type></
 <listitem><simpara> a <link linkend="GimpDrawable"><type>GimpDrawable</type></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>toggle</parameter>&nbsp;:</term>
-<listitem><simpara>   pointer to a <link linkend="gboolean"><type>gboolean</type></link> variable to sync with the "Preview"
-           check-button or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
+<listitem><simpara>   unused
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 

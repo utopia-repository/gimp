@@ -180,8 +180,8 @@ This function delegates to the underlying
                                                          const <link linkend="gchar">gchar</link> *label);</programlisting>
 <para>
 Selects a color profile from the <parameter>combo</parameter> and makes it the active
-item.  If the profile is not listed in the <parameter>combo</parameter>, then it is
-added.</para>
+item.  If the profile is not listed in the <parameter>combo</parameter>, then it is added
+with the given <parameter>label</parameter> (or <parameter>filename</parameter> in case that <parameter>label</parameter> is <link linkend="NULL:CAPS"><literal>NULL</literal></link>).</para>
 <para>
 
 </para><variablelist role="params">
@@ -192,7 +192,7 @@ added.</para>
 <listitem><simpara> filename of the profile to select
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>label</parameter>&nbsp;:</term>
-<listitem><simpara>    label
+<listitem><simpara>    label to use when adding a new entry (can be <link linkend="NULL:CAPS"><literal>NULL</literal></link>)
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>

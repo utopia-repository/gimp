@@ -78,6 +78,7 @@ EXPORTS
 	gimp_context_get_paint_mode
 	gimp_context_get_palette
 	gimp_context_get_pattern
+	gimp_context_list_paint_methods
 	gimp_context_pop
 	gimp_context_push
 	gimp_context_set_background
@@ -404,6 +405,7 @@ EXPORTS
 	gimp_layer_add_mask
 	gimp_layer_copy
 	gimp_layer_create_mask
+	gimp_layer_flatten
 	gimp_layer_from_mask
 	gimp_layer_get_apply_mask
 	gimp_layer_get_edit_mask

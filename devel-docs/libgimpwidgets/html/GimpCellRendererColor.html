@@ -33,20 +33,20 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpCellRendererToggle.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2641750" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2616655" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2649281" class="shortcut">Description</a>
+                  <a href="#id2640650" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2631326" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2641279" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2649228" class="shortcut">Properties</a></nobr></td></tr>
+                  <a href="#id2641425" class="shortcut">Properties</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpCellRendererColor"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2641750"></a><span class="refentrytitle">GimpCellRendererColor</span>
+<a name="id2616655"></a><span class="refentrytitle">GimpCellRendererColor</span>
 </h2>
 <p>GimpCellRendererColor</p>
 </td>
@@ -59,55 +59,73 @@
 
 
                     <a class="link" href="GimpCellRendererColor.html#GimpCellRendererColor-struct">GimpCellRendererColor</a>;
-GtkCellRenderer*    <a class="link" href="GimpCellRendererColor.html#gimp-cell-renderer-color-new">gimp_cell_renderer_color_new</a>        (void);
+<a
+href="../gtk/GtkCellRenderer.html"
+>GtkCellRenderer</a>*    <a class="link" href="GimpCellRendererColor.html#gimp-cell-renderer-color-new">gimp_cell_renderer_color_new</a>        (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2631326"></a><h2>Object Hierarchy</h2>
+<a name="id2641279"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkCellRenderer
+  <a
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="../gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="../gtk/GtkCellRenderer.html"
+>GtkCellRenderer</a>
                      +----GimpCellRendererColor
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2649228"></a><h2>Properties</h2>
+<a name="id2641425"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a class="link" href="GimpCellRendererColor.html#GimpCellRendererColor--color">color</a>"                    <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a>               : Read / Write
-  "<a class="link" href="GimpCellRendererColor.html#GimpCellRendererColor--icon-size">icon-size</a>"                gint                  : Read / Write / Construct
-  "<a class="link" href="GimpCellRendererColor.html#GimpCellRendererColor--opaque">opaque</a>"                   gboolean              : Read / Write / Construct
+  "<a class="link" href="GimpCellRendererColor.html#GimpCellRendererColor--icon-size">icon-size</a>"                <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write / Construct
+  "<a class="link" href="GimpCellRendererColor.html#GimpCellRendererColor--opaque">opaque</a>"                   <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>              : Read / Write / Construct
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2649281"></a><h2>Description</h2>
+<a name="id2640650"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578606"></a><h2>Details</h2>
+<a name="id2640666"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2578617"></a><h3>
+<a name="id2640677"></a><h3>
 <a name="GimpCellRendererColor-struct"></a>GimpCellRendererColor</h3>
-<a class="indexterm" name="id2578628"></a><pre class="programlisting">typedef struct _GimpCellRendererColor GimpCellRendererColor;</pre>
+<a class="indexterm" name="id2640688"></a><pre class="programlisting">typedef struct _GimpCellRendererColor GimpCellRendererColor;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2578644"></a><h3>
+<a name="id2655105"></a><h3>
 <a name="gimp-cell-renderer-color-new"></a>gimp_cell_renderer_color_new ()</h3>
-<a class="indexterm" name="id2578658"></a><pre class="programlisting">GtkCellRenderer*    gimp_cell_renderer_color_new        (void);</pre>
+<a class="indexterm" name="id2655119"></a><pre class="programlisting"><a
+href="../gtk/GtkCellRenderer.html"
+>GtkCellRenderer</a>*    gimp_cell_renderer_color_new        (void);</pre>
 <p>
-Creates a <span class="type">GtkCellRenderer</span> that displays a color.</p>
+Creates a <a
+href="../gtk/GtkCellRenderer.html"
+><span class="type">GtkCellRenderer</span></a> that displays a color.</p>
 <p>
 
 </p>
@@ -125,29 +143,33 @@ Creates a <span class="type">GtkCellRenderer</span> that displays a color.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2654517"></a><h2>Property Details</h2>
+<a name="id2655181"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2654528"></a><h3>
+<a name="id2655192"></a><h3>
 <a name="GimpCellRendererColor--color"></a>The "<code class="literal">color</code>" property</h3>
-<a class="indexterm" name="id2654542"></a><pre class="programlisting">  "color"                    <a
+<a class="indexterm" name="id2654739"></a><pre class="programlisting">  "color"                    <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a>               : Read / Write</pre>
 <p></p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2654561"></a><h3>
+<a name="id2654758"></a><h3>
 <a name="GimpCellRendererColor--icon-size"></a>The "<code class="literal">icon-size</code>" property</h3>
-<a class="indexterm" name="id2528197"></a><pre class="programlisting">  "icon-size"                gint                  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2654772"></a><pre class="programlisting">  "icon-size"                <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                  : Read / Write / Construct</pre>
 <p></p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 1</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2528224"></a><h3>
+<a name="id2654800"></a><h3>
 <a name="GimpCellRendererColor--opaque"></a>The "<code class="literal">opaque</code>" property</h3>
-<a class="indexterm" name="id2528239"></a><pre class="programlisting">  "opaque"                   gboolean              : Read / Write / Construct</pre>
+<a class="indexterm" name="id2654814"></a><pre class="programlisting">  "opaque"                   <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>              : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: TRUE</p>
 </div>

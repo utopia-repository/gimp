@@ -57,7 +57,7 @@
 
 
 #ifdef RCSID
-static gchar rcsid[] = "$Id: edge.c 22715 2007-06-06 08:44:52Z muks $";
+static gchar rcsid[] = "$Id: edge.c 23603 2007-09-21 13:27:33Z neo $";
 #endif
 
 /* Some useful macros */
@@ -81,7 +81,6 @@ typedef struct
   gdouble  amount;
   gint     edgemode;
   gint     wrapmode;
-  gboolean update_preview;
 } EdgeVals;
 
 /*
@@ -122,8 +121,7 @@ static EdgeVals evals =
 {
   2.0,                           /* amount */
   SOBEL,                         /* Edge detection algorithm */
-  GIMP_PIXEL_FETCHER_EDGE_SMEAR, /* wrapmode */
-  TRUE                           /* update_preview */
+  GIMP_PIXEL_FETCHER_EDGE_SMEAR  /* wrapmode */
 };
 
 /***** Functions *****/
@@ -653,7 +651,7 @@ edge_dialog (GimpDrawable *drawable)
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_drawable_preview_new (drawable, &evals.update_preview);
+  preview = gimp_drawable_preview_new (drawable, NULL);
   gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
   gtk_widget_show (preview);
   g_signal_connect (preview, "invalidated",

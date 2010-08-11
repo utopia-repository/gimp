@@ -39,7 +39,7 @@
  * Ported to GIMP Plug-in API 1.0
  *    by Eiichi Takamori <taka@ma1.seikyou.ne.jp>
  *
- * $Id: plasma.c 22715 2007-06-06 08:44:52Z muks $
+ * $Id: plasma.c 23603 2007-09-21 13:27:33Z neo $
  *
  * A few functions names and their order are changed :)
  * Plasma implementation almost hasn't been changed.
@@ -78,7 +78,6 @@ typedef struct
   guint32   seed;
   gdouble   turbulence;
   gboolean  random_seed;
-  gboolean  preview;
 } PlasmaValues;
 
 
@@ -142,8 +141,7 @@ static PlasmaValues pvals =
 {
   0,     /* seed            */
   1.0,   /* turbulence      */
-  FALSE, /* Use random seed */
-  TRUE   /* preview         */
+  FALSE  /* Use random seed */
 };
 
 /*
@@ -320,7 +318,7 @@ plasma_dialog (GimpDrawable *drawable)
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), main_vbox);
   gtk_widget_show (main_vbox);
 
-  preview = gimp_aspect_preview_new (drawable, &pvals.preview);
+  preview = gimp_aspect_preview_new (drawable, NULL);
   gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
   gtk_widget_show (preview);
   g_signal_connect_swapped (preview, "invalidated",

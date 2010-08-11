@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpbrushes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2600690" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2616886" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2701841" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2702091" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbrush"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2600690"></a><span class="refentrytitle">gimpbrush</span>
+<a name="id2616886"></a><span class="refentrytitle">gimpbrush</span>
 </h2>
 <p>gimpbrush &#8212; Functions operating on a single brush.</p>
 </td>
@@ -52,63 +52,191 @@
 
 
 
-gchar*              <a class="link" href="libgimp-gimpbrush.html#gimp-brush-new">gimp_brush_new</a>                      (const gchar *name);
-gchar*              <a class="link" href="libgimp-gimpbrush.html#gimp-brush-duplicate">gimp_brush_duplicate</a>                (const gchar *name);
-gchar*              <a class="link" href="libgimp-gimpbrush.html#gimp-brush-rename">gimp_brush_rename</a>                   (const gchar *name,
-                                                         const gchar *new_name);
-gboolean            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-delete">gimp_brush_delete</a>                   (const gchar *name);
-gboolean            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-info">gimp_brush_get_info</a>                 (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *mask_bpp,
-                                                         gint *color_bpp);
-gboolean            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-pixels">gimp_brush_get_pixels</a>               (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *mask_bpp,
-                                                         gint *num_mask_bytes,
-                                                         guint8 **mask_bytes,
-                                                         gint *color_bpp,
-                                                         gint *num_color_bytes,
-                                                         guint8 **color_bytes);
-gboolean            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-spacing">gimp_brush_get_spacing</a>              (const gchar *name,
-                                                         gint *spacing);
-gboolean            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-spacing">gimp_brush_set_spacing</a>              (const gchar *name,
-                                                         gint spacing);
-<a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-shape">gimp_brush_get_shape</a>            (const gchar *name);
-<a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-shape">gimp_brush_set_shape</a>            (const gchar *name,
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpbrush.html#gimp-brush-new">gimp_brush_new</a>                      (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpbrush.html#gimp-brush-duplicate">gimp_brush_duplicate</a>                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpbrush.html#gimp-brush-rename">gimp_brush_rename</a>                   (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *new_name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-delete">gimp_brush_delete</a>                   (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-info">gimp_brush_get_info</a>                 (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *mask_bpp,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *color_bpp);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-pixels">gimp_brush_get_pixels</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *mask_bpp,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_mask_bytes,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> **mask_bytes,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *color_bpp,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_color_bytes,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> **color_bytes);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-spacing">gimp_brush_get_spacing</a>              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *spacing);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-spacing">gimp_brush_set_spacing</a>              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing);
+<a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-shape">gimp_brush_get_shape</a>            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-shape">gimp_brush_set_shape</a>            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> shape_in);
-gint                <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-spikes">gimp_brush_get_spikes</a>               (const gchar *name);
-gint                <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-spikes">gimp_brush_set_spikes</a>               (const gchar *name,
-                                                         gint spikes_in);
-gdouble             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-angle">gimp_brush_get_angle</a>                (const gchar *name);
-gdouble             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-angle">gimp_brush_set_angle</a>                (const gchar *name,
-                                                         gdouble angle_in);
-gdouble             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-radius">gimp_brush_get_radius</a>               (const gchar *name);
-gdouble             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-radius">gimp_brush_set_radius</a>               (const gchar *name,
-                                                         gdouble radius_in);
-gdouble             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-aspect-ratio">gimp_brush_get_aspect_ratio</a>         (const gchar *name);
-gdouble             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-aspect-ratio">gimp_brush_set_aspect_ratio</a>         (const gchar *name,
-                                                         gdouble aspect_ratio_in);
-gdouble             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-hardness">gimp_brush_get_hardness</a>             (const gchar *name);
-gdouble             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-hardness">gimp_brush_set_hardness</a>             (const gchar *name,
-                                                         gdouble hardness_in);
-gboolean            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-is-generated">gimp_brush_is_generated</a>             (const gchar *name);
-gboolean            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-is-editable">gimp_brush_is_editable</a>              (const gchar *name);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-spikes">gimp_brush_get_spikes</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-spikes">gimp_brush_set_spikes</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spikes_in);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-angle">gimp_brush_get_angle</a>                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-angle">gimp_brush_set_angle</a>                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> angle_in);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-radius">gimp_brush_get_radius</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-radius">gimp_brush_set_radius</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> radius_in);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-aspect-ratio">gimp_brush_get_aspect_ratio</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-aspect-ratio">gimp_brush_set_aspect_ratio</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> aspect_ratio_in);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-get-hardness">gimp_brush_get_hardness</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="libgimp-gimpbrush.html#gimp-brush-set-hardness">gimp_brush_set_hardness</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> hardness_in);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-is-generated">gimp_brush_is_generated</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpbrush.html#gimp-brush-is-editable">gimp_brush_is_editable</a>              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2701841"></a><h2>Description</h2>
+<a name="id2702091"></a><h2>Description</h2>
 <p>
 Functions operating on a single brush.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2701857"></a><h2>Details</h2>
+<a name="id2702106"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2701868"></a><h3>
+<a name="id2702117"></a><h3>
 <a name="gimp-brush-new"></a>gimp_brush_new ()</h3>
-<a class="indexterm" name="id2701882"></a><pre class="programlisting">gchar*              gimp_brush_new                      (const gchar *name);</pre>
+<a class="indexterm" name="id2702132"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_brush_new                      (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Creates a new brush
 </p>
@@ -138,9 +266,13 @@ This procedure creates a new, uninitialized brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2701954"></a><h3>
+<a name="id2702203"></a><h3>
 <a name="gimp-brush-duplicate"></a>gimp_brush_duplicate ()</h3>
-<a class="indexterm" name="id2701967"></a><pre class="programlisting">gchar*              gimp_brush_duplicate                (const gchar *name);</pre>
+<a class="indexterm" name="id2702216"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_brush_duplicate                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Duplicates a brush
 </p>
@@ -170,10 +302,16 @@ This procedure creates an identical brush by a different name</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2702039"></a><h3>
+<a name="id2702288"></a><h3>
 <a name="gimp-brush-rename"></a>gimp_brush_rename ()</h3>
-<a class="indexterm" name="id2702053"></a><pre class="programlisting">gchar*              gimp_brush_rename                   (const gchar *name,
-                                                         const gchar *new_name);</pre>
+<a class="indexterm" name="id2702302"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_brush_rename                   (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *new_name);</pre>
 <p>
 Rename a brush
 </p>
@@ -208,9 +346,13 @@ This procedure renames a brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2702145"></a><h3>
+<a name="id2702395"></a><h3>
 <a name="gimp-brush-delete"></a>gimp_brush_delete ()</h3>
-<a class="indexterm" name="id2702160"></a><pre class="programlisting">gboolean            gimp_brush_delete                   (const gchar *name);</pre>
+<a class="indexterm" name="id2702409"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brush_delete                   (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Deletes a brush
 </p>
@@ -240,13 +382,25 @@ This procedure deletes a brush</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689549"></a><h3>
+<a name="id2689827"></a><h3>
 <a name="gimp-brush-get-info"></a>gimp_brush_get_info ()</h3>
-<a class="indexterm" name="id2689563"></a><pre class="programlisting">gboolean            gimp_brush_get_info                 (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *mask_bpp,
-                                                         gint *color_bpp);</pre>
+<a class="indexterm" name="id2689841"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brush_get_info                 (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *mask_bpp,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *color_bpp);</pre>
 <p>
 Retrieve information about the specified brush.
 </p>
@@ -297,17 +451,37 @@ includes the brush name, and the brush extents (width and height).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689722"></a><h3>
+<a name="id2690001"></a><h3>
 <a name="gimp-brush-get-pixels"></a>gimp_brush_get_pixels ()</h3>
-<a class="indexterm" name="id2689736"></a><pre class="programlisting">gboolean            gimp_brush_get_pixels               (const gchar *name,
-                                                         gint *width,
-                                                         gint *height,
-                                                         gint *mask_bpp,
-                                                         gint *num_mask_bytes,
-                                                         guint8 **mask_bytes,
-                                                         gint *color_bpp,
-                                                         gint *num_color_bytes,
-                                                         guint8 **color_bytes);</pre>
+<a class="indexterm" name="id2690014"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brush_get_pixels               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *mask_bpp,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_mask_bytes,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> **mask_bytes,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *color_bpp,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_color_bytes,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint8"
+>guint8</a> **color_bytes);</pre>
 <p>
 Retrieve information about the specified brush.
 </p>
@@ -378,10 +552,16 @@ includes the brush extents (width and height) and its pixels data.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689980"></a><h3>
+<a name="id2690258"></a><h3>
 <a name="gimp-brush-get-spacing"></a>gimp_brush_get_spacing ()</h3>
-<a class="indexterm" name="id2689993"></a><pre class="programlisting">gboolean            gimp_brush_get_spacing              (const gchar *name,
-                                                         gint *spacing);</pre>
+<a class="indexterm" name="id2690271"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brush_get_spacing              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *spacing);</pre>
 <p>
 Get the brush spacing.
 </p>
@@ -418,10 +598,16 @@ percentage of the maximum of the width and height of the mask.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690088"></a><h3>
+<a name="id2690366"></a><h3>
 <a name="gimp-brush-set-spacing"></a>gimp_brush_set_spacing ()</h3>
-<a class="indexterm" name="id2690102"></a><pre class="programlisting">gboolean            gimp_brush_set_spacing              (const gchar *name,
-                                                         gint spacing);</pre>
+<a class="indexterm" name="id2690380"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brush_set_spacing              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing);</pre>
 <p>
 Set the brush spacing.
 </p>
@@ -457,9 +643,11 @@ The value should be a integer between 0 and 1000.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690196"></a><h3>
+<a name="id2690474"></a><h3>
 <a name="gimp-brush-get-shape"></a>gimp_brush_get_shape ()</h3>
-<a class="indexterm" name="id2690209"></a><pre class="programlisting"><a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> gimp_brush_get_shape            (const gchar *name);</pre>
+<a class="indexterm" name="id2690487"></a><pre class="programlisting"><a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> gimp_brush_get_shape            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Get the shape of a generated brush.
 </p>
@@ -494,9 +682,11 @@ in the future.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690284"></a><h3>
+<a name="id2690562"></a><h3>
 <a name="gimp-brush-set-shape"></a>gimp_brush_set_shape ()</h3>
-<a class="indexterm" name="id2690297"></a><pre class="programlisting"><a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> gimp_brush_set_shape            (const gchar *name,
+<a class="indexterm" name="id2690575"></a><pre class="programlisting"><a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> gimp_brush_set_shape            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpBrushGeneratedShape">GimpBrushGeneratedShape</a> shape_in);</pre>
 <p>
 Set the shape of a generated brush.
@@ -537,9 +727,13 @@ in the future.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690392"></a><h3>
+<a name="id2690670"></a><h3>
 <a name="gimp-brush-get-spikes"></a>gimp_brush_get_spikes ()</h3>
-<a class="indexterm" name="id2690406"></a><pre class="programlisting">gint                gimp_brush_get_spikes               (const gchar *name);</pre>
+<a class="indexterm" name="id2690684"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_brush_get_spikes               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Get the number of spikes for a generated brush.
 </p>
@@ -570,10 +764,16 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690479"></a><h3>
+<a name="id2690757"></a><h3>
 <a name="gimp-brush-set-spikes"></a>gimp_brush_set_spikes ()</h3>
-<a class="indexterm" name="id2690493"></a><pre class="programlisting">gint                gimp_brush_set_spikes               (const gchar *name,
-                                                         gint spikes_in);</pre>
+<a class="indexterm" name="id2690771"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_brush_set_spikes               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spikes_in);</pre>
 <p>
 Set the number of spikes for a generated brush.
 </p>
@@ -609,9 +809,13 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690587"></a><h3>
+<a name="id2690866"></a><h3>
 <a name="gimp-brush-get-angle"></a>gimp_brush_get_angle ()</h3>
-<a class="indexterm" name="id2690601"></a><pre class="programlisting">gdouble             gimp_brush_get_angle                (const gchar *name);</pre>
+<a class="indexterm" name="id2690879"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_brush_get_angle                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Get the rotation angle of a generated brush.
 </p>
@@ -642,10 +846,16 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690674"></a><h3>
+<a name="id2690953"></a><h3>
 <a name="gimp-brush-set-angle"></a>gimp_brush_set_angle ()</h3>
-<a class="indexterm" name="id2690688"></a><pre class="programlisting">gdouble             gimp_brush_set_angle                (const gchar *name,
-                                                         gdouble angle_in);</pre>
+<a class="indexterm" name="id2690966"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_brush_set_angle                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> angle_in);</pre>
 <p>
 Set the rotation angle of a generated brush.
 </p>
@@ -681,9 +891,13 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690783"></a><h3>
+<a name="id2691061"></a><h3>
 <a name="gimp-brush-get-radius"></a>gimp_brush_get_radius ()</h3>
-<a class="indexterm" name="id2690797"></a><pre class="programlisting">gdouble             gimp_brush_get_radius               (const gchar *name);</pre>
+<a class="indexterm" name="id2691075"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_brush_get_radius               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Get the radius of a generated brush.
 </p>
@@ -714,10 +928,16 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690869"></a><h3>
+<a name="id2691147"></a><h3>
 <a name="gimp-brush-set-radius"></a>gimp_brush_set_radius ()</h3>
-<a class="indexterm" name="id2690883"></a><pre class="programlisting">gdouble             gimp_brush_set_radius               (const gchar *name,
-                                                         gdouble radius_in);</pre>
+<a class="indexterm" name="id2691161"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_brush_set_radius               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> radius_in);</pre>
 <p>
 Set the radius of a generated brush.
 </p>
@@ -753,9 +973,13 @@ any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690976"></a><h3>
+<a name="id2691254"></a><h3>
 <a name="gimp-brush-get-aspect-ratio"></a>gimp_brush_get_aspect_ratio ()</h3>
-<a class="indexterm" name="id2690990"></a><pre class="programlisting">gdouble             gimp_brush_get_aspect_ratio         (const gchar *name);</pre>
+<a class="indexterm" name="id2691268"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_brush_get_aspect_ratio         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Get the aspect ratio of a generated brush.
 </p>
@@ -786,10 +1010,16 @@ for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691063"></a><h3>
+<a name="id2691341"></a><h3>
 <a name="gimp-brush-set-aspect-ratio"></a>gimp_brush_set_aspect_ratio ()</h3>
-<a class="indexterm" name="id2691077"></a><pre class="programlisting">gdouble             gimp_brush_set_aspect_ratio         (const gchar *name,
-                                                         gdouble aspect_ratio_in);</pre>
+<a class="indexterm" name="id2691355"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_brush_set_aspect_ratio         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> aspect_ratio_in);</pre>
 <p>
 Set the aspect ratio of a generated brush.
 </p>
@@ -825,9 +1055,13 @@ called for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691172"></a><h3>
+<a name="id2691450"></a><h3>
 <a name="gimp-brush-get-hardness"></a>gimp_brush_get_hardness ()</h3>
-<a class="indexterm" name="id2691186"></a><pre class="programlisting">gdouble             gimp_brush_get_hardness             (const gchar *name);</pre>
+<a class="indexterm" name="id2691464"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_brush_get_hardness             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Get the hardness of a generated brush.
 </p>
@@ -859,10 +1093,16 @@ called for any other type of brush, the function does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691260"></a><h3>
+<a name="id2691539"></a><h3>
 <a name="gimp-brush-set-hardness"></a>gimp_brush_set_hardness ()</h3>
-<a class="indexterm" name="id2691274"></a><pre class="programlisting">gdouble             gimp_brush_set_hardness             (const gchar *name,
-                                                         gdouble hardness_in);</pre>
+<a class="indexterm" name="id2691552"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_brush_set_hardness             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> hardness_in);</pre>
 <p>
 Set the hardness of a generated brush.
 </p>
@@ -898,9 +1138,13 @@ for any other type of brush, it does not succeed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691369"></a><h3>
+<a name="id2691647"></a><h3>
 <a name="gimp-brush-is-generated"></a>gimp_brush_is_generated ()</h3>
-<a class="indexterm" name="id2691383"></a><pre class="programlisting">gboolean            gimp_brush_is_generated             (const gchar *name);</pre>
+<a class="indexterm" name="id2691661"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brush_is_generated             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Tests if brush is generated
 </p>
@@ -930,9 +1174,13 @@ Returns TRUE if this brush is parametric, FALSE for other types</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691454"></a><h3>
+<a name="id2691732"></a><h3>
 <a name="gimp-brush-is-editable"></a>gimp_brush_is_editable ()</h3>
-<a class="indexterm" name="id2691468"></a><pre class="programlisting">gboolean            gimp_brush_is_editable              (const gchar *name);</pre>
+<a class="indexterm" name="id2691746"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brush_is_editable              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Tests if brush can be edited
 </p>

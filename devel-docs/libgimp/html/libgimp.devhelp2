@@ -190,6 +190,7 @@
     <keyword type="function" name="gimp_context_set_font ()" link="libgimp-gimpcontext.html#gimp-context-set-font" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_context_get_paint_method ()" link="libgimp-gimpcontext.html#gimp-context-get-paint-method" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_context_set_paint_method ()" link="libgimp-gimpcontext.html#gimp-context-set-paint-method" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_context_list_paint_methods ()" link="libgimp-gimpcontext.html#gimp-context-list-paint-methods" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_gimprc_query ()" link="libgimp-gimpgimprc.html#gimp-gimprc-query"/>
     <keyword type="function" name="gimp_gimprc_set ()" link="libgimp-gimpgimprc.html#gimp-gimprc-set"/>
     <keyword type="function" name="gimp_get_color_configuration ()" link="libgimp-gimpgimprc.html#gimp-get-color-configuration" since="GIMP 2.4"/>
@@ -469,6 +470,7 @@
     <keyword type="function" name="gimp_layer_resize_to_image_size ()" link="libgimp-gimplayer.html#gimp-layer-resize-to-image-size"/>
     <keyword type="function" name="gimp_layer_translate ()" link="libgimp-gimplayer.html#gimp-layer-translate"/>
     <keyword type="function" name="gimp_layer_add_alpha ()" link="libgimp-gimplayer.html#gimp-layer-add-alpha"/>
+    <keyword type="function" name="gimp_layer_flatten ()" link="libgimp-gimplayer.html#gimp-layer-flatten" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_layer_set_offsets ()" link="libgimp-gimplayer.html#gimp-layer-set-offsets"/>
     <keyword type="function" name="gimp_layer_create_mask ()" link="libgimp-gimplayer.html#gimp-layer-create-mask"/>
     <keyword type="function" name="gimp_layer_from_mask ()" link="libgimp-gimplayer.html#gimp-layer-from-mask" since="GIMP 2.2"/>

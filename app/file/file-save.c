@@ -60,7 +60,6 @@
 
 #include "file-save.h"
 #include "file-utils.h"
-#include "gimprecentlist.h"
 
 #include "gimp-intl.h"
 
@@ -170,6 +169,7 @@ file_save (GimpImage           *image,
 
           gimp_image_set_uri (image, uri);
           gimp_image_set_save_proc (image, file_proc);
+
           gimp_image_clean_all (image);
         }
 
@@ -185,7 +185,7 @@ file_save (GimpImage           *image,
         gimp_imagefile_save_thumbnail (imagefile, file_proc->mime_type, image);
 
       if (image->gimp->config->save_document_history)
-        gimp_recent_list_add_uri (uri, file_proc->mime_type);
+        gimp_recent_list_add_uri (image->gimp, uri, file_proc->mime_type);
     }
   else if (status != GIMP_PDB_CANCEL)
     {

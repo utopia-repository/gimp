@@ -1,12 +1,7 @@
 /* GIMP - The GNU Image Manipulation Program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * Recent File Storage,
- * see http://freedesktop.org/Standards/recent-file-spec/
- *
- * This code is taken from libegg and has been adapted to the GIMP needs.
- * The original author is James Willcox <jwillcox@cs.indiana.edu>,
- * responsible for bugs in this version is Sven Neumann <sven@gimp.org>.
+ * plug-in-menu-path.h
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +18,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIMP_RECENT_LIST_H__
-#define __GIMP_RECENT_LIST_H__
+#ifndef __PLUG_IN_MENU_PATH_H__
+#define __PLUG_IN_MENU_PATH_H__
 
 
-gboolean  gimp_recent_list_add_uri (const gchar *uri,
-                                    const gchar *mime_type);
+gchar * plug_in_menu_path_map (const gchar *menu_path);
 
 
-#endif /* __GIMP_RECENT_LIST_H__ */
+#endif /* __PLUG_IN_MENU_PATH_H__ */

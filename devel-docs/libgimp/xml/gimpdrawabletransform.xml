@@ -293,10 +293,10 @@ transform.</para>
 <listitem><simpara> Type of interpolation.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>supersample</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to perform supersample.
+<listitem><simpara> This parameter is ignored, supersampling is performed based on the interpolation type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>recursion_level</parameter>&nbsp;:</term>
-<listitem><simpara> Level of recursion (3 is a nice default).
+<listitem><simpara> Maximum recursion level used for supersampling (3 is a nice value).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
 <listitem><simpara> Whether to clip results.
@@ -425,10 +425,10 @@ to have been projected via a perspective transform.</para>
 <listitem><simpara> Type of interpolation.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>supersample</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to perform supersample.
+<listitem><simpara> This parameter is ignored, supersampling is performed based on the interpolation type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>recursion_level</parameter>&nbsp;:</term>
-<listitem><simpara> Level of recursion (3 is a nice default).
+<listitem><simpara> Maximum recursion level used for supersampling (3 is a nice value).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
 <listitem><simpara> How to clip results.
@@ -597,10 +597,10 @@ this will be the newly created and rotated drawable.</para>
 <listitem><simpara> Type of interpolation.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>supersample</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to perform supersample.
+<listitem><simpara> This parameter is ignored, supersampling is performed based on the interpolation type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>recursion_level</parameter>&nbsp;:</term>
-<listitem><simpara> Level of recursion (3 is a nice default).
+<listitem><simpara> Maximum recursion level used for supersampling (3 is a nice value).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
 <listitem><simpara> How to clip results.
@@ -705,10 +705,10 @@ this will be the newly created and scaled drawable.</para>
 <listitem><simpara> Type of interpolation.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>supersample</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to perform supersample.
+<listitem><simpara> This parameter is ignored, supersampling is performed based on the interpolation type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>recursion_level</parameter>&nbsp;:</term>
-<listitem><simpara> Level of recursion (3 is a nice default).
+<listitem><simpara> Maximum recursion level used for supersampling (3 is a nice value).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
 <listitem><simpara> How to clip results.
@@ -808,10 +808,10 @@ indicates the extent (in pixels) to shear by.</para>
 <listitem><simpara> Type of interpolation.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>supersample</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to perform supersample.
+<listitem><simpara> This parameter is ignored, supersampling is performed based on the interpolation type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>recursion_level</parameter>&nbsp;:</term>
-<listitem><simpara> Level of recursion (3 is a nice default).
+<listitem><simpara> Maximum recursion level used for supersampling (3 is a nice value).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
 <listitem><simpara> How to clip results.
@@ -923,10 +923,10 @@ Otherwise, this will be the newly created and transformed drawable.</para>
 <listitem><simpara> Type of interpolation.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>supersample</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to perform supersample.
+<listitem><simpara> This parameter is ignored, supersampling is performed based on the interpolation type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>recursion_level</parameter>&nbsp;:</term>
-<listitem><simpara> Level of recursion (3 is a nice default).
+<listitem><simpara> Maximum recursion level used for supersampling (3 is a nice value).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
 <listitem><simpara> How to clip results.
@@ -1062,10 +1062,10 @@ Otherwise, this will be the newly created and transformed drawable.</para>
 <listitem><simpara> Type of interpolation.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>supersample</parameter>&nbsp;:</term>
-<listitem><simpara> Whether to perform supersample.
+<listitem><simpara> This parameter is ignored, supersampling is performed based on the interpolation type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>recursion_level</parameter>&nbsp;:</term>
-<listitem><simpara> Level of recursion (3 is a nice default).
+<listitem><simpara> Maximum recursion level used for supersampling (3 is a nice value).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>clip_result</parameter>&nbsp;:</term>
 <listitem><simpara> How to clip results.

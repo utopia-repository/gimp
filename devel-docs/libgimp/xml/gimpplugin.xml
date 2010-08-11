@@ -159,8 +159,10 @@ procedure.</para>
 Register a sub-menu.
 </para>
 <para>
-This procedure installs an sub-menu which does not belong to any
-procedure.</para>
+This procedure installs a sub-menu which does not belong to any
+procedure. The menu-name should be the untranslated menu label. GIMP
+will look up the translation in the textdomain registered for the
+plug-in.</para>
 <para>
 
 </para><variablelist role="params">

@@ -641,6 +641,9 @@ const PyMethodDef gimpthumb_functions[] = {
 void
 gimpthumb_add_constants(PyObject *module, const gchar *strip_prefix)
 {
+#ifdef VERSION
+    PyModule_AddStringConstant(module, "__version__", VERSION);
+#endif
   pyg_enum_add(module, "ThumbFileType", strip_prefix, GIMP_TYPE_THUMB_FILE_TYPE);
   pyg_enum_add(module, "ThumbSize", strip_prefix, GIMP_TYPE_THUMB_SIZE);
   pyg_enum_add(module, "ThumbState", strip_prefix, GIMP_TYPE_THUMB_STATE);
@@ -681,7 +684,7 @@ gimpthumb_register_classes(PyObject *d)
     }
 
 
-#line 685 "gimpthumb.c"
+#line 688 "gimpthumb.c"
     pygobject_register_class(d, "GimpThumbnail", GIMP_TYPE_THUMBNAIL, &PyGimpThumbnail_Type, Py_BuildValue("(O)", &PyGObject_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_THUMBNAIL);
 }

@@ -295,6 +295,16 @@ gimp_image_merge_visible_vectors (GimpImage *image)
 
 /*  private functions  */
 
+static CombinationMode
+gimp_image_merge_layers_get_operation (GimpLayer *dest,
+                                       GimpLayer *src)
+{
+  GimpImageType type  = gimp_drawable_type (GIMP_DRAWABLE (dest));
+  gint          bytes = gimp_drawable_bytes (GIMP_DRAWABLE (src));
+
+  return gimp_image_get_combination_mode (type, bytes);
+}
+
 static GimpLayer *
 gimp_image_merge_layers (GimpImage     *image,
                          GSList        *merge_list,
@@ -341,7 +351,7 @@ gimp_image_merge_layers (GimpImage     *image,
         {
         case GIMP_EXPAND_AS_NECESSARY:
         case GIMP_CLIP_TO_IMAGE:
-          if (!count)
+          if (! count)
             {
               x1 = off_x;
               y1 = off_y;
@@ -359,6 +369,7 @@ gimp_image_merge_layers (GimpImage     *image,
               if ((off_y + gimp_item_height (GIMP_ITEM (layer))) > y2)
                 y2 = (off_y + gimp_item_height (GIMP_ITEM (layer)));
             }
+
           if (merge_type == GIMP_CLIP_TO_IMAGE)
             {
               x1 = CLAMP (x1, 0, image->width);
@@ -413,7 +424,7 @@ gimp_image_merge_layers (GimpImage     *image,
                                     type,
                                     gimp_object_get_name (GIMP_OBJECT (layer)),
                                     GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
-      if (!merge_layer)
+      if (! merge_layer)
         {
           g_warning ("%s: could not allocate merge layer.", G_STRFUNC);
           return NULL;
@@ -430,8 +441,7 @@ gimp_image_merge_layers (GimpImage     *image,
       /*  init the pixel region  */
       pixel_region_init (&src1PR,
                          gimp_drawable_get_tiles (GIMP_DRAWABLE (merge_layer)),
-                         0, 0,
-                         image->width, image->height,
+                         0, 0, (x2 - x1), (y2 - y1),
                          TRUE);
 
       /*  set the region to the background color  */
@@ -442,9 +452,8 @@ gimp_image_merge_layers (GimpImage     *image,
   else
     {
       /*  The final merged layer inherits the name of the bottom most layer
-       *  and the resulting layer has an alpha channel
-       *  whether or not the original did
-       *  Opacity is set to 100% and the MODE is set to normal
+       *  and the resulting layer has an alpha channel whether or not the
+       *  original did. Opacity is set to 100% and the MODE is set to normal.
        */
 
       merge_layer =
@@ -500,9 +509,16 @@ gimp_image_merge_layers (GimpImage     *image,
       /*  determine what sort of operation is being attempted and
        *  if it's actually legal...
        */
-      operation =
-        gimp_image_get_combination_mode (gimp_drawable_type (GIMP_DRAWABLE (merge_layer)),
-                                         gimp_drawable_bytes (GIMP_DRAWABLE (layer)));
+      operation = gimp_image_merge_layers_get_operation (merge_layer, layer);
+
+      if (operation == -1)
+        {
+          gimp_layer_add_alpha (layer);
+
+          /*  try again ...  */
+          operation = gimp_image_merge_layers_get_operation (merge_layer,
+                                                             layer);
+        }
 
       if (operation == -1)
         {

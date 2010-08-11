@@ -51,10 +51,10 @@
 /* BOOLEAN:BOOLEAN (./gimpmarshal.list:25) */
 void
 gimp_marshal_BOOLEAN__BOOLEAN (GClosure     *closure,
-                               GValue       *return_value,
+                               GValue       *return_value G_GNUC_UNUSED,
                                guint         n_param_values,
                                const GValue *param_values,
-                               gpointer      invocation_hint,
+                               gpointer      invocation_hint G_GNUC_UNUSED,
                                gpointer      marshal_data)
 {
   typedef gboolean (*GMarshalFunc_BOOLEAN__BOOLEAN) (gpointer     data1,
@@ -90,10 +90,10 @@ gimp_marshal_BOOLEAN__BOOLEAN (GClosure     *closure,
 /* BOOLEAN:ENUM,INT (./gimpmarshal.list:26) */
 void
 gimp_marshal_BOOLEAN__ENUM_INT (GClosure     *closure,
-                                GValue       *return_value,
+                                GValue       *return_value G_GNUC_UNUSED,
                                 guint         n_param_values,
                                 const GValue *param_values,
-                                gpointer      invocation_hint,
+                                gpointer      invocation_hint G_GNUC_UNUSED,
                                 gpointer      marshal_data)
 {
   typedef gboolean (*GMarshalFunc_BOOLEAN__ENUM_INT) (gpointer     data1,
@@ -131,10 +131,10 @@ gimp_marshal_BOOLEAN__ENUM_INT (GClosure     *closure,
 /* BOOLEAN:OBJECT,POINTER (./gimpmarshal.list:27) */
 void
 gimp_marshal_BOOLEAN__OBJECT_POINTER (GClosure     *closure,
-                                      GValue       *return_value,
+                                      GValue       *return_value G_GNUC_UNUSED,
                                       guint         n_param_values,
                                       const GValue *param_values,
-                                      gpointer      invocation_hint,
+                                      gpointer      invocation_hint G_GNUC_UNUSED,
                                       gpointer      marshal_data)
 {
   typedef gboolean (*GMarshalFunc_BOOLEAN__OBJECT_POINTER) (gpointer     data1,
@@ -172,10 +172,10 @@ gimp_marshal_BOOLEAN__OBJECT_POINTER (GClosure     *closure,
 /* BOOLEAN:OBJECT,POINTER,STRING (./gimpmarshal.list:28) */
 void
 gimp_marshal_BOOLEAN__OBJECT_POINTER_STRING (GClosure     *closure,
-                                             GValue       *return_value,
+                                             GValue       *return_value G_GNUC_UNUSED,
                                              guint         n_param_values,
                                              const GValue *param_values,
-                                             gpointer      invocation_hint,
+                                             gpointer      invocation_hint G_GNUC_UNUSED,
                                              gpointer      marshal_data)
 {
   typedef gboolean (*GMarshalFunc_BOOLEAN__OBJECT_POINTER_STRING) (gpointer     data1,
@@ -217,10 +217,10 @@ gimp_marshal_BOOLEAN__OBJECT_POINTER_STRING (GClosure     *closure,
 /* VOID:BOOLEAN,INT,INT,INT,INT (./gimpmarshal.list:31) */
 void
 gimp_marshal_VOID__BOOLEAN_INT_INT_INT_INT (GClosure     *closure,
-                                            GValue       *return_value,
+                                            GValue       *return_value G_GNUC_UNUSED,
                                             guint         n_param_values,
                                             const GValue *param_values,
-                                            gpointer      invocation_hint,
+                                            gpointer      invocation_hint G_GNUC_UNUSED,
                                             gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__BOOLEAN_INT_INT_INT_INT) (gpointer     data1,
@@ -262,10 +262,10 @@ gimp_marshal_VOID__BOOLEAN_INT_INT_INT_INT (GClosure     *closure,
 /* VOID:BOXED,ENUM (./gimpmarshal.list:33) */
 void
 gimp_marshal_VOID__BOXED_ENUM (GClosure     *closure,
-                               GValue       *return_value,
+                               GValue       *return_value G_GNUC_UNUSED,
                                guint         n_param_values,
                                const GValue *param_values,
-                               gpointer      invocation_hint,
+                               gpointer      invocation_hint G_GNUC_UNUSED,
                                gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__BOXED_ENUM) (gpointer     data1,
@@ -301,10 +301,10 @@ gimp_marshal_VOID__BOXED_ENUM (GClosure     *closure,
 /* VOID:DOUBLE,DOUBLE (./gimpmarshal.list:35) */
 void
 gimp_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
-                                  GValue       *return_value,
+                                  GValue       *return_value G_GNUC_UNUSED,
                                   guint         n_param_values,
                                   const GValue *param_values,
-                                  gpointer      invocation_hint,
+                                  gpointer      invocation_hint G_GNUC_UNUSED,
                                   gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__DOUBLE_DOUBLE) (gpointer     data1,
@@ -340,10 +340,10 @@ gimp_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
 /* VOID:ENUM,ENUM,BOXED,INT (./gimpmarshal.list:37) */
 void
 gimp_marshal_VOID__ENUM_ENUM_BOXED_INT (GClosure     *closure,
-                                        GValue       *return_value,
+                                        GValue       *return_value G_GNUC_UNUSED,
                                         guint         n_param_values,
                                         const GValue *param_values,
-                                        gpointer      invocation_hint,
+                                        gpointer      invocation_hint G_GNUC_UNUSED,
                                         gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__ENUM_ENUM_BOXED_INT) (gpointer     data1,
@@ -381,10 +381,10 @@ gimp_marshal_VOID__ENUM_ENUM_BOXED_INT (GClosure     *closure,
 /* VOID:ENUM,OBJECT (./gimpmarshal.list:38) */
 void
 gimp_marshal_VOID__ENUM_OBJECT (GClosure     *closure,
-                                GValue       *return_value,
+                                GValue       *return_value G_GNUC_UNUSED,
                                 guint         n_param_values,
                                 const GValue *param_values,
-                                gpointer      invocation_hint,
+                                gpointer      invocation_hint G_GNUC_UNUSED,
                                 gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__ENUM_OBJECT) (gpointer     data1,
@@ -418,10 +418,10 @@ gimp_marshal_VOID__ENUM_OBJECT (GClosure     *closure,
 /* VOID:ENUM,POINTER (./gimpmarshal.list:39) */
 void
 gimp_marshal_VOID__ENUM_POINTER (GClosure     *closure,
-                                 GValue       *return_value,
+                                 GValue       *return_value G_GNUC_UNUSED,
                                  guint         n_param_values,
                                  const GValue *param_values,
-                                 gpointer      invocation_hint,
+                                 gpointer      invocation_hint G_GNUC_UNUSED,
                                  gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__ENUM_POINTER) (gpointer     data1,
@@ -459,10 +459,10 @@ gimp_marshal_VOID__ENUM_POINTER (GClosure     *closure,
 /* VOID:INT,INT (./gimpmarshal.list:42) */
 void
 gimp_marshal_VOID__INT_INT (GClosure     *closure,
-                            GValue       *return_value,
+                            GValue       *return_value G_GNUC_UNUSED,
                             guint         n_param_values,
                             const GValue *param_values,
-                            gpointer      invocation_hint,
+                            gpointer      invocation_hint G_GNUC_UNUSED,
                             gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__INT_INT) (gpointer     data1,
@@ -496,10 +496,10 @@ gimp_marshal_VOID__INT_INT (GClosure     *closure,
 /* VOID:INT,INT,INT,INT (./gimpmarshal.list:43) */
 void
 gimp_marshal_VOID__INT_INT_INT_INT (GClosure     *closure,
-                                    GValue       *return_value,
+                                    GValue       *return_value G_GNUC_UNUSED,
                                     guint         n_param_values,
                                     const GValue *param_values,
-                                    gpointer      invocation_hint,
+                                    gpointer      invocation_hint G_GNUC_UNUSED,
                                     gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__INT_INT_INT_INT) (gpointer     data1,
@@ -539,10 +539,10 @@ gimp_marshal_VOID__INT_INT_INT_INT (GClosure     *closure,
 /* VOID:OBJECT,INT (./gimpmarshal.list:45) */
 void
 gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
-                               GValue       *return_value,
+                               GValue       *return_value G_GNUC_UNUSED,
                                guint         n_param_values,
                                const GValue *param_values,
-                               gpointer      invocation_hint,
+                               gpointer      invocation_hint G_GNUC_UNUSED,
                                gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__OBJECT_INT) (gpointer     data1,
@@ -576,10 +576,10 @@ gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
 /* VOID:OBJECT,OBJECT (./gimpmarshal.list:46) */
 void
 gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
-                                  GValue       *return_value,
+                                  GValue       *return_value G_GNUC_UNUSED,
                                   guint         n_param_values,
                                   const GValue *param_values,
-                                  gpointer      invocation_hint,
+                                  gpointer      invocation_hint G_GNUC_UNUSED,
                                   gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__OBJECT_OBJECT) (gpointer     data1,
@@ -613,10 +613,10 @@ gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
 /* VOID:OBJECT,POINTER (./gimpmarshal.list:47) */
 void
 gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
-                                   GValue       *return_value,
+                                   GValue       *return_value G_GNUC_UNUSED,
                                    guint         n_param_values,
                                    const GValue *param_values,
-                                   gpointer      invocation_hint,
+                                   gpointer      invocation_hint G_GNUC_UNUSED,
                                    gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__OBJECT_POINTER) (gpointer     data1,
@@ -652,10 +652,10 @@ gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
 /* VOID:POINTER,BOXED (./gimpmarshal.list:49) */
 void
 gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
-                                  GValue       *return_value,
+                                  GValue       *return_value G_GNUC_UNUSED,
                                   guint         n_param_values,
                                   const GValue *param_values,
-                                  gpointer      invocation_hint,
+                                  gpointer      invocation_hint G_GNUC_UNUSED,
                                   gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__POINTER_BOXED) (gpointer     data1,
@@ -689,10 +689,10 @@ gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
 /* VOID:POINTER,ENUM (./gimpmarshal.list:50) */
 void
 gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
-                                 GValue       *return_value,
+                                 GValue       *return_value G_GNUC_UNUSED,
                                  guint         n_param_values,
                                  const GValue *param_values,
-                                 gpointer      invocation_hint,
+                                 gpointer      invocation_hint G_GNUC_UNUSED,
                                  gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__POINTER_ENUM) (gpointer     data1,
@@ -728,10 +728,10 @@ gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
 /* VOID:STRING,BOOLEAN,UINT,FLAGS (./gimpmarshal.list:52) */
 void
 gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
-                                              GValue       *return_value,
+                                              GValue       *return_value G_GNUC_UNUSED,
                                               guint         n_param_values,
                                               const GValue *param_values,
-                                              gpointer      invocation_hint,
+                                              gpointer      invocation_hint G_GNUC_UNUSED,
                                               gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__STRING_BOOLEAN_UINT_FLAGS) (gpointer     data1,
@@ -769,10 +769,10 @@ gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
 /* VOID:STRING,FLAGS (./gimpmarshal.list:53) */
 void
 gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
-                                 GValue       *return_value,
+                                 GValue       *return_value G_GNUC_UNUSED,
                                  guint         n_param_values,
                                  const GValue *param_values,
-                                 gpointer      invocation_hint,
+                                 gpointer      invocation_hint G_GNUC_UNUSED,
                                  gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__STRING_FLAGS) (gpointer     data1,
@@ -806,10 +806,10 @@ gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
 /* VOID:STRING,STRING,STRING (./gimpmarshal.list:54) */
 void
 gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
-                                         GValue       *return_value,
+                                         GValue       *return_value G_GNUC_UNUSED,
                                          guint         n_param_values,
                                          const GValue *param_values,
-                                         gpointer      invocation_hint,
+                                         gpointer      invocation_hint G_GNUC_UNUSED,
                                          gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__STRING_STRING_STRING) (gpointer     data1,

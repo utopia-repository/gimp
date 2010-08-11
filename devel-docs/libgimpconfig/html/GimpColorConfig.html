@@ -110,16 +110,31 @@ href="../glib/glib-Basic-Types.html#gboolean"
 <div class="refsect2" lang="en">
 <a name="id2612484"></a><h3>
 <a name="GimpColorConfig-struct"></a>GimpColorConfig</h3>
-<a class="indexterm" name="id2612496"></a><pre class="programlisting">typedef struct _GimpColorConfig GimpColorConfig;</pre>
+<a class="indexterm" name="id2612496"></a><pre class="programlisting">typedef struct {
+  GimpColorManagementMode     mode;
+  gchar                      *rgb_profile;
+  gchar                      *cmyk_profile;
+  gchar                      *display_profile;
+  gboolean                    display_profile_from_gdk;
+  gchar                      *printer_profile;
+  GimpColorRenderingIntent    display_intent;
+  GimpColorRenderingIntent    simulation_intent;
+
+  gchar                      *display_module;
+
+  gboolean                    simulation_gamut_check;
+  GimpRGB                     out_of_gamut_color;
+} GimpColorConfig;
+</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612512"></a><h3>
+<a name="id2585856"></a><h3>
 <a name="GimpColorManagementMode"></a>enum GimpColorManagementMode</h3>
-<a class="indexterm" name="id2612524"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2611754"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_MANAGEMENT_OFF,       /*&lt; desc="No color management"   &gt;*/
   GIMP_COLOR_MANAGEMENT_DISPLAY,   /*&lt; desc="Color managed display" &gt;*/
@@ -132,9 +147,9 @@ href="../glib/glib-Basic-Types.html#gboolean"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2612544"></a><h3>
+<a name="id2612525"></a><h3>
 <a name="GimpColorRenderingIntent"></a>enum GimpColorRenderingIntent</h3>
-<a class="indexterm" name="id2612556"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2612537"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,            /*&lt; desc="Perceptual"            &gt;*/
   GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*&lt; desc="Relative colorimetric" &gt;*/
@@ -148,19 +163,19 @@ href="../glib/glib-Basic-Types.html#gboolean"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2617251"></a><h2>Property Details</h2>
+<a name="id2612561"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2617261"></a><h3>
+<a name="id2612571"></a><h3>
 <a name="GimpColorConfig--cmyk-profile"></a>The <code class="literal">"cmyk-profile"</code> property</h3>
-<a class="indexterm" name="id2617277"></a><pre class="programlisting">  "cmyk-profile"             GimpConfigPath        : Read / Write / Construct</pre>
+<a class="indexterm" name="id2617247"></a><pre class="programlisting">  "cmyk-profile"             GimpConfigPath        : Read / Write / Construct</pre>
 <p>The CMYK color profile used to convert between RGB and CMYK.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617303"></a><h3>
+<a name="id2617274"></a><h3>
 <a name="GimpColorConfig--display-module"></a>The <code class="literal">"display-module"</code> property</h3>
-<a class="indexterm" name="id2617319"></a><pre class="programlisting">  "display-module"           <a
+<a class="indexterm" name="id2617290"></a><pre class="programlisting">  "display-module"           <a
 href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
 >gchararray</a>            : Read / Write / Construct</pre>
 <p></p>
@@ -168,68 +183,68 @@ href="../gobject/gobject-Standard-Parameter-and-Value-Types.html#gchararray"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617344"></a><h3>
+<a name="id2617315"></a><h3>
 <a name="GimpColorConfig--display-profile"></a>The <code class="literal">"display-profile"</code> property</h3>
-<a class="indexterm" name="id2617360"></a><pre class="programlisting">  "display-profile"          GimpConfigPath        : Read / Write / Construct</pre>
+<a class="indexterm" name="id2617331"></a><pre class="programlisting">  "display-profile"          GimpConfigPath        : Read / Write / Construct</pre>
 <p>The color profile of your (primary) monitor.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617387"></a><h3>
+<a name="id2617358"></a><h3>
 <a name="GimpColorConfig--display-profile-from-gdk"></a>The <code class="literal">"display-profile-from-gdk"</code> property</h3>
-<a class="indexterm" name="id2617403"></a><pre class="programlisting">  "display-profile-from-gdk" <a
+<a class="indexterm" name="id2617374"></a><pre class="programlisting">  "display-profile-from-gdk" <a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read / Write / Construct</pre>
 <p>When enabled, GIMP will try to use the display color profile from the windowing system.  The configured monitor profile is then only used as a fallback.</p>
-<p>Default value: TRUE</p>
+<p>Default value: FALSE</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617431"></a><h3>
+<a name="id2617402"></a><h3>
 <a name="GimpColorConfig--display-rendering-intent"></a>The <code class="literal">"display-rendering-intent"</code> property</h3>
-<a class="indexterm" name="id2617447"></a><pre class="programlisting">  "display-rendering-intent" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2617418"></a><pre class="programlisting">  "display-rendering-intent" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
 <p>Sets how colors are mapped for your display.</p>
 <p>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2617474"></a><h3>
+<a name="id2617445"></a><h3>
 <a name="GimpColorConfig--mode"></a>The <code class="literal">"mode"</code> property</h3>
-<a class="indexterm" name="id2617488"></a><pre class="programlisting">  "mode"                     <a class="link" href="GimpColorConfig.html#GimpColorManagementMode">GimpColorManagementMode</a>  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2617459"></a><pre class="programlisting">  "mode"                     <a class="link" href="GimpColorConfig.html#GimpColorManagementMode">GimpColorManagementMode</a>  : Read / Write / Construct</pre>
 <p>Mode of operation for color management.</p>
 <p>Default value: GIMP_COLOR_MANAGEMENT_DISPLAY</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598284"></a><h3>
+<a name="id2617485"></a><h3>
 <a name="GimpColorConfig--out-of-gamut-color"></a>The <code class="literal">"out-of-gamut-color"</code> property</h3>
-<a class="indexterm" name="id2598300"></a><pre class="programlisting">  "out-of-gamut-color"       <a
+<a class="indexterm" name="id2617501"></a><pre class="programlisting">  "out-of-gamut-color"       <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a>               : Read / Write / Construct</pre>
 <p>The color to use for marking colors which are out of gamut.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598323"></a><h3>
+<a name="id2598293"></a><h3>
 <a name="GimpColorConfig--printer-profile"></a>The <code class="literal">"printer-profile"</code> property</h3>
-<a class="indexterm" name="id2598339"></a><pre class="programlisting">  "printer-profile"          GimpConfigPath        : Read / Write / Construct</pre>
+<a class="indexterm" name="id2598309"></a><pre class="programlisting">  "printer-profile"          GimpConfigPath        : Read / Write / Construct</pre>
 <p>The color profile used for simulating a printed version (softproof).</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598366"></a><h3>
+<a name="id2598337"></a><h3>
 <a name="GimpColorConfig--rgb-profile"></a>The <code class="literal">"rgb-profile"</code> property</h3>
-<a class="indexterm" name="id2598382"></a><pre class="programlisting">  "rgb-profile"              GimpConfigPath        : Read / Write / Construct</pre>
+<a class="indexterm" name="id2598353"></a><pre class="programlisting">  "rgb-profile"              GimpConfigPath        : Read / Write / Construct</pre>
 <p>The default RGB working space color profile.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598408"></a><h3>
+<a name="id2598379"></a><h3>
 <a name="GimpColorConfig--simulation-gamut-check"></a>The <code class="literal">"simulation-gamut-check"</code> property</h3>
-<a class="indexterm" name="id2598424"></a><pre class="programlisting">  "simulation-gamut-check"   <a
+<a class="indexterm" name="id2598395"></a><pre class="programlisting">  "simulation-gamut-check"   <a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>              : Read / Write / Construct</pre>
 <p>When enabled, the print simulation will mark colors which can not be represented in the target color space.</p>
@@ -237,17 +252,17 @@ href="../glib/glib-Basic-Types.html#gboolean"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2598452"></a><h3>
+<a name="id2598422"></a><h3>
 <a name="GimpColorConfig--simulation-rendering-intent"></a>The <code class="literal">"simulation-rendering-intent"</code> property</h3>
-<a class="indexterm" name="id2598468"></a><pre class="programlisting">  "simulation-rendering-intent" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2598438"></a><pre class="programlisting">  "simulation-rendering-intent" <a class="link" href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
 <p>Sets how colors are converted from RGB working space to the print simulation device.</p>
 <p>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2598497"></a><div class="refsect2" lang="en"><a name="id2598498"></a></div>
+<a name="id2598468"></a><div class="refsect2" lang="en"><a name="id2598469"></a></div>
 <hr>
-<div class="refsect2" lang="en"><a name="id2598499"></a></div>
+<div class="refsect2" lang="en"><a name="id2598470"></a></div>
 </div>
 </div>
 </body>

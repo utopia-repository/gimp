@@ -33,7 +33,7 @@
 </tr>
 <tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581858" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2579775" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2579777" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpplugin"></a><div class="titlepage"></div>
@@ -98,18 +98,18 @@ href="../glib/glib-Basic-Types.html#gchar"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2579775"></a><h2>Description</h2>
+<a name="id2579777"></a><h2>Description</h2>
 <p>
 Functions useful for plugins, e.g. registration and progress indicators.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2579791"></a><h2>Details</h2>
+<a name="id2579794"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2579802"></a><h3>
+<a name="id2579804"></a><h3>
 <a name="gimp-plugin-domain-register"></a>gimp_plugin_domain_register ()</h3>
-<a class="indexterm" name="id2579813"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2579816"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_plugin_domain_register         (const <a
 href="../glib/glib-Basic-Types.html#gchar"
@@ -155,9 +155,9 @@ called before any procedure is installed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2624224"></a><h3>
+<a name="id2624226"></a><h3>
 <a name="gimp-plugin-help-register"></a>gimp_plugin_help_register ()</h3>
-<a class="indexterm" name="id2624235"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2624237"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_plugin_help_register           (const <a
 href="../glib/glib-Basic-Types.html#gchar"
@@ -198,9 +198,9 @@ interpreted relative to this rootdir.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588212"></a><h3>
+<a name="id2588215"></a><h3>
 <a name="gimp-plugin-icon-register"></a>gimp_plugin_icon_register ()</h3>
-<a class="indexterm" name="id2588224"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2588226"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_plugin_icon_register           (const <a
 href="../glib/glib-Basic-Types.html#gchar"
@@ -244,9 +244,9 @@ href="../glib/glib-Basic-Types.html#guint8"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594134"></a><h3>
+<a name="id2594136"></a><h3>
 <a name="gimp-plugin-menu-register"></a>gimp_plugin_menu_register ()</h3>
-<a class="indexterm" name="id2594147"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2594150"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_plugin_menu_register           (const <a
 href="../glib/glib-Basic-Types.html#gchar"
@@ -289,9 +289,9 @@ procedure.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594242"></a><h3>
+<a name="id2594245"></a><h3>
 <a name="gimp-plugin-menu-branch-register"></a>gimp_plugin_menu_branch_register ()</h3>
-<a class="indexterm" name="id2594256"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2594258"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_plugin_menu_branch_register    (const <a
 href="../glib/glib-Basic-Types.html#gchar"
@@ -303,8 +303,10 @@ href="../glib/glib-Basic-Types.html#gchar"
 Register a sub-menu.
 </p>
 <p>
-This procedure installs an sub-menu which does not belong to any
-procedure.</p>
+This procedure installs a sub-menu which does not belong to any
+procedure. The menu-name should be the untranslated menu label. GIMP
+will look up the translation in the textdomain registered for the
+plug-in.</p>
 <p>
 
 </p>
@@ -334,9 +336,9 @@ procedure.</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2594350"></a><div class="refsect2" lang="en"><a name="id2594351"></a></div>
+<a name="id2594355"></a><div class="refsect2" lang="en"><a name="id2594356"></a></div>
 <hr>
-<div class="refsect2" lang="en"><a name="id2594352"></a></div>
+<div class="refsect2" lang="en"><a name="id2594357"></a></div>
 </div>
 </div>
 </body>

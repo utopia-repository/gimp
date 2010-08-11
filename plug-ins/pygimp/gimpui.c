@@ -7283,6 +7283,9 @@ const PyMethodDef gimpui_functions[] = {
 void
 gimpui_add_constants(PyObject *module, const gchar *strip_prefix)
 {
+#ifdef VERSION
+    PyModule_AddStringConstant(module, "__version__", VERSION);
+#endif
   pyg_enum_add(module, "ChainPosition", strip_prefix, GIMP_TYPE_CHAIN_POSITION);
   pyg_enum_add(module, "ColorAreaType", strip_prefix, GIMP_TYPE_COLOR_AREA_TYPE);
   pyg_enum_add(module, "ColorSelectorChannel", strip_prefix, GIMP_TYPE_COLOR_SELECTOR_CHANNEL);
@@ -7482,7 +7485,7 @@ gimpui_register_classes(PyObject *d)
     }
 
 
-#line 7486 "gimpui.c"
+#line 7489 "gimpui.c"
     pygobject_register_class(d, "GimpBrowser", GIMP_TYPE_BROWSER, &PyGimpBrowser_Type, Py_BuildValue("(O)", &PyGtkHPaned_Type));
     pyg_set_object_has_new_constructor(GIMP_TYPE_BROWSER);
     pygobject_register_class(d, "GimpButton", GIMP_TYPE_BUTTON, &PyGimpButton_Type, Py_BuildValue("(O)", &PyGtkButton_Type));

@@ -1,3 +1,367 @@
+2008-10-30  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.6.2 release.
+
+2008-10-30  Sven Neumann  <sven@gimp.org>
+
+	Backed out this change for now as it causes problem with some
+	window managers:
+
+        Bug 556896 – Dialogs don't get minimized with single image window
+
+	* app/display/gimpdisplayshell.c
+	* app/display/gimpdisplay-foreach.[ch]
+	* app/widgets/gimpdialogfactory.[ch]: merged changes from trunk.
+	Hide the toolbox and docks if the last display is iconified.
+	Unhide them if a display is uniconified.
+
+2008-10-29  Sven Neumann  <sven@gimp.org>
+
+ 	Merged from trunk:
+
+	Bug 557950 – Scaling in Gimp 2.6 is much slower than in Gimp 2.4
+
+        * app/paint-funcs/scale-region.c: don't do multi-pass scaling
+	when we are scaling up.
+
+2008-10-29  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 558215 – unit and zoom entries in Statusbar not visible
+
+	* app/display/gimpdisplayshell-callbacks.c
+	(gimp_display_shell_canvas_size_allocate): Don't try to be clever,
+	call gimp_display_shell_scaled() whenever the canvas size changes
+	so a newly created display shell gets updated properly.
+
+2008-10-29  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 558451 – Cannot build GIMP using Sun CC on Solaris 2.8
+
+	* app/pdb/gimp-pdb-compat.c
+	* app/gegl/gimpoperationtilesink.c
+	* app/gegl/gimpoperationtilesource.c
+	* app/tools/gimpgegltool.c: applied patches from Eric Lamarque
+	fixing the build using Sun CC on Solaris.
+
+2008-10-29  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 558420 – projection incorrect with alpha-less layers
+
+	* app/core/gimpprojection-construct.c (gimp_projection_initialize):
+	need to initialize the projection if the covering layer is not
+	opaque.
+
+2008-10-28  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 556603 – Zoom region always zooms in center of image
+
+	* app/tools/gimpmagnifytool.c (gimp_magnify_tool_button_release):
+	When zooming with a click, use gimp_display_shell_scale() instead
+	of local zoom logic.
+
+2008-10-25  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	Bug 557870 – "Qmask" message popping up here and there
+
+	* app/display/gimpdisplayshell-title.c
+	(gimp_display_shell_format_title): use
+	gimp_viewable_get_description() instead of gimp_object_get_name()
+	for displaying the active drawable's name so the quick mask and
+	the floating selection have the same names as in the
+	layers/channels dialogs.
+
+2008-10-24  Sven Neumann  <sven@gimp.org>
+
+	Bug 557705 – compatibility with GEGL > 0.0.20
+
+	* app/core/gimpdrawable-brightness-contrast.c
+	* app/core/gimpdrawable-invert.c
+	* app/tools/gimpbrightnesscontrasttool.c: choose GEGL operation
+	names based on the GEGL version we are being used with.
+
+2008-10-24  Sven Neumann  <sven@gimp.org>
+
+	Bug 557705 – compatibility with GEGL > 0.0.20
+
+	* app/gegl/gimp-gegl-utils.[ch]: added gimp_gegl_check_version(),
+	a run-time GEGL version check.
+
+	* app/core/gimpimagemap.c (gimp_image_map_apply): use the new
+	function to determine the names of the GEGL ops to use.
+
+2008-10-24  Sven Neumann  <sven@gimp.org>
+
+        Bug 556896 – Dialogs don't get minimized with single image window
+
+	* app/display/gimpdisplayshell.c
+	* app/display/gimpdisplay-foreach.[ch]
+	* app/widgets/gimpdialogfactory.[ch]: merged changes from trunk.
+	Hide the toolbox and docks if the last display is iconified.
+	Unhide them if a display is uniconified.
+
+2008-10-24  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+        Bug 556248 – Scaling gives 'jagged' edges
+
+        * app/paint-funcs/scale-region.c (scale): calculate pixel
+        contributions based on pixel centers, not on pixel origins.
+
+2008-10-23  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/plug-in/gimppluginprocframe.c
+	(gimp_plug_in_proc_frame_dispose): set proc_frame->procedure to
+	NULL *after* calling gimp_plug_in_cleanup(). Fixes the crash on
+	windows in bug #557061 (but not the bug).
+
+2008-10-23  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* configure.in: removed check for Carbon and added a test for the
+	target OS being Darwin instead.
+
+	* app/config/gimpguiconfig.c: use PLATFORM_OSX instead of
+	HAVE_CARBON to determine the default "web-browser" command.
+
+2008-10-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/print/print-preview.c (print_preview_leave_notify_event):
+	check the crossing mode and don't unset the "inside" flag when the
+	event is caused by a pointer grab/ungrab.
+
+2008-10-22  Martin Nordholts  <martinn@svn.gnome.org>
+
+	Merged from trunk:
+
+	Bug 556804 – Zoom drop down doesn't update
+
+	* app/display/gimpdisplayshell-scale.c
+	* app/display/gimpdisplayshell-callbacks.c: Fix calls to
+	gimp_display_shell_scaled() when Resize window on zoom is enabled.
+
+2008-10-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 524615 – Print not to scale
+
+	* plug-ins/print/print.c: set the unit for dimensions on the Cairo
+	context used for printing to GTK_UNIT_PIXELS.
+
+	* plug-ins/print/print-draw-page.c (print_draw_page): changed the
+	Cairo scale factors accordingly. Seems to fix printing on Windows.
+
+2008-10-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/widgets/gimpprogressbox.c: set box->progress to NULL in
+	destroy() and check for progress being NULL in various places so
+	we don't crash on API calls after the widget is destroyed.
+
+2008-10-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 555246 – gimp crashes when a file is opened while a preview is
+	generating
+
+	* app/widgets/gimpthumbbox.c: set box->progress to NULL in
+	destroy() and check for progress being NULL in various places so
+	we don't crash on API calls after the widget is destroyed.
+
+2008-10-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 556741 – Alpha layer automatically added (in psd format) but
+	not desired
+
+	* plug-ins/file-psd/psd-save.c: applied patch from Dennis Ranke
+	that flattens the projection for indexed images.
+
+2008-10-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+        * app/widgets/gimpfiledialog.c: set dialog->progress to NULL in
+        destroy() and check for progress being NULL in various places so
+        we don't crash on API calls after the widget is destroyed.
+
+2008-10-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/tools/gimpgegltool.c (gimp_param_spec_duplicate):
+	GEGL_IS_PARAM_SPEC_PATH() became GEGL_IS_PARAM_SPEC_FILE_PATH()
+	in GEGL 0.0.21.
+
+	* app/tools/gimpgegltool.c (gimp_gegl_tool_dialog): for the
+	combo-box, strip known prefixes from the GEGL operation names and
+	use icons instead.
+
+2008-10-21  Sven Neumann  <sven@gimp.org>
+
+	* app/tools/gimpgegltool.c (gimp_gegl_tool_operation_blacklisted):
+	make the operations blacklist work with GEGL >= 0.0.21.
+
+2008-10-21  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/actions/file-commands.c (file_open_recent_cmd_callback): ref
+	the GimpDisplay and GimpImageFile objects while holding a
+	reference to them. Fixes a potential crash if GIMP is closed while
+	the image is being loaded.
+
+2008-10-20  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/widgets/gimperrorconsole.c (gimp_error_console_init): don't
+	make the font size even smaller. We already use a smaller font in
+	the dock windows.
+
+2008-10-17  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* plug-ins/file-psd/psd-save.c (xfwrite): fixed handling of empty
+	strings. Don't quit silently, write an error message to stderr at
+	least.
+
+2008-10-17  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/core/gimp.[ch]: added signal Gimp::image-opened to announce
+	that an image has been loaded and a display was created for it.
+
+	* app/file/file-open.c (file_open_with_proc_and_display): call
+	gimp_image_opened() to emit the new signal.
+
+	* app/gui/dbus-service.xml
+	* app/gui/gimpdbusservice.[ch]: propagate the 'opened' signal to
+	listeners of the "org.gimp.GIMP.UI" DBus service.
+
+	* app/gui/gui-unique.c: formatting.
+
+2008-10-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* themes/Default/images/stock-gegl.svg
+	* themes/Default/images/stock-gegl-22.svg
+	* themes/Default/images/stock-gegl-22.png: remove white from the
+	shadow to render correctly on dark backgrounds.
+
+2008-10-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	* app/widgets/gimpdialogfactory.c (gimp_dialog_factory_add_dialog):
+	let new docks appear at the pointer position.
+
+2008-10-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 556182 – Could you please explain a few strings [I18N]
+
+	* plug-ins/pygimp/plug-ins/py-slice.py: added translator comments.
+
+2008-10-10  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/tools/gimpmovetool.c (gimp_move_tool_button_release): flush
+	the image after setting active items back from temporarily
+	selected ones. Fixes menu item sensitivity.
+
+2008-10-09  Sven Neumann  <sven@gimp.org>
+
+	Merged from trunk:
+
+	Bug 555697 – build fails if configured with --without-libjpeg
+
+	* plug-ins/Makefile.am: applied patch from Simon Zilliken that
+	disables the build of the PSD plug-in if JPEG support is disabled.
+
+2008-10-09  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	This is not exactly a bugfix-only commit, but fixing this bug
+	was the original reason for all the curve and image map tool
+	refactorings that went into 2.6. It would be silly not to
+	fix it just because I simply forgot to hack the final step of
+	enabling all the new code. The two new translatable strings are
+	a PITA, sorry about that; but better than still only exporting
+	the old curves and levels formats in 2.6.
+
+	Bug 134956 – Curves tool doesn't save free curves
+
+	* app/core/gimpmarshal.list
+	* app/widgets/gimpsettingsbox.[ch]: add signal "file-dialog-setup"
+	and emit it when the export/import file chooser is fully
+	constructed. Callbacks can then do additional things to the
+	dialog, like adding custom buttons.
+
+	* app/tools/gimpcurvestool.h
+	* app/tools/gimplevelstool.h: add boolean member
+	"export_old_format".
+
+	* app/tools/gimpcurvestool.c
+	* app/tools/gimplevelstool.c (gimp_*_tool_dialog): connect to
+	the settings box' "file-dialog-setup".
+
+	(gimp_*_tool_export_setup): new callback which adds a toggle to
+	the file choosers that allows to export to the old format.
+	Default saving the new format, we defaulted to the old one before.
+
+	(gimp_*_tool_settings_export): check the "export_old_format"
+	boolean and only save the cruft format if it is TRUE; chain up
+	otherwise, which generically saves the new format.
+
+	* app/tools/gimplevelstool.c (gimp_levels_tool_settings_import):
+	add the same file format detection code as in the curves tool
+	so it transparently loads old and new levels files.
+
+2008-10-09  Michael Natterer  <mitch@gimp.org>
+
+	Merged from trunk:
+
+	* app/gegl/gimpcurvesconfig.c (gimp_curves_config_save_cruft):
+	when saving a curve of type GIMP_CURVE_FREE, don't use
+	gimp_curve_get_point() because that returns nothing for free
+	curves.
+
+	(gimp_curves_config_load_cruft): reset the curve before loading it.
+
+	* app/core/gimpcurve.c (gimp_curve_get_point): instead of above
+	mentioned uninitialized nonsense, at least return -1,-1 for free
+	curves.
+
+2008-10-09  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: bumped version to 2.6.2 (interface age 2).
+
 2008-10-09  Sven Neumann  <sven@gimp.org>
 
 	* Made 2.6.1 release.
@@ -200,7 +564,7 @@
 2008-10-03  Hans Breuer  <hans@breuer.org>
 
 	* plug-ins/common/web-browser.c : when ShellExecute() is failing give
-	the detailed (currently intentionally untranslated) error message via 
+	the detailed (currently intentionally untranslated) error message via
 	g_message()
 
 	* **/makefie.msc gimpdefs.msc app/gimpcore.def : updated

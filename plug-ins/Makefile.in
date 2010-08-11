@@ -86,7 +86,6 @@ BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
 BINRELOC_LIBS = @BINRELOC_LIBS@
 CAIRO_CFLAGS = @CAIRO_CFLAGS@
 CAIRO_LIBS = @CAIRO_LIBS@
-CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -385,6 +384,7 @@ EXTRA_DIST = \
 
 @BUILD_HELP_BROWSER_TRUE@help_browser = help-browser
 @BUILD_JPEG_TRUE@file_jpeg = file-jpeg
+@BUILD_JPEG_TRUE@file_psd = file-psd
 @BUILD_PRINT_TRUE@print = print
 @BUILD_PYTHON_TRUE@pygimp = pygimp
 @BUILD_SCRIPT_FU_TRUE@script_fu = script-fu
@@ -405,7 +405,7 @@ SUBDIRS = \
 	file-fli		\
 	$(file_ico)		\
 	$(file_jpeg)		\
-	file-psd		\
+	$(file_psd)		\
 	file-sgi		\
 	$(file_uri)		\
 	$(file_xjt)		\

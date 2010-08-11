@@ -55,41 +55,21 @@
 <a name="GimpEnumLabel.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpEnumLabel.html#GimpEnumLabel-struct" title="GimpEnumLabel">GimpEnumLabel</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpEnumLabel.html#gimp-enum-label-new" title="gimp_enum_label_new ()">gimp_enum_label_new</a>                 (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a> enum_type,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> value);
+GtkWidget*          <a class="link" href="GimpEnumLabel.html#gimp-enum-label-new" title="gimp_enum_label_new ()">gimp_enum_label_new</a>                 (GType enum_type,
+                                                         gint value);
 void                <a class="link" href="GimpEnumLabel.html#gimp-enum-label-set-value" title="gimp_enum_label_set_value ()">gimp_enum_label_set_value</a>           (<a class="link" href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> value);
+                                                         gint value);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpEnumLabel.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkMisc.html"
->GtkMisc</a>
-                           +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
->GtkLabel</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkMisc
+                           +----GtkLabel
                                  +----GimpEnumLabel
 </pre>
 </div>
@@ -97,9 +77,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
 <a name="GimpEnumLabel.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpEnumLabel implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpEnumLabel.description"></a><h2>Description</h2>
@@ -119,14 +97,8 @@ href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-enum-label-new"></a><h3>gimp_enum_label_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_enum_label_new                 (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
->GType</a> enum_type,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> value);</pre>
+<pre class="programlisting">GtkWidget*          gimp_enum_label_new                 (GType enum_type,
+                                                         gint value);</pre>
 <p>
 </p>
 <p>
@@ -137,9 +109,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em> :</span></p></td>
-<td> the <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
-><span class="type">GType</span></a> of an enum.
+<td> the <span class="type">GType</span> of an enum.
 </td>
 </tr>
 <tr>
@@ -162,9 +132,7 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 <div class="refsect2" lang="en">
 <a name="gimp-enum-label-set-value"></a><h3>gimp_enum_label_set_value ()</h3>
 <pre class="programlisting">void                gimp_enum_label_set_value           (<a class="link" href="GimpEnumLabel.html" title="GimpEnumLabel">GimpEnumLabel</a> *label,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> value);</pre>
+                                                         gint value);</pre>
 <p>
 </p>
 <p>

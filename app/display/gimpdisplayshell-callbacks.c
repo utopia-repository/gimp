@@ -350,7 +350,6 @@ gimp_display_shell_canvas_size_allocate (GtkWidget        *widget,
         }
 
       gimp_display_shell_scroll_clamp_and_update (shell);
-
       gimp_display_shell_scaled (shell);
 
       /* Reset */

@@ -48,164 +48,64 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimptexttool.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimptexttool.html#gimp-text-fontname" title="gimp_text_fontname ()">gimp_text_fontname</a>                  (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> border,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
+gint32              <a class="link" href="libgimp-gimptexttool.html#gimp-text-fontname" title="gimp_text_fontname ()">gimp_text_fontname</a>                  (gint32 image_ID,
+                                                         gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         const gchar *text,
+                                                         gint border,
+                                                         gboolean antialias,
+                                                         gdouble size,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *fontname);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname" title="gimp_text_get_extents_fontname ()">gimp_text_get_extents_fontname</a>      (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
+                                                         const gchar *fontname);
+gboolean            <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname" title="gimp_text_get_extents_fontname ()">gimp_text_get_extents_fontname</a>      (const gchar *text,
+                                                         gdouble size,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *fontname,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *height,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *ascent,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *descent);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimptexttool.html#gimp-text" title="gimp_text ()">gimp_text</a>                           (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> border,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
+                                                         const gchar *fontname,
+                                                         gint *width,
+                                                         gint *height,
+                                                         gint *ascent,
+                                                         gint *descent);
+gint32              <a class="link" href="libgimp-gimptexttool.html#gimp-text" title="gimp_text ()">gimp_text</a>                           (gint32 image_ID,
+                                                         gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         const gchar *text,
+                                                         gint border,
+                                                         gboolean antialias,
+                                                         gdouble size,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *foundry,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *family,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *weight,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *slant,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *set_width,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *spacing,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *registry,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *encoding);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents" title="gimp_text_get_extents ()">gimp_text_get_extents</a>               (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
+                                                         const gchar *foundry,
+                                                         const gchar *family,
+                                                         const gchar *weight,
+                                                         const gchar *slant,
+                                                         const gchar *set_width,
+                                                         const gchar *spacing,
+                                                         const gchar *registry,
+                                                         const gchar *encoding);
+gboolean            <a class="link" href="libgimp-gimptexttool.html#gimp-text-get-extents" title="gimp_text_get_extents ()">gimp_text_get_extents</a>               (const gchar *text,
+                                                         gdouble size,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *foundry,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *family,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *weight,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *slant,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *set_width,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *spacing,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *registry,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *encoding,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *height,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *ascent,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *descent);
+                                                         const gchar *foundry,
+                                                         const gchar *family,
+                                                         const gchar *weight,
+                                                         const gchar *slant,
+                                                         const gchar *set_width,
+                                                         const gchar *spacing,
+                                                         const gchar *registry,
+                                                         const gchar *encoding,
+                                                         gint *width,
+                                                         gint *height,
+                                                         gint *ascent,
+                                                         gint *descent);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -219,38 +119,18 @@ Functions for controlling the text tool.
 <a name="libgimp-gimptexttool.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-text-fontname"></a><h3>gimp_text_fontname ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_text_fontname                  (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> border,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
+<pre class="programlisting">gint32              gimp_text_fontname                  (gint32 image_ID,
+                                                         gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         const gchar *text,
+                                                         gint border,
+                                                         gboolean antialias,
+                                                         gdouble size,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *fontname);</pre>
+                                                         const gchar *fontname);</pre>
 <p>
 Add text at the specified location as a floating selection or a new
 layer.
@@ -336,32 +216,16 @@ vertical resolution.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-text-get-extents-fontname"></a><h3>gimp_text_get_extents_fontname ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_text_get_extents_fontname      (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
+<pre class="programlisting">gboolean            gimp_text_get_extents_fontname      (const gchar *text,
+                                                         gdouble size,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *fontname,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *height,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *ascent,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *descent);</pre>
+                                                         const gchar *fontname,
+                                                         gint *width,
+                                                         gint *height,
+                                                         gint *ascent,
+                                                         gint *descent);</pre>
 <p>
 Get extents of the bounding box for the specified text.
 </p>
@@ -430,59 +294,25 @@ into account.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-text"></a><h3>gimp_text ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_text                           (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> border,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
+<pre class="programlisting">gint32              gimp_text                           (gint32 image_ID,
+                                                         gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         const gchar *text,
+                                                         gint border,
+                                                         gboolean antialias,
+                                                         gdouble size,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *foundry,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *family,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *weight,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *slant,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *set_width,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *spacing,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *registry,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *encoding);</pre>
+                                                         const gchar *foundry,
+                                                         const gchar *family,
+                                                         const gchar *weight,
+                                                         const gchar *slant,
+                                                         const gchar *set_width,
+                                                         const gchar *spacing,
+                                                         const gchar *registry,
+                                                         const gchar *encoding);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_text</code> is deprecated and should not be used in newly-written code.</p>
@@ -591,53 +421,23 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimptexttool.htm
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-text-get-extents"></a><h3>gimp_text_get_extents ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_text_get_extents               (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *text,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
+<pre class="programlisting">gboolean            gimp_text_get_extents               (const gchar *text,
+                                                         gdouble size,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpSizeType"
 >GimpSizeType</a> size_type,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *foundry,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *family,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *weight,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *slant,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *set_width,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *spacing,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *registry,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *encoding,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *height,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *ascent,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *descent);</pre>
+                                                         const gchar *foundry,
+                                                         const gchar *family,
+                                                         const gchar *weight,
+                                                         const gchar *slant,
+                                                         const gchar *set_width,
+                                                         const gchar *spacing,
+                                                         const gchar *registry,
+                                                         const gchar *encoding,
+                                                         gint *width,
+                                                         gint *height,
+                                                         gint *ascent,
+                                                         gint *descent);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_text_get_extents</code> is deprecated and should not be used in newly-written code.</p>

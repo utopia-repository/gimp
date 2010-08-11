@@ -51,158 +51,62 @@
                     <a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a>;
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-init" title="gimp_pixel_rgn_init ()">gimp_pixel_rgn_init</a>                 (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
                                                          <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> dirty,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> shadow);
+                                                         gint x,
+                                                         gint y,
+                                                         gint width,
+                                                         gint height,
+                                                         gint dirty,
+                                                         gint shadow);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-resize" title="gimp_pixel_rgn_resize ()">gimp_pixel_rgn_resize</a>               (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);
+                                                         gint x,
+                                                         gint y,
+                                                         gint width,
+                                                         gint height);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-get-pixel" title="gimp_pixel_rgn_get_pixel ()">gimp_pixel_rgn_get_pixel</a>            (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y);
+                                                         guchar *buf,
+                                                         gint x,
+                                                         gint y);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-get-row" title="gimp_pixel_rgn_get_row ()">gimp_pixel_rgn_get_row</a>              (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width);
+                                                         guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint width);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-get-col" title="gimp_pixel_rgn_get_col ()">gimp_pixel_rgn_get_col</a>              (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);
+                                                         guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint height);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-get-rect" title="gimp_pixel_rgn_get_rect ()">gimp_pixel_rgn_get_rect</a>             (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);
+                                                         guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint width,
+                                                         gint height);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-set-pixel" title="gimp_pixel_rgn_set_pixel ()">gimp_pixel_rgn_set_pixel</a>            (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y);
+                                                         const guchar *buf,
+                                                         gint x,
+                                                         gint y);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-set-row" title="gimp_pixel_rgn_set_row ()">gimp_pixel_rgn_set_row</a>              (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width);
+                                                         const guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint width);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-set-col" title="gimp_pixel_rgn_set_col ()">gimp_pixel_rgn_set_col</a>              (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);
+                                                         const guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint height);
 void                <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgn-set-rect" title="gimp_pixel_rgn_set_rect ()">gimp_pixel_rgn_set_rect</a>             (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>            <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register" title="gimp_pixel_rgns_register ()">gimp_pixel_rgns_register</a>            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> nrgns,
+                                                         const guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint width,
+                                                         gint height);
+gpointer            <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register" title="gimp_pixel_rgns_register ()">gimp_pixel_rgns_register</a>            (gint nrgns,
                                                          ...);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>            <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register2" title="gimp_pixel_rgns_register2 ()">gimp_pixel_rgns_register2</a>           (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> nrgns,
+gpointer            <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register2" title="gimp_pixel_rgns_register2 ()">gimp_pixel_rgns_register2</a>           (gint nrgns,
                                                          <a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> **prs);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>            <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-process" title="gimp_pixel_rgns_process ()">gimp_pixel_rgns_process</a>             (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> pri_ptr);
+gpointer            <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-process" title="gimp_pixel_rgns_process ()">gimp_pixel_rgns_process</a>             (gpointer pri_ptr);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -238,24 +142,12 @@ fast ways of accessing and modifying portions of a drawable.
 <a name="gimp-pixel-rgn-init"></a><h3>gimp_pixel_rgn_init ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_init                 (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
                                                          <a class="link" href="libgimp-gimpdrawable.html#GimpDrawable" title="GimpDrawable">GimpDrawable</a> *drawable,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> dirty,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> shadow);</pre>
+                                                         gint x,
+                                                         gint y,
+                                                         gint width,
+                                                         gint height,
+                                                         gint dirty,
+                                                         gint shadow);</pre>
 <p>
 Initialize the pixel region pointed by <em class="parameter"><code>pr</code></em> with the specified parameters.
 </p>
@@ -335,17 +227,13 @@ The <em class="parameter"><code>dirty</code></em> and <em class="parameter"><cod
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dirty</code></em> :</span></p></td>
-<td>     a <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
-><span class="type">gboolean</span></a> indicating whether the <em class="parameter"><code>drawable</code></em> should be marked
+<td>     a <span class="type">gboolean</span> indicating whether the <em class="parameter"><code>drawable</code></em> should be marked
             as "dirty".
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>shadow</code></em> :</span></p></td>
-<td>    a <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
-><span class="type">gboolean</span></a> indicating whether the region is attached to the
+<td>    a <span class="type">gboolean</span> indicating whether the region is attached to the
             shadow tiles or the real <em class="parameter"><code>drawable</code></em> tiles.
 </td>
 </tr>
@@ -356,18 +244,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-resize"></a><h3>gimp_pixel_rgn_resize ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_resize               (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);</pre>
+                                                         gint x,
+                                                         gint y,
+                                                         gint width,
+                                                         gint height);</pre>
 <p>
 Change the position and size of a previously initialized pixel region.</p>
 <p>
@@ -410,29 +290,15 @@ Change the position and size of a previously initialized pixel region.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-get-pixel"></a><h3>gimp_pixel_rgn_get_pixel ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_get_pixel            (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y);</pre>
+                                                         guchar *buf,
+                                                         gint x,
+                                                         gint y);</pre>
 <p>
 Fill the buffer pointed by <em class="parameter"><code>buf</code></em> with the value of the pixel at (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>)
 in the region <em class="parameter"><code>pr</code></em>. <em class="parameter"><code>buf</code></em> should be large enough to hold the pixel value
-(1 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a> for an indexed or grayscale drawable, 2 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a> for
-indexed with alpha or grayscale with alpha drawable, 3 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a> for
-rgb drawable and 4 <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a> for rgb with alpha drawable.</p>
+(1 <span class="type">guchar</span> for an indexed or grayscale drawable, 2 <span class="type">guchar</span> for
+indexed with alpha or grayscale with alpha drawable, 3 <span class="type">guchar</span> for
+rgb drawable and 4 <span class="type">guchar</span> for rgb with alpha drawable.</p>
 <p>
 
 </p>
@@ -446,9 +312,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>   a pointer to an array of <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a>
+<td>   a pointer to an array of <span class="type">guchar</span>
 </td>
 </tr>
 <tr>
@@ -468,18 +332,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-get-row"></a><h3>gimp_pixel_rgn_get_row ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_get_row              (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width);</pre>
+                                                         guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint width);</pre>
 <p>
 Get several pixels of a region in a row. This function fills the buffer
 <em class="parameter"><code>buf</code></em> with the values of the pixels from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>+<em class="parameter"><code>width</code></em>-1, <em class="parameter"><code>y</code></em>).
@@ -497,9 +353,7 @@ Get several pixels of a region in a row. This function fills the buffer
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>    a pointer to an array of <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a>
+<td>    a pointer to an array of <span class="type">guchar</span>
 </td>
 </tr>
 <tr>
@@ -524,18 +378,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-get-col"></a><h3>gimp_pixel_rgn_get_col ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_get_col              (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);</pre>
+                                                         guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint height);</pre>
 <p>
 Get several pixels of a region's column. This function fills the buffer
 <em class="parameter"><code>buf</code></em> with the values of the pixels from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>+<em class="parameter"><code>height</code></em>-1).
@@ -553,9 +399,7 @@ Get several pixels of a region's column. This function fills the buffer
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>    a pointer to an array of <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a>
+<td>    a pointer to an array of <span class="type">guchar</span>
 </td>
 </tr>
 <tr>
@@ -580,21 +424,11 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-get-rect"></a><h3>gimp_pixel_rgn_get_rect ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_get_rect             (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);</pre>
+                                                         guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint width,
+                                                         gint height);</pre>
 <p>
 Get all the pixel values from the rectangle defined by <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>, <em class="parameter"><code>width</code></em> and
 <em class="parameter"><code>height</code></em>. This function fills the buffer <em class="parameter"><code>buf</code></em> with the values of the pixels
@@ -613,9 +447,7 @@ from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>    a pointer to an array of <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a>
+<td>    a pointer to an array of <span class="type">guchar</span>
 </td>
 </tr>
 <tr>
@@ -645,15 +477,9 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-set-pixel"></a><h3>gimp_pixel_rgn_set_pixel ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_set_pixel            (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y);</pre>
+                                                         const guchar *buf,
+                                                         gint x,
+                                                         gint y);</pre>
 <p>
 Set the pixel at (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to the values from <em class="parameter"><code>buf</code></em>.</p>
 <p>
@@ -669,9 +495,7 @@ Set the pixel at (<em class="parameter"><code>x</code></em>, <em class="paramete
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>  a pointer to an array of <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a>.
+<td>  a pointer to an array of <span class="type">guchar</span>.
 </td>
 </tr>
 <tr>
@@ -691,18 +515,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-set-row"></a><h3>gimp_pixel_rgn_set_row ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_set_row              (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width);</pre>
+                                                         const guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint width);</pre>
 <p>
 Set several pixels of a region in a row. This function draws the pixels
 from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>+<em class="parameter"><code>width</code></em>-1, <em class="parameter"><code>y</code></em>) using the values of the buffer <em class="parameter"><code>buf</code></em>.
@@ -720,9 +536,7 @@ from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>    a pointer to an array of <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a>
+<td>    a pointer to an array of <span class="type">guchar</span>
 </td>
 </tr>
 <tr>
@@ -747,18 +561,10 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-set-col"></a><h3>gimp_pixel_rgn_set_col ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_set_col              (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);</pre>
+                                                         const guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint height);</pre>
 <p>
 Set several pixels of a region's column. This function draws the pixels
 from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>+<em class="parameter"><code>height</code></em>-1) using the values from the buffer <em class="parameter"><code>buf</code></em>.
@@ -776,9 +582,7 @@ from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>    a pointer to an array of <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a>
+<td>    a pointer to an array of <span class="type">guchar</span>
 </td>
 </tr>
 <tr>
@@ -803,21 +607,11 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgn-set-rect"></a><h3>gimp_pixel_rgn_set_rect ()</h3>
 <pre class="programlisting">void                gimp_pixel_rgn_set_rect             (<a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> *pr,
-                                                         const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
->guchar</a> *buf,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> x,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> y,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> height);</pre>
+                                                         const guchar *buf,
+                                                         gint x,
+                                                         gint y,
+                                                         gint width,
+                                                         gint height);</pre>
 <p>
 Set all the pixel of the rectangle defined by <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>, <em class="parameter"><code>width</code></em> and
 <em class="parameter"><code>height</code></em>. This function draws the rectangle from (<em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em>) to
@@ -836,9 +630,7 @@ Set all the pixel of the rectangle defined by <em class="parameter"><code>x</cod
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
-<td>    a pointer to an array of <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
-><span class="type">guchar</span></a>
+<td>    a pointer to an array of <span class="type">guchar</span>
 </td>
 </tr>
 <tr>
@@ -867,11 +659,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgns-register"></a><h3>gimp_pixel_rgns_register ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>            gimp_pixel_rgns_register            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> nrgns,
+<pre class="programlisting">gpointer            gimp_pixel_rgns_register            (gint nrgns,
                                                          ...);</pre>
 <p>
 This is the varargs version of <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register2" title="gimp_pixel_rgns_register2 ()"><span class="type">gimp_pixel_rgns_register2</span></a>.</p>
@@ -893,9 +681,7 @@ This is the varargs version of <a class="link" href="libgimp-gimppixelrgn.html#g
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
-><span class="type">gpointer</span></a> to a regions iterator.
+<td> a <span class="type">gpointer</span> to a regions iterator.
 </td>
 </tr>
 </tbody>
@@ -904,11 +690,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgns-register2"></a><h3>gimp_pixel_rgns_register2 ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>            gimp_pixel_rgns_register2           (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> nrgns,
+<pre class="programlisting">gpointer            gimp_pixel_rgns_register2           (gint nrgns,
                                                          <a class="link" href="libgimp-gimppixelrgn.html#GimpPixelRgn" title="GimpPixelRgn">GimpPixelRgn</a> **prs);</pre>
 <p>
 It takes a number of initialized regions of the same size and provides a
@@ -941,9 +723,7 @@ This function has to be used together with gimp_pixel_rgns_process in a loop.</p
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
-><span class="type">gpointer</span></a> to a regions iterator.
+<td> a <span class="type">gpointer</span> to a regions iterator.
 </td>
 </tr>
 </tbody>
@@ -952,11 +732,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-pixel-rgns-process"></a><h3>gimp_pixel_rgns_process ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>            gimp_pixel_rgns_process             (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a> pri_ptr);</pre>
+<pre class="programlisting">gpointer            gimp_pixel_rgns_process             (gpointer pri_ptr);</pre>
 <p>
 This function update the regions registered previously with one of the
 <a class="link" href="libgimp-gimppixelrgn.html#gimp-pixel-rgns-register" title="gimp_pixel_rgns_register ()"><span class="type">gimp_pixel_rgns_register</span></a>* functions to their next tile.</p>
@@ -974,11 +750,7 @@ This function update the regions registered previously with one of the
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
-><span class="type">gpointer</span></a> to a new regions iterator or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><span class="type">NULL</span></a> if there isn't
+<td> a <span class="type">gpointer</span> to a new regions iterator or <span class="type">NULL</span> if there isn't
 any tiles left.
 </td>
 </tr>

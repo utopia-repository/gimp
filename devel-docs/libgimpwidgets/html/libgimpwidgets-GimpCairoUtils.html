@@ -62,22 +62,16 @@ href="/usr/share/gtk-doc/html/cairo/cairo-cairo-t.html#cairo-t"
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-set-focus-line-pattern" title="gimp_cairo_set_focus_line_pattern ()">gimp_cairo_set_focus_line_pattern</a>   (<a
+gboolean            <a class="link" href="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-set-focus-line-pattern" title="gimp_cairo_set_focus_line_pattern ()">gimp_cairo_set_focus_line_pattern</a>   (<a
 href="/usr/share/gtk-doc/html/cairo/cairo-cairo-t.html#cairo-t"
 >cairo_t</a> *cr,
-                                                         <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a> *widget);
+                                                         GtkWidget *widget);
 <a
 href="/usr/share/gtk-doc/html/cairo/cairo-Patterns.html#cairo-pattern-t"
 >cairo_pattern_t</a>*    <a class="link" href="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-checkerboard-create" title="gimp_cairo_checkerboard_create ()">gimp_cairo_checkerboard_create</a>      (<a
 href="/usr/share/gtk-doc/html/cairo/cairo-cairo-t.html#cairo-t"
 >cairo_t</a> *cr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> size,
+                                                         gint size,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *light,
@@ -87,9 +81,7 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 <a
 href="/usr/share/gtk-doc/html/cairo/cairo-cairo-surface-t.html#cairo-surface-t"
 >cairo_surface_t</a>*    <a class="link" href="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-surface-create-from-pixbuf" title="gimp_cairo_surface_create_from_pixbuf ()">gimp_cairo_surface_create_from_pixbuf</a>
-                                                        (<a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a> *pixbuf);
+                                                        (GdkPixbuf *pixbuf);
 #define             <a class="link" href="libgimpwidgets-GimpCairoUtils.html#GIMP-CAIRO-RGB24-SET-PIXEL:CAPS" title="GIMP_CAIRO_RGB24_SET_PIXEL()">GIMP_CAIRO_RGB24_SET_PIXEL</a>          (d, r, g, b)
 #define             <a class="link" href="libgimpwidgets-GimpCairoUtils.html#GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS" title="GIMP_CAIRO_ARGB32_SET_PIXEL()">GIMP_CAIRO_ARGB32_SET_PIXEL</a>         (d, r, g, b, a)
 </pre>
@@ -180,14 +172,10 @@ href="/usr/share/gtk-doc/html/cairo/cairo-cairo-t.html#cairo-set-source-rgba"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-cairo-set-focus-line-pattern"></a><h3>gimp_cairo_set_focus_line_pattern ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_cairo_set_focus_line_pattern   (<a
+<pre class="programlisting">gboolean            gimp_cairo_set_focus_line_pattern   (<a
 href="/usr/share/gtk-doc/html/cairo/cairo-cairo-t.html#cairo-t"
 >cairo_t</a> *cr,
-                                                         <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a> *widget);</pre>
+                                                         GtkWidget *widget);</pre>
 <p>
 Sets color and dash pattern for stroking a focus line on the given
 <em class="parameter"><code>cr</code></em>. The line pattern is taken from <em class="parameter"><code>widget</code></em>.</p>
@@ -209,12 +197,8 @@ Sets color and dash pattern for stroking a focus line on the given
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"
-><code class="literal">TRUE</code></a> if the widget style has a focus line pattern,
-              <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td> <code class="literal">TRUE</code> if the widget style has a focus line pattern,
+              <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>
@@ -231,9 +215,7 @@ href="/usr/share/gtk-doc/html/cairo/cairo-Patterns.html#cairo-pattern-t"
 >cairo_pattern_t</a>*    gimp_cairo_checkerboard_create      (<a
 href="/usr/share/gtk-doc/html/cairo/cairo-cairo-t.html#cairo-t"
 >cairo_t</a> *cr,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> size,
+                                                         gint size,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *light,
@@ -260,16 +242,12 @@ Create a repeating checkerboard pattern.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>light</code></em> :</span></p></td>
-<td> light check color or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> to use the default light gray
+<td> light check color or <code class="literal">NULL</code> to use the default light gray
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dark</code></em> :</span></p></td>
-<td>  dark check color or <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
-><code class="literal">NULL</code></a> to use the default dark gray
+<td>  dark check color or <code class="literal">NULL</code> to use the default dark gray
 </td>
 </tr>
 <tr>
@@ -289,9 +267,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 <pre class="programlisting"><a
 href="/usr/share/gtk-doc/html/cairo/cairo-cairo-surface-t.html#cairo-surface-t"
 >cairo_surface_t</a>*    gimp_cairo_surface_create_from_pixbuf
-                                                        (<a
-href="/usr/share/gtk-doc/html/gdk-pixbuf/gdk-pixbuf-gdk-pixbuf.html#GdkPixbuf"
->GdkPixbuf</a> *pixbuf);</pre>
+                                                        (GdkPixbuf *pixbuf);</pre>
 <p>
 Create a Cairo image surface from a GdkPixbuf.
 </p>

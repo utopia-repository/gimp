@@ -67,11 +67,7 @@ enum                <a class="link" href="libgimp-gimpenums.html#GimpOffsetType"
 enum                <a class="link" href="libgimp-gimpenums.html#GimpOrientationType" title="enum GimpOrientationType">GimpOrientationType</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpRotationType" title="enum GimpRotationType">GimpRotationType</a>;
 enum                <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion" title="enum GimpSelectCriterion">GimpSelectCriterion</a>;
-const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>**       <a class="link" href="libgimp-gimpenums.html#gimp-enums-get-type-names" title="gimp_enums_get_type_names ()">gimp_enums_get_type_names</a>           (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *n_type_names);
+const gchar**       <a class="link" href="libgimp-gimpenums.html#gimp-enums-get-type-names" title="gimp_enums_get_type_names ()">gimp_enums_get_type_names</a>           (gint *n_type_names);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -388,11 +384,7 @@ implicitly.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-enums-get-type-names"></a><h3>gimp_enums_get_type_names ()</h3>
-<pre class="programlisting">const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>**       gimp_enums_get_type_names           (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *n_type_names);</pre>
+<pre class="programlisting">const gchar**       gimp_enums_get_type_names           (gint *n_type_names);</pre>
 <p>
 This function gives access to the list of enums registered by libgimp.
 The returned array is static and must not be modified.</p>

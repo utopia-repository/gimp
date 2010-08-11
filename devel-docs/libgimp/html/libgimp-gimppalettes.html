@@ -48,38 +48,14 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimppalettes.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-refresh" title="gimp_palettes_refresh ()">gimp_palettes_refresh</a>               (void);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>**             <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-list" title="gimp_palettes_get_list ()">gimp_palettes_get_list</a>              (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *filter,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *num_palettes);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-palette" title="gimp_palettes_get_palette ()">gimp_palettes_get_palette</a>           (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *num_colors);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-set-palette" title="gimp_palettes_set_palette ()">gimp_palettes_set_palette</a>           (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);
-<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-palette-entry" title="gimp_palettes_get_palette_entry ()">gimp_palettes_get_palette_entry</a>     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *num_colors,
+gboolean            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-refresh" title="gimp_palettes_refresh ()">gimp_palettes_refresh</a>               (void);
+gchar**             <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-list" title="gimp_palettes_get_list ()">gimp_palettes_get_list</a>              (const gchar *filter,
+                                                         gint *num_palettes);
+gchar*              <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-palette" title="gimp_palettes_get_palette ()">gimp_palettes_get_palette</a>           (gint *num_colors);
+gboolean            <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-set-palette" title="gimp_palettes_set_palette ()">gimp_palettes_set_palette</a>           (const gchar *name);
+gchar*              <a class="link" href="libgimp-gimppalettes.html#gimp-palettes-get-palette-entry" title="gimp_palettes_get_palette_entry ()">gimp_palettes_get_palette_entry</a>     (const gchar *name,
+                                                         gint entry_num,
+                                                         gint *num_colors,
                                                          <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);
@@ -95,9 +71,7 @@ Operations related to palettes.
 <a name="libgimp-gimppalettes.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="gimp-palettes-refresh"></a><h3>gimp_palettes_refresh ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_palettes_refresh               (void);</pre>
+<pre class="programlisting">gboolean            gimp_palettes_refresh               (void);</pre>
 <p>
 Refreshes current palettes. This function always succeeds.
 </p>
@@ -119,14 +93,8 @@ palette path and updates the palette dialogs accordingly.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-palettes-get-list"></a><h3>gimp_palettes_get_list ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>**             gimp_palettes_get_list              (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *filter,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *num_palettes);</pre>
+<pre class="programlisting">gchar**             gimp_palettes_get_list              (const gchar *filter,
+                                                         gint *num_palettes);</pre>
 <p>
 Retrieves a list of all of the available palettes
 </p>
@@ -161,11 +129,7 @@ Each name returned can be used as input to the command
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-palettes-get-palette"></a><h3>gimp_palettes_get_palette ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_palettes_get_palette           (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *num_colors);</pre>
+<pre class="programlisting">gchar*              gimp_palettes_get_palette           (gint *num_colors);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palettes_get_palette</code> is deprecated and should not be used in newly-written code.</p>
@@ -195,11 +159,7 @@ instead.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-palettes-set-palette"></a><h3>gimp_palettes_set_palette ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_palettes_set_palette           (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name);</pre>
+<pre class="programlisting">gboolean            gimp_palettes_set_palette           (const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_palettes_set_palette</code> is deprecated and should not be used in newly-written code.</p>
@@ -228,17 +188,9 @@ This procedure is deprecated! Use <a class="link" href="libgimp-gimpcontext.html
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-palettes-get-palette-entry"></a><h3>gimp_palettes_get_palette_entry ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a>*              gimp_palettes_get_palette_entry     (const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
->gchar</a> *name,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> entry_num,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> *num_colors,
+<pre class="programlisting">gchar*              gimp_palettes_get_palette_entry     (const gchar *name,
+                                                         gint entry_num,
+                                                         gint *num_colors,
                                                          <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color);</pre>

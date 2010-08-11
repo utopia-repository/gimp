@@ -57,35 +57,19 @@
 <a name="GimpPickButton.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpPickButton.html#GimpPickButton-struct" title="GimpPickButton">GimpPickButton</a>;
-<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          <a class="link" href="GimpPickButton.html#gimp-pick-button-new" title="gimp_pick_button_new ()">gimp_pick_button_new</a>                (void);
+GtkWidget*          <a class="link" href="GimpPickButton.html#gimp-pick-button-new" title="gimp_pick_button_new ()">gimp_pick_button_new</a>                (void);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpPickButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
->GtkBin</a>
-                                 +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
->GtkButton</a>
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBin
+                                 +----GtkButton
                                        +----GimpPickButton
 </pre>
 </div>
@@ -93,9 +77,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
 <a name="GimpPickButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPickButton implements
- AtkImplementorIface and  <a
-href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>.</p>
+ AtkImplementorIface and  GtkBuildable.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpPickButton.signals"></a><h2>Signals</h2>
@@ -123,9 +105,7 @@ from any point on the screen.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-pick-button-new"></a><h3>gimp_pick_button_new ()</h3>
-<pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>*          gimp_pick_button_new                (void);</pre>
+<pre class="programlisting">GtkWidget*          gimp_pick_button_new                (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.</p>
 <p>
@@ -146,12 +126,8 @@ Creates a new <a class="link" href="GimpPickButton.html" title="GimpPickButton">
 <div class="refsect2" lang="en">
 <a name="GimpPickButton-color-picked"></a><h3>The <code class="literal">"color-picked"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>        arg1,
-                                                        <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>        user_data)           : Run First</pre>
+                                                        gpointer        arg1,
+                                                        gpointer        user_data)           : Run First</pre>
 <p>
 
 </p>

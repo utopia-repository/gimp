@@ -52,16 +52,10 @@
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-ref" title="gimp_tile_ref ()">gimp_tile_ref</a>                       (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-ref-zero" title="gimp_tile_ref_zero ()">gimp_tile_ref_zero</a>                  (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-unref" title="gimp_tile_unref ()">gimp_tile_unref</a>                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> dirty);
+                                                         gboolean dirty);
 void                <a class="link" href="libgimp-gimptile.html#gimp-tile-flush" title="gimp_tile_flush ()">gimp_tile_flush</a>                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile);
-void                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-size" title="gimp_tile_cache_size ()">gimp_tile_cache_size</a>                (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"
->gulong</a> kilobytes);
-void                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles" title="gimp_tile_cache_ntiles ()">gimp_tile_cache_ntiles</a>              (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"
->gulong</a> ntiles);
+void                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-size" title="gimp_tile_cache_size ()">gimp_tile_cache_size</a>                (gulong kilobytes);
+void                <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-ntiles" title="gimp_tile_cache_ntiles ()">gimp_tile_cache_ntiles</a>              (gulong ntiles);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -131,9 +125,7 @@ Functions for working with tiles.
 <div class="refsect2" lang="en">
 <a name="gimp-tile-unref"></a><h3>gimp_tile_unref ()</h3>
 <pre class="programlisting">void                gimp_tile_unref                     (<a class="link" href="libgimp-gimptile.html#GimpTile" title="GimpTile">GimpTile</a> *tile,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
->gboolean</a> dirty);</pre>
+                                                         gboolean dirty);</pre>
 <p>
 
 </p>
@@ -176,9 +168,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-tile-cache-size"></a><h3>gimp_tile_cache_size ()</h3>
-<pre class="programlisting">void                gimp_tile_cache_size                (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"
->gulong</a> kilobytes);</pre>
+<pre class="programlisting">void                gimp_tile_cache_size                (gulong kilobytes);</pre>
 <p>
 Sets the size of the tile cache on the plug-in side. The tile cache
 is used to reduce the number of tiles exchanged between the GIMP core
@@ -198,9 +188,7 @@ and the plug-in. See also <a class="link" href="libgimp-gimptile.html#gimp-tile-
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-tile-cache-ntiles"></a><h3>gimp_tile_cache_ntiles ()</h3>
-<pre class="programlisting">void                gimp_tile_cache_ntiles              (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gulong"
->gulong</a> ntiles);</pre>
+<pre class="programlisting">void                gimp_tile_cache_ntiles              (gulong ntiles);</pre>
 <p>
 Sets the size of the tile cache on the plug-in side. This function
 is similar to <a class="link" href="libgimp-gimptile.html#gimp-tile-cache-size" title="gimp_tile_cache_size ()"><code class="function">gimp_tile_cache_size()</code></a> but allows to specify the

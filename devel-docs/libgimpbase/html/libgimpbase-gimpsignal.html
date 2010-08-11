@@ -42,16 +42,10 @@
 <div class="refsynopsisdiv">
 <a name="libgimpbase-gimpsignal.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-void                (<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">*GimpSignalHandlerFunc</a>)            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> signum);
-<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private" title="gimp_signal_private ()">gimp_signal_private</a>               (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> signum,
+void                (<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">*GimpSignalHandlerFunc</a>)            (gint signum);
+<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private" title="gimp_signal_private ()">gimp_signal_private</a>               (gint signum,
                                                          <a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> handler,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> flags);
+                                                         gint flags);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -65,9 +59,7 @@ Portable signal handling.
 <a name="libgimpbase-gimpsignal.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpSignalHandlerFunc"></a><h3>GimpSignalHandlerFunc ()</h3>
-<pre class="programlisting">void                (*GimpSignalHandlerFunc)            (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> signum);</pre>
+<pre class="programlisting">void                (*GimpSignalHandlerFunc)            (gint signum);</pre>
 <p>
 A prototype for signal handler functions. Note that each function which
 takes or returns a variable of this type also accepts or may return
@@ -89,13 +81,9 @@ special values defined by your system's signal.h header file (like
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-signal-private"></a><h3>gimp_signal_private ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> gimp_signal_private               (<a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> signum,
+<pre class="programlisting"><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> gimp_signal_private               (gint signum,
                                                          <a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> handler,
-                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a> flags);</pre>
+                                                         gint flags);</pre>
 <p>
 This function furnishes a workalike for signal(2) but
 which internally invokes sigaction(2) after certain

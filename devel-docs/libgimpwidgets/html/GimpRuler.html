@@ -59,7 +59,11 @@
 <a name="GimpRuler.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
                     <a class="link" href="GimpRuler.html#GimpRuler-struct" title="GimpRuler">GimpRuler</a>;
-GtkWidget*          <a class="link" href="GimpRuler.html#gimp-ruler-new" title="gimp_ruler_new ()">gimp_ruler_new</a>                      (GtkOrientation orientation);
+<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          <a class="link" href="GimpRuler.html#gimp-ruler-new" title="gimp_ruler_new ()">gimp_ruler_new</a>                      (<a
+href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
+>GtkOrientation</a> orientation);
 void                <a class="link" href="GimpRuler.html#gimp-ruler-set-unit" title="gimp_ruler_set_unit ()">gimp_ruler_set_unit</a>                 (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
@@ -68,25 +72,49 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>            <a class="link" href="GimpRuler.html#gimp-ruler-get-unit" title="gimp_ruler_get_unit ()">gimp_ruler_get_unit</a>                 (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler);
 void                <a class="link" href="GimpRuler.html#gimp-ruler-set-position" title="gimp_ruler_set_position ()">gimp_ruler_set_position</a>             (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler,
-                                                         gdouble position);
-gdouble             <a class="link" href="GimpRuler.html#gimp-ruler-get-position" title="gimp_ruler_get_position ()">gimp_ruler_get_position</a>             (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> position);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a class="link" href="GimpRuler.html#gimp-ruler-get-position" title="gimp_ruler_get_position ()">gimp_ruler_get_position</a>             (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler);
 void                <a class="link" href="GimpRuler.html#gimp-ruler-set-range" title="gimp_ruler_set_range ()">gimp_ruler_set_range</a>                (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler,
-                                                         gdouble lower,
-                                                         gdouble upper,
-                                                         gdouble max_size);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lower,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> upper,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> max_size);
 void                <a class="link" href="GimpRuler.html#gimp-ruler-get-range" title="gimp_ruler_get_range ()">gimp_ruler_get_range</a>                (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler,
-                                                         gdouble *lower,
-                                                         gdouble *upper,
-                                                         gdouble *max_size);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *lower,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *upper,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *max_size);
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpRuler.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  GObject
-   +----GInitiallyUnowned
-         +----GtkObject
-               +----GtkWidget
+  <a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+>GObject</a>
+   +----<a
+href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+>GInitiallyUnowned</a>
+         +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+>GtkObject</a>
+               +----<a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>
                      +----GimpRuler
 </pre>
 </div>
@@ -94,25 +122,39 @@ void                <a class="link" href="GimpRuler.html#gimp-ruler-get-range" t
 <a name="GimpRuler.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpRuler implements
- AtkImplementorIface and  GtkBuildable.</p>
+ AtkImplementorIface and  <a
+href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable"
+>GtkBuildable</a>.</p>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpRuler.properties"></a><h2>Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpRuler.html#GimpRuler--lower" title='The "lower" property'>lower</a>"                    gdouble               : Read / Write
-  "<a class="link" href="GimpRuler.html#GimpRuler--max-size" title='The "max-size" property'>max-size</a>"                 gdouble               : Read / Write
-  "<a class="link" href="GimpRuler.html#GimpRuler--orientation" title='The "orientation" property'>orientation</a>"              GtkOrientation        : Read / Write
-  "<a class="link" href="GimpRuler.html#GimpRuler--position" title='The "position" property'>position</a>"                 gdouble               : Read / Write
+  "<a class="link" href="GimpRuler.html#GimpRuler--lower" title='The "lower" property'>lower</a>"                    <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write
+  "<a class="link" href="GimpRuler.html#GimpRuler--max-size" title='The "max-size" property'>max-size</a>"                 <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write
+  "<a class="link" href="GimpRuler.html#GimpRuler--orientation" title='The "orientation" property'>orientation</a>"              <a
+href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
+>GtkOrientation</a>        : Read / Write
+  "<a class="link" href="GimpRuler.html#GimpRuler--position" title='The "position" property'>position</a>"                 <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write
   "<a class="link" href="GimpRuler.html#GimpRuler--unit" title='The "unit" property'>unit</a>"                     <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>              : Read / Write
-  "<a class="link" href="GimpRuler.html#GimpRuler--upper" title='The "upper" property'>upper</a>"                    gdouble               : Read / Write
+  "<a class="link" href="GimpRuler.html#GimpRuler--upper" title='The "upper" property'>upper</a>"                    <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write
 </pre>
 </div>
 <div class="refsect1" lang="en">
 <a name="GimpRuler.style-properties"></a><h2>Style Properties</h2>
 <pre class="synopsis">
-  "<a class="link" href="GimpRuler.html#GimpRuler--font-scale" title='The "font-scale" style property'>font-scale</a>"               gdouble               : Read
+  "<a class="link" href="GimpRuler.html#GimpRuler--font-scale" title='The "font-scale" style property'>font-scale</a>"               <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -133,7 +175,11 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-ruler-new"></a><h3>gimp_ruler_new ()</h3>
-<pre class="programlisting">GtkWidget*          gimp_ruler_new                      (GtkOrientation orientation);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a>*          gimp_ruler_new                      (<a
+href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
+>GtkOrientation</a> orientation);</pre>
 <p>
 Creates a new ruler.</p>
 <p>
@@ -220,7 +266,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 <div class="refsect2" lang="en">
 <a name="gimp-ruler-set-position"></a><h3>gimp_ruler_set_position ()</h3>
 <pre class="programlisting">void                gimp_ruler_set_position             (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler,
-                                                         gdouble position);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> position);</pre>
 <p>
 This sets the position of the ruler.</p>
 <p>
@@ -247,7 +295,9 @@ This sets the position of the ruler.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-ruler-get-position"></a><h3>gimp_ruler_get_position ()</h3>
-<pre class="programlisting">gdouble             gimp_ruler_get_position             (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_ruler_get_position             (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler);</pre>
 <p>
 </p>
 <p>
@@ -276,9 +326,15 @@ This sets the position of the ruler.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-ruler-set-range"></a><h3>gimp_ruler_set_range ()</h3>
 <pre class="programlisting">void                gimp_ruler_set_range                (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler,
-                                                         gdouble lower,
-                                                         gdouble upper,
-                                                         gdouble max_size);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> lower,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> upper,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> max_size);</pre>
 <p>
 This sets the range of the ruler.</p>
 <p>
@@ -317,9 +373,15 @@ leave for the text
 <div class="refsect2" lang="en">
 <a name="gimp-ruler-get-range"></a><h3>gimp_ruler_get_range ()</h3>
 <pre class="programlisting">void                gimp_ruler_get_range                (<a class="link" href="GimpRuler.html" title="GimpRuler">GimpRuler</a> *ruler,
-                                                         gdouble *lower,
-                                                         gdouble *upper,
-                                                         gdouble *max_size);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *lower,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *upper,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *max_size);</pre>
 <p>
 Retrieves values indicating the range and current position of a <a class="link" href="GimpRuler.html" title="GimpRuler"><span class="type">GimpRuler</span></a>.
 See <a class="link" href="GimpRuler.html#gimp-ruler-set-range" title="gimp_ruler_set_range ()"><code class="function">gimp_ruler_set_range()</code></a>.</p>
@@ -336,18 +398,24 @@ See <a class="link" href="GimpRuler.html#gimp-ruler-set-range" title="gimp_ruler
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lower</code></em> :</span></p></td>
-<td> location to store lower limit of the ruler, or <code class="literal">NULL</code>
+<td> location to store lower limit of the ruler, or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>upper</code></em> :</span></p></td>
-<td> location to store upper limit of the ruler, or <code class="literal">NULL</code>
+<td> location to store upper limit of the ruler, or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>max_size</code></em> :</span></p></td>
 <td> location to store the maximum size of the ruler used when
-           calculating the space to leave for the text, or <code class="literal">NULL</code>.
+           calculating the space to leave for the text, or <a
+href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a>.
 </td>
 </tr>
 </tbody>
@@ -360,28 +428,36 @@ See <a class="link" href="GimpRuler.html#gimp-ruler-set-range" title="gimp_ruler
 <a name="GimpRuler.property-details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpRuler--lower"></a><h3>The <code class="literal">"lower"</code> property</h3>
-<pre class="programlisting">  "lower"                    gdouble               : Read / Write</pre>
+<pre class="programlisting">  "lower"                    <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write</pre>
 <p>Lower limit of ruler.</p>
 <p>Default value: 0</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRuler--max-size"></a><h3>The <code class="literal">"max-size"</code> property</h3>
-<pre class="programlisting">  "max-size"                 gdouble               : Read / Write</pre>
+<pre class="programlisting">  "max-size"                 <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write</pre>
 <p>Maximum size of the ruler.</p>
 <p>Default value: 0</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRuler--orientation"></a><h3>The <code class="literal">"orientation"</code> property</h3>
-<pre class="programlisting">  "orientation"              GtkOrientation        : Read / Write</pre>
+<pre class="programlisting">  "orientation"              <a
+href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"
+>GtkOrientation</a>        : Read / Write</pre>
 <p>The orientation of the ruler.</p>
 <p>Default value: GTK_ORIENTATION_HORIZONTAL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRuler--position"></a><h3>The <code class="literal">"position"</code> property</h3>
-<pre class="programlisting">  "position"                 gdouble               : Read / Write</pre>
+<pre class="programlisting">  "position"                 <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write</pre>
 <p>Position of mark on the ruler.</p>
 <p>Default value: 0</p>
 </div>
@@ -398,7 +474,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 <hr>
 <div class="refsect2" lang="en">
 <a name="GimpRuler--upper"></a><h3>The <code class="literal">"upper"</code> property</h3>
-<pre class="programlisting">  "upper"                    gdouble               : Read / Write</pre>
+<pre class="programlisting">  "upper"                    <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read / Write</pre>
 <p>Upper limit of ruler.</p>
 <p>Default value: 0</p>
 </div>
@@ -407,7 +485,9 @@ href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 <a name="GimpRuler.style-property-details"></a><h2>Style Property Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpRuler--font-scale"></a><h3>The <code class="literal">"font-scale"</code> style property</h3>
-<pre class="programlisting">  "font-scale"               gdouble               : Read</pre>
+<pre class="programlisting">  "font-scale"               <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>               : Read</pre>
 <p></p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 0.833333</p>

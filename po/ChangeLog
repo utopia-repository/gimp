@@ -1,3 +1,43 @@
+2008-11-16  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+
+	* be.po: Updated Belarusian translation by Hleb Valoshka.
+
+2008-11-14  Sven Neumann  <sven@gimp.org>
+
+	Bug 559490 – Wrong lang tags for 'no'
+
+	* nb.po
+	* nn.po: fixed tips locales.
+
+2008-11-11  Mugurel Tudor  <mugurelu@gnome.ro>
+
+	* ro.po: Updated Romanian translation
+	by Cristian Secară <cristi AT secarica DOT ro>
+
+2008-11-10  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated German translation.
+
+	* POTFILES.in: added file with a new string that was needed to fix
+	a crash.
+
+2008-11-08  Wadim Dziedzic  <wdziedzic@aviary.pl>
+
+	* pl.po: Updated Polish translation by Bartosz Kosiorek
+
+2008-11-01  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* nl.po: Updated Dutch translation by Filip Vervloesem.
+
+2008-11-01  Takeshi AIHANA <takeshi.aihana@gmail.com>
+
+	* ja.po: Fixed Japanese translation by
+	         Kiyotaka Nishibori.
+
+2008-10-30  Žygimantas Beručka  <zygis@gnome.org>
+
+	* lt.po: Updated Lithuanian translation.
+
 2008-10-28  Petr Kovar  <pknbe@volny.cz>
 
 	* cs.po: Fixed Czech translation (bug #517967).

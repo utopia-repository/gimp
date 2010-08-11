@@ -48,20 +48,54 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimpfontselect.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-void                (<a class="link" href="libgimp-gimpfontselect.html#GimpRunFontCallback" title="GimpRunFontCallback ()">*GimpRunFontCallback</a>)              (const gchar *font_name,
-                                                         gboolean dialog_closing,
-                                                         gpointer user_data);
-const gchar*        <a class="link" href="libgimp-gimpfontselect.html#gimp-font-select-new" title="gimp_font_select_new ()">gimp_font_select_new</a>                (const gchar *title,
-                                                         const gchar *font_name,
+void                (<a class="link" href="libgimp-gimpfontselect.html#GimpRunFontCallback" title="GimpRunFontCallback ()">*GimpRunFontCallback</a>)              (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);
+const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="libgimp-gimpfontselect.html#gimp-font-select-new" title="gimp_font_select_new ()">gimp_font_select_new</a>                (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_name,
                                                          <a class="link" href="libgimp-gimpfontselect.html#GimpRunFontCallback" title="GimpRunFontCallback ()">GimpRunFontCallback</a> callback,
-                                                         gpointer data);
-void                <a class="link" href="libgimp-gimpfontselect.html#gimp-font-select-destroy" title="gimp_font_select_destroy ()">gimp_font_select_destroy</a>            (const gchar *font_callback);
-gboolean            <a class="link" href="libgimp-gimpfontselect.html#gimp-fonts-popup" title="gimp_fonts_popup ()">gimp_fonts_popup</a>                    (const gchar *font_callback,
-                                                         const gchar *popup_title,
-                                                         const gchar *initial_font);
-gboolean            <a class="link" href="libgimp-gimpfontselect.html#gimp-fonts-close-popup" title="gimp_fonts_close_popup ()">gimp_fonts_close_popup</a>              (const gchar *font_callback);
-gboolean            <a class="link" href="libgimp-gimpfontselect.html#gimp-fonts-set-popup" title="gimp_fonts_set_popup ()">gimp_fonts_set_popup</a>                (const gchar *font_callback,
-                                                         const gchar *font_name);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+void                <a class="link" href="libgimp-gimpfontselect.html#gimp-font-select-destroy" title="gimp_font_select_destroy ()">gimp_font_select_destroy</a>            (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_callback);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfontselect.html#gimp-fonts-popup" title="gimp_fonts_popup ()">gimp_fonts_popup</a>                    (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_callback,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_font);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfontselect.html#gimp-fonts-close-popup" title="gimp_fonts_close_popup ()">gimp_fonts_close_popup</a>              (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_callback);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfontselect.html#gimp-fonts-set-popup" title="gimp_fonts_set_popup ()">gimp_fonts_set_popup</a>                (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_callback,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -74,9 +108,15 @@ Functions providing a font selection dialog.
 <a name="libgimp-gimpfontselect.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpRunFontCallback"></a><h3>GimpRunFontCallback ()</h3>
-<pre class="programlisting">void                (*GimpRunFontCallback)              (const gchar *font_name,
-                                                         gboolean dialog_closing,
-                                                         gpointer user_data);</pre>
+<pre class="programlisting">void                (*GimpRunFontCallback)              (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);</pre>
 <p>
 
 </p>
@@ -106,10 +146,18 @@ Functions providing a font selection dialog.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-font-select-new"></a><h3>gimp_font_select_new ()</h3>
-<pre class="programlisting">const gchar*        gimp_font_select_new                (const gchar *title,
-                                                         const gchar *font_name,
+<pre class="programlisting">const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_font_select_new                (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_name,
                                                          <a class="link" href="libgimp-gimpfontselect.html#GimpRunFontCallback" title="GimpRunFontCallback ()">GimpRunFontCallback</a> callback,
-                                                         gpointer data);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 
 </p>
@@ -149,7 +197,9 @@ Functions providing a font selection dialog.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-font-select-destroy"></a><h3>gimp_font_select_destroy ()</h3>
-<pre class="programlisting">void                gimp_font_select_destroy            (const gchar *font_callback);</pre>
+<pre class="programlisting">void                gimp_font_select_destroy            (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_callback);</pre>
 <p>
 
 </p>
@@ -167,9 +217,17 @@ Functions providing a font selection dialog.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-fonts-popup"></a><h3>gimp_fonts_popup ()</h3>
-<pre class="programlisting">gboolean            gimp_fonts_popup                    (const gchar *font_callback,
-                                                         const gchar *popup_title,
-                                                         const gchar *initial_font);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_fonts_popup                    (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_callback,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_font);</pre>
 <p>
 Invokes the Gimp font selection.
 </p>
@@ -207,7 +265,11 @@ This procedure opens the font selection dialog.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-fonts-close-popup"></a><h3>gimp_fonts_close_popup ()</h3>
-<pre class="programlisting">gboolean            gimp_fonts_close_popup              (const gchar *font_callback);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_fonts_close_popup              (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_callback);</pre>
 <p>
 Close the font selection dialog.
 </p>
@@ -235,8 +297,14 @@ This procedure closes an opened font selection dialog.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-fonts-set-popup"></a><h3>gimp_fonts_set_popup ()</h3>
-<pre class="programlisting">gboolean            gimp_fonts_set_popup                (const gchar *font_callback,
-                                                         const gchar *font_name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_fonts_set_popup                (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_callback,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *font_name);</pre>
 <p>
 Sets the current font in a font selection dialog.
 </p>

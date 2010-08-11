@@ -48,24 +48,66 @@
 <div class="refsynopsisdiv">
 <a name="libgimp-gimppatternselect.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-void                (<a class="link" href="libgimp-gimppatternselect.html#GimpRunPatternCallback" title="GimpRunPatternCallback ()">*GimpRunPatternCallback</a>)           (const gchar *pattern_name,
-                                                         gint width,
-                                                         gint height,
-                                                         gint bpp,
-                                                         const guchar *mask_data,
-                                                         gboolean dialog_closing,
-                                                         gpointer user_data);
-const gchar*        <a class="link" href="libgimp-gimppatternselect.html#gimp-pattern-select-new" title="gimp_pattern_select_new ()">gimp_pattern_select_new</a>             (const gchar *title,
-                                                         const gchar *pattern_name,
+void                (<a class="link" href="libgimp-gimppatternselect.html#GimpRunPatternCallback" title="GimpRunPatternCallback ()">*GimpRunPatternCallback</a>)           (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> height,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> bpp,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
+>guchar</a> *mask_data,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);
+const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="libgimp-gimppatternselect.html#gimp-pattern-select-new" title="gimp_pattern_select_new ()">gimp_pattern_select_new</a>             (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name,
                                                          <a class="link" href="libgimp-gimppatternselect.html#GimpRunPatternCallback" title="GimpRunPatternCallback ()">GimpRunPatternCallback</a> callback,
-                                                         gpointer data);
-void                <a class="link" href="libgimp-gimppatternselect.html#gimp-pattern-select-destroy" title="gimp_pattern_select_destroy ()">gimp_pattern_select_destroy</a>         (const gchar *pattern_callback);
-gboolean            <a class="link" href="libgimp-gimppatternselect.html#gimp-patterns-popup" title="gimp_patterns_popup ()">gimp_patterns_popup</a>                 (const gchar *pattern_callback,
-                                                         const gchar *popup_title,
-                                                         const gchar *initial_pattern);
-gboolean            <a class="link" href="libgimp-gimppatternselect.html#gimp-patterns-close-popup" title="gimp_patterns_close_popup ()">gimp_patterns_close_popup</a>           (const gchar *pattern_callback);
-gboolean            <a class="link" href="libgimp-gimppatternselect.html#gimp-patterns-set-popup" title="gimp_patterns_set_popup ()">gimp_patterns_set_popup</a>             (const gchar *pattern_callback,
-                                                         const gchar *pattern_name);
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+void                <a class="link" href="libgimp-gimppatternselect.html#gimp-pattern-select-destroy" title="gimp_pattern_select_destroy ()">gimp_pattern_select_destroy</a>         (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppatternselect.html#gimp-patterns-popup" title="gimp_patterns_popup ()">gimp_patterns_popup</a>                 (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_pattern);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppatternselect.html#gimp-patterns-close-popup" title="gimp_patterns_close_popup ()">gimp_patterns_close_popup</a>           (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback);
+<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimppatternselect.html#gimp-patterns-set-popup" title="gimp_patterns_set_popup ()">gimp_patterns_set_popup</a>             (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
@@ -78,13 +120,27 @@ Functions providing a pattern selection dialog.
 <a name="libgimp-gimppatternselect.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
 <a name="GimpRunPatternCallback"></a><h3>GimpRunPatternCallback ()</h3>
-<pre class="programlisting">void                (*GimpRunPatternCallback)           (const gchar *pattern_name,
-                                                         gint width,
-                                                         gint height,
-                                                         gint bpp,
-                                                         const guchar *mask_data,
-                                                         gboolean dialog_closing,
-                                                         gpointer user_data);</pre>
+<pre class="programlisting">void                (*GimpRunPatternCallback)           (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> height,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> bpp,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guchar"
+>guchar</a> *mask_data,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);</pre>
 <p>
 
 </p>
@@ -134,10 +190,18 @@ Functions providing a pattern selection dialog.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-pattern-select-new"></a><h3>gimp_pattern_select_new ()</h3>
-<pre class="programlisting">const gchar*        gimp_pattern_select_new             (const gchar *title,
-                                                         const gchar *pattern_name,
+<pre class="programlisting">const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_pattern_select_new             (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name,
                                                          <a class="link" href="libgimp-gimppatternselect.html#GimpRunPatternCallback" title="GimpRunPatternCallback ()">GimpRunPatternCallback</a> callback,
-                                                         gpointer data);</pre>
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 
 </p>
@@ -177,7 +241,9 @@ Functions providing a pattern selection dialog.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-pattern-select-destroy"></a><h3>gimp_pattern_select_destroy ()</h3>
-<pre class="programlisting">void                gimp_pattern_select_destroy         (const gchar *pattern_callback);</pre>
+<pre class="programlisting">void                gimp_pattern_select_destroy         (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback);</pre>
 <p>
 
 </p>
@@ -195,9 +261,17 @@ Functions providing a pattern selection dialog.
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-patterns-popup"></a><h3>gimp_patterns_popup ()</h3>
-<pre class="programlisting">gboolean            gimp_patterns_popup                 (const gchar *pattern_callback,
-                                                         const gchar *popup_title,
-                                                         const gchar *initial_pattern);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_patterns_popup                 (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_pattern);</pre>
 <p>
 Invokes the Gimp pattern selection.
 </p>
@@ -235,7 +309,11 @@ This procedure opens the pattern selection dialog.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-patterns-close-popup"></a><h3>gimp_patterns_close_popup ()</h3>
-<pre class="programlisting">gboolean            gimp_patterns_close_popup           (const gchar *pattern_callback);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_patterns_close_popup           (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback);</pre>
 <p>
 Close the pattern selection dialog.
 </p>
@@ -263,8 +341,14 @@ This procedure closes an opened pattern selection dialog.</p>
 <hr>
 <div class="refsect2" lang="en">
 <a name="gimp-patterns-set-popup"></a><h3>gimp_patterns_set_popup ()</h3>
-<pre class="programlisting">gboolean            gimp_patterns_set_popup             (const gchar *pattern_callback,
-                                                         const gchar *pattern_name);</pre>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_patterns_set_popup             (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback,
+                                                         const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name);</pre>
 <p>
 Sets the current pattern in a pattern selection dialog.
 </p>

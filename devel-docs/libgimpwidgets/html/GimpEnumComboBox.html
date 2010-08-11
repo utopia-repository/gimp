@@ -62,17 +62,17 @@
 
                     <a class="link" href="GimpEnumComboBox.html#GimpEnumComboBox-struct">GimpEnumComboBox</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>*          <a class="link" href="GimpEnumComboBox.html#gimp-enum-combo-box-new">gimp_enum_combo_box_new</a>             (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
+href="../gobject/gobject-Type-Information.html#GType"
 >GType</a> enum_type);
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>*          <a class="link" href="GimpEnumComboBox.html#gimp-enum-combo-box-new-with-model">gimp_enum_combo_box_new_with_model</a>  (<a class="link" href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *enum_store);
 void                <a class="link" href="GimpEnumComboBox.html#gimp-enum-combo-box-set-stock-prefix">gimp_enum_combo_box_set_stock_prefix</a>
                                                         (<a class="link" href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a> *combo_box,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a> *stock_prefix);
 
 </pre>
@@ -82,25 +82,25 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <pre class="synopsis">
 
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="../gtk/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="../gtk/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
+href="../gtk/GtkBin.html"
 >GtkBin</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
+href="../gtk/GtkComboBox.html"
 >GtkComboBox</a>
                                        +----<a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox">GimpIntComboBox</a>
                                              +----GimpEnumComboBox
@@ -111,9 +111,9 @@ href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
 <p>
 GimpEnumComboBox implements
  AtkImplementorIface,  GtkBuildable,  <a
-href="/usr/share/gtk-doc/html/gtk/GtkCellEditable.html"
+href="../gtk/GtkCellEditable.html"
 >GtkCellEditable</a> and  <a
-href="/usr/share/gtk-doc/html/gtk/GtkCellLayout.html"
+href="../gtk/GtkCellLayout.html"
 >GtkCellLayout</a>.</p>
 </div>
 <div class="refsect1" lang="en">
@@ -144,17 +144,17 @@ href="/usr/share/gtk-doc/html/gtk/GtkCellLayout.html"
 <a name="id2578954"></a><h3>
 <a name="gimp-enum-combo-box-new"></a>gimp_enum_combo_box_new ()</h3>
 <a class="indexterm" name="id2578967"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>*          gimp_enum_combo_box_new             (<a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
+href="../gobject/gobject-Type-Information.html#GType"
 >GType</a> enum_type);</pre>
 <p>
 Creates a <a
-href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
+href="../gtk/GtkComboBox.html"
 ><span class="type">GtkComboBox</span></a> readily filled with all enum values from a
 given <em class="parameter"><code>enum_type</code></em>. The enum needs to be registered to the type
 system. It should also have <a
-href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbasetypes.html#GimpEnumDesc"
+href="../libgimpbase/libgimpbase-gimpbasetypes.html#GimpEnumDesc"
 ><code class="literal">GimpEnumDesc</code></a> descriptions registered
 that contain translatable value names. This is the case for the
 enums used in the GIMP PDB functions.
@@ -172,7 +172,7 @@ own <a class="link" href="GimpEnumStore.html" title="GimpEnumStore"><span class=
 <tr>
 <td><p><span class="term"><em class="parameter"><code>enum_type</code></em>&#160;:</span></p></td>
 <td> the <a
-href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
+href="../gobject/gobject-Type-Information.html#GType"
 ><span class="type">GType</span></a> of an enum.
 </td>
 </tr>
@@ -192,11 +192,11 @@ href="/usr/share/gtk-doc/html/gobject/gobject-Type-Information.html#GType"
 <a name="id2626874"></a><h3>
 <a name="gimp-enum-combo-box-new-with-model"></a>gimp_enum_combo_box_new_with_model ()</h3>
 <a class="indexterm" name="id2626888"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>*          gimp_enum_combo_box_new_with_model  (<a class="link" href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *enum_store);</pre>
 <p>
 Creates a <a
-href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
+href="../gtk/GtkComboBox.html"
 ><span class="type">GtkComboBox</span></a> for the given <em class="parameter"><code>enum_store</code></em>.</p>
 <p>
 
@@ -227,7 +227,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
 <a class="indexterm" name="id2626999"></a><pre class="programlisting">void                gimp_enum_combo_box_set_stock_prefix
                                                         (<a class="link" href="GimpEnumComboBox.html" title="GimpEnumComboBox">GimpEnumComboBox</a> *combo_box,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a> *stock_prefix);</pre>
 <p>
 Attempts to create stock icons for all items in the <em class="parameter"><code>combo_box</code></em>. See

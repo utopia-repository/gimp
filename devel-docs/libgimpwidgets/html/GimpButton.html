@@ -51,7 +51,7 @@
 <a name="id2584526"></a><span class="refentrytitle">GimpButton</span>
 </h2>
 <p>GimpButton &#8212; A <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="../gtk/GtkButton.html"
 ><span class="type">GtkButton</span></a> with a little extra functionality.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-button.png"></td>
@@ -64,11 +64,11 @@ href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
 
                     <a class="link" href="GimpButton.html#GimpButton-struct">GimpButton</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>*          <a class="link" href="GimpButton.html#gimp-button-new">gimp_button_new</a>                     (void);
 void                <a class="link" href="GimpButton.html#gimp-button-extended-clicked">gimp_button_extended_clicked</a>        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
                                                          <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+href="../gdk/gdk-Windows.html#GdkModifierType"
 >GdkModifierType</a> state);
 
 </pre>
@@ -78,25 +78,25 @@ href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
 <pre class="synopsis">
 
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="../gtk/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="../gtk/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkBin.html"
+href="../gtk/GtkBin.html"
 >GtkBin</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="../gtk/GtkButton.html"
 >GtkButton</a>
                                        +----GimpButton
                                              +----<a class="link" href="GimpColorButton.html" title="GimpColorButton">GimpColorButton</a>
@@ -119,7 +119,7 @@ GimpButton implements
 <a name="id2613821"></a><h2>Description</h2>
 <p>
 <a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> adds an extra signal to the <a
-href="/usr/share/gtk-doc/html/gtk/GtkButton.html"
+href="../gtk/GtkButton.html"
 ><span class="type">GtkButton</span></a> widget that allows
 to distinguish a normal click from a click that was performed with
 modifier keys pressed.
@@ -140,7 +140,7 @@ modifier keys pressed.
 <a name="id2613891"></a><h3>
 <a name="gimp-button-new"></a>gimp_button_new ()</h3>
 <a class="indexterm" name="id2613903"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>*          gimp_button_new                     (void);</pre>
 <p>
 Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span class="type">GimpButton</span></a> widget.</p>
@@ -162,7 +162,7 @@ Creates a new <a class="link" href="GimpButton.html" title="GimpButton"><span cl
 <a name="gimp-button-extended-clicked"></a>gimp_button_extended_clicked ()</h3>
 <a class="indexterm" name="id2613969"></a><pre class="programlisting">void                gimp_button_extended_clicked        (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a> *button,
                                                          <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+href="../gdk/gdk-Windows.html#GdkModifierType"
 >GdkModifierType</a> state);</pre>
 <p>
 Emits the button's "extended_clicked" signal.</p>
@@ -180,7 +180,7 @@ Emits the button's "extended_clicked" signal.</p>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>state</code></em>&#160;:</span></p></td>
 <td>  a state as found in <span class="type">GdkEventButton-</span>&gt;state, e.g. <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GDK-SHIFT-MASK:CAPS"
+href="../gdk/gdk-Windows.html#GDK-SHIFT-MASK:CAPS"
 ><span class="type">GDK_SHIFT_MASK</span></a>.
 </td>
 </tr>
@@ -195,10 +195,10 @@ href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GDK-SHIFT-MASK:CAPS"
 <a name="GimpButton-extended-clicked"></a>The <code class="literal">"extended-clicked"</code> signal</h3>
 <a class="indexterm" name="id2592620"></a><pre class="programlisting">void                user_function                      (<a class="link" href="GimpButton.html" title="GimpButton">GimpButton</a>     *gimpbutton,
                                                         <a
-href="/usr/share/gtk-doc/html/gdk/gdk-Windows.html#GdkModifierType"
+href="../gdk/gdk-Windows.html#GdkModifierType"
 >GdkModifierType</a> arg1,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="../glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>        user_data)       : Run First</pre>
 <p>
 

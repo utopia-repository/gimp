@@ -58,7 +58,8 @@ am__EXEEXT_1 = @GIMP_REMOTE@
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
-am_gimp_remote_2_4_OBJECTS = gimp-remote.$(OBJEXT)
+am_gimp_remote_2_4_OBJECTS = gimp-remote.$(OBJEXT) \
+	gimp-remote-x11.$(OBJEXT)
 gimp_remote_2_4_OBJECTS = $(am_gimp_remote_2_4_OBJECTS)
 am__DEPENDENCIES_1 =
 gimp_remote_2_4_DEPENDENCIES = $(am__DEPENDENCIES_1) \
@@ -467,7 +468,11 @@ target_alias = @target_alias@
 @WITH_PDBGEN_FALSE@D_pdbgen = 
 @WITH_PDBGEN_TRUE@D_pdbgen = pdbgen
 SUBDIRS = $(D_pdbgen)
-gimp_remote_2_4_SOURCES = gimp-remote.c
+gimp_remote_2_4_SOURCES = \
+	gimp-remote.c	\
+	gimp-remote.h	\
+	gimp-remote-x11.c
+
 gimp_remote_2_4_LDADD = \
 	$(GTK_LIBS)	\
 	$(LIBXMU)
@@ -575,6 +580,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-remote-x11.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimp-remote.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kernelgen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-clipboard.Po@am__quote@

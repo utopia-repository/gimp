@@ -62,23 +62,23 @@
 
                     <a class="link" href="GimpBrowser.html#GimpBrowser-struct">GimpBrowser</a>;
 <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>*          <a class="link" href="GimpBrowser.html#gimp-browser-new">gimp_browser_new</a>                    (void);
 void                <a class="link" href="GimpBrowser.html#gimp-browser-add-search-types">gimp_browser_add_search_types</a>       (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a> *first_type_label,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="../glib/glib-Basic-Types.html#gint"
 >gint</a> first_type_id,
                                                          ...);
 void                <a class="link" href="GimpBrowser.html#gimp-browser-set-widget">gimp_browser_set_widget</a>             (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a> *widget);
 void                <a class="link" href="GimpBrowser.html#gimp-browser-show-message">gimp_browser_show_message</a>           (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a> *message);
 
 </pre>
@@ -88,25 +88,25 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 <pre class="synopsis">
 
   <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
+href="../gobject/gobject-The-Base-Object-Type.html#GObject"
 >GObject</a>
    +----<a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
+href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
 >GInitiallyUnowned</a>
          +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
+href="../gtk/GtkObject.html"
 >GtkObject</a>
                +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>
                      +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
+href="../gtk/GtkContainer.html"
 >GtkContainer</a>
                            +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkPaned.html"
+href="../gtk/GtkPaned.html"
 >GtkPaned</a>
                                  +----<a
-href="/usr/share/gtk-doc/html/gtk/GtkHPaned.html"
+href="../gtk/GtkHPaned.html"
 >GtkHPaned</a>
                                        +----GimpBrowser
 </pre>
@@ -145,7 +145,7 @@ GimpBrowser implements
 <a name="id2527602"></a><h3>
 <a name="gimp-browser-new"></a>gimp_browser_new ()</h3>
 <a class="indexterm" name="id2527617"></a><pre class="programlisting"><a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a>*          gimp_browser_new                    (void);</pre>
 <p>
 Create a new <a class="link" href="GimpBrowser.html" title="GimpBrowser"><span class="type">GimpBrowser</span></a> widget.</p>
@@ -170,15 +170,15 @@ Create a new <a class="link" href="GimpBrowser.html" title="GimpBrowser"><span c
 <a name="gimp-browser-add-search-types"></a>gimp_browser_add_search_types ()</h3>
 <a class="indexterm" name="id2581835"></a><pre class="programlisting">void                gimp_browser_add_search_types       (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a> *first_type_label,
                                                          <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="../glib/glib-Basic-Types.html#gint"
 >gint</a> first_type_id,
                                                          ...);</pre>
 <p>
 Populates the <a
-href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
+href="../gtk/GtkComboBox.html"
 ><span class="type">GtkComboBox</span></a> with search types.</p>
 <p>
 
@@ -204,7 +204,7 @@ href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"
 <tr>
 <td><p><span class="term"><em class="parameter"><code>...</code></em>&#160;:</span></p></td>
 <td>              a <a
-href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 ><code class="literal">NULL</code></a>-terminated list of more labels and ids.
 </td>
 </tr>
@@ -219,7 +219,7 @@ href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#NULL:CAPS"
 <a name="gimp-browser-set-widget"></a>gimp_browser_set_widget ()</h3>
 <a class="indexterm" name="id2581988"></a><pre class="programlisting">void                gimp_browser_set_widget             (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 >GtkWidget</a> *widget);</pre>
 <p>
 Sets the widget to appear on the right side of the <em class="parameter"><code>browser</code></em>.</p>
@@ -237,7 +237,7 @@ Sets the widget to appear on the right side of the <em class="parameter"><code>b
 <tr>
 <td><p><span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></p></td>
 <td>  a <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+href="../gtk/GtkWidget.html"
 ><span class="type">GtkWidget</span></a>
 </td>
 </tr>
@@ -252,15 +252,15 @@ href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
 <a name="gimp-browser-show-message"></a>gimp_browser_show_message ()</h3>
 <a class="indexterm" name="id2611669"></a><pre class="programlisting">void                gimp_browser_show_message           (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *browser,
                                                          const <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a> *message);</pre>
 <p>
 Displays <em class="parameter"><code>message</code></em> in the right side of the <em class="parameter"><code>browser</code></em>. Unless the right
 side already contains a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="../gtk/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>, the widget previously added with
 <a class="link" href="GimpBrowser.html#gimp-browser-set-widget"><code class="function">gimp_browser_set_widget()</code></a> is removed and replaced by a <a
-href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
+href="../gtk/GtkLabel.html"
 ><span class="type">GtkLabel</span></a>.</p>
 <p>
 
@@ -291,13 +291,13 @@ href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"
 <a name="GimpBrowser-search"></a>The <code class="literal">"search"</code> signal</h3>
 <a class="indexterm" name="id2611815"></a><pre class="programlisting">void                user_function                      (<a class="link" href="GimpBrowser.html" title="GimpBrowser">GimpBrowser</a> *gimpbrowser,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a>       *arg1,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+href="../glib/glib-Basic-Types.html#gint"
 >gint</a>         arg2,
                                                         <a
-href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
+href="../glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>     user_data)        : Run Last</pre>
 <p>
 

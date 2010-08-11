@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimprectangle.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2607368" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2586403" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2575731" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2579579" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpmemsize"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2607368"></a><span class="refentrytitle">gimpmemsize</span>
+<a name="id2586403"></a><span class="refentrytitle">gimpmemsize</span>
 </h2>
 <p>gimpmemsize &#8212; Functions to (de)serialize a given memory size.</p>
 </td>
@@ -95,17 +95,17 @@ href="../gobject/gobject-GParamSpec.html#GParamFlags"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2575731"></a><h2>Description</h2>
+<a name="id2579579"></a><h2>Description</h2>
 <p>
 Functions to (de)serialize a given memory size.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2575748"></a><h2>Details</h2>
+<a name="id2579596"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2619932"></a><h3>
+<a name="id2579607"></a><h3>
 <a name="gimp-memsize-serialize"></a>gimp_memsize_serialize ()</h3>
-<a class="indexterm" name="id2619946"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2579620"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_memsize_serialize              (<a
 href="../glib/glib-Basic-Types.html#guint64"
@@ -139,9 +139,9 @@ nice human-readable string please use <a class="link" href="libgimpbase-gimpmems
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2620040"></a><h3>
+<a name="id2587953"></a><h3>
 <a name="gimp-memsize-deserialize"></a>gimp_memsize_deserialize ()</h3>
-<a class="indexterm" name="id2620054"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2587967"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_memsize_deserialize            (const <a
 href="../glib/glib-Basic-Types.html#gchar"
@@ -186,9 +186,9 @@ href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611030"></a><h3>
+<a name="id2582059"></a><h3>
 <a name="gimp-memsize-to-string"></a>gimp_memsize_to_string ()</h3>
-<a class="indexterm" name="id2611041"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2582070"></a><pre class="programlisting"><a
 href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_memsize_to_string              (<a
 href="../glib/glib-Basic-Types.html#guint64"
@@ -219,9 +219,9 @@ becomes "4.4 KB" and so on.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611111"></a><h3>
+<a name="id2582140"></a><h3>
 <a name="GIMP-TYPE-MEMSIZE:CAPS"></a>GIMP_TYPE_MEMSIZE</h3>
-<a class="indexterm" name="id2611123"></a><pre class="programlisting">#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
+<a class="indexterm" name="id2582151"></a><pre class="programlisting">#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
 </pre>
 <p>
 <a class="link" href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS"><span class="type">GIMP_TYPE_MEMSIZE</span></a> is a <a
@@ -233,9 +233,9 @@ href="../gobject/gobject-Type-Information.html#G-TYPE-UINT64:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2611161"></a><h3>
+<a name="id2582189"></a><h3>
 <a name="GIMP-TYPE-PARAM-MEMSIZE:CAPS"></a>GIMP_TYPE_PARAM_MEMSIZE</h3>
-<a class="indexterm" name="id2611172"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_MEMSIZE           (gimp_param_memsize_get_type ())
+<a class="indexterm" name="id2582201"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_MEMSIZE           (gimp_param_memsize_get_type ())
 </pre>
 <p>
 
@@ -243,9 +243,9 @@ href="../gobject/gobject-Type-Information.html#G-TYPE-UINT64:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615167"></a><h3>
+<a name="id2582217"></a><h3>
 <a name="GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS"></a>GIMP_IS_PARAM_SPEC_MEMSIZE()</h3>
-<a class="indexterm" name="id2615178"></a><pre class="programlisting">#define GIMP_IS_PARAM_SPEC_MEMSIZE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MEMSIZE))
+<a class="indexterm" name="id2582228"></a><pre class="programlisting">#define GIMP_IS_PARAM_SPEC_MEMSIZE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MEMSIZE))
 </pre>
 <p>
 
@@ -263,9 +263,9 @@ href="../gobject/gobject-Type-Information.html#G-TYPE-UINT64:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615214"></a><h3>
+<a name="id2582264"></a><h3>
 <a name="gimp-param-spec-memsize"></a>gimp_param_spec_memsize ()</h3>
-<a class="indexterm" name="id2615228"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2621647"></a><pre class="programlisting"><a
 href="../gobject/gobject-GParamSpec.html#GParamSpec"
 >GParamSpec</a>*         gimp_param_spec_memsize             (const <a
 href="../glib/glib-Basic-Types.html#gchar"
@@ -351,9 +351,9 @@ href="../gobject/gobject-GParamSpec.html#GParamSpec"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2621316"></a><h3>
+<a name="id2621866"></a><h3>
 <a name="GIMP-VALUE-HOLDS-MEMSIZE:CAPS"></a>GIMP_VALUE_HOLDS_MEMSIZE()</h3>
-<a class="indexterm" name="id2621326"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
+<a class="indexterm" name="id2621879"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
 </pre>
 <p>
 
@@ -371,9 +371,9 @@ href="../gobject/gobject-GParamSpec.html#GParamSpec"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2621359"></a><div class="refsect2" lang="en"><a name="id2621360"></a></div>
+<a name="id2621916"></a><div class="refsect2" lang="en"><a name="id2621917"></a></div>
 <hr>
-<div class="refsect2" lang="en"><a name="id2621361"></a></div>
+<div class="refsect2" lang="en"><a name="id2621918"></a></div>
 </div>
 </div>
 </body>

@@ -79,14 +79,14 @@
     <keyword type="function" name="gimp_browser_set_widget ()" link="GimpBrowser.html#gimp-browser-set-widget" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_browser_show_message ()" link="GimpBrowser.html#gimp-browser-show-message" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;search&quot; signal" link="GimpBrowser.html#GimpBrowser-search"/>
-    <keyword type="" name="" link="GimpBrowser.html#id2616100"/>
-    <keyword type="" name="" link="GimpBrowser.html#id2616101"/>
+    <keyword type="" name="" link="GimpBrowser.html#id2611580"/>
+    <keyword type="" name="" link="GimpBrowser.html#id2611581"/>
     <keyword type="struct" name="GimpButton" link="GimpButton.html#GimpButton-struct"/>
     <keyword type="function" name="gimp_button_new ()" link="GimpButton.html#gimp-button-new"/>
     <keyword type="function" name="gimp_button_extended_clicked ()" link="GimpButton.html#gimp-button-extended-clicked"/>
     <keyword type="" name="The &quot;extended-clicked&quot; signal" link="GimpButton.html#GimpButton-extended-clicked"/>
-    <keyword type="" name="" link="GimpButton.html#id2592713"/>
-    <keyword type="" name="" link="GimpButton.html#id2592714"/>
+    <keyword type="" name="" link="GimpButton.html#id2616665"/>
+    <keyword type="" name="" link="GimpButton.html#id2616666"/>
     <keyword type="struct" name="GimpChainButton" link="GimpChainButton.html#GimpChainButton-struct"/>
     <keyword type="enum" name="enum GimpChainPosition" link="GimpChainButton.html#GimpChainPosition"/>
     <keyword type="function" name="gimp_chain_button_new ()" link="GimpChainButton.html#gimp-chain-button-new"/>
@@ -94,8 +94,8 @@
     <keyword type="function" name="gimp_chain_button_get_active ()" link="GimpChainButton.html#gimp-chain-button-get-active"/>
     <keyword type="" name="The &quot;position&quot; property" link="GimpChainButton.html#GimpChainButton--position"/>
     <keyword type="" name="The &quot;toggled&quot; signal" link="GimpChainButton.html#GimpChainButton-toggled"/>
-    <keyword type="" name="" link="GimpChainButton.html#id2580111"/>
-    <keyword type="" name="" link="GimpChainButton.html#id2580112"/>
+    <keyword type="" name="" link="GimpChainButton.html#id2618298"/>
+    <keyword type="" name="" link="GimpChainButton.html#id2618299"/>
     <keyword type="struct" name="GimpColorArea" link="GimpColorArea.html#GimpColorArea-struct"/>
     <keyword type="enum" name="enum GimpColorAreaType" link="GimpColorArea.html#GimpColorAreaType"/>
     <keyword type="function" name="gimp_color_area_new ()" link="GimpColorArea.html#gimp-color-area-new"/>
@@ -109,8 +109,8 @@
     <keyword type="" name="The &quot;draw-border&quot; property" link="GimpColorArea.html#GimpColorArea--draw-border"/>
     <keyword type="" name="The &quot;type&quot; property" link="GimpColorArea.html#GimpColorArea--type"/>
     <keyword type="" name="The &quot;color-changed&quot; signal" link="GimpColorArea.html#GimpColorArea-color-changed"/>
-    <keyword type="" name="" link="GimpColorArea.html#id2619675"/>
-    <keyword type="" name="" link="GimpColorArea.html#id2619676"/>
+    <keyword type="" name="" link="GimpColorArea.html#id2619089"/>
+    <keyword type="" name="" link="GimpColorArea.html#id2619090"/>
     <keyword type="struct" name="GimpColorButton" link="GimpColorButton.html#GimpColorButton-struct"/>
     <keyword type="function" name="gimp_color_button_new ()" link="GimpColorButton.html#gimp-color-button-new"/>
     <keyword type="function" name="gimp_color_button_set_color ()" link="GimpColorButton.html#gimp-color-button-set-color"/>
@@ -124,21 +124,21 @@
     <keyword type="" name="The &quot;title&quot; property" link="GimpColorButton.html#GimpColorButton--title"/>
     <keyword type="" name="The &quot;type&quot; property" link="GimpColorButton.html#GimpColorButton--type"/>
     <keyword type="" name="The &quot;color-changed&quot; signal" link="GimpColorButton.html#GimpColorButton-color-changed"/>
-    <keyword type="" name="" link="GimpColorButton.html#id2621654"/>
-    <keyword type="" name="" link="GimpColorButton.html#id2621655"/>
+    <keyword type="" name="" link="GimpColorButton.html#id2621374"/>
+    <keyword type="" name="" link="GimpColorButton.html#id2621375"/>
     <keyword type="struct" name="GimpColorHexEntry" link="GimpColorHexEntry.html#GimpColorHexEntry-struct"/>
     <keyword type="function" name="gimp_color_hex_entry_new ()" link="GimpColorHexEntry.html#gimp-color-hex-entry-new" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_color_hex_entry_set_color ()" link="GimpColorHexEntry.html#gimp-color-hex-entry-set-color" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_color_hex_entry_get_color ()" link="GimpColorHexEntry.html#gimp-color-hex-entry-get-color" since="GIMP 2.2"/>
     <keyword type="" name="The &quot;color-changed&quot; signal" link="GimpColorHexEntry.html#GimpColorHexEntry-color-changed"/>
-    <keyword type="" name="" link="GimpColorHexEntry.html#id2603612"/>
-    <keyword type="" name="" link="GimpColorHexEntry.html#id2603614"/>
+    <keyword type="" name="" link="GimpColorHexEntry.html#id2579321"/>
+    <keyword type="" name="" link="GimpColorHexEntry.html#id2579322"/>
     <keyword type="struct" name="GimpColorScale" link="GimpColorScale.html#GimpColorScale-struct"/>
     <keyword type="function" name="gimp_color_scale_new ()" link="GimpColorScale.html#gimp-color-scale-new"/>
     <keyword type="function" name="gimp_color_scale_set_channel ()" link="GimpColorScale.html#gimp-color-scale-set-channel"/>
     <keyword type="function" name="gimp_color_scale_set_color ()" link="GimpColorScale.html#gimp-color-scale-set-color"/>
-    <keyword type="" name="" link="GimpColorScale.html#id2578728"/>
-    <keyword type="" name="" link="GimpColorScale.html#id2578729"/>
+    <keyword type="" name="" link="GimpColorScale.html#id2613240"/>
+    <keyword type="" name="" link="GimpColorScale.html#id2613241"/>
     <keyword type="struct" name="GimpColorSelection" link="GimpColorSelection.html#GimpColorSelection-struct"/>
     <keyword type="function" name="gimp_color_selection_new ()" link="GimpColorSelection.html#gimp-color-selection-new"/>
     <keyword type="function" name="gimp_color_selection_set_show_alpha ()" link="GimpColorSelection.html#gimp-color-selection-set-show-alpha"/>
@@ -152,14 +152,14 @@
     <keyword type="function" name="gimp_color_selection_set_config ()" link="GimpColorSelection.html#gimp-color-selection-set-config" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;config&quot; property" link="GimpColorSelection.html#GimpColorSelection--config"/>
     <keyword type="" name="The &quot;color-changed&quot; signal" link="GimpColorSelection.html#GimpColorSelection-color-changed"/>
-    <keyword type="" name="" link="GimpColorSelection.html#id2624607"/>
-    <keyword type="" name="" link="GimpColorSelection.html#id2624608"/>
+    <keyword type="" name="" link="GimpColorSelection.html#id2622285"/>
+    <keyword type="" name="" link="GimpColorSelection.html#id2622286"/>
     <keyword type="struct" name="GimpColorProfileStore" link="GimpColorProfileStore.html#GimpColorProfileStore-struct"/>
     <keyword type="function" name="gimp_color_profile_store_new ()" link="GimpColorProfileStore.html#gimp-color-profile-store-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_color_profile_store_add ()" link="GimpColorProfileStore.html#gimp-color-profile-store-add" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;history&quot; property" link="GimpColorProfileStore.html#GimpColorProfileStore--history"/>
-    <keyword type="" name="" link="GimpColorProfileStore.html#id2621759"/>
-    <keyword type="" name="" link="GimpColorProfileStore.html#id2621760"/>
+    <keyword type="" name="" link="GimpColorProfileStore.html#id2582337"/>
+    <keyword type="" name="" link="GimpColorProfileStore.html#id2582338"/>
     <keyword type="struct" name="GimpColorProfileComboBox" link="GimpColorProfileComboBox.html#GimpColorProfileComboBox-struct"/>
     <keyword type="function" name="gimp_color_profile_combo_box_new ()" link="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_color_profile_combo_box_new_with_model ()" link="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-new-with-model" since="GIMP 2.4"/>
@@ -168,8 +168,8 @@
     <keyword type="function" name="gimp_color_profile_combo_box_get_active ()" link="GimpColorProfileComboBox.html#gimp-color-profile-combo-box-get-active" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;dialog&quot; property" link="GimpColorProfileComboBox.html#GimpColorProfileComboBox--dialog"/>
     <keyword type="" name="The &quot;model&quot; property" link="GimpColorProfileComboBox.html#GimpColorProfileComboBox--model"/>
-    <keyword type="" name="" link="GimpColorProfileComboBox.html#id2626293"/>
-    <keyword type="" name="" link="GimpColorProfileComboBox.html#id2626294"/>
+    <keyword type="" name="" link="GimpColorProfileComboBox.html#id2625613"/>
+    <keyword type="" name="" link="GimpColorProfileComboBox.html#id2625614"/>
     <keyword type="struct" name="GimpDialog" link="GimpDialog.html#GimpDialog-struct"/>
     <keyword type="function" name="gimp_dialog_new ()" link="GimpDialog.html#gimp-dialog-new"/>
     <keyword type="function" name="gimp_dialog_new_valist ()" link="GimpDialog.html#gimp-dialog-new-valist"/>
@@ -180,8 +180,8 @@
     <keyword type="function" name="gimp_dialogs_show_help_button ()" link="GimpDialog.html#gimp-dialogs-show-help-button" since="GIMP 2.2"/>
     <keyword type="" name="The &quot;help-func&quot; property" link="GimpDialog.html#GimpDialog--help-func"/>
     <keyword type="" name="The &quot;help-id&quot; property" link="GimpDialog.html#GimpDialog--help-id"/>
-    <keyword type="" name="" link="GimpDialog.html#id2628516"/>
-    <keyword type="" name="" link="GimpDialog.html#id2628517"/>
+    <keyword type="" name="" link="GimpDialog.html#id2628217"/>
+    <keyword type="" name="" link="GimpDialog.html#id2628218"/>
     <keyword type="struct" name="GimpEnumStore" link="GimpEnumStore.html#GimpEnumStore-struct"/>
     <keyword type="function" name="gimp_enum_store_new ()" link="GimpEnumStore.html#gimp-enum-store-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_store_new_with_range ()" link="GimpEnumStore.html#gimp-enum-store-new-with-range" since="GIMP 2.4"/>
@@ -189,36 +189,36 @@
     <keyword type="function" name="gimp_enum_store_new_with_values_valist ()" link="GimpEnumStore.html#gimp-enum-store-new-with-values-valist" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_store_set_stock_prefix ()" link="GimpEnumStore.html#gimp-enum-store-set-stock-prefix" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;enum-type&quot; property" link="GimpEnumStore.html#GimpEnumStore--enum-type"/>
-    <keyword type="" name="" link="GimpEnumStore.html#id2609888"/>
-    <keyword type="" name="" link="GimpEnumStore.html#id2609889"/>
+    <keyword type="" name="" link="GimpEnumStore.html#id2628696"/>
+    <keyword type="" name="" link="GimpEnumStore.html#id2628697"/>
     <keyword type="struct" name="GimpEnumComboBox" link="GimpEnumComboBox.html#GimpEnumComboBox-struct"/>
     <keyword type="function" name="gimp_enum_combo_box_new ()" link="GimpEnumComboBox.html#gimp-enum-combo-box-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_combo_box_new_with_model ()" link="GimpEnumComboBox.html#gimp-enum-combo-box-new-with-model" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_combo_box_set_stock_prefix ()" link="GimpEnumComboBox.html#gimp-enum-combo-box-set-stock-prefix" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;model&quot; property" link="GimpEnumComboBox.html#GimpEnumComboBox--model"/>
-    <keyword type="" name="" link="GimpEnumComboBox.html#id2577678"/>
-    <keyword type="" name="" link="GimpEnumComboBox.html#id2577679"/>
+    <keyword type="" name="" link="GimpEnumComboBox.html#id2626104"/>
+    <keyword type="" name="" link="GimpEnumComboBox.html#id2626105"/>
     <keyword type="struct" name="GimpEnumLabel" link="GimpEnumLabel.html#GimpEnumLabel-struct"/>
     <keyword type="function" name="gimp_enum_label_new ()" link="GimpEnumLabel.html#gimp-enum-label-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_label_set_value ()" link="GimpEnumLabel.html#gimp-enum-label-set-value" since="GIMP 2.4"/>
-    <keyword type="" name="" link="GimpEnumLabel.html#id2630214"/>
-    <keyword type="" name="" link="GimpEnumLabel.html#id2630216"/>
+    <keyword type="" name="" link="GimpEnumLabel.html#id2628909"/>
+    <keyword type="" name="" link="GimpEnumLabel.html#id2628910"/>
     <keyword type="struct" name="GimpFileEntry" link="GimpFileEntry.html#GimpFileEntry-struct"/>
     <keyword type="function" name="gimp_file_entry_new ()" link="GimpFileEntry.html#gimp-file-entry-new" deprecated=""/>
     <keyword type="function" name="gimp_file_entry_get_filename ()" link="GimpFileEntry.html#gimp-file-entry-get-filename" deprecated=""/>
     <keyword type="function" name="gimp_file_entry_set_filename ()" link="GimpFileEntry.html#gimp-file-entry-set-filename" deprecated=""/>
     <keyword type="" name="The &quot;filename-changed&quot; signal" link="GimpFileEntry.html#GimpFileEntry-filename-changed"/>
-    <keyword type="" name="" link="GimpFileEntry.html#id2628943"/>
-    <keyword type="" name="" link="GimpFileEntry.html#id2628944"/>
+    <keyword type="" name="" link="GimpFileEntry.html#id2631408"/>
+    <keyword type="" name="" link="GimpFileEntry.html#id2631409"/>
     <keyword type="struct" name="GimpFrame" link="GimpFrame.html#GimpFrame-struct"/>
     <keyword type="function" name="gimp_frame_new ()" link="GimpFrame.html#gimp-frame-new" since="GIMP 2.2"/>
     <keyword type="" name="The &quot;label-bold&quot; style property" link="GimpFrame.html#GimpFrame--label-bold"/>
     <keyword type="" name="The &quot;label-spacing&quot; style property" link="GimpFrame.html#GimpFrame--label-spacing"/>
-    <keyword type="" name="" link="GimpFrame.html#id2631471"/>
-    <keyword type="" name="" link="GimpFrame.html#id2631472"/>
+    <keyword type="" name="" link="GimpFrame.html#id2623014"/>
+    <keyword type="" name="" link="GimpFrame.html#id2623015"/>
     <keyword type="function" name="gimp_hint_box_new ()" link="libgimpwidgets-GimpHintBox.html#gimp-hint-box-new"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpHintBox.html#id2631439"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpHintBox.html#id2631440"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpHintBox.html#id2622358"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpHintBox.html#id2622359"/>
     <keyword type="struct" name="GimpIntComboBox" link="GimpIntComboBox.html#GimpIntComboBox-struct"/>
     <keyword type="function" name="GimpIntSensitivityFunc ()" link="GimpIntComboBox.html#GimpIntSensitivityFunc"/>
     <keyword type="function" name="gimp_int_combo_box_new ()" link="GimpIntComboBox.html#gimp-int-combo-box-new" since="GIMP 2.2"/>
@@ -231,22 +231,22 @@
     <keyword type="function" name="gimp_int_combo_box_connect ()" link="GimpIntComboBox.html#gimp-int-combo-box-connect" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_int_combo_box_set_sensitivity ()" link="GimpIntComboBox.html#gimp-int-combo-box-set-sensitivity" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;ellipsize&quot; property" link="GimpIntComboBox.html#GimpIntComboBox--ellipsize"/>
-    <keyword type="" name="" link="GimpIntComboBox.html#id2635276"/>
-    <keyword type="" name="" link="GimpIntComboBox.html#id2635277"/>
+    <keyword type="" name="" link="GimpIntComboBox.html#id2634753"/>
+    <keyword type="" name="" link="GimpIntComboBox.html#id2634754"/>
     <keyword type="struct" name="GimpIntStore" link="GimpIntStore.html#GimpIntStore-struct"/>
     <keyword type="enum" name="enum GimpIntStoreColumns" link="GimpIntStore.html#GimpIntStoreColumns"/>
     <keyword type="function" name="gimp_int_store_new ()" link="GimpIntStore.html#gimp-int-store-new" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_int_store_lookup_by_value ()" link="GimpIntStore.html#gimp-int-store-lookup-by-value" since="GIMP 2.2"/>
     <keyword type="" name="The &quot;user-data-type&quot; property" link="GimpIntStore.html#GimpIntStore--user-data-type"/>
-    <keyword type="" name="" link="GimpIntStore.html#id2630670"/>
-    <keyword type="" name="" link="GimpIntStore.html#id2630671"/>
+    <keyword type="" name="" link="GimpIntStore.html#id2629933"/>
+    <keyword type="" name="" link="GimpIntStore.html#id2629934"/>
     <keyword type="struct" name="GimpMemsizeEntry" link="GimpMemsizeEntry.html#GimpMemsizeEntry-struct"/>
     <keyword type="function" name="gimp_memsize_entry_new ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-new"/>
     <keyword type="function" name="gimp_memsize_entry_set_value ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-set-value"/>
     <keyword type="function" name="gimp_memsize_entry_get_value ()" link="GimpMemsizeEntry.html#gimp-memsize-entry-get-value"/>
     <keyword type="" name="The &quot;value-changed&quot; signal" link="GimpMemsizeEntry.html#GimpMemsizeEntry-value-changed"/>
-    <keyword type="" name="" link="GimpMemsizeEntry.html#id2630801"/>
-    <keyword type="" name="" link="GimpMemsizeEntry.html#id2630802"/>
+    <keyword type="" name="" link="GimpMemsizeEntry.html#id2632196"/>
+    <keyword type="" name="" link="GimpMemsizeEntry.html#id2632197"/>
     <keyword type="struct" name="GimpNumberPairEntry" link="GimpNumberPairEntry.html#GimpNumberPairEntry-struct"/>
     <keyword type="enum" name="enum GimpAspectType" link="GimpNumberPairEntry.html#GimpAspectType"/>
     <keyword type="function" name="gimp_number_pair_entry_new ()" link="GimpNumberPairEntry.html#gimp-number-pair-entry-new" since="GIMP 2.4"/>
@@ -276,16 +276,16 @@
     <keyword type="" name="The &quot;user-override&quot; property" link="GimpNumberPairEntry.html#GimpNumberPairEntry--user-override"/>
     <keyword type="" name="The &quot;numbers-changed&quot; signal" link="GimpNumberPairEntry.html#GimpNumberPairEntry-numbers-changed"/>
     <keyword type="" name="The &quot;ratio-changed&quot; signal" link="GimpNumberPairEntry.html#GimpNumberPairEntry-ratio-changed"/>
-    <keyword type="" name="" link="GimpNumberPairEntry.html#id2640900"/>
-    <keyword type="" name="" link="GimpNumberPairEntry.html#id2640901"/>
+    <keyword type="" name="" link="GimpNumberPairEntry.html#id2641528"/>
+    <keyword type="" name="" link="GimpNumberPairEntry.html#id2641529"/>
     <keyword type="struct" name="GimpOffsetArea" link="GimpOffsetArea.html#GimpOffsetArea-struct"/>
     <keyword type="function" name="gimp_offset_area_new ()" link="GimpOffsetArea.html#gimp-offset-area-new"/>
     <keyword type="function" name="gimp_offset_area_set_size ()" link="GimpOffsetArea.html#gimp-offset-area-set-size"/>
     <keyword type="function" name="gimp_offset_area_set_offsets ()" link="GimpOffsetArea.html#gimp-offset-area-set-offsets"/>
     <keyword type="function" name="gimp_offset_area_set_pixbuf ()" link="GimpOffsetArea.html#gimp-offset-area-set-pixbuf" since="GIMP 2.2"/>
     <keyword type="" name="The &quot;offsets-changed&quot; signal" link="GimpOffsetArea.html#GimpOffsetArea-offsets-changed"/>
-    <keyword type="" name="" link="GimpOffsetArea.html#id2638318"/>
-    <keyword type="" name="" link="GimpOffsetArea.html#id2638319"/>
+    <keyword type="" name="" link="GimpOffsetArea.html#id2632578"/>
+    <keyword type="" name="" link="GimpOffsetArea.html#id2632579"/>
     <keyword type="struct" name="GimpPageSelector" link="GimpPageSelector.html#GimpPageSelector-struct"/>
     <keyword type="enum" name="enum GimpPageSelectorTarget" link="GimpPageSelector.html#GimpPageSelectorTarget"/>
     <keyword type="function" name="gimp_page_selector_new ()" link="GimpPageSelector.html#gimp-page-selector-new" since="GIMP 2.4"/>
@@ -309,8 +309,8 @@
     <keyword type="" name="The &quot;target&quot; property" link="GimpPageSelector.html#GimpPageSelector--target"/>
     <keyword type="" name="The &quot;activate&quot; signal" link="GimpPageSelector.html#GimpPageSelector-activate"/>
     <keyword type="" name="The &quot;selection-changed&quot; signal" link="GimpPageSelector.html#GimpPageSelector-selection-changed"/>
-    <keyword type="" name="" link="GimpPageSelector.html#id2644647"/>
-    <keyword type="" name="" link="GimpPageSelector.html#id2644648"/>
+    <keyword type="" name="" link="GimpPageSelector.html#id2645283"/>
+    <keyword type="" name="" link="GimpPageSelector.html#id2645284"/>
     <keyword type="struct" name="GimpPathEditor" link="GimpPathEditor.html#GimpPathEditor-struct"/>
     <keyword type="function" name="gimp_path_editor_new ()" link="GimpPathEditor.html#gimp-path-editor-new"/>
     <keyword type="function" name="gimp_path_editor_get_path ()" link="GimpPathEditor.html#gimp-path-editor-get-path"/>
@@ -321,18 +321,18 @@
     <keyword type="function" name="gimp_path_editor_set_dir_writable ()" link="GimpPathEditor.html#gimp-path-editor-set-dir-writable"/>
     <keyword type="" name="The &quot;path-changed&quot; signal" link="GimpPathEditor.html#GimpPathEditor-path-changed"/>
     <keyword type="" name="The &quot;writable-changed&quot; signal" link="GimpPathEditor.html#GimpPathEditor-writable-changed"/>
-    <keyword type="" name="" link="GimpPathEditor.html#id2635478"/>
-    <keyword type="" name="" link="GimpPathEditor.html#id2635480"/>
+    <keyword type="" name="" link="GimpPathEditor.html#id2645159"/>
+    <keyword type="" name="" link="GimpPathEditor.html#id2645160"/>
     <keyword type="struct" name="GimpPickButton" link="GimpPickButton.html#GimpPickButton-struct"/>
     <keyword type="function" name="gimp_pick_button_new ()" link="GimpPickButton.html#gimp-pick-button-new"/>
     <keyword type="" name="The &quot;color-picked&quot; signal" link="GimpPickButton.html#GimpPickButton-color-picked"/>
-    <keyword type="" name="" link="GimpPickButton.html#id2637253"/>
-    <keyword type="" name="" link="GimpPickButton.html#id2637254"/>
+    <keyword type="" name="" link="GimpPickButton.html#id2636438"/>
+    <keyword type="" name="" link="GimpPickButton.html#id2636439"/>
     <keyword type="struct" name="GimpPixmap" link="GimpPixmap.html#GimpPixmap-struct"/>
     <keyword type="function" name="gimp_pixmap_new ()" link="GimpPixmap.html#gimp-pixmap-new" deprecated=""/>
     <keyword type="function" name="gimp_pixmap_set ()" link="GimpPixmap.html#gimp-pixmap-set" deprecated=""/>
-    <keyword type="" name="" link="GimpPixmap.html#id2635558"/>
-    <keyword type="" name="" link="GimpPixmap.html#id2635559"/>
+    <keyword type="" name="" link="GimpPixmap.html#id2643713"/>
+    <keyword type="" name="" link="GimpPixmap.html#id2643714"/>
     <keyword type="struct" name="GimpPreviewArea" link="GimpPreviewArea.html#GimpPreviewArea-struct"/>
     <keyword type="function" name="gimp_preview_area_new ()" link="GimpPreviewArea.html#gimp-preview-area-new"/>
     <keyword type="function" name="gimp_preview_area_draw ()" link="GimpPreviewArea.html#gimp-preview-area-draw"/>
@@ -345,8 +345,8 @@
     <keyword type="function" name="gimp_preview_area_menu_popup ()" link="GimpPreviewArea.html#gimp-preview-area-menu-popup" since="GIMP 2.2"/>
     <keyword type="" name="The &quot;check-size&quot; property" link="GimpPreviewArea.html#GimpPreviewArea--check-size"/>
     <keyword type="" name="The &quot;check-type&quot; property" link="GimpPreviewArea.html#GimpPreviewArea--check-type"/>
-    <keyword type="" name="" link="GimpPreviewArea.html#id2649476"/>
-    <keyword type="" name="" link="GimpPreviewArea.html#id2649477"/>
+    <keyword type="" name="" link="GimpPreviewArea.html#id2648598"/>
+    <keyword type="" name="" link="GimpPreviewArea.html#id2648599"/>
     <keyword type="struct" name="GimpPreview" link="GimpPreview.html#GimpPreview-struct"/>
     <keyword type="function" name="gimp_preview_get_update ()" link="GimpPreview.html#gimp-preview-get-update" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_preview_set_update ()" link="GimpPreview.html#gimp-preview-set-update" since="GIMP 2.2"/>
@@ -364,15 +364,15 @@
     <keyword type="" name="The &quot;update&quot; property" link="GimpPreview.html#GimpPreview--update"/>
     <keyword type="" name="The &quot;size&quot; style property" link="GimpPreview.html#GimpPreview--size"/>
     <keyword type="" name="The &quot;invalidated&quot; signal" link="GimpPreview.html#GimpPreview-invalidated"/>
-    <keyword type="" name="" link="GimpPreview.html#id2652001"/>
-    <keyword type="" name="" link="GimpPreview.html#id2652002"/>
+    <keyword type="" name="" link="GimpPreview.html#id2651551"/>
+    <keyword type="" name="" link="GimpPreview.html#id2651552"/>
     <keyword type="struct" name="GimpScrolledPreview" link="GimpScrolledPreview.html#GimpScrolledPreview-struct"/>
     <keyword type="function" name="gimp_scrolled_preview_set_position ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-position" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_scrolled_preview_set_policy ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-policy" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_scrolled_preview_freeze ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-freeze" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_scrolled_preview_thaw ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-thaw" since="GIMP 2.4"/>
-    <keyword type="" name="" link="GimpScrolledPreview.html#id2647052"/>
-    <keyword type="" name="" link="GimpScrolledPreview.html#id2647053"/>
+    <keyword type="" name="" link="GimpScrolledPreview.html#id2645938"/>
+    <keyword type="" name="" link="GimpScrolledPreview.html#id2645939"/>
     <keyword type="struct" name="GimpSizeEntry" link="GimpSizeEntry.html#GimpSizeEntry-struct"/>
     <keyword type="struct" name="GimpSizeEntryField" link="GimpSizeEntry.html#GimpSizeEntryField"/>
     <keyword type="enum" name="enum GimpSizeEntryUpdatePolicy" link="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy"/>
@@ -398,8 +398,8 @@
     <keyword type="" name="The &quot;refval-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-refval-changed"/>
     <keyword type="" name="The &quot;unit-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-unit-changed"/>
     <keyword type="" name="The &quot;value-changed&quot; signal" link="GimpSizeEntry.html#GimpSizeEntry-value-changed"/>
-    <keyword type="" name="" link="GimpSizeEntry.html#id2659524"/>
-    <keyword type="" name="" link="GimpSizeEntry.html#id2659525"/>
+    <keyword type="" name="" link="GimpSizeEntry.html#id2659816"/>
+    <keyword type="" name="" link="GimpSizeEntry.html#id2659817"/>
     <keyword type="struct" name="GimpStringComboBox" link="GimpStringComboBox.html#GimpStringComboBox-struct"/>
     <keyword type="function" name="gimp_string_combo_box_new ()" link="GimpStringComboBox.html#gimp-string-combo-box-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_string_combo_box_set_active ()" link="GimpStringComboBox.html#gimp-string-combo-box-set-active" since="GIMP 2.4"/>
@@ -407,8 +407,8 @@
     <keyword type="" name="The &quot;ellipsize&quot; property" link="GimpStringComboBox.html#GimpStringComboBox--ellipsize"/>
     <keyword type="" name="The &quot;id-column&quot; property" link="GimpStringComboBox.html#GimpStringComboBox--id-column"/>
     <keyword type="" name="The &quot;label-column&quot; property" link="GimpStringComboBox.html#GimpStringComboBox--label-column"/>
-    <keyword type="" name="" link="GimpStringComboBox.html#id2650130"/>
-    <keyword type="" name="" link="GimpStringComboBox.html#id2650131"/>
+    <keyword type="" name="" link="GimpStringComboBox.html#id2649675"/>
+    <keyword type="" name="" link="GimpStringComboBox.html#id2649676"/>
     <keyword type="struct" name="GimpUnitMenu" link="GimpUnitMenu.html#GimpUnitMenu-struct"/>
     <keyword type="function" name="gimp_unit_menu_new ()" link="GimpUnitMenu.html#gimp-unit-menu-new"/>
     <keyword type="function" name="gimp_unit_menu_set_unit ()" link="GimpUnitMenu.html#gimp-unit-menu-set-unit"/>
@@ -416,8 +416,8 @@
     <keyword type="function" name="gimp_unit_menu_get_pixel_digits ()" link="GimpUnitMenu.html#gimp-unit-menu-get-pixel-digits"/>
     <keyword type="function" name="gimp_unit_menu_set_pixel_digits ()" link="GimpUnitMenu.html#gimp-unit-menu-set-pixel-digits"/>
     <keyword type="" name="The &quot;unit-changed&quot; signal" link="GimpUnitMenu.html#GimpUnitMenu-unit-changed"/>
-    <keyword type="" name="" link="GimpUnitMenu.html#id2655079"/>
-    <keyword type="" name="" link="GimpUnitMenu.html#id2655080"/>
+    <keyword type="" name="" link="GimpUnitMenu.html#id2655603"/>
+    <keyword type="" name="" link="GimpUnitMenu.html#id2655604"/>
     <keyword type="struct" name="GimpZoomModel" link="GimpZoomModel.html#GimpZoomModel-struct"/>
     <keyword type="enum" name="enum GimpZoomType" link="GimpZoomModel.html#GimpZoomType"/>
     <keyword type="function" name="gimp_zoom_model_new ()" link="GimpZoomModel.html#gimp-zoom-model-new"/>
@@ -433,23 +433,23 @@
     <keyword type="" name="The &quot;percentage&quot; property" link="GimpZoomModel.html#GimpZoomModel--percentage"/>
     <keyword type="" name="The &quot;value&quot; property" link="GimpZoomModel.html#GimpZoomModel--value"/>
     <keyword type="" name="The &quot;zoomed&quot; signal" link="GimpZoomModel.html#GimpZoomModel-zoomed"/>
-    <keyword type="" name="" link="GimpZoomModel.html#id2660542"/>
-    <keyword type="" name="" link="GimpZoomModel.html#id2660543"/>
+    <keyword type="" name="" link="GimpZoomModel.html#id2661143"/>
+    <keyword type="" name="" link="GimpZoomModel.html#id2661144"/>
     <keyword type="struct" name="GimpCellRendererColor" link="GimpCellRendererColor.html#GimpCellRendererColor-struct"/>
     <keyword type="function" name="gimp_cell_renderer_color_new ()" link="GimpCellRendererColor.html#gimp-cell-renderer-color-new" since="GIMP 2.2"/>
     <keyword type="" name="The &quot;color&quot; property" link="GimpCellRendererColor.html#GimpCellRendererColor--color"/>
     <keyword type="" name="The &quot;icon-size&quot; property" link="GimpCellRendererColor.html#GimpCellRendererColor--icon-size"/>
     <keyword type="" name="The &quot;opaque&quot; property" link="GimpCellRendererColor.html#GimpCellRendererColor--opaque"/>
-    <keyword type="" name="" link="GimpCellRendererColor.html#id2655904"/>
-    <keyword type="" name="" link="GimpCellRendererColor.html#id2655905"/>
+    <keyword type="" name="" link="GimpCellRendererColor.html#id2656336"/>
+    <keyword type="" name="" link="GimpCellRendererColor.html#id2656337"/>
     <keyword type="struct" name="GimpCellRendererToggle" link="GimpCellRendererToggle.html#GimpCellRendererToggle-struct"/>
     <keyword type="function" name="gimp_cell_renderer_toggle_new ()" link="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-new" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_cell_renderer_toggle_clicked ()" link="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-clicked" since="GIMP 2.2"/>
     <keyword type="" name="The &quot;stock-id&quot; property" link="GimpCellRendererToggle.html#GimpCellRendererToggle--stock-id"/>
     <keyword type="" name="The &quot;stock-size&quot; property" link="GimpCellRendererToggle.html#GimpCellRendererToggle--stock-size"/>
     <keyword type="" name="The &quot;clicked&quot; signal" link="GimpCellRendererToggle.html#GimpCellRendererToggle-clicked"/>
-    <keyword type="" name="" link="GimpCellRendererToggle.html#id2659839"/>
-    <keyword type="" name="" link="GimpCellRendererToggle.html#id2659840"/>
+    <keyword type="" name="" link="GimpCellRendererToggle.html#id2656575"/>
+    <keyword type="" name="" link="GimpCellRendererToggle.html#id2656576"/>
     <keyword type="struct" name="GimpColorDisplay" link="GimpColorDisplay.html#GimpColorDisplay-struct"/>
     <keyword type="function" name="gimp_color_display_new ()" link="GimpColorDisplay.html#gimp-color-display-new" deprecated=""/>
     <keyword type="function" name="gimp_color_display_clone ()" link="GimpColorDisplay.html#gimp-color-display-clone"/>
@@ -467,8 +467,8 @@
     <keyword type="" name="The &quot;color-managed&quot; property" link="GimpColorDisplay.html#GimpColorDisplay--color-managed"/>
     <keyword type="" name="The &quot;enabled&quot; property" link="GimpColorDisplay.html#GimpColorDisplay--enabled"/>
     <keyword type="" name="The &quot;changed&quot; signal" link="GimpColorDisplay.html#GimpColorDisplay-changed"/>
-    <keyword type="" name="" link="GimpColorDisplay.html#id2663933"/>
-    <keyword type="" name="" link="GimpColorDisplay.html#id2663934"/>
+    <keyword type="" name="" link="GimpColorDisplay.html#id2663758"/>
+    <keyword type="" name="" link="GimpColorDisplay.html#id2663759"/>
     <keyword type="struct" name="GimpColorDisplayStack" link="GimpColorDisplayStack.html#GimpColorDisplayStack-struct"/>
     <keyword type="function" name="gimp_color_display_stack_new ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-new"/>
     <keyword type="function" name="gimp_color_display_stack_clone ()" link="GimpColorDisplayStack.html#gimp-color-display-stack-clone"/>
@@ -482,8 +482,8 @@
     <keyword type="" name="The &quot;changed&quot; signal" link="GimpColorDisplayStack.html#GimpColorDisplayStack-changed"/>
     <keyword type="" name="The &quot;removed&quot; signal" link="GimpColorDisplayStack.html#GimpColorDisplayStack-removed"/>
     <keyword type="" name="The &quot;reordered&quot; signal" link="GimpColorDisplayStack.html#GimpColorDisplayStack-reordered"/>
-    <keyword type="" name="" link="GimpColorDisplayStack.html#id2665187"/>
-    <keyword type="" name="" link="GimpColorDisplayStack.html#id2665188"/>
+    <keyword type="" name="" link="GimpColorDisplayStack.html#id2665017"/>
+    <keyword type="" name="" link="GimpColorDisplayStack.html#id2665018"/>
     <keyword type="struct" name="GimpColorSelector" link="GimpColorSelector.html#GimpColorSelector-struct"/>
     <keyword type="macro" name="GIMP_COLOR_SELECTOR_SIZE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-SIZE:CAPS"/>
     <keyword type="macro" name="GIMP_COLOR_SELECTOR_BAR_SIZE" link="GimpColorSelector.html#GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS"/>
@@ -499,20 +499,20 @@
     <keyword type="function" name="gimp_color_selector_set_config ()" link="GimpColorSelector.html#gimp-color-selector-set-config" since="GIMP 2.4"/>
     <keyword type="" name="The &quot;channel-changed&quot; signal" link="GimpColorSelector.html#GimpColorSelector-channel-changed"/>
     <keyword type="" name="The &quot;color-changed&quot; signal" link="GimpColorSelector.html#GimpColorSelector-color-changed"/>
-    <keyword type="" name="" link="GimpColorSelector.html#id2667384"/>
-    <keyword type="" name="" link="GimpColorSelector.html#id2667385"/>
+    <keyword type="" name="" link="GimpColorSelector.html#id2667308"/>
+    <keyword type="" name="" link="GimpColorSelector.html#id2667309"/>
     <keyword type="struct" name="GimpColorNotebook" link="GimpColorNotebook.html#GimpColorNotebook-struct"/>
     <keyword type="function" name="gimp_color_notebook_set_has_page ()" link="GimpColorNotebook.html#gimp-color-notebook-set-has-page"/>
     <keyword type="" name="The &quot;tab-border&quot; style property" link="GimpColorNotebook.html#GimpColorNotebook--tab-border"/>
     <keyword type="" name="The &quot;tab-icon-size&quot; style property" link="GimpColorNotebook.html#GimpColorNotebook--tab-icon-size"/>
-    <keyword type="" name="" link="GimpColorNotebook.html#id2666591"/>
-    <keyword type="" name="" link="GimpColorNotebook.html#id2666592"/>
+    <keyword type="" name="" link="GimpColorNotebook.html#id2666209"/>
+    <keyword type="" name="" link="GimpColorNotebook.html#id2666210"/>
     <keyword type="struct" name="GimpColorScales" link="GimpColorScales.html#GimpColorScales-struct"/>
-    <keyword type="" name="" link="GimpColorScales.html#id2666604"/>
-    <keyword type="" name="" link="GimpColorScales.html#id2666605"/>
+    <keyword type="" name="" link="GimpColorScales.html#id2667366"/>
+    <keyword type="" name="" link="GimpColorScales.html#id2667368"/>
     <keyword type="struct" name="GimpColorSelect" link="GimpColorSelect.html#GimpColorSelect-struct"/>
-    <keyword type="" name="" link="GimpColorSelect.html#id2666266"/>
-    <keyword type="" name="" link="GimpColorSelect.html#id2666267"/>
+    <keyword type="" name="" link="GimpColorSelect.html#id2667622"/>
+    <keyword type="" name="" link="GimpColorSelect.html#id2667624"/>
     <keyword type="enum" name="enum GimpControllerEventType" link="GimpController.html#GimpControllerEventType"/>
     <keyword type="struct" name="GimpControllerEventAny" link="GimpController.html#GimpControllerEventAny"/>
     <keyword type="struct" name="GimpControllerEventTrigger" link="GimpController.html#GimpControllerEventTrigger"/>
@@ -527,8 +527,8 @@
     <keyword type="" name="The &quot;name&quot; property" link="GimpController.html#GimpController--name"/>
     <keyword type="" name="The &quot;state&quot; property" link="GimpController.html#GimpController--state"/>
     <keyword type="" name="The &quot;event&quot; signal" link="GimpController.html#GimpController-event"/>
-    <keyword type="" name="" link="GimpController.html#id2669136"/>
-    <keyword type="" name="" link="GimpController.html#id2669137"/>
+    <keyword type="" name="" link="GimpController.html#id2668964"/>
+    <keyword type="" name="" link="GimpController.html#id2668965"/>
     <keyword type="function" name="GimpHelpFunc ()" link="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc"/>
     <keyword type="macro" name="GIMP_HELP_ID" link="libgimpwidgets-GimpHelpUI.html#GIMP-HELP-ID:CAPS"/>
     <keyword type="function" name="gimp_help_enable_tooltips ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-enable-tooltips"/>
@@ -537,8 +537,8 @@
     <keyword type="function" name="gimp_help_connect ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-connect"/>
     <keyword type="function" name="gimp_help_set_help_data ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data"/>
     <keyword type="function" name="gimp_context_help ()" link="libgimpwidgets-GimpHelpUI.html#gimp-context-help"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpHelpUI.html#id2668156"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpHelpUI.html#id2668157"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpHelpUI.html#id2670150"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpHelpUI.html#id2670151"/>
     <keyword type="function" name="GimpQueryStringCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback"/>
     <keyword type="function" name="GimpQueryIntCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback"/>
     <keyword type="function" name="GimpQueryDoubleCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback"/>
@@ -550,8 +550,8 @@
     <keyword type="function" name="gimp_query_size_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-size-box"/>
     <keyword type="function" name="gimp_query_boolean_box ()" link="libgimpwidgets-GimpQueryBox.html#gimp-query-boolean-box"/>
     <keyword type="macro" name="GIMP_QUERY_BOX_VBOX()" link="libgimpwidgets-GimpQueryBox.html#GIMP-QUERY-BOX-VBOX:CAPS"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpQueryBox.html#id2675609"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpQueryBox.html#id2675610"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpQueryBox.html#id2676131"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpQueryBox.html#id2676132"/>
     <keyword type="function" name="gimp_stock_init ()" link="libgimpwidgets-GimpStock.html#gimp-stock-init"/>
     <keyword type="macro" name="GIMP_STOCK_ANCHOR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ANCHOR:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_CENTER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CENTER:CAPS"/>
@@ -753,8 +753,8 @@
     <keyword type="macro" name="GIMP_STOCK_GRADIENT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_PALETTE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PALETTE:CAPS"/>
     <keyword type="macro" name="GIMP_STOCK_PATTERN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATTERN:CAPS"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpStock.html#id2692754"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpStock.html#id2692755"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpStock.html#id2692808"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpStock.html#id2692809"/>
     <keyword type="function" name="gimp_enum_radio_box_new ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_radio_box_new_with_range ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-box-new-with-range" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_radio_frame_new ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-radio-frame-new" since="GIMP 2.4"/>
@@ -762,8 +762,8 @@
     <keyword type="function" name="gimp_enum_stock_box_new ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_stock_box_new_with_range ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new-with-range" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_enum_stock_box_set_child_padding ()" link="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-set-child-padding" since="GIMP 2.4"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpEnumWidgets.html#id2677669"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpEnumWidgets.html#id2677670"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpEnumWidgets.html#id2679279"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpEnumWidgets.html#id2679280"/>
     <keyword type="function" name="gimp_prop_boolean_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-combo-box-new"/>
     <keyword type="function" name="gimp_prop_boolean_radio_frame_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-radio-frame-new"/>
     <keyword type="function" name="gimp_prop_check_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-check-button-new"/>
@@ -793,8 +793,8 @@
     <keyword type="function" name="gimp_prop_string_combo_box_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-string-combo-box-new"/>
     <keyword type="function" name="gimp_prop_text_buffer_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new"/>
     <keyword type="function" name="gimp_prop_unit_menu_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-unit-menu-new"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpPropWidgets.html#id2698383"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpPropWidgets.html#id2698384"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpPropWidgets.html#id2698507"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpPropWidgets.html#id2698508"/>
     <keyword type="function" name="gimp_radio_group_new ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new"/>
     <keyword type="function" name="gimp_radio_group_new2 ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-new2"/>
     <keyword type="function" name="gimp_radio_group_set_active ()" link="libgimpwidgets-GimpWidgets.html#gimp-radio-group-set-active"/>
@@ -828,8 +828,8 @@
     <keyword type="function" name="gimp_unit_menu_update ()" link="libgimpwidgets-GimpWidgets.html#gimp-unit-menu-update"/>
     <keyword type="function" name="gimp_table_attach_aligned ()" link="libgimpwidgets-GimpWidgets.html#gimp-table-attach-aligned"/>
     <keyword type="function" name="gimp_label_set_attributes ()" link="libgimpwidgets-GimpWidgets.html#gimp-label-set-attributes" since="GIMP 2.2"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpWidgets.html#id2705720"/>
-    <keyword type="" name="" link="libgimpwidgets-GimpWidgets.html#id2705721"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpWidgets.html#id2705756"/>
+    <keyword type="" name="" link="libgimpwidgets-GimpWidgets.html#id2705757"/>
     <keyword type="function" name="gimp_int_option_menu_new ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-new" deprecated=""/>
     <keyword type="function" name="gimp_int_option_menu_set_history ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-set-history" deprecated=""/>
     <keyword type="function" name="GimpIntOptionMenuSensitivityCallback ()" link="libgimpwidgets-gimpoldwidgets.html#GimpIntOptionMenuSensitivityCallback" deprecated=""/>
@@ -840,7 +840,7 @@
     <keyword type="function" name="GimpOptionMenuSensitivityCallback ()" link="libgimpwidgets-gimpoldwidgets.html#GimpOptionMenuSensitivityCallback" deprecated=""/>
     <keyword type="function" name="gimp_option_menu_set_sensitive ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-sensitive" deprecated=""/>
     <keyword type="function" name="gimp_menu_item_update ()" link="libgimpwidgets-gimpoldwidgets.html#gimp-menu-item-update" deprecated=""/>
-    <keyword type="" name="" link="libgimpwidgets-gimpoldwidgets.html#id2681640"/>
-    <keyword type="" name="" link="libgimpwidgets-gimpoldwidgets.html#id2681641"/>
+    <keyword type="" name="" link="libgimpwidgets-gimpoldwidgets.html#id2698604"/>
+    <keyword type="" name="" link="libgimpwidgets-gimpoldwidgets.html#id2698605"/>
   </functions>
 </book>

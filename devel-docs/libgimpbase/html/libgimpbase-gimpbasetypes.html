@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpversion.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583310" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2606863" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2608380" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2616701" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpbasetypes"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2583310"></a><span class="refentrytitle">gimpbasetypes</span>
+<a name="id2606863"></a><span class="refentrytitle">gimpbasetypes</span>
 </h2>
 <p>gimpbasetypes &#8212; Translation between gettext translation domain identifier and GType.</p>
 </td>
@@ -76,17 +76,17 @@ href="../gobject/gobject-Type-Information.html#GType"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608380"></a><h2>Description</h2>
+<a name="id2616701"></a><h2>Description</h2>
 <p>
 Translation between gettext translation domain identifier and GType.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608396"></a><h2>Details</h2>
+<a name="id2616718"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2588780"></a><h3>
+<a name="id2616729"></a><h3>
 <a name="GimpEnumDesc"></a>GimpEnumDesc</h3>
-<a class="indexterm" name="id2588793"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2616741"></a><pre class="programlisting">typedef struct {
   gint   value;
   gchar *value_desc;
   gchar *value_help;
@@ -98,9 +98,9 @@ Translation between gettext translation domain identifier and GType.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588810"></a><h3>
+<a name="id2600518"></a><h3>
 <a name="GimpFlagsDesc"></a>GimpFlagsDesc</h3>
-<a class="indexterm" name="id2588822"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2600531"></a><pre class="programlisting">typedef struct {
   guint  value;
   gchar *value_desc;
   gchar *value_help;
@@ -112,9 +112,9 @@ Translation between gettext translation domain identifier and GType.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588839"></a><h3>
+<a name="id2600548"></a><h3>
 <a name="gimp-type-set-translation-domain"></a>gimp_type_set_translation_domain ()</h3>
-<a class="indexterm" name="id2588854"></a><pre class="programlisting">void                gimp_type_set_translation_domain    (<a
+<a class="indexterm" name="id2600564"></a><pre class="programlisting">void                gimp_type_set_translation_domain    (<a
 href="../gobject/gobject-Type-Information.html#GType"
 >GType</a> type,
                                                          const <a
@@ -154,9 +154,9 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596533"></a><h3>
+<a name="id2599631"></a><h3>
 <a name="gimp-type-get-translation-domain"></a>gimp_type_get_translation_domain ()</h3>
-<a class="indexterm" name="id2596549"></a><pre class="programlisting">const <a
+<a class="indexterm" name="id2599646"></a><pre class="programlisting">const <a
 href="../glib/glib-Basic-Types.html#gchar"
 >gchar</a>*        gimp_type_get_translation_domain    (<a
 href="../gobject/gobject-Type-Information.html#GType"
@@ -195,9 +195,9 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596670"></a><h3>
+<a name="id2599767"></a><h3>
 <a name="gimp-enum-set-value-descriptions"></a>gimp_enum_set_value_descriptions ()</h3>
-<a class="indexterm" name="id2596686"></a><pre class="programlisting">void                gimp_enum_set_value_descriptions    (<a
+<a class="indexterm" name="id2599783"></a><pre class="programlisting">void                gimp_enum_set_value_descriptions    (<a
 href="../gobject/gobject-Type-Information.html#GType"
 >GType</a> enum_type,
                                                          const <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc">GimpEnumDesc</a> *descriptions);</pre>
@@ -231,9 +231,9 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2527257"></a><h3>
+<a name="id2599887"></a><h3>
 <a name="gimp-enum-get-value-descriptions"></a>gimp_enum_get_value_descriptions ()</h3>
-<a class="indexterm" name="id2527273"></a><pre class="programlisting">const <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc">GimpEnumDesc</a>* gimp_enum_get_value_descriptions    (<a
+<a class="indexterm" name="id2576808"></a><pre class="programlisting">const <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc">GimpEnumDesc</a>* gimp_enum_get_value_descriptions    (<a
 href="../gobject/gobject-Type-Information.html#GType"
 >GType</a> enum_type);</pre>
 <p>
@@ -267,9 +267,9 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2527367"></a><h3>
+<a name="id2576902"></a><h3>
 <a name="gimp-flags-get-value-descriptions"></a>gimp_flags_get_value_descriptions ()</h3>
-<a class="indexterm" name="id2527382"></a><pre class="programlisting">const <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc">GimpFlagsDesc</a>* gimp_flags_get_value_descriptions  (<a
+<a class="indexterm" name="id2576917"></a><pre class="programlisting">const <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc">GimpFlagsDesc</a>* gimp_flags_get_value_descriptions  (<a
 href="../gobject/gobject-Type-Information.html#GType"
 >GType</a> flags_type);</pre>
 <p>
@@ -303,9 +303,9 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2527476"></a><h3>
+<a name="id2577011"></a><h3>
 <a name="gimp-flags-set-value-descriptions"></a>gimp_flags_set_value_descriptions ()</h3>
-<a class="indexterm" name="id2527492"></a><pre class="programlisting">void                gimp_flags_set_value_descriptions   (<a
+<a class="indexterm" name="id2577027"></a><pre class="programlisting">void                gimp_flags_set_value_descriptions   (<a
 href="../gobject/gobject-Type-Information.html#GType"
 >GType</a> flags_type,
                                                          const <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc">GimpFlagsDesc</a> *descriptions);</pre>
@@ -339,9 +339,9 @@ href="../glib/glib-Standard-Macros.html#NULL:CAPS"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2616536"></a><div class="refsect2" lang="en"><a name="id2616537"></a></div>
+<a name="id2577131"></a><div class="refsect2" lang="en"><a name="id2577132"></a></div>
 <hr>
-<div class="refsect2" lang="en"><a name="id2616538"></a></div>
+<div class="refsect2" lang="en"><a name="id2577134"></a></div>
 </div>
 </div>
 </body>

@@ -92,6 +92,7 @@
     <thetip xml:lang="sk">GIMP vám umožňuje vrátiť späť väčšinu zmien na obrázku, a preto sa nebojte experimentovať.</thetip>
     <thetip xml:lang="sl">GIMP zagotavlja razveljavitev velike večine sprememb na sliki, zato uživajte v eksperimentiranju!</thetip>
     <thetip xml:lang="sv">GIMP låter dig ångra de flesta ändringar i bilden, så experimentera gärna.</thetip>
+    <thetip xml:lang="uk">У GIMP можна скасувати більшість внесених змін, тому можете сміливо експериментувати.</thetip>
     <thetip xml:lang="vi">Bộ trình đồ họa GIMP cho phép bạn hoàn lại phần lớn thay đổi trong ảnh, vì vậy bạn có thể thử ra nhé.</thetip>
   </tip>
 
@@ -128,6 +129,7 @@
     <thetip xml:lang="ru">Контекстную помощь для большинства функций и пунктов меню GIMP можно вызвать клавишей F1.</thetip>
     <thetip xml:lang="sl">Za večino funkcij GIMPa obstaja od konteksta odvisna pomoč, do katere lahko vedno dostopate s pritiskom na tipko F1. To deluje tudi znotraj menijev.</thetip>
     <thetip xml:lang="sv">Du kan få sammanhangskänslig hjälp för de flesta av GIMP:s funktioner genom att när som helst trycka på F1-tangenten. Detta fungerar även inne i menyerna.</thetip>
+    <thetip xml:lang="uk">Контекстну довідку для більшості функцій та меню GIMP можна викликати клавішею F1.</thetip>
   </tip>
   <tip level="beginner">
     <thetip>GIMP uses layers to let you organize your image. Think of them as a stack of slides or filters, such that looking through them you see a composite of their contents.</thetip>
@@ -165,6 +167,7 @@
     <thetip xml:lang="sk">GIMP používa vrstvy na organizáciu vašich obrázkov. Môžete si ich predstaviť ako sadu fólií alebo filtrov, cez ktoré sa pozeráte, keď chcete vidieť ich kompozíciu.</thetip>
     <thetip xml:lang="sl">GIMP uporablja plasti, s katerimi lažje organizirate slike. Predstavljate si jih kot večje število prosojnic ali filtrov, zloženih drug na drugega, tako da s pogledom od zgoraj vidite sestavljeno vsebino cele slike.</thetip>
     <thetip xml:lang="sv">GIMP använder lager så att du kan organisera din bild. Betrakta dem som en hög med diabilder eller filter, som gör att när du tittar genom dem ser en sammansättning av deras innehåll.</thetip>
+    <thetip xml:lang="uk">Для створення складного зображення у GIMP використовує шари. Щоб отримати про них уяву, уявіть стопку прозорих плівок із зображеннями, так що при перегляді видимий вміст одразу всіх плівок.</thetip>
     <thetip xml:lang="vi">Bộ trình đồ họa GIMP dùng lớp để cho phép bạn tổ hợp ảnh. Có thể tưởng rằng các lớp này là một đống nhiều bộ lọc hoặc chiều ảnh, thì khi bạn thấy qua, có thể xem các nội dung ghép lại.</thetip>
   </tip>
   <tip level="beginner">
@@ -250,6 +253,7 @@
     <thetip xml:lang="sk">Keď ukladáte obrázok, na ktorom budete ešte pracovať, skúste použiť natívny formát XCF programu GIMP (používa príponu <tt>.xcf</tt>), ktorý uchová vrstvy a každý aspekt vašej nedokončenej práce. Po dokončení projektu ho môžete uložiť ako JPEG, PNG, GIF, ...</thetip>
     <thetip xml:lang="sl">Če obdelujete sliko in jo želite pozneje še naprej obdelovati, jo shranite v zapisu GIMP (s končnico <tt>.xcf</tt>). Ta namreč omogoča shranjevanje vseh plasti in večine drugih nastavitev. Ko je projekt zaključen, ga lahko shranite v zapisih TIF, JPEG, PNG, GIF, ...</thetip>
     <thetip xml:lang="sv">Prova att använda XCF, GIMP:s inbyggda filformat (använd filändelsen <tt>.xcf</tt>), när du sparar en bild för att arbeta med den senare. Detta bevarar lagren och alla aspekter av ditt pågående arbete. När ett projekt väl är färdigt kan du spara det som JPEG, PNG, GIF, ...</thetip>
+    <thetip xml:lang="uk">Якщо ви бажаєте продовжити редагування зображення пізніше, збережіть його у форматі XCF. Це внутрішній формат GIMP (розширення файлів <tt>.xcf</tt>). У ньому зберігаються стан усіх шарів, масок та інших частин зображення.  Після закінчення роботи над проектом можете зберегти його у JPEG, PNG, GIF, ...</thetip>
     <thetip xml:lang="vi">Khi bạn lưu một ảnh để làm việc với nó sau, hãy thử ra dùng định dạng tập tin sở hữu của GIMP, XCF (dùng phần mở rộng tập tin <tt>.xcf</tt>). Định dạng XCF bảo quản mọi lớp và mọi khía cạnh của việc-đang-tiến-hành của bạn. Một khi dự án đó hoàn thành, bạn có thể lưu nó dạng JPEG, PNG, GIF v.v.</thetip>
   </tip>
   <tip level="beginner">
@@ -281,6 +285,7 @@
     <thetip xml:lang="ru">Большинство расширений работает с активным слоем активного изображения. В некоторых случаях вам придется объединить слои («Изображение→Свести изображение»), чтобы расширение обработало все изображение.</thetip>
     <thetip xml:lang="sl">Večina vtičnikov obdela samo trenutno aktivno plast na odprti sliki. V nekaterih primerih je potrebno vse plasti združiti v eno plast (Slika→Splošči sliko), preden lahko uporabimo vtičnik na celi sliki.</thetip>
     <thetip xml:lang="sv">De flesta insticksmoduler arbetar med det aktuella lagret i den aktuella bilden. I en del fall måste du slå samman alla lager (Bild→Platta till bilden) om du vill att insticksmodulen ska arbeta på hela bilden.</thetip>
+    <thetip xml:lang="uk">Більшість доповнень працюють з активним шаром зображення. У деяких випадках необхідно об'єднувати всі шари (Зображення→Звести зображення), якщо бажаєте щоб доповнення діяло на все зображення.</thetip>
   </tip>
   <tip level="beginner">
     <thetip>If a layer's name in the Layers dialog is displayed in <b>bold</b>, this layer doesn't have an alpha-channel. You can add an alpha-channel using Layer→Transparency→Add Alpha Channel.</thetip>
@@ -312,6 +317,7 @@
     <thetip xml:lang="ru">Если имя слоя в палитре слоев отображено <b>жирным</b> шрифтом, это означает, что у данного слоя нет альфа-канала. Вы можете добавить альфа-канал через меню «Слой→Прозрачность→Добавить альфа-канал».</thetip>
     <thetip xml:lang="sl">Če je ime plasti prikazano s <b>krepko</b> pisavo, ta kanal nima kanala alfa. Kanal alfa lahko dodate z ukazom Plast→Prosojnost→Dodaj kanal alfa.</thetip>
     <thetip xml:lang="sv">Om ett lagers namn i lagerdialogen visas med <b>fet</b> text innebär det att lagret inte har en alfakanal. Du kan lägga till en alfakanal med hjälp av Lager→Transparens→Lägg till alfakanal.</thetip>
+    <thetip xml:lang="uk">Якщо назва шару у палітрі шарів відображається <b>жирним</b> шрифтом, це означає, що цей шар не має альфа-каналу. Ви можете додати альфа-канал у меню «Шар→Прозорість→Додати альфа-канал».</thetip>
   </tip>
   <tip level="beginner">
     <thetip>Not all effects can be applied to all kinds of images. This is indicated by a grayed-out menu-entry. You may need to change the image mode to RGB (Image→Mode→RGB), add an alpha-channel (Layer→Transparency→Add Alpha Channel) or flatten it (Image→Flatten Image).</thetip>
@@ -343,6 +349,7 @@
     <thetip xml:lang="ru">Некоторые эффекты применимы не ко всем типам изображения. Пункт меню такого эффекта недоступен для выбора. Иногда для того, чтобы воспользоваться тем или иным фильтром, нужно перевести изображение в режим RGB («Изображение→Режим→RGB»), добавить альфа-канал («Слой→Прозрачность→Добавить альфа-канал») или свести изображение («Изображение→Свести изображение»).</thetip>
     <thetip xml:lang="sl">Vsem vrstam slik ne moremo dodeliti vseh učinkov. To nakazujejo posiveli menijski vnosi. Morda morate spremeniti slikovni način v RGB (Slika→Način→RGB), dodati kanal alfa (Plast→Prosojnost→Dodaj kanal alfa) ali sploščiti sliko (Slika→Splošči sliko).</thetip>
     <thetip xml:lang="sv">Alla effekter kan inte tillämpas på alla typer av bilder. Detta visas genom att menyposten är gråtonad. Du kan behöva ändra bildläget till RGB (Bild→Läge→RGB), lägga till en alfakanal (Lager→Transparens→Lägg till alfakanal) eller platta till den (Bild→Platta till bild).</thetip>
+    <thetip xml:lang="uk">Деякі ефекти не можуть бути застосовані до усіх типів зображення. Це позначується сірим кольором елементів меню. Можливо знадобиться перевести зображення у режим RGB (Зображення→Режим→RGB), додати канал прозорості (Шар→Прозорість→Додати альфа-канал) або об'єднати шари зображення (Зображення→Звести зображення).</thetip>
   </tip>
   <tip level="beginner">
     <thetip>You can adjust or move a selection by using <tt>Alt</tt>-drag. If this makes the window move, your window manager uses the <tt>Alt</tt> key already. Most window managers can be configured to ignore the <tt>Alt</tt> key or to use the <tt>Super</tt> key (or "Windows logo") instead.</thetip>
@@ -365,6 +372,7 @@
     <thetip xml:lang="ru">Вы можете переместить выделение, нажав <tt>Alt</tt> и перетащив его мышкой. Если вместо выделения перемещается окно с изображением, значит ваш оконный менеджер уже использует эту комбинацию с <tt>Alt</tt>. Попробуйте одновременно с <tt>Alt</tt> нажать клавишу <tt>Shift</tt>, либо смените настройки оконного менеджера (сменив <tt>Alt</tt> на <tt>Super</tt> или клавишу с логотипом Windows).</thetip>
     <thetip xml:lang="sl">Izbor lahko premikate ali prilagodite s pomočjo <tt>Alt</tt>-povleci. Če se s to kombinacijo premakne okno, vaš okenski upravitelj že uporablja tipko <tt>Alt</tt>. Večina okenskih upraviteljev je mogoče nastaviti tako, da prezrejo pritisnjeno tipko <tt>Alt</tt> ali da namesto nje uporabijo tipko <tt>Super</tt> (ali "Logotip Windows").</thetip>
     <thetip xml:lang="sv">Du kan justera eller flytta en markering genom att använda <tt>Alt</tt> och dra. Om detta gör att fönstret flyttar sig använder din fönsterhanterare redan <tt>Alt</tt>-tangenten. De flesta fönsterhanterare kan konfigureras till att ignorera <tt>Alt</tt>-tangenten eller till att använda <tt>Super</tt>-tangenten (eller "Windows logo") istället.</thetip>
+    <thetip xml:lang="uk">Ви можете скоригувати чи перемістити виділену ділянку використовуючи перетягування з утриманням натиснутої <tt>Alt</tt>. Якщо це призводить до переміщення цілого вікна, це означає ваш менеджер вікон вже використовує клавішу <tt>Alt</tt>. Спробуйте одночасно з цим натискати <tt>Shift</tt>, або змініть настройки віконного менеджера (змінивши <tt>Alt</tt> на <tt>Super</tt> чи клавішу з логотипом Windows).</thetip>
   </tip>
 
 
@@ -402,6 +410,7 @@
     <thetip xml:lang="ru">В GIMP можно перетаскивать мышкой многие элементы. Например, если перетащить цвет с панели инструментов или из палитры на изображение, то изображение или его выделенная область будет залито этим цветом.</thetip>
     <thetip xml:lang="sl">Uporabite lahko marsikatero možnost urejanja s pomočjo tehnike povleci in spusti, npr. z vlečenjem barve iz orodjarne ali barvne palete v sliko; trenutna slika ali izbrano področje se bo prebarvalo z izbrano barvo.</thetip>
     <thetip xml:lang="sv">Du kan dra och släppa många saker i GIMP. Att exempelvis dra en färg från verktygslådan eller från en färgpalett och släppa den i en bild gör att den aktuella markeringen fylls med den färgen.</thetip>
+    <thetip xml:lang="uk">У GIMP можна перетягувати мишею багато елементів. Наприклад, перетягування кольору з панелі інструментів або з палітри на зображення призводить до заповнення цим кольором зображення (або його виділеної ділянки).</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>You can use the middle mouse button to pan around the image (or optionally hold <tt>Spacebar</tt> while you move the mouse).</thetip>
@@ -431,6 +440,7 @@
     <thetip xml:lang="ru">Для перемещения по изображению используйте среднюю клавишу мыши. В диалоге настроек можно изменить способ на более привычный для пользователей других программ — удерживая нажатой клавишу <tt>пробела</tt>, перемещать курсор мыши.</thetip>
     <thetip xml:lang="sl">S srednjim gumbom miške si lahko pomagate za pomikanje okoli slike (ali po možnosti držite pritisnjeno <tt>preslednico</tt>, medtem ko premikate miško).</thetip>
     <thetip xml:lang="sv">Du kan använda den mittenmusknappen för att panorera över bilden (eller hålla ner <tt>blankstegstangenten</tt> när du flyttar musen).</thetip>
+    <thetip xml:lang="uk">Для переміщення по зображенню використовуйте середню клавішу миші. У діалозі параметрів можна змінити спосіб на більш звичний для користувачів інших програм — утримуючи натисненою клавішу <tt>пробіл</tt>, переміщувати курсор миші.</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>Click and drag on a ruler to place a guide on an image. All dragged selections will snap to the guides. You can remove guides by dragging them off the image with the Move tool.</thetip>
@@ -470,7 +480,7 @@
     <thetip xml:lang="sk">Kliknutím a potiahnutím na pravítko umiestnite do obrázka vodítko.Všetky ťahané výbery budú pritiahnuté k týmto vodítkam. Vodítka môže odstrániť tak, že pomocou nástroja Presun ich vytiahnete mimo plochu obrázka.</thetip>
     <thetip xml:lang="sl">Kliknite in povlecite na ravnilo za postavitev vodila na sliko. Vse povlečene izbire se bodo pripele na vodila. Vodila odstranite z vlečenjem le-teh prek zunanjih robov slike z orodjem Premakni.</thetip>
     <thetip xml:lang="sv">Klicka på en linjal och dra den för att placera en hjälplinje på en bild. Alla markeringar som dras kommer att fästas vid hjälplinjerna. Du kan ta bort hjälplinjer genom att dra dem utanför bilden med flyttverktyget.</thetip>
-    <thetip xml:lang="uk">Щоб помістити напрямну на зображення натисніть на лінійку та перетягніть. Всі виділені області, які переміщуватимуться, будуть причіплюватись до напрямних. Видалити напрямні можна перетягнувши їх за межі зображення за допомогою інструменту &quot;Переміщення&quot;.</thetip>
+    <thetip xml:lang="uk">Щоб помістити напрямну на зображення натисніть на лінійку та перетягніть. Всі виділені області, які переміщуватимуться, будуть причіплюватись до напрямних. Видалити напрямні можна перетягнувши їх за межі зображення за допомогою інструменту «Переміщення».</thetip>
     <thetip xml:lang="vi">Hãy nhắp và kếo vào một thuớc đo để tạo một nét dẫn trên một ảnh nào đó. Mọi vùng chọn đã kéo thì sẽ đính nét dẫn này. Bạn có thể loại bỏ nét dẫn bằng cách kéo nó ra ảnh, dùng công cụ Chuyển.</thetip>
     <thetip xml:lang="zh_CN">点击并拖动标尺可以在图像中放置参考线。所有拖动的选区都会被吸附到参考线上。您可以用移动工具把参考线拖出图像外来删除它们。</thetip>
   </tip>
@@ -516,7 +526,7 @@
     <thetip xml:lang="sr">Можете превући слој из прозорчета „Слојеви, канали и путање“ и спустити га на палету алата. На тај начин ће се направити нова слика која садржи само тај слој.</thetip>
     <thetip xml:lang="sr@Latn">Možete prevući sloj iz prozorčeta „Slojevi, kanali i putanje“ i spustiti ga na paletu alata. Na taj način će se napraviti nova slika koja sadrži samo taj sloj.</thetip>
     <thetip xml:lang="sv">Du kan dra ett lager från lagerdialogen och släppa den på verktygslådan. Detta skapar en ny bild som innehåller endast det lagret.</thetip>
-    <thetip xml:lang="uk">Можна перемістити шар з діалогового вікна &quot;Шари&quot; на панель інструментів. Це призведе до створення нового зображення, яке буде містити лише цей шар.</thetip>
+    <thetip xml:lang="uk">Можна перемістити шар з діалогового вікна «Шари» на панель інструментів. Це призведе до створення нового зображення, яке буде містити лише цей шар.</thetip>
     <thetip xml:lang="vi">Bạn có thể kéo một lớp từ hộp thoại Lớp rồi thả nó trên hộp công cụ. Làm như thế sẽ tạo một ảnh mới có chứa chỉ lớp đó thôi.</thetip>
     <thetip xml:lang="zh_CN">您可以从图层对话框中拖动一个图层到工具箱中释放。这样会创建一幅只含有那个图层的新图像。</thetip>
     <thetip xml:lang="zh_TW">您可以在「圖層」對話方塊中拖曳一個圖層並將之放進工具箱內。這樣會產生一幅只含有該圖層的影像。</thetip>
@@ -597,6 +607,7 @@
     <thetip xml:lang="sk">GIMP podporuje priebežnú gzip kompresiu. Stačí pridať koncovku <tt>.gz</tt> (alebo <tt>.bz2</tt>, ak máte nainštalovaný bzip2) k názvu súboru a obrázok bude uložený komprimovaný. Rovnako to funguje, prirodzene, aj pri načítavaní obrázkov.</thetip>
     <thetip xml:lang="sl">GIMP omogoča neposredno shranjevanje v načinu stiskanja podatkov gzip. Dodajte le končnico <tt>.gz</tt> ( ali <tt>.bz2</tt>, če je nameščen program bzip2) na koncu imena datoteke in ta se shrani v stisnjeni obliki. Tudi program lahko neposredno odpira tako stisnjene slike.</thetip>
     <thetip xml:lang="sv">GIMP stöder direkt gzip-komprimering. Lägg bara till <tt>.gz</tt> (eller <tt>.bz2</tt>, om du har bzip2 installerat) till filnamnet och din bild kommer att sparas komprimerad. Givetvis fungerar även inläsning av komprimerade bilder.</thetip>
+    <thetip xml:lang="uk">GIMP підтримує стискання gzip «на ходу». Просто додайте <tt>.gz</tt> (чи <tt>.bz2</tt>, якщо у вас встановлено bzip2) до назви файлу, та ваше зображення буде збережено стисненим. Звичайно, стиснені зображення можна відкривати як звичайні.</thetip>
     <thetip xml:lang="vi">Bộ trình đồ họa GIMP hỗ trợ nén kiểu gzip một cách động. Hãy chỉ đơn giản thêm phần mở rộng <tt>.gz</tt> (hoặc <tt>.bz2</tt> nếu bạn đã cài đặt bzip2) vào tên tập tin, rồi ảnh đó sẽ được lưu đã nén. Tất nhiên, bạn cũng có thể tải ảnh đã nén.</thetip>
   </tip>
   <tip level="intermediate">
@@ -676,6 +687,7 @@
     <thetip xml:lang="ru">При помощи команды, вызываемой из меню «Правка→Обвести по контуру...» можно быстро нарисовать простые геометрические фигуры, такие как квадраты и круги. Этой командой выделенная область обводится по контуру  активной кистью или пунктиром с задаваемыми параметрами. Более сложные геометрические фигуры можно рисовать при помощи подпрограммы Gfig («Фильтры→Визуализация→Gfig»).</thetip>
     <thetip xml:lang="sl">Enostavne kvadrate ali kroge narišete z ukazom Uredi→Izbor poteze. S potezo oriše rob trenutnega izbora. Bolj zahtevne oblike lahko narišete z orodjem Pot ali z ukazom Filtri→Upodobi→Gfig.</thetip>
     <thetip xml:lang="sv">Du kan rita enkla fyrkanter och cirklar genom att använda Redigera→Stryk längs markering. Den stryker längs kanten av din aktuella markering. Mer komplexa figurer kan ritas med slingverktyget eller Filter→Rendera→Gfig.</thetip>
+    <thetip xml:lang="uk">Можна малювати прості квадрати чи кола використовуючи меню «Правка→Обвести за контуром». Цією командою контур виділеної області обводиться активним пензлем чи типовим пунктиром. Більш складні геометричні фігури можна намалювати використовуючи інструмент «Контур» або «Фільтри→Візуалізація→Gfig».</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>If you stroke a path (Edit→Stroke Path), the paint tools can be used with their current settings. You can use the Paintbrush in gradient mode or even the Eraser or the Smudge tool.</thetip>
@@ -708,6 +720,7 @@
     <thetip xml:lang="ru">При обводке по контуру («Правка→Обвести по контуру...»), используется активный на данный момент рисующий инструмент со всеми параметрами. Вы можете использовать «Кисть» в режиме градиента, «Штамп» с источником из шаблона или даже «Ластик» и «Палец».</thetip>
     <thetip xml:lang="sl">Pri izrisu poti po obrisu predmeta (Uredi→Izris poti) uporabite trenutne nastavitve izbranega risarskega orodja. Uporabite npr. slikarski čopič v načinu barvnega preliva, radirko ali orodje za razmazovanje.</thetip>
     <thetip xml:lang="sv">Om du stryker en slinga (Redigera→Stryk slinga) kan ritverktygen användas med deras aktuella inställningar. Du kan använda målarpenseln i gradientläget eller till och med suddaren eller smetverktyget.</thetip>
+    <thetip xml:lang="uk">При обведенні контуру (Правка→Обвести за контуром), використовується поточний інструмент малювання з усіма параметрами. Ви можете використовувати «Пензель» у режимі градієнта, «Штамп» з джерелом з шаблону, або навіть інструменти «Гумка» чи «Палець».</thetip>
   </tip>
   <tip level="intermediate">
     <thetip>You can create and edit complex selections using the Path tool. The Paths dialog allows you to work on multiple paths and to convert them to selections.</thetip>
@@ -749,7 +762,7 @@
     <thetip xml:lang="sr">Можете направити и уређивати сложене изборе помоћу алата за путање. Прозорче за путање дозвољава рад са више путања и претварање истих у изборе.</thetip>
     <thetip xml:lang="sr@Latn">Možete napraviti i uređivati složene izbore pomoću alata za putanje. Prozorče za putanje dozvoljava rad sa više putanja i pretvaranje istih u izbore.</thetip>
     <thetip xml:lang="sv">Du kan skapa och redigera komplexa markeringar genom att använda slingverktyget. Slingdialogen låter dig arbeta med flera slingor och konvertera dem till markeringar.</thetip>
-    <thetip xml:lang="uk">Можна створювати та редагувати складні ділянки виділення використовуючи інструмент &quot;Контур&quot;. У діалоговому вікні &quot;Контур&quot; можна працювати з кількома контурами та перетворювати їх у виділення.</thetip>
+    <thetip xml:lang="uk">Можна створювати та редагувати складні ділянки виділення використовуючи інструмент «Контур». У діалоговому вікні «Контур»; можна працювати з кількома контурами та перетворювати їх у виділення.</thetip>
     <thetip xml:lang="vi">Bạn có thể tạo và hiệu chỉnh vùng chọn phức tạp bằng cách dùng công cụ « Đường dẫn ». Hộp thoại « Đường dẫn » cho phép bạn làm việc với nhiều đường dẫn và chuyển đổi chúng thành vùng chọn.</thetip>
     <thetip xml:lang="zh_CN">您可以用路径工具创建和编辑复杂的选区。路径对话框允许您同时操作多个路径以及把它们转换到选区。</thetip>
     <thetip xml:lang="zh_TW">您可以使用路徑工具來製作及修改複雜的選擇區域。在「路徑」對話方塊中，您可以同時處理多個路徑並將它們轉換為選擇區域。</thetip>
@@ -824,6 +837,7 @@
     <thetip xml:lang="ru">Выделенную область можно сохранить как канал («Выделение→Сохранить в канале»), а потом редактировать этот канал любым инструментом рисования. Изменять видимость канала и преобразовывать его в выделение вы можете при помощи кнопок в диалоге каналов.</thetip>
     <thetip xml:lang="sl">Izbor lahko shranite v kanal (Izberi→Shrani v kanal) in ga potem obdelate s katerim koli orodjem za risanje. S pomočjo gumbov v pogovornem oknu Kanali lahko spreminjate vidnost novega kanala ali ga spremenite v izbiro.</thetip>
     <thetip xml:lang="sv">Du kan spara en markering till en kanal (Markera→Spara till kanal) och sedan ändra denna kanal med något av målarverktygen. Genom att använda knapparna i kanaldialogen kan du växla synligheten på denna nya kanal eller konvertera den till en markering.</thetip>
+    <thetip xml:lang="uk">Виділену ділянку можна зберегти як канал («Виділення→Зберегти в каналі»), а потім редагувати цей канал будь-яким інструментом. Кнопками у діалоговому вікні "Канали", можна змінити видимість каналу або перетворити його у виділену ділянку.</thetip>
   </tip>
 
 
@@ -857,6 +871,7 @@
     <thetip xml:lang="ru">После того, как вы включили в диалоге настройки функцию «Динамические клавиатурные комбинации», вы можете переопределить сочетания клавиш быстрого доступа. Чтобы это сделать, наведите курсор мыши на нужный пункт меню и нажмите удобное вам сочетание клавиш. Проверьте, стоит ли в настройках GIMP флажок напротив «Сохранять клавиши быстрого доступа при выходе», чтобы при следующем запуске программы не переназначать всё заново. После установки всех комбинаций, возможно, стоит отключить динамическое запоминание, чтобы случайно ничего не переназначить.</thetip>
     <thetip xml:lang="sl">Potem ko omogočite &quot;Uporabi dinamične tipke za bližnjice&quot; v pogovornem oknu nastavitev, lahko tipke za bližnjice prerazporedite. Prikličite meni, izberite ukaz v njem, nato pritisnite želeno kombinacijo tipk. Če je &quot;Shrani tipke za bližnjice ob izhodu&quot; vključen, bodo nove kombinacije tipk shranjene ob izhodu iz aplikacije GIMP. Kasneje raje izključite &quot;Dinamične tipke za bližnjice&quot;, da preprečite nenamerno dodeljevanje novih bližnjic.</thetip>
     <thetip xml:lang="sv">När du har aktiverat &quot;Dynamiska tangentbordsgenvägar&quot; i inställningsdialogen kan du konfigurera om genvägstangenter. Detta gör du genom att ta fram menyn, välja ett menyobjekt och trycka på den önskade tangentkombinationen. Om &quot;Spara tangentbordsgenvägar&quot; är aktiverad kommer tangentbindningarna att sparas när du avslutar GIMP. Du bör antagligen inaktivera &quot;Dynamiska tangentbordsgenvägar&quot; efteråt för att förhindra att genvägar konfigureras av misstag.</thetip>
+    <thetip xml:lang="uk">Після ввімкнення функції «Динамічні комбінації клавіш» у діалоговому вікні Параметри" можна перевизначати комбінації клавіш. Для цього відкрийте меню наведіть вказівник на потрібний пункт меню, та натисніть бажану комбінацію клавіш. Якщо ввімкнено «Зберігати комбінації клавіш при виході», вона буде збережена під час виходу з програми GIMP.  Після встановлення всіх комбінацій, можливо, варто вимкнути динамічне запам'ятовування, щоб випадково нічого не переназначити.</thetip>
   </tip>
   <tip level="advanced">
     <thetip>If your screen is too cluttered, you can press <tt>Tab</tt> in an image window to toggle the visibility of the toolbox and other dialogs.</thetip>
@@ -888,6 +903,7 @@
     <thetip xml:lang="ru">Если на экране мало места, можно воспользоваться кнопкой <tt>Tab</tt> в окне изображения, чтобы скрыть или показать панель инструментов и окна диалогов.</thetip>
     <thetip xml:lang="sl">Če je vaše namizje preveč nastlano, lahko pritisnete tipko <tt>Tab</tt> v oknu slike, da vključite ali izključite vidnost orodne vrstice in drugih pogovornih oken.</thetip>
     <thetip xml:lang="sv">Om din bildskärm är för stökig kan du trycka på <tt>tabulator</tt> i ett bildfönster för att växla synligheten på verktygslådan och andra dialoger.</thetip>
+    <thetip xml:lang="uk">Якщо на екрані мало місця, можна користуватись кнопкою <tt>Tab</tt> у вікні зображення, щоб приховати чи показати панелі інструментів та інші діалогові вікна.</thetip>
   </tip>
   <tip level="advanced">
     <thetip><tt>Shift</tt>-click on the eye icon in the Layers dialog to hide all layers but that one. <tt>Shift</tt>-click again to show all layers.</thetip>
@@ -965,6 +981,7 @@
     <thetip xml:lang="ru">Чтобы переключить активность маски слоя, нажмите кнопкой мыши ее эскиз, удерживая клавишу <tt>Ctrl</tt>. <tt>Alt</tt>+щелчок по эскизу маски переключает прямое отображение маски.</thetip>
     <thetip xml:lang="sl"><tt>Ctrl</tt>-klik v predogledu maske plasti v pogovornem oknu Plasti vključi ali izključi učinek maske plasti. <tt>Alt</tt>-klik na predogled maske plasti v pogovornem oknu Plasti vključi ali izključi neposreden ogled maske.</thetip>
     <thetip xml:lang="sv">Håll ner <tt>Ctrl</tt> och klicka på lagermaskens förhandsgranskning i lagerdialogen växlar effekten av lagermasken. <tt>Alt</tt>-klick på lagermaskens förhandsgranskning i lagerdialogen växlar visning av masken direkt.</thetip>
+    <thetip xml:lang="uk">Щоб перемикнути активність маски шару, натисніть кнопкою миші на ескізі, утримуючи при цьому клавішу <tt>Ctrl</tt>. <tt>Alt</tt>+клацання на ескізі маски</thetip>
   </tip>
   <tip level="advanced">
     <thetip>You can use <tt>Ctrl</tt>-<tt>Tab</tt> to cycle through all layers in an image (if your window manager doesn't trap those keys...).</thetip>
@@ -997,6 +1014,7 @@
     <thetip xml:lang="ru">Переключаться между слоями можно по <tt>Ctrl</tt>-<tt>Tab</tt> (если ваш оконный менеджер не использует это сочетание клавиш).</thetip>
     <thetip xml:lang="sl">Uporabite kombinacijo tipk <tt>Ctrl</tt> in <tt>Tab</tt> za prehajanje med plastmi slike  (če vaš upravljalnik oken to dovoljuje in ne prestreže te kombinacije tipk).</thetip>
     <thetip xml:lang="sv">Du kan använda <tt>Alt</tt>-<tt>tabulator</tt> för att växla mellan alla lager i en bild (om din fönsterhanterare inte fångar dessa tangenter...).</thetip>
+    <thetip xml:lang="uk">Для перемикання між шарами можна користуватись клавішами <tt>Alt</tt>-<tt>Tab</tt> (якщо ваш віконний менеджер не використовує цю комбінацію клавіш).</thetip>
   </tip>
   <tip level="advanced">
     <thetip><tt>Ctrl</tt>-click with the Bucket Fill tool to have it use the background color instead of the foreground color. Similarly, <tt>Ctrl</tt>-clicking with the eyedropper tool sets the background color instead of the foreground color.</thetip>
@@ -1028,6 +1046,7 @@
     <thetip xml:lang="ru">Инструмент «Заливка» по умолчанию использует цвет переднего плана. Чтобы залить область цветом фона используйте клавишу <tt>Ctrl</tt>. Аналогично, при нажатой клавише <tt>Ctrl</tt> пипетка снимает цвет для фона, а не для переднего плана.</thetip>
     <thetip xml:lang="sl"><tt>Ctrl</tt>-klik v orodju Zapolni s kanglico uporabi barvo ozadja namesto barve ospredja. Podobno <tt>Ctrl</tt>-klik v orodju kapalke nastavi barvo ozadja namesto barve ospredja.</thetip>
     <thetip xml:lang="sv">Håll ner <tt>Ctrl</tt> och klicka med fyllnadsverktyget för att göra så att det använder bakgrundsfärgen istället för förgrundsfärgen. På samma sätt ställer ett <tt>Ctrl</tt>-klick med pipettverktyget in bakgrundsfärgen istället för förgrundsfärgen.</thetip>
+    <thetip xml:lang="uk">Інструмент «Заповнення» зазвичай використовує колір переднього плану. Щоб заповнити ділянку кольором тла, натискайте клавішу <tt>Ctrl</tt>. Аналогічно, при натиснутій клавіші <tt>Ctrl</tt> піпетка знімає колір для тла, а не для переднього плану.</thetip>
   </tip>
   <tip level="advanced">
     <thetip><tt>Ctrl</tt>-drag with the Rotate tool will constrain the rotation to 15 degree angles.</thetip>
@@ -1144,6 +1163,7 @@
     <thetip xml:lang="ru">Если цвета отсканированных фотографий выглядят недостаточно сочными, это можно исправить при помощи кнопки «Авто» в диалоге «Уровни» («Цвет→Уровни...»). Оттенки цвета можно редактировать при помощи инструмента «Кривые» («Цвет→Кривые...»).</thetip>
     <thetip xml:lang="sl">Če nekatere skenirane slike niso videti dovolj barvite, lahko njihov tonski obseg enostavno spremenite z gumbom "Samodejno" v orodju Ravni (Barve→Ravni). Če so barve na sliki nepravilno prikazane, lahko to popravite z orodjem Krivulje (Barve→Krivulje).</thetip>
     <thetip xml:lang="sv">Om en del av dina inlästa bilder inte ser ut att vara tillräckligt färggranna kan du enkelt förbättra deras färgtonsintervall med knappen &quot;Auto&quot; i nivåverktyget (Färger→Nivåer). Om det finns några färgskiftningar kan du korrigera dem med kurvverktyget (Färger→Kurvor).</thetip>
+    <thetip xml:lang="uk">Якщо кольори сканованих зображення виглядають недостатньо соковитими, їх тональний діапазон можна виправити за допомогою кнопки «Авто» у діалоговому вікні «Рівні» (Колір→Рівні). Відтінки кольору можна скоригувати інструментом «Криві» (Колір→Криві).</thetip>
   </tip>
 
 

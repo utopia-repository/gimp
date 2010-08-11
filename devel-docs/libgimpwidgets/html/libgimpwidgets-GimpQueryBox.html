@@ -8,22 +8,8 @@
 <link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpHelpUI.html" title="GimpHelpUI">
 <link rel="next" href="libgimpwidgets-GimpStock.html" title="GimpStock">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
-<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
-<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
-<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
-<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
-<link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
-<link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
-<link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
-<link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
-<link rel="index" href="libgimpwidgets-index.html" title="Index">
-<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpwidgets-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -36,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpwidgets-GimpQueryBox.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimpwidgets-GimpQueryBox.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimpwidgets-GimpQueryBox.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpQueryBox">
@@ -51,235 +37,86 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpwidgets-GimpQueryBox.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-void                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback" title="GimpQueryStringCallback ()">*GimpQueryStringCallback</a>)          (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *string,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback" title="GimpQueryIntCallback ()">*GimpQueryIntCallback</a>)             (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> value,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback" title="GimpQueryDoubleCallback ()">*GimpQueryDoubleCallback</a>)          (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> value,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback" title="GimpQuerySizeCallback ()">*GimpQuerySizeCallback</a>)            (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
->GimpUnit</a> unit,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-void                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback" title="GimpQueryBooleanCallback ()">*GimpQueryBooleanCallback</a>)         (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> value,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-string-box" title="gimp_query_string_box ()">gimp_query_string_box</a>               (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *initial,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback" title="GimpQueryStringCallback ()">GimpQueryStringCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-int-box" title="gimp_query_int_box ()">gimp_query_int_box</a>                  (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> initial,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> lower,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> upper,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback" title="GimpQueryIntCallback ()">GimpQueryIntCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-double-box" title="gimp_query_double_box ()">gimp_query_double_box</a>               (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> initial,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lower,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> upper,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback" title="GimpQueryDoubleCallback ()">GimpQueryDoubleCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-size-box" title="gimp_query_size_box ()">gimp_query_size_box</a>                 (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> initial,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lower,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> upper,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
->GimpUnit</a> unit,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> resolution,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> dot_for_dot,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback" title="GimpQuerySizeCallback ()">GimpQuerySizeCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-boolean-box" title="gimp_query_boolean_box ()">gimp_query_boolean_box</a>              (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *stock_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *true_button,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *false_button,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback" title="GimpQueryBooleanCallback ()">GimpQueryBooleanCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);
-#define             <a class="link" href="libgimpwidgets-GimpQueryBox.html#GIMP-QUERY-BOX-VBOX--CAPS" title="GIMP_QUERY_BOX_VBOX()">GIMP_QUERY_BOX_VBOX</a>                 (qbox)
+<pre class="synopsis"><span class="returnvalue">void</span>                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback" title="GimpQueryStringCallback ()">*GimpQueryStringCallback</a>)          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *string</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback" title="GimpQueryIntCallback ()">*GimpQueryIntCallback</a>)             (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback" title="GimpQueryDoubleCallback ()">*GimpQueryDoubleCallback</a>)          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback" title="GimpQuerySizeCallback ()">*GimpQuerySizeCallback</a>)            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback" title="GimpQueryBooleanCallback ()">*GimpQueryBooleanCallback</a>)         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-string-box" title="gimp_query_string_box ()">gimp_query_string_box</a>               (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *initial</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback" title="GimpQueryStringCallback ()"><span class="type">GimpQueryStringCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-int-box" title="gimp_query_int_box ()">gimp_query_int_box</a>                  (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> initial</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> lower</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> upper</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback" title="GimpQueryIntCallback ()"><span class="type">GimpQueryIntCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-double-box" title="gimp_query_double_box ()">gimp_query_double_box</a>               (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> initial</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lower</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> upper</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback" title="GimpQueryDoubleCallback ()"><span class="type">GimpQueryDoubleCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-size-box" title="gimp_query_size_box ()">gimp_query_size_box</a>                 (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> initial</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lower</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> upper</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> resolution</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dot_for_dot</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback" title="GimpQuerySizeCallback ()"><span class="type">GimpQuerySizeCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpQueryBox.html#gimp-query-boolean-box" title="gimp_query_boolean_box ()">gimp_query_boolean_box</a>              (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *stock_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *true_button</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *false_button</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback" title="GimpQueryBooleanCallback ()"><span class="type">GimpQueryBooleanCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);
+#define             <a class="link" href="libgimpwidgets-GimpQueryBox.html#GIMP-QUERY-BOX-VBOX:CAPS" title="GIMP_QUERY_BOX_VBOX()">GIMP_QUERY_BOX_VBOX</a>                 (qbox)
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -289,12 +126,8 @@ These functions provide simple dialogs for entering a single string,
 integer, double, boolean or pixel size value.
 </p>
 <p>
-They return a pointer to a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a> which has to be shown with
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html#gtk-widget-show"
-><code class="function">gtk_widget_show()</code></a> by the caller.
+They return a pointer to a <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a> which has to be shown with
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html#gtk-widget-show"><code class="function">gtk_widget_show()</code></a> by the caller.
 </p>
 <p>
 The dialogs contain an entry widget for the kind of value they ask for
@@ -307,19 +140,11 @@ callback function is called and returns the entered value.
 <a name="libgimpwidgets-GimpQueryBox.details"></a><h2>Details</h2>
 <div class="refsect2" title="GimpQueryStringCallback ()">
 <a name="GimpQueryStringCallback"></a><h3>GimpQueryStringCallback ()</h3>
-<pre class="programlisting">void                (*GimpQueryStringCallback)          (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *string,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpQueryStringCallback)          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *string</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
-Note that you have to <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g-free"
-><code class="function">g_free()</code></a> the returned string.
+Note that you have to <a href="/usr/share/gtk-doc/html/glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> the returned string.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -345,15 +170,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Memory-Allocation.html#g
 <hr>
 <div class="refsect2" title="GimpQueryIntCallback ()">
 <a name="GimpQueryIntCallback"></a><h3>GimpQueryIntCallback ()</h3>
-<pre class="programlisting">void                (*GimpQueryIntCallback)             (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> value,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpQueryIntCallback)             (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -380,15 +199,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="GimpQueryDoubleCallback ()">
 <a name="GimpQueryDoubleCallback"></a><h3>GimpQueryDoubleCallback ()</h3>
-<pre class="programlisting">void                (*GimpQueryDoubleCallback)          (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> value,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpQueryDoubleCallback)          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -415,18 +228,10 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="GimpQuerySizeCallback ()">
 <a name="GimpQuerySizeCallback"></a><h3>GimpQuerySizeCallback ()</h3>
-<pre class="programlisting">void                (*GimpQuerySizeCallback)            (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> size,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
->GimpUnit</a> unit,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpQuerySizeCallback)            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> size</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -458,15 +263,9 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="GimpQueryBooleanCallback ()">
 <a name="GimpQueryBooleanCallback"></a><h3>GimpQueryBooleanCallback ()</h3>
-<pre class="programlisting">void                (*GimpQueryBooleanCallback)         (<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *query_box,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> value,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpQueryBooleanCallback)         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *query_box</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -493,98 +292,75 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointe
 <hr>
 <div class="refsect2" title="gimp_query_string_box ()">
 <a name="gimp-query-string-box"></a><h3>gimp_query_string_box ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_query_string_box               (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *initial,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback" title="GimpQueryStringCallback ()">GimpQueryStringCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_query_string_box               (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *initial</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback" title="GimpQueryStringCallback ()"><span class="type">GimpQueryStringCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
-Creates a new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that queries the user for a string value.</p>
-<p>
+Creates a new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a> that queries the user for a string value.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>     The query box dialog's title.
+<td>The query box dialog's title.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>parent</code></em> :</span></p></td>
-<td>    The dialog's parent widget.
+<td>The dialog's parent widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_func</code></em> :</span></p></td>
-<td> The help function to show this dialog's help page.
+<td>The help function to show this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
-<td>   A string identifying this dialog's help page.
+<td>A string identifying this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
-<td>   A string which will be shown above the dialog's entry widget.
+<td>A string which will be shown above the dialog's entry widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>initial</code></em> :</span></p></td>
-<td>   The initial value.
+<td>The initial value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
-<td>    The object this query box is associated with.
+<td>The object this query box is associated with.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>signal</code></em> :</span></p></td>
-<td>    The object's signal which will cause the query box to be closed.
+<td>The object's signal which will cause the query box to be closed.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>  The function which will be called when the user selects "OK".
+<td>The function which will be called when the user selects "OK".
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>      The callback's user data.
+<td>The callback's user data.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A pointer to the new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a>.
 </td>
 </tr>
 </tbody>
@@ -593,114 +369,87 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
 <hr>
 <div class="refsect2" title="gimp_query_int_box ()">
 <a name="gimp-query-int-box"></a><h3>gimp_query_int_box ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_query_int_box                  (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> initial,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> lower,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> upper,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback" title="GimpQueryIntCallback ()">GimpQueryIntCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_query_int_box                  (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> initial</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> lower</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> upper</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback" title="GimpQueryIntCallback ()"><span class="type">GimpQueryIntCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
-Creates a new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that queries the user for an integer value.</p>
-<p>
+Creates a new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a> that queries the user for an integer value.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>     The query box dialog's title.
+<td>The query box dialog's title.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>parent</code></em> :</span></p></td>
-<td>    The dialog's parent widget.
+<td>The dialog's parent widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_func</code></em> :</span></p></td>
-<td> The help function to show this dialog's help page.
+<td>The help function to show this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
-<td>   A string identifying this dialog's help page.
+<td>A string identifying this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
-<td>   A string which will be shown above the dialog's entry widget.
+<td>A string which will be shown above the dialog's entry widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>initial</code></em> :</span></p></td>
-<td>   The initial value.
+<td>The initial value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lower</code></em> :</span></p></td>
-<td>     The lower boundary of the range of possible values.
+<td>The lower boundary of the range of possible values.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>upper</code></em> :</span></p></td>
-<td>     The upper boundray of the range of possible values.
+<td>The upper boundray of the range of possible values.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
-<td>    The object this query box is associated with.
+<td>The object this query box is associated with.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>signal</code></em> :</span></p></td>
-<td>    The object's signal which will cause the query box to be closed.
+<td>The object's signal which will cause the query box to be closed.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>  The function which will be called when the user selects "OK".
+<td>The function which will be called when the user selects "OK".
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>      The callback's user data.
+<td>The callback's user data.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A pointer to the new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a>.
 </td>
 </tr>
 </tbody>
@@ -709,124 +458,93 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
 <hr>
 <div class="refsect2" title="gimp_query_double_box ()">
 <a name="gimp-query-double-box"></a><h3>gimp_query_double_box ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_query_double_box               (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> initial,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lower,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> upper,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback" title="GimpQueryDoubleCallback ()">GimpQueryDoubleCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_query_double_box               (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> initial</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lower</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> upper</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryDoubleCallback" title="GimpQueryDoubleCallback ()"><span class="type">GimpQueryDoubleCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
-Creates a new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that queries the user for a double value.</p>
-<p>
+Creates a new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a> that queries the user for a double value.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>     The query box dialog's title.
+<td>The query box dialog's title.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>parent</code></em> :</span></p></td>
-<td>    The dialog's parent widget.
+<td>The dialog's parent widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_func</code></em> :</span></p></td>
-<td> The help function to show this dialog's help page.
+<td>The help function to show this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
-<td>   A string identifying this dialog's help page.
+<td>A string identifying this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
-<td>   A string which will be shown above the dialog's entry widget.
+<td>A string which will be shown above the dialog's entry widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>initial</code></em> :</span></p></td>
-<td>   The initial value.
+<td>The initial value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lower</code></em> :</span></p></td>
-<td>     The lower boundary of the range of possible values.
+<td>The lower boundary of the range of possible values.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>upper</code></em> :</span></p></td>
-<td>     The upper boundray of the range of possible values.
+<td>The upper boundray of the range of possible values.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>digits</code></em> :</span></p></td>
-<td>    The number of decimal digits the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
-><span class="type">GtkSpinButton</span></a> will provide.
+<td>The number of decimal digits the <a href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"><span class="type">GtkSpinButton</span></a> will provide.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
-<td>    The object this query box is associated with.
+<td>The object this query box is associated with.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>signal</code></em> :</span></p></td>
-<td>    The object's signal which will cause the query box to be closed.
+<td>The object's signal which will cause the query box to be closed.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>  The function which will be called when the user selects "OK".
+<td>The function which will be called when the user selects "OK".
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>      The callback's user data.
+<td>The callback's user data.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A pointer to the new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a>.
 </td>
 </tr>
 </tbody>
@@ -835,152 +553,116 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
 <hr>
 <div class="refsect2" title="gimp_query_size_box ()">
 <a name="gimp-query-size-box"></a><h3>gimp_query_size_box ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_query_size_box                 (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> initial,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lower,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> upper,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits,
-                                                         <a
-href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
->GimpUnit</a> unit,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> resolution,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> dot_for_dot,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback" title="GimpQuerySizeCallback ()">GimpQuerySizeCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_query_size_box                 (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> initial</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lower</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> upper</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>,
+                                                         <em class="parameter"><code><a href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"><span class="type">GimpUnit</span></a> unit</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> resolution</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> dot_for_dot</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQuerySizeCallback" title="GimpQuerySizeCallback ()"><span class="type">GimpQuerySizeCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
-Creates a new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that queries the user for a size using a
-<a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.</p>
-<p>
+Creates a new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a> that queries the user for a size using a
+<a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>       The query box dialog's title.
+<td>The query box dialog's title.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>parent</code></em> :</span></p></td>
-<td>      The dialog's parent widget.
+<td>The dialog's parent widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_func</code></em> :</span></p></td>
-<td>   The help function to show this dialog's help page.
+<td>The help function to show this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
-<td>     A string identifying this dialog's help page.
+<td>A string identifying this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
-<td>     A string which will be shown above the dialog's entry widget.
+<td>A string which will be shown above the dialog's entry widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>initial</code></em> :</span></p></td>
-<td>     The initial value.
+<td>The initial value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lower</code></em> :</span></p></td>
-<td>       The lower boundary of the range of possible values.
+<td>The lower boundary of the range of possible values.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>upper</code></em> :</span></p></td>
-<td>       The upper boundray of the range of possible values.
+<td>The upper boundray of the range of possible values.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>digits</code></em> :</span></p></td>
-<td>      The number of decimal digits the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> provide in
+<td>The number of decimal digits the <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> provide in
               "pixel" mode.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit</code></em> :</span></p></td>
-<td>        The unit initially shown by the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.
+<td>The unit initially shown by the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>resolution</code></em> :</span></p></td>
-<td>  The resolution (in dpi) which will be used for pixel/unit
+<td>The resolution (in dpi) which will be used for pixel/unit
               calculations.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dot_for_dot</code></em> :</span></p></td>
-<td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a> if the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>'s initial unit should be "pixels".
+<td>
+<a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a>'s initial unit should be "pixels".
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
-<td>      The object this query box is associated with.
+<td>The object this query box is associated with.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>signal</code></em> :</span></p></td>
-<td>      The object's signal which will cause the query box
+<td>The object's signal which will cause the query box
               to be closed.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>    The function which will be called when the user selects "OK".
+<td>The function which will be called when the user selects "OK".
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>        The callback's user data.
+<td>The callback's user data.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A pointer to the new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a>.
 </td>
 </tr>
 </tbody>
@@ -989,117 +671,90 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
 <hr>
 <div class="refsect2" title="gimp_query_boolean_box ()">
 <a name="gimp-query-boolean-box"></a><h3>gimp_query_boolean_box ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_query_boolean_box              (const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *parent,
-                                                         <a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()">GimpHelpFunc</a> help_func,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *help_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *stock_id,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *message,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *true_button,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *false_button,
-                                                         <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *object,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *signal,
-                                                         <a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback" title="GimpQueryBooleanCallback ()">GimpQueryBooleanCallback</a> callback,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"
->gpointer</a> data);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_query_boolean_box              (<em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *parent</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc" title="GimpHelpFunc ()"><span class="type">GimpHelpFunc</span></a> help_func</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *help_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *stock_id</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *message</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *true_button</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *false_button</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *signal</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpwidgets-GimpQueryBox.html#GimpQueryBooleanCallback" title="GimpQueryBooleanCallback ()"><span class="type">GimpQueryBooleanCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> data</code></em>);</pre>
 <p>
-Creates a new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a> that asks the user to do a boolean decision.</p>
-<p>
+Creates a new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a> that asks the user to do a boolean decision.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>        The query box dialog's title.
+<td>The query box dialog's title.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>parent</code></em> :</span></p></td>
-<td>       The dialog's parent widget.
+<td>The dialog's parent widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_func</code></em> :</span></p></td>
-<td>    The help function to show this dialog's help page.
+<td>The help function to show this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
-<td>      A string identifying this dialog's help page.
+<td>A string identifying this dialog's help page.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>stock_id</code></em> :</span></p></td>
-<td>     A stock_id to specify an icon to appear on the left
+<td>A stock_id to specify an icon to appear on the left
                on the dialog's message.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
-<td>      A string which will be shown in the query box.
+<td>A string which will be shown in the query box.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>true_button</code></em> :</span></p></td>
-<td>  The string to be shown in the dialog's left button.
+<td>The string to be shown in the dialog's left button.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>false_button</code></em> :</span></p></td>
-<td> The string to be shown in the dialog's right button.
+<td>The string to be shown in the dialog's right button.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
-<td>       The object this query box is associated with.
+<td>The object this query box is associated with.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>signal</code></em> :</span></p></td>
-<td>       The object's signal which will cause the query box
+<td>The object's signal which will cause the query box
                to be closed.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
-<td>     The function which will be called when the user clicks one
+<td>The function which will be called when the user clicks one
                of the buttons.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>         The callback's user data.
+<td>The callback's user data.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A pointer to the new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
-><span class="type">GtkDialog</span></a>.
+<td> A pointer to the new <a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html"><span class="type">GtkDialog</span></a>.
 </td>
 </tr>
 </tbody>
@@ -1107,12 +762,10 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkDialog.html"
 </div>
 <hr>
 <div class="refsect2" title="GIMP_QUERY_BOX_VBOX()">
-<a name="GIMP-QUERY-BOX-VBOX--CAPS"></a><h3>GIMP_QUERY_BOX_VBOX()</h3>
+<a name="GIMP-QUERY-BOX-VBOX:CAPS"></a><h3>GIMP_QUERY_BOX_VBOX()</h3>
 <pre class="programlisting">#define             GIMP_QUERY_BOX_VBOX(qbox)</pre>
 <p>
-A macro to access the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkVBox.html"
-><span class="type">GtkVBox</span></a> in a <span class="type">GimpQueryBox</span>. Useful if you want to add
+A macro to access the <a href="/usr/share/gtk-doc/html/gtk/GtkVBox.html"><span class="type">GtkVBox</span></a> in a <span class="type">GimpQueryBox</span>. Useful if you want to add
 more widgets.
 </p>
 <div class="variablelist"><table border="0">
@@ -1137,6 +790,6 @@ GimpUnitMenu
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

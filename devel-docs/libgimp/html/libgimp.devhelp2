@@ -107,7 +107,7 @@
     <keyword type="struct" name="GimpParamRegion" link="libgimp-gimp.html#GimpParamRegion"/>
     <keyword type="union" name="union GimpParamData" link="libgimp-gimp.html#GimpParamData"/>
     <keyword type="struct" name="GimpParam" link="libgimp-gimp.html#GimpParam"/>
-    <keyword type="macro" name="MAIN()" link="libgimp-gimp.html#MAIN--CAPS"/>
+    <keyword type="macro" name="MAIN" link="libgimp-gimp.html#MAIN:CAPS"/>
     <keyword type="function" name="gimp_main ()" link="libgimp-gimp.html#gimp-main"/>
     <keyword type="function" name="gimp_quit ()" link="libgimp-gimp.html#gimp-quit"/>
     <keyword type="function" name="gimp_install_procedure ()" link="libgimp-gimp.html#gimp-install-procedure"/>
@@ -930,7 +930,7 @@
     <keyword type="function" name="gimp_gradient_select_widget_set ()" link="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-set" deprecated=""/>
     <keyword type="function" name="gimp_palette_select_widget_new ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new" deprecated="" since="GIMP 2.2"/>
     <keyword type="function" name="gimp_palette_select_widget_close ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-close" deprecated="" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_palette_select_widget_set ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-set" deprecated="" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_palette_select_widget_set ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-set" deprecated=""/>
     <keyword type="function" name="gimp_pattern_select_widget_new ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new" deprecated=""/>
     <keyword type="function" name="gimp_pattern_select_widget_close ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close" deprecated=""/>
     <keyword type="function" name="gimp_pattern_select_widget_set ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set" deprecated=""/>

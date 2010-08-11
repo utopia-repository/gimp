@@ -8,22 +8,8 @@
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="prev" href="GimpColorHexEntry.html" title="GimpColorHexEntry">
 <link rel="next" href="GimpColorSelection.html" title="GimpColorSelection">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
-<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
-<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
-<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
-<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
-<link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
-<link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
-<link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
-<link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
-<link rel="index" href="libgimpwidgets-index.html" title="Index">
-<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpwidgets-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -36,12 +22,12 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#GimpColorScale.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#GimpColorScale.description" class="shortcut">Description</a>
-                 | 
-                <a href="#GimpColorScale.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                 | 
-                <a href="#GimpColorScale.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#GimpColorScale.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#GimpColorScale.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#GimpColorScale.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpColorScale">
@@ -55,46 +41,25 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpColorScale.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-                    <a class="link" href="GimpColorScale.html#GimpColorScale-struct" title="GimpColorScale">GimpColorScale</a>;
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="GimpColorScale.html#gimp-color-scale-new" title="gimp_color_scale_new ()">gimp_color_scale_new</a>                (<a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-Standard-Enumerations.html#GtkOrientation"
->GtkOrientation</a> orientation,
-                                                         <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel">GimpColorSelectorChannel</a> channel);
-void                <a class="link" href="GimpColorScale.html#gimp-color-scale-set-channel" title="gimp_color_scale_set_channel ()">gimp_color_scale_set_channel</a>        (<a class="link" href="GimpColorScale.html" title="GimpColorScale">GimpColorScale</a> *scale,
-                                                         <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel">GimpColorSelectorChannel</a> channel);
-void                <a class="link" href="GimpColorScale.html#gimp-color-scale-set-color" title="gimp_color_scale_set_color ()">gimp_color_scale_set_color</a>          (<a class="link" href="GimpColorScale.html" title="GimpColorScale">GimpColorScale</a> *scale,
-                                                         const <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
->GimpRGB</a> *rgb,
-                                                         const <a
-href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
->GimpHSV</a> *hsv);
+<pre class="synopsis">                    <a class="link" href="GimpColorScale.html#GimpColorScale-struct" title="GimpColorScale">GimpColorScale</a>;
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="GimpColorScale.html#gimp-color-scale-new" title="gimp_color_scale_new ()">gimp_color_scale_new</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"><span class="type">GtkOrientation</span></a> orientation</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="type">GimpColorSelectorChannel</span></a> channel</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="GimpColorScale.html#gimp-color-scale-set-channel" title="gimp_color_scale_set_channel ()">gimp_color_scale_set_channel</a>        (<em class="parameter"><code><a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> *scale</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="type">GimpColorSelectorChannel</span></a> channel</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="GimpColorScale.html#gimp-color-scale-set-color" title="gimp_color_scale_set_color ()">gimp_color_scale_set_color</a>          (<em class="parameter"><code><a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> *scale</code></em>,
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Object Hierarchy">
 <a name="GimpColorScale.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkRange.html"
->GtkRange</a>
-                           +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkScale.html"
->GtkScale</a>
+  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
+               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
+                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkRange.html">GtkRange</a>
+                           +----<a href="/usr/share/gtk-doc/html/gtk/GtkScale.html">GtkScale</a>
                                  +----GimpColorScale
 </pre>
 </div>
@@ -102,11 +67,7 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkScale.html"
 <a name="GimpColorScale.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorScale implements
- <a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>,  AtkImplementorIface and  <a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrientable"
->GtkOrientable</a>.</p>
+ AtkImplementorIface,  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a> and  <a href="/usr/share/gtk-doc/html/gtk/gtk-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
 <div class="refsect1" title="Description">
 <a name="GimpColorScale.description"></a><h2>Description</h2>
@@ -124,27 +85,22 @@ href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrienta
 <hr>
 <div class="refsect2" title="gimp_color_scale_new ()">
 <a name="gimp-color-scale-new"></a><h3>gimp_color_scale_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_color_scale_new                (<a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-Standard-Enumerations.html#GtkOrientation"
->GtkOrientation</a> orientation,
-                                                         <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel">GimpColorSelectorChannel</a> channel);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_color_scale_new                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkOrientation"><span class="type">GtkOrientation</span></a> orientation</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="type">GimpColorSelectorChannel</span></a> channel</code></em>);</pre>
 <p>
-Creates a new <a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> widget.</p>
-<p>
+Creates a new <a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> widget.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>orientation</code></em> :</span></p></td>
-<td> the scale's orientation (horizontal or vertical)
+<td>the scale's orientation (horizontal or vertical)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>channel</code></em> :</span></p></td>
-<td> the scale's color channel
+<td>the scale's color channel
 </td>
 </tr>
 <tr>
@@ -158,23 +114,22 @@ Creates a new <a class="link" href="GimpColorScale.html" title="GimpColorScale">
 <hr>
 <div class="refsect2" title="gimp_color_scale_set_channel ()">
 <a name="gimp-color-scale-set-channel"></a><h3>gimp_color_scale_set_channel ()</h3>
-<pre class="programlisting">void                gimp_color_scale_set_channel        (<a class="link" href="GimpColorScale.html" title="GimpColorScale">GimpColorScale</a> *scale,
-                                                         <a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel">GimpColorSelectorChannel</a> channel);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_scale_set_channel        (<em class="parameter"><code><a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> *scale</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpColorSelector.html#GimpColorSelectorChannel" title="enum GimpColorSelectorChannel"><span class="type">GimpColorSelectorChannel</span></a> channel</code></em>);</pre>
 <p>
-Changes the color channel displayed by the <em class="parameter"><code>scale</code></em>.</p>
-<p>
+Changes the color channel displayed by the <em class="parameter"><code>scale</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scale</code></em> :</span></p></td>
-<td> a <a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> widget
+<td>a <a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> widget
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>channel</code></em> :</span></p></td>
-<td> the new color channel
+<td>the new color channel
 </td>
 </tr>
 </tbody>
@@ -183,37 +138,28 @@ Changes the color channel displayed by the <em class="parameter"><code>scale</co
 <hr>
 <div class="refsect2" title="gimp_color_scale_set_color ()">
 <a name="gimp-color-scale-set-color"></a><h3>gimp_color_scale_set_color ()</h3>
-<pre class="programlisting">void                gimp_color_scale_set_color          (<a class="link" href="GimpColorScale.html" title="GimpColorScale">GimpColorScale</a> *scale,
-                                                         const <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
->GimpRGB</a> *rgb,
-                                                         const <a
-href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
->GimpHSV</a> *hsv);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_color_scale_set_color          (<em class="parameter"><code><a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> *scale</code></em>,
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a> *rgb</code></em>,
+                                                         <em class="parameter"><code>const <a href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"><span class="type">GimpHSV</span></a> *hsv</code></em>);</pre>
 <p>
-Changes the color value of the <em class="parameter"><code>scale</code></em>.</p>
-<p>
+Changes the color value of the <em class="parameter"><code>scale</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scale</code></em> :</span></p></td>
-<td> a <a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> widget
+<td>a <a class="link" href="GimpColorScale.html" title="GimpColorScale"><span class="type">GimpColorScale</span></a> widget
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td> the new color as <a
-href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
-><span class="type">GimpRGB</span></a>
+<td>the new color as <a href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"><span class="type">GimpRGB</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>hsv</code></em> :</span></p></td>
-<td> the new color as <a
-href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
-><span class="type">GimpHSV</span></a>
+<td>the new color as <a href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"><span class="type">GimpHSV</span></a>
 </td>
 </tr>
 </tbody>
@@ -223,6 +169,6 @@ href="../libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV"
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

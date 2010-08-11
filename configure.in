@@ -8,11 +8,11 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [6])
-m4_define([gimp_micro_version], [8])
+m4_define([gimp_micro_version], [10])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
-m4_define([gimp_interface_age], [8])
+m4_define([gimp_interface_age], [10])
 m4_define([gimp_binary_age],
           [m4_eval(100 * gimp_minor_version + gimp_micro_version)])
 
@@ -1099,7 +1099,7 @@ if test -z "$Z_LIBS"; then
 fi
 
 if test "x$have_zlib" = xyes; then
-  MIME_TYPES="$MIME_TYPES;image/x-psd"
+  MIME_TYPES="$MIME_TYPES;image/x-psp"
 fi
 
 AC_SUBST(FILE_PSP)
@@ -1278,7 +1278,7 @@ if test "x$with_print" != xno; then
   enable_print="yes"
 fi
 
-AM_CONDITIONAL(BUILD_PRINT, test "x$enable_print" == xyes)
+AM_CONDITIONAL(BUILD_PRINT, test "x$enable_print" = xyes)
 
 
 ######################

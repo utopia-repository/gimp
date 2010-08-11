@@ -8,14 +8,8 @@
 <link rel="up" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="prev" href="libgimpmath.html" title="Part I. GIMP Math Library">
 <link rel="next" href="libgimpmath-GimpMatrix.html" title="GimpMatrix">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpmath.html" title="Part I. GIMP Math Library">
-<link rel="index" href="libgimpmath-index.html" title="Index">
-<link rel="index" href="libgimpmath-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpmath-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpmath-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpmath-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpmath-GimpMath.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimpmath-GimpMath.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimpmath-GimpMath.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpMath">
@@ -43,12 +37,11 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpmath-GimpMath.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-#define             <a class="link" href="libgimpmath-GimpMath.html#RINT--CAPS" title="RINT()">RINT</a>                                (x)
-#define             <a class="link" href="libgimpmath-GimpMath.html#ROUND--CAPS" title="ROUND()">ROUND</a>                               (x)
-#define             <a class="link" href="libgimpmath-GimpMath.html#SQR--CAPS" title="SQR()">SQR</a>                                 (x)
-#define             <a class="link" href="libgimpmath-GimpMath.html#MAX255--CAPS" title="MAX255()">MAX255</a>                              (a)
-#define             <a class="link" href="libgimpmath-GimpMath.html#CLAMP0255--CAPS" title="CLAMP0255()">CLAMP0255</a>                           (a)
+<pre class="synopsis">#define             <a class="link" href="libgimpmath-GimpMath.html#RINT:CAPS" title="RINT()">RINT</a>                                (x)
+#define             <a class="link" href="libgimpmath-GimpMath.html#ROUND:CAPS" title="ROUND()">ROUND</a>                               (x)
+#define             <a class="link" href="libgimpmath-GimpMath.html#SQR:CAPS" title="SQR()">SQR</a>                                 (x)
+#define             <a class="link" href="libgimpmath-GimpMath.html#MAX255:CAPS" title="MAX255()">MAX255</a>                              (a)
+#define             <a class="link" href="libgimpmath-GimpMath.html#CLAMP0255:CAPS" title="CLAMP0255()">CLAMP0255</a>                           (a)
 #define             <a class="link" href="libgimpmath-GimpMath.html#gimp-deg-to-rad" title="gimp_deg_to_rad()">gimp_deg_to_rad</a>                     (angle)
 #define             <a class="link" href="libgimpmath-GimpMath.html#gimp-rad-to-deg" title="gimp_rad_to_deg()">gimp_rad_to_deg</a>                     (angle)
 </pre>
@@ -63,7 +56,7 @@ rather than the ones from math.h for enhanced portability.
 <div class="refsect1" title="Details">
 <a name="libgimpmath-GimpMath.details"></a><h2>Details</h2>
 <div class="refsect2" title="RINT()">
-<a name="RINT--CAPS"></a><h3>RINT()</h3>
+<a name="RINT:CAPS"></a><h3>RINT()</h3>
 <pre class="programlisting">#define             RINT(x)</pre>
 <p>
 This macro rounds its argument <em class="parameter"><code>x</code></em> to an integer value in floating point
@@ -80,7 +73,7 @@ format.
 </div>
 <hr>
 <div class="refsect2" title="ROUND()">
-<a name="ROUND--CAPS"></a><h3>ROUND()</h3>
+<a name="ROUND:CAPS"></a><h3>ROUND()</h3>
 <pre class="programlisting">#define ROUND(x) ((int) ((x) + 0.5))
 </pre>
 <p>
@@ -97,7 +90,7 @@ This macro rounds its argument <em class="parameter"><code>x</code></em> to the 
 </div>
 <hr>
 <div class="refsect2" title="SQR()">
-<a name="SQR--CAPS"></a><h3>SQR()</h3>
+<a name="SQR:CAPS"></a><h3>SQR()</h3>
 <pre class="programlisting">#define SQR(x) ((x) * (x))
 </pre>
 <p>
@@ -114,7 +107,7 @@ This macro squares its argument <em class="parameter"><code>x</code></em>.
 </div>
 <hr>
 <div class="refsect2" title="MAX255()">
-<a name="MAX255--CAPS"></a><h3>MAX255()</h3>
+<a name="MAX255:CAPS"></a><h3>MAX255()</h3>
 <pre class="programlisting">#define MAX255(a)  ((a) | (((a) &amp; 256) - (((a) &amp; 256) &gt;&gt; 8)))
 </pre>
 <p>
@@ -131,7 +124,7 @@ This macro limits it argument <em class="parameter"><code>a</code></em>, an (0-5
 </div>
 <hr>
 <div class="refsect2" title="CLAMP0255()">
-<a name="CLAMP0255--CAPS"></a><h3>CLAMP0255()</h3>
+<a name="CLAMP0255:CAPS"></a><h3>CLAMP0255()</h3>
 <pre class="programlisting">#define CLAMP0255(a)  CLAMP(a,0,255)
 </pre>
 <p>
@@ -185,6 +178,6 @@ This macro converts its argument <em class="parameter"><code>angle</code></em> f
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

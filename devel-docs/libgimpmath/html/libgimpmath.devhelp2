@@ -15,11 +15,11 @@
     <sub name="Index of deprecated symbols" link="libgimpmath-index-deprecated.html"/>
   </chapters>
   <functions>
-    <keyword type="macro" name="RINT()" link="libgimpmath-GimpMath.html#RINT--CAPS"/>
-    <keyword type="macro" name="ROUND()" link="libgimpmath-GimpMath.html#ROUND--CAPS"/>
-    <keyword type="macro" name="SQR()" link="libgimpmath-GimpMath.html#SQR--CAPS"/>
-    <keyword type="macro" name="MAX255()" link="libgimpmath-GimpMath.html#MAX255--CAPS"/>
-    <keyword type="macro" name="CLAMP0255()" link="libgimpmath-GimpMath.html#CLAMP0255--CAPS"/>
+    <keyword type="macro" name="RINT()" link="libgimpmath-GimpMath.html#RINT:CAPS"/>
+    <keyword type="macro" name="ROUND()" link="libgimpmath-GimpMath.html#ROUND:CAPS"/>
+    <keyword type="macro" name="SQR()" link="libgimpmath-GimpMath.html#SQR:CAPS"/>
+    <keyword type="macro" name="MAX255()" link="libgimpmath-GimpMath.html#MAX255:CAPS"/>
+    <keyword type="macro" name="CLAMP0255()" link="libgimpmath-GimpMath.html#CLAMP0255:CAPS"/>
     <keyword type="macro" name="gimp_deg_to_rad()" link="libgimpmath-GimpMath.html#gimp-deg-to-rad"/>
     <keyword type="macro" name="gimp_rad_to_deg()" link="libgimpmath-GimpMath.html#gimp-rad-to-deg"/>
     <keyword type="struct" name="GimpMatrix2" link="libgimpmath-GimpMatrix.html#GimpMatrix2"/>
@@ -43,11 +43,11 @@
     <keyword type="function" name="gimp_matrix3_is_affine ()" link="libgimpmath-GimpMatrix.html#gimp-matrix3-is-affine" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_matrix3_is_simple ()" link="libgimpmath-GimpMatrix.html#gimp-matrix3-is-simple"/>
     <keyword type="function" name="gimp_matrix4_to_deg ()" link="libgimpmath-GimpMatrix.html#gimp-matrix4-to-deg"/>
-    <keyword type="macro" name="GIMP_TYPE_MATRIX2" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX2--CAPS"/>
-    <keyword type="macro" name="GIMP_TYPE_PARAM_MATRIX2" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX2--CAPS"/>
-    <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MATRIX2()" link="libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX2--CAPS"/>
+    <keyword type="macro" name="GIMP_TYPE_MATRIX2" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-MATRIX2:CAPS"/>
+    <keyword type="macro" name="GIMP_TYPE_PARAM_MATRIX2" link="libgimpmath-GimpMatrix.html#GIMP-TYPE-PARAM-MATRIX2:CAPS"/>
+    <keyword type="macro" name="GIMP_IS_PARAM_SPEC_MATRIX2()" link="libgimpmath-GimpMatrix.html#GIMP-IS-PARAM-SPEC-MATRIX2:CAPS"/>
     <keyword type="function" name="gimp_param_spec_matrix2 ()" link="libgimpmath-GimpMatrix.html#gimp-param-spec-matrix2" since="GIMP 2.4"/>
-    <keyword type="macro" name="GIMP_VALUE_HOLDS_MATRIX2()" link="libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX2--CAPS"/>
+    <keyword type="macro" name="GIMP_VALUE_HOLDS_MATRIX2()" link="libgimpmath-GimpMatrix.html#GIMP-VALUE-HOLDS-MATRIX2:CAPS"/>
     <keyword type="struct" name="GimpVector2" link="libgimpmath-GimpVector.html#GimpVector2"/>
     <keyword type="struct" name="GimpVector3" link="libgimpmath-GimpVector.html#GimpVector3"/>
     <keyword type="struct" name="GimpVector4" link="libgimpmath-GimpVector.html#GimpVector4"/>

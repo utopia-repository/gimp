@@ -58,7 +58,7 @@ _wrap_gimp_thumbnail_set_uri(PyGObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = { "uri", NULL };
     char *uri;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpThumbnail.set_uri", kwlist, &uri))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.Thumbnail.set_uri", kwlist, &uri))
         return NULL;
     
     gimp_thumbnail_set_uri(GIMP_THUMBNAIL(self->obj), uri);
@@ -75,7 +75,7 @@ _wrap_gimp_thumbnail_set_filename(PyGObject *self, PyObject *args, PyObject *kwa
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpThumbnail.set_filename", kwlist, &filename))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.Thumbnail.set_filename", kwlist, &filename))
         return NULL;
     
     ret = gimp_thumbnail_set_filename(GIMP_THUMBNAIL(self->obj), filename, &error);
@@ -94,7 +94,7 @@ _wrap_gimp_thumbnail_set_from_thumb(PyGObject *self, PyObject *args, PyObject *k
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpThumbnail.set_from_thumb", kwlist, &filename))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.Thumbnail.set_from_thumb", kwlist, &filename))
         return NULL;
     
     ret = gimp_thumbnail_set_from_thumb(GIMP_THUMBNAIL(self->obj), filename, &error);
@@ -124,7 +124,7 @@ _wrap_gimp_thumbnail_peek_thumb(PyGObject *self, PyObject *args, PyObject *kwarg
     gint ret;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpThumbnail.peek_thumb", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.Thumbnail.peek_thumb", kwlist, &py_size))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
@@ -142,7 +142,7 @@ _wrap_gimp_thumbnail_check_thumb(PyGObject *self, PyObject *args, PyObject *kwar
     gint ret;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpThumbnail.check_thumb", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.Thumbnail.check_thumb", kwlist, &py_size))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
@@ -161,7 +161,7 @@ _wrap_gimp_thumbnail_load_thumb(PyGObject *self, PyObject *args, PyObject *kwarg
     GError *error = NULL;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpThumbnail.load_thumb", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.Thumbnail.load_thumb", kwlist, &py_size))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;
@@ -183,7 +183,7 @@ _wrap_gimp_thumbnail_save_thumb(PyGObject *self, PyObject *args, PyObject *kwarg
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!s:GimpThumbnail.save_thumb", kwlist, &PyGdkPixbuf_Type, &pixbuf, &software))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!s:Gimp.Thumbnail.save_thumb", kwlist, &PyGdkPixbuf_Type, &pixbuf, &software))
         return NULL;
     
     ret = gimp_thumbnail_save_thumb(GIMP_THUMBNAIL(self->obj), GDK_PIXBUF(pixbuf->obj), software, &error);
@@ -203,7 +203,7 @@ _wrap_gimp_thumbnail_save_thumb_local(PyGObject *self, PyObject *args, PyObject 
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!s:GimpThumbnail.save_thumb_local", kwlist, &PyGdkPixbuf_Type, &pixbuf, &software))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!s:Gimp.Thumbnail.save_thumb_local", kwlist, &PyGdkPixbuf_Type, &pixbuf, &software))
         return NULL;
     
     ret = gimp_thumbnail_save_thumb_local(GIMP_THUMBNAIL(self->obj), GDK_PIXBUF(pixbuf->obj), software, &error);
@@ -222,7 +222,7 @@ _wrap_gimp_thumbnail_save_failure(PyGObject *self, PyObject *args, PyObject *kwa
     int ret;
     GError *error = NULL;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:GimpThumbnail.save_failure", kwlist, &software))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"s:Gimp.Thumbnail.save_failure", kwlist, &software))
         return NULL;
     
     ret = gimp_thumbnail_save_failure(GIMP_THUMBNAIL(self->obj), software, &error);
@@ -250,7 +250,7 @@ _wrap_gimp_thumbnail_delete_others(PyGObject *self, PyObject *args, PyObject *kw
     PyObject *py_size = NULL;
     GimpThumbSize size;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:GimpThumbnail.delete_others", kwlist, &py_size))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:Gimp.Thumbnail.delete_others", kwlist, &py_size))
         return NULL;
     if (pyg_enum_get_value(GIMP_TYPE_THUMB_SIZE, py_size, (gpointer)&size))
         return NULL;

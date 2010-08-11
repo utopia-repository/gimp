@@ -8,20 +8,8 @@
 <link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="prev" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
 <link rel="next" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
-<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
-<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
-<link rel="chapter" href="libgimp-data.html" title="Data Objects">
-<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
-<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
-<link rel="index" href="libgimp-index.html" title="Index">
-<link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -34,12 +22,12 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#GimpSelectButton.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#GimpSelectButton.description" class="shortcut">Description</a>
-                 | 
-                <a href="#GimpSelectButton.object-hierarchy" class="shortcut">Object Hierarchy</a>
-                 | 
-                <a href="#GimpSelectButton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
+                   | 
+                  <a href="#GimpSelectButton.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#GimpSelectButton.object-hierarchy" class="shortcut">Object Hierarchy</a>
+                   | 
+                  <a href="#GimpSelectButton.implemented-interfaces" class="shortcut">Implemented Interfaces</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpSelectButton">
@@ -53,35 +41,20 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="GimpSelectButton.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-                    <a class="link" href="GimpSelectButton.html#GimpSelectButton-struct" title="GimpSelectButton">GimpSelectButton</a>;
-void                <a class="link" href="GimpSelectButton.html#gimp-select-button-close-popup" title="gimp_select_button_close_popup ()">gimp_select_button_close_popup</a>      (<a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a> *button);
+<pre class="synopsis">                    <a class="link" href="GimpSelectButton.html#GimpSelectButton-struct" title="GimpSelectButton">GimpSelectButton</a>;
+<span class="returnvalue">void</span>                <a class="link" href="GimpSelectButton.html#gimp-select-button-close-popup" title="gimp_select_button_close_popup ()">gimp_select_button_close_popup</a>      (<em class="parameter"><code><a class="link" href="GimpSelectButton.html" title="GimpSelectButton"><span class="type">GimpSelectButton</span></a> *button</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Object Hierarchy">
 <a name="GimpSelectButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
-  <a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-   +----<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-         +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkBox.html"
->GtkBox</a>
-                                 +----<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkHBox.html"
->GtkHBox</a>
+  <a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject">GObject</a>
+   +----<a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+         +----<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html">GtkObject</a>
+               +----<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html">GtkWidget</a>
+                     +----<a href="/usr/share/gtk-doc/html/gtk/GtkContainer.html">GtkContainer</a>
+                           +----<a href="/usr/share/gtk-doc/html/gtk/GtkBox.html">GtkBox</a>
+                                 +----<a href="/usr/share/gtk-doc/html/gtk/GtkHBox.html">GtkHBox</a>
                                        +----GimpSelectButton
                                              +----<a class="link" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a>
                                              +----<a class="link" href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a>
@@ -94,11 +67,7 @@ href="http://library.gnome.org/devel/gtk/unstable/GtkHBox.html"
 <a name="GimpSelectButton.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpSelectButton implements
- <a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-gtkbuildable.html#GtkBuildable"
->GtkBuildable</a>,  AtkImplementorIface and  <a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrientable"
->GtkOrientable</a>.</p>
+ AtkImplementorIface,  <a href="/usr/share/gtk-doc/html/gtk/gtk-gtkbuildable.html#GtkBuildable">GtkBuildable</a> and  <a href="/usr/share/gtk-doc/html/gtk/gtk-Orientable.html#GtkOrientable">GtkOrientable</a>.</p>
 </div>
 <div class="refsect1" title="Description">
 <a name="GimpSelectButton.description"></a><h2>Description</h2>
@@ -116,16 +85,15 @@ href="http://library.gnome.org/devel/gtk/unstable/gtk-Orientable.html#GtkOrienta
 <hr>
 <div class="refsect2" title="gimp_select_button_close_popup ()">
 <a name="gimp-select-button-close-popup"></a><h3>gimp_select_button_close_popup ()</h3>
-<pre class="programlisting">void                gimp_select_button_close_popup      (<a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a> *button);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                gimp_select_button_close_popup      (<em class="parameter"><code><a class="link" href="GimpSelectButton.html" title="GimpSelectButton"><span class="type">GimpSelectButton</span></a> *button</code></em>);</pre>
 <p>
-Closes the popup window associated with <em class="parameter"><code>button</code></em>.</p>
-<p>
+Closes the popup window associated with <em class="parameter"><code>button</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>button</code></em> :</span></p></td>
-<td> A <a class="link" href="GimpSelectButton.html" title="GimpSelectButton"><span class="type">GimpSelectButton</span></a>
+<td>A <a class="link" href="GimpSelectButton.html" title="GimpSelectButton"><span class="type">GimpSelectButton</span></a>
 </td>
 </tr></tbody>
 </table></div>
@@ -135,6 +103,6 @@ Closes the popup window associated with <em class="parameter"><code>button</code
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

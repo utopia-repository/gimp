@@ -8,14 +8,8 @@
 <link rel="up" href="libgimpbase.html" title="Part I. GIMP Base Library">
 <link rel="prev" href="libgimpbase-gimpparasiteio.html" title="gimpparasiteio">
 <link rel="next" href="libgimpbase-gimpunit.html" title="gimpunit">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpbase.html" title="Part I. GIMP Base Library">
-<link rel="index" href="libgimpbase-index.html" title="Index">
-<link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpbase-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpbase-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -28,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpbase-gimpsignal.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimpbase-gimpsignal.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimpbase-gimpsignal.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="gimpsignal">
@@ -43,17 +37,10 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpbase-gimpsignal.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-void                (<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">*GimpSignalHandlerFunc</a>)            (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> signum);
-<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a>  <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private" title="gimp_signal_private ()">gimp_signal_private</a>              (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> signum,
-                                                         <a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> handler,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> flags);
+<pre class="synopsis"><span class="returnvalue">void</span>                (<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">*GimpSignalHandlerFunc</a>)            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> signum</code></em>);
+<a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="returnvalue">GimpSignalHandlerFunc</span></a>  <a class="link" href="libgimpbase-gimpsignal.html#gimp-signal-private" title="gimp_signal_private ()">gimp_signal_private</a>              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> signum</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="type">GimpSignalHandlerFunc</span></a> handler</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> flags</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -66,9 +53,7 @@ Portable signal handling.
 <a name="libgimpbase-gimpsignal.details"></a><h2>Details</h2>
 <div class="refsect2" title="GimpSignalHandlerFunc ()">
 <a name="GimpSignalHandlerFunc"></a><h3>GimpSignalHandlerFunc ()</h3>
-<pre class="programlisting">void                (*GimpSignalHandlerFunc)            (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> signum);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*GimpSignalHandlerFunc)            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> signum</code></em>);</pre>
 <p>
 A prototype for signal handler functions. Note that each function which
 takes or returns a variable of this type also accepts or may return
@@ -88,13 +73,9 @@ special values defined by your system's signal.h header file (like
 <hr>
 <div class="refsect2" title="gimp_signal_private ()">
 <a name="gimp-signal-private"></a><h3>gimp_signal_private ()</h3>
-<pre class="programlisting"><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a>  gimp_signal_private              (<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> signum,
-                                                         <a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()">GimpSignalHandlerFunc</a> handler,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> flags);</pre>
+<pre class="programlisting"><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="returnvalue">GimpSignalHandlerFunc</span></a>  gimp_signal_private              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> signum</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="libgimpbase-gimpsignal.html#GimpSignalHandlerFunc" title="GimpSignalHandlerFunc ()"><span class="type">GimpSignalHandlerFunc</span></a> handler</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> flags</code></em>);</pre>
 <p>
 This function furnishes a workalike for signal(2) but
 which internally invokes sigaction(2) after certain
@@ -108,27 +89,26 @@ Cause <em class="parameter"><code>handler</code></em> to be run when <em class="
 use sigaction(2) rather than signal(2) so that we can control the
 signal handler's environment completely via <em class="parameter"><code>flags</code></em>: some signal(2)
 implementations differ in their sematics, so we need to nail down
-exactly what we want. [austin 06.04.2000]</p>
-<p>
+exactly what we want. [austin 06.04.2000]
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>signum</code></em> :</span></p></td>
-<td> Selects signal to be handled see man 5 signal (or man 7 signal)
+<td>Selects signal to be handled see man 5 signal (or man 7 signal)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>handler</code></em> :</span></p></td>
-<td> Handler that maps to signum. Invoked by O/S.
+<td>Handler that maps to signum. Invoked by O/S.
           Handler gets signal that caused invocation. Corresponds
           to the <em class="parameter"><code>sa_handler</code></em> field of the <em class="parameter"><code>sigaction</code></em> struct.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
-<td> Preferences. OR'ed SA_&lt;xxx&gt;. See man sigaction. Corresponds
+<td>Preferences. OR'ed SA_&lt;xxx&gt;. See man sigaction. Corresponds
         to the <em class="parameter"><code>sa_flags</code></em> field of the <em class="parameter"><code>sigaction</code></em> struct.
 </td>
 </tr>
@@ -151,6 +131,6 @@ signal(2), signal(5 or 7), sigaction(2).
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

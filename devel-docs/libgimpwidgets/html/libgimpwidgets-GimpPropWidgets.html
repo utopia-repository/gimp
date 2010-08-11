@@ -8,22 +8,8 @@
 <link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpEnumWidgets.html" title="GimpEnumWidgets">
 <link rel="next" href="libgimpwidgets-GimpWidgets.html" title="GimpWidgets">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.15 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
-<link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
-<link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
-<link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
-<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
-<link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
-<link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
-<link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
-<link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
-<link rel="index" href="libgimpwidgets-index.html" title="Index">
-<link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
-<link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
-<link rel="index" href="libgimpwidgets-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
-<link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
@@ -36,8 +22,8 @@
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#libgimpwidgets-GimpPropWidgets.synopsis" class="shortcut">Top</a>
-                 | 
-                <a href="#libgimpwidgets-GimpPropWidgets.description" class="shortcut">Description</a>
+                   | 
+                  <a href="#libgimpwidgets-GimpPropWidgets.description" class="shortcut">Description</a>
 </td></tr>
 </table>
 <div class="refentry" title="GimpPropWidgets">
@@ -51,454 +37,139 @@
 </tr></table></div>
 <div class="refsynopsisdiv" title="Synopsis">
 <a name="libgimpwidgets-GimpPropWidgets.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-combo-box-new" title="gimp_prop_boolean_combo_box_new ()">gimp_prop_boolean_combo_box_new</a>     (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *true_text,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *false_text);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-radio-frame-new" title="gimp_prop_boolean_radio_frame_new ()">gimp_prop_boolean_radio_frame_new</a>   (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *true_text,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *false_text);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-check-button-new" title="gimp_prop_check_button_new ()">gimp_prop_check_button_new</a>          (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-color-area-new" title="gimp_prop_color_area_new ()">gimp_prop_color_area_new</a>            (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> height,
-                                                         <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType">GimpColorAreaType</a> type);
-<a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-connect" title="gimp_prop_coordinates_connect ()">gimp_prop_coordinates_connect</a>       (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *x_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *y_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *sizeentry,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *chainbutton,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> xresolution,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> yresolution);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new" title="gimp_prop_coordinates_new ()">gimp_prop_coordinates_new</a>           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *x_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *y_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_format,
-                                                         <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> xresolution,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> yresolution,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> has_chainbutton);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new" title="gimp_prop_entry_new ()">gimp_prop_entry_new</a>                 (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max_len);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-check-button-new" title="gimp_prop_enum_check_button_new ()">gimp_prop_enum_check_button_new</a>     (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> false_value,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> true_value);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-combo-box-new" title="gimp_prop_enum_combo_box_new ()">gimp_prop_enum_combo_box_new</a>        (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> maximum);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-label-new" title="gimp_prop_enum_label_new ()">gimp_prop_enum_label_new</a>            (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-box-new" title="gimp_prop_enum_radio_box_new ()">gimp_prop_enum_radio_box_new</a>        (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> maximum);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-frame-new" title="gimp_prop_enum_radio_frame_new ()">gimp_prop_enum_radio_frame_new</a>      (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> maximum);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-stock-box-new" title="gimp_prop_enum_stock_box_new ()">gimp_prop_enum_stock_box_new</a>        (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *stock_prefix,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> maximum);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-expander-new" title="gimp_prop_expander_new ()">gimp_prop_expander_new</a>              (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new" title="gimp_prop_file_chooser_button_new ()">gimp_prop_file_chooser_button_new</a>   (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooser.html#GtkFileChooserAction"
->GtkFileChooserAction</a> action);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new-with-dialog" title="gimp_prop_file_chooser_button_new_with_dialog ()">gimp_prop_file_chooser_button_new_with_dialog</a>
-                                                        (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *dialog);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-hscale-new" title="gimp_prop_hscale_new ()">gimp_prop_hscale_new</a>                (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> step_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> page_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-int-combo-box-new" title="gimp_prop_int_combo_box_new ()">gimp_prop_int_combo_box_new</a>         (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a class="link" href="GimpIntStore.html" title="GimpIntStore">GimpIntStore</a> *store);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-label-new" title="gimp_prop_label_new ()">gimp_prop_label_new</a>                 (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-memsize-entry-new" title="gimp_prop_memsize_entry_new ()">gimp_prop_memsize_entry_new</a>         (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
->GtkObject</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-opacity-entry-new" title="gimp_prop_opacity_entry_new ()">gimp_prop_opacity_entry_new</a>         (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
->GtkTable</a> *table,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> column,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> row,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-path-editor-new" title="gimp_prop_path_editor_new ()">gimp_prop_path_editor_new</a>           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *path_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *writable_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *filesel_title);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
->GtkObject</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-scale-entry-new" title="gimp_prop_scale_entry_new ()">gimp_prop_scale_entry_new</a>           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
->GtkTable</a> *table,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> column,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> row,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> step_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> page_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> limit_scale,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lower_limit,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> upper_limit);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-size-entry-new" title="gimp_prop_size_entry_new ()">gimp_prop_size_entry_new</a>            (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> property_is_pixel,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_format,
-                                                         <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> resolution);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-spin-button-new" title="gimp_prop_spin_button_new ()">gimp_prop_spin_button_new</a>           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> step_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> page_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-stock-image-new" title="gimp_prop_stock_image_new ()">gimp_prop_stock_image_new</a>           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-Themeable-Stock-Images.html#GtkIconSize"
->GtkIconSize</a> icon_size);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-string-combo-box-new" title="gimp_prop_string_combo_box_new ()">gimp_prop_string_combo_box_new</a>      (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTreeModel.html"
->GtkTreeModel</a> *model,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> id_column,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> label_column);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTextBuffer.html"
->GtkTextBuffer</a> *     <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new" title="gimp_prop_text_buffer_new ()">gimp_prop_text_buffer_new</a>           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max_len);
-<a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-unit-menu-new" title="gimp_prop_unit_menu_new ()">gimp_prop_unit_menu_new</a>             (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_format);
+<pre class="synopsis"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-combo-box-new" title="gimp_prop_boolean_combo_box_new ()">gimp_prop_boolean_combo_box_new</a>     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *true_text</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *false_text</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-boolean-radio-frame-new" title="gimp_prop_boolean_radio_frame_new ()">gimp_prop_boolean_radio_frame_new</a>   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *true_text</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *false_text</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-check-button-new" title="gimp_prop_check_button_new ()">gimp_prop_check_button_new</a>          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-color-area-new" title="gimp_prop_color_area_new ()">gimp_prop_color_area_new</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>);
+<a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-connect" title="gimp_prop_coordinates_connect ()">gimp_prop_coordinates_connect</a>       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *x_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *y_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *sizeentry</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *chainbutton</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> xresolution</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yresolution</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new" title="gimp_prop_coordinates_new ()">gimp_prop_coordinates_new</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *x_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *y_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_format</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> update_policy</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> xresolution</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yresolution</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> has_chainbutton</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new" title="gimp_prop_entry_new ()">gimp_prop_entry_new</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_len</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-check-button-new" title="gimp_prop_enum_check_button_new ()">gimp_prop_enum_check_button_new</a>     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> false_value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> true_value</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-combo-box-new" title="gimp_prop_enum_combo_box_new ()">gimp_prop_enum_combo_box_new</a>        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-label-new" title="gimp_prop_enum_label_new ()">gimp_prop_enum_label_new</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-box-new" title="gimp_prop_enum_radio_box_new ()">gimp_prop_enum_radio_box_new</a>        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-frame-new" title="gimp_prop_enum_radio_frame_new ()">gimp_prop_enum_radio_frame_new</a>      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-stock-box-new" title="gimp_prop_enum_stock_box_new ()">gimp_prop_enum_stock_box_new</a>        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *stock_prefix</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-expander-new" title="gimp_prop_expander_new ()">gimp_prop_expander_new</a>              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new" title="gimp_prop_file_chooser_button_new ()">gimp_prop_file_chooser_button_new</a>   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkFileChooser.html#GtkFileChooserAction"><span class="type">GtkFileChooserAction</span></a> action</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new-with-dialog" title="gimp_prop_file_chooser_button_new_with_dialog ()">gimp_prop_file_chooser_button_new_with_dialog</a>
+                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *dialog</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-hscale-new" title="gimp_prop_hscale_new ()">gimp_prop_hscale_new</a>                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> step_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> page_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-int-combo-box-new" title="gimp_prop_int_combo_box_new ()">gimp_prop_int_combo_box_new</a>         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> *store</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-label-new" title="gimp_prop_label_new ()">gimp_prop_label_new</a>                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-memsize-entry-new" title="gimp_prop_memsize_entry_new ()">gimp_prop_memsize_entry_new</a>         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html"><span class="returnvalue">GtkObject</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-opacity-entry-new" title="gimp_prop_opacity_entry_new ()">gimp_prop_opacity_entry_new</a>         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkTable.html"><span class="type">GtkTable</span></a> *table</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> row</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-path-editor-new" title="gimp_prop_path_editor_new ()">gimp_prop_path_editor_new</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *writable_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filesel_title</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkObject.html"><span class="returnvalue">GtkObject</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-scale-entry-new" title="gimp_prop_scale_entry_new ()">gimp_prop_scale_entry_new</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkTable.html"><span class="type">GtkTable</span></a> *table</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> row</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> step_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> page_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> limit_scale</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lower_limit</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> upper_limit</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-size-entry-new" title="gimp_prop_size_entry_new ()">gimp_prop_size_entry_new</a>            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> property_is_pixel</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_format</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> update_policy</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> resolution</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-spin-button-new" title="gimp_prop_spin_button_new ()">gimp_prop_spin_button_new</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> step_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> page_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-stock-image-new" title="gimp_prop_stock_image_new ()">gimp_prop_stock_image_new</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"><span class="type">GtkIconSize</span></a> icon_size</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-string-combo-box-new" title="gimp_prop_string_combo_box_new ()">gimp_prop_string_combo_box_new</a>      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html"><span class="type">GtkTreeModel</span></a> *model</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> id_column</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> label_column</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkTextBuffer.html"><span class="returnvalue">GtkTextBuffer</span></a> *     <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new" title="gimp_prop_text_buffer_new ()">gimp_prop_text_buffer_new</a>           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_len</code></em>);
+<a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-unit-menu-new" title="gimp_prop_unit_menu_new ()">gimp_prop_unit_menu_new</a>             (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_format</code></em>);
 </pre>
 </div>
 <div class="refsect1" title="Description">
@@ -510,61 +181,42 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <a name="libgimpwidgets-GimpPropWidgets.details"></a><h2>Details</h2>
 <div class="refsect2" title="gimp_prop_boolean_combo_box_new ()">
 <a name="gimp-prop-boolean-combo-box-new"></a><h3>gimp_prop_boolean_combo_box_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_boolean_combo_box_new     (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *true_text,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *false_text);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_boolean_combo_box_new     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *true_text</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *false_text</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkComboBox.html"
-><span class="type">GtkComboBox</span></a> widget to display and set the specified
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"><span class="type">GtkComboBox</span></a> widget to display and set the specified
 boolean property.  The combo box will have two entries, one
 displaying the <em class="parameter"><code>true_text</code></em> label, the other displaying the
-<em class="parameter"><code>false_text</code></em> label.</p>
-<p>
+<em class="parameter"><code>false_text</code></em> label.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of boolean property controlled by combo box.
+<td>Name of boolean property controlled by combo box.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>true_text</code></em> :</span></p></td>
-<td>     Label used for entry corresponding to <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a> value.
+<td>Label used for entry corresponding to <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>false_text</code></em> :</span></p></td>
-<td>    Label used for entry corresponding to <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
-><code class="literal">FALSE</code></a> value.
+<td>Label used for entry corresponding to <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> value.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The newly created <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkComboBox.html"
-><span class="type">GtkComboBox</span></a> widget.
+<td> The newly created <a href="/usr/share/gtk-doc/html/gtk/GtkComboBox.html"><span class="type">GtkComboBox</span></a> widget.
 
 Since GIMP 2.4
 </td>
@@ -575,58 +227,41 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_boolean_radio_frame_new ()">
 <a name="gimp-prop-boolean-radio-frame-new"></a><h3>gimp_prop_boolean_radio_frame_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_boolean_radio_frame_new   (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *true_text,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *false_text);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_boolean_radio_frame_new   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *true_text</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *false_text</code></em>);</pre>
 <p>
 Creates a pair of radio buttons which function to set and display
-the specified boolean property.</p>
-<p>
+the specified boolean property.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of boolean property controlled by the radio buttons.
+<td>Name of boolean property controlled by the radio buttons.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>         Label for the frame.
+<td>Label for the frame.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>true_text</code></em> :</span></p></td>
-<td>     Label for the button corresponding to <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a>.
+<td>Label for the button corresponding to <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>false_text</code></em> :</span></p></td>
-<td>    Label for the button corresponding to <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
-><code class="literal">FALSE</code></a>.
+<td>Label for the button corresponding to <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
 </td>
 </tr>
 <tr>
@@ -642,47 +277,34 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_check_button_new ()">
 <a name="gimp-prop-check-button-new"></a><h3>gimp_prop_check_button_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_check_button_new          (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_check_button_new          (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkCheckButton.html"
-><span class="type">GtkCheckButton</span></a> that displays and sets the specified
-boolean property.</p>
-<p>
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkCheckButton.html"><span class="type">GtkCheckButton</span></a> that displays and sets the specified
+boolean property.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of boolean property controlled by checkbutton.
+<td>Name of boolean property controlled by checkbutton.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label</code></em> :</span></p></td>
-<td>         Label to give checkbutton (including mnemonic).
+<td>Label to give checkbutton (including mnemonic).
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The newly created <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkCheckButton.html"
-><span class="type">GtkCheckButton</span></a> widget.
+<td> The newly created <a href="/usr/share/gtk-doc/html/gtk/GtkCheckButton.html"><span class="type">GtkCheckButton</span></a> widget.
 
 Since GIMP 2.4
 </td>
@@ -693,52 +315,41 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_color_area_new ()">
 <a name="gimp-prop-color-area-new"></a><h3>gimp_prop_color_area_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_color_area_new            (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> height,
-                                                         <a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType">GimpColorAreaType</a> type);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_color_area_new            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> width</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> height</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpColorArea.html#GimpColorAreaType" title="enum GimpColorAreaType"><span class="type">GimpColorAreaType</span></a> type</code></em>);</pre>
 <p>
 Creates a <a class="link" href="GimpColorArea.html" title="GimpColorArea"><span class="type">GimpColorArea</span></a> to set and display the value of an RGB
-property.</p>
-<p>
+property.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of RGB property.
+<td>Name of RGB property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>         Width of color area.
+<td>Width of color area.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>        Height of color area.
+<td>Height of color area.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
-<td>          How transparency is represented.
+<td>How transparency is represented.
 </td>
 </tr>
 <tr>
@@ -754,32 +365,14 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_coordinates_connect ()">
 <a name="gimp-prop-coordinates-connect"></a><h3>gimp_prop_coordinates_connect ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_prop_coordinates_connect       (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *x_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *y_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *sizeentry,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *chainbutton,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> xresolution,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> yresolution);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            gimp_prop_coordinates_connect       (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *x_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *y_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *sizeentry</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *chainbutton</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> xresolution</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yresolution</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -836,87 +429,68 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble
 <hr>
 <div class="refsect2" title="gimp_prop_coordinates_new ()">
 <a name="gimp-prop-coordinates-new"></a><h3>gimp_prop_coordinates_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_coordinates_new           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *x_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *y_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_format,
-                                                         <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> xresolution,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> yresolution,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> has_chainbutton);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_coordinates_new           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *x_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *y_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_format</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> update_policy</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> xresolution</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> yresolution</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> has_chainbutton</code></em>);</pre>
 <p>
 Creates a <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> to set and display two double or int
 properties, which will usually represent X and Y coordinates, and
-their associated unit property.</p>
-<p>
+their associated unit property.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>             Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x_property_name</code></em> :</span></p></td>
-<td>    Name of int or double property for X coordinate.
+<td>Name of int or double property for X coordinate.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>y_property_name</code></em> :</span></p></td>
-<td>    Name of int or double property for Y coordinate.
+<td>Name of int or double property for Y coordinate.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit_property_name</code></em> :</span></p></td>
-<td> Name of unit property.
+<td>Name of unit property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit_format</code></em> :</span></p></td>
-<td>        A printf-like unit-format string as is used with
+<td>A printf-like unit-format string as is used with
                      <a class="link" href="GimpUnitMenu.html#gimp-unit-menu-new" title="gimp_unit_menu_new ()"><code class="function">gimp_unit_menu_new()</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>update_policy</code></em> :</span></p></td>
-<td>      How the automatic pixel &lt;-&gt; real-world-unit
+<td>How the automatic pixel &lt;-&gt; real-world-unit
                      calculations should be done.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>xresolution</code></em> :</span></p></td>
-<td>        The resolution (in dpi) for the X coordinate.
+<td>The resolution (in dpi) for the X coordinate.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>yresolution</code></em> :</span></p></td>
-<td>        The resolution (in dpi) for the Y coordinate.
+<td>The resolution (in dpi) for the Y coordinate.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>has_chainbutton</code></em> :</span></p></td>
-<td>    Whether to add a chainbutton to the size entry.
+<td>Whether to add a chainbutton to the size entry.
 </td>
 </tr>
 <tr>
@@ -932,47 +506,34 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_entry_new ()">
 <a name="gimp-prop-entry-new"></a><h3>gimp_prop_entry_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_entry_new                 (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max_len);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_entry_new                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_len</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkEntry.html"
-><span class="type">GtkEntry</span></a> to set and display the value of the specified
-string property.</p>
-<p>
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkEntry.html"><span class="type">GtkEntry</span></a> to set and display the value of the specified
+string property.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of string property.
+<td>Name of string property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>max_len</code></em> :</span></p></td>
-<td>       Maximum allowed length of string.
+<td>Maximum allowed length of string.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>  A new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkEntry.html"
-><span class="type">GtkEntry</span></a> widget.
+<td>  A new <a href="/usr/share/gtk-doc/html/gtk/GtkEntry.html"><span class="type">GtkEntry</span></a> widget.
 
 Since GIMP 2.4
 </td>
@@ -983,65 +544,48 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_enum_check_button_new ()">
 <a name="gimp-prop-enum-check-button-new"></a><h3>gimp_prop_enum_check_button_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_enum_check_button_new     (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> false_value,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> true_value);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_enum_check_button_new     (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> false_value</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> true_value</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkCheckButton.html"
-><span class="type">GtkCheckButton</span></a> that displays and sets the specified
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkCheckButton.html"><span class="type">GtkCheckButton</span></a> that displays and sets the specified
 property of type Enum.  Note that this widget only allows two values
 for the enum, one corresponding to the "checked" state and the
-other to the "unchecked" state.</p>
-<p>
+other to the "unchecked" state.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of enum property controlled by checkbutton.
+<td>Name of enum property controlled by checkbutton.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label</code></em> :</span></p></td>
-<td>         Label to give checkbutton (including mnemonic).
+<td>Label to give checkbutton (including mnemonic).
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>false_value</code></em> :</span></p></td>
-<td>   Enum value corresponding to unchecked state.
+<td>Enum value corresponding to unchecked state.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>true_value</code></em> :</span></p></td>
-<td>    Enum value corresonding to checked state.
+<td>Enum value corresonding to checked state.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The newly created <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkCheckButton.html"
-><span class="type">GtkCheckButton</span></a> widget.
+<td> The newly created <a href="/usr/share/gtk-doc/html/gtk/GtkCheckButton.html"><span class="type">GtkCheckButton</span></a> widget.
 
 Since GIMP 2.4
 </td>
@@ -1052,49 +596,38 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_enum_combo_box_new ()">
 <a name="gimp-prop-enum-combo-box-new"></a><h3>gimp_prop_enum_combo_box_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_enum_combo_box_new        (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> maximum);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_enum_combo_box_new        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);</pre>
 <p>
 Creates a <a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> widget to display and set the specified
 enum property.  The <em class="parameter"><code>mimimum_value</code></em> and <em class="parameter"><code>maximum_value</code></em> give the
 possibility of restricting the allowed range to a subset of the
 enum.  If the two values are equal (e.g., 0, 0), then the full
-range of the Enum is used.</p>
-<p>
+range of the Enum is used.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of enum property controlled by combo box.
+<td>Name of enum property controlled by combo box.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>minimum</code></em> :</span></p></td>
-<td>       Smallest allowed value of enum.
+<td>Smallest allowed value of enum.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>maximum</code></em> :</span></p></td>
-<td>       Largest allowed value of enum.
+<td>Largest allowed value of enum.
 </td>
 </tr>
 <tr>
@@ -1110,29 +643,19 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_enum_label_new ()">
 <a name="gimp-prop-enum-label-new"></a><h3>gimp_prop_enum_label_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_enum_label_new            (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name);</pre>
-<p>
-</p>
-<p>
-</p>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_enum_label_new            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>         Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td>  Name of enum property to be displayed.
+<td>Name of enum property to be displayed.
 </td>
 </tr>
 <tr>
@@ -1148,57 +671,44 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_enum_radio_box_new ()">
 <a name="gimp-prop-enum-radio-box-new"></a><h3>gimp_prop_enum_radio_box_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_enum_radio_box_new        (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> maximum);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_enum_radio_box_new        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);</pre>
 <p>
 Creates a group of radio buttons which function to set and display
 the specified enum property.  The <em class="parameter"><code>minimum</code></em> and <em class="parameter"><code>maximum</code></em> arguments
 allow only a subset of the enum to be used.  If the two arguments
 are equal (e.g., 0, 0), then the full range of the enum will be used.
 If you want to assign a label to the group of radio buttons, use
-<a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-frame-new" title="gimp_prop_enum_radio_frame_new ()"><code class="function">gimp_prop_enum_radio_frame_new()</code></a> instead of this function.</p>
-<p>
+<a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-enum-radio-frame-new" title="gimp_prop_enum_radio_frame_new ()"><code class="function">gimp_prop_enum_radio_frame_new()</code></a> instead of this function.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of enum property controlled by the radio buttons.
+<td>Name of enum property controlled by the radio buttons.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>minimum</code></em> :</span></p></td>
-<td>       Smallest value of enum to be included.
+<td>Smallest value of enum to be included.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>maximum</code></em> :</span></p></td>
-<td>       Largest value of enum to be included.
+<td>Largest value of enum to be included.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkVBox.html"
-><span class="type">GtkVBox</span></a> containing the radio buttons.
+<td> A <a href="/usr/share/gtk-doc/html/gtk/GtkVBox.html"><span class="type">GtkVBox</span></a> containing the radio buttons.
 
 Since GIMP 2.4
 </td>
@@ -1209,56 +719,43 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_enum_radio_frame_new ()">
 <a name="gimp-prop-enum-radio-frame-new"></a><h3>gimp_prop_enum_radio_frame_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_enum_radio_frame_new      (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> maximum);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_enum_radio_frame_new      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);</pre>
 <p>
 Creates a group of radio buttons which function to set and display
 the specified enum property.  The <em class="parameter"><code>minimum</code></em> and <em class="parameter"><code>maximum</code></em> arguments
 allow only a subset of the enum to be used.  If the two arguments
-are equal (e.g., 0, 0), then the full range of the enum will be used.</p>
-<p>
+are equal (e.g., 0, 0), then the full range of the enum will be used.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of enum property controlled by the radio buttons.
+<td>Name of enum property controlled by the radio buttons.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>         Label for the frame holding the buttons
+<td>Label for the frame holding the buttons
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>minimum</code></em> :</span></p></td>
-<td>       Smallest value of enum to be included.
+<td>Smallest value of enum to be included.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>maximum</code></em> :</span></p></td>
-<td>       Largest value of enum to be included.
+<td>Largest value of enum to be included.
 </td>
 </tr>
 <tr>
@@ -1274,57 +771,44 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_enum_stock_box_new ()">
 <a name="gimp-prop-enum-stock-box-new"></a><h3>gimp_prop_enum_stock_box_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_enum_stock_box_new        (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *stock_prefix,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> minimum,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> maximum);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_enum_stock_box_new        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *stock_prefix</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> minimum</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> maximum</code></em>);</pre>
 <p>
 Creates a horizontal box of radio buttons with stock icons, which
 function to set and display the value of the specified Enum
 property.  The stock_id for each icon is created by appending the
 enum_value's nick to the given <em class="parameter"><code>stock_prefix</code></em>.  See
-<a class="link" href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new" title="gimp_enum_stock_box_new ()"><code class="function">gimp_enum_stock_box_new()</code></a> for more information.</p>
-<p>
+<a class="link" href="libgimpwidgets-GimpEnumWidgets.html#gimp-enum-stock-box-new" title="gimp_enum_stock_box_new ()"><code class="function">gimp_enum_stock_box_new()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of enum property controlled by the radio buttons.
+<td>Name of enum property controlled by the radio buttons.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>stock_prefix</code></em> :</span></p></td>
-<td>  The prefix of the group of stock ids to use.
+<td>The prefix of the group of stock ids to use.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>minimum</code></em> :</span></p></td>
-<td>       Smallest value of enum to be included.
+<td>Smallest value of enum to be included.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>maximum</code></em> :</span></p></td>
-<td>       Largest value of enum to be included.
+<td>Largest value of enum to be included.
 </td>
 </tr>
 <tr>
@@ -1340,50 +824,35 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_expander_new ()">
 <a name="gimp-prop-expander-new"></a><h3>gimp_prop_expander_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_expander_new              (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_expander_new              (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkExpander.html"
-><span class="type">GtkExpander</span></a> controlled by the specified boolean property.
-A value of <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a> for the property corresponds to the expanded state
-for the widget.</p>
-<p>
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkExpander.html"><span class="type">GtkExpander</span></a> controlled by the specified boolean property.
+A value of <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> for the property corresponds to the expanded state
+for the widget.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of boolean property.
+<td>Name of boolean property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label</code></em> :</span></p></td>
-<td>         Label for expander.
+<td>Label for expander.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>  A new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkExpander.html"
-><span class="type">GtkExpander</span></a> widget.
+<td>  A new <a href="/usr/share/gtk-doc/html/gtk/GtkExpander.html"><span class="type">GtkExpander</span></a> widget.
 
 Since GIMP 2.4
 </td>
@@ -1394,64 +863,43 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_file_chooser_button_new ()">
 <a name="gimp-prop-file-chooser-button-new"></a><h3>gimp_prop_file_chooser_button_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_file_chooser_button_new   (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *title,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooser.html#GtkFileChooserAction"
->GtkFileChooserAction</a> action);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_file_chooser_button_new   (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkFileChooser.html#GtkFileChooserAction"><span class="type">GtkFileChooserAction</span></a> action</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooserButton.html"
-><span class="type">GtkFileChooserButton</span></a> to edit the specified path property.
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooserButton.html"><span class="type">GtkFileChooserButton</span></a> to edit the specified path property.
 </p>
 <p>
-Note that <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooserButton.html"
-><span class="type">GtkFileChooserButton</span></a> implements the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooser.html"
-><span class="type">GtkFileChooser</span></a>
-interface; you can use the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooser.html"
-><span class="type">GtkFileChooser</span></a> API with it.</p>
-<p>
+Note that <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooserButton.html"><span class="type">GtkFileChooserButton</span></a> implements the <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooser.html"><span class="type">GtkFileChooser</span></a>
+interface; you can use the <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooser.html"><span class="type">GtkFileChooser</span></a> API with it.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        object to which property is attached.
+<td>object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> name of path property.
+<td>name of path property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>title</code></em> :</span></p></td>
-<td>         the title of the browse dialog.
+<td>the title of the browse dialog.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>action</code></em> :</span></p></td>
-<td>        the open mode for the widget.
+<td>the open mode for the widget.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>  A new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooserButton.html"
-><span class="type">GtkFileChooserButton</span></a>.
+<td>  A new <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooserButton.html"><span class="type">GtkFileChooserButton</span></a>.
 
 Since GIMP 2.4
 </td>
@@ -1462,66 +910,43 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_file_chooser_button_new_with_dialog ()">
 <a name="gimp-prop-file-chooser-button-new-with-dialog"></a><h3>gimp_prop_file_chooser_button_new_with_dialog ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_file_chooser_button_new_with_dialog
-                                                        (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *dialog);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_file_chooser_button_new_with_dialog
+                                                        (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="type">GtkWidget</span></a> *dialog</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooserButton.html"
-><span class="type">GtkFileChooserButton</span></a> to edit the specified path property.
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooserButton.html"><span class="type">GtkFileChooserButton</span></a> to edit the specified path property.
 </p>
 <p>
 The button uses <em class="parameter"><code>dialog</code></em> as it's file-picking window. Note that <em class="parameter"><code>dialog</code></em>
-must be a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooserDialog.html"
-><span class="type">GtkFileChooserDialog</span></a> (or subclass) and must not have
-<code class="literal">GTK_DIALOG_DESTROY_WITH_PARENT</code> set.
+must be a <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooserDialog.html"><span class="type">GtkFileChooserDialog</span></a> (or subclass) and must not have
+<a href="/usr/share/gtk-doc/html/gtk/GtkDialog.html#GTK-DIALOG-DESTROY-WITH-PARENT:CAPS"><code class="literal">GTK_DIALOG_DESTROY_WITH_PARENT</code></a> set.
 </p>
 <p>
-Note that <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooserButton.html"
-><span class="type">GtkFileChooserButton</span></a> implements the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooser.html"
-><span class="type">GtkFileChooser</span></a>
-interface; you can use the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooser.html"
-><span class="type">GtkFileChooser</span></a> API with it.</p>
-<p>
+Note that <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooserButton.html"><span class="type">GtkFileChooserButton</span></a> implements the <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooser.html"><span class="type">GtkFileChooser</span></a>
+interface; you can use the <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooser.html"><span class="type">GtkFileChooser</span></a> API with it.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        object to which property is attached.
+<td>object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> name of path property.
+<td>name of path property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dialog</code></em> :</span></p></td>
-<td>        the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooserDialog.html"
-><span class="type">GtkFileChooserDialog</span></a> widget to use.
+<td>the <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooserDialog.html"><span class="type">GtkFileChooserDialog</span></a> widget to use.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>  A new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkFileChooserButton.html"
-><span class="type">GtkFileChooserButton</span></a>.
+<td>  A new <a href="/usr/share/gtk-doc/html/gtk/GtkFileChooserButton.html"><span class="type">GtkFileChooserButton</span></a>.
 
 Since GIMP 2.4
 </td>
@@ -1532,61 +957,46 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_hscale_new ()">
 <a name="gimp-prop-hscale-new"></a><h3>gimp_prop_hscale_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_hscale_new                (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> step_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> page_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_hscale_new                (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> step_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> page_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>);</pre>
 <p>
 Creates a horizontal scale to control the value of the specified
-integer or double property.</p>
-<p>
+integer or double property.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>         Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td>  Name of integer or double property controlled by the scale.
+<td>Name of integer or double property controlled by the scale.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>step_increment</code></em> :</span></p></td>
-<td> Step size.
+<td>Step size.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>page_increment</code></em> :</span></p></td>
-<td> Page size.
+<td>Page size.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>digits</code></em> :</span></p></td>
-<td>         Number of digits after decimal point to display.
+<td>Number of digits after decimal point to display.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> A new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkScale.html"
-><span class="type">GtkScale</span></a>.
+<td> A new <a href="/usr/share/gtk-doc/html/gtk/GtkScale.html"><span class="type">GtkScale</span></a>.
 
 Since GIMP 2.4
 </td>
@@ -1597,37 +1007,31 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_int_combo_box_new ()">
 <a name="gimp-prop-int-combo-box-new"></a><h3>gimp_prop_int_combo_box_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_int_combo_box_new         (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a class="link" href="GimpIntStore.html" title="GimpIntStore">GimpIntStore</a> *store);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_int_combo_box_new         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> *store</code></em>);</pre>
 <p>
 Creates a <a class="link" href="GimpIntComboBox.html" title="GimpIntComboBox"><span class="type">GimpIntComboBox</span></a> widget to display and set the specified
 property.  The contents of the widget are determined by <em class="parameter"><code>store</code></em>,
-which should be created using <a class="link" href="GimpIntStore.html#gimp-int-store-new" title="gimp_int_store_new ()"><code class="function">gimp_int_store_new()</code></a>.</p>
-<p>
+which should be created using <a class="link" href="GimpIntStore.html#gimp-int-store-new" title="gimp_int_store_new ()"><code class="function">gimp_int_store_new()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of int property controlled by combo box.
+<td>Name of int property controlled by combo box.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>store</code></em> :</span></p></td>
-<td>         <a class="link" href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> holding list of labels, values, etc.
+<td>
+<a class="link" href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> holding list of labels, values, etc.
 </td>
 </tr>
 <tr>
@@ -1643,41 +1047,30 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_label_new ()">
 <a name="gimp-prop-label-new"></a><h3>gimp_prop_label_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_label_new                 (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_label_new                 (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
-><span class="type">GtkLabel</span></a> to display the value of the specified property.
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"><span class="type">GtkLabel</span></a> to display the value of the specified property.
 The property should be a string property or at least transformable
 to a string.  If the user should be able to edit the string, use
-<a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new" title="gimp_prop_entry_new ()"><code class="function">gimp_prop_entry_new()</code></a> instead.</p>
-<p>
+<a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new" title="gimp_prop_entry_new ()"><code class="function">gimp_prop_entry_new()</code></a> instead.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of string property.
+<td>Name of string property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>  A new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
-><span class="type">GtkLabel</span></a> widget.
+<td>  A new <a href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"><span class="type">GtkLabel</span></a> widget.
 
 Since GIMP 2.4
 </td>
@@ -1688,31 +1081,24 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_memsize_entry_new ()">
 <a name="gimp-prop-memsize-entry-new"></a><h3>gimp_prop_memsize_entry_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_memsize_entry_new         (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_memsize_entry_new         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>);</pre>
 <p>
 Creates a <a class="link" href="GimpMemsizeEntry.html" title="GimpMemsizeEntry"><span class="type">GimpMemsizeEntry</span></a> (spin button and option menu) to set
 and display the value of the specified memsize property.  See
-<a class="link" href="GimpMemsizeEntry.html#gimp-memsize-entry-new" title="gimp_memsize_entry_new ()"><code class="function">gimp_memsize_entry_new()</code></a> for more information.</p>
-<p>
+<a class="link" href="GimpMemsizeEntry.html#gimp-memsize-entry-new" title="gimp_memsize_entry_new ()"><code class="function">gimp_memsize_entry_new()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of memsize property.
+<td>Name of memsize property.
 </td>
 </tr>
 <tr>
@@ -1728,80 +1114,55 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_opacity_entry_new ()">
 <a name="gimp-prop-opacity-entry-new"></a><h3>gimp_prop_opacity_entry_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
->GtkObject</a> *         gimp_prop_opacity_entry_new         (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
->GtkTable</a> *table,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> column,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> row,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkObject.html"><span class="returnvalue">GtkObject</span></a> *         gimp_prop_opacity_entry_new         (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkTable.html"><span class="type">GtkTable</span></a> *table</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> row</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>);</pre>
 <p>
 Creates a <span class="type">GimpScaleEntry</span> (slider and spin button) to set and
 display the value of the specified double property, which should
 represent an "opacity" variable with range 0 to 100.  See
-<a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a> for more information.</p>
-<p>
+<a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of double property controlled by the spin button.
+<td>Name of double property controlled by the spin button.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>table</code></em> :</span></p></td>
-<td>         The <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
-><span class="type">GtkTable</span></a> the widgets will be attached to.
+<td>The <a href="/usr/share/gtk-doc/html/gtk/GtkTable.html"><span class="type">GtkTable</span></a> the widgets will be attached to.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>column</code></em> :</span></p></td>
-<td>        The column to start with.
+<td>The column to start with.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>row</code></em> :</span></p></td>
-<td>           The row to attach the widgets.
+<td>The row to attach the widgets.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label</code></em> :</span></p></td>
-<td>         The text for the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
-><span class="type">GtkLabel</span></a> which will appear left of the
-                <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
-><span class="type">GtkHScale</span></a>.
+<td>The text for the <a href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"><span class="type">GtkLabel</span></a> which will appear left of the
+                <a href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>  The <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
-><span class="type">GtkSpinButton</span></a>'s <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
-><span class="type">GtkAdjustment</span></a>.
+<td>  The <a href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"><span class="type">GtkSpinButton</span></a>'s <a href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"><span class="type">GtkAdjustment</span></a>.
 
 Since GIMP 2.4
 </td>
@@ -1812,20 +1173,10 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_path_editor_new ()">
 <a name="gimp-prop-path-editor-new"></a><h3>gimp_prop_path_editor_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_path_editor_new           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *path_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *writable_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *filesel_title);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_path_editor_new           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *path_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *writable_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *filesel_title</code></em>);</pre>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -1862,134 +1213,92 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 <hr>
 <div class="refsect2" title="gimp_prop_scale_entry_new ()">
 <a name="gimp-prop-scale-entry-new"></a><h3>gimp_prop_scale_entry_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkObject.html"
->GtkObject</a> *         gimp_prop_scale_entry_new           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
->GtkTable</a> *table,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> column,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> row,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *label,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> step_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> page_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> limit_scale,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> lower_limit,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> upper_limit);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkObject.html"><span class="returnvalue">GtkObject</span></a> *         gimp_prop_scale_entry_new           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkTable.html"><span class="type">GtkTable</span></a> *table</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> row</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> step_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> page_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> limit_scale</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> lower_limit</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> upper_limit</code></em>);</pre>
 <p>
 Creates a <span class="type">GimpScaleEntry</span> (slider and spin button) to set and
 display the value of the specified double property.  See
-<a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a> for more information.</p>
-<p>
+<a class="link" href="libgimpwidgets-GimpWidgets.html#gimp-scale-entry-new" title="gimp_scale_entry_new ()"><code class="function">gimp_scale_entry_new()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>         Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td>  Name of double property controlled by the spin button.
+<td>Name of double property controlled by the spin button.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>table</code></em> :</span></p></td>
-<td>          The <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTable.html"
-><span class="type">GtkTable</span></a> the widgets will be attached to.
+<td>The <a href="/usr/share/gtk-doc/html/gtk/GtkTable.html"><span class="type">GtkTable</span></a> the widgets will be attached to.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>column</code></em> :</span></p></td>
-<td>         The column to start with.
+<td>The column to start with.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>row</code></em> :</span></p></td>
-<td>            The row to attach the widgets.
+<td>The row to attach the widgets.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label</code></em> :</span></p></td>
-<td>          The text for the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkLabel.html"
-><span class="type">GtkLabel</span></a> which will appear left of
-                 the <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkHScale.html"
-><span class="type">GtkHScale</span></a>.
+<td>The text for the <a href="/usr/share/gtk-doc/html/gtk/GtkLabel.html"><span class="type">GtkLabel</span></a> which will appear left of
+                 the <a href="/usr/share/gtk-doc/html/gtk/GtkHScale.html"><span class="type">GtkHScale</span></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>step_increment</code></em> :</span></p></td>
-<td> Step size.
+<td>Step size.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>page_increment</code></em> :</span></p></td>
-<td> Page size.
+<td>Page size.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>digits</code></em> :</span></p></td>
-<td>         Number of digits after decimal point to display.
+<td>Number of digits after decimal point to display.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>limit_scale</code></em> :</span></p></td>
-<td>    <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a> if the range of possible values of the
+<td>
+<a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the range of possible values of the
                  GtkSpinButton should be the same as of the GtkHScale.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>lower_limit</code></em> :</span></p></td>
-<td>    The spinbutton's lower boundary if <em class="parameter"><code>limit_scale</code></em> is <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
-><code class="literal">FALSE</code></a>.
+<td>The spinbutton's lower boundary if <em class="parameter"><code>limit_scale</code></em> is <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>upper_limit</code></em> :</span></p></td>
-<td>    The spinbutton's upper boundary if <em class="parameter"><code>limit_scale</code></em> is <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
-><code class="literal">FALSE</code></a>.
+<td>The spinbutton's upper boundary if <em class="parameter"><code>limit_scale</code></em> is <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkSpinButton.html"
-><span class="type">GtkSpinButton</span></a>'s <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkAdjustment.html"
-><span class="type">GtkAdjustment</span></a>.
+<td> The <a href="/usr/share/gtk-doc/html/gtk/GtkSpinButton.html"><span class="type">GtkSpinButton</span></a>'s <a href="/usr/share/gtk-doc/html/gtk/GtkAdjustment.html"><span class="type">GtkAdjustment</span></a>.
 
 Since GIMP 2.4
 </td>
@@ -2000,76 +1309,59 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_size_entry_new ()">
 <a name="gimp-prop-size-entry-new"></a><h3>gimp_prop_size_entry_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_size_entry_new            (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"
->gboolean</a> property_is_pixel,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_format,
-                                                         <a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</a> update_policy,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> resolution);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_size_entry_new            (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> property_is_pixel</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_format</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="GimpSizeEntry.html#GimpSizeEntryUpdatePolicy" title="enum GimpSizeEntryUpdatePolicy"><span class="type">GimpSizeEntryUpdatePolicy</span></a> update_policy</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> resolution</code></em>);</pre>
 <p>
 Creates a <a class="link" href="GimpSizeEntry.html" title="GimpSizeEntry"><span class="type">GimpSizeEntry</span></a> to set and display the specified double or
 int property, and its associated unit property.  Note that this
 function is only suitable for creating a size entry holding a
 single value.  Use <a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new" title="gimp_prop_coordinates_new ()"><code class="function">gimp_prop_coordinates_new()</code></a> to create a size
-entry holding two values.</p>
-<p>
+entry holding two values.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>             Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td>      Name of int or double property.
+<td>Name of int or double property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_is_pixel</code></em> :</span></p></td>
-<td>  When <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a>, the property value is in pixels,
+<td>When <a href="/usr/share/gtk-doc/html/glib/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a>, the property value is in pixels,
                      and in the selected unit otherwise.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit_property_name</code></em> :</span></p></td>
-<td> Name of unit property.
+<td>Name of unit property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit_format</code></em> :</span></p></td>
-<td>        A printf-like unit-format string as is used with
+<td>A printf-like unit-format string as is used with
                      <a class="link" href="GimpUnitMenu.html#gimp-unit-menu-new" title="gimp_unit_menu_new ()"><code class="function">gimp_unit_menu_new()</code></a>.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>update_policy</code></em> :</span></p></td>
-<td>      How the automatic pixel &lt;-&gt; real-world-unit
+<td>How the automatic pixel &lt;-&gt; real-world-unit
                      calculations should be done.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>resolution</code></em> :</span></p></td>
-<td>         The resolution (in dpi) for the field.
+<td>The resolution (in dpi) for the field.
 </td>
 </tr>
 <tr>
@@ -2085,54 +1377,41 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_spin_button_new ()">
 <a name="gimp-prop-spin-button-new"></a><h3>gimp_prop_spin_button_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_spin_button_new           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> step_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"
->gdouble</a> page_increment,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> digits);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_spin_button_new           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> step_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> page_increment</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> digits</code></em>);</pre>
 <p>
 Creates a spin button to set and display the value of the
-specified double property.</p>
-<p>
+specified double property.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>            Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td>     Name of double property controlled by the spin button.
+<td>Name of double property controlled by the spin button.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>step_increment</code></em> :</span></p></td>
-<td>    Step size.
+<td>Step size.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>page_increment</code></em> :</span></p></td>
-<td>    Page size.
+<td>Page size.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>digits</code></em> :</span></p></td>
-<td>            Number of digits after decimal point to display.
+<td>Number of digits after decimal point to display.
 </td>
 </tr>
 <tr>
@@ -2148,48 +1427,35 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_stock_image_new ()">
 <a name="gimp-prop-stock-image-new"></a><h3>gimp_prop_stock_image_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_stock_image_new           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/gtk-Themeable-Stock-Images.html#GtkIconSize"
->GtkIconSize</a> icon_size);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_stock_image_new           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/gtk-Themeable-Stock-Images.html#GtkIconSize"><span class="type">GtkIconSize</span></a> icon_size</code></em>);</pre>
 <p>
 Creates a widget to display a stock image representing the value of the
 specified string property, which should encode a Stock ID.
-See <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkImage.html#gtk-image-new-from-stock"
-><code class="function">gtk_image_new_from_stock()</code></a> for more information.</p>
-<p>
+See <a href="/usr/share/gtk-doc/html/gtk/GtkImage.html#gtk-image-new-from-stock"><code class="function">gtk_image_new_from_stock()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of string property.
+<td>Name of string property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>icon_size</code></em> :</span></p></td>
-<td>     Size of desired stock image.
+<td>Size of desired stock image.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>  A new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkImage.html"
-><span class="type">GtkImage</span></a> widget.
+<td>  A new <a href="/usr/share/gtk-doc/html/gtk/GtkImage.html"><span class="type">GtkImage</span></a> widget.
 
 Since GIMP 2.4
 </td>
@@ -2200,57 +1466,43 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_string_combo_box_new ()">
 <a name="gimp-prop-string-combo-box-new"></a><h3>gimp_prop_string_combo_box_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_string_combo_box_new      (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTreeModel.html"
->GtkTreeModel</a> *model,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> id_column,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> label_column);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_string_combo_box_new      (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/gtk/GtkTreeModel.html"><span class="type">GtkTreeModel</span></a> *model</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> id_column</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> label_column</code></em>);</pre>
 <p>
 Creates a <a class="link" href="GimpStringComboBox.html" title="GimpStringComboBox"><span class="type">GimpStringComboBox</span></a> widget to display and set the
 specified property.  The contents of the widget are determined by
-<em class="parameter"><code>store</code></em>.</p>
-<p>
+<em class="parameter"><code>store</code></em>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of int property controlled by combo box.
+<td>Name of int property controlled by combo box.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>model</code></em> :</span></p></td>
-<td>         <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTreeStore.html"
-><span class="type">GtkTreeStore</span></a> holding list of values
+<td>
+<a href="/usr/share/gtk-doc/html/gtk/GtkTreeStore.html"><span class="type">GtkTreeStore</span></a> holding list of values
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>id_column</code></em> :</span></p></td>
-<td>     column in <em class="parameter"><code>store</code></em> that holds string IDs
+<td>column in <em class="parameter"><code>store</code></em> that holds string IDs
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>label_column</code></em> :</span></p></td>
-<td>  column in <em class="parameter"><code>store</code></em> that holds labels to use in the combo-box
+<td>column in <em class="parameter"><code>store</code></em> that holds labels to use in the combo-box
 </td>
 </tr>
 <tr>
@@ -2266,56 +1518,41 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_text_buffer_new ()">
 <a name="gimp-prop-text-buffer-new"></a><h3>gimp_prop_text_buffer_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTextBuffer.html"
->GtkTextBuffer</a> *     gimp_prop_text_buffer_new           (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
->gint</a> max_len);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkTextBuffer.html"><span class="returnvalue">GtkTextBuffer</span></a> *     gimp_prop_text_buffer_new           (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code><a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> max_len</code></em>);</pre>
 <p>
-Creates a <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTextBuffer.html"
-><span class="type">GtkTextBuffer</span></a> to set and display the value of the
+Creates a <a href="/usr/share/gtk-doc/html/gtk/GtkTextBuffer.html"><span class="type">GtkTextBuffer</span></a> to set and display the value of the
 specified string property.  Unless the string is expected to
 contain multiple lines or a large amount of text, use
-<a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new" title="gimp_prop_entry_new ()"><code class="function">gimp_prop_entry_new()</code></a> instead.  See <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTextView.html"
-><span class="type">GtkTextView</span></a> for information on
+<a class="link" href="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new" title="gimp_prop_entry_new ()"><code class="function">gimp_prop_entry_new()</code></a> instead.  See <a href="/usr/share/gtk-doc/html/gtk/GtkTextView.html"><span class="type">GtkTextView</span></a> for information on
 how to insert a text buffer into a visible widget.
 </p>
 <p>
 If <em class="parameter"><code>max_len</code></em> is 0 or negative, the text buffer allows an unlimited
-number of characters to be entered.</p>
-<p>
+number of characters to be entered.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of string property.
+<td>Name of string property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>max_len</code></em> :</span></p></td>
-<td>       Maximum allowed length of text (in characters).
+<td>Maximum allowed length of text (in characters).
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>  A new <a
-href="http://library.gnome.org/devel/gtk/unstable/GtkTextBuffer.html"
-><span class="type">GtkTextBuffer</span></a>.
+<td>  A new <a href="/usr/share/gtk-doc/html/gtk/GtkTextBuffer.html"><span class="type">GtkTextBuffer</span></a>.
 
 Since GIMP 2.4
 </td>
@@ -2326,38 +1563,29 @@ Since GIMP 2.4
 <hr>
 <div class="refsect2" title="gimp_prop_unit_menu_new ()">
 <a name="gimp-prop-unit-menu-new"></a><h3>gimp_prop_unit_menu_new ()</h3>
-<pre class="programlisting"><a
-href="http://library.gnome.org/devel/gtk/unstable/GtkWidget.html"
->GtkWidget</a> *         gimp_prop_unit_menu_new             (<a
-href="http://library.gnome.org/devel/gobject/unstable/gobject-The-Base-Object-Type.html#GObject"
->GObject</a> *config,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *property_name,
-                                                         const <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
->gchar</a> *unit_format);</pre>
+<pre class="programlisting"><a href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"><span class="returnvalue">GtkWidget</span></a> *         gimp_prop_unit_menu_new             (<em class="parameter"><code><a href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"><span class="type">GObject</span></a> *config</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *property_name</code></em>,
+                                                         <em class="parameter"><code>const <a href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *unit_format</code></em>);</pre>
 <p>
 Creates a <a class="link" href="GimpUnitMenu.html" title="GimpUnitMenu"><span class="type">GimpUnitMenu</span></a> to set and display the value of a Unit
-property.  See <a class="link" href="GimpUnitMenu.html#gimp-unit-menu-new" title="gimp_unit_menu_new ()"><code class="function">gimp_unit_menu_new()</code></a> for more information.</p>
-<p>
+property.  See <a class="link" href="GimpUnitMenu.html#gimp-unit-menu-new" title="gimp_unit_menu_new ()"><code class="function">gimp_unit_menu_new()</code></a> for more information.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>config</code></em> :</span></p></td>
-<td>        Object to which property is attached.
+<td>Object to which property is attached.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em> :</span></p></td>
-<td> Name of Unit property.
+<td>Name of Unit property.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>unit_format</code></em> :</span></p></td>
-<td>   A printf-like format string which is used to create
+<td>A printf-like format string which is used to create
                 the unit strings.
 </td>
 </tr>
@@ -2375,6 +1603,6 @@ Since GIMP 2.4
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.11</div>
+          Generated by GTK-Doc V1.15</div>
 </body>
 </html>

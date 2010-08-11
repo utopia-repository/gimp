@@ -132,8 +132,7 @@ LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
 	$(top_builddir)/plug-ins/libgck/gck/libgck.la	\
-	$(X_LIBS)				\
-	-lc
+	$(X_LIBS)
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\
@@ -284,6 +283,83 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+arcball.o: arcball.c ../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h arcball.h
+mapobject_apply.o: mapobject_apply.c mapobject_shade.h \
+	../../plug-ins/libgck/gck/gck.h \
+	../../plug-ins/libgck/gck/gckcommon.h \
+	../../plug-ins/libgck/gck/gcktypes.h \
+	../../plug-ins/libgck/gck/gckcolor.h \
+	../../plug-ins/libgck/gck/gckmath.h \
+	../../plug-ins/libgck/gck/gckvector.h \
+	../../plug-ins/libgck/gck/gckui.h \
+	../../plug-ins/libgck/gck/gcklistbox.h mapobject_main.h \
+	../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h arcball.h mapobject_ui.h \
+	mapobject_image.h mapobject_preview.h mapobject_apply.h
+mapobject_image.o: mapobject_image.c mapobject_image.h \
+	../../plug-ins/libgck/gck/gck.h \
+	../../plug-ins/libgck/gck/gckcommon.h \
+	../../plug-ins/libgck/gck/gcktypes.h \
+	../../plug-ins/libgck/gck/gckcolor.h \
+	../../plug-ins/libgck/gck/gckmath.h \
+	../../plug-ins/libgck/gck/gckvector.h \
+	../../plug-ins/libgck/gck/gckui.h \
+	../../plug-ins/libgck/gck/gcklistbox.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	mapobject_main.h arcball.h mapobject_ui.h mapobject_apply.h \
+	mapobject_preview.h mapobject_shade.h
+mapobject_main.o: mapobject_main.c mapobject_main.h \
+	../../plug-ins/libgck/gck/gck.h \
+	../../plug-ins/libgck/gck/gckcommon.h \
+	../../plug-ins/libgck/gck/gcktypes.h \
+	../../plug-ins/libgck/gck/gckcolor.h \
+	../../plug-ins/libgck/gck/gckmath.h \
+	../../plug-ins/libgck/gck/gckvector.h \
+	../../plug-ins/libgck/gck/gckui.h \
+	../../plug-ins/libgck/gck/gcklistbox.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	arcball.h mapobject_ui.h mapobject_image.h mapobject_preview.h \
+	mapobject_apply.h mapobject_shade.h
+mapobject_preview.o: mapobject_preview.c mapobject_preview.h \
+	../../plug-ins/libgck/gck/gck.h \
+	../../plug-ins/libgck/gck/gckcommon.h \
+	../../plug-ins/libgck/gck/gcktypes.h \
+	../../plug-ins/libgck/gck/gckcolor.h \
+	../../plug-ins/libgck/gck/gckmath.h \
+	../../plug-ins/libgck/gck/gckvector.h \
+	../../plug-ins/libgck/gck/gckui.h \
+	../../plug-ins/libgck/gck/gcklistbox.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	arcball.h mapobject_main.h mapobject_ui.h mapobject_image.h \
+	mapobject_shade.h mapobject_apply.h
+mapobject_shade.o: mapobject_shade.c mapobject_shade.h \
+	../../plug-ins/libgck/gck/gck.h \
+	../../plug-ins/libgck/gck/gckcommon.h \
+	../../plug-ins/libgck/gck/gcktypes.h \
+	../../plug-ins/libgck/gck/gckcolor.h \
+	../../plug-ins/libgck/gck/gckmath.h \
+	../../plug-ins/libgck/gck/gckvector.h \
+	../../plug-ins/libgck/gck/gckui.h \
+	../../plug-ins/libgck/gck/gcklistbox.h mapobject_main.h \
+	../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h arcball.h mapobject_ui.h \
+	mapobject_image.h mapobject_preview.h mapobject_apply.h
+mapobject_ui.o: mapobject_ui.c mapobject_ui.h \
+	../../plug-ins/libgck/gck/gck.h \
+	../../plug-ins/libgck/gck/gckcommon.h \
+	../../plug-ins/libgck/gck/gcktypes.h \
+	../../plug-ins/libgck/gck/gckcolor.h \
+	../../plug-ins/libgck/gck/gckmath.h \
+	../../plug-ins/libgck/gck/gckvector.h \
+	../../plug-ins/libgck/gck/gckui.h \
+	../../plug-ins/libgck/gck/gcklistbox.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	arcball.h mapobject_main.h mapobject_image.h \
+	mapobject_preview.h mapobject_apply.h mapobject_shade.h \
+	mapobject_pixmaps.h amb1.xpm amb2.xpm diffint1.xpm diffint2.xpm \
+	diffref1.xpm diffref2.xpm specref1.xpm specref2.xpm high1.xpm \
+	high2.xpm
 
 info:
 dvi:

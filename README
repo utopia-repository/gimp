@@ -1,7 +1,7 @@
 The GIMP: the GNU Image Manipulation Program
 --------------------------------------------
 
-The main difference between v1.0 and much earlier versions is the
+The main difference between v1.0.2 and much earlier versions is the
 use of a tile based memory management for images. This allows the GIMP
 to work with images much larger than physical memory in a usable
 fashion. Before such memory management, the GIMP was nearly unusable
@@ -96,10 +96,9 @@ Many of the developers hang out there.  Some of the Byxnet servers are:
 	irc.mint.net:6666
 	irc.canweb.net:6667
 	rudolf.canberra.edu.au:6666
-	levien.com:6666
 
 You can customize the look of the interface quite a bit my editing the
-~/.gimp/gtkrc file. A sample file, gtkrc.forest, is included (Thanks to
+~/.gimp/gtkrc file. A sample file, gtkrc.forest2, is included (Thanks to
 Tuomas Kuosmanen)
 
 Included is a set of keybindings similar to those in Adobe Photoshop (tm).
@@ -109,7 +108,8 @@ You can find them in the ps-menurc file.  To use them, copy this file to
 We sincerely hope you enjoy the program.  Please report problems to
 bugs@gimp.org.  Before reporting a problem, you may want to see if someone
 else has already did (check the http://www.wilberworks.com/bugs.cgi for
-this).
+this). If you have a fix for the problem, upload a patch to the incoming
+dir on ftp.gimp.org.
 
 Have fun,
 

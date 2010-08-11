@@ -582,6 +582,576 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+about_dialog.o: about_dialog.c ../libgimp/gimpfeatures.h about_dialog.h \
+	interface.h ../config.h
+actionarea.o: actionarea.c appenv.h actionarea.h
+airbrush.o: airbrush.c appenv.h brushes.h procedural_db.h temp_buf.h \
+	drawable.h tile_manager.h tile.h errors.h gdisplay.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h layer.h \
+	info_dialog.h selection.h paint_core.h draw_core.h tools.h \
+	palette.h airbrush.h
+app_procs.o: app_procs.c ../libgimp/gimpfeatures.h appenv.h app_procs.h \
+	batch.h brushes.h procedural_db.h temp_buf.h color_transfer.h \
+	curves.h tools.h layer.h drawable.h tile_manager.h tile.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h gdisplay.h \
+	gimage.h info_dialog.h selection.h colormaps.h fileops.h \
+	gimprc.h global_edit.h gradient.h gximage.h hue_saturation.h \
+	image_render.h interface.h internal_procs.h layers_dialog.h \
+	levels.h menus.h palette.h patterns.h plug_in.h tile_swap.h \
+	tips_dialog.h undo.h xcf.h errors.h ../config.h
+asupsample.o: asupsample.c appenv.h asupsample.h
+batch.o: batch.c appenv.h app_procs.h batch.h procedural_db.h
+bezier_select.o: bezier_select.c appenv.h bezier_select.h tools.h \
+	layer.h drawable.h tile_manager.h tile.h temp_buf.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h bezier_selectP.h draw_core.h \
+	edit_selection.h errors.h gimage_mask.h rect_select.h \
+	procedural_db.h interface.h
+blend.o: blend.c appenv.h asupsample.h blend.h tools.h layer.h \
+	drawable.h tile_manager.h tile.h temp_buf.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h procedural_db.h brush_select.h \
+	buildmenu.h draw_core.h errors.h fuzzy_select.h gimage_mask.h \
+	gradient.h interface.h palette.h undo.h
+boundary.o: boundary.c appenv.h errors.h boundary.h paint_funcs.h \
+	pixel_region.h tile_manager.h tile.h
+brightness_contrast.o: brightness_contrast.c appenv.h actionarea.h \
+	brightness_contrast.h tools.h layer.h drawable.h tile_manager.h \
+	tile.h temp_buf.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h gdisplay.h gimage.h info_dialog.h selection.h \
+	procedural_db.h general.h gimage_mask.h image_map.h interface.h
+brush_select.o: brush_select.c appenv.h actionarea.h brushes.h \
+	procedural_db.h temp_buf.h brush_select.h buildmenu.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h channel.h layer.h \
+	disp_callbacks.h errors.h
+brushes.o: brushes.c appenv.h brushes.h procedural_db.h temp_buf.h \
+	brush_header.h brush_select.h buildmenu.h colormaps.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h tile_manager.h tile.h \
+	drawable.h channel.h layer.h datafiles.h errors.h general.h \
+	gimprc.h menus.h
+bucket_fill.o: bucket_fill.c appenv.h brush_select.h buildmenu.h \
+	bucket_fill.h tools.h layer.h drawable.h tile_manager.h tile.h \
+	temp_buf.h boundary.h paint_funcs.h pixel_region.h channel.h \
+	gdisplay.h gimage.h info_dialog.h selection.h procedural_db.h \
+	fuzzy_select.h gimage_mask.h interface.h palette.h patterns.h \
+	undo.h
+buildmenu.o: buildmenu.c appenv.h buildmenu.h interface.h
+by_color_select.o: by_color_select.c appenv.h boundary.h paint_funcs.h \
+	pixel_region.h tile_manager.h tile.h by_color_select.h tools.h \
+	layer.h drawable.h temp_buf.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h procedural_db.h colormaps.h \
+	draw_core.h general.h gimage_mask.h gimprc.h rect_select.h
+channel.o: channel.c appenv.h channel.h drawable.h tile_manager.h tile.h \
+	temp_buf.h boundary.h paint_funcs.h pixel_region.h errors.h \
+	gimage_mask.h gimage.h layer.h undo.h channel_pvt.h \
+	drawable_pvt.h
+channel_cmds.o: channel_cmds.c appenv.h general.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h channel_cmds.h procedural_db.h \
+	channel_pvt.h drawable_pvt.h
+channel_ops.o: channel_ops.c appenv.h actionarea.h channel_ops.h \
+	procedural_db.h drawable.h tile_manager.h tile.h temp_buf.h \
+	floating_sel.h layer.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h general.h gdisplay.h gimage.h info_dialog.h \
+	selection.h interface.h palette.h channel_pvt.h drawable_pvt.h
+channels_dialog.o: channels_dialog.c appenv.h actionarea.h buildmenu.h \
+	channels_dialog.h colormaps.h gimage.h boundary.h paint_funcs.h \
+	pixel_region.h tile_manager.h tile.h drawable.h temp_buf.h \
+	channel.h layer.h color_panel.h errors.h gdisplay.h \
+	info_dialog.h selection.h gimage_mask.h gimprc.h \
+	procedural_db.h general.h interface.h layers_dialogP.h \
+	ops_buttons.h palette.h resize.h tools/eye.xbm \
+	tools/channel.xbm tools/new.xpm tools/new_is.xpm \
+	tools/raise.xpm tools/raise_is.xpm tools/lower.xpm \
+	tools/lower_is.xpm tools/duplicate.xpm tools/duplicate_is.xpm \
+	tools/delete.xpm tools/delete_is.xpm channel_pvt.h \
+	drawable_pvt.h
+clone.o: clone.c appenv.h brushes.h procedural_db.h temp_buf.h \
+	drawable.h tile_manager.h tile.h errors.h gdisplay.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h layer.h \
+	info_dialog.h selection.h gimage_mask.h interface.h \
+	paint_core.h draw_core.h tools.h patterns.h clone.h
+color_area.o: color_area.c appenv.h color_area.h color_select.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h temp_buf.h channel.h layer.h \
+	palette.h procedural_db.h
+color_balance.o: color_balance.c appenv.h actionarea.h color_balance.h \
+	tools.h layer.h drawable.h tile_manager.h tile.h temp_buf.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h gdisplay.h \
+	gimage.h info_dialog.h selection.h procedural_db.h \
+	color_transfer.h general.h gimage_mask.h image_map.h \
+	interface.h
+color_panel.o: color_panel.c appenv.h color_panel.h color_select.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h temp_buf.h channel.h layer.h
+color_picker.o: color_picker.c appenv.h actionarea.h color_picker.h \
+	procedural_db.h tools.h layer.h drawable.h tile_manager.h \
+	tile.h temp_buf.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h gdisplay.h gimage.h info_dialog.h selection.h \
+	palette.h
+color_select.o: color_select.c appenv.h actionarea.h color_select.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h temp_buf.h channel.h layer.h \
+	errors.h gimprc.h procedural_db.h
+color_transfer.o: color_transfer.c appenv.h color_transfer.h
+colormaps.o: colormaps.c appenv.h app_procs.h brushes.h procedural_db.h \
+	temp_buf.h colormaps.h gimage.h boundary.h paint_funcs.h \
+	pixel_region.h tile_manager.h tile.h drawable.h channel.h \
+	layer.h errors.h general.h gimprc.h gradient.h palette.h \
+	patterns.h plug_in.h tile_swap.h
+commands.o: commands.c appenv.h about_dialog.h actionarea.h app_procs.h \
+	brightness_contrast.h tools.h layer.h drawable.h tile_manager.h \
+	tile.h temp_buf.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h gdisplay.h gimage.h info_dialog.h selection.h \
+	procedural_db.h brushes.h by_color_select.h channels_dialog.h \
+	colormaps.h color_balance.h commands.h convert.h curves.h \
+	desaturate.h channel_ops.h equalize.h fileops.h floating_sel.h \
+	gdisplay_ops.h general.h gimage_cmds.h gimage_mask.h gimprc.h \
+	global_edit.h gradient.h histogram_tool.h hue_saturation.h \
+	image_render.h indexed_palette.h info_window.h interface.h \
+	invert.h layers_dialog.h layer_select.h levels.h palette.h \
+	patterns.h plug_in.h posterize.h resize.h scale.h threshold.h \
+	tips_dialog.h undo.h
+convert.o: convert.c appenv.h actionarea.h convert.h procedural_db.h \
+	drawable.h tile_manager.h tile.h temp_buf.h floating_sel.h \
+	layer.h boundary.h paint_funcs.h pixel_region.h channel.h \
+	fsdither.h gdisplay.h gimage.h info_dialog.h selection.h \
+	indexed_palette.h interface.h undo.h palette.h layer_pvt.h \
+	drawable_pvt.h channel_pvt.h tile_manager_pvt.h
+convolve.o: convolve.c appenv.h brushes.h procedural_db.h temp_buf.h \
+	drawable.h tile_manager.h tile.h errors.h convolve.h \
+	paint_core.h draw_core.h tools.h layer.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h
+crop.o: crop.c appenv.h actionarea.h draw_core.h tools.h layer.h \
+	drawable.h tile_manager.h tile.h temp_buf.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h floating_sel.h gimage_mask.h crop.h \
+	procedural_db.h undo.h
+cursorutil.o: cursorutil.c appenv.h cursorutil.h
+curves.o: curves.c appenv.h actionarea.h buildmenu.h colormaps.h \
+	gimage.h boundary.h paint_funcs.h pixel_region.h tile_manager.h \
+	tile.h drawable.h temp_buf.h channel.h layer.h cursorutil.h \
+	general.h gdisplay.h info_dialog.h selection.h histogram.h \
+	image_map.h interface.h curves.h tools.h procedural_db.h
+datafiles.o: datafiles.c datafiles.h errors.h general.h gimprc.h \
+	procedural_db.h
+desaturate.o: desaturate.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h desaturate.h procedural_db.h interface.h \
+	paint_funcs.h pixel_region.h gimage.h boundary.h channel.h \
+	layer.h
+disp_callbacks.o: disp_callbacks.c appenv.h colormaps.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h tile_manager.h tile.h \
+	drawable.h temp_buf.h channel.h layer.h cursorutil.h \
+	disp_callbacks.h gdisplay.h info_dialog.h selection.h general.h \
+	gimprc.h procedural_db.h interface.h layer_select.h move.h \
+	tools.h scale.h scroll.h
+draw_core.o: draw_core.c appenv.h draw_core.h tools.h layer.h drawable.h \
+	tile_manager.h tile.h temp_buf.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h gdisplay.h gimage.h info_dialog.h \
+	selection.h
+drawable.o: drawable.c appenv.h channel.h drawable.h tile_manager.h \
+	tile.h temp_buf.h boundary.h paint_funcs.h pixel_region.h \
+	errors.h floating_sel.h layer.h gimage.h gimage_mask.h \
+	gdisplay.h info_dialog.h selection.h palette.h procedural_db.h \
+	undo.h drawable_pvt.h
+drawable_cmds.o: drawable_cmds.c appenv.h general.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h drawable_cmds.h procedural_db.h
+edit_cmds.o: edit_cmds.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h layer.h gimage_mask.h global_edit.h edit_cmds.h \
+	procedural_db.h
+edit_selection.o: edit_selection.c appenv.h draw_core.h tools.h layer.h \
+	drawable.h tile_manager.h tile.h temp_buf.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h edit_selection.h floating_sel.h \
+	gimage_mask.h undo.h
+ellipse_select.o: ellipse_select.c appenv.h edit_selection.h tools.h \
+	layer.h drawable.h tile_manager.h tile.h temp_buf.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h ellipse_select.h procedural_db.h \
+	gimage_mask.h rect_select.h rect_selectP.h draw_core.h
+equalize.o: equalize.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h equalize.h procedural_db.h interface.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h layer.h
+eraser.o: eraser.c appenv.h brushes.h procedural_db.h temp_buf.h \
+	drawable.h tile_manager.h tile.h errors.h gdisplay.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h layer.h \
+	info_dialog.h selection.h paint_core.h draw_core.h tools.h \
+	palette.h eraser.h
+errors.o: errors.c appenv.h app_procs.h interface.h errors.h
+fileops.o: fileops.c appenv.h actionarea.h gdisplay.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h tile_manager.h tile.h \
+	drawable.h temp_buf.h channel.h layer.h info_dialog.h \
+	selection.h general.h fileops.h interface.h menus.h plug_in.h \
+	procedural_db.h gimprc.h
+flip_tool.o: flip_tool.c appenv.h cursorutil.h drawable.h tile_manager.h \
+	tile.h temp_buf.h flip_tool.h tools.h layer.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h procedural_db.h transform_core.h \
+	draw_core.h undo.h tile_manager_pvt.h
+floating_sel.o: floating_sel.c appenv.h channels_dialog.h drawable.h \
+	tile_manager.h tile.h temp_buf.h layer.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h errors.h floating_sel.h \
+	gimage.h gimage_mask.h interface.h undo.h layer_pvt.h \
+	drawable_pvt.h channel_pvt.h tile_manager_pvt.h
+floating_sel_cmds.o: floating_sel_cmds.c appenv.h drawable.h \
+	tile_manager.h tile.h temp_buf.h general.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h floating_sel.h \
+	floating_sel_cmds.h procedural_db.h
+frac.o: frac.c tile.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h drawable.h temp_buf.h channel.h layer.h xcf.h \
+	frac.h
+free_select.o: free_select.c appenv.h draw_core.h tools.h layer.h \
+	drawable.h tile_manager.h tile.h temp_buf.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h edit_selection.h errors.h \
+	free_select.h procedural_db.h gimage_mask.h rect_select.h
+fuzzy_select.o: fuzzy_select.c appenv.h boundary.h paint_funcs.h \
+	pixel_region.h tile_manager.h tile.h draw_core.h tools.h \
+	layer.h drawable.h temp_buf.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h edit_selection.h fuzzy_select.h \
+	procedural_db.h gimage_mask.h gimprc.h rect_select.h
+gdisplay.o: gdisplay.c appenv.h buildmenu.h channels_dialog.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h temp_buf.h channel.h layer.h \
+	cursorutil.h disp_callbacks.h gdisplay.h info_dialog.h \
+	selection.h gdisplayP.h gdisplay_ops.h general.h gimage_mask.h \
+	gimprc.h procedural_db.h gximage.h image_render.h info_window.h \
+	interface.h layers_dialog.h menus.h plug_in.h scale.h scroll.h \
+	tools.h undo.h layer_pvt.h drawable_pvt.h channel_pvt.h
+gdisplay_cmds.o: gdisplay_cmds.c appenv.h general.h gdisplay.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h tile_manager.h tile.h \
+	drawable.h temp_buf.h channel.h layer.h info_dialog.h \
+	selection.h gdisplay_cmds.h procedural_db.h
+gdisplay_ops.o: gdisplay_ops.c appenv.h actionarea.h colormaps.h \
+	gimage.h boundary.h paint_funcs.h pixel_region.h tile_manager.h \
+	tile.h drawable.h temp_buf.h channel.h layer.h cursorutil.h \
+	fileops.h gdisplay_ops.h gdisplay.h info_dialog.h selection.h \
+	general.h gximage.h interface.h menus.h scale.h gimprc.h \
+	procedural_db.h
+general.o: general.c general.h
+gimage.o: gimage.c appenv.h channels_dialog.h drawable.h tile_manager.h \
+	tile.h temp_buf.h errors.h floating_sel.h layer.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h general.h gimage_mask.h \
+	indexed_palette.h interface.h layers_dialog.h palette.h \
+	procedural_db.h plug_in.h tools.h undo.h tile_manager_pvt.h \
+	layer_pvt.h drawable_pvt.h channel_pvt.h
+gimage_cmds.o: gimage_cmds.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h general.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h info_dialog.h \
+	selection.h gimage_cmds.h procedural_db.h floating_sel.h \
+	layer_pvt.h drawable_pvt.h channel_pvt.h
+gimage_mask.o: gimage_mask.c appenv.h brushes.h procedural_db.h \
+	temp_buf.h drawable.h tile_manager.h tile.h errors.h \
+	floating_sel.h layer.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h gdisplay.h gimage.h info_dialog.h selection.h \
+	gimage_mask.h interface.h layers_dialog.h paint_core.h \
+	draw_core.h tools.h undo.h layer_pvt.h drawable_pvt.h \
+	channel_pvt.h tile_manager_pvt.h
+gimage_mask_cmds.o: gimage_mask_cmds.c appenv.h drawable.h \
+	tile_manager.h tile.h temp_buf.h general.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h gimage_mask.h \
+	gimage_mask_cmds.h procedural_db.h
+gimprc.o: gimprc.c app_procs.h appenv.h errors.h fileops.h general.h \
+	gimprc.h procedural_db.h menus.h plug_in.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h
+global_edit.o: global_edit.c appenv.h actionarea.h drawable.h \
+	tile_manager.h tile.h temp_buf.h floating_sel.h layer.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h gdisplay.h \
+	gimage.h info_dialog.h selection.h gimage_mask.h general.h \
+	global_edit.h interface.h tools.h undo.h tile_manager_pvt.h \
+	drawable_pvt.h
+gradient.o: gradient.c appenv.h colormaps.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h cursorutil.h datafiles.h errors.h \
+	general.h gimprc.h procedural_db.h gradient.h interface.h \
+	palette.h
+gximage.o: gximage.c appenv.h colormaps.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h gximage.h errors.h
+histogram.o: histogram.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h errors.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h info_dialog.h \
+	selection.h gimage_mask.h histogram.h
+histogram_tool.o: histogram_tool.c appenv.h actionarea.h buildmenu.h \
+	drawable.h tile_manager.h tile.h temp_buf.h general.h \
+	gdisplay.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h layer.h info_dialog.h selection.h histogram.h \
+	histogram_tool.h tools.h procedural_db.h image_map.h \
+	interface.h
+hue_saturation.o: hue_saturation.c appenv.h actionarea.h colormaps.h \
+	gimage.h boundary.h paint_funcs.h pixel_region.h tile_manager.h \
+	tile.h drawable.h temp_buf.h channel.h layer.h general.h \
+	gimage_mask.h gdisplay.h info_dialog.h selection.h \
+	hue_saturation.h tools.h procedural_db.h image_map.h \
+	interface.h
+image_map.o: image_map.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h errors.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h info_dialog.h \
+	selection.h gimage_mask.h image_map.h tile_manager_pvt.h
+image_render.o: image_render.c appenv.h colormaps.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h errors.h gimprc.h procedural_db.h \
+	gximage.h image_render.h gdisplay.h info_dialog.h selection.h \
+	scale.h
+indexed_palette.o: indexed_palette.c appenv.h actionarea.h buildmenu.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h temp_buf.h channel.h layer.h \
+	color_select.h color_area.h errors.h gdisplay.h info_dialog.h \
+	selection.h gimprc.h procedural_db.h general.h image_render.h \
+	interface.h indexed_palette.h palette.h undo.h
+info_dialog.o: info_dialog.c appenv.h gimprc.h procedural_db.h \
+	info_dialog.h interface.h
+info_window.o: info_window.c appenv.h actionarea.h colormaps.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h tile_manager.h tile.h \
+	drawable.h temp_buf.h channel.h layer.h info_dialog.h \
+	info_window.h gdisplay.h selection.h general.h gximage.h \
+	interface.h
+install.o: install.c appenv.h actionarea.h install.h interface.h \
+	gimprc.h procedural_db.h
+interface.o: interface.c appenv.h actionarea.h app_procs.h buildmenu.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h temp_buf.h channel.h layer.h \
+	color_area.h commands.h disp_callbacks.h errors.h gdisplay.h \
+	info_dialog.h selection.h gdisplay_ops.h gimprc.h \
+	procedural_db.h general.h interface.h menus.h tools.h pixmaps.h
+internal_procs.o: internal_procs.c appenv.h app_procs.h airbrush.h \
+	tools.h layer.h drawable.h tile_manager.h tile.h temp_buf.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h gdisplay.h \
+	gimage.h info_dialog.h selection.h paint_core.h draw_core.h \
+	procedural_db.h blend.h bucket_fill.h brightness_contrast.h \
+	brushes.h by_color_select.h channel_cmds.h channel_ops.h \
+	clone.h color_balance.h color_picker.h convert.h convolve.h \
+	crop.h curves.h desaturate.h drawable_cmds.h edit_cmds.h \
+	ellipse_select.h equalize.h eraser.h flip_tool.h \
+	floating_sel_cmds.h free_select.h fuzzy_select.h \
+	gdisplay_cmds.h gimage_cmds.h gimage_mask_cmds.h gimprc.h \
+	gradient.h histogram_tool.h hue_saturation.h invert.h \
+	layer_cmds.h levels.h internal_procs.h paintbrush.h palette.h \
+	patterns.h pencil.h perspective_tool.h posterize.h \
+	rect_select.h rotate_tool.h scale_tool.h shear_tool.h \
+	text_tool.h threshold.h undo_cmds.h
+invert.o: invert.c appenv.h drawable.h tile_manager.h tile.h temp_buf.h \
+	interface.h invert.h procedural_db.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h
+iscissors.o: iscissors.c appenv.h bezier_selectP.h draw_core.h tools.h \
+	layer.h drawable.h tile_manager.h tile.h temp_buf.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h channel_pvt.h drawable_pvt.h errors.h \
+	gimage_mask.h interface.h iscissors.h edit_selection.h \
+	rect_select.h procedural_db.h
+layer.o: layer.c appenv.h drawable.h tile_manager.h tile.h temp_buf.h \
+	errors.h floating_sel.h layer.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h gdisplay.h gimage.h info_dialog.h \
+	selection.h gimage_mask.h interface.h layers_dialog.h undo.h \
+	layer_pvt.h drawable_pvt.h channel_pvt.h tile_manager_pvt.h
+layer_cmds.o: layer_cmds.c appenv.h floating_sel.h layer.h drawable.h \
+	tile_manager.h tile.h temp_buf.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h general.h gimage.h layer_cmds.h \
+	procedural_db.h undo.h layer_pvt.h drawable_pvt.h channel_pvt.h
+layer_select.o: layer_select.c appenv.h colormaps.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h errors.h gdisplay.h info_dialog.h \
+	selection.h gimprc.h procedural_db.h interface.h layer_select.h \
+	layers_dialogP.h buildmenu.h
+layers_dialog.o: layers_dialog.c appenv.h actionarea.h buildmenu.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h temp_buf.h channel.h layer.h \
+	errors.h floating_sel.h gdisplay.h info_dialog.h selection.h \
+	gimage_mask.h gimprc.h procedural_db.h general.h image_render.h \
+	interface.h layers_dialog.h layers_dialogP.h ops_buttons.h \
+	palette.h resize.h undo.h tools/eye.xbm tools/linked.xbm \
+	tools/layer.xbm tools/mask.xbm tools/new.xpm tools/new_is.xpm \
+	tools/raise.xpm tools/raise_is.xpm tools/lower.xpm \
+	tools/lower_is.xpm tools/duplicate.xpm tools/duplicate_is.xpm \
+	tools/delete.xpm tools/delete_is.xpm tools/anchor.xpm \
+	tools/anchor_is.xpm layer_pvt.h drawable_pvt.h channel_pvt.h
+levels.o: levels.c appenv.h actionarea.h buildmenu.h colormaps.h \
+	gimage.h boundary.h paint_funcs.h pixel_region.h tile_manager.h \
+	tile.h drawable.h temp_buf.h channel.h layer.h general.h \
+	gdisplay.h info_dialog.h selection.h histogram.h image_map.h \
+	interface.h levels.h tools.h procedural_db.h
+magnify.o: magnify.c appenv.h draw_core.h tools.h layer.h drawable.h \
+	tile_manager.h tile.h temp_buf.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h gdisplay.h gimage.h info_dialog.h \
+	selection.h gimprc.h procedural_db.h info_window.h magnify.h \
+	scale.h
+main.o: main.c ../config.h ../libgimp/gimpfeatures.h appenv.h \
+	app_procs.h errors.h install.h tile.h
+menus.o: menus.c appenv.h colormaps.h gimage.h boundary.h paint_funcs.h \
+	pixel_region.h tile_manager.h tile.h drawable.h temp_buf.h \
+	channel.h layer.h commands.h fileops.h gimprc.h procedural_db.h \
+	interface.h menus.h scale.h gdisplay.h info_dialog.h \
+	selection.h tools.h
+move.o: move.c appenv.h draw_core.h tools.h layer.h drawable.h \
+	tile_manager.h tile.h temp_buf.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h gdisplay.h gimage.h info_dialog.h \
+	selection.h edit_selection.h errors.h floating_sel.h \
+	gimage_mask.h gdisplay_ops.h move.h undo.h
+ops_buttons.o: ops_buttons.c appenv.h gimprc.h procedural_db.h \
+	ops_buttons.h
+paint_core.o: paint_core.c appenv.h brushes.h procedural_db.h temp_buf.h \
+	channels_dialog.h drawable.h tile_manager.h tile.h errors.h \
+	gdisplay.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h layer.h info_dialog.h selection.h gimage_mask.h \
+	layers_dialog.h paint_core.h draw_core.h tools.h undo.h
+paint_funcs.o: paint_funcs.c appenv.h gimprc.h procedural_db.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h boundary.h
+paintbrush.o: paintbrush.c appenv.h brushes.h procedural_db.h temp_buf.h \
+	drawable.h tile_manager.h tile.h errors.h gdisplay.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h layer.h \
+	info_dialog.h selection.h paint_core.h draw_core.h tools.h \
+	palette.h paintbrush.h
+palette.o: palette.c appenv.h actionarea.h buildmenu.h colormaps.h \
+	gimage.h boundary.h paint_funcs.h pixel_region.h tile_manager.h \
+	tile.h drawable.h temp_buf.h channel.h layer.h color_area.h \
+	color_select.h datafiles.h errors.h general.h gimprc.h \
+	procedural_db.h interface.h palette.h
+pattern_select.o: pattern_select.c appenv.h actionarea.h patterns.h \
+	temp_buf.h procedural_db.h pattern_select.h buildmenu.h \
+	colormaps.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h channel.h layer.h \
+	disp_callbacks.h errors.h
+patterns.o: patterns.c appenv.h colormaps.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h datafiles.h patterns.h \
+	procedural_db.h pattern_header.h pattern_select.h buildmenu.h \
+	errors.h general.h gimprc.h menus.h
+pencil.o: pencil.c appenv.h brushes.h procedural_db.h temp_buf.h \
+	drawable.h tile_manager.h tile.h errors.h gdisplay.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h channel.h layer.h \
+	info_dialog.h selection.h paint_core.h draw_core.h tools.h \
+	palette.h paintbrush.h pencil.h
+perspective_tool.o: perspective_tool.c appenv.h drawable.h \
+	tile_manager.h tile.h temp_buf.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h info_dialog.h \
+	selection.h gimage_mask.h perspective_tool.h tools.h \
+	procedural_db.h transform_core.h draw_core.h transform_tool.h \
+	undo.h tile_manager_pvt.h
+pixel_region.o: pixel_region.c appenv.h pixel_region.h tile_manager.h \
+	tile.h tile_manager_pvt.h
+plug_in.o: plug_in.c ../config.h ../libgimp/gimpprotocol.h \
+	../libgimp/gimpwire.h app_procs.h appenv.h drawable.h \
+	tile_manager.h tile.h temp_buf.h datafiles.h errors.h \
+	gdisplay.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	channel.h layer.h info_dialog.h selection.h general.h gimprc.h \
+	procedural_db.h interface.h menus.h plug_in.h
+posterize.o: posterize.c appenv.h actionarea.h drawable.h tile_manager.h \
+	tile.h temp_buf.h gdisplay.h gimage.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h layer.h info_dialog.h selection.h \
+	image_map.h interface.h posterize.h tools.h procedural_db.h
+procedural_db.o: procedural_db.c regex.h appenv.h app_procs.h general.h \
+	gdisplay.h gimage.h boundary.h paint_funcs.h pixel_region.h \
+	tile_manager.h tile.h drawable.h temp_buf.h channel.h layer.h \
+	info_dialog.h selection.h plug_in.h procedural_db.h
+rect_select.o: rect_select.c appenv.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h info_dialog.h selection.h \
+	gimage_mask.h edit_selection.h tools.h floating_sel.h \
+	rect_select.h procedural_db.h rect_selectP.h draw_core.h
+regex.o: regex.c ../config.h regex.h
+resize.o: resize.c appenv.h resize.h
+rotate_tool.o: rotate_tool.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h gdisplay.h gimage.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h layer.h info_dialog.h selection.h \
+	gimage_mask.h palette.h procedural_db.h rotate_tool.h tools.h \
+	transform_core.h draw_core.h transform_tool.h undo.h \
+	tile_manager_pvt.h
+scale.o: scale.c appenv.h errors.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h info_dialog.h selection.h \
+	gdisplay_ops.h gimprc.h procedural_db.h info_window.h scale.h \
+	tools.h
+scale_tool.o: scale_tool.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h gdisplay.h gimage.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h layer.h info_dialog.h selection.h \
+	gimage_mask.h scale_tool.h tools.h procedural_db.h \
+	transform_core.h draw_core.h transform_tool.h undo.h \
+	tile_manager_pvt.h
+scroll.o: scroll.c appenv.h scale.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h tile_manager.h tile.h drawable.h \
+	temp_buf.h channel.h layer.h info_dialog.h selection.h scroll.h \
+	cursorutil.h tools.h
+selection.o: selection.c appenv.h boundary.h paint_funcs.h \
+	pixel_region.h tile_manager.h tile.h colormaps.h gimage.h \
+	drawable.h temp_buf.h channel.h layer.h errors.h gdisplay.h \
+	info_dialog.h selection.h gdisplay_ops.h gimage_mask.h gimprc.h \
+	procedural_db.h marching_ants.h
+shear_tool.o: shear_tool.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h gdisplay.h gimage.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h layer.h info_dialog.h selection.h \
+	gimage_mask.h palette.h procedural_db.h shear_tool.h tools.h \
+	transform_core.h draw_core.h transform_tool.h undo.h \
+	tile_manager_pvt.h
+temp_buf.o: temp_buf.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h errors.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h info_dialog.h \
+	selection.h general.h gimprc.h procedural_db.h
+text_tool.o: text_tool.c appenv.h actionarea.h buildmenu.h colormaps.h \
+	gimage.h boundary.h paint_funcs.h pixel_region.h tile_manager.h \
+	tile.h drawable.h temp_buf.h channel.h layer.h edit_selection.h \
+	tools.h gdisplay.h info_dialog.h selection.h errors.h \
+	floating_sel.h gimage_mask.h general.h global_edit.h \
+	interface.h palette.h procedural_db.h text_tool.h undo.h \
+	tile_manager_pvt.h drawable_pvt.h
+threshold.o: threshold.c appenv.h actionarea.h drawable.h tile_manager.h \
+	tile.h temp_buf.h general.h gdisplay.h gimage.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h layer.h info_dialog.h \
+	selection.h histogram.h image_map.h interface.h threshold.h \
+	tools.h procedural_db.h
+tile.o: tile.c tile.h tile_cache.h tile_manager.h tile_swap.h
+tile_cache.o: tile_cache.c gimprc.h procedural_db.h tile_cache.h tile.h \
+	tile_swap.h
+tile_manager.o: tile_manager.c tile_cache.h tile.h tile_manager.h \
+	tile_swap.h tile_manager_pvt.h
+tile_swap.o: tile_swap.c tile_swap.h tile.h
+tips_dialog.o: tips_dialog.c tips_dialog.h gimprc.h procedural_db.h \
+	interface.h wilber.h
+tools.o: tools.c appenv.h actionarea.h airbrush.h tools.h layer.h \
+	drawable.h tile_manager.h tile.h temp_buf.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h gdisplay.h gimage.h \
+	info_dialog.h selection.h paint_core.h draw_core.h \
+	procedural_db.h bezier_select.h blend.h brightness_contrast.h \
+	bucket_fill.h by_color_select.h clone.h color_balance.h \
+	color_picker.h convolve.h crop.h cursorutil.h curves.h eraser.h \
+	hue_saturation.h ellipse_select.h flip_tool.h free_select.h \
+	fuzzy_select.h gimprc.h histogram_tool.h interface.h \
+	iscissors.h levels.h magnify.h move.h paintbrush.h pencil.h \
+	posterize.h rect_select.h text_tool.h threshold.h \
+	transform_tool.h
+transform_core.o: transform_core.c appenv.h drawable.h tile_manager.h \
+	tile.h temp_buf.h errors.h floating_sel.h layer.h boundary.h \
+	paint_funcs.h pixel_region.h channel.h general.h gdisplay.h \
+	gimage.h info_dialog.h selection.h gimage_mask.h gimprc.h \
+	procedural_db.h interface.h layers_dialog.h palette.h \
+	transform_core.h draw_core.h tools.h transform_tool.h undo.h \
+	layer_pvt.h drawable_pvt.h channel_pvt.h tile_manager_pvt.h
+transform_tool.o: transform_tool.c appenv.h gdisplay.h gimage.h \
+	boundary.h paint_funcs.h pixel_region.h tile_manager.h tile.h \
+	drawable.h temp_buf.h channel.h layer.h info_dialog.h \
+	selection.h tools.h perspective_tool.h procedural_db.h \
+	rotate_tool.h scale_tool.h shear_tool.h transform_tool.h
+undo.o: undo.c appenv.h by_color_select.h tools.h layer.h drawable.h \
+	tile_manager.h tile.h temp_buf.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h gdisplay.h gimage.h info_dialog.h \
+	selection.h procedural_db.h channels_dialog.h errors.h \
+	floating_sel.h gdisplay_ops.h gimage_mask.h gimprc.h \
+	indexed_palette.h paint_core.h draw_core.h transform_core.h \
+	undo.h drawable_pvt.h layer_pvt.h channel_pvt.h \
+	tile_manager_pvt.h
+undo_cmds.o: undo_cmds.c appenv.h drawable.h tile_manager.h tile.h \
+	temp_buf.h general.h undo.h gimage.h boundary.h paint_funcs.h \
+	pixel_region.h channel.h layer.h undo_cmds.h procedural_db.h
+xcf.o: xcf.c floating_sel.h layer.h drawable.h tile_manager.h tile.h \
+	temp_buf.h boundary.h paint_funcs.h pixel_region.h channel.h \
+	gimage.h gimage_mask.h interface.h plug_in.h procedural_db.h \
+	tile_swap.h xcf.h frac.h drawable_pvt.h layer_pvt.h \
+	channel_pvt.h tile_manager_pvt.h
 
 info:
 dvi:

@@ -279,6 +279,8 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+aa.o: aa.c ../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h
 
 info:
 dvi:
@@ -347,7 +349,6 @@ installcheck install-exec install-data install uninstall all \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-	-lc
 
 .PHONY: files
 

@@ -25,6 +25,9 @@
 /* Define if you have the vprintf function.  */
 #undef HAVE_VPRINTF
 
+/* Define as __inline if that's what the C compiler calls it.  */
+#undef inline
+
 /* Define to `int' if <sys/types.h> doesn't define.  */
 #undef pid_t
 
@@ -46,15 +49,11 @@
 /* Define if you can safely include both <sys/time.h> and <time.h>.  */
 #undef TIME_WITH_SYS_TIME
 
-#undef GIMP_MAJOR_VERSION
-#undef GIMP_MINOR_VERSION
-#undef GIMP_MICRO_VERSION
-#undef GIMP_VERSION
-
 #undef HAVE_DIRENT_H
 #undef HAVE_DOPRNT
 #undef HAVE_IPC_H
 #undef HAVE_NDIR_H
+#undef HAVE_PUTENV
 #undef HAVE_SHM_H
 #undef HAVE_SYS_DIR_H
 #undef HAVE_SYS_NDIR_H
@@ -71,9 +70,6 @@
 
 #undef RAND_FUNC
 #undef SRAND_FUNC
-
-/* #undef PACKAGE */
-/* #undef VERSION */
 
 /* Define if you have the <dirent.h> header file.  */
 #undef HAVE_DIRENT_H

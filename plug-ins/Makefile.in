@@ -119,20 +119,20 @@ SUBDIRS = 			\
 	libgck			\
 	megawidget		\
 	gpc			\
-	MapObject		\
-	AlienMap		\
 	dbbrowser		\
 	script-fu		\
-	struc			\
-	@WEBBROWSER@		\
 	@AA@			\
-	@TIFF@			\
 	@JPEG@			\
-	@PNG@			\
 	@MPEG@			\
+	@PNG@			\
+	@TIFF@			\
+	@WEBBROWSER@		\
 	@XD@			\
 	@XPM@			\
+	AlienMap		\
+	CEL			\
 	CML_explorer		\
+	MapObject		\
 	align_layers		\
 	animoptimize		\
 	apply_lens		\
@@ -145,7 +145,6 @@ SUBDIRS = 			\
 	bumpmap			\
 	bz2			\
 	c_astretch		\
-	CEL			\
 	checkerboard		\
 	colorify		\
 	compose			\
@@ -229,6 +228,7 @@ SUBDIRS = 			\
 	sobel			\
 	sparkle			\
 	spread			\
+	struc			\
 	sunras			\
 	tga			\
 	threshold_alpha		\
@@ -248,8 +248,6 @@ scriptdata =
 
 pluginlibdir = $(gimpplugindir)/plug-ins
 
-EXTRA_DIST = build.in
-
 INCLUDES = \
 	$(X_CFLAGS)			\
 	-I$(top_srcdir)			\
@@ -258,8 +256,8 @@ INCLUDES = \
 LIBGIMPUI = $(top_builddir)/libgimp/libgimpui.la
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
-CONFIG_CLEAN_FILES =  build
-DIST_COMMON =  Makefile.am Makefile.in build.in
+CONFIG_CLEAN_FILES = 
+DIST_COMMON =  Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -276,8 +274,6 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-build: $(top_builddir)/config.status build.in
-	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= ./config.status
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.

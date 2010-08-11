@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-pluginlibdir = $(gimpplugindir)/plug-ins
+pluginlibdir = $(libdir)
 
 pluginlib_LIBRARIES = libmegawidget.a
 
@@ -15,8 +15,7 @@ INCLUDES = \
 LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)				\
-	-lc
+	$(X_LIBS)
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\

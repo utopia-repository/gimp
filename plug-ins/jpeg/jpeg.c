@@ -201,7 +201,7 @@ run (char    *name,
 
 	case RUN_NONINTERACTIVE:
 	  /*  Make sure all the arguments are there!  */
-	  if (nparams != 7)
+	  if (nparams != 8)
 	    status = STATUS_CALLING_ERROR;
 	  if (status == STATUS_SUCCESS)
 	    {
@@ -215,6 +215,7 @@ run (char    *name,
 	  if (status == STATUS_SUCCESS &&
 	      (jsvals.smoothing < 0.0 || jsvals.smoothing > 1.0))
 	    status = STATUS_CALLING_ERROR;
+	  break;
 
 	case RUN_WITH_LAST_VALS:
 	  /*  Possibly retrieve data  */
@@ -269,7 +270,7 @@ load_image (char *filename)
 {
   GPixelRgn pixel_rgn;
   GDrawable *drawable;
-  gint32 image_ID;
+  gint32 volatile image_ID;
   gint32 layer_ID;
   struct jpeg_decompress_struct cinfo;
   struct my_error_mgr jerr;
@@ -450,7 +451,7 @@ save_image (char   *filename,
   GDrawableType drawable_type;
   struct jpeg_compress_struct cinfo;
   struct my_error_mgr jerr;
-  FILE *outfile;
+  FILE * volatile outfile;
   guchar *temp, *t;
   guchar *data;
   guchar *src, *s;
@@ -583,6 +584,10 @@ save_image (char   *filename,
   rowstride = drawable->bpp * drawable->width;
   temp = (guchar *) malloc (cinfo.image_width * cinfo.input_components);
   data = (guchar *) malloc (rowstride * gimp_tile_height ());
+
+  /* fault if cinfo.next_scanline isn't initially a multiple of
+   * gimp_tile_height */
+  src = NULL;
 
   while (cinfo.next_scanline < cinfo.image_height)
     {

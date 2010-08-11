@@ -130,9 +130,7 @@ INCLUDES = \
 LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
-	$(X_LIBS)				\
-					\
-	-lc
+	$(X_LIBS)
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\
@@ -281,6 +279,16 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+algorithms.o: algorithms.c maze.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	../../libgimp/gimpui.h ../../libgimp/gimpmenu.h
+handy.o: handy.c ../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h
+maze.o: maze.c ../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h maze.h
+maze_face.o: maze_face.c maze.h ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	../../libgimp/gimpui.h ../../libgimp/gimpmenu.h
 
 info:
 dvi:

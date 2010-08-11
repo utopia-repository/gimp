@@ -131,8 +131,7 @@ LDADD = \
 	$(top_builddir)/libgimp/libgimpui.la	\
 	$(top_builddir)/libgimp/libgimp.la	\
 	$(X_LIBS)				\
-	$(LIBUCB_LIB)				\
-	-lc
+	$(LIBUCB_LIB)
 
 DEPS = \
 	$(top_builddir)/libgimp/libgimpui.la	\
@@ -281,6 +280,16 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+cmap.o: cmap.c cmap.h ../../config.h
+flame.o: flame.c ../../libgimp/gimp.h ../../libgimp/gimpfeatures.h \
+	../../libgimp/gimpenums.h ../../libgimp/gimpmenu.h \
+	../../libgimp/gimpwire.h ../../config.h megawidget.h libifs.h \
+	cmap.h rect.h
+libifs.o: libifs.c libifs.h cmap.h ../../config.h
+megawidget.o: megawidget.c ../../libgimp/gimp.h \
+	../../libgimp/gimpfeatures.h ../../libgimp/gimpenums.h \
+	megawidget.h
+rect.o: rect.c rect.h libifs.h cmap.h
 
 info:
 dvi:

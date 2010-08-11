@@ -202,8 +202,10 @@ AC_DEFUN(AM_ENABLE_SHARED,
 [define([AM_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE(shared,
 changequote(<<, >>)dnl
-<<  --enable-shared[=PKGS]  build shared libraries [default=>>AM_ENABLE_SHARED_DEFAULT],
+<<  --enable-shared         build shared libraries [default=>>AM_ENABLE_SHARED_DEFAULT]
 changequote([, ])dnl
+[  --enable-shared=PKGS    only build shared libraries if the current package
+                          appears as an element in the PKGS list],
 [p=${PACKAGE-default}
 case "$enableval" in
 yes) enable_shared=yes ;;
@@ -239,8 +241,10 @@ AC_DEFUN(AM_ENABLE_STATIC,
 [define([AM_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE(static,
 changequote(<<, >>)dnl
-<<  --enable-static[=PKGS]  build static libraries [default=>>AM_ENABLE_STATIC_DEFAULT],
+<<  --enable-static         build static libraries [default=>>AM_ENABLE_STATIC_DEFAULT]
 changequote([, ])dnl
+[  --enable-static=PKGS    only build shared libraries if the current package
+                          appears as an element in the PKGS list],
 [p=${PACKAGE-default}
 case "$enableval" in
 yes) enable_static=yes ;;
@@ -449,6 +453,7 @@ dnl
       AC_TRY_RUN([
 #include <gtk/gtk.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int 
 main ()
@@ -481,6 +486,17 @@ main ()
       printf("*** to point to the correct copy of gtk-config, and remove the file config.cache\n");
       printf("*** before re-running configure\n");
     } 
+#if defined (GTK_MAJOR_VERSION) && defined (GTK_MINOR_VERSION) && defined (GTK_MICRO_VERSION)
+  else if ((gtk_major_version != GTK_MAJOR_VERSION) ||
+	   (gtk_minor_version != GTK_MINOR_VERSION) ||
+           (gtk_micro_version != GTK_MICRO_VERSION))
+    {
+      printf("*** GTK+ header files (version %d.%d.%d) do not match\n",
+	     GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION);
+      printf("*** library (version %d.%d.%d)\n",
+	     gtk_major_version, gtk_minor_version, gtk_micro_version);
+    }
+#endif /* defined (GTK_MAJOR_VERSION) ... */
   else
     {
       if ((gtk_major_version > major) ||

@@ -23,17 +23,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id: nlfilt.c,v 1.7 1998/03/25 04:34:39 yosh Exp $
+ * $Id: nlfilt.c,v 1.7.4.2 1998/07/14 06:20:14 yosh Exp $
  */
 
 /* add any necessary includes  */
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <libgimp/gimp.h>
-
 #include <gtk/gtk.h>
 #include <plug-ins/megawidget/megawidget.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 static mw_preview_t nlfilt_do_preview;
 

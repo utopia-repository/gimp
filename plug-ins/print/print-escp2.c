@@ -1,5 +1,5 @@
 /*
- * "$Id: print-escp2.c,v 1.9 1998/05/17 07:16:45 yosh Exp $"
+ * "$Id: print-escp2.c,v 1.9.4.1 1998/08/28 01:58:13 yosh Exp $"
  *
  *   Print plug-in EPSON ESC/P2 driver for the GIMP.
  *
@@ -30,6 +30,11 @@
  * Revision History:
  *
  *   $Log: print-escp2.c,v $
+ *   Revision 1.9.4.1  1998/08/28 01:58:13  yosh
+ *   s/strdup/g_strdup/ for portability
+ *
+ *   -Yosh
+ *
  *   Revision 1.9  1998/05/17 07:16:45  yosh
  *   0.99.31 fun
  *
@@ -151,7 +156,7 @@ escp2_parameters(int  model,		/* I - Printer model */
 
   valptrs = g_new(char *, *count);
   for (i = 0; i < *count; i ++)
-    valptrs[i] = strdup(p[i]);
+    valptrs[i] = g_strdup(p[i]);
 
   return (valptrs);
 }
@@ -816,5 +821,5 @@ escp2_write(FILE          *prn,		/* I - Print file or command */
 
 
 /*
- * End of "$Id: print-escp2.c,v 1.9 1998/05/17 07:16:45 yosh Exp $".
+ * End of "$Id: print-escp2.c,v 1.9.4.1 1998/08/28 01:58:13 yosh Exp $".
  */

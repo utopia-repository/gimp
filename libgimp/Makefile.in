@@ -119,6 +119,8 @@ gimpincludedir = $(includedir)/libgimp
 
 scriptdata =
 
+EXTRA_DIST = gimpfeatures.h.in
+
 lib_LTLIBRARIES = libgimp.la libgimpui.la
 noinst_LIBRARIES = libgimpi.a
 
@@ -126,6 +128,8 @@ libgimpi_a_SOURCES =	gimpprotocol.c	\
 			gimpprotocol.h	\
 			gimpwire.c	\
 			gimpwire.h
+
+libgimpi_a_DEPENDENCIES = libgimp.la
 
 libgimp_la_SOURCES =	gimp.c		\
 			gimpchannel.c	\
@@ -146,11 +150,15 @@ libgimpui_la_SOURCES =	gimpmenu.c
 
 gimpinclude_HEADERS =	gimp.h		\
 			gimpenums.h	\
+			gimpfeatures.h	\
 			gimpmenu.h	\
 			gimpui.h
 
-libgimp_la_LDFLAGS = -version-info 1:0:0
-libgimpui_la_LDFLAGS = -version-info 1:0:0
+libgimp_la_LDFLAGS = -version-info $(GIMP_MAJOR_VERSION):$(GIMP_MICRO_VERSION):0
+libgimpui_la_LDFLAGS = -version-info $(GIMP_MAJOR_VERSION):$(GIMP_MICRO_VERSION):0
+
+CPPFLAGS = \
+	-DGIMPDIR=\""$(gimpdir)"\"
 
 INCLUDES = \
 	$(X_CFLAGS)			\
@@ -158,12 +166,11 @@ INCLUDES = \
 	-I$(includedir)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
-CONFIG_CLEAN_FILES = 
+CONFIG_CLEAN_FILES =  gimpfeatures.h
 LIBRARIES =  $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I..
-CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 libgimpi_a_LIBADD = 
@@ -183,7 +190,7 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CF
 LINK = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(gimpinclude_HEADERS)
 
-DIST_COMMON =  COPYING Makefile.am Makefile.in
+DIST_COMMON =  COPYING Makefile.am Makefile.in gimpfeatures.h.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -204,6 +211,8 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+gimpfeatures.h: $(top_builddir)/config.status gimpfeatures.h.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= ./config.status
 
 mostlyclean-noinstLIBRARIES:
 
@@ -339,6 +348,29 @@ distdir: $(DISTFILES)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+gimp.lo gimp.o: gimp.c ../config.h gimp.h gimpfeatures.h gimpenums.h \
+	gimpprotocol.h gimpwire.h
+gimpchannel.lo gimpchannel.o: gimpchannel.c gimp.h gimpfeatures.h \
+	gimpenums.h
+gimpdisplay.lo gimpdisplay.o: gimpdisplay.c gimp.h gimpfeatures.h \
+	gimpenums.h
+gimpdrawable.lo gimpdrawable.o: gimpdrawable.c gimp.h gimpfeatures.h \
+	gimpenums.h
+gimpgradient.lo gimpgradient.o: gimpgradient.c gimp.h gimpfeatures.h \
+	gimpenums.h
+gimpimage.lo gimpimage.o: gimpimage.c gimp.h gimpfeatures.h gimpenums.h
+gimplayer.lo gimplayer.o: gimplayer.c gimp.h gimpfeatures.h gimpenums.h
+gimpmenu.lo gimpmenu.o: gimpmenu.c gimp.h gimpfeatures.h gimpenums.h \
+	gimpui.h gimpmenu.h
+gimppalette.lo gimppalette.o: gimppalette.c gimp.h gimpfeatures.h \
+	gimpenums.h
+gimppixelrgn.lo gimppixelrgn.o: gimppixelrgn.c gimp.h gimpfeatures.h \
+	gimpenums.h
+gimpprotocol.lo gimpprotocol.o: gimpprotocol.c gimpenums.h \
+	gimpprotocol.h gimpwire.h
+gimptile.lo gimptile.o: gimptile.c gimp.h gimpfeatures.h gimpenums.h \
+	gimpprotocol.h gimpwire.h
+gimpwire.lo gimpwire.o: gimpwire.c gimpwire.h
 
 info:
 dvi:

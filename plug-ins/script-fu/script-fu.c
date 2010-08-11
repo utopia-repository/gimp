@@ -114,6 +114,13 @@ query ()
   };
   static gint nconsole_args = sizeof (console_args) / sizeof (console_args[0]);
 
+  static GParamDef eval_args[] =
+  {
+    { PARAM_INT32, "run_mode", "[Interactive], non-interactive" },
+    { PARAM_STRING, "code", "The code to evaluate" }
+  };
+  static gint neval_args = sizeof (eval_args) / sizeof (eval_args[0]);
+
   static GParamDef server_args[] =
   {
     { PARAM_INT32, "run_mode", "[Interactive], non-interactive" },
@@ -156,6 +163,18 @@ query ()
 			  PROC_EXTENSION,
 			  nserver_args, 0,
 			  server_args, NULL);
+
+  gimp_install_procedure ("extension_script_fu_eval",
+			  "Evaluate scheme code",
+			  "Evaluate the code under the scheme interpeter (primarily for batch mode)",
+			  "Manish Singh",
+			  "Manish Singh",
+			  "1998",
+			  NULL,
+			  NULL,
+			  PROC_EXTENSION,
+			  neval_args, 0,
+			  eval_args, NULL);
 }
 
 static void
@@ -220,6 +239,13 @@ run (char    *name,
   else if (strcmp (name, "extension_script_fu_server") == 0)
     {
       script_fu_server_run (name, nparams, param, nreturn_vals, return_vals);
+    }
+  /*
+   *  A non-interactive "console" (for batch mode)
+   */
+  else if (strcmp (name, "extension_script_fu_eval") == 0)
+    {
+      script_fu_eval_run (name, nparams, param, nreturn_vals, return_vals);
     }
 }
 
@@ -560,7 +586,7 @@ marshall_proc_db_call (LISP a)
 	  if (success)
 	    {
 	      args[i].type = PARAM_INT16;
-	      args[i].data.d_int32 = get_c_long (car (a));
+	      args[i].data.d_int16 = (gint16) get_c_long (car (a));
 	    }
 	  break;
 	case PARAM_INT8:
@@ -569,7 +595,7 @@ marshall_proc_db_call (LISP a)
 	  if (success)
 	    {
 	      args[i].type = PARAM_INT8;
-	      args[i].data.d_int32 = get_c_long (car (a));
+	      args[i].data.d_int8 = (gint8) get_c_long (car (a));
 	    }
 	  break;
 	case PARAM_FLOAT:
@@ -605,7 +631,7 @@ marshall_proc_db_call (LISP a)
 	  if (success)
 	    {
 	      args[i].type = PARAM_INT16ARRAY;
-	      args[i].data.d_int16array = (short *) (car (a))->storage_as.long_array.data;
+	      args[i].data.d_int16array = (gint16*) (car (a))->storage_as.long_array.data;
 	    }
 	  break;
 	case PARAM_INT8ARRAY:
@@ -614,7 +640,7 @@ marshall_proc_db_call (LISP a)
 	  if (success)
 	    {
 	      args[i].type = PARAM_INT8ARRAY;
-	      args[i].data.d_int8array = (gint8 *) (car (a))->storage_as.string.data;
+	      args[i].data.d_int8array = (gint8*) (car (a))->storage_as.string.data;
 	    }
 	  break;
 	case PARAM_FLOATARRAY:

@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-data.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2569087" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2577825" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2685267" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2685519" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpvectors"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2569087"></a><span class="refentrytitle">gimpvectors</span>
+<a name="id2577825"></a><span class="refentrytitle">gimpvectors</span>
 </h2>
 <p>gimpvectors</p>
 </td>
@@ -52,160 +52,478 @@
 
 
 
-gint32              <a href="libgimp-gimpvectors.html#gimp-vectors-new">gimp_vectors_new</a>                    (gint32 image_ID,
-                                                         const gchar *name);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-import-from-file">gimp_vectors_import_from_file</a>       (gint32 image_ID,
-                                                         const gchar *filename,
-                                                         gboolean merge,
-                                                         gboolean scale,
-                                                         gint *num_vectors,
-                                                         gint32 **vectors_ids);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-import-from-string">gimp_vectors_import_from_string</a>     (gint32 image_ID,
-                                                         const gchar *string,
-                                                         gint length,
-                                                         gboolean merge,
-                                                         gboolean scale,
-                                                         gint *num_vectors,
-                                                         gint32 **vectors_ids);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-is-valid">gimp_vectors_is_valid</a>               (gint32 vectors_ID);
-gint*               <a href="libgimp-gimpvectors.html#gimp-vectors-get-strokes">gimp_vectors_get_strokes</a>            (gint32 vectors_ID,
-                                                         gint *num_strokes);
-gint32              <a href="libgimp-gimpvectors.html#gimp-vectors-get-image">gimp_vectors_get_image</a>              (gint32 vectors_ID);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-get-linked">gimp_vectors_get_linked</a>             (gint32 vectors_ID);
-gchar*              <a href="libgimp-gimpvectors.html#gimp-vectors-get-name">gimp_vectors_get_name</a>               (gint32 vectors_ID);
-gint                <a href="libgimp-gimpvectors.html#gimp-vectors-get-tattoo">gimp_vectors_get_tattoo</a>             (gint32 vectors_ID);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-get-visible">gimp_vectors_get_visible</a>            (gint32 vectors_ID);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-set-linked">gimp_vectors_set_linked</a>             (gint32 vectors_ID,
-                                                         gboolean linked);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-set-name">gimp_vectors_set_name</a>               (gint32 vectors_ID,
-                                                         const gchar *name);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-set-tattoo">gimp_vectors_set_tattoo</a>             (gint32 vectors_ID,
-                                                         gint tattoo);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-set-visible">gimp_vectors_set_visible</a>            (gint32 vectors_ID,
-                                                         gboolean visible);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-remove-stroke">gimp_vectors_remove_stroke</a>          (gint32 vectors_ID,
-                                                         gint stroke_id);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-to-selection">gimp_vectors_to_selection</a>           (gint32 vectors_ID,
+<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a href="libgimp-gimpvectors.html#gimp-vectors-new">gimp_vectors_new</a>                    (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-import-from-file">gimp_vectors_import_from_file</a>       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> merge,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> scale,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_vectors,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> **vectors_ids);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-import-from-string">gimp_vectors_import_from_string</a>     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *string,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> length,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> merge,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> scale,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_vectors,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> **vectors_ids);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-is-valid">gimp_vectors_is_valid</a>               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>*               <a href="libgimp-gimpvectors.html#gimp-vectors-get-strokes">gimp_vectors_get_strokes</a>            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_strokes);
+<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a href="libgimp-gimpvectors.html#gimp-vectors-get-image">gimp_vectors_get_image</a>              (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-get-linked">gimp_vectors_get_linked</a>             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimp-gimpvectors.html#gimp-vectors-get-name">gimp_vectors_get_name</a>               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a href="libgimp-gimpvectors.html#gimp-vectors-get-tattoo">gimp_vectors_get_tattoo</a>             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-get-visible">gimp_vectors_get_visible</a>            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-set-linked">gimp_vectors_set_linked</a>             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> linked);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-set-name">gimp_vectors_set_name</a>               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-set-tattoo">gimp_vectors_set_tattoo</a>             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> tattoo);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-set-visible">gimp_vectors_set_visible</a>            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> visible);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-remove-stroke">gimp_vectors_remove_stroke</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-to-selection">gimp_vectors_to_selection</a>           (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         gboolean antialias,
-                                                         gboolean feather,
-                                                         gdouble feather_radius_x,
-                                                         gdouble feather_radius_y);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-attach">gimp_vectors_parasite_attach</a>        (gint32 vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> antialias,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> feather,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> feather_radius_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> feather_radius_y);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-attach">gimp_vectors_parasite_attach</a>        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
                                                          const <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-detach">gimp_vectors_parasite_detach</a>        (gint32 vectors_ID,
-                                                         const gchar *name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-detach">gimp_vectors_parasite_detach</a>        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
 <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>*       <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-find">gimp_vectors_parasite_find</a>          (gint32 vectors_ID,
-                                                         const gchar *name);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-list">gimp_vectors_parasite_list</a>          (gint32 vectors_ID,
-                                                         gint *num_parasites,
-                                                         gchar ***parasites);
-gint                <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-new-from-points">gimp_vectors_stroke_new_from_points</a> (gint32 vectors_ID,
+>GimpParasite</a>*       <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-find">gimp_vectors_parasite_find</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-parasite-list">gimp_vectors_parasite_list</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_parasites,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> ***parasites);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-new-from-points">gimp_vectors_stroke_new_from_points</a> (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"
 >GimpVectorsStrokeType</a> type,
-                                                         gint num_points,
-                                                         const gdouble *controlpoints,
-                                                         gboolean closed);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-close">gimp_vectors_stroke_close</a>           (gint32 vectors_ID,
-                                                         gint stroke_id);
-gdouble             <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-length">gimp_vectors_stroke_get_length</a>      (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble precision);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_points,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *controlpoints,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> closed);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-close">gimp_vectors_stroke_close</a>           (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-length">gimp_vectors_stroke_get_length</a>      (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> precision);
 <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"
->GimpVectorsStrokeType</a> <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-points">gimp_vectors_stroke_get_points</a>    (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gint *num_points,
-                                                         gdouble **controlpoints,
-                                                         gboolean *closed);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-point-at-dist">gimp_vectors_stroke_get_point_at_dist</a>
-                                                        (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble dist,
-                                                         gdouble precision,
-                                                         gdouble *x_point,
-                                                         gdouble *y_point,
-                                                         gdouble *slope,
-                                                         gboolean *valid);
-gdouble*            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-interpolate">gimp_vectors_stroke_interpolate</a>     (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble precision,
-                                                         gint *num_coords,
-                                                         gboolean *closed);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-scale">gimp_vectors_stroke_scale</a>           (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble scale_x,
-                                                         gdouble scale_y);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-translate">gimp_vectors_stroke_translate</a>       (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gint off_x,
-                                                         gint off_y);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-flip">gimp_vectors_stroke_flip</a>            (gint32 vectors_ID,
-                                                         gint stroke_id,
+>GimpVectorsStrokeType</a> <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-points">gimp_vectors_stroke_get_points</a>    (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_points,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> **controlpoints,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> *closed);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-get-point-at-dist">gimp_vectors_stroke_get_point_at_dist</a>
+                                                        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> dist,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> precision,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *x_point,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *y_point,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *slope,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> *valid);
+<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>*            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-interpolate">gimp_vectors_stroke_interpolate</a>     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> precision,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_coords,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> *closed);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-scale">gimp_vectors_stroke_scale</a>           (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> scale_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> scale_y);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-translate">gimp_vectors_stroke_translate</a>       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> off_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> off_y);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-flip">gimp_vectors_stroke_flip</a>            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
                                                          <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
-                                                         gdouble axis);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-flip-free">gimp_vectors_stroke_flip_free</a>       (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble x1,
-                                                         gdouble y1,
-                                                         gdouble x2,
-                                                         gdouble y2);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-rotate">gimp_vectors_stroke_rotate</a>          (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble center_x,
-                                                         gdouble center_y,
-                                                         gdouble angle);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-conicto">gimp_vectors_bezier_stroke_conicto</a>  (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble x0,
-                                                         gdouble y0,
-                                                         gdouble x1,
-                                                         gdouble y1);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-cubicto">gimp_vectors_bezier_stroke_cubicto</a>  (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble x0,
-                                                         gdouble y0,
-                                                         gdouble x1,
-                                                         gdouble y1,
-                                                         gdouble x2,
-                                                         gdouble y2);
-gboolean            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-lineto">gimp_vectors_bezier_stroke_lineto</a>   (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble x0,
-                                                         gdouble y0);
-gint                <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-ellipse">gimp_vectors_bezier_stroke_new_ellipse</a>
-                                                        (gint32 vectors_ID,
-                                                         gdouble x0,
-                                                         gdouble y0,
-                                                         gdouble radius_x,
-                                                         gdouble radius_y,
-                                                         gdouble angle);
-gint                <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-moveto">gimp_vectors_bezier_stroke_new_moveto</a>
-                                                        (gint32 vectors_ID,
-                                                         gdouble x0,
-                                                         gdouble y0);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> axis);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-flip-free">gimp_vectors_stroke_flip_free</a>       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y2);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-stroke-rotate">gimp_vectors_stroke_rotate</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> center_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> center_y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> angle);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-conicto">gimp_vectors_bezier_stroke_conicto</a>  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y1);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-cubicto">gimp_vectors_bezier_stroke_cubicto</a>  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y2);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-lineto">gimp_vectors_bezier_stroke_lineto</a>   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-ellipse">gimp_vectors_bezier_stroke_new_ellipse</a>
+                                                        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> radius_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> radius_y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> angle);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-moveto">gimp_vectors_bezier_stroke_new_moveto</a>
+                                                        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2685267"></a><h2>Description</h2>
+<a name="id2685519"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2685281"></a><h2>Details</h2>
+<a name="id2685532"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2685290"></a><h3>
+<a name="id2685542"></a><h3>
 <a name="gimp-vectors-new"></a>gimp_vectors_new ()</h3>
-<a class="indexterm" name="id2685302"></a><pre class="programlisting">gint32              gimp_vectors_new                    (gint32 image_ID,
-                                                         const gchar *name);</pre>
+<a class="indexterm" name="id2685554"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_vectors_new                    (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Creates a new empty vectors object.
 </p>
@@ -241,14 +559,28 @@ using <a href="libgimp-gimpimage.html#gimp-image-add-vectors"><code class="funct
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685395"></a><h3>
+<a name="id2685648"></a><h3>
 <a name="gimp-vectors-import-from-file"></a>gimp_vectors_import_from_file ()</h3>
-<a class="indexterm" name="id2685408"></a><pre class="programlisting">gboolean            gimp_vectors_import_from_file       (gint32 image_ID,
-                                                         const gchar *filename,
-                                                         gboolean merge,
-                                                         gboolean scale,
-                                                         gint *num_vectors,
-                                                         gint32 **vectors_ids);</pre>
+<a class="indexterm" name="id2685660"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_import_from_file       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> merge,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> scale,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_vectors,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> **vectors_ids);</pre>
 <p>
 Import paths from an SVG file.
 </p>
@@ -304,15 +636,31 @@ than paths and basic shapes are ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685569"></a><h3>
+<a name="id2685824"></a><h3>
 <a name="gimp-vectors-import-from-string"></a>gimp_vectors_import_from_string ()</h3>
-<a class="indexterm" name="id2685581"></a><pre class="programlisting">gboolean            gimp_vectors_import_from_string     (gint32 image_ID,
-                                                         const gchar *string,
-                                                         gint length,
-                                                         gboolean merge,
-                                                         gboolean scale,
-                                                         gint *num_vectors,
-                                                         gint32 **vectors_ids);</pre>
+<a class="indexterm" name="id2685838"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_import_from_string     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *string,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> length,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> merge,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> scale,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_vectors,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> **vectors_ids);</pre>
 <p>
 Import paths from an SVG string.
 </p>
@@ -374,9 +722,13 @@ write scripts that generate SVG and feed it to GIMP.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685775"></a><h3>
+<a name="id2686034"></a><h3>
 <a name="gimp-vectors-is-valid"></a>gimp_vectors_is_valid ()</h3>
-<a class="indexterm" name="id2685787"></a><pre class="programlisting">gboolean            gimp_vectors_is_valid               (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686046"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_is_valid               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);</pre>
 <p>
 Returns TRUE if the vectors object is valid.
 </p>
@@ -407,10 +759,16 @@ an existing vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685854"></a><h3>
+<a name="id2686113"></a><h3>
 <a name="gimp-vectors-get-strokes"></a>gimp_vectors_get_strokes ()</h3>
-<a class="indexterm" name="id2685866"></a><pre class="programlisting">gint*               gimp_vectors_get_strokes            (gint32 vectors_ID,
-                                                         gint *num_strokes);</pre>
+<a class="indexterm" name="id2686125"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>*               gimp_vectors_get_strokes            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_strokes);</pre>
 <p>
 List the strokes associated with the passed path.
 </p>
@@ -446,9 +804,13 @@ path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685952"></a><h3>
+<a name="id2686211"></a><h3>
 <a name="gimp-vectors-get-image"></a>gimp_vectors_get_image ()</h3>
-<a class="indexterm" name="id2685965"></a><pre class="programlisting">gint32              gimp_vectors_get_image              (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686224"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_vectors_get_image              (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);</pre>
 <p>
 Returns the vectors objects image.
 </p>
@@ -478,9 +840,13 @@ Returns the vectors objects image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686029"></a><h3>
+<a name="id2686288"></a><h3>
 <a name="gimp-vectors-get-linked"></a>gimp_vectors_get_linked ()</h3>
-<a class="indexterm" name="id2686042"></a><pre class="programlisting">gboolean            gimp_vectors_get_linked             (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686300"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_get_linked             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);</pre>
 <p>
 Gets the linked state of the vectors object.
 </p>
@@ -510,9 +876,13 @@ Gets the linked state of the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686107"></a><h3>
+<a name="id2686366"></a><h3>
 <a name="gimp-vectors-get-name"></a>gimp_vectors_get_name ()</h3>
-<a class="indexterm" name="id2686120"></a><pre class="programlisting">gchar*              gimp_vectors_get_name               (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686378"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_vectors_get_name               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);</pre>
 <p>
 Gets the name of the vectors object.
 </p>
@@ -542,9 +912,13 @@ Gets the name of the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686185"></a><h3>
+<a name="id2686444"></a><h3>
 <a name="gimp-vectors-get-tattoo"></a>gimp_vectors_get_tattoo ()</h3>
-<a class="indexterm" name="id2686197"></a><pre class="programlisting">gint                gimp_vectors_get_tattoo             (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686456"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_vectors_get_tattoo             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);</pre>
 <p>
 Get the tattoo of the vectors object.
 </p>
@@ -574,9 +948,13 @@ Get the tattoo state of the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686262"></a><h3>
+<a name="id2686521"></a><h3>
 <a name="gimp-vectors-get-visible"></a>gimp_vectors_get_visible ()</h3>
-<a class="indexterm" name="id2686274"></a><pre class="programlisting">gboolean            gimp_vectors_get_visible            (gint32 vectors_ID);</pre>
+<a class="indexterm" name="id2686533"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_get_visible            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID);</pre>
 <p>
 Gets the visibility of the vectors object.
 </p>
@@ -606,10 +984,16 @@ Gets the visibility of the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686340"></a><h3>
+<a name="id2686599"></a><h3>
 <a name="gimp-vectors-set-linked"></a>gimp_vectors_set_linked ()</h3>
-<a class="indexterm" name="id2686352"></a><pre class="programlisting">gboolean            gimp_vectors_set_linked             (gint32 vectors_ID,
-                                                         gboolean linked);</pre>
+<a class="indexterm" name="id2686611"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_set_linked             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> linked);</pre>
 <p>
 Sets the linked state of the vectors object.
 </p>
@@ -644,10 +1028,16 @@ Sets the linked state of the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686437"></a><h3>
+<a name="id2686696"></a><h3>
 <a name="gimp-vectors-set-name"></a>gimp_vectors_set_name ()</h3>
-<a class="indexterm" name="id2686449"></a><pre class="programlisting">gboolean            gimp_vectors_set_name               (gint32 vectors_ID,
-                                                         const gchar *name);</pre>
+<a class="indexterm" name="id2686708"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_set_name               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Sets the name of the vectors object.
 </p>
@@ -682,10 +1072,16 @@ Sets the name of the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686533"></a><h3>
+<a name="id2686792"></a><h3>
 <a name="gimp-vectors-set-tattoo"></a>gimp_vectors_set_tattoo ()</h3>
-<a class="indexterm" name="id2686545"></a><pre class="programlisting">gboolean            gimp_vectors_set_tattoo             (gint32 vectors_ID,
-                                                         gint tattoo);</pre>
+<a class="indexterm" name="id2686804"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_set_tattoo             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> tattoo);</pre>
 <p>
 Set the tattoo of the vectors object.
 </p>
@@ -720,10 +1116,16 @@ Set the tattoo of the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686629"></a><h3>
+<a name="id2686888"></a><h3>
 <a name="gimp-vectors-set-visible"></a>gimp_vectors_set_visible ()</h3>
-<a class="indexterm" name="id2686641"></a><pre class="programlisting">gboolean            gimp_vectors_set_visible            (gint32 vectors_ID,
-                                                         gboolean visible);</pre>
+<a class="indexterm" name="id2686900"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_set_visible            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> visible);</pre>
 <p>
 Sets the visibility of the vectors object.
 </p>
@@ -758,10 +1160,16 @@ Sets the visibility of the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686726"></a><h3>
+<a name="id2686984"></a><h3>
 <a name="gimp-vectors-remove-stroke"></a>gimp_vectors_remove_stroke ()</h3>
-<a class="indexterm" name="id2686739"></a><pre class="programlisting">gboolean            gimp_vectors_remove_stroke          (gint32 vectors_ID,
-                                                         gint stroke_id);</pre>
+<a class="indexterm" name="id2686998"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_remove_stroke          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id);</pre>
 <p>
 remove the stroke from a vectors object.
 </p>
@@ -796,16 +1204,28 @@ Remove the stroke from a vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686822"></a><h3>
+<a name="id2687081"></a><h3>
 <a name="gimp-vectors-to-selection"></a>gimp_vectors_to_selection ()</h3>
-<a class="indexterm" name="id2686835"></a><pre class="programlisting">gboolean            gimp_vectors_to_selection           (gint32 vectors_ID,
+<a class="indexterm" name="id2687094"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_to_selection           (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         gboolean antialias,
-                                                         gboolean feather,
-                                                         gdouble feather_radius_x,
-                                                         gdouble feather_radius_y);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> antialias,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> feather,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> feather_radius_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> feather_radius_y);</pre>
 <p>
 Transforms the specified vectors object into a selection
 </p>
@@ -861,9 +1281,13 @@ selection of the image the vectors object belongs to.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686999"></a><h3>
+<a name="id2687258"></a><h3>
 <a name="gimp-vectors-parasite-attach"></a>gimp_vectors_parasite_attach ()</h3>
-<a class="indexterm" name="id2687014"></a><pre class="programlisting">gboolean            gimp_vectors_parasite_attach        (gint32 vectors_ID,
+<a class="indexterm" name="id2687272"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_parasite_attach        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
                                                          const <a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
 >GimpParasite</a> *parasite);</pre>
@@ -902,10 +1326,16 @@ return values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687100"></a><h3>
+<a name="id2687358"></a><h3>
 <a name="gimp-vectors-parasite-detach"></a>gimp_vectors_parasite_detach ()</h3>
-<a class="indexterm" name="id2687114"></a><pre class="programlisting">gboolean            gimp_vectors_parasite_detach        (gint32 vectors_ID,
-                                                         const gchar *name);</pre>
+<a class="indexterm" name="id2687373"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_parasite_detach        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Removes a parasite from a vectors object
 </p>
@@ -941,12 +1371,16 @@ return values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687200"></a><h3>
+<a name="id2687459"></a><h3>
 <a name="gimp-vectors-parasite-find"></a>gimp_vectors_parasite_find ()</h3>
-<a class="indexterm" name="id2687213"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2687472"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpparasite.html#GimpParasite"
->GimpParasite</a>*       gimp_vectors_parasite_find          (gint32 vectors_ID,
-                                                         const gchar *name);</pre>
+>GimpParasite</a>*       gimp_vectors_parasite_find          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name);</pre>
 <p>
 Look up a parasite in a vectors object
 </p>
@@ -982,11 +1416,19 @@ vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687298"></a><h3>
+<a name="id2687557"></a><h3>
 <a name="gimp-vectors-parasite-list"></a>gimp_vectors_parasite_list ()</h3>
-<a class="indexterm" name="id2687311"></a><pre class="programlisting">gboolean            gimp_vectors_parasite_list          (gint32 vectors_ID,
-                                                         gint *num_parasites,
-                                                         gchar ***parasites);</pre>
+<a class="indexterm" name="id2687570"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_parasite_list          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_parasites,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> ***parasites);</pre>
 <p>
 List all parasites.
 </p>
@@ -1026,15 +1468,25 @@ Returns a list of all currently attached parasites.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687419"></a><h3>
+<a name="id2687680"></a><h3>
 <a name="gimp-vectors-stroke-new-from-points"></a>gimp_vectors_stroke_new_from_points ()</h3>
-<a class="indexterm" name="id2687436"></a><pre class="programlisting">gint                gimp_vectors_stroke_new_from_points (gint32 vectors_ID,
+<a class="indexterm" name="id2687698"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_vectors_stroke_new_from_points (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"
 >GimpVectorsStrokeType</a> type,
-                                                         gint num_points,
-                                                         const gdouble *controlpoints,
-                                                         gboolean closed);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> num_points,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *controlpoints,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> closed);</pre>
 <p>
 Adds a stroke of a given type to the vectors object.
 </p>
@@ -1091,10 +1543,16 @@ order CACCACCAC...</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687607"></a><h3>
+<a name="id2687868"></a><h3>
 <a name="gimp-vectors-stroke-close"></a>gimp_vectors_stroke_close ()</h3>
-<a class="indexterm" name="id2687624"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_close           (gint32 vectors_ID,
-                                                         gint stroke_id);</pre>
+<a class="indexterm" name="id2687885"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_stroke_close           (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id);</pre>
 <p>
 closes the specified stroke.
 </p>
@@ -1129,11 +1587,19 @@ Closes the specified stroke.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687718"></a><h3>
+<a name="id2687979"></a><h3>
 <a name="gimp-vectors-stroke-get-length"></a>gimp_vectors_stroke_get_length ()</h3>
-<a class="indexterm" name="id2687734"></a><pre class="programlisting">gdouble             gimp_vectors_stroke_get_length      (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble precision);</pre>
+<a class="indexterm" name="id2687996"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>             gimp_vectors_stroke_get_length      (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> precision);</pre>
 <p>
 Measure the length of the given stroke.
 </p>
@@ -1173,15 +1639,25 @@ Measure the length of the given stroke.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687851"></a><h3>
+<a name="id2688112"></a><h3>
 <a name="gimp-vectors-stroke-get-points"></a>gimp_vectors_stroke_get_points ()</h3>
-<a class="indexterm" name="id2687868"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2688129"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpVectorsStrokeType"
->GimpVectorsStrokeType</a> gimp_vectors_stroke_get_points    (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gint *num_points,
-                                                         gdouble **controlpoints,
-                                                         gboolean *closed);</pre>
+>GimpVectorsStrokeType</a> gimp_vectors_stroke_get_points    (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_points,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> **controlpoints,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> *closed);</pre>
 <p>
 returns the control points of a stroke.
 </p>
@@ -1234,17 +1710,35 @@ control points.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688033"></a><h3>
+<a name="id2688294"></a><h3>
 <a name="gimp-vectors-stroke-get-point-at-dist"></a>gimp_vectors_stroke_get_point_at_dist ()</h3>
-<a class="indexterm" name="id2688050"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_get_point_at_dist
-                                                        (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble dist,
-                                                         gdouble precision,
-                                                         gdouble *x_point,
-                                                         gdouble *y_point,
-                                                         gdouble *slope,
-                                                         gboolean *valid);</pre>
+<a class="indexterm" name="id2688311"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_stroke_get_point_at_dist
+                                                        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> dist,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> precision,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *x_point,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *y_point,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *slope,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> *valid);</pre>
 <p>
 Get point at a specified distance along the stroke.
 </p>
@@ -1314,13 +1808,25 @@ enough, a \"valid\" flag will be FALSE.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688282"></a><h3>
+<a name="id2688543"></a><h3>
 <a name="gimp-vectors-stroke-interpolate"></a>gimp_vectors_stroke_interpolate ()</h3>
-<a class="indexterm" name="id2688298"></a><pre class="programlisting">gdouble*            gimp_vectors_stroke_interpolate     (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble precision,
-                                                         gint *num_coords,
-                                                         gboolean *closed);</pre>
+<a class="indexterm" name="id2688560"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a>*            gimp_vectors_stroke_interpolate     (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> precision,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *num_coords,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> *closed);</pre>
 <p>
 returns polygonal approximation of the stroke.
 </p>
@@ -1370,12 +1876,22 @@ returns polygonal approximation of the stroke.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688459"></a><h3>
+<a name="id2688720"></a><h3>
 <a name="gimp-vectors-stroke-scale"></a>gimp_vectors_stroke_scale ()</h3>
-<a class="indexterm" name="id2688476"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_scale           (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble scale_x,
-                                                         gdouble scale_y);</pre>
+<a class="indexterm" name="id2688737"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_stroke_scale           (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> scale_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> scale_y);</pre>
 <p>
 scales the given stroke.
 </p>
@@ -1420,12 +1936,22 @@ Scale the given stroke.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688613"></a><h3>
+<a name="id2688874"></a><h3>
 <a name="gimp-vectors-stroke-translate"></a>gimp_vectors_stroke_translate ()</h3>
-<a class="indexterm" name="id2688629"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_translate       (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gint off_x,
-                                                         gint off_y);</pre>
+<a class="indexterm" name="id2688890"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_stroke_translate       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> off_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> off_y);</pre>
 <p>
 translate the given stroke.
 </p>
@@ -1470,12 +1996,20 @@ Translate the given stroke.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688766"></a><h3>
+<a name="id2689028"></a><h3>
 <a name="gimp-vectors-stroke-flip"></a>gimp_vectors_stroke_flip ()</h3>
-<a class="indexterm" name="id2688783"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_flip            (gint32 vectors_ID,
-                                                         gint stroke_id,
+<a class="indexterm" name="id2689044"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_stroke_flip            (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
                                                          <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type,
-                                                         gdouble axis);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> axis);</pre>
 <p>
 flips the given stroke.
 </p>
@@ -1520,14 +2054,28 @@ Rotates the given stroke around given center by angle (in degrees).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688922"></a><h3>
+<a name="id2689183"></a><h3>
 <a name="gimp-vectors-stroke-flip-free"></a>gimp_vectors_stroke_flip_free ()</h3>
-<a class="indexterm" name="id2688938"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_flip_free       (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble x1,
-                                                         gdouble y1,
-                                                         gdouble x2,
-                                                         gdouble y2);</pre>
+<a class="indexterm" name="id2689199"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_stroke_flip_free       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y2);</pre>
 <p>
 flips the given stroke about an arbitrary axis.
 </p>
@@ -1584,13 +2132,25 @@ axis passes.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689123"></a><h3>
+<a name="id2689384"></a><h3>
 <a name="gimp-vectors-stroke-rotate"></a>gimp_vectors_stroke_rotate ()</h3>
-<a class="indexterm" name="id2689140"></a><pre class="programlisting">gboolean            gimp_vectors_stroke_rotate          (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble center_x,
-                                                         gdouble center_y,
-                                                         gdouble angle);</pre>
+<a class="indexterm" name="id2689401"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_stroke_rotate          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> center_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> center_y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> angle);</pre>
 <p>
 rotates the given stroke.
 </p>
@@ -1640,14 +2200,28 @@ Rotates the given stroke around given center by angle (in degrees).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689299"></a><h3>
+<a name="id2689560"></a><h3>
 <a name="gimp-vectors-bezier-stroke-conicto"></a>gimp_vectors_bezier_stroke_conicto ()</h3>
-<a class="indexterm" name="id2689316"></a><pre class="programlisting">gboolean            gimp_vectors_bezier_stroke_conicto  (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble x0,
-                                                         gdouble y0,
-                                                         gdouble x1,
-                                                         gdouble y1);</pre>
+<a class="indexterm" name="id2689578"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_bezier_stroke_conicto  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y1);</pre>
 <p>
 Extends a bezier stroke with a conic bezier spline.
 </p>
@@ -1704,16 +2278,34 @@ spline.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689499"></a><h3>
+<a name="id2689760"></a><h3>
 <a name="gimp-vectors-bezier-stroke-cubicto"></a>gimp_vectors_bezier_stroke_cubicto ()</h3>
-<a class="indexterm" name="id2689517"></a><pre class="programlisting">gboolean            gimp_vectors_bezier_stroke_cubicto  (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble x0,
-                                                         gdouble y0,
-                                                         gdouble x1,
-                                                         gdouble y1,
-                                                         gdouble x2,
-                                                         gdouble y2);</pre>
+<a class="indexterm" name="id2689778"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_bezier_stroke_cubicto  (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y2);</pre>
 <p>
 Extends a bezier stroke with a cubic bezier spline.
 </p>
@@ -1778,12 +2370,22 @@ Extends a bezier stroke with a cubic bezier spline.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689742"></a><h3>
+<a name="id2690003"></a><h3>
 <a name="gimp-vectors-bezier-stroke-lineto"></a>gimp_vectors_bezier_stroke_lineto ()</h3>
-<a class="indexterm" name="id2689760"></a><pre class="programlisting">gboolean            gimp_vectors_bezier_stroke_lineto   (gint32 vectors_ID,
-                                                         gint stroke_id,
-                                                         gdouble x0,
-                                                         gdouble y0);</pre>
+<a class="indexterm" name="id2690021"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_vectors_bezier_stroke_lineto   (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> stroke_id,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0);</pre>
 <p>
 Extends a bezier stroke with a lineto.
 </p>
@@ -1828,15 +2430,29 @@ Extends a bezier stroke with a lineto.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689897"></a><h3>
+<a name="id2690158"></a><h3>
 <a name="gimp-vectors-bezier-stroke-new-ellipse"></a>gimp_vectors_bezier_stroke_new_ellipse ()</h3>
-<a class="indexterm" name="id2689913"></a><pre class="programlisting">gint                gimp_vectors_bezier_stroke_new_ellipse
-                                                        (gint32 vectors_ID,
-                                                         gdouble x0,
-                                                         gdouble y0,
-                                                         gdouble radius_x,
-                                                         gdouble radius_y,
-                                                         gdouble angle);</pre>
+<a class="indexterm" name="id2690174"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_vectors_bezier_stroke_new_ellipse
+                                                        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> radius_x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> radius_y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> angle);</pre>
 <p>
 Adds a bezier stroke describing an ellipse the vectors object.
 </p>
@@ -1891,12 +2507,20 @@ Adds a bezier stroke describing an ellipse the vectors object.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690097"></a><h3>
+<a name="id2690358"></a><h3>
 <a name="gimp-vectors-bezier-stroke-new-moveto"></a>gimp_vectors_bezier_stroke_new_moveto ()</h3>
-<a class="indexterm" name="id2690114"></a><pre class="programlisting">gint                gimp_vectors_bezier_stroke_new_moveto
-                                                        (gint32 vectors_ID,
-                                                         gdouble x0,
-                                                         gdouble y0);</pre>
+<a class="indexterm" name="id2690375"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_vectors_bezier_stroke_new_moveto
+                                                        (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> vectors_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x0,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y0);</pre>
 <p>
 Adds a bezier stroke with a single moveto to the vectors object.
 </p>

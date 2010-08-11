@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Color Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpcolor-GimpBilinear.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2589537" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581422" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2601038" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2570474" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpcolor-GimpAdaptiveSupersample"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2589537"></a><span class="refentrytitle">GimpAdaptiveSupersample</span>
+<a name="id2581422"></a><span class="refentrytitle">GimpAdaptiveSupersample</span>
 </h2>
 <p>GimpAdaptiveSupersample &#8212; Functions to perform adaptive supersampling on an area.</p>
 </td>
@@ -46,47 +46,95 @@
 
 
 
-void                (<a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc">*GimpProgressFunc</a>)                 (gint min,
-                                                         gint max,
-                                                         gint current,
-                                                         gpointer data);
-void                (<a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc">*GimpPutPixelFunc</a>)                 (gint x,
-                                                         gint y,
+void                (<a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc">*GimpProgressFunc</a>)                 (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> min,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> max,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> current,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+void                (<a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc">*GimpPutPixelFunc</a>)                 (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
                                                          <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color,
-                                                         gpointer data);
-void                (<a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc">*GimpRenderFunc</a>)                   (gdouble x,
-                                                         gdouble y,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+void                (<a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc">*GimpRenderFunc</a>)                   (<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y,
                                                          <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color,
-                                                         gpointer data);
-gulong              <a href="libgimpcolor-GimpAdaptiveSupersample.html#gimp-adaptive-supersample-area">gimp_adaptive_supersample_area</a>      (gint x1,
-                                                         gint y1,
-                                                         gint x2,
-                                                         gint y2,
-                                                         gint max_depth,
-                                                         gdouble threshold,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+<a
+href="../glib/glib-Basic-Types.html#gulong"
+>gulong</a>              <a href="libgimpcolor-GimpAdaptiveSupersample.html#gimp-adaptive-supersample-area">gimp_adaptive_supersample_area</a>      (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> max_depth,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> threshold,
                                                          <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc">GimpRenderFunc</a> render_func,
-                                                         gpointer render_data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> render_data,
                                                          <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc">GimpPutPixelFunc</a> put_pixel_func,
-                                                         gpointer put_pixel_data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> put_pixel_data,
                                                          <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc">GimpProgressFunc</a> progress_func,
-                                                         gpointer progress_data);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> progress_data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2601038"></a><h2>Description</h2>
+<a name="id2570474"></a><h2>Description</h2>
 <p>
 Functions to perform adaptive supersampling on an area.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2601055"></a><h2>Details</h2>
+<a name="id2570490"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2601066"></a><h3>
+<a name="id2570501"></a><h3>
 <a name="GimpProgressFunc"></a>GimpProgressFunc ()</h3>
-<a class="indexterm" name="id2601078"></a><pre class="programlisting">void                (*GimpProgressFunc)                 (gint min,
-                                                         gint max,
-                                                         gint current,
-                                                         gpointer data);</pre>
+<a class="indexterm" name="id2570514"></a><pre class="programlisting">void                (*GimpProgressFunc)                 (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> min,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> max,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> current,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 
 </p>
@@ -120,12 +168,18 @@ Functions to perform adaptive supersampling on an area.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2561714"></a><h3>
+<a name="id2576793"></a><h3>
 <a name="GimpPutPixelFunc"></a>GimpPutPixelFunc ()</h3>
-<a class="indexterm" name="id2561726"></a><pre class="programlisting">void                (*GimpPutPixelFunc)                 (gint x,
-                                                         gint y,
+<a class="indexterm" name="id2576805"></a><pre class="programlisting">void                (*GimpPutPixelFunc)                 (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y,
                                                          <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color,
-                                                         gpointer data);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 
 </p>
@@ -159,12 +213,18 @@ Functions to perform adaptive supersampling on an area.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2561835"></a><h3>
+<a name="id2576915"></a><h3>
 <a name="GimpRenderFunc"></a>GimpRenderFunc ()</h3>
-<a class="indexterm" name="id2561848"></a><pre class="programlisting">void                (*GimpRenderFunc)                   (gdouble x,
-                                                         gdouble y,
+<a class="indexterm" name="id2576927"></a><pre class="programlisting">void                (*GimpRenderFunc)                   (<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> x,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> y,
                                                          <a href="libgimpcolor-GimpRGB.html#GimpRGB">GimpRGB</a> *color,
-                                                         gpointer data);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 
 </p>
@@ -198,20 +258,40 @@ Functions to perform adaptive supersampling on an area.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2563043"></a><h3>
+<a name="id2559878"></a><h3>
 <a name="gimp-adaptive-supersample-area"></a>gimp_adaptive_supersample_area ()</h3>
-<a class="indexterm" name="id2563054"></a><pre class="programlisting">gulong              gimp_adaptive_supersample_area      (gint x1,
-                                                         gint y1,
-                                                         gint x2,
-                                                         gint y2,
-                                                         gint max_depth,
-                                                         gdouble threshold,
+<a class="indexterm" name="id2559890"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gulong"
+>gulong</a>              gimp_adaptive_supersample_area      (<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y1,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> x2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> y2,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> max_depth,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> threshold,
                                                          <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpRenderFunc">GimpRenderFunc</a> render_func,
-                                                         gpointer render_data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> render_data,
                                                          <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpPutPixelFunc">GimpPutPixelFunc</a> put_pixel_func,
-                                                         gpointer put_pixel_data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> put_pixel_data,
                                                          <a href="libgimpcolor-GimpAdaptiveSupersample.html#GimpProgressFunc">GimpProgressFunc</a> progress_func,
-                                                         gpointer progress_data);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> progress_data);</pre>
 <p>
 
 </p>

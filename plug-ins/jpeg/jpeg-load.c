@@ -40,6 +40,7 @@
 
 #include "jpeg.h"
 #include "jpeg-icc.h"
+#include "jpeg-settings.h"
 #include "jpeg-load.h"
 
 
@@ -48,9 +49,9 @@ static void  jpeg_load_resolution  (gint32                         image_ID,
 static void  jpeg_sanitize_comment (gchar *comment);
 
 
-gint32 volatile  image_ID_global;
 GimpDrawable    *drawable_global;
-gint32           layer_ID_global;
+gint32 volatile  preview_image_ID;
+gint32           preview_layer_ID;
 
 
 gint32
@@ -114,7 +115,7 @@ load_image (const gchar *filename,
         gimp_image_delete (image_ID);
 
       if (preview)
-        destroy_preview();
+        destroy_preview ();
 
       return -1;
     }
@@ -219,7 +220,7 @@ load_image (const gchar *filename,
 
   if (preview)
     {
-      image_ID = image_ID_global;
+      image_ID = preview_image_ID;
     }
   else
     {
@@ -232,11 +233,11 @@ load_image (const gchar *filename,
 
   if (preview)
     {
-      layer_ID_global = layer_ID =
-        gimp_layer_new (image_ID, _("JPEG preview"),
-                        cinfo.output_width,
-                        cinfo.output_height,
-                        layer_type, 100, GIMP_NORMAL_MODE);
+      preview_layer_ID = gimp_layer_new (preview_image_ID, _("JPEG preview"),
+                                         cinfo.output_width,
+                                         cinfo.output_height,
+                                         layer_type, 100, GIMP_NORMAL_MODE);
+      layer_ID = preview_layer_ID;
     }
   else
     {
@@ -256,6 +257,9 @@ load_image (const gchar *filename,
 #ifdef HAVE_EXIF
       ExifData *exif_data = NULL;
 #endif
+
+      /* Step 5.0: save the original JPEG settings in a parasite */
+      jpeg_detect_original_settings (&cinfo, image_ID);
 
       /* Step 5.1: check for comments, or EXIF metadata in APP1 markers */
       for (marker = cinfo.marker_list; marker; marker = marker->next)
@@ -361,7 +365,8 @@ load_image (const gchar *filename,
       if (jpeg_icc_read_profile (&cinfo, &profile, &profile_size))
         {
           GimpParasite *parasite = gimp_parasite_new ("icc-profile",
-                                                      0,
+                                                      GIMP_PARASITE_PERSISTENT |
+                                                      GIMP_PARASITE_UNDOABLE,
                                                       profile_size, profile);
           gimp_image_parasite_attach (image_ID, parasite);
           gimp_parasite_free (parasite);

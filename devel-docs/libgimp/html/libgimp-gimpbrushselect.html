@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfontselect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574487" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2601500" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2706032" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2705244" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpbrushselect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2574487"></a><span class="refentrytitle">gimpbrushselect</span>
+<a name="id2601500"></a><span class="refentrytitle">gimpbrushselect</span>
 </h2>
 <p>gimpbrushselect &#8212; Functions providing a brush selection dialog.</p>
 </td>
@@ -52,57 +52,129 @@
 
 
 
-void                (<a href="libgimp-gimpbrushselect.html#GimpRunBrushCallback">*GimpRunBrushCallback</a>)             (const gchar *brush_name,
-                                                         gdouble opacity,
-                                                         gint spacing,
+void                (<a href="libgimp-gimpbrushselect.html#GimpRunBrushCallback">*GimpRunBrushCallback</a>)             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing,
                                                          <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
-                                                         gint width,
-                                                         gint height,
-                                                         const guchar *mask_data,
-                                                         gboolean dialog_closing,
-                                                         gpointer user_data);
-const gchar*        <a href="libgimp-gimpbrushselect.html#gimp-brush-select-new">gimp_brush_select_new</a>               (const gchar *title,
-                                                         const gchar *brush_name,
-                                                         gdouble opacity,
-                                                         gint spacing,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *mask_data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a href="libgimp-gimpbrushselect.html#gimp-brush-select-new">gimp_brush_select_new</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing,
                                                          <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a href="libgimp-gimpbrushselect.html#GimpRunBrushCallback">GimpRunBrushCallback</a> callback,
-                                                         gpointer data);
-void                <a href="libgimp-gimpbrushselect.html#gimp-brush-select-destroy">gimp_brush_select_destroy</a>           (const gchar *brush_callback);
-gboolean            <a href="libgimp-gimpbrushselect.html#gimp-brushes-popup">gimp_brushes_popup</a>                  (const gchar *brush_callback,
-                                                         const gchar *popup_title,
-                                                         const gchar *initial_brush,
-                                                         gdouble opacity,
-                                                         gint spacing,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+void                <a href="libgimp-gimpbrushselect.html#gimp-brush-select-destroy">gimp_brush_select_destroy</a>           (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_callback);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpbrushselect.html#gimp-brushes-popup">gimp_brushes_popup</a>                  (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_callback,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_brush,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing,
                                                          <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
-gboolean            <a href="libgimp-gimpbrushselect.html#gimp-brushes-close-popup">gimp_brushes_close_popup</a>            (const gchar *brush_callback);
-gboolean            <a href="libgimp-gimpbrushselect.html#gimp-brushes-set-popup">gimp_brushes_set_popup</a>              (const gchar *brush_callback,
-                                                         const gchar *brush_name,
-                                                         gdouble opacity,
-                                                         gint spacing,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpbrushselect.html#gimp-brushes-close-popup">gimp_brushes_close_popup</a>            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_callback);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpbrushselect.html#gimp-brushes-set-popup">gimp_brushes_set_popup</a>              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_callback,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing,
                                                          <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706032"></a><h2>Description</h2>
+<a name="id2705244"></a><h2>Description</h2>
 <p>
 Functions providing a brush selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2706049"></a><h2>Details</h2>
+<a name="id2705261"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2706059"></a><h3>
+<a name="id2705271"></a><h3>
 <a name="GimpRunBrushCallback"></a>GimpRunBrushCallback ()</h3>
-<a class="indexterm" name="id2706070"></a><pre class="programlisting">void                (*GimpRunBrushCallback)             (const gchar *brush_name,
-                                                         gdouble opacity,
-                                                         gint spacing,
+<a class="indexterm" name="id2705282"></a><pre class="programlisting">void                (*GimpRunBrushCallback)             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing,
                                                          <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
-                                                         gint width,
-                                                         gint height,
-                                                         const guchar *mask_data,
-                                                         gboolean dialog_closing,
-                                                         gpointer user_data);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *mask_data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);</pre>
 <p>
 
 </p>
@@ -161,15 +233,27 @@ Functions providing a brush selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2701235"></a><h3>
+<a name="id2707839"></a><h3>
 <a name="gimp-brush-select-new"></a>gimp_brush_select_new ()</h3>
-<a class="indexterm" name="id2701246"></a><pre class="programlisting">const gchar*        gimp_brush_select_new               (const gchar *title,
-                                                         const gchar *brush_name,
-                                                         gdouble opacity,
-                                                         gint spacing,
+<a class="indexterm" name="id2707850"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_brush_select_new               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing,
                                                          <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a href="libgimp-gimpbrushselect.html#GimpRunBrushCallback">GimpRunBrushCallback</a> callback,
-                                                         gpointer data);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 
 </p>
@@ -223,9 +307,11 @@ Functions providing a brush selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2701430"></a><h3>
+<a name="id2705802"></a><h3>
 <a name="gimp-brush-select-destroy"></a>gimp_brush_select_destroy ()</h3>
-<a class="indexterm" name="id2701441"></a><pre class="programlisting">void                gimp_brush_select_destroy           (const gchar *brush_callback);</pre>
+<a class="indexterm" name="id2705813"></a><pre class="programlisting">void                gimp_brush_select_destroy           (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_callback);</pre>
 <p>
 
 </p>
@@ -242,13 +328,25 @@ Functions providing a brush selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2701486"></a><h3>
+<a name="id2705858"></a><h3>
 <a name="gimp-brushes-popup"></a>gimp_brushes_popup ()</h3>
-<a class="indexterm" name="id2701497"></a><pre class="programlisting">gboolean            gimp_brushes_popup                  (const gchar *brush_callback,
-                                                         const gchar *popup_title,
-                                                         const gchar *initial_brush,
-                                                         gdouble opacity,
-                                                         gint spacing,
+<a class="indexterm" name="id2705869"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brushes_popup                  (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_callback,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_brush,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing,
                                                          <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
 <p>
 Invokes the Gimp brush selection.
@@ -301,9 +399,13 @@ This procedure opens the brush selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708730"></a><h3>
+<a name="id2708983"></a><h3>
 <a name="gimp-brushes-close-popup"></a>gimp_brushes_close_popup ()</h3>
-<a class="indexterm" name="id2708741"></a><pre class="programlisting">gboolean            gimp_brushes_close_popup            (const gchar *brush_callback);</pre>
+<a class="indexterm" name="id2708994"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brushes_close_popup            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_callback);</pre>
 <p>
 Close the brush selection dialog.
 </p>
@@ -330,12 +432,22 @@ This procedure closes an opened brush selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2708800"></a><h3>
+<a name="id2709052"></a><h3>
 <a name="gimp-brushes-set-popup"></a>gimp_brushes_set_popup ()</h3>
-<a class="indexterm" name="id2708810"></a><pre class="programlisting">gboolean            gimp_brushes_set_popup              (const gchar *brush_callback,
-                                                         const gchar *brush_name,
-                                                         gdouble opacity,
-                                                         gint spacing,
+<a class="indexterm" name="id2709063"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_brushes_set_popup              (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_callback,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *brush_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> opacity,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> spacing,
                                                          <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode);</pre>
 <p>
 Sets the current brush in a brush selection dialog.

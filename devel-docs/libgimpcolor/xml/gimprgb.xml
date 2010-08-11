@@ -257,11 +257,8 @@ Sets the red, green and blue components of <parameter>rgb</parameter> from 8bit 
                                                          const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> len);</programlisting>
 <para>
-Attempts to parse a color name. This function accepts RGB hex
-values or <ulink url="http://www.w3.org/TR/SVG/types.html">SVG 1.0
-color keywords</ulink>.  The format of an RGB value in hexadecimal
-notation is a '#' immediately followed by either three or six
-hexadecimal characters.
+Attempts to parse a color name. This function accepts <ulink
+url="http://www.w3.org/TR/SVG/types.html">SVG 1.0 color keywords</ulink>.
 </para>
 <para>
 This function does not touch the alpha component of <parameter>rgb</parameter>.</para>
@@ -277,8 +274,8 @@ This function does not touch the alpha component of <parameter>rgb</parameter>.<
 <varlistentry><term><parameter>len</parameter>&nbsp;:</term>
 <listitem><simpara>  the length of <parameter>name</parameter>, in bytes. or -1 if <parameter>name</parameter> is nul-terminated
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if <parameter>name</parameter> was parsed successfully and <parameter>rgb</parameter> has been
-              set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if <parameter>name</parameter> was parsed successfully and <parameter>rgb</parameter> has
+              been set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
@@ -289,8 +286,8 @@ This function does not touch the alpha component of <parameter>rgb</parameter>.<
                                                          const <link linkend="gchar">gchar</link> *hex,
                                                          <link linkend="gint">gint</link> len);</programlisting>
 <para>
-Attempts to parse a string describing a color in RGB value in
-hexadecimal notation (optionally prefixed with a '#').
+Attempts to parse a string describing an RGB color in hexadecimal
+notation (optionally prefixed with a '#').
 </para>
 <para>
 This function does not touch the alpha component of <parameter>rgb</parameter>.</para>
@@ -306,8 +303,8 @@ This function does not touch the alpha component of <parameter>rgb</parameter>.<
 <varlistentry><term><parameter>len</parameter>&nbsp;:</term>
 <listitem><simpara> the length of <parameter>hex</parameter>, in bytes. or -1 if <parameter>hex</parameter> is nul-terminated
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if <parameter>hex</parameter> was parsed successfully and <parameter>rgb</parameter> has been
-              set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if <parameter>hex</parameter> was parsed successfully and <parameter>rgb</parameter> has
+              been set, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
@@ -318,10 +315,10 @@ This function does not touch the alpha component of <parameter>rgb</parameter>.<
                                                          const <link linkend="gchar">gchar</link> *css,
                                                          <link linkend="gint">gint</link> len);</programlisting>
 <para>
-Attempts to parse a string describing a color in RGB value in CSS
+Attempts to parse a string describing an RGB color in CSS
 notation. This can be either a numerical representation
-(<code>rgb(255,0,0)</code> or <code>rgb(100%,0%,0%)</code>) or
-a hexadecimal notation as parsed by <link linkend="gimp-rgb-parse-hex"><function>gimp_rgb_parse_hex()</function></link>
+(<code>rgb(255,0,0)</code> or <code>rgb(100%,0%,0%)</code>)
+or a hexadecimal notation as parsed by <link linkend="gimp-rgb-parse-hex"><function>gimp_rgb_parse_hex()</function></link>
 (<code>#<link linkend="ff0000"><type>ff0000</type></link></code>) or a color name as parsed by
 <link linkend="gimp-rgb-parse-name"><function>gimp_rgb_parse_name()</function></link> (<code>red</code>).
 </para>

@@ -203,7 +203,42 @@ gimp_crop_tool_button_release (GimpTool              *tool,
                                GimpButtonReleaseType  release_type,
                                GimpDisplay           *display)
 {
+  GimpRectangleOptions *options = GIMP_RECTANGLE_TOOL_GET_OPTIONS (tool);
+
   gimp_tool_push_status (tool, display, _("Click or press Enter to crop"));
+
+  if (tool->display != NULL)
+    {
+      gint crop_rectangle_width;
+      gint crop_rectangle_height;
+
+      /* There exists a pending crop rectangle, set default aspect ratio to the
+       * same aspect ratio of the rectangle.
+       */
+
+      gimp_rectangle_tool_get_rectangle_size (GIMP_RECTANGLE_TOOL (tool),
+                                              &crop_rectangle_width,
+                                              &crop_rectangle_height);
+      if (crop_rectangle_width < 1.0)
+        crop_rectangle_width = 1.0;
+
+      if (crop_rectangle_height < 1.0)
+        crop_rectangle_height = 1.0;
+
+      g_object_set (options,
+                    "default-aspect-numerator",   (double) crop_rectangle_width,
+                    "default-aspect-denominator", (double) crop_rectangle_height,
+                    NULL);
+    }
+  else
+    {
+      /* There exist no rectangle, set default to 1:1 */
+      /* TODO: Should be canvas/layer width/height when bug #417166 is fixed. */
+      g_object_set (options,
+                    "default-aspect-numerator",   1.0,
+                    "default-aspect-denominator", 1.0,
+                    NULL);
+    }
 
   gimp_rectangle_tool_button_release (tool, coords, time, state, release_type,
                                       display);
@@ -229,7 +264,6 @@ gimp_crop_tool_cursor_update (GimpTool        *tool,
                               GimpDisplay     *display)
 {
   gimp_rectangle_tool_cursor_update (tool, coords, state, display);
-  gimp_tool_control_set_tool_cursor (tool->control, GIMP_TOOL_CURSOR_CROP);
 
   GIMP_TOOL_CLASS (parent_class)->cursor_update (tool, coords, state, display);
 }
@@ -241,11 +275,16 @@ gimp_crop_tool_execute (GimpRectangleTool  *rectangle,
                         gint                w,
                         gint                h)
 {
-  GimpTool        *tool    = GIMP_TOOL (rectangle);
-  GimpCropOptions *options = GIMP_CROP_TOOL_GET_OPTIONS (tool);
-  GimpImage       *image;
-  gint             max_x, max_y;
-  gboolean         rectangle_exists;
+  GimpTool             *tool;
+  GimpCropOptions      *options;
+  GimpRectangleOptions *rectangle_options;
+  GimpImage            *image;
+  gint                  max_x, max_y;
+  gboolean              rectangle_exists;
+
+  tool              = GIMP_TOOL (rectangle);
+  options           = GIMP_CROP_TOOL_GET_OPTIONS (tool);
+  rectangle_options = GIMP_RECTANGLE_TOOL_GET_OPTIONS (rectangle);
 
   gimp_tool_pop_status (tool, tool->display);
 
@@ -284,6 +323,12 @@ gimp_crop_tool_execute (GimpRectangleTool  *rectangle,
                        TRUE);
 
       gimp_image_flush (image);
+
+      /* TODO: Should be canvas/layer width/height when bug #417166 is fixed. */
+      g_object_set (rectangle_options,
+                    "default-aspect-numerator",   1.0,
+                    "default-aspect-denominator", 1.0,
+                    NULL);
 
       return TRUE;
     }

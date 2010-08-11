@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpimage.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2599539" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2583394" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2637938" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2638163" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpguides"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2599539"></a><span class="refentrytitle">gimpguides</span>
+<a name="id2583394"></a><span class="refentrytitle">gimpguides</span>
 </h2>
 <p>gimpguides &#8212; Functions for manipulating guides.</p>
 </td>
@@ -52,34 +52,74 @@
 
 
 
-gint32              <a href="libgimp-gimpguides.html#gimp-image-add-hguide">gimp_image_add_hguide</a>               (gint32 image_ID,
-                                                         gint yposition);
-gint32              <a href="libgimp-gimpguides.html#gimp-image-add-vguide">gimp_image_add_vguide</a>               (gint32 image_ID,
-                                                         gint xposition);
-gboolean            <a href="libgimp-gimpguides.html#gimp-image-delete-guide">gimp_image_delete_guide</a>             (gint32 image_ID,
-                                                         gint32 guide_ID);
-gint32              <a href="libgimp-gimpguides.html#gimp-image-find-next-guide">gimp_image_find_next_guide</a>          (gint32 image_ID,
-                                                         gint32 guide_ID);
-<a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> <a href="libgimp-gimpguides.html#gimp-image-get-guide-orientation">gimp_image_get_guide_orientation</a>    (gint32 image_ID,
-                                                         gint32 guide_ID);
-gint                <a href="libgimp-gimpguides.html#gimp-image-get-guide-position">gimp_image_get_guide_position</a>       (gint32 image_ID,
-                                                         gint32 guide_ID);
+<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a href="libgimp-gimpguides.html#gimp-image-add-hguide">gimp_image_add_hguide</a>               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> yposition);
+<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a href="libgimp-gimpguides.html#gimp-image-add-vguide">gimp_image_add_vguide</a>               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> xposition);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpguides.html#gimp-image-delete-guide">gimp_image_delete_guide</a>             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> guide_ID);
+<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a href="libgimp-gimpguides.html#gimp-image-find-next-guide">gimp_image_find_next_guide</a>          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> guide_ID);
+<a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> <a href="libgimp-gimpguides.html#gimp-image-get-guide-orientation">gimp_image_get_guide_orientation</a>    (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> guide_ID);
+<a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                <a href="libgimp-gimpguides.html#gimp-image-get-guide-position">gimp_image_get_guide_position</a>       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> guide_ID);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2637938"></a><h2>Description</h2>
+<a name="id2638163"></a><h2>Description</h2>
 <p>
 Functions for manipulating guides.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2637954"></a><h2>Details</h2>
+<a name="id2638178"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2637965"></a><h3>
+<a name="id2638189"></a><h3>
 <a name="gimp-image-add-hguide"></a>gimp_image_add_hguide ()</h3>
-<a class="indexterm" name="id2637976"></a><pre class="programlisting">gint32              gimp_image_add_hguide               (gint32 image_ID,
-                                                         gint yposition);</pre>
+<a class="indexterm" name="id2638200"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_image_add_hguide               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> yposition);</pre>
 <p>
 Add a horizontal guide to an image.
 </p>
@@ -113,10 +153,16 @@ returns the guide ID of the new guide.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638063"></a><h3>
+<a name="id2638288"></a><h3>
 <a name="gimp-image-add-vguide"></a>gimp_image_add_vguide ()</h3>
-<a class="indexterm" name="id2638075"></a><pre class="programlisting">gint32              gimp_image_add_vguide               (gint32 image_ID,
-                                                         gint xposition);</pre>
+<a class="indexterm" name="id2638299"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_image_add_vguide               (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> xposition);</pre>
 <p>
 Add a vertical guide to an image.
 </p>
@@ -150,10 +196,16 @@ the guide ID of the new guide.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637638"></a><h3>
+<a name="id2637863"></a><h3>
 <a name="gimp-image-delete-guide"></a>gimp_image_delete_guide ()</h3>
-<a class="indexterm" name="id2637650"></a><pre class="programlisting">gboolean            gimp_image_delete_guide             (gint32 image_ID,
-                                                         gint32 guide_ID);</pre>
+<a class="indexterm" name="id2637874"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_image_delete_guide             (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> guide_ID);</pre>
 <p>
 Deletes a guide from an image.
 </p>
@@ -186,10 +238,16 @@ the specified guide from the specified image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2637736"></a><h3>
+<a name="id2637960"></a><h3>
 <a name="gimp-image-find-next-guide"></a>gimp_image_find_next_guide ()</h3>
-<a class="indexterm" name="id2637747"></a><pre class="programlisting">gint32              gimp_image_find_next_guide          (gint32 image_ID,
-                                                         gint32 guide_ID);</pre>
+<a class="indexterm" name="id2637972"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a>              gimp_image_find_next_guide          (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> guide_ID);</pre>
 <p>
 Find next guide on an image.
 </p>
@@ -225,10 +283,14 @@ as an argument or the image has no guides.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636404"></a><h3>
+<a name="id2636638"></a><h3>
 <a name="gimp-image-get-guide-orientation"></a>gimp_image_get_guide_orientation ()</h3>
-<a class="indexterm" name="id2636415"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> gimp_image_get_guide_orientation    (gint32 image_ID,
-                                                         gint32 guide_ID);</pre>
+<a class="indexterm" name="id2636649"></a><pre class="programlisting"><a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> gimp_image_get_guide_orientation    (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> guide_ID);</pre>
 <p>
 Get orientation of a guide on an image.
 </p>
@@ -261,10 +323,16 @@ the orientations of the guide.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2636501"></a><h3>
+<a name="id2636734"></a><h3>
 <a name="gimp-image-get-guide-position"></a>gimp_image_get_guide_position ()</h3>
-<a class="indexterm" name="id2636512"></a><pre class="programlisting">gint                gimp_image_get_guide_position       (gint32 image_ID,
-                                                         gint32 guide_ID);</pre>
+<a class="indexterm" name="id2636746"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a>                gimp_image_get_guide_position       (<a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> image_ID,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint32"
+>gint32</a> guide_ID);</pre>
 <p>
 Get position of a guide on an image.
 </p>

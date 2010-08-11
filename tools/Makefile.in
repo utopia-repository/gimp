@@ -38,7 +38,7 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = $(am__EXEEXT_1)
 noinst_PROGRAMS = test-clipboard$(EXEEXT)
-EXTRA_PROGRAMS = gimp-remote-2.3$(EXEEXT) kernelgen$(EXEEXT)
+EXTRA_PROGRAMS = gimp-remote-2.4$(EXEEXT) kernelgen$(EXEEXT)
 subdir = tools
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -58,16 +58,16 @@ am__EXEEXT_1 = @GIMP_REMOTE@
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
-am_gimp_remote_2_3_OBJECTS = gimp-remote.$(OBJEXT)
-gimp_remote_2_3_OBJECTS = $(am_gimp_remote_2_3_OBJECTS)
+am_gimp_remote_2_4_OBJECTS = gimp-remote.$(OBJEXT)
+gimp_remote_2_4_OBJECTS = $(am_gimp_remote_2_4_OBJECTS)
 am__DEPENDENCIES_1 =
-gimp_remote_2_3_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+gimp_remote_2_4_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_kernelgen_OBJECTS = kernelgen.$(OBJEXT)
 kernelgen_OBJECTS = $(am_kernelgen_OBJECTS)
 kernelgen_LDADD = $(LDADD)
-test_clipboard_SOURCES = test-clipboard.c
-test_clipboard_OBJECTS = test-clipboard.$(OBJEXT)
+am_test_clipboard_OBJECTS = test-clipboard.$(OBJEXT)
+test_clipboard_OBJECTS = $(am_test_clipboard_OBJECTS)
 test_clipboard_DEPENDENCIES = $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -80,10 +80,10 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(gimp_remote_2_3_SOURCES) $(kernelgen_SOURCES) \
-	test-clipboard.c
-DIST_SOURCES = $(gimp_remote_2_3_SOURCES) $(kernelgen_SOURCES) \
-	test-clipboard.c
+SOURCES = $(gimp_remote_2_4_SOURCES) $(kernelgen_SOURCES) \
+	$(test_clipboard_SOURCES)
+DIST_SOURCES = $(gimp_remote_2_4_SOURCES) $(kernelgen_SOURCES) \
+	$(test_clipboard_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	html-recursive info-recursive install-data-recursive \
 	install-exec-recursive install-info-recursive \
@@ -259,14 +259,12 @@ INTLTOOL_CAVES_RULE = @INTLTOOL_CAVES_RULE@
 INTLTOOL_DESKTOP_RULE = @INTLTOOL_DESKTOP_RULE@
 INTLTOOL_DIRECTORY_RULE = @INTLTOOL_DIRECTORY_RULE@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
-INTLTOOL_ICONV = @INTLTOOL_ICONV@
 INTLTOOL_KBD_RULE = @INTLTOOL_KBD_RULE@
 INTLTOOL_KEYS_RULE = @INTLTOOL_KEYS_RULE@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
-INTLTOOL_MSGFMT = @INTLTOOL_MSGFMT@
-INTLTOOL_MSGMERGE = @INTLTOOL_MSGMERGE@
 INTLTOOL_OAF_RULE = @INTLTOOL_OAF_RULE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_POLICY_RULE = @INTLTOOL_POLICY_RULE@
 INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
@@ -278,7 +276,6 @@ INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
 INTLTOOL_UI_RULE = @INTLTOOL_UI_RULE@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_XAM_RULE = @INTLTOOL_XAM_RULE@
-INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
@@ -466,13 +463,13 @@ target_alias = @target_alias@
 @WITH_PDBGEN_FALSE@D_pdbgen = 
 @WITH_PDBGEN_TRUE@D_pdbgen = pdbgen
 SUBDIRS = $(D_pdbgen)
-gimp_remote_2_3_SOURCES = gimp-remote.c
-gimp_remote_2_3_LDADD = \
+gimp_remote_2_4_SOURCES = gimp-remote.c
+gimp_remote_2_4_LDADD = \
 	$(GTK_LIBS)	\
 	$(LIBXMU)
 
 kernelgen_SOURCES = kernelgen.c
-test_clipboard_SURCES = test-clipboard.c
+test_clipboard_SOURCES = test-clipboard.c
 test_clipboard_LDADD = \
 	$(GTK_LIBS)
 
@@ -558,9 +555,9 @@ clean-noinstPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-gimp-remote-2.3$(EXEEXT): $(gimp_remote_2_3_OBJECTS) $(gimp_remote_2_3_DEPENDENCIES) 
-	@rm -f gimp-remote-2.3$(EXEEXT)
-	$(LINK) $(gimp_remote_2_3_LDFLAGS) $(gimp_remote_2_3_OBJECTS) $(gimp_remote_2_3_LDADD) $(LIBS)
+gimp-remote-2.4$(EXEEXT): $(gimp_remote_2_4_OBJECTS) $(gimp_remote_2_4_DEPENDENCIES) 
+	@rm -f gimp-remote-2.4$(EXEEXT)
+	$(LINK) $(gimp_remote_2_4_LDFLAGS) $(gimp_remote_2_4_OBJECTS) $(gimp_remote_2_4_LDADD) $(LIBS)
 kernelgen$(EXEEXT): $(kernelgen_OBJECTS) $(kernelgen_DEPENDENCIES) 
 	@rm -f kernelgen$(EXEEXT)
 	$(LINK) $(kernelgen_LDFLAGS) $(kernelgen_OBJECTS) $(kernelgen_LDADD) $(LIBS)

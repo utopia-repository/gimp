@@ -74,8 +74,8 @@ am_libgimpthumb_2_0_la_OBJECTS = gimpthumb-enums.lo gimpthumb-error.lo \
 	gimpthumb-utils.lo gimpthumbnail.lo
 libgimpthumb_2_0_la_OBJECTS = $(am_libgimpthumb_2_0_la_OBJECTS)
 PROGRAMS = $(noinst_PROGRAMS)
-gimp_thumbnail_list_SOURCES = gimp-thumbnail-list.c
-gimp_thumbnail_list_OBJECTS = gimp-thumbnail-list.$(OBJEXT)
+am_gimp_thumbnail_list_OBJECTS = gimp-thumbnail-list.$(OBJEXT)
+gimp_thumbnail_list_OBJECTS = $(am_gimp_thumbnail_list_OBJECTS)
 gimp_thumbnail_list_DEPENDENCIES =  \
 	libgimpthumb-$(GIMP_API_VERSION).la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -89,8 +89,10 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libgimpthumb_2_0_la_SOURCES) gimp-thumbnail-list.c
-DIST_SOURCES = $(libgimpthumb_2_0_la_SOURCES) gimp-thumbnail-list.c
+SOURCES = $(libgimpthumb_2_0_la_SOURCES) \
+	$(gimp_thumbnail_list_SOURCES)
+DIST_SOURCES = $(libgimpthumb_2_0_la_SOURCES) \
+	$(gimp_thumbnail_list_SOURCES)
 DATA = $(noinst_DATA)
 libgimpthumbincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(libgimpthumbinclude_HEADERS)
@@ -262,14 +264,12 @@ INTLTOOL_CAVES_RULE = @INTLTOOL_CAVES_RULE@
 INTLTOOL_DESKTOP_RULE = @INTLTOOL_DESKTOP_RULE@
 INTLTOOL_DIRECTORY_RULE = @INTLTOOL_DIRECTORY_RULE@
 INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
-INTLTOOL_ICONV = @INTLTOOL_ICONV@
 INTLTOOL_KBD_RULE = @INTLTOOL_KBD_RULE@
 INTLTOOL_KEYS_RULE = @INTLTOOL_KEYS_RULE@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
-INTLTOOL_MSGFMT = @INTLTOOL_MSGFMT@
-INTLTOOL_MSGMERGE = @INTLTOOL_MSGMERGE@
 INTLTOOL_OAF_RULE = @INTLTOOL_OAF_RULE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
+INTLTOOL_POLICY_RULE = @INTLTOOL_POLICY_RULE@
 INTLTOOL_PONG_RULE = @INTLTOOL_PONG_RULE@
 INTLTOOL_PROP_RULE = @INTLTOOL_PROP_RULE@
 INTLTOOL_SCHEMAS_RULE = @INTLTOOL_SCHEMAS_RULE@
@@ -281,7 +281,6 @@ INTLTOOL_THEME_RULE = @INTLTOOL_THEME_RULE@
 INTLTOOL_UI_RULE = @INTLTOOL_UI_RULE@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_XAM_RULE = @INTLTOOL_XAM_RULE@
-INTLTOOL_XGETTEXT = @INTLTOOL_XGETTEXT@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
 JPEG = @JPEG@
@@ -512,7 +511,7 @@ libgimpthumb_2_0_la_LDFLAGS = \
 	$(libgimpthumb_export_symbols)
 
 libgimpthumb_2_0_la_LIBADD = $(libgimpmath) $(GDK_PIXBUF_LIBS)
-gimp_thumbnail_list_SURCES = gimp-thumbnail-list.c
+gimp_thumbnail_list_SOURCES = gimp-thumbnail-list.c
 gimp_thumbnail_list_LDADD = libgimpthumb-$(GIMP_API_VERSION).la
 
 #

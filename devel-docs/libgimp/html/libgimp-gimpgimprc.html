@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimphelp.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2563524" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2560512" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2586774" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2581941" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpgimprc"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2563524"></a><span class="refentrytitle">gimpgimprc</span>
+<a name="id2560512"></a><span class="refentrytitle">gimpgimprc</span>
 </h2>
 <p>gimpgimprc &#8212; Interactions with settings from .gimprc.</p>
 </td>
@@ -52,35 +52,61 @@
 
 
 
-gchar*              <a href="libgimp-gimpgimprc.html#gimp-gimprc-query">gimp_gimprc_query</a>                   (const gchar *token);
-gboolean            <a href="libgimp-gimpgimprc.html#gimp-gimprc-set">gimp_gimprc_set</a>                     (const gchar *token,
-                                                         const gchar *value);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimp-gimpgimprc.html#gimp-gimprc-query">gimp_gimprc_query</a>                   (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *token);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpgimprc.html#gimp-gimprc-set">gimp_gimprc_set</a>                     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *token,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *value);
 <a
 href="../libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a>*    <a href="libgimp-gimpgimprc.html#gimp-get-color-configuration">gimp_get_color_configuration</a>        (void);
-gchar*              <a href="libgimp-gimpgimprc.html#gimp-get-default-comment">gimp_get_default_comment</a>            (void);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimp-gimpgimprc.html#gimp-get-default-comment">gimp_get_default_comment</a>            (void);
 <a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>            <a href="libgimp-gimpgimprc.html#gimp-get-default-unit">gimp_get_default_unit</a>               (void);
-gchar*              <a href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</a>        (void);
-gboolean            <a href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution">gimp_get_monitor_resolution</a>         (gdouble *xres,
-                                                         gdouble *yres);
-gchar*              <a href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_dir</a>                  (void);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimp-gimpgimprc.html#gimp-get-module-load-inhibit">gimp_get_module_load_inhibit</a>        (void);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimpgimprc.html#gimp-get-monitor-resolution">gimp_get_monitor_resolution</a>         (<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *xres,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *yres);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_dir</a>                  (void);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586774"></a><h2>Description</h2>
+<a name="id2581941"></a><h2>Description</h2>
 <p>
 Interactions with settings from .gimprc.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586789"></a><h2>Details</h2>
+<a name="id2581956"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2586800"></a><h3>
+<a name="id2581967"></a><h3>
 <a name="gimp-gimprc-query"></a>gimp_gimprc_query ()</h3>
-<a class="indexterm" name="id2586812"></a><pre class="programlisting">gchar*              gimp_gimprc_query                   (const gchar *token);</pre>
+<a class="indexterm" name="id2581979"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_gimprc_query                   (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *token);</pre>
 <p>
 Queries the gimprc file parser for information on a specified token.
 </p>
@@ -115,10 +141,16 @@ to be issued on gimprc parsing and will not be queryable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2558800"></a><h3>
+<a name="id2563759"></a><h3>
 <a name="gimp-gimprc-set"></a>gimp_gimprc_set ()</h3>
-<a class="indexterm" name="id2558812"></a><pre class="programlisting">gboolean            gimp_gimprc_set                     (const gchar *token,
-                                                         const gchar *value);</pre>
+<a class="indexterm" name="id2563771"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_gimprc_set                     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *token,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *value);</pre>
 <p>
 Sets a gimprc token to a value and saves it in the gimprc.
 </p>
@@ -154,9 +186,9 @@ will accept _only_ string values in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2558913"></a><h3>
+<a name="id2563871"></a><h3>
 <a name="gimp-get-color-configuration"></a>gimp_get_color_configuration ()</h3>
-<a class="indexterm" name="id2599784"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2561164"></a><pre class="programlisting"><a
 href="../libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a>*    gimp_get_color_configuration        (void);</pre>
 <p>
@@ -181,9 +213,11 @@ href="../libgimpconfig/GimpColorConfig.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599840"></a><h3>
+<a name="id2561221"></a><h3>
 <a name="gimp-get-default-comment"></a>gimp_get_default_comment ()</h3>
-<a class="indexterm" name="id2599852"></a><pre class="programlisting">gchar*              gimp_get_default_comment            (void);</pre>
+<a class="indexterm" name="id2561232"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_get_default_comment            (void);</pre>
 <p>
 Get the default image comment as specified in the Preferences.
 </p>
@@ -203,9 +237,9 @@ Returns a copy of the default image comment.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599897"></a><h3>
+<a name="id2561277"></a><h3>
 <a name="gimp-get-default-unit"></a>gimp_get_default_unit ()</h3>
-<a class="indexterm" name="id2599910"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2561290"></a><pre class="programlisting"><a
 href="../libgimpbase/libgimpbase-gimpunit.html#GimpUnit"
 >GimpUnit</a>            gimp_get_default_unit               (void);</pre>
 <p>
@@ -230,9 +264,11 @@ Returns the default unit's integer ID.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2599962"></a><h3>
+<a name="id2561342"></a><h3>
 <a name="gimp-get-module-load-inhibit"></a>gimp_get_module_load_inhibit ()</h3>
-<a class="indexterm" name="id2599973"></a><pre class="programlisting">gchar*              gimp_get_module_load_inhibit        (void);</pre>
+<a class="indexterm" name="id2561353"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_get_module_load_inhibit        (void);</pre>
 <p>
 Get the list of modules which should not be loaded.
 </p>
@@ -252,10 +288,16 @@ Returns a copy of the list of modules which should not be loaded.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600018"></a><h3>
+<a name="id2561398"></a><h3>
 <a name="gimp-get-monitor-resolution"></a>gimp_get_monitor_resolution ()</h3>
-<a class="indexterm" name="id2600030"></a><pre class="programlisting">gboolean            gimp_get_monitor_resolution         (gdouble *xres,
-                                                         gdouble *yres);</pre>
+<a class="indexterm" name="id2561409"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_get_monitor_resolution         (<a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *xres,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gdouble"
+>gdouble</a> *yres);</pre>
 <p>
 Get the monitor resolution as specified in the Preferences.
 </p>
@@ -290,9 +332,11 @@ reasonable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600853"></a><h3>
+<a name="id2600372"></a><h3>
 <a name="gimp-get-theme-dir"></a>gimp_get_theme_dir ()</h3>
-<a class="indexterm" name="id2600865"></a><pre class="programlisting">gchar*              gimp_get_theme_dir                  (void);</pre>
+<a class="indexterm" name="id2600384"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_get_theme_dir                  (void);</pre>
 <p>
 Get the directory of the current GUI theme.
 </p>

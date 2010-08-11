@@ -969,6 +969,107 @@ prefs_table_new (gint          rows,
   return table;
 }
 
+static void
+prefs_profile_combo_dialog_response (GimpProfileChooserDialog *dialog,
+                                     gint                      response,
+                                     GimpColorProfileComboBox *combo)
+{
+  if (response == GTK_RESPONSE_ACCEPT)
+    {
+      gchar *filename;
+
+      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+
+      if (filename)
+        {
+          gchar *label = gimp_profile_chooser_dialog_get_desc (dialog,
+                                                               filename);
+
+          gimp_color_profile_combo_box_set_active (combo, filename, label);
+
+          g_free (label);
+        }
+    }
+
+  gtk_widget_hide (GTK_WIDGET (dialog));
+}
+
+static void
+prefs_profile_combo_changed (GimpColorProfileComboBox *combo,
+                             GObject                  *config)
+{
+  gchar *filename = gimp_color_profile_combo_box_get_active (combo);
+
+  g_object_set (config,
+                g_object_get_data (G_OBJECT (combo), "property-name"), filename,
+                NULL);
+
+  g_free (filename);
+}
+
+static GtkWidget *
+prefs_profile_combo_add_tooltip (GtkWidget   *combo,
+                                 GObject     *config,
+                                 const gchar *property_name)
+{
+  GParamSpec  *param_spec;
+  const gchar *blurb;
+
+  param_spec = g_object_class_find_property (G_OBJECT_GET_CLASS (config),
+                                             property_name);
+
+  blurb = g_param_spec_get_blurb (param_spec);
+
+  /*  can't set a tooltip on a combo_box  */
+  if (blurb)
+    {
+      GtkWidget *ebox = gtk_event_box_new ();
+
+      gimp_help_set_help_data (ebox,
+                               dgettext (GETTEXT_PACKAGE "-libgimp", blurb),
+                               NULL);
+      gtk_container_add (GTK_CONTAINER (ebox), combo);
+      gtk_widget_show (combo);
+
+      return ebox;
+    }
+
+  return combo;
+}
+
+static GtkWidget *
+prefs_profile_combo_box_new (Gimp         *gimp,
+                             GObject      *config,
+                             GtkListStore *store,
+                             const gchar  *label,
+                             const gchar  *property_name)
+{
+  GtkWidget *dialog = gimp_profile_chooser_dialog_new (gimp, label);
+  GtkWidget *combo;
+  gchar     *filename;
+
+  g_object_get (config, property_name, &filename, NULL);
+
+  combo = gimp_color_profile_combo_box_new_with_model (dialog,
+                                                       GTK_TREE_MODEL (store));
+
+  g_object_set_data (G_OBJECT (combo),
+                     "property-name", (gpointer) property_name);
+
+  gimp_color_profile_combo_box_set_active (GIMP_COLOR_PROFILE_COMBO_BOX (combo),
+                                           filename, NULL);
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (prefs_profile_combo_dialog_response),
+                    combo);
+
+  g_signal_connect (combo, "changed",
+                    G_CALLBACK (prefs_profile_combo_changed),
+                    config);
+
+  return prefs_profile_combo_add_tooltip (combo, config, property_name);
+}
+
 static GtkWidget *
 prefs_button_add (const gchar *stock_id,
                   const gchar *label,
@@ -2315,8 +2416,10 @@ prefs_dialog_new (Gimp       *gimp,
         N_("Select Printer Color Profile"), "printer-profile" }
     };
 
-    GObject *color_config;
-    gint     row = 0;
+    GObject      *color_config;
+    GtkListStore *store;
+    gchar        *filename;
+    gint          row = 0;
 
     g_object_get (object, "color-management", &color_config, NULL);
 
@@ -2325,16 +2428,19 @@ prefs_dialog_new (Gimp       *gimp,
                               GTK_TABLE (table), row++, NULL);
     gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
 
+    filename = gimp_personal_rc_file ("profilerc");
+    store = gimp_color_profile_store_new (filename);
+    g_free (filename);
+
+    gimp_color_profile_store_add (GIMP_COLOR_PROFILE_STORE (store), NULL, NULL);
+
     for (i = 0; i < G_N_ELEMENTS (profiles); i++)
       {
-        GtkWidget *chooser;
-
-        chooser = gimp_profile_chooser_dialog_new (gimp,
-                                                   gettext (profiles[i].fs_label));
-        button =
-          gimp_prop_file_chooser_button_new_with_dialog (color_config,
-                                                         profiles[i].property_name,
-                                                         chooser);
+        button = prefs_profile_combo_box_new (gimp,
+                                              color_config,
+                                              store,
+                                              gettext (profiles[i].fs_label),
+                                              profiles[i].property_name);
 
         gimp_table_attach_aligned (GTK_TABLE (table), 0, row++,
                                    gettext (profiles[i].label), 0.0, 0.5,
@@ -2343,23 +2449,23 @@ prefs_dialog_new (Gimp       *gimp,
 
         if (i == 2) /* display profile */
           {
-#if defined (GDK_WINDOWING_X11)
             button =
               gimp_prop_check_button_new (color_config,
                                           "display-profile-from-gdk",
                                           _("_Try to obtain the monitor "
-                                            "profile from the X server"));
+                                            "profile from the windowing "
+                                            "system"));
 
             gtk_table_attach_defaults (GTK_TABLE (table),
                                        button, 0, 2, row, row + 1);
-            row++;
             gtk_widget_show (button);
-#endif
+            row++;
 
             prefs_enum_combo_box_add (color_config,
                                       "display-rendering-intent", 0, 0,
                                       _("_Display rendering intent:"),
                                       GTK_TABLE (table), row++, NULL);
+            gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
           }
 
         if (i == 3) /* printer profile */
@@ -2369,10 +2475,11 @@ prefs_dialog_new (Gimp       *gimp,
                                       _("_Softproof rendering intent:"),
                                       GTK_TABLE (table), row++, NULL);
           }
-
-        gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
       }
 
+    gtk_table_set_row_spacing (GTK_TABLE (table), row - 1, 12);
+
+    g_object_unref (store);
     g_object_unref (color_config);
 
     button = prefs_enum_combo_box_add (object, "color-profile-policy", 0, 0,

@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimprectangle.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2564642" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2585226" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2574736" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2596551" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpmemsize"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2564642"></a><span class="refentrytitle">gimpmemsize</span>
+<a name="id2585226"></a><span class="refentrytitle">gimpmemsize</span>
 </h2>
 <p>gimpmemsize &#8212; Functions to (de)serialize a given memory size.</p>
 </td>
@@ -46,36 +46,70 @@
 
 
 
-gchar*              <a href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize">gimp_memsize_serialize</a>              (guint64 memsize);
-gboolean            <a href="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize">gimp_memsize_deserialize</a>            (const gchar *string,
-                                                         guint64 *memsize);
-gchar*              <a href="libgimpbase-gimpmemsize.html#gimp-memsize-to-string">gimp_memsize_to_string</a>              (guint64 memsize);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize">gimp_memsize_serialize</a>              (<a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> memsize);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize">gimp_memsize_deserialize</a>            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *string,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> *memsize);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimpbase-gimpmemsize.html#gimp-memsize-to-string">gimp_memsize_to_string</a>              (<a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> memsize);
 #define             <a href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS">GIMP_TYPE_MEMSIZE</a>
 #define             <a href="libgimpbase-gimpmemsize.html#GIMP-TYPE-PARAM-MEMSIZE:CAPS">GIMP_TYPE_PARAM_MEMSIZE</a>
 #define             <a href="libgimpbase-gimpmemsize.html#GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS">GIMP_IS_PARAM_SPEC_MEMSIZE</a>          (pspec)
-GParamSpec*         <a href="libgimpbase-gimpmemsize.html#gimp-param-spec-memsize">gimp_param_spec_memsize</a>             (const gchar *name,
-                                                         const gchar *nick,
-                                                         const gchar *blurb,
-                                                         guint64 minimum,
-                                                         guint64 maximum,
-                                                         guint64 default_value,
-                                                         GParamFlags flags);
+<a
+href="../gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a>*         <a href="libgimpbase-gimpmemsize.html#gimp-param-spec-memsize">gimp_param_spec_memsize</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *nick,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> minimum,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> maximum,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> default_value,
+                                                         <a
+href="../gobject/gobject-GParamSpec.html#GParamFlags"
+>GParamFlags</a> flags);
 #define             <a href="libgimpbase-gimpmemsize.html#GIMP-VALUE-HOLDS-MEMSIZE:CAPS">GIMP_VALUE_HOLDS_MEMSIZE</a>            (value)
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2574736"></a><h2>Description</h2>
+<a name="id2596551"></a><h2>Description</h2>
 <p>
 Functions to (de)serialize a given memory size.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2574753"></a><h2>Details</h2>
+<a name="id2596567"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2576577"></a><h3>
+<a name="id2596578"></a><h3>
 <a name="gimp-memsize-serialize"></a>gimp_memsize_serialize ()</h3>
-<a class="indexterm" name="id2576591"></a><pre class="programlisting">gchar*              gimp_memsize_serialize              (guint64 memsize);</pre>
+<a class="indexterm" name="id2577881"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_memsize_serialize              (<a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> memsize);</pre>
 <p>
 Creates a string representation of a given memory size. This string
 can be parsed by <a href="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize"><code class="function">gimp_memsize_deserialize()</code></a> and can thus be used in
@@ -105,10 +139,16 @@ nice human-readable string please use <a href="libgimpbase-gimpmemsize.html#gimp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576685"></a><h3>
+<a name="id2577976"></a><h3>
 <a name="gimp-memsize-deserialize"></a>gimp_memsize_deserialize ()</h3>
-<a class="indexterm" name="id2576699"></a><pre class="programlisting">gboolean            gimp_memsize_deserialize            (const gchar *string,
-                                                         guint64 *memsize);</pre>
+<a class="indexterm" name="id2577990"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_memsize_deserialize            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *string,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> *memsize);</pre>
 <p>
 Parses a string representation of a memory size as returned by
 <a href="libgimpbase-gimpmemsize.html#gimp-memsize-serialize"><code class="function">gimp_memsize_serialize()</code></a>.</p>
@@ -130,8 +170,12 @@ Parses a string representation of a memory size as returned by
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> <code class="literal">TRUE</code> if the <em class="parameter"><code>string</code></em> was successfully parsed and
-              <em class="parameter"><code>memsize</code></em> has been set, <code class="literal">FALSE</code> otherwise.
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if the <em class="parameter"><code>string</code></em> was successfully parsed and
+              <em class="parameter"><code>memsize</code></em> has been set, <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> otherwise.
 
 </td>
 </tr>
@@ -142,9 +186,13 @@ Parses a string representation of a memory size as returned by
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2563661"></a><h3>
+<a name="id2558829"></a><h3>
 <a name="gimp-memsize-to-string"></a>gimp_memsize_to_string ()</h3>
-<a class="indexterm" name="id2563672"></a><pre class="programlisting">gchar*              gimp_memsize_to_string              (guint64 memsize);</pre>
+<a class="indexterm" name="id2558840"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_memsize_to_string              (<a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> memsize);</pre>
 <p>
 This function returns a human readable, translated representation
 of the passed <em class="parameter"><code>memsize</code></em>. Large values are displayed using a
@@ -171,19 +219,23 @@ becomes "4.4 KB" and so on.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2563742"></a><h3>
+<a name="id2558910"></a><h3>
 <a name="GIMP-TYPE-MEMSIZE:CAPS"></a>GIMP_TYPE_MEMSIZE</h3>
-<a class="indexterm" name="id2563754"></a><pre class="programlisting">#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
+<a class="indexterm" name="id2558921"></a><pre class="programlisting">#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
 </pre>
 <p>
-<a href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS"><span class="type">GIMP_TYPE_MEMSIZE</span></a> is a <span class="type">GType</span> derived from <span class="type">G_TYPE_UINT64</span>.
+<a href="libgimpbase-gimpmemsize.html#GIMP-TYPE-MEMSIZE:CAPS"><span class="type">GIMP_TYPE_MEMSIZE</span></a> is a <a
+href="../gobject/gobject-Type-Information.html#GType"
+><span class="type">GType</span></a> derived from <a
+href="../gobject/gobject-Type-Information.html#G-TYPE-UINT64:CAPS"
+><span class="type">G_TYPE_UINT64</span></a>.
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2563792"></a><h3>
+<a name="id2558959"></a><h3>
 <a name="GIMP-TYPE-PARAM-MEMSIZE:CAPS"></a>GIMP_TYPE_PARAM_MEMSIZE</h3>
-<a class="indexterm" name="id2563803"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_MEMSIZE           (gimp_param_memsize_get_type ())
+<a class="indexterm" name="id2558971"></a><pre class="programlisting">#define GIMP_TYPE_PARAM_MEMSIZE           (gimp_param_memsize_get_type ())
 </pre>
 <p>
 
@@ -191,9 +243,9 @@ becomes "4.4 KB" and so on.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576292"></a><h3>
+<a name="id2557737"></a><h3>
 <a name="GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS"></a>GIMP_IS_PARAM_SPEC_MEMSIZE()</h3>
-<a class="indexterm" name="id2576303"></a><pre class="programlisting">#define GIMP_IS_PARAM_SPEC_MEMSIZE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MEMSIZE))
+<a class="indexterm" name="id2557747"></a><pre class="programlisting">#define GIMP_IS_PARAM_SPEC_MEMSIZE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MEMSIZE))
 </pre>
 <p>
 
@@ -211,18 +263,36 @@ becomes "4.4 KB" and so on.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2576339"></a><h3>
+<a name="id2557783"></a><h3>
 <a name="gimp-param-spec-memsize"></a>gimp_param_spec_memsize ()</h3>
-<a class="indexterm" name="id2576352"></a><pre class="programlisting">GParamSpec*         gimp_param_spec_memsize             (const gchar *name,
-                                                         const gchar *nick,
-                                                         const gchar *blurb,
-                                                         guint64 minimum,
-                                                         guint64 maximum,
-                                                         guint64 default_value,
-                                                         GParamFlags flags);</pre>
+<a class="indexterm" name="id2557796"></a><pre class="programlisting"><a
+href="../gobject/gobject-GParamSpec.html#GParamSpec"
+>GParamSpec</a>*         gimp_param_spec_memsize             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *name,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *nick,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *blurb,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> minimum,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> maximum,
+                                                         <a
+href="../glib/glib-Basic-Types.html#guint64"
+>guint64</a> default_value,
+                                                         <a
+href="../gobject/gobject-GParamSpec.html#GParamFlags"
+>GParamFlags</a> flags);</pre>
 <p>
 Creates a param spec to hold a memory size value.
-See <code class="function">g_param_spec_internal()</code> for more information.</p>
+See <a
+href="../gobject/gobject-GParamSpec.html#g-param-spec-internal"
+><code class="function">g_param_spec_internal()</code></a> for more information.</p>
 <p>
 
 </p>
@@ -261,12 +331,16 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>flags</code></em>&#160;:</span></td>
-<td>         a combination of <span class="type">GParamFlags</span>
+<td>         a combination of <a
+href="../gobject/gobject-GParamSpec.html#GParamFlags"
+><span class="type">GParamFlags</span></a>
 </td>
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> a newly allocated <span class="type">GParamSpec</span> instance
+<td> a newly allocated <a
+href="../gobject/gobject-GParamSpec.html#GParamSpec"
+><span class="type">GParamSpec</span></a> instance
 
 </td>
 </tr>
@@ -277,9 +351,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603826"></a><h3>
+<a name="id2603823"></a><h3>
 <a name="GIMP-VALUE-HOLDS-MEMSIZE:CAPS"></a>GIMP_VALUE_HOLDS_MEMSIZE()</h3>
-<a class="indexterm" name="id2603836"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
+<a class="indexterm" name="id2603835"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
 </pre>
 <p>
 

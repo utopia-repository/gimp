@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpui.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2641461" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2572047" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2710217" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2708216" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppatternselect"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2641461"></a><span class="refentrytitle">gimppatternselect</span>
+<a name="id2572047"></a><span class="refentrytitle">gimppatternselect</span>
 </h2>
 <p>gimppatternselect &#8212; Functions providing a pattern selection dialog.</p>
 </td>
@@ -52,44 +52,100 @@
 
 
 
-void                (<a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">*GimpRunPatternCallback</a>)           (const gchar *pattern_name,
-                                                         gint width,
-                                                         gint height,
-                                                         gint bpp,
-                                                         const guchar *mask_data,
-                                                         gboolean dialog_closing,
-                                                         gpointer user_data);
-const gchar*        <a href="libgimp-gimppatternselect.html#gimp-pattern-select-new">gimp_pattern_select_new</a>             (const gchar *title,
-                                                         const gchar *pattern_name,
+void                (<a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">*GimpRunPatternCallback</a>)           (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> bpp,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *mask_data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a href="libgimp-gimppatternselect.html#gimp-pattern-select-new">gimp_pattern_select_new</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name,
                                                          <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
-                                                         gpointer data);
-void                <a href="libgimp-gimppatternselect.html#gimp-pattern-select-destroy">gimp_pattern_select_destroy</a>         (const gchar *pattern_callback);
-gboolean            <a href="libgimp-gimppatternselect.html#gimp-patterns-popup">gimp_patterns_popup</a>                 (const gchar *pattern_callback,
-                                                         const gchar *popup_title,
-                                                         const gchar *initial_pattern);
-gboolean            <a href="libgimp-gimppatternselect.html#gimp-patterns-close-popup">gimp_patterns_close_popup</a>           (const gchar *pattern_callback);
-gboolean            <a href="libgimp-gimppatternselect.html#gimp-patterns-set-popup">gimp_patterns_set_popup</a>             (const gchar *pattern_callback,
-                                                         const gchar *pattern_name);
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);
+void                <a href="libgimp-gimppatternselect.html#gimp-pattern-select-destroy">gimp_pattern_select_destroy</a>         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimppatternselect.html#gimp-patterns-popup">gimp_patterns_popup</a>                 (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_pattern);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimppatternselect.html#gimp-patterns-close-popup">gimp_patterns_close_popup</a>           (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback);
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimp-gimppatternselect.html#gimp-patterns-set-popup">gimp_patterns_set_popup</a>             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2710217"></a><h2>Description</h2>
+<a name="id2708216"></a><h2>Description</h2>
 <p>
 Functions providing a pattern selection dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2710234"></a><h2>Details</h2>
+<a name="id2708232"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2710244"></a><h3>
+<a name="id2708242"></a><h3>
 <a name="GimpRunPatternCallback"></a>GimpRunPatternCallback ()</h3>
-<a class="indexterm" name="id2710255"></a><pre class="programlisting">void                (*GimpRunPatternCallback)           (const gchar *pattern_name,
-                                                         gint width,
-                                                         gint height,
-                                                         gint bpp,
-                                                         const guchar *mask_data,
-                                                         gboolean dialog_closing,
-                                                         gpointer user_data);</pre>
+<a class="indexterm" name="id2708254"></a><pre class="programlisting">void                (*GimpRunPatternCallback)           (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> width,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> height,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> bpp,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#guchar"
+>guchar</a> *mask_data,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> dialog_closing,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> user_data);</pre>
 <p>
 
 </p>
@@ -138,12 +194,20 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2706625"></a><h3>
+<a name="id2710194"></a><h3>
 <a name="gimp-pattern-select-new"></a>gimp_pattern_select_new ()</h3>
-<a class="indexterm" name="id2706636"></a><pre class="programlisting">const gchar*        gimp_pattern_select_new             (const gchar *title,
-                                                         const gchar *pattern_name,
+<a class="indexterm" name="id2710467"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_pattern_select_new             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name,
                                                          <a href="libgimp-gimppatternselect.html#GimpRunPatternCallback">GimpRunPatternCallback</a> callback,
-                                                         gpointer data);</pre>
+                                                         <a
+href="../glib/glib-Basic-Types.html#gpointer"
+>gpointer</a> data);</pre>
 <p>
 
 </p>
@@ -182,9 +246,11 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2706757"></a><h3>
+<a name="id2710588"></a><h3>
 <a name="gimp-pattern-select-destroy"></a>gimp_pattern_select_destroy ()</h3>
-<a class="indexterm" name="id2706768"></a><pre class="programlisting">void                gimp_pattern_select_destroy         (const gchar *pattern_callback);</pre>
+<a class="indexterm" name="id2710599"></a><pre class="programlisting">void                gimp_pattern_select_destroy         (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback);</pre>
 <p>
 
 </p>
@@ -201,11 +267,19 @@ Functions providing a pattern selection dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2706813"></a><h3>
+<a name="id2710644"></a><h3>
 <a name="gimp-patterns-popup"></a>gimp_patterns_popup ()</h3>
-<a class="indexterm" name="id2706824"></a><pre class="programlisting">gboolean            gimp_patterns_popup                 (const gchar *pattern_callback,
-                                                         const gchar *popup_title,
-                                                         const gchar *initial_pattern);</pre>
+<a class="indexterm" name="id2710655"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_patterns_popup                 (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *popup_title,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *initial_pattern);</pre>
 <p>
 Invokes the Gimp pattern selection.
 </p>
@@ -242,9 +316,13 @@ This procedure opens the pattern selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2705543"></a><h3>
+<a name="id2704114"></a><h3>
 <a name="gimp-patterns-close-popup"></a>gimp_patterns_close_popup ()</h3>
-<a class="indexterm" name="id2705554"></a><pre class="programlisting">gboolean            gimp_patterns_close_popup           (const gchar *pattern_callback);</pre>
+<a class="indexterm" name="id2704125"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_patterns_close_popup           (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback);</pre>
 <p>
 Close the pattern selection dialog.
 </p>
@@ -271,10 +349,16 @@ This procedure closes an opened pattern selection dialog.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2705618"></a><h3>
+<a name="id2704189"></a><h3>
 <a name="gimp-patterns-set-popup"></a>gimp_patterns_set_popup ()</h3>
-<a class="indexterm" name="id2705629"></a><pre class="programlisting">gboolean            gimp_patterns_set_popup             (const gchar *pattern_callback,
-                                                         const gchar *pattern_name);</pre>
+<a class="indexterm" name="id2704200"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_patterns_set_popup             (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_callback,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *pattern_name);</pre>
 <p>
 Sets the current pattern in a pattern selection dialog.
 </p>

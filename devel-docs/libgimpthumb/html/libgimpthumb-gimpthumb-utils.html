@@ -25,16 +25,16 @@
 <th width="100%" align="center">GIMP Thumbnail Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpthumb-gimpthumb-enums.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2584426" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2568544" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2566697" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2569503" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpthumb-gimpthumb-utils"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2584426"></a><span class="refentrytitle">gimpthumb-utils</span>
+<a name="id2568544"></a><span class="refentrytitle">gimpthumb-utils</span>
 </h2>
 <p>gimpthumb-utils &#8212; Utility functions provided and used by libgimpthumb</p>
 </td>
@@ -46,43 +46,95 @@
 
 
 
-gboolean            <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-init">gimp_thumb_init</a>                     (const gchar *creator,
-                                                         const gchar *thumb_basedir);
-gchar*              <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-find-thumb">gimp_thumb_find_thumb</a>               (const gchar *uri,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-init">gimp_thumb_init</a>                     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *creator,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *thumb_basedir);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-find-thumb">gimp_thumb_find_thumb</a>               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> *size);
-<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType">GimpThumbFileType</a>   <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-file-test">gimp_thumb_file_test</a>                (const gchar *filename,
-                                                         gint64 *mtime,
-                                                         gint64 *size,
-                                                         gint *err_no);
-gchar*              <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-name-from-uri">gimp_thumb_name_from_uri</a>            (const gchar *uri,
+<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType">GimpThumbFileType</a>   <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-file-test">gimp_thumb_file_test</a>                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint64"
+>gint64</a> *mtime,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint64"
+>gint64</a> *size,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *err_no);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-name-from-uri">gimp_thumb_name_from_uri</a>            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);
-gboolean            <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-ensure-thumb-dir">gimp_thumb_ensure_thumb_dir</a>         (<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size,
-                                                         GError **error);
-const gchar*        <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir">gimp_thumb_get_thumb_dir</a>            (<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);
-void                <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumbs-delete-for-uri">gimp_thumbs_delete_for_uri</a>          (const gchar *uri);
-gchar*              <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-name-from-uri-local">gimp_thumb_name_from_uri_local</a>      (const gchar *uri,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-ensure-thumb-dir">gimp_thumb_ensure_thumb_dir</a>         (<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size,
+                                                         <a
+href="../glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
+const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir">gimp_thumb_get_thumb_dir</a>            (<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);
+void                <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumbs-delete-for-uri">gimp_thumbs_delete_for_uri</a>          (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-name-from-uri-local">gimp_thumb_name_from_uri_local</a>      (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);
-gboolean            <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-ensure-thumb-dir-local">gimp_thumb_ensure_thumb_dir_local</a>   (const gchar *dirname,
+<a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-ensure-thumb-dir-local">gimp_thumb_ensure_thumb_dir_local</a>   (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *dirname,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size,
-                                                         GError **error);
-gchar*              <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir-local">gimp_thumb_get_thumb_dir_local</a>      (const gchar *dirname,
+                                                         <a
+href="../glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);
+<a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-get-thumb-dir-local">gimp_thumb_get_thumb_dir_local</a>      (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *dirname,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);
-void                <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumbs-delete-for-uri-local">gimp_thumbs_delete_for_uri_local</a>    (const gchar *uri);
+void                <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumbs-delete-for-uri-local">gimp_thumbs_delete_for_uri_local</a>    (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2566697"></a><h2>Description</h2>
+<a name="id2569503"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2566713"></a><h2>Details</h2>
+<a name="id2569518"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2566723"></a><h3>
+<a name="id2569529"></a><h3>
 <a name="gimp-thumb-init"></a>gimp_thumb_init ()</h3>
-<a class="indexterm" name="id2566736"></a><pre class="programlisting">gboolean            gimp_thumb_init                     (const gchar *creator,
-                                                         const gchar *thumb_basedir);</pre>
+<a class="indexterm" name="id2569542"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumb_init                     (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *creator,
+                                                         const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *thumb_basedir);</pre>
 <p>
 This function initializes the thumbnail system. It must be called
 before any other functions from libgimpthumb are used. You may call
@@ -97,7 +149,9 @@ of the software that creates the thumbnails. It is used to handle
 thumbnail creation failures. See the spec for more details.
 </p>
 <p>
-Usually you will pass <code class="literal">NULL</code> for <em class="parameter"><code>thumb_basedir</code></em>. Thumbnails will
+Usually you will pass <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> for <em class="parameter"><code>thumb_basedir</code></em>. Thumbnails will
 then be stored in the user's personal thumbnail directory as
 defined in the spec. If you wish to use libgimpthumb to store
 application-specific thumbnails, you can specify a different base
@@ -115,12 +169,16 @@ directory here.</p>
 </tr>
 <tr>
 <td><span class="term"><em class="parameter"><code>thumb_basedir</code></em>&#160;:</span></td>
-<td> an absolute path or <code class="literal">NULL</code> to use the default
+<td> an absolute path or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> to use the default
 </td>
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> <code class="literal">TRUE</code> if the library was successfully initialized.
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> if the library was successfully initialized.
 </td>
 </tr>
 </tbody>
@@ -128,9 +186,13 @@ directory here.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2594079"></a><h3>
+<a name="id2588130"></a><h3>
 <a name="gimp-thumb-find-thumb"></a>gimp_thumb_find_thumb ()</h3>
-<a class="indexterm" name="id2594090"></a><pre class="programlisting">gchar*              gimp_thumb_find_thumb               (const gchar *uri,
+<a class="indexterm" name="id2588142"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_thumb_find_thumb               (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> *size);</pre>
 <p>
 This function attempts to locate a thumbnail for the given
@@ -166,7 +228,9 @@ pointer to by <em class="parameter"><code>size</code></em> and the file location
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a newly allocated string in the encoding of the
-              filesystem or <code class="literal">NULL</code> if no thumbnail for <em class="parameter"><code>uri</code></em> was found
+              filesystem or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> if no thumbnail for <em class="parameter"><code>uri</code></em> was found
 </td>
 </tr>
 </tbody>
@@ -174,12 +238,20 @@ pointer to by <em class="parameter"><code>size</code></em> and the file location
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588132"></a><h3>
+<a name="id2588291"></a><h3>
 <a name="gimp-thumb-file-test"></a>gimp_thumb_file_test ()</h3>
-<a class="indexterm" name="id2588143"></a><pre class="programlisting"><a href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType">GimpThumbFileType</a>   gimp_thumb_file_test                (const gchar *filename,
-                                                         gint64 *mtime,
-                                                         gint64 *size,
-                                                         gint *err_no);</pre>
+<a class="indexterm" name="id2588302"></a><pre class="programlisting"><a href="libgimpthumb-gimpthumb-enums.html#GimpThumbFileType">GimpThumbFileType</a>   gimp_thumb_file_test                (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *filename,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint64"
+>gint64</a> *mtime,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint64"
+>gint64</a> *size,
+                                                         <a
+href="../glib/glib-Basic-Types.html#gint"
+>gint</a> *err_no);</pre>
 <p>
 This is a convenience and portability wrapper around <code class="function">stat()</code>. It
 checks if the given <em class="parameter"><code>filename</code></em> exists and returns modification time
@@ -221,9 +293,13 @@ and file size in 64bit integer values.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2588290"></a><h3>
+<a name="id2588450"></a><h3>
 <a name="gimp-thumb-name-from-uri"></a>gimp_thumb_name_from_uri ()</h3>
-<a class="indexterm" name="id2588301"></a><pre class="programlisting">gchar*              gimp_thumb_name_from_uri            (const gchar *uri,
+<a class="indexterm" name="id2588461"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_thumb_name_from_uri            (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);</pre>
 <p>
 Creates the name of the thumbnail file of the specified <em class="parameter"><code>size</code></em> that
@@ -247,7 +323,9 @@ belongs to an image file located at the given <em class="parameter"><code>uri</c
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a newly allocated filename in the encoding of the
-              filesystem or <code class="literal">NULL</code> if <em class="parameter"><code>uri</code></em> points to the user's
+              filesystem or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> if <em class="parameter"><code>uri</code></em> points to the user's
               thumbnail repository.
 </td>
 </tr>
@@ -256,10 +334,14 @@ belongs to an image file located at the given <em class="parameter"><code>uri</c
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562108"></a><h3>
+<a name="id2562051"></a><h3>
 <a name="gimp-thumb-ensure-thumb-dir"></a>gimp_thumb_ensure_thumb_dir ()</h3>
-<a class="indexterm" name="id2562120"></a><pre class="programlisting">gboolean            gimp_thumb_ensure_thumb_dir         (<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size,
-                                                         GError **error);</pre>
+<a class="indexterm" name="id2562063"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumb_ensure_thumb_dir         (<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size,
+                                                         <a
+href="../glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 This function checks if the directory that is required to store
 thumbnails for a particular <em class="parameter"><code>size</code></em> exist and attempts to create it
@@ -287,7 +369,11 @@ do this for you.</p>
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> <code class="literal">TRUE</code> is the directory exists, <code class="literal">FALSE</code> if it could not
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> is the directory exists, <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> if it could not
               be created
 </td>
 </tr>
@@ -296,9 +382,11 @@ do this for you.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562250"></a><h3>
+<a name="id2562193"></a><h3>
 <a name="gimp-thumb-get-thumb-dir"></a>gimp_thumb_get_thumb_dir ()</h3>
-<a class="indexterm" name="id2562261"></a><pre class="programlisting">const gchar*        gimp_thumb_get_thumb_dir            (<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);</pre>
+<a class="indexterm" name="id2562204"></a><pre class="programlisting">const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gimp_thumb_get_thumb_dir            (<a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);</pre>
 <p>
 Retrieve the name of the thumbnail folder for a specific size. The
 returned pointer will become invalid if <a href="libgimpthumb-gimpthumb-utils.html#gimp-thumb-init"><code class="function">gimp_thumb_init()</code></a> is used
@@ -324,9 +412,11 @@ again. It must not be changed or freed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2562336"></a><h3>
+<a name="id2562278"></a><h3>
 <a name="gimp-thumbs-delete-for-uri"></a>gimp_thumbs_delete_for_uri ()</h3>
-<a class="indexterm" name="id2562350"></a><pre class="programlisting">void                gimp_thumbs_delete_for_uri          (const gchar *uri);</pre>
+<a class="indexterm" name="id2562293"></a><pre class="programlisting">void                gimp_thumbs_delete_for_uri          (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri);</pre>
 <p>
 Deletes all thumbnails for the image file specified by <em class="parameter"><code>uri</code></em> from the
 user's thumbnail repository.</p>
@@ -346,9 +436,13 @@ user's thumbnail repository.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601722"></a><h3>
+<a name="id2601881"></a><h3>
 <a name="gimp-thumb-name-from-uri-local"></a>gimp_thumb_name_from_uri_local ()</h3>
-<a class="indexterm" name="id2601736"></a><pre class="programlisting">gchar*              gimp_thumb_name_from_uri_local      (const gchar *uri,
+<a class="indexterm" name="id2601895"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_thumb_name_from_uri_local      (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);</pre>
 <p>
 Creates the name of a local thumbnail file of the specified <em class="parameter"><code>size</code></em>
@@ -373,7 +467,9 @@ thumbnails have been introduced with version 0.7 of the spec.</p>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
 <td> a newly allocated filename in the encoding of the
-              filesystem or <code class="literal">NULL</code> if <em class="parameter"><code>uri</code></em> is a remote file or
+              filesystem or <a
+href="../glib/glib-Standard-Macros.html#NULL:CAPS"
+><code class="literal">NULL</code></a> if <em class="parameter"><code>uri</code></em> is a remote file or
               points to the user's thumbnail repository.
 
 </td>
@@ -385,11 +481,17 @@ thumbnails have been introduced with version 0.7 of the spec.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2601853"></a><h3>
+<a name="id2602013"></a><h3>
 <a name="gimp-thumb-ensure-thumb-dir-local"></a>gimp_thumb_ensure_thumb_dir_local ()</h3>
-<a class="indexterm" name="id2601870"></a><pre class="programlisting">gboolean            gimp_thumb_ensure_thumb_dir_local   (const gchar *dirname,
+<a class="indexterm" name="id2602029"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            gimp_thumb_ensure_thumb_dir_local   (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *dirname,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size,
-                                                         GError **error);</pre>
+                                                         <a
+href="../glib/glib-Error-Reporting.html#GError"
+>GError</a> **error);</pre>
 <p>
 This function checks if the directory that is required to store
 local thumbnails for a particular <em class="parameter"><code>size</code></em> exist and attempts to
@@ -421,7 +523,11 @@ You shouldn't have to call this function directly since
 </tr>
 <tr>
 <td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> <code class="literal">TRUE</code> is the directory exists, <code class="literal">FALSE</code> if it could not
+<td> <a
+href="../glib/glib-Standard-Macros.html#TRUE:CAPS"
+><code class="literal">TRUE</code></a> is the directory exists, <a
+href="../glib/glib-Standard-Macros.html#FALSE:CAPS"
+><code class="literal">FALSE</code></a> if it could not
               be created
 
 </td>
@@ -433,9 +539,13 @@ You shouldn't have to call this function directly since
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602022"></a><h3>
+<a name="id2602181"></a><h3>
 <a name="gimp-thumb-get-thumb-dir-local"></a>gimp_thumb_get_thumb_dir_local ()</h3>
-<a class="indexterm" name="id2602037"></a><pre class="programlisting">gchar*              gimp_thumb_get_thumb_dir_local      (const gchar *dirname,
+<a class="indexterm" name="id2602197"></a><pre class="programlisting"><a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              gimp_thumb_get_thumb_dir_local      (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *dirname,
                                                          <a href="libgimpthumb-gimpthumb-enums.html#GimpThumbSize">GimpThumbSize</a> size);</pre>
 <p>
 Retrieve the name of the local thumbnail folder for a specific
@@ -470,9 +580,11 @@ constant and should be free'd when it is not any longer needed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602139"></a><h3>
+<a name="id2602299"></a><h3>
 <a name="gimp-thumbs-delete-for-uri-local"></a>gimp_thumbs_delete_for_uri_local ()</h3>
-<a class="indexterm" name="id2602155"></a><pre class="programlisting">void                gimp_thumbs_delete_for_uri_local    (const gchar *uri);</pre>
+<a class="indexterm" name="id2602314"></a><pre class="programlisting">void                gimp_thumbs_delete_for_uri_local    (const <a
+href="../glib/glib-Basic-Types.html#gchar"
+>gchar</a> *uri);</pre>
 <p>
 Deletes all thumbnails for the image file specified by <em class="parameter"><code>uri</code></em> from
 the local thumbnail repository.</p>

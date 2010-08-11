@@ -55,7 +55,7 @@ lib_LTLIBRARIES = \
 modules_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
 
 colorsel_libadd = $(libgimpcolor) $(modules_libadd)
-cdisplay_libadd = $(libgimpbase) $(libgimpconfig) $(modules_libadd)
+cdisplay_libadd = $(libgimpbase) $(libgimpconfig) $(libgimpcolor) $(modules_libadd)
 controller_libadd = $(modules_libadd)
 
 if HAVE_LCMS
@@ -91,6 +91,10 @@ libcdisplay_highcontrast_la_LIBADD = $(cdisplay_libadd)
 libcdisplay_lcms_la_SOURCES = cdisplay_lcms.c
 libcdisplay_lcms_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcdisplay_lcms_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS)
+
+if PLATFORM_WIN32
+libcdisplay_lcms_la_LIBADD += -lgdi32
+endif
 
 libcdisplay_proof_la_SOURCES = cdisplay_proof.c
 libcdisplay_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)

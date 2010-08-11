@@ -37,6 +37,8 @@ libappplug_in_a_SOURCES = \
 	gimpplugin-progress.h			\
 	gimpplugindef.c				\
 	gimpplugindef.h				\
+	gimppluginerror.c 			\
+	gimppluginerror.h 			\
 	gimppluginmanager.c			\
 	gimppluginmanager.h			\
 	gimppluginmanager-call.c		\

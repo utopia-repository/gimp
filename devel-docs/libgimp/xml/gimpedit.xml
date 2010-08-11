@@ -97,7 +97,7 @@ Cut from the specified drawable.
 If there is a selection in the image, then the area specified by the
 selection is cut from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using
-the 'gimp-edit-paste' command. If there is no selection, then the
+the <link linkend="gimp-edit-paste"><function>gimp_edit_paste()</function></link> command. If there is no selection, then the
 specified drawable will be removed and its contents stored in the
 internal GIMP edit buffer.</para>
 <para>
@@ -119,7 +119,7 @@ Copy from the specified drawable.
 If there is a selection in the image, then the area specified by the
 selection is copied from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using
-the 'gimp-edit-paste' command. If there is no selection, then the
+the <link linkend="gimp-edit-paste"><function>gimp_edit_paste()</function></link> command. If there is no selection, then the
 specified drawable's contents will be stored in the internal GIMP
 edit buffer.</para>
 <para>
@@ -141,7 +141,7 @@ Copy from the projection.
 If there is a selection in the image, then the area specified by the
 selection is copied from the projection and placed in an internal
 GIMP edit buffer. It can subsequently be retrieved using the
-'gimp-edit-paste' command. If there is no selection, then the
+<link linkend="gimp-edit-paste"><function>gimp_edit_paste()</function></link> command. If there is no selection, then the
 projection's contents will be stored in the internal GIMP edit
 buffer.</para>
 <para>
@@ -165,7 +165,7 @@ Paste buffer to the specified drawable.
 <para>
 This procedure pastes a copy of the internal GIMP edit buffer to the
 specified drawable. The GIMP edit buffer will be empty unless a call
-was previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'.
+was previously made to either <link linkend="gimp-edit-cut"><function>gimp_edit_cut()</function></link> or <link linkend="gimp-edit-copy"><function>gimp_edit_copy()</function></link>.
 The \"paste_into\" option specifies whether to clear the current
 image selection, or to paste the buffer \"behind\" the selection.
 This allows the selection to act as a mask for the pasted buffer.
@@ -199,7 +199,7 @@ Paste buffer to a new image.
 <para>
 This procedure pastes a copy of the internal GIMP edit buffer to a
 new image. The GIMP edit buffer will be empty unless a call was
-previously made to either 'gimp-edit-cut' or 'gimp-edit-copy'. This
+previously made to either <link linkend="gimp-edit-cut"><function>gimp_edit_cut()</function></link> or <link linkend="gimp-edit-copy"><function>gimp_edit_copy()</function></link>. This
 procedure returns the new image.</para>
 <para>
 
@@ -217,9 +217,10 @@ procedure returns the new image.</para>
 Cut into a named buffer.
 </para>
 <para>
-This procedure works like gimp-edit-cut, but additionally stores the
-cut buffer into a named buffer that will stay available for later
-pasting, regardless of any intermediate copy or cut operations.</para>
+This procedure works like <link linkend="gimp-edit-cut"><function>gimp_edit_cut()</function></link>, but additionally stores
+the cut buffer into a named buffer that will stay available for
+later pasting, regardless of any intermediate copy or cut
+operations.</para>
 <para>
 
 </para><variablelist role="params">
@@ -242,7 +243,7 @@ pasting, regardless of any intermediate copy or cut operations.</para>
 Copy into a named buffer.
 </para>
 <para>
-This procedure works like gimp-edit-copy, but additionally stores
+This procedure works like <link linkend="gimp-edit-copy"><function>gimp_edit_copy()</function></link>, but additionally stores
 the copied buffer into a named buffer that will stay available for
 later pasting, regardless of any intermediate copy or cut
 operations.</para>
@@ -268,7 +269,7 @@ operations.</para>
 Copy from the projection into a named buffer.
 </para>
 <para>
-This procedure works like gimp-edit-copy-visible, but additionally
+This procedure works like <link linkend="gimp-edit-copy-visible"><function>gimp_edit_copy_visible()</function></link>, but additionally
 stores the copied buffer into a named buffer that will stay
 available for later pasting, regardless of any intermediate copy or
 cut operations.</para>
@@ -295,8 +296,8 @@ cut operations.</para>
 Paste named buffer to the specified drawable.
 </para>
 <para>
-This procedure works like gimp-edit-paste but pastes a named buffer
-instead of the global buffer.</para>
+This procedure works like <link linkend="gimp-edit-paste"><function>gimp_edit_paste()</function></link> but pastes a named
+buffer instead of the global buffer.</para>
 <para>
 
 </para><variablelist role="params">
@@ -321,8 +322,8 @@ instead of the global buffer.</para>
 Paste named buffer to a new image.
 </para>
 <para>
-This procedure works like gimp-edit-paste-as-new but pastes a named
-buffer instead of the global buffer.</para>
+This procedure works like <link linkend="gimp-edit-paste-as-new"><function>gimp_edit_paste_as_new()</function></link> but pastes a
+named buffer instead of the global buffer.</para>
 <para>
 
 </para><variablelist role="params">

@@ -273,7 +273,6 @@
     <function name="gimp_prop_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-entry-new"/>
     <function name="gimp_prop_text_buffer_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-text-buffer-new"/>
     <function name="gimp_prop_file_chooser_button_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-chooser-button-new"/>
-    <function name="gimp_prop_file_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-file-entry-new"/>
     <function name="gimp_prop_path_editor_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-path-editor-new"/>
     <function name="gimp_prop_size_entry_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-size-entry-new"/>
     <function name="gimp_prop_coordinates_new ()" link="libgimpwidgets-GimpPropWidgets.html#gimp-prop-coordinates-new"/>
@@ -465,6 +464,7 @@
     <function name="GIMP_STOCK_LAYERS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYERS:CAPS"/>
     <function name="GIMP_STOCK_CHANNELS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNELS:CAPS"/>
     <function name="GIMP_STOCK_PATHS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATHS:CAPS"/>
+    <function name="GIMP_STOCK_COLORMAP" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLORMAP:CAPS"/>
     <function name="GIMP_STOCK_INDEXED_PALETTE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-INDEXED-PALETTE:CAPS"/>
     <function name="GIMP_STOCK_CURSOR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURSOR:CAPS"/>
     <function name="GIMP_STOCK_SAMPLE_POINT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SAMPLE-POINT:CAPS"/>
@@ -536,6 +536,7 @@
     <function name="GIMP_STOCK_SWAP_COLORS" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-SWAP-COLORS:CAPS"/>
     <function name="GIMP_STOCK_UNDO_HISTORY" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-UNDO-HISTORY:CAPS"/>
     <function name="GIMP_STOCK_TOOL_AIRBRUSH" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-AIRBRUSH:CAPS"/>
+    <function name="GIMP_STOCK_TOOL_ALIGN" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ALIGN:CAPS"/>
     <function name="GIMP_STOCK_TOOL_BLEND" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLEND:CAPS"/>
     <function name="GIMP_STOCK_TOOL_BLUR" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLUR:CAPS"/>
     <function name="GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS"/>

@@ -141,25 +141,22 @@ static const GimpActionEntry image_actions[] =
     GIMP_HELP_IMAGE_PROPERTIES }
 };
 
-static const GimpEnumActionEntry image_convert_actions[] =
+static const GimpRadioActionEntry image_convert_actions[] =
 {
   { "image-convert-rgb", GIMP_STOCK_CONVERT_RGB,
     N_("_RGB"), NULL,
     N_("Convert the image to the RGB colorspace"),
-    GIMP_RGB, FALSE,
-    GIMP_HELP_IMAGE_CONVERT_RGB },
+    GIMP_RGB, GIMP_HELP_IMAGE_CONVERT_RGB },
 
   { "image-convert-grayscale", GIMP_STOCK_CONVERT_GRAYSCALE,
     N_("_Grayscale"), NULL,
     N_("Convert the image to grayscale"),
-    GIMP_GRAY, FALSE,
-    GIMP_HELP_IMAGE_CONVERT_GRAYSCALE },
+    GIMP_GRAY, GIMP_HELP_IMAGE_CONVERT_GRAYSCALE },
 
   { "image-convert-indexed", GIMP_STOCK_CONVERT_INDEXED,
     N_("_Indexed..."), NULL,
     N_("Convert the image to indexed colors"),
-    GIMP_INDEXED, FALSE,
-    GIMP_HELP_IMAGE_CONVERT_INDEXED }
+    GIMP_INDEXED, GIMP_HELP_IMAGE_CONVERT_INDEXED }
 };
 
 static const GimpEnumActionEntry image_flip_actions[] =
@@ -212,10 +209,11 @@ image_actions_setup (GimpActionGroup *group)
                                         "image-new-from-image");
   gtk_action_set_accel_path (action, "<Actions>/image/image-new");
 
-  gimp_action_group_add_enum_actions (group,
-                                      image_convert_actions,
-                                      G_N_ELEMENTS (image_convert_actions),
-                                      G_CALLBACK (image_convert_cmd_callback));
+  gimp_action_group_add_radio_actions (group,
+                                       image_convert_actions,
+                                       G_N_ELEMENTS (image_convert_actions),
+                                       NULL, 0,
+                                       G_CALLBACK (image_convert_cmd_callback));
 
   gimp_action_group_add_enum_actions (group,
                                       image_flip_actions,
@@ -232,24 +230,32 @@ void
 image_actions_update (GimpActionGroup *group,
                       gpointer         data)
 {
-  GimpImage *image     = action_data_get_image (data);
-  gboolean   is_rgb     = FALSE;
-  gboolean   is_gray    = FALSE;
-  gboolean   is_indexed = FALSE;
-  gboolean   fs         = FALSE;
-  gboolean   aux        = FALSE;
-  gboolean   lp         = FALSE;
-  gboolean   sel        = FALSE;
+  GimpImage *image = action_data_get_image (data);
+  gboolean   fs    = FALSE;
+  gboolean   aux   = FALSE;
+  gboolean   lp    = FALSE;
+  gboolean   sel   = FALSE;
 
   if (image)
     {
-      GimpImageBaseType base_type;
+      const gchar *action = NULL;
 
-      base_type = gimp_image_base_type (image);
+      switch (gimp_image_base_type (image))
+        {
+        case GIMP_RGB:
+          action = "image-convert-rgb";
+          break;
 
-      is_rgb     = (base_type == GIMP_RGB);
-      is_gray    = (base_type == GIMP_GRAY);
-      is_indexed = (base_type == GIMP_INDEXED);
+        case GIMP_GRAY:
+          action = "image-convert-grayscale";
+          break;
+
+        case GIMP_INDEXED:
+          action = "image-convert-indexed";
+          break;
+        }
+
+      gimp_action_group_set_action_active (group, action, TRUE);
 
       fs  = (gimp_image_floating_sel (image) != NULL);
       aux = (gimp_image_get_active_channel (image) != NULL);
@@ -260,9 +266,9 @@ image_actions_update (GimpActionGroup *group,
 #define SET_SENSITIVE(action,condition) \
         gimp_action_group_set_action_sensitive (group, action, (condition) != 0)
 
-  SET_SENSITIVE ("image-convert-rgb",       image && ! is_rgb);
-  SET_SENSITIVE ("image-convert-grayscale", image && ! is_gray);
-  SET_SENSITIVE ("image-convert-indexed",   image && ! is_indexed);
+  SET_SENSITIVE ("image-convert-rgb",       image);
+  SET_SENSITIVE ("image-convert-grayscale", image);
+  SET_SENSITIVE ("image-convert-indexed",   image);
 
   SET_SENSITIVE ("image-flip-horizontal", image);
   SET_SENSITIVE ("image-flip-vertical",   image);

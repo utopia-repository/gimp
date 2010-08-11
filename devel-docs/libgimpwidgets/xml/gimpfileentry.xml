@@ -101,18 +101,20 @@ will be emitted.
 <title id="details.title">Details</title>
 <refsect2>
 <title><anchor id="GimpFileEntry-struct" role="struct"/>GimpFileEntry</title>
-<indexterm><primary>GimpFileEntry</primary></indexterm><programlisting>typedef struct _GimpFileEntry GimpFileEntry;</programlisting>
+<indexterm role="deprecated"><primary>GimpFileEntry</primary></indexterm><programlisting>typedef struct _GimpFileEntry GimpFileEntry;</programlisting>
+<warning><para><literal>GimpFileEntry</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-file-entry-new" role="function"/>gimp_file_entry_new ()</title>
-<indexterm><primary>gimp_file_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_file_entry_new             (const <link linkend="gchar">gchar</link> *title,
+<title><anchor id="gimp-file-entry-new" role="function" condition="deprecated:"/>gimp_file_entry_new ()</title>
+<indexterm role="deprecated"><primary>gimp_file_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_file_entry_new             (const <link linkend="gchar">gchar</link> *title,
                                              const <link linkend="gchar">gchar</link> *filename,
                                              <link linkend="gboolean">gboolean</link> dir_only,
                                              <link linkend="gboolean">gboolean</link> check_valid);</programlisting>
+<warning><para><literal>gimp_file_entry_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
-Creates a new <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> widget.</para>
+You should use <link linkend="GtkFileChooserButton"><type>GtkFileChooserButton</type></link> instead.</para>
 <para>
 
 </para><variablelist role="params">
@@ -133,8 +135,9 @@ Creates a new <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> wi
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-file-entry-get-filename" role="function"/>gimp_file_entry_get_filename ()</title>
-<indexterm><primary>gimp_file_entry_get_filename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_file_entry_get_filename    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry);</programlisting>
+<title><anchor id="gimp-file-entry-get-filename" role="function" condition="deprecated:"/>gimp_file_entry_get_filename ()</title>
+<indexterm role="deprecated"><primary>gimp_file_entry_get_filename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_file_entry_get_filename    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry);</programlisting>
+<warning><para><literal>gimp_file_entry_get_filename</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Note that you have to <link linkend="g-free"><function>g_free()</function></link> the returned string.</para>
 <para>
@@ -147,9 +150,10 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-file-entry-set-filename" role="function"/>gimp_file_entry_set_filename ()</title>
-<indexterm><primary>gimp_file_entry_set_filename</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_file_entry_set_filename    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry,
+<title><anchor id="gimp-file-entry-set-filename" role="function" condition="deprecated:"/>gimp_file_entry_set_filename ()</title>
+<indexterm role="deprecated"><primary>gimp_file_entry_set_filename</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_file_entry_set_filename    (<link linkend="GimpFileEntry">GimpFileEntry</link> *entry,
                                              const <link linkend="gchar">gchar</link> *filename);</programlisting>
+<warning><para><literal>gimp_file_entry_set_filename</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 If you specified <parameter>check_valid</parameter> as <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> in <link linkend="gimp-file-entry-new"><function>gimp_file_entry_new()</function></link>
 the <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> will immediately check the validity of the file

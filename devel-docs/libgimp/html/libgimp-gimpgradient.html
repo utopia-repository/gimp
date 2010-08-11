@@ -194,9 +194,9 @@ Functions operating on a single gradient.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2650096"></a><h3>
+<a name="id2655799"></a><h3>
 <a name="gimp-gradient-new"></a>gimp_gradient_new ()</h3>
-<a class="indexterm" name="id2650108"></a><pre class="programlisting">gchar*      gimp_gradient_new               (const gchar *name);</pre>
+<a class="indexterm" name="id2655811"></a><pre class="programlisting">gchar*      gimp_gradient_new               (const gchar *name);</pre>
 <p>
 Creates a new gradient
 </p>
@@ -228,9 +228,9 @@ This procedure creates a new, uninitialized gradient</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650171"></a><h3>
+<a name="id2655874"></a><h3>
 <a name="gimp-gradient-duplicate"></a>gimp_gradient_duplicate ()</h3>
-<a class="indexterm" name="id2650183"></a><pre class="programlisting">gchar*      gimp_gradient_duplicate         (const gchar *name);</pre>
+<a class="indexterm" name="id2655886"></a><pre class="programlisting">gchar*      gimp_gradient_duplicate         (const gchar *name);</pre>
 <p>
 Duplicates a gradient
 </p>
@@ -262,9 +262,9 @@ This procedure creates an identical gradient by a different name</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650245"></a><h3>
+<a name="id2655948"></a><h3>
 <a name="gimp-gradient-rename"></a>gimp_gradient_rename ()</h3>
-<a class="indexterm" name="id2650258"></a><pre class="programlisting">gchar*      gimp_gradient_rename            (const gchar *name,
+<a class="indexterm" name="id2655961"></a><pre class="programlisting">gchar*      gimp_gradient_rename            (const gchar *name,
                                              const gchar *new_name);</pre>
 <p>
 Rename a gradient
@@ -303,9 +303,9 @@ This procedure renames a gradient</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650338"></a><h3>
+<a name="id2656041"></a><h3>
 <a name="gimp-gradient-delete"></a>gimp_gradient_delete ()</h3>
-<a class="indexterm" name="id2650350"></a><pre class="programlisting">gboolean    gimp_gradient_delete            (const gchar *name);</pre>
+<a class="indexterm" name="id2656054"></a><pre class="programlisting">gboolean    gimp_gradient_delete            (const gchar *name);</pre>
 <p>
 Deletes a gradient
 </p>
@@ -337,9 +337,9 @@ This procedure deletes a gradient</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650411"></a><h3>
+<a name="id2656114"></a><h3>
 <a name="gimp-gradient-is-editable"></a>gimp_gradient_is_editable ()</h3>
-<a class="indexterm" name="id2650424"></a><pre class="programlisting">gboolean    gimp_gradient_is_editable       (const gchar *name);</pre>
+<a class="indexterm" name="id2656127"></a><pre class="programlisting">gboolean    gimp_gradient_is_editable       (const gchar *name);</pre>
 <p>
 Tests if gradient can be edited
 </p>
@@ -371,9 +371,9 @@ Returns TRUE if you have permission to change the gradient</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650486"></a><h3>
+<a name="id2656189"></a><h3>
 <a name="gimp-gradient-get-uniform-samples"></a>gimp_gradient_get_uniform_samples ()</h3>
-<a class="indexterm" name="id2650499"></a><pre class="programlisting">gboolean    gimp_gradient_get_uniform_samples
+<a class="indexterm" name="id2656203"></a><pre class="programlisting">gboolean    gimp_gradient_get_uniform_samples
                                             (const gchar *name,
                                              gint num_samples,
                                              gboolean reverse,
@@ -440,9 +440,9 @@ the colors at positions { 0.0, 0.5, 1.0 }.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650647"></a><h3>
+<a name="id2656351"></a><h3>
 <a name="gimp-gradient-get-custom-samples"></a>gimp_gradient_get_custom_samples ()</h3>
-<a class="indexterm" name="id2650659"></a><pre class="programlisting">gboolean    gimp_gradient_get_custom_samples
+<a class="indexterm" name="id2656365"></a><pre class="programlisting">gboolean    gimp_gradient_get_custom_samples
                                             (const gchar *name,
                                              gint num_samples,
                                              const gdouble *positions,
@@ -515,9 +515,9 @@ correspond to the RGBA values for each sample.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650826"></a><h3>
+<a name="id2656534"></a><h3>
 <a name="gimp-gradient-segment-get-left-color"></a>gimp_gradient_segment_get_left_color ()</h3>
-<a class="indexterm" name="id2650841"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_color
+<a class="indexterm" name="id2656548"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_color
                                             (const gchar *name,
                                              gint segment,
                                              <a
@@ -574,9 +574,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2650964"></a><h3>
+<a name="id2656672"></a><h3>
 <a name="gimp-gradient-segment-set-left-color"></a>gimp_gradient_segment_set_left_color ()</h3>
-<a class="indexterm" name="id2650979"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_color
+<a class="indexterm" name="id2656687"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_color
                                             (const gchar *name,
                                              gint segment,
                                              const <a
@@ -633,9 +633,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651103"></a><h3>
+<a name="id2656811"></a><h3>
 <a name="gimp-gradient-segment-get-right-color"></a>gimp_gradient_segment_get_right_color ()</h3>
-<a class="indexterm" name="id2651118"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_color
+<a class="indexterm" name="id2656826"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_color
                                             (const gchar *name,
                                              gint segment,
                                              <a
@@ -692,9 +692,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651241"></a><h3>
+<a name="id2656950"></a><h3>
 <a name="gimp-gradient-segment-set-right-color"></a>gimp_gradient_segment_set_right_color ()</h3>
-<a class="indexterm" name="id2651256"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_color
+<a class="indexterm" name="id2656965"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_color
                                             (const gchar *name,
                                              gint segment,
                                              const <a
@@ -751,9 +751,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651380"></a><h3>
+<a name="id2657089"></a><h3>
 <a name="gimp-gradient-segment-get-left-pos"></a>gimp_gradient_segment_get_left_pos ()</h3>
-<a class="indexterm" name="id2651395"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_pos
+<a class="indexterm" name="id2657104"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_left_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble *pos);</pre>
@@ -801,9 +801,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651498"></a><h3>
+<a name="id2657207"></a><h3>
 <a name="gimp-gradient-segment-set-left-pos"></a>gimp_gradient_segment_set_left_pos ()</h3>
-<a class="indexterm" name="id2651513"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_pos
+<a class="indexterm" name="id2657223"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_left_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble pos,
@@ -861,9 +861,9 @@ position.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651639"></a><h3>
+<a name="id2657348"></a><h3>
 <a name="gimp-gradient-segment-get-middle-pos"></a>gimp_gradient_segment_get_middle_pos ()</h3>
-<a class="indexterm" name="id2651654"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_middle_pos
+<a class="indexterm" name="id2657363"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_middle_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble *pos);</pre>
@@ -911,9 +911,9 @@ segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651758"></a><h3>
+<a name="id2657467"></a><h3>
 <a name="gimp-gradient-segment-set-middle-pos"></a>gimp_gradient_segment_set_middle_pos ()</h3>
-<a class="indexterm" name="id2651773"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_middle_pos
+<a class="indexterm" name="id2657482"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_middle_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble pos,
@@ -970,9 +970,9 @@ final position.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2651898"></a><h3>
+<a name="id2657607"></a><h3>
 <a name="gimp-gradient-segment-get-right-pos"></a>gimp_gradient_segment_get_right_pos ()</h3>
-<a class="indexterm" name="id2651913"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_pos
+<a class="indexterm" name="id2657623"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_right_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble *pos);</pre>
@@ -1020,9 +1020,9 @@ specified segment of the specified gradient.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652017"></a><h3>
+<a name="id2657726"></a><h3>
 <a name="gimp-gradient-segment-set-right-pos"></a>gimp_gradient_segment_set_right_pos ()</h3>
-<a class="indexterm" name="id2652032"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_pos
+<a class="indexterm" name="id2657741"></a><pre class="programlisting">gboolean    gimp_gradient_segment_set_right_pos
                                             (const gchar *name,
                                              gint segment,
                                              gdouble pos,
@@ -1080,9 +1080,9 @@ the final position.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652158"></a><h3>
+<a name="id2657867"></a><h3>
 <a name="gimp-gradient-segment-get-blending-function"></a>gimp_gradient_segment_get_blending_function ()</h3>
-<a class="indexterm" name="id2652173"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_blending_function
+<a class="indexterm" name="id2657883"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_blending_function
                                             (const gchar *name,
                                              gint segment,
                                              <a href="libgimp-gimpenums.html#GimpGradientSegmentType">GimpGradientSegmentType</a> *blend_func);</pre>
@@ -1130,9 +1130,9 @@ specified gradient name and segment index.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652278"></a><h3>
+<a name="id2657987"></a><h3>
 <a name="gimp-gradient-segment-get-coloring-type"></a>gimp_gradient_segment_get_coloring_type ()</h3>
-<a class="indexterm" name="id2652292"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_coloring_type
+<a class="indexterm" name="id2658002"></a><pre class="programlisting">gboolean    gimp_gradient_segment_get_coloring_type
                                             (const gchar *name,
                                              gint segment,
                                              <a href="libgimp-gimpenums.html#GimpGradientSegmentColor">GimpGradientSegmentColor</a> *coloring_type);</pre>
@@ -1180,9 +1180,9 @@ specified gradient name and segment index.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652397"></a><h3>
+<a name="id2658107"></a><h3>
 <a name="gimp-gradient-segment-range-set-blending-function"></a>gimp_gradient_segment_range_set_blending_function ()</h3>
-<a class="indexterm" name="id2652413"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_blending_function
+<a class="indexterm" name="id2658122"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_blending_function
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1237,9 +1237,9 @@ the specified blending function.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652538"></a><h3>
+<a name="id2658247"></a><h3>
 <a name="gimp-gradient-segment-range-set-coloring-type"></a>gimp_gradient_segment_range_set_coloring_type ()</h3>
-<a class="indexterm" name="id2652553"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_coloring_type
+<a class="indexterm" name="id2658262"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_set_coloring_type
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1294,9 +1294,9 @@ specified coloring type.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652678"></a><h3>
+<a name="id2658387"></a><h3>
 <a name="gimp-gradient-segment-range-flip"></a>gimp_gradient_segment_range_flip ()</h3>
-<a class="indexterm" name="id2652692"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_flip
+<a class="indexterm" name="id2658402"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_flip
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1343,9 +1343,9 @@ This function flips a segment range.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652801"></a><h3>
+<a name="id2658506"></a><h3>
 <a name="gimp-gradient-segment-range-replicate"></a>gimp_gradient_segment_range_replicate ()</h3>
-<a class="indexterm" name="id2652818"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_replicate
+<a class="indexterm" name="id2658523"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_replicate
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1401,9 +1401,9 @@ of it will appear in equal widths.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2652958"></a><h3>
+<a name="id2658663"></a><h3>
 <a name="gimp-gradient-segment-range-split-midpoint"></a>gimp_gradient_segment_range_split_midpoint ()</h3>
-<a class="indexterm" name="id2652976"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_midpoint
+<a class="indexterm" name="id2658681"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_midpoint
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1451,9 +1451,9 @@ midpoint.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653093"></a><h3>
+<a name="id2658797"></a><h3>
 <a name="gimp-gradient-segment-range-split-uniform"></a>gimp_gradient_segment_range_split_uniform ()</h3>
-<a class="indexterm" name="id2653111"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_uniform
+<a class="indexterm" name="id2658815"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_split_uniform
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,
@@ -1508,9 +1508,9 @@ according to the number of times specified by the parameter.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653250"></a><h3>
+<a name="id2658955"></a><h3>
 <a name="gimp-gradient-segment-range-delete"></a>gimp_gradient_segment_range_delete ()</h3>
-<a class="indexterm" name="id2653268"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_delete
+<a class="indexterm" name="id2658972"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_delete
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1557,9 +1557,9 @@ This function deletes a segment range.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653383"></a><h3>
+<a name="id2659088"></a><h3>
 <a name="gimp-gradient-segment-range-redistribute-handles"></a>gimp_gradient_segment_range_redistribute_handles ()</h3>
-<a class="indexterm" name="id2653400"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_redistribute_handles
+<a class="indexterm" name="id2659104"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_redistribute_handles
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1607,9 +1607,9 @@ range of the specified gradient, so they'll be evenly spaced.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653518"></a><h3>
+<a name="id2659223"></a><h3>
 <a name="gimp-gradient-segment-range-blend-colors"></a>gimp_gradient_segment_range_blend_colors ()</h3>
-<a class="indexterm" name="id2653535"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_colors
+<a class="indexterm" name="id2659240"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_colors
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1658,9 +1658,9 @@ will be uniform across the range.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653654"></a><h3>
+<a name="id2659359"></a><h3>
 <a name="gimp-gradient-segment-range-blend-opacity"></a>gimp_gradient_segment_range_blend_opacity ()</h3>
-<a class="indexterm" name="id2653672"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_opacity
+<a class="indexterm" name="id2659377"></a><pre class="programlisting">gboolean    gimp_gradient_segment_range_blend_opacity
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment);</pre>
@@ -1709,9 +1709,9 @@ will be uniform across the range.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2653790"></a><h3>
+<a name="id2659494"></a><h3>
 <a name="gimp-gradient-segment-range-move"></a>gimp_gradient_segment_range_move ()</h3>
-<a class="indexterm" name="id2653806"></a><pre class="programlisting">gdouble     gimp_gradient_segment_range_move
+<a class="indexterm" name="id2659511"></a><pre class="programlisting">gdouble     gimp_gradient_segment_range_move
                                             (const gchar *name,
                                              gint start_segment,
                                              gint end_segment,

@@ -73,9 +73,8 @@
 #include "gimppenciltool.h"
 #include "gimpperspectivetool.h"
 #include "gimpposterizetool.h"
-#include "gimprectselecttool.h"
-#include "gimpnewrectselecttool.h"
 #include "gimpthresholdtool.h"
+#include "gimprectangleselecttool.h"
 #include "gimprotatetool.h"
 #include "gimpscaletool.h"
 #include "gimpsheartool.h"
@@ -171,8 +170,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_fuzzy_select_tool_register,
     gimp_free_select_tool_register,
     gimp_ellipse_select_tool_register,
-    gimp_rect_select_tool_register,
-    gimp_new_rect_select_tool_register
+    gimp_rect_select_tool_register
   };
 
   GList *default_order = NULL;
@@ -243,6 +241,7 @@ gimp_tools_restore (Gimp *gimp)
   if (gimp_config_deserialize_file (GIMP_CONFIG (gimp_list), filename,
                                     NULL, NULL))
     {
+      gint n = gimp_container_num_children (gimp->tool_info_list);
       gint i;
 
       gimp_list_reverse (GIMP_LIST (gimp_list));
@@ -265,7 +264,8 @@ gimp_tools_restore (Gimp *gimp)
                             "visible", GIMP_TOOL_INFO (list->data)->visible,
                             NULL);
 
-              gimp_container_reorder (gimp->tool_info_list, object, i);
+              gimp_container_reorder (gimp->tool_info_list,
+                                      object, MIN (i, n - 1));
             }
         }
     }
@@ -542,8 +542,7 @@ gimp_tools_register (GType                   tool_type,
                                   paint_core_name,
                                   stock_id);
 
-  visible = (! g_type_is_a (tool_type, GIMP_TYPE_IMAGE_MAP_TOOL) &&
-             ! g_type_is_a (tool_type, GIMP_TYPE_RECT_SELECT_TOOL));
+  visible = (! g_type_is_a (tool_type, GIMP_TYPE_IMAGE_MAP_TOOL));
 
   g_object_set (tool_info, "visible", visible, NULL);
   g_object_set_data (G_OBJECT (tool_info), "gimp-tool-default-visible",

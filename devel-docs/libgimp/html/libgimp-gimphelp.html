@@ -65,9 +65,9 @@ Loading help pages using gimp_help.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2537665"></a><h3>
+<a name="id2559406"></a><h3>
 <a name="gimp-help"></a>gimp_help ()</h3>
-<a class="indexterm" name="id2535472"></a><pre class="programlisting">gboolean    gimp_help                       (const gchar *help_domain,
+<a class="indexterm" name="id2524353"></a><pre class="programlisting">gboolean    gimp_help                       (const gchar *help_domain,
                                              const gchar *help_id);</pre>
 <p>
 Load a help page.
@@ -76,9 +76,9 @@ Load a help page.
 This procedure loads the specified help page into the helpbrowser or
 what ever is configured as help viewer. The help page is identified
 by its domain and ID: if help_domain is NULL, we use the help_domain
-which was registered using the gimp-plugin-help-register procedure.
-If help_domain is NULL and no help domain was registered, the help
-domain of the main GIMP installation is used.</p>
+which was registered using the <a href="libgimp-gimpplugin.html#gimp-plugin-help-register"><code class="function">gimp_plugin_help_register()</code></a>
+procedure. If help_domain is NULL and no help domain was registered,
+the help domain of the main GIMP installation is used.</p>
 <p>
 
 </p>

@@ -28,6 +28,7 @@
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
+#include "core/gimpguide.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-guides.h"
 #include "core/gimplayer.h"
@@ -113,7 +114,7 @@ gimp_move_tool_register (GimpToolRegisterCallback  callback,
                 gimp_move_options_gui,
                 0,
                 "gimp-move-tool",
-                _("Move"),
+                Q_("tool|Move"),
                 _("Move layers & selections"),
                 N_("_Move"), "M",
                 NULL, GIMP_HELP_TOOL_MOVE,
@@ -251,8 +252,8 @@ gimp_move_tool_button_press (GimpTool        *tool,
             {
               move->guide             = guide;
               move->moving_guide      = TRUE;
-              move->guide_position    = guide->position;
-              move->guide_orientation = guide->orientation;
+              move->guide_position    = gimp_guide_get_position (guide);
+              move->guide_orientation = gimp_guide_get_orientation (guide);
 
               gimp_tool_control_set_scroll_lock (tool->control, TRUE);
               gimp_tool_control_activate (tool->control);

@@ -72,9 +72,9 @@ gchar*      <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-i
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2553747"></a><h3>
+<a name="id2548521"></a><h3>
 <a name="GimpConfigPathType"></a>enum GimpConfigPathType</h3>
-<a class="indexterm" name="id2553758"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2548532"></a><pre class="programlisting">typedef enum
 {
   GIMP_CONFIG_PATH_FILE,
   GIMP_CONFIG_PATH_FILE_LIST,
@@ -88,9 +88,9 @@ gchar*      <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-i
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2553776"></a><h3>
+<a name="id2536812"></a><h3>
 <a name="gimp-param-spec-config-path"></a>gimp_param_spec_config_path ()</h3>
-<a class="indexterm" name="id2553790"></a><pre class="programlisting">GParamSpec* gimp_param_spec_config_path     (const gchar *name,
+<a class="indexterm" name="id2536825"></a><pre class="programlisting">GParamSpec* gimp_param_spec_config_path     (const gchar *name,
                                              const gchar *nick,
                                              const gchar *blurb,
                                              <a href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType">GimpConfigPathType</a> type,
@@ -156,9 +156,9 @@ See <code class="function">g_param_spec_internal()</code> for more information.<
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556280"></a><h3>
+<a name="id2534783"></a><h3>
 <a name="gimp-param-spec-config-path-type"></a>gimp_param_spec_config_path_type ()</h3>
-<a class="indexterm" name="id2556295"></a><pre class="programlisting"><a href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType">GimpConfigPathType</a> gimp_param_spec_config_path_type
+<a class="indexterm" name="id2534799"></a><pre class="programlisting"><a href="libgimpconfig-gimpconfig-path.html#GimpConfigPathType">GimpConfigPathType</a> gimp_param_spec_config_path_type
                                             (GParamSpec *pspec);</pre>
 <p>
 Tells whether the path param encodes a filename,
@@ -189,9 +189,9 @@ dir name, or list of file or dir names.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2556377"></a><h3>
+<a name="id2534881"></a><h3>
 <a name="gimp-config-path-expand"></a>gimp_config_path_expand ()</h3>
-<a class="indexterm" name="id2556391"></a><pre class="programlisting">gchar*      gimp_config_path_expand         (const gchar *path,
+<a class="indexterm" name="id2534895"></a><pre class="programlisting">gchar*      gimp_config_path_expand         (const gchar *path,
                                              gboolean recode,
                                              GError **error);</pre>
 <p>
@@ -240,9 +240,9 @@ filesystem encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2537941"></a><h3>
+<a name="id2529343"></a><h3>
 <a name="gimp-config-build-data-path"></a>gimp_config_build_data_path ()</h3>
-<a class="indexterm" name="id2537955"></a><pre class="programlisting">gchar*      gimp_config_build_data_path     (const gchar *name);</pre>
+<a class="indexterm" name="id2529357"></a><pre class="programlisting">gchar*      gimp_config_build_data_path     (const gchar *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-data-path"><code class="function">gimp_config_build_data_path()</code></a> includes a directory
@@ -281,9 +281,9 @@ recode it using <a href="libgimpconfig-gimpconfig-path.html#gimp-config-path-exp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2538055"></a><h3>
+<a name="id2529458"></a><h3>
 <a name="gimp-config-build-writable-path"></a>gimp_config_build_writable_path ()</h3>
-<a class="indexterm" name="id2538071"></a><pre class="programlisting">gchar*      gimp_config_build_writable_path (const gchar *name);</pre>
+<a class="indexterm" name="id2529474"></a><pre class="programlisting">gchar*      gimp_config_build_writable_path (const gchar *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-writable-path"><code class="function">gimp_config_build_writable_path()</code></a> is just the writable
@@ -321,9 +321,9 @@ recode it using <a href="libgimpconfig-gimpconfig-path.html#gimp-config-path-exp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565126"></a><h3>
+<a name="id2570329"></a><h3>
 <a name="gimp-config-build-plug-in-path"></a>gimp_config_build_plug_in_path ()</h3>
-<a class="indexterm" name="id2565140"></a><pre class="programlisting">gchar*      gimp_config_build_plug_in_path  (const gchar *name);</pre>
+<a class="indexterm" name="id2570343"></a><pre class="programlisting">gchar*      gimp_config_build_plug_in_path  (const gchar *name);</pre>
 <p>
 Creates a search path as it is used in the gimprc file.  The path
 returned by <a href="libgimpconfig-gimpconfig-path.html#gimp-config-build-plug-in-path"><code class="function">gimp_config_build_plug_in_path()</code></a> includes a directory
@@ -362,9 +362,9 @@ recode it using <a href="libgimpconfig-gimpconfig-path.html#gimp-config-path-exp
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565235"></a><h3>
+<a name="id2570410"></a><h3>
 <a name="GIMP-VALUE-HOLDS-CONFIG-PATH:CAPS"></a>GIMP_VALUE_HOLDS_CONFIG_PATH()</h3>
-<a class="indexterm" name="id2565248"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_CONFIG_PATH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_CONFIG_PATH))
+<a class="indexterm" name="id2570421"></a><pre class="programlisting">#define GIMP_VALUE_HOLDS_CONFIG_PATH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_CONFIG_PATH))
 </pre>
 <p>
 

@@ -28,7 +28,6 @@
 
 #include "core/gimpchannel.h"
 #include "core/gimpimage.h"
-#include "core/gimpimage-crop.h"
 #include "core/gimppickable.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimpmarshal.h"
@@ -63,32 +62,36 @@ typedef struct _GimpRectangleToolPrivate GimpRectangleToolPrivate;
 
 struct _GimpRectangleToolPrivate
 {
-  gint       pressx;     /*  x where button pressed      */
-  gint       pressy;     /*  y where button pressed      */
+  gint       pressx;     /*  x where button pressed         */
+  gint       pressy;     /*  y where button pressed         */
 
-  gint       x1, y1;     /*  upper left hand coordinate  */
-  gint       x2, y2;     /*  lower right hand coords     */
+  gint       x1, y1;     /*  upper left hand coordinate     */
+  gint       x2, y2;     /*  lower right hand coords        */
 
-  guint      function;   /*  moving or resizing          */
+  guint      function;   /*  moving or resizing             */
 
-  gboolean   constrain;  /* constrain to image bounds    */
+  gboolean   constrain;  /* constrain to image bounds       */
 
   /* Internal state */
-  gint       startx;     /*  starting x coord            */
-  gint       starty;     /*  starting y coord            */
+  gint       startx;     /*  starting x coord               */
+  gint       starty;     /*  starting y coord               */
 
-  gint       lastx;      /*  previous x coord            */
-  gint       lasty;      /*  previous y coord            */
+  gint       lastx;      /*  previous x coord               */
+  gint       lasty;      /*  previous y coord               */
 
-  gint       dx1, dy1;   /*  display coords              */
-  gint       dx2, dy2;   /*                              */
+  gint       dx1, dy1;   /*  display coords                 */
+  gint       dx2, dy2;   /*                                 */
 
-  gint       dcw, dch;   /*  width and height of edges   */
+  gint       dcw, dch;   /*  width and height of edges      */
 
   gint       saved_x1;   /*  for saving in case action is canceled */
   gint       saved_y1;
   gint       saved_x2;
   gint       saved_y2;
+  gdouble    saved_center_x;
+  gdouble   saved_center_y;
+
+  GimpRectangleGuide guide; /* synced with options->guide, only exists for drawing */
 };
 
 
@@ -124,11 +127,10 @@ gboolean    gimp_rectangle_tool_get_constrain       (GimpRectangleTool *tool);
 
 /*  Rectangle helper functions  */
 static void     rectangle_tool_start                (GimpRectangleTool     *rectangle);
+static void     gimp_rectangle_tool_draw_guides     (GimpDrawTool          *draw_tool);
 
 /*  Rectangle dialog functions  */
 static void     rectangle_selection_callback        (GtkWidget             *widget,
-                                                     GimpRectangleTool     *rectangle);
-static void     rectangle_automatic_callback        (GtkWidget             *widget,
                                                      GimpRectangleTool     *rectangle);
 
 static void     gimp_rectangle_tool_update_options  (GimpRectangleTool     *rectangle,
@@ -146,10 +148,15 @@ static void     gimp_rectangle_tool_notify_aspect     (GimpRectangleOptions  *op
 static void     gimp_rectangle_tool_notify_highlight  (GimpRectangleOptions  *options,
                                                        GParamSpec            *pspec,
                                                        GimpRectangleTool     *rectangle);
+static void     gimp_rectangle_tool_notify_guide      (GimpRectangleOptions  *options,
+                                                       GParamSpec            *pspec,
+                                                       GimpRectangleTool     *rectangle);
 static void     gimp_rectangle_tool_notify_dimensions (GimpRectangleOptions  *options,
                                                        GParamSpec            *pspec,
                                                        GimpRectangleTool     *rectangle);
-
+static void     gimp_rectangle_tool_check_function    (GimpRectangleTool     *rectangle,
+                                                       gint                   curx,
+                                                       gint                   cury);
 
 static guint gimp_rectangle_tool_signals[LAST_SIGNAL] = { 0 };
 
@@ -169,10 +176,10 @@ gimp_rectangle_tool_interface_get_type (void)
       };
 
       rectangle_tool_iface_type =
-	g_type_register_static (G_TYPE_INTERFACE,
-				"GimpRectangleToolInterface",
-				&rectangle_tool_iface_info,
-				0);
+        g_type_register_static (G_TYPE_INTERFACE,
+                                "GimpRectangleToolInterface",
+                                &rectangle_tool_iface_info,
+                                0);
     }
 
   return rectangle_tool_iface_type;
@@ -285,8 +292,8 @@ gimp_rectangle_tool_get_private (GimpRectangleTool *tool)
       private = g_new0 (GimpRectangleToolPrivate, 1);
 
       g_object_set_qdata_full (G_OBJECT (tool), private_key, private,
-			       (GDestroyNotify)
-			       gimp_rectangle_tool_private_finalize);
+                               (GDestroyNotify)
+                               gimp_rectangle_tool_private_finalize);
     }
 
   return private;
@@ -653,6 +660,9 @@ gimp_rectangle_tool_constructor (GObject *object)
   g_signal_connect_object (options, "notify::highlight",
                            G_CALLBACK (gimp_rectangle_tool_notify_highlight),
                            rectangle, 0);
+  g_signal_connect_object (options, "notify::guide",
+                           G_CALLBACK (gimp_rectangle_tool_notify_guide),
+                           rectangle, 0);
   g_signal_connect_object (options, "notify::dimensions-entry",
                            G_CALLBACK (gimp_rectangle_tool_notify_dimensions),
                            rectangle, 0);
@@ -688,12 +698,14 @@ gboolean
 gimp_rectangle_tool_initialize (GimpTool    *tool,
                                 GimpDisplay *display)
 {
-  GimpSizeEntry *entry;
-  GObject       *options;
+  GimpRectangleToolPrivate *private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (tool);
+  GObject                  *options = G_OBJECT (tool->tool_info->tool_options);
+  GimpSizeEntry            *entry;
 
-  options = G_OBJECT (tool->tool_info->tool_options);
-
-  g_object_get (options, "dimensions-entry", &entry, NULL);
+  g_object_get (options,
+                "dimensions-entry", &entry,
+                "guide",            &private->guide,
+                NULL);
 
   if (display != tool->display)
     {
@@ -763,8 +775,14 @@ gimp_rectangle_tool_button_press (GimpTool        *tool,
   GimpDrawTool             *draw_tool = GIMP_DRAW_TOOL (tool);
   guint                     function;
   GimpRectangleToolPrivate *private;
+  gint                      x         = ROUND (coords->x);
+  gint                      y         = ROUND (coords->y);
+  GimpRectangleOptions     *options;
+
 
   g_return_if_fail (GIMP_IS_RECTANGLE_TOOL (tool));
+
+  options = GIMP_RECTANGLE_OPTIONS (tool->tool_info->tool_options);
 
   if (display != tool->display)
     {
@@ -773,10 +791,10 @@ gimp_rectangle_tool_button_press (GimpTool        *tool,
 
       function = RECT_CREATING;
       g_object_set (rectangle, "function", function,
-                    "x1", ROUND (coords->x),
-                    "y1", ROUND (coords->y),
-                    "x2", ROUND (coords->x),
-                    "y2", ROUND (coords->y),
+                    "x1", x,
+                    "y1", y,
+                    "x2", x,
+                    "y2", y,
                     NULL);
       gimp_tool_control_set_snap_offsets (tool->control, 0, 0, 0, 0);
 
@@ -792,6 +810,10 @@ gimp_rectangle_tool_button_press (GimpTool        *tool,
                 "x2", &private->saved_x2,
                 "y2", &private->saved_y2,
                 NULL);
+  g_object_get (options,
+                "center-x", &private->saved_center_x,
+                "center-y", &private->saved_center_y,
+                NULL);
 
   g_object_get (rectangle,
                 "function", &function,
@@ -799,27 +821,32 @@ gimp_rectangle_tool_button_press (GimpTool        *tool,
 
   if (function == RECT_CREATING)
     {
+      g_object_set (options,
+                    "center-x", (gdouble) x,
+                    "center-y", (gdouble) y,
+                    NULL);
+
       gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
       g_object_set (rectangle,
-                    "x1", ROUND (coords->x),
-                    "y1", ROUND (coords->y),
-                    "x2", ROUND (coords->x),
-                    "y2", ROUND (coords->y),
+                    "x1", x,
+                    "y1", y,
+                    "x2", x,
+                    "y2", y,
                     NULL);
 
       gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
     }
 
   g_object_set (rectangle,
-                "pressx", ROUND (coords->x),
-                "pressy", ROUND (coords->y),
+                "pressx", x,
+                "pressy", y,
                 NULL);
 
-  private->startx = ROUND (coords->x);
-  private->starty = ROUND (coords->y);
-  private->lastx = ROUND (coords->x);
-  private->lasty = ROUND (coords->y);
+  private->startx = x;
+  private->starty = y;
+  private->lastx = x;
+  private->lasty = y;
 
   gimp_tool_control_activate (tool->control);
 }
@@ -834,9 +861,11 @@ gimp_rectangle_tool_button_release (GimpTool        *tool,
   GimpRectangleTool        *rectangle = GIMP_RECTANGLE_TOOL (tool);
   GimpRectangleToolPrivate *private;
   guint                     function;
-  gint                      pressx, pressy;
+  GimpRectangleOptions     *options;
 
   g_return_if_fail (GIMP_IS_RECTANGLE_TOOL (tool));
+
+  options = GIMP_RECTANGLE_OPTIONS (tool->tool_info->tool_options);
 
   gimp_tool_control_halt (tool->control);
 
@@ -848,20 +877,23 @@ gimp_rectangle_tool_button_release (GimpTool        *tool,
 
   if (! (state & GDK_BUTTON3_MASK))
     {
-      g_object_get (rectangle,
-                    "pressx", &pressx,
-                    "pressy", &pressy,
-                    NULL);
-      if (private->lastx == pressx && private->lasty == pressy)
+      if (gimp_rectangle_tool_no_movement (rectangle))
         {
           if (gimp_rectangle_tool_execute (rectangle))
             gimp_rectangle_tool_halt (rectangle);
         }
-
-      g_signal_emit_by_name (rectangle, "rectangle-changed", NULL);
+      else
+        {
+          g_signal_emit_by_name (rectangle, "rectangle-changed", NULL);
+        }
     }
   else
     {
+      g_object_set (options,
+                "center-x", private->saved_center_x,
+                "center-y", private->saved_center_y,
+                NULL);
+
       gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
       g_object_set (rectangle,
@@ -897,19 +929,25 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
   gboolean                  fixed_center;
   gdouble                   width, height;
   gdouble                   center_x, center_y;
+  gboolean                  aspect_square;
 
   g_return_if_fail (GIMP_IS_RECTANGLE_TOOL (tool));
 
   private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (tool);
 
-  /*  This is the only case when the motion events should be ignored--
-      we're just waiting for the button release event to execute  */
+  /*  This is the only case when the motion events should be ignored --
+   *  we're just waiting for the button release event to execute.
+   */
   g_object_get (rectangle, "function", &function, NULL);
+
   if (function == RECT_EXECUTING)
     return;
 
   curx = ROUND (coords->x);
   cury = ROUND (coords->y);
+
+  /* fix function, startx, starty if user has "flipped" the rectangle */
+  gimp_rectangle_tool_check_function (rectangle, curx, cury);
 
   inc_x = curx - private->startx;
   inc_y = cury - private->starty;
@@ -921,10 +959,11 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
   options = GIMP_RECTANGLE_OPTIONS (tool->tool_info->tool_options);
 
   g_object_get (options,
-                "new-fixed-width", &fixed_width,
+                "new-fixed-width",  &fixed_width,
                 "new-fixed-height", &fixed_height,
-                "fixed-aspect", &fixed_aspect,
-                "fixed-center", &fixed_center,
+                "fixed-aspect",     &fixed_aspect,
+                "fixed-center",     &fixed_center,
+                "aspect-square",    &aspect_square,
                 NULL);
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
@@ -978,7 +1017,7 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
               x1 = max_x - width;
             }
         }
-      else if (fixed_center || state & GDK_CONTROL_MASK)
+      else if (fixed_center)
         {
           x2 = x1 + 2 * (center_x - x1);
           if (x1 < 0)
@@ -1017,7 +1056,7 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
               x2 = width;
             }
         }
-      else if (fixed_center || state & GDK_CONTROL_MASK)
+      else if (fixed_center)
         {
           x1 = x2 - 2 * (x2 - center_x);
           if (x2 > max_x)
@@ -1075,7 +1114,7 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
               y1 = max_y - height;
             }
         }
-      else if (fixed_center || state & GDK_CONTROL_MASK)
+      else if (fixed_center)
         {
           y2 = y1 + 2 * (center_y - y1);
           if (y1 < 0)
@@ -1114,7 +1153,7 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
               y2 = height;
             }
         }
-      else if (fixed_center || state & GDK_CONTROL_MASK)
+      else if (fixed_center)
         {
           y1 = y2 - 2 * (y2 - center_y);
           if (y2 > max_y)
@@ -1149,13 +1188,17 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
       break;
     }
 
-  if (fixed_aspect)
+  if (fixed_aspect || aspect_square)
     {
       gdouble aspect;
 
-      g_object_get (options, "aspect", &aspect, NULL);
-
-      aspect = CLAMP (aspect, 1.0 / max_y, max_x);
+      if (aspect_square)
+        aspect = 1;
+      else
+        {
+          g_object_get (options, "aspect", &aspect, NULL);
+          aspect = CLAMP (aspect, 1.0 / max_y, max_x);
+        }
 
       switch (function)
         {
@@ -1189,50 +1232,6 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
             x2 = rx1 + (y2 - ry1) * aspect + .5;
           else
             y2 = ry1 + (x2 - rx1) / aspect + .5;
-          break;
-
-        default:
-          break;
-        }
-    }
-
-    /* If the shift key is down, then make the rectangle square (or
-     * ellipse circular)
-     */
-    if (state & GDK_SHIFT_MASK)
-      {
-        switch (function)
-        {
-        case RECT_RESIZING_UPPER_LEFT:
-          if (inc_x != 0)
-            y1 = y2 - (x2 - x1);
-          else
-            x1 = x2 - (y2 - y1);
-          break;
-
-        case RECT_RESIZING_UPPER_RIGHT:
-        case RECT_RESIZING_TOP:
-          if (inc_x != 0)
-            y1 = y2 - (x2 - x1);
-          else
-            x2 = x1 + (y2 - y1);
-          break;
-
-        case RECT_RESIZING_LOWER_LEFT:
-        case RECT_RESIZING_LEFT:
-          if (inc_x != 0)
-            y2 = y1 + (x2 - x1);
-          else
-            x1 = x2 - (y2 - y1);
-          break;
-
-        case RECT_RESIZING_LOWER_RIGHT:
-        case RECT_RESIZING_RIGHT:
-        case RECT_RESIZING_BOTTOM:
-          if (inc_x != 0)
-            y2 = y1 + (x2 - x1);
-          else
-            x2 = x1 + (y2 - y1);
           break;
 
         default:
@@ -1368,6 +1367,152 @@ gimp_rectangle_tool_motion (GimpTool        *tool,
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 }
 
+/*
+ * gimp_rectangle_tool_check_function() is needed to deal with
+ * situations where the user drags a corner or edge across one of the
+ * existing edges, thereby changing its function.  Ugh.
+ */
+static void
+gimp_rectangle_tool_check_function (GimpRectangleTool *rectangle,
+                                    gint               curx,
+                                    gint               cury)
+{
+  GimpRectangleToolPrivate *private;
+  guint                     function;
+  guint                     new_function;
+  gint                      x1, y1, x2, y2;
+
+  private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (rectangle);
+
+  g_object_get (rectangle,
+                "function", &function,
+                "x1",       &x1,
+                "y1",       &y1,
+                "x2",       &x2,
+                "y2",       &y2,
+                NULL);
+
+  new_function = function;
+
+  switch (function)
+    {
+    case RECT_RESIZING_LEFT:
+      if (curx > x2)
+        {
+          new_function = RECT_RESIZING_RIGHT;
+          private->startx = x2;
+        }
+      break;
+
+    case RECT_RESIZING_RIGHT:
+      if (curx < x1)
+        {
+          new_function = RECT_RESIZING_LEFT;
+          private->startx = x1;
+        }
+      break;
+
+    case RECT_RESIZING_TOP:
+      if (cury > y2)
+        {
+          new_function = RECT_RESIZING_BOTTOM;
+          private->starty = y2;
+        }
+      break;
+
+    case RECT_RESIZING_BOTTOM:
+      if (cury < y1)
+        {
+          new_function = RECT_RESIZING_TOP;
+          private->starty = y1;
+        }
+      break;
+
+    case RECT_RESIZING_UPPER_LEFT:
+      if (curx > x2 && cury > y2)
+        {
+          new_function = RECT_RESIZING_LOWER_RIGHT;
+          private->startx = x2;
+          private->starty = y2;
+        }
+      else if (curx > x2)
+        {
+          new_function = RECT_RESIZING_UPPER_RIGHT;
+          private->startx = x2;
+        }
+      else if (cury > y2)
+        {
+          new_function = RECT_RESIZING_LOWER_LEFT;
+          private->starty = y2;
+        }
+      break;
+
+    case RECT_RESIZING_UPPER_RIGHT:
+      if (curx < x1 && cury > y2)
+        {
+          new_function = RECT_RESIZING_LOWER_LEFT;
+          private->startx = x1;
+          private->starty = y2;
+        }
+      else if (curx < x1)
+        {
+          new_function = RECT_RESIZING_UPPER_LEFT;
+          private->startx = x1;
+        }
+      else if (cury > y2)
+        {
+          new_function = RECT_RESIZING_LOWER_RIGHT;
+          private->starty = y2;
+        }
+      break;
+
+    case RECT_RESIZING_LOWER_LEFT:
+      if (curx > x2 && cury < y1)
+        {
+          new_function = RECT_RESIZING_UPPER_RIGHT;
+          private->startx = x2;
+          private->starty = y1;
+        }
+      else if (curx > x2)
+        {
+          new_function = RECT_RESIZING_LOWER_RIGHT;
+          private->startx = x2;
+        }
+      else if (cury < y1)
+        {
+          new_function = RECT_RESIZING_UPPER_LEFT;
+          private->starty = y1;
+        }
+      break;
+
+    case RECT_RESIZING_LOWER_RIGHT:
+      if (curx < x1 && cury < y1)
+        {
+          new_function = RECT_RESIZING_UPPER_LEFT;
+          private->startx = x1;
+          private->starty = y1;
+        }
+      else if (curx < x1)
+        {
+          new_function = RECT_RESIZING_LOWER_LEFT;
+          private->startx = x1;
+        }
+      else if (cury < y1)
+        {
+          new_function = RECT_RESIZING_UPPER_RIGHT;
+          private->starty = y1;
+        }
+      break;
+
+    default:
+      break;
+    }
+
+  if (new_function != function)
+    g_object_set (rectangle, "function", new_function, NULL);
+
+}
+
 gboolean
 gimp_rectangle_tool_key_press (GimpTool    *tool,
                                GdkEventKey *kevent,
@@ -1447,16 +1592,9 @@ gimp_rectangle_tool_key_press (GimpTool    *tool,
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (tool));
 
-  return TRUE;
-}
+  g_signal_emit_by_name (rectangle, "rectangle-changed", NULL);
 
-void
-gimp_rectangle_tool_modifier_key (GimpTool        *tool,
-                                  GdkModifierType  key,
-                                  gboolean         press,
-                                  GdkModifierType  state,
-                                  GimpDisplay     *display)
-{
+  return TRUE;
 }
 
 void
@@ -1472,6 +1610,8 @@ gimp_rectangle_tool_oper_update (GimpTool        *tool,
   gint                      x1, y1, x2, y2;
   gboolean                  inside_x;
   gboolean                  inside_y;
+  gdouble                   handle_w, handle_h;
+  GimpDisplayShell         *shell;
 
   g_return_if_fail (GIMP_IS_RECTANGLE_TOOL (tool));
 
@@ -1480,12 +1620,17 @@ gimp_rectangle_tool_oper_update (GimpTool        *tool,
   if (tool->display != display)
     return;
 
+  shell = GIMP_DISPLAY_SHELL (tool->display->shell);
+
   g_object_get (rectangle,
                 "x1", &x1,
                 "y1", &y1,
                 "x2", &x2,
                 "y2", &y2,
                 NULL);
+
+  handle_w = private->dcw / SCALEFACTOR_X (shell);
+  handle_h = private->dch / SCALEFACTOR_Y (shell);
 
   inside_x = coords->x > x1 && coords->x < x2;
   inside_y = coords->y > y1 && coords->y < y2;
@@ -1550,7 +1695,7 @@ gimp_rectangle_tool_oper_update (GimpTool        *tool,
                                           y2 - coords->y,
                                           0, 0);
     }
-  else if ( (fabs (coords->x - x1) < private->dcw) && inside_y)
+  else if ( (fabs (coords->x - x1) < handle_w) && inside_y)
     {
       g_object_set (rectangle, "function", RECT_RESIZING_LEFT, NULL);
 
@@ -1558,7 +1703,7 @@ gimp_rectangle_tool_oper_update (GimpTool        *tool,
                                           x1 - coords->x, 0, 0, 0);
 
     }
-  else if ( (fabs (coords->x - x2) < private->dcw) && inside_y)
+  else if ( (fabs (coords->x - x2) < handle_w) && inside_y)
     {
       g_object_set (rectangle, "function", RECT_RESIZING_RIGHT, NULL);
 
@@ -1566,7 +1711,7 @@ gimp_rectangle_tool_oper_update (GimpTool        *tool,
                                           x2 - coords->x, 0, 0, 0);
 
     }
-  else if ( (fabs (coords->y - y1) < private->dch) && inside_x)
+  else if ( (fabs (coords->y - y1) < handle_h) && inside_x)
     {
       g_object_set (rectangle, "function", RECT_RESIZING_TOP, NULL);
 
@@ -1574,7 +1719,7 @@ gimp_rectangle_tool_oper_update (GimpTool        *tool,
                                           0, y1 - coords->y, 0, 0);
 
     }
-  else if ( (fabs (coords->y - y2) < private->dch) && inside_x)
+  else if ( (fabs (coords->y - y2) < handle_h) && inside_x)
     {
       g_object_set (rectangle, "function", RECT_RESIZING_BOTTOM, NULL);
 
@@ -1665,20 +1810,15 @@ gimp_rectangle_tool_cursor_update (GimpTool        *tool,
 void
 gimp_rectangle_tool_draw (GimpDrawTool *draw_tool)
 {
-  GimpTool                 *tool;
   GimpRectangleToolPrivate *private;
-  GimpRectangleOptions     *options;
   gint                      x1, x2, y1, y2;
   guint                     function;
-  GimpRectangleGuide        guide;
 
   g_return_if_fail (GIMP_IS_RECTANGLE_TOOL (draw_tool));
 
-  tool    = GIMP_TOOL (draw_tool);
   private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (draw_tool);
-  options = GIMP_RECTANGLE_OPTIONS (tool->tool_info->tool_options);
 
-  g_object_get (GIMP_RECTANGLE_TOOL (tool), "function", &function, NULL);
+  g_object_get (GIMP_RECTANGLE_TOOL (draw_tool), "function", &function, NULL);
 
   if (function == RECT_INACTIVE)
     return;
@@ -1704,9 +1844,25 @@ gimp_rectangle_tool_draw (GimpDrawTool *draw_tool)
                               x2, y2, ANCHOR_SIZE, ANCHOR_SIZE,
                               GTK_ANCHOR_SOUTH_EAST, FALSE);
 
-  g_object_get (options, "guide", &guide, NULL);
+  gimp_rectangle_tool_draw_guides (draw_tool);
+}
 
-  switch (guide)
+static void
+gimp_rectangle_tool_draw_guides (GimpDrawTool *draw_tool)
+{
+  GimpTool                 *tool;
+  GimpRectangleToolPrivate *private;
+  gint                      x1, x2, y1, y2;
+
+  tool    = GIMP_TOOL (draw_tool);
+  private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (draw_tool);
+
+  x1 = private->x1;
+  x2 = private->x2;
+  y1 = private->y1;
+  y2 = private->y2;
+
+  switch (private->guide)
     {
     case GIMP_RECTANGLE_GUIDE_NONE:
       break;
@@ -1737,17 +1893,28 @@ gimp_rectangle_tool_draw (GimpDrawTool *draw_tool)
 
     case GIMP_RECTANGLE_GUIDE_GOLDEN:
       gimp_draw_tool_draw_line (draw_tool,
-                                x1, (2 * y1 + (1 + sqrt(5)) * y2) / (3 + sqrt(5)),
-                                x2, (2 * y1 + (1 + sqrt(5)) * y2) / (3 + sqrt(5)), FALSE);
+                                x1,
+                                (2 * y1 + (1 + sqrt(5)) * y2) / (3 + sqrt(5)),
+                                x2,
+                                (2 * y1 + (1 + sqrt(5)) * y2) / (3 + sqrt(5)),
+                                FALSE);
       gimp_draw_tool_draw_line (draw_tool,
-                                x1, ((1 + sqrt(5)) * y1 + 2 * y2) / (3 + sqrt(5)),
-                                x2, ((1 + sqrt(5)) * y1 + 2 * y2) / (3 + sqrt(5)), FALSE);
+                                x1,
+                                ((1 + sqrt(5)) * y1 + 2 * y2) / (3 + sqrt(5)),
+                                x2,
+                                ((1 + sqrt(5)) * y1 + 2 * y2) / (3 + sqrt(5)),
+                                FALSE);
       gimp_draw_tool_draw_line (draw_tool,
-                                (2 * x1 + (1 + sqrt(5)) * x2) / (3 + sqrt(5)), y1,
-                                (2 * x1 + (1 + sqrt(5)) * x2) / (3 + sqrt(5)), y2, FALSE);
+                                (2 * x1 + (1 + sqrt(5)) * x2) / (3 + sqrt(5)),
+                                y1,
+                                (2 * x1 + (1 + sqrt(5)) * x2) / (3 + sqrt(5)),
+                                y2,
+                                FALSE);
       gimp_draw_tool_draw_line (draw_tool,
-                                ((1 + sqrt(5)) * x1 + 2 * x2) / (3 + sqrt(5)), y1,
-                                ((1 + sqrt(5)) * x1 + 2 * x2) / (3 + sqrt(5)), y2, FALSE);
+                                ((1 + sqrt(5)) * x1 + 2 * x2) / (3 + sqrt(5)),
+                                y1,
+                                ((1 + sqrt(5)) * x1 + 2 * x2) / (3 + sqrt(5)),
+                                y2, FALSE);
       break;
     }
 }
@@ -1845,23 +2012,20 @@ gimp_rectangle_tool_halt (GimpRectangleTool *rectangle)
   if (gimp_tool_control_is_active (tool->control))
     gimp_tool_control_halt (tool->control);
 
-  gimp_image_flush (tool->display->image);
-
   tool->display  = NULL;
   tool->drawable = NULL;
 
   g_object_set (rectangle, "function", RECT_INACTIVE, NULL);
 }
 
+/* FIXME: ‘rectangle_selection_callback’defined but not used */
 static void
 rectangle_selection_callback (GtkWidget         *widget,
                               GimpRectangleTool *rectangle)
 {
-  GimpDisplay *display;
+  GimpDisplay *display = GIMP_TOOL (rectangle)->display;
   gint         x1, y1;
   gint         x2, y2;
-
-  display   = GIMP_TOOL (rectangle)->display;
 
   gimp_draw_tool_pause (GIMP_DRAW_TOOL (rectangle));
 
@@ -1889,59 +2053,6 @@ rectangle_selection_callback (GtkWidget         *widget,
   gimp_rectangle_tool_configure (rectangle);
 
   gimp_draw_tool_resume (GIMP_DRAW_TOOL (rectangle));
-}
-
-static void
-rectangle_automatic_callback (GtkWidget         *widget,
-                              GimpRectangleTool *rectangle)
-{
-  GimpDisplay *display  = GIMP_TOOL (rectangle)->display;
-  gint         width    = display->image->width;
-  gint         height   = display->image->height;
-  gint         offset_x = 0;
-  gint         offset_y = 0;
-  gint         rx1, ry1;
-  gint         rx2, ry2;
-  gint         x1, y1;
-  gint         x2, y2;
-  gint         shrunk_x1;
-  gint         shrunk_y1;
-  gint         shrunk_x2;
-  gint         shrunk_y2;
-
-  g_object_get (rectangle,
-                "x1", &rx1,
-                "y1", &ry1,
-                "x2", &rx2,
-                "y2", &ry2,
-                NULL);
-
-  x1 = rx1 - offset_x  > 0      ? rx1 - offset_x : 0;
-  x2 = rx2 - offset_x  < width  ? rx2 - offset_x : width;
-  y1 = ry1 - offset_y  > 0      ? ry1 - offset_y : 0;
-  y2 = ry2 - offset_y  < height ? ry2 - offset_y : height;
-
-  if (gimp_image_crop_auto_shrink (display->image,
-                                   x1, y1, x2, y2,
-                                   FALSE,
-                                   &shrunk_x1,
-                                   &shrunk_y1,
-                                   &shrunk_x2,
-                                   &shrunk_y2))
-    {
-      gimp_draw_tool_pause (GIMP_DRAW_TOOL (rectangle));
-
-      g_object_set (rectangle,
-                    "x1", offset_x + shrunk_x1,
-                    "y1", offset_y + shrunk_y1,
-                    "x2", offset_x + shrunk_x2,
-                    "y2", offset_y + shrunk_y2,
-                    NULL);
-
-      gimp_rectangle_tool_configure (rectangle);
-
-      gimp_draw_tool_resume (GIMP_DRAW_TOOL (rectangle));
-    }
 }
 
 gboolean
@@ -1990,7 +2101,6 @@ static void
 gimp_rectangle_tool_update_options (GimpRectangleTool *rectangle,
                                     GimpDisplay       *display)
 {
-  GimpDisplayShell     *shell;
   gdouble               width;
   gdouble               height;
   gdouble               aspect;
@@ -2001,8 +2111,7 @@ gimp_rectangle_tool_update_options (GimpRectangleTool *rectangle,
   gboolean              fixed_width;
   gboolean              fixed_height;
   gboolean              fixed_aspect;
-
-  shell = GIMP_DISPLAY_SHELL (display->shell);
+  gboolean              aspect_square;
 
   g_object_get (rectangle,
                 "x1", &x1,
@@ -2018,13 +2127,16 @@ gimp_rectangle_tool_update_options (GimpRectangleTool *rectangle,
                 "new-fixed-width",  &fixed_width,
                 "new-fixed-height", &fixed_height,
                 "fixed-aspect",     &fixed_aspect,
+                "aspect-square",    &aspect_square,
                 "dimensions-entry", &entry,
                 NULL);
 
   width  = x2 - x1;
   height = y2 - y1;
 
-  if (height > 0.01)
+  if (aspect_square)
+    aspect = 1;
+  else if (height > 0.01)
     aspect = width / height;
   else
     aspect = 0.0;
@@ -2061,7 +2173,7 @@ gimp_rectangle_tool_update_options (GimpRectangleTool *rectangle,
                   "height", height,
                   NULL);
 
-  if (! fixed_aspect)
+  if (aspect_square || ! fixed_aspect)
     g_object_set (options,
                   "aspect", aspect,
                   NULL);
@@ -2221,11 +2333,9 @@ gimp_rectangle_tool_notify_highlight (GimpRectangleOptions *options,
                                       GParamSpec           *pspec,
                                       GimpRectangleTool    *rectangle)
 {
-  GimpTool             *tool = GIMP_TOOL (rectangle);
-  GimpDisplayShell     *shell;
-  gboolean              highlight;
-  gint                  x1, y1;
-  gint                  x2, y2;
+  GimpTool         *tool = GIMP_TOOL (rectangle);
+  GimpDisplayShell *shell;
+  gboolean          highlight;
 
   if (! tool->display)
     return;
@@ -2234,16 +2344,18 @@ gimp_rectangle_tool_notify_highlight (GimpRectangleOptions *options,
 
   g_object_get (options, "highlight", &highlight, NULL);
 
-  g_object_get (rectangle,
-                "x1", &x1,
-                "y1", &y1,
-                "x2", &x2,
-                "y2", &y2,
-                NULL);
-
   if (highlight)
     {
       GdkRectangle rect;
+      gint         x1, y1;
+      gint         x2, y2;
+
+      g_object_get (rectangle,
+                    "x1", &x1,
+                    "y1", &y1,
+                    "x2", &x2,
+                    "y2", &y2,
+                    NULL);
 
       rect.x      = x1;
       rect.y      = y1;
@@ -2253,7 +2365,30 @@ gimp_rectangle_tool_notify_highlight (GimpRectangleOptions *options,
       gimp_display_shell_set_highlight (shell, &rect);
     }
   else
-    gimp_display_shell_set_highlight (shell, NULL);
+    {
+      gimp_display_shell_set_highlight (shell, NULL);
+    }
+}
+
+static void
+gimp_rectangle_tool_notify_guide (GimpRectangleOptions *options,
+                                  GParamSpec           *pspec,
+                                  GimpRectangleTool    *rectangle)
+{
+  GimpTool                 *tool = GIMP_TOOL (rectangle);
+  GimpRectangleToolPrivate *private;
+
+  private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (rectangle);
+
+  if (tool->display)
+    gimp_draw_tool_pause (GIMP_DRAW_TOOL (rectangle));
+
+  g_object_get (options,
+                "guide", &private->guide,
+                NULL);
+
+  if (tool->display)
+    gimp_draw_tool_resume (GIMP_DRAW_TOOL (rectangle));
 }
 
 static void
@@ -2335,4 +2470,20 @@ gimp_rectangle_tool_notify_dimensions (GimpRectangleOptions *options,
                               GIMP_TOOL (rectangle)->display);
 
   g_signal_emit_by_name (rectangle, "rectangle-changed", NULL);
+}
+
+gboolean
+gimp_rectangle_tool_no_movement (GimpRectangleTool *rectangle)
+{
+  gint                      pressx, pressy;
+  GimpRectangleToolPrivate *private;
+
+  private = GIMP_RECTANGLE_TOOL_GET_PRIVATE (rectangle);
+
+  g_object_get (rectangle,
+                "pressx", &pressx,
+                "pressy", &pressy,
+                NULL);
+
+  return (private->lastx == pressx && private->lasty == pressy);
 }

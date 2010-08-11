@@ -232,7 +232,7 @@ Creates a new empty vectors object.
 </para>
 <para>
 Creates a new empty vectors object. Needs to be added to an image
-using gimp_image_add_vectors.</para>
+using <link linkend="gimp-image-add-vectors"><function>gimp_image_add_vectors()</function></link>.</para>
 <para>
 
 </para><variablelist role="params">

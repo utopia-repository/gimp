@@ -51,11 +51,12 @@ A widget for selecting gradients.
 <refsect1 id="details">
 <title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-gradient-select-widget-new" role="function"/>gimp_gradient_select_widget_new ()</title>
-<indexterm><primary>gimp_gradient_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_gradient_select_widget_new (const <link linkend="gchar">gchar</link> *title,
+<title><anchor id="gimp-gradient-select-widget-new" role="function" condition="deprecated:|since:GIMP 2.2"/>gimp_gradient_select_widget_new ()</title>
+<indexterm role="deprecated"><primary>gimp_gradient_select_widget_new</primary></indexterm><indexterm role="GIMP 2.2"><primary>gimp_gradient_select_widget_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_gradient_select_widget_new (const <link linkend="gchar">gchar</link> *title,
                                              const <link linkend="gchar">gchar</link> *gradient_name,
                                              <link linkend="GimpRunGradientCallback">GimpRunGradientCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
+<warning><para><literal>gimp_gradient_select_widget_new</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Creates a new <link linkend="GtkWidget"><type>GtkWidget</type></link> that completely controls the selection of
 a gradient.  This widget is suitable for placement in a table in a
@@ -67,22 +68,24 @@ plug-in dialog.</para>
 <listitem><simpara>         Title of the dialog to use or <link linkend="NULL:CAPS"><literal>NULL</literal></link> to use the default title.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>gradient_name</parameter>&nbsp;:</term>
-<listitem><simpara> Initial gradient name or <link linkend="NULL:CAPS"><literal>NULL</literal></link> to use current selection.
+<listitem><simpara> Initial gradient name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>callback</parameter>&nbsp;:</term>
 <listitem><simpara>      A function to call when the selected gradient changes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
-<listitem><simpara>          A pointer to arbitary data to be used in the call to
-                <parameter>callback</parameter>.
+<listitem><simpara>          A pointer to arbitary data to be used in the call to <parameter>callback</parameter>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GtkWidget"><type>GtkWidget</type></link> that you can use in your UI.
+
 </simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</variablelist><para>Since  GIMP 2.2
+</para></refsect2>
 <refsect2>
-<title><anchor id="gimp-gradient-select-widget-close" role="function"/>gimp_gradient_select_widget_close ()</title>
-<indexterm><primary>gimp_gradient_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_gradient_select_widget_close
+<title><anchor id="gimp-gradient-select-widget-close" role="function" condition="deprecated:"/>gimp_gradient_select_widget_close ()</title>
+<indexterm role="deprecated"><primary>gimp_gradient_select_widget_close</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_gradient_select_widget_close
                                             (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<warning><para><literal>gimp_gradient_select_widget_close</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
 Closes the popup window associated with <parameter>widget</parameter>.</para>
 <para>
@@ -93,12 +96,13 @@ Closes the popup window associated with <parameter>widget</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gradient-select-widget-set" role="function"/>gimp_gradient_select_widget_set ()</title>
-<indexterm><primary>gimp_gradient_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_gradient_select_widget_set (<link linkend="GtkWidget">GtkWidget</link> *widget,
+<title><anchor id="gimp-gradient-select-widget-set" role="function" condition="deprecated:"/>gimp_gradient_select_widget_set ()</title>
+<indexterm role="deprecated"><primary>gimp_gradient_select_widget_set</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_gradient_select_widget_set (<link linkend="GtkWidget">GtkWidget</link> *widget,
                                              const <link linkend="gchar">gchar</link> *gradient_name);</programlisting>
+<warning><para><literal>gimp_gradient_select_widget_set</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
-Sets the current gradient for the gradient select widget.  Calls
-the callback function if one was supplied in the call to
+Sets the current gradient for the gradient select widget.  Calls the
+callback function if one was supplied in the call to
 <link linkend="gimp-gradient-select-widget-new"><function>gimp_gradient_select_widget_new()</function></link>.</para>
 <para>
 

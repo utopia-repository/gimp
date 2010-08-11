@@ -73,9 +73,9 @@ Interface Library headers.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2661971"></a><h3>
+<a name="id2668295"></a><h3>
 <a name="gimp-ui-init"></a>gimp_ui_init ()</h3>
-<a class="indexterm" name="id2661982"></a><pre class="programlisting">void        gimp_ui_init                    (const gchar *prog_name,
+<a class="indexterm" name="id2668306"></a><pre class="programlisting">void        gimp_ui_init                    (const gchar *prog_name,
                                              gboolean preview);</pre>
 <p>
 This function initializes GTK+ with <code class="function">gtk_init()</code> and initializes GDK's
@@ -111,9 +111,9 @@ gimprc variables <em class="parameter"><code>min_colors</code></em> and <em clas
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2662093"></a><h3>
+<a name="id2670216"></a><h3>
 <a name="gimp-ui-get-display-window"></a>gimp_ui_get_display_window ()</h3>
-<a class="indexterm" name="id2662106"></a><pre class="programlisting">GdkWindow*  gimp_ui_get_display_window      (guint32 gdisp_ID);</pre>
+<a class="indexterm" name="id2670229"></a><pre class="programlisting">GdkWindow*  gimp_ui_get_display_window      (guint32 gdisp_ID);</pre>
 <p>
 Returns the <span class="type">GdkWindow</span> of a display window. The purpose is to allow
 to make plug-in dialogs transient to the image display as explained
@@ -150,9 +150,9 @@ You shouldn't have to call this function directly. Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657876"></a><h3>
+<a name="id2673068"></a><h3>
 <a name="gimp-ui-get-progress-window"></a>gimp_ui_get_progress_window ()</h3>
-<a class="indexterm" name="id2657889"></a><pre class="programlisting">GdkWindow*  gimp_ui_get_progress_window     (void);</pre>
+<a class="indexterm" name="id2673080"></a><pre class="programlisting">GdkWindow*  gimp_ui_get_progress_window     (void);</pre>
 <p>
 Returns the <span class="type">GdkWindow</span> of the window this plug-in's progress bar is
 shown in. Use it to make plug-in dialogs transient to this window
@@ -181,9 +181,9 @@ You shouldn't have to call this function directly. Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2657989"></a><h3>
+<a name="id2673181"></a><h3>
 <a name="gimp-window-set-transient"></a>gimp_window_set_transient ()</h3>
-<a class="indexterm" name="id2658003"></a><pre class="programlisting">void        gimp_window_set_transient       (GtkWindow *window);</pre>
+<a class="indexterm" name="id2673194"></a><pre class="programlisting">void        gimp_window_set_transient       (GtkWindow *window);</pre>
 <p>
 Indicates to the window manager that <em class="parameter"><code>window</code></em> is a transient dialog
 associated with the GIMP window that the plug-in has been
@@ -205,9 +205,9 @@ started from. See also <a href="libgimp-gimpui.html#gimp-window-set-transient-fo
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2658078"></a><h3>
+<a name="id2673269"></a><h3>
 <a name="gimp-window-set-transient-for-display"></a>gimp_window_set_transient_for_display ()</h3>
-<a class="indexterm" name="id2658258"></a><pre class="programlisting">void        gimp_window_set_transient_for_display
+<a class="indexterm" name="id2673282"></a><pre class="programlisting">void        gimp_window_set_transient_for_display
                                             (GtkWindow *window,
                                              guint32 gdisp_ID);</pre>
 <p>
@@ -243,7 +243,7 @@ Most of the time you will want to use the convenience function
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2658372"></a><h2>See Also</h2>
+<a name="id2670546"></a><h2>See Also</h2>
 <p>
 <code class="function">gtk_init()</code>, <code class="function">gdk_set_use_xshm()</code>, <code class="function">gdk_rgb_set_min_colors()</code>,
 <code class="function">gdk_rgb_set_install()</code>, <code class="function">gdk_rgb_get_visual()</code>, <code class="function">gdk_rgb_get_cmap()</code>,

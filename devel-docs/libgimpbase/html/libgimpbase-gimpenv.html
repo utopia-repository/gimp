@@ -71,9 +71,9 @@ configuration files.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2518521"></a><h3>
+<a name="id2536968"></a><h3>
 <a name="gimp-env-init"></a>gimp_env_init ()</h3>
-<a class="indexterm" name="id2518535"></a><pre class="programlisting">void        gimp_env_init                   (gboolean plug_in);</pre>
+<a class="indexterm" name="id2536982"></a><pre class="programlisting">void        gimp_env_init                   (gboolean plug_in);</pre>
 <p>
 You don't need to care about this function. It is being called for
 you automatically (by means of the <a
@@ -97,9 +97,9 @@ runs). Calling it again will cause a fatal error.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2518610"></a><h3>
+<a name="id2537056"></a><h3>
 <a name="gimp-directory"></a>gimp_directory ()</h3>
-<a class="indexterm" name="id2547516"></a><pre class="programlisting">const gchar* gimp_directory                 (void);</pre>
+<a class="indexterm" name="id2528607"></a><pre class="programlisting">const gchar* gimp_directory                 (void);</pre>
 <p>
 Returns the user-specific GIMP settings directory. If the
 environment variable GIMP2_DIRECTORY exists, it is used. If it is
@@ -135,9 +135,9 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2547597"></a><h3>
+<a name="id2528688"></a><h3>
 <a name="gimp-personal-rc-file"></a>gimp_personal_rc_file ()</h3>
-<a class="indexterm" name="id2547608"></a><pre class="programlisting">gchar*      gimp_personal_rc_file           (const gchar *basename);</pre>
+<a class="indexterm" name="id2528699"></a><pre class="programlisting">gchar*      gimp_personal_rc_file           (const gchar *basename);</pre>
 <p>
 Returns the name of a file in the user-specific GIMP settings directory.
 </p>
@@ -169,9 +169,9 @@ is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2547685"></a><h3>
+<a name="id2528776"></a><h3>
 <a name="gimp-data-directory"></a>gimp_data_directory ()</h3>
-<a class="indexterm" name="id2547697"></a><pre class="programlisting">const gchar* gimp_data_directory            (void);</pre>
+<a class="indexterm" name="id2528788"></a><pre class="programlisting">const gchar* gimp_data_directory            (void);</pre>
 <p>
 Returns the top directory for GIMP data. If the environment
 variable GIMP2_DATADIR exists, that is used.  It should be an
@@ -198,9 +198,9 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2547750"></a><h3>
+<a name="id2528840"></a><h3>
 <a name="gimp-locale-directory"></a>gimp_locale_directory ()</h3>
-<a class="indexterm" name="id2547761"></a><pre class="programlisting">const gchar* gimp_locale_directory          (void);</pre>
+<a class="indexterm" name="id2528851"></a><pre class="programlisting">const gchar* gimp_locale_directory          (void);</pre>
 <p>
 Returns the top directory for GIMP locale files. If the environment
 variable GIMP2_LOCALEDIR exists, that is used.  It should be an
@@ -227,9 +227,9 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2536752"></a><h3>
+<a name="id2566692"></a><h3>
 <a name="gimp-plug-in-directory"></a>gimp_plug_in_directory ()</h3>
-<a class="indexterm" name="id2536763"></a><pre class="programlisting">const gchar* gimp_plug_in_directory         (void);</pre>
+<a class="indexterm" name="id2566703"></a><pre class="programlisting">const gchar* gimp_plug_in_directory         (void);</pre>
 <p>
 Returns the top directory for GIMP plug_ins and modules. If the
 environment variable GIMP2_PLUGINDIR exists, that is used.  It
@@ -256,9 +256,9 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2536816"></a><h3>
+<a name="id2566756"></a><h3>
 <a name="gimp-sysconf-directory"></a>gimp_sysconf_directory ()</h3>
-<a class="indexterm" name="id2536828"></a><pre class="programlisting">const gchar* gimp_sysconf_directory         (void);</pre>
+<a class="indexterm" name="id2566768"></a><pre class="programlisting">const gchar* gimp_sysconf_directory         (void);</pre>
 <p>
 Returns the top directory for GIMP config files. If the environment
 variable GIMP2_SYSCONFDIR exists, that is used.  It should be an
@@ -285,9 +285,9 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2536881"></a><h3>
+<a name="id2566821"></a><h3>
 <a name="gimp-gtkrc"></a>gimp_gtkrc ()</h3>
-<a class="indexterm" name="id2536893"></a><pre class="programlisting">const gchar* gimp_gtkrc                     (void);</pre>
+<a class="indexterm" name="id2566833"></a><pre class="programlisting">const gchar* gimp_gtkrc                     (void);</pre>
 <p>
 Returns the name of the GIMP's application-specific gtkrc file.
 </p>
@@ -310,9 +310,9 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2536942"></a><h3>
+<a name="id2566882"></a><h3>
 <a name="gimp-path-parse"></a>gimp_path_parse ()</h3>
-<a class="indexterm" name="id2536954"></a><pre class="programlisting">GList*      gimp_path_parse                 (const gchar *path,
+<a class="indexterm" name="id2566894"></a><pre class="programlisting">GList*      gimp_path_parse                 (const gchar *path,
                                              gint max_paths,
                                              gboolean check,
                                              GList **check_failed);</pre>
@@ -360,9 +360,9 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2563894"></a><h3>
+<a name="id2569088"></a><h3>
 <a name="gimp-path-to-str"></a>gimp_path_to_str ()</h3>
-<a class="indexterm" name="id2563904"></a><pre class="programlisting">gchar*      gimp_path_to_str                (GList *path);</pre>
+<a class="indexterm" name="id2569099"></a><pre class="programlisting">gchar*      gimp_path_to_str                (GList *path);</pre>
 <p>
 </p>
 <p>
@@ -388,9 +388,9 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2563978"></a><h3>
+<a name="id2569173"></a><h3>
 <a name="gimp-path-free"></a>gimp_path_free ()</h3>
-<a class="indexterm" name="id2563991"></a><pre class="programlisting">void        gimp_path_free                  (GList *path);</pre>
+<a class="indexterm" name="id2569185"></a><pre class="programlisting">void        gimp_path_free                  (GList *path);</pre>
 <p>
 This function frees the memory allocated for the list and the strings
 it contains.</p>
@@ -409,9 +409,9 @@ it contains.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564052"></a><h3>
+<a name="id2569246"></a><h3>
 <a name="gimp-path-get-user-writable-dir"></a>gimp_path_get_user_writable_dir ()</h3>
-<a class="indexterm" name="id2564065"></a><pre class="programlisting">gchar*      gimp_path_get_user_writable_dir (GList *path);</pre>
+<a class="indexterm" name="id2569260"></a><pre class="programlisting">gchar*      gimp_path_get_user_writable_dir (GList *path);</pre>
 <p>
 Note that you have to <code class="function">g_free()</code> the returned string.</p>
 <p>

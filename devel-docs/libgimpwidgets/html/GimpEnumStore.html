@@ -99,18 +99,18 @@ GimpEnumStore implements
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2549201"></a><h3>
+<a name="id2567794"></a><h3>
 <a name="GimpEnumStore-struct"></a>GimpEnumStore</h3>
-<a class="indexterm" name="id2549212"></a><pre class="programlisting">typedef struct _GimpEnumStore GimpEnumStore;</pre>
+<a class="indexterm" name="id2567806"></a><pre class="programlisting">typedef struct _GimpEnumStore GimpEnumStore;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2549228"></a><h3>
+<a name="id2567822"></a><h3>
 <a name="gimp-enum-store-new"></a>gimp_enum_store_new ()</h3>
-<a class="indexterm" name="id2549243"></a><pre class="programlisting">GtkListStore* gimp_enum_store_new           (GType enum_type);</pre>
+<a class="indexterm" name="id2567836"></a><pre class="programlisting">GtkListStore* gimp_enum_store_new           (GType enum_type);</pre>
 <p>
 Creates a new <a href="GimpEnumStore.html" title="GimpEnumStore"><span class="type">GimpEnumStore</span></a>, derived from <span class="type">GtkListStore</span> and fills
 it with enum values. The enum needs to be registered to the type
@@ -141,9 +141,9 @@ system and should have translatable value names.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2568244"></a><h3>
+<a name="id2569212"></a><h3>
 <a name="gimp-enum-store-new-with-range"></a>gimp_enum_store_new_with_range ()</h3>
-<a class="indexterm" name="id2568258"></a><pre class="programlisting">GtkListStore* gimp_enum_store_new_with_range
+<a class="indexterm" name="id2569226"></a><pre class="programlisting">GtkListStore* gimp_enum_store_new_with_range
                                             (GType enum_type,
                                              gint minimum,
                                              gint maximum);</pre>
@@ -189,9 +189,9 @@ to limit the enum values to a certain range. Values smaller than
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2568411"></a><h3>
+<a name="id2569379"></a><h3>
 <a name="gimp-enum-store-new-with-values"></a>gimp_enum_store_new_with_values ()</h3>
-<a class="indexterm" name="id2568426"></a><pre class="programlisting">GtkListStore* gimp_enum_store_new_with_values
+<a class="indexterm" name="id2569395"></a><pre class="programlisting">GtkListStore* gimp_enum_store_new_with_values
                                             (GType enum_type,
                                              gint n_values,
                                              ...);</pre>
@@ -237,9 +237,9 @@ store.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2542723"></a><h3>
+<a name="id2570830"></a><h3>
 <a name="gimp-enum-store-new-with-values-valist"></a>gimp_enum_store_new_with_values_valist ()</h3>
-<a class="indexterm" name="id2542738"></a><pre class="programlisting">GtkListStore* gimp_enum_store_new_with_values_valist
+<a class="indexterm" name="id2570846"></a><pre class="programlisting">GtkListStore* gimp_enum_store_new_with_values_valist
                                             (GType enum_type,
                                              gint n_values,
                                              va_list args);</pre>
@@ -283,9 +283,9 @@ See <a href="GimpEnumStore.html#gimp-enum-store-new-with-values"><code class="fu
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570018"></a><h3>
+<a name="id2575219"></a><h3>
 <a name="gimp-enum-store-set-stock-prefix"></a>gimp_enum_store_set_stock_prefix ()</h3>
-<a class="indexterm" name="id2570033"></a><pre class="programlisting">void        gimp_enum_store_set_stock_prefix
+<a class="indexterm" name="id2575233"></a><pre class="programlisting">void        gimp_enum_store_set_stock_prefix
                                             (<a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a> *store,
                                              const gchar *stock_prefix);</pre>
 <p>

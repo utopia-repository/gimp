@@ -148,8 +148,8 @@ query (void)
                           args, NULL);
 
   gimp_plugin_menu_register (PLUG_IN_PROC, "<Toolbox>/Xtns/Extensions");
-  gimp_plugin_icon_register (PLUG_IN_PROC,
-                             GIMP_ICON_TYPE_STOCK_ID, GIMP_STOCK_PLUGIN);
+  gimp_plugin_icon_register (PLUG_IN_PROC, GIMP_ICON_TYPE_STOCK_ID,
+                             (const guint8 *) GIMP_STOCK_PLUGIN);
 }
 
 static void
@@ -383,7 +383,9 @@ browser_search (GimpBrowser   *gimp_browser,
 
   if (! search_text || strlen (search_text) == 0)
     {
-      str = g_strdup_printf (_("%d plug-ins"), num_plugins);
+      str = g_strdup_printf (ngettext ("%d plug-in", "%d plug-ins",
+                                       num_plugins),
+                             num_plugins);
     }
   else
     {

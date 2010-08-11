@@ -23,7 +23,12 @@
 #include "config.h"
 
 #include "gimp.h"
-#include "gimpui.h"
+
+#include "gimpuitypes.h"
+#include "gimpfontselectbutton.h"
+
+#undef GIMP_DISABLE_DEPRECATED
+#include "gimpfontmenu.h"
 
 
 typedef struct _CompatCallbackData CompatCallbackData;
@@ -43,8 +48,7 @@ static void compat_callback (GimpFontSelectButton *font_button,
 
 /**
  * gimp_font_select_widget_new:
- * @title:     Title of the dialog to use or %NULL means to use the default
- *             title.
+ * @title:     Title of the dialog to use or %NULL to use the default title.
  * @font_name: Initial font name.
  * @callback:  A function to call when the selected font changes.
  * @data:      A pointer to arbitary data to be used in the call to @callback.
@@ -90,7 +94,7 @@ gimp_font_select_widget_close (GtkWidget *widget)
 {
   g_return_if_fail (widget != NULL);
 
-  gimp_font_select_button_close_popup (GIMP_FONT_SELECT_BUTTON (widget));
+  gimp_select_button_close_popup (GIMP_SELECT_BUTTON (widget));
 }
 
 /**
@@ -108,8 +112,8 @@ gimp_font_select_widget_set (GtkWidget   *widget,
 {
   g_return_if_fail (widget != NULL);
 
-  gimp_font_select_button_set_font_name (GIMP_FONT_SELECT_BUTTON (widget),
-                                         font_name);
+  gimp_font_select_button_set_font (GIMP_FONT_SELECT_BUTTON (widget),
+                                    font_name);
 }
 
 static void

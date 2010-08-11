@@ -52,7 +52,7 @@ GimpFontSelectButton
 @Returns: 
 
 
-<!-- ##### FUNCTION gimp_font_select_button_get_font_name ##### -->
+<!-- ##### FUNCTION gimp_font_select_button_get_font ##### -->
 <para>
 
 </para>
@@ -61,20 +61,12 @@ GimpFontSelectButton
 @Returns: 
 
 
-<!-- ##### FUNCTION gimp_font_select_button_set_font_name ##### -->
+<!-- ##### FUNCTION gimp_font_select_button_set_font ##### -->
 <para>
 
 </para>
 
 @button: 
 @font_name: 
-
-
-<!-- ##### FUNCTION gimp_font_select_button_close_popup ##### -->
-<para>
-
-</para>
-
-@button: 
 
 

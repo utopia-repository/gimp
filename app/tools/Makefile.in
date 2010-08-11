@@ -86,9 +86,9 @@ am__objects_2 = gimp-tools.$(OBJEXT) tools-utils.$(OBJEXT) \
 	gimpmovetool.$(OBJEXT) gimppaintbrushtool.$(OBJEXT) \
 	gimppaintoptions-gui.$(OBJEXT) gimppainttool.$(OBJEXT) \
 	gimppenciltool.$(OBJEXT) gimpperspectivetool.$(OBJEXT) \
-	gimpposterizetool.$(OBJEXT) gimpnewrectselecttool.$(OBJEXT) \
-	gimpnewrectselectoptions.$(OBJEXT) gimprectangletool.$(OBJEXT) \
-	gimprectangleoptions.$(OBJEXT) gimprectselecttool.$(OBJEXT) \
+	gimpposterizetool.$(OBJEXT) gimprectangleselecttool.$(OBJEXT) \
+	gimprectangleselectoptions.$(OBJEXT) \
+	gimprectangletool.$(OBJEXT) gimprectangleoptions.$(OBJEXT) \
 	gimprotatetool.$(OBJEXT) gimpscaletool.$(OBJEXT) \
 	gimpselectionoptions.$(OBJEXT) gimpselectiontool.$(OBJEXT) \
 	gimpsheartool.$(OBJEXT) gimpsmudgetool.$(OBJEXT) \
@@ -119,6 +119,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 AA = @AA@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
+ALL_LINGUAS = @ALL_LINGUAS@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 ALSA_LIBS = @ALSA_LIBS@
 ALTIVEC_EXTRA_CFLAGS = @ALTIVEC_EXTRA_CFLAGS@
@@ -190,11 +191,6 @@ GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
 GDK_PIXBUF_REQUIRED_VERSION = @GDK_PIXBUF_REQUIRED_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIMPINSTALL = @GIMPINSTALL@
-GIMPPRINT_CFLAGS = @GIMPPRINT_CFLAGS@
-GIMPPRINT_CONFIG = @GIMPPRINT_CONFIG@
-GIMPPRINT_LIBS = @GIMPPRINT_LIBS@
-GIMPPRINT_REQUIRED_VERSION = @GIMPPRINT_REQUIRED_VERSION@
-GIMPPRINT_TOONEW_VERSION = @GIMPPRINT_TOONEW_VERSION@
 GIMP_API_VERSION = @GIMP_API_VERSION@
 GIMP_APP_VERSION = @GIMP_APP_VERSION@
 GIMP_BINARY_AGE = @GIMP_BINARY_AGE@
@@ -227,9 +223,6 @@ GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
 GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GNOMEPRINT = @GNOMEPRINT@
-GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
-GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
@@ -247,8 +240,6 @@ HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
 HAVE_GLIBC_REGEX_TRUE = @HAVE_GLIBC_REGEX_TRUE@
-HAVE_GNOMEPRINT_FALSE = @HAVE_GNOMEPRINT_FALSE@
-HAVE_GNOMEPRINT_TRUE = @HAVE_GNOMEPRINT_TRUE@
 HAVE_GNOMEVFS_FALSE = @HAVE_GNOMEVFS_FALSE@
 HAVE_GNOMEVFS_TRUE = @HAVE_GNOMEVFS_TRUE@
 HAVE_ISFINITE = @HAVE_ISFINITE@
@@ -303,7 +294,6 @@ LDFLAGS = @LDFLAGS@
 LIBAA = @LIBAA@
 LIBART_CFLAGS = @LIBART_CFLAGS@
 LIBART_LIBS = @LIBART_LIBS@
-LIBGNOMEPRINT = @LIBGNOMEPRINT@
 LIBJPEG = @LIBJPEG@
 LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
@@ -403,7 +393,6 @@ USE_BINRELOC_TRUE = @USE_BINRELOC_TRUE@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WINDRES = @WINDRES@
-WINPRINT = @WINPRINT@
 WITH_PDBGEN_FALSE = @WITH_PDBGEN_FALSE@
 WITH_PDBGEN_TRUE = @WITH_PDBGEN_TRUE@
 WMF = @WMF@
@@ -591,16 +580,14 @@ libapptools_a_sources = \
 	gimpperspectivetool.h		\
 	gimpposterizetool.c		\
 	gimpposterizetool.h		\
-	gimpnewrectselecttool.c		\
-	gimpnewrectselecttool.h		\
-	gimpnewrectselectoptions.c		\
-	gimpnewrectselectoptions.h		\
+	gimprectangleselecttool.c	\
+	gimprectangleselecttool.h	\
+	gimprectangleselectoptions.c	\
+	gimprectangleselectoptions.h	\
 	gimprectangletool.c		\
 	gimprectangletool.h		\
 	gimprectangleoptions.c		\
 	gimprectangleoptions.h		\
-	gimprectselecttool.c		\
-	gimprectselecttool.h		\
 	gimprotatetool.c		\
 	gimprotatetool.h		\
 	gimpscaletool.c			\
@@ -752,8 +739,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmeasuretool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmoveoptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmovetool.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpnewrectselectoptions.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpnewrectselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintbrushtool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppaintoptions-gui.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppainttool.Po@am__quote@
@@ -761,8 +746,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpperspectivetool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpposterizetool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectangleoptions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectangleselectoptions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectangleselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectangletool.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprectselecttool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimprotatetool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscaletool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpselectionoptions.Po@am__quote@

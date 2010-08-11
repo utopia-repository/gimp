@@ -59,7 +59,7 @@ Starts a group undo.
 <para>
 This function is used to start a group undo--necessary for logically
 combining two or more undo operations into a single operation. This
-call must be used in conjunction with a 'gimp-image-undo-group-end'
+call must be used in conjunction with a <link linkend="gimp-image-undo-group-end"><function>gimp_image_undo_group_end()</function></link>
 call.</para>
 <para>
 
@@ -78,7 +78,7 @@ Finish a group undo.
 </para>
 <para>
 This function must be called once for each
-'gimp-image-undo-group-start' call that is made.</para>
+<link linkend="gimp-image-undo-group-start"><function>gimp_image_undo_group_start()</function></link> call that is made.</para>
 <para>
 
 </para><variablelist role="params">
@@ -98,7 +98,7 @@ Check if the image's undo stack is enabled.
 This procedure checks if the image's undo stack is currently enabled
 or disabled. This is useful when several plugins or scripts call
 each other and want to check if their caller has already used
-'gimp_image_undo_disable' or 'gimp_image_undo_freeze'.</para>
+<link linkend="gimp-image-undo-disable"><function>gimp_image_undo_disable()</function></link> or <link linkend="gimp-image-undo-freeze"><function>gimp_image_undo_freeze()</function></link>.</para>
 <para>
 
 </para><variablelist role="params">
@@ -117,7 +117,7 @@ Disable the image's undo stack.
 <para>
 This procedure disables the image's undo stack, allowing subsequent
 operations to ignore their undo steps. This is generally called in
-conjunction with 'gimp_image_undo_enable' to temporarily disable an
+conjunction with <link linkend="gimp-image-undo-enable"><function>gimp_image_undo_enable()</function></link> to temporarily disable an
 image undo stack. This is advantageous because saving undo steps can
 be time and memory intensive.</para>
 <para>
@@ -138,7 +138,7 @@ Enable the image's undo stack.
 <para>
 This procedure enables the image's undo stack, allowing subsequent
 operations to store their undo steps. This is generally called in
-conjunction with 'gimp_image_undo_disable' to temporarily disable an
+conjunction with <link linkend="gimp-image-undo-disable"><function>gimp_image_undo_disable()</function></link> to temporarily disable an
 image undo stack.</para>
 <para>
 
@@ -158,14 +158,15 @@ Freeze the image's undo stack.
 <para>
 This procedure freezes the image's undo stack, allowing subsequent
 operations to ignore their undo steps. This is generally called in
-conjunction with 'gimp_image_undo_thaw' to temporarily disable an
+conjunction with <link linkend="gimp-image-undo-thaw"><function>gimp_image_undo_thaw()</function></link> to temporarily disable an
 image undo stack. This is advantageous because saving undo steps can
-be time and memory intensive. 'gimp_image_undo_{freeze,thaw}' and
-'gimp_image_undo_{disable,enable}' differ in that the former does
-not free up all undo steps when undo is thawed, so is more suited to
-interactive in-situ previews. It is important in this case that the
-image is back to the same state it was frozen in before thawing,
-else 'undo' behaviour is undefined.</para>
+be time and memory intensive. <link linkend="gimp-image-undo-freeze"><function>gimp_image_undo_freeze()</function></link> /
+<link linkend="gimp-image-undo-thaw"><function>gimp_image_undo_thaw()</function></link> and <link linkend="gimp-image-undo-disable"><function>gimp_image_undo_disable()</function></link> /
+<link linkend="gimp-image-undo-enable"><function>gimp_image_undo_enable()</function></link> differ in that the former does not free up
+all undo steps when undo is thawed, so is more suited to interactive
+in-situ previews. It is important in this case that the image is
+back to the same state it was frozen in before thawing, else 'undo'
+behaviour is undefined.</para>
 <para>
 
 </para><variablelist role="params">
@@ -184,9 +185,9 @@ Thaw the image's undo stack.
 <para>
 This procedure thaws the image's undo stack, allowing subsequent
 operations to store their undo steps. This is generally called in
-conjunction with 'gimp_image_undo_freeze' to temporarily freeze an
-image undo stack. 'gimp_image_undo_thaw' does NOT free the undo
-stack as 'gimp_image_undo_enable' does, so is suited for situations
+conjunction with <link linkend="gimp-image-undo-freeze"><function>gimp_image_undo_freeze()</function></link> to temporarily freeze an
+image undo stack. <link linkend="gimp-image-undo-thaw"><function>gimp_image_undo_thaw()</function></link> does NOT free the undo
+stack as <link linkend="gimp-image-undo-enable"><function>gimp_image_undo_enable()</function></link> does, so is suited for situations
 where one wishes to leave the undo stack in the same state in which
 one found it despite non-destructively playing with the image in the
 meantime. An example would be in-situ plugin previews. Balancing

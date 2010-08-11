@@ -92,7 +92,7 @@ union       <link linkend="GimpParamData">GimpParamData</link>;
 <link linkend="guint">guint</link>       <link linkend="gimp-tile-width">gimp_tile_width</link>                 (void);
 <link linkend="guint">guint</link>       <link linkend="gimp-tile-height">gimp_tile_height</link>                (void);
 <link linkend="gint">gint</link>        <link linkend="gimp-shm-ID">gimp_shm_ID</link>                     (void);
-<link linkend="guchar">guchar</link>*     <link linkend="gimp-shm-addr">gimp_shm_addr</link>                   (void);
+const <link linkend="guchar">guchar</link>* <link linkend="gimp-shm-addr">gimp_shm_addr</link>                 (void);
 <link linkend="gdouble">gdouble</link>     <link linkend="gimp-gamma">gimp_gamma</link>                      (void);
 <link linkend="gboolean">gboolean</link>    <link linkend="gimp-install-cmap">gimp_install_cmap</link>               (void);
 <link linkend="gint">gint</link>        <link linkend="gimp-min-colors">gimp_min_colors</link>                 (void);
@@ -322,12 +322,12 @@ This procedure returns the process ID of the currently running gimp.</para>
 {
   gint32            d_int32;
   gint16            d_int16;
-  gint8             d_int8;
+  guint8            d_int8;
   gdouble           d_float;
   gchar            *d_string;
   gint32           *d_int32array;
   gint16           *d_int16array;
-  gint8            *d_int8array;
+  guint8           *d_int8array;
   gdouble          *d_floatarray;
   gchar           **d_stringarray;
   GimpRGB           d_color;
@@ -752,7 +752,7 @@ given at Plug-In config time.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="gimp-shm-addr" role="function"/>gimp_shm_addr ()</title>
-<indexterm><primary>gimp_shm_addr</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*     gimp_shm_addr                   (void);</programlisting>
+<indexterm><primary>gimp_shm_addr</primary></indexterm><programlisting>const <link linkend="guchar">guchar</link>* gimp_shm_addr                 (void);</programlisting>
 <para>
 Returns the address of the shared memory segment used for passing
 tile data between the GIMP core and the Plug-In. This is a constant

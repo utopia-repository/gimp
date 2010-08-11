@@ -75,9 +75,9 @@ Interactions with settings from .gimprc.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2527068"></a><h3>
+<a name="id2552341"></a><h3>
 <a name="gimp-gimprc-query"></a>gimp_gimprc_query ()</h3>
-<a class="indexterm" name="id2527080"></a><pre class="programlisting">gchar*      gimp_gimprc_query               (const gchar *token);</pre>
+<a class="indexterm" name="id2552353"></a><pre class="programlisting">gchar*      gimp_gimprc_query               (const gchar *token);</pre>
 <p>
 Queries the gimprc file parser for information on a specified token.
 </p>
@@ -114,9 +114,9 @@ to be issued on gimprc parsing and will not be queryable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2517954"></a><h3>
+<a name="id2545465"></a><h3>
 <a name="gimp-gimprc-set"></a>gimp_gimprc_set ()</h3>
-<a class="indexterm" name="id2517967"></a><pre class="programlisting">gboolean    gimp_gimprc_set                 (const gchar *token,
+<a class="indexterm" name="id2545478"></a><pre class="programlisting">gboolean    gimp_gimprc_set                 (const gchar *token,
                                              const gchar *value);</pre>
 <p>
 Sets a gimprc token to a value and saves it in the gimprc.
@@ -125,7 +125,7 @@ Sets a gimprc token to a value and saves it in the gimprc.
 This procedure is used to add or change additional information in
 the gimprc file that is considered extraneous to the operation of
 the GIMP. Plug-ins that need configuration information can use this
-function to store it, and gimp_gimprc_query to retrieve it. This
+function to store it, and <a href="libgimp-gimpgimprc.html#gimp-gimprc-query"><code class="function">gimp_gimprc_query()</code></a> to retrieve it. This
 will accept _only_ string values in UTF-8 encoding.</p>
 <p>
 
@@ -156,9 +156,9 @@ will accept _only_ string values in UTF-8 encoding.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2518057"></a><h3>
+<a name="id2545577"></a><h3>
 <a name="gimp-get-color-configuration"></a>gimp_get_color_configuration ()</h3>
-<a class="indexterm" name="id2518070"></a><pre class="programlisting"><a
+<a class="indexterm" name="id2551952"></a><pre class="programlisting"><a
 href="../libgimpconfig/GimpColorConfig.html"
 >GimpColorConfig</a>* gimp_get_color_configuration
                                             (void);</pre>
@@ -185,9 +185,9 @@ href="../libgimpconfig/GimpColorConfig.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552847"></a><h3>
+<a name="id2552007"></a><h3>
 <a name="gimp-get-default-comment"></a>gimp_get_default_comment ()</h3>
-<a class="indexterm" name="id2552858"></a><pre class="programlisting">gchar*      gimp_get_default_comment        (void);</pre>
+<a class="indexterm" name="id2552018"></a><pre class="programlisting">gchar*      gimp_get_default_comment        (void);</pre>
 <p>
 Get the default image comment as specified in the Preferences.
 </p>
@@ -208,9 +208,9 @@ Returns a copy of the default image comment.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552903"></a><h3>
+<a name="id2552063"></a><h3>
 <a name="gimp-get-module-load-inhibit"></a>gimp_get_module_load_inhibit ()</h3>
-<a class="indexterm" name="id2552914"></a><pre class="programlisting">gchar*      gimp_get_module_load_inhibit    (void);</pre>
+<a class="indexterm" name="id2552074"></a><pre class="programlisting">gchar*      gimp_get_module_load_inhibit    (void);</pre>
 <p>
 Get the list of modules which should not be loaded.
 </p>
@@ -231,9 +231,9 @@ Returns a copy of the list of modules which should not be loaded.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2552959"></a><h3>
+<a name="id2566909"></a><h3>
 <a name="gimp-get-monitor-resolution"></a>gimp_get_monitor_resolution ()</h3>
-<a class="indexterm" name="id2561670"></a><pre class="programlisting">gboolean    gimp_get_monitor_resolution     (gdouble *xres,
+<a class="indexterm" name="id2566920"></a><pre class="programlisting">gboolean    gimp_get_monitor_resolution     (gdouble *xres,
                                              gdouble *yres);</pre>
 <p>
 Get the monitor resolution as specified in the Preferences.
@@ -272,9 +272,9 @@ reasonable.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2561759"></a><h3>
+<a name="id2567009"></a><h3>
 <a name="gimp-get-theme-dir"></a>gimp_get_theme_dir ()</h3>
-<a class="indexterm" name="id2561771"></a><pre class="programlisting">gchar*      gimp_get_theme_dir              (void);</pre>
+<a class="indexterm" name="id2567021"></a><pre class="programlisting">gchar*      gimp_get_theme_dir              (void);</pre>
 <p>
 Get the directory of the current GUI theme.
 </p>

@@ -109,11 +109,6 @@
                                              const <link linkend="gchar">gchar</link> *property_name,
                                              const <link linkend="gchar">gchar</link> *title,
                                              <link linkend="GtkFileChooserAction">GtkFileChooserAction</link> action);
-<link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-prop-file-entry-new">gimp_prop_file_entry_new</link>        (<link linkend="GObject">GObject</link> *config,
-                                             const <link linkend="gchar">gchar</link> *property_name,
-                                             const <link linkend="gchar">gchar</link> *filesel_title,
-                                             <link linkend="gboolean">gboolean</link> dir_only,
-                                             <link linkend="gboolean">gboolean</link> check_valid);
 <link linkend="GtkWidget">GtkWidget</link>*  <link linkend="gimp-prop-path-editor-new">gimp_prop_path_editor_new</link>       (<link linkend="GObject">GObject</link> *config,
                                              const <link linkend="gchar">gchar</link> *path_property_name,
                                              const <link linkend="gchar">gchar</link> *writable_property_name,
@@ -808,39 +803,6 @@ interface; you can use the <link linkend="GtkFileChooser"><type>GtkFileChooser</
 <listitem><simpara>        the open mode for the widget.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>  A new <link linkend="GtkFileChooserButton"><type>GtkFileChooserButton</type></link>.
-
-Since GIMP 2.4
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-file-entry-new" role="function"/>gimp_prop_file_entry_new ()</title>
-<indexterm><primary>gimp_prop_file_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_prop_file_entry_new        (<link linkend="GObject">GObject</link> *config,
-                                             const <link linkend="gchar">gchar</link> *property_name,
-                                             const <link linkend="gchar">gchar</link> *filesel_title,
-                                             <link linkend="gboolean">gboolean</link> dir_only,
-                                             <link linkend="gboolean">gboolean</link> check_valid);</programlisting>
-<para>
-Creates a <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> to set and display the specified Path property.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>config</parameter>&nbsp;:</term>
-<listitem><simpara>        Object to which property is attached.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>property_name</parameter>&nbsp;:</term>
-<listitem><simpara> Name of Path property.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>filesel_title</parameter>&nbsp;:</term>
-<listitem><simpara> Label for the file selector.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dir_only</parameter>&nbsp;:</term>
-<listitem><simpara>      <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the file entry should accept directories only.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>check_valid</parameter>&nbsp;:</term>
-<listitem><simpara>   <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the widget should check if the entered file
-                really exists.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>  A new <link linkend="GimpFileEntry"><type>GimpFileEntry</type></link> widget.
 
 Since GIMP 2.4
 </simpara></listitem></varlistentry>

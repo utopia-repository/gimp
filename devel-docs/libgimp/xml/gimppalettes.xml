@@ -76,7 +76,7 @@ Retrieves a list of all of the available palettes
 <para>
 This procedure returns a complete listing of available palettes.
 Each name returned can be used as input to the command
-'gimp-context-set-palette'.</para>
+<link linkend="gimp-context-set-palette"><function>gimp_context_set_palette()</function></link>.</para>
 <para>
 
 </para><variablelist role="params">

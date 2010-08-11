@@ -83,7 +83,6 @@ static const gchar * const authors[] =
   "Robert L Krawitz",
   "Tuomas Kuosmanen",
   "Olof S Kylander",
-  "Karl La Rocca",
   "Philip Lafleur",
   "Chris Lahey",
   "Nick Lamb",
@@ -182,23 +181,35 @@ static const gchar * const authors[] =
 
 static const gchar * const artists[] =
 {
+  "Lapo Calamandrei",
   "Tuomas Kuosmanen",
   "Karl La Rocca",
+  "Andreas Nilsson",
   "Mike Schaeffer",
   "Carol Spears",
   "Jakub Steiner",
+  "William Szilveszter",
   NULL
 };
 
 static const gchar * const documenters[] =
 {
   "Carey Bunks",
+  "Marco Ciampa",
+  "Dust",
+  "Jakub Friedl",
   "Michael Hammel",
+  "Julien Hardelin",
   "Simon Janes",
+  "Róman Joost",
+  "Hans de Jonge",
+  "Semka Kuloviæ-Debals",
   "Karin Kylander",
   "Olof S Kylander",
   "Ed Mackey",
   "Ian Main",
+  "Manuel Quiñones",
   "James Robinson",
+  "Axel Wernicke",
   NULL
 };

@@ -54,8 +54,13 @@
         <sub name="gimppatterns" link="libgimp-gimppatterns.html"/>
       </sub>
       <sub name="Controlling the Core's Selection Dialogs" link="libgimp-selectors.html">
-        <sub name="gimpbrushselect" link="libgimp-gimpbrushselect.html"/>
+        <sub name="GimpSelectButton" link="GimpSelectButton.html"/>
+        <sub name="GimpBrushSelectButton" link="GimpBrushSelectButton.html"/>
         <sub name="GimpFontSelectButton" link="GimpFontSelectButton.html"/>
+        <sub name="GimpGradientSelectButton" link="GimpGradientSelectButton.html"/>
+        <sub name="GimpPaletteSelectButton" link="GimpPaletteSelectButton.html"/>
+        <sub name="GimpPatternSelectButton" link="GimpPatternSelectButton.html"/>
+        <sub name="gimpbrushselect" link="libgimp-gimpbrushselect.html"/>
         <sub name="gimpfontselect" link="libgimp-gimpfontselect.html"/>
         <sub name="gimpgradientselect" link="libgimp-gimpgradientselect.html"/>
         <sub name="gimppaletteselect" link="libgimp-gimppaletteselect.html"/>
@@ -723,20 +728,55 @@
     <keyword type="function" name="gimp_patterns_get_pattern ()" link="libgimp-gimppatterns.html#gimp-patterns-get-pattern" deprecated=""/>
     <keyword type="function" name="gimp_patterns_set_pattern ()" link="libgimp-gimppatterns.html#gimp-patterns-set-pattern" deprecated=""/>
     <keyword type="function" name="gimp_patterns_get_pattern_data ()" link="libgimp-gimppatterns.html#gimp-patterns-get-pattern-data" deprecated=""/>
+    <keyword type="struct" name="GimpSelectButton" link="GimpSelectButton.html#GimpSelectButton-struct"/>
+    <keyword type="function" name="gimp_select_button_close_popup ()" link="GimpSelectButton.html#gimp-select-button-close-popup" since="GIMP 2.4"/>
+    <keyword type="struct" name="GimpBrushSelectButton" link="GimpBrushSelectButton.html#GimpBrushSelectButton-struct"/>
+    <keyword type="function" name="gimp_brush_select_button_new ()" link="GimpBrushSelectButton.html#gimp-brush-select-button-new" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_brush_select_button_get_brush ()" link="GimpBrushSelectButton.html#gimp-brush-select-button-get-brush" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_brush_select_button_set_brush ()" link="GimpBrushSelectButton.html#gimp-brush-select-button-set-brush" since="GIMP 2.4"/>
+    <keyword type="" name="The &quot;brush-name&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-name"/>
+    <keyword type="" name="The &quot;brush-opacity&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-opacity"/>
+    <keyword type="" name="The &quot;brush-paint-mode&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-paint-mode"/>
+    <keyword type="" name="The &quot;brush-spacing&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--brush-spacing"/>
+    <keyword type="" name="The &quot;title&quot; property" link="GimpBrushSelectButton.html#GimpBrushSelectButton--title"/>
+    <keyword type="" name="The &quot;brush-set&quot; signal" link="GimpBrushSelectButton.html#GimpBrushSelectButton-brush-set"/>
+    <keyword type="struct" name="GimpFontSelectButton" link="GimpFontSelectButton.html#GimpFontSelectButton-struct"/>
+    <keyword type="function" name="gimp_font_select_button_new ()" link="GimpFontSelectButton.html#gimp-font-select-button-new" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_font_select_button_get_font ()" link="GimpFontSelectButton.html#gimp-font-select-button-get-font" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_font_select_button_set_font ()" link="GimpFontSelectButton.html#gimp-font-select-button-set-font" since="GIMP 2.4"/>
+    <keyword type="" name="The &quot;font-name&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--font-name"/>
+    <keyword type="" name="The &quot;title&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--title"/>
+    <keyword type="" name="The &quot;font-name&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--font-name"/>
+    <keyword type="" name="The &quot;title&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--title"/>
+    <keyword type="" name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
+    <keyword type="" name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
+    <keyword type="struct" name="GimpGradientSelectButton" link="GimpGradientSelectButton.html#GimpGradientSelectButton-struct"/>
+    <keyword type="function" name="gimp_gradient_select_button_new ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-new" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_gradient_select_button_get_gradient ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-get-gradient"/>
+    <keyword type="function" name="gimp_gradient_select_button_set_gradient ()" link="GimpGradientSelectButton.html#gimp-gradient-select-button-set-gradient" since="GIMP 2.4"/>
+    <keyword type="" name="The &quot;gradient-name&quot; property" link="GimpGradientSelectButton.html#GimpGradientSelectButton--gradient-name"/>
+    <keyword type="" name="The &quot;title&quot; property" link="GimpGradientSelectButton.html#GimpGradientSelectButton--title"/>
+    <keyword type="" name="The &quot;gradient-set&quot; signal" link="GimpGradientSelectButton.html#GimpGradientSelectButton-gradient-set"/>
+    <keyword type="struct" name="GimpPaletteSelectButton" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton-struct"/>
+    <keyword type="function" name="gimp_palette_select_button_new ()" link="GimpPaletteSelectButton.html#gimp-palette-select-button-new" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_palette_select_button_get_palette ()" link="GimpPaletteSelectButton.html#gimp-palette-select-button-get-palette" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_palette_select_button_set_palette ()" link="GimpPaletteSelectButton.html#gimp-palette-select-button-set-palette" since="GIMP 2.4"/>
+    <keyword type="" name="The &quot;palette-name&quot; property" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton--palette-name"/>
+    <keyword type="" name="The &quot;title&quot; property" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton--title"/>
+    <keyword type="" name="The &quot;palette-set&quot; signal" link="GimpPaletteSelectButton.html#GimpPaletteSelectButton-palette-set"/>
+    <keyword type="struct" name="GimpPatternSelectButton" link="GimpPatternSelectButton.html#GimpPatternSelectButton-struct"/>
+    <keyword type="function" name="gimp_pattern_select_button_new ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-new" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_pattern_select_button_get_pattern ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-get-pattern" since="GIMP 2.4"/>
+    <keyword type="function" name="gimp_pattern_select_button_set_pattern ()" link="GimpPatternSelectButton.html#gimp-pattern-select-button-set-pattern"/>
+    <keyword type="" name="The &quot;pattern-name&quot; property" link="GimpPatternSelectButton.html#GimpPatternSelectButton--pattern-name"/>
+    <keyword type="" name="The &quot;title&quot; property" link="GimpPatternSelectButton.html#GimpPatternSelectButton--title"/>
+    <keyword type="" name="The &quot;pattern-set&quot; signal" link="GimpPatternSelectButton.html#GimpPatternSelectButton-pattern-set"/>
     <keyword type="function" name="GimpRunBrushCallback ()" link="libgimp-gimpbrushselect.html#GimpRunBrushCallback"/>
     <keyword type="function" name="gimp_brush_select_new ()" link="libgimp-gimpbrushselect.html#gimp-brush-select-new"/>
     <keyword type="function" name="gimp_brush_select_destroy ()" link="libgimp-gimpbrushselect.html#gimp-brush-select-destroy"/>
     <keyword type="function" name="gimp_brushes_popup ()" link="libgimp-gimpbrushselect.html#gimp-brushes-popup"/>
     <keyword type="function" name="gimp_brushes_close_popup ()" link="libgimp-gimpbrushselect.html#gimp-brushes-close-popup"/>
     <keyword type="function" name="gimp_brushes_set_popup ()" link="libgimp-gimpbrushselect.html#gimp-brushes-set-popup"/>
-    <keyword type="struct" name="GimpFontSelectButton" link="GimpFontSelectButton.html#GimpFontSelectButton-struct"/>
-    <keyword type="function" name="gimp_font_select_button_new ()" link="GimpFontSelectButton.html#gimp-font-select-button-new"/>
-    <keyword type="function" name="gimp_font_select_button_get_font_name ()" link="GimpFontSelectButton.html#gimp-font-select-button-get-font-name" since="2.4"/>
-    <keyword type="function" name="gimp_font_select_button_set_font_name ()" link="GimpFontSelectButton.html#gimp-font-select-button-set-font-name" since="2.4"/>
-    <keyword type="function" name="gimp_font_select_button_close_popup ()" link="GimpFontSelectButton.html#gimp-font-select-button-close-popup"/>
-    <keyword type="" name="The &quot;font-name&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--font-name"/>
-    <keyword type="" name="The &quot;title&quot; property" link="GimpFontSelectButton.html#GimpFontSelectButton--title"/>
-    <keyword type="" name="The &quot;font-set&quot; signal" link="GimpFontSelectButton.html#GimpFontSelectButton-font-set"/>
     <keyword type="function" name="GimpRunFontCallback ()" link="libgimp-gimpfontselect.html#GimpRunFontCallback"/>
     <keyword type="function" name="gimp_font_select_new ()" link="libgimp-gimpfontselect.html#gimp-font-select-new"/>
     <keyword type="function" name="gimp_font_select_destroy ()" link="libgimp-gimpfontselect.html#gimp-font-select-destroy"/>
@@ -805,21 +845,21 @@
     <keyword type="function" name="gimp_layer_menu_new ()" link="libgimp-gimpmenu.html#gimp-layer-menu-new" deprecated=""/>
     <keyword type="function" name="gimp_channel_menu_new ()" link="libgimp-gimpmenu.html#gimp-channel-menu-new" deprecated=""/>
     <keyword type="function" name="gimp_drawable_menu_new ()" link="libgimp-gimpmenu.html#gimp-drawable-menu-new" deprecated=""/>
-    <keyword type="function" name="gimp_brush_select_widget_new ()" link="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new"/>
-    <keyword type="function" name="gimp_brush_select_widget_close ()" link="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-close"/>
-    <keyword type="function" name="gimp_brush_select_widget_set ()" link="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-set"/>
+    <keyword type="function" name="gimp_brush_select_widget_new ()" link="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-new" deprecated=""/>
+    <keyword type="function" name="gimp_brush_select_widget_close ()" link="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-close" deprecated=""/>
+    <keyword type="function" name="gimp_brush_select_widget_set ()" link="libgimp-gimpbrushmenu.html#gimp-brush-select-widget-set" deprecated=""/>
     <keyword type="function" name="gimp_font_select_widget_new ()" link="libgimp-gimpfontmenu.html#gimp-font-select-widget-new" deprecated=""/>
     <keyword type="function" name="gimp_font_select_widget_close ()" link="libgimp-gimpfontmenu.html#gimp-font-select-widget-close" deprecated=""/>
     <keyword type="function" name="gimp_font_select_widget_set ()" link="libgimp-gimpfontmenu.html#gimp-font-select-widget-set" deprecated=""/>
-    <keyword type="function" name="gimp_gradient_select_widget_new ()" link="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-new"/>
-    <keyword type="function" name="gimp_gradient_select_widget_close ()" link="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-close"/>
-    <keyword type="function" name="gimp_gradient_select_widget_set ()" link="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-set"/>
-    <keyword type="function" name="gimp_palette_select_widget_new ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_palette_select_widget_close ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-close" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_palette_select_widget_set ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-set" since="GIMP 2.2"/>
-    <keyword type="function" name="gimp_pattern_select_widget_new ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new"/>
-    <keyword type="function" name="gimp_pattern_select_widget_close ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close"/>
-    <keyword type="function" name="gimp_pattern_select_widget_set ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set"/>
+    <keyword type="function" name="gimp_gradient_select_widget_new ()" link="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-new" deprecated="" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_gradient_select_widget_close ()" link="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-close" deprecated=""/>
+    <keyword type="function" name="gimp_gradient_select_widget_set ()" link="libgimp-gimpgradientmenu.html#gimp-gradient-select-widget-set" deprecated=""/>
+    <keyword type="function" name="gimp_palette_select_widget_new ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-new" deprecated="" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_palette_select_widget_close ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-close" deprecated="" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_palette_select_widget_set ()" link="libgimp-gimppalettemenu.html#gimp-palette-select-widget-set" deprecated="" since="GIMP 2.2"/>
+    <keyword type="function" name="gimp_pattern_select_widget_new ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-new" deprecated=""/>
+    <keyword type="function" name="gimp_pattern_select_widget_close ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-close" deprecated=""/>
+    <keyword type="function" name="gimp_pattern_select_widget_set ()" link="libgimp-gimppatternmenu.html#gimp-pattern-select-widget-set" deprecated=""/>
     <keyword type="struct" name="GimpProcBrowserDialog" link="GimpProcBrowserDialog.html#GimpProcBrowserDialog-struct"/>
     <keyword type="function" name="gimp_proc_browser_dialog_new ()" link="GimpProcBrowserDialog.html#gimp-proc-browser-dialog-new" since="GIMP 2.4"/>
     <keyword type="function" name="gimp_proc_browser_dialog_get_selected ()" link="GimpProcBrowserDialog.html#gimp-proc-browser-dialog-get-selected" since="GIMP 2.4"/>

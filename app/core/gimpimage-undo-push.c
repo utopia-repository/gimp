@@ -35,6 +35,7 @@
 #include "gimp-parasites.h"
 #include "gimp.h"
 #include "gimpgrid.h"
+#include "gimpguide.h"
 #include "gimpimage-colormap.h"
 #include "gimpimage-grid.h"
 #include "gimpimage-guides.h"
@@ -316,8 +317,8 @@ typedef struct _GuideUndo GuideUndo;
 struct _GuideUndo
 {
   GimpGuide           *guide;
-  gint                 position;
   GimpOrientationType  orientation;
+  gint                 position;
 };
 
 static gboolean undo_pop_image_guide  (GimpUndo            *undo,
@@ -334,7 +335,7 @@ gimp_image_undo_push_image_guide (GimpImage   *image,
   GimpUndo *new;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-  g_return_val_if_fail (guide != NULL, FALSE);
+  g_return_val_if_fail (GIMP_IS_GUIDE (guide), FALSE);
 
   if ((new = gimp_image_undo_push (image, GIMP_TYPE_UNDO,
                                    sizeof (GuideUndo),
@@ -347,9 +348,9 @@ gimp_image_undo_push_image_guide (GimpImage   *image,
     {
       GuideUndo *gu = new->data;
 
-      gu->guide       = gimp_image_guide_ref (guide);
-      gu->position    = guide->position;
-      gu->orientation = guide->orientation;
+      gu->guide       = g_object_ref (guide);
+      gu->orientation = gimp_guide_get_orientation (guide);
+      gu->position    = gimp_guide_get_position (guide);
 
       return TRUE;
     }
@@ -363,11 +364,11 @@ undo_pop_image_guide (GimpUndo            *undo,
                       GimpUndoAccumulator *accum)
 {
   GuideUndo           *gu = undo->data;
-  gint                 old_position;
   GimpOrientationType  old_orientation;
+  gint                 old_position;
 
-  old_position    = gu->guide->position;
-  old_orientation = gu->guide->orientation;
+  old_orientation = gimp_guide_get_orientation (gu->guide);
+  old_position    = gimp_guide_get_position (gu->guide);
 
   /*  add and move guides manually (nor using the gimp_image_guide
    *  API), because we might be in the middle of an image resizing
@@ -375,11 +376,11 @@ undo_pop_image_guide (GimpUndo            *undo,
    *  image.
    */
 
-  if (gu->guide->position == -1)
+  if (old_position == -1)
     {
       undo->image->guides = g_list_prepend (undo->image->guides, gu->guide);
-      gu->guide->position = gu->position;
-      gimp_image_guide_ref (gu->guide);
+      gimp_guide_set_position (gu->guide, gu->position);
+      g_object_ref (gu->guide);
       gimp_image_update_guide (undo->image, gu->guide);
     }
   else if (gu->position == -1)
@@ -389,11 +390,11 @@ undo_pop_image_guide (GimpUndo            *undo,
   else
     {
       gimp_image_update_guide (undo->image, gu->guide);
-      gu->guide->position = gu->position;
+      gimp_guide_set_position (gu->guide, gu->position);
       gimp_image_update_guide (undo->image, gu->guide);
     }
 
-  gu->guide->orientation = gu->orientation;
+  gimp_guide_set_orientation (gu->guide, gu->orientation);
 
   gu->position    = old_position;
   gu->orientation = old_orientation;
@@ -407,7 +408,7 @@ undo_free_image_guide (GimpUndo     *undo,
 {
   GuideUndo *gu = undo->data;
 
-  gimp_image_guide_unref (gu->guide);
+  g_object_unref (gu->guide);
   g_free (gu);
 }
 

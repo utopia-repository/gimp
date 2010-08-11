@@ -109,11 +109,6 @@ void        gimp_rectangle_tool_motion              (GimpTool          *tool,
 gboolean    gimp_rectangle_tool_key_press           (GimpTool          *tool,
                                                      GdkEventKey       *kevent,
                                                      GimpDisplay       *display);
-void        gimp_rectangle_tool_modifier_key        (GimpTool          *tool,
-                                                     GdkModifierType    key,
-                                                     gboolean           press,
-                                                     GdkModifierType    state,
-                                                     GimpDisplay       *display);
 void        gimp_rectangle_tool_oper_update         (GimpTool          *tool,
                                                      GimpCoords        *coords,
                                                      GdkModifierType    state,
@@ -130,6 +125,7 @@ void        gimp_rectangle_tool_halt                (GimpRectangleTool *rectangl
 void        gimp_rectangle_tool_configure           (GimpRectangleTool *rectangle);
 void        gimp_rectangle_tool_set_constrain       (GimpRectangleTool *rectangle,
                                                      gboolean           constrain);
+gboolean    gimp_rectangle_tool_no_movement         (GimpRectangleTool *rectangle);
 
 /*  convenience functions  */
 

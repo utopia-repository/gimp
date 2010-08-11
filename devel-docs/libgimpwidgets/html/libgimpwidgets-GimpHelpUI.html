@@ -80,9 +80,9 @@ void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-context-help">gimp_cont
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2605169"></a><h3>
+<a name="id2606398"></a><h3>
 <a name="GimpHelpFunc"></a>GimpHelpFunc ()</h3>
-<a class="indexterm" name="id2605181"></a><pre class="programlisting">void        (*GimpHelpFunc)                 (const gchar *help_id,
+<a class="indexterm" name="id2606410"></a><pre class="programlisting">void        (*GimpHelpFunc)                 (const gchar *help_id,
                                              gpointer help_data);</pre>
 <p>
 This is the prototype for all functions you pass as <em class="parameter"><code>help_func</code></em> to the
@@ -129,9 +129,9 @@ the help.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602001"></a><h3>
+<a name="id2606566"></a><h3>
 <a name="GIMP-HELP-ID:CAPS"></a>GIMP_HELP_ID</h3>
-<a class="indexterm" name="id2602014"></a><pre class="programlisting">#define GIMP_HELP_ID (gimp_help_id_quark ())
+<a class="indexterm" name="id2606578"></a><pre class="programlisting">#define GIMP_HELP_ID (gimp_help_id_quark ())
 </pre>
 <p>
 Since: GIMP 2.2
@@ -139,9 +139,9 @@ Since: GIMP 2.2
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602030"></a><h3>
+<a name="id2606595"></a><h3>
 <a name="gimp-help-enable-tooltips"></a>gimp_help_enable_tooltips ()</h3>
-<a class="indexterm" name="id2602041"></a><pre class="programlisting">void        gimp_help_enable_tooltips       (void);</pre>
+<a class="indexterm" name="id2606606"></a><pre class="programlisting">void        gimp_help_enable_tooltips       (void);</pre>
 <p>
 This function calls <code class="function">gtk_tooltips_enable()</code>.</p>
 <p>
@@ -150,9 +150,9 @@ This function calls <code class="function">gtk_tooltips_enable()</code>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602075"></a><h3>
+<a name="id2606640"></a><h3>
 <a name="gimp-help-disable-tooltips"></a>gimp_help_disable_tooltips ()</h3>
-<a class="indexterm" name="id2602086"></a><pre class="programlisting">void        gimp_help_disable_tooltips      (void);</pre>
+<a class="indexterm" name="id2606651"></a><pre class="programlisting">void        gimp_help_disable_tooltips      (void);</pre>
 <p>
 This function calls <code class="function">gtk_tooltips_disable()</code>.</p>
 <p>
@@ -161,9 +161,9 @@ This function calls <code class="function">gtk_tooltips_disable()</code>.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602119"></a><h3>
+<a name="id2606684"></a><h3>
 <a name="gimp-standard-help-func"></a>gimp_standard_help_func ()</h3>
-<a class="indexterm" name="id2602130"></a><pre class="programlisting">void        gimp_standard_help_func         (const gchar *help_id,
+<a class="indexterm" name="id2606695"></a><pre class="programlisting">void        gimp_standard_help_func         (const gchar *help_id,
                                              gpointer help_data);</pre>
 <p>
 This is the standard GIMP help function which does nothing but calling
@@ -193,9 +193,9 @@ href="../libgimp/libgimp-gimphelp.html#gimp-help"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2602227"></a><h3>
+<a name="id2606792"></a><h3>
 <a name="gimp-help-connect"></a>gimp_help_connect ()</h3>
-<a class="indexterm" name="id2602239"></a><pre class="programlisting">void        gimp_help_connect               (GtkWidget *widget,
+<a class="indexterm" name="id2608220"></a><pre class="programlisting">void        gimp_help_connect               (GtkWidget *widget,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              gpointer help_data);</pre>
@@ -239,9 +239,9 @@ constructors. You only have to call it for windows/dialogs you created
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603061"></a><h3>
+<a name="id2608367"></a><h3>
 <a name="gimp-help-set-help-data"></a>gimp_help_set_help_data ()</h3>
-<a class="indexterm" name="id2603073"></a><pre class="programlisting">void        gimp_help_set_help_data         (GtkWidget *widget,
+<a class="indexterm" name="id2608378"></a><pre class="programlisting">void        gimp_help_set_help_data         (GtkWidget *widget,
                                              const gchar *tooltip,
                                              const gchar *help_id);</pre>
 <p>
@@ -282,9 +282,9 @@ a visible tooltip.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2603249"></a><h3>
+<a name="id2608554"></a><h3>
 <a name="gimp-context-help"></a>gimp_context_help ()</h3>
-<a class="indexterm" name="id2603261"></a><pre class="programlisting">void        gimp_context_help               (GtkWidget *widget);</pre>
+<a class="indexterm" name="id2608567"></a><pre class="programlisting">void        gimp_context_help               (GtkWidget *widget);</pre>
 <p>
 This function invokes the context help inspector.
 </p>

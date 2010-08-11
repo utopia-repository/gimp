@@ -70,16 +70,16 @@ Control of undo/redo.
 <div class="refsect1" lang="en">
 <a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2627222"></a><h3>
+<a name="id2626240"></a><h3>
 <a name="gimp-image-undo-group-start"></a>gimp_image_undo_group_start ()</h3>
-<a class="indexterm" name="id2627234"></a><pre class="programlisting">gboolean    gimp_image_undo_group_start     (gint32 image_ID);</pre>
+<a class="indexterm" name="id2626251"></a><pre class="programlisting">gboolean    gimp_image_undo_group_start     (gint32 image_ID);</pre>
 <p>
 Starts a group undo.
 </p>
 <p>
 This function is used to start a group undo--necessary for logically
 combining two or more undo operations into a single operation. This
-call must be used in conjunction with a 'gimp-image-undo-group-end'
+call must be used in conjunction with a <a href="libgimp-gimpundo.html#gimp-image-undo-group-end"><code class="function">gimp_image_undo_group_end()</code></a>
 call.</p>
 <p>
 
@@ -104,15 +104,15 @@ call.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2627300"></a><h3>
+<a name="id2634863"></a><h3>
 <a name="gimp-image-undo-group-end"></a>gimp_image_undo_group_end ()</h3>
-<a class="indexterm" name="id2627311"></a><pre class="programlisting">gboolean    gimp_image_undo_group_end       (gint32 image_ID);</pre>
+<a class="indexterm" name="id2634874"></a><pre class="programlisting">gboolean    gimp_image_undo_group_end       (gint32 image_ID);</pre>
 <p>
 Finish a group undo.
 </p>
 <p>
 This function must be called once for each
-'gimp-image-undo-group-start' call that is made.</p>
+<a href="libgimp-gimpundo.html#gimp-image-undo-group-start"><code class="function">gimp_image_undo_group_start()</code></a> call that is made.</p>
 <p>
 
 </p>
@@ -136,9 +136,9 @@ This function must be called once for each
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629657"></a><h3>
+<a name="id2634946"></a><h3>
 <a name="gimp-image-undo-is-enabled"></a>gimp_image_undo_is_enabled ()</h3>
-<a class="indexterm" name="id2629668"></a><pre class="programlisting">gboolean    gimp_image_undo_is_enabled      (gint32 image_ID);</pre>
+<a class="indexterm" name="id2634957"></a><pre class="programlisting">gboolean    gimp_image_undo_is_enabled      (gint32 image_ID);</pre>
 <p>
 Check if the image's undo stack is enabled.
 </p>
@@ -146,7 +146,7 @@ Check if the image's undo stack is enabled.
 This procedure checks if the image's undo stack is currently enabled
 or disabled. This is useful when several plugins or scripts call
 each other and want to check if their caller has already used
-'gimp_image_undo_disable' or 'gimp_image_undo_freeze'.</p>
+<a href="libgimp-gimpundo.html#gimp-image-undo-disable"><code class="function">gimp_image_undo_disable()</code></a> or <a href="libgimp-gimpundo.html#gimp-image-undo-freeze"><code class="function">gimp_image_undo_freeze()</code></a>.</p>
 <p>
 
 </p>
@@ -170,16 +170,16 @@ each other and want to check if their caller has already used
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629735"></a><h3>
+<a name="id2635041"></a><h3>
 <a name="gimp-image-undo-disable"></a>gimp_image_undo_disable ()</h3>
-<a class="indexterm" name="id2629746"></a><pre class="programlisting">gboolean    gimp_image_undo_disable         (gint32 image_ID);</pre>
+<a class="indexterm" name="id2635052"></a><pre class="programlisting">gboolean    gimp_image_undo_disable         (gint32 image_ID);</pre>
 <p>
 Disable the image's undo stack.
 </p>
 <p>
 This procedure disables the image's undo stack, allowing subsequent
 operations to ignore their undo steps. This is generally called in
-conjunction with 'gimp_image_undo_enable' to temporarily disable an
+conjunction with <a href="libgimp-gimpundo.html#gimp-image-undo-enable"><code class="function">gimp_image_undo_enable()</code></a> to temporarily disable an
 image undo stack. This is advantageous because saving undo steps can
 be time and memory intensive.</p>
 <p>
@@ -205,16 +205,16 @@ be time and memory intensive.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2629812"></a><h3>
+<a name="id2632299"></a><h3>
 <a name="gimp-image-undo-enable"></a>gimp_image_undo_enable ()</h3>
-<a class="indexterm" name="id2629824"></a><pre class="programlisting">gboolean    gimp_image_undo_enable          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2632310"></a><pre class="programlisting">gboolean    gimp_image_undo_enable          (gint32 image_ID);</pre>
 <p>
 Enable the image's undo stack.
 </p>
 <p>
 This procedure enables the image's undo stack, allowing subsequent
 operations to store their undo steps. This is generally called in
-conjunction with 'gimp_image_undo_disable' to temporarily disable an
+conjunction with <a href="libgimp-gimpundo.html#gimp-image-undo-disable"><code class="function">gimp_image_undo_disable()</code></a> to temporarily disable an
 image undo stack.</p>
 <p>
 
@@ -239,23 +239,24 @@ image undo stack.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619697"></a><h3>
+<a name="id2632384"></a><h3>
 <a name="gimp-image-undo-freeze"></a>gimp_image_undo_freeze ()</h3>
-<a class="indexterm" name="id2619708"></a><pre class="programlisting">gboolean    gimp_image_undo_freeze          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2632395"></a><pre class="programlisting">gboolean    gimp_image_undo_freeze          (gint32 image_ID);</pre>
 <p>
 Freeze the image's undo stack.
 </p>
 <p>
 This procedure freezes the image's undo stack, allowing subsequent
 operations to ignore their undo steps. This is generally called in
-conjunction with 'gimp_image_undo_thaw' to temporarily disable an
+conjunction with <a href="libgimp-gimpundo.html#gimp-image-undo-thaw"><code class="function">gimp_image_undo_thaw()</code></a> to temporarily disable an
 image undo stack. This is advantageous because saving undo steps can
-be time and memory intensive. 'gimp_image_undo_{freeze,thaw}' and
-'gimp_image_undo_{disable,enable}' differ in that the former does
-not free up all undo steps when undo is thawed, so is more suited to
-interactive in-situ previews. It is important in this case that the
-image is back to the same state it was frozen in before thawing,
-else 'undo' behaviour is undefined.</p>
+be time and memory intensive. <a href="libgimp-gimpundo.html#gimp-image-undo-freeze"><code class="function">gimp_image_undo_freeze()</code></a> /
+<a href="libgimp-gimpundo.html#gimp-image-undo-thaw"><code class="function">gimp_image_undo_thaw()</code></a> and <a href="libgimp-gimpundo.html#gimp-image-undo-disable"><code class="function">gimp_image_undo_disable()</code></a> /
+<a href="libgimp-gimpundo.html#gimp-image-undo-enable"><code class="function">gimp_image_undo_enable()</code></a> differ in that the former does not free up
+all undo steps when undo is thawed, so is more suited to interactive
+in-situ previews. It is important in this case that the image is
+back to the same state it was frozen in before thawing, else 'undo'
+behaviour is undefined.</p>
 <p>
 
 </p>
@@ -279,18 +280,18 @@ else 'undo' behaviour is undefined.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2619779"></a><h3>
+<a name="id2632509"></a><h3>
 <a name="gimp-image-undo-thaw"></a>gimp_image_undo_thaw ()</h3>
-<a class="indexterm" name="id2619790"></a><pre class="programlisting">gboolean    gimp_image_undo_thaw            (gint32 image_ID);</pre>
+<a class="indexterm" name="id2632520"></a><pre class="programlisting">gboolean    gimp_image_undo_thaw            (gint32 image_ID);</pre>
 <p>
 Thaw the image's undo stack.
 </p>
 <p>
 This procedure thaws the image's undo stack, allowing subsequent
 operations to store their undo steps. This is generally called in
-conjunction with 'gimp_image_undo_freeze' to temporarily freeze an
-image undo stack. 'gimp_image_undo_thaw' does NOT free the undo
-stack as 'gimp_image_undo_enable' does, so is suited for situations
+conjunction with <a href="libgimp-gimpundo.html#gimp-image-undo-freeze"><code class="function">gimp_image_undo_freeze()</code></a> to temporarily freeze an
+image undo stack. <a href="libgimp-gimpundo.html#gimp-image-undo-thaw"><code class="function">gimp_image_undo_thaw()</code></a> does NOT free the undo
+stack as <a href="libgimp-gimpundo.html#gimp-image-undo-enable"><code class="function">gimp_image_undo_enable()</code></a> does, so is suited for situations
 where one wishes to leave the undo stack in the same state in which
 one found it despite non-destructively playing with the image in the
 meantime. An example would be in-situ plugin previews. Balancing

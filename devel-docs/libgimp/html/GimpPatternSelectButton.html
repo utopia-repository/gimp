@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>GimpPatternSelectButton</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
+<link rel="start" href="index.html" title="GIMP Library Reference Manual">
+<link rel="up" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
+<link rel="prev" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">
+<link rel="next" href="libgimp-gimpbrushselect.html" title="gimpbrushselect">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
+<link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
+<link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
+<link rel="chapter" href="libgimp-image.html" title="Manupulating Images and all their Properties">
+<link rel="chapter" href="libgimp-data.html" title="Data Objects">
+<link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
+<link rel="part" href="libgimpui.html" title="Part&#160;III.&#160;GIMP User Interface Library">
+<link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
+<link rel="index" href="ix01.html" title="Index">
+<link rel="index" href="ix02.html" title="Index of new symbols in GIMP 2.2">
+<link rel="index" href="ix03.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="ix04.html" title="Index of deprecated symbols">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="GimpPaletteSelectButton.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="libgimp-selectors.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GIMP Library Reference Manual</th>
+<td><a accesskey="n" href="libgimp-gimpbrushselect.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#properties" class="shortcut">Properties</a>
+                  &#160;|&#160;
+                  <a href="#signal_proto" class="shortcut">Signals</a></nobr></td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="GimpPatternSelectButton"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpPatternSelectButton</span></h2>
+<p>GimpPatternSelectButton &#8212; </p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+
+
+            <a href="GimpPatternSelectButton.html#GimpPatternSelectButton-struct">GimpPatternSelectButton</a>;
+GtkWidget*  <a href="GimpPatternSelectButton.html#gimp-pattern-select-button-new">gimp_pattern_select_button_new</a>  (const gchar *title,
+                                             const gchar *pattern_name);
+const gchar* <a href="GimpPatternSelectButton.html#gimp-pattern-select-button-get-pattern">gimp_pattern_select_button_get_pattern</a>
+                                            (<a href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a> *button);
+void        <a href="GimpPatternSelectButton.html#gimp-pattern-select-button-set-pattern">gimp_pattern_select_button_set_pattern</a>
+                                            (<a href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a> *button,
+                                             const gchar *pattern_name);
+
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="synopsis">
+
+  GObject
+   +----GInitiallyUnowned
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBox
+                                 +----GtkHBox
+                                       +----<a href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a>
+                                             +----GimpPatternSelectButton
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+GimpPatternSelectButton implements
+ AtkImplementorIface.</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="properties"></a><h2>Properties</h2>
+<pre class="synopsis">
+
+  "<a href="GimpPatternSelectButton.html#GimpPatternSelectButton--pattern-name">pattern-name</a>"         gchararray            : Read / Write
+  "<a href="GimpPatternSelectButton.html#GimpPatternSelectButton--title">title</a>"                gchararray            : Read / Write / Construct Only
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="signal_proto"></a><h2>Signals</h2>
+<pre class="synopsis">
+
+"<a href="GimpPatternSelectButton.html#GimpPatternSelectButton-pattern-set">pattern-set</a>"
+            void        user_function      (<a href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a> *widget,
+                                            gchar                   *pattern_name,
+                                            gint                     width,
+                                            gint                     height,
+                                            gint                     bpp,
+                                            gpointer                 mask_data,
+                                            gboolean                 dialog_closing,
+                                            gpointer                 user_data)           : Run first
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="desc"></a><h2>Description</h2>
+<p>
+
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="details"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2665658"></a><h3>
+<a name="GimpPatternSelectButton-struct"></a>GimpPatternSelectButton</h3>
+<a class="indexterm" name="id2665669"></a><pre class="programlisting">typedef struct _GimpPatternSelectButton GimpPatternSelectButton;</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2665685"></a><h3>
+<a name="gimp-pattern-select-button-new"></a>gimp_pattern_select_button_new ()</h3>
+<a class="indexterm" name="id2665698"></a><pre class="programlisting">GtkWidget*  gimp_pattern_select_button_new  (const gchar *title,
+                                             const gchar *pattern_name);</pre>
+<p>
+Creates a new <span class="type">GtkWidget</span> that completely controls the selection of
+a pattern.  This widget is suitable for placement in a table in a
+plug-in dialog.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>title</code></em>&#160;:</span></td>
+<td>        Title of the dialog to use or <code class="literal">NULL</code> to use the default title.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td> Initial pattern name or <code class="literal">NULL</code> to use current selection.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> A <span class="type">GtkWidget</span> that you can use in your UI.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2665816"></a><h3>
+<a name="gimp-pattern-select-button-get-pattern"></a>gimp_pattern_select_button_get_pattern ()</h3>
+<a class="indexterm" name="id2665831"></a><pre class="programlisting">const gchar* gimp_pattern_select_button_get_pattern
+                                            (<a href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a> *button);</pre>
+<p>
+Retrieves the name of currently selected pattern.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>button</code></em>&#160;:</span></td>
+<td> A <a href="GimpPatternSelectButton.html" title="GimpPatternSelectButton"><span class="type">GimpPatternSelectButton</span></a>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> an internal copy of the pattern name which must not be freed.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2664170"></a><h3>
+<a name="gimp-pattern-select-button-set-pattern"></a>gimp_pattern_select_button_set_pattern ()</h3>
+<a class="indexterm" name="id2664184"></a><pre class="programlisting">void        gimp_pattern_select_button_set_pattern
+                                            (<a href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a> *button,
+                                             const gchar *pattern_name);</pre>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>button</code></em>&#160;:</span></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td>
+
+
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="property_details"></a><h2>Property Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2664262"></a><h3>
+<a name="GimpPatternSelectButton--pattern-name"></a>The "<code class="literal">pattern-name</code>" property</h3>
+<a class="indexterm" name="id2664278"></a><pre class="programlisting">  "pattern-name"         gchararray            : Read / Write</pre>
+<p>
+The name of the currently selected pattern.</p>
+<p>
+
+</p>
+<p>Default value: NULL</p>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2664312"></a><h3>
+<a name="GimpPatternSelectButton--title"></a>The "<code class="literal">title</code>" property</h3>
+<a class="indexterm" name="id2664326"></a><pre class="programlisting">  "title"                gchararray            : Read / Write / Construct Only</pre>
+<p>
+The title to be used for the pattern selection popup dialog.</p>
+<p>
+
+</p>
+<p>Default value: "Pattern Selection"</p>
+<p>Since  GIMP 2.4
+</p>
+</div>
+</div>
+<div class="refsect1" lang="en">
+<a name="signals"></a><h2>Signal Details</h2>
+<div class="refsect2" lang="en">
+<a name="id2664373"></a><h3>
+<a name="GimpPatternSelectButton-pattern-set"></a>The "pattern-set" signal</h3>
+<a class="indexterm" name="id2664380"></a><pre class="programlisting">void        user_function                  (<a href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a> *widget,
+                                            gchar                   *pattern_name,
+                                            gint                     width,
+                                            gint                     height,
+                                            gint                     bpp,
+                                            gpointer                 mask_data,
+                                            gboolean                 dialog_closing,
+                                            gpointer                 user_data)           : Run first</pre>
+<p>
+The ::pattern-set signal is emitted when the user selects a pattern.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
+<td> the object which received the signal.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>pattern_name</code></em>&#160;:</span></td>
+<td> the name of the currently selected pattern.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td> width of the pattern
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td> height of the pattern
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>bpp</code></em>&#160;:</span></td>
+<td> bpp of the pattern
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>mask_data</code></em>&#160;:</span></td>
+<td> pattern mask data
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>dialog_closing</code></em>&#160;:</span></td>
+<td> whether the dialog was closed or not.
+</td>
+</tr>
+<tr>
+<td>
+<span class="term"><em class="parameter"><code>user_data</code></em>&#160;:</span></td>
+<td>user data set when the signal handler was connected.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -132,4 +132,4 @@
 )
 
 (script-fu-menu-register "script-fu-beveled-pattern-button"
-                         "<Toolbox>/Xtns/Web Page Themes/Beveled Pattern")
+                         "<Image>/File/Create/Web Page Themes/Beveled Pattern")

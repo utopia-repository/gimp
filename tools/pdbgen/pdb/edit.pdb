@@ -23,10 +23,12 @@ sub edit_cut {
     $help = <<'HELP';
 If there is a selection in the image, then the area specified by the
 selection is cut from the specified drawable and placed in an internal
-GIMP edit buffer.  It can subsequently be retrieved using the
+GIMP edit buffer. It can subsequently be retrieved using the
 gimp_edit_paste() command. If there is no selection, then the
 specified drawable will be removed and its contents stored in the
-internal GIMP edit buffer.
+internal GIMP edit buffer. This procedure will fail if the selected area
+lies completely outside the bounds of the current drawable and there is
+nothing to copy from.
 HELP
 
     &std_pdb_misc;
@@ -38,18 +40,26 @@ HELP
 
     @outargs = (
 	{ name => 'non_empty', type => 'boolean',
-	  desc => 'TRUE if the cut was successful, FALSE if the
-                   selection contained only transparent pixels' }
+	  desc => 'TRUE if the cut was successful,
+                   FALSE if there was nothing to copy from' }
     );
 
     %invoke = (
 	code => <<CODE
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
-      GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+      GimpImage *image    = gimp_item_get_image (GIMP_ITEM (drawable));
+      GError    *my_error = NULL;
 
-      non_empty = gimp_edit_cut (image, drawable, context) != NULL;
+      non_empty = gimp_edit_cut (image, drawable, context, &my_error) != NULL;
+
+      if (! non_empty)
+        {
+          gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_WARNING,
+                        "%s", my_error->message);
+          g_clear_error (&my_error);
+        }
     }
   else
     success = FALSE;
@@ -67,7 +77,9 @@ selection is copied from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using the
 gimp_edit_paste() command.  If there is no selection, then the
 specified drawable's contents will be stored in the internal GIMP edit
-buffer.
+buffer. This procedure will fail if the selected area lies completely
+outside the bounds of the current drawable and there is nothing to
+copy from.
 HELP
 
     &std_pdb_misc;
@@ -79,18 +91,26 @@ HELP
 
     @outargs = (
 	{ name => 'non_empty', type => 'boolean',
-	  desc => 'TRUE if the copy was successful, FALSE if the
-                   selection contained only transparent pixels' }
+	  desc => 'TRUE if the cut was successful,
+                   FALSE if there was nothing to copy from' }
     );
 
     %invoke = (
 	code => <<CODE
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
-      GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+      GimpImage *image    = gimp_item_get_image (GIMP_ITEM (drawable));
+      GError    *my_error = NULL;
 
-      non_empty = gimp_edit_copy (image, drawable, context) != NULL;
+      non_empty = gimp_edit_copy (image, drawable, context, &my_error) != NULL;
+
+      if (! non_empty)
+        {
+          gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_WARNING,
+                        "%s", my_error->message);
+          g_clear_error (&my_error);
+        }
     }
   else
     success = FALSE;
@@ -119,14 +139,22 @@ HELP
 
     @outargs = (
 	{ name => 'non_empty', type => 'boolean',
-	  desc => 'TRUE if the copy was successful, FALSE if the
-                   selection contained only transparent pixels' }
+	  desc => 'TRUE if the copy was successful' }
     );
 
     %invoke = (
 	code => <<CODE
 {
-  non_empty = gimp_edit_copy_visible (image, context) != NULL;
+  GError *my_error = NULL;
+
+  non_empty = gimp_edit_copy_visible (image, context, &my_error) != NULL;
+
+  if (! non_empty)
+    {
+      gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_WARNING,
+                    "%s", my_error->message);
+      g_clear_error (&my_error);
+    }
 }
 CODE
     );
@@ -169,7 +197,8 @@ HELP
     %invoke = (
 	code => <<CODE
 {
-  if (gimp->global_buffer && gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp->global_buffer &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
       floating_sel = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
                                       drawable, gimp->global_buffer,
@@ -240,23 +269,30 @@ HELP
     @outargs = (
 	{ name => 'real_name', type => 'string',
 	  desc => 'The real name given to the buffer, or NULL if the
-                   selection contained only transparent pixels' }
+                   cut failed' }
     );
 
     %invoke = (
 	code => <<CODE
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
-       GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+      GimpImage *image    = gimp_item_get_image (GIMP_ITEM (drawable));
+      GError    *my_error = NULL;
 
-       real_name = (gchar *) gimp_edit_named_cut (image, buffer_name,
-                                                  drawable, context);
+      real_name = (gchar *) gimp_edit_named_cut (image, buffer_name,
+                                                 drawable, context, &my_error);
 
-       if (real_name)
-         real_name = g_strdup (real_name);
-       else
-         success = FALSE;
+      if (real_name)
+        {
+          real_name = g_strdup (real_name);
+        }
+      else
+        {
+          gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_WARNING,
+                        "%s", my_error->message);
+          g_clear_error (&my_error);
+        }
     }
   else
     success = FALSE;
@@ -285,23 +321,30 @@ HELP
     @outargs = (
 	{ name => 'real_name', type => 'string',
 	  desc => 'The real name given to the buffer, or NULL if the
-                   selection contained only transparent pixels' }
+                   copy failed' }
     );
 
     %invoke = (
 	code => <<CODE
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
-       GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
+      GimpImage *image    = gimp_item_get_image (GIMP_ITEM (drawable));
+      GError    *my_error = NULL;
 
-       real_name = (gchar *) gimp_edit_named_copy (image, buffer_name,
-                                                   drawable, context);
+      real_name = (gchar *) gimp_edit_named_copy (image, buffer_name,
+                                                  drawable, context, &my_error);
 
-       if (real_name)
-         real_name = g_strdup (real_name);
-       else
-         success = FALSE;
+      if (real_name)
+        {
+          real_name = g_strdup (real_name);
+        }
+      else
+        {
+          gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_WARNING,
+                        "%s", my_error->message);
+          g_clear_error (&my_error);
+        }
     }
   else
     success = FALSE;
@@ -331,19 +374,28 @@ HELP
 
     @outargs = (
 	{ name => 'real_name', type => 'string',
-	  desc => 'The real name given to the buffer' }
+	  desc => 'The real name given to the buffer, or NULL if the
+                   copy failed' }
     );
 
     %invoke = (
 	code => <<CODE
 {
+  GError *my_error = NULL;
+
   real_name = (gchar *) gimp_edit_named_copy_visible (image, buffer_name,
-                                                      context);
+                                                      context, &my_error);
 
   if (real_name)
-    real_name = g_strdup (real_name);
+    {
+      real_name = g_strdup (real_name);
+    }
   else
-    success = FALSE;
+    {
+      gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_WARNING,
+                    "%s", my_error->message);
+      g_clear_error (&my_error);
+    }
 }
 CODE
     );
@@ -376,10 +428,9 @@ HELP
     %invoke = (
 	code => <<CODE
 {
-  GimpBuffer *buffer = (GimpBuffer *)
-    gimp_container_get_child_by_name (gimp->named_buffers, buffer_name);
+  GimpBuffer *buffer = gimp_pdb_get_buffer (gimp, buffer_name, error);
 
-  if (buffer && gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (buffer && gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
       floating_sel = gimp_edit_paste (gimp_item_get_image (GIMP_ITEM (drawable)),
                                       drawable, buffer,
@@ -417,8 +468,7 @@ HELP
     %invoke = (
 	code => <<CODE
 {
-  GimpBuffer *buffer = (GimpBuffer *)
-    gimp_container_get_child_by_name (gimp->named_buffers, buffer_name);
+  GimpBuffer *buffer = gimp_pdb_get_buffer (gimp, buffer_name, error);
 
   if (buffer)
     {
@@ -455,7 +505,7 @@ HELP
     %invoke = (
 	code => <<CODE
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
       GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -495,7 +545,7 @@ HELP
     %invoke = (
 	code => <<CODE
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
       GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -563,19 +613,20 @@ HELP
 	                 "core/gimpchannel.h") ],
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
       GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
       gboolean   do_seed_fill;
 
       do_seed_fill = gimp_channel_is_empty (gimp_image_get_mask (image));
 
-      gimp_drawable_bucket_fill (drawable, context, fill_mode,
-                                 paint_mode, opacity / 100.0,
-                                 do_seed_fill,
-                                 FALSE /* don't fill transparent */,
-                                 GIMP_SELECT_CRITERION_COMPOSITE,
-	                         threshold, sample_merged, x, y);
+      success = gimp_drawable_bucket_fill (drawable, context, fill_mode,
+                                           paint_mode, opacity / 100.0,
+                                           do_seed_fill,
+                                           FALSE /* don't fill transparent */,
+                                           GIMP_SELECT_CRITERION_COMPOSITE,
+	                                   threshold, sample_merged, x, y,
+                                           error);
     }
   else
     success = FALSE;
@@ -646,19 +697,20 @@ HELP
 	                 "core/gimpchannel.h") ],
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
       GimpImage *image = gimp_item_get_image (GIMP_ITEM (drawable));
       gboolean   do_seed_fill;
 
       do_seed_fill = gimp_channel_is_empty (gimp_image_get_mask (image));
 
-      gimp_drawable_bucket_fill (drawable, context, fill_mode,
-                                 paint_mode, opacity / 100.0,
-                                 do_seed_fill,
-                                 fill_transparent,
-                                 select_criterion,
-	                         threshold, sample_merged, x, y);
+      success = gimp_drawable_bucket_fill (drawable, context, fill_mode,
+                                           paint_mode, opacity / 100.0,
+                                           do_seed_fill,
+                                           fill_transparent,
+                                           select_criterion,
+                                           threshold, sample_merged, x, y,
+                                           error);
     }
   else
     success = FALSE;
@@ -666,10 +718,6 @@ HELP
 CODE
     );
 }
-
-
-
-
 
 sub edit_blend {
     $blurb = <<'BLURB';
@@ -726,7 +774,7 @@ HELP
         headers => [ qw("core/gimpdrawable-blend.h") ],
 	code => <<'CODE'
 {
-  success = gimp_item_is_attached (GIMP_ITEM (drawable));
+  success = gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error);
 
   if (success && supersample)
     {
@@ -782,7 +830,7 @@ HELP
 	headers => [ qw("core/gimpstrokedesc.h") ],
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
       GimpImage      *image = gimp_item_get_image (GIMP_ITEM (drawable));
       GimpStrokeDesc *desc  = gimp_stroke_desc_new (gimp, context);
@@ -790,7 +838,8 @@ HELP
       g_object_set (desc, "method", GIMP_STROKE_METHOD_PAINT_CORE, NULL);
 
       success = gimp_item_stroke (GIMP_ITEM (gimp_image_get_mask (image)),
-                                  drawable, context, desc, TRUE, progress);
+                                  drawable, context, desc, TRUE, progress,
+                                  error);
 
       g_object_unref (desc);
     }
@@ -822,14 +871,16 @@ HELP
 	headers => [ qw("core/gimpstrokedesc.h") ],
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error) &&
+      gimp_pdb_item_is_attached (GIMP_ITEM (vectors), error))
     {
       GimpStrokeDesc *desc  = gimp_stroke_desc_new (gimp, context);
 
       g_object_set (desc, "method", GIMP_STROKE_METHOD_PAINT_CORE, NULL);
 
       success = gimp_item_stroke (GIMP_ITEM (vectors),
-                                  drawable, context, desc, TRUE, progress);
+                                  drawable, context, desc, TRUE, progress,
+                                  error);
 
       g_object_unref (desc);
     }
@@ -844,17 +895,24 @@ CODE
 @headers = qw(<string.h>
               "core/gimp.h"
               "core/gimp-edit.h"
-              "core/gimpcontainer.h"
               "core/gimpimage.h"
               "core/gimpprogress.h"
+              "gimppdb-utils.h"
               "gimp-intl.h");
 
-@procs = qw(edit_cut edit_copy edit_copy_visible
+@procs = qw(edit_cut
+            edit_copy edit_copy_visible
             edit_paste edit_paste_as_new
-            edit_named_cut edit_named_copy edit_named_copy_visible
+            edit_named_cut
+            edit_named_copy edit_named_copy_visible
             edit_named_paste edit_named_paste_as_new
-            edit_clear edit_fill edit_bucket_fill edit_bucket_fill_full
-	    edit_blend edit_stroke edit_stroke_vectors);
+            edit_clear
+            edit_fill
+            edit_bucket_fill
+            edit_bucket_fill_full
+	    edit_blend
+            edit_stroke
+            edit_stroke_vectors);
 
 %exports = (app => [@procs], lib => [@procs]);
 

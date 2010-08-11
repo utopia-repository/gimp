@@ -185,6 +185,8 @@ gimp_foreground_select_tool_init (GimpForegroundSelectTool *fg_select)
   gimp_tool_control_set_scroll_lock (tool->control, FALSE);
   gimp_tool_control_set_preserve    (tool->control, FALSE);
   gimp_tool_control_set_dirty_mask  (tool->control, GIMP_DIRTY_IMAGE_SIZE);
+  gimp_tool_control_set_precision   (tool->control,
+                                     GIMP_CURSOR_PRECISION_PIXEL_CENTER);
   gimp_tool_control_set_tool_cursor (tool->control,
                                      GIMP_TOOL_CURSOR_FREE_SELECT);
 
@@ -271,6 +273,8 @@ gimp_foreground_select_tool_control (GimpTool       *tool,
             gimp_drawable_foreground_extract_siox_done (fg_select->state);
             fg_select->state = NULL;
           }
+
+        tool->display = NULL;
       }
       break;
     }
@@ -292,7 +296,7 @@ gimp_foreground_select_tool_oper_update (GimpTool        *tool,
   if (fg_select->mask && gimp_draw_tool_is_active (draw_tool))
     gimp_draw_tool_stop (draw_tool);
 
-  GIMP_FREE_SELECT_TOOL (tool)->last_coords = *coords;
+  fg_select->last_coords = *coords;
 
   GIMP_TOOL_CLASS (parent_class)->oper_update (tool, coords, state, proximity,
                                                display);
@@ -320,7 +324,7 @@ gimp_foreground_select_tool_oper_update (GimpTool        *tool,
       switch (GIMP_SELECTION_TOOL (tool)->function)
         {
         case SELECTION_SELECT:
-          status = _("Draw a rough circle around the object to extract");
+          status = _("Rougly outline the object to extract");
           break;
         default:
           break;
@@ -396,20 +400,29 @@ gimp_foreground_select_tool_key_press (GimpTool    *tool,
   if (display != tool->display)
     return FALSE;
 
-  switch (kevent->keyval)
+  if (fg_select->state)
     {
-    case GDK_Return:
-    case GDK_KP_Enter:
-    case GDK_ISO_Enter:
-      gimp_foreground_select_tool_apply (fg_select, display);
-      return TRUE;
+      switch (kevent->keyval)
+        {
+        case GDK_Return:
+        case GDK_KP_Enter:
+        case GDK_ISO_Enter:
+          gimp_foreground_select_tool_apply (fg_select, display);
+          return TRUE;
 
-    case GDK_Escape:
-      gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
-      return TRUE;
+        case GDK_Escape:
+          gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
+          return TRUE;
 
-    default:
-      return FALSE;
+        default:
+          return FALSE;
+        }
+    }
+  else
+    {
+      return GIMP_TOOL_CLASS (parent_class)->key_press (tool,
+                                                        kevent,
+                                                        display);
     }
 }
 
@@ -432,9 +445,10 @@ gimp_foreground_select_tool_button_press (GimpTool        *tool,
       if (gimp_draw_tool_is_active (draw_tool) && draw_tool->display != display)
         gimp_draw_tool_stop (draw_tool);
 
-      gimp_tool_control_activate (tool->control);
+      if (! gimp_tool_control_is_active (tool->control))
+        gimp_tool_control_activate (tool->control);
 
-      GIMP_FREE_SELECT_TOOL (tool)->last_coords = *coords;
+      fg_select->last_coords = *coords;
 
       g_return_if_fail (fg_select->stroke == NULL);
       fg_select->stroke = g_array_new (FALSE, FALSE, sizeof (GimpVector2));
@@ -505,7 +519,7 @@ gimp_foreground_select_tool_motion (GimpTool        *tool,
 
       gimp_draw_tool_pause (GIMP_DRAW_TOOL (tool));
 
-      GIMP_FREE_SELECT_TOOL (tool)->last_coords = *coords;
+      fg_select->last_coords = *coords;
 
       if (last->x != (gint) coords->x || last->y != (gint) coords->y)
         {
@@ -567,10 +581,9 @@ gimp_foreground_select_tool_draw (GimpDrawTool *draw_tool)
 
   if (fg_select->mask)
     {
-      GimpFreeSelectTool *sel   = GIMP_FREE_SELECT_TOOL (tool);
       GimpDisplayShell   *shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
-      gint                x     = sel->last_coords.x;
-      gint                y     = sel->last_coords.y;
+      gint                x     = fg_select->last_coords.x;
+      gint                y     = fg_select->last_coords.y;
       gdouble             radius;
 
       radius = (options->stroke_width / shell->scale_y) / 2;
@@ -613,6 +626,8 @@ gimp_foreground_select_tool_select (GimpFreeSelectTool *free_sel,
   GimpDrawable                *drawable;
   GimpScanConvert             *scan_convert;
   GimpChannel                 *mask;
+  const GimpVector2           *points;
+  gint                         n_points;
 
   drawable  = gimp_image_get_active_drawable (image);
   fg_select = GIMP_FOREGROUND_SELECT_TOOL (free_sel);
@@ -629,8 +644,14 @@ gimp_foreground_select_tool_select (GimpFreeSelectTool *free_sel,
 
   scan_convert = gimp_scan_convert_new ();
 
+  gimp_free_select_tool_get_points (free_sel,
+                                    &points,
+                                    &n_points);
+
   gimp_scan_convert_add_polyline (scan_convert,
-                                  free_sel->num_points, free_sel->points, TRUE);
+                                  n_points,
+                                  points,
+                                  TRUE);
 
   mask = gimp_channel_new (image,
                            gimp_image_get_width (image),
@@ -742,7 +763,7 @@ gimp_foreground_select_tool_apply (GimpForegroundSelectTool *fg_select,
   g_return_if_fail (fg_select->mask != NULL);
 
   gimp_channel_select_channel (gimp_image_get_mask (display->image),
-                               Q_("command|Foreground Select"),
+                               C_("command", "Foreground Select"),
                                fg_select->mask, 0, 0,
                                options->operation,
                                options->feather,
@@ -782,11 +803,9 @@ gimp_foreground_select_tool_stroke (GimpChannel    *mask,
                             stroke->width,
                             GIMP_JOIN_ROUND, GIMP_CAP_ROUND, 10.0,
                             0.0, NULL);
-  gimp_scan_convert_compose (scan_convert,
-                             stroke->background ?
-                             GIMP_CHANNEL_OP_SUBTRACT : GIMP_CHANNEL_OP_ADD,
+  gimp_scan_convert_compose_value (scan_convert,
                              gimp_drawable_get_tiles (GIMP_DRAWABLE (mask)),
-                             0, 0);
+                             0, 0, stroke->background ? 0 : 255);
   gimp_scan_convert_free (scan_convert);
 }
 

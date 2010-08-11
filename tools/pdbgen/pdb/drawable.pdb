@@ -51,8 +51,8 @@ sub drawable_merge_shadow {
     $blurb = 'Merge the shadow buffer with the specified drawable.';
 
     $help = <<'HELP';
-This procedure combines the contents of the image's shadow buffer (for
-temporary processing) with the specified drawable. The 'undo'
+This procedure combines the contents of the drawable's shadow buffer
+(for temporary processing) with the specified drawable. The 'undo'
 parameter specifies whether to add an undo step for the operation.
 Requesting no undo is useful for such applications as 'auto-apply'.
 HELP
@@ -67,20 +67,53 @@ HELP
     );
 
     %invoke = (
-	headers => [ qw("plug-in/gimpplugin.h" "plug-in/gimppluginmanager.h") ],
+	headers => [ qw("core/gimpdrawable-shadow.h"
+                        "plug-in/gimpplugin.h"
+                        "plug-in/gimppluginmanager.h") ],
 	code    => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     {
       const gchar *undo_desc = _("Plug-In");
 
       if (gimp->plug_in_manager->current_plug_in)
         undo_desc = gimp_plug_in_get_undo_desc (gimp->plug_in_manager->current_plug_in);
 
-      gimp_drawable_merge_shadow (drawable, undo, undo_desc);
+      gimp_drawable_merge_shadow_tiles (drawable, undo, undo_desc);
     }
   else
     success = FALSE;
+}
+CODE
+    );
+}
+
+sub drawable_free_shadow {
+    $blurb = "Free the specified drawable's shadow data (if it exists).";
+
+    $help = <<'HELP';
+This procedure is intended as a memory saving device. If any shadow
+memory has been allocated, it will be freed automatically when the
+drawable is removed from the image, or when the plug-in procedure
+which allocated it returns.
+HELP
+
+    &mitch_pdb_misc('2008', '2.6');
+
+    @inargs = (
+	{ name => 'drawable', type => 'drawable',
+	  desc => 'The drawable' }
+    );
+
+    %invoke = (
+	headers => [ qw("plug-in/gimpplugin-cleanup.h") ],
+	code => <<'CODE'
+{
+  if (gimp->plug_in_manager->current_plug_in)
+    gimp_plug_in_cleanup_remove_shadow (gimp->plug_in_manager->current_plug_in,
+                                        drawable);
+
+  gimp_drawable_free_shadow_tiles (drawable);
 }
 CODE
     );
@@ -199,7 +232,10 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  non_empty = gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+    non_empty = gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2);
+  else
+    success = FALSE;
 }
 CODE
     );
@@ -243,7 +279,11 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  non_empty = gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height);
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
+    non_empty = gimp_drawable_mask_intersect (drawable,
+                                              &x, &y, &width, &height);
+  else
+    success = FALSE;
 }
 CODE
     );
@@ -578,13 +618,41 @@ HELP
 
     @outargs = (
 	{ name => 'layer', type => 'boolean',
-	  desc => 'TRUE if the drawable is a layer' }
+	  desc => 'TRUE if the drawable is a layer, FALSE otherwise' }
     );
 
     %invoke = (
 	code => <<'CODE'
 {
   layer = GIMP_IS_LAYER (drawable);
+}
+CODE
+    );
+}
+
+sub drawable_is_text_layer {
+    $blurb = 'Returns whether the drawable is a text layer.';
+
+    $help = <<'HELP';
+This procedure returns TRUE if the specified drawable is a text layer.
+HELP
+
+    &marcus_pdb_misc('2008', '2.6');
+
+    @inargs = (
+        { name => 'drawable', type => 'drawable',
+	  desc => 'The drawable' }
+    );
+
+    @outargs = (
+        { name => 'text_layer', type => 'boolean',
+	  desc => 'TRUE if the drawable is a text layer, FALSE otherwise.' }
+    );
+
+    %invoke = (
+        code => <<'CODE'
+{
+  text_layer = gimp_drawable_is_text_layer (drawable);
 }
 CODE
     );
@@ -606,7 +674,7 @@ HELP
 
     @outargs = (
 	{ name => 'layer_mask', type => 'boolean',
-	  desc => 'TRUE if the drawable is a layer mask' }
+	  desc => 'TRUE if the drawable is a layer mask, FALSE otherwise' }
     );
 
     %invoke = (
@@ -634,7 +702,7 @@ HELP
 
     @outargs = (
 	{ name => 'channel', type => 'boolean',
-	  desc => 'TRUE if the drawable is a channel' }
+	  desc => 'TRUE if the drawable is a channel, FALSE otherwise' }
     );
 
     %invoke = (
@@ -689,7 +757,7 @@ sub drawable_set_name {
     %invoke = (
 	code => <<'CODE'
 {
-  success = gimp_item_rename (GIMP_ITEM (drawable), name);
+  success = gimp_item_rename (GIMP_ITEM (drawable), name, error);
 }
 CODE
     );
@@ -1186,7 +1254,7 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     gimp_drawable_offset (drawable, context, wrap_around, fill_type,
                           offset_x, offset_y);
   else
@@ -1254,7 +1322,7 @@ HELP
 	headers => [ qw("core/gimpdrawable-foreground-extract.h") ],
         code    => <<'CODE'
 {
-  if (gimp_item_is_attached (GIMP_ITEM (drawable)))
+  if (gimp_pdb_item_is_attached (GIMP_ITEM (drawable), error))
     gimp_drawable_foreground_extract (drawable, mode, mask, progress);
   else
     success = FALSE;
@@ -1272,24 +1340,35 @@ CODE
               "core/gimpdrawable-offset.h"
               "core/gimplayer.h"
               "core/gimplayermask.h"
+              "text/gimptextlayer.h"
+              "gimppdb-utils.h"
               "gimp-intl.h");
 
 @procs = qw(drawable_is_valid
-            drawable_is_layer drawable_is_layer_mask drawable_is_channel
+            drawable_is_layer drawable_is_text_layer
+	    drawable_is_layer_mask drawable_is_channel
 	    drawable_type  drawable_type_with_alpha drawable_has_alpha
             drawable_is_rgb drawable_is_gray drawable_is_indexed
-            drawable_bpp drawable_width drawable_height drawable_offsets
+            drawable_bpp
+            drawable_width
+            drawable_height
+            drawable_offsets
             drawable_delete
             drawable_get_image drawable_set_image
             drawable_get_name drawable_set_name
             drawable_get_visible drawable_set_visible
             drawable_get_linked drawable_set_linked
             drawable_get_tattoo drawable_set_tattoo
-            drawable_mask_bounds drawable_mask_intersect
-            drawable_merge_shadow drawable_update
+            drawable_mask_bounds
+            drawable_mask_intersect
+            drawable_merge_shadow
+            drawable_free_shadow
+            drawable_update
             drawable_get_pixel drawable_set_pixel
-	    drawable_fill drawable_offset
-            drawable_thumbnail drawable_sub_thumbnail
+	    drawable_fill
+            drawable_offset
+            drawable_thumbnail
+            drawable_sub_thumbnail
             drawable_foreground_extract);
 
 %exports = (app => [@procs], lib => [@procs]);

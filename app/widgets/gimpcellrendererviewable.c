@@ -123,7 +123,9 @@ gimp_cell_renderer_viewable_class_init (GimpCellRendererViewableClass *klass)
 static void
 gimp_cell_renderer_viewable_init (GimpCellRendererViewable *cellviewable)
 {
-  GTK_CELL_RENDERER (cellviewable)->mode = GTK_CELL_RENDERER_MODE_ACTIVATABLE;
+  g_object_set (cellviewable,
+                "mode", GTK_CELL_RENDERER_MODE_ACTIVATABLE,
+                NULL);
 }
 
 static void
@@ -172,11 +174,11 @@ gimp_cell_renderer_viewable_set_property (GObject      *object,
     {
     case PROP_RENDERER:
       {
-        GimpViewRenderer *renderer;
+        GimpViewRenderer *renderer = g_value_dup_object (value);
 
-        renderer = (GimpViewRenderer *) g_value_dup_object (value);
         if (cell->renderer)
           g_object_unref (cell->renderer);
+
         cell->renderer = renderer;
       }
       break;

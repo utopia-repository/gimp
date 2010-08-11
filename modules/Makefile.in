@@ -45,7 +45,7 @@ am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/m4macros/binreloc.m4 $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -60,77 +60,42 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 am__DEPENDENCIES_2 = $(libgimpmodule) $(libgimpwidgets) \
 	$(am__DEPENDENCIES_1)
-am__DEPENDENCIES_3 = $(libgimpbase) $(libgimpconfig) $(libgimpcolor) \
-	$(am__DEPENDENCIES_2)
-libcdisplay_colorblind_la_DEPENDENCIES = $(am__DEPENDENCIES_3)
-am_libcdisplay_colorblind_la_OBJECTS = cdisplay_colorblind.lo
-libcdisplay_colorblind_la_OBJECTS =  \
-	$(am_libcdisplay_colorblind_la_OBJECTS)
-libcdisplay_colorblind_la_LINK = $(LIBTOOL) --tag=CC \
+am__DEPENDENCIES_3 = $(libgimpcolor) $(am__DEPENDENCIES_2)
+@HAVE_LCMS_FALSE@libcolor_selector_cmyk_la_DEPENDENCIES =  \
+@HAVE_LCMS_FALSE@	$(am__DEPENDENCIES_3)
+@HAVE_LCMS_TRUE@libcolor_selector_cmyk_la_DEPENDENCIES =  \
+@HAVE_LCMS_TRUE@	$(libgimpconfig) $(am__DEPENDENCIES_3) \
+@HAVE_LCMS_TRUE@	$(am__DEPENDENCIES_1)
+am__libcolor_selector_cmyk_la_SOURCES_DIST = color-selector-cmyk.c \
+	color-selector-cmyk-lcms.c
+@HAVE_LCMS_FALSE@am_libcolor_selector_cmyk_la_OBJECTS = libcolor_selector_cmyk_la-color-selector-cmyk.lo
+@HAVE_LCMS_TRUE@am_libcolor_selector_cmyk_la_OBJECTS = libcolor_selector_cmyk_la-color-selector-cmyk-lcms.lo
+libcolor_selector_cmyk_la_OBJECTS =  \
+	$(am_libcolor_selector_cmyk_la_OBJECTS)
+libcolor_selector_cmyk_la_LINK = $(LIBTOOL) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(AM_CFLAGS) $(CFLAGS) $(libcdisplay_colorblind_la_LDFLAGS) \
-	$(LDFLAGS) -o $@
-libcdisplay_gamma_la_DEPENDENCIES = $(am__DEPENDENCIES_3)
-am_libcdisplay_gamma_la_OBJECTS = cdisplay_gamma.lo
-libcdisplay_gamma_la_OBJECTS = $(am_libcdisplay_gamma_la_OBJECTS)
-libcdisplay_gamma_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libcdisplay_gamma_la_LDFLAGS) $(LDFLAGS) -o $@
-libcdisplay_highcontrast_la_DEPENDENCIES = $(am__DEPENDENCIES_3)
-am_libcdisplay_highcontrast_la_OBJECTS = cdisplay_highcontrast.lo
-libcdisplay_highcontrast_la_OBJECTS =  \
-	$(am_libcdisplay_highcontrast_la_OBJECTS)
-libcdisplay_highcontrast_la_LINK = $(LIBTOOL) --tag=CC \
+	$(libcolor_selector_cmyk_la_CFLAGS) $(CFLAGS) \
+	$(libcolor_selector_cmyk_la_LDFLAGS) $(LDFLAGS) -o $@
+libcolor_selector_water_la_DEPENDENCIES = $(am__DEPENDENCIES_3)
+am_libcolor_selector_water_la_OBJECTS = color-selector-water.lo
+libcolor_selector_water_la_OBJECTS =  \
+	$(am_libcolor_selector_water_la_OBJECTS)
+libcolor_selector_water_la_LINK = $(LIBTOOL) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(AM_CFLAGS) $(CFLAGS) $(libcdisplay_highcontrast_la_LDFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS) $(libcolor_selector_water_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
-libcdisplay_lcms_la_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_libcdisplay_lcms_la_OBJECTS = cdisplay_lcms.lo
-libcdisplay_lcms_la_OBJECTS = $(am_libcdisplay_lcms_la_OBJECTS)
-libcdisplay_lcms_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libcdisplay_lcms_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_LCMS_TRUE@am_libcdisplay_lcms_la_rpath = -rpath $(libdir)
-libcdisplay_proof_la_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_1)
-am_libcdisplay_proof_la_OBJECTS = cdisplay_proof.lo
-libcdisplay_proof_la_OBJECTS = $(am_libcdisplay_proof_la_OBJECTS)
-libcdisplay_proof_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libcdisplay_proof_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_LCMS_TRUE@am_libcdisplay_proof_la_rpath = -rpath $(libdir)
-am__DEPENDENCIES_4 = $(libgimpcolor) $(am__DEPENDENCIES_2)
-@HAVE_LCMS_FALSE@libcolorsel_cmyk_la_DEPENDENCIES =  \
-@HAVE_LCMS_FALSE@	$(am__DEPENDENCIES_4)
-@HAVE_LCMS_TRUE@libcolorsel_cmyk_la_DEPENDENCIES = $(libgimpconfig) \
-@HAVE_LCMS_TRUE@	$(am__DEPENDENCIES_4) $(am__DEPENDENCIES_1)
-am__libcolorsel_cmyk_la_SOURCES_DIST = colorsel_cmyk.c \
-	colorsel_cmyk_lcms.c
-@HAVE_LCMS_FALSE@am_libcolorsel_cmyk_la_OBJECTS = colorsel_cmyk.lo
-@HAVE_LCMS_TRUE@am_libcolorsel_cmyk_la_OBJECTS =  \
-@HAVE_LCMS_TRUE@	colorsel_cmyk_lcms.lo
-libcolorsel_cmyk_la_OBJECTS = $(am_libcolorsel_cmyk_la_OBJECTS)
-libcolorsel_cmyk_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libcolorsel_cmyk_la_LDFLAGS) $(LDFLAGS) -o $@
-libcolorsel_triangle_la_DEPENDENCIES = $(am__DEPENDENCIES_4)
-am_libcolorsel_triangle_la_OBJECTS = colorsel_triangle.lo
-libcolorsel_triangle_la_OBJECTS =  \
-	$(am_libcolorsel_triangle_la_OBJECTS)
-libcolorsel_triangle_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libcolorsel_triangle_la_LDFLAGS) $(LDFLAGS) -o $@
-libcolorsel_water_la_DEPENDENCIES = $(am__DEPENDENCIES_4)
-am_libcolorsel_water_la_OBJECTS = colorsel_water.lo
-libcolorsel_water_la_OBJECTS = $(am_libcolorsel_water_la_OBJECTS)
-libcolorsel_water_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libcolorsel_water_la_LDFLAGS) $(LDFLAGS) -o $@
-am__DEPENDENCIES_5 = $(am__DEPENDENCIES_2)
-libcontroller_dx_dinput_la_DEPENDENCIES = $(am__DEPENDENCIES_5)
-am_libcontroller_dx_dinput_la_OBJECTS = gimpinputdevicestore.lo \
-	controller_dx_dinput.lo
+libcolor_selector_wheel_la_DEPENDENCIES = $(am__DEPENDENCIES_3)
+am_libcolor_selector_wheel_la_OBJECTS = color-selector-wheel.lo
+libcolor_selector_wheel_la_OBJECTS =  \
+	$(am_libcolor_selector_wheel_la_OBJECTS)
+libcolor_selector_wheel_la_LINK = $(LIBTOOL) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libcolor_selector_wheel_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am__DEPENDENCIES_4 = $(am__DEPENDENCIES_2)
+libcontroller_dx_dinput_la_DEPENDENCIES = $(am__DEPENDENCIES_4)
+am_libcontroller_dx_dinput_la_OBJECTS = gimpinputdevicestore-dx.lo \
+	controller-dx-dinput.lo
 libcontroller_dx_dinput_la_OBJECTS =  \
 	$(am_libcontroller_dx_dinput_la_OBJECTS)
 libcontroller_dx_dinput_la_LINK = $(LIBTOOL) --tag=CC \
@@ -139,11 +104,11 @@ libcontroller_dx_dinput_la_LINK = $(LIBTOOL) --tag=CC \
 	$(LDFLAGS) -o $@
 @HAVE_DX_DINPUT_TRUE@am_libcontroller_dx_dinput_la_rpath = -rpath \
 @HAVE_DX_DINPUT_TRUE@	$(libdir)
-libcontroller_linux_input_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
+libcontroller_linux_input_la_DEPENDENCIES = $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libcontroller_linux_input_la_OBJECTS =  \
-	libcontroller_linux_input_la-gimpinputdevicestore.lo \
-	libcontroller_linux_input_la-controller_linux_input.lo
+	libcontroller_linux_input_la-gimpinputdevicestore-hal.lo \
+	libcontroller_linux_input_la-controller-linux-input.lo
 libcontroller_linux_input_la_OBJECTS =  \
 	$(am_libcontroller_linux_input_la_OBJECTS)
 libcontroller_linux_input_la_LINK = $(LIBTOOL) --tag=CC \
@@ -152,10 +117,10 @@ libcontroller_linux_input_la_LINK = $(LIBTOOL) --tag=CC \
 	$(libcontroller_linux_input_la_LDFLAGS) $(LDFLAGS) -o $@
 @HAVE_LINUX_INPUT_TRUE@am_libcontroller_linux_input_la_rpath = -rpath \
 @HAVE_LINUX_INPUT_TRUE@	$(libdir)
-libcontroller_midi_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
+libcontroller_midi_la_DEPENDENCIES = $(am__DEPENDENCIES_4) \
 	$(am__DEPENDENCIES_1)
 am_libcontroller_midi_la_OBJECTS =  \
-	libcontroller_midi_la-controller_midi.lo
+	libcontroller_midi_la-controller-midi.lo
 libcontroller_midi_la_OBJECTS = $(am_libcontroller_midi_la_OBJECTS)
 libcontroller_midi_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -163,6 +128,57 @@ libcontroller_midi_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(libcontroller_midi_la_LDFLAGS) $(LDFLAGS) -o $@
 @PLATFORM_WIN32_FALSE@am_libcontroller_midi_la_rpath = -rpath \
 @PLATFORM_WIN32_FALSE@	$(libdir)
+am__DEPENDENCIES_5 = $(libgimpbase) $(libgimpconfig) $(libgimpcolor) \
+	$(am__DEPENDENCIES_2)
+libdisplay_filter_color_blind_la_DEPENDENCIES = $(am__DEPENDENCIES_5)
+am_libdisplay_filter_color_blind_la_OBJECTS =  \
+	display-filter-color-blind.lo
+libdisplay_filter_color_blind_la_OBJECTS =  \
+	$(am_libdisplay_filter_color_blind_la_OBJECTS)
+libdisplay_filter_color_blind_la_LINK = $(LIBTOOL) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) \
+	$(libdisplay_filter_color_blind_la_LDFLAGS) $(LDFLAGS) -o $@
+libdisplay_filter_gamma_la_DEPENDENCIES = $(am__DEPENDENCIES_5)
+am_libdisplay_filter_gamma_la_OBJECTS = display-filter-gamma.lo
+libdisplay_filter_gamma_la_OBJECTS =  \
+	$(am_libdisplay_filter_gamma_la_OBJECTS)
+libdisplay_filter_gamma_la_LINK = $(LIBTOOL) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libdisplay_filter_gamma_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+libdisplay_filter_high_contrast_la_DEPENDENCIES =  \
+	$(am__DEPENDENCIES_5)
+am_libdisplay_filter_high_contrast_la_OBJECTS =  \
+	display-filter-high-contrast.lo
+libdisplay_filter_high_contrast_la_OBJECTS =  \
+	$(am_libdisplay_filter_high_contrast_la_OBJECTS)
+libdisplay_filter_high_contrast_la_LINK = $(LIBTOOL) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) \
+	$(libdisplay_filter_high_contrast_la_LDFLAGS) $(LDFLAGS) -o $@
+libdisplay_filter_lcms_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am_libdisplay_filter_lcms_la_OBJECTS =  \
+	libdisplay_filter_lcms_la-display-filter-lcms.lo
+libdisplay_filter_lcms_la_OBJECTS =  \
+	$(am_libdisplay_filter_lcms_la_OBJECTS)
+libdisplay_filter_lcms_la_LINK = $(LIBTOOL) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libdisplay_filter_lcms_la_CFLAGS) $(CFLAGS) \
+	$(libdisplay_filter_lcms_la_LDFLAGS) $(LDFLAGS) -o $@
+@HAVE_LCMS_TRUE@am_libdisplay_filter_lcms_la_rpath = -rpath $(libdir)
+libdisplay_filter_proof_la_DEPENDENCIES = $(am__DEPENDENCIES_5) \
+	$(am__DEPENDENCIES_1)
+am_libdisplay_filter_proof_la_OBJECTS =  \
+	libdisplay_filter_proof_la-display-filter-proof.lo
+libdisplay_filter_proof_la_OBJECTS =  \
+	$(am_libdisplay_filter_proof_la_OBJECTS)
+libdisplay_filter_proof_la_LINK = $(LIBTOOL) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libdisplay_filter_proof_la_CFLAGS) $(CFLAGS) \
+	$(libdisplay_filter_proof_la_LDFLAGS) $(LDFLAGS) -o $@
+@HAVE_LCMS_TRUE@am_libdisplay_filter_proof_la_rpath = -rpath $(libdir)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -175,30 +191,32 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libcdisplay_colorblind_la_SOURCES) \
-	$(libcdisplay_gamma_la_SOURCES) \
-	$(libcdisplay_highcontrast_la_SOURCES) \
-	$(libcdisplay_lcms_la_SOURCES) $(libcdisplay_proof_la_SOURCES) \
-	$(libcolorsel_cmyk_la_SOURCES) \
-	$(libcolorsel_triangle_la_SOURCES) \
-	$(libcolorsel_water_la_SOURCES) \
+SOURCES = $(libcolor_selector_cmyk_la_SOURCES) \
+	$(libcolor_selector_water_la_SOURCES) \
+	$(libcolor_selector_wheel_la_SOURCES) \
 	$(libcontroller_dx_dinput_la_SOURCES) \
 	$(libcontroller_linux_input_la_SOURCES) \
-	$(libcontroller_midi_la_SOURCES)
-DIST_SOURCES = $(libcdisplay_colorblind_la_SOURCES) \
-	$(libcdisplay_gamma_la_SOURCES) \
-	$(libcdisplay_highcontrast_la_SOURCES) \
-	$(libcdisplay_lcms_la_SOURCES) $(libcdisplay_proof_la_SOURCES) \
-	$(am__libcolorsel_cmyk_la_SOURCES_DIST) \
-	$(libcolorsel_triangle_la_SOURCES) \
-	$(libcolorsel_water_la_SOURCES) \
+	$(libcontroller_midi_la_SOURCES) \
+	$(libdisplay_filter_color_blind_la_SOURCES) \
+	$(libdisplay_filter_gamma_la_SOURCES) \
+	$(libdisplay_filter_high_contrast_la_SOURCES) \
+	$(libdisplay_filter_lcms_la_SOURCES) \
+	$(libdisplay_filter_proof_la_SOURCES)
+DIST_SOURCES = $(am__libcolor_selector_cmyk_la_SOURCES_DIST) \
+	$(libcolor_selector_water_la_SOURCES) \
+	$(libcolor_selector_wheel_la_SOURCES) \
 	$(libcontroller_dx_dinput_la_SOURCES) \
 	$(libcontroller_linux_input_la_SOURCES) \
-	$(libcontroller_midi_la_SOURCES)
+	$(libcontroller_midi_la_SOURCES) \
+	$(libdisplay_filter_color_blind_la_SOURCES) \
+	$(libdisplay_filter_gamma_la_SOURCES) \
+	$(libdisplay_filter_high_contrast_la_SOURCES) \
+	$(libdisplay_filter_lcms_la_SOURCES) \
+	$(libdisplay_filter_proof_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-AA = @AA@
+AA_LIBS = @AA_LIBS@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
 ALL_LINGUAS = @ALL_LINGUAS@
@@ -212,8 +230,12 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BABL_CFLAGS = @BABL_CFLAGS@
+BABL_LIBS = @BABL_LIBS@
 BINRELOC_CFLAGS = @BINRELOC_CFLAGS@
 BINRELOC_LIBS = @BINRELOC_LIBS@
+CAIRO_CFLAGS = @CAIRO_CFLAGS@
+CAIRO_LIBS = @CAIRO_LIBS@
 CARBON_LDFLAGS = @CARBON_LDFLAGS@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
@@ -225,6 +247,8 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CURL_CFLAGS = @CURL_CFLAGS@
+CURL_LIBS = @CURL_LIBS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
@@ -250,15 +274,25 @@ EXIF_CFLAGS = @EXIF_CFLAGS@
 EXIF_LIBS = @EXIF_LIBS@
 F77 = @F77@
 FFLAGS = @FFLAGS@
+FILE_AA = @FILE_AA@
+FILE_MNG = @FILE_MNG@
+FILE_PDF = @FILE_PDF@
+FILE_PNG = @FILE_PNG@
+FILE_PSP = @FILE_PSP@
+FILE_SVG = @FILE_SVG@
+FILE_TIFF_LOAD = @FILE_TIFF_LOAD@
+FILE_TIFF_SAVE = @FILE_TIFF_SAVE@
+FILE_WMF = @FILE_WMF@
+FILE_XPM = @FILE_XPM@
 FONTCONFIG_CFLAGS = @FONTCONFIG_CFLAGS@
 FONTCONFIG_LIBS = @FONTCONFIG_LIBS@
-FONTCONFIG_REQUIRED_VERSION = @FONTCONFIG_REQUIRED_VERSION@
 FREETYPE_CONFIG = @FREETYPE_CONFIG@
 FREETYPE_LIBS = @FREETYPE_LIBS@
 GDK_PIXBUF_CFLAGS = @GDK_PIXBUF_CFLAGS@
 GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
 GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
-GDK_PIXBUF_REQUIRED_VERSION = @GDK_PIXBUF_REQUIRED_VERSION@
+GEGL_CFLAGS = @GEGL_CFLAGS@
+GEGL_LIBS = @GEGL_LIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GIMPINSTALL = @GIMPINSTALL@
 GIMP_API_VERSION = @GIMP_API_VERSION@
@@ -278,11 +312,14 @@ GIMP_PLUGINS = @GIMP_PLUGINS@
 GIMP_PLUGIN_VERSION = @GIMP_PLUGIN_VERSION@
 GIMP_REAL_VERSION = @GIMP_REAL_VERSION@
 GIMP_REMOTE = @GIMP_REMOTE@
+GIMP_REMOTE_MANPAGE = @GIMP_REMOTE_MANPAGE@
 GIMP_SYSCONF_VERSION = @GIMP_SYSCONF_VERSION@
 GIMP_TOOL_VERSION = @GIMP_TOOL_VERSION@
 GIMP_UNSTABLE = @GIMP_UNSTABLE@
 GIMP_USER_VERSION = @GIMP_USER_VERSION@
 GIMP_VERSION = @GIMP_VERSION@
+GIO_CFLAGS = @GIO_CFLAGS@
+GIO_LIBS = @GIO_LIBS@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
@@ -292,19 +329,16 @@ GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
 GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
+GNOME_VFS_CFLAGS = @GNOME_VFS_CFLAGS@
+GNOME_VFS_LIBS = @GNOME_VFS_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
-GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
-GTKHTML2_CFLAGS = @GTKHTML2_CFLAGS@
-GTKHTML2_LIBS = @GTKHTML2_LIBS@
-GTKHTML2_REQUIRED_VERSION = @GTKHTML2_REQUIRED_VERSION@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
 HAVE_FINITE = @HAVE_FINITE@
-HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_ISFINITE = @HAVE_ISFINITE@
 HTML_DIR = @HTML_DIR@
 INSTALL = @INSTALL@
@@ -337,27 +371,16 @@ INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTLTOOL_XAM_RULE = @INTLTOOL_XAM_RULE@
 INTLTOOL_XML_NOMERGE_RULE = @INTLTOOL_XML_NOMERGE_RULE@
 INTLTOOL_XML_RULE = @INTLTOOL_XML_RULE@
-JPEG = @JPEG@
+ISO_CODES_LOCALEDIR = @ISO_CODES_LOCALEDIR@
+ISO_CODES_LOCATION = @ISO_CODES_LOCATION@
+JPEG_LIBS = @JPEG_LIBS@
 LCMS = @LCMS@
+LCMS_CFLAGS = @LCMS_CFLAGS@
+LCMS_LIBS = @LCMS_LIBS@
 LDFLAGS = @LDFLAGS@
-LIBAA = @LIBAA@
-LIBART_CFLAGS = @LIBART_CFLAGS@
-LIBART_LIBS = @LIBART_LIBS@
-LIBJPEG = @LIBJPEG@
-LIBLCMS = @LIBLCMS@
-LIBMNG = @LIBMNG@
 LIBOBJS = @LIBOBJS@
-LIBPNG = @LIBPNG@
-LIBPOPPLER = @LIBPOPPLER@
 LIBS = @LIBS@
-LIBSCREENSHOT = @LIBSCREENSHOT@
-LIBSVG = @LIBSVG@
-LIBTIFF = @LIBTIFF@
 LIBTOOL = @LIBTOOL@
-LIBWMF = @LIBWMF@
-LIBXMU = @LIBXMU@
-LIBXPM = @LIBXPM@
-LIBZ = @LIBZ@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 LT_CURRENT_MINUS_AGE = @LT_CURRENT_MINUS_AGE@
@@ -365,10 +388,11 @@ LT_VERSION_INFO = @LT_VERSION_INFO@
 MAIL = @MAIL@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
+MIME_TYPES = @MIME_TYPES@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MMX_EXTRA_CFLAGS = @MMX_EXTRA_CFLAGS@
-MNG = @MNG@
+MNG_LIBS = @MNG_LIBS@
 MSGFMT = @MSGFMT@
 MSGFMT_OPTS = @MSGFMT_OPTS@
 MSGMERGE = @MSGMERGE@
@@ -383,22 +407,18 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PANGOFT2_CFLAGS = @PANGOFT2_CFLAGS@
 PANGOFT2_LIBS = @PANGOFT2_LIBS@
-PANGOFT2_REQUIRED_VERSION = @PANGOFT2_REQUIRED_VERSION@
 PATHSEP = @PATHSEP@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
-PNG = @PNG@
 PNG_CFLAGS = @PNG_CFLAGS@
 PNG_LIBS = @PNG_LIBS@
 POFILES = @POFILES@
-POPPLER = @POPPLER@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
 POPPLER_LIBS = @POPPLER_LIBS@
 POSUB = @POSUB@
 PO_IN_DATADIR_FALSE = @PO_IN_DATADIR_FALSE@
 PO_IN_DATADIR_TRUE = @PO_IN_DATADIR_TRUE@
-PSP = @PSP@
 PYBIN_PATH = @PYBIN_PATH@
 PYGIMP_EXTRA_CFLAGS = @PYGIMP_EXTRA_CFLAGS@
 PYGTK_CFLAGS = @PYGTK_CFLAGS@
@@ -413,9 +433,9 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
-RSVG_REQUIRED_VERSION = @RSVG_REQUIRED_VERSION@
 RT_LIBS = @RT_LIBS@
 SCREENSHOT = @SCREENSHOT@
+SCREENSHOT_LIBS = @SCREENSHOT_LIBS@
 SED = @SED@
 SENDMAIL = @SENDMAIL@
 SET_MAKE = @SET_MAKE@
@@ -423,32 +443,32 @@ SHELL = @SHELL@
 SOCKET_LIBS = @SOCKET_LIBS@
 SSE_EXTRA_CFLAGS = @SSE_EXTRA_CFLAGS@
 STRIP = @STRIP@
-SVG = @SVG@
 SVG_CFLAGS = @SVG_CFLAGS@
 SVG_LIBS = @SVG_LIBS@
 SYMPREFIX = @SYMPREFIX@
-TIFF_LOAD = @TIFF_LOAD@
-TIFF_SAVE = @TIFF_SAVE@
-URI_GNOME_VFS_CFLAGS = @URI_GNOME_VFS_CFLAGS@
-URI_GNOME_VFS_LIBS = @URI_GNOME_VFS_LIBS@
-URI_LIBCURL_CFLAGS = @URI_LIBCURL_CFLAGS@
-URI_LIBCURL_LIBS = @URI_LIBCURL_LIBS@
+TIFF_LIBS = @TIFF_LIBS@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
+WEBKIT_CFLAGS = @WEBKIT_CFLAGS@
+WEBKIT_LIBS = @WEBKIT_LIBS@
+WIN32_LARGE_ADDRESS_AWARE = @WIN32_LARGE_ADDRESS_AWARE@
 WINDRES = @WINDRES@
-WMF = @WMF@
 WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
-WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
+WMF_LIBS = @WMF_LIBS@
+XFIXES_CFLAGS = @XFIXES_CFLAGS@
+XFIXES_LIBS = @XFIXES_LIBS@
 XGETTEXT = @XGETTEXT@
 XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
-XPM = @XPM@
+XMU_LIBS = @XMU_LIBS@
+XPM_LIBS = @XPM_LIBS@
 XSLTPROC = @XSLTPROC@
 X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+Z_LIBS = @Z_LIBS@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -524,59 +544,62 @@ INCLUDES = \
 EXTRA_DIST = \
 	makefile.msc
 
-@HAVE_LCMS_TRUE@cdisplay_lcms_module = libcdisplay_lcms.la
-@HAVE_LCMS_TRUE@cdisplay_proof_module = libcdisplay_proof.la
-@PLATFORM_WIN32_FALSE@controller_midi_module = libcontroller_midi.la
-@HAVE_LINUX_INPUT_TRUE@controller_linux_input_module = libcontroller_linux_input.la
-@HAVE_DX_DINPUT_TRUE@controller_dx_dinput_module = libcontroller_dx_dinput.la
+@HAVE_LCMS_TRUE@display_filter_lcms_module = libdisplay-filter-lcms.la
+@HAVE_LCMS_TRUE@display_filter_proof_module = libdisplay-filter-proof.la
+@PLATFORM_WIN32_FALSE@controller_midi_module = libcontroller-midi.la
+@HAVE_LINUX_INPUT_TRUE@controller_linux_input_module = libcontroller-linux-input.la
+@HAVE_DX_DINPUT_TRUE@controller_dx_dinput_module = libcontroller-dx-dinput.la
 lib_LTLIBRARIES = \
-	libcolorsel_cmyk.la		\
-	libcolorsel_triangle.la		\
-	libcolorsel_water.la		\
-	libcdisplay_colorblind.la	\
-	libcdisplay_gamma.la		\
-	libcdisplay_highcontrast.la	\
-	$(cdisplay_lcms_module)		\
-	$(cdisplay_proof_module)	\
-	$(controller_midi_module)	\
-	$(controller_linux_input_module)\
+	libcolor-selector-cmyk.la		\
+	libcolor-selector-water.la		\
+	libcolor-selector-wheel.la		\
+	libdisplay-filter-color-blind.la	\
+	libdisplay-filter-gamma.la		\
+	libdisplay-filter-high-contrast.la	\
+	$(display_filter_lcms_module)		\
+	$(display_filter_proof_module)		\
+	$(controller_midi_module)		\
+	$(controller_linux_input_module)	\
 	$(controller_dx_dinput_module)
 
 modules_libadd = $(libgimpmodule) $(libgimpwidgets) $(GTK_LIBS)
-colorsel_libadd = $(libgimpcolor) $(modules_libadd)
-cdisplay_libadd = $(libgimpbase) $(libgimpconfig) $(libgimpcolor) $(modules_libadd)
+color_selector_libadd = $(libgimpcolor) $(modules_libadd)
+display_filter_libadd = $(libgimpbase) $(libgimpconfig) $(libgimpcolor) $(modules_libadd)
 controller_libadd = $(modules_libadd)
-@HAVE_LCMS_FALSE@libcolorsel_cmyk_la_SOURCES = colorsel_cmyk.c
-@HAVE_LCMS_TRUE@libcolorsel_cmyk_la_SOURCES = colorsel_cmyk_lcms.c
-@HAVE_LCMS_FALSE@libcolorsel_cmyk_la_LIBADD = $(colorsel_libadd)
-@HAVE_LCMS_TRUE@libcolorsel_cmyk_la_LIBADD = $(libgimpconfig) $(colorsel_libadd) $(LIBLCMS)
-libcolorsel_cmyk_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcolorsel_triangle_la_SOURCES = colorsel_triangle.c
-libcolorsel_triangle_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcolorsel_triangle_la_LIBADD = $(colorsel_libadd)
-libcolorsel_water_la_SOURCES = colorsel_water.c
-libcolorsel_water_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcolorsel_water_la_LIBADD = $(colorsel_libadd)
-libcdisplay_colorblind_la_SOURCES = cdisplay_colorblind.c
-libcdisplay_colorblind_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcdisplay_colorblind_la_LIBADD = $(cdisplay_libadd)
-libcdisplay_gamma_la_SOURCES = cdisplay_gamma.c
-libcdisplay_gamma_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcdisplay_gamma_la_LIBADD = $(cdisplay_libadd)
-libcdisplay_highcontrast_la_SOURCES = cdisplay_highcontrast.c
-libcdisplay_highcontrast_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcdisplay_highcontrast_la_LIBADD = $(cdisplay_libadd)
-libcdisplay_lcms_la_SOURCES = cdisplay_lcms.c
-libcdisplay_lcms_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcdisplay_lcms_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS) \
-	$(am__append_1)
-libcdisplay_proof_la_SOURCES = cdisplay_proof.c
-libcdisplay_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)
-libcdisplay_proof_la_LIBADD = $(cdisplay_libadd) $(LIBLCMS)
+@HAVE_LCMS_FALSE@libcolor_selector_cmyk_la_SOURCES = color-selector-cmyk.c
+@HAVE_LCMS_TRUE@libcolor_selector_cmyk_la_SOURCES = color-selector-cmyk-lcms.c
+@HAVE_LCMS_TRUE@libcolor_selector_cmyk_la_CFLAGS = $(LCMS_CFLAGS)
+@HAVE_LCMS_FALSE@libcolor_selector_cmyk_la_LIBADD = $(color_selector_libadd)
+@HAVE_LCMS_TRUE@libcolor_selector_cmyk_la_LIBADD = $(libgimpconfig) $(color_selector_libadd) $(LCMS_LIBS)
+libcolor_selector_cmyk_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcolor_selector_water_la_SOURCES = color-selector-water.c
+libcolor_selector_water_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcolor_selector_water_la_LIBADD = $(color_selector_libadd)
+libcolor_selector_wheel_la_SOURCES = color-selector-wheel.c
+libcolor_selector_wheel_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libcolor_selector_wheel_la_LIBADD = $(color_selector_libadd)
+libdisplay_filter_color_blind_la_SOURCES = display-filter-color-blind.c
+libdisplay_filter_color_blind_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libdisplay_filter_color_blind_la_LIBADD = $(display_filter_libadd)
+libdisplay_filter_gamma_la_SOURCES = display-filter-gamma.c
+libdisplay_filter_gamma_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libdisplay_filter_gamma_la_LIBADD = $(display_filter_libadd)
+libdisplay_filter_high_contrast_la_SOURCES = display-filter-high-contrast.c
+libdisplay_filter_high_contrast_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libdisplay_filter_high_contrast_la_LIBADD = $(display_filter_libadd)
+libdisplay_filter_lcms_la_SOURCES = display-filter-lcms.c
+libdisplay_filter_lcms_la_CFLAGS = $(LCMS_CFLAGS)
+libdisplay_filter_lcms_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libdisplay_filter_lcms_la_LIBADD = $(display_filter_libadd) \
+	$(LCMS_LIBS) $(am__append_1)
+libdisplay_filter_proof_la_SOURCES = display-filter-proof.c
+libdisplay_filter_proof_la_CFLAGS = $(LCMS_CFLAGS)
+libdisplay_filter_proof_la_LDFLAGS = -avoid-version -module $(no_undefined)
+libdisplay_filter_proof_la_LIBADD = $(display_filter_libadd) $(LCMS_LIBS)
 libcontroller_linux_input_la_SOURCES = \
-	gimpinputdevicestore.c	\
-	gimpinputdevicestore.h	\
-	controller_linux_input.c
+	gimpinputdevicestore-hal.c	\
+	gimpinputdevicestore.h		\
+	controller-linux-input.c
 
 libcontroller_linux_input_la_CFLAGS = $(DBUS_GLIB_CFLAGS) $(HAL_CFLAGS)
 libcontroller_linux_input_la_LDFLAGS = -avoid-version -module $(no_undefined)
@@ -584,16 +607,16 @@ libcontroller_linux_input_la_LIBADD = \
 	$(controller_libadd) $(DBUS_GLIB_LIBS) $(HAL_LIBS)
 
 libcontroller_dx_dinput_la_SOURCES = \
-	gimpinputdevicestore.c	\
-	gimpinputdevicestore.h	\
-	controller_dx_dinput.c
+	gimpinputdevicestore-dx.c	\
+	gimpinputdevicestore.h		\
+	controller-dx-dinput.c
 
 # Use -Wl to avoid libtool lossage
 libcontroller_dx_dinput_la_LDFLAGS = -avoid-version -module $(no_undefined) -Wl,-ldinput8 -Wl,-ldxguid
 libcontroller_dx_dinput_la_LIBADD = \
 	$(controller_libadd) -lrpcrt4
 
-libcontroller_midi_la_SOURCES = controller_midi.c
+libcontroller_midi_la_SOURCES = controller-midi.c
 libcontroller_midi_la_CFLAGS = $(ALSA_CFLAGS)
 libcontroller_midi_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libcontroller_midi_la_LIBADD = $(controller_libadd) $(ALSA_LIBS)
@@ -657,28 +680,28 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libcdisplay_colorblind.la: $(libcdisplay_colorblind_la_OBJECTS) $(libcdisplay_colorblind_la_DEPENDENCIES) 
-	$(libcdisplay_colorblind_la_LINK) -rpath $(libdir) $(libcdisplay_colorblind_la_OBJECTS) $(libcdisplay_colorblind_la_LIBADD) $(LIBS)
-libcdisplay_gamma.la: $(libcdisplay_gamma_la_OBJECTS) $(libcdisplay_gamma_la_DEPENDENCIES) 
-	$(libcdisplay_gamma_la_LINK) -rpath $(libdir) $(libcdisplay_gamma_la_OBJECTS) $(libcdisplay_gamma_la_LIBADD) $(LIBS)
-libcdisplay_highcontrast.la: $(libcdisplay_highcontrast_la_OBJECTS) $(libcdisplay_highcontrast_la_DEPENDENCIES) 
-	$(libcdisplay_highcontrast_la_LINK) -rpath $(libdir) $(libcdisplay_highcontrast_la_OBJECTS) $(libcdisplay_highcontrast_la_LIBADD) $(LIBS)
-libcdisplay_lcms.la: $(libcdisplay_lcms_la_OBJECTS) $(libcdisplay_lcms_la_DEPENDENCIES) 
-	$(libcdisplay_lcms_la_LINK) $(am_libcdisplay_lcms_la_rpath) $(libcdisplay_lcms_la_OBJECTS) $(libcdisplay_lcms_la_LIBADD) $(LIBS)
-libcdisplay_proof.la: $(libcdisplay_proof_la_OBJECTS) $(libcdisplay_proof_la_DEPENDENCIES) 
-	$(libcdisplay_proof_la_LINK) $(am_libcdisplay_proof_la_rpath) $(libcdisplay_proof_la_OBJECTS) $(libcdisplay_proof_la_LIBADD) $(LIBS)
-libcolorsel_cmyk.la: $(libcolorsel_cmyk_la_OBJECTS) $(libcolorsel_cmyk_la_DEPENDENCIES) 
-	$(libcolorsel_cmyk_la_LINK) -rpath $(libdir) $(libcolorsel_cmyk_la_OBJECTS) $(libcolorsel_cmyk_la_LIBADD) $(LIBS)
-libcolorsel_triangle.la: $(libcolorsel_triangle_la_OBJECTS) $(libcolorsel_triangle_la_DEPENDENCIES) 
-	$(libcolorsel_triangle_la_LINK) -rpath $(libdir) $(libcolorsel_triangle_la_OBJECTS) $(libcolorsel_triangle_la_LIBADD) $(LIBS)
-libcolorsel_water.la: $(libcolorsel_water_la_OBJECTS) $(libcolorsel_water_la_DEPENDENCIES) 
-	$(libcolorsel_water_la_LINK) -rpath $(libdir) $(libcolorsel_water_la_OBJECTS) $(libcolorsel_water_la_LIBADD) $(LIBS)
-libcontroller_dx_dinput.la: $(libcontroller_dx_dinput_la_OBJECTS) $(libcontroller_dx_dinput_la_DEPENDENCIES) 
+libcolor-selector-cmyk.la: $(libcolor_selector_cmyk_la_OBJECTS) $(libcolor_selector_cmyk_la_DEPENDENCIES) 
+	$(libcolor_selector_cmyk_la_LINK) -rpath $(libdir) $(libcolor_selector_cmyk_la_OBJECTS) $(libcolor_selector_cmyk_la_LIBADD) $(LIBS)
+libcolor-selector-water.la: $(libcolor_selector_water_la_OBJECTS) $(libcolor_selector_water_la_DEPENDENCIES) 
+	$(libcolor_selector_water_la_LINK) -rpath $(libdir) $(libcolor_selector_water_la_OBJECTS) $(libcolor_selector_water_la_LIBADD) $(LIBS)
+libcolor-selector-wheel.la: $(libcolor_selector_wheel_la_OBJECTS) $(libcolor_selector_wheel_la_DEPENDENCIES) 
+	$(libcolor_selector_wheel_la_LINK) -rpath $(libdir) $(libcolor_selector_wheel_la_OBJECTS) $(libcolor_selector_wheel_la_LIBADD) $(LIBS)
+libcontroller-dx-dinput.la: $(libcontroller_dx_dinput_la_OBJECTS) $(libcontroller_dx_dinput_la_DEPENDENCIES) 
 	$(libcontroller_dx_dinput_la_LINK) $(am_libcontroller_dx_dinput_la_rpath) $(libcontroller_dx_dinput_la_OBJECTS) $(libcontroller_dx_dinput_la_LIBADD) $(LIBS)
-libcontroller_linux_input.la: $(libcontroller_linux_input_la_OBJECTS) $(libcontroller_linux_input_la_DEPENDENCIES) 
+libcontroller-linux-input.la: $(libcontroller_linux_input_la_OBJECTS) $(libcontroller_linux_input_la_DEPENDENCIES) 
 	$(libcontroller_linux_input_la_LINK) $(am_libcontroller_linux_input_la_rpath) $(libcontroller_linux_input_la_OBJECTS) $(libcontroller_linux_input_la_LIBADD) $(LIBS)
-libcontroller_midi.la: $(libcontroller_midi_la_OBJECTS) $(libcontroller_midi_la_DEPENDENCIES) 
+libcontroller-midi.la: $(libcontroller_midi_la_OBJECTS) $(libcontroller_midi_la_DEPENDENCIES) 
 	$(libcontroller_midi_la_LINK) $(am_libcontroller_midi_la_rpath) $(libcontroller_midi_la_OBJECTS) $(libcontroller_midi_la_LIBADD) $(LIBS)
+libdisplay-filter-color-blind.la: $(libdisplay_filter_color_blind_la_OBJECTS) $(libdisplay_filter_color_blind_la_DEPENDENCIES) 
+	$(libdisplay_filter_color_blind_la_LINK) -rpath $(libdir) $(libdisplay_filter_color_blind_la_OBJECTS) $(libdisplay_filter_color_blind_la_LIBADD) $(LIBS)
+libdisplay-filter-gamma.la: $(libdisplay_filter_gamma_la_OBJECTS) $(libdisplay_filter_gamma_la_DEPENDENCIES) 
+	$(libdisplay_filter_gamma_la_LINK) -rpath $(libdir) $(libdisplay_filter_gamma_la_OBJECTS) $(libdisplay_filter_gamma_la_LIBADD) $(LIBS)
+libdisplay-filter-high-contrast.la: $(libdisplay_filter_high_contrast_la_OBJECTS) $(libdisplay_filter_high_contrast_la_DEPENDENCIES) 
+	$(libdisplay_filter_high_contrast_la_LINK) -rpath $(libdir) $(libdisplay_filter_high_contrast_la_OBJECTS) $(libdisplay_filter_high_contrast_la_LIBADD) $(LIBS)
+libdisplay-filter-lcms.la: $(libdisplay_filter_lcms_la_OBJECTS) $(libdisplay_filter_lcms_la_DEPENDENCIES) 
+	$(libdisplay_filter_lcms_la_LINK) $(am_libdisplay_filter_lcms_la_rpath) $(libdisplay_filter_lcms_la_OBJECTS) $(libdisplay_filter_lcms_la_LIBADD) $(LIBS)
+libdisplay-filter-proof.la: $(libdisplay_filter_proof_la_OBJECTS) $(libdisplay_filter_proof_la_DEPENDENCIES) 
+	$(libdisplay_filter_proof_la_LINK) $(am_libdisplay_filter_proof_la_rpath) $(libdisplay_filter_proof_la_OBJECTS) $(libdisplay_filter_proof_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -686,20 +709,20 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdisplay_colorblind.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdisplay_gamma.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdisplay_highcontrast.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdisplay_lcms.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdisplay_proof.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_cmyk.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_cmyk_lcms.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_triangle.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colorsel_water.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/controller_dx_dinput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpinputdevicestore.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_midi_la-controller_midi.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/color-selector-water.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/color-selector-wheel.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/controller-dx-dinput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/display-filter-color-blind.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/display-filter-gamma.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/display-filter-high-contrast.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpinputdevicestore-dx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolor_selector_cmyk_la-color-selector-cmyk-lcms.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolor_selector_cmyk_la-color-selector-cmyk.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_linux_input_la-controller-linux-input.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore-hal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcontroller_midi_la-controller-midi.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdisplay_filter_lcms_la-display-filter-lcms.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdisplay_filter_proof_la-display-filter-proof.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -722,26 +745,54 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-libcontroller_linux_input_la-gimpinputdevicestore.lo: gimpinputdevicestore.c
-@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -MT libcontroller_linux_input_la-gimpinputdevicestore.lo -MD -MP -MF $(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Tpo -c -o libcontroller_linux_input_la-gimpinputdevicestore.lo `test -f 'gimpinputdevicestore.c' || echo '$(srcdir)/'`gimpinputdevicestore.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Tpo $(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gimpinputdevicestore.c' object='libcontroller_linux_input_la-gimpinputdevicestore.lo' libtool=yes @AMDEPBACKSLASH@
+libcolor_selector_cmyk_la-color-selector-cmyk.lo: color-selector-cmyk.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolor_selector_cmyk_la_CFLAGS) $(CFLAGS) -MT libcolor_selector_cmyk_la-color-selector-cmyk.lo -MD -MP -MF $(DEPDIR)/libcolor_selector_cmyk_la-color-selector-cmyk.Tpo -c -o libcolor_selector_cmyk_la-color-selector-cmyk.lo `test -f 'color-selector-cmyk.c' || echo '$(srcdir)/'`color-selector-cmyk.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcolor_selector_cmyk_la-color-selector-cmyk.Tpo $(DEPDIR)/libcolor_selector_cmyk_la-color-selector-cmyk.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='color-selector-cmyk.c' object='libcolor_selector_cmyk_la-color-selector-cmyk.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -c -o libcontroller_linux_input_la-gimpinputdevicestore.lo `test -f 'gimpinputdevicestore.c' || echo '$(srcdir)/'`gimpinputdevicestore.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolor_selector_cmyk_la_CFLAGS) $(CFLAGS) -c -o libcolor_selector_cmyk_la-color-selector-cmyk.lo `test -f 'color-selector-cmyk.c' || echo '$(srcdir)/'`color-selector-cmyk.c
 
-libcontroller_linux_input_la-controller_linux_input.lo: controller_linux_input.c
-@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -MT libcontroller_linux_input_la-controller_linux_input.lo -MD -MP -MF $(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Tpo -c -o libcontroller_linux_input_la-controller_linux_input.lo `test -f 'controller_linux_input.c' || echo '$(srcdir)/'`controller_linux_input.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Tpo $(DEPDIR)/libcontroller_linux_input_la-controller_linux_input.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='controller_linux_input.c' object='libcontroller_linux_input_la-controller_linux_input.lo' libtool=yes @AMDEPBACKSLASH@
+libcolor_selector_cmyk_la-color-selector-cmyk-lcms.lo: color-selector-cmyk-lcms.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolor_selector_cmyk_la_CFLAGS) $(CFLAGS) -MT libcolor_selector_cmyk_la-color-selector-cmyk-lcms.lo -MD -MP -MF $(DEPDIR)/libcolor_selector_cmyk_la-color-selector-cmyk-lcms.Tpo -c -o libcolor_selector_cmyk_la-color-selector-cmyk-lcms.lo `test -f 'color-selector-cmyk-lcms.c' || echo '$(srcdir)/'`color-selector-cmyk-lcms.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcolor_selector_cmyk_la-color-selector-cmyk-lcms.Tpo $(DEPDIR)/libcolor_selector_cmyk_la-color-selector-cmyk-lcms.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='color-selector-cmyk-lcms.c' object='libcolor_selector_cmyk_la-color-selector-cmyk-lcms.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -c -o libcontroller_linux_input_la-controller_linux_input.lo `test -f 'controller_linux_input.c' || echo '$(srcdir)/'`controller_linux_input.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolor_selector_cmyk_la_CFLAGS) $(CFLAGS) -c -o libcolor_selector_cmyk_la-color-selector-cmyk-lcms.lo `test -f 'color-selector-cmyk-lcms.c' || echo '$(srcdir)/'`color-selector-cmyk-lcms.c
 
-libcontroller_midi_la-controller_midi.lo: controller_midi.c
-@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_midi_la_CFLAGS) $(CFLAGS) -MT libcontroller_midi_la-controller_midi.lo -MD -MP -MF $(DEPDIR)/libcontroller_midi_la-controller_midi.Tpo -c -o libcontroller_midi_la-controller_midi.lo `test -f 'controller_midi.c' || echo '$(srcdir)/'`controller_midi.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcontroller_midi_la-controller_midi.Tpo $(DEPDIR)/libcontroller_midi_la-controller_midi.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='controller_midi.c' object='libcontroller_midi_la-controller_midi.lo' libtool=yes @AMDEPBACKSLASH@
+libcontroller_linux_input_la-gimpinputdevicestore-hal.lo: gimpinputdevicestore-hal.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -MT libcontroller_linux_input_la-gimpinputdevicestore-hal.lo -MD -MP -MF $(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore-hal.Tpo -c -o libcontroller_linux_input_la-gimpinputdevicestore-hal.lo `test -f 'gimpinputdevicestore-hal.c' || echo '$(srcdir)/'`gimpinputdevicestore-hal.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore-hal.Tpo $(DEPDIR)/libcontroller_linux_input_la-gimpinputdevicestore-hal.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='gimpinputdevicestore-hal.c' object='libcontroller_linux_input_la-gimpinputdevicestore-hal.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_midi_la_CFLAGS) $(CFLAGS) -c -o libcontroller_midi_la-controller_midi.lo `test -f 'controller_midi.c' || echo '$(srcdir)/'`controller_midi.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -c -o libcontroller_linux_input_la-gimpinputdevicestore-hal.lo `test -f 'gimpinputdevicestore-hal.c' || echo '$(srcdir)/'`gimpinputdevicestore-hal.c
+
+libcontroller_linux_input_la-controller-linux-input.lo: controller-linux-input.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -MT libcontroller_linux_input_la-controller-linux-input.lo -MD -MP -MF $(DEPDIR)/libcontroller_linux_input_la-controller-linux-input.Tpo -c -o libcontroller_linux_input_la-controller-linux-input.lo `test -f 'controller-linux-input.c' || echo '$(srcdir)/'`controller-linux-input.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcontroller_linux_input_la-controller-linux-input.Tpo $(DEPDIR)/libcontroller_linux_input_la-controller-linux-input.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='controller-linux-input.c' object='libcontroller_linux_input_la-controller-linux-input.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_linux_input_la_CFLAGS) $(CFLAGS) -c -o libcontroller_linux_input_la-controller-linux-input.lo `test -f 'controller-linux-input.c' || echo '$(srcdir)/'`controller-linux-input.c
+
+libcontroller_midi_la-controller-midi.lo: controller-midi.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_midi_la_CFLAGS) $(CFLAGS) -MT libcontroller_midi_la-controller-midi.lo -MD -MP -MF $(DEPDIR)/libcontroller_midi_la-controller-midi.Tpo -c -o libcontroller_midi_la-controller-midi.lo `test -f 'controller-midi.c' || echo '$(srcdir)/'`controller-midi.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcontroller_midi_la-controller-midi.Tpo $(DEPDIR)/libcontroller_midi_la-controller-midi.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='controller-midi.c' object='libcontroller_midi_la-controller-midi.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcontroller_midi_la_CFLAGS) $(CFLAGS) -c -o libcontroller_midi_la-controller-midi.lo `test -f 'controller-midi.c' || echo '$(srcdir)/'`controller-midi.c
+
+libdisplay_filter_lcms_la-display-filter-lcms.lo: display-filter-lcms.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdisplay_filter_lcms_la_CFLAGS) $(CFLAGS) -MT libdisplay_filter_lcms_la-display-filter-lcms.lo -MD -MP -MF $(DEPDIR)/libdisplay_filter_lcms_la-display-filter-lcms.Tpo -c -o libdisplay_filter_lcms_la-display-filter-lcms.lo `test -f 'display-filter-lcms.c' || echo '$(srcdir)/'`display-filter-lcms.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libdisplay_filter_lcms_la-display-filter-lcms.Tpo $(DEPDIR)/libdisplay_filter_lcms_la-display-filter-lcms.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='display-filter-lcms.c' object='libdisplay_filter_lcms_la-display-filter-lcms.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdisplay_filter_lcms_la_CFLAGS) $(CFLAGS) -c -o libdisplay_filter_lcms_la-display-filter-lcms.lo `test -f 'display-filter-lcms.c' || echo '$(srcdir)/'`display-filter-lcms.c
+
+libdisplay_filter_proof_la-display-filter-proof.lo: display-filter-proof.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdisplay_filter_proof_la_CFLAGS) $(CFLAGS) -MT libdisplay_filter_proof_la-display-filter-proof.lo -MD -MP -MF $(DEPDIR)/libdisplay_filter_proof_la-display-filter-proof.Tpo -c -o libdisplay_filter_proof_la-display-filter-proof.lo `test -f 'display-filter-proof.c' || echo '$(srcdir)/'`display-filter-proof.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libdisplay_filter_proof_la-display-filter-proof.Tpo $(DEPDIR)/libdisplay_filter_proof_la-display-filter-proof.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='display-filter-proof.c' object='libdisplay_filter_proof_la-display-filter-proof.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdisplay_filter_proof_la_CFLAGS) $(CFLAGS) -c -o libdisplay_filter_proof_la-display-filter-proof.lo `test -f 'display-filter-proof.c' || echo '$(srcdir)/'`display-filter-proof.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

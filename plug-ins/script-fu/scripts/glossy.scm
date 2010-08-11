@@ -53,10 +53,9 @@
     (gimp-context-push)
 
     (script-fu-util-image-resize-from-layer img logo-layer)
+    (script-fu-util-image-add-layers img grow-me bg-layer)
     (gimp-drawable-set-name grow-me "Grow-me")
-    (gimp-image-add-layer img grow-me 1)
     (gimp-layer-translate grow-me posx posy)
-    (gimp-image-add-layer img bg-layer 2)
 
     (gimp-context-set-background bg-color)
     (gimp-selection-all img)
@@ -122,7 +121,10 @@
 
     (gimp-selection-none img)
 
-    (plug-in-bump-map RUN-NONINTERACTIVE img grow-me logo-layer
+    (plug-in-bump-map (if (= noninteractive TRUE)
+			  RUN-NONINTERACTIVE
+			  RUN-INTERACTIVE)
+		      img grow-me logo-layer
                       110.0 45.0 3 0 0 0 0 TRUE FALSE 0)
     (gimp-layer-set-mode logo-layer SCREEN-MODE)
 
@@ -290,4 +292,4 @@
 )
 
 (script-fu-menu-register "script-fu-glossy-logo"
-                         "<Toolbox>/Xtns/Logos")
+                         "<Image>/File/Create/Logos")

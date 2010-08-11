@@ -162,15 +162,15 @@ gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
                         GimpDrawable     *drawable,
                         GimpPaintOptions *paint_options)
 {
-  GimpDodgeBurn        *dodgeburn        = GIMP_DODGE_BURN (paint_core);
-  GimpContext          *context          = GIMP_CONTEXT (paint_options);
-  GimpPressureOptions  *pressure_options = paint_options->pressure_options;
-  GimpImage            *image;
-  TempBuf              *area;
-  TempBuf              *orig;
-  PixelRegion           srcPR, destPR, tempPR;
-  guchar               *temp_data;
-  gdouble               opacity;
+  GimpDodgeBurn *dodgeburn = GIMP_DODGE_BURN (paint_core);
+  GimpContext   *context   = GIMP_CONTEXT (paint_options);
+  GimpImage     *image;
+  TempBuf       *area;
+  TempBuf       *orig;
+  PixelRegion    srcPR, destPR, tempPR;
+  guchar        *temp_data;
+  gdouble        opacity;
+  gdouble        hardness;
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -234,17 +234,21 @@ gimp_dodge_burn_motion (GimpPaintCore    *paint_core,
   else
     copy_region (&tempPR, &destPR);
 
-  if (pressure_options->opacity)
-    opacity *= PRESSURE_SCALE * paint_core->cur_coords.pressure;
+  g_free (temp_data);
+
+  opacity *= gimp_paint_options_get_dynamic_opacity (paint_options,
+                                                     &paint_core->cur_coords);
+
+  hardness = gimp_paint_options_get_dynamic_hardness (paint_options,
+                                                      &paint_core->cur_coords);
 
   /* Replace the newly dodgedburned area (canvas_buf) to the image */
   gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
                                   MIN (opacity, GIMP_OPACITY_OPAQUE),
                                   gimp_context_get_opacity (context),
                                   gimp_paint_options_get_brush_mode (paint_options),
+                                  hardness,
                                   GIMP_PAINT_CONSTANT);
-
-  g_free (temp_data);
 }
 
 static void

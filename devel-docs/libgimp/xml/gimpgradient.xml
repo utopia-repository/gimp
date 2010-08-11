@@ -36,6 +36,8 @@
                                                          <link linkend="gboolean">gboolean</link> reverse,
                                                          <link linkend="gint">gint</link> *num_color_samples,
                                                          <link linkend="gdouble">gdouble</link> **color_samples);
+<link linkend="gint">gint</link>                <link linkend="gimp-gradient-get-number-of-segments">gimp_gradient_get_number_of_segments</link>
+                                                        (const <link linkend="gchar">gchar</link> *name);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-gradient-segment-get-left-color">gimp_gradient_segment_get_left_color</link>
                                                         (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> segment,
@@ -337,6 +339,27 @@ correspond to the RGBA values for each sample.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
+</para></refsect2>
+<refsect2 id="gimp-gradient-get-number-of-segments" role="function" condition="since:GIMP 2.6">
+<title>gimp_gradient_get_number_of_segments ()</title>
+<indexterm zone="gimp-gradient-get-number-of-segments" role="GIMP 2.6"><primary>gimp_gradient_get_number_of_segments</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_gradient_get_number_of_segments
+                                                        (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+Returns the number of segments of the specified gradient
+</para>
+<para>
+This procedure returns the number of segments of the specified
+gradient.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> The gradient name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Number of segments.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
 </para></refsect2>
 <refsect2 id="gimp-gradient-segment-get-left-color" role="function" condition="since:GIMP 2.2">
 <title>gimp_gradient_segment_get_left_color ()</title>

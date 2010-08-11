@@ -21,6 +21,7 @@
 #  include <config.h>
 #endif
 
+#undef GIMP_DISABLE_DEPRECATED
 #include "pygimp.h"
 
 static PyObject *
@@ -28,7 +29,7 @@ img_add_channel(PyGimpImage *self, PyObject *args)
 {
     PyGimpChannel *chn;
     int pos = -1;
-	
+
     if (!PyArg_ParseTuple(args, "O!|i:add_channel",
 	                        &PyGimpChannel_Type, &chn, &pos))
 	return NULL;
@@ -49,7 +50,7 @@ img_add_layer(PyGimpImage *self, PyObject *args)
 {
     PyGimpLayer *lay;
     int pos = -1;
-	
+
     if (!PyArg_ParseTuple(args, "O!|i:add_layer", &PyGimpLayer_Type, &lay,
 			  &pos))
 	return NULL;
@@ -64,6 +65,94 @@ img_add_layer(PyGimpImage *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+
+static PyObject *
+img_new_layer(PyGimpImage *self, PyObject *args, PyObject *kwargs)
+{
+    char *layer_name;
+    int layer_id;
+    int width, height;
+    int layer_type;
+    int offs_x = 0, offs_y = 0;
+    gboolean alpha = TRUE;
+    int pos = -1;
+    double opacity = 100.0;
+    GimpLayerModeEffects mode = GIMP_NORMAL_MODE;
+    GimpFillType fill_mode = -1;
+
+    static char *kwlist[] = { "name", "width", "height", "offset_x", "offset_y",
+                              "alpha", "pos", "opacity", "mode", "fill_mode",
+                              NULL };
+
+    layer_name = "New Layer";
+
+    width = gimp_image_width(self->ID);
+    height = gimp_image_width(self->ID);
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+                                     "|siiiiiidii:new_layer", kwlist,
+                                     &layer_name, &width, &height,
+                                     &offs_x, &offs_y, &alpha, &pos,
+                                     &opacity, &mode, &fill_mode))
+        return NULL;
+
+
+    switch (gimp_image_base_type(self->ID))  {
+        case GIMP_RGB:
+            layer_type = alpha ? GIMP_RGBA_IMAGE: GIMP_RGB_IMAGE;
+            break;
+        case GIMP_GRAY:
+            layer_type = alpha ? GIMP_GRAYA_IMAGE: GIMP_GRAY_IMAGE;
+            break;
+        case GIMP_INDEXED:
+            layer_type = alpha ? GIMP_INDEXEDA_IMAGE: GIMP_INDEXED_IMAGE;
+            break;
+        default:
+            PyErr_SetString(pygimp_error, "Unknown image base type");
+            return NULL;
+    }
+
+    if (fill_mode == -1)
+        fill_mode = alpha ? GIMP_TRANSPARENT_FILL: GIMP_BACKGROUND_FILL;
+
+
+    layer_id = gimp_layer_new(self->ID, layer_name, width, height,
+                              layer_type, opacity, mode);
+
+    if (!layer_id) {
+        PyErr_Format(pygimp_error,
+                     "could not create new layer in image (ID %d)",
+                     self->ID);
+        return NULL;
+    }
+
+    if (!gimp_drawable_fill(layer_id, fill_mode)) {
+        gimp_drawable_delete(layer_id);
+        PyErr_Format(pygimp_error,
+                     "could not fill new layer with fill mode %d",
+                     fill_mode);
+        return NULL;
+    }
+
+    if (!gimp_image_add_layer(self->ID, layer_id, pos)) {
+        gimp_drawable_delete(layer_id);
+        PyErr_Format(pygimp_error,
+                     "could not add layer (ID %d) to image (ID %d)",
+                     layer_id, self->ID);
+        return NULL;
+    }
+
+    if (!gimp_layer_set_offsets(layer_id, offs_x, offs_y)) {
+        gimp_image_remove_layer(self->ID, layer_id);
+        PyErr_Format(pygimp_error,
+                     "could not set offset %d, %d on layer (ID %d)",
+                      offs_x, offs_y, layer_id);
+        return NULL;
+    }
+
+    return pygimp_layer_new(layer_id);
+}
+
 
 static PyObject *
 img_clean_all(PyGimpImage *self)
@@ -205,7 +294,7 @@ img_pick_correlate_layer(PyGimpImage *self, PyObject *args)
 {
     int x,y;
     gint32 id;
-	
+
     if (!PyArg_ParseTuple(args, "ii:pick_correlate_layer", &x, &y))
 	return NULL;
 
@@ -223,7 +312,7 @@ static PyObject *
 img_raise_channel(PyGimpImage *self, PyObject *args)
 {
     PyGimpChannel *chn;
-	
+
     if (!PyArg_ParseTuple(args, "O!:raise_channel", &PyGimpChannel_Type, &chn))
 	return NULL;
 
@@ -357,17 +446,27 @@ static PyObject *
 img_scale(PyGimpImage *self, PyObject *args, PyObject *kwargs)
 {
     int new_width, new_height;
+    int interpolation = -1;
 
-    static char *kwlist[] = { "width", "height", NULL };
+    static char *kwlist[] = { "width", "height", "interpolation", NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii:scale", kwlist,
-				     &new_width, &new_height))
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii|i:scale", kwlist,
+				     &new_width, &new_height, &interpolation))
 	return NULL;
 
-    if (!gimp_image_scale(self->ID, new_width, new_height)) {
-	PyErr_Format(pygimp_error, "could not scale image (ID %d) to %dx%d",
-		     self->ID, new_width, new_height);
-	return NULL;
+    if (interpolation != -1) {
+        if (!gimp_image_scale_full(self->ID,
+                                   new_width, new_height, interpolation)) {
+            PyErr_Format(pygimp_error, "could not scale image (ID %d) to %dx%d",
+                         self->ID, new_width, new_height);
+            return NULL;
+        }
+    } else {
+        if (!gimp_image_scale(self->ID, new_width, new_height)) {
+            PyErr_Format(pygimp_error, "could not scale image (ID %d) to %dx%d",
+                         self->ID, new_width, new_height);
+            return NULL;
+        }
     }
 
     Py_INCREF(Py_None);
@@ -402,7 +501,7 @@ static PyObject *
 img_free_shadow(PyGimpImage *self)
 {
     if (!gimp_image_free_shadow(self->ID)) {
-	PyErr_Format(pygimp_error, "could not free shadow on image (ID %d)",
+	PyErr_Format(pygimp_error, "could not free shadow tiles on image (ID %d)",
 		     self->ID);
 	return NULL;
     }
@@ -441,10 +540,10 @@ static PyObject *
 img_get_component_visible(PyGimpImage *self, PyObject *args)
 {
     int comp;
-	
+
     if (!PyArg_ParseTuple(args, "i:get_component_visible", &comp))
 	return NULL;
-	
+
     return PyBool_FromLong(gimp_image_get_component_visible(self->ID, comp));
 }
 
@@ -740,6 +839,7 @@ img_undo_group_end(PyGimpImage *self)
 static PyMethodDef img_methods[] = {
     {"add_channel",	(PyCFunction)img_add_channel,	METH_VARARGS},
     {"add_layer",	(PyCFunction)img_add_layer,	METH_VARARGS},
+    {"new_layer",       (PyCFunction)img_new_layer, METH_VARARGS | METH_KEYWORDS},
     {"clean_all",	(PyCFunction)img_clean_all,	METH_NOARGS},
     {"disable_undo",	(PyCFunction)img_disable_undo,	METH_NOARGS},
     {"enable_undo",	(PyCFunction)img_enable_undo,	METH_NOARGS},
@@ -925,7 +1025,7 @@ img_get_colormap(PyGimpImage *self, void *closure)
 		     self->ID);
 	return NULL;
     }
-	
+
     ret = PyString_FromStringAndSize((char *)cmap, n_colours * 3);
     g_free(cmap);
 

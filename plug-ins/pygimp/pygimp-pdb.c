@@ -287,8 +287,26 @@ pygimp_param_to_tuple(int nparams, const GimpParam *params)
 	case GIMP_PDB_SELECTION:
 	    value = pygimp_layer_new(params[i].data.d_selection);
 	    break;
-	case GIMP_PDB_BOUNDARY:
-	    value = PyInt_FromLong(params[i].data.d_boundary);
+	case GIMP_PDB_COLORARRAY:
+	    if (params[i].data.d_colorarray == NULL) {
+		value = PyTuple_New(0);
+		break;
+	    }
+	    if ((tmp=PyTuple_GetItem(args, i-1)) == NULL) {
+		Py_DECREF(args);
+		return NULL;
+	    }
+	    if (!PyInt_Check(tmp)) {
+		PyErr_SetString(PyExc_TypeError,
+				"count type must be integer");
+		Py_DECREF(args);
+		return NULL;
+	    }
+	    n = PyInt_AsLong(tmp);
+	    value = PyTuple_New(n);
+	    for (j = 0; j < n; j++)
+		PyTuple_SetItem(value, j,
+                                pygimp_rgb_new(&params[i].data.d_colorarray[j]));
 	    break;
 	case GIMP_PDB_VECTORS:
 	    value = pygimp_vectors_new(params[i].data.d_vectors);
@@ -311,7 +329,7 @@ pygimp_param_to_tuple(int nparams, const GimpParam *params)
 GimpParam *
 pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 {
-    PyObject *tuple, *item, *r, *g, *b, *x, *y, *w, *h;
+    PyObject *tuple, *item, *x, *y, *w, *h;
     GimpParam *ret;
     int i, j, len;
     gint32 *i32a; gint16 *i16a; guint8 *i8a; gdouble *fa; gchar **sa;
@@ -455,23 +473,15 @@ pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 	    break;
 	case GIMP_PDB_COLOR:
 	    {
-		GimpRGB *rgb, tmprgb;
+                GimpRGB rgb;
 
-		if (!pygimp_rgb_check(item)) {
-		    check(!PySequence_Check(item) ||
-			  PySequence_Length(item) < 3);
-		    r = PySequence_GetItem(item, 0);
-		    g = PySequence_GetItem(item, 1);
-		    b = PySequence_GetItem(item, 2);
-		    check(!PyInt_Check(r) || !PyInt_Check(g) ||
-			  !PyInt_Check(b));
-		    gimp_rgba_set_uchar(&tmprgb, PyInt_AsLong(r),
-					PyInt_AsLong(g), PyInt_AsLong(b), 255);
-		    rgb = &tmprgb;
-		} else {
-		    rgb = pyg_boxed_get(item, GimpRGB);
+                if (!pygimp_rgb_from_pyobject(item, &rgb)) {
+                    Py_DECREF(tuple);
+                    gimp_destroy_params(ret, nparams);
+                    return NULL;
 		}
-		ret[i].data.d_color = *rgb;
+
+                ret[i].data.d_color = rgb;
 	    }
 	    break;
 	case GIMP_PDB_REGION:
@@ -532,9 +542,23 @@ pygimp_param_from_tuple(PyObject *args, const GimpParamDef *ptype, int nparams)
 	    check(!pygimp_layer_check(item));
 	    ret[i].data.d_selection = ((PyGimpLayer *)item)->ID;
 	    break;
-	case GIMP_PDB_BOUNDARY:
-	    check(!PyInt_Check(item));
-	    ret[i].data.d_boundary = PyInt_AsLong(item);
+	case GIMP_PDB_COLORARRAY:
+	    {
+                GimpRGB *rgb;
+
+		check(!PySequence_Check(item));
+		len = PySequence_Length(item);
+		rgb = g_new(GimpRGB, len);
+		for (j = 0; j < len; j++) {
+		    if (!pygimp_rgb_from_pyobject(item, &rgb[j])) {
+			Py_DECREF(tuple);
+			g_free(rgb);
+			gimp_destroy_params(ret, nparams);
+			return NULL;
+		    }
+		}
+                ret[i].data.d_colorarray = rgb;
+	    }
 	    break;
 	case GIMP_PDB_VECTORS:
 	    check(!pygimp_vectors_check(item));
@@ -596,9 +620,7 @@ static PyMethodDef pdb_methods[] = {
 PyObject *
 pygimp_pdb_new(void)
 {
-    PyGimpPDB *self;
-	
-    self = PyObject_NEW(PyGimpPDB, &PyGimpPDB_Type);
+    PyGimpPDB *self = PyObject_NEW(PyGimpPDB, &PyGimpPDB_Type);
 
     if (self == NULL)
 	return NULL;
@@ -650,18 +672,59 @@ static PyMappingMethods pdb_as_mapping = {
 /* -------------------------------------------------------- */
 
 static PyObject *
-pdb_getattro(PyGimpPDB *self, PyObject *attr)
+build_procedure_list(void)
 {
+    int num, i;
+    char **names, *name, *p;
     PyObject *ret;
 
-    ret = PyObject_GenericGetAttr((PyObject *)self, attr);
+    gimp_procedural_db_query(".*", ".*", ".*", ".*", ".*", ".*", ".*",
+                             &num, &names);
 
+    ret = PyList_New(num);
+
+    for (i = 0; i < num; i++) {
+        name = g_strdup(names[i]);
+        for (p = name; *p != '\0'; p++) {
+            if (*p == '-')
+                *p = '_';
+	}
+        PyList_SetItem(ret, i, PyString_FromString(name));
+        g_free(name);
+    }
+
+    g_free(names);
+
+    return ret;
+}
+
+static PyObject *
+pdb_getattro(PyGimpPDB *self, PyObject *attr)
+{
+    char *attr_name;
+    PyObject *ret;
+
+    attr_name = PyString_AsString(attr);
+    if (!attr_name) {
+         PyErr_Clear();
+         return PyObject_GenericGetAttr((PyObject *)self, attr);
+    }
+
+    if (attr_name[0] == '_') {
+        if (!strcmp(attr_name, "__members__")) {
+            return build_procedure_list();
+        } else {
+            return PyObject_GenericGetAttr((PyObject *)self, attr);
+        }
+    }
+
+    ret = PyObject_GenericGetAttr((PyObject *)self, attr);
     if (ret)
-	return ret;
+        return ret;
 
     PyErr_Clear();
 
-    return pygimp_pdb_function_new_from_proc_db(PyString_AsString(attr));
+    return pygimp_pdb_function_new_from_proc_db(attr_name);
 }
 
 PyTypeObject PyGimpPDB_Type = {
@@ -860,24 +923,6 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
     }
 
     switch(ret[0].data.d_status) {
-    case GIMP_PDB_EXECUTION_ERROR:
-#if PG_DEBUG > 0
-	g_printerr("execution error\n");
-#endif
-	gimp_destroy_params(ret, nret);
-	PyErr_SetString(PyExc_RuntimeError, "execution error");
-	return NULL;
-	break;
-
-    case GIMP_PDB_CALLING_ERROR:
-#if PG_DEBUG > 0
-	g_printerr("calling error\n");
-#endif
-	gimp_destroy_params(ret, nret);
-	PyErr_SetString(PyExc_TypeError, "invalid arguments");
-	return NULL;
-	break;
-
     case GIMP_PDB_SUCCESS:
 #if PG_DEBUG > 0
 	g_printerr("success\n");
@@ -891,6 +936,30 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
 	}
 	break;
 
+    case GIMP_PDB_EXECUTION_ERROR:
+#if PG_DEBUG > 0
+	g_printerr("execution error\n");
+#endif
+        PyErr_SetString(PyExc_RuntimeError, gimp_get_pdb_error());
+	gimp_destroy_params(ret, nret);
+	return NULL;
+
+    case GIMP_PDB_CALLING_ERROR:
+#if PG_DEBUG > 0
+	g_printerr("calling error\n");
+#endif
+        PyErr_SetString(PyExc_RuntimeError, gimp_get_pdb_error());
+	gimp_destroy_params(ret, nret);
+	return NULL;
+
+    case GIMP_PDB_CANCEL:
+#if PG_DEBUG > 0
+	g_printerr("cancel\n");
+#endif
+        PyErr_SetString(PyExc_RuntimeError, gimp_get_pdb_error());
+	gimp_destroy_params(ret, nret);
+	return NULL;
+
     default:
 #if PG_DEBUG > 0
 	g_printerr("unknown - %i (type %i)\n",
@@ -898,7 +967,6 @@ pf_call(PyGimpPDBFunction *self, PyObject *args, PyObject *kwargs)
 #endif
 	PyErr_SetString(pygimp_error, "unknown return code");
 	return NULL;
-	break;
     }
 
     if (PyTuple_Size(t) == 1) {

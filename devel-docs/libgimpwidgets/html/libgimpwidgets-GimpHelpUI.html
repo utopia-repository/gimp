@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
 <link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
-<link rel="prev" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
+<link rel="prev" href="libgimpwidgets-GimpCairoUtils.html" title="gimpcairo-utils">
 <link rel="next" href="libgimpwidgets-GimpQueryBox.html" title="GimpQueryBox">
 <meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -22,12 +22,13 @@
 <link rel="index" href="libgimpwidgets-index.html" title="Index">
 <link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpwidgets-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimpwidgets-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
 <tr valign="middle">
-<td><a accesskey="p" href="libgimpwidgets-utils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="libgimpwidgets-GimpCairoUtils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
@@ -64,6 +65,9 @@ void                <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-he
 void                <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data" title="gimp_help_set_help_data ()">gimp_help_set_help_data</a>             (GtkWidget *widget,
                                                          const gchar *tooltip,
                                                          const gchar *help_id);
+void                <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data-with-markup" title="gimp_help_set_help_data_with_markup ()">gimp_help_set_help_data_with_markup</a> (GtkWidget *widget,
+                                                         const gchar *tooltip,
+                                                         const gchar *help_id);
 void                <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-context-help" title="gimp_context_help ()">gimp_context_help</a>                   (GtkWidget *widget);
 </pre>
 </div>
@@ -93,9 +97,13 @@ All these dialog constructors functions call <a class="link" href="libgimpwidget
 </p>
 <p>
 In most cases it will be ok to use <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func" title="gimp_standard_help_func ()"><code class="function">gimp_standard_help_func()</code></a> which does
-nothing but passing the <em class="parameter"><code>help_id</code></em> string to <code class="function">gimp_help()</code>. If your
+nothing but passing the <em class="parameter"><code>help_id</code></em> string to <a
+href="../libgimp/libgimp-gimphelp.html#gimp-help"
+><code class="function">gimp_help()</code></a>. If your
 plug-in needs some more sophisticated help handling you can provide
-your own <em class="parameter"><code>help_func</code></em> which has to call <code class="function">gimp_help()</code> to actually display
+your own <em class="parameter"><code>help_func</code></em> which has to call <a
+href="../libgimp/libgimp-gimphelp.html#gimp-help"
+><code class="function">gimp_help()</code></a> to actually display
 the help.
 </p>
 <div class="variablelist"><table border="0">
@@ -130,7 +138,15 @@ Since: GIMP 2.2
 <a name="gimp-help-enable-tooltips"></a><h3>gimp_help_enable_tooltips ()</h3>
 <pre class="programlisting">void                gimp_help_enable_tooltips           (void);</pre>
 <p>
-This function calls <code class="function">gtk_tooltips_enable()</code>.</p>
+Enable tooltips to be shown in the GIMP user interface.
+</p>
+<p>
+As a plug-in author, you don't need to care about this as this
+function is called for you from <a
+href="../libgimp/libgimp-gimpui.html#gimp-ui-init"
+><code class="function">gimp_ui_init()</code></a>. This ensures that
+the user setting from the GIMP preferences dialog is respected in
+all plug-in dialogs.</p>
 <p>
 
 </p>
@@ -140,7 +156,15 @@ This function calls <code class="function">gtk_tooltips_enable()</code>.</p>
 <a name="gimp-help-disable-tooltips"></a><h3>gimp_help_disable_tooltips ()</h3>
 <pre class="programlisting">void                gimp_help_disable_tooltips          (void);</pre>
 <p>
-This function calls <code class="function">gtk_tooltips_disable()</code>.</p>
+Disable tooltips to be shown in the GIMP user interface.
+</p>
+<p>
+As a plug-in author, you don't need to care about this as this
+function is called for you from <a
+href="../libgimp/libgimp-gimpui.html#gimp-ui-init"
+><code class="function">gimp_ui_init()</code></a>. This ensures that
+the user setting from the GIMP preferences dialog is respected in
+all plug-in dialogs.</p>
 <p>
 
 </p>
@@ -152,7 +176,9 @@ This function calls <code class="function">gtk_tooltips_disable()</code>.</p>
                                                          gpointer help_data);</pre>
 <p>
 This is the standard GIMP help function which does nothing but calling
-<code class="function">gimp_help()</code>. It is the right function to use in almost all cases.</p>
+<a
+href="../libgimp/libgimp-gimphelp.html#gimp-help"
+><code class="function">gimp_help()</code></a>. It is the right function to use in almost all cases.</p>
 <p>
 
 </p>
@@ -220,9 +246,9 @@ constructors. You only have to call it for windows/dialogs you created
                                                          const gchar *tooltip,
                                                          const gchar *help_id);</pre>
 <p>
-The reason why we don't use <code class="function">gtk_tooltips_set_tip()</code> is that it's
-impossible to set a <em class="parameter"><code>private_tip</code></em> (aka <em class="parameter"><code>help_id</code></em>) without a visible
-<em class="parameter"><code>tooltip</code></em>.
+The reason why we don't use <code class="function">gtk_widget_set_tooltip_text()</code> is that
+elements in the GIMP user interface should, if possible, also have
+a <em class="parameter"><code>help_id</code></em> set for context-sensitive help.
 </p>
 <p>
 This function can be called with <span class="type">NULL</span> for <em class="parameter"><code>tooltip</code></em>. Use this feature
@@ -251,6 +277,42 @@ a visible tooltip.</p>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-help-set-help-data-with-markup"></a><h3>gimp_help_set_help_data_with_markup ()</h3>
+<pre class="programlisting">void                gimp_help_set_help_data_with_markup (GtkWidget *widget,
+                                                         const gchar *tooltip,
+                                                         const gchar *help_id);</pre>
+<p>
+Just like <a class="link" href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data" title="gimp_help_set_help_data ()"><code class="function">gimp_help_set_help_data()</code></a>, but it allows to pass text which
+is marked up with
+Pango text markup language.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>widget</code></em> :</span></p></td>
+<td>  The <span class="type">GtkWidget</span> you want to set a <em class="parameter"><code>tooltip</code></em> and/or <em class="parameter"><code>help_id</code></em> for.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>tooltip</code></em> :</span></p></td>
+<td> The markup for this widget's tooltip (or <code class="literal">NULL</code>).
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>help_id</code></em> :</span></p></td>
+<td> The <em class="parameter"><code>help_id</code></em> for the <span class="type">GtkTipsQuery</span> tooltips inspector.
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">

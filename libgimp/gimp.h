@@ -128,6 +128,7 @@ union _GimpParamData
   guint8           *d_int8array;
   gdouble          *d_floatarray;
   gchar           **d_stringarray;
+  GimpRGB          *d_colorarray;
   GimpRGB           d_color;
   GimpParamRegion   d_region;
   gint32            d_display;
@@ -198,7 +199,10 @@ struct _GimpParam
    int                                                  \
    main (int argc, char *argv[])                        \
    {                                                    \
-     return gimp_main (&PLUG_IN_INFO, argc, argv);      \
+     /* Use __argc and __argv here, too, as they work   \
+      * better with mingw-w64.				\
+      */						\
+     return gimp_main (&PLUG_IN_INFO, __argc, __argv);  \
    }
 #else
 #  define MAIN()                                        \
@@ -298,10 +302,14 @@ void           gimp_destroy_params      (GimpParam       *params,
 
 /* Destroy the an array of GimpParamDef's. This is useful for
  *  destroying the return values returned by a call to
- *  'gimp_query_procedure'.
+ *  'gimp_procedural_db_proc_info'.
  */
 void           gimp_destroy_paramdefs   (GimpParamDef    *paramdefs,
                                          gint             n_params);
+
+/* Retrieve the error message for the last procedure call.
+ */
+const gchar  * gimp_get_pdb_error       (void);
 
 
 /* Return various constants given by the GIMP core at plug-in config time.
@@ -321,6 +329,7 @@ gint32         gimp_default_display     (void) G_GNUC_CONST;
 const gchar  * gimp_wm_class            (void) G_GNUC_CONST;
 const gchar  * gimp_display_name        (void) G_GNUC_CONST;
 gint           gimp_monitor_number      (void) G_GNUC_CONST;
+guint32        gimp_user_time           (void) G_GNUC_CONST;
 
 const gchar  * gimp_get_progname        (void) G_GNUC_CONST;
 

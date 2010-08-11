@@ -131,7 +131,7 @@ gimp_image_merge_visible_layers (GimpImage     *image,
       return layer;
     }
 
-  return image->active_layer;
+  return gimp_image_get_active_layer (image);
 }
 
 GimpLayer *
@@ -222,7 +222,8 @@ gimp_image_merge_down (GimpImage     *image,
 /* merging vectors */
 
 GimpVectors *
-gimp_image_merge_visible_vectors (GimpImage *image)
+gimp_image_merge_visible_vectors (GimpImage  *image,
+                                  GError    **error)
 {
   GList       *list           = NULL;
   GSList      *merge_list     = NULL;
@@ -233,6 +234,7 @@ gimp_image_merge_visible_vectors (GimpImage *image)
   gint         pos            = 0;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   for (list = GIMP_LIST (image->vectors)->list;
        list;
@@ -255,10 +257,8 @@ gimp_image_merge_visible_vectors (GimpImage *image)
       vectors = GIMP_VECTORS (cur_item->data);
 
       name = g_strdup (gimp_object_get_name (GIMP_OBJECT (vectors)));
-      target_vectors = GIMP_VECTORS (
-                            gimp_item_duplicate (GIMP_ITEM (vectors),
-                                                 GIMP_TYPE_VECTORS,
-                                                 FALSE));
+      target_vectors = GIMP_VECTORS (gimp_item_duplicate (GIMP_ITEM (vectors),
+                                                          GIMP_TYPE_VECTORS));
       pos = gimp_image_get_vectors_index (image, vectors);
       gimp_image_remove_vectors (image, vectors);
       cur_item = cur_item->next;
@@ -285,9 +285,9 @@ gimp_image_merge_visible_vectors (GimpImage *image)
     }
   else
     {
-      gimp_message (image->gimp, NULL, GIMP_MESSAGE_WARNING,
-                    _("Not enough visible paths for a merge. "
-                      "There must be at least two."));
+      g_set_error (error, 0, 0,
+                   _("Not enough visible paths for a merge. "
+                     "There must be at least two."));
       return NULL;
     }
 }
@@ -319,7 +319,6 @@ gimp_image_merge_layers (GimpImage     *image,
   GimpLayer       *merge_layer;
   GimpLayer       *layer;
   GimpLayer       *bottom_layer;
-  guchar           bg[4] = {0, 0, 0, 0};
   GimpImageType    type;
   gint             count;
   gint             x1, y1, x2, y2;
@@ -372,10 +371,10 @@ gimp_image_merge_layers (GimpImage     *image,
 
           if (merge_type == GIMP_CLIP_TO_IMAGE)
             {
-              x1 = CLAMP (x1, 0, image->width);
-              y1 = CLAMP (y1, 0, image->height);
-              x2 = CLAMP (x2, 0, image->width);
-              y2 = CLAMP (y2, 0, image->height);
+              x1 = CLAMP (x1, 0, gimp_image_get_width  (image));
+              y1 = CLAMP (y1, 0, gimp_image_get_height (image));
+              x2 = CLAMP (x2, 0, gimp_image_get_width  (image));
+              y2 = CLAMP (y2, 0, gimp_image_get_height (image));
             }
           break;
 
@@ -394,8 +393,8 @@ gimp_image_merge_layers (GimpImage     *image,
             {
               x1 = 0;
               y1 = 0;
-              x2 = image->width;
-              y2 = image->height;
+              x2 = gimp_image_get_width  (image);
+              y2 = gimp_image_get_height (image);
             }
           break;
         }
@@ -418,6 +417,8 @@ gimp_image_merge_layers (GimpImage     *image,
   if (merge_type == GIMP_FLATTEN_IMAGE ||
       gimp_drawable_type (GIMP_DRAWABLE (layer)) == GIMP_INDEXED_IMAGE)
     {
+      guchar bg[4] = { 0, 0, 0, 0 };
+
       type = GIMP_IMAGE_TYPE_FROM_BASE_TYPE (gimp_image_base_type (image));
 
       merge_layer = gimp_layer_new (image, (x2 - x1), (y2 - y1),
@@ -471,15 +472,13 @@ gimp_image_merge_layers (GimpImage     *image,
       GIMP_ITEM (merge_layer)->offset_x = x1;
       GIMP_ITEM (merge_layer)->offset_y = y1;
 
-      /*  Set the layer to transparent  */
+      /*  clear the layer  */
       pixel_region_init (&src1PR,
                          gimp_drawable_get_tiles (GIMP_DRAWABLE (merge_layer)),
                          0, 0,
                          (x2 - x1), (y2 - y1),
                          TRUE);
-
-      /*  set the region to 0's  */
-      color_region (&src1PR, bg);
+      clear_region (&src1PR);
 
       /*  Find the index in the layer list of the bottom layer--we need this
        *  in order to add the final, merged layer to the layer list correctly
@@ -544,7 +543,8 @@ gimp_image_merge_layers (GimpImage     *image,
                          (x4 - x3), (y4 - y3),
                          FALSE);
 
-      if (layer->mask && layer->mask->apply_mask)
+      if (gimp_layer_get_mask (layer) &&
+          gimp_layer_mask_get_apply (layer->mask))
         {
           TileManager *tiles;
 
@@ -564,12 +564,12 @@ gimp_image_merge_layers (GimpImage     *image,
        *  work on the projection with the lower layer, but only locally on
        *  the layers alpha channel.
        */
-      mode = layer->mode;
+      mode = gimp_layer_get_mode (layer);
       if (layer == bottom_layer && mode != GIMP_DISSOLVE_MODE)
         mode = GIMP_NORMAL_MODE;
 
       combine_regions (&src1PR, &src2PR, &src1PR, mask, NULL,
-                       layer->opacity * 255.999,
+                       gimp_layer_get_opacity (layer) * 255.999,
                        mode,
                        active,
                        operation);

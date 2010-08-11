@@ -56,6 +56,8 @@ gimp_image_duplicate (GimpImage *image)
   GimpDrawable *new_floating_sel_drawable = NULL;
   GimpDrawable *floating_sel_drawable     = NULL;
   gchar        *filename;
+  gdouble       xres;
+  gdouble       yres;
   gint          count;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
@@ -64,8 +66,9 @@ gimp_image_duplicate (GimpImage *image)
 
   /*  Create a new image  */
   new_image = gimp_create_image (image->gimp,
-                                 image->width, image->height,
-                                 image->base_type,
+                                 gimp_image_get_width  (image),
+                                 gimp_image_get_height (image),
+                                 gimp_image_base_type (image),
                                  FALSE);
   gimp_image_undo_disable (new_image);
 
@@ -80,16 +83,16 @@ gimp_image_duplicate (GimpImage *image)
     }
 
   /*  Copy the colormap if necessary  */
-  if (new_image->base_type == GIMP_INDEXED)
+  if (gimp_image_base_type (new_image) == GIMP_INDEXED)
     gimp_image_set_colormap (new_image,
                              gimp_image_get_colormap (image),
                              gimp_image_get_colormap_size (image),
                              FALSE);
 
   /*  Copy resolution information  */
-  new_image->xresolution     = image->xresolution;
-  new_image->yresolution     = image->yresolution;
-  new_image->resolution_unit = image->resolution_unit;
+  gimp_image_get_resolution (image, &xres, &yres);
+  gimp_image_set_resolution (new_image, xres, yres);
+  gimp_image_set_unit (new_image, gimp_image_get_unit (image));
 
   /*  Copy floating layer  */
   floating_layer = gimp_image_floating_sel (image);
@@ -111,8 +114,7 @@ gimp_image_duplicate (GimpImage *image)
 
       new_layer = GIMP_LAYER (gimp_item_convert (GIMP_ITEM (layer),
                                                  new_image,
-                                                 G_TYPE_FROM_INSTANCE (layer),
-                                                 FALSE));
+                                                 G_TYPE_FROM_INSTANCE (layer)));
 
       /*  Make sure the copied layer doesn't say: "<old layer> copy"  */
       gimp_object_set_name (GIMP_OBJECT (new_layer),
@@ -146,11 +148,9 @@ gimp_image_duplicate (GimpImage *image)
       GimpChannel *channel = list->data;
       GimpChannel *new_channel;
 
-      new_channel =
-        GIMP_CHANNEL (gimp_item_convert (GIMP_ITEM (channel),
-                                         new_image,
-                                         G_TYPE_FROM_INSTANCE (channel),
-                                         FALSE));
+      new_channel = GIMP_CHANNEL (gimp_item_convert (GIMP_ITEM (channel),
+                                                     new_image,
+                                                     G_TYPE_FROM_INSTANCE (channel)));
 
       /*  Make sure the copied channel doesn't say: "<old channel> copy"  */
       gimp_object_set_name (GIMP_OBJECT (new_channel),
@@ -173,11 +173,9 @@ gimp_image_duplicate (GimpImage *image)
       GimpVectors *vectors = list->data;
       GimpVectors *new_vectors;
 
-      new_vectors =
-        GIMP_VECTORS (gimp_item_convert (GIMP_ITEM (vectors),
-                                         new_image,
-                                         G_TYPE_FROM_INSTANCE (vectors),
-                                         FALSE));
+      new_vectors = GIMP_VECTORS (gimp_item_convert (GIMP_ITEM (vectors),
+                                                     new_image,
+                                                     G_TYPE_FROM_INSTANCE (vectors)));
 
       /*  Make sure the copied vectors doesn't say: "<old vectors> copy"  */
       gimp_object_set_name (GIMP_OBJECT (new_vectors),
@@ -196,14 +194,20 @@ gimp_image_duplicate (GimpImage *image)
     PixelRegion  srcPR, destPR;
 
     src_tiles  =
-      gimp_drawable_get_tiles (GIMP_DRAWABLE (image->selection_mask));
+      gimp_drawable_get_tiles (GIMP_DRAWABLE (gimp_image_get_mask (image)));
     dest_tiles =
-      gimp_drawable_get_tiles (GIMP_DRAWABLE (new_image->selection_mask));
+      gimp_drawable_get_tiles (GIMP_DRAWABLE (gimp_image_get_mask (new_image)));
 
     pixel_region_init (&srcPR, src_tiles,
-                       0, 0, image->width, image->height, FALSE);
+                       0, 0,
+                       gimp_image_get_width  (image),
+                       gimp_image_get_height (image),
+                       FALSE);
     pixel_region_init (&destPR, dest_tiles,
-                       0, 0, image->width, image->height, TRUE);
+                       0, 0,
+                       gimp_image_get_width  (image),
+                       gimp_image_get_height (image),
+                       TRUE);
 
     copy_region (&srcPR, &destPR);
 
@@ -232,7 +236,7 @@ gimp_image_duplicate (GimpImage *image)
     }
 
   /*  Copy any guides  */
-  for (list = image->guides; list; list = g_list_next (list))
+  for (list = gimp_image_get_guides (image); list; list = g_list_next (list))
     {
       GimpGuide *guide    = list->data;
       gint       position = gimp_guide_get_position (guide);
@@ -253,7 +257,7 @@ gimp_image_duplicate (GimpImage *image)
     }
 
   /*  Copy any sample points  */
-  for (list = image->sample_points; list; list = g_list_next (list))
+  for (list = gimp_image_get_sample_points (image); list; list = g_list_next (list))
     {
       GimpSamplePoint *sample_point = list->data;
 

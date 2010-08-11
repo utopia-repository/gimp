@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * gimp-user-install.c
- * Copyright (C) 2000-2006 Michael Natterer and Sven Neumann
+ * Copyright (C) 2000-2008 Michael Natterer and Sven Neumann
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,7 +94,6 @@ gimp_user_install_items[] =
   { "templates",       USER_INSTALL_MKDIR },
   { "themes",          USER_INSTALL_MKDIR },
   { "tmp",             USER_INSTALL_MKDIR },
-  { "tool-options",    USER_INSTALL_MKDIR },
   { "curves",          USER_INSTALL_MKDIR },
   { "levels",          USER_INSTALL_MKDIR },
   { "fractalexplorer", USER_INSTALL_MKDIR },
@@ -104,6 +103,7 @@ gimp_user_install_items[] =
 };
 
 
+static gboolean  gimp_user_install_detect_old    (GimpUserInstall  *install);
 static void      user_install_log                (GimpUserInstall  *install,
                                                   const gchar      *format,
                                                   ...) G_GNUC_PRINTF (2, 3);
@@ -131,54 +131,10 @@ GimpUserInstall *
 gimp_user_install_new (gboolean verbose)
 {
   GimpUserInstall *install = g_slice_new0 (GimpUserInstall);
-  gchar           *dir;
-  gchar           *version;
-  gboolean         migrate;
 
   install->verbose = verbose;
 
-  dir = g_strdup (gimp_directory ());
-
-  version = strstr (dir, GIMP_APP_VERSION);
-
-  if (! version)
-    {
-      g_free (dir);
-      return install;
-    }
-
-  /*  we assume that GIMP_APP_VERSION is in the form '2.x'  */
-  version[2] = '2';
-
-  migrate = g_file_test (dir, G_FILE_TEST_IS_DIR);
-
-  if (migrate)
-    {
-      install->old_major = 2;
-      install->old_minor = 2;
-    }
-  else
-    {
-      version[2] = '0';
-
-      migrate = g_file_test (dir, G_FILE_TEST_IS_DIR);
-
-      if (migrate)
-        {
-          install->old_major = 2;
-          install->old_minor = 0;
-        }
-    }
-
-  if (migrate)
-    {
-      install->old_dir = dir;
-      install->migrate = (const gchar *) version;
-    }
-  else
-    {
-      g_free (dir);
-    }
+  gimp_user_install_detect_old (install);
 
   return install;
 }
@@ -240,6 +196,54 @@ gimp_user_install_set_log_handler (GimpUserInstall        *install,
 
 
 /*  Local functions  */
+
+static gboolean
+gimp_user_install_detect_old (GimpUserInstall *install)
+{
+  gchar    *dir;
+  gchar    *version;
+  gboolean  migrate = FALSE;
+
+  dir = g_strdup (gimp_directory ());
+
+  version = strstr (dir, GIMP_APP_VERSION);
+
+  if (version)
+    {
+      gint i;
+
+      for (i = 4; i >= 0; i -= 2)
+        {
+          /*  we assume that GIMP_APP_VERSION is in the form '2.x'  */
+          g_snprintf (version + 2, 2, "%d", i);
+
+          migrate = g_file_test (dir, G_FILE_TEST_IS_DIR);
+
+          if (migrate)
+            {
+#ifdef GIMP_UNSTABLE
+	      g_printerr ("gimp-user-install: migrating from %s\n", dir);
+#endif
+              install->old_major = 2;
+              install->old_minor = i;
+
+              break;
+            }
+        }
+    }
+
+  if (migrate)
+    {
+      install->old_dir = dir;
+      install->migrate = (const gchar *) version;
+    }
+  else
+    {
+      g_free (dir);
+    }
+
+  return migrate;
+}
 
 static void
 user_install_log (GimpUserInstall *install,
@@ -489,16 +493,17 @@ user_install_migrate_files (GimpUserInstall *install)
       if (g_file_test (source, G_FILE_TEST_IS_REGULAR))
         {
           /*  skip these files for all old versions  */
-          if (g_str_has_prefix (basename, "gimpswap.") ||
-              g_str_has_prefix (basename, "pluginrc")  ||
-              g_str_has_prefix (basename, "themerc")   ||
-              g_str_has_prefix (basename, "toolrc"))
+          if (strcmp (basename, "documents") == 0      ||
+              g_str_has_prefix (basename, "gimpswap.") ||
+              strcmp (basename, "pluginrc") == 0       ||
+              strcmp (basename, "themerc") == 0        ||
+              strcmp (basename, "toolrc") == 0)
             {
               goto next_file;
             }
 
-          /*  skip menurc for gimp 2.0 since the format has changed  */
-          if (install->old_minor == 0 && g_str_has_prefix (basename, "menurc"))
+          /*  skip menurc for gimp 2.0 as the format has changed  */
+          if (install->old_minor == 0 && strcmp (basename, "menurc") == 0)
             {
               goto next_file;
             }

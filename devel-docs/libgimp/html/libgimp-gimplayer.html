@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -56,11 +57,23 @@ href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpImageType"
 >GimpImageType</a> type,
                                                          gdouble opacity,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> mode);
+gint32              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-drawable" title="gimp_layer_new_from_drawable ()">gimp_layer_new_from_drawable</a>        (gint32 drawable_ID,
+                                                         gint32 dest_image_ID);
+gint32              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-visible" title="gimp_layer_new_from_visible ()">gimp_layer_new_from_visible</a>         (gint32 image_ID,
+                                                         gint32 dest_image_ID,
+                                                         const gchar *name);
 gint32              <a class="link" href="libgimp-gimplayer.html#gimp-layer-copy" title="gimp_layer_copy ()">gimp_layer_copy</a>                     (gint32 layer_ID);
 gboolean            <a class="link" href="libgimp-gimplayer.html#gimp-layer-scale" title="gimp_layer_scale ()">gimp_layer_scale</a>                    (gint32 layer_ID,
                                                          gint new_width,
                                                          gint new_height,
                                                          gboolean local_origin);
+gboolean            <a class="link" href="libgimp-gimplayer.html#gimp-layer-scale-full" title="gimp_layer_scale_full ()">gimp_layer_scale_full</a>               (gint32 layer_ID,
+                                                         gint new_width,
+                                                         gint new_height,
+                                                         gboolean local_origin,
+                                                         <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
+>GimpInterpolationType</a> interpolation);
 gboolean            <a class="link" href="libgimp-gimplayer.html#gimp-layer-resize" title="gimp_layer_resize ()">gimp_layer_resize</a>                   (gint32 layer_ID,
                                                          gint new_width,
                                                          gint new_height,
@@ -85,8 +98,6 @@ gboolean            <a class="link" href="libgimp-gimplayer.html#gimp-layer-add-
                                                          gint32 mask_ID);
 gboolean            <a class="link" href="libgimp-gimplayer.html#gimp-layer-remove-mask" title="gimp_layer_remove_mask ()">gimp_layer_remove_mask</a>              (gint32 layer_ID,
                                                          <a class="link" href="libgimp-gimpenums.html#GimpMaskApplyMode" title="enum GimpMaskApplyMode">GimpMaskApplyMode</a> mode);
-gint32              <a class="link" href="libgimp-gimplayer.html#gimp-layer-new-from-drawable" title="gimp_layer_new_from_drawable ()">gimp_layer_new_from_drawable</a>        (gint32 drawable_ID,
-                                                         gint32 dest_image_ID);
 gboolean            <a class="link" href="libgimp-gimplayer.html#gimp-layer-get-lock-alpha" title="gimp_layer_get_lock_alpha ()">gimp_layer_get_lock_alpha</a>           (gint32 layer_ID);
 gboolean            <a class="link" href="libgimp-gimplayer.html#gimp-layer-set-lock-alpha" title="gimp_layer_set_lock_alpha ()">gimp_layer_set_lock_alpha</a>           (gint32 layer_ID,
                                                          gboolean lock_alpha);
@@ -192,6 +203,91 @@ should be set with explicit procedure calls.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
+<a name="gimp-layer-new-from-drawable"></a><h3>gimp_layer_new_from_drawable ()</h3>
+<pre class="programlisting">gint32              gimp_layer_new_from_drawable        (gint32 drawable_ID,
+                                                         gint32 dest_image_ID);</pre>
+<p>
+Create a new layer by copying an existing drawable.
+</p>
+<p>
+This procedure creates a new layer as a copy of the specified
+drawable. The new layer still needs to be added to the image, as
+this is not automatic. Add the new layer with the
+<a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer" title="gimp_image_add_layer ()"><code class="function">gimp_image_add_layer()</code></a> command. Other attributes such as layer mask
+modes, and offsets should be set with explicit procedure calls.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
+<td> The source drawable from where the new layer is copied.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dest_image_ID</code></em> :</span></p></td>
+<td> The destination image to which to add the layer.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The newly copied layer.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-layer-new-from-visible"></a><h3>gimp_layer_new_from_visible ()</h3>
+<pre class="programlisting">gint32              gimp_layer_new_from_visible         (gint32 image_ID,
+                                                         gint32 dest_image_ID,
+                                                         const gchar *name);</pre>
+<p>
+Create a new layer from what is visible in an image.
+</p>
+<p>
+This procedure creates a new layer from what is visible in the given
+image. The new layer still needs to be added to the destination
+image, as this is not automatic. Add the new layer with the
+<a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer" title="gimp_image_add_layer ()"><code class="function">gimp_image_add_layer()</code></a> command. Other attributes such as layer mask
+modes, and offsets should be set with explicit procedure calls.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td> The source image from where the content is copied.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dest_image_ID</code></em> :</span></p></td>
+<td> The destination image to which to add the layer.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> The layer name.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The newly created layer.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
 <a name="gimp-layer-copy"></a><h3>gimp_layer_copy ()</h3>
 <pre class="programlisting">gint32              gimp_layer_copy                     (gint32 layer_ID);</pre>
 <p>
@@ -228,14 +324,14 @@ should not be subsequently added to any other image.</p>
                                                          gint new_height,
                                                          gboolean local_origin);</pre>
 <p>
-Scale the layer to the specified extents.
+Scale the layer using the default interpolation method.
 </p>
 <p>
 This procedure scales the layer so that its new width and height are
 equal to the supplied parameters. The 'local-origin' parameter
 specifies whether to scale from the center of the layer, or from the
 image origin. This operation only works if the layer has been added
-to an image.</p>
+to an image. The default interpolation method is used for scaling.</p>
 <p>
 
 </p>
@@ -269,6 +365,68 @@ to an image.</p>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-layer-scale-full"></a><h3>gimp_layer_scale_full ()</h3>
+<pre class="programlisting">gboolean            gimp_layer_scale_full               (gint32 layer_ID,
+                                                         gint new_width,
+                                                         gint new_height,
+                                                         gboolean local_origin,
+                                                         <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
+>GimpInterpolationType</a> interpolation);</pre>
+<p>
+Scale the layer using a specific interpolation method.
+</p>
+<p>
+This procedure scales the layer so that its new width and height are
+equal to the supplied parameters. The 'local-origin' parameter
+specifies whether to scale from the center of the layer, or from the
+image origin. This operation only works if the layer has been added
+to an image. This procedure allows you to specify the interpolation
+method explicitly.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_ID</code></em> :</span></p></td>
+<td> The layer.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>new_width</code></em> :</span></p></td>
+<td> New layer width.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>new_height</code></em> :</span></p></td>
+<td> New layer height.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>local_origin</code></em> :</span></p></td>
+<td> Use a local origin (as opposed to the image origin).
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interpolation</code></em> :</span></p></td>
+<td> Type of interpolation.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -690,44 +848,6 @@ the mask doesn't exist, an error is returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="gimp-layer-new-from-drawable"></a><h3>gimp_layer_new_from_drawable ()</h3>
-<pre class="programlisting">gint32              gimp_layer_new_from_drawable        (gint32 drawable_ID,
-                                                         gint32 dest_image_ID);</pre>
-<p>
-Create a new layer by copying an existing drawable.
-</p>
-<p>
-This procedure creates a new layer as a copy of the specified
-drawable. The new layer still needs to be added to the image, as
-this is not automatic. Add the new layer with the
-<a class="link" href="libgimp-gimpimage.html#gimp-image-add-layer" title="gimp_image_add_layer ()"><code class="function">gimp_image_add_layer()</code></a> command. Other attributes such as layer mask
-modes, and offsets should be set with explicit procedure calls.</p>
-<p>
-
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
-<td> The source drawable from where the new layer is copied.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>dest_image_ID</code></em> :</span></p></td>
-<td> The destination image to which to add the layer.
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> The newly copied layer.
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2" lang="en">
 <a name="gimp-layer-get-lock-alpha"></a><h3>gimp_layer_get_lock_alpha ()</h3>
 <pre class="programlisting">gboolean            gimp_layer_get_lock_alpha           (gint32 layer_ID);</pre>
 <p>
@@ -962,9 +1082,9 @@ Set the show mask setting of the specified layer.
 </p>
 <p>
 This procedure sets the specified layer's show mask setting. This
-controls whether the layer's mask is currently affecting the alpha
-channel. If there is no layer mask, this function will return an
-error.</p>
+controls whether the layer or its mask is visible. TRUE indicates
+that the mask should be visible. If there is no layer mask, this
+function will return an error.</p>
 <p>
 
 </p>

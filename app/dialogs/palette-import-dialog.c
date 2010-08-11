@@ -678,8 +678,11 @@ palette_import_image_callback (GtkWidget    *widget,
   image = gimp_context_get_image (dialog->context);
 
   if (! image)
-    image = (GimpImage *)
-      gimp_container_get_child_by_index (dialog->context->gimp->images, 0);
+    {
+      GimpContainer *images = dialog->context->gimp->images;
+
+      image = GIMP_IMAGE (gimp_container_get_first_child (images));
+    }
 
   palette_import_set_sensitive (dialog);
 
@@ -723,7 +726,8 @@ palette_import_columns_changed (GtkAdjustment *adj,
                                 ImportDialog  *dialog)
 {
   if (dialog->palette)
-    gimp_palette_set_columns (dialog->palette, ROUND (adj->value));
+    gimp_palette_set_columns (dialog->palette,
+                              ROUND (gtk_adjustment_get_value (adj)));
 }
 
 /*  functions & callbacks to keep the import dialog uptodate  ****************/
@@ -769,9 +773,9 @@ palette_import_make_palette (ImportDialog *dialog)
   if (! palette_name || ! strlen (palette_name))
     palette_name = _("Untitled");
 
-  n_colors  = ROUND (dialog->num_colors->value);
-  n_columns = ROUND (dialog->columns->value);
-  threshold = ROUND (dialog->threshold->value);
+  n_colors  = ROUND (gtk_adjustment_get_value (dialog->num_colors));
+  n_columns = ROUND (gtk_adjustment_get_value (dialog->columns));
+  threshold = ROUND (gtk_adjustment_get_value (dialog->threshold));
 
   switch (dialog->import_type)
     {

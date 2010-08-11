@@ -152,7 +152,6 @@ struct _GimpParamSpecString
   GParamSpecString parent_instance;
 
   guint            allow_non_utf8 : 1;
-  guint            null_ok        : 1;
   guint            non_empty      : 1;
 };
 
@@ -858,6 +857,51 @@ void           gimp_value_set_static_stringarray (GValue       *value,
 void           gimp_value_take_stringarray       (GValue       *value,
                                                   gchar       **array,
                                                   gsize         length);
+
+
+/*
+ * GIMP_TYPE_COLOR_ARRAY
+ */
+
+#define GIMP_TYPE_COLOR_ARRAY               (gimp_color_array_get_type ())
+#define GIMP_VALUE_HOLDS_COLOR_ARRAY(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_COLOR_ARRAY))
+
+GType   gimp_color_array_get_type           (void) G_GNUC_CONST;
+
+
+/*
+ * GIMP_TYPE_PARAM_COLOR_ARRAY
+ */
+
+#define GIMP_TYPE_PARAM_COLOR_ARRAY           (gimp_param_color_array_get_type ())
+#define GIMP_PARAM_SPEC_COLOR_ARRAY(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), GIMP_TYPE_PARAM_COLOR_ARRAY, GimpParamSpecColorArray))
+#define GIMP_IS_PARAM_SPEC_COLOR_ARRAY(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_COLOR_ARRAY))
+
+typedef struct _GimpParamSpecColorArray GimpParamSpecColorArray;
+
+struct _GimpParamSpecColorArray
+{
+  GParamSpecBoxed parent_instance;
+};
+
+GType           gimp_param_color_array_get_type  (void) G_GNUC_CONST;
+
+GParamSpec    * gimp_param_spec_color_array      (const gchar   *name,
+                                                  const gchar   *nick,
+                                                  const gchar   *blurb,
+                                                  GParamFlags    flags);
+
+const GimpRGB * gimp_value_get_colorarray        (const GValue  *value);
+GimpRGB       * gimp_value_dup_colorarray        (const GValue  *value);
+void            gimp_value_set_colorarray        (GValue        *value,
+                                                  const GimpRGB *array,
+                                                  gsize          length);
+void            gimp_value_set_static_colorarray (GValue        *value,
+                                                  const GimpRGB *array,
+                                                  gsize          length);
+void            gimp_value_take_colorarray       (GValue        *value,
+                                                  GimpRGB       *array,
+                                                  gsize          length);
 
 
 #endif  /*  __GIMP_PARAM_SPECS_H__  */

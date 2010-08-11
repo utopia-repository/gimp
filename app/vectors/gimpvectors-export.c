@@ -139,7 +139,8 @@ gimp_vectors_export (const GimpImage   *image,
 
   g_string_append_printf (str,
                           "     viewBox=\"0 0 %d %d\">\n",
-                          image->width, image->height);
+                          gimp_image_get_width  (image),
+                          gimp_image_get_height (image));
 
   if (vectors)
     {
@@ -166,10 +167,14 @@ gimp_vectors_export_image_size (const GimpImage *image,
   const gchar *abbrev;
   gchar        wbuf[G_ASCII_DTOSTR_BUF_SIZE];
   gchar        hbuf[G_ASCII_DTOSTR_BUF_SIZE];
+  gdouble      xres;
+  gdouble      yres;
   gdouble      w, h;
 
-  w = (gdouble) image->width  / image->xresolution;
-  h = (gdouble) image->height / image->yresolution;
+  gimp_image_get_resolution (image, &xres, &yres);
+
+  w = (gdouble) gimp_image_get_width  (image) / xres;
+  h = (gdouble) gimp_image_get_height (image) / yres;
 
   /*  FIXME: should probably use the display unit here  */
   unit = gimp_image_get_unit (image);

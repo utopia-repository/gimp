@@ -143,12 +143,11 @@
 	(set! shadow-shrink max_shrink))
 
     (script-fu-util-image-resize-from-layer img tube-layer)
-    (gimp-image-add-layer img bg-layer 1)
+    (script-fu-util-image-add-layers img glow-layer bg-layer)
     (if (not (= shadow 0))
         (begin
-          (gimp-image-add-layer img shadow-layer 1)
+          (gimp-image-add-layer img shadow-layer -1)
           (gimp-edit-clear shadow-layer)))
-    (gimp-image-add-layer img glow-layer 1)
 
     (gimp-context-set-background '(0 0 0))
     (gimp-selection-layer-alpha tube-layer)
@@ -235,7 +234,7 @@
                                    shadow)
   (begin
     (gimp-image-undo-group-start img)
-    (apply-neon-logo-effect img tube-layer size bg-color glow-color shadow)
+    (apply-neon-logo-effect img tube-layer (* size 5) bg-color glow-color shadow)
     (gimp-image-undo-group-end img)
     (gimp-displays-flush)
   )
@@ -248,12 +247,12 @@
   "Spencer Kimball"
   "1997"
   "RGBA"
-  SF-IMAGE      "Image"                     0
-  SF-DRAWABLE   "Drawable"                  0
-  SF-ADJUSTMENT _"Effect size (pixels * 5)" '(150 2 1000 1 10 0 1)
-  SF-COLOR      _"Background color"         "black"
-  SF-COLOR      _"Glow color"               '(38 211 255)
-  SF-TOGGLE     _"Create shadow"            FALSE
+  SF-IMAGE      "Image"                 0
+  SF-DRAWABLE   "Drawable"              0
+  SF-ADJUSTMENT _"Effect size (pixels)" '(30 1 200 1 10 0 1)
+  SF-COLOR      _"Background color"     "black"
+  SF-COLOR      _"Glow color"           '(38 211 255)
+  SF-TOGGLE     _"Create shadow"        FALSE
 )
 
 (script-fu-menu-register "script-fu-neon-logo-alpha"
@@ -293,4 +292,4 @@
 )
 
 (script-fu-menu-register "script-fu-neon-logo"
-                         "<Toolbox>/Xtns/Logos")
+                         "<Image>/File/Create/Logos")

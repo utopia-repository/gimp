@@ -76,8 +76,8 @@ static void       gimp_selection_rotate        (GimpItem        *item,
 static gboolean   gimp_selection_stroke        (GimpItem        *item,
                                                 GimpDrawable    *drawable,
                                                 GimpStrokeDesc  *stroke_desc,
-                                                GimpProgress    *progress);
-
+                                                GimpProgress    *progress,
+                                                GError         **error);
 static void gimp_selection_invalidate_boundary (GimpDrawable    *drawable);
 
 static gboolean   gimp_selection_boundary      (GimpChannel     *channel,
@@ -123,9 +123,6 @@ static void       gimp_selection_shrink        (GimpChannel     *channel,
                                                 gint             radius_y,
                                                 gboolean         edge_lock,
                                                 gboolean         push_undo);
-
-static void       gimp_selection_validate_tile (TileManager     *tm,
-                                                Tile            *tile);
 
 
 G_DEFINE_TYPE (GimpSelection, gimp_selection, GIMP_TYPE_CHANNEL)
@@ -256,10 +253,11 @@ gimp_selection_rotate (GimpItem         *item,
 }
 
 static gboolean
-gimp_selection_stroke (GimpItem       *item,
-                       GimpDrawable   *drawable,
-                       GimpStrokeDesc *stroke_desc,
-                       GimpProgress   *progress)
+gimp_selection_stroke (GimpItem        *item,
+                       GimpDrawable    *drawable,
+                       GimpStrokeDesc  *stroke_desc,
+                       GimpProgress    *progress,
+                       GError         **error)
 {
   GimpSelection  *selection = GIMP_SELECTION (item);
   const BoundSeg *dummy_in;
@@ -273,16 +271,15 @@ gimp_selection_stroke (GimpItem       *item,
                                &num_dummy_in, &num_dummy_out,
                                0, 0, 0, 0))
     {
-      gimp_message (gimp_item_get_image (item)->gimp, G_OBJECT (progress),
-                    GIMP_MESSAGE_WARNING,
-                    _("There is no selection to stroke."));
+      g_set_error (error, 0, 0,
+                   _("There is no selection to stroke."));
       return FALSE;
     }
 
   selection->stroking = TRUE;
 
   retval = GIMP_ITEM_CLASS (parent_class)->stroke (item, drawable, stroke_desc,
-                                                   progress);
+                                                   progress, error);
 
   selection->stroking = FALSE;
 
@@ -309,8 +306,8 @@ gimp_selection_invalidate_boundary (GimpDrawable *drawable)
   if (layer && gimp_layer_is_floating_sel (layer))
     gimp_drawable_update (GIMP_DRAWABLE (layer),
                           0, 0,
-                          GIMP_ITEM (layer)->width,
-                          GIMP_ITEM (layer)->height);
+                          gimp_item_width  (GIMP_ITEM (layer)),
+                          gimp_item_height (GIMP_ITEM (layer)));
 
   /*  invalidate the preview  */
   drawable->preview_valid = FALSE;
@@ -363,8 +360,8 @@ gimp_selection_boundary (GimpChannel     *channel,
                                                           num_segs_in,
                                                           num_segs_out,
                                                           0, 0,
-                                                          image->width,
-                                                          image->height);
+                                                          gimp_image_get_width  (image),
+                                                          gimp_image_get_height (image));
     }
   else if ((layer = gimp_image_get_active_layer (image)))
     {
@@ -378,12 +375,12 @@ gimp_selection_boundary (GimpChannel     *channel,
 
       gimp_item_offsets (GIMP_ITEM (layer), &off_x, &off_y);
 
-      x1 = CLAMP (off_x, 0, image->width);
-      y1 = CLAMP (off_y, 0, image->height);
-      x2 = CLAMP (off_x + gimp_item_width (GIMP_ITEM (layer)), 0,
-                  image->width);
-      y2 = CLAMP (off_y + gimp_item_height (GIMP_ITEM (layer)), 0,
-                  image->height);
+      x1 = CLAMP (off_x, 0, gimp_image_get_width  (image));
+      y1 = CLAMP (off_y, 0, gimp_image_get_height (image));
+      x2 = CLAMP (off_x + gimp_item_width (GIMP_ITEM (layer)),
+                  0, gimp_image_get_width (image));
+      y2 = CLAMP (off_y + gimp_item_height (GIMP_ITEM (layer)),
+                  0, gimp_image_get_height (image));
 
       return GIMP_CHANNEL_CLASS (parent_class)->boundary (channel,
                                                           segs_in, segs_out,
@@ -501,15 +498,6 @@ gimp_selection_shrink (GimpChannel *channel,
 					     push_undo);
 }
 
-static void
-gimp_selection_validate_tile (TileManager *tm,
-                              Tile        *tile)
-{
-  /*  Set the contents of the tile to empty  */
-  memset (tile_data_pointer (tile, 0, 0),
-          TRANSPARENT_OPACITY, tile_size (tile));
-}
-
 
 /*  public functions  */
 
@@ -531,14 +519,11 @@ gimp_selection_new (GimpImage *image,
                            GIMP_GRAY_IMAGE,
                            _("Selection Mask"));
 
-  channel->color       = black;
-  channel->show_masked = TRUE;
-  channel->x2          = width;
-  channel->y2          = height;
+  gimp_channel_set_color (channel, &black, FALSE);
+  gimp_channel_set_show_masked (channel, TRUE);
 
-  tile_manager_set_validate_proc (GIMP_DRAWABLE (channel)->tiles,
-                                  (TileValidateProc) gimp_selection_validate_tile,
-                                  NULL);
+  channel->x2 = width;
+  channel->y2 = height;
 
   return channel;
 }
@@ -558,24 +543,32 @@ gimp_selection_load (GimpChannel *selection,
   src_item  = GIMP_ITEM (channel);
   dest_item = GIMP_ITEM (selection);
 
-  g_return_if_fail (src_item->width  == dest_item->width);
-  g_return_if_fail (src_item->height == dest_item->height);
+  g_return_if_fail (gimp_item_width  (src_item) == gimp_item_width  (dest_item));
+  g_return_if_fail (gimp_item_height (src_item) == gimp_item_height (dest_item));
 
   gimp_channel_push_undo (selection, _("Channel to Selection"));
 
   /*  copy the channel to the mask  */
-  pixel_region_init (&srcPR, GIMP_DRAWABLE (channel)->tiles,
-                     0, 0, src_item->width, src_item->height,
+  pixel_region_init (&srcPR,
+                     gimp_drawable_get_tiles (GIMP_DRAWABLE (channel)),
+                     0, 0,
+                     gimp_item_width  (src_item),
+                     gimp_item_height (src_item),
                      FALSE);
-  pixel_region_init (&destPR, GIMP_DRAWABLE (selection)->tiles,
-                     0, 0, dest_item->width, dest_item->height,
+  pixel_region_init (&destPR,
+                     gimp_drawable_get_tiles (GIMP_DRAWABLE (selection)),
+                     0, 0,
+                     gimp_item_width  (dest_item),
+                     gimp_item_height (dest_item),
                      TRUE);
   copy_region (&srcPR, &destPR);
 
   selection->bounds_known = FALSE;
 
-  gimp_drawable_update (GIMP_DRAWABLE (selection), 0, 0,
-                        dest_item->width, dest_item->height);
+  gimp_drawable_update (GIMP_DRAWABLE (selection),
+                        0, 0,
+                        gimp_item_width  (dest_item),
+                        gimp_item_height (dest_item));
 }
 
 GimpChannel *
@@ -589,8 +582,7 @@ gimp_selection_save (GimpChannel *selection)
   image = gimp_item_get_image (GIMP_ITEM (selection));
 
   new_channel = GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (selection),
-                                                   GIMP_TYPE_CHANNEL,
-                                                   FALSE));
+                                                   GIMP_TYPE_CHANNEL));
 
   /*  saved selections are not visible by default  */
   gimp_item_set_visible (GIMP_ITEM (new_channel), FALSE, FALSE);
@@ -606,7 +598,8 @@ gimp_selection_extract (GimpChannel  *selection,
                         GimpContext  *context,
                         gboolean      cut_image,
                         gboolean      keep_indexed,
-                        gboolean      add_alpha)
+                        gboolean      add_alpha,
+                        GError      **error)
 {
   GimpImage         *image;
   TileManager       *tiles;
@@ -624,6 +617,7 @@ gimp_selection_extract (GimpChannel  *selection,
   if (GIMP_IS_ITEM (pickable))
     g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (pickable)), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   image = gimp_pickable_get_image (pickable);
 
@@ -642,9 +636,9 @@ gimp_selection_extract (GimpChannel  *selection,
 
   if (non_empty && ((x1 == x2) || (y1 == y2)))
     {
-      gimp_message (image->gimp, NULL, GIMP_MESSAGE_WARNING,
-                    _("Unable to cut or copy because the "
-                      "selected region is empty."));
+      g_set_error (error, 0, 0,
+                   _("Unable to cut or copy because the "
+                     "selected region is empty."));
       return NULL;
     }
 
@@ -738,9 +732,6 @@ gimp_selection_extract (GimpChannel  *selection,
 
       if (GIMP_IS_DRAWABLE (pickable) && cut_image)
         {
-          /*  Clear the region  */
-          gimp_channel_clear (selection, NULL, TRUE);
-
           /*  Update the region  */
           gimp_drawable_update (GIMP_DRAWABLE (pickable),
                                 x1, y1, (x2 - x1), (y2 - y1));
@@ -762,10 +753,7 @@ gimp_selection_extract (GimpChannel  *selection,
       else
         {
           /*  Otherwise, do a straight copy  */
-          if (! GIMP_IS_DRAWABLE (pickable))
-            copy_region_nocow (&srcPR, &destPR);
-          else
-            copy_region (&srcPR, &destPR);
+          copy_region (&srcPR, &destPR);
         }
 
       /*  If we're cutting, remove either the layer (or floating selection),
@@ -796,12 +784,13 @@ gimp_selection_extract (GimpChannel  *selection,
 }
 
 GimpLayer *
-gimp_selection_float (GimpChannel  *selection,
-                      GimpDrawable *drawable,
-                      GimpContext  *context,
-                      gboolean      cut_image,
-                      gint          off_x,
-                      gint          off_y)
+gimp_selection_float (GimpChannel   *selection,
+                      GimpDrawable  *drawable,
+                      GimpContext   *context,
+                      gboolean       cut_image,
+                      gint           off_x,
+                      gint           off_y,
+                      GError       **error)
 {
   GimpImage   *image;
   GimpLayer   *layer;
@@ -813,13 +802,19 @@ gimp_selection_float (GimpChannel  *selection,
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   image = gimp_item_get_image (GIMP_ITEM (selection));
 
   /*  Make sure there is a region to float...  */
   if (! gimp_drawable_mask_bounds (drawable, &x1, &y1, &x2, &y2) ||
       (x1 == x2 || y1 == y2))
-    return NULL;
+    {
+      g_set_error (error, 0, 0,
+                   _("Cannot float selection because the selected region "
+                     "is empty."));
+      return NULL;
+    }
 
   /*  Start an undo group  */
   gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_FS_FLOAT,
@@ -827,11 +822,10 @@ gimp_selection_float (GimpChannel  *selection,
 
   /*  Cut or copy the selected region  */
   tiles = gimp_selection_extract (selection, GIMP_PICKABLE (drawable), context,
-                                  cut_image, FALSE, TRUE);
+                                  cut_image, FALSE, TRUE, NULL);
 
-  /*  Clear the selection as if we had cut the pixels  */
-  if (! cut_image)
-    gimp_channel_clear (selection, NULL, TRUE);
+  /*  Clear the selection  */
+  gimp_channel_clear (selection, NULL, TRUE);
 
   /* Create a new layer from the buffer, using the drawable's type
    *  because it may be different from the image's type if we cut from

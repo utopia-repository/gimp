@@ -35,11 +35,14 @@
 
 #include "core/gimp.h"
 #include "core/gimpdrawable.h"
+#include "core/gimpdrawable-shadow.h"
 
-#include "pdb/gimppdb.h"
 #include "pdb/gimp-pdb-compat.h"
+#include "pdb/gimppdb.h"
+#include "pdb/gimppdberror.h"
 
 #include "gimpplugin.h"
+#include "gimpplugin-cleanup.h"
 #include "gimpplugin-message.h"
 #include "gimppluginmanager.h"
 #include "gimpplugindef.h"
@@ -47,12 +50,18 @@
 #include "gimptemporaryprocedure.h"
 #include "plug-in-params.h"
 
+#include "gimp-intl.h"
+
 
 /*  local function prototypes  */
 
 static void gimp_plug_in_handle_quit             (GimpPlugIn      *plug_in);
-static void gimp_plug_in_handle_tile_req         (GimpPlugIn      *plug_in,
-                                                  GPTileReq       *tile_req);
+static void gimp_plug_in_handle_tile_request     (GimpPlugIn      *plug_in,
+                                                  GPTileReq       *request);
+static void gimp_plug_in_handle_tile_put         (GimpPlugIn      *plug_in,
+                                                  GPTileReq       *request);
+static void gimp_plug_in_handle_tile_get         (GimpPlugIn      *plug_in,
+                                                  GPTileReq       *request);
 static void gimp_plug_in_handle_proc_run         (GimpPlugIn      *plug_in,
                                                   GPProcRun       *proc_run);
 static void gimp_plug_in_handle_proc_return      (GimpPlugIn      *plug_in,
@@ -93,7 +102,7 @@ gimp_plug_in_handle_message (GimpPlugIn      *plug_in,
       break;
 
     case GP_TILE_REQ:
-      gimp_plug_in_handle_tile_req (plug_in, msg->data);
+      gimp_plug_in_handle_tile_request (plug_in, msg->data);
       break;
 
     case GP_TILE_ACK:
@@ -163,8 +172,20 @@ gimp_plug_in_handle_quit (GimpPlugIn *plug_in)
 }
 
 static void
-gimp_plug_in_handle_tile_req (GimpPlugIn *plug_in,
-                              GPTileReq  *tile_req)
+gimp_plug_in_handle_tile_request (GimpPlugIn *plug_in,
+                                  GPTileReq  *request)
+{
+  g_return_if_fail (request != NULL);
+
+  if (request->drawable_ID == -1)
+    gimp_plug_in_handle_tile_put (plug_in, request);
+  else
+    gimp_plug_in_handle_tile_get (plug_in, request);
+}
+
+static void
+gimp_plug_in_handle_tile_put (GimpPlugIn *plug_in,
+                              GPTileReq  *request)
 {
   GPTileData       tile_data;
   GPTileData      *tile_info;
@@ -173,175 +194,250 @@ gimp_plug_in_handle_tile_req (GimpPlugIn *plug_in,
   TileManager     *tm;
   Tile            *tile;
 
-  if (tile_req->drawable_ID == -1)
+  tile_data.drawable_ID = -1;
+  tile_data.tile_num    = 0;
+  tile_data.shadow      = 0;
+  tile_data.bpp         = 0;
+  tile_data.width       = 0;
+  tile_data.height      = 0;
+  tile_data.use_shm     = (plug_in->manager->shm != NULL);
+  tile_data.data        = NULL;
+
+  if (! gp_tile_data_write (plug_in->my_write, &tile_data, plug_in))
     {
-      /*  this branch communicates with libgimp/gimptile.c:gimp_tile_put()  */
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "%s: ERROR", G_STRFUNC);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
 
-      tile_data.drawable_ID = -1;
-      tile_data.tile_num    = 0;
-      tile_data.shadow      = 0;
-      tile_data.bpp         = 0;
-      tile_data.width       = 0;
-      tile_data.height      = 0;
-      tile_data.use_shm     = (plug_in->manager->shm != NULL);
-      tile_data.data        = NULL;
+  if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "%s: ERROR", G_STRFUNC);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
 
-      if (! gp_tile_data_write (plug_in->my_write, &tile_data, plug_in))
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "plug_in_handle_tile_req: ERROR");
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
+  if (msg.type != GP_TILE_DATA)
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "expected tile data and received: %d", msg.type);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
 
-      if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "plug_in_handle_tile_req: ERROR");
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
+  tile_info = msg.data;
 
-      if (msg.type != GP_TILE_DATA)
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "expected tile data and received: %d", msg.type);
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
+  drawable = (GimpDrawable *) gimp_item_get_by_ID (plug_in->manager->gimp,
+                                                   tile_info->drawable_ID);
 
-      tile_info = msg.data;
+  if (! GIMP_IS_DRAWABLE (drawable))
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-In \"%s\"\n(%s)\n\n"
+                    "tried writing to invalid drawable %d (killing)",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    tile_info->drawable_ID);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+  else if (gimp_item_is_removed (GIMP_ITEM (drawable)))
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-In \"%s\"\n(%s)\n\n"
+                    "tried writing to drawable %d which was removed "
+                    "from the image (killing)",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    tile_info->drawable_ID);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
 
-      drawable = (GimpDrawable *) gimp_item_get_by_ID (plug_in->manager->gimp,
-                                                       tile_info->drawable_ID);
+  if (tile_info->shadow)
+    {
+      tm = gimp_drawable_get_shadow_tiles (drawable);
 
-      if (! GIMP_IS_DRAWABLE (drawable))
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "Plug-In \"%s\"\n(%s)\n\n"
-                        "requested invalid drawable (killing)",
-                        gimp_object_get_name (GIMP_OBJECT (plug_in)),
-                        gimp_filename_to_utf8 (plug_in->prog));
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
-
-      if (tile_info->shadow)
-        tm = gimp_drawable_get_shadow_tiles (drawable);
-      else
-        tm = gimp_drawable_get_tiles (drawable);
-
-      tile = tile_manager_get (tm, tile_info->tile_num, TRUE, TRUE);
-
-      if (! tile)
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "Plug-In \"%s\"\n(%s)\n\n"
-                        "requested invalid tile (killing)",
-                        gimp_object_get_name (GIMP_OBJECT (plug_in)),
-                        gimp_filename_to_utf8 (plug_in->prog));
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
-
-      if (tile_data.use_shm)
-        memcpy (tile_data_pointer (tile, 0, 0),
-                gimp_plug_in_shm_get_addr (plug_in->manager->shm),
-                tile_size (tile));
-      else
-        memcpy (tile_data_pointer (tile, 0, 0),
-                tile_info->data,
-                tile_size (tile));
-
-      tile_release (tile, TRUE);
-      gimp_wire_destroy (&msg);
-
-      if (! gp_tile_ack_write (plug_in->my_write, plug_in))
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "plug_in_handle_tile_req: ERROR");
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
+      gimp_plug_in_cleanup_add_shadow (plug_in, drawable);
     }
   else
     {
-      /*  this branch communicates with libgimp/gimptile.c:gimp_tile_get()  */
+      tm = gimp_drawable_get_tiles (drawable);
+    }
 
-      drawable = (GimpDrawable *) gimp_item_get_by_ID (plug_in->manager->gimp,
-                                                       tile_req->drawable_ID);
+  tile = tile_manager_get (tm, tile_info->tile_num, TRUE, TRUE);
 
-      if (! GIMP_IS_DRAWABLE (drawable))
+  if (! tile)
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-In \"%s\"\n(%s)\n\n"
+                    "requested invalid tile (killing)",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog));
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+
+  if (tile_data.use_shm)
+    memcpy (tile_data_pointer (tile, 0, 0),
+            gimp_plug_in_shm_get_addr (plug_in->manager->shm),
+            tile_size (tile));
+  else
+    memcpy (tile_data_pointer (tile, 0, 0),
+            tile_info->data,
+            tile_size (tile));
+
+  tile_release (tile, TRUE);
+  gimp_wire_destroy (&msg);
+
+  if (! gp_tile_ack_write (plug_in->my_write, plug_in))
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "%s: ERROR", G_STRFUNC);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+}
+
+static void
+gimp_plug_in_handle_tile_get (GimpPlugIn *plug_in,
+                              GPTileReq  *request)
+{
+  GPTileData       tile_data;
+  GimpWireMessage  msg;
+  GimpDrawable    *drawable;
+  TileManager     *tm;
+  Tile            *tile;
+
+  drawable = (GimpDrawable *) gimp_item_get_by_ID (plug_in->manager->gimp,
+                                                   request->drawable_ID);
+
+  if (! GIMP_IS_DRAWABLE (drawable))
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-In \"%s\"\n(%s)\n\n"
+                    "tried reading from invalid drawable %d (killing)",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    request->drawable_ID);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+  else if (gimp_item_is_removed (GIMP_ITEM (drawable)))
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-In \"%s\"\n(%s)\n\n"
+                    "tried reading from drawable %d which was removed "
+                    "from the image (killing)",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog),
+                    request->drawable_ID);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+
+  if (request->shadow)
+    {
+      tm = gimp_drawable_get_shadow_tiles (drawable);
+
+      gimp_plug_in_cleanup_add_shadow (plug_in, drawable);
+    }
+  else
+    {
+      tm = gimp_drawable_get_tiles (drawable);
+    }
+
+  tile = tile_manager_get (tm, request->tile_num, TRUE, FALSE);
+
+  if (! tile)
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-In \"%s\"\n(%s)\n\n"
+                    "requested invalid tile (killing)",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog));
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+
+  tile_data.drawable_ID = request->drawable_ID;
+  tile_data.tile_num    = request->tile_num;
+  tile_data.shadow      = request->shadow;
+  tile_data.bpp         = tile_bpp (tile);
+  tile_data.width       = tile_ewidth (tile);
+  tile_data.height      = tile_eheight (tile);
+  tile_data.use_shm     = (plug_in->manager->shm != NULL);
+
+  if (tile_data.use_shm)
+    memcpy (gimp_plug_in_shm_get_addr (plug_in->manager->shm),
+            tile_data_pointer (tile, 0, 0),
+            tile_size (tile));
+  else
+    tile_data.data = tile_data_pointer (tile, 0, 0);
+
+  if (! gp_tile_data_write (plug_in->my_write, &tile_data, plug_in))
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "%s: ERROR", G_STRFUNC);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+
+  tile_release (tile, FALSE);
+
+  if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "%s: ERROR", G_STRFUNC);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+
+  if (msg.type != GP_TILE_ACK)
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "expected tile ack and received: %d", msg.type);
+      gimp_plug_in_close (plug_in, TRUE);
+      return;
+    }
+
+  gimp_wire_destroy (&msg);
+}
+
+static void
+gimp_plug_in_handle_proc_error (GimpPlugIn          *plug_in,
+                                GimpPlugInProcFrame *proc_frame,
+                                const gchar         *name,
+                                const GError        *error)
+{
+  switch (proc_frame->error_handler)
+    {
+    case GIMP_PDB_ERROR_HANDLER_INTERNAL:
+      if (error->domain == GIMP_PDB_ERROR)
         {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "Plug-In \"%s\"\n(%s)\n\n"
-                        "requested invalid drawable (killing)",
-                        gimp_object_get_name (GIMP_OBJECT (plug_in)),
-                        gimp_filename_to_utf8 (plug_in->prog));
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
+          gimp_message (plug_in->manager->gimp,
+                        G_OBJECT (proc_frame->progress),
+                        GIMP_MESSAGE_ERROR,
+                        _("Calling error for procedure '%s':\n"
+                          "%s"),
+                        name, error->message);
         }
-
-      if (tile_req->shadow)
-        tm = gimp_drawable_get_shadow_tiles (drawable);
       else
-        tm = gimp_drawable_get_tiles (drawable);
-
-      tile = tile_manager_get (tm, tile_req->tile_num, TRUE, FALSE);
-
-      if (! tile)
         {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "Plug-In \"%s\"\n(%s)\n\n"
-                        "requested invalid tile (killing)",
-                        gimp_object_get_name (GIMP_OBJECT (plug_in)),
-                        gimp_filename_to_utf8 (plug_in->prog));
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
+          gimp_message (plug_in->manager->gimp,
+                        G_OBJECT (proc_frame->progress),
+                        GIMP_MESSAGE_ERROR,
+                        _("Execution error for procedure '%s':\n"
+                          "%s"),
+                        name, error->message);
         }
+      break;
 
-      tile_data.drawable_ID = tile_req->drawable_ID;
-      tile_data.tile_num    = tile_req->tile_num;
-      tile_data.shadow      = tile_req->shadow;
-      tile_data.bpp         = tile_bpp (tile);
-      tile_data.width       = tile_ewidth (tile);
-      tile_data.height      = tile_eheight (tile);
-      tile_data.use_shm     = (plug_in->manager->shm != NULL);
-
-      if (tile_data.use_shm)
-        memcpy (gimp_plug_in_shm_get_addr (plug_in->manager->shm),
-                tile_data_pointer (tile, 0, 0),
-                tile_size (tile));
-      else
-        tile_data.data = tile_data_pointer (tile, 0, 0);
-
-      if (! gp_tile_data_write (plug_in->my_write, &tile_data, plug_in))
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "plug_in_handle_tile_req: ERROR");
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
-
-      tile_release (tile, FALSE);
-
-      if (! gimp_wire_read_msg (plug_in->my_read, &msg, plug_in))
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "plug_in_handle_tile_req: ERROR");
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
-
-      if (msg.type != GP_TILE_ACK)
-        {
-          gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "expected tile ack and received: %d", msg.type);
-          gimp_plug_in_close (plug_in, TRUE);
-          return;
-        }
-
-      gimp_wire_destroy (&msg);
+    case GIMP_PDB_ERROR_HANDLER_PLUGIN:
+      /*  the plug-in is responsible for handling this error  */
+      break;
     }
 }
 
@@ -351,10 +447,14 @@ gimp_plug_in_handle_proc_run (GimpPlugIn *plug_in,
 {
   GimpPlugInProcFrame *proc_frame;
   gchar               *canonical;
-  const gchar         *proc_name     = NULL;
+  const gchar         *proc_name   = NULL;
   GimpProcedure       *procedure;
-  GValueArray         *args          = NULL;
-  GValueArray         *return_vals   = NULL;
+  GValueArray         *args        = NULL;
+  GValueArray         *return_vals = NULL;
+  GError              *error       = NULL;
+
+  g_return_if_fail (proc_run != NULL);
+  g_return_if_fail (proc_run->name != NULL);
 
   canonical = gimp_canonicalize_identifier (proc_run->name);
 
@@ -429,11 +529,20 @@ gimp_plug_in_handle_proc_run (GimpPlugIn *plug_in,
                                                          proc_frame->context_stack->data :
                                                          proc_frame->main_context,
                                                          proc_frame->progress,
+                                                         &error,
                                                          proc_name,
                                                          args);
   gimp_plug_in_manager_plug_in_pop (plug_in->manager);
 
   g_value_array_free (args);
+
+  if (error)
+    {
+      gimp_plug_in_handle_proc_error (plug_in, proc_frame,
+                                      canonical, error);
+      g_error_free (error);
+    }
+
   g_free (canonical);
 
   /*  Don't bother to send the return value if executing the procedure
@@ -454,7 +563,7 @@ gimp_plug_in_handle_proc_run (GimpPlugIn *plug_in,
       if (! gp_proc_return_write (plug_in->my_write, &proc_return, plug_in))
         {
           gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
-                        "plug_in_handle_proc_run: ERROR");
+                        "%s: ERROR", G_STRFUNC);
           gimp_plug_in_close (plug_in, TRUE);
         }
 
@@ -469,6 +578,8 @@ gimp_plug_in_handle_proc_return (GimpPlugIn   *plug_in,
                                  GPProcReturn *proc_return)
 {
   GimpPlugInProcFrame *proc_frame = &plug_in->main_proc_frame;
+
+  g_return_if_fail (proc_return != NULL);
 
   if (proc_frame->main_loop)
     {
@@ -489,6 +600,8 @@ static void
 gimp_plug_in_handle_temp_proc_return (GimpPlugIn   *plug_in,
                                       GPProcReturn *proc_return)
 {
+  g_return_if_fail (proc_return != NULL);
+
   if (plug_in->temp_proc_frames)
     {
       GimpPlugInProcFrame *proc_frame = plug_in->temp_proc_frames->data;
@@ -519,11 +632,15 @@ static void
 gimp_plug_in_handle_proc_install (GimpPlugIn    *plug_in,
                                   GPProcInstall *proc_install)
 {
-  GimpPlugInProcedure *proc        = NULL;
-  GimpProcedure       *procedure   = NULL;
+  GimpPlugInProcedure *proc       = NULL;
+  GimpProcedure       *procedure  = NULL;
   gchar               *canonical;
-  gboolean             valid_utf8  = FALSE;
+  gboolean             null_name  = FALSE;
+  gboolean             valid_utf8 = FALSE;
   gint                 i;
+
+  g_return_if_fail (proc_install != NULL);
+  g_return_if_fail (proc_install->name != NULL);
 
   canonical = gimp_canonicalize_identifier (proc_install->name);
 
@@ -534,7 +651,8 @@ gimp_plug_in_handle_proc_install (GimpPlugIn    *plug_in,
       if ((proc_install->params[i].type == GIMP_PDB_INT32ARRAY ||
            proc_install->params[i].type == GIMP_PDB_INT8ARRAY  ||
            proc_install->params[i].type == GIMP_PDB_FLOATARRAY ||
-           proc_install->params[i].type == GIMP_PDB_STRINGARRAY)
+           proc_install->params[i].type == GIMP_PDB_STRINGARRAY ||
+           proc_install->params[i].type == GIMP_PDB_COLORARRAY)
           &&
           proc_install->params[i - 1].type != GIMP_PDB_INT32)
         {
@@ -553,37 +671,59 @@ gimp_plug_in_handle_proc_install (GimpPlugIn    *plug_in,
 
   /*  Sanity check strings for UTF-8 validity  */
 
-  if ((proc_install->menu_path == NULL ||
-       g_utf8_validate (proc_install->menu_path, -1, NULL)) &&
-      (g_utf8_validate (canonical, -1, NULL))               &&
-      (proc_install->blurb == NULL ||
-       g_utf8_validate (proc_install->blurb, -1, NULL))     &&
-      (proc_install->help == NULL ||
-       g_utf8_validate (proc_install->help, -1, NULL))      &&
-      (proc_install->author == NULL ||
-       g_utf8_validate (proc_install->author, -1, NULL))    &&
-      (proc_install->copyright == NULL ||
-       g_utf8_validate (proc_install->copyright, -1, NULL)) &&
-      (proc_install->date == NULL ||
-       g_utf8_validate (proc_install->date, -1, NULL)))
+#define VALIDATE(str)         (g_utf8_validate ((str), -1, NULL))
+#define VALIDATE_OR_NULL(str) ((str) == NULL || g_utf8_validate ((str), -1, NULL))
+
+  if (VALIDATE_OR_NULL (proc_install->menu_path) &&
+      VALIDATE         (canonical)               &&
+      VALIDATE_OR_NULL (proc_install->blurb)     &&
+      VALIDATE_OR_NULL (proc_install->help)      &&
+      VALIDATE_OR_NULL (proc_install->author)    &&
+      VALIDATE_OR_NULL (proc_install->copyright) &&
+      VALIDATE_OR_NULL (proc_install->date))
     {
+      null_name  = FALSE;
       valid_utf8 = TRUE;
 
-      for (i = 0; i < proc_install->nparams && valid_utf8; i++)
+      for (i = 0; i < proc_install->nparams && valid_utf8 && !null_name; i++)
         {
-          if (! (g_utf8_validate (proc_install->params[i].name, -1, NULL) &&
-                 (proc_install->params[i].description == NULL ||
-                  g_utf8_validate (proc_install->params[i].description, -1, NULL))))
-            valid_utf8 = FALSE;
+          if (! proc_install->params[i].name)
+            {
+              null_name = TRUE;
+            }
+          else if (! (VALIDATE         (proc_install->params[i].name) &&
+                      VALIDATE_OR_NULL (proc_install->params[i].description)))
+            {
+              valid_utf8 = FALSE;
+            }
         }
 
-      for (i = 0; i < proc_install->nreturn_vals && valid_utf8; i++)
+      for (i = 0; i < proc_install->nreturn_vals && valid_utf8 && !null_name; i++)
         {
-          if (! (g_utf8_validate (proc_install->return_vals[i].name, -1, NULL) &&
-                 (proc_install->return_vals[i].description == NULL ||
-                  g_utf8_validate (proc_install->return_vals[i].description, -1, NULL))))
-            valid_utf8 = FALSE;
+          if (! proc_install->return_vals[i].name)
+            {
+              null_name = TRUE;
+            }
+          else if (! (VALIDATE         (proc_install->return_vals[i].name) &&
+                      VALIDATE_OR_NULL (proc_install->return_vals[i].description)))
+            {
+              valid_utf8 = FALSE;
+            }
         }
+    }
+
+#undef VALIDATE
+#undef VALIDATE_OR_NULL
+
+  if (null_name)
+    {
+      gimp_message (plug_in->manager->gimp, NULL, GIMP_MESSAGE_ERROR,
+                    "Plug-In \"%s\"\n(%s)\n\n"
+                    "attempted to install a procedure NULL parameter name.",
+                    gimp_object_get_name (GIMP_OBJECT (plug_in)),
+                    gimp_filename_to_utf8 (plug_in->prog));
+      g_free (canonical);
+      return;
     }
 
   if (! valid_utf8)
@@ -697,6 +837,9 @@ gimp_plug_in_handle_proc_uninstall (GimpPlugIn      *plug_in,
 {
   GimpPlugInProcedure *proc;
   gchar               *canonical;
+
+  g_return_if_fail (proc_uninstall != NULL);
+  g_return_if_fail (proc_uninstall->name != NULL);
 
   canonical = gimp_canonicalize_identifier (proc_uninstall->name);
 

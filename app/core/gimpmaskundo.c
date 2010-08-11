@@ -116,8 +116,7 @@ gimp_mask_undo_get_memsize (GimpObject *object,
   GimpMaskUndo *mask_undo = GIMP_MASK_UNDO (object);
   gint64        memsize   = 0;
 
-  if (mask_undo->tiles)
-    memsize += tile_manager_get_memsize (mask_undo->tiles, FALSE);
+  memsize += tile_manager_get_memsize (mask_undo->tiles, FALSE);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -140,21 +139,21 @@ gimp_mask_undo_pop (GimpUndo            *undo,
 
   if (gimp_channel_bounds (channel, &x1, &y1, &x2, &y2))
     {
-      guchar empty = 0;
-
       new_tiles = tile_manager_new (x2 - x1, y2 - y1, 1);
 
-      pixel_region_init (&srcPR, GIMP_DRAWABLE (channel)->tiles,
+      pixel_region_init (&srcPR,
+                         gimp_drawable_get_tiles (GIMP_DRAWABLE (channel)),
                          x1, y1, x2 - x1, y2 - y1, FALSE);
       pixel_region_init (&destPR, new_tiles,
                          0, 0, x2 - x1, y2 - y1, TRUE);
 
       copy_region (&srcPR, &destPR);
 
-      pixel_region_init (&srcPR, GIMP_DRAWABLE (channel)->tiles,
+      pixel_region_init (&srcPR,
+                         gimp_drawable_get_tiles (GIMP_DRAWABLE (channel)),
                          x1, y1, x2 - x1, y2 - y1, TRUE);
 
-      color_region (&srcPR, &empty);
+      clear_region (&srcPR);
     }
   else
     {
@@ -168,7 +167,8 @@ gimp_mask_undo_pop (GimpUndo            *undo,
 
       pixel_region_init (&srcPR, mask_undo->tiles,
                          0, 0, width, height, FALSE);
-      pixel_region_init (&destPR, GIMP_DRAWABLE (channel)->tiles,
+      pixel_region_init (&destPR,
+                         gimp_drawable_get_tiles (GIMP_DRAWABLE (channel)),
                          mask_undo->x, mask_undo->y, width, height, TRUE);
 
       copy_region (&srcPR, &destPR);
@@ -192,8 +192,8 @@ gimp_mask_undo_pop (GimpUndo            *undo,
       channel->empty = TRUE;
       channel->x1    = 0;
       channel->y1    = 0;
-      channel->x2    = GIMP_ITEM (channel)->width;
-      channel->y2    = GIMP_ITEM (channel)->height;
+      channel->x2    = gimp_item_width  (GIMP_ITEM (channel));
+      channel->y2    = gimp_item_height (GIMP_ITEM (channel));
     }
 
   /* we know the bounds */
@@ -206,8 +206,8 @@ gimp_mask_undo_pop (GimpUndo            *undo,
 
   gimp_drawable_update (GIMP_DRAWABLE (channel),
                         0, 0,
-                        GIMP_ITEM (channel)->width,
-                        GIMP_ITEM (channel)->height);
+                        gimp_item_width  (GIMP_ITEM (channel)),
+                        gimp_item_height (GIMP_ITEM (channel)));
 }
 
 static void

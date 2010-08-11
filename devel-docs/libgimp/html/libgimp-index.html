@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -485,6 +486,8 @@
 </dt>
 <dt>gimp_drawable_foreground_extract, <a class="indexterm" href="libgimp-gimpdrawable.html#gimp-drawable-foreground-extract">gimp_drawable_foreground_extract ()</a>
 </dt>
+<dt>gimp_drawable_free_shadow, <a class="indexterm" href="libgimp-gimpdrawable.html#gimp-drawable-free-shadow">gimp_drawable_free_shadow ()</a>
+</dt>
 <dt>gimp_drawable_get, <a class="indexterm" href="libgimp-gimpdrawable.html#gimp-drawable-get">gimp_drawable_get ()</a>
 </dt>
 <dt>gimp_drawable_get_color_uchar, <a class="indexterm" href="libgimp-gimpdrawable.html#gimp-drawable-get-color-uchar">gimp_drawable_get_color_uchar ()</a>
@@ -528,6 +531,8 @@
 <dt>gimp_drawable_is_layer_mask, <a class="indexterm" href="libgimp-gimpdrawable.html#gimp-drawable-is-layer-mask">gimp_drawable_is_layer_mask ()</a>
 </dt>
 <dt>gimp_drawable_is_rgb, <a class="indexterm" href="libgimp-gimpdrawable.html#gimp-drawable-is-rgb">gimp_drawable_is_rgb ()</a>
+</dt>
+<dt>gimp_drawable_is_text_layer, <a class="indexterm" href="libgimp-gimpdrawable.html#gimp-drawable-is-text-layer">gimp_drawable_is_text_layer ()</a>
 </dt>
 <dt>gimp_drawable_is_valid, <a class="indexterm" href="libgimp-gimpdrawable.html#gimp-drawable-is-valid">gimp_drawable_is_valid ()</a>
 </dt>
@@ -739,6 +744,8 @@
 </dt>
 <dt>gimp_get_path_by_tattoo, <a class="indexterm" href="libgimp-gimppaths.html#gimp-get-path-by-tattoo">gimp_get_path_by_tattoo ()</a>
 </dt>
+<dt>gimp_get_pdb_error, <a class="indexterm" href="libgimp-gimp.html#gimp-get-pdb-error">gimp_get_pdb_error ()</a>
+</dt>
 <dt>gimp_get_progname, <a class="indexterm" href="libgimp-gimp.html#gimp-get-progname">gimp_get_progname ()</a>
 </dt>
 <dt>gimp_get_theme_dir, <a class="indexterm" href="libgimp-gimpgimprc.html#gimp-get-theme-dir">gimp_get_theme_dir ()</a>
@@ -772,6 +779,8 @@
 <dt>gimp_gradient_duplicate, <a class="indexterm" href="libgimp-gimpgradient.html#gimp-gradient-duplicate">gimp_gradient_duplicate ()</a>
 </dt>
 <dt>gimp_gradient_get_custom_samples, <a class="indexterm" href="libgimp-gimpgradient.html#gimp-gradient-get-custom-samples">gimp_gradient_get_custom_samples ()</a>
+</dt>
+<dt>gimp_gradient_get_number_of_segments, <a class="indexterm" href="libgimp-gimpgradient.html#gimp-gradient-get-number-of-segments">gimp_gradient_get_number_of_segments ()</a>
 </dt>
 <dt>gimp_gradient_get_uniform_samples, <a class="indexterm" href="libgimp-gimpgradient.html#gimp-gradient-get-uniform-samples">gimp_gradient_get_uniform_samples ()</a>
 </dt>
@@ -949,6 +958,8 @@
 </dt>
 <dt>gimp_image_get_vectors, <a class="indexterm" href="libgimp-gimpimage.html#gimp-image-get-vectors">gimp_image_get_vectors ()</a>
 </dt>
+<dt>gimp_image_get_vectors_by_tattoo, <a class="indexterm" href="libgimp-gimpimage.html#gimp-image-get-vectors-by-tattoo">gimp_image_get_vectors_by_tattoo ()</a>
+</dt>
 <dt>gimp_image_get_vectors_position, <a class="indexterm" href="libgimp-gimpimage.html#gimp-image-get-vectors-position">gimp_image_get_vectors_position ()</a>
 </dt>
 <dt>gimp_image_grid_get_background_color, <a class="indexterm" href="libgimp-gimpgrid.html#gimp-image-grid-get-background-color">gimp_image_grid_get_background_color ()</a>
@@ -1032,6 +1043,8 @@
 <dt>gimp_image_rotate, <a class="indexterm" href="libgimp-gimpimage.html#gimp-image-rotate">gimp_image_rotate ()</a>
 </dt>
 <dt>gimp_image_scale, <a class="indexterm" href="libgimp-gimpimage.html#gimp-image-scale">gimp_image_scale ()</a>
+</dt>
+<dt>gimp_image_scale_full, <a class="indexterm" href="libgimp-gimpimage.html#gimp-image-scale-full">gimp_image_scale_full ()</a>
 </dt>
 <dt>gimp_image_set_active_channel, <a class="indexterm" href="libgimp-gimpimage.html#gimp-image-set-active-channel">gimp_image_set_active_channel ()</a>
 </dt>
@@ -1121,6 +1134,8 @@
 </dt>
 <dt>gimp_layer_new_from_pixbuf, <a class="indexterm" href="libgimp-gimppixbuf.html#gimp-layer-new-from-pixbuf">gimp_layer_new_from_pixbuf ()</a>
 </dt>
+<dt>gimp_layer_new_from_visible, <a class="indexterm" href="libgimp-gimplayer.html#gimp-layer-new-from-visible">gimp_layer_new_from_visible ()</a>
+</dt>
 <dt>gimp_layer_remove_mask, <a class="indexterm" href="libgimp-gimplayer.html#gimp-layer-remove-mask">gimp_layer_remove_mask ()</a>
 </dt>
 <dt>gimp_layer_resize, <a class="indexterm" href="libgimp-gimplayer.html#gimp-layer-resize">gimp_layer_resize ()</a>
@@ -1128,6 +1143,8 @@
 <dt>gimp_layer_resize_to_image_size, <a class="indexterm" href="libgimp-gimplayer.html#gimp-layer-resize-to-image-size">gimp_layer_resize_to_image_size ()</a>
 </dt>
 <dt>gimp_layer_scale, <a class="indexterm" href="libgimp-gimplayer.html#gimp-layer-scale">gimp_layer_scale ()</a>
+</dt>
+<dt>gimp_layer_scale_full, <a class="indexterm" href="libgimp-gimplayer.html#gimp-layer-scale-full">gimp_layer_scale_full ()</a>
 </dt>
 <dt>gimp_layer_set_apply_mask, <a class="indexterm" href="libgimp-gimplayer.html#gimp-layer-set-apply-mask">gimp_layer_set_apply_mask ()</a>
 </dt>
@@ -1202,6 +1219,8 @@
 <dt>gimp_palette_entry_set_name, <a class="indexterm" href="libgimp-gimppalette.html#gimp-palette-entry-set-name">gimp_palette_entry_set_name ()</a>
 </dt>
 <dt>gimp_palette_get_background, <a class="indexterm" href="libgimp-gimppalette.html#gimp-palette-get-background">gimp_palette_get_background ()</a>
+</dt>
+<dt>gimp_palette_get_colors, <a class="indexterm" href="libgimp-gimppalette.html#gimp-palette-get-colors">gimp_palette_get_colors ()</a>
 </dt>
 <dt>gimp_palette_get_columns, <a class="indexterm" href="libgimp-gimppalette.html#gimp-palette-get-columns">gimp_palette_get_columns ()</a>
 </dt>
@@ -1357,6 +1376,8 @@
 </dt>
 <dt>gimp_plugin_domain_register, <a class="indexterm" href="libgimp-gimpplugin.html#gimp-plugin-domain-register">gimp_plugin_domain_register ()</a>
 </dt>
+<dt>gimp_plugin_get_pdb_error_handler, <a class="indexterm" href="libgimp-gimpplugin.html#gimp-plugin-get-pdb-error-handler">gimp_plugin_get_pdb_error_handler ()</a>
+</dt>
 <dt>gimp_plugin_help_register, <a class="indexterm" href="libgimp-gimpplugin.html#gimp-plugin-help-register">gimp_plugin_help_register ()</a>
 </dt>
 <dt>gimp_plugin_icon_register, <a class="indexterm" href="libgimp-gimpplugin.html#gimp-plugin-icon-register">gimp_plugin_icon_register ()</a>
@@ -1364,6 +1385,8 @@
 <dt>gimp_plugin_menu_branch_register, <a class="indexterm" href="libgimp-gimpplugin.html#gimp-plugin-menu-branch-register">gimp_plugin_menu_branch_register ()</a>
 </dt>
 <dt>gimp_plugin_menu_register, <a class="indexterm" href="libgimp-gimpplugin.html#gimp-plugin-menu-register">gimp_plugin_menu_register ()</a>
+</dt>
+<dt>gimp_plugin_set_pdb_error_handler, <a class="indexterm" href="libgimp-gimpplugin.html#gimp-plugin-set-pdb-error-handler">gimp_plugin_set_pdb_error_handler ()</a>
 </dt>
 <dt>gimp_posterize, <a class="indexterm" href="libgimp-gimpcolor.html#gimp-posterize">gimp_posterize ()</a>
 </dt>
@@ -1374,6 +1397,8 @@
 <dt>gimp_procedural_db_get_data_size, <a class="indexterm" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-get-data-size">gimp_procedural_db_get_data_size ()</a>
 </dt>
 <dt>gimp_procedural_db_proc_arg, <a class="indexterm" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-arg">gimp_procedural_db_proc_arg ()</a>
+</dt>
+<dt>gimp_procedural_db_proc_exists, <a class="indexterm" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-exists">gimp_procedural_db_proc_exists ()</a>
 </dt>
 <dt>gimp_procedural_db_proc_info, <a class="indexterm" href="libgimp-gimpproceduraldb.html#gimp-procedural-db-proc-info">gimp_procedural_db_proc_info ()</a>
 </dt>
@@ -1519,6 +1544,60 @@
 </dt>
 <dt>gimp_text_get_extents_fontname, <a class="indexterm" href="libgimp-gimptexttool.html#gimp-text-get-extents-fontname">gimp_text_get_extents_fontname ()</a>
 </dt>
+<dt>gimp_text_layer_get_antialias, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-antialias">gimp_text_layer_get_antialias ()</a>
+</dt>
+<dt>gimp_text_layer_get_base_direction, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-base-direction">gimp_text_layer_get_base_direction ()</a>
+</dt>
+<dt>gimp_text_layer_get_color, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-color">gimp_text_layer_get_color ()</a>
+</dt>
+<dt>gimp_text_layer_get_font, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-font">gimp_text_layer_get_font ()</a>
+</dt>
+<dt>gimp_text_layer_get_font_size, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-font-size">gimp_text_layer_get_font_size ()</a>
+</dt>
+<dt>gimp_text_layer_get_hinting, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-hinting">gimp_text_layer_get_hinting ()</a>
+</dt>
+<dt>gimp_text_layer_get_indent, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-indent">gimp_text_layer_get_indent ()</a>
+</dt>
+<dt>gimp_text_layer_get_justification, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-justification">gimp_text_layer_get_justification ()</a>
+</dt>
+<dt>gimp_text_layer_get_kerning, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-kerning">gimp_text_layer_get_kerning ()</a>
+</dt>
+<dt>gimp_text_layer_get_language, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-language">gimp_text_layer_get_language ()</a>
+</dt>
+<dt>gimp_text_layer_get_letter_spacing, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-letter-spacing">gimp_text_layer_get_letter_spacing ()</a>
+</dt>
+<dt>gimp_text_layer_get_line_spacing, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-line-spacing">gimp_text_layer_get_line_spacing ()</a>
+</dt>
+<dt>gimp_text_layer_get_text, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-get-text">gimp_text_layer_get_text ()</a>
+</dt>
+<dt>gimp_text_layer_new, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-new">gimp_text_layer_new ()</a>
+</dt>
+<dt>gimp_text_layer_set_antialias, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-antialias">gimp_text_layer_set_antialias ()</a>
+</dt>
+<dt>gimp_text_layer_set_base_direction, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-base-direction">gimp_text_layer_set_base_direction ()</a>
+</dt>
+<dt>gimp_text_layer_set_color, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-color">gimp_text_layer_set_color ()</a>
+</dt>
+<dt>gimp_text_layer_set_font, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-font">gimp_text_layer_set_font ()</a>
+</dt>
+<dt>gimp_text_layer_set_font_size, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-font-size">gimp_text_layer_set_font_size ()</a>
+</dt>
+<dt>gimp_text_layer_set_hinting, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-hinting">gimp_text_layer_set_hinting ()</a>
+</dt>
+<dt>gimp_text_layer_set_indent, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-indent">gimp_text_layer_set_indent ()</a>
+</dt>
+<dt>gimp_text_layer_set_justification, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-justification">gimp_text_layer_set_justification ()</a>
+</dt>
+<dt>gimp_text_layer_set_kerning, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-kerning">gimp_text_layer_set_kerning ()</a>
+</dt>
+<dt>gimp_text_layer_set_language, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-language">gimp_text_layer_set_language ()</a>
+</dt>
+<dt>gimp_text_layer_set_letter_spacing, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-letter-spacing">gimp_text_layer_set_letter_spacing ()</a>
+</dt>
+<dt>gimp_text_layer_set_line_spacing, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-line-spacing">gimp_text_layer_set_line_spacing ()</a>
+</dt>
+<dt>gimp_text_layer_set_text, <a class="indexterm" href="libgimp-gimptextlayer.html#gimp-text-layer-set-text">gimp_text_layer_set_text ()</a>
+</dt>
 <dt>gimp_threshold, <a class="indexterm" href="libgimp-gimpcolor.html#gimp-threshold">gimp_threshold ()</a>
 </dt>
 <dt>gimp_tile_cache_ntiles, <a class="indexterm" href="libgimp-gimptile.html#gimp-tile-cache-ntiles">gimp_tile_cache_ntiles ()</a>
@@ -1547,6 +1626,8 @@
 </dt>
 <dt>gimp_uninstall_temp_proc, <a class="indexterm" href="libgimp-gimp.html#gimp-uninstall-temp-proc">gimp_uninstall_temp_proc ()</a>
 </dt>
+<dt>gimp_user_time, <a class="indexterm" href="libgimp-gimp.html#gimp-user-time">gimp_user_time ()</a>
+</dt>
 <dt>gimp_vectors_bezier_stroke_conicto, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-conicto">gimp_vectors_bezier_stroke_conicto ()</a>
 </dt>
 <dt>gimp_vectors_bezier_stroke_cubicto, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-cubicto">gimp_vectors_bezier_stroke_cubicto ()</a>
@@ -1558,6 +1639,12 @@
 <dt>gimp_vectors_bezier_stroke_new_moveto, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-bezier-stroke-new-moveto">gimp_vectors_bezier_stroke_new_moveto ()</a>
 </dt>
 <dt>gimp_vectors_combo_box_new, <a class="indexterm" href="libgimp-GimpItemComboBox.html#gimp-vectors-combo-box-new">gimp_vectors_combo_box_new ()</a>
+</dt>
+<dt>gimp_vectors_copy, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-copy">gimp_vectors_copy ()</a>
+</dt>
+<dt>gimp_vectors_export_to_file, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-export-to-file">gimp_vectors_export_to_file ()</a>
+</dt>
+<dt>gimp_vectors_export_to_string, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-export-to-string">gimp_vectors_export_to_string ()</a>
 </dt>
 <dt>gimp_vectors_get_image, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-get-image">gimp_vectors_get_image ()</a>
 </dt>
@@ -1578,6 +1665,8 @@
 <dt>gimp_vectors_is_valid, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-is-valid">gimp_vectors_is_valid ()</a>
 </dt>
 <dt>gimp_vectors_new, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-new">gimp_vectors_new ()</a>
+</dt>
+<dt>gimp_vectors_new_from_text_layer, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-new-from-text-layer">gimp_vectors_new_from_text_layer ()</a>
 </dt>
 <dt>gimp_vectors_parasite_attach, <a class="indexterm" href="libgimp-gimpvectors.html#gimp-vectors-parasite-attach">gimp_vectors_parasite_attach ()</a>
 </dt>

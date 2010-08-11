@@ -50,12 +50,18 @@ GtkWidget * gimp_prop_color_button_new    (GObject     *config,
                                            GimpColorAreaType  type);
 
 
+/*  GParamDouble  */
+GtkWidget * gimp_prop_scale_button_new    (GObject     *config,
+                                           const gchar *property_name);
+
+
 /*  GParamObject (GimpViewable)  */
 
 GtkWidget * gimp_prop_view_new            (GObject     *config,
                                            const gchar *property_name,
                                            GimpContext *context,
                                            gint         size);
+
 
 /*  GParamDouble, GParamDouble, GParamDouble, GParamDouble, GParamBoolean  */
 
@@ -72,6 +78,13 @@ GtkWidget * gimp_prop_number_pair_entry_new
                                            gboolean     allow_simplification,
                                            gdouble      min_valid_value,
                                            gdouble      max_valid_value);
+
+
+/*  A view on all of an object's properties  */
+
+GtkWidget * gimp_prop_table_new           (GObject     *config,
+                                           GType        owner_type,
+                                           GimpContext *context);
 
 
 #endif /* __GIMP_APP_PROP_WIDGETS_H__ */

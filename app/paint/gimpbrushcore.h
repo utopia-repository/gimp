@@ -27,8 +27,6 @@
 #define BRUSH_CORE_SOLID_SUBSAMPLE  2
 #define BRUSH_CORE_JITTER_LUTSIZE   360
 
-#define PRESSURE_SCALE              1.5
-
 
 #define GIMP_TYPE_BRUSH_CORE            (gimp_brush_core_get_type ())
 #define GIMP_BRUSH_CORE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH_CORE, GimpBrushCore))
@@ -60,6 +58,7 @@ struct _GimpBrushCore
   TempBuf       *last_scale_brush;
   gint           last_scale_width;
   gint           last_scale_height;
+  gdouble        last_scale;
 
   TempBuf       *scale_pixmap;
   TempBuf       *last_scale_pixmap;
@@ -91,8 +90,8 @@ struct _GimpBrushCoreClass
   /*  Set for tools that don't mind if the brush changes while painting  */
   gboolean            handles_changing_brush;
 
-  /*  Scale the brush mask depending on pressure  */
-  gboolean            use_scale;
+  /*  Set for tools that don't mind if the brush scales while painting  */
+  gboolean            handles_scaling_brush;
 
   void (* set_brush) (GimpBrushCore *core,
                       GimpBrush     *brush);
@@ -112,22 +111,25 @@ void    gimp_brush_core_paste_canvas   (GimpBrushCore            *core,
                                         gdouble                   image_opacity,
                                         GimpLayerModeEffects      paint_mode,
                                         GimpBrushApplicationMode  brush_hardness,
+                                        gdouble                   dynamic_hardness,
                                         GimpPaintApplicationMode  mode);
 void    gimp_brush_core_replace_canvas (GimpBrushCore            *core,
                                         GimpDrawable             *drawable,
                                         gdouble                   brush_opacity,
                                         gdouble                   image_opacity,
                                         GimpBrushApplicationMode  brush_hardness,
+                                        gdouble                   dynamic_hardness,
                                         GimpPaintApplicationMode  mode);
 
 void    gimp_brush_core_color_area_with_pixmap
-                                       (GimpBrushCore            *core,
-                                        GimpDrawable             *drawable,
-                                        TempBuf                  *area,
-                                        GimpBrushApplicationMode  mode);
+                                         (GimpBrushCore            *core,
+                                          GimpDrawable             *drawable,
+                                          TempBuf                  *area,
+                                          GimpBrushApplicationMode  mode);
 
 TempBuf * gimp_brush_core_get_brush_mask (GimpBrushCore            *core,
-                                          GimpBrushApplicationMode  brush_hardness);
+                                          GimpBrushApplicationMode  brush_hardness,
+                                          gdouble                   dynamic_hardness);
 
 
 #endif  /*  __GIMP_BRUSH_CORE_H__  */

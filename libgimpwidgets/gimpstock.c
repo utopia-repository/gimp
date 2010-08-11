@@ -23,7 +23,6 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
-#include <gtk/gtkiconfactory.h>
 
 #include "gimpstock.h"
 
@@ -258,6 +257,7 @@ static const GtkStockItem gimp_stock_items[] =
   { GIMP_TOILET_PAPER,                   NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_WEB,                      NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_VIDEO,                    NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_GEGL,                     NULL,        0, 0, LIBGIMP_DOMAIN },
 
   { GIMP_STOCK_SHAPE_CIRCLE,             NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_SHAPE_DIAMOND,            NULL,        0, 0, LIBGIMP_DOMAIN },
@@ -274,6 +274,7 @@ static const GtkStockItem gimp_stock_items[] =
   { GIMP_STOCK_ERROR,                    NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_INFO,                     NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_QUESTION,                 NULL,        0, 0, LIBGIMP_DOMAIN },
+  { GIMP_STOCK_USER_MANUAL,              NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_WARNING,                  NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_WILBER,                   NULL,        0, 0, LIBGIMP_DOMAIN },
   { GIMP_STOCK_WILBER_EEK,               NULL,        0, 0, LIBGIMP_DOMAIN },
@@ -477,7 +478,9 @@ gimp_stock_button_pixbufs[] =
   { GIMP_STOCK_WARNING,                  stock_warning_24                  },
   { GIMP_TOILET_PAPER,                   stock_toilet_paper_24             },
   { GIMP_STOCK_WEB,                      stock_web_24                      },
-  { GIMP_STOCK_VIDEO,                    stock_video_24                    }
+  { GIMP_STOCK_WILBER,                   stock_wilber_22                   },
+  { GIMP_STOCK_VIDEO,                    stock_video_24                    },
+  { GIMP_STOCK_GEGL,                     stock_gegl_22                     }
 };
 
 static const struct
@@ -637,8 +640,10 @@ gimp_stock_menu_pixbufs[] =
   { GIMP_STOCK_WARNING,                  stock_warning_16                  },
   { GIMP_STOCK_WILBER,                   stock_wilber_16                   },
   { GIMP_TOILET_PAPER,                   stock_toilet_paper_16             },
+  { GIMP_STOCK_USER_MANUAL,              stock_user_manual_16              },
   { GIMP_STOCK_WEB,                      stock_web_16                      },
   { GIMP_STOCK_VIDEO,                    stock_video_16                    },
+  { GIMP_STOCK_GEGL,                     stock_gegl_16                     },
 
   { GIMP_STOCK_SHAPE_CIRCLE,             stock_shape_circle_16             },
   { GIMP_STOCK_SHAPE_SQUARE,             stock_shape_square_16             },
@@ -665,11 +670,12 @@ gimp_stock_dnd_pixbufs[] =
   { GIMP_STOCK_CHANNEL_GRAY,         stock_channel_gray_32         },
   { GIMP_STOCK_CHANNEL_INDEXED,      stock_channel_indexed_32      },
   { GIMP_STOCK_CHANNEL_ALPHA,        stock_channel_alpha_32        },
+  { GIMP_STOCK_FLOATING_SELECTION,   stock_floating_selection_32   },
   { GIMP_STOCK_LAYER_MASK,           stock_layer_mask_32           },
   { GIMP_STOCK_IMAGE,                stock_image_32                },
   { GIMP_STOCK_LAYER,                stock_layer_32                },
   { GIMP_STOCK_TEXT_LAYER,           stock_text_layer_32           },
-  { GIMP_STOCK_FLOATING_SELECTION,   stock_floating_selection_32   }
+  { GIMP_STOCK_USER_MANUAL,          stock_user_manual_32          }
 };
 
 static const struct
@@ -686,15 +692,16 @@ gimp_stock_dialog_pixbufs[] =
   { GIMP_STOCK_CHANNEL_GRAY,         stock_channel_gray_48         },
   { GIMP_STOCK_CHANNEL_INDEXED,      stock_channel_indexed_48      },
   { GIMP_STOCK_CHANNEL_ALPHA,        stock_channel_alpha_48        },
+  { GIMP_STOCK_FLOATING_SELECTION,   stock_floating_selection_48   },
   { GIMP_STOCK_LAYER_MASK,           stock_layer_mask_48           },
   { GIMP_STOCK_IMAGE,                stock_image_48                },
   { GIMP_STOCK_LAYER,                stock_layer_48                },
   { GIMP_STOCK_TEXT_LAYER,           stock_text_layer_48           },
-  { GIMP_STOCK_FLOATING_SELECTION,   stock_floating_selection_48   },
 
   { GIMP_STOCK_ERROR,                stock_error_64                },
   { GIMP_STOCK_INFO,                 stock_info_64                 },
   { GIMP_STOCK_QUESTION,             stock_question_64             },
+  { GIMP_STOCK_USER_MANUAL,          stock_user_manual_64          },
   { GIMP_STOCK_WARNING,              stock_warning_64              },
   { GIMP_STOCK_WILBER,               stock_wilber_64               },
   { GIMP_STOCK_WILBER_EEK,           stock_wilber_eek_64           },

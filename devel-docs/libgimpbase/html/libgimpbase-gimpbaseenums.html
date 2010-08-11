@@ -14,6 +14,7 @@
 <link rel="index" href="libgimpbase-index.html" title="Index">
 <link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpbase-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimpbase-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -61,6 +62,7 @@ enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpInt
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpMessageHandlerType" title="enum GimpMessageHandlerType">GimpMessageHandlerType</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode" title="enum GimpPaintApplicationMode">GimpPaintApplicationMode</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBArgType" title="enum GimpPDBArgType">GimpPDBArgType</a>;
+enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBErrorHandler" title="enum GimpPDBErrorHandler">GimpPDBErrorHandler</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBProcType" title="enum GimpPDBProcType">GimpPDBProcType</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpPDBStatusType" title="enum GimpPDBStatusType">GimpPDBStatusType</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpProgressCommand" title="enum GimpProgressCommand">GimpProgressCommand</a>;
@@ -68,6 +70,8 @@ enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpRep
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpRunMode" title="enum GimpRunMode">GimpRunMode</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpSizeType" title="enum GimpSizeType">GimpSizeType</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpStackTraceMode" title="enum GimpStackTraceMode">GimpStackTraceMode</a>;
+enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextDirection" title="enum GimpTextDirection">GimpTextDirection</a>;
+enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTextJustification" title="enum GimpTextJustification">GimpTextJustification</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransferMode" title="enum GimpTransferMode">GimpTransferMode</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransformDirection" title="enum GimpTransformDirection">GimpTransformDirection</a>;
 enum                <a class="link" href="libgimpbase-gimpbaseenums.html#GimpTransformResize" title="enum GimpTransformResize">GimpTransformResize</a>;
@@ -392,14 +396,29 @@ Basic GIMP enumeration data types.
   GIMP_PDB_CHANNEL,
   GIMP_PDB_DRAWABLE,
   GIMP_PDB_SELECTION,
-  GIMP_PDB_BOUNDARY,
+  GIMP_PDB_COLORARRAY,
   GIMP_PDB_VECTORS,
   GIMP_PDB_PARASITE,
   GIMP_PDB_STATUS,
   GIMP_PDB_END,
 
-  GIMP_PDB_PATH = GIMP_PDB_VECTORS /* deprecated */
+  /*  the following aliases are deprecated  */
+  GIMP_PDB_PATH     = GIMP_PDB_VECTORS,     /*&lt; skip &gt;*/
+  GIMP_PDB_BOUNDARY = GIMP_PDB_COLORARRAY   /*&lt; skip &gt;*/
 } GimpPDBArgType;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GimpPDBErrorHandler"></a><h3>enum GimpPDBErrorHandler</h3>
+<pre class="programlisting">typedef enum
+{
+  GIMP_PDB_ERROR_HANDLER_INTERNAL,
+  GIMP_PDB_ERROR_HANDLER_PLUGIN
+} GimpPDBErrorHandler;
 </pre>
 <p>
 
@@ -510,6 +529,34 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
+<a name="GimpTextDirection"></a><h3>enum GimpTextDirection</h3>
+<pre class="programlisting">typedef enum
+{
+  GIMP_TEXT_DIRECTION_LTR,   /*&lt; desc="From left to right" &gt;*/
+  GIMP_TEXT_DIRECTION_RTL    /*&lt; desc="From right to left" &gt;*/
+} GimpTextDirection;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GimpTextJustification"></a><h3>enum GimpTextJustification</h3>
+<pre class="programlisting">typedef enum
+{
+  GIMP_TEXT_JUSTIFY_LEFT,    /*&lt; desc="Left justified"  &gt;*/
+  GIMP_TEXT_JUSTIFY_RIGHT,   /*&lt; desc="Right justified" &gt;*/
+  GIMP_TEXT_JUSTIFY_CENTER,  /*&lt; desc="Centered"        &gt;*/
+  GIMP_TEXT_JUSTIFY_FILL     /*&lt; desc="Filled"          &gt;*/
+} GimpTextJustification;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
 <a name="GimpTransferMode"></a><h3>enum GimpTransferMode</h3>
 <pre class="programlisting">typedef enum
 {
@@ -565,6 +612,10 @@ Basic GIMP enumeration data types.
   GIMP_USER_DIRECTORY_VIDEOS
 } GimpUserDirectory;
 </pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">GimpUserDirectory</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
 
 </p>

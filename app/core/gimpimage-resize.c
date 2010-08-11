@@ -93,11 +93,16 @@ gimp_image_resize_with_layers (GimpImage    *image,
                                                  GIMP_ITEM_TYPE_LAYERS,
                                                  layer_set);
 
-  old_width  = image->width;
-  old_height = image->height;
+  old_width  = gimp_image_get_width  (image);
+  old_height = gimp_image_get_height (image);
 
   /*  Push the image size to the stack  */
-  gimp_image_undo_push_image_size (image, NULL);
+  gimp_image_undo_push_image_size (image,
+                                   NULL,
+                                   -offset_x,
+                                   -offset_y,
+                                   new_width,
+                                   new_height);
 
   /*  Set the new width and height  */
   g_object_set (image,
@@ -165,7 +170,7 @@ gimp_image_resize_with_layers (GimpImage    *image,
   g_list_free (resize_layers);
 
   /*  Reposition or remove all guides  */
-  for (list = image->guides; list; list = g_list_next (list))
+  for (list = gimp_image_get_guides (image); list; list = g_list_next (list))
     {
       GimpGuide *guide        = list->data;
       gboolean   remove_guide = FALSE;
@@ -196,7 +201,7 @@ gimp_image_resize_with_layers (GimpImage    *image,
     }
 
   /*  Reposition or remove sample points  */
-  for (list = image->sample_points; list; list = g_list_next (list))
+  for (list = gimp_image_get_sample_points (image); list; list = g_list_next (list))
     {
       GimpSamplePoint *sample_point        = list->data;
       gboolean         remove_sample_point = FALSE;
@@ -220,7 +225,12 @@ gimp_image_resize_with_layers (GimpImage    *image,
 
   gimp_image_undo_group_end (image);
 
-  gimp_viewable_size_changed (GIMP_VIEWABLE (image));
+  gimp_image_size_changed_detailed (image,
+                                    offset_x,
+                                    offset_y,
+                                    old_width,
+                                    old_height);
+
   g_object_thaw_notify (G_OBJECT (image));
 
   gimp_unset_busy (image->gimp);
@@ -243,8 +253,8 @@ gimp_image_resize_to_layers (GimpImage    *image,
   item = list->data;
   min_x = item->offset_x;
   min_y = item->offset_y;
-  max_x = item->offset_x + item->width;
-  max_y = item->offset_y + item->height;
+  max_x = item->offset_x + gimp_item_width  (item);
+  max_y = item->offset_y + gimp_item_height (item);
 
   /*  Respect all layers  */
   for (list = g_list_next (list);
@@ -255,8 +265,8 @@ gimp_image_resize_to_layers (GimpImage    *image,
 
       min_x = MIN (min_x, item->offset_x);
       min_y = MIN (min_y, item->offset_y);
-      max_x = MAX (max_x, item->offset_x + item->width);
-      max_y = MAX (max_y, item->offset_y + item->height);
+      max_x = MAX (max_x, item->offset_x + gimp_item_width  (item));
+      max_y = MAX (max_y, item->offset_y + gimp_item_height (item));
     }
 
   gimp_image_resize (image, context,

@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * The GIMP Help plug-in
- * Copyright (C) 1999-2004 Sven Neumann <sven@gimp.org>
+ * Copyright (C) 1999-2008 Sven Neumann <sven@gimp.org>
  *                         Michael Natterer <mitch@gimp.org>
  *                         Henrik Brix Andersen <brix@gimp.org>
  *
@@ -30,6 +30,7 @@
 #include "gimphelpdomain.h"
 #include "gimphelpitem.h"
 #include "gimphelplocale.h"
+#include "gimphelpprogress.h"
 
 
 #define GIMP_HELP_DEFAULT_DOMAIN  "http://www.gimp.org/help"
@@ -49,8 +50,7 @@ gboolean         gimp_help_init            (gint            n_domain_names,
 void             gimp_help_exit            (void);
 
 void             gimp_help_register_domain (const gchar    *domain_name,
-                                            const gchar    *domain_uri,
-                                            const gchar    *domain_root);
+                                            const gchar    *domain_uri);
 GimpHelpDomain * gimp_help_lookup_domain   (const gchar    *domain_name);
 
 GList          * gimp_help_parse_locales   (const gchar    *help_locales);

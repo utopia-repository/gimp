@@ -30,6 +30,7 @@
 #include "core/gimp.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-pick-color.h"
+#include "core/gimpimage-sample-points.h"
 #include "core/gimpsamplepoint.h"
 
 #include "gimpcolorframe.h"
@@ -241,8 +242,7 @@ gimp_sample_point_editor_style_set (GtkWidget *widget,
   GimpSamplePointEditor *editor = GIMP_SAMPLE_POINT_EDITOR (widget);
   gint                   content_spacing;
 
-  if (GTK_WIDGET_CLASS (parent_class)->style_set)
-    GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 
   gtk_widget_style_get (widget,
                         "content-spacing", &content_spacing,
@@ -269,7 +269,8 @@ gimp_sample_point_editor_set_image (GimpImageEditor *image_editor,
       g_signal_handlers_disconnect_by_func (image_editor->image,
                                             gimp_sample_point_editor_point_update,
                                             editor);
-      g_signal_handlers_disconnect_by_func (image_editor->image->projection,
+
+      g_signal_handlers_disconnect_by_func (gimp_image_get_projection (image_editor->image),
                                             gimp_sample_point_editor_proj_update,
                                             editor);
     }
@@ -287,7 +288,8 @@ gimp_sample_point_editor_set_image (GimpImageEditor *image_editor,
       g_signal_connect (image, "update-sample-point",
                         G_CALLBACK (gimp_sample_point_editor_point_update),
                         editor);
-      g_signal_connect (image->projection, "update",
+
+      g_signal_connect (gimp_image_get_projection (image), "update",
                         G_CALLBACK (gimp_sample_point_editor_proj_update),
                         editor);
     }
@@ -364,7 +366,7 @@ gimp_sample_point_editor_point_update (GimpImage             *image,
                                        GimpSamplePoint       *sample_point,
                                        GimpSamplePointEditor *editor)
 {
-  gint i = g_list_index (image->sample_points, sample_point);
+  gint i = g_list_index (gimp_image_get_sample_points (image), sample_point);
 
   if (i < 4)
     gimp_sample_point_editor_dirty (editor, i);
@@ -380,13 +382,16 @@ gimp_sample_point_editor_proj_update (GimpImage             *image,
                                       GimpSamplePointEditor *editor)
 {
   GimpImageEditor *image_editor = GIMP_IMAGE_EDITOR (editor);
+  GList           *sample_points;
   gint             n_points     = 0;
   GList           *list;
   gint             i;
 
-  n_points = MIN (4, g_list_length (image_editor->image->sample_points));
+  sample_points = gimp_image_get_sample_points (image_editor->image);
 
-  for (i = 0, list = image_editor->image->sample_points;
+  n_points = MIN (4, g_list_length (sample_points));
+
+  for (i = 0, list = sample_points;
        i < n_points;
        i++, list = g_list_next (list))
     {
@@ -404,11 +409,15 @@ static void
 gimp_sample_point_editor_points_changed (GimpSamplePointEditor *editor)
 {
   GimpImageEditor *image_editor = GIMP_IMAGE_EDITOR (editor);
+  GList           *sample_points;
   gint             n_points     = 0;
   gint             i;
 
   if (image_editor->image)
-    n_points = MIN (4, g_list_length (image_editor->image->sample_points));
+    {
+      sample_points = gimp_image_get_sample_points (image_editor->image);
+      n_points = MIN (4, g_list_length (sample_points));
+    }
 
   for (i = 0; i < n_points; i++)
     {
@@ -446,6 +455,7 @@ static gboolean
 gimp_sample_point_editor_update (GimpSamplePointEditor *editor)
 {
   GimpImageEditor *image_editor = GIMP_IMAGE_EDITOR (editor);
+  GList           *sample_points;
   gint             n_points     = 0;
   GList           *list;
   gint             i;
@@ -455,9 +465,11 @@ gimp_sample_point_editor_update (GimpSamplePointEditor *editor)
   if (! image_editor->image)
     return FALSE;
 
-  n_points = MIN (4, g_list_length (image_editor->image->sample_points));
+  sample_points = gimp_image_get_sample_points (image_editor->image);
 
-  for (i = 0, list = image_editor->image->sample_points;
+  n_points = MIN (4, g_list_length (sample_points));
+
+  for (i = 0, list = sample_points;
        i < n_points;
        i++, list = g_list_next (list))
     {

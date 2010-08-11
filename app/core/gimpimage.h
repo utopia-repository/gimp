@@ -113,8 +113,8 @@ struct _GimpImage
   GimpUnit           resolution_unit;       /*  resolution unit              */
   GimpImageBaseType  base_type;             /*  base gimp_image type         */
 
-  guchar            *cmap;                  /*  colormap--for indexed        */
-  gint               num_cols;              /*  number of cols--for indexed  */
+  guchar            *colormap;              /*  colormap (for indexed)       */
+  gint               n_colors;              /*  # of colors (for indexed)    */
 
   gint               dirty;                 /*  dirty flag -- # of ops       */
   guint              dirty_time;            /*  time when image became dirty */
@@ -124,8 +124,6 @@ struct _GimpImage
   gint               disp_count;            /*  number of displays           */
 
   GimpTattoo         tattoo_state;          /*  the last used tattoo         */
-
-  TileManager       *shadow;                /*  shadow buffer tiles          */
 
   GimpProjection    *projection;            /*  projection layers & channels */
 
@@ -193,6 +191,11 @@ struct _GimpImageClass
                                          GimpChannelType       channel);
   void (* mask_changed)                 (GimpImage            *image);
   void (* resolution_changed)           (GimpImage            *image);
+  void (* size_changed_detailed)        (GimpImage            *image,
+                                         gint                  previous_origin_x,
+                                         gint                  previous_origin_y,
+                                         gint                  previous_width,
+                                         gint                  previous_height);
   void (* unit_changed)                 (GimpImage            *image);
   void (* quick_mask_changed)           (GimpImage            *image);
   void (* selection_control)            (GimpImage            *image,
@@ -326,6 +329,11 @@ void            gimp_image_colormap_changed      (GimpImage          *image,
 void            gimp_image_selection_control     (GimpImage          *image,
                                                   GimpSelectionControl  control);
 void            gimp_image_quick_mask_changed    (GimpImage          *image);
+void            gimp_image_size_changed_detailed (GimpImage          *image,
+                                                  gint                previous_origin_x,
+                                                  gint                previous_origin_y,
+                                                  gint                previous_width,
+                                                  gint                previous_height);
 
 
 /*  undo  */
@@ -379,15 +387,6 @@ TempBuf       * gimp_image_transform_temp_buf    (const GimpImage    *dest_image
                                                   gboolean           *new_buf);
 
 
-/*  shadow tiles  */
-
-TileManager   * gimp_image_get_shadow_tiles      (GimpImage          *image,
-                                                  gint                width,
-                                                  gint                height,
-                                                  gint                bpp);
-void            gimp_image_free_shadow_tiles     (GimpImage          *image);
-
-
 /*  parasites  */
 
 const GimpParasite * gimp_image_parasite_find    (const GimpImage    *image,
@@ -406,6 +405,11 @@ GimpTattoo      gimp_image_get_new_tattoo        (GimpImage          *image);
 gboolean        gimp_image_set_tattoo_state      (GimpImage          *image,
                                                   GimpTattoo          val);
 GimpTattoo      gimp_image_get_tattoo_state      (GimpImage          *image);
+
+
+/*  projection  */
+
+GimpProjection * gimp_image_get_projection       (const GimpImage    *image);
 
 
 /*  layers / channels / vectors  */
@@ -468,9 +472,11 @@ void            gimp_image_add_layers            (GimpImage          *image,
                                                   const gchar        *undo_desc);
 
 gboolean        gimp_image_raise_layer           (GimpImage          *image,
-                                                  GimpLayer          *layer);
+                                                  GimpLayer          *layer,
+                                                  GError            **error);
 gboolean        gimp_image_lower_layer           (GimpImage          *image,
-                                                  GimpLayer          *layer);
+                                                  GimpLayer          *layer,
+                                                  GError            **error);
 gboolean        gimp_image_raise_layer_to_top    (GimpImage          *image,
                                                   GimpLayer          *layer);
 gboolean        gimp_image_lower_layer_to_bottom (GimpImage          *image,
@@ -488,11 +494,13 @@ void            gimp_image_remove_channel        (GimpImage          *image,
                                                   GimpChannel        *channel);
 
 gboolean        gimp_image_raise_channel         (GimpImage          *image,
-                                                  GimpChannel        *channel);
+                                                  GimpChannel        *channel,
+                                                  GError            **error);
 gboolean        gimp_image_raise_channel_to_top  (GimpImage          *image,
                                                   GimpChannel        *channel);
 gboolean        gimp_image_lower_channel         (GimpImage          *image,
-                                                  GimpChannel        *channel);
+                                                  GimpChannel        *channel,
+                                                  GError            **error);
 gboolean      gimp_image_lower_channel_to_bottom (GimpImage          *image,
                                                   GimpChannel        *channel);
 gboolean        gimp_image_position_channel      (GimpImage          *image,
@@ -508,11 +516,13 @@ void            gimp_image_remove_vectors        (GimpImage          *image,
                                                   GimpVectors        *vectors);
 
 gboolean        gimp_image_raise_vectors         (GimpImage          *image,
-                                                  GimpVectors        *vectors);
+                                                  GimpVectors        *vectors,
+                                                  GError            **error);
 gboolean        gimp_image_raise_vectors_to_top  (GimpImage          *image,
                                                   GimpVectors        *vectors);
 gboolean        gimp_image_lower_vectors         (GimpImage          *image,
-                                                  GimpVectors        *vectors);
+                                                  GimpVectors        *vectors,
+                                                  GError            **error);
 gboolean      gimp_image_lower_vectors_to_bottom (GimpImage          *image,
                                                   GimpVectors        *vectors);
 gboolean        gimp_image_position_vectors      (GimpImage          *image,

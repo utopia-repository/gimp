@@ -88,11 +88,11 @@ gimp_image_set_quick_mask_state (GimpImage *image,
               GimpLayer *floating_sel = gimp_image_floating_sel (image);
 
               if (floating_sel)
-                floating_sel_to_layer (floating_sel);
+                floating_sel_to_layer (floating_sel, NULL);
 
               mask = gimp_channel_new (image,
-                                       image->width,
-                                       image->height,
+                                       gimp_image_get_width  (image),
+                                       gimp_image_get_height (image),
                                        GIMP_IMAGE_QUICK_MASK_NAME,
                                        &image->quick_mask_color);
 
@@ -104,14 +104,14 @@ gimp_image_set_quick_mask_state (GimpImage *image,
               /* if selection */
 
               mask = GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (selection),
-                                                        GIMP_TYPE_CHANNEL,
-                                                        FALSE));
+                                                        GIMP_TYPE_CHANNEL));
 
               /* Clear the selection */
               gimp_channel_clear (selection, NULL, TRUE);
 
               gimp_channel_set_color (mask, &image->quick_mask_color, FALSE);
-              gimp_item_rename (GIMP_ITEM (mask), GIMP_IMAGE_QUICK_MASK_NAME);
+              gimp_item_rename (GIMP_ITEM (mask), GIMP_IMAGE_QUICK_MASK_NAME,
+                                NULL);
             }
 
           if (image->quick_mask_inverted)

@@ -184,6 +184,17 @@ gimp_imagefile_new (Gimp        *gimp,
 }
 
 void
+gimp_imagefile_set_mime_type (GimpImagefile *imagefile,
+                              const gchar   *mime_type)
+{
+  g_return_if_fail (GIMP_IS_IMAGEFILE (imagefile));
+
+  g_object_set (imagefile->thumbnail,
+                "image-mimetype", mime_type,
+                NULL);
+}
+
+void
 gimp_imagefile_update (GimpImagefile *imagefile)
 {
   gchar *uri;
@@ -247,7 +258,7 @@ gimp_imagefile_create_thumbnail (GimpImagefile *imagefile,
 
       image = file_open_thumbnail (imagefile->gimp, context, progress,
                                    thumbnail->image_uri, size,
-                                   &mime_type, &width, &height);
+                                   &mime_type, &width, &height, NULL);
 
       if (image)
         {
@@ -406,8 +417,6 @@ gimp_imagefile_name_changed (GimpObject *object)
   if (GIMP_OBJECT_CLASS (parent_class)->name_changed)
     GIMP_OBJECT_CLASS (parent_class)->name_changed (object);
 
-  gimp_viewable_set_stock_id (GIMP_VIEWABLE (imagefile), NULL);
-
   gimp_thumbnail_set_uri (imagefile->thumbnail, gimp_object_get_name (object));
 }
 
@@ -443,39 +452,11 @@ gimp_imagefile_get_new_pixbuf (GimpViewable *viewable,
                                gint          height)
 {
   GimpImagefile *imagefile = GIMP_IMAGEFILE (viewable);
-  GdkPixbuf     *pixbuf;
-  const gchar   *stock_id  = NULL;
 
-  if (! GIMP_OBJECT (imagefile)->name)
+  if (! gimp_object_get_name (GIMP_OBJECT (imagefile)))
     return NULL;
 
-  pixbuf = gimp_imagefile_load_thumb (imagefile, width, height);
-
-  switch (imagefile->thumbnail->image_state)
-    {
-    case GIMP_THUMB_STATE_REMOTE:
-      stock_id = "gtk-network";
-      break;
-
-    case GIMP_THUMB_STATE_FOLDER:
-      stock_id = "gtk-directory";
-      break;
-
-    case GIMP_THUMB_STATE_SPECIAL:
-      stock_id = "gtk-harddisk";
-      break;
-
-    case GIMP_THUMB_STATE_NOT_FOUND:
-      stock_id = "gtk-dialog-question";
-      break;
-
-    default:
-      break;
-    }
-
-  gimp_viewable_set_stock_id (GIMP_VIEWABLE (imagefile), stock_id);
-
-  return pixbuf;
+  return gimp_imagefile_load_thumb (imagefile, width, height);
 }
 
 static gchar *
@@ -544,12 +525,12 @@ gimp_imagefile_get_desc_string (GimpImagefile *imagefile)
       break;
 
     case GIMP_THUMB_STATE_FOLDER:
-      imagefile->description = _("Folder");
+      imagefile->description = (gchar *) _("Folder");
       imagefile->static_desc = TRUE;
       break;
 
     case GIMP_THUMB_STATE_SPECIAL:
-      imagefile->description = _("Special File");
+      imagefile->description = (gchar *) _("Special File");
       imagefile->static_desc = TRUE;
       break;
 
@@ -570,7 +551,7 @@ gimp_imagefile_get_desc_string (GimpImagefile *imagefile)
 
         if (thumbnail->image_filesize > 0)
           {
-            gchar *size = gimp_memsize_to_string (thumbnail->image_filesize);
+            gchar *size = g_format_size_for_display (thumbnail->image_filesize);
 
             if (str->len > 0)
               g_string_append_c (str, '\n');
@@ -699,7 +680,7 @@ gimp_imagefile_load_thumb (GimpImagefile *imagefile,
       return NULL;
     }
 
-  pixbuf_width  = gdk_pixbuf_get_width (pixbuf);
+  pixbuf_width  = gdk_pixbuf_get_width  (pixbuf);
   pixbuf_height = gdk_pixbuf_get_height (pixbuf);
 
   gimp_viewable_calc_preview_size (pixbuf_width,
@@ -758,24 +739,27 @@ gimp_imagefile_save_thumb (GimpImagefile  *imagefile,
   if (size < 1)
     return TRUE;
 
-  if (image->width <= size && image->height <= size)
+  if (gimp_image_get_width  (image) <= size &&
+      gimp_image_get_height (image) <= size)
     {
-      width  = image->width;
-      height = image->height;
+      width  = gimp_image_get_width  (image);
+      height = gimp_image_get_height (image);
 
       size = MAX (width, height);
     }
   else
     {
-      if (image->width < image->height)
+      if (gimp_image_get_width (image) < gimp_image_get_height (image))
         {
           height = size;
-          width  = MAX (1, (size * image->width) / image->height);
+          width  = MAX (1, (size * gimp_image_get_width (image) /
+                            gimp_image_get_height (image)));
         }
       else
         {
           width  = size;
-          height = MAX (1, (size * image->height) / image->width);
+          height = MAX (1, (size * gimp_image_get_height (image) /
+                            gimp_image_get_width (image)));
         }
     }
 
@@ -831,7 +815,7 @@ gimp_thumbnail_set_info_from_image (GimpThumbnail *thumbnail,
 
   g_object_set (thumbnail,
                 "image-mimetype",   mime_type,
-                "image-width",      gimp_image_get_width (image),
+                "image-width",      gimp_image_get_width  (image),
                 "image-height",     gimp_image_get_height (image),
                 "image-type",       desc->value_desc,
                 "image-num-layers", gimp_container_num_children (image->layers),

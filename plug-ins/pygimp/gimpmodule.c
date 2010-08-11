@@ -21,6 +21,7 @@
 #  include <config.h>
 #endif
 
+#undef GIMP_DISABLE_DEPRECATED
 #include "pygimp.h"
 
 #include "pygimpcolor-api.h"
@@ -268,6 +269,34 @@ pygimp_message(PyObject *self, PyObject *args)
         return NULL;
 
     gimp_message(msg);
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static PyObject *
+pygimp_exit(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    gboolean force = FALSE;
+    int nreturn_vals;
+    GimpParam *return_vals;
+
+    static char *kwlist[] = { "force", NULL };
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|i:exit", kwlist, &force))
+        return NULL;
+
+    return_vals = gimp_run_procedure("gimp-quit",
+                                     &nreturn_vals,
+                                     GIMP_PDB_INT32, force,
+                                     GIMP_PDB_END);
+
+    if (return_vals[0].data.d_status != GIMP_PDB_SUCCESS) {
+        PyErr_SetString(pygimp_error, "error while exiting");
+        return NULL;
+    }
+
+    gimp_destroy_params(return_vals, nreturn_vals);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -833,37 +862,18 @@ static PyObject *
 pygimp_set_background(PyObject *self, PyObject *args)
 {
     PyObject *color;
-    GimpRGB tmprgb, *rgb;
-    int r, g, b;
-    gboolean compat = FALSE;
+    GimpRGB rgb;
 
-    if (!PyArg_ParseTuple(args, "O!:set_background",
-                          PyGimpRGB_Type, &color)) {
-        PyErr_Clear();
-        compat = TRUE;
-        if (!PyArg_ParseTuple(args, "(iii):set_background", &r, &g, &b)) {
-            PyErr_Clear();
-            if (!PyArg_ParseTuple(args, "iii:set_background", &r, &g, &b)) {
-                PyErr_Clear();
-                PyArg_ParseTuple(args, "O!:set_background",
-                                 PyGimpRGB_Type, &color);
-                return NULL;
-            }
-        }
-    }
-
-    if (compat) {
-        r = CLAMP(r, 0, 255);
-        g = CLAMP(g, 0, 255);
-        b = CLAMP(b, 0, 255);
-
-        gimp_rgb_set_uchar(&tmprgb, r, g, b);
-        rgb = &tmprgb;
+    if (PyArg_ParseTuple(args, "O:set_background", &color)) {
+        if (!pygimp_rgb_from_pyobject(color, &rgb))
+            return NULL;
     } else {
-        rgb = pyg_boxed_get(color, GimpRGB);
+        PyErr_Clear();
+        if (!pygimp_rgb_from_pyobject(args, &rgb))
+            return NULL;
     }
 
-    gimp_context_set_background(rgb);
+    gimp_context_set_background(&rgb);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -873,37 +883,18 @@ static PyObject *
 pygimp_set_foreground(PyObject *self, PyObject *args)
 {
     PyObject *color;
-    GimpRGB tmprgb, *rgb;
-    int r, g, b;
-    gboolean compat = FALSE;
+    GimpRGB rgb;
 
-    if (!PyArg_ParseTuple(args, "O!:set_foreground",
-                          PyGimpRGB_Type, &color)) {
-        PyErr_Clear();
-        compat = TRUE;
-        if (!PyArg_ParseTuple(args, "(iii):set_foreground", &r, &g, &b)) {
-            PyErr_Clear();
-            if (!PyArg_ParseTuple(args, "iii:set_foreground", &r, &g, &b)) {
-                PyErr_Clear();
-                PyArg_ParseTuple(args, "O!:set_foreground",
-                                 PyGimpRGB_Type, &color);
-                return NULL;
-            }
-        }
-    }
-
-    if (compat) {
-        r = CLAMP(r, 0, 255);
-        g = CLAMP(g, 0, 255);
-        b = CLAMP(b, 0, 255);
-
-        gimp_rgb_set_uchar(&tmprgb, r, g, b);
-        rgb = &tmprgb;
+    if (PyArg_ParseTuple(args, "O:set_foreground", &color)) {
+        if (!pygimp_rgb_from_pyobject(color, &rgb))
+            return NULL;
     } else {
-        rgb = pyg_boxed_get(color, GimpRGB);
+        PyErr_Clear();
+        if (!pygimp_rgb_from_pyobject(args, &rgb))
+            return NULL;
     }
 
-    gimp_context_set_foreground(rgb);
+    gimp_context_set_foreground(&rgb);
 
     Py_INCREF(Py_None);
     return Py_None;
@@ -1550,7 +1541,7 @@ pygimp_vectors_import_from_file(PyObject *self, PyObject *args, PyObject *kwargs
             Py_XDECREF(read_method);
             PyErr_SetString(PyExc_TypeError,
                             "svg_file must be an object that has a \"read\" "
-                            "method, or a filename (str)");   
+                            "method, or a filename (str)");
             return NULL;
         }
 
@@ -1592,7 +1583,8 @@ pygimp_vectors_import_from_file(PyObject *self, PyObject *args, PyObject *kwargs
     }
 
     if (!success) {
-        PyErr_SetString(pygimp_error, "Vectors import failed");
+        PyErr_Format(pygimp_error,
+                     "Vectors import failed: %s", gimp_get_pdb_error());
         return NULL;
     }
 
@@ -1623,7 +1615,8 @@ pygimp_vectors_import_from_string(PyObject *self, PyObject *args, PyObject *kwar
                                               &num_vectors, &vectors);
 
     if (!success) {
-        PyErr_SetString(pygimp_error, "Vectors import failed");
+        PyErr_Format(pygimp_error,
+                     "Vectors import failed: %s", gimp_get_pdb_error());
         return NULL;
     }
 
@@ -1696,6 +1689,7 @@ static struct PyMethodDef gimp_methods[] = {
     {"main",    (PyCFunction)pygimp_main,       METH_VARARGS},
     {"quit",    (PyCFunction)pygimp_quit,       METH_NOARGS},
     {"message", (PyCFunction)pygimp_message,    METH_VARARGS},
+    {"exit",    (PyCFunction)pygimp_exit,       METH_VARARGS | METH_KEYWORDS},
     {"set_data",        (PyCFunction)pygimp_set_data,   METH_VARARGS},
     {"get_data",        (PyCFunction)pygimp_get_data,   METH_VARARGS},
     {"progress_init",   (PyCFunction)pygimp_progress_init,      METH_VARARGS},
@@ -1718,7 +1712,6 @@ static struct PyMethodDef gimp_methods[] = {
     {"personal_rc_file",        (PyCFunction)pygimp_personal_rc_file, METH_VARARGS | METH_KEYWORDS},
     {"context_push", (PyCFunction)pygimp_context_push, METH_NOARGS},
     {"context_pop", (PyCFunction)pygimp_context_pop, METH_NOARGS},
-    {"get_foreground",  (PyCFunction)pygimp_get_foreground,     METH_NOARGS},
     {"get_background",  (PyCFunction)pygimp_get_background,     METH_NOARGS},
     {"get_foreground",  (PyCFunction)pygimp_get_foreground,     METH_NOARGS},
     {"set_background",  (PyCFunction)pygimp_set_background,     METH_VARARGS},
@@ -1818,7 +1811,6 @@ initgimp(void)
         return;
 
     PyGimpDisplay_Type.ob_type = &PyType_Type;
-    PyGimpDisplay_Type.ob_type = &PyType_Type;
     PyGimpDisplay_Type.tp_alloc = PyType_GenericAlloc;
     PyGimpDisplay_Type.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PyGimpDisplay_Type) < 0)
@@ -1838,13 +1830,11 @@ initgimp(void)
 
     PyGimpTile_Type.ob_type = &PyType_Type;
     PyGimpTile_Type.tp_alloc = PyType_GenericAlloc;
-    PyGimpTile_Type.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PyGimpTile_Type) < 0)
         return;
 
     PyGimpPixelRgn_Type.ob_type = &PyType_Type;
     PyGimpPixelRgn_Type.tp_alloc = PyType_GenericAlloc;
-    PyGimpPixelRgn_Type.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PyGimpPixelRgn_Type) < 0)
         return;
 
@@ -1870,6 +1860,12 @@ initgimp(void)
     PyGimpVectors_Type.tp_alloc = PyType_GenericAlloc;
     PyGimpVectors_Type.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PyGimpVectors_Type) < 0)
+        return;
+
+    PyGimpPixelFetcher_Type.ob_type = &PyType_Type;
+    PyGimpPixelFetcher_Type.tp_alloc = PyType_GenericAlloc;
+    PyGimpPixelFetcher_Type.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&PyGimpPixelFetcher_Type) < 0)
         return;
 
     pygimp_init_pygobject();
@@ -1925,6 +1921,9 @@ initgimp(void)
 
     Py_INCREF(&PyGimpVectors_Type);
     PyModule_AddObject(m, "Vectors", (PyObject *)&PyGimpVectors_Type);
+
+    Py_INCREF(&PyGimpPixelFetcher_Type);
+    PyModule_AddObject(m, "PixelFetcher", (PyObject *)&PyGimpPixelFetcher_Type);
 
     /* for other modules */
     pygimp_api_functions.pygimp_error = pygimp_error;

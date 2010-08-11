@@ -105,14 +105,15 @@ _gimp_paintbrush_motion (GimpPaintCore    *paint_core,
                          GimpPaintOptions *paint_options,
                          gdouble           opacity)
 {
-  GimpBrushCore            *brush_core       = GIMP_BRUSH_CORE (paint_core);
-  GimpContext              *context          = GIMP_CONTEXT (paint_options);
-  GimpPressureOptions      *pressure_options = paint_options->pressure_options;
+  GimpBrushCore            *brush_core = GIMP_BRUSH_CORE (paint_core);
+  GimpContext              *context    = GIMP_CONTEXT (paint_options);
   GimpImage                *image;
   GimpRGB                   gradient_color;
   TempBuf                  *area;
   guchar                    col[MAX_CHANNELS];
   GimpPaintApplicationMode  paint_appl_mode;
+  gdouble                   grad_point;
+  gdouble                   hardness;
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -121,15 +122,18 @@ _gimp_paintbrush_motion (GimpPaintCore    *paint_core,
   if (opacity == 0.0)
     return;
 
-  paint_appl_mode = paint_options->application_mode;
-
   area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options);
   if (! area)
     return;
 
+  paint_appl_mode = paint_options->application_mode;
+
+  grad_point = gimp_paint_options_get_dynamic_color (paint_options,
+                                                     &paint_core->cur_coords);
+
   /* optionally take the color from the current gradient */
   if (gimp_paint_options_get_gradient_color (paint_options, image,
-                                             paint_core->cur_coords.pressure,
+                                             grad_point,
                                              paint_core->pixel_dist,
                                              &gradient_color))
     {
@@ -169,8 +173,11 @@ _gimp_paintbrush_motion (GimpPaintCore    *paint_core,
                     area->bytes);
     }
 
-  if (paint_core->use_pressure && pressure_options->opacity)
-    opacity *= PRESSURE_SCALE * paint_core->cur_coords.pressure;
+  opacity *= gimp_paint_options_get_dynamic_opacity (paint_options,
+                                                     &paint_core->cur_coords);
+
+  hardness = gimp_paint_options_get_dynamic_hardness (paint_options,
+                                                      &paint_core->cur_coords);
 
   /* finally, let the brush core paste the colored area on the canvas */
   gimp_brush_core_paste_canvas (brush_core, drawable,
@@ -178,5 +185,6 @@ _gimp_paintbrush_motion (GimpPaintCore    *paint_core,
                                 gimp_context_get_opacity (context),
                                 gimp_context_get_paint_mode (context),
                                 gimp_paint_options_get_brush_mode (paint_options),
+                                hardness,
                                 paint_appl_mode);
 }

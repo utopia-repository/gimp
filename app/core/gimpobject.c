@@ -184,7 +184,7 @@ gimp_object_get_property (GObject    *object,
  * @name: the @object's new name
  *
  * Sets the @object's name. Takes care of freeing the old name and
- * emitting the "name_changed" signal if the old and new name differ.
+ * emitting the ::name_changed signal if the old and new name differ.
  **/
 void
 gimp_object_set_name (GimpObject  *object,
@@ -284,7 +284,7 @@ gimp_object_get_name (const GimpObject *object)
  * gimp_object_name_changed:
  * @object: a #GimpObject
  *
- * Causes the "name-changed" signal to be emitted.
+ * Causes the ::name-changed signal to be emitted.
  **/
 void
 gimp_object_name_changed (GimpObject *object)
@@ -303,7 +303,7 @@ gimp_object_name_changed (GimpObject *object)
  *
  * In general you should be using gimp_object_set_name() instead. But
  * if you ever need to free the object name but don't want the
- * "name-changed" signal to be emitted, then use this function. Never
+ * ::name-changed signal to be emitted, then use this function. Never
  * ever free the object name directly!
  **/
 void
@@ -388,7 +388,15 @@ gimp_object_get_memsize (GimpObject *object,
   gint64 my_size     = 0;
   gint64 my_gui_size = 0;
 
-  g_return_val_if_fail (GIMP_IS_OBJECT (object), 0);
+  g_return_val_if_fail (object == NULL || GIMP_IS_OBJECT (object), 0);
+
+  if (! object)
+    {
+      if (gui_size)
+        *gui_size = 0;
+
+      return 0;
+    }
 
 #ifdef DEBUG_MEMSIZE
   if (gimp_debug_memsize)
@@ -461,8 +469,8 @@ gimp_object_real_get_memsize (GimpObject *object,
 {
   gint64 memsize = 0;
 
-  if (object->name && ! object->static_name)
-    memsize += strlen (object->name) + 1;
+  if (! object->static_name)
+    memsize += gimp_string_get_memsize (object->name);
 
   return memsize + gimp_g_object_get_memsize ((GObject *) object);
 }

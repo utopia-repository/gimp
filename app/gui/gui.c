@@ -22,12 +22,6 @@
 
 #include <gtk/gtk.h>
 
-#if HAVE_DBUS_GLIB
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-lowlevel.h>
-#endif
-
 #include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 #include "libgimpwidgets/gimpwidgets-private.h"
@@ -57,7 +51,6 @@
 #include "widgets/gimpclipboard.h"
 #include "widgets/gimpcolorselectorpalette.h"
 #include "widgets/gimpcontrollers.h"
-#include "widgets/gimpdbusservice.h"
 #include "widgets/gimpdevices.h"
 #include "widgets/gimpdevicestatus.h"
 #include "widgets/gimpdialogfactory.h"
@@ -72,7 +65,7 @@
 #include "widgets/gimpwidgets-utils.h"
 
 #include "actions/actions.h"
-#include "actions/dialogs-commands.h"
+#include "actions/windows-commands.h"
 
 #include "menus/menus.h"
 
@@ -80,6 +73,7 @@
 
 #include "color-history.h"
 #include "gui.h"
+#include "gui-unique.h"
 #include "gui-vtable.h"
 #include "session.h"
 #include "splash.h"
@@ -136,18 +130,11 @@ static void       gui_display_changed           (GimpContext        *context,
                                                  Gimp               *gimp);
 static void       gui_display_remove            (GimpContainer      *displays);
 
-static void       gui_dbus_service_init         (Gimp               *gimp);
-static void       gui_dbus_service_exit         (void);
-
 
 /*  private variables  */
 
-static Gimp            *the_gui_gimp     = NULL;
-static GimpUIManager   *image_ui_manager = NULL;
-
-#if HAVE_DBUS_GLIB
-static DBusGConnection *dbus_connection  = NULL;
-#endif
+static Gimp          *the_gui_gimp     = NULL;
+static GimpUIManager *image_ui_manager = NULL;
 
 
 /*  public functions  */
@@ -205,6 +192,10 @@ gui_init (Gimp     *gimp,
   if (abort_message)
     gui_abort (abort_message);
 
+  the_gui_gimp = gimp;
+
+  gui_unique_init (gimp);
+
   gimp_widgets_init (gui_help_func,
                      gui_get_foreground_func,
                      gui_get_background_func,
@@ -212,7 +203,8 @@ gui_init (Gimp     *gimp,
 
   g_type_class_ref (GIMP_TYPE_COLOR_SELECT);
 
-  the_gui_gimp = gimp;
+  /*  disable automatic startup notification  */
+  gtk_window_set_auto_startup_notification (FALSE);
 
   gimp_dnd_init (gimp);
 
@@ -251,32 +243,19 @@ gui_init (Gimp     *gimp,
   return status_callback;
 }
 
-void
-gui_post_init (Gimp *gimp)
-{
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-
-  if (GIMP_GUI_CONFIG (gimp->config)->show_tips)
-    gimp_dialog_factory_dialog_new (global_dialog_factory,
-                                    gdk_screen_get_default (),
-                                    "gimp-tips-dialog", -1, TRUE);
-}
-
 
 /*  private functions  */
 
 static gchar *
 gui_sanity_check (void)
 {
-  const gchar *mismatch;
-
 #define GTK_REQUIRED_MAJOR 2
-#define GTK_REQUIRED_MINOR 10
-#define GTK_REQUIRED_MICRO 13
+#define GTK_REQUIRED_MINOR 12
+#define GTK_REQUIRED_MICRO 1
 
-  mismatch = gtk_check_version (GTK_REQUIRED_MAJOR,
-                                GTK_REQUIRED_MINOR,
-                                GTK_REQUIRED_MICRO);
+  const gchar *mismatch = gtk_check_version (GTK_REQUIRED_MAJOR,
+                                             GTK_REQUIRED_MINOR,
+                                             GTK_REQUIRED_MICRO);
 
   if (mismatch)
     {
@@ -306,7 +285,7 @@ gui_help_func (const gchar *help_id,
 {
   g_return_if_fail (GIMP_IS_GIMP (the_gui_gimp));
 
-  gimp_help (the_gui_gimp, NULL, help_id);
+  gimp_help (the_gui_gimp, NULL, NULL, help_id);
 }
 
 static gboolean
@@ -340,7 +319,7 @@ gui_initialize_after_callback (Gimp               *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
   if (gimp->be_verbose)
-    g_print ("INIT: gui_initialize_after_callback\n");
+    g_print ("INIT: %s\n", G_STRFUNC);
 
 #if defined (GDK_WINDOWING_X11)
   name = "DISPLAY";
@@ -352,9 +331,8 @@ gui_initialize_after_callback (Gimp               *gimp,
 
   if (name)
     {
-      gchar *display;
+      gchar *display = gdk_get_display ();
 
-      display = gdk_get_display ();
       gimp_environ_table_add (gimp->plug_in_manager->environ_table,
                               name, display, NULL);
       g_free (display);
@@ -374,7 +352,7 @@ gui_restore_callback (Gimp               *gimp,
   GimpGuiConfig     *gui_config     = GIMP_GUI_CONFIG (gimp->config);
 
   if (gimp->be_verbose)
-    g_print ("INIT: gui_restore_callback\n");
+    g_print ("INIT: %s\n", G_STRFUNC);
 
   gui_vtable_init (gimp);
 
@@ -438,7 +416,11 @@ gui_restore_callback (Gimp               *gimp,
 
   g_type_class_unref (g_type_class_ref (GIMP_TYPE_COLOR_SELECTOR_PALETTE));
 
-  (* status_callback) (NULL, _("Tool Options"), 1.0);
+  /*  initialize the document history  */
+  status_callback (NULL, _("Documents"), 0.9);
+  gimp_recent_list_load (gimp);
+
+  status_callback (NULL, _("Tool Options"), 1.0);
   gimp_tools_restore (gimp);
 }
 
@@ -447,9 +429,10 @@ gui_restore_after_callback (Gimp               *gimp,
                             GimpInitStatusFunc  status_callback)
 {
   GimpGuiConfig *gui_config = GIMP_GUI_CONFIG (gimp->config);
+  GimpDisplay   *display;
 
   if (gimp->be_verbose)
-    g_print ("INIT: gui_restore_after_callback\n");
+    g_print ("INIT: %s\n", G_STRFUNC);
 
   gimp->message_handler = GIMP_MESSAGE_BOX;
 
@@ -527,12 +510,20 @@ gui_restore_after_callback (Gimp               *gimp,
 
   color_history_restore (gimp);
 
+  /*  create the empty display  */
+  display = GIMP_DISPLAY (gimp_create_display (gimp,
+                                               NULL, GIMP_UNIT_PIXEL, 1.0));
+
   if (gui_config->restore_session)
     session_restore (gimp);
 
-  dialogs_show_toolbox ();
+  windows_show_toolbox ();
 
-  gui_dbus_service_init (gimp);
+  /*  move keyboard focus to the display  */
+  gtk_window_present (GTK_WINDOW (display->shell));
+
+  /*  indicate that the application has finished loading  */
+  gdk_notify_startup_complete ();
 }
 
 static gboolean
@@ -542,7 +533,7 @@ gui_exit_callback (Gimp     *gimp,
   GimpGuiConfig  *gui_config = GIMP_GUI_CONFIG (gimp->config);
 
   if (gimp->be_verbose)
-    g_print ("EXIT: gui_exit_callback\n");
+    g_print ("EXIT: %s\n", G_STRFUNC);
 
   if (! force && gimp_displays_dirty (gimp))
     {
@@ -555,9 +546,7 @@ gui_exit_callback (Gimp     *gimp,
 
   gimp->message_handler = GIMP_CONSOLE;
 
-#if HAVE_DBUS_GLIB
-  gui_dbus_service_exit ();
-#endif
+  gui_unique_exit ();
 
   if (gui_config->save_session_info)
     session_save (gimp, FALSE);
@@ -593,7 +582,7 @@ gui_exit_after_callback (Gimp     *gimp,
                          gboolean  force)
 {
   if (gimp->be_verbose)
-    g_print ("EXIT: gui_exit_after_callback\n");
+    g_print ("EXIT: %s\n", G_STRFUNC);
 
   g_signal_handlers_disconnect_by_func (gimp->config,
                                         gui_show_help_button_notify,
@@ -667,7 +656,7 @@ gui_device_change_notify (Gimp *gimp)
     {
       GtkWidget *device_status;
 
-      device_status = GTK_BIN (session_info->widget)->child;
+      device_status = gtk_bin_get_child (GTK_BIN (session_info->widget));
 
       gimp_device_status_update (GIMP_DEVICE_STATUS (device_status));
     }
@@ -692,7 +681,7 @@ gui_menu_show_tooltip (GimpUIManager *manager,
       GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (display->shell);
 
       gimp_statusbar_push (GIMP_STATUSBAR (shell->statusbar), "menu-tooltip",
-                           "%s", tooltip);
+                           NULL, "%s", tooltip);
     }
 }
 
@@ -755,45 +744,5 @@ gui_display_remove (GimpContainer *displays)
   /* show the toolbox when the last image window is closed */
 
   if (gimp_container_is_empty (displays))
-    dialogs_show_toolbox ();
-}
-
-static void
-gui_dbus_service_init (Gimp *gimp)
-{
-#if HAVE_DBUS_GLIB
-  GError  *error = NULL;
-
-  g_return_if_fail (dbus_connection == NULL);
-
-  dbus_connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-
-  if (dbus_connection)
-    {
-      GObject *service = gimp_dbus_service_new (gimp);
-
-      dbus_bus_request_name (dbus_g_connection_get_connection (dbus_connection),
-                             GIMP_DBUS_SERVICE_NAME, 0, NULL);
-
-      dbus_g_connection_register_g_object (dbus_connection,
-                                           GIMP_DBUS_SERVICE_PATH, service);
-    }
-  else
-    {
-      g_printerr ("%s\n", error->message);
-      g_error_free (error);
-    }
-#endif
-}
-
-static void
-gui_dbus_service_exit (void)
-{
-#if HAVE_DBUS_GLIB
-  if (dbus_connection)
-    {
-      dbus_g_connection_unref (dbus_connection);
-      dbus_connection = NULL;
-    }
-#endif
+    windows_show_toolbox ();
 }

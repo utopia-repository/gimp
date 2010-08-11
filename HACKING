@@ -5,19 +5,16 @@ to have the following packages (or newer versions) installed:
 
     * GNU autoconf 2.54
         - ftp://ftp.gnu.org/gnu/autoconf/
-    * GNU automake 1.9 (automake 1.8 should also work)
+    * GNU automake 1.9 (automake 1.10 should also work)
         - ftp://ftp.gnu.org/gnu/automake/
-    * GNU libtool 1.4  (libtool 1.5 if you are compiling on Win32)
+    * GNU libtool 1.5
         - ftp://ftp.gnu.org/gnu/libtool/
 
 Fine GNU mirrors are listed at http://www.gnu.org/prep/ftp.html
 Beta software can be found at alpha.gnu.org.
 
-    * pkg-config 0.15.0 (or preferably a newer version)
+    * pkg-config 0.16.0 (or preferably a newer version)
         - http://www.freedesktop.org/software/pkgconfig/
-
-    * intltoolize 0.31.1 (or preferably a newer version)
-        - ftp://ftp.gnome.org/pub/gnome/sources/intltool/
 
     * gtkdocize
         - http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/
@@ -41,7 +38,7 @@ by running:
 Basically this does the following for you:
 
     gimp/trunk$ aclocal-1.9; libtoolize; automake-1.9 -a;
-    gimp/trunk$ autoconf; glib-gettextize; intltoolize
+    gimp/trunk$ autoconf; intltoolize --automake
 
 The above commands create the "configure" script.  Now you can run the
 configure script in gimp/trunk to create all the Makefiles.
@@ -72,36 +69,26 @@ the API documentation.
 
 Subversion
 ----------
-GIMP is available from GNOME Subversion. You can also grab glib, pango,
-atk, gtk+, libart, gtkhtml2 as well as intltool and gtk-doc from the
-same Subversion server. You can use the following commands to get them
-from the anonymous Subversion server:
+GIMP is available from GNOME Subversion. You can use the following
+commands to get them from the anonymous Subversion server:
 
-For getting the trunk, use:
+For getting GIMP trunk, use:
 
-    $ svn co http://svn.gnome.org/svn/<module>/trunk <module>
+    $ svn co http://svn.gnome.org/svn/gimp/trunk gimp
 
-For getting a branch, use:
+For getting a GIMP branch, use:
 
-    $ svn co http://svn.gnome.org/svn/<module>/branches/<branch> <module>
-
-
-The interesting modules and the suggested stable branches to use are:
-
-    * gimp
-    * glib        (glib-2-12)
-    * atk         (gnome-2-16)
-    * pango       (pango-1-16)
-    * gtk+        (gtk-2-10)
-    * libart_lgpl
-    * gtkhtml2
-    * intltool
-    * gtk-doc
+    $ svn co http://svn.gnome.org/svn/gimp/branches/<branch> gimp-<branch>
 
 You can read more on using GNOME's Subversion service at these URLs:
 
     http://developer.gnome.org/tools/svn.html
     http://svnbook.red-bean.com/
+
+
+You will also need relatively new stable releases of glib, pango, atk,
+gtk+, cairo, gtkhtml2, etc. for building GIMP, which you can get as a
+part of recent Linux distribution releases.
 
 
 Patches
@@ -133,8 +120,8 @@ Auto-generated Files
 --------------------
 Please notice that some files in the source are generated from other
 sources. All those files have a short notice about being generated
-somewhere at the top. Among them are the files ending in _pdb.[ch] in
-the libgimp directory and the files ending in _cmds.c in the app/pdb
+somewhere at the top. Among them are the files ending in pdb.[ch] in
+the libgimp directory and the files ending in cmds.c in the app/pdb
 subdirectory. Those are generated from the respective .pdb files in
 tools/pdbgen/pdb.
 

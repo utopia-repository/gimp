@@ -45,11 +45,14 @@
 #define GIMP_COORDS_MAX_WHEEL         1.0
 #define GIMP_COORDS_DEFAULT_WHEEL     0.5
 
-#define GIMP_COORDS_DEFAULT_VALUES  { 0.0, 0.0, \
-                                      GIMP_COORDS_DEFAULT_PRESSURE, \
-                                      GIMP_COORDS_DEFAULT_TILT,     \
-                                      GIMP_COORDS_DEFAULT_TILT,     \
-                                      GIMP_COORDS_DEFAULT_WHEEL }
+#define GIMP_COORDS_DEFAULT_VELOCITY  0.0
+
+#define GIMP_COORDS_DEFAULT_VALUES    { 0.0, 0.0, \
+                                        GIMP_COORDS_DEFAULT_PRESSURE, \
+                                        GIMP_COORDS_DEFAULT_TILT,     \
+                                        GIMP_COORDS_DEFAULT_TILT,     \
+                                        GIMP_COORDS_DEFAULT_WHEEL,    \
+                                        GIMP_COORDS_DEFAULT_VELOCITY }
 
 
 /*  base classes  */
@@ -95,6 +98,7 @@ typedef struct _GimpGradient         GimpGradient;
 typedef struct _GimpPattern          GimpPattern;
 typedef struct _GimpPatternClipboard GimpPatternClipboard;
 typedef struct _GimpPalette          GimpPalette;
+typedef struct _GimpCurve            GimpCurve;
 
 
 /*  drawable objects  */
@@ -136,6 +140,7 @@ typedef struct _GimpEnvironTable    GimpEnvironTable;
 typedef struct _GimpGuide           GimpGuide;
 typedef struct _GimpImagefile       GimpImagefile;
 typedef struct _GimpImageMap        GimpImageMap;
+typedef struct _GimpImageMapConfig  GimpImageMapConfig;
 typedef struct _GimpInterpreterDB   GimpInterpreterDB;
 typedef struct _GimpParasiteList    GimpParasiteList;
 typedef struct _GimpPdbProgress     GimpPdbProgress;
@@ -149,6 +154,7 @@ typedef struct _GimpStrokeDesc      GimpStrokeDesc;
 
 typedef struct _GimpPickable        GimpPickable; /* dummy typedef */
 typedef struct _GimpProgress        GimpProgress; /* dummy typedef */
+typedef struct _GimpTagged          GimpTagged;   /* dummy typedef */
 
 
 /*  non-object types  */
@@ -162,17 +168,28 @@ typedef struct _GimpPaletteEntry    GimpPaletteEntry;
 typedef struct _GimpScanConvert     GimpScanConvert;
 
 
+/*  tags  */
+
+typedef GQuark                      GimpTag;
+#define gimp_tag_new(name)          g_quark_from_string (name)
+#define gimp_tag_get_name(tag)      g_quark_to_string (name)
+
+
 /*  functions  */
 
-typedef void     (* GimpInitStatusFunc)   (const gchar      *text1,
-                                           const gchar      *text2,
-                                           gdouble           percentage);
+typedef void     (* GimpInitStatusFunc)    (const gchar      *text1,
+                                            const gchar      *text2,
+                                            gdouble           percentage);
 
-typedef gboolean (* GimpObjectFilterFunc) (const GimpObject *object,
-                                           gpointer          user_data);
+typedef gboolean (* GimpObjectFilterFunc)  (const GimpObject *object,
+                                            gpointer          user_data);
 
-typedef gint64   (* GimpMemsizeFunc)      (gpointer          instance,
-                                           gint64           *gui_size);
+typedef gint64   (* GimpMemsizeFunc)       (gpointer          instance,
+                                            gint64           *gui_size);
+
+typedef void     (* GimpImageMapApplyFunc) (gpointer          apply_data,
+                                            PixelRegion      *srcPR,
+                                            PixelRegion      *destPR);
 
 
 /*  structs  */
@@ -185,9 +202,11 @@ struct _GimpCoords
   gdouble xtilt;
   gdouble ytilt;
   gdouble wheel;
+  gdouble velocity;
 };
 
 
+#include "gegl/gegl-types.h"
 #include "paint/paint-types.h"
 #include "text/text-types.h"
 #include "vectors/vectors-types.h"

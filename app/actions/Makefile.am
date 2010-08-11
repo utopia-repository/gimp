@@ -23,6 +23,10 @@ libappactions_a_SOURCES = \
 	colormap-actions.h		\
 	colormap-commands.c		\
 	colormap-commands.h		\
+	config-actions.c		\
+	config-actions.h		\
+	config-commands.c		\
+	config-commands.h		\
 	context-actions.c		\
 	context-actions.h		\
 	context-commands.c		\
@@ -152,7 +156,11 @@ libappactions_a_SOURCES = \
 	window-actions.c		\
 	window-actions.h		\
 	window-commands.c		\
-	window-commands.h
+	window-commands.h		\
+	windows-actions.c		\
+	windows-actions.h		\
+	windows-commands.c		\
+	windows-commands.h
 
 
 EXTRA_DIST = \
@@ -167,4 +175,5 @@ INCLUDES = \
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GTK_CFLAGS)		\
+	$(GEGL_CFLAGS)		\
 	-I$(includedir)

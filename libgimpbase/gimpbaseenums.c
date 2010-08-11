@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include <glib-object.h>
+#undef GIMP_DISABLE_DEPRECATED
 #include "gimpbasetypes.h"
 #include "libgimp/libgimp-intl.h"
 
@@ -814,12 +815,11 @@ gimp_pdb_arg_type_get_type (void)
     { GIMP_PDB_CHANNEL, "GIMP_PDB_CHANNEL", "channel" },
     { GIMP_PDB_DRAWABLE, "GIMP_PDB_DRAWABLE", "drawable" },
     { GIMP_PDB_SELECTION, "GIMP_PDB_SELECTION", "selection" },
-    { GIMP_PDB_BOUNDARY, "GIMP_PDB_BOUNDARY", "boundary" },
+    { GIMP_PDB_COLORARRAY, "GIMP_PDB_COLORARRAY", "colorarray" },
     { GIMP_PDB_VECTORS, "GIMP_PDB_VECTORS", "vectors" },
     { GIMP_PDB_PARASITE, "GIMP_PDB_PARASITE", "parasite" },
     { GIMP_PDB_STATUS, "GIMP_PDB_STATUS", "status" },
     { GIMP_PDB_END, "GIMP_PDB_END", "end" },
-    { GIMP_PDB_PATH, "GIMP_PDB_PATH", "path" },
     { 0, NULL, NULL }
   };
 
@@ -843,12 +843,11 @@ gimp_pdb_arg_type_get_type (void)
     { GIMP_PDB_CHANNEL, "GIMP_PDB_CHANNEL", NULL },
     { GIMP_PDB_DRAWABLE, "GIMP_PDB_DRAWABLE", NULL },
     { GIMP_PDB_SELECTION, "GIMP_PDB_SELECTION", NULL },
-    { GIMP_PDB_BOUNDARY, "GIMP_PDB_BOUNDARY", NULL },
+    { GIMP_PDB_COLORARRAY, "GIMP_PDB_COLORARRAY", NULL },
     { GIMP_PDB_VECTORS, "GIMP_PDB_VECTORS", NULL },
     { GIMP_PDB_PARASITE, "GIMP_PDB_PARASITE", NULL },
     { GIMP_PDB_STATUS, "GIMP_PDB_STATUS", NULL },
     { GIMP_PDB_END, "GIMP_PDB_END", NULL },
-    { GIMP_PDB_PATH, "GIMP_PDB_PATH", NULL },
     { 0, NULL, NULL }
   };
 
@@ -857,6 +856,35 @@ gimp_pdb_arg_type_get_type (void)
   if (! type)
     {
       type = g_enum_register_static ("GimpPDBArgType", values);
+      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_pdb_error_handler_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_PDB_ERROR_HANDLER_INTERNAL, "GIMP_PDB_ERROR_HANDLER_INTERNAL", "internal" },
+    { GIMP_PDB_ERROR_HANDLER_PLUGIN, "GIMP_PDB_ERROR_HANDLER_PLUGIN", "plugin" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_PDB_ERROR_HANDLER_INTERNAL, "GIMP_PDB_ERROR_HANDLER_INTERNAL", NULL },
+    { GIMP_PDB_ERROR_HANDLER_PLUGIN, "GIMP_PDB_ERROR_HANDLER_PLUGIN", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (! type)
+    {
+      type = g_enum_register_static ("GimpPDBErrorHandler", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
       gimp_enum_set_value_descriptions (type, descs);
     }
@@ -1024,6 +1052,68 @@ gimp_progress_command_get_type (void)
   if (! type)
     {
       type = g_enum_register_static ("GimpProgressCommand", values);
+      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_text_direction_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_TEXT_DIRECTION_LTR, "GIMP_TEXT_DIRECTION_LTR", "ltr" },
+    { GIMP_TEXT_DIRECTION_RTL, "GIMP_TEXT_DIRECTION_RTL", "rtl" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_TEXT_DIRECTION_LTR, N_("From left to right"), NULL },
+    { GIMP_TEXT_DIRECTION_RTL, N_("From right to left"), NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (! type)
+    {
+      type = g_enum_register_static ("GimpTextDirection", values);
+      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_text_justification_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_TEXT_JUSTIFY_LEFT, "GIMP_TEXT_JUSTIFY_LEFT", "left" },
+    { GIMP_TEXT_JUSTIFY_RIGHT, "GIMP_TEXT_JUSTIFY_RIGHT", "right" },
+    { GIMP_TEXT_JUSTIFY_CENTER, "GIMP_TEXT_JUSTIFY_CENTER", "center" },
+    { GIMP_TEXT_JUSTIFY_FILL, "GIMP_TEXT_JUSTIFY_FILL", "fill" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_TEXT_JUSTIFY_LEFT, N_("Left justified"), NULL },
+    { GIMP_TEXT_JUSTIFY_RIGHT, N_("Right justified"), NULL },
+    { GIMP_TEXT_JUSTIFY_CENTER, N_("Centered"), NULL },
+    { GIMP_TEXT_JUSTIFY_FILL, N_("Filled"), NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (! type)
+    {
+      type = g_enum_register_static ("GimpTextJustification", values);
       gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
       gimp_enum_set_value_descriptions (type, descs);
     }

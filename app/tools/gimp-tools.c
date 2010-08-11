@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -49,6 +50,7 @@
 #include "gimpconvolvetool.h"
 #include "gimpcroptool.h"
 #include "gimpcurvestool.h"
+#include "gimpdesaturatetool.h"
 #include "gimpdodgeburntool.h"
 #include "gimpellipseselecttool.h"
 #include "gimperasertool.h"
@@ -56,6 +58,7 @@
 #include "gimpfreeselecttool.h"
 #include "gimpforegroundselecttool.h"
 #include "gimpfuzzyselecttool.h"
+#include "gimpgegltool.h"
 #include "gimphealtool.h"
 #include "gimphuesaturationtool.h"
 #include "gimpinktool.h"
@@ -113,6 +116,7 @@ gimp_tools_init (Gimp *gimp)
     /*  register tools in reverse order  */
 
     /*  color tools  */
+    gimp_gegl_tool_register,
     gimp_posterize_tool_register,
     gimp_curves_tool_register,
     gimp_levels_tool_register,
@@ -121,6 +125,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_colorize_tool_register,
     gimp_hue_saturation_tool_register,
     gimp_color_balance_tool_register,
+    gimp_desaturate_tool_register,
 
     /*  paint tools  */
 
@@ -168,7 +173,7 @@ gimp_tools_init (Gimp *gimp)
     gimp_fuzzy_select_tool_register,
     gimp_free_select_tool_register,
     gimp_ellipse_select_tool_register,
-    gimp_rect_select_tool_register
+    gimp_rectangle_select_tool_register
   };
 
   GList *default_order = NULL;
@@ -176,6 +181,8 @@ gimp_tools_init (Gimp *gimp)
   gint   i;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+
+  gimp_tool_options_create_folder ();
 
   tool_manager_init (gimp);
 
@@ -227,6 +234,7 @@ gimp_tools_restore (Gimp *gimp)
   GimpContainer *gimp_list;
   gchar         *filename;
   GList         *list;
+  GError        *error = NULL;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
@@ -282,7 +290,12 @@ gimp_tools_restore (Gimp *gimp)
       gimp_tool_options_reset (tool_info->tool_options);
     }
 
-  gimp_contexts_load (gimp);
+  if (! gimp_contexts_load (gimp, &error))
+    {
+      gimp_message (gimp, NULL, GIMP_MESSAGE_WARNING,
+                    "%s", error->message);
+      g_clear_error (&error);
+    }
 
   for (list = GIMP_LIST (gimp->tool_info_list)->list;
        list;
@@ -339,9 +352,15 @@ gimp_tools_save (Gimp     *gimp,
 
   if (save_tool_options && (! tool_options_deleted || always_save))
     {
-      GList *list;
+      GList  *list;
+      GError *error = NULL;
 
-      gimp_contexts_save (gimp);
+      if (! gimp_contexts_save (gimp, &error))
+        {
+          gimp_message (gimp, NULL, GIMP_MESSAGE_WARNING,
+                        "%s", error->message);
+          g_clear_error (&error);
+        }
 
       gimp_tool_options_create_folder ();
 

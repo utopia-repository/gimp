@@ -23,7 +23,12 @@
 #define __GIMP_CONTAINER_COMBO_BOX_H__
 
 
-#include <gtk/gtkcombobox.h>
+enum
+{
+  GIMP_CONTAINER_COMBO_BOX_COLUMN_RENDERER,
+  GIMP_CONTAINER_COMBO_BOX_COLUMN_NAME,
+  GIMP_CONTAINER_COMBO_BOX_N_COLUMNS
+};
 
 
 #define GIMP_TYPE_CONTAINER_COMBO_BOX            (gimp_container_combo_box_get_type ())

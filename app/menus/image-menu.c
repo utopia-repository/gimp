@@ -28,6 +28,7 @@
 #include "image-menu.h"
 #include "plug-in-menus.h"
 #include "window-menu.h"
+#include "windows-menu.h"
 
 
 void
@@ -40,6 +41,7 @@ image_menu_setup (GimpUIManager *manager,
     ui_path = "/dummy-menubar/image-popup";
 
   file_menu_setup (manager, ui_path);
+  windows_menu_setup (manager, ui_path);
   plug_in_menus_setup (manager, ui_path);
 
   path = g_strconcat (ui_path, "/View", NULL);

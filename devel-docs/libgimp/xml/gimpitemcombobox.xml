@@ -196,7 +196,7 @@ of the selected drawable.</para>
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
-channels. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_combo_box()</function></link> for more info.</para>
+channels. See <link linkend="gimp-drawable-combo-box-new"><function>gimp_drawable_combo_box_new()</function></link> for more information.</para>
 <para>
 
 </para><variablelist role="params">
@@ -223,7 +223,7 @@ channels. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_co
                                                          <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
-layers. See <link linkend="gimp-drawable-combo-box"><function>gimp_drawable_combo_box()</function></link> for more info.</para>
+layers. See <link linkend="gimp-drawable-combo-box-new"><function>gimp_drawable_combo_box_new()</function></link> for more information.</para>
 <para>
 
 </para><variablelist role="params">

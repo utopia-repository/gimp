@@ -1,3 +1,21 @@
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
 #include "config.h"
 
 #include <gtk/gtk.h>
@@ -65,7 +83,7 @@ double get_direction (double x, double y, int from)
       vec = vector;
       angoff = GTK_ADJUSTMENT (angle_offset_adjust)->value;
       strexp = GTK_ADJUSTMENT (orient_map_str_exp_adjust)->value;
-      voronoi = GTK_TOGGLE_BUTTON (orient_voronoi)->active;
+      voronoi = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (orient_voronoi));
     }
   else
     {
@@ -440,7 +458,7 @@ orient_map_response (GtkWidget *widget,
         pcvals.num_orient_vectors = num_vectors;
         pcvals.orient_strength_exponent  = GTK_ADJUSTMENT (orient_map_str_exp_adjust)->value;
         pcvals.orient_angle_offset  = GTK_ADJUSTMENT (angle_offset_adjust)->value;
-        pcvals.orient_voronoi = GTK_TOGGLE_BUTTON (orient_voronoi)->active;
+        pcvals.orient_voronoi = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (orient_voronoi));
       }
     };
 
@@ -505,9 +523,9 @@ create_orientmap_dialog (GtkWidget *parent)
     }
 
   orient_map_window =
-    gimp_dialog_new (_("Orientation Map Editor"), "gimpressionist",
+    gimp_dialog_new (_("Orientation Map Editor"), PLUG_IN_BINARY,
                      gtk_widget_get_toplevel (parent), 0,
-                     gimp_standard_help_func, PLUG_IN_NAME,
+                     gimp_standard_help_func, PLUG_IN_PROC,
 
                      GTK_STOCK_APPLY,  GTK_RESPONSE_APPLY,
                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,

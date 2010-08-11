@@ -228,8 +228,9 @@ engrave_dialog (GimpDrawable *drawable)
   gtk_widget_show (main_vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
-  gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
+  gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
+
   g_signal_connect_swapped (preview, "invalidated",
                             G_CALLBACK (engrave),
                             drawable);
@@ -413,7 +414,7 @@ typedef struct
   guchar *data;
 } PixelArea;
 
-PixelArea area;
+static PixelArea area;
 
 static void
 engrave_small (GimpDrawable *drawable,

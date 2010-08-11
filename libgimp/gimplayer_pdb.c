@@ -79,6 +79,48 @@ _gimp_layer_new (gint32                image_ID,
 }
 
 /**
+ * gimp_layer_new_from_visible:
+ * @image_ID: The source image from where the content is copied.
+ * @dest_image_ID: The destination image to which to add the layer.
+ * @name: The layer name.
+ *
+ * Create a new layer from what is visible in an image.
+ *
+ * This procedure creates a new layer from what is visible in the given
+ * image. The new layer still needs to be added to the destination
+ * image, as this is not automatic. Add the new layer with the
+ * gimp_image_add_layer() command. Other attributes such as layer mask
+ * modes, and offsets should be set with explicit procedure calls.
+ *
+ * Returns: The newly created layer.
+ *
+ * Since: GIMP 2.6
+ */
+gint32
+gimp_layer_new_from_visible (gint32       image_ID,
+                             gint32       dest_image_ID,
+                             const gchar *name)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gint32 layer_ID = -1;
+
+  return_vals = gimp_run_procedure ("gimp-layer-new-from-visible",
+                                    &nreturn_vals,
+                                    GIMP_PDB_IMAGE, image_ID,
+                                    GIMP_PDB_IMAGE, dest_image_ID,
+                                    GIMP_PDB_STRING, name,
+                                    GIMP_PDB_END);
+
+  if (return_vals[0].data.d_status == GIMP_PDB_SUCCESS)
+    layer_ID = return_vals[1].data.d_layer;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return layer_ID;
+}
+
+/**
  * gimp_layer_new_from_drawable:
  * @drawable_ID: The source drawable from where the new layer is copied.
  * @dest_image_ID: The destination image to which to add the layer.
@@ -227,13 +269,13 @@ gimp_layer_flatten (gint32 layer_ID)
  * @new_height: New layer height.
  * @local_origin: Use a local origin (as opposed to the image origin).
  *
- * Scale the layer to the specified extents.
+ * Scale the layer using the default interpolation method.
  *
  * This procedure scales the layer so that its new width and height are
  * equal to the supplied parameters. The 'local-origin' parameter
  * specifies whether to scale from the center of the layer, or from the
  * image origin. This operation only works if the layer has been added
- * to an image.
+ * to an image. The default interpolation method is used for scaling.
  *
  * Returns: TRUE on success.
  */
@@ -253,6 +295,54 @@ gimp_layer_scale (gint32   layer_ID,
                                     GIMP_PDB_INT32, new_width,
                                     GIMP_PDB_INT32, new_height,
                                     GIMP_PDB_INT32, local_origin,
+                                    GIMP_PDB_END);
+
+  success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
+
+  gimp_destroy_params (return_vals, nreturn_vals);
+
+  return success;
+}
+
+/**
+ * gimp_layer_scale_full:
+ * @layer_ID: The layer.
+ * @new_width: New layer width.
+ * @new_height: New layer height.
+ * @local_origin: Use a local origin (as opposed to the image origin).
+ * @interpolation: Type of interpolation.
+ *
+ * Scale the layer using a specific interpolation method.
+ *
+ * This procedure scales the layer so that its new width and height are
+ * equal to the supplied parameters. The 'local-origin' parameter
+ * specifies whether to scale from the center of the layer, or from the
+ * image origin. This operation only works if the layer has been added
+ * to an image. This procedure allows you to specify the interpolation
+ * method explicitly.
+ *
+ * Returns: TRUE on success.
+ *
+ * Since: GIMP 2.6
+ */
+gboolean
+gimp_layer_scale_full (gint32                layer_ID,
+                       gint                  new_width,
+                       gint                  new_height,
+                       gboolean              local_origin,
+                       GimpInterpolationType interpolation)
+{
+  GimpParam *return_vals;
+  gint nreturn_vals;
+  gboolean success = TRUE;
+
+  return_vals = gimp_run_procedure ("gimp-layer-scale-full",
+                                    &nreturn_vals,
+                                    GIMP_PDB_LAYER, layer_ID,
+                                    GIMP_PDB_INT32, new_width,
+                                    GIMP_PDB_INT32, new_height,
+                                    GIMP_PDB_INT32, local_origin,
+                                    GIMP_PDB_INT32, interpolation,
                                     GIMP_PDB_END);
 
   success = return_vals[0].data.d_status == GIMP_PDB_SUCCESS;
@@ -794,9 +884,9 @@ gimp_layer_get_show_mask (gint32 layer_ID)
  * Set the show mask setting of the specified layer.
  *
  * This procedure sets the specified layer's show mask setting. This
- * controls whether the layer's mask is currently affecting the alpha
- * channel. If there is no layer mask, this function will return an
- * error.
+ * controls whether the layer or its mask is visible. TRUE indicates
+ * that the mask should be visible. If there is no layer mask, this
+ * function will return an error.
  *
  * Returns: TRUE on success.
  */

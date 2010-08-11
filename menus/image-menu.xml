@@ -6,9 +6,13 @@
   <menubar action="image-menubar">
 
     <menu action="file-menu" name="File">
-      <placeholder name="New">
-        <menuitem action="image-new-from-image"/>
-      </placeholder>
+      <menuitem action="image-new"/>
+      <menu action="file-create-menu" name="Create">
+        <placeholder name="Acquire">
+          <menuitem action="edit-paste-as-new"/>
+        </placeholder>
+        <separator/>
+      </menu>
       <placeholder name="Open">
         <menuitem action="file-open"/>
         <menuitem action="file-open-as-layers"/>
@@ -19,7 +23,10 @@
         <separator/>
         <menuitem action="dialogs-document-history"/>
       </menu>
-      <menu action="file-acquire-menu" name="Acquire"/>
+
+<!--  The debug-menu is automatically excluded for stable releases  -->
+      
+
       <separator/>
       <placeholder name="Save">
 	<menuitem action="file-save"/>
@@ -167,6 +174,7 @@
       </placeholder>
       <menu action="edit-paste-as-menu" name="Paste as">
 	<menuitem action="edit-paste-as-new-short"/>
+	<menuitem action="edit-paste-as-new-layer"/>
       </menu>
       <menu action="edit-buffer-menu" name="Buffer">
         <menuitem action="edit-named-cut"/>
@@ -191,6 +199,7 @@
       <placeholder name="Preferences">
         <menuitem action="dialogs-preferences"/>      
         <menuitem action="dialogs-keyboard-shortcuts"/>
+        <menuitem action="dialogs-module-dialog"/>
       </placeholder>
       <separator/>
     </menu>
@@ -226,7 +235,7 @@
         <menuitem action="view-zoom-out"/>
         <menuitem action="view-zoom-in"/>
         <menuitem action="view-zoom-fit-in"/>
-        <menuitem action="view-zoom-fit-to"/>
+        <menuitem action="view-zoom-fill"/>
         <separator/>
         <menuitem action="view-zoom-16-1"/>
         <menuitem action="view-zoom-8-1"/>
@@ -333,6 +342,7 @@
     <menu action="layers-menu" name="Layer">
       <placeholder name="New">
         <menuitem action="layers-new"/>
+        <menuitem action="layers-new-from-visible"/>
         <menuitem action="layers-duplicate"/>
       </placeholder>
       <placeholder name="Structure">
@@ -466,11 +476,13 @@
       <menuitem action="tools-levels"/>
       <menuitem action="tools-curves"/>
       <menuitem action="tools-posterize"/>
+      <menuitem action="tools-desaturate"/>
       <separator/>
-      <menuitem action="drawable-desaturate"/>
       <placeholder name="Invert">
         <menuitem action="drawable-invert"/>
       </placeholder>
+      <separator/>
+      <menuitem action="config-use-gegl"/>
       <separator/>
       <menu action="colors-auto-menu" name="Auto">
         <menuitem action="drawable-equalize"/>
@@ -532,25 +544,70 @@
 	<menuitem action="tools-levels"/>
 	<menuitem action="tools-curves"/>
 	<menuitem action="tools-posterize"/>
+	<menuitem action="tools-desaturate"/>
       </menu>
       <menuitem action="tools-vector"/>
       <menuitem action="tools-color-picker"/>
       <menuitem action="tools-zoom"/>
       <menuitem action="tools-measure"/>
       <menuitem action="tools-text"/>
+      <menuitem action="tools-gegl"/>
       <separator/>
-      <menuitem action="dialogs-toolbox"/>
+      <menuitem action="windows-show-toolbox"/>
       <menuitem action="context-colors-default"/>
       <menuitem action="context-colors-swap"/>
     </menu>
 
-    <menu action="dialogs-menu" name="Dialogs">
-      <menu action="dialogs-new-dock-menu" name="Create New Dock">
-	<menuitem action="dialogs-new-dock-lcp"/>
-	<menuitem action="dialogs-new-dock-data"/>
-	<menuitem action="dialogs-new-dock-stuff"/>
+    <menu action="plug-in-menu" name="Filters">
+      <menuitem action="plug-in-repeat"/>
+      <menuitem action="plug-in-reshow"/>
+      <menu action="plug-in-recent-menu" name="Recently Used">
+        <placeholder name="Plug-Ins"/>
       </menu>
-      
+      <menuitem action="plug-in-reset-all"/>
+      <separator/>
+      <menu action="plug-in-blur-menu" name="Blur"/>
+      <menu action="plug-in-enhance-menu" name="Enhance"/>
+      <menu action="plug-in-distorts-menu" name="Distorts"/>
+      <menu action="plug-in-light-shadow-menu" name="Light and Shadow">
+        <placeholder name="Light"/>
+	<separator/>
+        <placeholder name="Shadow"/>
+	<separator/>
+        <placeholder name="Glass"/>
+      </menu>
+      <menu action="plug-in-noise-menu" name="Noise"/>
+      <menu action="plug-in-edge-detect-menu" name="Edge-Detect"/>
+      <menu action="plug-in-generic-menu" name="Generic"/>
+      <menu action="plug-in-combine-menu" name="Combine"/>
+      <menu action="plug-in-artistic-menu" name="Artistic"/>
+      <menu action="plug-in-decor-menu" name="Decor"/>
+      <menu action="plug-in-map-menu" name="Map"/>
+      <menu action="plug-in-render-menu" name="Render">
+	<menu action="plug-in-render-clouds-menu" name="Clouds"/>
+	<menu action="plug-in-render-nature-menu" name="Nature"/>
+	<menu action="plug-in-render-pattern-menu" name="Pattern"/>
+	<separator/>
+      </menu>
+      <menu action="plug-in-web-menu" name="Web"/>
+      <menu action="plug-in-animation-menu" name="Animation">
+        <placeholder name="Animators"/>
+	<separator/>
+      </menu>
+      <separator/>
+      <placeholder name="Menus"/>
+      <separator/>
+      <placeholder name="Languages"/>
+      <placeholder name="Extensions"/>
+      <separator/>
+    </menu>
+
+    <placeholder name="Menus"/>
+
+    <menu action="windows-menu" name="Windows">
+      <menu action="windows-docks-menu" name="Recently Closed Docks"/>
+      <menu action="windows-dialogs-menu" name="Dockable Dialogs">
+	
   <menuitem action="dialogs-tool-options"/>
   <menuitem action="dialogs-device-status"/>
   <separator/>
@@ -579,57 +636,35 @@
   <menuitem action="dialogs-tools"/>
   <menuitem action="dialogs-error-console"/>
 
+      </menu>
+      <separator/>
+      <placeholder name="Images"/>
+      <separator/>
+      <placeholder name="Docks">
+	<menuitem action="windows-show-toolbox"/>
+      </placeholder>
     </menu>
 
-    <menu action="plug-in-menu" name="Filters">
-      <menuitem action="plug-in-repeat"/>
-      <menuitem action="plug-in-reshow"/>
-      <menu action="plug-in-recent-menu" name="Recently Used">
-        <placeholder name="Plug-Ins"/>
-      </menu>
-      <menuitem action="plug-in-reset-all"/>
+    <menu action="help-menu" name="Help">
+      <menuitem action="help-help"/>
+      <menuitem action="help-context-help"/>
+      <menuitem action="dialogs-tips"/>
+      <menuitem action="dialogs-about"/>
       <separator/>
-      <menu action="plug-in-blur-menu" name="Blur"/>
-      <menu action="plug-in-enhance-menu" name="Enhance"/>
-      <menu action="plug-in-distorts-menu" name="Distorts"/>
-      <menu action="plug-in-light-shadow-menu" name="Light and Shadow">
-        <placeholder name="Light"/>
-	<separator/>
-        <placeholder name="Shadow"/>
-	<separator/>
-        <placeholder name="Glass"/>
-      </menu>
-      <menu action="plug-in-noise-menu" name="Noise"/>
-      <menu action="plug-in-edge-detect-menu" name="Edge-Detect"/>
-      <menu action="plug-in-generic-menu" name="Generic"/>
-      <menu action="plug-in-combine-menu" name="Combine"/>
-      <separator/>
-      <menu action="plug-in-artistic-menu" name="Artistic"/>
-      <menu action="plug-in-map-menu" name="Map"/>
-      <menu action="plug-in-render-menu" name="Render">
-	<menu action="plug-in-render-clouds-menu" name="Clouds"/>
-	<menu action="plug-in-render-nature-menu" name="Nature"/>
-	<menu action="plug-in-render-pattern-menu" name="Pattern"/>
-	<separator/>
-      </menu>
-      <menu action="plug-in-web-menu" name="Web"/>
-      <menu action="plug-in-animation-menu" name="Animation">
-        <placeholder name="Animators"/>
-	<separator/>
-      </menu>
+      <placeholder name="Programming"/>
       <separator/>
     </menu>
-
-    
-
-    
 
   </menubar><menubar name="dummy-menubar"><menu action="image-popup">
 
     <menu action="file-menu" name="File">
-      <placeholder name="New">
-        <menuitem action="image-new-from-image"/>
-      </placeholder>
+      <menuitem action="image-new"/>
+      <menu action="file-create-menu" name="Create">
+        <placeholder name="Acquire">
+          <menuitem action="edit-paste-as-new"/>
+        </placeholder>
+        <separator/>
+      </menu>
       <placeholder name="Open">
         <menuitem action="file-open"/>
         <menuitem action="file-open-as-layers"/>
@@ -640,7 +675,10 @@
         <separator/>
         <menuitem action="dialogs-document-history"/>
       </menu>
-      <menu action="file-acquire-menu" name="Acquire"/>
+
+<!--  The debug-menu is automatically excluded for stable releases  -->
+      
+
       <separator/>
       <placeholder name="Save">
 	<menuitem action="file-save"/>
@@ -788,6 +826,7 @@
       </placeholder>
       <menu action="edit-paste-as-menu" name="Paste as">
 	<menuitem action="edit-paste-as-new-short"/>
+	<menuitem action="edit-paste-as-new-layer"/>
       </menu>
       <menu action="edit-buffer-menu" name="Buffer">
         <menuitem action="edit-named-cut"/>
@@ -812,6 +851,7 @@
       <placeholder name="Preferences">
         <menuitem action="dialogs-preferences"/>      
         <menuitem action="dialogs-keyboard-shortcuts"/>
+        <menuitem action="dialogs-module-dialog"/>
       </placeholder>
       <separator/>
     </menu>
@@ -847,7 +887,7 @@
         <menuitem action="view-zoom-out"/>
         <menuitem action="view-zoom-in"/>
         <menuitem action="view-zoom-fit-in"/>
-        <menuitem action="view-zoom-fit-to"/>
+        <menuitem action="view-zoom-fill"/>
         <separator/>
         <menuitem action="view-zoom-16-1"/>
         <menuitem action="view-zoom-8-1"/>
@@ -954,6 +994,7 @@
     <menu action="layers-menu" name="Layer">
       <placeholder name="New">
         <menuitem action="layers-new"/>
+        <menuitem action="layers-new-from-visible"/>
         <menuitem action="layers-duplicate"/>
       </placeholder>
       <placeholder name="Structure">
@@ -1087,11 +1128,13 @@
       <menuitem action="tools-levels"/>
       <menuitem action="tools-curves"/>
       <menuitem action="tools-posterize"/>
+      <menuitem action="tools-desaturate"/>
       <separator/>
-      <menuitem action="drawable-desaturate"/>
       <placeholder name="Invert">
         <menuitem action="drawable-invert"/>
       </placeholder>
+      <separator/>
+      <menuitem action="config-use-gegl"/>
       <separator/>
       <menu action="colors-auto-menu" name="Auto">
         <menuitem action="drawable-equalize"/>
@@ -1153,25 +1196,70 @@
 	<menuitem action="tools-levels"/>
 	<menuitem action="tools-curves"/>
 	<menuitem action="tools-posterize"/>
+	<menuitem action="tools-desaturate"/>
       </menu>
       <menuitem action="tools-vector"/>
       <menuitem action="tools-color-picker"/>
       <menuitem action="tools-zoom"/>
       <menuitem action="tools-measure"/>
       <menuitem action="tools-text"/>
+      <menuitem action="tools-gegl"/>
       <separator/>
-      <menuitem action="dialogs-toolbox"/>
+      <menuitem action="windows-show-toolbox"/>
       <menuitem action="context-colors-default"/>
       <menuitem action="context-colors-swap"/>
     </menu>
 
-    <menu action="dialogs-menu" name="Dialogs">
-      <menu action="dialogs-new-dock-menu" name="Create New Dock">
-	<menuitem action="dialogs-new-dock-lcp"/>
-	<menuitem action="dialogs-new-dock-data"/>
-	<menuitem action="dialogs-new-dock-stuff"/>
+    <menu action="plug-in-menu" name="Filters">
+      <menuitem action="plug-in-repeat"/>
+      <menuitem action="plug-in-reshow"/>
+      <menu action="plug-in-recent-menu" name="Recently Used">
+        <placeholder name="Plug-Ins"/>
       </menu>
-      
+      <menuitem action="plug-in-reset-all"/>
+      <separator/>
+      <menu action="plug-in-blur-menu" name="Blur"/>
+      <menu action="plug-in-enhance-menu" name="Enhance"/>
+      <menu action="plug-in-distorts-menu" name="Distorts"/>
+      <menu action="plug-in-light-shadow-menu" name="Light and Shadow">
+        <placeholder name="Light"/>
+	<separator/>
+        <placeholder name="Shadow"/>
+	<separator/>
+        <placeholder name="Glass"/>
+      </menu>
+      <menu action="plug-in-noise-menu" name="Noise"/>
+      <menu action="plug-in-edge-detect-menu" name="Edge-Detect"/>
+      <menu action="plug-in-generic-menu" name="Generic"/>
+      <menu action="plug-in-combine-menu" name="Combine"/>
+      <menu action="plug-in-artistic-menu" name="Artistic"/>
+      <menu action="plug-in-decor-menu" name="Decor"/>
+      <menu action="plug-in-map-menu" name="Map"/>
+      <menu action="plug-in-render-menu" name="Render">
+	<menu action="plug-in-render-clouds-menu" name="Clouds"/>
+	<menu action="plug-in-render-nature-menu" name="Nature"/>
+	<menu action="plug-in-render-pattern-menu" name="Pattern"/>
+	<separator/>
+      </menu>
+      <menu action="plug-in-web-menu" name="Web"/>
+      <menu action="plug-in-animation-menu" name="Animation">
+        <placeholder name="Animators"/>
+	<separator/>
+      </menu>
+      <separator/>
+      <placeholder name="Menus"/>
+      <separator/>
+      <placeholder name="Languages"/>
+      <placeholder name="Extensions"/>
+      <separator/>
+    </menu>
+
+    <placeholder name="Menus"/>
+
+    <menu action="windows-menu" name="Windows">
+      <menu action="windows-docks-menu" name="Recently Closed Docks"/>
+      <menu action="windows-dialogs-menu" name="Dockable Dialogs">
+	
   <menuitem action="dialogs-tool-options"/>
   <menuitem action="dialogs-device-status"/>
   <separator/>
@@ -1200,50 +1288,24 @@
   <menuitem action="dialogs-tools"/>
   <menuitem action="dialogs-error-console"/>
 
+      </menu>
+      <separator/>
+      <placeholder name="Images"/>
+      <separator/>
+      <placeholder name="Docks">
+	<menuitem action="windows-show-toolbox"/>
+      </placeholder>
     </menu>
 
-    <menu action="plug-in-menu" name="Filters">
-      <menuitem action="plug-in-repeat"/>
-      <menuitem action="plug-in-reshow"/>
-      <menu action="plug-in-recent-menu" name="Recently Used">
-        <placeholder name="Plug-Ins"/>
-      </menu>
-      <menuitem action="plug-in-reset-all"/>
+    <menu action="help-menu" name="Help">
+      <menuitem action="help-help"/>
+      <menuitem action="help-context-help"/>
+      <menuitem action="dialogs-tips"/>
+      <menuitem action="dialogs-about"/>
       <separator/>
-      <menu action="plug-in-blur-menu" name="Blur"/>
-      <menu action="plug-in-enhance-menu" name="Enhance"/>
-      <menu action="plug-in-distorts-menu" name="Distorts"/>
-      <menu action="plug-in-light-shadow-menu" name="Light and Shadow">
-        <placeholder name="Light"/>
-	<separator/>
-        <placeholder name="Shadow"/>
-	<separator/>
-        <placeholder name="Glass"/>
-      </menu>
-      <menu action="plug-in-noise-menu" name="Noise"/>
-      <menu action="plug-in-edge-detect-menu" name="Edge-Detect"/>
-      <menu action="plug-in-generic-menu" name="Generic"/>
-      <menu action="plug-in-combine-menu" name="Combine"/>
-      <separator/>
-      <menu action="plug-in-artistic-menu" name="Artistic"/>
-      <menu action="plug-in-map-menu" name="Map"/>
-      <menu action="plug-in-render-menu" name="Render">
-	<menu action="plug-in-render-clouds-menu" name="Clouds"/>
-	<menu action="plug-in-render-nature-menu" name="Nature"/>
-	<menu action="plug-in-render-pattern-menu" name="Pattern"/>
-	<separator/>
-      </menu>
-      <menu action="plug-in-web-menu" name="Web"/>
-      <menu action="plug-in-animation-menu" name="Animation">
-        <placeholder name="Animators"/>
-	<separator/>
-      </menu>
+      <placeholder name="Programming"/>
       <separator/>
     </menu>
-
-    
-
-    
 
   </menu></menubar>
 

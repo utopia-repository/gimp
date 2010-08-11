@@ -20,9 +20,6 @@
 #define __GIMP_COLOR_FRAME_H__
 
 
-#include <gtk/gtkframe.h>
-
-
 #define GIMP_COLOR_FRAME_ROWS 5
 
 
@@ -53,10 +50,11 @@ struct _GimpColorFrame
   gboolean            has_color_area;
 
   GtkWidget          *menu;
-  GtkWidget          *number_label;
   GtkWidget          *color_area;
   GtkWidget          *name_labels[GIMP_COLOR_FRAME_ROWS];
   GtkWidget          *value_labels[GIMP_COLOR_FRAME_ROWS];
+
+  PangoLayout        *number_layout;
 };
 
 struct _GimpColorFrameClass

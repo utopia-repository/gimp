@@ -112,9 +112,7 @@ about_dialog_create (GimpContext *context)
                              "role",               "about-dialog",
                              "window-position",    GTK_WIN_POS_CENTER,
                              "title",              _("About GIMP"),
-                             (gtk_check_version (2, 12, 0) ?
-                              "name" :
-                              "program-name"),     GIMP_ACRONYM,
+                             "program-name",       GIMP_ACRONYM,
                              "version",            GIMP_VERSION,
                              "copyright",          GIMP_COPYRIGHT,
                              "comments",           GIMP_NAME,
@@ -126,9 +124,7 @@ about_dialog_create (GimpContext *context)
                              "authors",            authors,
                              "artists",            artists,
                              "documenters",        documenters,
-                             /* Translators: insert your names here,
-                              * separated by newline
-                              */
+                             /* Translators: insert your names here, separated by newline */
                              "translator-credits", _("translator-credits"),
                              NULL);
 
@@ -207,7 +203,7 @@ about_dialog_load_url (GtkAboutDialog *dialog,
   GValueArray *return_vals;
 
   return_vals = gimp_pdb_execute_procedure_by_name (context->gimp->pdb,
-                                                    context, NULL,
+                                                    context, NULL, NULL,
                                                     PDB_URL_LOAD,
                                                     G_TYPE_STRING, url,
                                                     G_TYPE_NONE);
@@ -290,14 +286,15 @@ about_dialog_anim_expose (GtkWidget       *widget,
                           GdkEventExpose  *event,
                           GimpAboutDialog *dialog)
 {
-  GdkGC *text_gc;
-  gint   x, y;
-  gint   width, height;
+  GtkStyle *style = gtk_widget_get_style (widget);
+  GdkGC    *text_gc;
+  gint      x, y;
+  gint      width, height;
 
   if (! dialog->visible)
     return FALSE;
 
-  text_gc = widget->style->text_gc[GTK_STATE_NORMAL];
+  text_gc = style->text_gc[GTK_STATE_NORMAL];
 
   pango_layout_get_pixel_size (dialog->layout, &width, &height);
 
@@ -368,6 +365,7 @@ decorate_text (GimpAboutDialog *dialog,
                gint             anim_type,
                gdouble          time)
 {
+  GtkStyle       *style = gtk_widget_get_style (dialog->anim_area);
   const gchar    *text;
   const gchar    *ptr;
   gint            letter_count = 0;
@@ -381,8 +379,8 @@ decorate_text (GimpAboutDialog *dialog,
   PangoRectangle  lrect = {0, 0, 0, 0};
   GdkColor        mix;
 
-  mix_colors (dialog->anim_area->style->bg + GTK_STATE_NORMAL,
-              dialog->anim_area->style->fg + GTK_STATE_NORMAL, &mix, time);
+  mix_colors (style->bg + GTK_STATE_NORMAL,
+              style->fg + GTK_STATE_NORMAL, &mix, time);
 
   text = pango_layout_get_text (dialog->layout);
   g_return_if_fail (text != NULL);
@@ -478,8 +476,8 @@ decorate_text (GimpAboutDialog *dialog,
           else
             pos = ((gdouble) (letter_count - border)) / 15;
 
-          mix_colors (dialog->anim_area->style->fg + GTK_STATE_NORMAL,
-                      dialog->anim_area->style->bg + GTK_STATE_NORMAL,
+          mix_colors (style->fg + GTK_STATE_NORMAL,
+                      style->bg + GTK_STATE_NORMAL,
                       &mix, pos);
 
           ptr = g_utf8_next_char (ptr);

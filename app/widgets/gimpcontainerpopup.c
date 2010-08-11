@@ -477,13 +477,15 @@ gimp_container_popup_set_view_size (GimpContainerPopup *popup,
                                     gint                view_size)
 {
   GtkWidget *scrolled_win;
+  GtkWidget *viewport;
   gint       viewport_width;
 
   g_return_if_fail (GIMP_IS_CONTAINER_POPUP (popup));
 
   scrolled_win = GIMP_CONTAINER_BOX (popup->editor->view)->scrolled_win;
+  viewport     = gtk_bin_get_child (GTK_BIN (scrolled_win));
 
-  viewport_width = GTK_BIN (scrolled_win)->child->allocation.width;
+  viewport_width = viewport->allocation.width;
 
   view_size = CLAMP (view_size, GIMP_VIEW_SIZE_TINY,
                      MIN (GIMP_VIEW_SIZE_GIGANTIC,
@@ -586,7 +588,7 @@ static void
 gimp_container_popup_view_type_toggled (GtkWidget          *button,
                                         GimpContainerPopup *popup)
 {
-  if (GTK_TOGGLE_BUTTON (button)->active)
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
     {
       GimpViewType view_type;
 

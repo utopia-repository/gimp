@@ -90,7 +90,7 @@ HELP
 	code => <<'CODE'
 {
   channel_copy = GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (channel),
-                               G_TYPE_FROM_INSTANCE (channel), FALSE));
+                               G_TYPE_FROM_INSTANCE (channel)));
 
   if (! channel_copy)
     success = FALSE;
@@ -344,7 +344,9 @@ CODE
 
 @headers = qw("libgimpbase/gimpbase.h");
 
-@procs = qw(channel_new channel_new_from_component channel_copy
+@procs = qw(channel_new
+            channel_new_from_component
+            channel_copy
             channel_combine_masks
             channel_get_show_masked channel_set_show_masked
             channel_get_opacity channel_set_opacity

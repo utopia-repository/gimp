@@ -212,9 +212,48 @@ gimp_marshal_BOOLEAN__OBJECT_POINTER_STRING (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* VOID:BOOLEAN (./gimpmarshal.list:30) */
+/* BOOLEAN:STRING (./gimpmarshal.list:29) */
+void
+gimp_marshal_BOOLEAN__STRING (GClosure     *closure,
+                              GValue       *return_value G_GNUC_UNUSED,
+                              guint         n_param_values,
+                              const GValue *param_values,
+                              gpointer      invocation_hint G_GNUC_UNUSED,
+                              gpointer      marshal_data)
+{
+  typedef gboolean (*GMarshalFunc_BOOLEAN__STRING) (gpointer     data1,
+                                                    gpointer     arg_1,
+                                                    gpointer     data2);
+  register GMarshalFunc_BOOLEAN__STRING callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+  gboolean v_return;
 
-/* VOID:BOOLEAN,INT,INT,INT,INT (./gimpmarshal.list:31) */
+  g_return_if_fail (return_value != NULL);
+  g_return_if_fail (n_param_values == 2);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_BOOLEAN__STRING) (marshal_data ? marshal_data : cc->callback);
+
+  v_return = callback (data1,
+                       g_marshal_value_peek_string (param_values + 1),
+                       data2);
+
+  g_value_set_boolean (return_value, v_return);
+}
+
+/* VOID:BOOLEAN (./gimpmarshal.list:31) */
+
+/* VOID:BOOLEAN,INT,INT,INT,INT (./gimpmarshal.list:32) */
 void
 gimp_marshal_VOID__BOOLEAN_INT_INT_INT_INT (GClosure     *closure,
                                             GValue       *return_value G_GNUC_UNUSED,
@@ -257,9 +296,9 @@ gimp_marshal_VOID__BOOLEAN_INT_INT_INT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:BOXED (./gimpmarshal.list:32) */
+/* VOID:BOXED (./gimpmarshal.list:33) */
 
-/* VOID:BOXED,ENUM (./gimpmarshal.list:33) */
+/* VOID:BOXED,ENUM (./gimpmarshal.list:34) */
 void
 gimp_marshal_VOID__BOXED_ENUM (GClosure     *closure,
                                GValue       *return_value G_GNUC_UNUSED,
@@ -296,9 +335,9 @@ gimp_marshal_VOID__BOXED_ENUM (GClosure     *closure,
             data2);
 }
 
-/* VOID:DOUBLE (./gimpmarshal.list:34) */
+/* VOID:DOUBLE (./gimpmarshal.list:35) */
 
-/* VOID:DOUBLE,DOUBLE (./gimpmarshal.list:35) */
+/* VOID:DOUBLE,DOUBLE (./gimpmarshal.list:36) */
 void
 gimp_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
                                   GValue       *return_value G_GNUC_UNUSED,
@@ -335,9 +374,50 @@ gimp_marshal_VOID__DOUBLE_DOUBLE (GClosure     *closure,
             data2);
 }
 
-/* VOID:ENUM (./gimpmarshal.list:36) */
+/* VOID:DOUBLE,DOUBLE,DOUBLE,DOUBLE (./gimpmarshal.list:37) */
+void
+gimp_marshal_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
+                                                GValue       *return_value G_GNUC_UNUSED,
+                                                guint         n_param_values,
+                                                const GValue *param_values,
+                                                gpointer      invocation_hint G_GNUC_UNUSED,
+                                                gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE) (gpointer     data1,
+                                                                  gdouble      arg_1,
+                                                                  gdouble      arg_2,
+                                                                  gdouble      arg_3,
+                                                                  gdouble      arg_4,
+                                                                  gpointer     data2);
+  register GMarshalFunc_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
 
-/* VOID:ENUM,ENUM,BOXED,INT (./gimpmarshal.list:37) */
+  g_return_if_fail (n_param_values == 5);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_double (param_values + 1),
+            g_marshal_value_peek_double (param_values + 2),
+            g_marshal_value_peek_double (param_values + 3),
+            g_marshal_value_peek_double (param_values + 4),
+            data2);
+}
+
+/* VOID:ENUM (./gimpmarshal.list:38) */
+
+/* VOID:ENUM,ENUM,BOXED,INT (./gimpmarshal.list:39) */
 void
 gimp_marshal_VOID__ENUM_ENUM_BOXED_INT (GClosure     *closure,
                                         GValue       *return_value G_GNUC_UNUSED,
@@ -378,7 +458,7 @@ gimp_marshal_VOID__ENUM_ENUM_BOXED_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:ENUM,OBJECT (./gimpmarshal.list:38) */
+/* VOID:ENUM,OBJECT (./gimpmarshal.list:40) */
 void
 gimp_marshal_VOID__ENUM_OBJECT (GClosure     *closure,
                                 GValue       *return_value G_GNUC_UNUSED,
@@ -415,7 +495,7 @@ gimp_marshal_VOID__ENUM_OBJECT (GClosure     *closure,
             data2);
 }
 
-/* VOID:ENUM,POINTER (./gimpmarshal.list:39) */
+/* VOID:ENUM,POINTER (./gimpmarshal.list:41) */
 void
 gimp_marshal_VOID__ENUM_POINTER (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,
@@ -452,11 +532,11 @@ gimp_marshal_VOID__ENUM_POINTER (GClosure     *closure,
             data2);
 }
 
-/* VOID:FLAGS (./gimpmarshal.list:40) */
+/* VOID:FLAGS (./gimpmarshal.list:42) */
 
-/* VOID:INT (./gimpmarshal.list:41) */
+/* VOID:INT (./gimpmarshal.list:43) */
 
-/* VOID:INT,INT (./gimpmarshal.list:42) */
+/* VOID:INT,INT (./gimpmarshal.list:44) */
 void
 gimp_marshal_VOID__INT_INT (GClosure     *closure,
                             GValue       *return_value G_GNUC_UNUSED,
@@ -493,7 +573,7 @@ gimp_marshal_VOID__INT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:INT,INT,INT,INT (./gimpmarshal.list:43) */
+/* VOID:INT,INT,INT,INT (./gimpmarshal.list:45) */
 void
 gimp_marshal_VOID__INT_INT_INT_INT (GClosure     *closure,
                                     GValue       *return_value G_GNUC_UNUSED,
@@ -534,9 +614,9 @@ gimp_marshal_VOID__INT_INT_INT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT (./gimpmarshal.list:44) */
+/* VOID:OBJECT (./gimpmarshal.list:46) */
 
-/* VOID:OBJECT,INT (./gimpmarshal.list:45) */
+/* VOID:OBJECT,INT (./gimpmarshal.list:47) */
 void
 gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
                                GValue       *return_value G_GNUC_UNUSED,
@@ -573,7 +653,7 @@ gimp_marshal_VOID__OBJECT_INT (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,OBJECT (./gimpmarshal.list:46) */
+/* VOID:OBJECT,OBJECT (./gimpmarshal.list:48) */
 void
 gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
                                   GValue       *return_value G_GNUC_UNUSED,
@@ -610,7 +690,7 @@ gimp_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,POINTER (./gimpmarshal.list:47) */
+/* VOID:OBJECT,POINTER (./gimpmarshal.list:49) */
 void
 gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
                                    GValue       *return_value G_GNUC_UNUSED,
@@ -647,9 +727,9 @@ gimp_marshal_VOID__OBJECT_POINTER (GClosure     *closure,
             data2);
 }
 
-/* VOID:POINTER (./gimpmarshal.list:48) */
+/* VOID:POINTER (./gimpmarshal.list:50) */
 
-/* VOID:POINTER,BOXED (./gimpmarshal.list:49) */
+/* VOID:POINTER,BOXED (./gimpmarshal.list:51) */
 void
 gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
                                   GValue       *return_value G_GNUC_UNUSED,
@@ -686,7 +766,7 @@ gimp_marshal_VOID__POINTER_BOXED (GClosure     *closure,
             data2);
 }
 
-/* VOID:POINTER,ENUM (./gimpmarshal.list:50) */
+/* VOID:POINTER,ENUM (./gimpmarshal.list:52) */
 void
 gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,
@@ -723,9 +803,9 @@ gimp_marshal_VOID__POINTER_ENUM (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING (./gimpmarshal.list:51) */
+/* VOID:STRING (./gimpmarshal.list:53) */
 
-/* VOID:STRING,BOOLEAN,UINT,FLAGS (./gimpmarshal.list:52) */
+/* VOID:STRING,BOOLEAN,UINT,FLAGS (./gimpmarshal.list:54) */
 void
 gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
                                               GValue       *return_value G_GNUC_UNUSED,
@@ -766,7 +846,7 @@ gimp_marshal_VOID__STRING_BOOLEAN_UINT_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,FLAGS (./gimpmarshal.list:53) */
+/* VOID:STRING,FLAGS (./gimpmarshal.list:55) */
 void
 gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,
@@ -803,7 +883,7 @@ gimp_marshal_VOID__STRING_FLAGS (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,STRING,STRING (./gimpmarshal.list:54) */
+/* VOID:STRING,STRING,STRING (./gimpmarshal.list:56) */
 void
 gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
                                          GValue       *return_value G_GNUC_UNUSED,
@@ -842,5 +922,5 @@ gimp_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
             data2);
 }
 
-/* VOID:VOID (./gimpmarshal.list:55) */
+/* VOID:VOID (./gimpmarshal.list:57) */
 

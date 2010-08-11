@@ -88,11 +88,6 @@ static void      preview_update            (GtkWidget     *preview);
 static gint      quick_median_select       (const guchar **p,
                                             guchar        *i,
                                             gint           n);
-static inline guchar  pixel_luminance      (const guchar  *p,
-                                            gint           bpp);
-static inline void    pixel_copy           (guchar        *dest,
-                                            const guchar  *src,
-                                            gint           bpp);
 
 /*
  * Globals...
@@ -321,6 +316,42 @@ run (const gchar      *name,
   gimp_drawable_detach (drawable);
 }
 
+static inline guchar
+pixel_luminance (const guchar *p,
+                 gint          bpp)
+{
+  switch (bpp)
+    {
+    case 1:
+    case 2:
+      return p[0];
+
+    case 3:
+    case 4:
+      return GIMP_RGB_LUMINANCE (p[0], p[1], p[2]);
+
+    default:
+      return 0; /* should not be reached */
+    }
+}
+
+static inline void
+pixel_copy (guchar       *dest,
+            const guchar *src,
+            gint          bpp)
+{
+  switch (bpp)
+    {
+    case 4:
+      *dest++ = *src++;
+    case 3:
+      *dest++ = *src++;
+    case 2:
+      *dest++ = *src++;
+    case 1:
+      *dest++ = *src++;
+    }
+}
 
 /*
  * 'despeckle()' - Despeckle an image using a median filter.
@@ -563,7 +594,7 @@ static void
 dialog_adaptive_callback (GtkWidget *widget,
                           gpointer   data)
 {
-  if (GTK_TOGGLE_BUTTON (widget)->active)
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     filter_type |= FILTER_ADAPTIVE;
   else
     filter_type &= ~FILTER_ADAPTIVE;
@@ -575,7 +606,7 @@ static void
 dialog_recursive_callback (GtkWidget *widget,
                            gpointer   data)
 {
-  if (GTK_TOGGLE_BUTTON (widget)->active)
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     filter_type |= FILTER_RECURSIVE;
   else
     filter_type &= ~FILTER_RECURSIVE;
@@ -796,39 +827,3 @@ quick_median_select (const guchar **p,
     }
 }
 
-static inline guchar
-pixel_luminance (const guchar *p,
-                 gint          bpp)
-{
-  switch (bpp)
-    {
-    case 1:
-    case 2:
-      return p[0];
-
-    case 3:
-    case 4:
-      return GIMP_RGB_LUMINANCE (p[0], p[1], p[2]);
-
-    default:
-      return 0; /* should not be reached */
-    }
-}
-
-static inline void
-pixel_copy (guchar       *dest,
-            const guchar *src,
-            gint          bpp)
-{
-  switch (bpp)
-    {
-    case 4:
-      *dest++ = *src++;
-    case 3:
-      *dest++ = *src++;
-    case 2:
-      *dest++ = *src++;
-    case 1:
-      *dest++ = *src++;
-    }
-}

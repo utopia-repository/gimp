@@ -87,6 +87,8 @@ offset_dialog_new (GimpDrawable *drawable,
   GtkWidget    *frame;
   GtkWidget    *radio_button;
   GtkObject    *adjustment;
+  gdouble       xres;
+  gdouble       yres;
   const gchar  *title = NULL;
 
   g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), NULL);
@@ -99,6 +101,8 @@ offset_dialog_new (GimpDrawable *drawable,
   dialog->fill_type = gimp_drawable_has_alpha (drawable) | WRAP_AROUND;
   item = GIMP_ITEM (drawable);
   dialog->image     = gimp_item_get_image (item);
+
+  gimp_image_get_resolution (dialog->image, &xres, &yres);
 
   if (GIMP_IS_LAYER (drawable))
     title = _("Offset Layer");
@@ -158,7 +162,7 @@ offset_dialog_new (GimpDrawable *drawable,
   gtk_widget_show (vbox);
 
   spinbutton = gimp_spin_button_new (&adjustment,
-                                     1, 1, 1, 1, 10, 1,
+                                     1, 1, 1, 1, 10, 0,
                                      1, 2);
   gtk_entry_set_width_chars (GTK_ENTRY (spinbutton), 10);
 
@@ -187,21 +191,21 @@ offset_dialog_new (GimpDrawable *drawable,
   gimp_size_entry_set_unit (GIMP_SIZE_ENTRY (dialog->off_se), GIMP_UNIT_PIXEL);
 
   gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (dialog->off_se), 0,
-                                  dialog->image->xresolution, FALSE);
+                                  xres, FALSE);
   gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (dialog->off_se), 1,
-                                  dialog->image->yresolution, FALSE);
+                                  yres, FALSE);
 
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (dialog->off_se), 0,
-                                         -item->width,
-                                         item->width);
+                                         - gimp_item_width (item),
+                                         gimp_item_width (item));
   gimp_size_entry_set_refval_boundaries (GIMP_SIZE_ENTRY (dialog->off_se), 1,
-                                         -item->height,
-                                         item->height);
+                                         - gimp_item_height (item),
+                                         gimp_item_height (item));
 
   gimp_size_entry_set_size (GIMP_SIZE_ENTRY (dialog->off_se), 0,
-                            0, item->width);
+                            0, gimp_item_width (item));
   gimp_size_entry_set_size (GIMP_SIZE_ENTRY (dialog->off_se), 1,
-                            0, item->width);
+                            0, gimp_item_height (item));
 
   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (dialog->off_se), 0, 0);
   gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (dialog->off_se), 1, 0);
@@ -286,9 +290,9 @@ offset_halfheight_callback (GtkWidget    *widget,
       GimpItem *item = GIMP_ITEM (gimp_image_get_active_drawable (image));
 
       gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (dialog->off_se),
-                                  0, item->width / 2);
+                                  0, gimp_item_width (item) / 2);
       gimp_size_entry_set_refval (GIMP_SIZE_ENTRY (dialog->off_se),
-                                  1, item->height / 2);
+                                  1, gimp_item_height (item) / 2);
    }
 }
 

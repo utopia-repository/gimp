@@ -42,6 +42,7 @@
 
 struct _GimpHistogram
 {
+  gint           ref_count;
   gint           n_channels;
 #ifdef ENABLE_MP
   GStaticMutex   mutex;
@@ -68,6 +69,8 @@ gimp_histogram_new (void)
 {
   GimpHistogram *histogram = g_slice_new0 (GimpHistogram);
 
+  histogram->ref_count = 1;
+
 #ifdef ENABLE_MP
   g_static_mutex_init (&histogram->mutex);
 #endif
@@ -75,13 +78,61 @@ gimp_histogram_new (void)
   return histogram;
 }
 
+GimpHistogram *
+gimp_histogram_ref (GimpHistogram *histogram)
+{
+  g_return_val_if_fail (histogram != NULL, NULL);
+
+  histogram->ref_count++;
+
+  return histogram;
+}
+
 void
-gimp_histogram_free (GimpHistogram *histogram)
+gimp_histogram_unref (GimpHistogram *histogram)
 {
   g_return_if_fail (histogram != NULL);
 
-  gimp_histogram_free_values (histogram);
-  g_slice_free (GimpHistogram, histogram);
+  histogram->ref_count--;
+
+  if (histogram->ref_count == 0)
+    {
+      gimp_histogram_free_values (histogram);
+      g_slice_free (GimpHistogram, histogram);
+    }
+}
+
+/**
+ * gimp_histogram_duplicate:
+ * @histogram: a %GimpHistogram
+ *
+ * Creates a duplicate of @histogram. The duplicate has a reference
+ * count of 1 and contains the values from @histogram.
+ *
+ * Return value: a newly allocated %GimpHistogram
+ **/
+GimpHistogram *
+gimp_histogram_duplicate (GimpHistogram *histogram)
+{
+  GimpHistogram *dup;
+
+  g_return_val_if_fail (histogram != NULL, NULL);
+
+  dup = gimp_histogram_new ();
+
+#ifdef ENABLE_MP
+  g_static_mutex_lock (&histogram->mutex);
+#endif
+
+  dup->n_channels = histogram->n_channels;
+  dup->values[0]  = g_memdup (histogram->values[0],
+                              sizeof (gdouble) * dup->n_channels * 256);
+
+#ifdef ENABLE_MP
+  g_static_mutex_unlock (&histogram->mutex);
+#endif
+
+  return dup;
 }
 
 void

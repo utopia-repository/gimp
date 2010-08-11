@@ -61,7 +61,7 @@ Functions to (de)serialize a given memory size.
 Creates a string representation of a given memory size. This string
 can be parsed by <link linkend="gimp-memsize-deserialize"><function>gimp_memsize_deserialize()</function></link> and can thus be used in
 config files. It should not be displayed to the user. If you need a
-nice human-readable string please use <link linkend="gimp-memsize-to-string"><function>gimp_memsize_to_string()</function></link>.</para>
+nice human-readable string please use <link linkend="g-format-size-for-display"><function>g_format_size_for_display()</function></link>.</para>
 <para>
 
 </para><variablelist role="params">
@@ -95,14 +95,12 @@ Parses a string representation of a memory size as returned by
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2 id="gimp-memsize-to-string" role="function">
+<refsect2 id="gimp-memsize-to-string" role="function" condition="deprecated:">
 <title>gimp_memsize_to_string ()</title>
-<indexterm zone="gimp-memsize-to-string"><primary>gimp_memsize_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_memsize_to_string              (<link linkend="guint64">guint64</link> memsize);</programlisting>
+<indexterm zone="gimp-memsize-to-string" role="deprecated"><primary>gimp_memsize_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_memsize_to_string              (<link linkend="guint64">guint64</link> memsize);</programlisting>
+<warning><para><literal>gimp_memsize_to_string</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
-This function returns a human readable, translated representation
-of the passed <parameter>memsize</parameter>. Large values are displayed using a
-reasonable memsize unit, e.g.: "345" becomes "345 Bytes", "4500"
-becomes "4.4 KB" and so on.</para>
+This function is deprecated! Use <link linkend="g-format-size-for-display"><function>g_format_size_for_display()</function></link> instead.</para>
 <para>
 
 </para><variablelist role="params">

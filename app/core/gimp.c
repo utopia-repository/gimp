@@ -31,7 +31,7 @@
 
 #include "pdb/gimppdb.h"
 #include "pdb/gimp-pdb-compat.h"
-#include "pdb/internal_procs.h"
+#include "pdb/internal-procs.h"
 
 #include "plug-in/gimppluginmanager.h"
 #include "plug-in/gimppluginmanager-restore.h"
@@ -44,7 +44,6 @@
 
 #include "gimp.h"
 #include "gimp-contexts.h"
-#include "gimp-documents.h"
 #include "gimp-gradients.h"
 #include "gimp-modules.h"
 #include "gimp-parasites.h"
@@ -187,6 +186,8 @@ gimp_init (Gimp *gimp)
   gimp->stack_trace_mode = GIMP_STACK_TRACE_NEVER;
   gimp->pdb_compat_mode  = GIMP_PDB_COMPAT_OFF;
 
+  gimp->restored         = FALSE;
+
   gimp_gui_init (gimp);
 
   gimp->busy                = 0;
@@ -211,7 +212,11 @@ gimp_init (Gimp *gimp)
   gimp->next_item_ID        = 1;
   gimp->item_table          = g_hash_table_new (g_direct_hash, NULL);
 
-  gimp->displays            = gimp_list_new_weak (GIMP_TYPE_OBJECT, FALSE);
+  gimp->displays            = g_object_new (GIMP_TYPE_LIST,
+                                            "children-type", GIMP_TYPE_OBJECT,
+                                            "policy",        GIMP_CONTAINER_POLICY_WEAK,
+                                            "append",        TRUE,
+                                            NULL);
   gimp_object_set_static_name (GIMP_OBJECT (gimp->displays), "displays");
 
   gimp->next_display_ID     = 1;
@@ -255,7 +260,7 @@ gimp_dispose (GObject *object)
   Gimp *gimp = GIMP (object);
 
   if (gimp->be_verbose)
-    g_print ("EXIT: gimp_dispose\n");
+    g_print ("EXIT: %s\n", G_STRFUNC);
 
   if (gimp->brush_factory)
     gimp_data_factory_data_free (gimp->brush_factory);
@@ -278,7 +283,7 @@ gimp_finalize (GObject *object)
   Gimp *gimp = GIMP (object);
 
   if (gimp->be_verbose)
-    g_print ("EXIT: gimp_finalize\n");
+    g_print ("EXIT: %s\n", G_STRFUNC);
 
   gimp_contexts_exit (gimp);
 
@@ -438,49 +443,49 @@ gimp_get_memsize (GimpObject *object,
                                       gui_size);
 
   memsize += gimp_g_object_get_memsize (G_OBJECT (gimp->module_db));
-  memsize += gimp_g_object_get_memsize (G_OBJECT (gimp->plug_in_manager));
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->plug_in_manager),
+                                      gui_size);
 
   memsize += gimp_g_hash_table_get_memsize (gimp->image_table, 0);
   memsize += gimp_g_hash_table_get_memsize (gimp->item_table,  0);
 
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->displays), gui_size);
 
-  if (gimp->global_buffer)
-    memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->global_buffer),
-                                        gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->global_buffer),
+                                      gui_size);
 
-  memsize += (gimp_object_get_memsize (GIMP_OBJECT (gimp->named_buffers),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->fonts),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->brush_factory),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->pattern_factory),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->gradient_factory),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->palette_factory),
-                                       gui_size));
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->named_buffers),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->fonts),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->brush_factory),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->pattern_factory),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->gradient_factory),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->palette_factory),
+                                      gui_size);
 
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->pdb), gui_size);
 
-  memsize += (gimp_object_get_memsize (GIMP_OBJECT (gimp->tool_info_list),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->standard_tool_info),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->documents),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->templates),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->image_new_last_template),
-                                       gui_size));
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->tool_info_list),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->standard_tool_info),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->documents),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->templates),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->image_new_last_template),
+                                      gui_size);
 
   memsize += gimp_g_list_get_memsize (gimp->context_list, 0);
 
-  memsize += (gimp_object_get_memsize (GIMP_OBJECT (gimp->default_context),
-                                       gui_size) +
-              gimp_object_get_memsize (GIMP_OBJECT (gimp->user_context),
-                                       gui_size));
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->default_context),
+                                      gui_size);
+  memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->user_context),
+                                      gui_size);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -523,7 +528,7 @@ gimp_real_initialize (Gimp               *gimp,
   GimpData *clipboard_pattern;
 
   if (gimp->be_verbose)
-    g_print ("INIT: gimp_real_initialize\n");
+    g_print ("INIT: %s\n", G_STRFUNC);
 
   status_callback (_("Initialization"), NULL, 0.0);
 
@@ -614,10 +619,12 @@ gimp_real_restore (Gimp               *gimp,
                    GimpInitStatusFunc  status_callback)
 {
   if (gimp->be_verbose)
-    g_print ("INIT: gimp_real_restore\n");
+    g_print ("INIT: %s\n", G_STRFUNC);
 
   gimp_plug_in_manager_restore (gimp->plug_in_manager,
                                 gimp_get_user_context (gimp), status_callback);
+
+  gimp->restored = TRUE;
 }
 
 static gboolean
@@ -625,7 +632,7 @@ gimp_real_exit (Gimp     *gimp,
                 gboolean  force)
 {
   if (gimp->be_verbose)
-    g_print ("EXIT: gimp_real_exit\n");
+    g_print ("EXIT: %s\n", G_STRFUNC);
 
   gimp_plug_in_manager_exit (gimp->plug_in_manager);
   gimp_modules_unload (gimp);
@@ -636,9 +643,6 @@ gimp_real_exit (Gimp     *gimp,
   gimp_data_factory_data_save (gimp->palette_factory);
 
   gimp_fonts_reset (gimp);
-
-  if (gimp->config->save_document_history)
-    gimp_documents_save (gimp);
 
   gimp_templates_save (gimp);
   gimp_parasiterc_save (gimp);
@@ -769,7 +773,7 @@ gimp_load_config (Gimp        *gimp,
   g_return_if_fail (gimp->edit_config == NULL);
 
   if (gimp->be_verbose)
-    g_print ("INIT: gimp_load_config\n");
+    g_print ("INIT: %s\n", G_STRFUNC);
 
   /*  this needs to be done before gimprc loading because gimprc can
    *  use user defined units
@@ -801,7 +805,7 @@ gimp_initialize (Gimp               *gimp,
   g_return_if_fail (GIMP_IS_CORE_CONFIG (gimp->config));
 
   if (gimp->be_verbose)
-    g_print ("INIT: gimp_initialize\n");
+    g_print ("INIT: %s\n", G_STRFUNC);
 
   g_signal_emit (gimp, gimp_signals[INITIALIZE], 0, status_callback);
 }
@@ -814,7 +818,7 @@ gimp_restore (Gimp               *gimp,
   g_return_if_fail (status_callback != NULL);
 
   if (gimp->be_verbose)
-    g_print ("INIT: gimp_restore\n");
+    g_print ("INIT: %s\n", G_STRFUNC);
 
   /*  initialize  the global parasite table  */
   status_callback (_("Looking for data files"), _("Parasites"), 0.0);
@@ -841,20 +845,31 @@ gimp_restore (Gimp               *gimp,
   if (! gimp->no_fonts)
     gimp_fonts_load (gimp);
 
-  /*  initialize the document history  */
-  status_callback (NULL, _("Documents"), 0.6);
-  gimp_documents_load (gimp);
-
   /*  initialize the template list  */
-  status_callback (NULL, _("Templates"), 0.7);
+  status_callback (NULL, _("Templates"), 0.6);
   gimp_templates_load (gimp);
 
   /*  initialize the module list  */
-  status_callback (NULL, _("Modules"), 0.8);
+  status_callback (NULL, _("Modules"), 0.7);
   gimp_modules_load (gimp);
 
   g_signal_emit (gimp, gimp_signals[RESTORE], 0, status_callback);
 }
+
+/**
+ * gimp_is_restored:
+ * @gimp: a #Gimp object
+ *
+ * Return value: %TRUE if GIMP is completely started, %FALSE otherwise.
+ **/
+gboolean
+gimp_is_restored (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  return gimp->restored;
+}
+
 
 /**
  * gimp_exit:
@@ -873,7 +888,7 @@ gimp_exit (Gimp     *gimp,
   g_return_if_fail (GIMP_IS_GIMP (gimp));
 
   if (gimp->be_verbose)
-    g_print ("EXIT: gimp_exit\n");
+    g_print ("EXIT: %s\n", G_STRFUNC);
 
   g_signal_emit (gimp, gimp_signals[EXIT], 0,
                  force ? TRUE : FALSE,
@@ -1055,4 +1070,12 @@ gimp_message_valist (Gimp                *gimp,
   gimp_show_message (gimp, handler, severity, NULL, message);
 
   g_free (message);
+}
+
+gboolean
+gimp_use_gegl (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  return gimp->config->use_gegl;
 }

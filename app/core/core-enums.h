@@ -299,6 +299,7 @@ typedef enum  /*< pdb-skip >*/
 {
   GIMP_SELECTION_OFF,
   GIMP_SELECTION_LAYER_OFF,
+  GIMP_SELECTION_LAYER_ON,
   GIMP_SELECTION_ON,
   GIMP_SELECTION_PAUSE,
   GIMP_SELECTION_RESUME
@@ -436,8 +437,8 @@ typedef enum /*< pdb-skip >*/
   GIMP_UNDO_VECTORS_MOD,              /*< desc="Path modification"           >*/
   GIMP_UNDO_VECTORS_REPOSITION,       /*< desc="Reposition path"             >*/
   GIMP_UNDO_FS_TO_LAYER,              /*< desc="Floating selection to layer" >*/
-  GIMP_UNDO_FS_RIGOR,                 /*< desc="FS rigor"                    >*/
-  GIMP_UNDO_FS_RELAX,                 /*< desc="FS relax"                    >*/
+  GIMP_UNDO_FS_RIGOR,                 /*< desc="Rigor floating selection"    >*/
+  GIMP_UNDO_FS_RELAX,                 /*< desc="Relax floating selection"    >*/
   GIMP_UNDO_TRANSFORM,                /*< desc="Transform"                   >*/
   GIMP_UNDO_PAINT,                    /*< desc="Paint"                       >*/
   GIMP_UNDO_INK,                      /*< desc="Ink"                         >*/
@@ -445,7 +446,7 @@ typedef enum /*< pdb-skip >*/
   GIMP_UNDO_PARASITE_ATTACH,          /*< desc="Attach parasite"             >*/
   GIMP_UNDO_PARASITE_REMOVE,          /*< desc="Remove parasite"             >*/
 
-  GIMP_UNDO_CANT                      /*< desc="EEK: can't undo"             >*/
+  GIMP_UNDO_CANT                      /*< desc="Not undoable"                >*/
 } GimpUndoType;
 
 

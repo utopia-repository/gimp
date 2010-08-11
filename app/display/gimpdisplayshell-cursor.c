@@ -46,6 +46,8 @@ static void  gimp_display_shell_real_set_cursor (GimpDisplayShell   *shell,
                                                  gboolean            always_install);
 
 
+/*  public functions  */
+
 void
 gimp_display_shell_set_cursor (GimpDisplayShell   *shell,
                                GimpCursorType      cursor_type,
@@ -61,6 +63,18 @@ gimp_display_shell_set_cursor (GimpDisplayShell   *shell,
                                           tool_cursor,
                                           modifier,
                                           FALSE);
+    }
+}
+
+void
+gimp_display_shell_unset_cursor (GimpDisplayShell *shell)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  if (! shell->using_override_cursor)
+    {
+      gimp_display_shell_real_set_cursor (shell,
+                                          (GimpCursorType) -1, 0, 0, FALSE);
     }
 }
 
@@ -103,11 +117,12 @@ gimp_display_shell_unset_override_cursor (GimpDisplayShell *shell)
 }
 
 void
-gimp_display_shell_update_cursor (GimpDisplayShell *shell,
-                                  gint              display_x,
-                                  gint              display_y,
-                                  gint              image_x,
-                                  gint              image_y)
+gimp_display_shell_update_cursor (GimpDisplayShell    *shell,
+                                  GimpCursorPrecision  precision,
+                                  gint                 display_x,
+                                  gint                 display_y,
+                                  gdouble              image_x,
+                                  gdouble              image_y)
 {
   GimpDialogFactory *factory;
   GimpSessionInfo   *session_info;
@@ -145,7 +160,7 @@ gimp_display_shell_update_cursor (GimpDisplayShell *shell,
    *  possibly snapped...
    */
   gimp_statusbar_update_cursor (GIMP_STATUSBAR (shell->statusbar),
-                                image_x, image_y);
+                                precision, image_x, image_y);
 
   factory = gimp_dialog_factory_from_name ("dock");
   session_info = gimp_dialog_factory_find_session_info (factory,
@@ -197,6 +212,9 @@ gimp_display_shell_clear_cursor (GimpDisplayShell *shell)
     }
 }
 
+
+/*  private functions  */
+
 static void
 gimp_display_shell_real_set_cursor (GimpDisplayShell   *shell,
                                     GimpCursorType      cursor_type,
@@ -204,17 +222,24 @@ gimp_display_shell_real_set_cursor (GimpDisplayShell   *shell,
                                     GimpCursorModifier  modifier,
                                     gboolean            always_install)
 {
-  GimpDisplayConfig *config;
-  GimpCursorFormat   cursor_format;
+  GimpCursorFormat cursor_format;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
-  config = GIMP_DISPLAY_CONFIG (shell->display->image->gimp->config);
+  if (cursor_type == (GimpCursorType) -1)
+    {
+      shell->current_cursor = cursor_type;
+
+      if (GTK_WIDGET_DRAWABLE (shell->canvas))
+        gdk_window_set_cursor (shell->canvas->window, NULL);
+
+      return;
+    }
 
   if (cursor_type != GIMP_CURSOR_NONE &&
       cursor_type != GIMP_CURSOR_BAD)
     {
-      switch (config->cursor_mode)
+      switch (shell->display->config->cursor_mode)
         {
         case GIMP_CURSOR_MODE_TOOL_ICON:
           break;
@@ -243,7 +268,7 @@ gimp_display_shell_real_set_cursor (GimpDisplayShell   *shell,
         }
     }
 
-  cursor_format = GIMP_GUI_CONFIG (config)->cursor_format;
+  cursor_format = GIMP_GUI_CONFIG (shell->display->config)->cursor_format;
 
   if (shell->cursor_format   != cursor_format ||
       shell->current_cursor  != cursor_type   ||

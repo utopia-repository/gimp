@@ -33,36 +33,6 @@
 #include "gimp-intl.h"
 
 
-static const GimpActionEntry dialogs_actions[] =
-{
-  { "dialogs-menu",          NULL, N_("_Dialogs")         },
-  { "dialogs-new-dock-menu", NULL, N_("Create New Doc_k") },
-
-  { "dialogs-new-dock-lcp", NULL,
-    N_("_Layers, Channels & Paths"), NULL,
-    N_("Open a Layers, Channels & Paths dock"),
-    G_CALLBACK (dialogs_create_lc_cmd_callback),
-    GIMP_HELP_DOCK },
-
-  { "dialogs-new-dock-data", NULL,
-    N_("_Brushes, Patterns & Gradients"), NULL,
-    N_("Open a Brushes, Patterns & Gradients dock"),
-    G_CALLBACK (dialogs_create_data_cmd_callback),
-    GIMP_HELP_DOCK },
-
-  { "dialogs-new-dock-stuff", NULL,
-    N_("_Misc. Stuff"), NULL,
-    N_("Open a dock containing miscellaneous dialogs"),
-    G_CALLBACK (dialogs_create_stuff_cmd_callback),
-    GIMP_HELP_DOCK },
-
-  { "dialogs-toolbox", NULL,
-    N_("Tool_box"), "<control>B",
-    N_("Raise the toolbox"),
-    G_CALLBACK (dialogs_show_toolbox_cmd_callback),
-    GIMP_HELP_TOOLBOX }
-};
-
 const GimpStringActionEntry dialogs_dockable_actions[] =
 {
   { "dialogs-tool-options", GIMP_STOCK_TOOL_OPTIONS,
@@ -149,6 +119,12 @@ const GimpStringActionEntry dialogs_dockable_actions[] =
     "gimp-brush-grid|gimp-brush-list",
     GIMP_HELP_BRUSH_DIALOG },
 
+  { "dialogs-brush-editor", GIMP_STOCK_BRUSH,
+    N_("Brush Editor"), NULL,
+    N_("Open the brush editor"),
+    "gimp-brush-editor",
+    GIMP_HELP_BRUSH_EDIT },
+
   { "dialogs-patterns", GIMP_STOCK_PATTERN,
     N_("P_atterns"), "<control><shift>P",
     N_("Open the patterns dialog"),
@@ -161,11 +137,23 @@ const GimpStringActionEntry dialogs_dockable_actions[] =
     "gimp-gradient-list|gimp-gradient-grid",
     GIMP_HELP_GRADIENT_DIALOG },
 
+  { "dialogs-gradient-editor", GIMP_STOCK_GRADIENT,
+    N_("Gradient Editor"), NULL,
+    N_("Open the gradient editor"),
+    "gimp-gradient-editor",
+    GIMP_HELP_GRADIENT_EDIT },
+
   { "dialogs-palettes", GIMP_STOCK_PALETTE,
     N_("Pal_ettes"), NULL,
     N_("Open the palettes dialog"),
     "gimp-palette-list|gimp-palette-grid",
     GIMP_HELP_PALETTE_DIALOG },
+
+  { "dialogs-palette-editor", GIMP_STOCK_PALETTE,
+    N_("Palette Editor"), NULL,
+    N_("Open the palette editor"),
+    "gimp-palette-editor",
+    GIMP_HELP_PALETTE_EDIT },
 
   { "dialogs-fonts", GIMP_STOCK_FONT,
     N_("_Fonts"), NULL,
@@ -185,7 +173,7 @@ const GimpStringActionEntry dialogs_dockable_actions[] =
     "gimp-image-list|gimp-image-grid",
     GIMP_HELP_IMAGE_DIALOG },
 
-  { "dialogs-document-history", GTK_STOCK_OPEN,
+  { "dialogs-document-history", "document-open-recent",
     N_("Document Histor_y"), "",
     N_("Open the document history dialog"),
     "gimp-document-list|gimp-document-grid",
@@ -227,14 +215,14 @@ static const GimpStringActionEntry dialogs_toplevel_actions[] =
     GIMP_HELP_KEYBOARD_SHORTCUTS },
 
   { "dialogs-module-dialog", GTK_STOCK_EXECUTE,
-    N_("_Module Manager"), NULL,
+    N_("_Modules"), NULL,
     N_("Open the module manager dialog"),
     "gimp-module-dialog",
     GIMP_HELP_MODULE_DIALOG },
 
   { "dialogs-tips", GIMP_STOCK_INFO,
     N_("_Tip of the Day"), NULL,
-    N_("Show the tip of the day"),
+    N_("Show some helpful tips on using GIMP"),
     "gimp-tips-dialog",
     GIMP_HELP_TIPS_DIALOG },
 
@@ -249,10 +237,6 @@ static const GimpStringActionEntry dialogs_toplevel_actions[] =
 void
 dialogs_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_actions (group,
-                                 dialogs_actions,
-                                 G_N_ELEMENTS (dialogs_actions));
-
   gimp_action_group_add_string_actions (group,
                                         dialogs_dockable_actions,
                                         G_N_ELEMENTS (dialogs_dockable_actions),

@@ -1,3 +1,21 @@
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
 #include "config.h"
 
 #include <gtk/gtk.h>
@@ -45,7 +63,7 @@ getsiz_from_gui (double x, double y)
 {
   return getsiz_proto (x,y, numsmvect, smvector,
                        GTK_ADJUSTMENT (smstrexpadjust)->value,
-                       GTK_TOGGLE_BUTTON (size_voronoi)->active);
+                       gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (size_voronoi)));
 }
 
 static void
@@ -306,8 +324,8 @@ smresponse (GtkWidget *widget,
           pcvals.size_vectors[i] = smvector[i];
 
         pcvals.num_size_vectors = numsmvect;
-        pcvals.size_strength_exponent  = GTK_ADJUSTMENT (smstrexpadjust)->value;
-        pcvals.size_voronoi = GTK_TOGGLE_BUTTON (size_voronoi)->active;
+        pcvals.size_strength_exponent  = gtk_adjustment_get_value (GTK_ADJUSTMENT (smstrexpadjust));
+        pcvals.size_voronoi = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (size_voronoi));
       }
       break;
     }
@@ -380,9 +398,9 @@ create_sizemap_dialog (GtkWidget *parent)
     }
 
   smwindow =
-    gimp_dialog_new (_("Size Map Editor"), "gimpressionist",
+    gimp_dialog_new (_("Size Map Editor"), PLUG_IN_BINARY,
                      gtk_widget_get_toplevel (parent), 0,
-                     gimp_standard_help_func, PLUG_IN_NAME,
+                     gimp_standard_help_func, PLUG_IN_PROC,
 
                      GTK_STOCK_APPLY,  RESPONSE_APPLY,
                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,

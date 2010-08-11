@@ -23,11 +23,12 @@
 #include "core/gimpobject.h"
 
 
-typedef GValueArray * (* GimpMarshalFunc) (GimpProcedure     *procedure,
-                                           Gimp              *gimp,
-                                           GimpContext       *context,
-                                           GimpProgress      *progress,
-                                           const GValueArray *args);
+typedef GValueArray * (* GimpMarshalFunc) (GimpProcedure      *procedure,
+                                           Gimp               *gimp,
+                                           GimpContext        *context,
+                                           GimpProgress       *progress,
+                                           const GValueArray  *args,
+                                           GError            **error);
 
 
 #define GIMP_TYPE_PROCEDURE            (gimp_procedure_get_type ())
@@ -69,17 +70,18 @@ struct _GimpProcedureClass
 {
   GimpObjectClass parent_class;
 
-  GValueArray * (* execute)       (GimpProcedure *procedure,
-                                   Gimp          *gimp,
-                                   GimpContext   *context,
-                                   GimpProgress  *progress,
-                                   GValueArray   *args);
-  void          (* execute_async) (GimpProcedure *procedure,
-                                   Gimp          *gimp,
-                                   GimpContext   *context,
-                                   GimpProgress  *progress,
-                                   GValueArray   *args,
-                                   GimpObject    *display);
+  GValueArray * (* execute)       (GimpProcedure  *procedure,
+                                   Gimp           *gimp,
+                                   GimpContext    *context,
+                                   GimpProgress   *progress,
+                                   GValueArray    *args,
+                                   GError        **error);
+  void          (* execute_async) (GimpProcedure  *procedure,
+                                   Gimp           *gimp,
+                                   GimpContext    *context,
+                                   GimpProgress   *progress,
+                                   GValueArray    *args,
+                                   GimpObject     *display);
 };
 
 
@@ -96,13 +98,13 @@ void            gimp_procedure_set_strings        (GimpProcedure    *procedure,
                                                    const gchar      *date,
                                                    const gchar      *deprecated);
 void            gimp_procedure_set_static_strings (GimpProcedure    *procedure,
-                                                   gchar            *original_name,
-                                                   gchar            *blurb,
-                                                   gchar            *help,
-                                                   gchar            *author,
-                                                   gchar            *copyright,
-                                                   gchar            *date,
-                                                   gchar            *deprecated);
+                                                   const gchar      *original_name,
+                                                   const gchar      *blurb,
+                                                   const gchar      *help,
+                                                   const gchar      *author,
+                                                   const gchar      *copyright,
+                                                   const gchar      *date,
+                                                   const gchar      *deprecated);
 void            gimp_procedure_take_strings       (GimpProcedure    *procedure,
                                                    gchar            *original_name,
                                                    gchar            *blurb,
@@ -119,19 +121,22 @@ void            gimp_procedure_add_return_value   (GimpProcedure    *procedure,
 
 GValueArray   * gimp_procedure_get_arguments      (GimpProcedure    *procedure);
 GValueArray   * gimp_procedure_get_return_values  (GimpProcedure    *procedure,
-                                                   gboolean          success);
+                                                   gboolean          success,
+                                                   const GError     *error);
 
 GValueArray   * gimp_procedure_execute            (GimpProcedure    *procedure,
                                                    Gimp             *gimp,
                                                    GimpContext      *context,
                                                    GimpProgress     *progress,
-                                                   GValueArray      *args);
+                                                   GValueArray      *args,
+                                                   GError          **error);
 void            gimp_procedure_execute_async      (GimpProcedure    *procedure,
                                                    Gimp             *gimp,
                                                    GimpContext      *context,
                                                    GimpProgress     *progress,
                                                    GValueArray      *args,
-                                                   GimpObject       *display);
+                                                   GimpObject       *display,
+                                                   GError          **error);
 
 
 #endif  /*  __GIMP_PROCEDURE_H__  */

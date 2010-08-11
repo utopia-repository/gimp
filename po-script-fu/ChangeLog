@@ -1,14 +1,143 @@
-2008-07-16  Žygimantas Beručka  <zygis@gnome.org>
+2008-09-24  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2008-09-22  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	 gl.po: Updated Galician translation
+
+2008-09-20 Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: Updated italian translation.
+	
+2008-09-19  Changwoo Ryu  <cwryu@debian.org>
+
+	* ko.po: Updated Korean translation by Choi, Ji-Hui.
+
+2008-09-18 Inaki Larrañaga Murgoitio  <dooteo@euskalgnu.org>
+
+	* eu.po: Updated Basque translation.
+
+2008-09-17  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated German translation.
+
+2008-09-16  Gil Forcada  <gforcada@gnome.org>
+
+	* ca.po: Minor fix to Catalan translation.
+
+2008-09-15  Alexandre Prokoudine  <alexandre.prokoudine@gmail.com>
+
+	* ru.po: updated and improved Russian translation.
+
+2008-09-12  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2008-09-11  Goran Rakić  <grakic@devbase.net>
+
+	* LINGUAS, sr@latin.po, sr@Latn.po: Conversion from sr@Latn to sr@latin.
+
+2008-09-07  Gil Forcada  <gforcada@gnome.org>
+
+	* ca.po: Updated Catalan translation by Joaquim Perez.
+
+2008-09-02  Sven Neumann  <sven@gimp.org>
+
+	* LINGUAS: added missing language: az.
+
+2008-09-02  Sven Neumann  <sven@gimp.org>
+
+	* LINGUAS: removed language that has no translation in this
+	textdomain: tt.
+
+2008-08-29  Mugurel Tudor  <mugurelu@gnome.ro>
+
+	* ro.po: Translation updated by Cristian Secară
+	<cristi AT secarica DOT ro>
+
+2008-08-27  Inaki Larranaga Murgoitio  <dooteo@euskalgnu.org>
+
+	* eu.po: Updated Basque translation.
+
+2008-08-21  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: added plug-ins/script-fu/script-fu-eval.c
+
+	* POTFILES.skip: follow plug-in name changes.
+
+2008-08-19  Alexandre Prokoudine  <alexandre.prokoudine@gmail.com>
+
+        * ru.po: updated and improved Russian translation.
+
+2008-08-17  Sven Neumann  <sven@gimp.org>
+
+	* de.po: updated German translation.
+
+2008-08-17  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.in: removed starburst-logo.scm.
+
+2008-08-14  Takeshi AIHANA <takeshi.aihana@gmail.com>
+
+	* ja.po: Updated Japanese translation by Kiyotaka Nishibori.
+
+2008-08-10  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* gl.po: Updated Galician translation
+
+2008-08-8  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by .
+
+2008-07-31  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by .
+
+2008-07-31  Djihed Afifi <djihed@gmail.com> 
+
+	* ar.po: Updated Arabic Translation by .
+
+2008-07-22  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+        * gl.po: Updated Galician Translation by Frco. Javier Rial.
+
+2008-07-21  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+
+	* be.po: Added Belarusian translation by Hleb Valoshka.
+
+2008-07-17  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation by Francisco Vila
+
+2008-07-17  Žygimantas Beručka  <zygis@gnome.org>
 
 	* lt.po: Updated Lithuanian translation.
 
-2008-06-15   Clytie Siddall <clytie@riverland.net.au>
+2008-07-12  Daniel Nylander <po@danielnylander.se>
 
-	* vi.po: Updated Vietnamese translation.
+	* sv.po: Updated Swedish translation.
 
-2008-05-28  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+2008-07-09  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
 
-	* be.po: Added Belarusian translation by Hleb Vałoška.
+	* de.po: Updated/fixed German translation.
+
+2008-07-03  Yannig Marchegay <yannig@marchegay.org>
+
+	* oc.po: Updated Occitan translation.
+
+2008-07-02  Takeshi AIHANA <takeshi.aihana@gmail.com>
+
+	* ja.po: Updated Japanese translation by Kiyotaka Nishibori.
+
+2008-06-24  Gil Forcada  <gforcada@gnome.org>
+
+	* ca.po: Updated Catalan translation by Joaquim Perez.
+
+2008-06-06  Sven Neumann  <sven@gimp.org>
+
+	* POTFILES.skip: fixed the insanity using a new feature in
+	intltool 0.40.0 that allows us to skip whole directories.
 
 2008-05-27  Claude Paroz  <claude@2xlibre.net>
 
@@ -19,83 +148,95 @@
 	* ro.po: Updated Romanian translation by
 	Cristian Secară <cristi AT secarica DOT ro>
 
-2008-05-23  Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
+2008-05-23  Sven Neumann  <sven@gimp.org>
 
-	* be.po: Added Belarusian translation by Hleb Vałoška.
+	* Makefile.in.in: set XGETTEXT_KEYWORDS for use of msgctxtid.
 
-2008-05-07  Djihed Afifi <djihed@gmail.com> 
+2008-05-12  Marco Ciampa  <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2008-05-7  Djihed Afifi <djihed@gmail.com> 
 
 	* ar.po: Updated Arabic Translation by .
 
-2008-05-06  Marco Ciampa  <ciampix@libero.it>
+2008-05-05  Sven Neumann  <sven@gimp.org>
 
-	* it.po: updated italian translation.
-	
-2008-05-03  João S. O. Bueno  <gwidion@mpc.com.br>
+	* is.po: Updated/Added Icelandic Translation by Anna Ármansdóttir
+	<annajonna@gmail.com>
 
-	* pt_BR.po: Updated Brazilian Portuguese translation
+2008-04-21  Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
 
-2008-04-06  Gabor Kelemen  <kelemeng@gnome.hu>
+	* ru.po: Updated Russian translation.
 
-	* hu.po: Translation updated by Attila Hammer
+2008-04-09  Sven Neumann  <sven@gimp.org>
 
-2008-04-05  Changwoo Ryu  <cwryu@debian.org>
+	* POTFILES.in: updated.
 
-	* ko.po: Updated Korean translation by Choi, Ji-Hui.
+	* de.po: updated German translation.
 
-2008-04-03  Ulf-D. Ehlert  <ulfehlert@svn.gnome.org>
+2008-04-08  Sven Neumann  <sven@gimp.org>
 
-	* de.po: Minor fixes in German translation.
+	* POTFILES.skip: updated.
 
 2008-04-03  Jordi Mallach  <jordi@sindominio.net>
 
 	* ca@valencia.po: Add new Valencian-Catalan translation,
 	based on the Catalan file.
 
-2008-03-28  Djihed Afifi <djihed@gmail.com> 
-
-	* ar.po: Updated Arabic Translation by Djihed Afifi.
-
 2008-03-12  Åsmund Skjæveland  <aasmunds@ulrik.uio.no>
 
-	* nn.po: Added Norwegian Nynorsk translation from Kolbjørn Stuestøl <kol-stue@online.no>.
+	* nn.po: Added Norwegian Nynorsk translation from Kolbjørn
+	Stuestøl <kol-stue@online.no>.
 
-2008-02-22  Changwoo Ryu  <cwryu@debian.org>
+2008-03-09  Philip Withnall  <pwithnall@svn.gnome.org>
 
-	* ko.po: Updated Korean translation by Choi, Ji-Hui.
+	* en_GB.po: Updated British English translation.
+
+2008-03-06  Gil Forcada  <gforcada@gnome.org>
+
+	* ca.po: Updated Catalan translation by Joaquim Perez.
+
+2008-03-04  Hendrik Brandt  <heb@gnome-de.org>
+
+	* de.po: Updated German translation.
+
+2008-02-28  Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+
+	* ru.po: Updated Russian translation.
+
+2008-02-19  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* nb.po: Updated Norwegian bokmål translation.
 
 2008-02-17  Marco Ciampa  <ciampix@libero.it>
 
-	* it.po: small fixies to it translation thanks to A. Falappa
+	* it.po: small fix to it translation thanks to A. Falappa
 	
 2008-02-12  Kevin Cozens  <kcozens@cvs.gnome.org>
 
 	* de.po: Fixed translation for "Difference Clouds". It was using
 	same string as "Solid Noise".
 
-2008-02-12  Inaki Larranaga Murgoitio  <dooteo@euskalgnu.org>
-
-	* eu.po: Updated Basque translation.
-
-2008-01-11  Žygimantas Beručka  <zygis@gnome.org>
-
-	* lt.po: Updated Lithuanian translation.
-
-2007-12-03  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
-
-	* gl.po: Updated Galician Translation by Mancomun.
-
-2007-11-21  Gil Forcada  <gforcada@svn.gnome.org>
-
-	* ca.po: Updated Catalan translation by Joaquim Perez.
-
-2007-11-08  Daniel Nylander <po@danielnylander.se>
+2008-02-10  Daniel Nylander <po@danielnylander.se>
 
 	* sv.po: Updated Swedish translation.
+
+2008-01-10  Maxim Dziumanenko <dziumanenko@gmail.com>
+
+	* uk.po: Updated Ukrainian translation.
+
+2007-12-31  Yannig Marchegay <yannig@marchegay.org>
+
+	* oc.po: Updated Occitan translation.
 
 2007-11-01  Sven Neumann  <sven@gimp.org>
 
 	* POTFILES.in: removed hsv-graph.scm.
+
+2007-10-31  Jovan Naumovski  <jovan@lugola.net>
+
+	* mk.po: Updated Macedonian translation.
 
 2007-10-30  Priit Laes  <plaes@svn.gnome.org>
 
@@ -805,7 +946,8 @@
 
 2006-01-09  Priit Laes  <plaes@cvs.gnome.org>
 
-	* et.po: Translation updated by "Last-Translator: Olle Niit olle@paalalinn.com\n".
+	* et.po: Translation updated by "Last-Translator: Olle Niit
+	olle@paalalinn.com\n".
 
 2006-01-03  Clytie Siddall <clytie@riverland.net.au>
 
@@ -829,7 +971,7 @@
 
 2005-10-30  Takeshi AIHANA <aihana@gnome.gr.jp>
 
-	 * ja.po: Updated Japanese translation by
+	* ja.po: Updated Japanese translation by
 		OKANO Takayoshi <kano@na.rim.or.jp>.
 
 2005-10-26  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>

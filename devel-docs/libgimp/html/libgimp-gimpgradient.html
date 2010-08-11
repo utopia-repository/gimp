@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -64,6 +65,8 @@ gboolean            <a class="link" href="libgimp-gimpgradient.html#gimp-gradien
                                                          gboolean reverse,
                                                          gint *num_color_samples,
                                                          gdouble **color_samples);
+gint                <a class="link" href="libgimp-gimpgradient.html#gimp-gradient-get-number-of-segments" title="gimp_gradient_get_number_of_segments ()">gimp_gradient_get_number_of_segments</a>
+                                                        (const gchar *name);
 gboolean            <a class="link" href="libgimp-gimpgradient.html#gimp-gradient-segment-get-left-color" title="gimp_gradient_segment_get_left_color ()">gimp_gradient_segment_get_left_color</a>
                                                         (const gchar *name,
                                                          gint segment,
@@ -465,6 +468,39 @@ correspond to the RGBA values for each sample.</p>
 </tbody>
 </table></div>
 <p class="since">Since  GIMP 2.2
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-gradient-get-number-of-segments"></a><h3>gimp_gradient_get_number_of_segments ()</h3>
+<pre class="programlisting">gint                gimp_gradient_get_number_of_segments
+                                                        (const gchar *name);</pre>
+<p>
+Returns the number of segments of the specified gradient
+</p>
+<p>
+This procedure returns the number of segments of the specified
+gradient.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> The gradient name.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> Number of segments.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
 </p>
 </div>
 <hr>

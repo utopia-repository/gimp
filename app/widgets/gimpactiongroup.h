@@ -22,8 +22,6 @@
 #ifndef __GIMP_ACTION_GROUP_H__
 #define __GIMP_ACTION_GROUP_H__
 
-#include <gtk/gtkactiongroup.h>
-
 
 #define GIMP_TYPE_ACTION_GROUP              (gimp_action_group_get_type ())
 #define GIMP_ACTION_GROUP(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ACTION_GROUP, GimpActionGroup))
@@ -195,7 +193,7 @@ void   gimp_action_group_set_action_viewable  (GimpActionGroup     *group,
                                                GimpViewable        *viewable);
 void   gimp_action_group_set_action_hide_empty(GimpActionGroup     *group,
                                                const gchar         *action_name,
-                                               gboolean             is_important);
+                                               gboolean             hide_empty);
 
 
 #endif  /* __GIMP_ACTION_GROUP_H__ */

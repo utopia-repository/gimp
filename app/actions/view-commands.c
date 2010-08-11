@@ -36,9 +36,10 @@
 #include "display/gimpdisplayoptions.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-appearance.h"
-#include "display/gimpdisplayshell-close.h"
 #include "display/gimpdisplayshell-filter-dialog.h"
 #include "display/gimpdisplayshell-scale.h"
+#include "display/gimpdisplayshell-scale-dialog.h"
+#include "display/gimpdisplayshell-scroll.h"
 
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimpcolordialog.h"
@@ -100,13 +101,13 @@ view_zoom_fit_in_cmd_callback (GtkAction *action,
 }
 
 void
-view_zoom_fit_to_cmd_callback (GtkAction *action,
+view_zoom_fill_cmd_callback (GtkAction *action,
                                gpointer   data)
 {
   GimpDisplay *display;
   return_if_no_display (display, data);
 
-  gimp_display_shell_scale_fit_to (GIMP_DISPLAY_SHELL (display->shell));
+  gimp_display_shell_scale_fill (GIMP_DISPLAY_SHELL (display->shell));
 }
 
 void
@@ -162,7 +163,7 @@ view_zoom_cmd_callback (GtkAction *action,
 
         scale = action_select_value ((GimpActionSelectType) value,
                                      scale,
-                                     0.0, 512.0,
+                                     0.0, 512.0, 1.0,
                                      1.0 / 8.0, 1.0, 16.0, 0.0,
                                      FALSE);
 
@@ -260,6 +261,7 @@ view_scroll_horizontal_cmd_callback (GtkAction *action,
                                 shell->hsbdata->lower,
                                 shell->hsbdata->upper -
                                 shell->hsbdata->page_size,
+                                shell->hsbdata->lower,
                                 1,
                                 shell->hsbdata->step_increment,
                                 shell->hsbdata->page_increment,
@@ -285,6 +287,7 @@ view_scroll_vertical_cmd_callback (GtkAction *action,
                                 shell->vsbdata->lower,
                                 shell->vsbdata->upper -
                                 shell->vsbdata->page_size,
+                                shell->vsbdata->lower,
                                 1,
                                 shell->vsbdata->step_increment,
                                 shell->vsbdata->page_increment,
@@ -608,17 +611,14 @@ view_padding_color_cmd_callback (GtkAction *action,
       g_object_set_data (G_OBJECT (shell), "padding-color-dialog", NULL);
 
       {
-        GimpDisplayConfig  *config;
         GimpDisplayOptions *default_options;
-
-        config = GIMP_DISPLAY_CONFIG (display->image->gimp->config);
 
         options->padding_mode_set = FALSE;
 
         if (fullscreen)
-          default_options = config->default_fullscreen_view;
+          default_options = display->config->default_fullscreen_view;
         else
-          default_options = config->default_view;
+          default_options = display->config->default_view;
 
         gimp_display_shell_set_padding (shell,
                                         default_options->padding_mode,
@@ -633,9 +633,13 @@ view_shrink_wrap_cmd_callback (GtkAction *action,
                                gpointer   data)
 {
   GimpDisplay *display;
+  GimpDisplayShell *shell;
   return_if_no_display (display, data);
 
-  gimp_display_shell_scale_shrink_wrap (GIMP_DISPLAY_SHELL (display->shell));
+  shell = GIMP_DISPLAY_SHELL (display->shell);
+
+  gimp_display_shell_scale_shrink_wrap (shell,
+                                        FALSE);
 }
 
 void

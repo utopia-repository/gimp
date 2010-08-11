@@ -36,25 +36,26 @@
 
 #include "gimp-intl.h"
 
-
 enum
 {
   RESPONSE_PREVIOUS = 1,
   RESPONSE_NEXT     = 2
 };
 
-static void  tips_set_labels      (GimpTip   *tip);
-static void  tips_dialog_response (GtkWidget *dialog,
-                                   gint       response);
-static void  tips_dialog_destroy  (GtkWidget *widget,
-                                   gpointer   data);
+static void  tips_dialog_set_tip  (GimpTip       *tip);
+static void  tips_dialog_response (GtkWidget     *dialog,
+                                   gint           response);
+static void  tips_dialog_destroy  (GtkWidget     *widget,
+                                   GimpGuiConfig *config);
+static void  more_button_clicked  (GtkWidget     *button,
+                                   Gimp          *gimp);
 
 
-static GtkWidget *tips_dialog   = NULL;
-static GtkWidget *welcome_label = NULL;
-static GtkWidget *thetip_label  = NULL;
-static GList     *tips          = NULL;
-static GList     *current_tip   = NULL;
+static GtkWidget *tips_dialog = NULL;
+static GtkWidget *tip_label   = NULL;
+static GtkWidget *more_button = NULL;
+static GList     *tips        = NULL;
+static GList     *current_tip = NULL;
 
 
 GtkWidget *
@@ -62,7 +63,6 @@ tips_dialog_create (Gimp *gimp)
 {
   GimpGuiConfig *config;
   GtkWidget     *vbox;
-  GtkWidget     *vbox2;
   GtkWidget     *hbox;
   GtkWidget     *button;
   GtkWidget     *image;
@@ -84,31 +84,33 @@ tips_dialog_create (Gimp *gimp)
         {
           GimpTip *tip;
 
-          if (error->code == G_FILE_ERROR_NOENT)
+          if (! error)
             {
-              tip = gimp_tip_new ("<b>%s</b>",
-                                  _("Your GIMP tips file appears to be missing!"));
-              gimp_tip_set (tip,
-                            _("There should be a file called '%s'. "
-                              "Please check your installation."), filename);
+              tip = gimp_tip_new (_("The GIMP tips file is empty!"), NULL);
+            }
+          else if (error->code == G_FILE_ERROR_NOENT)
+            {
+              tip = gimp_tip_new (_("The GIMP tips file appears to be "
+                                    "missing!"),
+                                  _("There should be a file called '%s'. "
+                                    "Please check your installation."),
+                                  gimp_filename_to_utf8 (filename));
             }
           else
             {
-              tip = gimp_tip_new ("<b>%s</b>",
-                                  _("The GIMP tips file could not be parsed!"));
-              gimp_tip_set (tip, "%s", error->message);
+              tip = gimp_tip_new (_("The GIMP tips file could not be parsed!"),
+                                  "%s", error->message);
             }
 
           tips = g_list_prepend (tips, tip);
-          g_error_free (error);
         }
       else if (error)
         {
           g_printerr ("Error while parsing '%s': %s\n",
                       filename, error->message);
-          g_error_free (error);
         }
 
+      g_clear_error (&error);
       g_free (filename);
     }
 
@@ -141,15 +143,6 @@ tips_dialog_create (Gimp *gimp)
                         gtk_image_new_from_stock (GTK_STOCK_GO_FORWARD,
                                                   GTK_ICON_SIZE_BUTTON));
 
-  button = gtk_dialog_add_button (GTK_DIALOG (tips_dialog),
-                                  GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE);
-
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (tips_dialog),
-                                           GTK_RESPONSE_CLOSE,
-                                           RESPONSE_PREVIOUS,
-                                           RESPONSE_NEXT,
-                                           -1);
-
   gtk_dialog_set_response_sensitive (GTK_DIALOG (tips_dialog),
                                      RESPONSE_NEXT, tips_count > 1);
   gtk_dialog_set_response_sensitive (GTK_DIALOG (tips_dialog),
@@ -173,50 +166,48 @@ tips_dialog_create (Gimp *gimp)
   gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);
   gtk_widget_show (hbox);
 
-  vbox2 = gtk_vbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox2, TRUE, TRUE, 0);
-  gtk_widget_show (vbox2);
-
-  welcome_label = gtk_label_new (NULL);
-  gtk_label_set_justify (GTK_LABEL (welcome_label), GTK_JUSTIFY_LEFT);
-  gtk_label_set_line_wrap (GTK_LABEL (welcome_label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (welcome_label), 0.5, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox2), welcome_label, FALSE, FALSE, 0);
-
-  thetip_label = gtk_label_new (NULL);
-  gtk_label_set_selectable (GTK_LABEL (thetip_label), TRUE);
-  gtk_label_set_justify (GTK_LABEL (thetip_label), GTK_JUSTIFY_LEFT);
-  gtk_label_set_line_wrap (GTK_LABEL (thetip_label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (thetip_label), 0.5, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox2), thetip_label, TRUE, TRUE, 0);
-  gtk_widget_show (thetip_label);
-
-  gtk_container_set_focus_chain (GTK_CONTAINER (vbox2), NULL);
-
-  vbox2 = gtk_vbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox2, FALSE, FALSE, 0);
-  gtk_widget_show (vbox2);
+  vbox = gtk_vbox_new (FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+  gtk_widget_show (vbox);
 
   image = gtk_image_new_from_stock (GIMP_STOCK_INFO, GTK_ICON_SIZE_DIALOG);
-  gtk_box_pack_start (GTK_BOX (vbox2), image, TRUE, FALSE, 0);
+  gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
+  gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
   gtk_widget_show (image);
 
-  button = gimp_prop_check_button_new (G_OBJECT (config), "show-tips",
-                                       _("Show tip next time GIMP starts"));
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-  gtk_widget_show (button);
+  gtk_container_set_focus_chain (GTK_CONTAINER (hbox), NULL);
 
-  tips_set_labels (current_tip->data);
+  tip_label = gtk_label_new (NULL);
+  gtk_label_set_selectable (GTK_LABEL (tip_label), TRUE);
+  gtk_label_set_justify (GTK_LABEL (tip_label), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (tip_label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (tip_label), 0.5, 0.0);
+  gtk_box_pack_start (GTK_BOX (vbox), tip_label, TRUE, TRUE, 0);
+  gtk_widget_show (tip_label);
+
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  gtk_widget_show (hbox);
+
+  more_button = gtk_link_button_new_with_label ("http://docs.gimp.org/",
+  /*  a link to the related section in the user manual  */
+                                                _("Learn more"));
+  gtk_widget_show (more_button);
+  gtk_box_pack_start (GTK_BOX (hbox), more_button, FALSE, FALSE, 0);
+
+  g_signal_connect (more_button, "clicked",
+                    G_CALLBACK (more_button_clicked),
+                    gimp);
+
+  tips_dialog_set_tip (current_tip->data);
 
   return tips_dialog;
 }
 
 static void
-tips_dialog_destroy (GtkWidget *widget,
-                     gpointer   data)
+tips_dialog_destroy (GtkWidget     *widget,
+                     GimpGuiConfig *config)
 {
-  GimpGuiConfig *config = GIMP_GUI_CONFIG (data);
-
   /* the last-shown-tip is saved in sessionrc */
   config->last_tip = g_list_position (tips, current_tip);
 
@@ -235,12 +226,12 @@ tips_dialog_response (GtkWidget *dialog,
     {
     case RESPONSE_PREVIOUS:
       current_tip = current_tip->prev ? current_tip->prev : g_list_last (tips);
-      tips_set_labels (current_tip->data);
+      tips_dialog_set_tip (current_tip->data);
       break;
 
     case RESPONSE_NEXT:
       current_tip = current_tip->next ? current_tip->next : tips;
-      tips_set_labels (current_tip->data);
+      tips_dialog_set_tip (current_tip->data);
       break;
 
     default:
@@ -250,15 +241,25 @@ tips_dialog_response (GtkWidget *dialog,
 }
 
 static void
-tips_set_labels (GimpTip *tip)
+tips_dialog_set_tip (GimpTip *tip)
 {
   g_return_if_fail (tip != NULL);
 
-  if (tip->welcome)
-    gtk_widget_show (welcome_label);
-  else
-    gtk_widget_hide (welcome_label);
+  gtk_label_set_markup (GTK_LABEL (tip_label), tip->text);
 
-  gtk_label_set_markup (GTK_LABEL (welcome_label), tip->welcome);
-  gtk_label_set_markup (GTK_LABEL (thetip_label), tip->thetip);
+  /*  set the URI to unset the "visited" state  */
+  gtk_link_button_set_uri (GTK_LINK_BUTTON (more_button),
+                           "http://docs.gimp.org/");
+
+  gtk_widget_set_sensitive (more_button, tip->help_id != NULL);
+}
+
+static void
+more_button_clicked (GtkWidget *button,
+                     Gimp      *gimp)
+{
+  GimpTip *tip = current_tip->data;
+
+  if (tip->help_id)
+    gimp_help (gimp, NULL, NULL, tip->help_id);
 }

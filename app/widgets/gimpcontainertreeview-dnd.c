@@ -185,9 +185,9 @@ gimp_container_tree_view_scroll_timeout (gpointer data)
 #endif
 
   if (tree_view->scroll_dir == GDK_SCROLL_UP)
-    new_value = adj->value - SCROLL_STEP;
+    new_value = gtk_adjustment_get_value (adj) - SCROLL_STEP;
   else
-    new_value = adj->value + SCROLL_STEP;
+    new_value = gtk_adjustment_get_value (adj) + SCROLL_STEP;
 
   new_value = CLAMP (new_value, adj->lower, adj->upper - adj->page_size);
 
@@ -317,6 +317,9 @@ gimp_container_tree_view_drag_drop (GtkWidget             *widget,
         {
           gboolean success = TRUE;
 
+          /* XXX: Make GimpContainerTreeViewClass::drop_viewable()
+           * return success?
+           */
           tree_view_class->drop_viewable (tree_view, src_viewable,
                                           dest_viewable, drop_pos);
 

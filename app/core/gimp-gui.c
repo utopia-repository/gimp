@@ -50,6 +50,7 @@ gimp_gui_init (Gimp *gimp)
   gimp->gui.help                = NULL;
   gimp->gui.get_program_class   = NULL;
   gimp->gui.get_display_name    = NULL;
+  gimp->gui.get_user_time       = NULL;
   gimp->gui.get_theme_dir       = NULL;
   gimp->gui.display_get_by_id   = NULL;
   gimp->gui.display_get_id      = NULL;
@@ -62,6 +63,7 @@ gimp_gui_init (Gimp *gimp)
   gimp->gui.pdb_dialog_set      = NULL;
   gimp->gui.pdb_dialog_close    = NULL;
   gimp->gui.recent_list_add_uri = NULL;
+  gimp->gui.recent_list_load    = NULL;
 }
 
 void
@@ -188,14 +190,16 @@ gimp_show_message (Gimp                *gimp,
 }
 
 void
-gimp_help (Gimp        *gimp,
-           const gchar *help_domain,
-           const gchar *help_id)
+gimp_help (Gimp         *gimp,
+           GimpProgress *progress,
+           const gchar  *help_domain,
+           const gchar  *help_id)
 {
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
   if (gimp->gui.help)
-    gimp->gui.help (gimp, help_domain, help_id);
+    gimp->gui.help (gimp, progress, help_domain, help_id);
 }
 
 const gchar *
@@ -225,6 +229,27 @@ gimp_get_display_name (Gimp *gimp,
   return NULL;
 }
 
+/**
+ * gimp_get_user_time:
+ * @gimp:
+ *
+ * Returns the timestamp of the last user interaction. The timestamp is
+ * taken from events caused by user interaction such as key presses or
+ * pointer movements. See gdk_x11_display_get_user_time().
+ *
+ * Return value: the timestamp of the last user interaction
+ */
+guint32
+gimp_get_user_time (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), 0);
+
+  if (gimp->gui.get_user_time)
+    return gimp->gui.get_user_time (gimp);
+
+  return 0;
+}
+
 const gchar *
 gimp_get_theme_dir (Gimp *gimp)
 {
@@ -232,6 +257,17 @@ gimp_get_theme_dir (Gimp *gimp)
 
   if (gimp->gui.get_theme_dir)
     return gimp->gui.get_theme_dir (gimp);
+
+  return NULL;
+}
+
+GimpObject *
+gimp_get_empty_display (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+
+  if (gimp->gui.get_empty_display)
+    return gimp->gui.get_empty_display (gimp);
 
   return NULL;
 }
@@ -281,10 +317,10 @@ gimp_create_display (Gimp      *gimp,
                      gdouble    scale)
 {
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
-  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (image == NULL || GIMP_IS_IMAGE (image), NULL);
 
   if (gimp->gui.display_create)
-    return gimp->gui.display_create (image, unit, scale);
+    return gimp->gui.display_create (gimp, image, unit, scale);
 
   return NULL;
 }
@@ -429,4 +465,13 @@ gimp_recent_list_add_uri (Gimp        *gimp,
     return gimp->gui.recent_list_add_uri (gimp, uri, mime_type);
 
   return FALSE;
+}
+
+void
+gimp_recent_list_load (Gimp *gimp)
+{
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+
+  if (gimp->gui.recent_list_load)
+    gimp->gui.recent_list_load (gimp);
 }

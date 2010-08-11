@@ -29,6 +29,8 @@
 #include "config/gimpdisplayconfig.h"
 
 #include "core/gimp.h"
+#include "core/gimpcontainer.h"
+#include "core/gimpcontext.h"
 #include "core/gimpimage.h"
 
 #include "file/file-utils.h"
@@ -55,7 +57,6 @@ static gboolean  gimp_display_shell_close_time_changed (GimpMessageBox   *box);
 static void      gimp_display_shell_close_response     (GtkWidget        *widget,
                                                         gboolean          close,
                                                         GimpDisplayShell *shell);
-
 static void      gimp_time_since                       (guint  then,
                                                         gint  *hours,
                                                         gint  *minutes);
@@ -76,7 +77,7 @@ gimp_display_shell_close (GimpDisplayShell *shell,
   /*  FIXME: gimp_busy HACK not really appropriate here because we only
    *  want to prevent the busy image and display to be closed.  --Mitch
    */
-  if (image->gimp->busy)
+  if (shell->display->gimp->busy)
     return;
 
   /*  If the image has been modified, give the user a chance to save
@@ -84,15 +85,36 @@ gimp_display_shell_close (GimpDisplayShell *shell,
    *  to an image canvas.  (a image with disp_count = 1)
    */
   if (! kill_it              &&
+      image                  &&
       image->disp_count == 1 &&
       image->dirty           &&
-      GIMP_DISPLAY_CONFIG (image->gimp->config)->confirm_on_close)
+      shell->display->config->confirm_on_close)
     {
-      gimp_display_shell_close_dialog (shell, image);
+      /*  If there's a save dialog active for this image, then raise it.
+       *  (see bug #511965)
+       */
+      GtkWidget *dialog = g_object_get_data (G_OBJECT (image),
+                                             "gimp-file-save-dialog");
+      if (dialog)
+        {
+          gtk_window_present (GTK_WINDOW (dialog));
+        }
+      else
+        {
+          gimp_display_shell_close_dialog (shell, image);
+        }
+    }
+  else if (image)
+    {
+      gimp_display_close (shell->display);
     }
   else
     {
-      gimp_display_delete (shell->display);
+      /* Activate the action instead of simply calling gimp_exit(), so
+       * the quit action's sensitivity is taken into account.
+       */
+      gimp_ui_manager_activate_action (shell->menubar_manager,
+                                       "file", "file-quit");
     }
 }
 
@@ -173,7 +195,7 @@ gimp_display_shell_close_dialog (GimpDisplayShell *shell,
                            G_OBJECT (box));
 
   /*  update every 10 seconds  */
-  source = g_timeout_source_new (10 * 1000);
+  source = g_timeout_source_new_seconds (10);
   g_source_set_closure (source, closure);
   g_source_attach (source, NULL);
   g_source_unref (source);
@@ -277,7 +299,7 @@ gimp_display_shell_close_response (GtkWidget        *widget,
   switch (response_id)
     {
     case GTK_RESPONSE_CLOSE:
-      gimp_display_delete (shell->display);
+      gimp_display_close (shell->display);
       break;
 
     case RESPONSE_SAVE:

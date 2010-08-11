@@ -627,6 +627,7 @@ gimp_selection_control_get_type (void)
   {
     { GIMP_SELECTION_OFF, "GIMP_SELECTION_OFF", "off" },
     { GIMP_SELECTION_LAYER_OFF, "GIMP_SELECTION_LAYER_OFF", "layer-off" },
+    { GIMP_SELECTION_LAYER_ON, "GIMP_SELECTION_LAYER_ON", "layer-on" },
     { GIMP_SELECTION_ON, "GIMP_SELECTION_ON", "on" },
     { GIMP_SELECTION_PAUSE, "GIMP_SELECTION_PAUSE", "pause" },
     { GIMP_SELECTION_RESUME, "GIMP_SELECTION_RESUME", "resume" },
@@ -637,6 +638,7 @@ gimp_selection_control_get_type (void)
   {
     { GIMP_SELECTION_OFF, "GIMP_SELECTION_OFF", NULL },
     { GIMP_SELECTION_LAYER_OFF, "GIMP_SELECTION_LAYER_OFF", NULL },
+    { GIMP_SELECTION_LAYER_ON, "GIMP_SELECTION_LAYER_ON", NULL },
     { GIMP_SELECTION_ON, "GIMP_SELECTION_ON", NULL },
     { GIMP_SELECTION_PAUSE, "GIMP_SELECTION_PAUSE", NULL },
     { GIMP_SELECTION_RESUME, "GIMP_SELECTION_RESUME", NULL },
@@ -919,15 +921,15 @@ gimp_undo_type_get_type (void)
     { GIMP_UNDO_VECTORS_MOD, N_("Path modification"), NULL },
     { GIMP_UNDO_VECTORS_REPOSITION, N_("Reposition path"), NULL },
     { GIMP_UNDO_FS_TO_LAYER, N_("Floating selection to layer"), NULL },
-    { GIMP_UNDO_FS_RIGOR, N_("FS rigor"), NULL },
-    { GIMP_UNDO_FS_RELAX, N_("FS relax"), NULL },
+    { GIMP_UNDO_FS_RIGOR, N_("Rigor floating selection"), NULL },
+    { GIMP_UNDO_FS_RELAX, N_("Relax floating selection"), NULL },
     { GIMP_UNDO_TRANSFORM, N_("Transform"), NULL },
     { GIMP_UNDO_PAINT, N_("Paint"), NULL },
     { GIMP_UNDO_INK, N_("Ink"), NULL },
     { GIMP_UNDO_FOREGROUND_SELECT, N_("Select foreground"), NULL },
     { GIMP_UNDO_PARASITE_ATTACH, N_("Attach parasite"), NULL },
     { GIMP_UNDO_PARASITE_REMOVE, N_("Remove parasite"), NULL },
-    { GIMP_UNDO_CANT, N_("EEK: can't undo"), NULL },
+    { GIMP_UNDO_CANT, N_("Not undoable"), NULL },
     { 0, NULL, NULL }
   };
 

@@ -3,7 +3,6 @@
 SUBDIRS = \
 	m4macros	\
 	tools		\
-	regexrepl	\
 	cursors		\
 	themes		\
 	po		\
@@ -30,7 +29,7 @@ SUBDIRS = \
 	devel-docs	\
 	docs
 
-bin_SCRIPTS = gimptool-@GIMP_TOOL_VERSION@ @GIMPINSTALL@
+bin_SCRIPTS = @GIMPINSTALL@
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = \
@@ -65,27 +64,16 @@ EXTRA_DIST = \
 	NEWS.pre-2-4		\
 	README			\
 	README.i18n		\
-	README.win32		\
 	authors.dtd		\
 	authors.xml		\
 	authors.xsl		\
 	config.h.win32		\
 	gimp-zip.in		\
 	gimpdefs.msc		\
-	gimptool-win32.c.in	\
-	intltool-extract.in	\
-	intltool-merge.in	\
-	intltool-update.in	\
-	makefile.msc		\
-	mkinstalldirs
+	makefile.msc
 
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
-
-DISTCLEANFILES = \
-	intltool-extract	\
-	intltool-merge		\
-	intltool-update
 
 
 gimpinstall-@GIMP_TOOL_VERSION@:

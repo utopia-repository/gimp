@@ -47,7 +47,6 @@ struct _GimpGuiConfig
   gboolean             save_session_info;
   gboolean             restore_session;
   gboolean             save_tool_options;
-  gboolean             show_tips;
   gboolean             show_tooltips;
   gboolean             tearoff_menus;
   gboolean             can_change_accels;
@@ -59,6 +58,7 @@ struct _GimpGuiConfig
   gboolean             toolbox_color_area;
   gboolean             toolbox_foo_area;
   gboolean             toolbox_image_area;
+  gboolean             toolbox_wilber;
   gchar               *theme_path;
   gchar               *theme;
   gboolean             use_help;
@@ -66,6 +66,8 @@ struct _GimpGuiConfig
   gchar               *help_locales;
   GimpHelpBrowserType  help_browser;
   gchar               *web_browser;
+  gboolean             user_manual_online;
+  gchar               *user_manual_online_uri;
   GimpWindowHint       toolbox_window_hint;
   GimpWindowHint       dock_window_hint;
   gboolean             transient_docks;

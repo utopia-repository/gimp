@@ -181,7 +181,7 @@ channels_raise_cmd_callback (GtkAction *action,
   GimpChannel *channel;
   return_if_no_channel (image, channel, data);
 
-  gimp_image_raise_channel (image, channel);
+  gimp_image_raise_channel (image, channel, NULL);
   gimp_image_flush (image);
 }
 
@@ -205,7 +205,7 @@ channels_lower_cmd_callback (GtkAction *action,
   GimpChannel *channel;
   return_if_no_channel (image, channel, data);
 
-  gimp_image_lower_channel (image, channel);
+  gimp_image_lower_channel (image, channel, NULL);
   gimp_image_flush (image);
 }
 
@@ -259,8 +259,7 @@ channels_duplicate_cmd_callback (GtkAction *action,
 
       new_channel =
         GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (channel),
-                                           G_TYPE_FROM_INSTANCE (channel),
-                                           TRUE));
+                                           G_TYPE_FROM_INSTANCE (channel)));
     }
 
   gimp_image_add_channel (image, new_channel, -1);
@@ -339,8 +338,7 @@ channels_new_channel_response (GtkWidget            *widget,
 
           new_channel =
             GIMP_CHANNEL (gimp_item_duplicate (GIMP_ITEM (selection),
-                                               GIMP_TYPE_CHANNEL,
-                                               FALSE));
+                                               GIMP_TYPE_CHANNEL));
 
           gimp_object_set_name (GIMP_OBJECT (new_channel), channel_name);
           gimp_channel_set_color (new_channel, &channel_color, FALSE);
@@ -348,8 +346,8 @@ channels_new_channel_response (GtkWidget            *widget,
       else
         {
           new_channel = gimp_channel_new (options->image,
-                                          options->image->width,
-                                          options->image->height,
+                                          gimp_image_get_width  (options->image),
+                                          gimp_image_get_height (options->image),
                                           channel_name,
                                           &channel_color);
 
@@ -395,7 +393,7 @@ channels_edit_channel_response (GtkWidget            *widget,
                                      _("Channel Attributes"));
 
       if (name_changed)
-        gimp_item_rename (GIMP_ITEM (channel), new_name);
+        gimp_item_rename (GIMP_ITEM (channel), new_name, NULL);
 
       if (color_changed)
         gimp_channel_set_color (channel, &color, TRUE);

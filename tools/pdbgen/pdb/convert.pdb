@@ -36,10 +36,16 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  if (gimp_image_base_type (image) != GIMP_RGB)
-    gimp_image_convert (image, GIMP_RGB, 0, 0, FALSE, FALSE, 0, NULL, NULL);
+  if (gimp_pdb_image_is_not_base_type (image, GIMP_RGB, error))
+    {
+      success = gimp_image_convert (image, GIMP_RGB,
+                                    0, 0, FALSE, FALSE, 0, NULL,
+                                    NULL, error);
+    }
   else
-    success = FALSE;
+    {
+      success = FALSE;
+    }
 }
 CODE
     );
@@ -64,10 +70,16 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  if (gimp_image_base_type (image) != GIMP_GRAY)
-    gimp_image_convert (image, GIMP_GRAY, 0, 0, FALSE, FALSE, 0, NULL, NULL);
+  if (gimp_pdb_image_is_not_base_type (image, GIMP_GRAY, error))
+    {
+      success = gimp_image_convert (image, GIMP_GRAY,
+				    0, 0, FALSE, FALSE, 0, NULL,
+				    NULL, error);
+    }
   else
-    success = FALSE;
+    {
+      success = FALSE;
+    }
 }
 CODE
     );
@@ -119,7 +131,7 @@ HELP
 {
   GimpPalette *pal = NULL;
 
-  if (gimp_image_base_type (image) != GIMP_INDEXED)
+  if (gimp_pdb_image_is_not_base_type (image, GIMP_INDEXED, error))
     {
       switch (palette_type)
 	{
@@ -129,24 +141,35 @@ HELP
 	  break;
 
 	case GIMP_CUSTOM_PALETTE:
-          pal = (GimpPalette *)
-            gimp_container_get_child_by_name (gimp->palette_factory->container,
-                                              palette);
-	  if (pal == NULL || pal->n_colors > 256)
-	    success = FALSE;
-	  break;
+          pal = gimp_pdb_get_palette (gimp, palette, FALSE, error);
+	  if (! pal)
+            {
+              success = FALSE;
+            }
+          else if (pal->n_colors > MAXNUMCOLORS)
+            {
+              g_set_error (error, GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
+                           _("Cannot convert to a palette "
+                             "with more than 256 colors."));
+              success = FALSE;
+            }
+          break;
 
 	default:
           break;
 	}
     }
   else
-    success = FALSE;
+    {
+      success = FALSE;
+    }
 
   if (success)
-    gimp_image_convert (image, GIMP_INDEXED, num_cols, dither_type,
-		        alpha_dither, remove_unused, palette_type, pal,
-                        NULL);
+    success = gimp_image_convert (image, GIMP_INDEXED,
+                                  num_cols, dither_type,
+                                  alpha_dither, remove_unused,
+				  palette_type, pal,
+                                  NULL, error);
 }
 CODE
     );
@@ -177,15 +200,18 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
-  gimp_image_convert_set_dither_matrix (width, height, (guchar *) matrix);
+  gimp_image_convert_set_dither_matrix (matrix, width, height);
 }
 CODE
     );
 }
 
-@headers = qw("core/gimp.h" "core/gimpcontainer.h" "core/gimpdatafactory.h"
-              "core/gimpimage.h" "core/gimpimage-convert.h"
-              "core/gimppalette.h");
+@headers = qw("core/gimpimage.h"
+              "core/gimpimage-convert.h"
+              "core/gimppalette.h"
+              "gimppdberror.h"
+              "gimppdb-utils.h"
+              "gimp-intl.h");
 
 @procs = qw(image_convert_rgb
             image_convert_grayscale

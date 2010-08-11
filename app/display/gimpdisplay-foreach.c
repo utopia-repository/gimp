@@ -46,7 +46,7 @@ gimp_displays_dirty (Gimp *gimp)
     {
       GimpDisplay *display = list->data;
 
-      if (display->image->dirty)
+      if (display->image && display->image->dirty)
         return TRUE;
     }
 
@@ -139,20 +139,53 @@ gimp_displays_get_dirty_images (Gimp *gimp)
   return NULL;
 }
 
+/**
+ * gimp_displays_delete:
+ * @gimp:
+ *
+ * Calls gimp_display_delete() an all displays in the display list.
+ * This closes all displays, including the first one which is usually
+ * kept open.
+ */
 void
 gimp_displays_delete (Gimp *gimp)
 {
-  g_return_if_fail (GIMP_IS_GIMP (gimp));
-
   /*  this removes the GimpDisplay from the list, so do a while loop
    *  "around" the first element to get them all
    */
-  while (GIMP_LIST (gimp->displays)->list)
+  while (! gimp_container_is_empty (gimp->displays))
     {
       GimpDisplay *display = GIMP_LIST (gimp->displays)->list->data;
 
       gimp_display_delete (display);
     }
+}
+
+/**
+ * gimp_displays_close:
+ * @gimp:
+ *
+ * Calls gimp_display_close() an all displays in the display list. The
+ * first display will remain open without an image.
+ */
+void
+gimp_displays_close (Gimp *gimp)
+{
+  GList *list;
+  GList *iter;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+
+  list = g_list_copy (GIMP_LIST (gimp->displays)->list);
+
+  for (iter = list; iter; iter = g_list_next (iter))
+    {
+      GimpDisplay *display = iter->data;
+
+      gimp_display_close (display);
+    }
+
+  g_list_free (list);
 }
 
 void
@@ -183,7 +216,7 @@ gimp_displays_reconnect (Gimp      *gimp,
       GimpDisplay *display = list->data;
 
       if (display->image == old)
-        gimp_display_reconnect (display, new);
+        gimp_display_set_image (display, new);
     }
 
   /*  set the new_image on the remembered contexts (in reverse

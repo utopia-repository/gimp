@@ -48,36 +48,36 @@ enum
 };
 
 
-static void        gimp_brush_set_property          (GObject       *object,
-                                                     guint          property_id,
-                                                     const GValue  *value,
-                                                     GParamSpec    *pspec);
-static void        gimp_brush_get_property          (GObject       *object,
-                                                     guint          property_id,
-                                                     GValue        *value,
-                                                     GParamSpec    *pspec);
-static void        gimp_brush_finalize              (GObject       *object);
+static void          gimp_brush_set_property          (GObject       *object,
+                                                       guint          property_id,
+                                                       const GValue  *value,
+                                                       GParamSpec    *pspec);
+static void          gimp_brush_get_property          (GObject       *object,
+                                                       guint          property_id,
+                                                       GValue        *value,
+                                                       GParamSpec    *pspec);
+static void          gimp_brush_finalize              (GObject       *object);
 
-static gint64      gimp_brush_get_memsize           (GimpObject    *object,
-                                                     gint64        *gui_size);
+static gint64        gimp_brush_get_memsize           (GimpObject    *object,
+                                                       gint64        *gui_size);
 
-static gboolean    gimp_brush_get_size              (GimpViewable  *viewable,
-                                                     gint          *width,
-                                                     gint          *height);
-static TempBuf   * gimp_brush_get_new_preview       (GimpViewable  *viewable,
-                                                     GimpContext   *context,
-                                                     gint           width,
-                                                     gint           height);
-static gchar     * gimp_brush_get_description       (GimpViewable  *viewable,
-                                                     gchar        **tooltip);
-static gchar     * gimp_brush_get_extension         (GimpData      *data);
+static gboolean      gimp_brush_get_size              (GimpViewable  *viewable,
+                                                       gint          *width,
+                                                       gint          *height);
+static TempBuf     * gimp_brush_get_new_preview       (GimpViewable  *viewable,
+                                                       GimpContext   *context,
+                                                       gint           width,
+                                                       gint           height);
+static gchar       * gimp_brush_get_description       (GimpViewable  *viewable,
+                                                       gchar        **tooltip);
+static const gchar * gimp_brush_get_extension         (GimpData      *data);
 
-static GimpBrush * gimp_brush_real_select_brush     (GimpBrush     *brush,
-                                                     GimpCoords    *last_coords,
-                                                     GimpCoords    *cur_coords);
-static gboolean    gimp_brush_real_want_null_motion (GimpBrush     *brush,
-                                                     GimpCoords    *last_coords,
-                                                     GimpCoords    *cur_coords);
+static GimpBrush   * gimp_brush_real_select_brush     (GimpBrush     *brush,
+                                                       GimpCoords    *last_coords,
+                                                       GimpCoords    *cur_coords);
+static gboolean      gimp_brush_real_want_null_motion (GimpBrush     *brush,
+                                                       GimpCoords    *last_coords,
+                                                       GimpCoords    *cur_coords);
 
 
 G_DEFINE_TYPE (GimpBrush, gimp_brush, GIMP_TYPE_DATA)
@@ -211,11 +211,8 @@ gimp_brush_get_memsize (GimpObject *object,
   GimpBrush *brush   = GIMP_BRUSH (object);
   gint64     memsize = 0;
 
-  if (brush->mask)
-    memsize += temp_buf_get_memsize (brush->mask);
-
-  if (brush->pixmap)
-    memsize += temp_buf_get_memsize (brush->pixmap);
+  memsize += temp_buf_get_memsize (brush->mask);
+  memsize += temp_buf_get_memsize (brush->pixmap);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -338,7 +335,7 @@ gimp_brush_get_description (GimpViewable  *viewable,
                           brush->mask->height);
 }
 
-static gchar *
+static const gchar *
 gimp_brush_get_extension (GimpData *data)
 {
   return GIMP_BRUSH_FILE_EXTENSION;

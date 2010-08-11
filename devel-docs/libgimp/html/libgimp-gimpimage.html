@@ -20,6 +20,7 @@
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimp-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimp-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimp-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -75,6 +76,12 @@ gboolean            <a class="link" href="libgimp-gimpimage.html#gimp-image-resi
 gboolean            <a class="link" href="libgimp-gimpimage.html#gimp-image-scale" title="gimp_image_scale ()">gimp_image_scale</a>                    (gint32 image_ID,
                                                          gint new_width,
                                                          gint new_height);
+gboolean            <a class="link" href="libgimp-gimpimage.html#gimp-image-scale-full" title="gimp_image_scale_full ()">gimp_image_scale_full</a>               (gint32 image_ID,
+                                                         gint new_width,
+                                                         gint new_height,
+                                                         <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
+>GimpInterpolationType</a> interpolation);
 gboolean            <a class="link" href="libgimp-gimpimage.html#gimp-image-crop" title="gimp_image_crop ()">gimp_image_crop</a>                     (gint32 image_ID,
                                                          gint new_width,
                                                          gint new_height,
@@ -196,6 +203,8 @@ gboolean            <a class="link" href="libgimp-gimpimage.html#gimp-image-set-
                                                          gint num_colors);
 gint*               <a class="link" href="libgimp-gimpimage.html#gimp-image-get-vectors" title="gimp_image_get_vectors ()">gimp_image_get_vectors</a>              (gint32 image_ID,
                                                          gint *num_vectors);
+gint32              <a class="link" href="libgimp-gimpimage.html#gimp-image-get-vectors-by-tattoo" title="gimp_image_get_vectors_by_tattoo ()">gimp_image_get_vectors_by_tattoo</a>    (gint32 image_ID,
+                                                         gint tattoo);
 guchar*             <a class="link" href="libgimp-gimpimage.html#gimp-image-get-thumbnail-data" title="gimp_image_get_thumbnail_data ()">gimp_image_get_thumbnail_data</a>       (gint32 image_ID,
                                                          gint *width,
                                                          gint *height,
@@ -509,13 +518,13 @@ of any of the layers in this image. This is the \"canvas\" height.</p>
 <div class="refsect2" lang="en">
 <a name="gimp-image-free-shadow"></a><h3>gimp_image_free_shadow ()</h3>
 <pre class="programlisting">gboolean            gimp_image_free_shadow              (gint32 image_ID);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_image_free_shadow</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
-Free the specified image's shadow data (if it exists).
-</p>
-<p>
-This procedure is intended as a memory saving device. If any shadow
-memory has been allocated, it will be freed automatically on a call
-to <a class="link" href="libgimp-gimpimage.html#gimp-image-delete" title="gimp_image_delete ()"><code class="function">gimp_image_delete()</code></a>.</p>
+This procedure is deprecated! Use <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-free-shadow" title="gimp_drawable_free_shadow ()"><code class="function">gimp_drawable_free_shadow()</code></a>
+instead.</p>
 <p>
 
 </p>
@@ -617,12 +626,11 @@ Resize the image to the specified extents.
 <p>
 This procedure resizes the image so that it's new width and height
 are equal to the supplied parameters. Offsets are also provided
-which describe the position of the previous image's content. No
-bounds checking is currently provided, so don't supply parameters
-that are out of bounds. All channels within the image are resized
-according to the specified parameters; this includes the image
-selection mask. All layers within the image are repositioned
-according to the specified offsets.</p>
+which describe the position of the previous image's content. All
+channels within the image are resized according to the specified
+parameters; this includes the image selection mask. All layers
+within the image are repositioned according to the specified
+offsets.</p>
 <p>
 
 </p>
@@ -703,17 +711,14 @@ image are repositioned to the new image area.</p>
                                                          gint new_width,
                                                          gint new_height);</pre>
 <p>
-Scale the image to the specified extents.
+Scale the image using the default interpolation method.
 </p>
 <p>
 This procedure scales the image so that its new width and height are
-equal to the supplied parameters. Offsets are also provided which
-describe the position of the previous image's content. No bounds
-checking is currently provided, so don't supply parameters that are
-out of bounds. All channels within the image are scaled according to
-the specified parameters; this includes the image selection mask.
-All layers within the image are repositioned according to the
-specified offsets.</p>
+equal to the supplied parameters. All layers and channels within the
+image are scaled according to the specified parameters; this
+includes the image selection mask. The default interpolation method
+is used.</p>
 <p>
 
 </p>
@@ -742,6 +747,61 @@ specified offsets.</p>
 </tr>
 </tbody>
 </table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-image-scale-full"></a><h3>gimp_image_scale_full ()</h3>
+<pre class="programlisting">gboolean            gimp_image_scale_full               (gint32 image_ID,
+                                                         gint new_width,
+                                                         gint new_height,
+                                                         <a
+href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpInterpolationType"
+>GimpInterpolationType</a> interpolation);</pre>
+<p>
+Scale the image using a specific interpolation method.
+</p>
+<p>
+This procedure scales the image so that its new width and height are
+equal to the supplied parameters. All layers and channels within the
+image are scaled according to the specified parameters; this
+includes the image selection mask. This procedure allows you to
+specify the interpolation method explicitly.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>new_width</code></em> :</span></p></td>
+<td> New image width.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>new_height</code></em> :</span></p></td>
+<td> New image height.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>interpolation</code></em> :</span></p></td>
+<td> Type of interpolation.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE on success.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
+</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -784,12 +844,12 @@ range, an error is returned.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>offx</code></em> :</span></p></td>
-<td> x offset: (0 &lt;= offx &lt;= (width - new_width)).
+<td> X offset: (0 &lt;= offx &lt;= (width - new_width)).
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>offy</code></em> :</span></p></td>
-<td> y offset: (0 &lt;= offy &lt;= (height - new_height)).
+<td> Y offset: (0 &lt;= offy &lt;= (height - new_height)).
 </td>
 </tr>
 <tr>
@@ -1180,7 +1240,7 @@ Raise the specified layer in the image's layer stack
 </p>
 <p>
 This procedure raises the specified layer one step in the existing
-layer stack. It will not move the layer if there is no layer above
+layer stack. The procecure call will fail if there is no layer above
 it.</p>
 <p>
 
@@ -1216,7 +1276,7 @@ Lower the specified layer in the image's layer stack
 </p>
 <p>
 This procedure lowers the specified layer one step in the existing
-layer stack. It will not move the layer if there is no layer below
+layer stack. The procecure call will fail if there is no layer below
 it.</p>
 <p>
 
@@ -1324,8 +1384,8 @@ it.</p>
 Returns the position of the layer in the layer stack.
 </p>
 <p>
-This procedure determines the positioin of the specified layer in
-the images layer stack. If the layer doesn't exist in the image, an
+This procedure determines the position of the specified layer in the
+images layer stack. If the layer doesn't exist in the image, an
 error is returned.</p>
 <p>
 
@@ -1441,7 +1501,7 @@ Raise the specified channel in the image's channel stack
 </p>
 <p>
 This procedure raises the specified channel one step in the existing
-channel stack. It will not move the channel if there is no channel
+channel stack. The procecure call will fail if there is no channel
 above it.</p>
 <p>
 
@@ -1477,7 +1537,7 @@ Lower the specified channel in the image's channel stack
 </p>
 <p>
 This procedure lowers the specified channel one step in the existing
-channel stack. It will not move the channel if there is no channel
+channel stack. The procecure call will fail if there is no channel
 below it.</p>
 <p>
 
@@ -1512,7 +1572,7 @@ below it.</p>
 Returns the position of the channel in the channel stack.
 </p>
 <p>
-This procedure determines the positioin of the specified channel in
+This procedure determines the position of the specified channel in
 the images channel stack. If the channel doesn't exist in the image,
 an error is returned.</p>
 <p>
@@ -2579,7 +2639,7 @@ is not of base type INDEXED, this pointer will be NULL.</p>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>num_colors</code></em> :</span></p></td>
-<td> Number of colors in the colormap array.
+<td> Returns the number of colors in the colormap array.
 </td>
 </tr>
 <tr>
@@ -2669,6 +2729,44 @@ specified image.</p>
 </tbody>
 </table></div>
 <p class="since">Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gimp-image-get-vectors-by-tattoo"></a><h3>gimp_image_get_vectors_by_tattoo ()</h3>
+<pre class="programlisting">gint32              gimp_image_get_vectors_by_tattoo    (gint32 image_ID,
+                                                         gint tattoo);</pre>
+<p>
+Find a vectors with a given tattoo in an image.
+</p>
+<p>
+This procedure returns the vectors with the given tattoo in the
+specified image.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
+<td> The image.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>tattoo</code></em> :</span></p></td>
+<td> The tattoo of the vectors to find.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The vectors with the specified tattoo.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since  GIMP 2.6
 </p>
 </div>
 <hr>
@@ -3076,7 +3174,7 @@ Lower the specified vectors in the image's vectors stack
 </p>
 <p>
 This procedure lowers the specified vectors one step in the existing
-vectors stack. It will not move the vectors if there is no vectors
+vectors stack. The procecure call will fail if there is no vectors
 below it.</p>
 <p>
 
@@ -3115,7 +3213,7 @@ Raise the specified vectors in the image's vectors stack
 </p>
 <p>
 This procedure raises the specified vectors one step in the existing
-vectors stack. It will not move the vectors if there is no vectors
+vectors stack. The procecure call will fail if there is no vectors
 above it.</p>
 <p>
 
@@ -3234,7 +3332,7 @@ Returns the position of the vectors object in the vectors objects
 stack.
 </p>
 <p>
-This procedure determines the positioin of the specified vectors
+This procedure determines the position of the specified vectors
 object in the images vectors object stack. If the vectors object
 doesn't exist in the image, an error is returned.</p>
 <p>

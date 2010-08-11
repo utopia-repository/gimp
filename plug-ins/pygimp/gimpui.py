@@ -55,7 +55,7 @@ def _createMenu(items, callback, data):
                               callback, data)
         menu_item.show()
     return menu
-        
+
 
 def ImageMenu(constraint=None, callback=None, data=None):
     items = []
@@ -172,6 +172,8 @@ class ColorSelector(ColorButton):
             color = default
         elif isinstance(default, tuple):
             color = apply(gimpcolor.RGB, default)
+        elif isinstance(default, str):
+            color = gimpcolor.rgb_parse_css(default)
         ColorButton.__init__(self, _("Python-Fu Color Selection"), 100, 20,
                              color, COLOR_AREA_FLAT)
     def get_value(self):
@@ -208,7 +210,7 @@ class PaletteSelector(PaletteSelectButton):
             self.set_palette(default)
     def get_value(self):
         return self.get_palette()
-    
+
 class FontSelector(FontSelectButton):
     def __init__(self, default="Sans"):
         FontSelectButton.__init__(self)
@@ -216,7 +218,7 @@ class FontSelector(FontSelectButton):
             self.set_font(default)
     def get_value(self):
         return self.get_font()
-                
+
 class FileSelector(gtk.FileChooserButton):
     def __init__(self, default=""):
         gtk.FileChooserButton.__init__(self, _("Python-Fu File Selection"))

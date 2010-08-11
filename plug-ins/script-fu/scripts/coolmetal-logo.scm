@@ -35,9 +35,7 @@
 
     (gimp-selection-none img)
     (gimp-image-resize img img-width img-height posx posy)
-    (gimp-image-add-layer img bg-layer 1)
-    (gimp-image-add-layer img reflect-layer 1)
-    (gimp-image-add-layer img shadow-layer 1)
+    (script-fu-util-image-add-layers img shadow-layer reflect-layer bg-layer)
     (gimp-layer-set-lock-alpha logo-layer TRUE)
 
     (gimp-context-set-background bg-color)
@@ -120,6 +118,14 @@
                                          gradient-reverse)
   (begin
     (gimp-image-undo-group-start img)
+
+    (if (car (gimp-layer-is-floating-sel logo-layer))
+        (begin
+            (gimp-floating-sel-to-layer logo-layer)
+            (set! logo-layer (car (gimp-image-get-active-layer img)))
+        )
+     )
+
     (apply-cool-metal-logo-effect img logo-layer size bg-color
                                   gradient gradient-reverse)
     (gimp-image-undo-group-end img)
@@ -181,4 +187,4 @@
 )
 
 (script-fu-menu-register "script-fu-cool-metal-logo"
-                         "<Toolbox>/Xtns/Logos")
+                         "<Image>/File/Create/Logos")

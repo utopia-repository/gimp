@@ -277,6 +277,7 @@ gimp_enum_radio_frame_add (GtkFrame  *frame,
           gint       indicator_spacing;
           gint       focus_width;
           gint       focus_padding;
+          gint       border_width;
 
           gtk_widget_style_get (radio,
                                 "indicator-size",    &indicator_size,
@@ -284,6 +285,8 @@ gimp_enum_radio_frame_add (GtkFrame  *frame,
                                 "focus-line-width",  &focus_width,
                                 "focus-padding",     &focus_padding,
                                 NULL);
+
+          border_width = gtk_container_get_border_width (GTK_CONTAINER (radio));
 
           hbox = gtk_hbox_new (FALSE, 0);
 
@@ -293,7 +296,7 @@ gimp_enum_radio_frame_add (GtkFrame  *frame,
                                        3 * indicator_spacing +
                                        focus_width +
                                        focus_padding +
-                                       GTK_CONTAINER (radio)->border_width,
+                                       border_width,
                                        -1);
           gtk_box_pack_start (GTK_BOX (hbox), spacer, FALSE, FALSE, 0);
           gtk_widget_show (spacer);
@@ -307,7 +310,7 @@ gimp_enum_radio_frame_add (GtkFrame  *frame,
                             NULL);
 
           gtk_widget_set_sensitive (hbox,
-                                    GTK_TOGGLE_BUTTON (list->data)->active);
+                                    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (list->data)));
 
           gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
           gtk_box_reorder_child (GTK_BOX (vbox), hbox, pos);
@@ -343,7 +346,8 @@ gimp_get_icon_size (GtkWidget   *widget,
   g_return_val_if_fail (width > 0, icon_size);
   g_return_val_if_fail (height > 0, icon_size);
 
-  icon_set = gtk_style_lookup_icon_set (widget->style, stock_id);
+  icon_set = gtk_style_lookup_icon_set (gtk_widget_get_style (widget),
+                                        stock_id);
 
   if (! icon_set)
     return GTK_ICON_SIZE_INVALID;
@@ -979,13 +983,12 @@ gimp_widget_accel_changed (GtkAccelGroup   *accel_group,
     {
       GtkAction   *action;
       GtkAccelKey *accel_key;
-      gchar       *orig_tooltip;
       gchar       *tooltip;
       const gchar *help_id;
 
       action = g_object_get_data (G_OBJECT (widget), "gimp-accel-action");
 
-      g_object_get (action, "tooltip", &orig_tooltip, NULL);
+      g_object_get (action, "tooltip", &tooltip, NULL);
       help_id = g_object_get_qdata (G_OBJECT (action), GIMP_HELP_ID);
 
       accel_key = gtk_accel_group_find (accel_group,
@@ -996,21 +999,23 @@ gimp_widget_accel_changed (GtkAccelGroup   *accel_group,
           accel_key->accel_key &&
           accel_key->accel_flags & GTK_ACCEL_VISIBLE)
         {
-          gchar *accel = gtk_accelerator_get_label (accel_key->accel_key,
-                                                    accel_key->accel_mods);
+          gchar *escaped = g_markup_escape_text (tooltip, -1);
+          gchar *accel   = gtk_accelerator_get_label (accel_key->accel_key,
+                                                      accel_key->accel_mods);
+          gchar *tmp     = g_strdup_printf ("%s  <b>%s</b>", escaped, accel);
 
-          tooltip = g_strdup_printf ("%s  (%s)", orig_tooltip, accel);
           g_free (accel);
+          g_free (escaped);
+
+          gimp_help_set_help_data_with_markup (widget, tmp, help_id);
+          g_free (tmp);
         }
       else
         {
-          tooltip = g_strdup (orig_tooltip);
+          gimp_help_set_help_data (widget, tooltip, help_id);
         }
 
-      gimp_help_set_help_data (widget, tooltip, help_id);
-
       g_free (tooltip);
-      g_free (orig_tooltip);
     }
 }
 
@@ -1018,9 +1023,7 @@ void
 gimp_widget_set_accel_help (GtkWidget *widget,
                             GtkAction *action)
 {
-  GClosure *accel_closure = NULL;
-
-  accel_closure = gtk_action_get_accel_closure (action);
+  GClosure *accel_closure = gtk_action_get_accel_closure (action);
 
   if (accel_closure)
     {
@@ -1072,4 +1075,44 @@ gimp_get_message_stock_id (GimpMessageSeverity severity)
     }
 
   g_return_val_if_reached (GIMP_STOCK_WARNING);
+}
+
+void
+gimp_pango_layout_set_scale (PangoLayout *layout,
+                             gdouble      scale)
+{
+  PangoAttrList  *attrs;
+  PangoAttribute *attr;
+
+  g_return_if_fail (PANGO_IS_LAYOUT (layout));
+
+  attrs = pango_attr_list_new ();
+
+  attr = pango_attr_scale_new (scale);
+  attr->start_index = 0;
+  attr->end_index   = -1;
+  pango_attr_list_insert (attrs, attr);
+
+  pango_layout_set_attributes (layout, attrs);
+  pango_attr_list_unref (attrs);
+}
+
+void
+gimp_pango_layout_set_weight (PangoLayout *layout,
+                              PangoWeight  weight)
+{
+  PangoAttrList  *attrs;
+  PangoAttribute *attr;
+
+  g_return_if_fail (PANGO_IS_LAYOUT (layout));
+
+  attrs = pango_attr_list_new ();
+
+  attr = pango_attr_weight_new (weight);
+  attr->start_index = 0;
+  attr->end_index   = -1;
+  pango_attr_list_insert (attrs, attr);
+
+  pango_layout_set_attributes (layout, attrs);
+  pango_attr_list_unref (attrs);
 }

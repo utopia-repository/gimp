@@ -19,7 +19,6 @@
 #include "config.h"
 
 #include <stdarg.h>
-#include <string.h>
 #include <sys/types.h>
 
 #include <glib-object.h>
@@ -39,6 +38,7 @@
 
 #include "vectors/gimpvectors.h"
 
+#include "gimppdberror.h"
 #include "gimpprocedure.h"
 
 #include "gimp-intl.h"
@@ -53,7 +53,8 @@ static GValueArray * gimp_procedure_real_execute  (GimpProcedure  *procedure,
                                                    Gimp           *gimp,
                                                    GimpContext    *context,
                                                    GimpProgress   *progress,
-                                                   GValueArray    *args);
+                                                   GValueArray    *args,
+                                                   GError        **error);
 static void    gimp_procedure_real_execute_async  (GimpProcedure  *procedure,
                                                    Gimp           *gimp,
                                                    GimpContext    *context,
@@ -63,12 +64,11 @@ static void    gimp_procedure_real_execute_async  (GimpProcedure  *procedure,
 
 static void          gimp_procedure_free_strings  (GimpProcedure  *procedure);
 static gboolean      gimp_procedure_validate_args (GimpProcedure  *procedure,
-                                                   Gimp           *gimp,
-                                                   GimpProgress   *progress,
                                                    GParamSpec    **param_specs,
                                                    gint            n_param_specs,
                                                    GValueArray    *args,
-                                                   gboolean        return_vals);
+                                                   gboolean        return_vals,
+                                                   GError        **error);
 
 
 G_DEFINE_TYPE (GimpProcedure, gimp_procedure, GIMP_TYPE_OBJECT)
@@ -135,26 +135,13 @@ gimp_procedure_get_memsize (GimpObject *object,
 
   if (! procedure->static_strings)
     {
-      if (procedure->original_name)
-        memsize += strlen (procedure->original_name) + 1;
-
-      if (procedure->blurb)
-        memsize += strlen (procedure->blurb) + 1;
-
-      if (procedure->help)
-        memsize += strlen (procedure->help) + 1;
-
-      if (procedure->author)
-        memsize += strlen (procedure->author) + 1;
-
-      if (procedure->copyright)
-        memsize += strlen (procedure->copyright) + 1;
-
-      if (procedure->date)
-        memsize += strlen (procedure->date) + 1;
-
-      if (procedure->deprecated)
-        memsize += strlen (procedure->deprecated) + 1;
+      memsize += gimp_string_get_memsize (procedure->original_name);
+      memsize += gimp_string_get_memsize (procedure->blurb);
+      memsize += gimp_string_get_memsize (procedure->help);
+      memsize += gimp_string_get_memsize (procedure->author);
+      memsize += gimp_string_get_memsize (procedure->copyright);
+      memsize += gimp_string_get_memsize (procedure->date);
+      memsize += gimp_string_get_memsize (procedure->deprecated);
     }
 
   memsize += procedure->num_args * sizeof (GParamSpec *);
@@ -172,28 +159,30 @@ gimp_procedure_get_memsize (GimpObject *object,
 }
 
 static GValueArray *
-gimp_procedure_real_execute (GimpProcedure *procedure,
-                             Gimp          *gimp,
-                             GimpContext   *context,
-                             GimpProgress  *progress,
-                             GValueArray   *args)
+gimp_procedure_real_execute (GimpProcedure  *procedure,
+                             Gimp           *gimp,
+                             GimpContext    *context,
+                             GimpProgress   *progress,
+                             GValueArray    *args,
+                             GError        **error)
 {
   g_return_val_if_fail (args->n_values >= procedure->num_args, NULL);
 
   return procedure->marshal_func (procedure, gimp,
                                   context, progress,
-                                  args);
+                                  args, error);
 }
 
 static void
-gimp_procedure_real_execute_async (GimpProcedure *procedure,
-                                   Gimp          *gimp,
-                                   GimpContext   *context,
-                                   GimpProgress  *progress,
-                                   GValueArray   *args,
-                                   GimpObject    *display)
+gimp_procedure_real_execute_async (GimpProcedure  *procedure,
+                                   Gimp           *gimp,
+                                   GimpContext    *context,
+                                   GimpProgress   *progress,
+                                   GValueArray    *args,
+                                   GimpObject     *display)
 {
   GValueArray *return_vals;
+  GError      *error = NULL;
 
   g_return_if_fail (args->n_values >= procedure->num_args);
 
@@ -201,9 +190,17 @@ gimp_procedure_real_execute_async (GimpProcedure *procedure,
                                                                gimp,
                                                                context,
                                                                progress,
-                                                               args);
+                                                               args,
+                                                               &error);
 
   g_value_array_free (return_vals);
+
+  if (error)
+    {
+      gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
+                    "%s", error->message);
+      g_error_free (error);
+    }
 }
 
 
@@ -250,25 +247,25 @@ gimp_procedure_set_strings (GimpProcedure *procedure,
 
 void
 gimp_procedure_set_static_strings (GimpProcedure *procedure,
-                                   gchar         *original_name,
-                                   gchar         *blurb,
-                                   gchar         *help,
-                                   gchar         *author,
-                                   gchar         *copyright,
-                                   gchar         *date,
-                                   gchar         *deprecated)
+                                   const gchar   *original_name,
+                                   const gchar   *blurb,
+                                   const gchar   *help,
+                                   const gchar   *author,
+                                   const gchar   *copyright,
+                                   const gchar   *date,
+                                   const gchar   *deprecated)
 {
   g_return_if_fail (GIMP_IS_PROCEDURE (procedure));
 
   gimp_procedure_free_strings (procedure);
 
-  procedure->original_name = original_name;
-  procedure->blurb         = blurb;
-  procedure->help          = help;
-  procedure->author        = author;
-  procedure->copyright     = copyright;
-  procedure->date          = date;
-  procedure->deprecated    = deprecated;
+  procedure->original_name = (gchar *) original_name;
+  procedure->blurb         = (gchar *) blurb;
+  procedure->help          = (gchar *) help;
+  procedure->author        = (gchar *) author;
+  procedure->copyright     = (gchar *) copyright;
+  procedure->date          = (gchar *) date;
+  procedure->deprecated    = (gchar *) deprecated;
 
   procedure->static_strings = TRUE;
 }
@@ -299,26 +296,30 @@ gimp_procedure_take_strings (GimpProcedure *procedure,
 }
 
 GValueArray *
-gimp_procedure_execute (GimpProcedure *procedure,
-                        Gimp          *gimp,
-                        GimpContext   *context,
-                        GimpProgress  *progress,
-                        GValueArray   *args)
+gimp_procedure_execute (GimpProcedure  *procedure,
+                        Gimp           *gimp,
+                        GimpContext    *context,
+                        GimpProgress   *progress,
+                        GValueArray    *args,
+                        GError        **error)
 {
-  GValueArray *return_vals = NULL;
+  GValueArray *return_vals;
+  GError      *pdb_error = NULL;
 
   g_return_val_if_fail (GIMP_IS_PROCEDURE (procedure), NULL);
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
   g_return_val_if_fail (args != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  if (! gimp_procedure_validate_args (procedure, gimp, progress,
+  if (! gimp_procedure_validate_args (procedure,
                                       procedure->args, procedure->num_args,
-                                      args, FALSE))
+                                      args, FALSE, &pdb_error))
     {
-      return_vals = gimp_procedure_get_return_values (procedure, FALSE);
-      g_value_set_enum (return_vals->values, GIMP_PDB_CALLING_ERROR);
+      return_vals = gimp_procedure_get_return_values (procedure, FALSE,
+                                                      pdb_error);
+      g_propagate_error (error, pdb_error);
 
       return return_vals;
     }
@@ -328,27 +329,57 @@ gimp_procedure_execute (GimpProcedure *procedure,
                                                                gimp,
                                                                context,
                                                                progress,
-                                                               args);
+                                                               args,
+                                                               error);
 
-  /*  If there are no return arguments, assume an execution error  */
-  if (! return_vals)
+
+  if (return_vals)
     {
-      return_vals = gimp_procedure_get_return_values (procedure, FALSE);
-      g_value_set_enum (return_vals->values, GIMP_PDB_EXECUTION_ERROR);
+      if (g_value_get_enum (&return_vals->values[0]) != GIMP_PDB_SUCCESS)
+        {
+          /*  If the error has not already been set, construct one
+           *  from the error message that is optionally passed with
+           *  the return values.
+           */
+          if (error && *error == NULL)
+            {
+              if (return_vals->n_values > 1 &&
+                  G_VALUE_HOLDS_STRING (&return_vals->values[1]))
+                {
+                  g_set_error (error, 0, 0,
+                               g_value_get_string (&return_vals->values[1]));
+                }
+            }
+        }
+    }
+  else
+    {
+      g_warning ("%s: no return values, shouldn't happen", G_STRFUNC);
 
-      return return_vals;
+      pdb_error = g_error_new (GIMP_PDB_ERROR, GIMP_PDB_INVALID_RETURN_VALUE,
+                               _("Procedure '%s' returned no return values"),
+                               gimp_object_get_name (GIMP_OBJECT (procedure)));
+
+      return_vals = gimp_procedure_get_return_values (procedure, FALSE,
+                                                      pdb_error);
+      if (error && *error == NULL)
+        g_propagate_error (error, pdb_error);
+      else
+        g_error_free (pdb_error);
+
     }
 
   return return_vals;
 }
 
 void
-gimp_procedure_execute_async (GimpProcedure *procedure,
-                              Gimp          *gimp,
-                              GimpContext   *context,
-                              GimpProgress  *progress,
-                              GValueArray   *args,
-                              GimpObject    *display)
+gimp_procedure_execute_async (GimpProcedure  *procedure,
+                              Gimp           *gimp,
+                              GimpContext    *context,
+                              GimpProgress   *progress,
+                              GValueArray    *args,
+                              GimpObject     *display,
+                              GError        **error)
 {
   g_return_if_fail (GIMP_IS_PROCEDURE (procedure));
   g_return_if_fail (GIMP_IS_GIMP (gimp));
@@ -356,10 +387,11 @@ gimp_procedure_execute_async (GimpProcedure *procedure,
   g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
   g_return_if_fail (args != NULL);
   g_return_if_fail (display == NULL || GIMP_IS_OBJECT (display));
+  g_return_if_fail (error == NULL || *error == NULL);
 
-  if (gimp_procedure_validate_args (procedure, gimp, progress,
+  if (gimp_procedure_validate_args (procedure,
                                     procedure->args, procedure->num_args,
-                                    args, FALSE))
+                                    args, FALSE, error))
     {
       GIMP_PROCEDURE_GET_CLASS (procedure)->execute_async (procedure, gimp,
                                                            context, progress,
@@ -390,36 +422,74 @@ gimp_procedure_get_arguments (GimpProcedure *procedure)
 
 GValueArray *
 gimp_procedure_get_return_values (GimpProcedure *procedure,
-                                  gboolean       success)
+                                  gboolean       success,
+                                  const GError  *error)
 {
   GValueArray *args;
   GValue       value = { 0, };
-  gint         n_args;
   gint         i;
 
-  g_return_val_if_fail (GIMP_IS_PROCEDURE (procedure) ||
-                        success == FALSE, NULL);
+  g_return_val_if_fail (success == FALSE || GIMP_IS_PROCEDURE (procedure),
+                        NULL);
 
-  if (procedure)
-    n_args = procedure->num_values + 1;
+  if (success)
+    {
+      args = g_value_array_new (procedure->num_values + 1);
+
+      g_value_init (&value, GIMP_TYPE_PDB_STATUS_TYPE);
+      g_value_set_enum (&value, GIMP_PDB_SUCCESS);
+      g_value_array_append (args, &value);
+      g_value_unset (&value);
+
+      for (i = 0; i < procedure->num_values; i++)
+        {
+          g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (procedure->values[i]));
+          g_value_array_append (args, &value);
+          g_value_unset (&value);
+        }
+    }
   else
-    n_args = 1;
+    {
+      args = g_value_array_new ((error && error->message) ? 2 : 1);
 
-  args = g_value_array_new (n_args);
+      g_value_init (&value, GIMP_TYPE_PDB_STATUS_TYPE);
 
-  g_value_init (&value, GIMP_TYPE_PDB_STATUS_TYPE);
-  g_value_set_enum (&value,
-                    success ? GIMP_PDB_SUCCESS : GIMP_PDB_EXECUTION_ERROR);
-  g_value_array_append (args, &value);
-  g_value_unset (&value);
+      /*  errors in the GIMP_PDB_ERROR domain are calling errors  */
+      if (error && error->domain == GIMP_PDB_ERROR)
+        {
+          switch ((GimpPdbErrorCode) error->code)
+            {
+            case GIMP_PDB_PROCEDURE_NOT_FOUND:
+            case GIMP_PDB_INVALID_ARGUMENT:
+            case GIMP_PDB_INVALID_RETURN_VALUE:
+            case GIMP_PDB_INTERNAL_ERROR:
+              g_value_set_enum (&value, GIMP_PDB_CALLING_ERROR);
+              break;
 
-  if (procedure)
-    for (i = 0; i < procedure->num_values; i++)
-      {
-        g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (procedure->values[i]));
-        g_value_array_append (args, &value);
-        g_value_unset (&value);
-      }
+            case GIMP_PDB_CANCELLED:
+              g_value_set_enum (&value, GIMP_PDB_CANCEL);
+              break;
+
+            default:
+              g_assert_not_reached ();
+            }
+        }
+      else
+        {
+          g_value_set_enum (&value, GIMP_PDB_EXECUTION_ERROR);
+        }
+
+      g_value_array_append (args, &value);
+      g_value_unset (&value);
+
+      if (error && error->message)
+        {
+          g_value_init (&value, G_TYPE_STRING);
+          g_value_set_string (&value, error->message);
+          g_value_array_append (args, &value);
+          g_value_unset (&value);
+        }
+    }
 
   return args;
 }
@@ -490,12 +560,11 @@ gimp_procedure_free_strings (GimpProcedure *procedure)
 
 static gboolean
 gimp_procedure_validate_args (GimpProcedure  *procedure,
-                              Gimp           *gimp,
-                              GimpProgress   *progress,
                               GParamSpec    **param_specs,
                               gint            n_param_specs,
                               GValueArray    *args,
-                              gboolean        return_vals)
+                              gboolean        return_vals,
+                              GError        **error)
 {
   gint i;
 
@@ -510,27 +579,27 @@ gimp_procedure_validate_args (GimpProcedure  *procedure,
         {
           if (return_vals)
             {
-              gimp_message (gimp, G_OBJECT (progress),
-                            GIMP_MESSAGE_ERROR,
-                            _("Procedure '%s' returned a wrong value type "
-                              "for return value '%s' (#%d). "
-                              "Expected %s, got %s."),
-                            gimp_object_get_name (GIMP_OBJECT (procedure)),
-                            g_param_spec_get_name (pspec),
-                            i + 1, g_type_name (spec_type),
-                            g_type_name (arg_type));
+              g_set_error (error,
+                           GIMP_PDB_ERROR, GIMP_PDB_INVALID_RETURN_VALUE,
+                           _("Procedure '%s' returned a wrong value type "
+                             "for return value '%s' (#%d). "
+                             "Expected %s, got %s."),
+                           gimp_object_get_name (GIMP_OBJECT (procedure)),
+                           g_param_spec_get_name (pspec),
+                           i + 1, g_type_name (spec_type),
+                           g_type_name (arg_type));
             }
           else
             {
-              gimp_message (gimp, G_OBJECT (progress),
-                            GIMP_MESSAGE_ERROR,
-                            _("Procedure '%s' has been called with a "
-                              "wrong value type for argument '%s' (#%d). "
-                              "Expected %s, got %s."),
-                            gimp_object_get_name (GIMP_OBJECT (procedure)),
-                            g_param_spec_get_name (pspec),
-                            i + 1, g_type_name (spec_type),
-                            g_type_name (arg_type));
+              g_set_error (error,
+                           GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
+                           _("Procedure '%s' has been called with a "
+                             "wrong value type for argument '%s' (#%d). "
+                             "Expected %s, got %s."),
+                           gimp_object_get_name (GIMP_OBJECT (procedure)),
+                           g_param_spec_get_name (pspec),
+                           i + 1, g_type_name (spec_type),
+                           g_type_name (arg_type));
             }
 
           return FALSE;
@@ -554,27 +623,27 @@ gimp_procedure_validate_args (GimpProcedure  *procedure,
                 {
                   if (return_vals)
                     {
-                      gimp_message (gimp, G_OBJECT (progress),
-                                    GIMP_MESSAGE_ERROR,
-                                    _("Procedure '%s' returned an "
-                                      "invalid ID for argument '%s'. "
-                                      "Most likely a plug-in is trying "
-                                      "to work on a layer that doesn't "
-                                      "exist any longer."),
-                                    gimp_object_get_name (GIMP_OBJECT (procedure)),
-                                    g_param_spec_get_name (pspec));
+                      g_set_error (error,
+                                   GIMP_PDB_ERROR, GIMP_PDB_INVALID_RETURN_VALUE,
+                                   _("Procedure '%s' returned an "
+                                     "invalid ID for argument '%s'. "
+                                     "Most likely a plug-in is trying "
+                                     "to work on a layer that doesn't "
+                                     "exist any longer."),
+                                   gimp_object_get_name (GIMP_OBJECT (procedure)),
+                                   g_param_spec_get_name (pspec));
                     }
                   else
                     {
-                      gimp_message (gimp, G_OBJECT (progress),
-                                    GIMP_MESSAGE_ERROR,
-                                    _("Procedure '%s' has been called with an "
-                                      "invalid ID for argument '%s'. "
-                                      "Most likely a plug-in is trying "
-                                      "to work on a layer that doesn't "
-                                      "exist any longer."),
-                                    gimp_object_get_name (GIMP_OBJECT (procedure)),
-                                    g_param_spec_get_name (pspec));
+                      g_set_error (error,
+                                   GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
+                                   _("Procedure '%s' has been called with an "
+                                     "invalid ID for argument '%s'. "
+                                     "Most likely a plug-in is trying "
+                                     "to work on a layer that doesn't "
+                                     "exist any longer."),
+                                   gimp_object_get_name (GIMP_OBJECT (procedure)),
+                                   g_param_spec_get_name (pspec));
                     }
                 }
               else if (GIMP_IS_PARAM_SPEC_IMAGE_ID (pspec) &&
@@ -582,27 +651,27 @@ gimp_procedure_validate_args (GimpProcedure  *procedure,
                 {
                   if (return_vals)
                     {
-                      gimp_message (gimp, G_OBJECT (progress),
-                                    GIMP_MESSAGE_ERROR,
-                                    _("Procedure '%s' returned an "
-                                      "invalid ID for argument '%s'. "
-                                      "Most likely a plug-in is trying "
-                                      "to work on an image that doesn't "
-                                      "exist any longer."),
-                                    gimp_object_get_name (GIMP_OBJECT (procedure)),
-                                    g_param_spec_get_name (pspec));
+                      g_set_error (error,
+                                   GIMP_PDB_ERROR, GIMP_PDB_INVALID_RETURN_VALUE,
+                                   _("Procedure '%s' returned an "
+                                     "invalid ID for argument '%s'. "
+                                     "Most likely a plug-in is trying "
+                                     "to work on an image that doesn't "
+                                     "exist any longer."),
+                                   gimp_object_get_name (GIMP_OBJECT (procedure)),
+                                   g_param_spec_get_name (pspec));
                     }
                   else
                     {
-                      gimp_message (gimp, G_OBJECT (progress),
-                                    GIMP_MESSAGE_ERROR,
-                                    _("Procedure '%s' has been called with an "
-                                      "invalid ID for argument '%s'. "
-                                      "Most likely a plug-in is trying "
-                                      "to work on an image that doesn't "
-                                      "exist any longer."),
-                                    gimp_object_get_name (GIMP_OBJECT (procedure)),
-                                    g_param_spec_get_name (pspec));
+                      g_set_error (error,
+                                   GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
+                                   _("Procedure '%s' has been called with an "
+                                     "invalid ID for argument '%s'. "
+                                     "Most likely a plug-in is trying "
+                                     "to work on an image that doesn't "
+                                     "exist any longer."),
+                                   gimp_object_get_name (GIMP_OBJECT (procedure)),
+                                   g_param_spec_get_name (pspec));
                     }
                 }
               else
@@ -614,29 +683,29 @@ gimp_procedure_validate_args (GimpProcedure  *procedure,
 
                   if (return_vals)
                     {
-                      gimp_message (gimp, G_OBJECT (progress),
-                                    GIMP_MESSAGE_ERROR,
-                                    _("Procedure '%s' returned "
-                                      "'%s' as return value '%s' "
-                                      "(#%d, type %s). "
-                                      "This value is out of range."),
-                                    gimp_object_get_name (GIMP_OBJECT (procedure)),
-                                    value,
-                                    g_param_spec_get_name (pspec),
-                                    i + 1, g_type_name (spec_type));
+                      g_set_error (error,
+                                   GIMP_PDB_ERROR, GIMP_PDB_INVALID_RETURN_VALUE,
+                                   _("Procedure '%s' returned "
+                                     "'%s' as return value '%s' "
+                                     "(#%d, type %s). "
+                                     "This value is out of range."),
+                                   gimp_object_get_name (GIMP_OBJECT (procedure)),
+                                   value,
+                                   g_param_spec_get_name (pspec),
+                                   i + 1, g_type_name (spec_type));
                     }
                   else
                     {
-                      gimp_message (gimp, G_OBJECT (progress),
-                                    GIMP_MESSAGE_ERROR,
-                                    _("Procedure '%s' has been called with "
-                                      "value '%s' for argument '%s' "
-                                      "(#%d, type %s). "
-                                      "This value is out of range."),
-                                    gimp_object_get_name (GIMP_OBJECT (procedure)),
-                                    value,
-                                    g_param_spec_get_name (pspec),
-                                    i + 1, g_type_name (spec_type));
+                      g_set_error (error,
+                                   GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
+                                   _("Procedure '%s' has been called with "
+                                     "value '%s' for argument '%s' "
+                                     "(#%d, type %s). "
+                                     "This value is out of range."),
+                                   gimp_object_get_name (GIMP_OBJECT (procedure)),
+                                   value,
+                                   g_param_spec_get_name (pspec),
+                                   i + 1, g_type_name (spec_type));
                     }
                 }
 

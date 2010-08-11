@@ -54,6 +54,8 @@ libapptools_a_sources = \
 	gimpcroptool.h			\
 	gimpcurvestool.c		\
 	gimpcurvestool.h		\
+	gimpdesaturatetool.c		\
+	gimpdesaturatetool.h		\
 	gimpdodgeburntool.c		\
 	gimpdodgeburntool.h		\
 	gimpdrawtool.c			\
@@ -78,6 +80,8 @@ libapptools_a_sources = \
 	gimpforegroundselecttoolundo.h	\
 	gimpfuzzyselecttool.c		\
 	gimpfuzzyselecttool.h		\
+	gimpgegltool.c			\
+	gimpgegltool.h			\
 	gimphealtool.c			\
 	gimphealtool.h			\
 	gimphistogramoptions.c		\
@@ -88,10 +92,14 @@ libapptools_a_sources = \
 	gimpimagemapoptions.h		\
 	gimpimagemaptool.c		\
 	gimpimagemaptool.h		\
+	gimpimagemaptool-settings.c	\
+	gimpimagemaptool-settings.h	\
 	gimpinkoptions-gui.c		\
 	gimpinkoptions-gui.h		\
 	gimpinktool.c			\
 	gimpinktool.h			\
+	gimpiscissorsoptions.c		\
+	gimpiscissorsoptions.h		\
 	gimpiscissorstool.c		\
 	gimpiscissorstool.h		\
 	gimplevelstool.c		\
@@ -130,6 +138,8 @@ libapptools_a_sources = \
 	gimprectangletool.h		\
 	gimprectangleoptions.c		\
 	gimprectangleoptions.h		\
+	gimpregionselectoptions.c	\
+	gimpregionselectoptions.h	\
 	gimpregionselecttool.c		\
 	gimpregionselecttool.h		\
 	gimprotatetool.c		\
@@ -183,6 +193,7 @@ INCLUDES = \
 	-I$(top_builddir)/app	\
 	-I$(top_srcdir)/app	\
 	$(GTK_CFLAGS)		\
+	$(GEGL_CFLAGS)		\
 	-I$(includedir)
 
 EXTRA_DIST = makefile.msc

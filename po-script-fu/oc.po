@@ -1,52 +1,55 @@
+# Translation of oc.po to Occitan
 # Occitan (post 1500) translation for gimp script-fu.
 # Copyright (c) 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gimp package.
 #
-# Yannig MARCHEGAY <yannig@marchegay.org>, 2007.
-# 
+#
+# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2007.
+# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: gimp-script-fu 2.3.17\n"
+"Project-Id-Version: oc\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-29 15:06+0200\n"
-"PO-Revision-Date: 2007-04-26 16:03+0200\n"
-"Last-Translator: Yannig MARCHEGAY <yannig@marchegay.org>\n"
-"Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
+"POT-Creation-Date: 2008-07-02 08:57+0200\n"
+"PO-Revision-Date: 2007-12-27 15:16+0100\n"
+"Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
+"Language-Team: Occitan <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../plug-ins/script-fu/script-fu-console.c:143
-#: ../plug-ins/script-fu/script-fu-console.c:212
+#: ../plug-ins/script-fu/script-fu-console.c:133
+#: ../plug-ins/script-fu/script-fu-console.c:200
 msgid "Script-Fu Console"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-console.c:208
+#: ../plug-ins/script-fu/script-fu-console.c:196
 msgid "Welcome to TinyScheme"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-console.c:214
+#: ../plug-ins/script-fu/script-fu-console.c:202
 msgid "Interactive Scheme Development"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-console.c:250
+#: ../plug-ins/script-fu/script-fu-console.c:238
 msgid "_Browse..."
 msgstr "_Examinar..."
 
-#: ../plug-ins/script-fu/script-fu-console.c:312
+#: ../plug-ins/script-fu/script-fu-console.c:296
 msgid "Save Script-Fu Console Output"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-console.c:359
+#: ../plug-ins/script-fu/script-fu-console.c:343
 #, c-format
 msgid "Could not open '%s' for writing: %s"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-console.c:388
+#: ../plug-ins/script-fu/script-fu-console.c:372
 msgid "Script-Fu Procedure Browser"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-console.c:713
+#: ../plug-ins/script-fu/script-fu-console.c:718
 msgid "Script-Fu evaluation mode only allows non-interactive invocation"
 msgstr ""
 
@@ -59,57 +62,55 @@ msgstr ""
 msgid "You are already running the \"%s\" script."
 msgstr ""
 
-#. strip the first part of the menupath if it contains _("/Script-Fu/")
-#: ../plug-ins/script-fu/script-fu-interface.c:216
-#: ../plug-ins/script-fu/script-fu-interface.c:219
-msgid "/Script-Fu/"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu-interface.c:237
+#: ../plug-ins/script-fu/script-fu-interface.c:238
 #, c-format
 msgid "Script-Fu: %s"
 msgstr ""
 
 #. we add a colon after the label;
 #. some languages want an extra space here
-#: ../plug-ins/script-fu/script-fu-interface.c:299
+#: ../plug-ins/script-fu/script-fu-interface.c:300
 #, c-format
 msgid "%s:"
 msgstr "%s :"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:347
+#: ../plug-ins/script-fu/script-fu-interface.c:348
 msgid "Script-Fu Color Selection"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-interface.c:459
+#: ../plug-ins/script-fu/script-fu-interface.c:460
 msgid "Script-Fu File Selection"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-interface.c:462
+#: ../plug-ins/script-fu/script-fu-interface.c:463
 msgid "Script-Fu Folder Selection"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-interface.c:474
+#: ../plug-ins/script-fu/script-fu-interface.c:475
 msgid "Script-Fu Font Selection"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-interface.c:482
+#: ../plug-ins/script-fu/script-fu-interface.c:483
 msgid "Script-Fu Palette Selection"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-interface.c:491
+#: ../plug-ins/script-fu/script-fu-interface.c:492
 msgid "Script-Fu Pattern Selection"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-interface.c:500
+#: ../plug-ins/script-fu/script-fu-interface.c:501
 msgid "Script-Fu Gradient Selection"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-interface.c:509
+#: ../plug-ins/script-fu/script-fu-interface.c:510
 msgid "Script-Fu Brush Selection"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-scripts.c:664
+#: ../plug-ins/script-fu/script-fu-scripts.c:148
+msgid "Too few arguments to 'script-fu-register' call"
+msgstr ""
+
+#: ../plug-ins/script-fu/script-fu-scripts.c:667
 #, c-format
 msgid ""
 "Error while executing\n"
@@ -118,30 +119,28 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-server.c:711
+#: ../plug-ins/script-fu/script-fu-server.c:712
 msgid "Script-Fu Server Options"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-server.c:716
+#: ../plug-ins/script-fu/script-fu-server.c:717
 msgid "_Start Server"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu-server.c:744
-#, fuzzy
+#: ../plug-ins/script-fu/script-fu-server.c:745
 msgid "Server port:"
 msgstr "Pòrt del servidor :"
 
-#: ../plug-ins/script-fu/script-fu-server.c:750
-#, fuzzy
+#: ../plug-ins/script-fu/script-fu-server.c:751
 msgid "Server logfile:"
-msgstr "Pòrt del servidor :"
+msgstr ""
 
 #: ../plug-ins/script-fu/script-fu.c:110
 msgid "Interactive console for Script-Fu development"
 msgstr ""
 
 #: ../plug-ins/script-fu/script-fu.c:116
-msgid "Script-Fu _Console"
+msgid "_Console"
 msgstr ""
 
 #: ../plug-ins/script-fu/script-fu.c:140
@@ -152,118 +151,63 @@ msgstr ""
 msgid "_Start Server..."
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:300
+#: ../plug-ins/script-fu/script-fu.c:301
 msgid "_GIMP Online"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:301
+#: ../plug-ins/script-fu/script-fu.c:302
 msgid "_User Manual"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:304
+#: ../plug-ins/script-fu/script-fu.c:305
 msgid "_Script-Fu"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:306
-msgid "_Buttons"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:308
-msgid "_Logos"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:310
-msgid "_Misc"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:312
-#, fuzzy
-msgid "_Patterns"
-msgstr "Motiu"
-
-#: ../plug-ins/script-fu/script-fu.c:314
-#, fuzzy
+#: ../plug-ins/script-fu/script-fu.c:307
 msgid "_Test"
 msgstr "_Tèxt"
 
-#: ../plug-ins/script-fu/script-fu.c:316
-msgid "_Utils"
+#: ../plug-ins/script-fu/script-fu.c:310
+msgid "_Buttons"
+msgstr "_Botons"
+
+#: ../plug-ins/script-fu/script-fu.c:312
+msgid "_Logos"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:318
+#: ../plug-ins/script-fu/script-fu.c:314
+msgid "_Patterns"
+msgstr "Motiu"
+
+#: ../plug-ins/script-fu/script-fu.c:317
 msgid "_Web Page Themes"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:320
+#: ../plug-ins/script-fu/script-fu.c:319
 msgid "_Alien Glow"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:322
-#, fuzzy
+#: ../plug-ins/script-fu/script-fu.c:321
 msgid "_Beveled Pattern"
-msgstr "Motiu"
+msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:324
+#: ../plug-ins/script-fu/script-fu.c:323
 msgid "_Classic.Gimp.Org"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:327
+#: ../plug-ins/script-fu/script-fu.c:326
 msgid "Alpha to _Logo"
 msgstr ""
 
 #: ../plug-ins/script-fu/script-fu.c:329
-msgid "An_imation"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:331
-msgid "_Animators"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:333
-msgid "_Artistic"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:335
-msgid "_Blur"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:337
-msgid "_Decor"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:339
-msgid "_Effects"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:341
-msgid "En_hance"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:343
-msgid "_Light and Shadow"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:345
-msgid "S_hadow"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:347
-msgid "_Render"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:349
-msgid "_Alchemy"
-msgstr ""
-
-#: ../plug-ins/script-fu/script-fu.c:352
 msgid "Re-read all available Script-Fu scripts"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:357
+#: ../plug-ins/script-fu/script-fu.c:334
 msgid "_Refresh Scripts"
 msgstr ""
 
-#: ../plug-ins/script-fu/script-fu.c:380
+#: ../plug-ins/script-fu/script-fu.c:357
 msgid ""
 "You can not use \"Refresh Scripts\" while a Script-Fu dialog box is open.  "
 "Please close all Script-Fu windows and try again."
@@ -467,7 +411,6 @@ msgstr ""
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:1
 #: ../plug-ins/script-fu/scripts/news-text.scm.h:1
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:1
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:1
 #: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:1
 #: ../plug-ins/script-fu/scripts/swirltile.scm.h:2
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:2
@@ -585,7 +528,7 @@ msgstr ""
 #: ../plug-ins/script-fu/scripts/alien-glow-button.scm.h:7
 #: ../plug-ins/script-fu/scripts/alien-glow-logo.scm.h:6
 #: ../plug-ins/script-fu/scripts/alien-neon-logo.scm.h:8
-#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:9
+#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:8
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:8
 #: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:6
 msgid "Glow color"
@@ -657,7 +600,7 @@ msgstr ""
 #: ../plug-ins/script-fu/scripts/alien-glow-button.scm.h:1
 #: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm.h:1
 msgid "B_utton..."
-msgstr ""
+msgstr "B_oton..."
 
 #: ../plug-ins/script-fu/scripts/alien-glow-button.scm.h:3
 msgid "Create a button graphic with an eerie glow for web pages"
@@ -957,35 +900,35 @@ msgid "B_urn-In..."
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:4
-msgid ""
-"Burn-In: Needs two layers in total!\n"
-"A foreground text layer with transparency and a background layer."
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:5
 msgid "Corona width"
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:6
+#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:5
 msgid ""
 "Create intermediate layers to produce an animated 'burn-in' transition "
 "between two layers"
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:7
+#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:6
 msgid "Fadeout"
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:8
+#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:7
 msgid "Fadeout width"
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:10
+#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:9
 msgid "Prepare for GIF"
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:11
+#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:10
 msgid "Speed (pixels/frame)"
+msgstr ""
+
+#: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:11
+msgid ""
+"The Burn-In script needs two layers in total. A foreground layer with "
+"transparency and a background layer."
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/camo.scm.h:1
@@ -1241,9 +1184,7 @@ msgid "Add realistic looking coffee stains to the image"
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/coffee.scm.h:2
-msgid ""
-"Darken only\n"
-"(Better, but only for images with a lot of white)"
+msgid "Darken only"
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/coffee.scm.h:3
@@ -1294,10 +1235,6 @@ msgstr ""
 #: ../plug-ins/script-fu/scripts/coolmetal-logo.scm.h:5
 #: ../plug-ins/script-fu/scripts/frosty-logo.scm.h:4
 msgid "Effect size (pixels)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/copy-visible.scm.h:1
-msgid "This procedure is deprecated! use 'gimp-edit-copy-visible' instead."
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/crystal-logo.scm.h:1
@@ -1435,43 +1372,6 @@ msgstr ""
 msgid "_Erase Every Other Row..."
 msgstr ""
 
-#: ../plug-ins/script-fu/scripts/fade-outline.scm.h:1
-msgid "Apply generated layermask"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/fade-outline.scm.h:2
-#: ../plug-ins/script-fu/scripts/fuzzyborder.scm.h:4
-#: ../plug-ins/script-fu/scripts/old-photo.scm.h:1
-msgid "Border size"
-msgstr "Talha de la bordadura"
-
-#: ../plug-ins/script-fu/scripts/fade-outline.scm.h:3
-msgid "Clear unselected maskarea"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/fade-outline.scm.h:4
-msgid ""
-"Create a layermask that fades the edges of the selected region (or alpha)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/fade-outline.scm.h:6
-#, no-c-format
-msgid "Fade from %"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/fade-outline.scm.h:8
-#, no-c-format
-msgid "Fade to %"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/fade-outline.scm.h:9
-msgid "Use growing selection"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/fade-outline.scm.h:10
-msgid "_Fade to Layer Mask..."
-msgstr ""
-
 #: ../plug-ins/script-fu/scripts/flatland.scm.h:1
 msgid "Create an image filled with a Land Pattern"
 msgstr ""
@@ -1580,6 +1480,11 @@ msgstr ""
 #: ../plug-ins/script-fu/scripts/fuzzyborder.scm.h:3
 msgid "Blur border"
 msgstr ""
+
+#: ../plug-ins/script-fu/scripts/fuzzyborder.scm.h:4
+#: ../plug-ins/script-fu/scripts/old-photo.scm.h:1
+msgid "Border size"
+msgstr "Talha de la bordadura"
 
 #: ../plug-ins/script-fu/scripts/fuzzyborder.scm.h:7
 msgid "Granularity (1 is Low)"
@@ -1725,7 +1630,6 @@ msgid "Pattern (text)"
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:15
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:5
 msgid "Shadow"
 msgstr ""
 
@@ -1852,7 +1756,7 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/guides-new.scm.h:5
 msgid "Position"
-msgstr ""
+msgstr "Posicion"
 
 #: ../plug-ins/script-fu/scripts/guides-remove-all.scm.h:1
 msgid "Remove all horizontal and vertical guides"
@@ -1860,46 +1764,6 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/guides-remove-all.scm.h:2
 msgid "_Remove all Guides"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:1
-msgid "BG opacity"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:2
-msgid "Create a graph of the Hue, Saturation, and Value distributions"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:3
-msgid "Draw _HSV Graph..."
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:4
-msgid "End X"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:5
-msgid "End Y"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:6
-msgid "From top-left to bottom-right"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:7
-msgid "Graph scale"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:8
-msgid "Start X"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:9
-msgid "Start Y"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/hsv-graph.scm.h:10
-msgid "Use selection bounds instead of values below"
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/i26-gunya2.scm.h:1
@@ -2078,7 +1942,7 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/old-photo.scm.h:5
 msgid "Sepia"
-msgstr ""
+msgstr "Sepia"
 
 #: ../plug-ins/script-fu/scripts/old-photo.scm.h:7
 msgid "_Old Photo..."
@@ -2097,18 +1961,21 @@ msgid "File name"
 msgstr "Nom de fichièr"
 
 #: ../plug-ins/script-fu/scripts/paste-as-brush.scm.h:3
-#, fuzzy
 msgid "New _Brush..."
-msgstr "_Examinar..."
+msgstr ""
 
 #: ../plug-ins/script-fu/scripts/paste-as-brush.scm.h:4
 msgid "Paste the clipboard contents into a new brush"
 msgstr ""
 
+#: ../plug-ins/script-fu/scripts/paste-as-brush.scm.h:6
+#: ../plug-ins/script-fu/scripts/paste-as-pattern.scm.h:5
+msgid "There is no image data in the clipboard to paste."
+msgstr ""
+
 #: ../plug-ins/script-fu/scripts/paste-as-pattern.scm.h:2
-#, fuzzy
 msgid "New _Pattern..."
-msgstr "Motiu"
+msgstr ""
 
 #: ../plug-ins/script-fu/scripts/paste-as-pattern.scm.h:3
 msgid "Paste the clipboard contents into a new pattern"
@@ -2213,7 +2080,7 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/rendermap.scm.h:1
 msgid "Behavior"
-msgstr ""
+msgstr "Compòrtament"
 
 #: ../plug-ins/script-fu/scripts/rendermap.scm.h:2
 msgid "Create an image filled with an Earth-like map pattern"
@@ -2294,6 +2161,18 @@ msgstr ""
 msgid "_Round Corners..."
 msgstr ""
 
+#: ../plug-ins/script-fu/scripts/script-fu-set-cmap.scm.h:1
+msgid "Change the colormap of an image to the colors in a specified palette."
+msgstr ""
+
+#: ../plug-ins/script-fu/scripts/script-fu-set-cmap.scm.h:2
+msgid "Palette"
+msgstr "Paleta"
+
+#: ../plug-ins/script-fu/scripts/script-fu-set-cmap.scm.h:3
+msgid "Se_t Colormap..."
+msgstr ""
+
 #: ../plug-ins/script-fu/scripts/select-to-brush.scm.h:2
 msgid "Convert a selection to a brush"
 msgstr ""
@@ -2332,12 +2211,6 @@ msgid "Round the corners of the current selection"
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/selection-round.scm.h:5
-msgid ""
-"Round the corners of the current selection (deprecated, use Rounded "
-"Rectangle)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/selection-round.scm.h:6
 msgid "Rounded R_ectangle..."
 msgstr ""
 
@@ -2371,26 +2244,6 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:7
 msgid "Speed Text..."
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:2
-msgid "Create a simple sphere with a drop shadow"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:3
-msgid "Lighting (degrees)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:4
-msgid "Radius (pixels)"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:6
-msgid "Sphere color"
-msgstr ""
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:7
-msgid "_Sphere..."
 msgstr ""
 
 #: ../plug-ins/script-fu/scripts/spinning-globe.scm.h:1
@@ -2525,7 +2378,7 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm.h:30
 msgid "Tool"
-msgstr ""
+msgstr "Esplech"
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm.h:31
 msgid "Triangle"
@@ -2741,7 +2594,7 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/truchet.scm.h:4
 msgid "Foreground color"
-msgstr ""
+msgstr "Color de _fons"
 
 #: ../plug-ins/script-fu/scripts/truchet.scm.h:7
 msgid "T_ruchet..."
@@ -2911,29 +2764,8 @@ msgstr ""
 msgid "_Xach-Effect..."
 msgstr ""
 
-#~ msgid "(none)"
-#~ msgstr "(pas cap)"
+#~ msgid "_Artistic"
+#~ msgstr "_Artistic"
 
-#~ msgid "Author:"
-#~ msgstr "Autor :"
-
-#~ msgid "Copyright:"
-#~ msgstr "Copyright :"
-
-#~ msgid "Date:"
-#~ msgstr "Data :"
-
-#~ msgid "_Search:"
-#~ msgstr "_Recèrcar :"
-
-#~ msgid "Parameters"
-#~ msgstr "Paramètres"
-
-#~ msgid "Additional Information"
-#~ msgstr "Informacions suplementàrias"
-
-#~ msgid "None"
-#~ msgstr "Pas cap"
-
-#~ msgid "Filename"
-#~ msgstr "Nom del fichièr"
+#~ msgid "_Effects"
+#~ msgstr "_Efieches"

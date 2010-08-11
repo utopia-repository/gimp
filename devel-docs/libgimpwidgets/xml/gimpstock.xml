@@ -158,6 +158,8 @@
 #define             <link linkend="GIMP-STOCK-INFO:CAPS">GIMP_STOCK_INFO</link>
 #define             <link linkend="GIMP-STOCK-QUESTION:CAPS">GIMP_STOCK_QUESTION</link>
 #define             <link linkend="GIMP-STOCK-WARNING:CAPS">GIMP_STOCK_WARNING</link>
+#define             <link linkend="GIMP-STOCK-GEGL:CAPS">GIMP_STOCK_GEGL</link>
+#define             <link linkend="GIMP-STOCK-USER-MANUAL:CAPS">GIMP_STOCK_USER_MANUAL</link>
 #define             <link linkend="GIMP-STOCK-WILBER:CAPS">GIMP_STOCK_WILBER</link>
 #define             <link linkend="GIMP-STOCK-WILBER-EEK:CAPS">GIMP_STOCK_WILBER_EEK</link>
 #define             <link linkend="GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS">GIMP_STOCK_ZOOM_FOLLOW_WINDOW</link>
@@ -174,6 +176,7 @@
 #define             <link linkend="GIMP-STOCK-TOOL-COLORIZE:CAPS">GIMP_STOCK_TOOL_COLORIZE</link>
 #define             <link linkend="GIMP-STOCK-TOOL-CROP:CAPS">GIMP_STOCK_TOOL_CROP</link>
 #define             <link linkend="GIMP-STOCK-TOOL-CURVES:CAPS">GIMP_STOCK_TOOL_CURVES</link>
+#define             <link linkend="GIMP-STOCK-TOOL-DESATURATE:CAPS">GIMP_STOCK_TOOL_DESATURATE</link>
 #define             <link linkend="GIMP-STOCK-TOOL-DODGE:CAPS">GIMP_STOCK_TOOL_DODGE</link>
 #define             <link linkend="GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS">GIMP_STOCK_TOOL_ELLIPSE_SELECT</link>
 #define             <link linkend="GIMP-STOCK-TOOL-ERASER:CAPS">GIMP_STOCK_TOOL_ERASER</link>
@@ -1285,6 +1288,24 @@ RTL variant
 <inlinegraphic fileref="stock-warning-24.png" format="png"></inlinegraphic>
 <inlinegraphic fileref="stock-warning-16.png" format="png"></inlinegraphic>
 </para></refsect2>
+<refsect2 id="GIMP-STOCK-GEGL:CAPS" role="macro">
+<title>GIMP_STOCK_GEGL</title>
+<indexterm zone="GIMP-STOCK-GEGL:CAPS"><primary>GIMP_STOCK_GEGL</primary></indexterm><programlisting>#define GIMP_STOCK_GEGL                     "gimp-gegl"
+</programlisting>
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-gegl-22.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-gegl-16.png" format="png"></inlinegraphic>
+</para></refsect2>
+<refsect2 id="GIMP-STOCK-USER-MANUAL:CAPS" role="macro">
+<title>GIMP_STOCK_USER_MANUAL</title>
+<indexterm zone="GIMP-STOCK-USER-MANUAL:CAPS"><primary>GIMP_STOCK_USER_MANUAL</primary></indexterm><programlisting>#define GIMP_STOCK_USER_MANUAL              "gimp-user-manual"
+</programlisting>
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-user-manual-64.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-user-manual-32.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-user-manual-24.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-user-manual-16.png" format="png"></inlinegraphic>
+</para></refsect2>
 <refsect2 id="GIMP-STOCK-WILBER:CAPS" role="macro">
 <title>GIMP_STOCK_WILBER</title>
 <indexterm zone="GIMP-STOCK-WILBER:CAPS"><primary>GIMP_STOCK_WILBER</primary></indexterm><programlisting>#define GIMP_STOCK_WILBER                   "gimp-wilber"
@@ -1410,6 +1431,13 @@ RTL variant
 <para xml:base="../gimpstock.xml">
 <inlinegraphic fileref="stock-tool-curves-22.png" format="png"></inlinegraphic>
 <inlinegraphic fileref="stock-tool-curves-16.png" format="png"></inlinegraphic>
+</para></refsect2>
+<refsect2 id="GIMP-STOCK-TOOL-DESATURATE:CAPS" role="macro">
+<title>GIMP_STOCK_TOOL_DESATURATE</title>
+<indexterm zone="GIMP-STOCK-TOOL-DESATURATE:CAPS"><primary>GIMP_STOCK_TOOL_DESATURATE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_DESATURATE          GIMP_STOCK_CONVERT_GRAYSCALE
+</programlisting>
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-convert-grayscale-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2 id="GIMP-STOCK-TOOL-DODGE:CAPS" role="macro">
 <title>GIMP_STOCK_TOOL_DODGE</title>
@@ -1559,8 +1587,9 @@ RTL variant
 <title>GIMP_STOCK_TOOL_PERSPECTIVE_CLONE</title>
 <indexterm zone="GIMP-STOCK-TOOL-PERSPECTIVE-CLONE:CAPS"><primary>GIMP_STOCK_TOOL_PERSPECTIVE_CLONE</primary></indexterm><programlisting>#define GIMP_STOCK_TOOL_PERSPECTIVE_CLONE   "gimp-tool-perspective-clone"
 </programlisting>
-<para>
-
+<para xml:base="../gimpstock.xml">
+<inlinegraphic fileref="stock-tool-perspective-clone-22.png" format="png"></inlinegraphic>
+<inlinegraphic fileref="stock-tool-perspective-clone-16.png" format="png"></inlinegraphic>
 </para></refsect2>
 <refsect2 id="GIMP-STOCK-TOOL-POSTERIZE:CAPS" role="macro">
 <title>GIMP_STOCK_TOOL_POSTERIZE</title>

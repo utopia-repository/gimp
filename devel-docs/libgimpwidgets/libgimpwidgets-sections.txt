@@ -35,6 +35,18 @@ GIMP_BUTTON_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>gimpcairo-utils</FILE>
+<TITLE>GimpCairoUtils</TITLE>
+gimp_cairo_set_source_rgb
+gimp_cairo_set_source_rgba
+gimp_cairo_set_focus_line_pattern
+gimp_cairo_checkerboard_create
+gimp_cairo_surface_create_from_pixbuf
+GIMP_CAIRO_RGB24_SET_PIXEL
+GIMP_CAIRO_ARGB32_SET_PIXEL
+</SECTION>
+
+<SECTION>
 <FILE>gimpcellrenderercolor</FILE>
 <TITLE>GimpCellRendererColor</TITLE>
 GimpCellRendererColor
@@ -553,6 +565,28 @@ gimp_aspect_type_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gimpruler</FILE>
+<TITLE>GimpRuler</TITLE>
+GimpRuler
+gimp_ruler_new
+gimp_ruler_set_unit
+gimp_ruler_get_unit
+gimp_ruler_set_position
+gimp_ruler_get_position
+gimp_ruler_set_range
+gimp_ruler_get_range
+<SUBSECTION Standard>
+GimpRulerClass
+GIMP_RULER
+GIMP_IS_RULER
+GIMP_TYPE_RULER
+gimp_ruler_get_type
+GIMP_RULER_CLASS
+GIMP_IS_RULER_CLASS
+GIMP_RULER_GET_CLASS
+</SECTION>
+
+<SECTION>
 <FILE>gimpunitmenu</FILE>
 <TITLE>GimpUnitMenu</TITLE>
 GimpUnitMenu
@@ -623,6 +657,7 @@ gimp_help_disable_tooltips
 gimp_standard_help_func
 gimp_help_connect
 gimp_help_set_help_data
+gimp_help_set_help_data_with_markup
 gimp_context_help
 <SUBSECTION Standard>
 gimp_help_id_quark
@@ -786,6 +821,8 @@ GIMP_STOCK_ERROR
 GIMP_STOCK_INFO
 GIMP_STOCK_QUESTION
 GIMP_STOCK_WARNING
+GIMP_STOCK_GEGL
+GIMP_STOCK_USER_MANUAL
 GIMP_STOCK_WILBER
 GIMP_STOCK_WILBER_EEK
 GIMP_STOCK_ZOOM_FOLLOW_WINDOW
@@ -802,6 +839,7 @@ GIMP_STOCK_TOOL_COLOR_PICKER
 GIMP_STOCK_TOOL_COLORIZE
 GIMP_STOCK_TOOL_CROP
 GIMP_STOCK_TOOL_CURVES
+GIMP_STOCK_TOOL_DESATURATE
 GIMP_STOCK_TOOL_DODGE
 GIMP_STOCK_TOOL_ELLIPSE_SELECT
 GIMP_STOCK_TOOL_ERASER

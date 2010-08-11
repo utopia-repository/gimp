@@ -20,9 +20,6 @@
 #define __GIMP_COLOR_BAR_H__
 
 
-#include <gtk/gtkmisc.h>
-
-
 #define GIMP_TYPE_COLOR_BAR            (gimp_color_bar_get_type ())
 #define GIMP_COLOR_BAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_COLOR_BAR, GimpColorBar))
 #define GIMP_COLOR_BAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_COLOR_BAR, GimpColorBarClass))
@@ -35,7 +32,7 @@ typedef struct _GimpColorBarClass  GimpColorBarClass;
 
 struct _GimpColorBar
 {
-  GtkMisc         parent_class;
+  GtkEventBox     parent_class;
 
   GtkOrientation  orientation;
   guchar          buf[3 * 256];
@@ -43,7 +40,7 @@ struct _GimpColorBar
 
 struct _GimpColorBarClass
 {
-  GtkMiscClass   parent_class;
+  GtkEventBoxClass  parent_class;
 };
 
 

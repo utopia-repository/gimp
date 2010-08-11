@@ -118,7 +118,7 @@ static const GimpActionEntry edit_actions[] =
 
   { "edit-copy-visible", NULL, /* GIMP_STOCK_COPY_VISIBLE, */
     N_("Copy _Visible"), "<control><shift>C",
-    N_("Copy the selected region to the clipboard"),
+    N_("Copy what is visible in the selected region"),
     G_CALLBACK (edit_copy_visible_cmd_callback),
     GIMP_HELP_EDIT_COPY_VISIBLE },
 
@@ -135,7 +135,7 @@ static const GimpActionEntry edit_actions[] =
     GIMP_HELP_EDIT_PASTE_INTO },
 
   { "edit-paste-as-new", GIMP_STOCK_PASTE_AS_NEW,
-    N_("Paste as New"), "<control><shift>V",
+    N_("From _Clipboard"), "<control><shift>V",
     N_("Create a new image from the content of the clipboard"),
     G_CALLBACK (edit_paste_as_new_cmd_callback),
     GIMP_HELP_EDIT_PASTE_AS_NEW },
@@ -145,6 +145,12 @@ static const GimpActionEntry edit_actions[] =
     N_("Create a new image from the content of the clipboard"),
     G_CALLBACK (edit_paste_as_new_cmd_callback),
     GIMP_HELP_EDIT_PASTE_AS_NEW },
+
+  { "edit-paste-as-new-layer", NULL,
+    N_("New _Layer"), NULL,
+    N_("Create a new layer from the content of the clipboard"),
+    G_CALLBACK (edit_paste_as_new_layer_cmd_callback),
+    GIMP_HELP_EDIT_PASTE_AS_NEW_LAYER },
 
   { "edit-named-cut", GTK_STOCK_CUT,
     N_("Cu_t Named..."), "",
@@ -248,7 +254,7 @@ void
 edit_actions_update (GimpActionGroup *group,
                      gpointer         data)
 {
-  GimpImage    *image       = action_data_get_image (data);
+  GimpImage    *image        = action_data_get_image (data);
   GimpDrawable *drawable     = NULL;
   gchar        *undo_name    = NULL;
   gchar        *redo_name    = NULL;
@@ -258,38 +264,43 @@ edit_actions_update (GimpActionGroup *group,
 
   if (image)
     {
-      GimpUndo *undo;
-      GimpUndo *redo;
-
       drawable = gimp_image_get_active_drawable (image);
 
       undo_enabled = gimp_image_undo_is_enabled (image);
 
       if (undo_enabled)
         {
-          undo = gimp_undo_stack_peek (image->undo_stack);
-          redo = gimp_undo_stack_peek (image->redo_stack);
+          GimpUndo *undo = gimp_undo_stack_peek (image->undo_stack);
+          GimpUndo *redo = gimp_undo_stack_peek (image->redo_stack);
 
           if (undo)
-            undo_name =
-              g_strdup_printf (_("_Undo %s"),
-                               gimp_object_get_name (GIMP_OBJECT (undo)));
+            {
+              undo_name =
+                g_strdup_printf (_("_Undo %s"),
+                                 gimp_object_get_name (GIMP_OBJECT (undo)));
+            }
 
           if (redo)
-            redo_name =
-              g_strdup_printf (_("_Redo %s"),
-                               gimp_object_get_name (GIMP_OBJECT (redo)));
+            {
+              redo_name =
+                g_strdup_printf (_("_Redo %s"),
+                                 gimp_object_get_name (GIMP_OBJECT (redo)));
+            }
 
           undo = gimp_image_undo_get_fadeable (image);
 
           if (GIMP_IS_DRAWABLE_UNDO (undo) &&
               GIMP_DRAWABLE_UNDO (undo)->src2_tiles)
-            fade_enabled = TRUE;
+            {
+              fade_enabled = TRUE;
+            }
 
           if (fade_enabled)
-            fade_name =
-              g_strdup_printf (_("_Fade %s..."),
-                               gimp_object_get_name (GIMP_OBJECT (undo)));
+            {
+              fade_name =
+                g_strdup_printf (_("_Fade %s..."),
+                                 gimp_object_get_name (GIMP_OBJECT (undo)));
+            }
         }
     }
 
@@ -314,21 +325,22 @@ edit_actions_update (GimpActionGroup *group,
   g_free (redo_name);
   g_free (fade_name);
 
-  SET_SENSITIVE ("edit-cut",          drawable);
-  SET_SENSITIVE ("edit-copy",         drawable);
-  SET_SENSITIVE ("edit-copy-visible", image);
+  SET_SENSITIVE ("edit-cut",                drawable);
+  SET_SENSITIVE ("edit-copy",               drawable);
+  SET_SENSITIVE ("edit-copy-visible",       image);
   /*             "edit-paste" is always enabled  */
-  SET_SENSITIVE ("edit-paste-into",   image);
+  SET_SENSITIVE ("edit-paste-as-new-layer", image);
+  SET_SENSITIVE ("edit-paste-into",         image);
 
   SET_SENSITIVE ("edit-named-cut",          drawable);
   SET_SENSITIVE ("edit-named-copy",         drawable);
   SET_SENSITIVE ("edit-named-copy-visible", drawable);
   SET_SENSITIVE ("edit-named-paste",        image);
 
-  SET_SENSITIVE ("edit-clear",        drawable);
-  SET_SENSITIVE ("edit-fill-fg",      drawable);
-  SET_SENSITIVE ("edit-fill-bg",      drawable);
-  SET_SENSITIVE ("edit-fill-pattern", drawable);
+  SET_SENSITIVE ("edit-clear",              drawable);
+  SET_SENSITIVE ("edit-fill-fg",            drawable);
+  SET_SENSITIVE ("edit-fill-bg",            drawable);
+  SET_SENSITIVE ("edit-fill-pattern",       drawable);
 
 #undef SET_LABEL
 #undef SET_SENSITIVE

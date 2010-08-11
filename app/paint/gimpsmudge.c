@@ -86,11 +86,11 @@ gimp_smudge_class_init (GimpSmudgeClass *klass)
   GimpPaintCoreClass *paint_core_class = GIMP_PAINT_CORE_CLASS (klass);
   GimpBrushCoreClass *brush_core_class = GIMP_BRUSH_CORE_CLASS (klass);
 
-  object_class->finalize      = gimp_smudge_finalize;
+  object_class->finalize  = gimp_smudge_finalize;
 
-  paint_core_class->paint     = gimp_smudge_paint;
+  paint_core_class->paint = gimp_smudge_paint;
 
-  brush_core_class->use_scale = FALSE;
+  brush_core_class->handles_scaling_brush = FALSE;
 }
 
 static void
@@ -228,16 +228,17 @@ gimp_smudge_motion (GimpPaintCore    *paint_core,
                     GimpDrawable     *drawable,
                     GimpPaintOptions *paint_options)
 {
-  GimpSmudge          *smudge           = GIMP_SMUDGE (paint_core);
-  GimpSmudgeOptions   *options          = GIMP_SMUDGE_OPTIONS (paint_options);
-  GimpContext         *context          = GIMP_CONTEXT (paint_options);
-  GimpPressureOptions *pressure_options = paint_options->pressure_options;
-  GimpImage           *image;
-  TempBuf             *area;
-  PixelRegion          srcPR, destPR, tempPR;
-  gdouble              rate;
-  gdouble              opacity;
-  gint                 x, y, w, h;
+  GimpSmudge        *smudge  = GIMP_SMUDGE (paint_core);
+  GimpSmudgeOptions *options = GIMP_SMUDGE_OPTIONS (paint_options);
+  GimpContext       *context = GIMP_CONTEXT (paint_options);
+  GimpImage         *image;
+  TempBuf           *area;
+  PixelRegion        srcPR, destPR, tempPR;
+  gdouble            rate;
+  gdouble            opacity;
+  gdouble            dynamic_rate;
+  gint               x, y, w, h;
+  gdouble            hardness;
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -249,24 +250,22 @@ gimp_smudge_motion (GimpPaintCore    *paint_core,
   if (opacity == 0.0)
     return;
 
-  /*  Get the unclipped brush coordinates  */
-  gimp_smudge_brush_coords (paint_core, &x, &y, &w, &h);
-
   /*  Get the paint area (Smudge won't scale!)  */
   area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options);
   if (! area)
     return;
 
+  /*  Get the unclipped brush coordinates  */
+  gimp_smudge_brush_coords (paint_core, &x, &y, &w, &h);
+
   /* srcPR will be the pixels under the current painthit from the drawable */
   pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
                      area->x, area->y, area->width, area->height, FALSE);
 
-  /* Enable pressure sensitive rate */
-  if (pressure_options->rate)
-    rate = MIN (options->rate / 100.0 * PRESSURE_SCALE *
-                paint_core->cur_coords.pressure, 1.0);
-  else
-    rate = options->rate / 100.0;
+  /* Enable dynamic rate */
+  dynamic_rate = gimp_paint_options_get_dynamic_rate (paint_options,
+                                                      &paint_core->cur_coords);
+  rate = (options->rate / 100.0) * dynamic_rate;
 
   /* The tempPR will be the built up buffer (for smudge) */
   pixel_region_init_data (&tempPR, smudge->accum_data,
@@ -305,13 +304,17 @@ gimp_smudge_motion (GimpPaintCore    *paint_core,
   else
     copy_region (&tempPR, &destPR);
 
-  if (pressure_options->opacity)
-    opacity *= PRESSURE_SCALE * paint_core->cur_coords.pressure;
+  opacity *= gimp_paint_options_get_dynamic_opacity (paint_options,
+                                                     &paint_core->cur_coords);
+
+  hardness = gimp_paint_options_get_dynamic_hardness (paint_options,
+                                                      &paint_core->cur_coords);
 
   gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core), drawable,
                                   MIN (opacity, GIMP_OPACITY_OPAQUE),
                                   gimp_context_get_opacity (context),
                                   gimp_paint_options_get_brush_mode (paint_options),
+                                  hardness,
                                   GIMP_PAINT_INCREMENTAL);
 }
 
@@ -323,10 +326,15 @@ gimp_smudge_brush_coords (GimpPaintCore *paint_core,
                           gint          *h)
 {
   GimpBrushCore *brush_core = GIMP_BRUSH_CORE (paint_core);
+  gint           width;
+  gint           height;
+
+  gimp_brush_scale_size (brush_core->brush, brush_core->scale,
+                         &width, &height);
 
   /* Note: these are the brush mask size plus a border of 1 pixel */
-  *x = (gint) paint_core->cur_coords.x - brush_core->brush->mask->width  / 2 - 1;
-  *y = (gint) paint_core->cur_coords.y - brush_core->brush->mask->height / 2 - 1;
-  *w = brush_core->brush->mask->width  + 2;
-  *h = brush_core->brush->mask->height + 2;
+  *x = (gint) paint_core->cur_coords.x - width  / 2 - 1;
+  *y = (gint) paint_core->cur_coords.y - height / 2 - 1;
+  *w = width  + 2;
+  *h = height + 2;
 }

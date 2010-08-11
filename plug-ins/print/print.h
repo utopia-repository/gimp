@@ -26,11 +26,9 @@ typedef enum
 
 typedef struct
 {
-  gint                num_pages;
   gint32              image_id;
   gint32              drawable_id;
   GimpUnit            unit;
-  gboolean            show_info_header;
   gdouble             xres;
   gdouble             yres;
   GimpUnit            image_unit;
@@ -39,6 +37,5 @@ typedef struct
   PrintCenterMode     center;
   gboolean            use_full_page;
   GtkPrintOperation  *operation;
-  GtkPageOrientation  orientation;
 } PrintData;
 

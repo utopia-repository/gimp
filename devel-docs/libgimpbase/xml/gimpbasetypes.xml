@@ -53,9 +53,9 @@ Translation between gettext translation domain identifier and GType.
 <refsect2 id="GimpEnumDesc" role="struct">
 <title>GimpEnumDesc</title>
 <indexterm zone="GimpEnumDesc"><primary>GimpEnumDesc</primary></indexterm><programlisting>typedef struct {
-  gint   value;
-  gchar *value_desc;
-  gchar *value_help;
+  gint         value;
+  const gchar *value_desc;
+  const gchar *value_help;
 } GimpEnumDesc;
 </programlisting>
 <para>
@@ -64,9 +64,9 @@ Translation between gettext translation domain identifier and GType.
 <refsect2 id="GimpFlagsDesc" role="struct">
 <title>GimpFlagsDesc</title>
 <indexterm zone="GimpFlagsDesc"><primary>GimpFlagsDesc</primary></indexterm><programlisting>typedef struct {
-  guint  value;
-  gchar *value_desc;
-  gchar *value_help;
+  guint        value;
+  const gchar *value_desc;
+  const gchar *value_help;
 } GimpFlagsDesc;
 </programlisting>
 <para>

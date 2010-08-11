@@ -36,13 +36,11 @@ do_about_dialog(void)
    static GtkWidget *dialog;
    if (!dialog)
      {
-       const gchar *authors[]     = { "Maurits Rijk (m.rijk@chello.nl)", NULL };
-       const gchar *property_name = (gtk_check_version (2, 12, 0) ?
-                                     "name" : "program-name");
+       const gchar* authors[] = {"Maurits Rijk (m.rijk@chello.nl)", NULL};
 
        dialog = g_object_new (GTK_TYPE_ABOUT_DIALOG,
                               "transient-for", get_dialog(),
-                              property_name, _("Image Map Plug-In"),
+                              "program-name",  _("Image Map Plug-In"),
                               "version", "2.3",
                               "authors", authors,
                               "copyright",

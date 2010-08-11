@@ -113,8 +113,7 @@ gimp_buffer_get_memsize (GimpObject *object,
   GimpBuffer *buffer  = GIMP_BUFFER (object);
   gint64      memsize = 0;
 
-  if (buffer->tiles)
-    memsize += tile_manager_get_memsize (buffer->tiles, FALSE);
+  memsize += tile_manager_get_memsize (buffer->tiles, FALSE);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);
@@ -327,4 +326,12 @@ gimp_buffer_get_image_type (const GimpBuffer *buffer)
     }
 
   return 0;
+}
+
+TileManager *
+gimp_buffer_get_tiles (const GimpBuffer *buffer)
+{
+  g_return_val_if_fail (GIMP_IS_BUFFER (buffer), NULL);
+
+  return buffer->tiles;
 }

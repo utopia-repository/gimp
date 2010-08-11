@@ -58,13 +58,12 @@ enum
 };
 
 
-static void        run_page_setup_dialog              (GtkWidget     *widget,
-                                                       PrintData     *data);
+static void        print_page_setup_notify            (GtkPrintOperation *operation);
 
-static GtkWidget * print_size_frame                   (PrintData     *data,
+static GtkWidget * print_size_frame                   (PrintData    *data,
                                                        GtkSizeGroup *label_group,
                                                        GtkSizeGroup *entry_group);
-static GtkWidget * print_offset_frame                 (PrintData     *data,
+static GtkWidget * print_offset_frame                 (PrintData    *data,
                                                        GtkSizeGroup *label_group,
                                                        GtkSizeGroup *entry_group);
 
@@ -95,15 +94,12 @@ static PrintSizeInfo  info;
 
 
 GtkWidget *
-print_page_layout_gui (PrintData *data)
+print_page_layout_gui (PrintData   *data,
+                       const gchar *help_id)
 {
-  GtkWidget    *layout;
   GtkWidget    *main_hbox;
   GtkWidget    *main_vbox;
-  GtkWidget    *hbox;
-  GtkWidget    *vbox;
   GtkWidget    *button;
-  GtkWidget    *label;
   GtkWidget    *frame;
   GtkPageSetup *setup;
   GtkSizeGroup *label_group;
@@ -122,67 +118,17 @@ print_page_layout_gui (PrintData *data)
       gtk_print_operation_set_default_page_setup (data->operation, setup);
     }
 
-  layout = gtk_vbox_new (FALSE, 6);
-  gtk_container_set_border_width (GTK_CONTAINER (layout), 12);
-
-  hbox = gtk_hbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (layout), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
-
-  /* label for the printable area */
-
-  label = gtk_label_new (_("Printable area:"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
-  label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gimp_label_set_attributes (GTK_LABEL (label),
-                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
-                             -1);
-  info.area_label = label;
-
-  gtk_box_pack_start (GTK_BOX (hbox), info.area_label, TRUE, TRUE, 0);
-  gtk_widget_show (info.area_label);
-
-  button = gtk_button_new_with_mnemonic (_("_Adjust Page Size "
-                                           "and Orientation"));
-  gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-  g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (run_page_setup_dialog),
-                    data);
-  gtk_widget_show (button);
-
   /*  main hbox  */
   main_hbox = gtk_hbox_new (FALSE, 12);
-  gtk_box_pack_start (GTK_BOX (layout), main_hbox, TRUE, TRUE, 0);
-  gtk_widget_show (main_hbox);
+  gtk_container_set_border_width (GTK_CONTAINER (main_hbox), 12);
 
   /*  main vbox  */
   main_vbox = gtk_vbox_new (FALSE, 12);
   gtk_box_pack_start (GTK_BOX (main_hbox), main_vbox, FALSE, FALSE, 0);
   gtk_widget_show (main_vbox);
 
-  vbox = gtk_vbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (main_vbox), vbox, FALSE, FALSE, 0);
-  gtk_widget_show (vbox);
-
   label_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
   entry_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-
-#if 0
-  /* Commented out until the header becomes a little more configurable
-   * and we can provide a user interface to include/exclude information.
-   */
-  button = gtk_check_button_new_with_label ("Print image header");
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
-                                data->show_info_header);
-  gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
-  g_signal_connect (G_OBJECT (button), "toggled",
-                    G_CALLBACK (gimp_toggle_button_update),
-                    &data->show_info_header);
-  gtk_widget_show (button);
-#endif
 
   /* size entry area for the image's print size */
 
@@ -209,10 +155,15 @@ print_page_layout_gui (PrintData *data)
                     NULL);
   gtk_widget_show (button);
 
-  info.preview = gimp_print_preview_new (setup, data->drawable_id);
-  gimp_print_preview_set_use_full_page (GIMP_PRINT_PREVIEW(info.preview),
-                                        data->use_full_page);
-  gtk_box_pack_start (GTK_BOX (main_hbox), info.preview, TRUE, TRUE, 0);
+  /* preview */
+  frame = gimp_frame_new (_("Preview"));
+  gtk_box_pack_start (GTK_BOX (main_hbox), frame, TRUE, TRUE, 0);
+  gtk_widget_show (frame);
+
+  info.preview = print_preview_new (setup, data->drawable_id);
+  print_preview_set_use_full_page (PRINT_PREVIEW (info.preview),
+                                   data->use_full_page);
+  gtk_container_add (GTK_CONTAINER (frame), info.preview);
   gtk_widget_show (info.preview);
 
   g_signal_connect (info.preview, "offsets-changed",
@@ -221,45 +172,31 @@ print_page_layout_gui (PrintData *data)
 
   print_size_info_set_page_setup (&info);
 
-  return layout;
+  g_signal_connect_object (data->operation, "notify::default-page-setup",
+                           G_CALLBACK (print_page_setup_notify),
+                           main_hbox, 0);
+
+  gimp_help_connect (main_hbox, gimp_standard_help_func, help_id, NULL);
+
+  return main_hbox;
 }
 
 static void
-run_page_setup_dialog (GtkWidget *widget,
-                       PrintData *data)
+print_page_setup_notify (GtkPrintOperation *operation)
 {
-  GtkPrintOperation *operation = data->operation;
-  GtkPrintSettings  *settings;
-  GtkPageSetup      *page_setup;
-  GtkWidget         *toplevel;
+  GtkPageSetup *setup;
 
-  /* find a transient parent if possible */
-  toplevel = gtk_widget_get_toplevel (widget);
-  if (! GTK_WIDGET_TOPLEVEL (toplevel))
-    toplevel = NULL;
-
-  settings = gtk_print_operation_get_print_settings (operation);
-  if (! settings)
-    settings = gtk_print_settings_new ();
-
-  page_setup = gtk_print_operation_get_default_page_setup (operation);
-
-  page_setup = gtk_print_run_page_setup_dialog (GTK_WINDOW (toplevel),
-                                                page_setup, settings);
-
-  gtk_print_operation_set_default_page_setup (operation, page_setup);
-
-  gimp_print_preview_set_page_setup (GIMP_PRINT_PREVIEW (info.preview),
-                                     page_setup);
+  setup = gtk_print_operation_get_default_page_setup (operation);
 
   print_size_info_set_page_setup (&info);
+  print_preview_set_page_setup (PRINT_PREVIEW (info.preview), setup);
 }
+
 
 #define SB_WIDTH 8
 
-
 static GtkWidget *
-print_size_frame (PrintData *data,
+print_size_frame (PrintData    *data,
                   GtkSizeGroup *label_group,
                   GtkSizeGroup *entry_group)
 {
@@ -676,9 +613,9 @@ print_size_info_center_changed (GtkWidget *combo)
       print_size_info_update_offsets ();
 
       if (info.preview)
-        gimp_print_preview_set_image_offsets (GIMP_PRINT_PREVIEW (info.preview),
-                                              info.data->offset_x,
-                                              info.data->offset_y);
+        print_preview_set_image_offsets (PRINT_PREVIEW (info.preview),
+                                         info.data->offset_x,
+                                         info.data->offset_y);
     }
 }
 
@@ -741,9 +678,9 @@ print_size_info_size_changed (GtkWidget *widget)
   info.data->offset_x = gimp_size_entry_get_refval (info.size_entry, LEFT);
   info.data->offset_y = gimp_size_entry_get_refval (info.size_entry, TOP);
 
-  gimp_print_preview_set_image_offsets (GIMP_PRINT_PREVIEW (info.preview),
-                                        info.data->offset_x,
-                                        info.data->offset_y);
+  print_preview_set_image_offsets (PRINT_PREVIEW (info.preview),
+                                   info.data->offset_x,
+                                   info.data->offset_y);
 }
 
 static void
@@ -784,8 +721,7 @@ print_size_info_use_full_page_toggled (GtkWidget *widget)
 
   print_size_info_set_page_setup (&info);
 
-  gimp_print_preview_set_use_full_page (GIMP_PRINT_PREVIEW(info.preview),
-                                        active);
+  print_preview_set_use_full_page (PRINT_PREVIEW(info.preview), active);
 }
 
 static void
@@ -857,12 +793,12 @@ print_size_info_set_resolution (PrintSizeInfo *info,
 
   print_size_info_update_offsets ();
 
-  gimp_print_preview_set_image_dpi (GIMP_PRINT_PREVIEW (info->preview),
-                                    data->xres, data->yres);
-  gimp_print_preview_set_image_offsets (GIMP_PRINT_PREVIEW (info->preview),
-                                        data->offset_x, data->offset_y);
-  gimp_print_preview_set_image_offsets_max (GIMP_PRINT_PREVIEW (info->preview),
-                                            offset_x_max, offset_y_max);
+  print_preview_set_image_dpi (PRINT_PREVIEW (info->preview),
+                               data->xres, data->yres);
+  print_preview_set_image_offsets (PRINT_PREVIEW (info->preview),
+                                   data->offset_x, data->offset_y);
+  print_preview_set_image_offsets_max (PRINT_PREVIEW (info->preview),
+                                       offset_x_max, offset_y_max);
 }
 
 static void
@@ -870,8 +806,6 @@ print_size_info_set_page_setup (PrintSizeInfo *info)
 {
   GtkPageSetup *setup;
   PrintData    *data = info->data;
-  gchar        *format;
-  gchar        *text;
   gdouble       page_width;
   gdouble       page_height;
   gdouble       x;
@@ -886,38 +820,46 @@ print_size_info_set_page_setup (PrintSizeInfo *info)
   page_width  *= gimp_unit_get_factor (data->unit);
   page_height *= gimp_unit_get_factor (data->unit);
 
-  format = g_strdup_printf ("%%.%df x %%.%df %s",
-                            gimp_unit_get_digits (data->unit),
-                            gimp_unit_get_digits (data->unit),
-                            gimp_unit_get_plural (data->unit));
-  text = g_strdup_printf (format, page_width, page_height);
-  g_free (format);
+  if (info->area_label)
+    {
+      gchar *format;
+      gchar *text;
 
-  gtk_label_set_text (GTK_LABEL (info->area_label), text);
-  g_free (text);
+      format = g_strdup_printf ("%%.%df x %%.%df %s",
+                                gimp_unit_get_digits (data->unit),
+                                gimp_unit_get_digits (data->unit),
+                                gimp_unit_get_plural (data->unit));
+      text = g_strdup_printf (format, page_width, page_height);
+      g_free (format);
+
+      gtk_label_set_text (GTK_LABEL (info->area_label), text);
+      g_free (text);
+    }
 
   x = page_width;
   y = page_height;
 
   if (info->chain && gimp_chain_button_get_active (info->chain))
     {
-      gdouble ratio_x = page_width / (gdouble) info->image_width;
+      gdouble ratio_x = page_width  / (gdouble) info->image_width;
       gdouble ratio_y = page_height / (gdouble) info->image_height;
 
       if (ratio_x < ratio_y)
         y = (gdouble) info->image_height * ratio_x;
       else
-        x = (gdouble) info->image_width * ratio_y;
+        x = (gdouble) info->image_width  * ratio_y;
     }
 
-  gimp_size_entry_set_value_boundaries (info->size_entry, WIDTH,  0.0, x);
-  gimp_size_entry_set_value_boundaries (info->size_entry, HEIGHT, 0.0, y);
+  gimp_size_entry_set_value_boundaries (info->size_entry, WIDTH,
+                                        page_width  / 100.0, x);
+  gimp_size_entry_set_value_boundaries (info->size_entry, HEIGHT,
+                                        page_height / 100.0, y);
 
   print_size_info_get_page_dimensions (info,
                                        &page_width, &page_height,
                                        GTK_UNIT_POINTS);
 
-  x = (gdouble) info->image_width / page_width * 72.0;
+  x = (gdouble) info->image_width  / page_width  * 72.0;
   y = (gdouble) info->image_height / page_height * 72.0;
 
   if (info->chain && gimp_chain_button_get_active (info->chain))
@@ -931,7 +873,4 @@ print_size_info_set_page_setup (PrintSizeInfo *info)
                                          x, GIMP_MAX_RESOLUTION);
   gimp_size_entry_set_refval_boundaries (info->resolution_entry, 1,
                                          y, GIMP_MAX_RESOLUTION);
-
-  /* FIXME: is this still needed at all? */
-  data->orientation = gtk_page_setup_get_orientation (setup);
 }

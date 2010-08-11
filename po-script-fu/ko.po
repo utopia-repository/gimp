@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gimp-script-fu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-22 12:57+0000\n"
-"PO-Revision-Date: 2008-04-04 16:40+0900\n"
+"POT-Creation-Date: 2008-09-17 06:01+0000\n"
+"PO-Revision-Date: 2008-09-17 15:51+0900\n"
 "Last-Translator: Mr.Dust <like.a.dust@gmail.com>\n"
 "Language-Team: Mr.Dust <like.a.dust@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -20,94 +20,94 @@ msgstr ""
 "X-Poedit-Country: KOREA, REPUBLIC OF\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../plug-ins/script-fu/script-fu-console.c:133
-#: ../plug-ins/script-fu/script-fu-console.c:200
+#: ../plug-ins/script-fu/script-fu-console.c:131
+#: ../plug-ins/script-fu/script-fu-console.c:198
 msgid "Script-Fu Console"
 msgstr "Script-Fu 콘솔"
 
-#: ../plug-ins/script-fu/script-fu-console.c:196
+#: ../plug-ins/script-fu/script-fu-console.c:194
 msgid "Welcome to TinyScheme"
 msgstr "TinyScheme에 오신 것을 환영합니다!"
 
-#: ../plug-ins/script-fu/script-fu-console.c:202
+#: ../plug-ins/script-fu/script-fu-console.c:200
 msgid "Interactive Scheme Development"
 msgstr "대화형 Scheme 개발"
 
-#: ../plug-ins/script-fu/script-fu-console.c:238
+#: ../plug-ins/script-fu/script-fu-console.c:236
 msgid "_Browse..."
 msgstr "찾아보기(_B)..."
 
-#: ../plug-ins/script-fu/script-fu-console.c:296
+#: ../plug-ins/script-fu/script-fu-console.c:294
 msgid "Save Script-Fu Console Output"
-msgstr "스크립트-푸 콘솔 출력 저장"
+msgstr "Script-Fu 콘솔 출력 저장"
 
-#: ../plug-ins/script-fu/script-fu-console.c:343
+#: ../plug-ins/script-fu/script-fu-console.c:341
 #, c-format
 msgid "Could not open '%s' for writing: %s"
 msgstr "'%s'을(를) 쓰기 모드로 열기 실패: %s"
 
-#: ../plug-ins/script-fu/script-fu-console.c:372
+#: ../plug-ins/script-fu/script-fu-console.c:370
 msgid "Script-Fu Procedure Browser"
-msgstr "스크립트-푸 프로시저 찾아보기"
+msgstr "Script-Fu 프로시저 찾아보기"
 
-#: ../plug-ins/script-fu/script-fu-console.c:718
+#: ../plug-ins/script-fu/script-fu-eval.c:63
 msgid "Script-Fu evaluation mode only allows non-interactive invocation"
 msgstr "Script-Fu 평가 모드는 비대화형 호출만 허용합니다."
 
-#: ../plug-ins/script-fu/script-fu-interface.c:191
+#: ../plug-ins/script-fu/script-fu-interface.c:194
 msgid "Script-Fu cannot process two scripts at the same time."
 msgstr "Script-Fu는 동시에 두 개의 스크립트를 실행할 수 없습니다."
 
-#: ../plug-ins/script-fu/script-fu-interface.c:193
+#: ../plug-ins/script-fu/script-fu-interface.c:196
 #, c-format
 msgid "You are already running the \"%s\" script."
 msgstr "\"%s\" 스크립트가 이미 실행되고 있습니다."
 
-#: ../plug-ins/script-fu/script-fu-interface.c:238
+#: ../plug-ins/script-fu/script-fu-interface.c:243
 #, c-format
 msgid "Script-Fu: %s"
 msgstr "Script-Fu: %s"
 
 #. we add a colon after the label;
 #. some languages want an extra space here
-#: ../plug-ins/script-fu/script-fu-interface.c:300
+#: ../plug-ins/script-fu/script-fu-interface.c:305
 #, c-format
 msgid "%s:"
 msgstr "%s:"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:348
+#: ../plug-ins/script-fu/script-fu-interface.c:353
 msgid "Script-Fu Color Selection"
 msgstr "Script-Fu 색상 선택"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:460
+#: ../plug-ins/script-fu/script-fu-interface.c:465
 msgid "Script-Fu File Selection"
 msgstr "Script-Fu 파일 선택"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:463
+#: ../plug-ins/script-fu/script-fu-interface.c:468
 msgid "Script-Fu Folder Selection"
 msgstr "Script-Fu 폴더 선택"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:475
+#: ../plug-ins/script-fu/script-fu-interface.c:480
 msgid "Script-Fu Font Selection"
 msgstr "Script-Fu 글꼴 선택"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:483
+#: ../plug-ins/script-fu/script-fu-interface.c:488
 msgid "Script-Fu Palette Selection"
 msgstr "Script-Fu 팔레트 선택"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:492
+#: ../plug-ins/script-fu/script-fu-interface.c:497
 msgid "Script-Fu Pattern Selection"
 msgstr "Script-Fu 무늬 선택"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:501
+#: ../plug-ins/script-fu/script-fu-interface.c:506
 msgid "Script-Fu Gradient Selection"
 msgstr "Script-Fu 그라디언트 선택"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:510
+#: ../plug-ins/script-fu/script-fu-interface.c:515
 msgid "Script-Fu Brush Selection"
 msgstr "Script-Fu 브러시 선택"
 
-#: ../plug-ins/script-fu/script-fu-scripts.c:658
+#: ../plug-ins/script-fu/script-fu-interface.c:914
 #, c-format
 msgid ""
 "Error while executing\n"
@@ -120,149 +120,114 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../plug-ins/script-fu/script-fu-server.c:712
+#: ../plug-ins/script-fu/script-fu-scripts.c:150
+msgid "Too few arguments to 'script-fu-register' call"
+msgstr "'script-fu-register' 호출에 필요한 매개변수가 부족합니다."
+
+#: ../plug-ins/script-fu/script-fu-scripts.c:710
+#, c-format
+msgid ""
+"Error while loading\n"
+"\"%s\"\n"
+"\n"
+"%s"
+msgstr ""
+"불러오는 중 오류\n"
+"\"%s\"\n"
+"\n"
+"%s"
+
+#: ../plug-ins/script-fu/script-fu-server.c:713
 msgid "Script-Fu Server Options"
 msgstr "Script-Fu 서버 옵션"
 
-#: ../plug-ins/script-fu/script-fu-server.c:717
+#: ../plug-ins/script-fu/script-fu-server.c:718
 msgid "_Start Server"
 msgstr "서버 시작(_S)"
 
-#: ../plug-ins/script-fu/script-fu-server.c:745
+#: ../plug-ins/script-fu/script-fu-server.c:746
 msgid "Server port:"
 msgstr "서버 포트:"
 
-#: ../plug-ins/script-fu/script-fu-server.c:751
+#: ../plug-ins/script-fu/script-fu-server.c:752
 msgid "Server logfile:"
 msgstr "서버 로그파일:"
 
-#: ../plug-ins/script-fu/script-fu.c:110
+#: ../plug-ins/script-fu/script-fu.c:111
 msgid "Interactive console for Script-Fu development"
 msgstr "Script-Fu 개발을 위한대화형 콘솔"
 
-#: ../plug-ins/script-fu/script-fu.c:116
-msgid "Script-Fu _Console"
-msgstr "Script-Fu 콘솔(_C)"
+#: ../plug-ins/script-fu/script-fu.c:117
+msgid "_Console"
+msgstr "콘솔(_C)"
 
-#: ../plug-ins/script-fu/script-fu.c:140
+#: ../plug-ins/script-fu/script-fu.c:141
 msgid "Server for remote Script-Fu operation"
-msgstr "원격 스크립트-푸 동작을 위한 서버"
+msgstr "원격 Script-Fu 동작을 위한 서버"
 
-#: ../plug-ins/script-fu/script-fu.c:145
+#: ../plug-ins/script-fu/script-fu.c:146
 msgid "_Start Server..."
 msgstr "서버 시작(_S)..."
 
-#: ../plug-ins/script-fu/script-fu.c:301
+#: ../plug-ins/script-fu/script-fu.c:302
 msgid "_GIMP Online"
 msgstr "김프 온라인(_G)"
 
-#: ../plug-ins/script-fu/script-fu.c:302
+#: ../plug-ins/script-fu/script-fu.c:303
 msgid "_User Manual"
 msgstr "사용자 설명서(_U)"
 
-#: ../plug-ins/script-fu/script-fu.c:305
+#: ../plug-ins/script-fu/script-fu.c:306
 msgid "_Script-Fu"
-msgstr "스크립트-푸(_S)"
+msgstr "Script-Fu(_S)"
 
-#: ../plug-ins/script-fu/script-fu.c:307
-msgid "_Buttons"
-msgstr "버튼(_B)"
-
-#: ../plug-ins/script-fu/script-fu.c:309
-msgid "_Logos"
-msgstr "로고(_L)"
-
-#: ../plug-ins/script-fu/script-fu.c:311
-msgid "_Misc"
-msgstr "기타(_M)"
-
-#: ../plug-ins/script-fu/script-fu.c:313
-msgid "_Patterns"
-msgstr "무늬(_P)"
-
-#: ../plug-ins/script-fu/script-fu.c:315
+#: ../plug-ins/script-fu/script-fu.c:308
 msgid "_Test"
 msgstr "테스트(_T)"
 
-#: ../plug-ins/script-fu/script-fu.c:317
-msgid "_Utilities"
-msgstr "유틸리티(_U)"
+#: ../plug-ins/script-fu/script-fu.c:311
+msgid "_Buttons"
+msgstr "버튼(_B)"
 
-#: ../plug-ins/script-fu/script-fu.c:319
+#: ../plug-ins/script-fu/script-fu.c:313
+msgid "_Logos"
+msgstr "로고(_L)"
+
+#: ../plug-ins/script-fu/script-fu.c:315
+msgid "_Patterns"
+msgstr "무늬(_P)"
+
+#: ../plug-ins/script-fu/script-fu.c:318
 msgid "_Web Page Themes"
 msgstr "웹 페이지 테마(_W)"
 
-#: ../plug-ins/script-fu/script-fu.c:321
+#: ../plug-ins/script-fu/script-fu.c:320
 msgid "_Alien Glow"
 msgstr "외계의 빛(_A)"
 
-#: ../plug-ins/script-fu/script-fu.c:323
+#: ../plug-ins/script-fu/script-fu.c:322
 msgid "_Beveled Pattern"
 msgstr "바벨 무늬(_B)"
 
-#: ../plug-ins/script-fu/script-fu.c:325
+#: ../plug-ins/script-fu/script-fu.c:324
 msgid "_Classic.Gimp.Org"
 msgstr "예전 Gimp.Org(_C)"
 
-#: ../plug-ins/script-fu/script-fu.c:328
+#: ../plug-ins/script-fu/script-fu.c:327
 msgid "Alpha to _Logo"
 msgstr "로고용 효과(_L)"
 
 #: ../plug-ins/script-fu/script-fu.c:330
-msgid "An_imation"
-msgstr "애니메이션(_I)"
-
-#: ../plug-ins/script-fu/script-fu.c:332
-msgid "_Animators"
-msgstr "애니메이터(_A)"
-
-#: ../plug-ins/script-fu/script-fu.c:334
-msgid "_Artistic"
-msgstr "예술적인(_A)"
-
-#: ../plug-ins/script-fu/script-fu.c:336
-msgid "_Blur"
-msgstr "흐릿하게(_B)"
-
-#: ../plug-ins/script-fu/script-fu.c:338
-msgid "_Decor"
-msgstr "장식(_D)"
-
-#: ../plug-ins/script-fu/script-fu.c:340
-msgid "_Effects"
-msgstr "효과(_E)"
-
-#: ../plug-ins/script-fu/script-fu.c:342
-msgid "En_hance"
-msgstr "강화(_H)"
-
-#: ../plug-ins/script-fu/script-fu.c:344
-msgid "_Light and Shadow"
-msgstr "빛과 그림자(_L)"
-
-#: ../plug-ins/script-fu/script-fu.c:346
-msgid "S_hadow"
-msgstr "그림자(_H)"
-
-#: ../plug-ins/script-fu/script-fu.c:348
-msgid "_Render"
-msgstr "렌더(_R)"
-
-#: ../plug-ins/script-fu/script-fu.c:350
-msgid "_Alchemy"
-msgstr "연금술(_A)"
-
-#: ../plug-ins/script-fu/script-fu.c:353
 msgid "Re-read all available Script-Fu scripts"
-msgstr "사용가능한 모든 스크립트-푸 스크립트를 다시 읽기"
+msgstr "사용가능한 모든 Script-Fu 스크립트를 다시 읽기"
 
-#: ../plug-ins/script-fu/script-fu.c:358
+#: ../plug-ins/script-fu/script-fu.c:335
 msgid "_Refresh Scripts"
 msgstr "스크립트 새로고침(_R)"
 
-#: ../plug-ins/script-fu/script-fu.c:381
+#: ../plug-ins/script-fu/script-fu.c:358
 msgid "You can not use \"Refresh Scripts\" while a Script-Fu dialog box is open.  Please close all Script-Fu windows and try again."
-msgstr "스크립트 대화상자가 열려있는 동안에는 \"스크립트 새로고침\"을 사용할 수 없습니다. 모든 스크립트-푸 창을 닫고 다시 시도하십시오."
+msgstr "스크립트 대화상자가 열려있는 동안에는 \"스크립트 새로고침\"을 사용할 수 없습니다. 모든 Script-Fu 창을 닫고 다시 시도하십시오."
 
 #: ../plug-ins/script-fu/scripts/3d-outline.scm.h:1
 msgid "3D _Outline..."
@@ -312,8 +277,7 @@ msgstr "기본 범프맵 설정"
 #: ../plug-ins/script-fu/scripts/slide.scm.h:2
 #: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm.h:7
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:5
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:6
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:4
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:2
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:8
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:4
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:6
@@ -351,8 +315,7 @@ msgstr "글꼴"
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:4
 #: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm.h:8
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:6
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:7
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:5
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:3
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:9
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:5
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:7
@@ -426,8 +389,7 @@ msgstr "그림자 흐릿한 영역의 반지름"
 #: ../plug-ins/script-fu/scripts/slide.scm.h:5
 #: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm.h:11
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:8
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:9
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:8
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:6
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:11
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:8
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:14
@@ -461,8 +423,6 @@ msgstr "3D 트뤼셰(Truchet)(_D)..."
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:1
 #: ../plug-ins/script-fu/scripts/news-text.scm.h:1
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:1
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:1
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:1
 #: ../plug-ins/script-fu/scripts/swirltile.scm.h:2
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:2
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:1
@@ -581,7 +541,7 @@ msgstr "배경으로 이미지 합치기"
 #: ../plug-ins/script-fu/scripts/alien-neon-logo.scm.h:8
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:8
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:8
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:6
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:4
 msgid "Glow color"
 msgstr "빛 색상"
 
@@ -1219,7 +1179,7 @@ msgstr "이미지에 진짜같은 커피 얼룩을 추가합니다."
 
 #: ../plug-ins/script-fu/scripts/coffee.scm.h:2
 msgid "Darken only"
-msgstr "어둡게만"
+msgstr "어두운 색만"
 
 #: ../plug-ins/script-fu/scripts/coffee.scm.h:3
 msgid "Stains"
@@ -1264,6 +1224,8 @@ msgstr "반사 효과와 원근 그림자가 있는 금속 느낌의 로고를 �
 
 #: ../plug-ins/script-fu/scripts/coolmetal-logo.scm.h:5
 #: ../plug-ins/script-fu/scripts/frosty-logo.scm.h:4
+#: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:4
+#: ../plug-ins/script-fu/scripts/neon-logo.scm.h:5
 msgid "Effect size (pixels)"
 msgstr "효과 크기 (픽셀)"
 
@@ -1649,7 +1611,6 @@ msgid "Pattern (text)"
 msgstr "무늬 (글자)"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:15
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:5
 msgid "Shadow"
 msgstr "그림자"
 
@@ -1676,10 +1637,6 @@ msgstr "선택한 영역(혹은 알파)에 밝게 빛나는 금속 효과를 추
 #: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:3
 msgid "Create a logo that looks like glowing hot metal"
 msgstr "밝게 빛나는 금속 느낌의 로고를 만듭니다."
-
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:4
-msgid "Effect size (pixels * 3)"
-msgstr "효과 크기 (픽셀 * 3)"
 
 #: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:7
 msgid "Glo_wing Hot..."
@@ -1718,7 +1675,7 @@ msgstr "사용자 그라디언트(_G)..."
 #: ../plug-ins/script-fu/scripts/grid-system.scm.h:1
 #: ../plug-ins/script-fu/scripts/guides-from-selection.scm.h:1
 msgid "Draw a grid as specified by the lists of X and Y locations using the current brush"
-msgstr "현재 사용 중인 붓을 이용해 지정된 X, Y 위치에 모눈을 그립니다."
+msgstr "현재 사용 중인 붓을 이용해 지정된 X, Y 위치에 격자를 그립니다."
 
 #: ../plug-ins/script-fu/scripts/grid-system.scm.h:2
 msgid "X divisions"
@@ -1918,10 +1875,6 @@ msgstr "네온 사인 스타일의 로고를 만듭니다."
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:4
 msgid "Create shadow"
 msgstr "그림자를 만듭니다."
-
-#: ../plug-ins/script-fu/scripts/neon-logo.scm.h:5
-msgid "Effect size (pixels * 5)"
-msgstr "효과 크기 (픽셀 * 5)"
 
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:9
 msgid "N_eon..."
@@ -2261,26 +2214,6 @@ msgstr "빠르게 움직이는 글자 효과를 가진 로고를 만듭니다."
 msgid "Speed Text..."
 msgstr "빠르게 움직이는 글자..."
 
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:2
-msgid "Create a simple sphere with a drop shadow"
-msgstr "그림자가 있는 단순한 구체를 만듭니다."
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:3
-msgid "Lighting (degrees)"
-msgstr "조명 (각도)"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:4
-msgid "Radius (pixels)"
-msgstr "반지름 (픽셀)"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:6
-msgid "Sphere color"
-msgstr "구체의 색"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:7
-msgid "_Sphere..."
-msgstr "구체(_S)..."
-
 #: ../plug-ins/script-fu/scripts/spinning-globe.scm.h:1
 msgid "Create an animation by mapping the current image onto a spinning sphere"
 msgstr "현재 이미지를 회전하는 구체로 매핑하는 애니메이션을 만듭니다."
@@ -2426,39 +2359,11 @@ msgstr "유형"
 msgid "_Spyrogimp..."
 msgstr "스파이로그래프(_S)..."
 
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:2
-msgid "Burst color"
-msgstr "폭발 색상"
-
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:3
-msgid "Create a logo using a starburst gradient"
-msgstr "별빛 무늬 그라디언트를 이용해 로고를 만듭니다."
-
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:4
-msgid "Effect size (pixels * 30)"
-msgstr "효과 크기 (픽셀 * 30)"
-
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:5
-msgid "Fill the selected region (or alpha) with a starburst gradient and add a shadow"
-msgstr "선택한 영역(혹은 알파)을 별빛과 그림자로 채웁니다."
-
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:8
-msgid "Starb_urst..."
-msgstr "폭발(_U)..."
-
 #: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:1
 msgid "Create a logo using a rock-like texture, a nova glow, and shadow"
 msgstr "바위느낌의 텍스쳐, 초신성 빛, 그림자가 있는 로고를 만듭니다."
 
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:2
-msgid "Effect size (pixels * 4)"
-msgstr "효과 크기 (픽셀 * 4)"
-
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:3
-msgid "Fill the selected region (or alpha) with a rock-like texture, a nova glow, and shadow"
-msgstr "선택한 영역(혹은 알파)를 바위느낌의 텍스쳐, 초신성 빛, 그림자로 채웁니다."
-
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:7
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:5
 msgid "Sta_rscape..."
 msgstr "별빛(_R)..."
 
@@ -2785,4 +2690,64 @@ msgstr "하일라이트 불투명도"
 #: ../plug-ins/script-fu/scripts/xach-effect.scm.h:12
 msgid "_Xach-Effect..."
 msgstr "Xach 효과(_X)..."
+
+#~ msgid "Effect size (pixels * 3)"
+#~ msgstr "효과 크기 (픽셀 * 3)"
+#~ msgid "Effect size (pixels * 5)"
+#~ msgstr "효과 크기 (픽셀 * 5)"
+#~ msgid "Burst color"
+#~ msgstr "폭발 색상"
+#~ msgid "Create a logo using a starburst gradient"
+#~ msgstr "별빛 무늬 그라디언트를 이용해 로고를 만듭니다."
+#~ msgid "Effect size (pixels * 30)"
+#~ msgstr "효과 크기 (픽셀 * 30)"
+#~ msgid ""
+#~ "Fill the selected region (or alpha) with a starburst gradient and add a "
+#~ "shadow"
+#~ msgstr "선택한 영역(혹은 알파)을 별빛과 그림자로 채웁니다."
+#~ msgid "Starb_urst..."
+#~ msgstr "폭발(_U)..."
+#~ msgid "Effect size (pixels * 4)"
+#~ msgstr "효과 크기 (픽셀 * 4)"
+#~ msgid ""
+#~ "Fill the selected region (or alpha) with a rock-like texture, a nova "
+#~ "glow, and shadow"
+#~ msgstr ""
+#~ "선택한 영역(혹은 알파)를 바위느낌의 텍스쳐, 초신성 빛, 그림자로 채웁니다."
+#~ msgid "_Misc"
+#~ msgstr "기타(_M)"
+#~ msgid "_Utilities"
+#~ msgstr "유틸리티(_U)"
+#~ msgid "An_imation"
+#~ msgstr "애니메이션(_I)"
+#~ msgid "_Animators"
+#~ msgstr "애니메이터(_A)"
+#~ msgid "_Artistic"
+#~ msgstr "예술적인(_A)"
+#~ msgid "_Blur"
+#~ msgstr "흐릿하게(_B)"
+#~ msgid "_Decor"
+#~ msgstr "장식(_D)"
+#~ msgid "_Effects"
+#~ msgstr "효과(_E)"
+#~ msgid "En_hance"
+#~ msgstr "강화(_H)"
+#~ msgid "_Light and Shadow"
+#~ msgstr "빛과 그림자(_L)"
+#~ msgid "S_hadow"
+#~ msgstr "그림자(_H)"
+#~ msgid "_Render"
+#~ msgstr "렌더(_R)"
+#~ msgid "_Alchemy"
+#~ msgstr "연금술(_A)"
+#~ msgid "Create a simple sphere with a drop shadow"
+#~ msgstr "그림자가 있는 단순한 구체를 만듭니다."
+#~ msgid "Lighting (degrees)"
+#~ msgstr "조명 (각도)"
+#~ msgid "Radius (pixels)"
+#~ msgstr "반지름 (픽셀)"
+#~ msgid "Sphere color"
+#~ msgstr "구체의 색"
+#~ msgid "_Sphere..."
+#~ msgstr "구체(_S)..."
 

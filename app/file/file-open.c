@@ -65,7 +65,6 @@
 #include "plug-in/gimppluginerror.h"
 #include "plug-in/plug-in-icc-profile.h"
 
-
 #include "file-open.h"
 #include "file-procedure.h"
 #include "file-utils.h"
@@ -75,6 +74,9 @@
 
 static void  file_open_sanitize_image       (GimpImage    *image,
                                              gboolean      as_new);
+static void  file_open_convert_items        (GimpImage    *dest_image,
+                                             const gchar  *basename,
+                                             GList        *items);
 static void  file_open_handle_color_profile (GimpImage    *image,
                                              GimpContext  *context,
                                              GimpProgress *progress,
@@ -146,7 +148,7 @@ file_open_image (Gimp                *gimp,
 
   return_vals =
     gimp_pdb_execute_procedure_by_name (gimp->pdb,
-                                        context, progress,
+                                        context, progress, error,
                                         GIMP_OBJECT (file_proc)->name,
                                         GIMP_TYPE_INT32, run_mode,
                                         G_TYPE_STRING,   filename,
@@ -176,18 +178,21 @@ file_open_image (Gimp                *gimp,
         }
       else
         {
-          g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                       _("%s plug-in returned SUCCESS but did not "
-                         "return an image"),
-                       gimp_plug_in_procedure_get_label (file_proc));
+          if (error && ! *error)
+            g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                         _("%s plug-in returned SUCCESS but did not "
+                           "return an image"),
+                         gimp_plug_in_procedure_get_label (file_proc));
+
           *status = GIMP_PDB_EXECUTION_ERROR;
         }
     }
   else if (*status != GIMP_PDB_CANCEL)
     {
-      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
-                   _("%s plug-In could not open image"),
-                   gimp_plug_in_procedure_get_label (file_proc));
+      if (error && ! *error)
+        g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                     _("%s plug-In could not open image"),
+                     gimp_plug_in_procedure_get_label (file_proc));
     }
 
   g_value_array_free (return_vals);
@@ -209,7 +214,8 @@ file_open_thumbnail (Gimp          *gimp,
                      gint           size,
                      const gchar  **mime_type,
                      gint          *image_width,
-                     gint          *image_height)
+                     gint          *image_height,
+                     GError       **error)
 {
   GimpPlugInProcedure *file_proc;
   GimpProcedure       *procedure;
@@ -220,6 +226,7 @@ file_open_thumbnail (Gimp          *gimp,
   g_return_val_if_fail (mime_type != NULL, NULL);
   g_return_val_if_fail (image_width != NULL, NULL);
   g_return_val_if_fail (image_height != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   *image_width  = 0;
   *image_height = 0;
@@ -246,7 +253,7 @@ file_open_thumbnail (Gimp          *gimp,
 
       return_vals =
         gimp_pdb_execute_procedure_by_name (gimp->pdb,
-                                            context, progress,
+                                            context, progress, error,
                                             GIMP_OBJECT (procedure)->name,
                                             G_TYPE_STRING,   filename,
                                             GIMP_TYPE_INT32, size,
@@ -276,7 +283,8 @@ file_open_thumbnail (Gimp          *gimp,
 
 #ifdef GIMP_UNSTABLE
               g_printerr ("opened thumbnail at %d x %d\n",
-                          image->width, image->height);
+                          gimp_image_get_width  (image),
+                          gimp_image_get_height (image));
 #endif
             }
         }
@@ -354,9 +362,6 @@ file_open_with_proc_and_display (Gimp                *gimp,
                   gimp_imagefile_save_thumbnail (imagefile, mime_type, image);
                 }
             }
-
-          if (gimp->config->save_document_history)
-            gimp_recent_list_add_uri (gimp, uri, mime_type);
         }
 
       /*  the display owns the image now  */
@@ -403,7 +408,7 @@ file_open_layers (Gimp                *gimp,
 
       gimp_image_undo_disable (new_image);
 
-      for (list = GIMP_LIST (new_image->layers)->list;
+      for (list = GIMP_LIST (gimp_image_get_layers (new_image))->list;
            list;
            list = g_list_next (list))
         {
@@ -435,45 +440,18 @@ file_open_layers (Gimp                *gimp,
         {
           gchar *basename = file_utils_uri_display_basename (uri);
 
-          for (list = layers; list; list = g_list_next (list))
-            {
-              GimpLayer *layer = list->data;
-              GimpItem  *item;
-
-              item = gimp_item_convert (GIMP_ITEM (layer), dest_image,
-                                        G_TYPE_FROM_INSTANCE (layer),
-                                        TRUE);
-
-              if (layers->next == NULL)
-                {
-                  gimp_object_set_name (GIMP_OBJECT (item), basename);
-                }
-              else
-                {
-                  gchar *name;
-
-                  name = g_strdup_printf ("%s - %s", basename,
-                                          gimp_object_get_name (GIMP_OBJECT (layer)));
-                  gimp_object_take_name (GIMP_OBJECT (item), name);
-                }
-
-              list->data = item;
-            }
-
+          file_open_convert_items (dest_image, basename, layers);
           g_free (basename);
 
           gimp_document_list_add_uri (GIMP_DOCUMENT_LIST (gimp->documents),
                                       uri, mime_type);
-
-          if (gimp->config->save_document_history)
-            gimp_recent_list_add_uri (gimp, uri, mime_type);
         }
       else
         {
           g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                        _("Image doesn't contain any layers"));
           *status = GIMP_PDB_EXECUTION_ERROR;
-       }
+        }
 
       g_object_unref (new_image);
     }
@@ -503,11 +481,12 @@ file_open_from_command_line (Gimp        *gimp,
   if (uri)
     {
       GimpImage         *image;
+      GimpObject        *display = gimp_get_empty_display (gimp);
       GimpPDBStatusType  status;
 
       image = file_open_with_display (gimp,
                                       gimp_get_user_context (gimp),
-                                      NULL,
+                                      GIMP_PROGRESS (display),
                                       uri, as_new,
                                       &status, &error);
 
@@ -519,7 +498,7 @@ file_open_from_command_line (Gimp        *gimp,
         {
           gchar *filename = file_utils_uri_display_name (uri);
 
-          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
+          gimp_message (gimp, G_OBJECT (display), GIMP_MESSAGE_ERROR,
                         _("Opening '%s' failed: %s"),
                         filename, error->message);
           g_clear_error (&error);
@@ -563,12 +542,46 @@ file_open_sanitize_image (GimpImage *image,
    * load plug-ins are not required to call gimp_drawable_update() or
    * anything.
    */
-  gimp_image_update (image, 0, 0, image->width, image->height);
+  gimp_image_update (image,
+                     0, 0,
+                     gimp_image_get_width  (image),
+                     gimp_image_get_height (image));
   gimp_image_flush (image);
 
   /* same for drawable previews */
   gimp_image_invalidate_layer_previews (image);
   gimp_image_invalidate_channel_previews (image);
+}
+
+/* Converts items from one image to another */
+static void
+file_open_convert_items (GimpImage   *dest_image,
+                         const gchar *basename,
+                         GList       *items)
+{
+  GList *list;
+
+  for (list = items; list; list = g_list_next (list))
+    {
+      GimpItem *src = list->data;
+      GimpItem *item;
+
+      item = gimp_item_convert (src, dest_image, G_TYPE_FROM_INSTANCE (src));
+
+      if (g_list_length (items) == 1)
+        {
+          gimp_object_set_name (GIMP_OBJECT (item), basename);
+        }
+      else
+        {
+          gchar *name = g_strdup_printf ("%s - %s", basename,
+                                         GIMP_OBJECT (src)->name);
+
+          gimp_object_take_name (GIMP_OBJECT (item), name);
+        }
+
+      list->data = item;
+    }
 }
 
 static void

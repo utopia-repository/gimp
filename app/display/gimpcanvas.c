@@ -20,45 +20,52 @@
 
 #include <gtk/gtk.h>
 
+#include "libgimpbase/gimpbase.h"
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpwidgets/gimpwidgets.h"
 
 #include "display-types.h"
 
 #include "config/gimpdisplayconfig.h"
 
-#include "core/gimp.h"
-
+#include "widgets/gimpcairo-wilber.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "gimpcanvas.h"
+
+#include "gimp-intl.h"
 
 
 enum
 {
   PROP_0,
-  PROP_GIMP
+  PROP_CONFIG
 };
 
 
 /*  local function prototypes  */
 
-static void    gimp_canvas_set_property (GObject         *object,
-                                         guint            property_id,
-                                         const GValue    *value,
-                                         GParamSpec      *pspec);
-static void    gimp_canvas_get_property (GObject         *object,
-                                         guint            property_id,
-                                         GValue          *value,
-                                         GParamSpec      *pspec);
+static void    gimp_canvas_set_property  (GObject         *object,
+                                          guint            property_id,
+                                          const GValue    *value,
+                                          GParamSpec      *pspec);
+static void    gimp_canvas_get_property  (GObject         *object,
+                                          guint            property_id,
+                                          GValue          *value,
+                                          GParamSpec      *pspec);
 
-static void    gimp_canvas_realize      (GtkWidget       *widget);
-static void    gimp_canvas_unrealize    (GtkWidget       *widget);
+static void    gimp_canvas_realize       (GtkWidget       *widget);
+static void    gimp_canvas_unrealize     (GtkWidget       *widget);
+static void    gimp_canvas_size_allocate (GtkWidget       *widget,
+                                          GtkAllocation   *allocation);
+static void    gimp_canvas_style_set     (GtkWidget       *widget,
+                                          GtkStyle        *prev_style);
 
 static GdkGC * gimp_canvas_gc_new       (GimpCanvas      *canvas,
                                          GimpCanvasStyle  style);
 
 
-G_DEFINE_TYPE (GimpCanvas, gimp_canvas, GTK_TYPE_DRAWING_AREA)
+G_DEFINE_TYPE (GimpCanvas, gimp_canvas, GTK_TYPE_CONTAINER)
 
 #define parent_class gimp_canvas_parent_class
 
@@ -154,15 +161,17 @@ gimp_canvas_class_init (GimpCanvasClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->set_property = gimp_canvas_set_property;
-  object_class->get_property = gimp_canvas_get_property;
+  object_class->set_property  = gimp_canvas_set_property;
+  object_class->get_property  = gimp_canvas_get_property;
 
-  widget_class->realize      = gimp_canvas_realize;
-  widget_class->unrealize    = gimp_canvas_unrealize;
+  widget_class->realize       = gimp_canvas_realize;
+  widget_class->unrealize     = gimp_canvas_unrealize;
+  widget_class->size_allocate = gimp_canvas_size_allocate;
+  widget_class->style_set     = gimp_canvas_style_set;
 
-  g_object_class_install_property (object_class, PROP_GIMP,
-                                   g_param_spec_object ("gimp", NULL, NULL,
-                                                        GIMP_TYPE_GIMP,
+  g_object_class_install_property (object_class, PROP_CONFIG,
+                                   g_param_spec_object ("config", NULL, NULL,
+                                                        GIMP_TYPE_DISPLAY_CONFIG,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
 }
@@ -170,7 +179,12 @@ gimp_canvas_class_init (GimpCanvasClass *klass)
 static void
 gimp_canvas_init (GimpCanvas *canvas)
 {
-  gint i;
+  GtkWidget *widget = GTK_WIDGET (canvas);
+  gint       i;
+
+  GTK_WIDGET_SET_FLAGS (widget, GTK_CAN_FOCUS);
+
+  gtk_widget_set_extension_events (widget, GDK_EXTENSION_EVENTS_ALL);
 
   for (i = 0; i < GIMP_CANVAS_NUM_STYLES; i++)
     canvas->gc[i] = NULL;
@@ -189,8 +203,8 @@ gimp_canvas_set_property (GObject      *object,
 
   switch (property_id)
     {
-    case PROP_GIMP:
-      canvas->gimp = g_value_get_object (value);
+    case PROP_CONFIG:
+      canvas->config = g_value_get_object (value); /* don't dup */
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -208,8 +222,8 @@ gimp_canvas_get_property (GObject    *object,
 
   switch (property_id)
     {
-    case PROP_GIMP:
-      g_value_set_object (value, canvas->gimp);
+    case PROP_CONFIG:
+      g_value_set_object (value, canvas->config);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -220,9 +234,31 @@ gimp_canvas_get_property (GObject    *object,
 static void
 gimp_canvas_realize (GtkWidget *widget)
 {
-  GimpCanvas *canvas = GIMP_CANVAS (widget);
+  GimpCanvas    *canvas = GIMP_CANVAS (widget);
+  GdkWindowAttr  attributes;
+  gint           attributes_mask;
 
-  GTK_WIDGET_CLASS (parent_class)->realize (widget);
+  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+
+  attributes.x           = widget->allocation.x;
+  attributes.y           = widget->allocation.y;
+  attributes.width       = widget->allocation.width;
+  attributes.height      = widget->allocation.height;
+  attributes.window_type = GDK_WINDOW_CHILD;
+  attributes.wclass      = GDK_INPUT_OUTPUT;
+  attributes.visual      = gtk_widget_get_visual (widget);
+  attributes.colormap    = gtk_widget_get_colormap (widget);
+  attributes.event_mask  = (gtk_widget_get_events (widget) |
+                            GIMP_CANVAS_EVENT_MASK);
+
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+
+  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget),
+                                   &attributes, attributes_mask);
+  gdk_window_set_user_data (widget->window, widget);
+
+  widget->style = gtk_style_attach (widget->style, widget->window);
+  gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 
   canvas->stipple[0] =
     gdk_bitmap_create_from_data (widget->window,
@@ -262,15 +298,41 @@ gimp_canvas_unrealize (GtkWidget *widget)
   GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
 }
 
+static void
+gimp_canvas_size_allocate (GtkWidget     *widget,
+                           GtkAllocation *allocation)
+{
+  widget->allocation = *allocation;
+
+  if (GTK_WIDGET_REALIZED (widget))
+    gdk_window_move_resize (widget->window,
+                            allocation->x, allocation->y,
+                            allocation->width, allocation->height);
+}
+
+static void
+gimp_canvas_style_set (GtkWidget *widget,
+                       GtkStyle  *prev_style)
+{
+  GimpCanvas *canvas = GIMP_CANVAS (widget);
+
+  GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
+
+  if (canvas->layout)
+    {
+      g_object_unref (canvas->layout);
+      canvas->layout = NULL;
+    }
+}
+
 /* Returns: %TRUE if the XOR color is not white */
 static gboolean
 gimp_canvas_get_xor_color (GimpCanvas *canvas,
                            GdkColor   *color)
 {
-  GimpDisplayConfig *config = GIMP_DISPLAY_CONFIG (canvas->gimp->config);
-  guchar             r, g, b;
+  guchar r, g, b;
 
-  gimp_rgb_get_uchar (&config->xor_color, &r, &g, &b);
+  gimp_rgb_get_uchar (&canvas->config->xor_color, &r, &g, &b);
 
   color->red   = (r << 8) | r;
   color->green = (g << 8) | g;
@@ -328,6 +390,7 @@ gimp_canvas_gc_new (GimpCanvas      *canvas,
     case GIMP_CANVAS_STYLE_LAYER_BOUNDARY:
     case GIMP_CANVAS_STYLE_GUIDE_NORMAL:
     case GIMP_CANVAS_STYLE_GUIDE_ACTIVE:
+    case GIMP_CANVAS_STYLE_LAYER_MASK_ACTIVE:
       mask |= GDK_GC_CAP_STYLE | GDK_GC_FILL | GDK_GC_STIPPLE;
       values.cap_style = GDK_CAP_NOT_LAST;
       values.fill      = GDK_OPAQUE_STIPPLED;
@@ -414,6 +477,16 @@ gimp_canvas_gc_new (GimpCanvas      *canvas,
       bg.blue  = 0x0;
       break;
 
+    case GIMP_CANVAS_STYLE_LAYER_MASK_ACTIVE:
+      fg.red   = 0x0;
+      fg.green = 0x0;
+      fg.blue  = 0x0;
+
+      bg.red   = 0x0;
+      bg.green = 0xffff;
+      bg.blue  = 0x0;
+      break;
+
     case GIMP_CANVAS_STYLE_SAMPLE_POINT_NORMAL:
       fg.red   = 0x0;
       fg.green = 0x7f7f;
@@ -461,14 +534,40 @@ gimp_canvas_ensure_style (GimpCanvas      *canvas,
  * Return value: a new #GimpCanvas widget
  **/
 GtkWidget *
-gimp_canvas_new (Gimp *gimp)
+gimp_canvas_new (GimpDisplayConfig *config)
 {
-  g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
+  g_return_val_if_fail (GIMP_IS_DISPLAY_CONFIG (config), NULL);
 
   return g_object_new (GIMP_TYPE_CANVAS,
-                       "name", "gimp-canvas",
-                       "gimp", gimp,
+                       "name",   "gimp-canvas",
+                       "config", config,
                        NULL);
+}
+
+/**
+ * gimp_canvas_scroll:
+ * @canvas: the #GimpCanvas widget to scroll.
+ * @offset_x: the x scroll amount.
+ * @offset_y: the y scroll amount.
+ *
+ * Scrolls the canvas using gdk_window_scroll() and makes sure the result
+ * is displayed immediately by calling gdk_window_process_updates().
+ **/
+void
+gimp_canvas_scroll (GimpCanvas *canvas,
+                    gint        offset_x,
+                    gint        offset_y)
+{
+  GtkWidget *widget;
+
+  g_return_if_fail (GIMP_IS_CANVAS (canvas));
+
+  widget = GTK_WIDGET (canvas);
+
+  gdk_window_scroll (widget->window, offset_x, offset_y);
+
+  /*  Make sure expose events are processed before scrolling again  */
+  gdk_window_process_updates (widget->window, FALSE);
 }
 
 /**
@@ -790,6 +889,48 @@ gimp_canvas_draw_rgb (GimpCanvas      *canvas,
                                 x, y, width, height,
                                 GDK_RGB_DITHER_MAX,
                                 rgb_buf, rowstride, xdith, ydith);
+}
+
+void
+gimp_canvas_draw_drop_zone (GimpCanvas *canvas,
+                            cairo_t    *cr)
+{
+  GtkWidget *widget = GTK_WIDGET (canvas);
+  GtkStyle  *style  = gtk_widget_get_style (widget);
+  gdouble    wilber_width;
+  gdouble    wilber_height;
+  gdouble    width;
+  gdouble    height;
+  gdouble    side;
+  gdouble    factor;
+
+  gimp_cairo_wilber_get_size (cr, &wilber_width, &wilber_height);
+
+  wilber_width  /= 2;
+  wilber_height /= 2;
+
+  side = MIN (MIN (widget->allocation.width, widget->allocation.height),
+              MAX (widget->allocation.width, widget->allocation.height) / 2);
+
+  width  = MAX (wilber_width,  side);
+  height = MAX (wilber_height, side);
+
+  factor = MIN (width / wilber_width, height / wilber_height);
+
+  cairo_scale (cr, factor, factor);
+
+  /*  magic factors depend on the image used, everything else is generic
+   */
+  gimp_cairo_wilber (cr,
+                     - wilber_width * 0.6,
+                     widget->allocation.height / factor - wilber_height * 1.1);
+
+  cairo_set_source_rgba (cr,
+                         style->fg[widget->state].red   / 65535.0,
+                         style->fg[widget->state].green / 65535.0,
+                         style->fg[widget->state].blue  / 65535.0,
+                         0.15);
+  cairo_fill (cr);
 }
 
 /**

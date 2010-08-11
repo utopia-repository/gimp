@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+
+<refentry id="libgimpwidgets-GimpCairoUtils">
+<refmeta>
+<refentrytitle role="top_of_page" id="libgimpwidgets-GimpCairoUtils.top_of_page">gimpcairo-utils</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>gimpcairo-utils</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv id="libgimpwidgets-GimpCairoUtils.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+<link linkend="void">void</link>                <link linkend="gimp-cairo-set-source-rgb">gimp_cairo_set_source_rgb</link>           (<link linkend="cairo-t">cairo_t</link> *cr,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="void">void</link>                <link linkend="gimp-cairo-set-source-rgba">gimp_cairo_set_source_rgba</link>          (<link linkend="cairo-t">cairo_t</link> *cr,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-cairo-set-focus-line-pattern">gimp_cairo_set_focus_line_pattern</link>   (<link linkend="cairo-t">cairo_t</link> *cr,
+                                                         <link linkend="GtkWidget">GtkWidget</link> *widget);
+<link linkend="cairo-pattern-t">cairo_pattern_t</link>*    <link linkend="gimp-cairo-checkerboard-create">gimp_cairo_checkerboard_create</link>      (<link linkend="cairo-t">cairo_t</link> *cr,
+                                                         <link linkend="gint">gint</link> size,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *light,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *dark);
+<link linkend="cairo-surface-t">cairo_surface_t</link>*    <link linkend="gimp-cairo-surface-create-from-pixbuf">gimp_cairo_surface_create_from_pixbuf</link>
+                                                        (<link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf);
+#define             <link linkend="GIMP-CAIRO-RGB24-SET-PIXEL:CAPS">GIMP_CAIRO_RGB24_SET_PIXEL</link>          (d, r, g, b)
+#define             <link linkend="GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS">GIMP_CAIRO_ARGB32_SET_PIXEL</link>         (d, r, g, b, a)
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libgimpwidgets-GimpCairoUtils.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 id="libgimpwidgets-GimpCairoUtils.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="gimp-cairo-set-source-rgb" role="function" condition="since:GIMP 2.6">
+<title>gimp_cairo_set_source_rgb ()</title>
+<indexterm zone="gimp-cairo-set-source-rgb" role="GIMP 2.6"><primary>gimp_cairo_set_source_rgb</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cairo_set_source_rgb           (<link linkend="cairo-t">cairo_t</link> *cr,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<para>
+Sets the source pattern within <parameter>cr</parameter> to the solid opaque color
+described by <parameter>color</parameter>.
+</para>
+<para>
+This function calls <link linkend="cairo-set-source-rgb"><function>cairo_set_source_rgb()</function></link> for you.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>cr</parameter>&nbsp;:</term>
+<listitem><simpara>    Cairo context
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<listitem><simpara> GimpRGB color
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
+<refsect2 id="gimp-cairo-set-source-rgba" role="function" condition="since:GIMP 2.6">
+<title>gimp_cairo_set_source_rgba ()</title>
+<indexterm zone="gimp-cairo-set-source-rgba" role="GIMP 2.6"><primary>gimp_cairo_set_source_rgba</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_cairo_set_source_rgba          (<link linkend="cairo-t">cairo_t</link> *cr,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
+<para>
+Sets the source pattern within <parameter>cr</parameter> to the solid translucent color
+described by <parameter>color</parameter>.
+</para>
+<para>
+This function calls <link linkend="cairo-set-source-rgba"><function>cairo_set_source_rgba()</function></link> for you.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>cr</parameter>&nbsp;:</term>
+<listitem><simpara>    Cairo context
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>color</parameter>&nbsp;:</term>
+<listitem><simpara> GimpRGB color
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
+<refsect2 id="gimp-cairo-set-focus-line-pattern" role="function" condition="since:GIMP 2.6">
+<title>gimp_cairo_set_focus_line_pattern ()</title>
+<indexterm zone="gimp-cairo-set-focus-line-pattern" role="GIMP 2.6"><primary>gimp_cairo_set_focus_line_pattern</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_cairo_set_focus_line_pattern   (<link linkend="cairo-t">cairo_t</link> *cr,
+                                                         <link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<para>
+Sets color and dash pattern for stroking a focus line on the given
+<parameter>cr</parameter>. The line pattern is taken from <parameter>widget</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>cr</parameter>&nbsp;:</term>
+<listitem><simpara>     Cairo context
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara> widget to draw the focus indicator on
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the widget style has a focus line pattern,
+              <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
+<refsect2 id="gimp-cairo-checkerboard-create" role="function" condition="since:GIMP 2.6">
+<title>gimp_cairo_checkerboard_create ()</title>
+<indexterm zone="gimp-cairo-checkerboard-create" role="GIMP 2.6"><primary>gimp_cairo_checkerboard_create</primary></indexterm><programlisting><link linkend="cairo-pattern-t">cairo_pattern_t</link>*    gimp_cairo_checkerboard_create      (<link linkend="cairo-t">cairo_t</link> *cr,
+                                                         <link linkend="gint">gint</link> size,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *light,
+                                                         const <link linkend="GimpRGB">GimpRGB</link> *dark);</programlisting>
+<para>
+Create a repeating checkerboard pattern.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>cr</parameter>&nbsp;:</term>
+<listitem><simpara>    Cairo context
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara>  check size
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>light</parameter>&nbsp;:</term>
+<listitem><simpara> light check color or <link linkend="NULL:CAPS"><literal>NULL</literal></link> to use the default light gray
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dark</parameter>&nbsp;:</term>
+<listitem><simpara>  dark check color or <link linkend="NULL:CAPS"><literal>NULL</literal></link> to use the default dark gray
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a new Cairo pattern that can be used as a source on <parameter>cr</parameter>.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
+<refsect2 id="gimp-cairo-surface-create-from-pixbuf" role="function" condition="since:GIMP 2.6">
+<title>gimp_cairo_surface_create_from_pixbuf ()</title>
+<indexterm zone="gimp-cairo-surface-create-from-pixbuf" role="GIMP 2.6"><primary>gimp_cairo_surface_create_from_pixbuf</primary></indexterm><programlisting><link linkend="cairo-surface-t">cairo_surface_t</link>*    gimp_cairo_surface_create_from_pixbuf
+                                                        (<link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf);</programlisting>
+<para>
+Create a Cairo image surface from a GdkPixbuf.
+</para>
+<para>
+You should avoid calling this function as there are probably more
+efficient ways of achieving the result you are looking for.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>pixbuf</parameter>&nbsp;:</term>
+<listitem><simpara> a GdkPixbuf
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
+<refsect2 id="GIMP-CAIRO-RGB24-SET-PIXEL:CAPS" role="macro" condition="since:GIMP 2.6">
+<title>GIMP_CAIRO_RGB24_SET_PIXEL()</title>
+<indexterm zone="GIMP-CAIRO-RGB24-SET-PIXEL:CAPS" role="GIMP 2.6"><primary>GIMP_CAIRO_RGB24_SET_PIXEL</primary></indexterm><programlisting>#define             GIMP_CAIRO_RGB24_SET_PIXEL(d, r, g, b)</programlisting>
+<para>
+Sets a single pixel in an Cairo image surface in <link linkend="CAIRO-FORMAT-RGB24:CAPS"><literal>CAIRO_FORMAT_RGB24</literal></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>d</parameter>&nbsp;:</term>
+<listitem><simpara> pointer to the destination buffer
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>r</parameter>&nbsp;:</term>
+<listitem><simpara> red component
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>g</parameter>&nbsp;:</term>
+<listitem><simpara> green component
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>b</parameter>&nbsp;:</term>
+<listitem><simpara> blue component
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
+<refsect2 id="GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS" role="macro" condition="since:GIMP 2.6">
+<title>GIMP_CAIRO_ARGB32_SET_PIXEL()</title>
+<indexterm zone="GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS" role="GIMP 2.6"><primary>GIMP_CAIRO_ARGB32_SET_PIXEL</primary></indexterm><programlisting>#define             GIMP_CAIRO_ARGB32_SET_PIXEL(d, r, g, b, a)</programlisting>
+<para>
+Sets a single pixel in an Cairo image surface in <link linkend="CAIRO-FORMAT-ARGB32:CAPS"><literal>CAIRO_FORMAT_ARGB32</literal></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>d</parameter>&nbsp;:</term>
+<listitem><simpara> pointer to the destination buffer
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>r</parameter>&nbsp;:</term>
+<listitem><simpara> red component, not pre-multiplied
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>g</parameter>&nbsp;:</term>
+<listitem><simpara> green component, not pre-multiplied
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>b</parameter>&nbsp;:</term>
+<listitem><simpara> blue component, not pre-multiplied
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>a</parameter>&nbsp;:</term>
+<listitem><simpara> alpha component
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

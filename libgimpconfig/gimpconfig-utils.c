@@ -206,7 +206,6 @@ gimp_config_sync (GObject     *src,
   /* we use the internal versions here for a number of reasons:
    *  - it saves a g_list_reverse()
    *  - it avoids duplicated parameter checks
-   *  - it makes GimpTemplateEditor work (resolution is set before size)
    */
   if (G_TYPE_FROM_INSTANCE (src) == G_TYPE_FROM_INSTANCE (dest))
     diff = gimp_config_diff_same (src, dest, (flags | G_PARAM_READWRITE));
@@ -215,6 +214,8 @@ gimp_config_sync (GObject     *src,
 
   if (!diff)
     return FALSE;
+
+  g_object_freeze_notify (G_OBJECT (dest));
 
   for (list = diff; list; list = list->next)
     {
@@ -232,6 +233,8 @@ gimp_config_sync (GObject     *src,
           g_value_unset (&value);
         }
     }
+
+  g_object_thaw_notify (G_OBJECT (dest));
 
   g_list_free (diff);
 
@@ -306,9 +309,9 @@ gimp_config_reset_properties (GObject *object)
         }
     }
 
-  g_free (property_specs);
-
   g_object_thaw_notify (object);
+
+  g_free (property_specs);
 }
 
 

@@ -16,10 +16,10 @@ libappmenus_a_SOURCES = \
 	plug-in-menus.h		\
 	tool-options-menu.c	\
 	tool-options-menu.h	\
-	toolbox-menu.c		\
-	toolbox-menu.h		\
 	window-menu.c		\
-	window-menu.h
+	window-menu.h		\
+	windows-menu.c		\
+	windows-menu.h
 
 
 EXTRA_DIST = \

@@ -1,4 +1,4 @@
-# translation of gimp-script-fu.gimp-2-4.po to Basque
+# translation of eu.po to Basque
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
@@ -7,262 +7,211 @@
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: gimp-script-fu.gimp-2-4\n"
+"Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-12 16:36+0100\n"
-"PO-Revision-Date: 2008-02-12 11:38+0100\n"
+"POT-Creation-Date: 2008-09-18 15:33+0200\n"
+"PO-Revision-Date: 2008-09-18 15:41+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "\n"
 
-#: ../plug-ins/script-fu/script-fu-console.c:133
-#: ../plug-ins/script-fu/script-fu-console.c:200
+#: ../plug-ins/script-fu/script-fu-console.c:131
+#: ../plug-ins/script-fu/script-fu-console.c:198
 msgid "Script-Fu Console"
 msgstr "Script-Fu kontsola"
 
-#: ../plug-ins/script-fu/script-fu-console.c:196
+#: ../plug-ins/script-fu/script-fu-console.c:194
 msgid "Welcome to TinyScheme"
 msgstr "Ongi etorri TinyScheme-ra"
 
-#: ../plug-ins/script-fu/script-fu-console.c:202
+#: ../plug-ins/script-fu/script-fu-console.c:200
 msgid "Interactive Scheme Development"
 msgstr "Eskema garapen interaktiboa"
 
-#: ../plug-ins/script-fu/script-fu-console.c:238
+#: ../plug-ins/script-fu/script-fu-console.c:236
 msgid "_Browse..."
 msgstr "_Arakatu..."
 
-#: ../plug-ins/script-fu/script-fu-console.c:296
+#: ../plug-ins/script-fu/script-fu-console.c:294
 msgid "Save Script-Fu Console Output"
 msgstr "Gorde Script-Fu kontsolaren irteera"
 
-#: ../plug-ins/script-fu/script-fu-console.c:343
+#: ../plug-ins/script-fu/script-fu-console.c:341
 #, c-format
 msgid "Could not open '%s' for writing: %s"
 msgstr "Ezin izan da '%s' ireki idazteko: %s"
 
-#: ../plug-ins/script-fu/script-fu-console.c:372
+#: ../plug-ins/script-fu/script-fu-console.c:370
 msgid "Script-Fu Procedure Browser"
 msgstr "Script-Fu-ren prozedura-arakatzailea"
 
-#: ../plug-ins/script-fu/script-fu-console.c:716
+#: ../plug-ins/script-fu/script-fu-eval.c:63
 msgid "Script-Fu evaluation mode only allows non-interactive invocation"
 msgstr ""
 "Script-Fu-ren ebaluatze-moduak deitze ez-interaktiboak bakarrik baimentzen "
 "ditu"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:191
+#: ../plug-ins/script-fu/script-fu-interface.c:196
 msgid "Script-Fu cannot process two scripts at the same time."
 msgstr "'Script-Fu'-k ezin du bi script aldi berean landu."
 
-#: ../plug-ins/script-fu/script-fu-interface.c:193
+#: ../plug-ins/script-fu/script-fu-interface.c:198
 #, c-format
 msgid "You are already running the \"%s\" script."
-msgstr "\"%s\" script-a jadanik exekutatzen ari zara."
+msgstr "\"%s\" scripta jadanik exekutatzen ari zara."
 
-#: ../plug-ins/script-fu/script-fu-interface.c:238
+#: ../plug-ins/script-fu/script-fu-interface.c:245
 #, c-format
 msgid "Script-Fu: %s"
 msgstr "Script-Fu: %s"
 
 #. we add a colon after the label;
 #. some languages want an extra space here
-#: ../plug-ins/script-fu/script-fu-interface.c:300
+#: ../plug-ins/script-fu/script-fu-interface.c:308
 #, c-format
 msgid "%s:"
 msgstr "%s:"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:348
+#: ../plug-ins/script-fu/script-fu-interface.c:356
 msgid "Script-Fu Color Selection"
 msgstr "Script-Fu-ren kolore-hautapena"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:460
+#: ../plug-ins/script-fu/script-fu-interface.c:465
 msgid "Script-Fu File Selection"
 msgstr "Script-Fu-ren fitxategi-hautapena"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:463
+#: ../plug-ins/script-fu/script-fu-interface.c:468
 msgid "Script-Fu Folder Selection"
 msgstr "Script-Fu-ren karpeta-hautapena"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:475
+#: ../plug-ins/script-fu/script-fu-interface.c:481
 msgid "Script-Fu Font Selection"
 msgstr "Script-Fu-ren letra-tipoaren hautapena"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:483
+#: ../plug-ins/script-fu/script-fu-interface.c:489
 msgid "Script-Fu Palette Selection"
 msgstr "Script-Fu-ren paleta-hautapena"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:492
+#: ../plug-ins/script-fu/script-fu-interface.c:498
 msgid "Script-Fu Pattern Selection"
 msgstr "Script-Fu-ren eredu-hautapena"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:501
+#: ../plug-ins/script-fu/script-fu-interface.c:507
 msgid "Script-Fu Gradient Selection"
 msgstr "Script-Fu-ren gradiente-hautapena"
 
-#: ../plug-ins/script-fu/script-fu-interface.c:510
+#: ../plug-ins/script-fu/script-fu-interface.c:516
 msgid "Script-Fu Brush Selection"
 msgstr "Script-Fu-ren brotxa-hautapena"
 
-#: ../plug-ins/script-fu/script-fu-scripts.c:658
+#: ../plug-ins/script-fu/script-fu-interface.c:845
 #, c-format
-msgid ""
-"Error while executing\n"
-"%s\n"
-"\n"
-"%s"
-msgstr ""
-"Errorea gertatu da exekutatzean\n"
-"%s\n"
-"\n"
-"%s"
+msgid "Error while executing %s:"
+msgstr "Errorea gertatu da %s exekutatzean:"
 
-#: ../plug-ins/script-fu/script-fu-server.c:712
+#: ../plug-ins/script-fu/script-fu-scripts.c:149
+msgid "Too few arguments to 'script-fu-register' call"
+msgstr "Argumentu gutxiegi 'script-fu-register' deian"
+
+#: ../plug-ins/script-fu/script-fu-scripts.c:621
+#, c-format
+msgid "Error while loading %s:"
+msgstr "Errorea gertatu da %s kargatzean:"
+
+#: ../plug-ins/script-fu/script-fu-server.c:713
 msgid "Script-Fu Server Options"
 msgstr "Script-Fu-ren zerbitzari-aukerak"
 
-#: ../plug-ins/script-fu/script-fu-server.c:717
+#: ../plug-ins/script-fu/script-fu-server.c:718
 msgid "_Start Server"
 msgstr "_Abiarazi zerbitzaria..."
 
-#: ../plug-ins/script-fu/script-fu-server.c:745
+#: ../plug-ins/script-fu/script-fu-server.c:746
 msgid "Server port:"
 msgstr "Zerbitzari-ataka:"
 
-#: ../plug-ins/script-fu/script-fu-server.c:751
+#: ../plug-ins/script-fu/script-fu-server.c:752
 msgid "Server logfile:"
 msgstr "Zerbitzariaren egunkaria:"
 
-#: ../plug-ins/script-fu/script-fu.c:110
+#: ../plug-ins/script-fu/script-fu.c:111
 msgid "Interactive console for Script-Fu development"
 msgstr "Script-Fu garapeneko kontsola interaktiboa"
 
-#: ../plug-ins/script-fu/script-fu.c:116
-msgid "Script-Fu _Console"
-msgstr "Script-Fu _kontsola"
+#: ../plug-ins/script-fu/script-fu.c:117
+msgid "_Console"
+msgstr "_Kontsola"
 
-#: ../plug-ins/script-fu/script-fu.c:140
+#: ../plug-ins/script-fu/script-fu.c:141
 msgid "Server for remote Script-Fu operation"
 msgstr "Urruneko Script-Fu eragiketen zerbitzaria"
 
-#: ../plug-ins/script-fu/script-fu.c:145
+#: ../plug-ins/script-fu/script-fu.c:146
 msgid "_Start Server..."
 msgstr "_Abiarazi zerbitzaria..."
 
-#: ../plug-ins/script-fu/script-fu.c:301
+#: ../plug-ins/script-fu/script-fu.c:302
 msgid "_GIMP Online"
 msgstr "Lineako _GIMP"
 
-#: ../plug-ins/script-fu/script-fu.c:302
+#: ../plug-ins/script-fu/script-fu.c:303
 msgid "_User Manual"
 msgstr "_Eskuliburua"
 
-#: ../plug-ins/script-fu/script-fu.c:305
+#: ../plug-ins/script-fu/script-fu.c:306
 msgid "_Script-Fu"
 msgstr "_Script-Fu"
 
-#: ../plug-ins/script-fu/script-fu.c:307
-msgid "_Buttons"
-msgstr "B_otoiak"
-
-#: ../plug-ins/script-fu/script-fu.c:309
-msgid "_Logos"
-msgstr "_Logotipoak"
-
-#: ../plug-ins/script-fu/script-fu.c:311
-msgid "_Misc"
-msgstr "_Hainbat"
-
-#: ../plug-ins/script-fu/script-fu.c:313
-msgid "_Patterns"
-msgstr "_Ereduak"
-
-#: ../plug-ins/script-fu/script-fu.c:315
+#: ../plug-ins/script-fu/script-fu.c:308
 msgid "_Test"
 msgstr "_Proba"
 
-#: ../plug-ins/script-fu/script-fu.c:317
-msgid "_Utilities"
-msgstr "_Utilitateak"
+#: ../plug-ins/script-fu/script-fu.c:311
+msgid "_Buttons"
+msgstr "B_otoiak"
 
-#: ../plug-ins/script-fu/script-fu.c:319
+#: ../plug-ins/script-fu/script-fu.c:313
+msgid "_Logos"
+msgstr "_Logotipoak"
+
+#: ../plug-ins/script-fu/script-fu.c:315
+msgid "_Patterns"
+msgstr "_Ereduak"
+
+#: ../plug-ins/script-fu/script-fu.c:318
 msgid "_Web Page Themes"
 msgstr "_Web orriko gaiak"
 
-#: ../plug-ins/script-fu/script-fu.c:321
+#: ../plug-ins/script-fu/script-fu.c:320
 msgid "_Alien Glow"
 msgstr "Estralurtarren _dirdira"
 
-#: ../plug-ins/script-fu/script-fu.c:323
+#: ../plug-ins/script-fu/script-fu.c:322
 msgid "_Beveled Pattern"
 msgstr "Eredu _alakatua"
 
-#: ../plug-ins/script-fu/script-fu.c:325
+#: ../plug-ins/script-fu/script-fu.c:324
 msgid "_Classic.Gimp.Org"
 msgstr "_Classic.Gimp.Org"
 
-#: ../plug-ins/script-fu/script-fu.c:328
+#: ../plug-ins/script-fu/script-fu.c:327
 msgid "Alpha to _Logo"
 msgstr "Alfa _logora"
 
 #: ../plug-ins/script-fu/script-fu.c:330
-msgid "An_imation"
-msgstr "A_nimazioa"
-
-#: ../plug-ins/script-fu/script-fu.c:332
-msgid "_Animators"
-msgstr "_Marrazkigileak"
-
-#: ../plug-ins/script-fu/script-fu.c:334
-msgid "_Artistic"
-msgstr "_Artistikoa"
-
-#: ../plug-ins/script-fu/script-fu.c:336
-msgid "_Blur"
-msgstr "_Lausotu"
-
-#: ../plug-ins/script-fu/script-fu.c:338
-msgid "_Decor"
-msgstr "_Dekorazioa"
-
-#: ../plug-ins/script-fu/script-fu.c:340
-msgid "_Effects"
-msgstr "_Efektuak"
-
-#: ../plug-ins/script-fu/script-fu.c:342
-msgid "En_hance"
-msgstr "_Nabarmendu"
-
-#: ../plug-ins/script-fu/script-fu.c:344
-msgid "_Light and Shadow"
-msgstr "_Argia eta itzala"
-
-#: ../plug-ins/script-fu/script-fu.c:346
-msgid "S_hadow"
-msgstr "_Itzala"
-
-#: ../plug-ins/script-fu/script-fu.c:348
-msgid "_Render"
-msgstr "_Errendatua"
-
-#: ../plug-ins/script-fu/script-fu.c:350
-msgid "_Alchemy"
-msgstr "_Alkimia"
-
-#: ../plug-ins/script-fu/script-fu.c:353
 msgid "Re-read all available Script-Fu scripts"
 msgstr "Irakurri berriro erabilgarri dauden Script-Fu script guztiak"
 
-#: ../plug-ins/script-fu/script-fu.c:358
+#: ../plug-ins/script-fu/script-fu.c:335
 msgid "_Refresh Scripts"
 msgstr "_Freskatu script-ak"
 
-#: ../plug-ins/script-fu/script-fu.c:381
+#: ../plug-ins/script-fu/script-fu.c:358
 msgid ""
 "You can not use \"Refresh Scripts\" while a Script-Fu dialog box is open.  "
 "Please close all Script-Fu windows and try again."
@@ -280,7 +229,7 @@ msgstr "Erliebe-maparen (alfa geruza) lausotze-erradioa"
 
 #: ../plug-ins/script-fu/scripts/3d-outline.scm.h:3
 msgid "Create a logo with outlined text and a drop shadow"
-msgstr "Sortu logotipoa testuaren eskemarekin eta itzal jaurtiarekin"
+msgstr "Sortu logotipoa testuaren eskemanrekin eta itzal jaurtiarekin"
 
 #: ../plug-ins/script-fu/scripts/3d-outline.scm.h:4
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:6
@@ -318,8 +267,7 @@ msgstr "Erliebe-maparen ezarpen lehenetsiak"
 #: ../plug-ins/script-fu/scripts/slide.scm.h:2
 #: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm.h:7
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:5
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:6
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:4
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:2
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:8
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:4
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:6
@@ -357,8 +305,7 @@ msgstr "Letra-tipoa"
 #: ../plug-ins/script-fu/scripts/pupi-button.scm.h:4
 #: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm.h:8
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:6
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:7
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:5
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:3
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:9
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:5
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:7
@@ -371,8 +318,7 @@ msgid "Outline blur radius"
 msgstr "Eskemaren lausotze-erradioa"
 
 #: ../plug-ins/script-fu/scripts/3d-outline.scm.h:8
-msgid ""
-"Outline the selected region (or alpha) with a pattern and add a drop shadow"
+msgid "Outline the selected region (or alpha) with a pattern and add a drop shadow"
 msgstr ""
 "Eskualdearen hautapenaren (edo gardentasuna) eskema egin eta gehitu itzal "
 "jaurtia"
@@ -435,8 +381,7 @@ msgstr "Itzalaren lausotze-erradioa"
 #: ../plug-ins/script-fu/scripts/slide.scm.h:5
 #: ../plug-ins/script-fu/scripts/sota-chrome-logo.scm.h:11
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:8
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:9
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:8
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:6
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:11
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:8
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:14
@@ -470,8 +415,6 @@ msgstr "3_D Truchet..."
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:1
 #: ../plug-ins/script-fu/scripts/news-text.scm.h:1
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:1
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:1
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:1
 #: ../plug-ins/script-fu/scripts/swirltile.scm.h:2
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:2
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:1
@@ -590,7 +533,7 @@ msgstr "Berdindu irudia"
 #: ../plug-ins/script-fu/scripts/alien-neon-logo.scm.h:8
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:8
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:8
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:6
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:4
 msgid "Glow color"
 msgstr "Dirdiraren kolorea"
 
@@ -635,8 +578,7 @@ msgstr "Barraren luzera"
 
 #: ../plug-ins/script-fu/scripts/alien-glow-bar.scm.h:4
 msgid "Create an Hrule graphic with an eerie glow for web pages"
-msgstr ""
-"Sortu marra horizontaleko grafikoa dirdira espektralekin web orrialdeentzako"
+msgstr "Sortu marra horizontalek ografikoa dirdira espektralekin web orrialdeentzako"
 
 #: ../plug-ins/script-fu/scripts/alien-glow-bar.scm.h:7
 #: ../plug-ins/script-fu/scripts/beveled-pattern-hrule.scm.h:5
@@ -645,8 +587,7 @@ msgstr "Erregela _horizontala..."
 
 #: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm.h:2
 msgid "Create a bullet graphic with an eerie glow for web pages"
-msgstr ""
-"Sortu buleta formako grafikoa dirdira espektralekin web orrialdeentzako"
+msgstr "Sortu buleta formako grafikoa dirdira espektralekin web orrialdeentzako"
 
 #: ../plug-ins/script-fu/scripts/alien-glow-bullet.scm.h:5
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:6
@@ -710,8 +651,7 @@ msgstr "Dirdiraren tamaina (pixelak * 4)"
 
 #: ../plug-ins/script-fu/scripts/alien-neon-logo.scm.h:1
 msgid "Add psychedelic outlines to the selected region (or alpha)"
-msgstr ""
-"Gehitu eskema psikodelikoak hautatutako eskualdeari (edo gardentasunari)"
+msgstr "Gehitu eskema psikodelikoak hautatutako eskualdeari (edo gardentasunari)"
 
 #: ../plug-ins/script-fu/scripts/alien-neon-logo.scm.h:2
 msgid "Alien _Neon..."
@@ -759,8 +699,7 @@ msgstr "_Oinarrizkoa I..."
 
 #: ../plug-ins/script-fu/scripts/basic2-logo.scm.h:1
 msgid "Add a shadow and a highlight to the selected region (or alpha)"
-msgstr ""
-"Gehitu itzala eta nabarmendua hautatutako eskualdeari (edo gardentasunari)"
+msgstr "Gehitu itzala eta nabarmendua hautatutako eskualdeari (edo gardentasunari)"
 
 #: ../plug-ins/script-fu/scripts/basic2-logo.scm.h:2
 msgid "B_asic II..."
@@ -782,7 +721,7 @@ msgstr "Sortu botoi formako grafiko bakuna eta alakatua web orrialdeentzako"
 
 #: ../plug-ins/script-fu/scripts/beveled-button.scm.h:5
 msgid "Lower-right color"
-msgstr "Behe-eskuineko kolorea"
+msgstr "Beheko eskuineko kolorea"
 
 #: ../plug-ins/script-fu/scripts/beveled-button.scm.h:7
 #: ../plug-ins/script-fu/scripts/beveled-pattern-button.scm.h:6
@@ -796,7 +735,7 @@ msgstr "Bo_toi soil alakatua..."
 
 #: ../plug-ins/script-fu/scripts/beveled-button.scm.h:11
 msgid "Upper-left color"
-msgstr "Goi-ezkerreko kolorea"
+msgstr "Goiko ezkerreko kolorea"
 
 #: ../plug-ins/script-fu/scripts/beveled-pattern-arrow.scm.h:1
 msgid "Create a beveled pattern arrow for webpages"
@@ -861,7 +800,7 @@ msgstr ""
 
 #: ../plug-ins/script-fu/scripts/blend-anim.scm.h:3
 msgid "Intermediate frames"
-msgstr "Tarteko fotogramak"
+msgstr "Tarteko markoak"
 
 #: ../plug-ins/script-fu/scripts/blend-anim.scm.h:4
 msgid "Looped"
@@ -901,7 +840,7 @@ msgstr "Gradiente pertsonalizatua"
 
 #: ../plug-ins/script-fu/scripts/blended-logo.scm.h:8
 msgid "FG-BG-HSV"
-msgstr "AurPl-AtzPl-ÑSB"
+msgstr "AurPl-AtzPl-HSV"
 
 #: ../plug-ins/script-fu/scripts/blended-logo.scm.h:9
 msgid "FG-BG-RGB"
@@ -993,19 +932,19 @@ msgstr "Iraungitzearen zabalera"
 
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:9
 msgid "Prepare for GIF"
-msgstr "Prestatu GIFerako"
+msgstr "Prestatu GIFerako "
 
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:10
 msgid "Speed (pixels/frame)"
-msgstr "Abiadura (pixel/fotog.)"
+msgstr "Abiadura (pixel/marko)"
 
 #: ../plug-ins/script-fu/scripts/burn-in-anim.scm.h:11
 msgid ""
 "The Burn-In script needs two layers in total. A foreground layer with "
 "transparency and a background layer."
 msgstr ""
-"'Erregailua' (burn-in) script-ak guztira bi geruza behar ditu. Aurreko "
-"planoko geruza gardentasunarekin eta atzeko planoko geruza."
+"Erregailua: guztira bi geruza behar ditu. Aurreko planoa gardentasunarekin "
+"eta atzeko planoko geruza."
 
 #: ../plug-ins/script-fu/scripts/camo.scm.h:1
 msgid "Color 1"
@@ -1084,8 +1023,7 @@ msgstr "Klera-kolorea"
 
 #: ../plug-ins/script-fu/scripts/chalk.scm.h:3
 msgid "Create a chalk drawing effect for the selected region (or alpha)"
-msgstr ""
-"Sortu marrazketa klera efektua hautatutako eremuan (edo gardentasunean)"
+msgstr "Sortu marrazketa klera efektua hautatutako eremuan (edo gardentasunean)"
 
 #: ../plug-ins/script-fu/scripts/chalk.scm.h:4
 msgid "Create a logo resembling chalk scribbled on a blackboard"
@@ -1202,8 +1140,7 @@ msgid "Circuit seed"
 msgstr "Zirkuitu-hazia"
 
 #: ../plug-ins/script-fu/scripts/circuit.scm.h:2
-msgid ""
-"Fill the selected region (or alpha) with traces like those on a circuit board"
+msgid "Fill the selected region (or alpha) with traces like those on a circuit board"
 msgstr ""
 "Bete hautatutako eskualdea (edo gardentasuna) zirkuito elektronikoko "
 "trazuekin bezala"
@@ -1319,10 +1256,12 @@ msgstr "_Metal hotza..."
 
 #: ../plug-ins/script-fu/scripts/coolmetal-logo.scm.h:4
 msgid "Create a metallic logo with reflections and perspective shadows"
-msgstr "Sortu logotipo metalikoa isaladarekin eta perspektibako itzalarekin"
+msgstr "SOrtu logotipo metalikoa isaladarekin eta perspektibako itzalarekin"
 
 #: ../plug-ins/script-fu/scripts/coolmetal-logo.scm.h:5
 #: ../plug-ins/script-fu/scripts/frosty-logo.scm.h:4
+#: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:4
+#: ../plug-ins/script-fu/scripts/neon-logo.scm.h:5
 msgid "Effect size (pixels)"
 msgstr "Efektuaren tamaina (pixeletan)"
 
@@ -1508,8 +1447,7 @@ msgid "Black on white"
 msgstr "Beltza zurian"
 
 #: ../plug-ins/script-fu/scripts/font-map.scm.h:3
-msgid ""
-"Create an image filled with previews of fonts matching a fontname filter"
+msgid "Create an image filled with previews of fonts matching a fontname filter"
 msgstr ""
 "Sortu irudia letra-izenaren iragazkiarekin bat datozen letra-tipoen "
 "aurrebistekin beteta"
@@ -1598,11 +1536,11 @@ msgstr "Ebaki automatikoki"
 
 #: ../plug-ins/script-fu/scripts/gimp-headers.scm.h:2
 msgid "Create an image of a large header using the gimp.org webpage theme"
-msgstr "Sortu goiburu handiaren irudia gimp.org guneko gaia erabiliz"
+msgstr "Sortu goiburu handiaren irudia gimp.org guineko gaia erabiliz"
 
 #: ../plug-ins/script-fu/scripts/gimp-headers.scm.h:3
 msgid "Create an image of a small header using the gimp.org webpage theme"
-msgstr "Sortu goiburu txikiaren irudia gimp.org guneko gaia erabiliz"
+msgstr "Sortu goiburu txikiaren irudia gimp.org guineko gaia erabiliz"
 
 #: ../plug-ins/script-fu/scripts/gimp-headers.scm.h:4
 msgid "Dark color"
@@ -1651,27 +1589,25 @@ msgid ""
 "Create an image of a Tube Button Label Header using the gimp.org webpage "
 "theme"
 msgstr ""
-"Sortu botoiaren etiketako hodi orokorraren irudia gimp.org guneko gaia "
+"Sortu botoiaren etiketako hodi orokorraren irudia gimp.org guineko gaia "
 "erabiliz"
 
 #: ../plug-ins/script-fu/scripts/gimp-labels.scm.h:3
 msgid "Create an image of a Tube Button Label using the gimp.org webpage theme"
-msgstr ""
-"Sortu botoiaren etiketako hodiaren irudia gimp.org guneko gaia erabiliz"
+msgstr "Sortu botoiaren etiketako hodiaren irudia gimp.org guineko gaia erabiliz"
 
 #: ../plug-ins/script-fu/scripts/gimp-labels.scm.h:4
 msgid ""
 "Create an image of a second level Tube Button Label using the gimp.org "
 "webpage theme"
-msgstr ""
-"Sortu azpibotoiaren etiketako hodiaren irudia gimp.org guneko gaia erabiliz"
+msgstr "Sortu azpibotoiaren etiketako hodiaren irudia gimp.org guineko gaia erabiliz"
 
 #: ../plug-ins/script-fu/scripts/gimp-labels.scm.h:5
 msgid ""
 "Create an image of a third level Tube Button Label using the gimp.org "
 "webpage theme"
 msgstr ""
-"Sortu azpiazpibotoiaren etiketako hodiaren irudia gimp.org guneko gaia "
+"Sortu azpiazpibotoiaren etiketako hodiaren irudia gimp.org guineko gaia "
 "erabiliz"
 
 #: ../plug-ins/script-fu/scripts/gimp-labels.scm.h:16
@@ -1731,7 +1667,6 @@ msgid "Pattern (text)"
 msgstr "Eredua (testua)"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:15
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:5
 msgid "Shadow"
 msgstr "Itzala"
 
@@ -1753,16 +1688,11 @@ msgstr "Erabili ereduen gainjartzea"
 
 #: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:1
 msgid "Add a glowing hot metal effect to the selected region (or alpha)"
-msgstr ""
-"Gehitu bero dirdiratsua efektua hautatutako eskualdeari (edo gardentasunari)"
+msgstr "Gehitu bero dirdiratsua efektua hautatutako eskualdeari (edo gardentasunari)"
 
 #: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:3
 msgid "Create a logo that looks like glowing hot metal"
 msgstr "Sortu bero dirdiratsua dirudien logotipoa"
-
-#: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:4
-msgid "Effect size (pixels * 3)"
-msgstr "Efektuaren tamaina (pixelak * 3)"
 
 #: ../plug-ins/script-fu/scripts/glowing-logo.scm.h:7
 msgid "Glo_wing Hot..."
@@ -1925,8 +1855,7 @@ msgid "_Lava..."
 msgstr "_Laba..."
 
 #: ../plug-ins/script-fu/scripts/line-nova.scm.h:1
-msgid ""
-"Fill a layer with rays emanating outward from its center using the FG color"
+msgid "Fill a layer with rays emanating outward from its center using the FG color"
 msgstr "Bete geruza kanporantz doazen izpiekin Aur.Planoko kolorea erabiliz"
 
 #: ../plug-ins/script-fu/scripts/line-nova.scm.h:2
@@ -1997,8 +1926,7 @@ msgstr "_Laukizuzena..."
 
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:2
 msgid "Convert the selected region (or alpha) into a neon-sign like object"
-msgstr ""
-"Bihurtu hautatutako eskualdea (edo gardentasuna) neonezko kartel batean"
+msgstr "Bihurtu hautatutako eskualdea (edo gardentasuna) neonezko kartel batean"
 
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:3
 msgid "Create a logo in the style of a neon sign"
@@ -2007,10 +1935,6 @@ msgstr "Sortu logotipoa neonezko kartelaren estiloan"
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:4
 msgid "Create shadow"
 msgstr "Sortu itzala"
-
-#: ../plug-ins/script-fu/scripts/neon-logo.scm.h:5
-msgid "Effect size (pixels * 5)"
-msgstr "Efektuaren tamaina (pixelak * 5)"
 
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:9
 msgid "N_eon..."
@@ -2052,7 +1976,7 @@ msgstr "Sepia"
 
 #: ../plug-ins/script-fu/scripts/old-photo.scm.h:7
 msgid "_Old Photo..."
-msgstr "_Argazki zaharra..."
+msgstr "_argazki zaharra..."
 
 #: ../plug-ins/script-fu/scripts/paste-as-brush.scm.h:1
 #: ../plug-ins/script-fu/scripts/select-to-brush.scm.h:1
@@ -2094,8 +2018,7 @@ msgstr "Eredu-izena"
 
 #: ../plug-ins/script-fu/scripts/perspective-shadow.scm.h:1
 msgid "Add a perspective shadow to the selected region (or alpha)"
-msgstr ""
-"Gehitu itzalaren perspektiba hautatutako eskualdeari (edo gardentasunari)"
+msgstr "Gehitu itzalaren perspektiba hautatutako eskualdeari (edo gardentasunari)"
 
 #: ../plug-ins/script-fu/scripts/perspective-shadow.scm.h:3
 msgid "Angle"
@@ -2119,12 +2042,11 @@ msgstr "_Perspektiba..."
 
 #: ../plug-ins/script-fu/scripts/predator.scm.h:1
 msgid "Add a 'Predator' effect to the selected region (or alpha)"
-msgstr ""
-"Gehitu 'Harraparia' efektua hautatutako eskualdeari (edo gardentasunari)"
+msgstr "Gehitu 'Harraparia' efektua hautatutako eskualdeari (edo gardentasunari)"
 
 #: ../plug-ins/script-fu/scripts/predator.scm.h:2
 msgid "Edge amount"
-msgstr "Ertzen kopurua"
+msgstr "Ertza-kopurua"
 
 #: ../plug-ins/script-fu/scripts/predator.scm.h:4
 msgid "Pixel amount"
@@ -2219,8 +2141,7 @@ msgid "Black"
 msgstr "Beltza"
 
 #: ../plug-ins/script-fu/scripts/ripply-anim.scm.h:2
-msgid ""
-"Create a multi-layer image by adding a ripple effect to the current image"
+msgid "Create a multi-layer image by adding a ripple effect to the current image"
 msgstr "Sortu geruza anitzeko irudia uneko irudiari izurtze-efektua gehituz"
 
 #: ../plug-ins/script-fu/scripts/ripply-anim.scm.h:3
@@ -2261,10 +2182,8 @@ msgid "Edge radius"
 msgstr "Ertzaren erradioa"
 
 #: ../plug-ins/script-fu/scripts/round-corners.scm.h:5
-msgid ""
-"Round the corners of an image and optionally add a drop-shadow and background"
-msgstr ""
-"Biribildu irudiaren ertzak, eta aukera gehitu itzal jaurtia eta atzeko planoa"
+msgid "Round the corners of an image and optionally add a drop-shadow and background"
+msgstr "Biribildu irudiaren ertzak, eta aukera gehitu itzal jaurtia eta atzeko planoa"
 
 #: ../plug-ins/script-fu/scripts/round-corners.scm.h:9
 msgid "_Round Corners..."
@@ -2357,26 +2276,6 @@ msgstr "Sortu logotipoa abiaduradun testuaren efektuarekin"
 msgid "Speed Text..."
 msgstr "Testu azkarra..."
 
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:2
-msgid "Create a simple sphere with a drop shadow"
-msgstr "Sortu esfera bakuna itzal jaurtiarekin"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:3
-msgid "Lighting (degrees)"
-msgstr "Argitasuna (gradutan)"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:4
-msgid "Radius (pixels)"
-msgstr "Erradioa (pixeletan)"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:6
-msgid "Sphere color"
-msgstr "Esferaren kolorea"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:7
-msgid "_Sphere..."
-msgstr "_Esfera..."
-
 #: ../plug-ins/script-fu/scripts/spinning-globe.scm.h:1
 msgid "Create an animation by mapping the current image onto a spinning sphere"
 msgstr "Sortu animazioa uneko irudia biraka dagoen esferan mapatuz"
@@ -2398,10 +2297,8 @@ msgid "_Spinning Globe..."
 msgstr "Globo b_irakaria..."
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm.h:1
-msgid ""
-"Add Spirographs, Epitrochoids, and Lissajous Curves to the current layer"
-msgstr ""
-"Gehitu espirografoak, epitrokoideak eta Lissajous kurbak uneko geruzari"
+msgid "Add Spirographs, Epitrochoids, and Lissajous Curves to the current layer"
+msgstr "Gehitu espirografoak, epitrokoideak eta Lissajous kurbak uneko geruzari"
 
 #: ../plug-ins/script-fu/scripts/spyrogimp.scm.h:2
 msgid "Airbrush"
@@ -2524,48 +2421,11 @@ msgstr "Mota"
 msgid "_Spyrogimp..."
 msgstr "E_spirografoa..."
 
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:2
-msgid "Burst color"
-msgstr "Eztandaren kolorea"
-
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:3
-msgid "Create a logo using a starburst gradient"
-msgstr "Sortu logotipoa izar-eztandaren gradientea erabiliz"
-
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:4
-msgid "Effect size (pixels * 30)"
-msgstr "Efektuaren tamaina (pixelak * 30)"
-
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:5
-msgid ""
-"Fill the selected region (or alpha) with a starburst gradient and add a "
-"shadow"
-msgstr ""
-"Bete hautatutako eskualdea (edo gardentasuna) izar-eztandaren "
-"gradientearekin eta gehitu itzala"
-
-#: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:8
-msgid "Starb_urst..."
-msgstr "I_zar-eztanda..."
-
 #: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:1
 msgid "Create a logo using a rock-like texture, a nova glow, and shadow"
-msgstr ""
-"Sortu logotipoa harriaren testurarekin, noba dirdirarekin eta itzalarekin"
+msgstr "Sortu logotipoa harriaren testurarekin, noba dirdirarekin eta itzalarekin"
 
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:2
-msgid "Effect size (pixels * 4)"
-msgstr "Efektuaren tamaina (pixelak * 4)"
-
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:3
-msgid ""
-"Fill the selected region (or alpha) with a rock-like texture, a nova glow, "
-"and shadow"
-msgstr ""
-"Bete hautatutako eskualdea (edo gardentasuna) harriaren testurarekin, noba "
-"dirdirarekin eta itzalarekin"
-
-#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:7
+#: ../plug-ins/script-fu/scripts/starscape-logo.scm.h:5
 msgid "Sta_rscape..."
 msgstr "Iz_arretakoa..."
 
@@ -2636,8 +2496,7 @@ msgid "Antialias"
 msgstr "Antialiasing-a"
 
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:2
-msgid ""
-"Create a logo by rendering the specified text along the perimeter of a circle"
+msgid "Create a logo by rendering the specified text along the perimeter of a circle"
 msgstr "Sortu logotipoa zehaztutako testua zirkuluaren perimetroan marraztuz"
 
 #: ../plug-ins/script-fu/scripts/text-circle.scm.h:3
@@ -2649,8 +2508,7 @@ msgid "Text C_ircle..."
 msgstr "Testu _zirkularra..."
 
 #: ../plug-ins/script-fu/scripts/textured-logo.scm.h:3
-msgid ""
-"Create a textured logo with highlights, shadows, and a mosaic background"
+msgid "Create a textured logo with highlights, shadows, and a mosaic background"
 msgstr ""
 "Sortu testuradun logotipoa argitasunekin, itzalekin eta mosaikodun atzeko "
 "planoarekin"
@@ -2701,7 +2559,7 @@ msgstr "Lausotu horizontalki"
 
 #: ../plug-ins/script-fu/scripts/tileblur.scm.h:2
 msgid "Blur the edges of an image so the result tiles seamlessly"
-msgstr "Lausotu irudiaren ertzak emaitzarekin mosaikoa osatzeko"
+msgstr "Lauzotu irudiaren ertzak emaitzarekin mosaikoa osatzeko"
 
 #: ../plug-ins/script-fu/scripts/tileblur.scm.h:3
 msgid "Blur type"
@@ -2912,3 +2770,4 @@ msgstr "Nabarmentzearen opakutasuna"
 #: ../plug-ins/script-fu/scripts/xach-effect.scm.h:12
 msgid "_Xach-Effect..."
 msgstr "_Xach-en efektua..."
+

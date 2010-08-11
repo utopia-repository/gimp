@@ -41,10 +41,6 @@
 #include <io.h> /* get_osfhandle */
 #endif
 
-#if HAVE_DBUS_GLIB
-#include <dbus/dbus-glib.h>
-#endif
-
 #ifndef GIMP_CONSOLE_COMPILATION
 #include <gdk/gdk.h>
 #endif
@@ -59,21 +55,20 @@
 
 #include "core/gimp.h"
 
-#include "file/file-utils.h"
-
-#include "widgets/gimpdbusservice.h"
-
 #include "about.h"
 #include "app.h"
 #include "errors.h"
 #include "sanity.h"
+#include "unique.h"
 #include "units.h"
+#include "version.h"
 
 #ifdef G_OS_WIN32
 #include <windows.h>
 #include <conio.h>
 #endif
 
+#include "gimp-log.h"
 #include "gimp-intl.h"
 
 
@@ -110,11 +105,6 @@ static void      gimp_open_console_window     (void);
 #else
 #define gimp_open_console_window() /* as nothing */
 #endif
-
-static gboolean  gimp_dbus_open               (const gchar **filenames,
-                                               gboolean      as_new,
-                                               gboolean      be_verbose);
-
 
 static const gchar        *system_gimprc     = NULL;
 static const gchar        *user_gimprc       = NULL;
@@ -278,7 +268,6 @@ static const GOptionEntry main_entries[] =
   { NULL }
 };
 
-
 int
 main (int    argc,
       char **argv)
@@ -288,6 +277,16 @@ main (int    argc,
   const gchar    *abort_message;
   gchar          *basename;
   gint            i;
+
+#if defined (__GNUC__) && defined (_WIN64)
+  /* mingw-w64, at least the unstable build from late July 2008,
+   * starts subsystem:windows programs in main(), but passes them
+   * bogus argc and argv. __argc and __argv are OK, though, so just
+   * use them.
+   */
+  argc = __argc;
+  argv = __argv;
+#endif
 
   g_thread_init (NULL);
 
@@ -299,6 +298,8 @@ main (int    argc,
 
   gimp_env_init (FALSE);
 
+  gimp_log_init ();
+
   gimp_init_i18n ();
 
   g_set_application_name (GIMP_NAME);
@@ -306,6 +307,20 @@ main (int    argc,
   basename = g_path_get_basename (argv[0]);
   g_set_prgname (basename);
   g_free (basename);
+
+  /* Check argv[] for "--verbose" first */
+  for (i = 1; i < argc; i++)
+    {
+      const gchar *arg = argv[i];
+
+      if (arg[0] != '-')
+        continue;
+
+      if ((strcmp (arg, "--verbose") == 0) || (strcmp (arg, "-v") == 0))
+        {
+          be_verbose = TRUE;
+        }
+    }
 
   /* Check argv[] for "--no-interface" before trying to initialize gtk+. */
   for (i = 1; i < argc; i++)
@@ -321,7 +336,6 @@ main (int    argc,
         }
       else if ((strcmp (arg, "--version") == 0) || (strcmp (arg, "-v") == 0))
         {
-          gimp_open_console_window ();
           gimp_show_version_and_exit ();
         }
 #if defined (G_OS_WIN32) && !defined (GIMP_CONSOLE_COMPILATION)
@@ -370,11 +384,18 @@ main (int    argc,
   if (no_interface)
     new_instance = TRUE;
 
-  if (! new_instance)
+#ifndef GIMP_CONSOLE_COMPILATION
+  if (! new_instance && gimp_unique_open (filenames, as_new))
     {
-      if (gimp_dbus_open (filenames, as_new, be_verbose))
-        return EXIT_SUCCESS;
+      if (be_verbose)
+	g_print ("%s\n",
+		 _("Another GIMP instance is already running."));
+
+      gdk_notify_startup_complete ();
+
+      return EXIT_SUCCESS;
     }
+#endif
 
   abort_message = sanity_check ();
   if (abort_message)
@@ -410,7 +431,11 @@ main (int    argc,
 
 #ifdef G_OS_WIN32
 
-/* In case we build this as a windowed application. Well, we do. */
+/* Provide WinMain in case we build GIMP as a subsystem:windows
+ * application. Well, we do. When built with mingw, though, user code
+ * execution still starts in main() in that case. So WinMain() gets
+ * used on MSVC builds only.
+ */
 
 #ifdef __GNUC__
 #  ifndef _stdcall
@@ -551,17 +576,10 @@ gimp_option_dump_gimprc (const gchar  *option_name,
 }
 
 static void
-gimp_show_version (void)
-{
-  gimp_open_console_window ();
-  g_print (_("%s version %s"), GIMP_NAME, GIMP_VERSION);
-  g_print ("\n");
-}
-
-static void
 gimp_show_version_and_exit (void)
 {
-  gimp_show_version ();
+  gimp_open_console_window ();
+  gimp_version_show (be_verbose);
 
   app_exit (EXIT_SUCCESS);
 }
@@ -569,7 +587,8 @@ gimp_show_version_and_exit (void)
 static void
 gimp_show_license_and_exit (void)
 {
-  gimp_show_version ();
+  gimp_open_console_window ();
+  gimp_version_show (be_verbose);
 
   g_print ("\n");
   g_print (GIMP_LICENSE);
@@ -597,9 +616,6 @@ gimp_init_malloc (void)
    *
    * An alternative to tuning this parameter would be to use
    * malloc_trim(), for example after releasing a large tile-manager.
-   *
-   * Another possibility is to switch to using GSlice as soon as this
-   * API is available in a stable GLib release.
    */
   mallopt (M_MMAP_THRESHOLD, TILE_WIDTH * TILE_HEIGHT);
 #endif
@@ -688,113 +704,3 @@ gimp_sigfatal_handler (gint sig_num)
 }
 
 #endif /* ! G_OS_WIN32 */
-
-
-static gboolean
-gimp_dbus_open (const gchar **filenames,
-                gboolean      as_new,
-                gboolean      be_verbose)
-{
-#ifndef GIMP_CONSOLE_COMPILATION
-#if HAVE_DBUS_GLIB
-  DBusGConnection *connection = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
-
-  if (connection)
-    {
-      DBusGProxy *proxy;
-      gboolean    success;
-      GError     *error = NULL;
-
-      proxy = dbus_g_proxy_new_for_name (connection,
-                                         GIMP_DBUS_SERVICE_NAME,
-                                         GIMP_DBUS_SERVICE_PATH,
-                                         GIMP_DBUS_SERVICE_INTERFACE);
-
-      if (filenames)
-        {
-          const gchar *method = as_new ? "OpenAsNew" : "Open";
-          gchar       *cwd    = NULL;
-          gint         i;
-
-          for (i = 0, success = TRUE; filenames[i] && success; i++)
-            {
-              const gchar *filename = filenames[i];
-              gchar       *uri      = NULL;
-
-              if (file_utils_filename_is_uri (filename, &error))
-                {
-                  uri = g_strdup (filename);
-                }
-              else if (! error)
-                {
-                  if (! g_path_is_absolute (filename))
-                    {
-                      gchar *absolute;
-
-                      if (! cwd)
-                        cwd = g_get_current_dir ();
-
-                      absolute = g_build_filename (cwd, filename, NULL);
-
-                      uri = g_filename_to_uri (absolute, NULL, &error);
-
-                      g_free (absolute);
-                    }
-                  else
-                    {
-                      uri = g_filename_to_uri (filename, NULL, &error);
-                    }
-                }
-
-              if (uri)
-                {
-                  gboolean retval; /* ignored */
-
-                  success = dbus_g_proxy_call (proxy, method, &error,
-                                               G_TYPE_STRING, uri,
-                                               G_TYPE_INVALID,
-                                               G_TYPE_BOOLEAN, &retval,
-                                               G_TYPE_INVALID);
-                  g_free (uri);
-                }
-              else
-                {
-                  g_printerr ("conversion to uri failed: %s\n", error->message);
-                  g_clear_error (&error);
-                }
-            }
-
-          g_free (cwd);
-        }
-      else
-        {
-          success = dbus_g_proxy_call (proxy, "Activate", &error,
-                                       G_TYPE_INVALID, G_TYPE_INVALID);
-        }
-
-      g_object_unref (proxy);
-      dbus_g_connection_unref (connection);
-
-      if (success)
-        {
-          if (be_verbose)
-            g_print ("%s\n",
-                     _("Another GIMP instance is already running."));
-
-          gdk_notify_startup_complete ();
-
-          return TRUE;
-        }
-      else if (! (error->domain == DBUS_GERROR &&
-                  error->code == DBUS_GERROR_SERVICE_UNKNOWN))
-        {
-          g_print ("%s\n", error->message);
-        }
-
-      g_clear_error (&error);
-    }
-#endif
-#endif
-
-  return FALSE;
-}

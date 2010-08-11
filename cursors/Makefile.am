@@ -30,6 +30,7 @@ CURSOR_IMAGES = \
 	modifier-pattern.png		\
 	modifier-plus.png		\
 	modifier-resize.png		\
+	modifier-select.png		\
 	\
 	tool-airbrush.png		\
 	tool-blend.png			\
@@ -59,6 +60,7 @@ CURSOR_IMAGES = \
 	tool-paths-segment.png		\
 	tool-pencil.png			\
 	tool-perspective.png		\
+	tool-polygon-select.png		\
 	tool-rect-select.png		\
 	tool-resize.png			\
 	tool-rotate.png			\
@@ -129,6 +131,8 @@ EXTRA_DIST = \
 	xbm/modifier-pattern-mask.xbm		\
 	xbm/modifier-join.xbm			\
 	xbm/modifier-join-mask.xbm		\
+	xbm/modifier-select.xbm			\
+	xbm/modifier-select-mask.xbm		\
 	\
 	xbm/tool-rect-select.xbm		\
 	xbm/tool-rect-select-mask.xbm		\
@@ -136,6 +140,8 @@ EXTRA_DIST = \
 	xbm/tool-ellipse-select-mask.xbm	\
 	xbm/tool-free-select.xbm		\
 	xbm/tool-free-select-mask.xbm		\
+	xbm/tool-polygon-select.xbm		\
+	xbm/tool-polygon-select-mask.xbm	\
 	xbm/tool-fuzzy-select.xbm		\
 	xbm/tool-fuzzy-select-mask.xbm		\
 	xbm/tool-paths-anchor.xbm		\

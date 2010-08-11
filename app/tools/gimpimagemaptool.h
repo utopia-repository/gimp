@@ -37,19 +37,23 @@ typedef struct _GimpImageMapToolClass GimpImageMapToolClass;
 
 struct _GimpImageMapTool
 {
-  GimpColorTool  parent_instance;
+  GimpColorTool          parent_instance;
 
-  GimpDrawable  *drawable;
-  GimpImageMap  *image_map;
+  GimpDrawable          *drawable;
+
+  GeglNode              *operation;
+  GObject               *config;
+  GObject               *default_config;
+  GimpImageMapApplyFunc  apply_func;
+  gpointer               apply_data;
+
+  GimpImageMap          *image_map;
 
   /* dialog */
-  GtkWidget     *shell;
-  GtkWidget     *main_vbox;
-  GtkWidget     *load_button;
-  GtkWidget     *save_button;
-
-  /* settings file dialog */
-  GtkWidget     *settings_dialog;
+  GtkWidget             *shell;
+  GtkWidget             *main_vbox;
+  GtkWidget             *settings_box;
+  GtkSizeGroup          *label_group;
 };
 
 struct _GimpImageMapToolClass
@@ -58,27 +62,41 @@ struct _GimpImageMapToolClass
 
   const gchar        *shell_desc;
   const gchar        *settings_name;
-  const gchar        *load_button_tip;
-  const gchar        *load_dialog_title;
-  const gchar        *save_button_tip;
-  const gchar        *save_dialog_title;
+  const gchar        *import_dialog_title;
+  const gchar        *export_dialog_title;
+
+  GimpContainer      *recent_settings;
 
   /* virtual functions */
-  void     (* map)           (GimpImageMapTool  *image_map_tool);
-  void     (* dialog)        (GimpImageMapTool  *image_map_tool);
-  void     (* reset)         (GimpImageMapTool  *image_map_tool);
+  GeglNode * (* get_operation)   (GimpImageMapTool  *image_map_tool,
+                                  GObject          **config);
+  void       (* map)             (GimpImageMapTool  *image_map_tool);
+  void       (* dialog)          (GimpImageMapTool  *image_map_tool);
+  void       (* reset)           (GimpImageMapTool  *image_map_tool);
 
-  gboolean (* settings_load) (GimpImageMapTool  *image_map_tool,
-                              gpointer           file,
-                              GError           **error);
-  gboolean (* settings_save) (GimpImageMapTool  *image_map_tool,
-                              gpointer           file);
+  gboolean   (* settings_import) (GimpImageMapTool  *image_map_tool,
+                                  const gchar       *filename,
+                                  GError           **error);
+  gboolean   (* settings_export) (GimpImageMapTool  *image_map_tool,
+                                  const gchar       *filename,
+                                  GError           **error);
 };
 
 
-GType   gimp_image_map_tool_get_type (void) G_GNUC_CONST;
+GType   gimp_image_map_tool_get_type   (void) G_GNUC_CONST;
 
-void    gimp_image_map_tool_preview  (GimpImageMapTool *image_map_tool);
+void    gimp_image_map_tool_preview    (GimpImageMapTool *image_map_tool);
+
+/* temp hack for the gegl tool */
+void    gimp_image_map_tool_create_map (GimpImageMapTool *image_map_tool);
+
+void    gimp_image_map_tool_edit_as    (GimpImageMapTool *image_map_tool,
+                                        const gchar      *new_tool_id,
+                                        GimpConfig       *config);
+
+/* accessors for derived classes */
+GtkWidget    * gimp_image_map_tool_dialog_get_vbox        (GimpImageMapTool *tool);
+GtkSizeGroup * gimp_image_map_tool_dialog_get_label_group (GimpImageMapTool *tool);
 
 
 #endif  /*  __GIMP_IMAGE_MAP_TOOL_H__  */

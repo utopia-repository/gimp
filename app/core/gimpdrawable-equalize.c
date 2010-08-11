@@ -25,14 +25,11 @@
 #include "base/gimphistogram.h"
 #include "base/gimplut.h"
 #include "base/lut-funcs.h"
-#include "base/pixel-processor.h"
-#include "base/pixel-region.h"
 
-#include "gimp.h"
 #include "gimpdrawable.h"
 #include "gimpdrawable-equalize.h"
 #include "gimpdrawable-histogram.h"
-#include "gimpimage.h"
+#include "gimpdrawable-process.h"
 
 #include "gimp-intl.h"
 
@@ -41,40 +38,18 @@ void
 gimp_drawable_equalize (GimpDrawable *drawable,
                         gboolean      mask_only)
 {
-  PixelRegion    srcPR, destPR;
-  gint           bytes;
-  gint           x, y, width, height;
   GimpHistogram *hist;
   GimpLut       *lut;
-  GimpImage     *image;
 
   g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
 
-  image = gimp_item_get_image (GIMP_ITEM (drawable));
-  bytes  = gimp_drawable_bytes (drawable);
-
-  if (! gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
-    return;
-
   hist = gimp_histogram_new ();
   gimp_drawable_calculate_histogram (drawable, hist);
 
-  lut = equalize_lut_new (hist, bytes);
+  lut = equalize_lut_new (hist, gimp_drawable_bytes (drawable));
+  gimp_histogram_unref (hist);
 
-  /*  Apply the histogram  */
-  pixel_region_init (&srcPR, gimp_drawable_get_tiles (drawable),
-                     x, y, width, height, FALSE);
-  pixel_region_init (&destPR, gimp_drawable_get_shadow_tiles (drawable),
-                     x, y, width, height, TRUE);
-
-  pixel_regions_process_parallel ((PixelProcessorFunc) gimp_lut_process,
-                                  lut, 2, &srcPR, &destPR);
-
+  gimp_drawable_process_lut (drawable, NULL, _("Equalize"), lut);
   gimp_lut_free (lut);
-  gimp_histogram_free (hist);
-
-  gimp_drawable_merge_shadow (drawable, TRUE, _("Equalize"));
-
-  gimp_drawable_update (drawable, x, y, width, height);
 }

@@ -31,7 +31,6 @@
 
 #include "base/pixel-region.h"
 #include "base/temp-buf.h"
-#include "base/tile-manager.h"
 
 #include "core/gimppickable.h"
 #include "core/gimpimage.h"
@@ -56,10 +55,6 @@ static gboolean     gimp_heal_start              (GimpPaintCore    *paint_core,
                                                   GimpPaintOptions *paint_options,
                                                   GimpCoords       *coords,
                                                   GError          **error);
-
-static void         gimp_heal_class_init         (GimpHealClass    *klass);
-
-static void         gimp_heal_init               (GimpHeal         *heal);
 
 static void         gimp_heal_substitute_0_for_1 (PixelRegion      *pr);
 
@@ -102,9 +97,6 @@ static void         gimp_heal_motion             (GimpSourceCore   *source_core,
                                                   gint              paint_area_offset_y,
                                                   gint              paint_area_width,
                                                   gint              paint_area_height);
-
-
-
 
 
 G_DEFINE_TYPE (GimpHeal, gimp_heal, GIMP_TYPE_SOURCE_CORE)
@@ -434,7 +426,6 @@ gimp_heal_motion (GimpSourceCore   *source_core,
                   gint              paint_area_width,
                   gint              paint_area_height)
 {
-  GimpHeal      *heal       = GIMP_HEAL (source_core);
   GimpPaintCore *paint_core = GIMP_PAINT_CORE (source_core);
   GimpContext   *context    = GIMP_CONTEXT (paint_options);
   TempBuf       *src;
@@ -444,9 +435,14 @@ gimp_heal_motion (GimpSourceCore   *source_core,
   PixelRegion    destPR;
   GimpImageType  src_type;
   TempBuf       *mask_buf;
+  gdouble        hardness;
+
+  hardness = gimp_paint_options_get_dynamic_hardness (paint_options,
+                                                      &paint_core->cur_coords);
 
   mask_buf = gimp_brush_core_get_brush_mask (GIMP_BRUSH_CORE (source_core),
-                                             GIMP_BRUSH_HARD);
+                                             GIMP_BRUSH_HARD,
+                                             hardness);
 
   src_type = gimp_pickable_get_image_type (src_pickable);
 
@@ -540,14 +536,17 @@ gimp_heal_motion (GimpSourceCore   *source_core,
   /* heal tempPR using srcPR */
   gimp_heal_region (&tempPR, srcPR, mask_buf);
 
+  temp_buf_free (src);
+
   /* reinitialize tempPR */
   pixel_region_init_temp_buf (&tempPR, temp, 0, 0, temp->width, temp->height);
 
   copy_region (&tempPR, &destPR);
 
-  /* check the brush pressure */
-  if (paint_options->pressure_options->opacity)
-    opacity *= PRESSURE_SCALE * paint_core->cur_coords.pressure;
+  temp_buf_free (temp);
+
+  opacity *= gimp_paint_options_get_dynamic_opacity (paint_options,
+                                                     &paint_core->cur_coords);
 
   /* replace the canvas with our healed data */
   gimp_brush_core_replace_canvas (GIMP_BRUSH_CORE (paint_core),
@@ -555,8 +554,6 @@ gimp_heal_motion (GimpSourceCore   *source_core,
                                   MIN (opacity, GIMP_OPACITY_OPAQUE),
                                   gimp_context_get_opacity (context),
                                   gimp_paint_options_get_brush_mode (paint_options),
+                                  hardness,
                                   GIMP_PAINT_INCREMENTAL);
-
-  temp_buf_free (src);
-  temp_buf_free (temp);
 }

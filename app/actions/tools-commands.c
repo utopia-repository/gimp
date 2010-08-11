@@ -20,6 +20,7 @@
 
 #include <string.h>
 
+#include <gegl.h>
 #include <gtk/gtk.h>
 
 #include "actions-types.h"
@@ -34,12 +35,15 @@
 #include "widgets/gimpenumaction.h"
 #include "widgets/gimpuimanager.h"
 
+#include "display/gimpdisplay.h"
+
 #include "tools/gimp-tools.h"
 #include "tools/gimpcoloroptions.h"
 #include "tools/gimpforegroundselectoptions.h"
 #include "tools/gimprectangleoptions.h"
 #include "tools/gimpimagemaptool.h"
 #include "tools/gimptoolcontrol.h"
+#include "tools/gimptransformoptions.h"
 #include "tools/tool_manager.h"
 
 #include "actions.h"
@@ -95,7 +99,7 @@ tools_select_cmd_callback (GtkAction   *action,
 
   display = gimp_context_get_display (context);
 
-  if (display)
+  if (display && display->image)
     tool_manager_initialize_active (gimp, display);
 }
 
@@ -372,6 +376,26 @@ tools_fg_select_brush_size_cmd_callback (GtkAction *action,
 }
 
 void
+tools_transform_preview_opacity_cmd_callback (GtkAction *action,
+                                              gint       value,
+                                              gpointer   data)
+{
+  GimpContext  *context;
+  GimpToolInfo *tool_info;
+  return_if_no_context (context, data);
+
+  tool_info = gimp_context_get_tool (context);
+
+  if (tool_info && GIMP_IS_TRANSFORM_OPTIONS (tool_info->tool_options))
+    {
+      action_select_property ((GimpActionSelectType) value,
+                              G_OBJECT (tool_info->tool_options),
+                              "preview-opacity",
+                              0.01, 0.1, 0.5, FALSE);
+    }
+}
+
+void
 tools_value_1_cmd_callback (GtkAction *action,
                             gint       value,
                             gpointer   data)
@@ -531,12 +555,7 @@ tools_activate_enum_action (const gchar *action_desc,
       if (GIMP_IS_ENUM_ACTION (action) &&
           GIMP_ENUM_ACTION (action)->value_variable)
         {
-          gint old_value;
-
-          old_value = GIMP_ENUM_ACTION (action)->value;
-          GIMP_ENUM_ACTION (action)->value = value;
-          gtk_action_activate (action);
-          GIMP_ENUM_ACTION (action)->value = old_value;
+          gimp_enum_action_selected (GIMP_ENUM_ACTION (action), value);
         }
     }
 

@@ -43,10 +43,6 @@
 
 static const GimpActionEntry image_actions[] =
 {
-  { "toolbox-menubar", NULL,
-    N_("Toolbox Menu"), NULL, NULL, NULL,
-    GIMP_HELP_TOOLBOX },
-
   { "image-menubar", NULL,
     N_("Image Menu"), NULL, NULL, NULL,
     GIMP_HELP_IMAGE_WINDOW },
@@ -54,8 +50,6 @@ static const GimpActionEntry image_actions[] =
   { "image-popup", NULL,
     N_("Image Menu"), NULL, NULL, NULL,
     GIMP_HELP_IMAGE_WINDOW },
-
-  { "extensions-menu",        NULL, N_("_Xtns")       },
 
   { "image-menu",             NULL, N_("_Image")      },
   { "image-mode-menu",        NULL, N_("_Mode")       },
@@ -72,12 +66,6 @@ static const GimpActionEntry image_actions[] =
     N_("_New..."), "<control>N",
     N_("Create a new image"),
     G_CALLBACK (image_new_cmd_callback),
-    GIMP_HELP_FILE_NEW },
-
-  { "image-new-from-image", GTK_STOCK_NEW,
-    N_("_New..."), NULL,
-    N_("Create a new image"),
-    G_CALLBACK (image_new_from_image_cmd_callback),
     GIMP_HELP_FILE_NEW },
 
   { "image-resize", GIMP_STOCK_RESIZE,
@@ -205,15 +193,9 @@ static const GimpEnumActionEntry image_rotate_actions[] =
 void
 image_actions_setup (GimpActionGroup *group)
 {
-  GtkAction *action;
-
   gimp_action_group_add_actions (group,
                                  image_actions,
                                  G_N_ELEMENTS (image_actions));
-
-  action = gtk_action_group_get_action (GTK_ACTION_GROUP (group),
-                                        "image-new-from-image");
-  gtk_action_set_accel_path (action, "<Actions>/image/image-new");
 
   gimp_action_group_add_radio_actions (group,
                                        image_convert_actions,

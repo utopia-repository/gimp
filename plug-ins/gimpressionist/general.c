@@ -1,3 +1,21 @@
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
 #include "config.h"
 
 #include <gtk/gtk.h>
@@ -44,10 +62,10 @@ general_bg_callback (GtkWidget *wg, void *d)
 void
 general_store (void)
 {
-  pcvals.general_paint_edges = GTK_TOGGLE_BUTTON (general_paint_edges)->active;
+  pcvals.general_paint_edges = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (general_paint_edges));
   pcvals.general_dark_edge = GTK_ADJUSTMENT (general_dark_edge_adjust)->value;
-  pcvals.general_tileable = GTK_TOGGLE_BUTTON (general_tileable)->active;
-  pcvals.general_drop_shadow = GTK_TOGGLE_BUTTON (general_drop_shadow)->active;
+  pcvals.general_tileable = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (general_tileable));
+  pcvals.general_drop_shadow = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (general_drop_shadow));
   pcvals.general_shadow_darkness = GTK_ADJUSTMENT (general_shadow_adjust)->value;
   pcvals.general_shadow_depth = GTK_ADJUSTMENT (general_shadow_depth)->value;
   pcvals.general_shadow_blur = GTK_ADJUSTMENT (general_shadow_blur)->value;
@@ -96,11 +114,11 @@ select_color (GtkWidget *widget, gpointer data)
 }
 
 static GtkWidget *
-create_general_button (GtkWidget  *box,
-                       int         idx,
-                       gchar      *label,
-                       gchar      *help_string,
-                       GSList    **radio_group)
+create_general_button (GtkWidget    *box,
+                       int           idx,
+                       const gchar  *label,
+                       const gchar  *help_string,
+                       GSList      **radio_group)
 {
   return create_radio_button (box, idx, general_bg_callback, label,
                               help_string, radio_group, general_bg_radio);

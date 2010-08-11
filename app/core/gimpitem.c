@@ -78,13 +78,13 @@ static gint64     gimp_item_get_memsize       (GimpObject    *object,
                                                gint64        *gui_size);
 
 static GimpItem * gimp_item_real_duplicate    (GimpItem      *item,
-                                               GType          new_type,
-                                               gboolean       add_alpha);
+                                               GType          new_type);
 static void       gimp_item_real_convert      (GimpItem      *item,
                                                GimpImage     *dest_image);
 static gboolean   gimp_item_real_rename       (GimpItem      *item,
                                                const gchar   *new_name,
-                                               const gchar   *undo_desc);
+                                               const gchar   *undo_desc,
+                                               GError       **error);
 static void       gimp_item_real_translate    (GimpItem      *item,
                                                gint           offset_x,
                                                gint           offset_y,
@@ -288,8 +288,7 @@ gimp_item_get_memsize (GimpObject *object,
 
 static GimpItem *
 gimp_item_real_duplicate (GimpItem *item,
-                          GType     new_type,
-                          gboolean  add_alpha)
+                          GType     new_type)
 {
   GimpItem *new_item;
   gchar    *new_name;
@@ -330,7 +329,8 @@ gimp_item_real_duplicate (GimpItem *item,
 
   gimp_item_configure (new_item, gimp_item_get_image (item),
                        item->offset_x, item->offset_y,
-                       item->width, item->height,
+                       gimp_item_width  (item),
+                       gimp_item_height (item),
                        new_name);
 
   g_free (new_name);
@@ -338,8 +338,8 @@ gimp_item_real_duplicate (GimpItem *item,
   g_object_unref (new_item->parasites);
   new_item->parasites = gimp_parasite_list_copy (item->parasites);
 
-  new_item->visible = item->visible;
-  new_item->linked  = item->linked;
+  new_item->visible = gimp_item_get_visible (item);
+  new_item->linked  = gimp_item_get_linked (item);
 
   return new_item;
 }
@@ -352,9 +352,10 @@ gimp_item_real_convert (GimpItem  *item,
 }
 
 static gboolean
-gimp_item_real_rename (GimpItem    *item,
-                       const gchar *new_name,
-                       const gchar *undo_desc)
+gimp_item_real_rename (GimpItem     *item,
+                       const gchar  *new_name,
+                       const gchar  *undo_desc,
+                       GError      **error)
 {
   if (gimp_item_is_attached (item))
     gimp_image_undo_push_item_rename (item->image, undo_desc, item);
@@ -522,22 +523,20 @@ gimp_item_is_attached (GimpItem *item)
 
 /**
  * gimp_item_duplicate:
- * @item:      The #GimpItem to duplicate.
- * @new_type:  The type to make the new item.
- * @add_alpha: #TRUE if an alpha channel should be added to the new item.
+ * @item:     The #GimpItem to duplicate.
+ * @new_type: The type to make the new item.
  *
  * Returns: the newly created item.
  */
 GimpItem *
 gimp_item_duplicate (GimpItem *item,
-                     GType     new_type,
-                     gboolean  add_alpha)
+                     GType     new_type)
 {
   g_return_val_if_fail (GIMP_IS_ITEM (item), NULL);
   g_return_val_if_fail (GIMP_IS_IMAGE (item->image), NULL);
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_ITEM), NULL);
 
-  return GIMP_ITEM_GET_CLASS (item)->duplicate (item, new_type, add_alpha);
+  return GIMP_ITEM_GET_CLASS (item)->duplicate (item, new_type);
 }
 
 /**
@@ -545,15 +544,13 @@ gimp_item_duplicate (GimpItem *item,
  * @item:       The #GimpItem to convert.
  * @dest_image: The #GimpImage in which to place the converted item.
  * @new_type:   The type to convert the item to.
- * @add_alpha:  #TRUE if an alpha channel should be added to the converted item.
  *
  * Returns: the new item that results from the conversion.
  */
 GimpItem *
 gimp_item_convert (GimpItem  *item,
                    GimpImage *dest_image,
-                   GType      new_type,
-                   gboolean   add_alpha)
+                   GType      new_type)
 {
   GimpItem *new_item;
 
@@ -562,7 +559,7 @@ gimp_item_convert (GimpItem  *item,
   g_return_val_if_fail (GIMP_IS_IMAGE (dest_image), NULL);
   g_return_val_if_fail (g_type_is_a (new_type, GIMP_TYPE_ITEM), NULL);
 
-  new_item = gimp_item_duplicate (item, new_type, add_alpha);
+  new_item = gimp_item_duplicate (item, new_type);
 
   if (new_item)
     GIMP_ITEM_GET_CLASS (new_item)->convert (new_item, dest_image);
@@ -574,22 +571,25 @@ gimp_item_convert (GimpItem  *item,
  * gimp_item_rename:
  * @item:     The #GimpItem to rename.
  * @new_name: The new name to give the item.
+ * @error:    Return location for error message.
  *
  * This function assigns a new name to the item, if the desired name is
  * different from the name it already has, and pushes an entry onto the
  * undo stack for the item's image.  If @new_name is NULL or empty, the
  * default name for the item's class is used.  If the name is changed,
- * the "name_changed" signal is emitted for the item.
+ * the GimpObject::name-changed signal is emitted for the item.
  *
  * Returns: %TRUE if the @item could be renamed, %FALSE otherwise.
  */
 gboolean
-gimp_item_rename (GimpItem    *item,
-                  const gchar *new_name)
+gimp_item_rename (GimpItem     *item,
+                  const gchar  *new_name,
+                  GError      **error)
 {
   GimpItemClass *item_class;
 
   g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   item_class = GIMP_ITEM_GET_CLASS (item);
 
@@ -597,7 +597,7 @@ gimp_item_rename (GimpItem    *item,
     new_name = item_class->default_name;
 
   if (strcmp (new_name, gimp_object_get_name (GIMP_OBJECT (item))))
-    return item_class->rename (item, new_name, item_class->rename_desc);
+    return item_class->rename (item, new_name, item_class->rename_desc, error);
 
   return TRUE;
 }
@@ -712,10 +712,12 @@ gimp_item_check_scaling (const GimpItem *item,
 
   image = gimp_item_get_image (item);
 
-  img_scale_w     = (gdouble) new_width  / (gdouble) image->width;
-  img_scale_h     = (gdouble) new_height / (gdouble) image->height;
-  new_item_width  = ROUND (img_scale_w * (gdouble) item->width);
-  new_item_height = ROUND (img_scale_h * (gdouble) item->height);
+  img_scale_w     = ((gdouble) new_width /
+                     (gdouble) gimp_image_get_width (image));
+  img_scale_h     = ((gdouble) new_height /
+                     (gdouble) gimp_image_get_height (image));
+  new_item_width  = ROUND (img_scale_w * (gdouble) gimp_item_width  (item));
+  new_item_height = ROUND (img_scale_h * (gdouble) gimp_item_height (item));
 
   return (new_item_width > 0 && new_item_height > 0);
 }
@@ -802,8 +804,8 @@ gimp_item_scale_by_factors (GimpItem              *item,
 
   new_offset_x = ROUND (w_factor * (gdouble) item->offset_x);
   new_offset_y = ROUND (h_factor * (gdouble) item->offset_y);
-  new_width    = ROUND (w_factor * (gdouble) item->width);
-  new_height   = ROUND (h_factor * (gdouble) item->height);
+  new_width    = ROUND (w_factor * (gdouble) gimp_item_width  (item));
+  new_height   = ROUND (h_factor * (gdouble) gimp_item_height (item));
 
   if (new_width != 0 && new_height != 0)
     {
@@ -866,18 +868,20 @@ gimp_item_scale_by_origin (GimpItem              *item,
 
   if (local_origin)
     {
-      new_offset_x = item->offset_x + ((item->width  - new_width)  / 2.0);
-      new_offset_y = item->offset_y + ((item->height - new_height) / 2.0);
+      new_offset_x = (item->offset_x +
+                      ((gimp_item_width  (item) - new_width)  / 2.0));
+      new_offset_y = (item->offset_y +
+                      ((gimp_item_height (item) - new_height) / 2.0));
     }
   else
     {
       new_offset_x = (gint) (((gdouble) new_width *
                               (gdouble) item->offset_x /
-                              (gdouble) item->width));
+                              (gdouble) gimp_item_width (item)));
 
       new_offset_y = (gint) (((gdouble) new_height *
                               (gdouble) item->offset_y /
-                              (gdouble) item->height));
+                              (gdouble) gimp_item_height (item)));
     }
 
   gimp_item_scale (item,
@@ -1000,12 +1004,13 @@ gimp_item_transform (GimpItem               *item,
 }
 
 gboolean
-gimp_item_stroke (GimpItem       *item,
-                  GimpDrawable   *drawable,
-                  GimpContext    *context,
-                  GimpStrokeDesc *stroke_desc,
-                  gboolean        use_default_values,
-                  GimpProgress   *progress)
+gimp_item_stroke (GimpItem        *item,
+                  GimpDrawable    *drawable,
+                  GimpContext     *context,
+                  GimpStrokeDesc  *stroke_desc,
+                  gboolean         use_default_values,
+                  GimpProgress    *progress,
+                  GError         **error)
 {
   GimpItemClass *item_class;
   gboolean       retval = FALSE;
@@ -1017,6 +1022,7 @@ gimp_item_stroke (GimpItem       *item,
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), FALSE);
   g_return_val_if_fail (GIMP_IS_STROKE_DESC (stroke_desc), FALSE);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   item_class = GIMP_ITEM_GET_CLASS (item);
 
@@ -1029,7 +1035,7 @@ gimp_item_stroke (GimpItem       *item,
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_PAINT,
                                    item_class->stroke_desc);
 
-      retval = item_class->stroke (item, drawable, stroke_desc, progress);
+      retval = item_class->stroke (item, drawable, stroke_desc, progress, error);
 
       gimp_image_undo_group_end (image);
 
@@ -1247,7 +1253,7 @@ gimp_item_set_visible (GimpItem *item,
 {
   g_return_if_fail (GIMP_IS_ITEM (item));
 
-  if (item->visible != visible)
+  if (gimp_item_get_visible (item) != visible)
     {
       if (push_undo && gimp_item_is_attached (item))
         {
@@ -1270,7 +1276,7 @@ gimp_item_set_linked (GimpItem *item,
 {
   g_return_if_fail (GIMP_IS_ITEM (item));
 
-  if (item->linked != linked)
+  if (gimp_item_get_linked (item) != linked)
     {
       if (push_undo && gimp_item_is_attached (item))
         {
@@ -1309,8 +1315,8 @@ gimp_item_is_in_set (GimpItem    *item,
       return TRUE;
 
     case GIMP_ITEM_SET_IMAGE_SIZED:
-      return (item->width  == item->image->width &&
-              item->height == item->image->height);
+      return (gimp_item_width  (item) == gimp_image_get_width  (item->image) &&
+              gimp_item_height (item) == gimp_image_get_height (item->image));
 
     case GIMP_ITEM_SET_VISIBLE:
       return gimp_item_get_visible (item);

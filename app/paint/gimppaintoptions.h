@@ -30,20 +30,20 @@
                                         GIMP_CONTEXT_BRUSH_MASK
 
 
-typedef struct _GimpPressureOptions GimpPressureOptions;
+typedef struct _GimpDynamicOptions  GimpDynamicOptions;
 typedef struct _GimpFadeOptions     GimpFadeOptions;
-typedef struct _GimpGradientOptions GimpGradientOptions;
 typedef struct _GimpJitterOptions   GimpJitterOptions;
+typedef struct _GimpGradientOptions GimpGradientOptions;
 
-struct _GimpPressureOptions
+struct _GimpDynamicOptions
 {
-  gboolean  expanded;
   gboolean  opacity;
   gboolean  hardness;
   gboolean  rate;
   gboolean  size;
   gboolean  inverse_size;
   gboolean  color;
+  gdouble   prescale;
 };
 
 struct _GimpFadeOptions
@@ -76,6 +76,8 @@ struct _GimpGradientOptions
 #define GIMP_IS_PAINT_OPTIONS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PAINT_OPTIONS))
 #define GIMP_PAINT_OPTIONS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINT_OPTIONS, GimpPaintOptionsClass))
 
+#define GIMP_PAINT_PRESSURE_SCALE 1.5
+#define GIMP_PAINT_VELOCITY_SCALE 1.0
 
 typedef struct _GimpPaintOptionsClass GimpPaintOptionsClass;
 
@@ -92,10 +94,14 @@ struct _GimpPaintOptions
 
   gboolean                  hard;
 
-  GimpPressureOptions      *pressure_options;
+  gboolean                  dynamics_expanded;
+  GimpDynamicOptions        *pressure_options;
+  GimpDynamicOptions        *velocity_options;
+  GimpDynamicOptions        *random_options;
+
   GimpFadeOptions          *fade_options;
-  GimpGradientOptions      *gradient_options;
   GimpJitterOptions        *jitter_options;
+  GimpGradientOptions      *gradient_options;
 
   GimpViewType              brush_view_type;
   GimpViewSize              brush_view_size;
@@ -119,17 +125,34 @@ gdouble            gimp_paint_options_get_fade (GimpPaintOptions *paint_options,
                                                 GimpImage        *image,
                                                 gdouble           pixel_dist);
 
-gboolean gimp_paint_options_get_gradient_color (GimpPaintOptions *paint_options,
-                                                GimpImage        *image,
-                                                gdouble           pressure,
-                                                gdouble           pixel_dist,
-                                                GimpRGB          *color);
-
 gdouble          gimp_paint_options_get_jitter (GimpPaintOptions *paint_options,
                                                 GimpImage        *image);
 
+gboolean gimp_paint_options_get_gradient_color (GimpPaintOptions *paint_options,
+                                                GimpImage        *image,
+                                                gdouble           grad_point,
+                                                gdouble           pixel_dist,
+                                                GimpRGB          *color);
+
 GimpBrushApplicationMode
              gimp_paint_options_get_brush_mode (GimpPaintOptions *paint_options);
+
+
+gdouble gimp_paint_options_get_dynamic_opacity (GimpPaintOptions *paint_options,
+                                                const GimpCoords *coords);
+
+gdouble gimp_paint_options_get_dynamic_size    (GimpPaintOptions *paint_options,
+                                                const GimpCoords *coords,
+                                                gboolean          use_dynamics);
+
+gdouble gimp_paint_options_get_dynamic_rate    (GimpPaintOptions *paint_options,
+                                                const GimpCoords *coords);
+
+gdouble gimp_paint_options_get_dynamic_color   (GimpPaintOptions *paint_options,
+                                                const GimpCoords *coords);
+
+gdouble gimp_paint_options_get_dynamic_hardness(GimpPaintOptions *paint_options,
+                                                const GimpCoords *coords);
 
 
 #endif  /*  __GIMP_PAINT_OPTIONS_H__  */

@@ -1,3 +1,21 @@
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
 #include "config.h"
 
 #include <string.h>
@@ -81,7 +99,7 @@ static void set_preset_description_text (const gchar *text)
 
 static char presetdesc[4096] = "";
 
-static char *factory_defaults = "<Factory defaults>";
+static const char *factory_defaults = "<Factory defaults>";
 
 static gchar *
 get_early_line_from_preset (gchar *full_path, const gchar *prefix)
@@ -116,7 +134,9 @@ get_early_line_from_preset (gchar *full_path, const gchar *prefix)
 }
 
 static gchar *
-get_object_name (gchar *dir, gchar *filename, void *context)
+get_object_name (const gchar *dir,
+                 gchar       *filename,
+                 void        *context)
 {
   gchar *ret = NULL, *unprocessed_line = NULL;
   gchar *full_path = NULL;
@@ -617,9 +637,9 @@ create_save_preset (GtkWidget *parent)
     }
 
   window =
-    gimp_dialog_new (_("Save Current"), "gimpressionist",
+    gimp_dialog_new (_("Save Current"), PLUG_IN_BINARY,
                      gtk_widget_get_toplevel (parent), 0,
-                     gimp_standard_help_func, PLUG_IN_NAME,
+                     gimp_standard_help_func, PLUG_IN_PROC,
 
                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                      GTK_STOCK_OK,     GTK_RESPONSE_OK,

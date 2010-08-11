@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -55,7 +57,7 @@ gimp_channel_select_rectangle (GimpChannel    *channel,
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)));
 
   if (push_undo)
-    gimp_channel_push_undo (channel, Q_("command|Rectangle Select"));
+    gimp_channel_push_undo (channel, C_("command", "Rectangle Select"));
 
   /*  if applicable, replace the current selection  */
   if (op == GIMP_CHANNEL_OP_REPLACE)
@@ -70,7 +72,7 @@ gimp_channel_select_rectangle (GimpChannel    *channel,
       GimpChannel *add_on;
 
       add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                      gimp_item_width (item),
+                                      gimp_item_width  (item),
                                       gimp_item_height (item));
       gimp_channel_combine_rect (add_on, GIMP_CHANNEL_OP_ADD, x, y, w, h);
 
@@ -106,7 +108,7 @@ gimp_channel_select_ellipse (GimpChannel    *channel,
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)));
 
   if (push_undo)
-    gimp_channel_push_undo (channel, Q_("command|Ellipse Select"));
+    gimp_channel_push_undo (channel, C_("command", "Ellipse Select"));
 
   /*  if applicable, replace the current selection  */
   if (op == GIMP_CHANNEL_OP_REPLACE)
@@ -121,7 +123,7 @@ gimp_channel_select_ellipse (GimpChannel    *channel,
       GimpChannel *add_on;
 
       add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                      gimp_item_width (item),
+                                      gimp_item_width  (item),
                                       gimp_item_height (item));
       gimp_channel_combine_ellipse (add_on, GIMP_CHANNEL_OP_ADD,
                                     x, y, w, h, antialias);
@@ -160,7 +162,7 @@ gimp_channel_select_round_rect (GimpChannel         *channel,
   g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (channel)));
 
   if (push_undo)
-    gimp_channel_push_undo (channel, Q_("command|Rounded Rectangle Select"));
+    gimp_channel_push_undo (channel, C_("command", "Rounded Rectangle Select"));
 
   /*  if applicable, replace the current selection  */
   if (op == GIMP_CHANNEL_OP_REPLACE)
@@ -175,7 +177,7 @@ gimp_channel_select_round_rect (GimpChannel         *channel,
       GimpChannel *add_on;
 
       add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                      gimp_item_width (item),
+                                      gimp_item_width  (item),
                                       gimp_item_height (item));
       gimp_channel_combine_ellipse_rect (add_on, GIMP_CHANNEL_OP_ADD,
                                          x, y, w, h,
@@ -232,7 +234,7 @@ gimp_channel_select_scan_convert (GimpChannel     *channel,
   item = GIMP_ITEM (channel);
 
   add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                  gimp_item_width (item),
+                                  gimp_item_width  (item),
                                   gimp_item_height (item));
   gimp_scan_convert_render (scan_convert,
                             gimp_drawable_get_tiles (GIMP_DRAWABLE (add_on)),
@@ -372,7 +374,7 @@ gimp_channel_select_channel (GimpChannel    *channel,
       GimpChannel *add_on2;
 
       add_on2 = gimp_channel_new_mask (gimp_item_get_image (item),
-                                       gimp_item_width (item),
+                                       gimp_item_width  (item),
                                        gimp_item_height (item));
 
       gimp_channel_combine_mask (add_on2, add_on, GIMP_CHANNEL_OP_ADD,
@@ -422,7 +424,7 @@ gimp_channel_select_alpha (GimpChannel    *channel,
        *  so simply select the whole layer's extents.  --mitch
        */
       add_on = gimp_channel_new_mask (gimp_item_get_image (item),
-                                      gimp_item_width (GIMP_ITEM (drawable)),
+                                      gimp_item_width  (GIMP_ITEM (drawable)),
                                       gimp_item_height (GIMP_ITEM (drawable)));
       gimp_channel_all (add_on, FALSE);
     }
@@ -515,7 +517,7 @@ gimp_channel_select_fuzzy (GimpChannel         *channel,
   if (! sample_merged)
     gimp_item_offsets (GIMP_ITEM (drawable), &add_on_x, &add_on_y);
 
-  gimp_channel_select_channel (channel, Q_("command|Fuzzy Select"),
+  gimp_channel_select_channel (channel, C_("command", "Fuzzy Select"),
                                add_on, add_on_x, add_on_y,
                                op,
                                feather,
@@ -562,7 +564,7 @@ gimp_channel_select_by_color (GimpChannel         *channel,
   if (! sample_merged)
     gimp_item_offsets (GIMP_ITEM (drawable), &add_on_x, &add_on_y);
 
-  gimp_channel_select_channel (channel, Q_("command|Select by Color"),
+  gimp_channel_select_channel (channel, C_("command", "Select by Color"),
                                add_on, add_on_x, add_on_y,
                                op,
                                feather,

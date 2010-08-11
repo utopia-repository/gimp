@@ -328,7 +328,7 @@ gimp_text_get_property (GObject      *object,
       g_value_set_double (value, text->box_height);
       break;
     case PROP_BOX_UNIT:
-      g_value_set_int (value, text->unit);
+      g_value_set_int (value, text->box_unit);
       break;
     case PROP_TRANSFORMATION:
       g_value_set_boxed (value, &text->transformation);
@@ -464,14 +464,9 @@ gimp_text_get_memsize (GimpObject *object,
   GimpText *text    = GIMP_TEXT (object);
   gint64    memsize = 0;
 
-  if (text->text)
-    memsize += strlen (text->text) + 1;
-
-  if (text->font)
-    memsize += strlen (text->font) + 1;
-
-  if (text->language)
-    memsize += strlen (text->language) + 1;
+  memsize += gimp_string_get_memsize (text->text);
+  memsize += gimp_string_get_memsize (text->font);
+  memsize += gimp_string_get_memsize (text->language);
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
                                                                   gui_size);

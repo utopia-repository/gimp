@@ -23,22 +23,23 @@
 #define MAXNUMCOLORS 256
 
 
-void   gimp_image_convert          (GimpImage              *image,
-                                    GimpImageBaseType       new_type,
+gboolean   gimp_image_convert      (GimpImage               *image,
+                                    GimpImageBaseType        new_type,
                                     /* The following params used only for
                                      * new_type == GIMP_INDEXED
                                      */
-                                    gint                    num_cols,
-                                    GimpConvertDitherType   dither,
-                                    gboolean                alpha_dither,
-                                    gboolean                remove_dups,
-                                    GimpConvertPaletteType  palette_type,
-                                    GimpPalette            *custom_palette,
-                                    GimpProgress           *progress);
+                                    gint                     num_cols,
+                                    GimpConvertDitherType    dither,
+                                    gboolean                 alpha_dither,
+                                    gboolean                 remove_dups,
+                                    GimpConvertPaletteType   palette_type,
+                                    GimpPalette             *custom_palette,
+                                    GimpProgress            *progress,
+                                    GError                 **error);
 
-void   gimp_image_convert_set_dither_matrix (gint           width,
-                                             gint           height,
-                                             const guchar  *source);
+void  gimp_image_convert_set_dither_matrix (const guchar *matrix,
+                                            gint          width,
+                                            gint          height);
 
 
 #endif  /*  __GIMP_IMAGE_CONVERT_H__  */

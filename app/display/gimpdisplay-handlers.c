@@ -24,13 +24,14 @@
 
 #include "config/gimpdisplayconfig.h"
 
-#include "core/gimp.h"
 #include "core/gimpimage.h"
 
 #include "file/file-utils.h"
 
 #include "gimpdisplay.h"
 #include "gimpdisplay-handlers.h"
+#include "gimpdisplayshell.h"
+#include "gimpstatusbar.h"
 
 #include "gimp-intl.h"
 
@@ -75,9 +76,10 @@ gimp_display_connect (GimpDisplay *display,
 
   g_object_ref (image);
 
-  g_signal_connect (image->projection, "update",
+  g_signal_connect (gimp_image_get_projection (image), "update",
                     G_CALLBACK (gimp_display_update_handler),
                     display);
+
   g_signal_connect (image, "flush",
                     G_CALLBACK (gimp_display_flush_handler),
                     display);
@@ -94,17 +96,20 @@ gimp_display_disconnect (GimpDisplay *display)
   g_return_if_fail (GIMP_IS_DISPLAY (display));
   g_return_if_fail (GIMP_IS_IMAGE (display->image));
 
-  g_signal_handlers_disconnect_by_func (display->image,
+  image = display->image;
+
+  g_signal_handlers_disconnect_by_func (image,
                                         gimp_display_saved_handler,
                                         display);
-  g_signal_handlers_disconnect_by_func (display->image,
+  g_signal_handlers_disconnect_by_func (image,
                                         gimp_display_flush_handler,
                                         display);
-  g_signal_handlers_disconnect_by_func (display->image->projection,
+
+  g_signal_handlers_disconnect_by_func (gimp_image_get_projection (image),
                                         gimp_display_update_handler,
                                         display);
 
-  display->image->disp_count--;
+  image->disp_count--;
 
 #if 0
   g_print ("%s: image->ref_count before unrefing: %d\n",
@@ -115,7 +120,6 @@ gimp_display_disconnect (GimpDisplay *display)
    *  that listens for image removals and then iterates the display list
    *  to find a valid display.
    */
-  image = display->image;
   display->image = NULL;
 
   g_object_unref (image);
@@ -149,10 +153,10 @@ gimp_display_saved_handler (GimpImage   *image,
                             const gchar *uri,
                             GimpDisplay *display)
 {
-  gchar *filename = file_utils_uri_display_name (uri);
+  GtkWidget *statusbar = GIMP_DISPLAY_SHELL (display->shell)->statusbar;
+  gchar     *filename  = file_utils_uri_display_name (uri);
 
-  gimp_message (image->gimp, G_OBJECT (display), GIMP_MESSAGE_INFO,
-                _("Image saved to '%s'"), filename);
-
+  gimp_statusbar_push_temp (GIMP_STATUSBAR (statusbar), GIMP_MESSAGE_INFO,
+                            GTK_STOCK_SAVE, _("Image saved to '%s'"), filename);
   g_free (filename);
 }

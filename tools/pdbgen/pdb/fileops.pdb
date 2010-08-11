@@ -60,18 +60,20 @@ HELP
 
   uri = file_utils_filename_to_uri (gimp,
                                     g_value_get_string (&args->values[1]),
-                                    NULL);
+                                    error);
 
   if (! uri)
-    return gimp_procedure_get_return_values (procedure, FALSE);
+    return gimp_procedure_get_return_values (procedure, FALSE,
+                                             error ? *error : NULL);
 
   file_proc =
-    file_procedure_find (gimp->plug_in_manager->load_procs, uri, NULL);
+    file_procedure_find (gimp->plug_in_manager->load_procs, uri, error);
 
   g_free (uri);
 
   if (! file_proc)
-    return gimp_procedure_get_return_values (procedure, FALSE);
+    return gimp_procedure_get_return_values (procedure, FALSE,
+                                             error ? *error : NULL);
 
   proc = GIMP_PROCEDURE (file_proc);
 
@@ -86,7 +88,7 @@ HELP
 
   return_vals =
     gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
-                                             context, progress,
+                                             context, progress, error,
                                              GIMP_OBJECT (proc)->name,
                                              new_args);
 
@@ -138,7 +140,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  gchar *uri = file_utils_filename_to_uri (gimp, filename, NULL);
+  gchar *uri = file_utils_filename_to_uri (gimp, filename, error);
 
   if (uri)
     {
@@ -147,7 +149,7 @@ HELP
 
       layers = file_open_layers (gimp, context, progress,
                                  image, FALSE,
-                                 uri, run_mode, NULL, &status, NULL);
+                                 uri, run_mode, NULL, &status, error);
 
       if (layers)
         {
@@ -195,7 +197,7 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  gchar *uri = file_utils_filename_to_uri (gimp, filename, NULL);
+  gchar *uri = file_utils_filename_to_uri (gimp, filename, error);
 
   if (uri)
     {
@@ -204,7 +206,7 @@ HELP
 
       layers = file_open_layers (gimp, context, progress,
                                  image, FALSE,
-                                 uri, run_mode, NULL, &status, NULL);
+                                 uri, run_mode, NULL, &status, error);
 
       if (layers)
         {
@@ -273,18 +275,20 @@ HELP
 
   uri = file_utils_filename_to_uri (gimp,
                                     g_value_get_string (&args->values[3]),
-                                    NULL);
+                                    error);
 
   if (! uri)
-    return gimp_procedure_get_return_values (procedure, FALSE);
+    return gimp_procedure_get_return_values (procedure, FALSE,
+                                             error ? *error : NULL);
 
   file_proc =
-    file_procedure_find (gimp->plug_in_manager->save_procs, uri, NULL);
+    file_procedure_find (gimp->plug_in_manager->save_procs, uri, error);
 
   g_free (uri);
 
   if (! file_proc)
-    return gimp_procedure_get_return_values (procedure, FALSE);
+    return gimp_procedure_get_return_values (procedure, FALSE,
+                                             error ? *error : NULL);
 
   proc = GIMP_PROCEDURE (file_proc);
 
@@ -297,10 +301,11 @@ HELP
     if (G_IS_PARAM_SPEC_STRING (proc->args[i]))
       g_value_set_static_string (&new_args->values[i], "");
 
-  return_vals = gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
-                                                         context, progress,
-                                                         GIMP_OBJECT (proc)->name,
-                                                         new_args);
+  return_vals =
+    gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
+                                             context, progress, error,
+                                             GIMP_OBJECT (proc)->name,
+                                             new_args);
 
   g_value_array_free (new_args);
 
@@ -614,11 +619,15 @@ CODE
 	      "file/file-procedure.h"
               "file/file-utils.h");
 
-@procs = qw(file_load file_load_layer file_load_layers
+@procs = qw(file_load
+            file_load_layer
+            file_load_layers
             file_save
-            file_load_thumbnail file_save_thumbnail
+            file_load_thumbnail
+            file_save_thumbnail
             temp_name
-            register_magic_load_handler register_load_handler
+            register_magic_load_handler
+            register_load_handler
             register_save_handler
             register_file_handler_mime
             register_thumbnail_loader);

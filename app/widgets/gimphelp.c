@@ -34,8 +34,9 @@
 #include "config/gimpguiconfig.h"
 
 #include "core/gimp.h"
-#include "core/gimp-utils.h"
 #include "core/gimpparamspecs.h"
+#include "core/gimpprogress.h"
+#include "core/gimp-utils.h"
 
 #include "pdb/gimppdb.h"
 #include "pdb/gimpprocedure.h"
@@ -46,52 +47,68 @@
 #include "gimphelp-ids.h"
 #include "gimpmessagebox.h"
 #include "gimpmessagedialog.h"
+#include "gimpmessagedialog.h"
+#include "gimpwidgets-utils.h"
 
+#include "gimp-log.h"
 #include "gimp-intl.h"
-
-
-/*  #define GIMP_HELP_DEBUG  */
 
 
 typedef struct _GimpIdleHelp GimpIdleHelp;
 
 struct _GimpIdleHelp
 {
-  Gimp  *gimp;
-  gchar *help_domain;
-  gchar *help_locales;
-  gchar *help_id;
+  Gimp         *gimp;
+  GimpProgress *progress;
+  gchar        *help_domain;
+  gchar        *help_locales;
+  gchar        *help_id;
 };
 
 
 /*  local function prototypes  */
 
-static gint      gimp_idle_help          (GimpIdleHelp  *idle_help);
+static gboolean   gimp_idle_help          (GimpIdleHelp  *idle_help);
+static void       gimp_idle_help_free     (GimpIdleHelp  *idle_help);
 
-static gboolean  gimp_help_browser       (Gimp          *gimp);
-static void      gimp_help_browser_error (Gimp          *gimp,
-                                          const gchar   *title,
-                                          const gchar   *primary,
-                                          const gchar   *text);
+static gboolean   gimp_help_browser       (Gimp          *gimp,
+					   GimpProgress  *progress);
+static void       gimp_help_browser_error (Gimp          *gimp,
+					   GimpProgress  *progress,
+                                           const gchar   *title,
+                                           const gchar   *primary,
+                                           const gchar   *text);
 
-static void      gimp_help_call          (Gimp          *gimp,
-                                          const gchar   *procedure_name,
-                                          const gchar   *help_domain,
-                                          const gchar   *help_locales,
-                                          const gchar   *help_id);
-static gchar *   gimp_help_get_locales   (GimpGuiConfig *config);
+static void       gimp_help_call          (Gimp          *gimp,
+                                           GimpProgress  *progress,
+                                           const gchar   *procedure_name,
+                                           const gchar   *help_domain,
+                                           const gchar   *help_locales,
+                                           const gchar   *help_id);
+
+static gint       gimp_help_get_help_domains         (Gimp    *gimp,
+                                                      gchar ***domain_names,
+                                                      gchar ***domain_uris);
+static gchar    * gimp_help_get_default_domain_uri   (Gimp    *gimp);
+static gchar    * gimp_help_get_locales              (Gimp    *gimp);
+
+static gchar    * gimp_help_get_user_manual_basedir  (void);
+
+static void       gimp_help_query_user_manual_online (GimpIdleHelp *idle_help);
 
 
 /*  public functions  */
 
 void
-gimp_help_show (Gimp        *gimp,
-                const gchar *help_domain,
-                const gchar *help_id)
+gimp_help_show (Gimp         *gimp,
+                GimpProgress *progress,
+                const gchar  *help_domain,
+                const gchar  *help_id)
 {
   GimpGuiConfig *config;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress));
 
   config = GIMP_GUI_CONFIG (gimp->config);
 
@@ -99,23 +116,66 @@ gimp_help_show (Gimp        *gimp,
     {
       GimpIdleHelp *idle_help = g_slice_new0 (GimpIdleHelp);
 
-      idle_help->gimp = gimp;
+      idle_help->gimp     = gimp;
+      idle_help->progress = progress;
 
       if (help_domain && strlen (help_domain))
         idle_help->help_domain = g_strdup (help_domain);
 
-      idle_help->help_locales = gimp_help_get_locales (config);
+      idle_help->help_locales = gimp_help_get_locales (gimp);
 
       if (help_id && strlen (help_id))
         idle_help->help_id = g_strdup (help_id);
 
-      g_idle_add ((GSourceFunc) gimp_idle_help, idle_help);
+      GIMP_LOG (HELP, "request for help-id '%s' from help-domain '%s'",
+                help_id     ? help_id      : "(null)",
+                help_domain ? help_domain  : "(null)");
 
-      if (gimp->be_verbose)
-        g_print ("HELP: request for help-id '%s' from help-domain '%s'\n",
-                 help_id     ? help_id      : "(null)",
-                 help_domain ? help_domain  : "(null)");
+      g_idle_add ((GSourceFunc) gimp_idle_help, idle_help);
     }
+}
+
+gboolean
+gimp_help_user_manual_is_installed (Gimp *gimp)
+{
+  gchar    *basedir;
+  gboolean  found = FALSE;
+
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  /*  if GIMP2_HELP_URI is set, assume that the manual can be found there  */
+  if (g_getenv ("GIMP2_HELP_URI"))
+    return TRUE;
+
+  basedir = gimp_help_get_user_manual_basedir ();
+
+  if (g_file_test (basedir, G_FILE_TEST_IS_DIR))
+    {
+      gchar       *locales = gimp_help_get_locales (gimp);
+      const gchar *s       = locales;
+      const gchar *p;
+
+      for (p = strchr (s, ':'); p && !found; p = strchr (s, ':'))
+        {
+          gchar *locale = g_strndup (s, p - s);
+          gchar *path;
+
+          path = g_build_filename (basedir, locale, "gimp-help.xml", NULL);
+
+          found = g_file_test (path, G_FILE_TEST_IS_REGULAR);
+
+          g_free (path);
+          g_free (locale);
+
+          s = p + 1;
+        }
+
+      g_free (locales);
+    }
+
+  g_free (basedir);
+
+  return found;
 }
 
 
@@ -127,16 +187,21 @@ gimp_idle_help (GimpIdleHelp *idle_help)
   GimpGuiConfig *config         = GIMP_GUI_CONFIG (idle_help->gimp->config);
   const gchar   *procedure_name = NULL;
 
-#ifdef GIMP_HELP_DEBUG
-  g_printerr ("Help Domain: %s\n",
-              idle_help->help_domain ? idle_help->help_domain : "NULL");
-  g_printerr ("Help ID: %s\n\n",
-              idle_help->help_id     ? idle_help->help_id     : "NULL");
-#endif
+  if (! idle_help->help_domain       &&
+      ! config->user_manual_online   &&
+      ! gimp_help_user_manual_is_installed (idle_help->gimp))
+    {
+      /*  The user manual is not installed locally, ask the user
+       *  if the online version should be used instead.
+       */
+      gimp_help_query_user_manual_online (idle_help);
+
+      return FALSE;
+    }
 
   if (config->help_browser == GIMP_HELP_BROWSER_GIMP)
     {
-      if (gimp_help_browser (idle_help->gimp))
+      if (gimp_help_browser (idle_help->gimp, idle_help->progress))
         procedure_name = "extension-gimp-help-browser-temp";
     }
 
@@ -148,22 +213,30 @@ gimp_idle_help (GimpIdleHelp *idle_help)
 
   if (procedure_name)
     gimp_help_call (idle_help->gimp,
+                    idle_help->progress,
                     procedure_name,
                     idle_help->help_domain,
                     idle_help->help_locales,
                     idle_help->help_id);
 
+  gimp_idle_help_free (idle_help);
+
+  return FALSE;
+}
+
+static void
+gimp_idle_help_free (GimpIdleHelp *idle_help)
+{
   g_free (idle_help->help_domain);
   g_free (idle_help->help_locales);
   g_free (idle_help->help_id);
 
   g_slice_free (GimpIdleHelp, idle_help);
-
-  return FALSE;
 }
 
 static gboolean
-gimp_help_browser (Gimp *gimp)
+gimp_help_browser (Gimp         *gimp,
+		   GimpProgress *progress)
 {
   static gboolean  busy = FALSE;
   GimpProcedure   *procedure;
@@ -183,25 +256,26 @@ gimp_help_browser (Gimp *gimp)
       gint          n_domains    = 0;
       gchar       **help_domains = NULL;
       gchar       **help_uris    = NULL;
+      GError       *error        = NULL;
 
       procedure = gimp_pdb_lookup_procedure (gimp->pdb,
                                              "extension-gimp-help-browser");
 
       if (! procedure)
         {
-          gimp_help_browser_error (gimp,
-                                   _("Help browser not found"),
-                                   _("Could not find GIMP help browser."),
+          gimp_help_browser_error (gimp, progress,
+                                   _("Help browser is missing"),
+                                   _("The GIMP help browser is not available."),
                                    _("The GIMP help browser plug-in appears "
-                                     "to be missing from your installation."));
+                                     "to be missing from your installation. "
+				     "You may instead use the web browser "
+				     "for reading the help pages."));
           busy = FALSE;
 
           return FALSE;
         }
 
-      n_domains = gimp_plug_in_manager_get_help_domains (gimp->plug_in_manager,
-                                                         &help_domains,
-                                                         &help_uris);
+      n_domains = gimp_help_get_help_domains (gimp, &help_domains, &help_uris);
 
       args = gimp_procedure_get_arguments (procedure);
       gimp_value_array_truncate (args, 5);
@@ -214,10 +288,17 @@ gimp_help_browser (Gimp *gimp)
 
       gimp_procedure_execute_async (procedure, gimp,
                                     gimp_get_user_context (gimp),
-                                    NULL, args, NULL);
+                                    NULL, args, NULL, &error);
 
       g_value_array_free (args);
-    }
+
+      if (error)
+        {
+          gimp_message (gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
+                        "%s", error->message);
+          g_error_free (error);
+        }
+     }
 
   /*  Check if the help browser started properly  */
   procedure = gimp_pdb_lookup_procedure (gimp->pdb,
@@ -225,9 +306,10 @@ gimp_help_browser (Gimp *gimp)
 
   if (! procedure)
     {
-      gimp_help_browser_error (gimp,
+      gimp_help_browser_error (gimp, progress,
                                _("Help browser doesn't start"),
-                               _("Could not start the GIMP help browser plug-in."),
+                               _("Could not start the GIMP help browser "
+                                 "plug-in."),
                                NULL);
       busy = FALSE;
 
@@ -240,27 +322,35 @@ gimp_help_browser (Gimp *gimp)
 }
 
 static void
-gimp_help_browser_error (Gimp        *gimp,
-                         const gchar *title,
-                         const gchar *primary,
-                         const gchar *text)
+gimp_help_browser_error (Gimp         *gimp,
+			 GimpProgress *progress,
+                         const gchar  *title,
+                         const gchar  *primary,
+                         const gchar  *text)
 {
   GtkWidget *dialog;
 
-  dialog =
-    gimp_message_dialog_new (title, GIMP_STOCK_WARNING,
-                             NULL, 0,
-                             NULL, NULL,
+  dialog = gimp_message_dialog_new (title, GIMP_STOCK_USER_MANUAL,
+				    NULL, 0,
+				    NULL, NULL,
 
-                             GTK_STOCK_CANCEL,              GTK_RESPONSE_CANCEL,
-                             _("Use _web browser instead"), GTK_RESPONSE_OK,
+				    GTK_STOCK_CANCEL,      GTK_RESPONSE_CANCEL,
+				    _("Use _Web Browser"), GTK_RESPONSE_OK,
 
-                             NULL);
+				    NULL);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
                                            GTK_RESPONSE_CANCEL,
                                            -1);
+
+  if (progress)
+    {
+      guint32 window = gimp_progress_get_window (progress);
+
+      if (window)
+        gimp_window_set_transient_for (GTK_WINDOW (dialog), window);
+    }
 
   gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
                                      primary);
@@ -277,11 +367,12 @@ gimp_help_browser_error (Gimp        *gimp,
 }
 
 static void
-gimp_help_call (Gimp        *gimp,
-                const gchar *procedure_name,
-                const gchar *help_domain,
-                const gchar *help_locales,
-                const gchar *help_id)
+gimp_help_call (Gimp         *gimp,
+                GimpProgress *progress,
+                const gchar  *procedure_name,
+                const gchar  *help_domain,
+                const gchar  *help_locales,
+                const gchar  *help_id)
 {
   GimpProcedure *procedure;
 
@@ -289,11 +380,18 @@ gimp_help_call (Gimp        *gimp,
   if (! strcmp (procedure_name, "extension-gimp-help-browser-temp"))
     {
       GValueArray *return_vals;
+      GError      *error = NULL;
+
+      GIMP_LOG (HELP, "Calling help via %s: %s %s %s",
+                procedure_name,
+                help_domain  ? help_domain  : "(null)",
+                help_locales ? help_locales : "(null)",
+                help_id      ? help_id      : "(null)");
 
       return_vals =
         gimp_pdb_execute_procedure_by_name (gimp->pdb,
                                             gimp_get_user_context (gimp),
-                                            NULL,
+                                            progress, &error,
                                             procedure_name,
                                             G_TYPE_STRING, help_domain,
                                             G_TYPE_STRING, help_locales,
@@ -301,6 +399,13 @@ gimp_help_call (Gimp        *gimp,
                                             G_TYPE_NONE);
 
       g_value_array_free (return_vals);
+
+      if (error)
+        {
+          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
+                        "%s", error->message);
+          g_error_free (error);
+        }
 
       return;
     }
@@ -314,6 +419,7 @@ gimp_help_call (Gimp        *gimp,
       gint          n_domains    = 0;
       gchar       **help_domains = NULL;
       gchar       **help_uris    = NULL;
+      GError       *error        = NULL;
 
       procedure = gimp_pdb_lookup_procedure (gimp->pdb, "extension-gimp-help");
 
@@ -321,9 +427,7 @@ gimp_help_call (Gimp        *gimp,
         /*  FIXME: error msg  */
         return;
 
-      n_domains = gimp_plug_in_manager_get_help_domains (gimp->plug_in_manager,
-                                                         &help_domains,
-                                                         &help_uris);
+      n_domains = gimp_help_get_help_domains (gimp, &help_domains, &help_uris);
 
       args = gimp_procedure_get_arguments (procedure);
       gimp_value_array_truncate (args, 4);
@@ -334,10 +438,17 @@ gimp_help_call (Gimp        *gimp,
       gimp_value_take_stringarray (&args->values[3], help_uris, n_domains);
 
       gimp_procedure_execute_async (procedure, gimp,
-                                    gimp_get_user_context (gimp),
-                                    NULL, args, NULL);
+                                    gimp_get_user_context (gimp), progress,
+                                    args, NULL, &error);
 
       g_value_array_free (args);
+
+      if (error)
+        {
+          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
+                        "%s", error->message);
+          g_error_free (error);
+        }
     }
 
   /*  Check if the help parser started properly  */
@@ -346,19 +457,18 @@ gimp_help_call (Gimp        *gimp,
   if (procedure)
     {
       GValueArray *return_vals;
+      GError      *error = NULL;
 
-#ifdef GIMP_HELP_DEBUG
-      g_printerr ("Calling help via %s: %s %s %s\n",
-                  procedure_name,
-                  help_domain  ? help_domain  : "(null)",
-                  help_locales ? help_locales : "(null)",
-                  help_id      ? help_id      : "(null)");
-#endif
+      GIMP_LOG (HELP, "Calling help via %s: %s %s %s",
+                procedure_name,
+                help_domain  ? help_domain  : "(null)",
+                help_locales ? help_locales : "(null)",
+                help_id      ? help_id      : "(null)");
 
       return_vals =
         gimp_pdb_execute_procedure_by_name (gimp->pdb,
                                             gimp_get_user_context (gimp),
-                                            NULL,
+                                            progress, &error,
                                             "extension-gimp-help-temp",
                                             G_TYPE_STRING, procedure_name,
                                             G_TYPE_STRING, help_domain,
@@ -367,15 +477,150 @@ gimp_help_call (Gimp        *gimp,
                                             G_TYPE_NONE);
 
       g_value_array_free (return_vals);
+
+      if (error)
+        {
+          gimp_message (gimp, NULL, GIMP_MESSAGE_ERROR,
+                        "%s", error->message);
+          g_error_free (error);
+        }
     }
 }
 
-static gchar *
-gimp_help_get_locales (GimpGuiConfig *config)
+static gint
+gimp_help_get_help_domains (Gimp    *gimp,
+                            gchar ***domain_names,
+                            gchar ***domain_uris)
 {
+  gchar **plug_in_domains = NULL;
+  gchar **plug_in_uris    = NULL;
+  gint    i, n_domains;
+
+  n_domains = gimp_plug_in_manager_get_help_domains (gimp->plug_in_manager,
+                                                     &plug_in_domains,
+                                                     &plug_in_uris);
+
+  *domain_names = g_new0 (gchar *, n_domains + 1);
+  *domain_uris  = g_new0 (gchar *, n_domains + 1);
+
+  *domain_names[0] = g_strdup ("http://www.gimp.org/help");
+  *domain_uris[0]  = gimp_help_get_default_domain_uri (gimp);
+
+  for (i = 0; i < n_domains; i++)
+    {
+      *domain_names[i + 1] = plug_in_domains[i];
+      *domain_uris[i + 1]  = plug_in_uris[i];
+    }
+
+  g_free (plug_in_domains);
+  g_free (plug_in_uris);
+
+  return n_domains + 1;
+}
+
+static gchar *
+gimp_help_get_default_domain_uri (Gimp *gimp)
+{
+  GimpGuiConfig *config = GIMP_GUI_CONFIG (gimp->config);
+  gchar         *dir;
+  gchar         *uri;
+
+  if (g_getenv ("GIMP2_HELP_URI"))
+    return g_strdup (g_getenv ("GIMP2_HELP_URI"));
+
+  if (config->user_manual_online)
+    return g_strdup (config->user_manual_online_uri);
+
+  dir = gimp_help_get_user_manual_basedir ();
+  uri = g_filename_to_uri (dir, NULL, NULL);
+  g_free (dir);
+
+  return uri;
+}
+
+static gchar *
+gimp_help_get_locales (Gimp *gimp)
+{
+  GimpGuiConfig *config = GIMP_GUI_CONFIG (gimp->config);
+
   if (config->help_locales && strlen (config->help_locales))
     return g_strdup (config->help_locales);
 
   return g_strjoinv (":", (gchar **) g_get_language_names ());
 }
 
+static gchar *
+gimp_help_get_user_manual_basedir (void)
+{
+  return g_build_filename (gimp_data_directory (), "help", NULL);
+}
+
+
+static void
+gimp_help_query_online_response (GtkWidget    *dialog,
+                                 gint          response,
+                                 GimpIdleHelp *idle_help)
+{
+  gtk_widget_destroy (dialog);
+
+  if (response == GTK_RESPONSE_ACCEPT)
+    {
+      g_object_set (idle_help->gimp->config,
+                    "user-manual-online", TRUE,
+                    NULL);
+
+      gimp_help_show (idle_help->gimp,
+                      idle_help->progress,
+                      idle_help->help_domain,
+                      idle_help->help_id);
+    }
+
+  gimp_idle_help_free (idle_help);
+}
+
+static void
+gimp_help_query_user_manual_online (GimpIdleHelp *idle_help)
+{
+  GtkWidget *dialog;
+  GtkWidget *button;
+
+  dialog = gimp_message_dialog_new (_("GIMP user manual is missing"),
+                                    GIMP_STOCK_USER_MANUAL,
+                                    NULL, 0, NULL, NULL,
+                                    GTK_STOCK_CANCEL,  GTK_RESPONSE_CANCEL,
+                                    NULL);
+
+  button = gtk_dialog_add_button (GTK_DIALOG (dialog),
+                                  _("_Read Online"), GTK_RESPONSE_ACCEPT);
+  gtk_button_set_image (GTK_BUTTON (button),
+                        gtk_image_new_from_stock (GIMP_STOCK_WEB,
+                                                  GTK_ICON_SIZE_BUTTON));
+
+  gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
+                                           GTK_RESPONSE_ACCEPT,
+                                           GTK_RESPONSE_CANCEL,
+                                           -1);
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
+
+  if (idle_help->progress)
+    {
+      guint32 window = gimp_progress_get_window (idle_help->progress);
+
+      if (window)
+        gimp_window_set_transient_for (GTK_WINDOW (dialog), window);
+    }
+
+  g_signal_connect (dialog, "response",
+                    G_CALLBACK (gimp_help_query_online_response),
+                    idle_help);
+
+  gimp_message_box_set_primary_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                                     _("The GIMP user manual is not installed "
+                                       "on your computer."));
+  gimp_message_box_set_text (GIMP_MESSAGE_DIALOG (dialog)->box,
+                             _("You may either install the additional help "
+                               "package or change your preferences to use "
+                               "the online version."));
+
+  gtk_widget_show (dialog);
+}

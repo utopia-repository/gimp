@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-07 21:38+0100\n"
+"POT-Creation-Date: 2008-08-08 12:26+0100\n"
 "PO-Revision-Date: 2008-04-19 20:45+0300\n"
 "Last-Translator: \n"
 "Language-Team: en_US <kde-i18n-doc@lists.kde.org>\n"
@@ -103,7 +103,11 @@ msgstr "تحديد تدرج الألوان في سكربت-فو"
 msgid "Script-Fu Brush Selection"
 msgstr "اختيار فرشاة سكربت-فو"
 
-#: ../plug-ins/script-fu/script-fu-scripts.c:658
+#: ../plug-ins/script-fu/script-fu-scripts.c:148
+msgid "Too few arguments to 'script-fu-register' call"
+msgstr "معطيات قليلة جدا لاستدعاء 'سكربت-فو'"
+
+#: ../plug-ins/script-fu/script-fu-scripts.c:667
 #, c-format
 msgid ""
 "Error while executing\n"
@@ -137,9 +141,8 @@ msgid "Interactive console for Script-Fu development"
 msgstr "وحدة التحكم التفاعلية لتطوير سكربت-فو"
 
 #: ../plug-ins/script-fu/script-fu.c:116
-#, fuzzy
-msgid "Script-Fu _Console"
-msgstr "وحدة تحكم سكربت-فو"
+msgid "_Console"
+msgstr "_كونسول"
 
 #: ../plug-ins/script-fu/script-fu.c:140
 msgid "Server for remote Script-Fu operation"
@@ -162,102 +165,50 @@ msgid "_Script-Fu"
 msgstr "_سكربت-فو"
 
 #: ../plug-ins/script-fu/script-fu.c:307
-msgid "_Buttons"
-msgstr "الأ_زرار"
-
-#: ../plug-ins/script-fu/script-fu.c:309
-msgid "_Logos"
-msgstr "ال_شعارات"
-
-#: ../plug-ins/script-fu/script-fu.c:311
-msgid "_Misc"
-msgstr "إ_عدادات مختلفة"
-
-#: ../plug-ins/script-fu/script-fu.c:313
-msgid "_Patterns"
-msgstr "الن_ماذج"
-
-#: ../plug-ins/script-fu/script-fu.c:315
 msgid "_Test"
 msgstr "اخ_تبار"
 
-#: ../plug-ins/script-fu/script-fu.c:317
-msgid "_Utilities"
-msgstr "أد_وات"
+#: ../plug-ins/script-fu/script-fu.c:310
+msgid "_Buttons"
+msgstr "الأ_زرار"
 
-#: ../plug-ins/script-fu/script-fu.c:319
+#: ../plug-ins/script-fu/script-fu.c:312
+msgid "_Logos"
+msgstr "ال_شعارات"
+
+#: ../plug-ins/script-fu/script-fu.c:314
+msgid "_Patterns"
+msgstr "الن_ماذج"
+
+#: ../plug-ins/script-fu/script-fu.c:317
 msgid "_Web Page Themes"
 msgstr "_سمات صفحات الويب"
 
-#: ../plug-ins/script-fu/script-fu.c:321
+#: ../plug-ins/script-fu/script-fu.c:319
 msgid "_Alien Glow"
 msgstr "تو_هج مغاير"
 
-#: ../plug-ins/script-fu/script-fu.c:323
+#: ../plug-ins/script-fu/script-fu.c:321
 msgid "_Beveled Pattern"
 msgstr "نموذج ال_زاوية المنحرفة"
 
-#: ../plug-ins/script-fu/script-fu.c:325
+#: ../plug-ins/script-fu/script-fu.c:323
 msgid "_Classic.Gimp.Org"
 msgstr "_Classic.Gimp.Org"
 
-#: ../plug-ins/script-fu/script-fu.c:328
+#: ../plug-ins/script-fu/script-fu.c:326
 msgid "Alpha to _Logo"
 msgstr "ألفا إلى ش_عار"
 
-#: ../plug-ins/script-fu/script-fu.c:330
-msgid "An_imation"
-msgstr "_رسوم متحركة"
-
-#: ../plug-ins/script-fu/script-fu.c:332
-msgid "_Animators"
-msgstr "_ال_محركات"
-
-#: ../plug-ins/script-fu/script-fu.c:334
-msgid "_Artistic"
-msgstr "_فني"
-
-#: ../plug-ins/script-fu/script-fu.c:336
-msgid "_Blur"
-msgstr "_غشاوة"
-
-#: ../plug-ins/script-fu/script-fu.c:338
-msgid "_Decor"
-msgstr "ز_خرفة"
-
-#: ../plug-ins/script-fu/script-fu.c:340
-msgid "_Effects"
-msgstr "مؤ_ثرات"
-
-#: ../plug-ins/script-fu/script-fu.c:342
-msgid "En_hance"
-msgstr "ز_يادة"
-
-#: ../plug-ins/script-fu/script-fu.c:344
-msgid "_Light and Shadow"
-msgstr "ال_ضوء والظل"
-
-#: ../plug-ins/script-fu/script-fu.c:346
-msgid "S_hadow"
-msgstr "ال_ظل"
-
-#: ../plug-ins/script-fu/script-fu.c:348
-msgid "_Render"
-msgstr "ت_صيير"
-
-#: ../plug-ins/script-fu/script-fu.c:350
-msgid "_Alchemy"
-msgstr "_خيميائي"
-
-#: ../plug-ins/script-fu/script-fu.c:353
+#: ../plug-ins/script-fu/script-fu.c:329
 msgid "Re-read all available Script-Fu scripts"
 msgstr "إعادة قراءة سكربتات سكربت-فو المتاحة"
 
-#: ../plug-ins/script-fu/script-fu.c:358
+#: ../plug-ins/script-fu/script-fu.c:334
 msgid "_Refresh Scripts"
 msgstr "تحديث السكرب_تات"
 
-#: ../plug-ins/script-fu/script-fu.c:381
+#: ../plug-ins/script-fu/script-fu.c:357
 msgid ""
 "You can not use \"Refresh Scripts\" while a Script-Fu dialog box is open.  "
 "Please close all Script-Fu windows and try again."
@@ -415,7 +366,7 @@ msgstr "نصف-قطر غشاوة الظل"
 #: ../plug-ins/script-fu/scripts/comic-logo.scm.h:11
 #: ../plug-ins/script-fu/scripts/coolmetal-logo.scm.h:10
 #: ../plug-ins/script-fu/scripts/crystal-logo.scm.h:8
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm.h:7
+#: ../plug-ins/script-fu/scripts/frosty-logo.scm.h:8
 #: ../plug-ins/script-fu/scripts/gimp-headers.scm.h:13
 #: ../plug-ins/script-fu/scripts/gimp-labels.scm.h:17
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:18
@@ -463,7 +414,6 @@ msgstr "Truchet ثلاثية الأبعا_د..."
 #: ../plug-ins/script-fu/scripts/neon-logo.scm.h:1
 #: ../plug-ins/script-fu/scripts/news-text.scm.h:1
 #: ../plug-ins/script-fu/scripts/speed-text.scm.h:1
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:1
 #: ../plug-ins/script-fu/scripts/starburst-logo.scm.h:1
 #: ../plug-ins/script-fu/scripts/swirltile.scm.h:2
 #: ../plug-ins/script-fu/scripts/t-o-p-logo.scm.h:2
@@ -1525,7 +1475,12 @@ msgstr "إضافة تأثير جليدي إلى المنطقة المحددة (�
 msgid "Create frozen logo with an added drop shadow"
 msgstr "أنشئ شعار جليدي مع ظل ساقط"
 
-#: ../plug-ins/script-fu/scripts/frosty-logo.scm.h:8
+#: ../plug-ins/script-fu/scripts/frosty-logo.scm.h:7
+#, fuzzy
+msgid "Matte"
+msgstr "بقع"
+
+#: ../plug-ins/script-fu/scripts/frosty-logo.scm.h:9
 msgid "_Frosty..."
 msgstr "_جليدي..."
 
@@ -1692,7 +1647,6 @@ msgid "Pattern (text)"
 msgstr "نموذج (نص)"
 
 #: ../plug-ins/script-fu/scripts/glossy.scm.h:15
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:5
 msgid "Shadow"
 msgstr "ظل"
 
@@ -2310,26 +2264,6 @@ msgstr "أنشئ شعار مع تأثير نص سريع"
 msgid "Speed Text..."
 msgstr "نص سريع..."
 
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:2
-msgid "Create a simple sphere with a drop shadow"
-msgstr "أنشئ كرة بسيطة مع ظل ساقط"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:3
-msgid "Lighting (degrees)"
-msgstr "الإضاءة (بالدرجات)"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:4
-msgid "Radius (pixels)"
-msgstr "نصف-القطر (بالبكسل)"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:6
-msgid "Sphere color"
-msgstr "لون الكرة"
-
-#: ../plug-ins/script-fu/scripts/sphere.scm.h:7
-msgid "_Sphere..."
-msgstr "_كرة..."
-
 #: ../plug-ins/script-fu/scripts/spinning-globe.scm.h:1
 msgid "Create an animation by mapping the current image onto a spinning sphere"
 msgstr "أنشئ رسوماً متحركة من خلال تحويل الصورة الحالية إلى كرة دائرية"
@@ -2849,11 +2783,63 @@ msgstr "إعتام التمييز اللوني"
 msgid "_Xach-Effect..."
 msgstr "تأثير-_Xach..."
 
-#~ msgid "Too few arguments to 'script-fu-register' call"
-#~ msgstr "معطيات قليلة جدا لاستدعاء 'سكربت-فو'"
+#, fuzzy
+#~ msgid "Script-Fu _Console"
+#~ msgstr "وحدة تحكم سكربت-فو"
 
-#~ msgid "_Console"
-#~ msgstr "_كونسول"
+#~ msgid "_Misc"
+#~ msgstr "إ_عدادات مختلفة"
+
+#~ msgid "_Utilities"
+#~ msgstr "أد_وات"
+
+#~ msgid "An_imation"
+#~ msgstr "_رسوم متحركة"
+
+#~ msgid "_Animators"
+#~ msgstr "_ال_محركات"
+
+#~ msgid "_Artistic"
+#~ msgstr "_فني"
+
+#~ msgid "_Blur"
+#~ msgstr "_غشاوة"
+
+#~ msgid "_Decor"
+#~ msgstr "ز_خرفة"
+
+#~ msgid "_Effects"
+#~ msgstr "مؤ_ثرات"
+
+#~ msgid "En_hance"
+#~ msgstr "ز_يادة"
+
+#~ msgid "_Light and Shadow"
+#~ msgstr "ال_ضوء والظل"
+
+#~ msgid "S_hadow"
+#~ msgstr "ال_ظل"
+
+#~ msgid "_Render"
+#~ msgstr "ت_صيير"
+
+#~ msgid "_Alchemy"
+#~ msgstr "_خيميائي"
+
+#~ msgid "Create a simple sphere with a drop shadow"
+#~ msgstr "أنشئ كرة بسيطة مع ظل ساقط"
+
+#~ msgid "Lighting (degrees)"
+#~ msgstr "الإضاءة (بالدرجات)"
+
+#~ msgid "Radius (pixels)"
+#~ msgstr "نصف-القطر (بالبكسل)"
+
+#~ msgid "Sphere color"
+#~ msgstr "لون الكرة"
+
+#~ msgid "_Sphere..."
+#~ msgstr "_كرة..."
 
 #~ msgid "BG opacity"
 #~ msgstr "عتمة الخلفية"

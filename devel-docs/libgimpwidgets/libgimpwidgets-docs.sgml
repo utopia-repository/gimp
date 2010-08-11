@@ -51,6 +51,7 @@
     <xi:include href="xml/gimppixmap.xml" />
     <xi:include href="xml/gimppreviewarea.xml" />
     <xi:include href="xml/gimppreview.xml" />
+    <xi:include href="xml/gimpruler.xml" />
     <xi:include href="xml/gimpscrolledpreview.xml" />
     <xi:include href="xml/gimpsizeentry.xml" />
     <xi:include href="xml/gimpstringcombobox.xml" />
@@ -88,6 +89,7 @@
 
   <part id="libgimpwidgets-utils">
     <title>GIMP Widgets Utilities</title>
+    <xi:include href="xml/gimpcairo-utils.xml" />
     <xi:include href="xml/gimphelpui.xml" />
     <xi:include href="xml/gimpquerybox.xml" />
     <xi:include href="xml/gimpstock.xml" />
@@ -109,6 +111,9 @@
   </index>
   <index role="GIMP 2.4" id="libgimpwidgets-index-new-in-2-4">
     <title>Index of new symbols in GIMP 2.4</title>
+  </index>
+  <index role="GIMP 2.6" id="libgimpwidgets-index-new-in-2-6">
+    <title>Index of new symbols in GIMP 2.6</title>
   </index>
   <index role="deprecated" id="libgimpwidgets-index-deprecated">
     <title>Index of deprecated symbols</title>

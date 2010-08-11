@@ -49,8 +49,7 @@ sub procedural_db_dump {
     $help = <<'HELP';
 This procedure dumps the contents of the procedural database to the specified
 file. The file will contain all of the information provided for each registered
-procedure. This file is in a format appropriate for use with the supplied
-"pdb_self_doc.el" Elisp script, which generates a texinfo document.
+procedure.
 HELP
 
     &std_pdb_misc;
@@ -125,7 +124,56 @@ HELP
   success = gimp_pdb_query (gimp->pdb,
                             name, blurb, help, author,
                             copyright, date, proc_type,
-                            &num_matches, &procedure_names);
+                            &num_matches, &procedure_names,
+                            error);
+}
+CODE
+    );
+}
+
+sub procedural_db_proc_exists {
+    $blurb = <<'BLURB';
+Checks if the specified procedure exists in the procedural database
+BLURB
+
+    $help = <<'HELP';
+This procedure checks if the specified procedure is registered in the
+procedural database.
+HELP
+
+    &neo_pdb_misc('2008', '2.6');
+
+    @inargs = (
+	{ name  => 'procedure_name', type  => 'string', non_empty => 1,
+	  desc  => 'The procedure name' }
+    );
+
+    @outargs = (
+	{ name => 'exists', type => 'boolean',
+	  desc => 'Whether a procedure of that name is registered' }
+    );
+
+    %invoke = (
+	code => <<'CODE'
+{
+  GimpProcedure *procedure;
+  gchar         *canonical;
+
+  canonical = gimp_canonicalize_identifier (procedure_name);
+
+  procedure = gimp_pdb_lookup_procedure (gimp->pdb, canonical);
+
+  if (! procedure)
+    {
+      procedure_name = gimp_pdb_lookup_compat_proc_name (gimp->pdb, canonical);
+
+      if (procedure_name)
+        procedure = gimp_pdb_lookup_procedure (gimp->pdb, procedure_name);
+    }
+
+  g_free (canonical);
+
+  exists = (procedure != NULL);
 }
 CODE
     );
@@ -183,7 +231,8 @@ HELP
   success = gimp_pdb_proc_info (gimp->pdb, canonical,
                                 &blurb, &help, &author,
                                 &copyright, &date, &ptype,
-                                &num_args, &num_values);
+                                &num_args, &num_values,
+                                error);
   proc_type = ptype;
 
   g_free (canonical);
@@ -446,13 +495,16 @@ CODE
 @headers = qw("libgimpbase/gimpbase.h"
               "core/gimp.h"
               "core/gimpparamspecs-desc.h"
+              "plug-in/gimppluginmanager-data.h"
               "gimppdb-query.h"
-              "gimp-pdb-compat.h"
-              "plug-in/gimppluginmanager-data.h");
+              "gimp-pdb-compat.h");
 
-@procs = qw(procedural_db_temp_name procedural_db_dump
-            procedural_db_query procedural_db_proc_info
-	    procedural_db_proc_arg procedural_db_proc_val
+@procs = qw(procedural_db_temp_name
+            procedural_db_dump
+            procedural_db_query
+            procedural_db_proc_exists
+            procedural_db_proc_info
+            procedural_db_proc_arg procedural_db_proc_val
 	    procedural_db_get_data procedural_db_get_data_size
 	    procedural_db_set_data);
 

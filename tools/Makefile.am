@@ -8,22 +8,28 @@ endif
 
 SUBDIRS = $(D_pdbgen)
 
-bin_PROGRAMS = $(GIMP_REMOTE)
+bin_PROGRAMS = $(GIMP_REMOTE) gimptool-2.0
 
 noinst_PROGRAMS = test-clipboard
 
 EXTRA_PROGRAMS = \
-	gimp-remote-2.4	\
+	gimp-remote-2.6	\
 	kernelgen
 
-gimp_remote_2_4_SOURCES = \
+gimp_remote_2_6_SOURCES = \
 	gimp-remote.c	\
 	gimp-remote.h	\
 	gimp-remote-x11.c
 
-gimp_remote_2_4_LDADD = \
+gimp_remote_2_6_LDADD = \
 	$(GTK_LIBS)	\
-	$(LIBXMU)
+	$(XMU_LIBS)
+
+gimptool_2_0_SOURCES = \
+	gimptool.c
+
+gimptool_2_0_LDADD = \
+	$(GTK_LIBS)
 
 kernelgen_SOURCES = kernelgen.c
 
@@ -34,7 +40,25 @@ test_clipboard_LDADD = \
 
 AM_CPPFLAGS = \
 	-DGIMP_APP_VERSION=\"@GIMP_APP_VERSION@\"	\
-	-DLOCALEDIR=\""$(gimplocaledir)"\"
+	-DLOCALEDIR=\""$(gimplocaledir)"\"		\
+	-DPREFIX=\""$(prefix)"\"			\
+	-DEXEC_PREFIX=\""$(exec_prefix)"\"		\
+	-DBINDIR=\""$(bindir)"\"			\
+	-DSBINDIR=\""$(sbindir)"\"			\
+	-DLIBEXECDIR=\""$(libexecdir)"\"		\
+	-DDATADIR=\""$(datadir)"\"			\
+	-DDATAROOTDIR=\""$(datarootdir)"\"		\
+	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
+	-DSHAREDSTATEDIR=\""$(sharedstatedir)"\"	\
+	-DLOCALSTATEDIR=\""$(localstatedir)"\"		\
+	-DLIBDIR=\""$(libdir)"\"			\
+	-DINFODIR=\""$(infodir)"\"			\
+	-DMANDIR=\""$(mandir)"\"			\
+	-DGIMPPLUGINDIR=\""$(gimpplugindir)"\"		\
+	-DGIMPDATADIR=\""$(gimpdatadir)"\"		\
+	-DCC=\""$(CC)"\"				\
+	-DGIMPDIR=\""$(gimpdir)"\"			\
+	-DGIMP_PLUGIN_VERSION=\""$(GIMP_PLUGIN_VERSION)"\"
 
 INCLUDES = \
 	-I$(top_srcdir)	\

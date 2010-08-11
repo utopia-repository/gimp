@@ -53,6 +53,7 @@
 #define GIMP_HELP_EDIT_PASTE                      "gimp-edit-paste"
 #define GIMP_HELP_EDIT_PASTE_INTO                 "gimp-edit-paste-into"
 #define GIMP_HELP_EDIT_PASTE_AS_NEW               "gimp-edit-paste-as-new"
+#define GIMP_HELP_EDIT_PASTE_AS_NEW_LAYER         "gimp-edit-paste-as-new-layer"
 #define GIMP_HELP_EDIT_CLEAR                      "gimp-edit-clear"
 #define GIMP_HELP_EDIT_FILL_FG                    "gimp-edit-fill-fg"
 #define GIMP_HELP_EDIT_FILL_BG                    "gimp-edit-fill-bg"
@@ -79,7 +80,7 @@
 #define GIMP_HELP_VIEW_ZOOM_IN                    "gimp-view-zoom-in"
 #define GIMP_HELP_VIEW_ZOOM_100                   "gimp-view-zoom-100"
 #define GIMP_HELP_VIEW_ZOOM_FIT_IN                "gimp-view-zoom-fit-in"
-#define GIMP_HELP_VIEW_ZOOM_FIT_TO                "gimp-view-zoom-fit-to"
+#define GIMP_HELP_VIEW_ZOOM_FILL                  "gimp-view-zoom-fill"
 #define GIMP_HELP_VIEW_ZOOM_OTHER                 "gimp-view-zoom-other"
 #define GIMP_HELP_VIEW_SHOW_SELECTION             "gimp-view-show-selection"
 #define GIMP_HELP_VIEW_SHOW_LAYER_BOUNDARY        "gimp-view-show-layer-boundary"
@@ -136,6 +137,7 @@
 #define GIMP_HELP_LAYER_DIALOG_LOCK_ALPHA_BUTTON  "gimp-layer-dialog-lock-alpha-button"
 
 #define GIMP_HELP_LAYER_NEW                       "gimp-layer-new"
+#define GIMP_HELP_LAYER_NEW_FROM_VISIBLE          "gimp-layer-new-from-visible"
 #define GIMP_HELP_LAYER_DUPLICATE                 "gimp-layer-duplicate"
 #define GIMP_HELP_LAYER_ANCHOR                    "gimp-layer-anchor"
 #define GIMP_HELP_LAYER_MERGE_DOWN                "gimp-layer-merge-down"
@@ -155,7 +157,6 @@
 #define GIMP_HELP_LAYER_RAISE_TO_TOP              "gimp-layer-raise-to-top"
 #define GIMP_HELP_LAYER_LOWER                     "gimp-layer-lower"
 #define GIMP_HELP_LAYER_LOWER_TO_BOTTOM           "gimp-layer-lower-to-bottom"
-#define GIMP_HELP_LAYER_DESATURATE                "gimp-layer-desaturate"
 #define GIMP_HELP_LAYER_INVERT                    "gimp-layer-invert"
 #define GIMP_HELP_LAYER_WHITE_BALANCE             "gimp-layer-white-balance"
 #define GIMP_HELP_LAYER_EQUALIZE                  "gimp-layer-equalize"
@@ -248,6 +249,7 @@
 #define GIMP_HELP_TOOL_CROP                       "gimp-tool-crop"
 #define GIMP_HELP_TOOL_CURVES                     "gimp-tool-curves"
 #define GIMP_HELP_TOOL_CURVES                     "gimp-tool-curves"
+#define GIMP_HELP_TOOL_DESATURATE                 "gimp-tool-desaturate"
 #define GIMP_HELP_TOOL_DODGE_BURN                 "gimp-tool-dodge-burn"
 #define GIMP_HELP_TOOL_ELLIPSE_SELECT             "gimp-tool-ellipse-select"
 #define GIMP_HELP_TOOL_ERASER                     "gimp-tool-eraser"
@@ -451,6 +453,7 @@
 
 #define GIMP_HELP_DOCK_TAB_ADD                    "gimp-dock-tab-add"
 #define GIMP_HELP_DOCK_TAB_CLOSE                  "gimp-dock-tab-close"
+#define GIMP_HELP_DOCK_TAB_LOCK                   "gimp-dock-tab-lock"
 #define GIMP_HELP_DOCK_TAB_MENU                   "gimp-dock-tab-menu"
 #define GIMP_HELP_DOCK_TAB_DETACH                 "gimp-dock-tab-detach"
 #define GIMP_HELP_DOCK_PREVIEW_SIZE               "gimp-dock-preview-size"
@@ -475,6 +478,9 @@
 #define GIMP_HELP_EXPORT_CONFIRM_DIALOG           "gimp-export-confirm-dialog"
 #define GIMP_HELP_UNIT_DIALOG                     "gimp-unit-dialog"
 
+#define GIMP_HELP_WINDOWS_SHOW_DOCK               "gimp-windows-show-dock"
+#define GIMP_HELP_WINDOWS_OPEN_RECENT_DOCK        "gimp-windows-open-recent-dock"
+
 #define GIMP_HELP_HELP                            "gimp-help"
 #define GIMP_HELP_HELP_CONTEXT                    "gimp-help-context"
 
@@ -492,6 +498,8 @@
 #define GIMP_HELP_CONTROLLER_LINUX_INPUT          "gimp-controller-linux-input"
 #define GIMP_HELP_CONTROLLER_MIDI                 "gimp-controller-midi"
 #define GIMP_HELP_CONTROLLER_WHEEL                "gimp-controller-wheel"
+
+#define GIMP_HELP_CONFIG_USE_GEGL                 "gimp-config-use-gegl"
 
 
 #endif /* __GIMP_HELP_IDS_H__ */

@@ -14,6 +14,7 @@
 <link rel="index" href="libgimpbase-index.html" title="Index">
 <link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpbase-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimpbase-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -73,7 +74,7 @@ Functions to (de)serialize a given memory size.
 Creates a string representation of a given memory size. This string
 can be parsed by <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-deserialize" title="gimp_memsize_deserialize ()"><code class="function">gimp_memsize_deserialize()</code></a> and can thus be used in
 config files. It should not be displayed to the user. If you need a
-nice human-readable string please use <a class="link" href="libgimpbase-gimpmemsize.html#gimp-memsize-to-string" title="gimp_memsize_to_string ()"><code class="function">gimp_memsize_to_string()</code></a>.</p>
+nice human-readable string please use <code class="function">g_format_size_for_display()</code>.</p>
 <p>
 
 </p>
@@ -136,11 +137,12 @@ Parses a string representation of a memory size as returned by
 <div class="refsect2" lang="en">
 <a name="gimp-memsize-to-string"></a><h3>gimp_memsize_to_string ()</h3>
 <pre class="programlisting">gchar*              gimp_memsize_to_string              (guint64 memsize);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">gimp_memsize_to_string</code> is deprecated and should not be used in newly-written code.</p>
+</div>
 <p>
-This function returns a human readable, translated representation
-of the passed <em class="parameter"><code>memsize</code></em>. Large values are displayed using a
-reasonable memsize unit, e.g.: "345" becomes "345 Bytes", "4500"
-becomes "4.4 KB" and so on.</p>
+This function is deprecated! Use <code class="function">g_format_size_for_display()</code> instead.</p>
 <p>
 
 </p>

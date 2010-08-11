@@ -267,7 +267,7 @@ gimp_color_scales_set_channel (GimpColorSelector        *selector,
 {
   GimpColorScales *scales = GIMP_COLOR_SCALES (selector);
 
-  if (channel >= 0 && channel < 7)
+  if (channel < 7)
     {
       g_signal_handlers_block_by_func (scales->toggles[channel],
                                        gimp_color_scales_toggle_update,
@@ -325,7 +325,7 @@ gimp_color_scales_toggle_update (GtkWidget       *widget,
 {
   GimpColorSelector *selector = GIMP_COLOR_SELECTOR (scales);
 
-  if (GTK_TOGGLE_BUTTON (widget)->active)
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
     {
       gint i;
 
@@ -345,6 +345,7 @@ gimp_color_scales_scale_update (GtkAdjustment   *adjustment,
                                 GimpColorScales *scales)
 {
   GimpColorSelector *selector = GIMP_COLOR_SELECTOR (scales);
+  gdouble            value    = gtk_adjustment_get_value (adjustment);
   gint               i;
 
   for (i = 0; i < 7; i++)
@@ -354,32 +355,31 @@ gimp_color_scales_scale_update (GtkAdjustment   *adjustment,
   switch (i)
     {
     case GIMP_COLOR_SELECTOR_HUE:
-      selector->hsv.h = GTK_ADJUSTMENT (adjustment)->value / 360.0;
+      selector->hsv.h = value / 360.0;
       break;
 
     case GIMP_COLOR_SELECTOR_SATURATION:
-      selector->hsv.s = GTK_ADJUSTMENT (adjustment)->value / 100.0;
+      selector->hsv.s = value / 100.0;
       break;
 
     case GIMP_COLOR_SELECTOR_VALUE:
-      selector->hsv.v = GTK_ADJUSTMENT (adjustment)->value / 100.0;
+      selector->hsv.v = value / 100.0;
       break;
 
     case GIMP_COLOR_SELECTOR_RED:
-      selector->rgb.r = GTK_ADJUSTMENT (adjustment)->value / 255.0;
+      selector->rgb.r = value / 255.0;
       break;
 
     case GIMP_COLOR_SELECTOR_GREEN:
-      selector->rgb.g = GTK_ADJUSTMENT (adjustment)->value / 255.0;
+      selector->rgb.g = value / 255.0;
       break;
 
     case GIMP_COLOR_SELECTOR_BLUE:
-      selector->rgb.b = GTK_ADJUSTMENT (adjustment)->value / 255.0;
+      selector->rgb.b = value / 255.0;
       break;
 
     case GIMP_COLOR_SELECTOR_ALPHA:
-      selector->hsv.a = selector->rgb.a =
-        GTK_ADJUSTMENT (adjustment)->value / 100.0;
+      selector->hsv.a = selector->rgb.a = value / 100.0;
       break;
     }
 

@@ -2,7 +2,7 @@
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
  * The GIMP Help plug-in
- * Copyright (C) 1999-2004 Sven Neumann <sven@gimp.org>
+ * Copyright (C) 1999-2008 Sven Neumann <sven@gimp.org>
  *                         Michael Natterer <mitch@gimp.org>
  *                         Henrik Brix Andersen <brix@gimp.org>
  *
@@ -31,7 +31,7 @@ struct _GimpHelpItem
   gchar *title;
   gchar *parent;
 
-  /* eek */
+  /*  extra fields used by the help-browser  */
   GList *children;
   gint   index;
 };

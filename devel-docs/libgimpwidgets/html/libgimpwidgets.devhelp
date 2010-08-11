@@ -33,6 +33,7 @@
       <sub name="GimpPixmap" link="GimpPixmap.html"/>
       <sub name="GimpPreviewArea" link="GimpPreviewArea.html"/>
       <sub name="GimpPreview" link="GimpPreview.html"/>
+      <sub name="GimpRuler" link="GimpRuler.html"/>
       <sub name="GimpScrolledPreview" link="GimpScrolledPreview.html"/>
       <sub name="GimpSizeEntry" link="GimpSizeEntry.html"/>
       <sub name="GimpStringComboBox" link="GimpStringComboBox.html"/>
@@ -57,6 +58,7 @@
       <sub name="GimpController" link="GimpController.html"/>
     </sub>
     <sub name="GIMP Widgets Utilities" link="libgimpwidgets-utils.html">
+      <sub name="gimpcairo-utils" link="libgimpwidgets-GimpCairoUtils.html"/>
       <sub name="GimpHelpUI" link="libgimpwidgets-GimpHelpUI.html"/>
       <sub name="GimpQueryBox" link="libgimpwidgets-GimpQueryBox.html"/>
       <sub name="GimpStock" link="libgimpwidgets-GimpStock.html"/>
@@ -70,6 +72,7 @@
     <sub name="Index" link="libgimpwidgets-index.html"/>
     <sub name="Index of new symbols in GIMP 2.2" link="libgimpwidgets-index-new-in-2-2.html"/>
     <sub name="Index of new symbols in GIMP 2.4" link="libgimpwidgets-index-new-in-2-4.html"/>
+    <sub name="Index of new symbols in GIMP 2.6" link="libgimpwidgets-index-new-in-2-6.html"/>
     <sub name="Index of deprecated symbols" link="libgimpwidgets-index-deprecated.html"/>
   </chapters>
   <functions>
@@ -310,6 +313,20 @@
     <function name="The &quot;update&quot; property" link="GimpPreview.html#GimpPreview--update"/>
     <function name="The &quot;size&quot; style property" link="GimpPreview.html#GimpPreview--size"/>
     <function name="The &quot;invalidated&quot; signal" link="GimpPreview.html#GimpPreview-invalidated"/>
+    <function name="GimpRuler" link="GimpRuler.html#GimpRuler-struct"/>
+    <function name="gimp_ruler_new ()" link="GimpRuler.html#gimp-ruler-new"/>
+    <function name="gimp_ruler_set_unit ()" link="GimpRuler.html#gimp-ruler-set-unit"/>
+    <function name="gimp_ruler_get_unit ()" link="GimpRuler.html#gimp-ruler-get-unit"/>
+    <function name="gimp_ruler_set_position ()" link="GimpRuler.html#gimp-ruler-set-position"/>
+    <function name="gimp_ruler_get_position ()" link="GimpRuler.html#gimp-ruler-get-position"/>
+    <function name="gimp_ruler_set_range ()" link="GimpRuler.html#gimp-ruler-set-range"/>
+    <function name="gimp_ruler_get_range ()" link="GimpRuler.html#gimp-ruler-get-range"/>
+    <function name="The &quot;lower&quot; property" link="GimpRuler.html#GimpRuler--lower"/>
+    <function name="The &quot;max-size&quot; property" link="GimpRuler.html#GimpRuler--max-size"/>
+    <function name="The &quot;orientation&quot; property" link="GimpRuler.html#GimpRuler--orientation"/>
+    <function name="The &quot;position&quot; property" link="GimpRuler.html#GimpRuler--position"/>
+    <function name="The &quot;unit&quot; property" link="GimpRuler.html#GimpRuler--unit"/>
+    <function name="The &quot;upper&quot; property" link="GimpRuler.html#GimpRuler--upper"/>
     <function name="GimpScrolledPreview" link="GimpScrolledPreview.html#GimpScrolledPreview-struct"/>
     <function name="gimp_scrolled_preview_set_position ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-position"/>
     <function name="gimp_scrolled_preview_set_policy ()" link="GimpScrolledPreview.html#gimp-scrolled-preview-set-policy"/>
@@ -445,6 +462,13 @@
     <function name="The &quot;name&quot; property" link="GimpController.html#GimpController--name"/>
     <function name="The &quot;state&quot; property" link="GimpController.html#GimpController--state"/>
     <function name="The &quot;event&quot; signal" link="GimpController.html#GimpController-event"/>
+    <function name="gimp_cairo_set_source_rgb ()" link="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-set-source-rgb"/>
+    <function name="gimp_cairo_set_source_rgba ()" link="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-set-source-rgba"/>
+    <function name="gimp_cairo_set_focus_line_pattern ()" link="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-set-focus-line-pattern"/>
+    <function name="gimp_cairo_checkerboard_create ()" link="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-checkerboard-create"/>
+    <function name="gimp_cairo_surface_create_from_pixbuf ()" link="libgimpwidgets-GimpCairoUtils.html#gimp-cairo-surface-create-from-pixbuf"/>
+    <function name="GIMP_CAIRO_RGB24_SET_PIXEL()" link="libgimpwidgets-GimpCairoUtils.html#GIMP-CAIRO-RGB24-SET-PIXEL:CAPS"/>
+    <function name="GIMP_CAIRO_ARGB32_SET_PIXEL()" link="libgimpwidgets-GimpCairoUtils.html#GIMP-CAIRO-ARGB32-SET-PIXEL:CAPS"/>
     <function name="GimpHelpFunc ()" link="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc"/>
     <function name="GIMP_HELP_ID" link="libgimpwidgets-GimpHelpUI.html#GIMP-HELP-ID:CAPS"/>
     <function name="gimp_help_enable_tooltips ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-enable-tooltips"/>
@@ -452,6 +476,7 @@
     <function name="gimp_standard_help_func ()" link="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func"/>
     <function name="gimp_help_connect ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-connect"/>
     <function name="gimp_help_set_help_data ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data"/>
+    <function name="gimp_help_set_help_data_with_markup ()" link="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data-with-markup"/>
     <function name="gimp_context_help ()" link="libgimpwidgets-GimpHelpUI.html#gimp-context-help"/>
     <function name="GimpQueryStringCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryStringCallback"/>
     <function name="GimpQueryIntCallback ()" link="libgimpwidgets-GimpQueryBox.html#GimpQueryIntCallback"/>
@@ -602,6 +627,8 @@
     <function name="GIMP_STOCK_INFO" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-INFO:CAPS"/>
     <function name="GIMP_STOCK_QUESTION" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUESTION:CAPS"/>
     <function name="GIMP_STOCK_WARNING" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WARNING:CAPS"/>
+    <function name="GIMP_STOCK_GEGL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-GEGL:CAPS"/>
+    <function name="GIMP_STOCK_USER_MANUAL" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-USER-MANUAL:CAPS"/>
     <function name="GIMP_STOCK_WILBER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER:CAPS"/>
     <function name="GIMP_STOCK_WILBER_EEK" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-EEK:CAPS"/>
     <function name="GIMP_STOCK_ZOOM_FOLLOW_WINDOW" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS"/>
@@ -618,6 +645,7 @@
     <function name="GIMP_STOCK_TOOL_COLORIZE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLORIZE:CAPS"/>
     <function name="GIMP_STOCK_TOOL_CROP" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CROP:CAPS"/>
     <function name="GIMP_STOCK_TOOL_CURVES" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CURVES:CAPS"/>
+    <function name="GIMP_STOCK_TOOL_DESATURATE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-DESATURATE:CAPS"/>
     <function name="GIMP_STOCK_TOOL_DODGE" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-DODGE:CAPS"/>
     <function name="GIMP_STOCK_TOOL_ELLIPSE_SELECT" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS"/>
     <function name="GIMP_STOCK_TOOL_ERASER" link="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ERASER:CAPS"/>

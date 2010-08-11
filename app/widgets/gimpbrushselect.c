@@ -64,7 +64,8 @@ static void       gimp_brush_select_set_property (GObject         *object,
 static GValueArray *
                   gimp_brush_select_run_callback (GimpPdbDialog   *dialog,
                                                   GimpObject      *object,
-                                                  gboolean         closing);
+                                                  gboolean         closing,
+                                                  GError         **error);
 
 static void   gimp_brush_select_opacity_changed  (GimpContext     *context,
                                                   gdouble          opacity,
@@ -167,7 +168,7 @@ gimp_brush_select_constructor (GType                  type,
   gtk_widget_show (dialog->view);
 
   /*  Create the frame and the table for the options  */
-  table = GIMP_BRUSH_FACTORY_VIEW (dialog->view)->spacing_scale->parent;
+  table = gtk_widget_get_parent (GIMP_BRUSH_FACTORY_VIEW (dialog->view)->spacing_scale);
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_table_set_row_spacings (GTK_TABLE (table), 2);
 
@@ -252,9 +253,10 @@ gimp_brush_select_set_property (GObject      *object,
 }
 
 static GValueArray *
-gimp_brush_select_run_callback (GimpPdbDialog *dialog,
-                                GimpObject    *object,
-                                gboolean       closing)
+gimp_brush_select_run_callback (GimpPdbDialog  *dialog,
+                                GimpObject     *object,
+                                gboolean        closing,
+                                GError        **error)
 {
   GimpBrush   *brush = GIMP_BRUSH (object);
   GimpArray   *array;
@@ -269,7 +271,7 @@ gimp_brush_select_run_callback (GimpPdbDialog *dialog,
   return_vals =
     gimp_pdb_execute_procedure_by_name (dialog->pdb,
                                         dialog->caller_context,
-                                        NULL,
+                                        NULL, error,
                                         dialog->callback_name,
                                         G_TYPE_STRING,        object->name,
                                         G_TYPE_DOUBLE,        gimp_context_get_opacity (dialog->context) * 100.0,
@@ -330,7 +332,7 @@ gimp_brush_select_opacity_update (GtkAdjustment   *adjustment,
                                   GimpBrushSelect *select)
 {
   gimp_context_set_opacity (GIMP_PDB_DIALOG (select)->context,
-                            adjustment->value / 100.0);
+                            gtk_adjustment_get_value (adjustment) / 100.0);
 }
 
 static void
@@ -351,9 +353,11 @@ static void
 gimp_brush_select_spacing_update (GtkAdjustment   *adjustment,
                                   GimpBrushSelect *select)
 {
-  if (select->spacing != adjustment->value)
+  gdouble value = gtk_adjustment_get_value (adjustment);
+
+  if (select->spacing != value)
     {
-      select->spacing = adjustment->value;
+      select->spacing = value;
 
       gimp_pdb_dialog_run_callback (GIMP_PDB_DIALOG (select), FALSE);
     }

@@ -198,8 +198,7 @@ displaying the <parameter>true_text</parameter> label, the other displaying the
 <varlistentry><term><parameter>false_text</parameter>&nbsp;:</term>
 <listitem><simpara>    Label used for entry corresponding to <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="GtkComboBox"><type>GtkComboBox</type></link> widget, optionally
-              wrapped into a <link linkend="GtkEventBox"><type>GtkEventBox</type></link>..
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="GtkComboBox"><type>GtkComboBox</type></link> widget.
 
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
@@ -476,8 +475,7 @@ range of the Enum is used.</para>
 <varlistentry><term><parameter>maximum</parameter>&nbsp;:</term>
 <listitem><simpara>       Largest allowed value of enum.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="GimpEnumComboBox"><type>GimpEnumComboBox</type></link> widget, optionally
-              wrapped into a <link linkend="GtkEventBox"><type>GtkEventBox</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="GimpEnumComboBox"><type>GimpEnumComboBox</type></link> widget.
 
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
@@ -752,8 +750,7 @@ which should be created using <link linkend="gimp-int-store-new"><function>gimp_
 <varlistentry><term><parameter>store</parameter>&nbsp;:</term>
 <listitem><simpara>         <link linkend="GimpIntStore"><type>GimpIntStore</type></link> holding list of labels, values, etc.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> widget, optionally
-              wrapped into a <link linkend="GtkEventBox"><type>GtkEventBox</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> widget.
 
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
@@ -1068,8 +1065,7 @@ specified property.  The contents of the widget are determined by
 <varlistentry><term><parameter>label_column</parameter>&nbsp;:</term>
 <listitem><simpara>  column in <parameter>store</parameter> that holds labels to use in the combo-box
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="GimpStringComboBox"><type>GimpStringComboBox</type></link> widget, optionally
-              wrapped into a <link linkend="GtkEventBox"><type>GtkEventBox</type></link>.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created <link linkend="GimpStringComboBox"><type>GimpStringComboBox</type></link> widget.
 
 Since GIMP 2.4
 </simpara></listitem></varlistentry>

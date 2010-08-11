@@ -30,6 +30,8 @@
                                                          const <link linkend="gchar">gchar</link> *menu_path);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-plugin-menu-branch-register">gimp_plugin_menu_branch_register</link>    (const <link linkend="gchar">gchar</link> *menu_path,
                                                          const <link linkend="gchar">gchar</link> *menu_name);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-plugin-set-pdb-error-handler">gimp_plugin_set_pdb_error_handler</link>   (<link linkend="GimpPDBErrorHandler">GimpPDBErrorHandler</link> handler);
+<link linkend="GimpPDBErrorHandler">GimpPDBErrorHandler</link> <link linkend="gimp-plugin-get-pdb-error-handler">gimp_plugin_get_pdb_error_handler</link>   (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -173,6 +175,50 @@ plug-in.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
+</para></refsect2>
+<refsect2 id="gimp-plugin-set-pdb-error-handler" role="function" condition="since:GIMP 2.6">
+<title>gimp_plugin_set_pdb_error_handler ()</title>
+<indexterm zone="gimp-plugin-set-pdb-error-handler" role="GIMP 2.6"><primary>gimp_plugin_set_pdb_error_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_plugin_set_pdb_error_handler   (<link linkend="GimpPDBErrorHandler">GimpPDBErrorHandler</link> handler);</programlisting>
+<para>
+Sets an error handler for procedure calls.
+</para>
+<para>
+This procedure changes the way that errors in procedure calls are
+handled. By default GIMP will raise an error dialog if a procedure
+call made by a plug-in fails. Using this procedure the plug-in can
+change this behavior. If the error handler is set to
+<link linkend="GIMP-PDB-ERROR-HANDLER-PLUGIN:CAPS"><literal>GIMP_PDB_ERROR_HANDLER_PLUGIN</literal></link>, then the plug-in is responsible for
+calling <link linkend="gimp-get-pdb-error"><function>gimp_get_pdb_error()</function></link> and handling the error whenever one if
+its procedure calls fails. It can do this by displaying the error
+message or by forwarding it in its own return values.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>handler</parameter>&nbsp;:</term>
+<listitem><simpara> Who is responsible for handling procedure call errors.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
+<refsect2 id="gimp-plugin-get-pdb-error-handler" role="function" condition="since:GIMP 2.6">
+<title>gimp_plugin_get_pdb_error_handler ()</title>
+<indexterm zone="gimp-plugin-get-pdb-error-handler" role="GIMP 2.6"><primary>gimp_plugin_get_pdb_error_handler</primary></indexterm><programlisting><link linkend="GimpPDBErrorHandler">GimpPDBErrorHandler</link> gimp_plugin_get_pdb_error_handler   (void);</programlisting>
+<para>
+Retrieves the active error handler for procedure calls.
+</para>
+<para>
+This procedure retrieves the currently active error handler for
+procedure calls made by the calling plug-in. See
+<link linkend="gimp-plugin-set-pdb-error-handler"><function>gimp_plugin_set_pdb_error_handler()</function></link> for details.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> Who is responsible for handling procedure call errors.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
 </para></refsect2>
 
 </refsect1>

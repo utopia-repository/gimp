@@ -490,7 +490,7 @@ gfig_dialog (void)
   gtk_widget_show (toggle);
 
   /* "snap to grid" checkbutton at bottom of style frame */
-  toggle = gtk_check_button_new_with_label (Q_("checkbutton|Snap to grid"));
+  toggle = gtk_check_button_new_with_label (C_("checkbutton", "Snap to grid"));
   gtk_box_pack_end (GTK_BOX (vbox), toggle, FALSE, FALSE, 0);
   g_signal_connect (toggle, "toggled",
                     G_CALLBACK (gimp_toggle_button_update),
@@ -1678,11 +1678,11 @@ select_button_clicked_eq (void)
 /* Special case for now - options on poly/star/spiral button */
 
 GtkWidget *
-num_sides_widget (gchar *d_title,
-                  gint  *num_sides,
-                  gint  *which_way,
-                  gint   adj_min,
-                  gint   adj_max)
+num_sides_widget (const gchar *d_title,
+                  gint        *num_sides,
+                  gint        *which_way,
+                  gint         adj_min,
+                  gint         adj_max)
 {
   GtkWidget *table;
   GtkObject *size_data;

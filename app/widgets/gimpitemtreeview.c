@@ -30,6 +30,7 @@
 
 #include "widgets-types.h"
 
+#include "core/gimp.h"
 #include "core/gimpchannel.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpcontext.h"
@@ -282,15 +283,9 @@ gimp_item_tree_view_constructor (GType                  type,
   item_view       = GIMP_ITEM_TREE_VIEW (object);
   item_view_class = GIMP_ITEM_TREE_VIEW_GET_CLASS (object);
 
-  tree_view->name_cell->mode = GTK_CELL_RENDERER_MODE_EDITABLE;
-  GTK_CELL_RENDERER_TEXT (tree_view->name_cell)->editable = TRUE;
-
-  tree_view->editable_cells = g_list_prepend (tree_view->editable_cells,
-                                              tree_view->name_cell);
-
-  g_signal_connect (tree_view->name_cell, "edited",
-                    G_CALLBACK (gimp_item_tree_view_name_edited),
-                    item_view);
+  gimp_container_tree_view_connect_name_edited (tree_view,
+                                                G_CALLBACK (gimp_item_tree_view_name_edited),
+                                                item_view);
 
   column = gtk_tree_view_column_new ();
   gtk_tree_view_insert_column (tree_view->view, column, 0);
@@ -735,7 +730,7 @@ gimp_item_tree_view_drop_viewable (GimpContainerTreeView   *tree_view,
         dest_index++;
 
       new_item = gimp_item_convert (GIMP_ITEM (src_viewable),
-                                    item_view->image, item_type, TRUE);
+                                    item_view->image, item_type);
 
       gimp_item_set_linked (new_item, FALSE, FALSE);
 
@@ -846,6 +841,7 @@ gimp_item_tree_view_name_edited (GtkCellRendererText *cell,
       GimpViewRenderer *renderer;
       GimpItem         *item;
       const gchar      *old_name;
+      GError           *error = NULL;
 
       gtk_tree_model_get (tree_view->model, &iter,
                           tree_view->model_column_renderer, &renderer,
@@ -859,7 +855,7 @@ gimp_item_tree_view_name_edited (GtkCellRendererText *cell,
       if (! new_name) new_name = "";
 
       if (strcmp (old_name, new_name) &&
-          gimp_item_rename (item, new_name))
+          gimp_item_rename (item, new_name, &error))
         {
           gimp_image_flush (gimp_item_get_image (item));
         }
@@ -871,6 +867,14 @@ gimp_item_tree_view_name_edited (GtkCellRendererText *cell,
                               tree_view->model_column_name, name,
                               -1);
           g_free (name);
+
+          if (error)
+            {
+              gimp_message (view->image->gimp, G_OBJECT (view),
+                            GIMP_MESSAGE_WARNING,
+                            "%s", error->message);
+              g_clear_error (&error);
+            }
         }
 
       g_object_unref (renderer);

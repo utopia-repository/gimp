@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpcolor/gimpcolor.h"
+#include "libgimpmath/gimpmath.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "display-types.h"
@@ -41,12 +42,11 @@
 #include "gimpdisplayshell-callbacks.h"
 #include "gimpdisplayshell-draw.h"
 #include "gimpdisplayshell-handlers.h"
+#include "gimpdisplayshell-icon.h"
 #include "gimpdisplayshell-scale.h"
+#include "gimpdisplayshell-scroll.h"
 #include "gimpdisplayshell-selection.h"
 #include "gimpdisplayshell-title.h"
-
-
-#define GIMP_DISPLAY_UPDATE_ICON_TIMEOUT  1000
 
 
 /*  local function prototypes  */
@@ -66,7 +66,12 @@ static void   gimp_display_shell_name_changed_handler       (GimpImage        *i
 static void   gimp_display_shell_selection_control_handler  (GimpImage        *image,
                                                              GimpSelectionControl control,
                                                              GimpDisplayShell *shell);
-static void   gimp_display_shell_size_changed_handler       (GimpImage        *image,
+static void   gimp_display_shell_size_changed_detailed_handler
+                                                            (GimpImage        *image,
+                                                             gint              previous_origin_x,
+                                                             gint              previous_origin_y,
+                                                             gint              previous_width,
+                                                             gint              previous_height,
                                                              GimpDisplayShell *shell);
 static void   gimp_display_shell_resolution_changed_handler (GimpImage        *image,
                                                              GimpDisplayShell *shell);
@@ -118,24 +123,19 @@ static void   gimp_display_shell_quality_notify_handler     (GObject          *c
                                                              GParamSpec       *param_spec,
                                                              GimpDisplayShell *shell);
 
-static gboolean   gimp_display_shell_idle_update_icon       (gpointer          data);
-
 
 /*  public functions  */
 
 void
 gimp_display_shell_connect (GimpDisplayShell *shell)
 {
-  GimpImage         *image;
-  GimpDisplayConfig *display_config;
+  GimpImage *image;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
   g_return_if_fail (GIMP_IS_DISPLAY (shell->display));
   g_return_if_fail (GIMP_IS_IMAGE (shell->display->image));
 
   image = shell->display->image;
-
-  display_config = GIMP_DISPLAY_CONFIG (image->gimp->config);
 
   g_signal_connect (image, "clean",
                     G_CALLBACK (gimp_display_shell_clean_dirty_handler),
@@ -155,8 +155,8 @@ gimp_display_shell_connect (GimpDisplayShell *shell)
   g_signal_connect (image, "selection-control",
                     G_CALLBACK (gimp_display_shell_selection_control_handler),
                     shell);
-  g_signal_connect (image, "size-changed",
-                    G_CALLBACK (gimp_display_shell_size_changed_handler),
+  g_signal_connect (image, "size-changed-detailed",
+                    G_CALLBACK (gimp_display_shell_size_changed_detailed_handler),
                     shell);
   g_signal_connect (image, "resolution-changed",
                     G_CALLBACK (gimp_display_shell_resolution_changed_handler),
@@ -197,63 +197,63 @@ gimp_display_shell_connect (GimpDisplayShell *shell)
                     G_CALLBACK (gimp_display_shell_vectors_remove_handler),
                     shell);
 
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::transparency-size",
                     G_CALLBACK (gimp_display_shell_check_notify_handler),
                     shell);
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::transparency-type",
                     G_CALLBACK (gimp_display_shell_check_notify_handler),
                     shell);
 
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::image-title-format",
                     G_CALLBACK (gimp_display_shell_title_notify_handler),
                     shell);
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::image-status-format",
                     G_CALLBACK (gimp_display_shell_title_notify_handler),
                     shell);
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::navigation-preview-size",
                     G_CALLBACK (gimp_display_shell_nav_size_notify_handler),
                     shell);
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::monitor-resolution-from-windowing-system",
                     G_CALLBACK (gimp_display_shell_monitor_res_notify_handler),
                     shell);
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::monitor-xresolution",
                     G_CALLBACK (gimp_display_shell_monitor_res_notify_handler),
                     shell);
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::monitor-yresolution",
                     G_CALLBACK (gimp_display_shell_monitor_res_notify_handler),
                     shell);
 
-  g_signal_connect (display_config->default_view,
+  g_signal_connect (shell->display->config->default_view,
                     "notify::padding-mode",
                     G_CALLBACK (gimp_display_shell_padding_notify_handler),
                     shell);
-  g_signal_connect (display_config->default_view,
+  g_signal_connect (shell->display->config->default_view,
                     "notify::padding-color",
                     G_CALLBACK (gimp_display_shell_padding_notify_handler),
                     shell);
-  g_signal_connect (display_config->default_fullscreen_view,
+  g_signal_connect (shell->display->config->default_fullscreen_view,
                     "notify::padding-mode",
                     G_CALLBACK (gimp_display_shell_padding_notify_handler),
                     shell);
-  g_signal_connect (display_config->default_fullscreen_view,
+  g_signal_connect (shell->display->config->default_fullscreen_view,
                     "notify::padding-color",
                     G_CALLBACK (gimp_display_shell_padding_notify_handler),
                     shell);
 
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::marching-ants-speed",
                     G_CALLBACK (gimp_display_shell_ants_speed_notify_handler),
                     shell);
 
-  g_signal_connect (image->gimp->config,
+  g_signal_connect (shell->display->config,
                     "notify::zoom-quality",
                     G_CALLBACK (gimp_display_shell_quality_notify_handler),
                     shell);
@@ -265,8 +265,7 @@ gimp_display_shell_connect (GimpDisplayShell *shell)
 void
 gimp_display_shell_disconnect (GimpDisplayShell *shell)
 {
-  GimpImage         *image;
-  GimpDisplayConfig *display_config;
+  GimpImage *image;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
   g_return_if_fail (GIMP_IS_DISPLAY (shell->display));
@@ -274,13 +273,7 @@ gimp_display_shell_disconnect (GimpDisplayShell *shell)
 
   image = shell->display->image;
 
-  display_config = GIMP_DISPLAY_CONFIG (image->gimp->config);
-
-  if (shell->icon_idle_id)
-    {
-      g_source_remove (shell->icon_idle_id);
-      shell->icon_idle_id = 0;
-    }
+  gimp_display_shell_icon_idle_stop (shell);
 
   if (shell->grid_gc)
     {
@@ -294,28 +287,28 @@ gimp_display_shell_disconnect (GimpDisplayShell *shell)
       shell->pen_gc = NULL;
     }
 
-  g_signal_handlers_disconnect_by_func (image->gimp->config,
+  g_signal_handlers_disconnect_by_func (shell->display->config,
                                         gimp_display_shell_quality_notify_handler,
                                         shell);
-  g_signal_handlers_disconnect_by_func (image->gimp->config,
+  g_signal_handlers_disconnect_by_func (shell->display->config,
                                         gimp_display_shell_ants_speed_notify_handler,
                                         shell);
-  g_signal_handlers_disconnect_by_func (display_config->default_fullscreen_view,
+  g_signal_handlers_disconnect_by_func (shell->display->config->default_fullscreen_view,
                                         gimp_display_shell_padding_notify_handler,
                                         shell);
-  g_signal_handlers_disconnect_by_func (display_config->default_view,
+  g_signal_handlers_disconnect_by_func (shell->display->config->default_view,
                                         gimp_display_shell_padding_notify_handler,
                                         shell);
-  g_signal_handlers_disconnect_by_func (image->gimp->config,
+  g_signal_handlers_disconnect_by_func (shell->display->config,
                                         gimp_display_shell_monitor_res_notify_handler,
                                         shell);
-  g_signal_handlers_disconnect_by_func (image->gimp->config,
+  g_signal_handlers_disconnect_by_func (shell->display->config,
                                         gimp_display_shell_nav_size_notify_handler,
                                         shell);
-  g_signal_handlers_disconnect_by_func (image->gimp->config,
+  g_signal_handlers_disconnect_by_func (shell->display->config,
                                         gimp_display_shell_title_notify_handler,
                                         shell);
-  g_signal_handlers_disconnect_by_func (image->gimp->config,
+  g_signal_handlers_disconnect_by_func (shell->display->config,
                                         gimp_display_shell_check_notify_handler,
                                         shell);
 
@@ -352,7 +345,7 @@ gimp_display_shell_disconnect (GimpDisplayShell *shell)
                                         gimp_display_shell_resolution_changed_handler,
                                         shell);
   g_signal_handlers_disconnect_by_func (image,
-                                        gimp_display_shell_size_changed_handler,
+                                        gimp_display_shell_size_changed_detailed_handler,
                                         shell);
   g_signal_handlers_disconnect_by_func (image,
                                         gimp_display_shell_selection_control_handler,
@@ -424,15 +417,6 @@ gimp_display_shell_selection_control_handler (GimpImage            *image,
 }
 
 static void
-gimp_display_shell_size_changed_handler (GimpImage        *image,
-                                         GimpDisplayShell *shell)
-{
-  gimp_display_shell_scale_resize (shell,
-                                   GIMP_DISPLAY_CONFIG (image->gimp->config)->resize_windows_on_resize,
-                                   TRUE);
-}
-
-static void
 gimp_display_shell_resolution_changed_handler (GimpImage        *image,
                                                GimpDisplayShell *shell)
 {
@@ -440,12 +424,22 @@ gimp_display_shell_resolution_changed_handler (GimpImage        *image,
 
   if (shell->dot_for_dot)
     {
-      gimp_display_shell_scale_setup (shell);
+      if (shell->unit != GIMP_UNIT_PIXEL)
+        {
+          gimp_display_shell_scale_update_rulers (shell);
+        }
+
       gimp_display_shell_scaled (shell);
     }
   else
     {
-      gimp_display_shell_size_changed_handler (image, shell);
+      /* A resolution change has the same effect as a size change from
+       * a display shell point of view. Force a redraw of the display
+       * so that we don't get any display garbage.
+       */
+      gimp_display_shell_scale_resize (shell,
+                                       shell->display->config->resize_windows_on_resize,
+                                       FALSE);
     }
 }
 
@@ -453,7 +447,9 @@ static void
 gimp_display_shell_quick_mask_changed_handler (GimpImage        *image,
                                                GimpDisplayShell *shell)
 {
-  GtkImage *gtk_image = GTK_IMAGE (GTK_BIN (shell->quick_mask_button)->child);
+  GtkImage *gtk_image;
+
+  gtk_image = GTK_IMAGE (gtk_bin_get_child (GTK_BIN (shell->quick_mask_button)));
 
   g_signal_handlers_block_by_func (shell->quick_mask_button,
                                    gimp_display_shell_quick_mask_toggled,
@@ -491,17 +487,65 @@ gimp_display_shell_update_sample_point_handler (GimpImage        *image,
 }
 
 static void
+gimp_display_shell_image_size_starts_to_fit (GimpDisplayShell *shell,
+                                             gint              previous_width,
+                                             gint              previous_height,
+                                             gint              new_width,
+                                             gint              new_height,
+                                             gboolean         *horizontally,
+                                             gboolean         *vertically)
+{
+  *horizontally = SCALEX (shell, previous_width)  >  shell->disp_width  &&
+                  SCALEX (shell, new_width)       <= shell->disp_width;
+  *vertically   = SCALEY (shell, previous_height) >  shell->disp_height &&
+                  SCALEY (shell, new_height)      <= shell->disp_height;
+}
+
+static void
+gimp_display_shell_size_changed_detailed_handler (GimpImage        *image,
+                                                  gint              previous_origin_x,
+                                                  gint              previous_origin_y,
+                                                  gint              previous_width,
+                                                  gint              previous_height,
+                                                  GimpDisplayShell *shell)
+{
+  if (shell->display->config->resize_windows_on_resize)
+    {
+      /* If the window is resized just center the image in it when it
+       * has change size
+       */
+      gimp_display_shell_shrink_wrap (shell, FALSE);
+    }
+  else
+    {
+      GimpImage *image;
+      gboolean   horizontally, vertically;
+      gint       scaled_previous_origin_x = SCALEX (shell, previous_origin_x);
+      gint       scaled_previous_origin_y = SCALEY (shell, previous_origin_y);
+
+      image = GIMP_IMAGE (shell->display->image);
+
+      gimp_display_shell_image_size_starts_to_fit (shell,
+                                                   previous_width,
+                                                   previous_height,
+                                                   gimp_image_get_width (image),
+                                                   gimp_image_get_height (image),
+                                                   &horizontally,
+                                                   &vertically);
+
+      gimp_display_shell_scroll_set_offset (shell,
+                                            shell->offset_x + scaled_previous_origin_x,
+                                            shell->offset_y + scaled_previous_origin_y);
+
+      gimp_display_shell_scroll_center_image (shell, horizontally, vertically);
+    }
+}
+
+static void
 gimp_display_shell_invalidate_preview_handler (GimpImage        *image,
                                                GimpDisplayShell *shell)
 {
-  if (shell->icon_idle_id)
-    g_source_remove (shell->icon_idle_id);
-
-  shell->icon_idle_id = g_timeout_add_full (G_PRIORITY_LOW,
-                                            GIMP_DISPLAY_UPDATE_ICON_TIMEOUT,
-                                            gimp_display_shell_idle_update_icon,
-                                            shell,
-                                            NULL);
+  gimp_display_shell_icon_idle_update (shell);
 }
 
 static void
@@ -618,7 +662,8 @@ gimp_display_shell_monitor_res_notify_handler (GObject          *config,
 
   if (! shell->dot_for_dot)
     {
-      gimp_display_shell_scale_setup (shell);
+      gimp_display_shell_scroll_clamp_and_update (shell);
+
       gimp_display_shell_scaled (shell);
 
       gimp_display_shell_expose_full (shell);
@@ -635,7 +680,7 @@ gimp_display_shell_padding_notify_handler (GObject          *config,
   GimpCanvasPaddingMode  padding_mode;
   GimpRGB                padding_color;
 
-  display_config = GIMP_DISPLAY_CONFIG (shell->display->image->gimp->config);
+  display_config = shell->display->config;
 
   fullscreen = gimp_display_shell_get_fullscreen (shell);
 
@@ -689,16 +734,4 @@ gimp_display_shell_quality_notify_handler (GObject          *config,
                                            GimpDisplayShell *shell)
 {
   gimp_display_shell_expose_full (shell);
-}
-
-static gboolean
-gimp_display_shell_idle_update_icon (gpointer data)
-{
-  GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (data);
-
-  shell->icon_idle_id = 0;
-
-  gimp_display_shell_update_icon (shell);
-
-  return FALSE;
 }

@@ -232,12 +232,21 @@ Basic GIMP enumeration data types.
 @GIMP_PDB_CHANNEL: 
 @GIMP_PDB_DRAWABLE: 
 @GIMP_PDB_SELECTION: 
-@GIMP_PDB_BOUNDARY: 
+@GIMP_PDB_COLORARRAY: 
 @GIMP_PDB_VECTORS: 
 @GIMP_PDB_PARASITE: 
 @GIMP_PDB_STATUS: 
 @GIMP_PDB_END: 
 @GIMP_PDB_PATH: 
+@GIMP_PDB_BOUNDARY: 
+
+<!-- ##### ENUM GimpPDBErrorHandler ##### -->
+<para>
+
+</para>
+
+@GIMP_PDB_ERROR_HANDLER_INTERNAL: 
+@GIMP_PDB_ERROR_HANDLER_PLUGIN: 
 
 <!-- ##### ENUM GimpPDBProcType ##### -->
 <para>
@@ -306,6 +315,24 @@ Basic GIMP enumeration data types.
 @GIMP_STACK_TRACE_NEVER: 
 @GIMP_STACK_TRACE_QUERY: 
 @GIMP_STACK_TRACE_ALWAYS: 
+
+<!-- ##### ENUM GimpTextDirection ##### -->
+<para>
+
+</para>
+
+@GIMP_TEXT_DIRECTION_LTR: 
+@GIMP_TEXT_DIRECTION_RTL: 
+
+<!-- ##### ENUM GimpTextJustification ##### -->
+<para>
+
+</para>
+
+@GIMP_TEXT_JUSTIFY_LEFT: 
+@GIMP_TEXT_JUSTIFY_RIGHT: 
+@GIMP_TEXT_JUSTIFY_CENTER: 
+@GIMP_TEXT_JUSTIFY_FILL: 
 
 <!-- ##### ENUM GimpTransferMode ##### -->
 <para>

@@ -37,6 +37,7 @@
 #include "core/gimpprogress.h"
 
 #include "gimppdb.h"
+#include "gimppdberror.h"
 #include "gimpprocedure.h"
 
 #include "gimp-intl.h"
@@ -281,11 +282,12 @@ gimp_pdb_lookup_compat_proc_name (GimpPDB     *pdb,
 }
 
 GValueArray *
-gimp_pdb_execute_procedure_by_name_args (GimpPDB      *pdb,
-                                         GimpContext  *context,
-                                         GimpProgress *progress,
-                                         const gchar  *name,
-                                         GValueArray  *args)
+gimp_pdb_execute_procedure_by_name_args (GimpPDB       *pdb,
+                                         GimpContext   *context,
+                                         GimpProgress  *progress,
+                                         GError       **error,
+                                         const gchar   *name,
+                                         GValueArray   *args)
 {
   GValueArray *return_vals = NULL;
   GList       *list;
@@ -293,18 +295,19 @@ gimp_pdb_execute_procedure_by_name_args (GimpPDB      *pdb,
   g_return_val_if_fail (GIMP_IS_PDB (pdb), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
   list = g_hash_table_lookup (pdb->procedures, name);
 
   if (list == NULL)
     {
-      gimp_message (pdb->gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
-                    _("PDB calling error:\n"
-                      "Procedure '%s' not found"), name);
+      GError *pdb_error = g_error_new (GIMP_PDB_ERROR,
+                                       GIMP_PDB_PROCEDURE_NOT_FOUND,
+                                       _("Procedure '%s' not found"), name);
 
-      return_vals = gimp_procedure_get_return_values (NULL, FALSE);
-      g_value_set_enum (return_vals->values, GIMP_PDB_CALLING_ERROR);
+      return_vals = gimp_procedure_get_return_values (NULL, FALSE, pdb_error);
+      g_propagate_error (error, pdb_error);
 
       return return_vals;
     }
@@ -319,7 +322,7 @@ gimp_pdb_execute_procedure_by_name_args (GimpPDB      *pdb,
 
       return_vals = gimp_procedure_execute (procedure,
                                             pdb->gimp, context, progress,
-                                            args);
+                                            args, error);
 
       if (g_value_get_enum (&return_vals->values[0]) == GIMP_PDB_PASS_THROUGH)
         {
@@ -328,7 +331,10 @@ gimp_pdb_execute_procedure_by_name_args (GimpPDB      *pdb,
            *  and run the next procedure.
            */
           if (g_list_next (list))
-            g_value_array_free (return_vals);
+            {
+              g_value_array_free (return_vals);
+              g_clear_error (error);
+            }
         }
       else
         {
@@ -343,10 +349,11 @@ gimp_pdb_execute_procedure_by_name_args (GimpPDB      *pdb,
 }
 
 GValueArray *
-gimp_pdb_execute_procedure_by_name (GimpPDB      *pdb,
-                                    GimpContext  *context,
-                                    GimpProgress *progress,
-                                    const gchar  *name,
+gimp_pdb_execute_procedure_by_name (GimpPDB       *pdb,
+                                    GimpContext   *context,
+                                    GimpProgress  *progress,
+                                    GError       **error,
+                                    const gchar   *name,
                                     ...)
 {
   GimpProcedure *procedure;
@@ -358,18 +365,19 @@ gimp_pdb_execute_procedure_by_name (GimpPDB      *pdb,
   g_return_val_if_fail (GIMP_IS_PDB (pdb), NULL);
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
   g_return_val_if_fail (progress == NULL || GIMP_IS_PROGRESS (progress), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
   procedure = gimp_pdb_lookup_procedure (pdb, name);
 
-  if (procedure == NULL)
+  if (! procedure)
     {
-      gimp_message (pdb->gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
-                    _("PDB calling error:\n"
-                      "Procedure '%s' not found"), name);
+      GError *pdb_error = g_error_new (GIMP_PDB_ERROR,
+                                       GIMP_PDB_PROCEDURE_NOT_FOUND,
+                                       _("Procedure '%s' not found"), name);
 
-      return_vals = gimp_procedure_get_return_values (NULL, FALSE);
-      g_value_set_enum (return_vals->values, GIMP_PDB_CALLING_ERROR);
+      return_vals = gimp_procedure_get_return_values (NULL, FALSE, pdb_error);
+      g_propagate_error (error, pdb_error);
 
       return return_vals;
     }
@@ -382,7 +390,7 @@ gimp_pdb_execute_procedure_by_name (GimpPDB      *pdb,
     {
       GValue *value;
       GType   arg_type;
-      gchar  *error = NULL;
+      gchar  *error_msg = NULL;
 
       arg_type = va_arg (va_args, GType);
 
@@ -393,36 +401,43 @@ gimp_pdb_execute_procedure_by_name (GimpPDB      *pdb,
 
       if (arg_type != G_VALUE_TYPE (value))
         {
+          GError      *pdb_error;
           const gchar *expected = g_type_name (G_VALUE_TYPE (value));
           const gchar *got      = g_type_name (arg_type);
 
           g_value_array_free (args);
 
-          gimp_message (pdb->gimp, G_OBJECT (progress), GIMP_MESSAGE_ERROR,
-                        _("PDB calling error for procedure '%s':\n"
-                          "Argument #%d type mismatch (expected %s, got %s)"),
-                        gimp_object_get_name (GIMP_OBJECT (procedure)),
-                        i + 1, expected, got);
+          pdb_error = g_error_new (GIMP_PDB_ERROR, GIMP_PDB_INVALID_ARGUMENT,
+                                   _("Procedure '%s' has been called with a "
+                                     "wrong type for argument #%d. "
+                                     "Expected %s, got %s."),
+                                   gimp_object_get_name (GIMP_OBJECT (procedure)),
+                                   i + 1, expected, got);
 
-          return_vals = gimp_procedure_get_return_values (procedure, FALSE);
-          g_value_set_enum (return_vals->values, GIMP_PDB_CALLING_ERROR);
+          return_vals = gimp_procedure_get_return_values (procedure,
+                                                          FALSE, pdb_error);
+          g_propagate_error (error, pdb_error);
 
           va_end (va_args);
 
           return return_vals;
         }
 
-      G_VALUE_COLLECT (value, va_args, G_VALUE_NOCOPY_CONTENTS, &error);
+      G_VALUE_COLLECT (value, va_args, G_VALUE_NOCOPY_CONTENTS, &error_msg);
 
-      if (error)
+      if (error_msg)
         {
-          g_warning ("%s: %s", G_STRFUNC, error);
-          g_free (error);
+          GError *pdb_error = g_error_new_literal (GIMP_PDB_ERROR,
+                                                   GIMP_PDB_INTERNAL_ERROR,
+                                                   error_msg);
+          g_warning ("%s: %s", G_STRFUNC, error_msg);
+          g_free (error_msg);
 
           g_value_array_free (args);
 
-          return_vals = gimp_procedure_get_return_values (procedure, FALSE);
-          g_value_set_enum (return_vals->values, GIMP_PDB_CALLING_ERROR);
+          return_vals = gimp_procedure_get_return_values (procedure,
+                                                          FALSE, pdb_error);
+          g_propagate_error (error, pdb_error);
 
           va_end (va_args);
 
@@ -433,7 +448,7 @@ gimp_pdb_execute_procedure_by_name (GimpPDB      *pdb,
   va_end (va_args);
 
   return_vals = gimp_pdb_execute_procedure_by_name_args (pdb, context,
-                                                         progress,
+                                                         progress, error,
                                                          name, args);
 
   g_value_array_free (args);

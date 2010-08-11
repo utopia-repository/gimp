@@ -220,13 +220,9 @@ static gboolean
 gimp_preview_area_expose (GtkWidget      *widget,
                           GdkEventExpose *event)
 {
-  GimpPreviewArea *area;
+  GimpPreviewArea *area = GIMP_PREVIEW_AREA (widget);
   GdkRectangle     rect;
   GdkRectangle     render;
-
-  g_return_val_if_fail (GIMP_IS_PREVIEW_AREA (widget), FALSE);
-
-  area = GIMP_PREVIEW_AREA (widget);
 
   if (! area->buf)
     return FALSE;
@@ -238,12 +234,13 @@ gimp_preview_area_expose (GtkWidget      *widget,
 
   if (gdk_rectangle_intersect (&rect, &event->area, &render))
     {
-      gint    x   = render.x - rect.x;
-      gint    y   = render.y - rect.y;
-      guchar *buf = area->buf + x * 3 + y * area->rowstride;
+      GtkStyle *style = gtk_widget_get_style (widget);
+      gint      x     = render.x - rect.x;
+      gint      y     = render.y - rect.y;
+      guchar   *buf   = area->buf + x * 3 + y * area->rowstride;
 
       gdk_draw_rgb_image_dithalign (widget->window,
-                                    widget->style->fg_gc[widget->state],
+                                    style->fg_gc[widget->state],
                                     render.x,
                                     render.y,
                                     render.width,

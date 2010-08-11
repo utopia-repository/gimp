@@ -373,14 +373,27 @@ typedef enum
   GIMP_PDB_CHANNEL,
   GIMP_PDB_DRAWABLE,
   GIMP_PDB_SELECTION,
-  GIMP_PDB_BOUNDARY,
+  GIMP_PDB_COLORARRAY,
   GIMP_PDB_VECTORS,
   GIMP_PDB_PARASITE,
   GIMP_PDB_STATUS,
   GIMP_PDB_END,
 
-  GIMP_PDB_PATH = GIMP_PDB_VECTORS /* deprecated */
+  /*  the following aliases are deprecated  */
+  GIMP_PDB_PATH     = GIMP_PDB_VECTORS,     /*< skip >*/
+  GIMP_PDB_BOUNDARY = GIMP_PDB_COLORARRAY   /*< skip >*/
 } GimpPDBArgType;
+
+
+#define GIMP_TYPE_PDB_ERROR_HANDLER (gimp_pdb_error_handler_get_type ())
+
+GType gimp_pdb_error_handler_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_PDB_ERROR_HANDLER_INTERNAL,
+  GIMP_PDB_ERROR_HANDLER_PLUGIN
+} GimpPDBErrorHandler;
 
 
 #define GIMP_TYPE_PDB_PROC_TYPE (gimp_pdb_proc_type_get_type ())
@@ -449,6 +462,31 @@ typedef enum
 } GimpProgressCommand;
 
 
+#define GIMP_TYPE_TEXT_DIRECTION (gimp_text_direction_get_type ())
+
+GType gimp_text_direction_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_TEXT_DIRECTION_LTR,   /*< desc="From left to right" >*/
+  GIMP_TEXT_DIRECTION_RTL    /*< desc="From right to left" >*/
+} GimpTextDirection;
+
+
+#define GIMP_TYPE_TEXT_JUSTIFICATION (gimp_text_justification_get_type ())
+
+GType gimp_text_justification_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_TEXT_JUSTIFY_LEFT,    /*< desc="Left justified"  >*/
+  GIMP_TEXT_JUSTIFY_RIGHT,   /*< desc="Right justified" >*/
+  GIMP_TEXT_JUSTIFY_CENTER,  /*< desc="Centered"        >*/
+  GIMP_TEXT_JUSTIFY_FILL     /*< desc="Filled"          >*/
+} GimpTextJustification;
+
+
+#ifndef GIMP_DISABLE_DEPRECATED
 #define GIMP_TYPE_USER_DIRECTORY (gimp_user_directory_get_type ())
 
 GType gimp_user_directory_get_type (void) G_GNUC_CONST;
@@ -464,6 +502,7 @@ typedef enum
   GIMP_USER_DIRECTORY_TEMPLATES,
   GIMP_USER_DIRECTORY_VIDEOS
 } GimpUserDirectory;
+#endif /* !GIMP_DISABLE_DEPRECATED */
 
 
 #define GIMP_TYPE_VECTORS_STROKE_TYPE (gimp_vectors_stroke_type_get_type ())

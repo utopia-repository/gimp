@@ -677,7 +677,7 @@ new_preview (gint *sfn)
       gtk_widget_set_size_request (preview,
                                    PREVIEW_SIZE, PREVIEW_SIZE);
       gtk_widget_show (preview);
-      g_signal_connect_swapped (preview, "size_allocate",
+      g_signal_connect_swapped (preview, "size-allocate",
                                 G_CALLBACK (preview_update), st);
 
       label = gtk_label_new ("");
@@ -1216,8 +1216,9 @@ newsprint_dialog (GimpDrawable *drawable)
   gtk_widget_show (vbox);
 
   preview = gimp_drawable_preview_new (drawable, NULL);
-  gtk_box_pack_start_defaults (GTK_BOX (hbox), preview);
+  gtk_box_pack_start (GTK_BOX (hbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
+
   g_signal_connect_swapped (preview, "invalidated",
                             G_CALLBACK (newsprint),
                             drawable);
@@ -1491,15 +1492,16 @@ newsprint_cspace_update (GtkWidget *widget,
 
   if (st)
     {
+      gboolean active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
+
       /* the CMYK widget looks after the black pullout widget */
       if (new_cs == CS_CMYK)
         {
-          gtk_widget_set_sensitive (st->pull_table,
-                                    GTK_TOGGLE_BUTTON (widget)->active);
+          gtk_widget_set_sensitive (st->pull_table, active);
         }
 
       /* if we're not activate, then there's nothing more to do */
-      if (!GTK_TOGGLE_BUTTON (widget)->active)
+      if (! active)
         return;
 
       pvals.colourspace = new_cs;

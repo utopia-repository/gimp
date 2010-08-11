@@ -48,6 +48,8 @@ struct _GimpTool
   GimpDisplay     *display;     /*  pointer to currently active display    */
   GimpDrawable    *drawable;    /*  pointer to the tool's current drawable */
 
+  gdouble          max_coord_smooth;
+
   /*  private state of gimp_tool_set_focus_display() and
    *  gimp_tool_set_[active_]modifier_state()
    */
@@ -189,6 +191,7 @@ void          gimp_tool_push_status         (GimpTool            *tool,
                                              ...) G_GNUC_PRINTF(3,4);
 void          gimp_tool_push_status_coords  (GimpTool            *tool,
                                              GimpDisplay         *display,
+                                             GimpCursorPrecision  precision,
                                              const gchar         *title,
                                              gdouble              x,
                                              const gchar         *separator,

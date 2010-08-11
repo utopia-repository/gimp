@@ -28,26 +28,26 @@ typedef enum
   GIMP_RECTANGLE_TOOL_PROP_X2,
   GIMP_RECTANGLE_TOOL_PROP_Y2,
   GIMP_RECTANGLE_TOOL_PROP_CONSTRAINT,
-  GIMP_RECTANGLE_TOOL_PROP_LAST = GIMP_RECTANGLE_TOOL_PROP_CONSTRAINT
+  GIMP_RECTANGLE_TOOL_PROP_PRECISION,
+  GIMP_RECTANGLE_TOOL_PROP_LAST = GIMP_RECTANGLE_TOOL_PROP_PRECISION
 } GimpRectangleToolProp;
 
 
-/*  possible functions  */
 typedef enum
 {
-  RECT_INACTIVE,
-  RECT_DEAD,
-  RECT_CREATING,
-  RECT_MOVING,
-  RECT_RESIZING_UPPER_LEFT,
-  RECT_RESIZING_UPPER_RIGHT,
-  RECT_RESIZING_LOWER_LEFT,
-  RECT_RESIZING_LOWER_RIGHT,
-  RECT_RESIZING_LEFT,
-  RECT_RESIZING_RIGHT,
-  RECT_RESIZING_TOP,
-  RECT_RESIZING_BOTTOM,
-  RECT_EXECUTING
+  GIMP_RECTANGLE_TOOL_INACTIVE,
+  GIMP_RECTANGLE_TOOL_DEAD,
+  GIMP_RECTANGLE_TOOL_CREATING,
+  GIMP_RECTANGLE_TOOL_MOVING,
+  GIMP_RECTANGLE_TOOL_RESIZING_UPPER_LEFT,
+  GIMP_RECTANGLE_TOOL_RESIZING_UPPER_RIGHT,
+  GIMP_RECTANGLE_TOOL_RESIZING_LOWER_LEFT,
+  GIMP_RECTANGLE_TOOL_RESIZING_LOWER_RIGHT,
+  GIMP_RECTANGLE_TOOL_RESIZING_LEFT,
+  GIMP_RECTANGLE_TOOL_RESIZING_RIGHT,
+  GIMP_RECTANGLE_TOOL_RESIZING_TOP,
+  GIMP_RECTANGLE_TOOL_RESIZING_BOTTOM,
+  GIMP_RECTANGLE_TOOL_EXECUTING
 } GimpRectangleFunction;
 
 
@@ -75,7 +75,7 @@ struct _GimpRectangleToolInterface
   void     (* cancel)            (GimpRectangleTool *rect_tool);
 
   /*  signals  */
-  gboolean (* rectangle_changed) (GimpRectangleTool *rect_tool);
+  gboolean (* rectangle_change_complete) (GimpRectangleTool *rect_tool);
 };
 
 
@@ -83,6 +83,7 @@ GType       gimp_rectangle_tool_interface_get_type  (void) G_GNUC_CONST;
 
 void        gimp_rectangle_tool_constructor         (GObject                 *object);
 
+void        gimp_rectangle_tool_init                (GimpRectangleTool       *rect_tool);
 void        gimp_rectangle_tool_control             (GimpTool                *tool,
                                                      GimpToolAction           action,
                                                      GimpDisplay             *display);
@@ -129,9 +130,6 @@ GimpRectangleConstraint gimp_rectangle_tool_get_constraint
 GimpRectangleFunction gimp_rectangle_tool_get_function (GimpRectangleTool    *rectangle);
 void        gimp_rectangle_tool_set_function        (GimpRectangleTool       *rectangle,
                                                      GimpRectangleFunction    function);
-void        gimp_rectangle_tool_get_press_coords    (GimpRectangleTool       *rectangle,
-                                                     gint                    *pressx_ptr,
-                                                     gint                    *pressy_ptr);
 void        gimp_rectangle_tool_pending_size_set    (GimpRectangleTool       *rectangle,
                                                      GObject                 *object,
                                                      const gchar             *width_property,
@@ -140,8 +138,10 @@ void        gimp_rectangle_tool_constraint_size_set (GimpRectangleTool       *re
                                                      GObject                 *object,
                                                      const gchar             *width_property,
                                                      const gchar             *height_property);
-
-
+gboolean    gimp_rectangle_tool_rectangle_is_new    (GimpRectangleTool       *rect_tool);
+gboolean    gimp_rectangle_tool_point_in_rectangle  (GimpRectangleTool       *rect_tool,
+                                                     gdouble                  x,
+                                                     gdouble                  y);
 /*  convenience functions  */
 
 void        gimp_rectangle_tool_install_properties  (GObjectClass *klass);

@@ -33,7 +33,6 @@
 
 
 #define POPUP_SIZE  100
-#define PEN_WIDTH     3
 
 
 typedef struct
@@ -76,16 +75,13 @@ static gboolean  gimp_scrolled_preview_nav_button_press    (GtkWidget           
                                                             GdkEventButton           *event,
                                                             GimpScrolledPreview      *preview);
 
-static void      gimp_scrolled_preview_nav_popup_realize   (GtkWidget                *widget,
-                                                            GimpScrolledPreview      *preview);
-static void      gimp_scrolled_preview_nav_popup_unrealize (GtkWidget                *widget,
-                                                            GimpScrolledPreview      *preview);
 static gboolean  gimp_scrolled_preview_nav_popup_event     (GtkWidget                *widget,
                                                             GdkEvent                 *event,
                                                             GimpScrolledPreview      *preview);
 static gboolean  gimp_scrolled_preview_nav_popup_expose    (GtkWidget                *widget,
                                                             GdkEventExpose           *event,
                                                             GimpScrolledPreview      *preview);
+
 static void      gimp_scrolled_preview_set_cursor          (GimpPreview              *preview);
 
 
@@ -245,7 +241,7 @@ gimp_scrolled_preview_area_realize (GtkWidget           *widget,
 
   g_return_if_fail (preview->cursor_move == NULL);
 
-  preview->cursor_move = gdk_cursor_new_for_display (display, GDK_FLEUR);
+  preview->cursor_move = gdk_cursor_new_for_display (display, GDK_HAND1);
 }
 
 static void
@@ -373,6 +369,7 @@ gimp_scrolled_preview_area_event (GtkWidget           *area,
 {
   GimpScrolledPreviewPrivate *priv = GIMP_SCROLLED_PREVIEW_GET_PRIVATE (preview);
   GdkEventButton             *button_event = (GdkEventButton *) event;
+  GdkCursor                  *cursor;
 
   switch (event->type)
     {
@@ -381,12 +378,26 @@ gimp_scrolled_preview_area_event (GtkWidget           *area,
         {
         case 1:
         case 2:
-          gtk_widget_get_pointer (area, &priv->drag_x, &priv->drag_y);
+          cursor = gdk_cursor_new_for_display (gtk_widget_get_display (area),
+                                               GDK_FLEUR);
 
-          priv->drag_xoff = GIMP_PREVIEW (preview)->xoff;
-          priv->drag_yoff = GIMP_PREVIEW (preview)->yoff;
-          priv->in_drag   = TRUE;
-          gtk_grab_add (area);
+          if (gdk_pointer_grab (area->window, TRUE,
+                                GDK_BUTTON_RELEASE_MASK |
+                                GDK_BUTTON_MOTION_MASK  |
+                                GDK_POINTER_MOTION_HINT_MASK,
+                                NULL, cursor,
+                                gdk_event_get_time (event)) == GDK_GRAB_SUCCESS)
+            {
+              gtk_widget_get_pointer (area, &priv->drag_x, &priv->drag_y);
+
+              priv->drag_xoff = GIMP_PREVIEW (preview)->xoff;
+              priv->drag_yoff = GIMP_PREVIEW (preview)->yoff;
+              priv->in_drag   = TRUE;
+              gtk_grab_add (area);
+            }
+
+          gdk_cursor_unref (cursor);
+
           break;
 
         case 3:
@@ -398,6 +409,9 @@ gimp_scrolled_preview_area_event (GtkWidget           *area,
       if (priv->in_drag &&
           (button_event->button == 1 || button_event->button == 2))
         {
+          gdk_display_pointer_ungrab (gtk_widget_get_display (area),
+                                      gdk_event_get_time (event));
+
           gtk_grab_remove (area);
           priv->in_drag = FALSE;
         }
@@ -406,9 +420,10 @@ gimp_scrolled_preview_area_event (GtkWidget           *area,
     case GDK_MOTION_NOTIFY:
       if (priv->in_drag)
         {
-          GtkAdjustment *hadj;
-          GtkAdjustment *vadj;
-          gint           x, y;
+          GdkEventMotion *mevent = (GdkEventMotion *) event;
+          GtkAdjustment  *hadj;
+          GtkAdjustment  *vadj;
+          gint            x, y;
 
           hadj = gtk_range_get_adjustment (GTK_RANGE (preview->hscr));
           vadj = gtk_range_get_adjustment (GTK_RANGE (preview->vscr));
@@ -430,6 +445,8 @@ gimp_scrolled_preview_area_event (GtkWidget           *area,
               gimp_preview_draw (GIMP_PREVIEW (preview));
               gimp_preview_invalidate (GIMP_PREVIEW (preview));
             }
+
+          gdk_event_request_motions (mevent);
         }
       break;
 
@@ -544,6 +561,7 @@ gimp_scrolled_preview_nav_button_press (GtkWidget           *widget,
 
   if (event->type == GDK_BUTTON_PRESS && event->button == 1)
     {
+      GtkStyle   *style = gtk_widget_get_style (widget);
       GtkWidget  *outer;
       GtkWidget  *inner;
       GtkWidget  *area;
@@ -573,12 +591,6 @@ gimp_scrolled_preview_nav_button_press (GtkWidget           *widget,
 
       gtk_container_add (GTK_CONTAINER (inner), area);
 
-      g_signal_connect (area, "realize",
-                        G_CALLBACK (gimp_scrolled_preview_nav_popup_realize),
-                        preview);
-      g_signal_connect (area, "unrealize",
-                        G_CALLBACK (gimp_scrolled_preview_nav_popup_unrealize),
-                        preview);
       g_signal_connect (area, "event",
                         G_CALLBACK (gimp_scrolled_preview_nav_popup_event),
                         preview);
@@ -604,8 +616,8 @@ gimp_scrolled_preview_nav_button_press (GtkWidget           *widget,
       y += event->y - v * (gdouble) GIMP_PREVIEW_AREA (area)->height;
 
       gtk_window_move (GTK_WINDOW (preview->nav_popup),
-                       x - 2 * widget->style->xthickness,
-                       y - 2 * widget->style->ythickness);
+                       x - 2 * style->xthickness,
+                       y - 2 * style->ythickness);
 
       gtk_widget_show (preview->nav_popup);
 
@@ -625,32 +637,6 @@ gimp_scrolled_preview_nav_button_press (GtkWidget           *widget,
     }
 
   return TRUE;
-}
-
-static void
-gimp_scrolled_preview_nav_popup_realize (GtkWidget           *widget,
-                                         GimpScrolledPreview *preview)
-{
-  if (! preview->nav_gc)
-    {
-      preview->nav_gc = gdk_gc_new (widget->window);
-
-      gdk_gc_set_function (preview->nav_gc, GDK_INVERT);
-      gdk_gc_set_line_attributes (preview->nav_gc,
-                                  PEN_WIDTH,
-                                  GDK_LINE_SOLID, GDK_CAP_BUTT, GDK_JOIN_ROUND);
-    }
-}
-
-static void
-gimp_scrolled_preview_nav_popup_unrealize (GtkWidget           *widget,
-                                           GimpScrolledPreview *preview)
-{
-  if (preview->nav_gc)
-    {
-      g_object_unref (preview->nav_gc);
-      preview->nav_gc = NULL;
-    }
 }
 
 static gboolean
@@ -678,10 +664,11 @@ gimp_scrolled_preview_nav_popup_event (GtkWidget           *widget,
 
     case GDK_MOTION_NOTIFY:
       {
-        GtkAdjustment *hadj;
-        GtkAdjustment *vadj;
-        gint           cx, cy;
-        gdouble        x, y;
+        GdkEventMotion *mevent = (GdkEventMotion *) event;
+        GtkAdjustment  *hadj;
+        GtkAdjustment  *vadj;
+        gint            cx, cy;
+        gdouble         x, y;
 
         hadj = gtk_range_get_adjustment (GTK_RANGE (preview->hscr));
         vadj = gtk_range_get_adjustment (GTK_RANGE (preview->vscr));
@@ -703,6 +690,8 @@ gimp_scrolled_preview_nav_popup_event (GtkWidget           *widget,
 
         gtk_widget_queue_draw (widget);
         gdk_window_process_updates (widget->window, FALSE);
+
+        gdk_event_request_motions (mevent);
       }
       break;
 
@@ -719,10 +708,11 @@ gimp_scrolled_preview_nav_popup_expose (GtkWidget           *widget,
                                         GimpScrolledPreview *preview)
 {
   GtkAdjustment *adj;
+  cairo_t       *cr;
   gdouble        x, y;
   gdouble        w, h;
 
-  adj = gtk_range_get_adjustment (GTK_RANGE (preview->hscr));
+  adj   = gtk_range_get_adjustment (GTK_RANGE (preview->hscr));
 
   x = adj->value / (adj->upper - adj->lower);
   w = adj->page_size / (adj->upper - adj->lower);
@@ -735,16 +725,32 @@ gimp_scrolled_preview_nav_popup_expose (GtkWidget           *widget,
   if (w >= 1.0 && h >= 1.0)
     return FALSE;
 
-  gdk_gc_set_clip_rectangle (preview->nav_gc, &event->area);
+  x = floor (x * (gdouble) widget->allocation.width);
+  y = floor (y * (gdouble) widget->allocation.height);
+  w = MAX (1, ceil (w * (gdouble) widget->allocation.width));
+  h = MAX (1, ceil (h * (gdouble) widget->allocation.height));
 
-  gdk_draw_rectangle (widget->window, preview->nav_gc,
-                      FALSE,
-                      x * (gdouble) widget->allocation.width  + PEN_WIDTH / 2,
-                      y * (gdouble) widget->allocation.height + PEN_WIDTH / 2,
-                      MAX (1,
-                           ceil (w * widget->allocation.width)  - PEN_WIDTH),
-                      MAX (1,
-                           ceil (h * widget->allocation.height) - PEN_WIDTH));
+  cr = gdk_cairo_create (widget->window);
+
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
+  cairo_rectangle (cr,
+                   0, 0, widget->allocation.width, widget->allocation.height);
+
+  cairo_rectangle (cr, x, y, w, h);
+
+  cairo_set_source_rgba (cr, 0, 0, 0, 0.5);
+  cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
+  cairo_fill (cr);
+
+  cairo_rectangle (cr, x, y, w, h);
+
+  cairo_set_source_rgb (cr, 1, 1, 1);
+  cairo_set_line_width (cr, 2);
+  cairo_stroke (cr);
+
+  cairo_destroy (cr);
 
   return FALSE;
 }

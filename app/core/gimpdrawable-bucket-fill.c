@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <glib-object.h>
 
 #include "libgimpcolor/gimpcolor.h"
@@ -45,27 +47,29 @@
 
 /*  public functions  */
 
-void
-gimp_drawable_bucket_fill (GimpDrawable        *drawable,
-                           GimpContext         *context,
-                           GimpBucketFillMode   fill_mode,
-                           gint                 paint_mode,
-                           gdouble              opacity,
-                           gboolean             do_seed_fill,
-                           gboolean             fill_transparent,
-                           GimpSelectCriterion  fill_criterion,
-                           gdouble              threshold,
-                           gboolean             sample_merged,
-                           gdouble              x,
-                           gdouble              y)
+gboolean
+gimp_drawable_bucket_fill (GimpDrawable         *drawable,
+                           GimpContext          *context,
+                           GimpBucketFillMode    fill_mode,
+                           gint                  paint_mode,
+                           gdouble               opacity,
+                           gboolean              do_seed_fill,
+                           gboolean              fill_transparent,
+                           GimpSelectCriterion   fill_criterion,
+                           gdouble               threshold,
+                           gboolean              sample_merged,
+                           gdouble               x,
+                           gdouble               y,
+                           GError              **error)
 {
   GimpImage   *image;
   GimpRGB      color;
   GimpPattern *pattern = NULL;
 
-  g_return_if_fail (GIMP_IS_DRAWABLE (drawable));
-  g_return_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)));
-  g_return_if_fail (GIMP_IS_CONTEXT (context));
+  g_return_val_if_fail (GIMP_IS_DRAWABLE (drawable), FALSE);
+  g_return_val_if_fail (gimp_item_is_attached (GIMP_ITEM (drawable)), FALSE);
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   image = gimp_item_get_image (GIMP_ITEM (drawable));
 
@@ -83,15 +87,15 @@ gimp_drawable_bucket_fill (GimpDrawable        *drawable,
 
       if (! pattern)
         {
-          gimp_message (image->gimp, NULL, GIMP_MESSAGE_WARNING,
-                        _("No patterns available for this operation."));
-          return;
+          g_set_error (error, 0, 0,
+                       _("No patterns available for this operation."));
+          return FALSE;
         }
     }
   else
     {
       g_warning ("%s: invalid fill_mode passed", G_STRFUNC);
-      return;
+      return FALSE;
     }
 
   gimp_drawable_bucket_fill_full (drawable,
@@ -102,6 +106,8 @@ gimp_drawable_bucket_fill (GimpDrawable        *drawable,
                                   threshold, sample_merged,
                                   x, y,
                                   &color, pattern);
+
+  return TRUE;
 }
 
 void
@@ -277,7 +283,7 @@ gimp_drawable_bucket_fill_full (GimpDrawable        *drawable,
   /*  Apply it to the image  */
   pixel_region_init (&bufPR, buf_tiles, 0, 0, (x2 - x1), (y2 - y1), FALSE);
   gimp_drawable_apply_region (drawable, &bufPR,
-                              TRUE, Q_("command|Bucket Fill"),
+                              TRUE, C_("command", "Bucket Fill"),
                               opacity, paint_mode,
                               NULL, x1, y1);
   tile_manager_unref (buf_tiles);

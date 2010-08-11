@@ -266,7 +266,8 @@ N_("Remember the current tool, pattern, color, and brush across GIMP " \
    "sessions.")
 
 #define SAVE_DOCUMENT_HISTORY_BLURB \
-N_("Add all opened and saved files to the document history on disk.")
+N_("Keep a permanent record of all opened and saved files in the Recent " \
+   "Documents list.")
 
 #define SAVE_SESSION_INFO_BLURB \
 N_("Save the positions and sizes of the main dialogs when GIMP exits.")
@@ -325,9 +326,6 @@ N_("When enabled, the grid is visible by default. This can also be toggled " \
 #define SHOW_SAMPLE_POINTS_BLURB \
 N_("When enabled, the sample points are visible by default. This can also be " \
    "toggled with the \"View->Show Sample Points\" command.")
-
-#define SHOW_TIPS_BLURB \
-N_("Enable displaying a handy GIMP tip on startup.")
 
 #define SHOW_TOOLTIPS_BLURB \
 N_("Show a tooltip when the pointer hovers over an item.")
@@ -388,9 +386,17 @@ N_("When the amount of pixel data exceeds this limit, GIMP will start to " \
    "work on images that wouldn't fit into memory otherwise.  If you have a " \
    "lot of RAM, you may want to set this to a higher value.")
 
-#define TOOLBOX_COLOR_AREA_BLURB NULL
-#define TOOLBOX_FOO_AREA_BLURB NULL
-#define TOOLBOX_IMAGE_AREA_BLURB NULL
+#define TOOLBOX_COLOR_AREA_BLURB \
+N_("Show the current foreground and background colors in the toolbox.")
+
+#define TOOLBOX_FOO_AREA_BLURB \
+N_("Show the currently selected brush, pattern and gradient in the toolbox.")
+
+#define TOOLBOX_IMAGE_AREA_BLURB \
+N_("Show the currently active image in the toolbox.")
+
+#define TOOLBOX_WILBER_BLURB \
+"Show the GIMP mascot at the top of the toolbox."
 
 #define TOOLBOX_WINDOW_HINT_BLURB \
 N_("The window type hint that is set on the toolbox. This may affect " \
@@ -420,6 +426,14 @@ N_("Sets the size of the previews in the Undo History.")
 
 #define USE_HELP_BLURB  \
 N_("When enabled, pressing F1 will open the help browser.")
+
+#define USER_MANUAL_ONLINE_BLURB  \
+"When enabled, the online user manual will be used by the help system. " \
+"Otherwise the locally installed copy is used."
+
+#define USER_MANUAL_ONLINE_URI_BLURB \
+"The location of the online user manual. This is used if " \
+"'user-manual-online' is enabled."
 
 #define WEB_BROWSER_BLURB \
 N_("Sets the external web browser to be used.  This can be an absolute " \

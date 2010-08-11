@@ -8,6 +8,11 @@ EXPORTS
 	gimp_button_extended_clicked
 	gimp_button_get_type
 	gimp_button_new
+	gimp_cairo_checkerboard_create
+	gimp_cairo_set_focus_line_pattern
+	gimp_cairo_set_source_rgb
+	gimp_cairo_set_source_rgba
+	gimp_cairo_surface_create_from_pixbuf
 	gimp_cell_renderer_color_get_type
 	gimp_cell_renderer_color_new
 	gimp_cell_renderer_toggle_clicked
@@ -149,6 +154,7 @@ EXPORTS
 	gimp_help_enable_tooltips
 	gimp_help_id_quark
 	gimp_help_set_help_data
+	gimp_help_set_help_data_with_markup
 	gimp_hint_box_get_type
 	gimp_hint_box_new
 	gimp_int_adjustment_update
@@ -295,6 +301,14 @@ EXPORTS
 	gimp_radio_group_new2
 	gimp_radio_group_set_active
 	gimp_random_seed_new
+	gimp_ruler_get_position
+	gimp_ruler_get_range
+	gimp_ruler_get_type
+	gimp_ruler_get_unit
+	gimp_ruler_new
+	gimp_ruler_set_position
+	gimp_ruler_set_range
+	gimp_ruler_set_unit
 	gimp_scale_entry_get_logarithmic
 	gimp_scale_entry_new
 	gimp_scale_entry_set_logarithmic

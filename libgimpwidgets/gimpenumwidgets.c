@@ -414,15 +414,19 @@ gimp_enum_stock_box_set_child_padding (GtkWidget *stock_box,
 
   for (list = children; list; list = g_list_next (list))
     {
-      GtkBin *bin = list->data;
+      GtkWidget *child = gtk_bin_get_child (GTK_BIN (list->data));
 
-      if (GTK_IS_MISC (bin->child))
+      if (GTK_IS_MISC (child))
         {
-          GtkMisc *misc = GTK_MISC (bin->child);
+          GtkMisc *misc = GTK_MISC (child);
+          gint     misc_xpad;
+          gint     misc_ypad;
+
+          gtk_misc_get_padding (misc, &misc_xpad, &misc_ypad);
 
           gtk_misc_set_padding (misc,
-                                xpad < 0 ? misc->xpad : xpad,
-                                ypad < 0 ? misc->ypad : ypad);
+                                xpad < 0 ? misc_xpad : xpad,
+                                ypad < 0 ? misc_ypad : ypad);
         }
     }
 

@@ -98,14 +98,16 @@ selection is cut from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using
 the <link linkend="gimp-edit-paste"><function>gimp_edit_paste()</function></link> command. If there is no selection, then the
 specified drawable will be removed and its contents stored in the
-internal GIMP edit buffer.</para>
+internal GIMP edit buffer. This procedure will fail if the selected
+area lies completely outside the bounds of the current drawable and
+there is nothing to copy from.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The drawable to cut from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the cut was successful, FALSE if the selection contained only transparent pixels.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the cut was successful, FALSE if there was nothing to copy from.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-edit-copy" role="function">
@@ -120,14 +122,16 @@ selection is copied from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using
 the <link linkend="gimp-edit-paste"><function>gimp_edit_paste()</function></link> command. If there is no selection, then the
 specified drawable's contents will be stored in the internal GIMP
-edit buffer.</para>
+edit buffer. This procedure will fail if the selected area lies
+completely outside the bounds of the current drawable and there is
+nothing to copy from.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The drawable to copy from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the cut was successful, FALSE if there was nothing to copy from.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="gimp-edit-copy-visible" role="function" condition="since:GIMP 2.2">
@@ -149,7 +153,7 @@ buffer.</para>
 <varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
 <listitem><simpara> The image to copy from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the copy was successful.
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
@@ -229,7 +233,7 @@ operations.</para>
 <varlistentry><term><parameter>buffer_name</parameter>&nbsp;:</term>
 <listitem><simpara> The name of the buffer to create.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer, or NULL if the selection contained only transparent pixels.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer, or NULL if the cut failed.
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
@@ -255,7 +259,7 @@ operations.</para>
 <varlistentry><term><parameter>buffer_name</parameter>&nbsp;:</term>
 <listitem><simpara> The name of the buffer to create.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer, or NULL if the selection contained only transparent pixels.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer, or NULL if the copy failed.
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
@@ -281,7 +285,7 @@ cut operations.</para>
 <varlistentry><term><parameter>buffer_name</parameter>&nbsp;:</term>
 <listitem><simpara> The name of the buffer to create.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The real name given to the buffer, or NULL if the copy failed.
 
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4

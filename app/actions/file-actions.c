@@ -38,6 +38,8 @@
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimphelp-ids.h"
 
+#include "display/gimpdisplay.h"
+
 #include "actions.h"
 #include "file-actions.h"
 #include "file-commands.h"
@@ -54,7 +56,7 @@ static void   file_actions_last_opened_reorder (GimpContainer   *container,
                                                 GimpImagefile   *unused1,
                                                 gint             unused2,
                                                 GimpActionGroup *group);
-static void   file_actions_close_all_update    (GimpContainer   *container,
+static void   file_actions_close_all_update    (GimpContainer   *images,
                                                 GimpObject      *unused,
                                                 GimpActionGroup *group);
 
@@ -62,8 +64,8 @@ static void   file_actions_close_all_update    (GimpContainer   *container,
 static const GimpActionEntry file_actions[] =
 {
   { "file-menu",             NULL, N_("_File")        },
+  { "file-create-menu",      NULL, N_("Create")       },
   { "file-open-recent-menu", NULL, N_("Open _Recent") },
-  { "file-acquire-menu",     NULL, N_("Acq_uire")     },
 
   { "file-open", GTK_STOCK_OPEN,
     N_("_Open..."), NULL,
@@ -164,7 +166,6 @@ file_actions_setup (GimpActionGroup *group)
       entries[i].tooltip        = NULL;
       entries[i].value          = i;
       entries[i].value_variable = FALSE;
-      entries[i].help_id        = GIMP_HELP_FILE_OPEN_RECENT;
 
       if (i < 9)
         entries[i].accelerator = g_strdup_printf ("<control>%d", i + 1);
@@ -175,7 +176,7 @@ file_actions_setup (GimpActionGroup *group)
     }
 
   gimp_action_group_add_enum_actions (group, entries, n_entries,
-                                      G_CALLBACK (file_last_opened_cmd_callback));
+                                      G_CALLBACK (file_open_recent_cmd_callback));
 
   for (i = 0; i < n_entries; i++)
     {
@@ -208,10 +209,13 @@ file_actions_setup (GimpActionGroup *group)
 
   file_actions_last_opened_update (group->gimp->documents, NULL, group);
 
-  g_signal_connect_object (group->gimp->displays, "add",
+  /*  also listen to image adding/removal so we catch the case where
+   *  the last image is closed but its display stays open.
+   */
+  g_signal_connect_object (group->gimp->images, "add",
                            G_CALLBACK (file_actions_close_all_update),
                            group, 0);
-  g_signal_connect_object (group->gimp->displays, "remove",
+  g_signal_connect_object (group->gimp->images, "remove",
                            G_CALLBACK (file_actions_close_all_update),
                            group, 0);
 
@@ -237,6 +241,9 @@ file_actions_update (GimpActionGroup *group,
   SET_SENSITIVE ("file-save-a-copy",      image && drawable);
   SET_SENSITIVE ("file-save-as-template", image);
   SET_SENSITIVE ("file-revert",           image && GIMP_OBJECT (image)->name);
+
+  /*  needed for the empty display  */
+  SET_SENSITIVE ("file-close-all",        image);
 
 #undef SET_SENSITIVE
 }
@@ -318,12 +325,23 @@ file_actions_last_opened_reorder (GimpContainer   *container,
 }
 
 static void
-file_actions_close_all_update (GimpContainer   *container,
+file_actions_close_all_update (GimpContainer   *images,
                                GimpObject      *unused,
                                GimpActionGroup *group)
 {
-  gint n_displays = gimp_container_num_children (container);
+  GimpContainer *container  = group->gimp->displays;
+  gint           n_displays = gimp_container_num_children (container);
+  gboolean       sensitive  = (n_displays > 0);
 
-  gimp_action_group_set_action_sensitive (group, "file-close-all",
-                                          n_displays > 0);
+  if (n_displays == 1)
+    {
+      GimpDisplay *display;
+
+      display = GIMP_DISPLAY (gimp_container_get_first_child (container));
+
+      if (! display->image)
+        sensitive = FALSE;
+    }
+
+  gimp_action_group_set_action_sensitive (group, "file-close-all", sensitive);
 }

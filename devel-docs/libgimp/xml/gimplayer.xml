@@ -26,11 +26,21 @@
                                                          <link linkend="GimpImageType">GimpImageType</link> type,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> mode);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-new-from-drawable">gimp_layer_new_from_drawable</link>        (<link linkend="gint32">gint32</link> drawable_ID,
+                                                         <link linkend="gint32">gint32</link> dest_image_ID);
+<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-new-from-visible">gimp_layer_new_from_visible</link>         (<link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="gint32">gint32</link> dest_image_ID,
+                                                         const <link linkend="gchar">gchar</link> *name);
 <link linkend="gint32">gint32</link>              <link linkend="gimp-layer-copy">gimp_layer_copy</link>                     (<link linkend="gint32">gint32</link> layer_ID);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-scale">gimp_layer_scale</link>                    (<link linkend="gint32">gint32</link> layer_ID,
                                                          <link linkend="gint">gint</link> new_width,
                                                          <link linkend="gint">gint</link> new_height,
                                                          <link linkend="gboolean">gboolean</link> local_origin);
+<link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-scale-full">gimp_layer_scale_full</link>               (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> new_width,
+                                                         <link linkend="gint">gint</link> new_height,
+                                                         <link linkend="gboolean">gboolean</link> local_origin,
+                                                         <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-resize">gimp_layer_resize</link>                   (<link linkend="gint32">gint32</link> layer_ID,
                                                          <link linkend="gint">gint</link> new_width,
                                                          <link linkend="gint">gint</link> new_height,
@@ -53,8 +63,6 @@
                                                          <link linkend="gint32">gint32</link> mask_ID);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-remove-mask">gimp_layer_remove_mask</link>              (<link linkend="gint32">gint32</link> layer_ID,
                                                          <link linkend="GimpMaskApplyMode">GimpMaskApplyMode</link> mode);
-<link linkend="gint32">gint32</link>              <link linkend="gimp-layer-new-from-drawable">gimp_layer_new_from_drawable</link>        (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="gint32">gint32</link> dest_image_ID);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-get-lock-alpha">gimp_layer_get_lock_alpha</link>           (<link linkend="gint32">gint32</link> layer_ID);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-layer-set-lock-alpha">gimp_layer_set_lock_alpha</link>           (<link linkend="gint32">gint32</link> layer_ID,
                                                          <link linkend="gboolean">gboolean</link> lock_alpha);
@@ -144,6 +152,62 @@ should be set with explicit procedure calls.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created layer.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2 id="gimp-layer-new-from-drawable" role="function">
+<title>gimp_layer_new_from_drawable ()</title>
+<indexterm zone="gimp-layer-new-from-drawable"><primary>gimp_layer_new_from_drawable</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_new_from_drawable        (<link linkend="gint32">gint32</link> drawable_ID,
+                                                         <link linkend="gint32">gint32</link> dest_image_ID);</programlisting>
+<para>
+Create a new layer by copying an existing drawable.
+</para>
+<para>
+This procedure creates a new layer as a copy of the specified
+drawable. The new layer still needs to be added to the image, as
+this is not automatic. Add the new layer with the
+<link linkend="gimp-image-add-layer"><function>gimp_image_add_layer()</function></link> command. Other attributes such as layer mask
+modes, and offsets should be set with explicit procedure calls.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The source drawable from where the new layer is copied.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dest_image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The destination image to which to add the layer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly copied layer.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="gimp-layer-new-from-visible" role="function" condition="since:GIMP 2.6">
+<title>gimp_layer_new_from_visible ()</title>
+<indexterm zone="gimp-layer-new-from-visible" role="GIMP 2.6"><primary>gimp_layer_new_from_visible</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_new_from_visible         (<link linkend="gint32">gint32</link> image_ID,
+                                                         <link linkend="gint32">gint32</link> dest_image_ID,
+                                                         const <link linkend="gchar">gchar</link> *name);</programlisting>
+<para>
+Create a new layer from what is visible in an image.
+</para>
+<para>
+This procedure creates a new layer from what is visible in the given
+image. The new layer still needs to be added to the destination
+image, as this is not automatic. Add the new layer with the
+<link linkend="gimp-image-add-layer"><function>gimp_image_add_layer()</function></link> command. Other attributes such as layer mask
+modes, and offsets should be set with explicit procedure calls.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The source image from where the content is copied.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dest_image_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The destination image to which to add the layer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara> The layer name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly created layer.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
 <refsect2 id="gimp-layer-copy" role="function">
 <title>gimp_layer_copy ()</title>
 <indexterm zone="gimp-layer-copy"><primary>gimp_layer_copy</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_copy                     (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
@@ -170,14 +234,14 @@ should not be subsequently added to any other image.</para>
                                                          <link linkend="gint">gint</link> new_height,
                                                          <link linkend="gboolean">gboolean</link> local_origin);</programlisting>
 <para>
-Scale the layer to the specified extents.
+Scale the layer using the default interpolation method.
 </para>
 <para>
 This procedure scales the layer so that its new width and height are
 equal to the supplied parameters. The 'local-origin' parameter
 specifies whether to scale from the center of the layer, or from the
 image origin. This operation only works if the layer has been added
-to an image.</para>
+to an image. The default interpolation method is used for scaling.</para>
 <para>
 
 </para><variablelist role="params">
@@ -196,6 +260,46 @@ to an image.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2 id="gimp-layer-scale-full" role="function" condition="since:GIMP 2.6">
+<title>gimp_layer_scale_full ()</title>
+<indexterm zone="gimp-layer-scale-full" role="GIMP 2.6"><primary>gimp_layer_scale_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_scale_full               (<link linkend="gint32">gint32</link> layer_ID,
+                                                         <link linkend="gint">gint</link> new_width,
+                                                         <link linkend="gint">gint</link> new_height,
+                                                         <link linkend="gboolean">gboolean</link> local_origin,
+                                                         <link linkend="GimpInterpolationType">GimpInterpolationType</link> interpolation);</programlisting>
+<para>
+Scale the layer using a specific interpolation method.
+</para>
+<para>
+This procedure scales the layer so that its new width and height are
+equal to the supplied parameters. The 'local-origin' parameter
+specifies whether to scale from the center of the layer, or from the
+image origin. This operation only works if the layer has been added
+to an image. This procedure allows you to specify the interpolation
+method explicitly.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>layer_ID</parameter>&nbsp;:</term>
+<listitem><simpara> The layer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>new_width</parameter>&nbsp;:</term>
+<listitem><simpara> New layer width.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>new_height</parameter>&nbsp;:</term>
+<listitem><simpara> New layer height.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>local_origin</parameter>&nbsp;:</term>
+<listitem><simpara> Use a local origin (as opposed to the image origin).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>interpolation</parameter>&nbsp;:</term>
+<listitem><simpara> Type of interpolation.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
+
+</simpara></listitem></varlistentry>
+</variablelist><para role="since">Since  GIMP 2.6
+</para></refsect2>
 <refsect2 id="gimp-layer-resize" role="function">
 <title>gimp_layer_resize ()</title>
 <indexterm zone="gimp-layer-resize"><primary>gimp_layer_resize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_resize                   (<link linkend="gint32">gint32</link> layer_ID,
@@ -467,31 +571,6 @@ the mask doesn't exist, an error is returned.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2 id="gimp-layer-new-from-drawable" role="function">
-<title>gimp_layer_new_from_drawable ()</title>
-<indexterm zone="gimp-layer-new-from-drawable"><primary>gimp_layer_new_from_drawable</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_layer_new_from_drawable        (<link linkend="gint32">gint32</link> drawable_ID,
-                                                         <link linkend="gint32">gint32</link> dest_image_ID);</programlisting>
-<para>
-Create a new layer by copying an existing drawable.
-</para>
-<para>
-This procedure creates a new layer as a copy of the specified
-drawable. The new layer still needs to be added to the image, as
-this is not automatic. Add the new layer with the
-<link linkend="gimp-image-add-layer"><function>gimp_image_add_layer()</function></link> command. Other attributes such as layer mask
-modes, and offsets should be set with explicit procedure calls.</para>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>drawable_ID</parameter>&nbsp;:</term>
-<listitem><simpara> The source drawable from where the new layer is copied.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dest_image_ID</parameter>&nbsp;:</term>
-<listitem><simpara> The destination image to which to add the layer.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly copied layer.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
 <refsect2 id="gimp-layer-get-lock-alpha" role="function">
 <title>gimp_layer_get_lock_alpha ()</title>
 <indexterm zone="gimp-layer-get-lock-alpha"><primary>gimp_layer_get_lock_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_layer_get_lock_alpha           (<link linkend="gint32">gint32</link> layer_ID);</programlisting>
@@ -638,9 +717,9 @@ Set the show mask setting of the specified layer.
 </para>
 <para>
 This procedure sets the specified layer's show mask setting. This
-controls whether the layer's mask is currently affecting the alpha
-channel. If there is no layer mask, this function will return an
-error.</para>
+controls whether the layer or its mask is visible. TRUE indicates
+that the mask should be visible. If there is no layer mask, this
+function will return an error.</para>
 <para>
 
 </para><variablelist role="params">

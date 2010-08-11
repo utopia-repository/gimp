@@ -71,6 +71,8 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
   gint          height;
   gint          view_width;
   gint          view_height;
+  gdouble       xres       = 1.0;
+  gdouble       yres       = 1.0;
   gboolean      scaling_up;
   TempBuf      *render_buf = NULL;
 
@@ -81,39 +83,45 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
   width  = renderer->width;
   height = renderer->height;
 
+  if (image)
+    gimp_image_get_resolution (image, &xres, &yres);
+
   if (image && ! renderer->is_popup)
     {
-      width  = MAX (1, ROUND ((((gdouble) width / (gdouble) image->width) *
-                               (gdouble) item->width)));
-      height = MAX (1, ROUND ((((gdouble) height / (gdouble) image->height) *
-                              (gdouble) item->height)));
+      width  = MAX (1, ROUND ((((gdouble) width /
+                                (gdouble) gimp_image_get_width (image)) *
+                               (gdouble) gimp_item_width (item))));
+      height = MAX (1, ROUND ((((gdouble) height /
+                                (gdouble) gimp_image_get_height (image)) *
+                               (gdouble) gimp_item_height (item))));
 
-      gimp_viewable_calc_preview_size (item->width,
-                                       item->height,
+      gimp_viewable_calc_preview_size (gimp_item_width  (item),
+                                       gimp_item_height (item),
                                        width,
                                        height,
                                        renderer->dot_for_dot,
-                                       image->xresolution,
-                                       image->yresolution,
+                                       xres,
+                                       yres,
                                        &view_width,
                                        &view_height,
                                        &scaling_up);
     }
   else
     {
-      gimp_viewable_calc_preview_size (item->width,
-                                       item->height,
+      gimp_viewable_calc_preview_size (gimp_item_width  (item),
+                                       gimp_item_height (item),
                                        width,
                                        height,
                                        renderer->dot_for_dot,
-                                       image ? image->xresolution : 1.0,
-                                       image ? image->yresolution : 1.0,
+                                       xres,
+                                       yres,
                                        &view_width,
                                        &view_height,
                                        &scaling_up);
     }
 
-  if ((view_width * view_height) < (item->width * item->height * 4))
+  if ((view_width * view_height) <
+      (gimp_item_width (item) * gimp_item_height (item) * 4))
     scaling_up = FALSE;
 
   if (scaling_up)
@@ -124,9 +132,11 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
           gint src_width, src_height;
 
           if (gimp_rectangle_intersect (0, 0,
-                                        item->width, item->height,
+                                        gimp_item_width  (item),
+                                        gimp_item_height (item),
                                         -item->offset_x, -item->offset_y,
-                                        image->width, image->height,
+                                        gimp_image_get_width  (image),
+                                        gimp_image_get_height (image),
                                         &src_x, &src_y,
                                         &src_width, &src_height))
             {
@@ -134,10 +144,10 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
               gint dest_height;
 
               dest_width  = ROUND (((gdouble) renderer->width /
-                                    (gdouble) image->width) *
+                                    (gdouble) gimp_image_get_width (image)) *
                                    (gdouble) src_width);
               dest_height = ROUND (((gdouble) renderer->height /
-                                    (gdouble) image->height) *
+                                    (gdouble) gimp_image_get_height (image)) *
                                    (gdouble) src_height);
 
               if (dest_width  < 1) dest_width  = 1;
@@ -162,8 +172,8 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
 
           temp_buf = gimp_viewable_get_new_preview (renderer->viewable,
                                                     renderer->context,
-                                                    item->width,
-                                                    item->height);
+                                                    gimp_item_width  (item),
+                                                    gimp_item_height (item));
 
           if (temp_buf)
             {
@@ -187,12 +197,14 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
         {
           if (item->offset_x != 0)
             render_buf->x =
-              ROUND ((((gdouble) renderer->width / (gdouble) image->width) *
+              ROUND ((((gdouble) renderer->width /
+                       (gdouble) gimp_image_get_width (image)) *
                       (gdouble) item->offset_x));
 
           if (item->offset_y != 0)
             render_buf->y =
-              ROUND ((((gdouble) renderer->height / (gdouble) image->height) *
+              ROUND ((((gdouble) renderer->height /
+                       (gdouble) gimp_image_get_height (image)) *
                       (gdouble) item->offset_y));
 
           if (scaling_up)
@@ -210,9 +222,9 @@ gimp_view_renderer_drawable_render (GimpViewRenderer *renderer,
             render_buf->y = (height - view_height) / 2;
         }
 
-      gimp_view_renderer_render_buffer (renderer, render_buf, -1,
-                                        GIMP_VIEW_BG_CHECKS,
-                                        GIMP_VIEW_BG_CHECKS);
+      gimp_view_renderer_render_surface (renderer, render_buf, -1,
+                                         GIMP_VIEW_BG_CHECKS,
+                                         GIMP_VIEW_BG_CHECKS);
 
       temp_buf_free (render_buf);
     }

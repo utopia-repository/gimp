@@ -1,7 +1,26 @@
+/* GIMP - The GNU Image Manipulation Program
+ * Copyright (C) 1995 Spencer Kimball and Peter Mattis
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
 /*
  * utils.c - various utility routines that don't fit anywhere else. Usually
  * these routines don't affect the state of the program.
- * */
+ */
+
 #include "config.h"
 
 #include <string.h>
@@ -42,8 +61,8 @@ getsiz_proto (double x, double y, int n, smvector_t *vec,
     {
       n = numsmvect;
       vec = smvector;
-      smstrexp = GTK_ADJUSTMENT(smstrexpadjust)->value;
-      voronoi = GTK_TOGGLE_BUTTON(size_voronoi)->active;
+      smstrexp = gtk_adjustment_get_value (GTK_ADJUSTMENT (smstrexpadjust));
+      voronoi = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (size_voronoi));
     }
   else
     {
@@ -231,14 +250,14 @@ reselect (GtkWidget *view,
 }
 
 static void
-readdirintolist_real(char         *subdir,
-                     GtkWidget    *view,
-                     char         *selected,
-                     gboolean      with_filename_column,
-                     gchar      *(*get_object_name_cb) (gchar *dir,
-                                                        gchar *filename,
-                                                        void  *context),
-                     void         *context)
+readdirintolist_real (const char   *subdir,
+                      GtkWidget    *view,
+                      char         *selected,
+                      gboolean      with_filename_column,
+                      gchar      *(*get_object_name_cb) (const gchar *dir,
+                                                         gchar       *filename,
+                                                         void        *context),
+                      void         *context)
 {
   gchar           *fpath;
   const gchar     *de;
@@ -334,14 +353,14 @@ readdirintolist_real(char         *subdir,
 }
 
 void
-readdirintolist_extended (char         *subdir,
+readdirintolist_extended (const char   *subdir,
                           GtkWidget    *view,
                           char         *selected,
                           gboolean      with_filename_column,
-                          gchar      *(*get_object_name_cb) (gchar *dir,
-                                                             gchar *filename,
-                                                             void *context),
-                          void * context)
+                          gchar      *(*get_object_name_cb) (const gchar *dir,
+                                                             gchar       *filename,
+                                                             void        *context),
+                          void         *context)
 {
   char *tmpdir;
   GList *thispath = parsepath ();
@@ -357,7 +376,9 @@ readdirintolist_extended (char         *subdir,
 }
 
 void
-readdirintolist (char *subdir, GtkWidget *view, char *selected)
+readdirintolist (const char *subdir,
+                 GtkWidget  *view,
+                 char       *selected)
 {
   readdirintolist_extended (subdir, view, selected, FALSE, NULL, NULL);
 }
@@ -375,13 +396,13 @@ readdirintolist (char *subdir, GtkWidget *view, char *selected)
  *      to create a new group.
  * */
 GtkWidget *
-create_radio_button (GtkWidget   *box,
-                     int          orient_type,
-                     void       (*callback) (GtkWidget *wg, void *d),
-                     gchar       *label,
-                     gchar       *help_string,
-                     GSList     **radio_group,
-                     GtkWidget  **buttons_array)
+create_radio_button (GtkWidget    *box,
+                     int           orient_type,
+                     void        (*callback) (GtkWidget *wg, void *d),
+                     const gchar  *label,
+                     const gchar  *help_string,
+                     GSList      **radio_group,
+                     GtkWidget   **buttons_array)
 {
   GtkWidget *tmpw;
 

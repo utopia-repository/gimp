@@ -14,6 +14,7 @@
 <link rel="index" href="libgimpbase-index.html" title="Index">
 <link rel="index" href="libgimpbase-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpbase-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
+<link rel="index" href="libgimpbase-index-new-in-2-6.html" title="Index of new symbols in GIMP 2.6">
 <link rel="index" href="libgimpbase-index-deprecated.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -65,9 +66,9 @@ Translation between gettext translation domain identifier and GType.
 <div class="refsect2" lang="en">
 <a name="GimpEnumDesc"></a><h3>GimpEnumDesc</h3>
 <pre class="programlisting">typedef struct {
-  gint   value;
-  gchar *value_desc;
-  gchar *value_help;
+  gint         value;
+  const gchar *value_desc;
+  const gchar *value_help;
 } GimpEnumDesc;
 </pre>
 <p>
@@ -78,9 +79,9 @@ Translation between gettext translation domain identifier and GType.
 <div class="refsect2" lang="en">
 <a name="GimpFlagsDesc"></a><h3>GimpFlagsDesc</h3>
 <pre class="programlisting">typedef struct {
-  guint  value;
-  gchar *value_desc;
-  gchar *value_help;
+  guint        value;
+  const gchar *value_desc;
+  const gchar *value_help;
 } GimpFlagsDesc;
 </pre>
 <p>

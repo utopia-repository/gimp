@@ -16,9 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#define PRINT_SETTINGS_MAJOR_VERSION 0
-#define PRINT_SETTINGS_MINOR_VERSION 3
-
 #include "config.h"
 
 #include <libgimp/gimp.h>
@@ -26,16 +23,18 @@
 
 #include "print.h"
 #include "print-settings.h"
+#include "print-utils.h"
+
+
+#define PRINT_SETTINGS_MAJOR_VERSION 0
+#define PRINT_SETTINGS_MINOR_VERSION 4
+
+#define PRINT_SETTINGS_NAME          "print-settings"
 
 
 static GKeyFile * print_settings_key_file_from_settings      (PrintData         *data);
 
-static void       save_print_settings_resource_file          (GKeyFile          *settings_key_file);
-
-static void       save_print_settings_as_parasite            (GKeyFile          *settings_key_file,
-                                                              gint32             image_ID);
-
-static void       add_print_setting_to_key_file              (const gchar       *key,
+static void       print_settings_add_to_key_file             (const gchar       *key,
                                                               const gchar       *value,
                                                               gpointer           data);
 
@@ -43,10 +42,10 @@ static GKeyFile * print_settings_key_file_from_resource_file (void);
 
 static GKeyFile * print_settings_key_file_from_parasite      (gint32             image_ID);
 
-static gboolean   load_print_settings_from_key_file          (PrintData         *data,
+static gboolean   print_settings_load_from_key_file          (PrintData         *data,
                                                               GKeyFile          *key_file);
 
-static GKeyFile * check_version                              (GKeyFile          *key_file);
+static gboolean   print_settings_check_version               (GKeyFile          *key_file);
 
 /*
  * set GtkPrintSettings from the contents of a "print-settings"
@@ -54,7 +53,7 @@ static GKeyFile * check_version                              (GKeyFile          
  * file of the same name
  */
 gboolean
-load_print_settings (PrintData *data)
+print_settings_load (PrintData *data)
 {
   GKeyFile *key_file = print_settings_key_file_from_parasite (data->image_id);
 
@@ -63,7 +62,7 @@ load_print_settings (PrintData *data)
 
   if (key_file)
     {
-      load_print_settings_from_key_file (data, key_file);
+      print_settings_load_from_key_file (data, key_file);
       g_key_file_free (key_file);
       return TRUE;
     }
@@ -76,13 +75,11 @@ load_print_settings (PrintData *data)
  * and as an image parasite
  */
 void
-save_print_settings (PrintData *data)
+print_settings_save (PrintData *data)
 {
-  GKeyFile *key_file;
+  GKeyFile *key_file = print_settings_key_file_from_settings (data);
 
-  key_file = print_settings_key_file_from_settings (data);
-
-  save_print_settings_resource_file (key_file);
+  print_utils_key_file_save_as_rcfile (key_file, PRINT_SETTINGS_NAME);
 
   /* image setup */
   if (gimp_image_is_valid (data->image_id))
@@ -102,7 +99,9 @@ save_print_settings (PrintData *data)
       g_key_file_set_boolean (key_file, "image-setup",
                               "use-full-page", data->use_full_page);
 
-      save_print_settings_as_parasite (key_file, data->image_id);
+      print_utils_key_file_save_as_parasite (key_file,
+                                             data->image_id,
+                                             PRINT_SETTINGS_NAME);
     }
 
   g_key_file_free (key_file);
@@ -117,9 +116,6 @@ print_settings_key_file_from_settings (PrintData *data)
   GtkPrintOperation *operation = data->operation;
   GtkPrintSettings  *settings;
   GKeyFile          *key_file  = g_key_file_new ();
-  GtkPageSetup      *page_setup;
-
-  g_key_file_set_list_separator (key_file, '=');
 
   /* put version information into the file */
   g_key_file_set_integer (key_file, "meta", "major-version",
@@ -129,132 +125,25 @@ print_settings_key_file_from_settings (PrintData *data)
 
   /* save the contents of the GtkPrintSettings for the operation */
   settings = gtk_print_operation_get_print_settings (operation);
+
   if (settings)
-    {
-      gtk_print_settings_foreach (settings, add_print_setting_to_key_file,
-                                  key_file);
-    }
-
-  /* page setup */
-  page_setup = gtk_print_operation_get_default_page_setup (operation);
-  if (page_setup)
-    {
-      GtkPaperSize       *paper_size;
-      GtkPageOrientation  orientation;
-      const gchar        *name;
-
-      orientation = gtk_page_setup_get_orientation (page_setup);
-      g_key_file_set_integer (key_file, "page-setup", "orientation",
-                              orientation);
-
-      paper_size = gtk_page_setup_get_paper_size (page_setup);
-
-      name = gtk_paper_size_get_name (paper_size);
-      if (name)
-        {
-          g_key_file_set_string (key_file, "paper-size", "name", name);
-
-          name = gtk_paper_size_get_ppd_name (paper_size);
-
-          if (name)
-            {
-              g_key_file_set_string (key_file, "paper-size", "ppd-name",
-                                     name);
-            }
-
-          if (name || gtk_paper_size_is_custom (paper_size))
-            {
-              g_key_file_set_string (key_file, "paper-size", "display-name",
-                                     gtk_paper_size_get_display_name (paper_size));
-              g_key_file_set_double (key_file, "paper-size", "width",
-                                     gtk_paper_size_get_width (paper_size,
-                                                               GTK_UNIT_POINTS));
-              g_key_file_set_double (key_file, "paper-size", "height",
-                                     gtk_paper_size_get_height (paper_size,
-                                                                GTK_UNIT_POINTS));
-            }
-        }
-    }
-
-#if 0
-  /* other settings */
-  g_key_file_set_boolean (key_file, "other-settings", "show-header",
-                          data->show_info_header);
-#endif
+    gtk_print_settings_foreach (settings,
+                                print_settings_add_to_key_file, key_file);
 
   return key_file;
-}
-
-/*
- * create a resource file from a GKeyFile holding the settings
- */
-static void
-save_print_settings_resource_file (GKeyFile *settings_key_file)
-{
-  gchar  *filename;
-  gchar  *contents;
-  gsize   length;
-  GError *error = NULL;
-
-  contents = g_key_file_to_data (settings_key_file, &length, &error);
-  if (error)
-    {
-      g_warning ("Unable to get contents of settings key file: %s",
-                 error->message);
-      g_error_free (error);
-      return;
-    }
-
-  filename = g_build_filename (gimp_directory (), "print-settings", NULL);
-
-  if (! g_file_set_contents (filename, contents, length, &error))
-    {
-      g_warning ("Unable to write print settings to '%s': %s",
-                 gimp_filename_to_utf8 (filename), error->message);
-      g_error_free (error);
-    }
-
-  g_free (filename);
-  g_free (contents);
-}
-
-/*
- * create an image parasite called "print-settings" from a GKeyFile
- * holding the print settings
- */
-static void
-save_print_settings_as_parasite (GKeyFile *settings_key_file,
-                                 gint32    image_ID)
-{
-  gchar     *contents;
-  gsize      length;
-  GError    *error = NULL;
-
-  contents = g_key_file_to_data (settings_key_file, &length, &error);
-  if (! contents)
-    {
-      g_warning ("Unable to get contents of settings key file: %s",
-                 error->message);
-      g_error_free (error);
-      return;
-    }
-
-  gimp_image_attach_new_parasite (image_ID, "print-settings",
-                                  0, length, contents);
-  g_free (contents);
 }
 
 /*
  * callback used in gtk_print_settings_foreach loop
  */
 static void
-add_print_setting_to_key_file (const gchar *key,
-                               const gchar *value,
-                               gpointer     data)
+print_settings_add_to_key_file (const gchar *key,
+                                const gchar *value,
+                                gpointer     data)
 {
   GKeyFile *key_file = data;
 
-  g_key_file_set_value (key_file, "print-settings", key, value);
+  g_key_file_set_value (key_file, PRINT_SETTINGS_NAME, key, value);
 }
 
 /*
@@ -263,22 +152,17 @@ add_print_setting_to_key_file (const gchar *key,
 static GKeyFile *
 print_settings_key_file_from_resource_file (void)
 {
-  GKeyFile  *key_file = g_key_file_new ();
-  gchar     *filename;
+  GKeyFile *key_file;
 
-  g_key_file_set_list_separator (key_file, '=');
+  key_file = print_utils_key_file_load_from_rcfile (PRINT_SETTINGS_NAME);
 
-  filename = g_build_filename (gimp_directory (), "print-settings", NULL);
-
-  if (! g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, NULL))
+  if (key_file && ! print_settings_check_version (key_file))
     {
       g_key_file_free (key_file);
-      key_file = NULL;
+      return NULL;
     }
 
-  g_free (filename);
-
-  return check_version (key_file);
+  return key_file;
 }
 
 /* load information from an image parasite called "print-settings"
@@ -288,73 +172,26 @@ print_settings_key_file_from_resource_file (void)
 static GKeyFile *
 print_settings_key_file_from_parasite (gint32 image_ID)
 {
-  GimpParasite *parasite;
-  GKeyFile     *key_file;
+  GKeyFile *key_file;
 
-  parasite = gimp_image_parasite_find (image_ID, "print-settings");
+  key_file = print_utils_key_file_load_from_parasite (image_ID,
+                                                      PRINT_SETTINGS_NAME);
 
-  if (! parasite)
-    return NULL;
-
-  key_file = g_key_file_new ();
-
-  g_key_file_set_list_separator (key_file, '=');
-
-  if (! g_key_file_load_from_data (key_file,
-                                   gimp_parasite_data (parasite),
-                                   gimp_parasite_data_size (parasite),
-                                   G_KEY_FILE_NONE, NULL))
+  if (key_file && ! print_settings_check_version (key_file))
     {
       g_key_file_free (key_file);
-      key_file = NULL;;
+      return NULL;
     }
 
-  gimp_parasite_free (parasite);
-
-  return check_version (key_file);
-}
-
-static GtkPaperSize *
-load_paper_size_from_key_file (GKeyFile *key_file)
-{
-  const gchar *name;
-  const gchar *ppd_name;
-  const gchar *display_name;
-  gdouble      width;
-  gdouble      height;
-
-  name         = g_key_file_get_string (key_file, "paper-size", "name",
-                                        NULL);
-  ppd_name     = g_key_file_get_string (key_file, "paper-size", "ppd-name",
-                                        NULL);
-  display_name = g_key_file_get_string (key_file, "paper-size", "display-name",
-                                        NULL);
-  width        = g_key_file_get_double (key_file, "paper-size", "width",  NULL);
-  height       = g_key_file_get_double (key_file, "paper-size", "height", NULL);
-
-  if (ppd_name && display_name)
-    {
-      return gtk_paper_size_new_from_ppd (ppd_name,
-                                          display_name, width, height);
-    }
-
-  if (name && display_name)
-    {
-      return gtk_paper_size_new_custom (name,
-                                        display_name, width, height,
-                                        GTK_UNIT_POINTS);
-    }
-
-  return gtk_paper_size_new (name);
+  return key_file;
 }
 
 static gboolean
-load_print_settings_from_key_file (PrintData *data,
+print_settings_load_from_key_file (PrintData *data,
                                    GKeyFile  *key_file)
 {
   GtkPrintOperation  *operation = data->operation;
   GtkPrintSettings   *settings;
-  GtkPageSetup       *page_setup;
   gchar             **keys;
   gsize               n_keys;
   gint                i;
@@ -363,7 +200,7 @@ load_print_settings_from_key_file (PrintData *data,
   if (! settings)
     settings = gtk_print_settings_new ();
 
-  keys = g_key_file_get_keys (key_file, "print-settings", &n_keys, NULL);
+  keys = g_key_file_get_keys (key_file, PRINT_SETTINGS_NAME, &n_keys, NULL);
 
   if (! keys)
     return FALSE;
@@ -372,7 +209,8 @@ load_print_settings_from_key_file (PrintData *data,
     {
       gchar *value;
 
-      value = g_key_file_get_value (key_file, "print-settings", keys[i], NULL);
+      value = g_key_file_get_value (key_file,
+                                    PRINT_SETTINGS_NAME, keys[i], NULL);
 
       if (value)
         {
@@ -382,34 +220,6 @@ load_print_settings_from_key_file (PrintData *data,
     }
 
   g_strfreev (keys);
-
-  /* page setup parameters */
-
-  page_setup = gtk_print_operation_get_default_page_setup (operation);
-  if (! page_setup)
-    page_setup = gtk_page_setup_new ();
-
-  if (g_key_file_has_key (key_file, "paper-size", "name", NULL))
-    {
-      GtkPaperSize *paper_size = load_paper_size_from_key_file (key_file);
-
-      gtk_page_setup_set_paper_size_and_default_margins (page_setup,
-                                                         paper_size);
-    }
-
-  if (g_key_file_has_key (key_file, "page-setup", "orientation", NULL))
-    {
-      GtkPageOrientation  orientation;
-
-      orientation = g_key_file_get_integer (key_file,
-                                            "page-setup", "orientation", NULL);
-      gtk_page_setup_set_orientation (page_setup, orientation);
-      gtk_print_settings_set_orientation (settings, orientation);
-      data->orientation = orientation;
-    }
-
-  gtk_print_operation_set_default_page_setup (operation, page_setup);
-  g_object_unref (page_setup);
 
   if (g_key_file_has_key (key_file, "image-setup", "unit", NULL))
     {
@@ -447,45 +257,31 @@ load_print_settings_from_key_file (PrintData *data,
                                                     "image-setup", "use-full-page", NULL);
     }
 
-#if 0
-  /* other settings */
-  if (g_key_file_has_key (key_file, "other-settings", "show-header", NULL))
-    {
-      data->show_info_header = g_key_file_get_boolean (key_file,
-                                                       "other-settings",
-                                                       "show-header", NULL);
-    }
-  else
-#endif
-    {
-      data->show_info_header = FALSE;
-    }
-
   gtk_print_operation_set_print_settings (operation, settings);
 
   return TRUE;
 }
 
-static GKeyFile *
-check_version (GKeyFile *key_file)
+static gboolean
+print_settings_check_version (GKeyFile *key_file)
 {
   gint  major_version;
   gint  minor_version;
 
-  if (! key_file || ! g_key_file_has_group (key_file, "meta"))
-    return NULL;
+  if (! g_key_file_has_group (key_file, "meta"))
+    return FALSE;
 
   major_version = g_key_file_get_integer (key_file,
                                           "meta", "major-version", NULL);
 
   if (major_version != PRINT_SETTINGS_MAJOR_VERSION)
-    return NULL;
+    return FALSE;
 
   minor_version = g_key_file_get_integer (key_file,
                                           "meta", "minor-version", NULL);
 
   if (minor_version != PRINT_SETTINGS_MINOR_VERSION)
-    return NULL;
+    return FALSE;
 
-  return key_file;
+  return TRUE;
 }

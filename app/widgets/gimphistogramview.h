@@ -20,9 +20,6 @@
 #define __GIMP_HISTOGRAM_VIEW_H__
 
 
-#include <gtk/gtkdrawingarea.h>
-
-
 #define GIMP_TYPE_HISTOGRAM_VIEW            (gimp_histogram_view_get_type ())
 #define GIMP_HISTOGRAM_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_HISTOGRAM_VIEW, GimpHistogramView))
 #define GIMP_HISTOGRAM_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_HISTOGRAM_VIEW, GimpHistogramViewClass))
@@ -38,6 +35,7 @@ struct _GimpHistogramView
   GtkDrawingArea         parent_instance;
 
   GimpHistogram         *histogram;
+  GimpHistogram         *bg_histogram;
   GimpHistogramChannel   channel;
   GimpHistogramScale     scale;
   gint                   start;
@@ -45,9 +43,6 @@ struct _GimpHistogramView
 
   gint                   border_width;
   gint                   subdivisions;
-
-  /* hack */
-  gboolean               light_histogram;
 };
 
 struct _GimpHistogramViewClass
@@ -60,28 +55,34 @@ struct _GimpHistogramViewClass
 };
 
 
-GType           gimp_histogram_view_get_type      (void) G_GNUC_CONST;
+GType           gimp_histogram_view_get_type       (void) G_GNUC_CONST;
 
-GtkWidget     * gimp_histogram_view_new           (gboolean              range);
+GtkWidget     * gimp_histogram_view_new            (gboolean             range);
 
-void            gimp_histogram_view_set_histogram (GimpHistogramView    *view,
-                                                   GimpHistogram        *histogram);
-GimpHistogram * gimp_histogram_view_get_histogram (GimpHistogramView    *view);
+void            gimp_histogram_view_set_histogram  (GimpHistogramView   *view,
+                                                    GimpHistogram       *histogram);
+GimpHistogram * gimp_histogram_view_get_histogram  (GimpHistogramView   *view);
 
-void            gimp_histogram_view_set_channel   (GimpHistogramView    *view,
-                                                   GimpHistogramChannel  channel);
-GimpHistogramChannel gimp_histogram_view_get_channel (GimpHistogramView *view);
+void            gimp_histogram_view_set_background (GimpHistogramView   *view,
+                                                    GimpHistogram       *histogram);
+GimpHistogram * gimp_histogram_view_get_background (GimpHistogramView   *view);
 
-void            gimp_histogram_view_set_scale     (GimpHistogramView    *view,
-                                                   GimpHistogramScale    scale);
-GimpHistogramScale gimp_histogram_view_get_scale  (GimpHistogramView    *view);
+void            gimp_histogram_view_set_channel    (GimpHistogramView   *view,
+                                                    GimpHistogramChannel channel);
+GimpHistogramChannel
+                gimp_histogram_view_get_channel    (GimpHistogramView   *view);
 
-void            gimp_histogram_view_set_range     (GimpHistogramView    *view,
-                                                   gint                  start,
-                                                   gint                  end);
-void            gimp_histogram_view_get_range     (GimpHistogramView    *view,
-                                                   gint                 *start,
-                                                   gint                 *end);
+void            gimp_histogram_view_set_scale      (GimpHistogramView   *view,
+                                                    GimpHistogramScale   scale);
+GimpHistogramScale
+                gimp_histogram_view_get_scale      (GimpHistogramView   *view);
+
+void            gimp_histogram_view_set_range      (GimpHistogramView   *view,
+                                                    gint                 start,
+                                                    gint                 end);
+void            gimp_histogram_view_get_range      (GimpHistogramView   *view,
+                                                    gint                *start,
+                                                    gint                *end);
 
 
 #endif /* __GIMP_HISTOGRAM_VIEW_H__ */

@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#include <string.h>
-
 #include <glib-object.h>
 
 #include "libgimpconfig/gimpconfig.h"
@@ -30,6 +28,7 @@
 #include "core-types.h"
 
 #include "gimp.h"
+#include "gimp-utils.h"
 #include "gimpcontainer.h"
 #include "gimpmarshal.h"
 
@@ -298,7 +297,7 @@ gimp_container_get_memsize (GimpObject *object,
 
       memsize += (sizeof (GList) +
                   sizeof (GimpContainerHandler) +
-                  strlen (handler->signame) + 1);
+                  gimp_string_get_memsize (handler->signame));
     }
 
   return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
@@ -782,6 +781,44 @@ gimp_container_get_child_by_index (const GimpContainer *container,
 
   return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
                                                                    index);
+}
+
+/**
+ * gimp_container_get_first_child:
+ * @container: a #GimpContainer
+ *
+ * Return value: the first child object stored in @container or %NULL if the
+ *               container is empty
+ */
+GimpObject *
+gimp_container_get_first_child (const GimpContainer *container)
+{
+  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+
+  if (container->num_children > 0)
+    return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
+                                                                     0);
+
+  return NULL;
+}
+
+/**
+ * gimp_container_get_last_child:
+ * @container: a #GimpContainer
+ *
+ * Return value: the last child object stored in @container or %NULL if the
+ *               container is empty
+ */
+GimpObject *
+gimp_container_get_last_child (const GimpContainer *container)
+{
+  g_return_val_if_fail (GIMP_IS_CONTAINER (container), NULL);
+
+  if (container->num_children > 0)
+    return GIMP_CONTAINER_GET_CLASS (container)->get_child_by_index (container,
+                                                                     container->num_children - 1);
+
+  return NULL;
 }
 
 gint

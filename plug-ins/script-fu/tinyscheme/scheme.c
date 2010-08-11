@@ -287,6 +287,7 @@ INTERFACE INLINE void setimmutable(pointer p) { typeflag(p) |= T_IMMUTABLE; }
 #define cddr(p)          cdr(cdr(p))
 #define cadar(p)         car(cdr(car(p)))
 #define caddr(p)         car(cdr(cdr(p)))
+#define cdaar(p)         cdr(car(car(p)))
 #define cadaar(p)        car(cdr(car(car(p))))
 #define cadddr(p)        car(cdr(cdr(cdr(p))))
 #define cddddr(p)        cdr(cdr(cdr(cdr(p))))
@@ -376,7 +377,6 @@ static void finalize_cell(scheme *sc, pointer a);
 static int count_consecutive_cells(pointer x, int needed);
 static pointer find_slot_in_env(scheme *sc, pointer env, pointer sym, int all);
 static pointer mk_number(scheme *sc, num n);
-static pointer mk_empty_string(scheme *sc, int len, gunichar fill);
 static char *store_string(scheme *sc, int len, const char *str, gunichar fill);
 static pointer mk_vector(scheme *sc, int len);
 static pointer mk_atom(scheme *sc, char *q);
@@ -406,8 +406,9 @@ static pointer mk_continuation(scheme *sc, pointer d);
 static pointer reverse(scheme *sc, pointer a);
 static pointer reverse_in_place(scheme *sc, pointer term, pointer list);
 static pointer append(scheme *sc, pointer a, pointer b);
-static int list_length(scheme *sc, pointer a);
-static int eqv(pointer a, pointer b);
+int list_length(scheme *sc, pointer a);
+int eqv(pointer a, pointer b);
+
 static INLINE void dump_stack_mark(scheme *);
 static pointer opexe_0(scheme *sc, enum scheme_opcodes op);
 static pointer opexe_1(scheme *sc, enum scheme_opcodes op);
@@ -421,9 +422,6 @@ static void assign_syntax(scheme *sc, char *name);
 static int syntaxnum(pointer p);
 static void assign_proc(scheme *sc, enum scheme_opcodes, char *name);
 scheme *scheme_init_new(void);
-#if !STANDALONE
-void scheme_call(scheme *sc, pointer func, pointer args);
-#endif
 
 #define num_ivalue(n)       (n.is_fixnum?(n).value.ivalue:(long)(n).value.rvalue)
 #define num_rvalue(n)       (!n.is_fixnum?(n).value.rvalue:(double)(n).value.ivalue)
@@ -723,7 +721,7 @@ static pointer reserve_cells(scheme *sc, int n) {
 static pointer get_consecutive_cells(scheme *sc, int n) {
   pointer x;
 
-  if(sc->no_memory) { return sc->sink; }
+  if (sc->no_memory) { return sc->sink; }
 
   /* Are there any cells available? */
   x=find_consecutive_cells(sc,n);
@@ -1017,7 +1015,7 @@ INTERFACE pointer mk_counted_string(scheme *sc, const char *str, int len) {
      return (x);
 }
 
-static pointer mk_empty_string(scheme *sc, int len, gunichar fill) {
+INTERFACE pointer mk_empty_string(scheme *sc, int len, gunichar fill) {
      pointer x = get_cell(sc, sc->NIL, sc->NIL);
 
      strvalue(x) = store_string(sc,len,0,fill);
@@ -1028,6 +1026,7 @@ static pointer mk_empty_string(scheme *sc, int len, gunichar fill) {
 
 INTERFACE static pointer mk_vector(scheme *sc, int len) {
      pointer x=get_consecutive_cells(sc,len/2+len%2+1);
+     if(sc->no_memory) { return sc->sink; }
      typeflag(x) = (T_VECTOR | T_ATOM);
      ivalue_unchecked(x)=len;
      set_num_integer(x);
@@ -2110,17 +2109,18 @@ static pointer append(scheme *sc, pointer a, pointer b) {
 }
 
 /* equivalence of atoms */
-static int eqv(pointer a, pointer b) {
+int eqv(pointer a, pointer b) {
      if (is_string(a)) {
           if (is_string(b))
                return (strvalue(a) == strvalue(b));
           else
                return (0);
      } else if (is_number(a)) {
-          if (is_number(b))
-               return num_eq(nvalue(a),nvalue(b));
-          else
-               return (0);
+          if (is_number(b)) {
+               if (num_is_integer(a) == num_is_integer(b))
+                    return num_eq(nvalue(a),nvalue(b));
+          }
+          return (0);
      } else if (is_character(a)) {
           if (is_character(b))
                return charvalue(a)==charvalue(b);
@@ -2150,9 +2150,6 @@ static int eqv(pointer a, pointer b) {
 
 #if !defined(USE_ALIST_ENV) || !defined(USE_OBJECT_LIST)
 
-#ifdef __GNUC__
-#warning FIXME: Update hash_fn() to handle UTF-8 coded keys
-#endif
 static int hash_fn(const char *key, int table_size)
 {
   unsigned int hashed = 0;
@@ -2475,7 +2472,8 @@ static pointer opexe_0(scheme *sc, enum scheme_opcodes op) {
           if (!file_push(sc,strvalue(car(sc->args)))) {
                Error_1(sc,"unable to open", car(sc->args));
           }
-          s_goto(sc,OP_T0LVL);
+          else
+            { s_retbool(1); }
 
      case OP_T0LVL: /* top level */
           if(file_interactive(sc)) {
@@ -2759,6 +2757,9 @@ static pointer opexe_0(scheme *sc, enum scheme_opcodes op) {
      case OP_LET1:       /* let (calculate parameters) */
           sc->args = cons(sc, sc->value, sc->args);
           if (is_pair(sc->code)) { /* continue */
+               if (!is_pair(car(sc->code)) || !is_pair(cdar(sc->code))) {
+                    Error_1(sc, "Bad syntax of binding spec in let :", car(sc->code));
+               }
                s_save(sc,OP_LET1, sc->args, cdr(sc->code));
                sc->code = cadar(sc->code);
                sc->args = sc->NIL;
@@ -2778,7 +2779,10 @@ static pointer opexe_0(scheme *sc, enum scheme_opcodes op) {
           }
           if (is_symbol(car(sc->code))) {    /* named let */
                for (x = cadr(sc->code), sc->args = sc->NIL; x != sc->NIL; x = cdr(x)) {
-
+                    if (!is_pair(x))
+                        Error_1(sc, "Bad syntax of binding in let :", x);
+                    if (!is_list(sc, car(x)))
+                        Error_1(sc, "Bad syntax of binding in let :", car(x));
                     sc->args = cons(sc, caar(x), sc->args);
                }
                x = mk_closure(sc, cons(sc, reverse_in_place(sc, sc->NIL, sc->args), cddr(sc->code)), sc->envir);
@@ -2796,6 +2800,9 @@ static pointer opexe_0(scheme *sc, enum scheme_opcodes op) {
                new_frame_in_env(sc, sc->envir);
                sc->code = cdr(sc->code);
                s_goto(sc,OP_BEGIN);
+          }
+          if(!is_pair(car(sc->code)) || !is_pair(caar(sc->code)) || !is_pair(cdaar(sc->code))) {
+               Error_1(sc,"Bad syntax of binding spec in let* :",car(sc->code));
           }
           s_save(sc,OP_LET1AST, cdr(sc->code), car(sc->code));
           sc->code = cadaar(sc->code);
@@ -2839,6 +2846,9 @@ static pointer opexe_1(scheme *sc, enum scheme_opcodes op) {
      case OP_LET1REC:    /* letrec (calculate parameters) */
           sc->args = cons(sc, sc->value, sc->args);
           if (is_pair(sc->code)) { /* continue */
+               if (!is_pair(car(sc->code)) || !is_pair(cdar(sc->code))) {
+                    Error_1(sc,"Bad syntax of binding spec in letrec :",car(sc->code));
+               }
                s_save(sc,OP_LET1REC, sc->args, cdr(sc->code));
                sc->code = cadar(sc->code);
                sc->args = sc->NIL;
@@ -3434,6 +3444,7 @@ static pointer opexe_2(scheme *sc, enum scheme_opcodes op) {
                Error_1(sc,"vector: not a proper list:",sc->args);
           }
           vec=mk_vector(sc,len);
+          if(sc->no_memory) { s_return(sc, sc->sink); }
           for (x = sc->args, i = 0; is_pair(x); x = cdr(x), i++) {
                set_vector_elem(vec,i,car(x));
           }
@@ -3451,6 +3462,7 @@ static pointer opexe_2(scheme *sc, enum scheme_opcodes op) {
                fill=cadr(sc->args);
           }
           vec=mk_vector(sc,len);
+          if(sc->no_memory) { s_return(sc, sc->sink); }
           if(fill!=sc->NIL) {
                fill_vector(vec,fill);
           }
@@ -3496,62 +3508,62 @@ static pointer opexe_2(scheme *sc, enum scheme_opcodes op) {
 }
 
 static int is_list(scheme *sc, pointer a) {
-        pointer slow, fast;
+    pointer slow, fast;
 
-        slow = fast = a;
-        while (1)
+    slow = fast = a;
+    while (1)
+    {
+        if (fast == sc->NIL)
+                return 1;
+        if (!is_pair(fast))
+                return 0;
+        fast = cdr(fast);
+        if (fast == sc->NIL)
+                return 1;
+        if (!is_pair(fast))
+                return 0;
+        fast = cdr(fast);
+
+        slow = cdr(slow);
+        if (fast == slow)
         {
-                if (fast == sc->NIL)
-                        return 1;
-                if (!is_pair(fast))
-                        return 0;
-                fast = cdr(fast);
-                if (fast == sc->NIL)
-                        return 1;
-                if (!is_pair(fast))
-                        return 0;
-                fast = cdr(fast);
-
-                slow = cdr(slow);
-                if (fast == slow)
-                {
-                        /* the fast pointer has looped back around and caught up
-                           with the slow pointer, hence the structure is circular,
-                           not of finite length, and therefore not a list */
-                        return 0;
-                }
+            /* the fast pointer has looped back around and caught up
+               with the slow pointer, hence the structure is circular,
+               not of finite length, and therefore not a list */
+            return 0;
         }
+    }
 }
 
-static int list_length(scheme *sc, pointer a) {
+int list_length(scheme *sc, pointer a) {
     int i=0;
-        pointer slow, fast;
+    pointer slow, fast;
 
-        slow = fast = a;
-        while (1)
+    slow = fast = a;
+    while (1)
+    {
+        if (fast == sc->NIL)
+                return i;
+        if (!is_pair(fast))
+                return i;
+        fast = cdr(fast);
+        ++i;
+        if (fast == sc->NIL)
+                return i;
+        if (!is_pair(fast))
+                return i;
+        ++i;
+        fast = cdr(fast);
+
+        slow = cdr(slow);
+        if (fast == slow)
         {
-                if (fast == sc->NIL)
-                        return i;
-                if (!is_pair(fast))
-                        return i;
-                fast = cdr(fast);
-                ++i;
-                if (fast == sc->NIL)
-                        return i;
-                if (!is_pair(fast))
-                        return i;
-                ++i;
-                fast = cdr(fast);
-
-                slow = cdr(slow);
-                if (fast == slow)
-                {
-                        /* the fast pointer has looped back around and caught up
-                           with the slow pointer, hence the structure is circular,
-                           not of finite length, and therefore not a list */
-                        return -1;
-                }
+            /* the fast pointer has looped back around and caught up
+               with the slow pointer, hence the structure is circular,
+               not of finite length, and therefore not a list */
+            return -1;
         }
+    }
 }
 
 static pointer opexe_3(scheme *sc, enum scheme_opcodes op) {
@@ -4731,27 +4743,38 @@ void scheme_define(scheme *sc, pointer envir, pointer symbol, pointer value) {
 }
 
 #if !STANDALONE
-void scheme_apply0(scheme *sc, const char *procname) {
-     pointer carx=mk_symbol(sc,procname);
-     pointer cdrx=sc->NIL;
+pointer scheme_apply0(scheme *sc, const char *procname)
+{ return scheme_eval(sc, cons(sc,mk_symbol(sc,procname),sc->NIL)); }
 
-     dump_stack_reset(sc);
-     sc->envir = sc->global_env;
-     sc->code = cons(sc,carx,cdrx);
-     sc->interactive_repl=0;
-     sc->retcode=0;
-     Eval_Cycle(sc,OP_EVAL);
-     }
-
-void scheme_call(scheme *sc, pointer func, pointer args) {
-   dump_stack_reset(sc);
-   sc->envir = sc->global_env;
-   sc->args = args;
-   sc->code = func;
-   sc->interactive_repl =0;
-   sc->retcode = 0;
-   Eval_Cycle(sc, OP_APPLY);
+/* "func" and "args" are assumed to be already eval'ed. */
+pointer scheme_call(scheme *sc, pointer func, pointer args)
+{
+  int old_repl = sc->interactive_repl;
+  sc->interactive_repl = 0;
+  s_save(sc,OP_QUIT,sc->NIL,sc->NIL);
+  sc->envir = sc->global_env;
+  sc->args = args;
+  sc->code = func;
+  sc->retcode = 0;
+  Eval_Cycle(sc, OP_APPLY);
+  sc->interactive_repl = old_repl;
+  return sc->value;
 }
+
+pointer scheme_eval(scheme *sc, pointer obj)
+{
+  int old_repl = sc->interactive_repl;
+  sc->interactive_repl = 0;
+  s_save(sc,OP_QUIT,sc->NIL,sc->NIL);
+  sc->args = sc->NIL;
+  sc->code = obj;
+  sc->retcode = 0;
+  Eval_Cycle(sc, OP_EVAL);
+  sc->interactive_repl = old_repl;
+  return sc->value;
+}
+
+
 #endif
 
 /* ========== Main ========== */
@@ -4781,7 +4804,13 @@ int main(int argc, char **argv) {
     printf(banner);
   }
   if(argc==2 && strcmp(argv[1],"-?")==0) {
-    printf("Usage: %s [-? | <file1> <file2> ... | -1 <file> <arg1> <arg2> ...]\n\tUse - as filename for stdin.\n",argv[0]);
+    printf("Usage: tinyscheme -?\n");
+    printf("or:    tinyscheme [<file1> <file2> ...]\n");
+    printf("followed by\n");
+    printf("          -1 <file> [<arg1> <arg2> ...]\n");
+    printf("          -c <Scheme commands> [<arg1> <arg2> ...]\n");
+    printf("assuming that the executable is named tinyscheme.\n");
+    printf("Use - as filename for stdin.\n");
     return 1;
   }
   if(!scheme_init(&sc)) {

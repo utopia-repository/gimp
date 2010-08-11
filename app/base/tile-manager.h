@@ -20,15 +20,13 @@
 #define __TILE_MANAGER_H__
 
 
-/* Creates a new tile manager with the specified width for the
- *  toplevel. The toplevel size is used to compute the number of
- *  levels and their size. Each level is 1/2 the width and height of
- *  the level above it.
- *
- * The toplevel is level 0. The smallest level in the hierarchy
- *  is "nlevels - 1". That level will be smaller than TILE_WIDTH x
- *  TILE_HEIGHT
- */
+#define GIMP_TYPE_TILE_MANAGER               (gimp_tile_manager_get_type ())
+#define GIMP_VALUE_HOLDS_TILE_MANAGER(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_TILE_MANAGER))
+
+GType         gimp_tile_manager_get_type     (void) G_GNUC_CONST;
+
+
+/* Creates a new tile manager with the specified size */
 TileManager * tile_manager_new               (gint width,
                                               gint height,
                                               gint bpp);
@@ -79,7 +77,7 @@ void          tile_manager_map               (TileManager *tm,
 
 /* Validate a tiles memory.
  */
-void          tile_manager_validate          (TileManager  *tm,
+void          tile_manager_validate_tile     (TileManager  *tm,
                                               Tile         *tile);
 
 void          tile_manager_invalidate_area   (TileManager       *tm,

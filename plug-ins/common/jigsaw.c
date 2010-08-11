@@ -333,7 +333,7 @@ struct globals_tag
 
 typedef struct globals_tag globals_t;
 
-static globals_t globals = { { 0 } };
+static globals_t globals;
 
 MAIN ()
 
@@ -2435,8 +2435,9 @@ jigsaw_dialog (GimpDrawable *drawable)
   gtk_widget_show (main_vbox);
 
   preview = gimp_aspect_preview_new (drawable, NULL);
-  gtk_box_pack_start_defaults (GTK_BOX (main_vbox), preview);
+  gtk_box_pack_start (GTK_BOX (main_vbox), preview, TRUE, TRUE, 0);
   gtk_widget_show (preview);
+
   g_signal_connect_swapped (preview, "invalidated",
                             G_CALLBACK (jigsaw),
                             drawable);

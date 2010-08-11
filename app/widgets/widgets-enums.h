@@ -112,8 +112,8 @@ GType gimp_histogram_scale_get_type (void) G_GNUC_CONST;
 
 typedef enum
 {
-  GIMP_HISTOGRAM_SCALE_LINEAR,       /*< desc="Linear"      >*/
-  GIMP_HISTOGRAM_SCALE_LOGARITHMIC   /*< desc="Logarithmic" >*/
+  GIMP_HISTOGRAM_SCALE_LINEAR,       /*< desc="Linear histogram"      >*/
+  GIMP_HISTOGRAM_SCALE_LOGARITHMIC   /*< desc="Logarithmic histogram" >*/
 } GimpHistogramScale;
 
 
@@ -229,6 +229,7 @@ typedef enum  /*< skip >*/
   GIMP_TOOL_CURSOR_RECT_SELECT,
   GIMP_TOOL_CURSOR_ELLIPSE_SELECT,
   GIMP_TOOL_CURSOR_FREE_SELECT,
+  GIMP_TOOL_CURSOR_POLYGON_SELECT,
   GIMP_TOOL_CURSOR_FUZZY_SELECT,
   GIMP_TOOL_CURSOR_PATHS,
   GIMP_TOOL_CURSOR_PATHS_ANCHOR,
@@ -279,6 +280,7 @@ typedef enum  /*< skip >*/
   GIMP_CURSOR_MODIFIER_BACKGROUND,
   GIMP_CURSOR_MODIFIER_PATTERN,
   GIMP_CURSOR_MODIFIER_JOIN,
+  GIMP_CURSOR_MODIFIER_SELECT,
   GIMP_CURSOR_MODIFIER_LAST
 } GimpCursorModifier;
 

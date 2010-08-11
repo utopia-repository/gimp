@@ -113,7 +113,7 @@ gimp_stroke_editor_set_property (GObject      *object,
     case PROP_OPTIONS:
       if (editor->options)
         g_object_unref (editor->options);
-      editor->options = GIMP_STROKE_OPTIONS (g_value_dup_object (value));
+      editor->options = g_value_dup_object (value);
       break;
 
     case PROP_RESOLUTION:
@@ -360,10 +360,11 @@ gimp_stroke_editor_paint_button (GtkWidget       *widget,
                                  GdkEventExpose  *event,
                                  gpointer         data)
 {
+  GtkStyle      *style = gtk_widget_get_style (widget);
   GtkAllocation *alloc = &widget->allocation;
   gint           w     = MIN (alloc->width, alloc->height) * 2 / 3;
 
-  gtk_paint_arrow (widget->style, widget->window,
+  gtk_paint_arrow (style, widget->window,
                    widget->state, GTK_SHADOW_IN,
                    &event->area, widget, NULL,
                    data ? GTK_ARROW_LEFT : GTK_ARROW_RIGHT, TRUE,
@@ -382,7 +383,7 @@ gimp_stroke_editor_dash_preset (GtkWidget         *widget,
   if (gimp_int_combo_box_get_active (GIMP_INT_COMBO_BOX (widget), &value) &&
       value != GIMP_DASH_CUSTOM)
     {
-      gimp_stroke_options_set_dash_pattern (options, value, NULL);
+      gimp_stroke_options_take_dash_pattern (options, value, NULL);
     }
 }
 

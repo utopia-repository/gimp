@@ -132,13 +132,13 @@ GIMPPRINT_REQUIRED_VERSION = 4.2.0
 GIMPPRINT_TOONEW_VERSION = 4.3.0
 GIMP_API_VERSION = 2.0
 GIMP_APP_VERSION = 2.2
-GIMP_BINARY_AGE = 210
+GIMP_BINARY_AGE = 211
 GIMP_DATA_VERSION = 2.0
 GIMP_DESKTOP_ICON = wilber-icon.png
 GIMP_FULL_NAME = The GIMP
-GIMP_INTERFACE_AGE = 10
+GIMP_INTERFACE_AGE = 11
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 10
+GIMP_MICRO_VERSION = 11
 GIMP_MINOR_VERSION = 2
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
@@ -147,7 +147,7 @@ GIMP_MP_LIBS =
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.2.10
+GIMP_REAL_VERSION = 2.2.11
 GIMP_REMOTE = gimp-remote-2.2$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
 GIMP_THREAD_FLAGS = 
@@ -155,7 +155,7 @@ GIMP_THREAD_LIBS =
 GIMP_TOOL_VERSION = 2.0
 GIMP_UNSTABLE = no
 GIMP_USER_VERSION = 2.2
-GIMP_VERSION = 2.2.10
+GIMP_VERSION = 2.2.11
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
@@ -215,6 +215,7 @@ INTLTOOL_PONG_RULE = %.pong:      %.pong.in      $(INTLTOOL_MERGE) $(wildcard $(
 INTLTOOL_PROP_RULE = %.prop:      %.prop.in      $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_SCHEMAS_RULE = %.schemas:   %.schemas.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -s -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_SERVER_RULE = %.server:    %.server.in    $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -o -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
+INTLTOOL_SERVICE_RULE = %.service: %.service.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_SHEET_RULE = %.sheet:     %.sheet.in     $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_SOUNDLIST_RULE = %.soundlist: %.soundlist.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 INTLTOOL_THEME_RULE = %.theme:     %.theme.in     $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
@@ -246,7 +247,7 @@ LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 200:10:200
+LT_VERSION_INFO = 200:11:200
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
@@ -267,9 +268,9 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.2.10
+PACKAGE_STRING = GIMP 2.2.11
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.2.10
+PACKAGE_VERSION = 2.2.11
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PANGOFT2_REQUIRED_VERSION = 1.4.0
@@ -315,14 +316,14 @@ SYMPREFIX =
 TIFF = tiff$(EXEEXT)
 URL = url$(EXEEXT)
 USE_NLS = yes
-VERSION = 2.2.10
+VERSION = 2.2.11
 WINCLIPBOARD = 
 WINDRES = :
 WINPRINT = 
 WITH_PDBGEN_FALSE = #
 WITH_PDBGEN_TRUE = 
 WMF = wmf$(EXEEXT)
-WMF_CFLAGS = -I/usr/include/freetype2 -I/usr/X11R6/include -I/usr/include
+WMF_CFLAGS = -I/usr/include/freetype2 -I/usr/include
 WMF_CONFIG = /usr/bin/libwmf-config
 WMF_REQUIRED_VERSION = 0.2.8
 XGETTEXT = /usr/bin/xgettext

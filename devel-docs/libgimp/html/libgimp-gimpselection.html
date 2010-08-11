@@ -79,18 +79,18 @@ gboolean    <a href="libgimp-gimpselection.html#gimp-selection-combine">gimp_sel
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613281"></a><h2>Description</h2>
+<a name="id2594921"></a><h2>Description</h2>
 <p>
 Functions for manipulating selections.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613292"></a><h2>Details</h2>
+<a name="id2594932"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2613298"></a><h3>
+<a name="id2594938"></a><h3>
 <a name="gimp-selection-bounds"></a>gimp_selection_bounds ()</h3>
-<a class="indexterm" name="id2613307"></a><pre class="programlisting">gboolean    gimp_selection_bounds           (gint32 image_ID,
+<a class="indexterm" name="id2594947"></a><pre class="programlisting">gboolean    gimp_selection_bounds           (gint32 image_ID,
                                              gboolean *non_empty,
                                              gint *x1,
                                              gint *y1,
@@ -161,9 +161,9 @@ pixel. This means the width of the selection can be calculated as
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608053"></a><h3>
+<a name="id2595126"></a><h3>
 <a name="gimp-selection-all"></a>gimp_selection_all ()</h3>
-<a class="indexterm" name="id2608063"></a><pre class="programlisting">gboolean    gimp_selection_all              (gint32 image_ID);</pre>
+<a class="indexterm" name="id2595137"></a><pre class="programlisting">gboolean    gimp_selection_all              (gint32 image_ID);</pre>
 <p>
 Select all of the image.
 </p>
@@ -193,9 +193,9 @@ image. Every pixel in the selection channel is set to 255.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608128"></a><h3>
+<a name="id2595201"></a><h3>
 <a name="gimp-selection-none"></a>gimp_selection_none ()</h3>
-<a class="indexterm" name="id2608138"></a><pre class="programlisting">gboolean    gimp_selection_none             (gint32 image_ID);</pre>
+<a class="indexterm" name="id2595212"></a><pre class="programlisting">gboolean    gimp_selection_none             (gint32 image_ID);</pre>
 <p>
 Deselect the entire image.
 </p>
@@ -225,9 +225,9 @@ selection channel is set to 0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2608202"></a><h3>
+<a name="id2595276"></a><h3>
 <a name="gimp-selection-clear"></a>gimp_selection_clear ()</h3>
-<a class="indexterm" name="id2608211"></a><pre class="programlisting">gboolean    gimp_selection_clear            (gint32 image_ID);</pre>
+<a class="indexterm" name="id2595285"></a><pre class="programlisting">gboolean    gimp_selection_clear            (gint32 image_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_selection_clear</code> is deprecated and should not be used in newly-written code.</p>
@@ -257,9 +257,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpselection.html#gimp-selec
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614669"></a><h3>
+<a name="id2615085"></a><h3>
 <a name="gimp-selection-is-empty"></a>gimp_selection_is_empty ()</h3>
-<a class="indexterm" name="id2614677"></a><pre class="programlisting">gboolean    gimp_selection_is_empty         (gint32 image_ID);</pre>
+<a class="indexterm" name="id2615093"></a><pre class="programlisting">gboolean    gimp_selection_is_empty         (gint32 image_ID);</pre>
 <p>
 Determine whether the selection is empty.
 </p>
@@ -289,9 +289,9 @@ image is not empty.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614736"></a><h3>
+<a name="id2615152"></a><h3>
 <a name="gimp-selection-float"></a>gimp_selection_float ()</h3>
-<a class="indexterm" name="id2614745"></a><pre class="programlisting">gint32      gimp_selection_float            (gint32 image_ID,
+<a class="indexterm" name="id2615161"></a><pre class="programlisting">gint32      gimp_selection_float            (gint32 image_ID,
                                              gint32 drawable_ID,
                                              gint offx,
                                              gint offy);</pre>
@@ -346,9 +346,9 @@ positioning of the new floating selection.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614843"></a><h3>
+<a name="id2615282"></a><h3>
 <a name="gimp-selection-load"></a>gimp_selection_load ()</h3>
-<a class="indexterm" name="id2614852"></a><pre class="programlisting">gboolean    gimp_selection_load             (gint32 channel_ID);</pre>
+<a class="indexterm" name="id2615292"></a><pre class="programlisting">gboolean    gimp_selection_load             (gint32 channel_ID);</pre>
 <p>
 Transfer the specified channel to the selection mask.
 </p>
@@ -377,9 +377,9 @@ This procedure loads the specified channel into the selection mask.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614911"></a><h3>
+<a name="id2615358"></a><h3>
 <a name="gimp-selection-save"></a>gimp_selection_save ()</h3>
-<a class="indexterm" name="id2614919"></a><pre class="programlisting">gint32      gimp_selection_save             (gint32 image_ID);</pre>
+<a class="indexterm" name="id2615368"></a><pre class="programlisting">gint32      gimp_selection_save             (gint32 image_ID);</pre>
 <p>
 Copy the selection mask to a new channel.
 </p>
@@ -410,9 +410,9 @@ image's list of channels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614979"></a><h3>
+<a name="id2615435"></a><h3>
 <a name="gimp-selection-value"></a>gimp_selection_value ()</h3>
-<a class="indexterm" name="id2614988"></a><pre class="programlisting">gint        gimp_selection_value            (gint32 image_ID,
+<a class="indexterm" name="id2615444"></a><pre class="programlisting">gint        gimp_selection_value            (gint32 image_ID,
                                              gint x,
                                              gint y);</pre>
 <p>
@@ -456,9 +456,9 @@ coordinates. If the coordinates lie out of bounds, 0 is returned.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615085"></a><h3>
+<a name="id2615552"></a><h3>
 <a name="gimp-selection-grow"></a>gimp_selection_grow ()</h3>
-<a class="indexterm" name="id2615094"></a><pre class="programlisting">gboolean    gimp_selection_grow             (gint32 image_ID,
+<a class="indexterm" name="id2615562"></a><pre class="programlisting">gboolean    gimp_selection_grow             (gint32 image_ID,
                                              gint steps);</pre>
 <p>
 Grow the image's selection
@@ -495,9 +495,9 @@ boundary in all directions by the specified pixel amount.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615172"></a><h3>
+<a name="id2615648"></a><h3>
 <a name="gimp-selection-shrink"></a>gimp_selection_shrink ()</h3>
-<a class="indexterm" name="id2615180"></a><pre class="programlisting">gboolean    gimp_selection_shrink           (gint32 image_ID,
+<a class="indexterm" name="id2615657"></a><pre class="programlisting">gboolean    gimp_selection_shrink           (gint32 image_ID,
                                              gint radius);</pre>
 <p>
 Shrink the image's selection
@@ -535,9 +535,9 @@ of pixels.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615258"></a><h3>
+<a name="id2615744"></a><h3>
 <a name="gimp-selection-invert"></a>gimp_selection_invert ()</h3>
-<a class="indexterm" name="id2615266"></a><pre class="programlisting">gboolean    gimp_selection_invert           (gint32 image_ID);</pre>
+<a class="indexterm" name="id2615753"></a><pre class="programlisting">gboolean    gimp_selection_invert           (gint32 image_ID);</pre>
 <p>
 Invert the selection mask.
 </p>
@@ -567,9 +567,9 @@ selection channel, its new value is calculated as (255 - old_value).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615325"></a><h3>
+<a name="id2615818"></a><h3>
 <a name="gimp-selection-feather"></a>gimp_selection_feather ()</h3>
-<a class="indexterm" name="id2615334"></a><pre class="programlisting">gboolean    gimp_selection_feather          (gint32 image_ID,
+<a class="indexterm" name="id2615827"></a><pre class="programlisting">gboolean    gimp_selection_feather          (gint32 image_ID,
                                              gdouble radius);</pre>
 <p>
 Feather the image's selection
@@ -606,9 +606,9 @@ using a gaussian blur.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615411"></a><h3>
+<a name="id2615913"></a><h3>
 <a name="gimp-selection-sharpen"></a>gimp_selection_sharpen ()</h3>
-<a class="indexterm" name="id2615419"></a><pre class="programlisting">gboolean    gimp_selection_sharpen          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2615922"></a><pre class="programlisting">gboolean    gimp_selection_sharpen          (gint32 image_ID);</pre>
 <p>
 Sharpen the selection mask.
 </p>
@@ -640,9 +640,9 @@ in the selection mask's boundary.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615480"></a><h3>
+<a name="id2615989"></a><h3>
 <a name="gimp-selection-border"></a>gimp_selection_border ()</h3>
-<a class="indexterm" name="id2615488"></a><pre class="programlisting">gboolean    gimp_selection_border           (gint32 image_ID,
+<a class="indexterm" name="id2615998"></a><pre class="programlisting">gboolean    gimp_selection_border           (gint32 image_ID,
                                              gint radius);</pre>
 <p>
 Border the image's selection
@@ -680,9 +680,9 @@ selection at every point within the specified radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615567"></a><h3>
+<a name="id2616085"></a><h3>
 <a name="gimp-selection-translate"></a>gimp_selection_translate ()</h3>
-<a class="indexterm" name="id2615575"></a><pre class="programlisting">gboolean    gimp_selection_translate        (gint32 image_ID,
+<a class="indexterm" name="id2616094"></a><pre class="programlisting">gboolean    gimp_selection_translate        (gint32 image_ID,
                                              gint offx,
                                              gint offy);</pre>
 <p>
@@ -729,9 +729,9 @@ because of this call are lost.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615675"></a><h3>
+<a name="id2616205"></a><h3>
 <a name="gimp-selection-layer-alpha"></a>gimp_selection_layer_alpha ()</h3>
-<a class="indexterm" name="id2615684"></a><pre class="programlisting">gboolean    gimp_selection_layer_alpha      (gint32 layer_ID);</pre>
+<a class="indexterm" name="id2616215"></a><pre class="programlisting">gboolean    gimp_selection_layer_alpha      (gint32 layer_ID);</pre>
 <p>
 Transfer the specified layer's alpha channel to the selection mask.
 </p>
@@ -765,9 +765,9 @@ selection mask value is set to 0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615748"></a><h3>
+<a name="id2616286"></a><h3>
 <a name="gimp-selection-combine"></a>gimp_selection_combine ()</h3>
-<a class="indexterm" name="id2615756"></a><pre class="programlisting">gboolean    gimp_selection_combine          (gint32 channel_ID,
+<a class="indexterm" name="id2616295"></a><pre class="programlisting">gboolean    gimp_selection_combine          (gint32 channel_ID,
                                              <a href="libgimp-gimpenums.html#GimpChannelOps">GimpChannelOps</a> operation);</pre>
 <p>
 Combines the specified channel with the selection mask.

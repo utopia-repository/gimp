@@ -1,6 +1,210 @@
+2006-04-13  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.11 release.
+
+	* autogen.sh: replaced with the version from the HEAD branch.
+
+2006-04-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/widgets/gimpdockable.c (gimp_dockable_destroy): always set
+	dockable->blurb to NULL, also if its memory is shared with
+	dockable->name. Fixes bug #338286.
+
+2006-04-11  Sven Neumann  <sven@gimp.org>
+
+	* app/composite/gimp-composite-mmx-installer.c
+	* app/composite/gimp-composite-mmx-test.c
+	* app/composite/gimp-composite-mmx.[ch]: disable use of movntq
+	instruction and re-enable MMX acceleration for addition composite
+	mode (bug #162778, patch by Mukund).
+
+2006-03-09  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/imagemap/imap_main.c (button_press): do not attempt to
+	use a NULL function pointer.
+
+2006-03-08  Michael Natterer  <mitch@gimp.org>
+
+	* app/core/gimp-edit.c
+	* app/core/gimpchannel.c
+	* app/core/gimpimage-contiguous-region.c
+	* app/core/gimpimage-crop.c
+	* app/core/gimppalette-import.c
+	* app/tools/gimpbycolorselecttool.c
+	* app/tools/gimpiscissorstool.c
+	* tools/pdbgen/pdb/image.pdb: flush the projection before reading
+	from it. Fixes bug #332933.
+
+	* app/pdb/image_cmds.c: regenerated.
+
+2006-03-06  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/display/gimpdisplay.c (gimp_display_reconnect): keep a
+	reference on the old image until the display is connected to the
+	new one. Fixes bug #333568.
+
+	* app/display/gimpdisplay-handlers.c: fixed typo in comment.
+
+2006-03-02  Sven Neumann  <sven.gimp.org>
+
+	Merged from HEAD branch (bug #310426):
+
+	* plug-ins/common/psd.c: fixed bug in resolution loading.
+
+	* plug-ins/common/psd_save.c: save resolution in PSD file.
+
+2006-02-28  Manish Singh  <yosh@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/base/cpu-accel.c
+	* app/composite/gimp-composite-3dnow.h
+	* app/composite/gimp-composite-mmx.h
+	* app/composite/gimp-composite-sse.h
+	* app/composite/gimp-composite-sse2.h: check for __PIC__ in addition
+	to PIC.
+
+2006-02-27  Sven Neumann  <sven@gimp.org>
+
+	* data/images/gimp-splash.png: back to the original 2.2 splash.
+
+2006-02-27  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/bmp/bmpwrite.c: properly round the resolution entry.
+	Fixes bug #332501.
+
+2006-02-22  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/vectors/gimpvectors-import.c: fix the import of svg circles.
+
+2006-02-16  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/unsharp.c: applied patch from Stephane Chauveau
+	that corrects the calculation of the tile cache size (bug #331344).
+
+2006-02-14  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/animationplay.c (render_frame): applied patch
+	from Michael Schumacher that fixes a potential crash in the
+	plug-in (bug #328919).
+
+2006-02-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/winicon/icoload.c
+	* plug-ins/winicon/icosave.c: applied patches from Felix Pahl.
+	Fixes incorrect bit shifts that caused scrambled transparency
+	(bug #330692).
+
+2006-02-14  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/gauss.c (gauss): apply multiply_alpha() on the
+	source buffer, not the destination (bug #331051, spotted by
+	Stephane Chauveau).
+
+2006-02-13  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/config/gimpguiconfig.c: make the internal help browser the
+	default for all platforms (bug #329888).
+
+2006-02-01  Matt Wilson  <msw@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/common/compressor.c (run): file_{gz,bz2}_save takes 5
+	parameters, not 4.  Correct the nparams check in non-interactive
+	mode.
+
+
+2006-01-31  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* app/tools/gimplevelstool.c (gimp_levels_tool_color_picker_new):
+	manually add the icons to the color picker buttons instead of
+	abusing the stock-id property. Fixes bug #325745.
+
+2006-01-24  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* plug-ins/script-fu/scripts/guides-new.scm
+	* plug-ins/script-fu/scripts/guides-new-percent.scm: allow guides
+	at the right and bottom edges of the canvas. Fixes bug #328320.
+
+2006-01-23  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* data/misc/gimp.desktop.in.in (Categories): Added "GTK" (bug #328012).
+
+2006-01-07  Michael Natterer  <mitch@gimp.org>
+
+	Merged from HEAD branch:
+
+	* libgimpwidgets/gimpdialog.c: implement GtkWidget::hide() and set
+	the the focus widget to NULL, so a focussed entry emits focus_out
+	and its callbacks are invoked immediately (before the call to
+	gtk_widget_hide() returns). Fixes crashes and warnings in tool
+	dialogs when hitting escape while a spinbutton is being edited.
+
+	* app/tools/gimptransformtool.c
+	(gimp_transform_tool_force_expose_preview): return silently
+	instead of warning when being called while the draw tool is not
+	active (same scenario as above).
+
+2006-01-06  Sven Neumann  <sven@gimp.org>
+
+	* gimptool-2.0.in: if available use pkg-config to determine
+	compiler and linker flags at runtime. Fixes bug #324761.
+
+2006-01-06  Sven Neumann  <sven@gimp.org>
+
+	* plug-ins/common/jpeg.c: applied a patch from Mukund that fixes
+	handling of EXIF data when preview is enabled (bug #303383).
+
+2006-01-05  Sven Neumann  <sven@gimp.org>
+
+	Merged from HEAD branch:
+
+	* tools/pdbgen/pdb/brush.pdb (gimp-brush-set-spacing): allow to
+	change the spacing of brushes the user doesn't have write access
+	to. The user interface allows to do that as well.
+
+	* app/pdb/brush_cmds.c: regenerated.
+
+2006-01-05  Stanislav Brabec  <sbrabec@suse.cz>
+
+	* app/base/pixel-processor.c: Added missing string.h include.
+
 2005-12-27  Sven Neumann  <sven@gimp.org>
 
-	* data/images/gimp-splash.png: anniversairy splash screen "Dialed In",
+	* configure.in: bumped version to 2.2.11, interface_age 11.
+
+2005-12-27  Sven Neumann  <sven@gimp.org>
+
+	* Made 2.2.10 GIMP Anniversary Release.
+
+2005-12-27  Sven Neumann  <sven@gimp.org>
+
+	* data/images/gimp-splash.png: anniversary splash screen "Dialed In",
 	a contest submission by ix(at)hydrophilus.com.
 
 2005-12-27  Sven Neumann  <sven@gimp.org>

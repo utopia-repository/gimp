@@ -30,11 +30,12 @@
 <synopsis>
 
   <link linkend="GObject">GObject</link>
-   +----<link linkend="GtkObject">GtkObject</link>
-         +----<link linkend="GtkWidget">GtkWidget</link>
-               +----<link linkend="GtkProgress">GtkProgress</link>
-                     +----<link linkend="GtkProgressBar">GtkProgressBar</link>
-                           +----GimpProgressBar
+   +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
+         +----<link linkend="GtkObject">GtkObject</link>
+               +----<link linkend="GtkWidget">GtkWidget</link>
+                     +----<link linkend="GtkProgress">GtkProgress</link>
+                           +----<link linkend="GtkProgressBar">GtkProgressBar</link>
+                                 +----GimpProgressBar
 </synopsis>
 
 </refsect1>

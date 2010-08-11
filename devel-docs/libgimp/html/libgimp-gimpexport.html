@@ -50,7 +50,7 @@ enum        <a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn<
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2639840"></a><h2>Description</h2>
+<a name="id2639890"></a><h2>Description</h2>
 <p>
 This function should be called by all save_plugins unless they are
 able to save all image formats the GIMP knows about. It takes care
@@ -67,11 +67,11 @@ as it will most probably have to open a dialog.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2639867"></a><h2>Details</h2>
+<a name="id2639917"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2639873"></a><h3>
+<a name="id2639923"></a><h3>
 <a name="GimpExportCapabilities"></a>enum GimpExportCapabilities</h3>
-<a class="indexterm" name="id2533379"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2522820"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 &lt;&lt; 0,
   GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 &lt;&lt; 1,
@@ -90,9 +90,9 @@ as it will most probably have to open a dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2555857"></a><h3>
+<a name="id2599115"></a><h3>
 <a name="GimpExportReturn"></a>enum GimpExportReturn</h3>
-<a class="indexterm" name="id2535390"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2519674"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CANCEL,
   GIMP_EXPORT_IGNORE,
@@ -105,9 +105,9 @@ as it will most probably have to open a dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639893"></a><h3>
+<a name="id2639946"></a><h3>
 <a name="gimp-export-image"></a>gimp_export_image ()</h3>
-<a class="indexterm" name="id2639901"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a> gimp_export_image          (gint32 *image_ID,
+<a class="indexterm" name="id2639954"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a> gimp_export_image          (gint32 *image_ID,
                                              gint32 *drawable_ID,
                                              const gchar *format_name,
                                              <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);</pre>

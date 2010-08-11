@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpfonts</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimpbrushes.html" title="gimpbrushes">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradient.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2561504" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2613031" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2573691" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2603548" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfonts"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2561504"></a><span class="refentrytitle">gimpfonts</span>
+<a name="id2613031"></a><span class="refentrytitle">gimpfonts</span>
 </h2>
 <p>gimpfonts &#8212; Operations related to fonts.</p>
 </td>
@@ -52,33 +52,23 @@
 
 
 
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpfonts.html#gimp-fonts-refresh">gimp_fonts_refresh</a>                  (void);
-<a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>**             <a href="libgimp-gimpfonts.html#gimp-fonts-get-list">gimp_fonts_get_list</a>                 (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filter,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> *num_fonts);
+gboolean            <a class="link" href="libgimp-gimpfonts.html#gimp-fonts-refresh">gimp_fonts_refresh</a>                  (void);
+gchar**             <a class="link" href="libgimp-gimpfonts.html#gimp-fonts-get-list">gimp_fonts_get_list</a>                 (const gchar *filter,
+                                                         gint *num_fonts);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2573691"></a><h2>Description</h2>
+<a name="id2603548"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2583526"></a><h2>Details</h2>
+<a name="id2575400"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2671745"></a><h3>
+<a name="id2617161"></a><h3>
 <a name="gimp-fonts-refresh"></a>gimp_fonts_refresh ()</h3>
-<a class="indexterm" name="id2509617"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_fonts_refresh                  (void);</pre>
+<a class="indexterm" name="id2631881"></a><pre class="programlisting">gboolean            gimp_fonts_refresh                  (void);</pre>
 <p>
 Refresh current fonts. This function always succeeds.
 </p>
@@ -91,7 +81,7 @@ and updates the font dialogs accordingly.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr></tbody>
@@ -99,16 +89,10 @@ and updates the font dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2672288"></a><h3>
+<a name="id2692752"></a><h3>
 <a name="gimp-fonts-get-list"></a>gimp_fonts_get_list ()</h3>
-<a class="indexterm" name="id2672300"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>**             gimp_fonts_get_list                 (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *filter,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> *num_fonts);</pre>
+<a class="indexterm" name="id2692763"></a><pre class="programlisting">gchar**             gimp_fonts_get_list                 (const gchar *filter,
+                                                         gint *num_fonts);</pre>
 <p>
 Retrieve the list of loaded fonts.
 </p>
@@ -122,17 +106,17 @@ available.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>filter</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>filter</code></em>&#160;:</span></p></td>
 <td> An optional regular expression used to filter the list.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_fonts</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_fonts</code></em>&#160;:</span></p></td>
 <td> The number of available fonts.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The list of font names.
 </td>
 </tr>

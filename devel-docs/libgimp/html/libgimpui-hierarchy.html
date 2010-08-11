@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Object Hierarchy</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
@@ -34,76 +34,48 @@
 <div class="titlepage"><div><div><h2 class="title">
 <a name="libgimpui-hierarchy"></a>Object Hierarchy</h2></div></div></div>
 <pre class="screen">
-    <a
-href="../gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-        <a
-href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-            <a
-href="../gtk/GtkObject.html"
->GtkObject</a>
-                <a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>
-                    <a
-href="../gtk/GtkContainer.html"
->GtkContainer</a>
-                        <a
-href="../gtk/GtkBox.html"
->GtkBox</a>
-                            <a
-href="../gtk/GtkVBox.html"
->GtkVBox</a>
+    GObject
+        GInitiallyUnowned
+            GtkObject
+                GtkWidget
+                    GtkContainer
+                        GtkBox
+                            GtkVBox
                                 <a
 href="../libgimpwidgets/GimpPreview.html"
 >GimpPreview</a>
-                                    <a href="GimpAspectPreview.html" title="GimpAspectPreview">GimpAspectPreview</a>
+                                    <a class="link" href="GimpAspectPreview.html" title="GimpAspectPreview">GimpAspectPreview</a>
                                     <a
 href="../libgimpwidgets/GimpScrolledPreview.html"
 >GimpScrolledPreview</a>
-                                        <a href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a>
-                                        <a href="GimpZoomPreview.html" title="GimpZoomPreview">GimpZoomPreview</a>
-                            <a
-href="../gtk/GtkHBox.html"
->GtkHBox</a>
-                                <a href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a>
-                                    <a href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a>
-                                    <a href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a>
-                                    <a href="GimpGradientSelectButton.html" title="GimpGradientSelectButton">GimpGradientSelectButton</a>
-                                    <a href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a>
-                                    <a href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a>
-                        <a
-href="../gtk/GtkBin.html"
->GtkBin</a>
-                            <a
-href="../gtk/GtkComboBox.html"
->GtkComboBox</a>
+                                        <a class="link" href="GimpDrawablePreview.html" title="GimpDrawablePreview">GimpDrawablePreview</a>
+                                        <a class="link" href="GimpZoomPreview.html" title="GimpZoomPreview">GimpZoomPreview</a>
+                            GtkHBox
+                                <a class="link" href="GimpSelectButton.html" title="GimpSelectButton">GimpSelectButton</a>
+                                    <a class="link" href="GimpBrushSelectButton.html" title="GimpBrushSelectButton">GimpBrushSelectButton</a>
+                                    <a class="link" href="GimpFontSelectButton.html" title="GimpFontSelectButton">GimpFontSelectButton</a>
+                                    <a class="link" href="GimpGradientSelectButton.html" title="GimpGradientSelectButton">GimpGradientSelectButton</a>
+                                    <a class="link" href="GimpPaletteSelectButton.html" title="GimpPaletteSelectButton">GimpPaletteSelectButton</a>
+                                    <a class="link" href="GimpPatternSelectButton.html" title="GimpPatternSelectButton">GimpPatternSelectButton</a>
+                        GtkBin
+                            GtkComboBox
                                 <a
 href="../libgimpwidgets/GimpIntComboBox.html"
 >GimpIntComboBox</a>
-                                    <a href="libgimp-GimpItemComboBox.html#GimpChannelComboBox">GimpChannelComboBox</a>
-                                    <a href="libgimp-GimpItemComboBox.html#GimpDrawableComboBox">GimpDrawableComboBox</a>
-                                    <a href="GimpImageComboBox.html" title="gimpimagecombobox">GimpImageComboBox</a>
-                                    <a href="libgimp-GimpItemComboBox.html#GimpLayerComboBox">GimpLayerComboBox</a>
-                                    <a href="libgimp-GimpItemComboBox.html#GimpVectorsComboBox">GimpVectorsComboBox</a>
-                            <a
-href="../gtk/GtkWindow.html"
->GtkWindow</a>
-                                <a
-href="../gtk/GtkDialog.html"
->GtkDialog</a>
+                                    <a class="link" href="libgimp-GimpItemComboBox.html#GimpChannelComboBox">GimpChannelComboBox</a>
+                                    <a class="link" href="libgimp-GimpItemComboBox.html#GimpDrawableComboBox">GimpDrawableComboBox</a>
+                                    <a class="link" href="GimpImageComboBox.html" title="gimpimagecombobox">GimpImageComboBox</a>
+                                    <a class="link" href="libgimp-GimpItemComboBox.html#GimpLayerComboBox">GimpLayerComboBox</a>
+                                    <a class="link" href="libgimp-GimpItemComboBox.html#GimpVectorsComboBox">GimpVectorsComboBox</a>
+                            GtkWindow
+                                GtkDialog
                                     <a
 href="../libgimpwidgets/GimpDialog.html"
 >GimpDialog</a>
-                                        <a href="GimpProcBrowserDialog.html" title="GimpProcBrowserDialog">GimpProcBrowserDialog</a>
-                    <a
-href="../gtk/GtkProgress.html"
->GtkProgress</a>
-                        <a
-href="../gtk/GtkProgressBar.html"
->GtkProgressBar</a>
-                            <a href="GimpProgressBar.html" title="GimpProgressBar">GimpProgressBar</a>
+                                        <a class="link" href="GimpProcBrowserDialog.html" title="GimpProcBrowserDialog">GimpProcBrowserDialog</a>
+                    GtkProgress
+                        GtkProgressBar
+                            <a class="link" href="GimpProgressBar.html" title="GimpProgressBar">GimpProgressBar</a>
 </pre>
 </div>
 </body>

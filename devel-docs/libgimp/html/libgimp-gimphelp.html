@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimphelp</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpgimprc.html" title="gimpgimprc">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpmessage.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2574542" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2581357" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2563381" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2619149" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimphelp"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2574542"></a><span class="refentrytitle">gimphelp</span>
+<a name="id2581357"></a><span class="refentrytitle">gimphelp</span>
 </h2>
 <p>gimphelp &#8212; Loading help pages using gimp_help.</p>
 </td>
@@ -52,36 +52,24 @@
 
 
 
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimphelp.html#gimp-help">gimp_help</a>                           (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *help_domain,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *help_id);
+gboolean            <a class="link" href="libgimp-gimphelp.html#gimp-help">gimp_help</a>                           (const gchar *help_domain,
+                                                         const gchar *help_id);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2563381"></a><h2>Description</h2>
+<a name="id2619149"></a><h2>Description</h2>
 <p>
 Loading help pages using gimp_help.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586625"></a><h2>Details</h2>
+<a name="id2617696"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2596163"></a><h3>
+<a name="id2612424"></a><h3>
 <a name="gimp-help"></a>gimp_help ()</h3>
-<a class="indexterm" name="id2570040"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_help                           (const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *help_domain,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *help_id);</pre>
+<a class="indexterm" name="id2606766"></a><pre class="programlisting">gboolean            gimp_help                           (const gchar *help_domain,
+                                                         const gchar *help_id);</pre>
 <p>
 Load a help page.
 </p>
@@ -89,7 +77,7 @@ Load a help page.
 This procedure loads the specified help page into the helpbrowser or
 what ever is configured as help viewer. The help page is identified
 by its domain and ID: if help_domain is NULL, we use the help_domain
-which was registered using the <a href="libgimp-gimpplugin.html#gimp-plugin-help-register"><code class="function">gimp_plugin_help_register()</code></a>
+which was registered using the <a class="link" href="libgimp-gimpplugin.html#gimp-plugin-help-register"><code class="function">gimp_plugin_help_register()</code></a>
 procedure. If help_domain is NULL and no help domain was registered,
 the help domain of the main GIMP installation is used.</p>
 <p>
@@ -99,17 +87,17 @@ the help domain of the main GIMP installation is used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>help_domain</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>help_domain</code></em>&#160;:</span></p></td>
 <td> The help domain in which help_id is registered.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>help_id</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>help_id</code></em>&#160;:</span></p></td>
 <td> The help page's ID.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>

@@ -57,7 +57,7 @@ libappgui_a_AR = $(AR) $(ARFLAGS)
 libappgui_a_LIBADD =
 am_libappgui_a_OBJECTS = color-history.$(OBJEXT) gui.$(OBJEXT) \
 	gui-message.$(OBJEXT) gui-vtable.$(OBJEXT) session.$(OBJEXT) \
-	splash.$(OBJEXT) themes.$(OBJEXT)
+	splash.$(OBJEXT) themes.$(OBJEXT) gtk-macmenu.$(OBJEXT)
 libappgui_a_OBJECTS = $(am_libappgui_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -204,6 +204,8 @@ GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
+HAVE_CARBON_FALSE = @HAVE_CARBON_FALSE@
+HAVE_CARBON_TRUE = @HAVE_CARBON_TRUE@
 HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
 HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
@@ -469,7 +471,9 @@ libappgui_a_SOURCES = \
 	splash.c		\
 	splash.h		\
 	themes.c		\
-	themes.h
+	themes.h		\
+	gtk-macmenu.c		\
+	gtk-macmenu.h
 
 EXTRA_DIST = makefile.msc
 all: all-am
@@ -520,6 +524,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/color-history.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk-macmenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui-message.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui-vtable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui.Po@am__quote@

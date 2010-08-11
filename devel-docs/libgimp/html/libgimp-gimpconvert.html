@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpconvert</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpcolor.html" title="gimpcolor">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpdisplay.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2556076" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2594403" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2608741" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2632724" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpconvert"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2556076"></a><span class="refentrytitle">gimpconvert</span>
+<a name="id2594403"></a><span class="refentrytitle">gimpconvert</span>
 </h2>
 <p>gimpconvert &#8212; Conversions between RGB, indexed, and grayscale modes.</p>
 </td>
@@ -52,69 +52,35 @@
 
 
 
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpconvert.html#gimp-image-convert-rgb">gimp_image_convert_rgb</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpconvert.html#gimp-image-convert-grayscale">gimp_image_convert_grayscale</a>        (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpconvert.html#gimp-image-convert-indexed">gimp_image_convert_indexed</a>          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
-                                                         <a href="libgimp-gimpenums.html#GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_cols,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> alpha_dither,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> remove_unused,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimpconvert.html#gimp-image-convert-set-dither-matrix">gimp_image_convert_set_dither_matrix</a>
-                                                        (<a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> height,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> matrix_length,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#guint8"
->guint8</a> *matrix);
+gboolean            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-rgb">gimp_image_convert_rgb</a>              (gint32 image_ID);
+gboolean            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-grayscale">gimp_image_convert_grayscale</a>        (gint32 image_ID);
+gboolean            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-indexed">gimp_image_convert_indexed</a>          (gint32 image_ID,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
+                                                         gint num_cols,
+                                                         gboolean alpha_dither,
+                                                         gboolean remove_unused,
+                                                         const gchar *palette);
+gboolean            <a class="link" href="libgimp-gimpconvert.html#gimp-image-convert-set-dither-matrix">gimp_image_convert_set_dither_matrix</a>
+                                                        (gint width,
+                                                         gint height,
+                                                         gint matrix_length,
+                                                         const guint8 *matrix);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608741"></a><h2>Description</h2>
+<a name="id2632724"></a><h2>Description</h2>
 <p>
 Conversions between RGB, indexed, and grayscale modes.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2608758"></a><h2>Details</h2>
+<a name="id2632741"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2608768"></a><h3>
+<a name="id2632752"></a><h3>
 <a name="gimp-image-convert-rgb"></a>gimp_image_convert_rgb ()</h3>
-<a class="indexterm" name="id2608779"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_image_convert_rgb              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID);</pre>
+<a class="indexterm" name="id2632763"></a><pre class="programlisting">gboolean            gimp_image_convert_rgb              (gint32 image_ID);</pre>
 <p>
 Convert specified image to RGB color
 </p>
@@ -130,12 +96,12 @@ indexed image.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -144,13 +110,9 @@ indexed image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614723"></a><h3>
+<a name="id2632830"></a><h3>
 <a name="gimp-image-convert-grayscale"></a>gimp_image_convert_grayscale ()</h3>
-<a class="indexterm" name="id2614734"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_image_convert_grayscale        (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID);</pre>
+<a class="indexterm" name="id2633678"></a><pre class="programlisting">gboolean            gimp_image_convert_grayscale        (gint32 image_ID);</pre>
 <p>
 Convert specified image to grayscale (256 intensity levels)
 </p>
@@ -165,12 +127,12 @@ RGB or Indexed color mode.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -179,27 +141,15 @@ RGB or Indexed color mode.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614802"></a><h3>
+<a name="id2633744"></a><h3>
 <a name="gimp-image-convert-indexed"></a>gimp_image_convert_indexed ()</h3>
-<a class="indexterm" name="id2614813"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_image_convert_indexed          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
-                                                         <a href="libgimp-gimpenums.html#GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_cols,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> alpha_dither,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> remove_unused,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *palette);</pre>
+<a class="indexterm" name="id2633756"></a><pre class="programlisting">gboolean            gimp_image_convert_indexed          (gint32 image_ID,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
+                                                         gint num_cols,
+                                                         gboolean alpha_dither,
+                                                         gboolean remove_unused,
+                                                         const gchar *palette);</pre>
 <p>
 Convert specified image to and Indexed image
 </p>
@@ -224,42 +174,42 @@ location ('Fixed' dithering).</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>dither_type</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>dither_type</code></em>&#160;:</span></p></td>
 <td> The dither type to use.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>palette_type</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>palette_type</code></em>&#160;:</span></p></td>
 <td> The type of palette to use.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_cols</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_cols</code></em>&#160;:</span></p></td>
 <td> The number of colors to quantize to, ignored unless (palette_type == GIMP_MAKE_PALETTE).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>alpha_dither</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>alpha_dither</code></em>&#160;:</span></p></td>
 <td> Dither transparency to fake partial opacity.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>remove_unused</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>remove_unused</code></em>&#160;:</span></p></td>
 <td> Remove unused or duplicate color entries from final palette, ignored if (palette_type == GIMP_MAKE_PALETTE).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>palette</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>palette</code></em>&#160;:</span></p></td>
 <td> The name of the custom palette to use, ignored unless (palette_type == GIMP_CUSTOM_PALETTE).
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -268,23 +218,13 @@ location ('Fixed' dithering).</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2616461"></a><h3>
+<a name="id2631272"></a><h3>
 <a name="gimp-image-convert-set-dither-matrix"></a>gimp_image_convert_set_dither_matrix ()</h3>
-<a class="indexterm" name="id2616474"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_image_convert_set_dither_matrix
-                                                        (<a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> height,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> matrix_length,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#guint8"
->guint8</a> *matrix);</pre>
+<a class="indexterm" name="id2631286"></a><pre class="programlisting">gboolean            gimp_image_convert_set_dither_matrix
+                                                        (gint width,
+                                                         gint height,
+                                                         gint matrix_length,
+                                                         const guint8 *matrix);</pre>
 <p>
 Set dither matrix for conversion to indexed
 </p>
@@ -298,27 +238,27 @@ INDEXED mode with positional dithering.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
 <td> Width of the matrix (0 to reset to default matrix).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
 <td> Height of the matrix (0 to reset to default matrix).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>matrix_length</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>matrix_length</code></em>&#160;:</span></p></td>
 <td> The length of 'matrix'.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>matrix</code></em>&#160;:</span></p></td>
 <td> The matrix -- all values must be &gt;= 1.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 
 </td>

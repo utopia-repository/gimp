@@ -53,7 +53,7 @@ enum                <link linkend="GimpChainPosition">GimpChainPosition</link>;
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpChainButton implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
 
 </refsect1>
 

@@ -96,7 +96,8 @@ directory or not.
 <para>
 The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
-the system, which isn't necessarily UTF-8 (never is on Windows).</para>
+GLib, which isn't necessarily UTF-8. (On Windows it always is
+UTF-8.)</para>
 <para>
 
 </para><variablelist role="params">
@@ -110,13 +111,14 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 Returns the top directory for GIMP data. If the environment
 variable GIMP2_DATADIR exists, that is used.  It should be an
 absolute pathname.  Otherwise, on Unix the compile-time defined
-directory is used.  On Win32, the installation directory as deduced
-from the executable's name is used.
+directory is used. On Windows, the installation directory as deduced
+from the executable's full filename is used.
 </para>
 <para>
 The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
-the system, which isn't necessarily UTF-8 (never is on Windows).</para>
+GLib, which isn't necessarily UTF-8. (On Windows it always is
+UTF-8.)</para>
 <para>
 
 </para><variablelist role="params">
@@ -130,13 +132,14 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 Returns the top directory for GIMP locale files. If the environment
 variable GIMP2_LOCALEDIR exists, that is used.  It should be an
 absolute pathname.  Otherwise, on Unix the compile-time defined
-directory is used.  On Win32, the installation directory as deduced
-from the executable's name is used.
+directory is used. On Windows, the installation directory as deduced
+from the executable's full filename is used.
 </para>
 <para>
 The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
-the system, which isn't necessarily UTF-8 (never is on Windows).</para>
+GLib, which isn't necessarily UTF-8. (On Windows it always is
+UTF-8.)</para>
 <para>
 
 </para><variablelist role="params">
@@ -150,13 +153,14 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 Returns the top directory for GIMP plug_ins and modules. If the
 environment variable GIMP2_PLUGINDIR exists, that is used.  It
 should be an absolute pathname. Otherwise, on Unix the compile-time
-defined directory is used. On Win32, the installation directory as
-deduced from the executable's name is used.
+defined directory is used. On Windows, the installation directory as
+deduced from the executable's full filename is used.
 </para>
 <para>
 The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
-the system, which isn't necessarily UTF-8 (never is on Windows).</para>
+GLib, which isn't necessarily UTF-8. (On Windows it always is
+UTF-8.)</para>
 <para>
 
 </para><variablelist role="params">
@@ -170,13 +174,14 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 Returns the top directory for GIMP config files. If the environment
 variable GIMP2_SYSCONFDIR exists, that is used.  It should be an
 absolute pathname.  Otherwise, on Unix the compile-time defined
-directory is used.  On Win32, the installation directory as deduced
-from the executable's name is used.
+directory is used. On Windows, the installation directory as deduced
+from the executable's full filename is used.
 </para>
 <para>
 The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
-the system, which isn't necessarily UTF-8 (never is on Windows).</para>
+GLib, which isn't necessarily UTF-8. (On Windows it always is
+UTF-8.).</para>
 <para>
 
 </para><variablelist role="params">
@@ -213,9 +218,9 @@ Returns the name of a file in the user-specific GIMP settings directory.
 </para>
 <para>
 The returned string is allocated dynamically and *SHOULD* be freed
-with <link linkend="g-free"><function>g_free()</function></link> after use. The returned string is in the encoding used
-for filenames by the system, which isn't necessarily UTF-8 (never
-is on Windows).</para>
+with <link linkend="g-free"><function>g_free()</function></link> after use. The returned string is in the encoding
+used for filenames by GLib, which isn't necessarily
+UTF-8. (On Windows it always is UTF-8.)</para>
 <para>
 
 </para><variablelist role="params">
@@ -234,7 +239,8 @@ Returns the name of GIMP's application-specific gtkrc file.
 <para>
 The returned string is owned by GIMP and must not be modified or
 freed. The returned string is in the encoding used for filenames by
-the system, which isn't necessarily UTF-8 (never is on Windows).</para>
+GLib, which isn't necessarily UTF-8. (On Windows it always is
+UTF-8.)</para>
 <para>
 
 </para><variablelist role="params">

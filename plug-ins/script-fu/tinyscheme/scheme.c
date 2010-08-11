@@ -41,10 +41,37 @@
 #include <limits.h>
 #include <float.h>
 #include <ctype.h>
+#include <string.h>
 
 #include <libintl.h>
 
 #include "scheme-private.h"
+
+#if !STANDALONE
+static ts_output_func   ts_output_handler = NULL;
+static gpointer         ts_output_data = NULL;
+
+void
+ts_register_output_func (ts_output_func  func,
+                         gpointer        user_data)
+{
+  ts_output_handler = func;
+  ts_output_data    = user_data;
+}
+
+/* len is length of 'string' in bytes or -1 for null terminated strings */
+void
+ts_output_string (TsOutputType  type,
+                  const char   *string,
+                  int           len)
+{
+  if (len < 0)
+    len = strlen (string);
+
+  if (ts_output_handler && len > 0)
+    (* ts_output_handler) (type, string, len, ts_output_data);
+}
+#endif
 
 /* Used for documentation purposes, to signal functions in 'interface' */
 #define INTERFACE
@@ -92,7 +119,7 @@ static int utf8_stricmp(const char *s1, const char *s2)
   return result;
 }
 
-#define min(a, b)  ((a <= b) ? a : b)
+#define min(a, b)  ((a) <= (b) ? (a) : (b))
 
 #if USE_STRLWR
 /*
@@ -395,8 +422,6 @@ static void assign_proc(scheme *sc, enum scheme_opcodes, char *name);
 scheme *scheme_init_new(void);
 #if !STANDALONE
 void scheme_call(scheme *sc, pointer func, pointer args);
-
-void (*ts_output_routine) (const char *, int) = NULL;
 #endif
 
 #define num_ivalue(n)       (n.is_fixnum?(n).value.ivalue:(long)(n).value.rvalue)
@@ -922,6 +947,15 @@ void set_safe_foreign (scheme *sc, pointer data) {
   } else {
     car (sc->safe_foreign) = data;
   }
+}
+
+pointer foreign_error (scheme *sc, const char *s, pointer a) {
+  if (sc->safe_foreign == sc->NIL) {
+    fprintf (stderr, "set_foreign_error_flag called outside a foreign function\n");
+  } else {
+    sc->foreign_error = cons (sc, mk_string (sc, s), a);
+  }
+  return sc->T;
 }
 
 
@@ -1544,7 +1578,6 @@ static void backchar(scheme *sc, gunichar c) {
 static void putchars(scheme *sc, const char *chars, int char_cnt) {
   int   free_bytes;     /* Space remaining in buffer (in bytes) */
   int   l;
-  char *s;
   port *pt=sc->outport->_object._port;
 
   if (char_cnt <= 0)
@@ -1553,22 +1586,15 @@ static void putchars(scheme *sc, const char *chars, int char_cnt) {
   /* Get length of 'chars' in bytes */
   char_cnt = g_utf8_offset_to_pointer(chars, (long)char_cnt) - chars;
 
-  if (sc->print_error) {
-      l = strlen(sc->linebuff);
-      s = &sc->linebuff[l];
-      memcpy(s, chars, min(char_cnt, LINESIZE-l-1));
-      return;
-  }
-
   if(pt->kind&port_file) {
 #if STANDALONE
       fwrite(chars,1,char_cnt,pt->rep.stdio.file);
       fflush(pt->rep.stdio.file);
 #else
       /* If output is still directed to stdout (the default) it should be    */
-      /* safe to redirect it to the routine pointed to by ts_output_routine. */
-      if (pt->rep.stdio.file == stdout && ts_output_routine != NULL)
-           (*ts_output_routine) (chars, char_cnt);
+      /* safe to redirect it to the registered output routine. */
+      if (pt->rep.stdio.file == stdout)
+           ts_output_string (TS_OUTPUT_NORMAL, chars, char_cnt);
       else {
         fwrite(chars,1,char_cnt,pt->rep.stdio.file);
         fflush(pt->rep.stdio.file);
@@ -2562,9 +2588,16 @@ static pointer opexe_0(scheme *sc, enum scheme_opcodes op) {
                s_goto(sc,procnum(sc->code));   /* PROCEDURE */
           } else if (is_foreign(sc->code)) {
                sc->safe_foreign = cons (sc, sc->NIL, sc->safe_foreign);
+               sc->foreign_error = sc->NIL;
                x=sc->code->_object._ff(sc,sc->args);
                sc->safe_foreign = cdr (sc->safe_foreign);
-               s_return(sc,x);
+               if (sc->foreign_error == sc->NIL) {
+                   s_return(sc,x);
+               } else {
+                   x = sc->foreign_error;
+                   sc->foreign_error = sc->NIL;
+                   Error_1 (sc, string_value (car (x)), cdr (x));
+               }
           } else if (is_closure(sc->code) || is_macro(sc->code)
                      || is_promise(sc->code)) { /* CLOSURE */
             /* Should not accept promise */
@@ -3543,7 +3576,7 @@ static pointer opexe_3(scheme *sc, enum scheme_opcodes op) {
      case OP_STRINGP:     /* string? */
           s_retbool(is_string(car(sc->args)));
      case OP_INTEGERP:     /* integer? */
-          s_retbool(is_integer(car(sc->args)));
+          s_retbool(is_number(car(sc->args)) && is_integer(car(sc->args)));
      case OP_REALP:     /* real? */
           s_retbool(is_number(car(sc->args))); /* All numbers are real */
      case OP_CHARP:     /* char? */
@@ -3647,9 +3680,6 @@ static pointer opexe_4(scheme *sc, enum scheme_opcodes op) {
                sc->args=cons(sc,mk_string(sc," -- "),sc->args);
                setimmutable(car(sc->args));
           }
-          if (sc->print_error == 0)     /* Reset buffer if not already */
-              sc->linebuff[0] = '\0';   /* in error message output mode*/
-          sc->print_error = 1;
           putstr(sc, "Error: ");
           putstr(sc, strvalue(car(sc->args)));
           sc->args = cdr(sc->args);
@@ -3664,7 +3694,6 @@ static pointer opexe_4(scheme *sc, enum scheme_opcodes op) {
                s_goto(sc,OP_P0LIST);
           } else {
                putstr(sc, "\n");
-               sc->print_error = 0;
                if(sc->interactive_repl) {
                     s_goto(sc,OP_T0LVL);
                } else {
@@ -3964,8 +3993,7 @@ static pointer opexe_5(scheme *sc, enum scheme_opcodes op) {
                     s_return(sc,x);
                }
           default:
-               sprintf(sc->linebuff, "syntax error: illegal token %d", sc->tok);
-               Error_0(sc,sc->linebuff);
+               Error_1(sc, "syntax error: illegal token", mk_integer (sc, sc->tok));
           }
           break;
 
@@ -4515,7 +4543,6 @@ int scheme_init_custom_alloc(scheme *sc, func_alloc malloc, func_dealloc free) {
   sc->nesting=0;
   sc->interactive_repl=0;
   sc->print_output=0;
-  sc->print_error=0;
 
   if (alloc_cellseg(sc,FIRST_CELLSEGS) != FIRST_CELLSEGS) {
     sc->no_memory=1;

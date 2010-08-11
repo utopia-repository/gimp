@@ -477,7 +477,7 @@ Basic GIMP enumeration data types.
   GIMP_TRANSFORM_RESIZE_ADJUST           = 0, /*&lt; desc="Adjust" &gt;*/
   GIMP_TRANSFORM_RESIZE_CLIP             = 1, /*&lt; desc="Clip" &gt;*/
   GIMP_TRANSFORM_RESIZE_CROP,                 /*&lt; desc="Crop to result" &gt;*/
-  GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT,     /*&lt; desc="Crop with aspect" &gt;*/
+  GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT      /*&lt; desc="Crop with aspect" &gt;*/
 } GimpTransformResize;
 </programlisting>
 <para>

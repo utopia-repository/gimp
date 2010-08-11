@@ -47,8 +47,6 @@
 
 #include "scheme-wrapper.h"
 
-static int   ts_console_mode;
-
 #undef cons
 
 struct named_constant
@@ -188,27 +186,28 @@ struct named_constant const old_constants[] =
 
 
 static scheme sc;
-static FILE  *ts_output;
 
 
-/* wrapper functions */
-FILE *
-ts_get_output_file (void)
+void
+ts_stdout_output_func (TsOutputType  type,
+                       const char   *string,
+                       int           len,
+                       gpointer      user_data)
 {
-  return ts_output;
+  if (len < 0)
+    len = strlen (string);
+  fprintf (stdout, "%.*s", len, string);
 }
 
 void
-ts_set_output_file (FILE *file)
+ts_gstring_output_func (TsOutputType  type,
+                        const char   *string,
+                        int           len,
+                        gpointer      user_data)
 {
-  scheme_set_output_port_file (&sc, file);
-  ts_output = file;
-}
+  GString *gstr = (GString *) user_data;
 
-void
-ts_set_console_mode (int flag)
-{
-  ts_console_mode = flag;
+  g_string_append_len (gstr, string, len);
 }
 
 void
@@ -220,8 +219,10 @@ ts_set_print_flag (gint print_flag)
 void
 ts_print_welcome (void)
 {
-  fprintf (ts_output, "Welcome to TinyScheme, Version 1.38\n");
-  fprintf (ts_output, "Copyright (c) Dimitrios Souflis\n");
+  ts_output_string (TS_OUTPUT_NORMAL,
+                    "Welcome to TinyScheme, Version 1.38\n", -1);
+  ts_output_string (TS_OUTPUT_NORMAL,
+                    "Copyright (c) Dimitrios Souflis\n", -1);
 }
 
 void
@@ -233,13 +234,6 @@ ts_interpret_stdin (void)
 gint
 ts_interpret_string (const gchar *expr)
 {
-  port *pt = sc.outport->_object._port;
-
-  memset (sc.linebuff, '\0', LINESIZE);
-  pt->rep.string.curr = sc.linebuff;
-  /* Somewhere 'past_the_end' gets altered so it needs to be reset ~~~~~ */
-  pt->rep.string.past_the_end = &sc.linebuff[LINESIZE-1];
-
 #if DEBUG_SCRIPTS
   sc.print_output = 1;
   sc.tracing = 1;
@@ -250,12 +244,6 @@ ts_interpret_string (const gchar *expr)
   return sc.retcode;
 }
 
-const char *
-ts_get_error_msg (void)
-{
-  return sc.linebuff;
-}
-
 const gchar *
 ts_get_success_msg (void)
 {
@@ -263,16 +251,6 @@ ts_get_success_msg (void)
     return sc.vptr->string_value(sc.value);
 
   return "Success";
-}
-
-/* len is length of 'string' in bytes */
-void
-ts_output_string (const char *string, int len)
-{
-  g_return_if_fail (len >= 0);
-
-  if (len > 0 && ts_console_mode)
-    script_fu_output_to_console (string, len);
 }
 
 
@@ -286,7 +264,6 @@ tinyscheme_init (const gchar *path,
                  gboolean     local_register_scripts)
 {
   register_scripts = local_register_scripts;
-  ts_output_routine = ts_output_string;
 
   /* init the interpreter */
   if (!scheme_init (&sc))
@@ -296,11 +273,12 @@ tinyscheme_init (const gchar *path,
     }
 
   scheme_set_input_port_file (&sc, stdin);
-  ts_set_output_file (stdout);
+  scheme_set_output_port_file (&sc, stdout);
+  ts_register_output_func (ts_stdout_output_func, NULL);
 
   /* Initialize the TinyScheme extensions */
-  init_ftx(&sc);
-  init_re(&sc);
+  init_ftx (&sc);
+  init_re (&sc);
 
   /* register in the interpreter the gimp functions and types. */
   init_constants ();
@@ -587,26 +565,6 @@ convert_string (gchar *str)
     }
 }
 
-static pointer
-my_err (char *msg, pointer a)
-{
-  if (ts_console_mode)
-    {
-      gchar *tmp = g_strdup_printf ("Error: %s\n", msg);
-
-      script_fu_output_to_console (tmp, -1);
-
-      g_free (tmp);
-    }
-  else
-    {
-      g_message (msg);
-    }
-
-  return sc.NIL;
-}
-
-
 /* This is called by the Scheme interpreter to allow calls to GIMP functions */
 static pointer
 marshall_proc_db_call (scheme *sc, pointer a)
@@ -665,9 +623,10 @@ g_printerr ("\nIn marshall_proc_db_call ()\n");
 
   /*  Make sure there are arguments  */
   if (a == sc->NIL)
-    return my_err ("Procedure database argument marshaller was called with no arguments. "
-                   "The procedure to be executed and the arguments it requires "
-                   " (possibly none) must be specified.", sc->NIL);
+    return foreign_error (sc,
+                          "Procedure database argument marshaller was called with no arguments. "
+                          "The procedure to be executed and the arguments it requires "
+                          " (possibly none) must be specified.", 0);
 
   /*  The PDB procedure name is the argument or first argument of the list  */
   if (sc->vptr->is_pair (a))
@@ -701,7 +660,7 @@ g_printerr ("  Invalid procedure name\n");
 #endif
       g_snprintf (error_str, sizeof (error_str),
                   "Invalid procedure name %s specified", proc_name);
-      return my_err (error_str, sc->NIL);
+      return foreign_error (sc, error_str, 0);
     }
 
   /* Free the name and the description which are of no use here.  */
@@ -726,7 +685,7 @@ g_printerr ("  Invalid number of arguments (expected %d but received %d)",
       g_snprintf (error_str, sizeof (error_str),
                   "Invalid number of arguments for %s (expected %d but received %d)",
                   proc_name, nparams, (sc->vptr->list_length (sc, a) - 1));
-      return my_err (error_str, sc->NIL);
+      return foreign_error (sc, error_str, 0);
     }
 
   /*  Marshall the supplied arguments  */
@@ -832,7 +791,7 @@ g_printerr ("      string arg is '%s'\n", args[i].data.d_string);
                               "INT32 vector (argument %d) for function %s has "
                               "size of %ld but expected size of %d",
                               i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
-                  return my_err (error_str, sc->NIL);
+                  return foreign_error (sc, error_str, 0);
                 }
 
               /* FIXME: Check that g_new returned non-NULL value. */
@@ -848,7 +807,7 @@ g_printerr ("      string arg is '%s'\n", args[i].data.d_string);
                       g_snprintf (error_str, sizeof (error_str),
                                   "Item %d in vector is not a number (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
-                      return my_err (error_str, vector);
+                      return foreign_error (sc, error_str, vector);
                     }
 
                   args[i].data.d_int32array[j] =
@@ -885,7 +844,7 @@ if (count > 0)
                               "INT16 vector (argument %d) for function %s has "
                               "size of %ld but expected size of %d",
                               i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
-                  return my_err (error_str, sc->NIL);
+                  return foreign_error (sc, error_str, 0);
                 }
 
               args[i].data.d_int16array = g_new (gint16, n_elements);
@@ -899,7 +858,7 @@ if (count > 0)
                       g_snprintf (error_str, sizeof (error_str),
                                   "Item %d in vector is not a number (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
-                      return my_err (error_str, vector);
+                      return foreign_error (sc, error_str, vector);
                     }
 
                   args[i].data.d_int16array[j] =
@@ -936,7 +895,7 @@ if (count > 0)
                               "INT8 vector (argument %d) for function %s has "
                               "size of %ld but expected size of %d",
                               i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
-                  return my_err (error_str, sc->NIL);
+                  return foreign_error (sc, error_str, 0);
                 }
 
               args[i].data.d_int8array = g_new (guint8, n_elements);
@@ -950,7 +909,7 @@ if (count > 0)
                       g_snprintf (error_str, sizeof (error_str),
                                   "Item %d in vector is not a number (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
-                      return my_err (error_str, vector);
+                      return foreign_error (sc, error_str, vector);
                     }
 
                   args[i].data.d_int8array[j] =
@@ -987,7 +946,7 @@ if (count > 0)
                               "FLOAT vector (argument %d) for function %s has "
                               "size of %ld but expected size of %d",
                               i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
-                  return my_err (error_str, sc->NIL);
+                  return foreign_error (sc, error_str, 0);
                 }
 
               args[i].data.d_floatarray = g_new (gdouble, n_elements);
@@ -1001,7 +960,7 @@ if (count > 0)
                       g_snprintf (error_str, sizeof (error_str),
                                   "Item %d in vector is not a number (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
-                      return my_err (error_str, vector);
+                      return foreign_error (sc, error_str, vector);
                     }
 
                   args[i].data.d_floatarray[j] =
@@ -1038,7 +997,7 @@ if (count > 0)
                               "STRING vector (argument %d) for function %s has "
                               "length of %ld but expected length of %d",
                               i+1, proc_name, sc->vptr->vector_length (vector), n_elements);
-                  return my_err (error_str, sc->NIL);
+                  return foreign_error (sc, error_str, 0);
                 }
 
               args[i].data.d_stringarray = g_new (gchar *, n_elements);
@@ -1052,7 +1011,7 @@ if (count > 0)
                       g_snprintf (error_str, sizeof (error_str),
                                   "Item %d in vector is not a string (argument %d for function %s)\n",
                                   j+1, i+1, proc_name);
-                      return my_err (error_str, vector);
+                      return foreign_error (sc, error_str, vector);
                     }
 
                   args[i].data.d_stringarray[j] =
@@ -1201,15 +1160,16 @@ g_printerr ("      data '%s'\n", (char *)args[i].data.d_parasite.data);
           break;
 
         case GIMP_PDB_STATUS:
-          return my_err ("Status is for return types, not arguments",
-                         sc->vptr->pair_car (a));
+          return foreign_error (sc,
+                                "Status is for return types, not arguments",
+                                sc->vptr->pair_car (a));
           break;
 
         default:
           g_snprintf (error_str, sizeof (error_str),
                       "Argument %d for %s is an unknown type",
                       i+1, proc_name);
-          return my_err (error_str, sc->NIL);
+          return foreign_error (sc, error_str, 0);
         }
 
       /* Break out of loop before i gets updated when error was detected */
@@ -1235,7 +1195,7 @@ g_printerr ("  Invalid type for argument %d\n", i+1);
       g_snprintf (error_str, sizeof (error_str),
                   "Invalid type for argument %d to %s",
                   i+1, proc_name);
-      return my_err (error_str, sc->NIL);
+      return foreign_error (sc, error_str, 0);
     }
 
   /*  Check the return status  */
@@ -1248,7 +1208,7 @@ g_printerr ("  Did not return status\n");
                "Procedural database execution of %s did not return a status:\n    ",
                proc_name);
 
-      return my_err (error_str, sc->NIL);
+      return foreign_error (sc, error_str, 0);
     }
 
 #if DEBUG_MARSHALL
@@ -1262,14 +1222,14 @@ g_printerr ("    return value is %s\n",
       g_snprintf (error_str, sizeof (error_str),
               "Procedural database execution of %s failed:\n    ",
               proc_name);
-      return my_err (error_str, sc->NIL);
+      return foreign_error (sc, error_str, 0);
       break;
 
     case GIMP_PDB_CALLING_ERROR:
       g_snprintf (error_str, sizeof (error_str),
                "Procedural database execution of %s failed on invalid input arguments:\n    ",
                proc_name);
-      return my_err (error_str, sc->NIL);
+      return foreign_error (sc, error_str, 0);
       break;
 
     case GIMP_PDB_SUCCESS:
@@ -1488,7 +1448,7 @@ g_printerr ("      value %d is type %s (%d)\n",
             case GIMP_PDB_PARASITE:
               {
                 if (values[i + 1].data.d_parasite.name == NULL)
-                    return_val = my_err ("Error: null parasite", sc->NIL);
+                    return_val = foreign_error (sc, "Error: null parasite", 0);
                 else
                   {
                     /* don't move the mk_foo() calls outside this function call,
@@ -1522,11 +1482,11 @@ g_printerr ("      data '%.*s'\n",
               break;
 
             case GIMP_PDB_STATUS:
-              return my_err ("Procedural database execution returned multiple status values", sc->NIL);
+              return foreign_error (sc, "Procedural database execution returned multiple status values", 0);
               break;
 
             default:
-              return my_err ("Unknown return type", sc->NIL);
+              return foreign_error (sc, "Unknown return type", 0);
             }
         }
 

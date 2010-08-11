@@ -181,7 +181,7 @@ Determine whether the selection is empty.
 </para>
 <para>
 This procedure returns TRUE if the selection for the specified image
-is not empty.</para>
+is empty.</para>
 <para>
 
 </para><variablelist role="params">

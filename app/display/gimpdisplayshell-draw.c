@@ -553,10 +553,10 @@ gimp_display_shell_draw_area (GimpDisplayShell *shell,
 
       if (shell->highlight)
         {
-          rect.x      = SCALEX (shell, shell->highlight->x);
-          rect.y      = SCALEY (shell, shell->highlight->y);
-          rect.width  = SCALEX (shell, shell->highlight->width);
-          rect.height = SCALEY (shell, shell->highlight->height);
+          rect.x      = ceil  (shell->scale_x * shell->highlight->x);
+          rect.y      = ceil  (shell->scale_y * shell->highlight->y);
+          rect.width  = floor (shell->scale_x * shell->highlight->width);
+          rect.height = floor (shell->scale_y * shell->highlight->height);
         }
 
       /*  display the image in RENDER_BUF_WIDTH x RENDER_BUF_HEIGHT
@@ -576,15 +576,6 @@ gimp_display_shell_draw_area (GimpDisplayShell *shell,
                                          i - shell->disp_yoffset,
                                          dx, dy,
                                          shell->highlight ? &rect : NULL);
-
-#ifdef STRESS_TEST
-              /* Invalidate the projection just after we render it! */
-              gimp_image_invalidate_without_render (shell->display->image,
-                                                    j - shell->disp_xoffset,
-                                                    i - shell->disp_yoffset,
-                                                    dx, dy,
-                                                    0, 0, 0, 0);
-#endif
             }
         }
     }

@@ -456,7 +456,7 @@ gimp_display_shell_destroy (GtkObject *object)
 
   if (shell->highlight)
     {
-      g_free (shell->highlight);
+      g_slice_free (GdkRectangle, shell->highlight);
       shell->highlight = NULL;
     }
 
@@ -796,9 +796,11 @@ gimp_display_shell_new (GimpDisplay     *display,
   main_vbox = gtk_vbox_new (FALSE, 1);
   gtk_container_add (GTK_CONTAINER (shell), main_vbox);
 
+#ifndef HAVE_CARBON
   shell->menubar =
     gtk_ui_manager_get_widget (GTK_UI_MANAGER (shell->menubar_manager),
                                "/image-menubar");
+#endif /* !HAVE_CARBON */
 
   if (shell->menubar)
     {
@@ -1667,7 +1669,7 @@ gimp_display_shell_set_highlight (GimpDisplayShell   *shell,
         }
       else
         {
-          g_free (shell->highlight);
+          g_slice_free (GdkRectangle, shell->highlight);
           shell->highlight = NULL;
 
           gimp_display_shell_expose_full (shell);
@@ -1675,7 +1677,8 @@ gimp_display_shell_set_highlight (GimpDisplayShell   *shell,
     }
   else if (highlight)
     {
-      shell->highlight = g_memdup (highlight, sizeof (GdkRectangle));
+      shell->highlight = g_slice_new (GdkRectangle);
+      *shell->highlight = *highlight;
 
       gimp_display_shell_expose_full (shell);
     }

@@ -74,7 +74,7 @@ dialog-related stuff.</refpurpose>
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpDialog implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
 
 </refsect1>
 

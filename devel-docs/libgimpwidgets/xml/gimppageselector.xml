@@ -84,7 +84,7 @@ enum                <link linkend="GimpPageSelectorTarget">GimpPageSelectorTarge
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPageSelector implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
 
 </refsect1>
 

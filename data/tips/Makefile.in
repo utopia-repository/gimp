@@ -192,6 +192,8 @@ GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
 HAL_CFLAGS = @HAL_CFLAGS@
 HAL_LIBS = @HAL_LIBS@
+HAVE_CARBON_FALSE = @HAVE_CARBON_FALSE@
+HAVE_CARBON_TRUE = @HAVE_CARBON_TRUE@
 HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
 HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
@@ -627,7 +629,7 @@ uninstall-am: uninstall-info-am uninstall-tipsdataDATA
 
 
 gimp-tips.xml: gimp-tips.xml.in $(wildcard $(top_srcdir)/po-tips/*.po)
-	$(INTLTOOL_MERGE) $(top_srcdir)/po-tips $< $(@) -x -u -c $(top_builddir)/po-tips/.intltool-merge-cachemake
+	$(INTLTOOL_MERGE) $(top_srcdir)/po-tips $< $(@) -x -u -c $(top_builddir)/po-tips/.intltool-merge-cache
 
 validate: gimp-tips.xml
 @HAVE_XMLLINT_TRUE@	@$(XMLLINT) --noout --path $(srcdir) --valid $< || \

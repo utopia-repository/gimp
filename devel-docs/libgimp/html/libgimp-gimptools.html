@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimptools</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimptile.html" title="gimptile">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpundo.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2591889" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2610315" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2678406" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2695562" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimptools"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2591889"></a><span class="refentrytitle">gimptools</span>
+<a name="id2610315"></a><span class="refentrytitle">gimptools</span>
 </h2>
 <p>gimptools &#8212; Access to common toolbox tools.</p>
 </td>
@@ -52,652 +52,246 @@
 
 
 
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-airbrush">gimp_airbrush</a>                       (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> pressure,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-airbrush-default">gimp_airbrush_default</a>               (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-by-color-select">gimp_by_color_select</a>                (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-airbrush">gimp_airbrush</a>                       (gint32 drawable_ID,
+                                                         gdouble pressure,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-airbrush-default">gimp_airbrush_default</a>               (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-by-color-select">gimp_by_color_select</a>                (gint32 drawable_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> threshold,
+                                                         gint threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-by-color-select-full">gimp_by_color_select_full</a>           (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius,
+                                                         gboolean sample_merged);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-by-color-select-full">gimp_by_color_select_full</a>           (gint32 drawable_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> threshold,
+                                                         gint threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> select_transparent,
-                                                         <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-clone">gimp_clone</a>                          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> src_drawable_ID,
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius_x,
+                                                         gdouble feather_radius_y,
+                                                         gboolean sample_merged,
+                                                         gboolean select_transparent,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-clone">gimp_clone</a>                          (gint32 drawable_ID,
+                                                         gint32 src_drawable_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCloneType"
 >GimpCloneType</a> clone_type,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> src_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> src_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-clone-default">gimp_clone_default</a>                  (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-convolve">gimp_convolve</a>                       (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> pressure,
-                                                         <a href="libgimp-gimpenums.html#GimpConvolveType">GimpConvolveType</a> convolve_type,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-convolve-default">gimp_convolve_default</a>               (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-dodgeburn">gimp_dodgeburn</a>                      (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> exposure,
+                                                         gdouble src_x,
+                                                         gdouble src_y,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-clone-default">gimp_clone_default</a>                  (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-convolve">gimp_convolve</a>                       (gint32 drawable_ID,
+                                                         gdouble pressure,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpConvolveType">GimpConvolveType</a> convolve_type,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-convolve-default">gimp_convolve_default</a>               (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-dodgeburn">gimp_dodgeburn</a>                      (gint32 drawable_ID,
+                                                         gdouble exposure,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"
 >GimpDodgeBurnType</a> dodgeburn_type,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"
 >GimpTransferMode</a> dodgeburn_mode,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-dodgeburn-default">gimp_dodgeburn_default</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-edit-bucket-fill-full">gimp_edit_bucket_fill_full</a>          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-dodgeburn-default">gimp_dodgeburn_default</a>              (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-edit-bucket-fill-full">gimp_edit_bucket_fill_full</a>          (gint32 drawable_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
-                                                         <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> threshold,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> fill_transparent,
-                                                         <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-ellipse-select">gimp_ellipse_select</a>                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> height,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
+                                                         gdouble opacity,
+                                                         gdouble threshold,
+                                                         gboolean sample_merged,
+                                                         gboolean fill_transparent,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion,
+                                                         gdouble x,
+                                                         gdouble y);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-ellipse-select">gimp_ellipse_select</a>                 (gint32 image_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gdouble width,
+                                                         gdouble height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-eraser">gimp_eraser</a>                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes,
-                                                         <a href="libgimp-gimpenums.html#GimpBrushApplicationMode">GimpBrushApplicationMode</a> hardness,
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-eraser">gimp_eraser</a>                         (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpBrushApplicationMode">GimpBrushApplicationMode</a> hardness,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"
 >GimpPaintApplicationMode</a> method);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-eraser-default">gimp_eraser_default</a>                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimptools.html#gimp-flip">gimp_flip</a>                           (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-free-select">gimp_free_select</a>                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_segs,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *segs,
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-eraser-default">gimp_eraser_default</a>                 (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gint32              <a class="link" href="libgimp-gimptools.html#gimp-flip">gimp_flip</a>                           (gint32 drawable_ID,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-free-select">gimp_free_select</a>                    (gint32 image_ID,
+                                                         gint num_segs,
+                                                         const gdouble *segs,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-fuzzy-select">gimp_fuzzy_select</a>                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> threshold,
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-fuzzy-select">gimp_fuzzy_select</a>                   (gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gint threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-fuzzy-select-full">gimp_fuzzy_select_full</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> threshold,
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius,
+                                                         gboolean sample_merged);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-fuzzy-select-full">gimp_fuzzy_select_full</a>              (gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gint threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> select_transparent,
-                                                         <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-heal">gimp_heal</a>                           (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> src_drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> src_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> src_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-heal-default">gimp_heal_default</a>                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-paintbrush">gimp_paintbrush</a>                     (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> fade_out,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes,
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius_x,
+                                                         gdouble feather_radius_y,
+                                                         gboolean sample_merged,
+                                                         gboolean select_transparent,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-heal">gimp_heal</a>                           (gint32 drawable_ID,
+                                                         gint32 src_drawable_ID,
+                                                         gdouble src_x,
+                                                         gdouble src_y,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-heal-default">gimp_heal_default</a>                   (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-paintbrush">gimp_paintbrush</a>                     (gint32 drawable_ID,
+                                                         gdouble fade_out,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"
 >GimpPaintApplicationMode</a> method,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> gradient_length);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-paintbrush-default">gimp_paintbrush_default</a>             (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-pencil">gimp_pencil</a>                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimptools.html#gimp-perspective">gimp_perspective</a>                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x0,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y0,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x1,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y1,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x2,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y2,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x3,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y3);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-rect-select">gimp_rect_select</a>                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> height,
+                                                         gdouble gradient_length);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-paintbrush-default">gimp_paintbrush_default</a>             (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-pencil">gimp_pencil</a>                         (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gint32              <a class="link" href="libgimp-gimptools.html#gimp-perspective">gimp_perspective</a>                    (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble x1,
+                                                         gdouble y1,
+                                                         gdouble x2,
+                                                         gdouble y2,
+                                                         gdouble x3,
+                                                         gdouble y3);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-rect-select">gimp_rect_select</a>                    (gint32 image_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gdouble width,
+                                                         gdouble height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-round-rect-select">gimp_round_rect_select</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> height,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> corner_radius_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> corner_radius_y,
+                                                         gboolean feather,
+                                                         gdouble feather_radius);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-round-rect-select">gimp_round_rect_select</a>              (gint32 image_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gdouble width,
+                                                         gdouble height,
+                                                         gdouble corner_radius_x,
+                                                         gdouble corner_radius_y,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_y);
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimptools.html#gimp-rotate">gimp_rotate</a>                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> angle);
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimptools.html#gimp-scale">gimp_scale</a>                          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x0,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y0,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x1,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y1);
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimptools.html#gimp-shear">gimp_shear</a>                          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> magnitude);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-smudge">gimp_smudge</a>                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> pressure,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a href="libgimp-gimptools.html#gimp-smudge-default">gimp_smudge_default</a>                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);
-<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a href="libgimp-gimptools.html#gimp-transform-2d">gimp_transform_2d</a>                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> source_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> source_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> scale_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> scale_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> angle,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> dest_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> dest_y);
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius_x,
+                                                         gdouble feather_radius_y);
+gint32              <a class="link" href="libgimp-gimptools.html#gimp-rotate">gimp_rotate</a>                         (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         gdouble angle);
+gint32              <a class="link" href="libgimp-gimptools.html#gimp-scale">gimp_scale</a>                          (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble x1,
+                                                         gdouble y1);
+gint32              <a class="link" href="libgimp-gimptools.html#gimp-shear">gimp_shear</a>                          (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
+                                                         gdouble magnitude);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-smudge">gimp_smudge</a>                         (gint32 drawable_ID,
+                                                         gdouble pressure,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gboolean            <a class="link" href="libgimp-gimptools.html#gimp-smudge-default">gimp_smudge_default</a>                 (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);
+gint32              <a class="link" href="libgimp-gimptools.html#gimp-transform-2d">gimp_transform_2d</a>                   (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         gdouble source_x,
+                                                         gdouble source_y,
+                                                         gdouble scale_x,
+                                                         gdouble scale_y,
+                                                         gdouble angle,
+                                                         gdouble dest_x,
+                                                         gdouble dest_y);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678406"></a><h2>Description</h2>
+<a name="id2695562"></a><h2>Description</h2>
 <p>
 Functions giving access to common toolbox tools.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2678421"></a><h2>Details</h2>
+<a name="id2695576"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2678430"></a><h3>
+<a name="id2695586"></a><h3>
 <a name="gimp-airbrush"></a>gimp_airbrush ()</h3>
-<a class="indexterm" name="id2678441"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_airbrush                       (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> pressure,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2695596"></a><pre class="programlisting">gboolean            gimp_airbrush                       (gint32 drawable_ID,
+                                                         gdouble pressure,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Paint in the current brush with varying pressure. Paint application
 is time-dependent.
@@ -714,27 +308,27 @@ results in a thinner layer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></p></td>
 <td> The pressure of the airbrush strokes.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -743,26 +337,18 @@ results in a thinner layer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678563"></a><h3>
+<a name="id2695718"></a><h3>
 <a name="gimp-airbrush-default"></a>gimp_airbrush_default ()</h3>
-<a class="indexterm" name="id2678573"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_airbrush_default               (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2695729"></a><pre class="programlisting">gboolean            gimp_airbrush_default               (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Paint in the current brush with varying pressure. Paint application
 is time-dependent.
 </p>
 <p>
 This tool simulates the use of an airbrush. It is similar to
-<a href="libgimp-gimptools.html#gimp-airbrush"><code class="function">gimp_airbrush()</code></a> except that the pressure is derived from the
+<a class="link" href="libgimp-gimptools.html#gimp-airbrush"><code class="function">gimp_airbrush()</code></a> except that the pressure is derived from the
 airbrush tools options box. It the option has not been set the
 default for the option will be used.</p>
 <p>
@@ -772,22 +358,22 @@ default for the option will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -796,34 +382,20 @@ default for the option will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678685"></a><h3>
+<a name="id2695840"></a><h3>
 <a name="gimp-by-color-select"></a>gimp_by_color_select ()</h3>
-<a class="indexterm" name="id2678695"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_by_color_select                (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
+<a class="indexterm" name="id2695851"></a><pre class="programlisting">gboolean            gimp_by_color_select                (gint32 drawable_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> threshold,
+                                                         gint threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged);</pre>
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius,
+                                                         gboolean sample_merged);</pre>
 <p>
 Create a selection by selecting all pixels (in the specified
 drawable) with the same (or similar) color to that specified.
@@ -849,47 +421,47 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
 <td> The color to select.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></p></td>
 <td> Threshold in intensity levels.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></p></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></p></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></p></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -898,41 +470,23 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678903"></a><h3>
+<a name="id2696059"></a><h3>
 <a name="gimp-by-color-select-full"></a>gimp_by_color_select_full ()</h3>
-<a class="indexterm" name="id2678916"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_by_color_select_full           (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
+<a class="indexterm" name="id2696071"></a><pre class="programlisting">gboolean            gimp_by_color_select_full           (gint32 drawable_ID,
                                                          const <a
 href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 >GimpRGB</a> *color,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> threshold,
+                                                         gint threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> select_transparent,
-                                                         <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);</pre>
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius_x,
+                                                         gdouble feather_radius_y,
+                                                         gboolean sample_merged,
+                                                         gboolean select_transparent,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);</pre>
 <p>
 Create a selection by selecting all pixels (in the specified
 drawable) with the same (or similar) color to that specified.
@@ -959,62 +513,62 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>color</code></em>&#160;:</span></p></td>
 <td> The color to select.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></p></td>
 <td> Threshold in intensity levels.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></p></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></p></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation in X direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation in Y direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></p></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>select_transparent</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>select_transparent</code></em>&#160;:</span></p></td>
 <td> Whether to consider transparent pixels for selection. If TRUE, transparency is considered as a unique selectable color.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></p></td>
 <td> The criterion used to determine color similarity. SELECT_CRITERION_COMPOSITE is the standard choice.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -1026,31 +580,17 @@ In the case of a merged sampling, the supplied drawable is ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679195"></a><h3>
+<a name="id2696351"></a><h3>
 <a name="gimp-clone"></a>gimp_clone ()</h3>
-<a class="indexterm" name="id2679206"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_clone                          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> src_drawable_ID,
+<a class="indexterm" name="id2696361"></a><pre class="programlisting">gboolean            gimp_clone                          (gint32 drawable_ID,
+                                                         gint32 src_drawable_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpCloneType"
 >GimpCloneType</a> clone_type,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> src_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> src_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+                                                         gdouble src_x,
+                                                         gdouble src_y,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Clone from the source to the dest drawable using the current brush
 </p>
@@ -1074,42 +614,42 @@ significantly slower.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>src_drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>src_drawable_ID</code></em>&#160;:</span></p></td>
 <td> The source drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>clone_type</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>clone_type</code></em>&#160;:</span></p></td>
 <td> The type of clone.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></p></td>
 <td> The x coordinate in the source image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></p></td>
 <td> The y coordinate in the source image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1118,26 +658,18 @@ significantly slower.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679394"></a><h3>
+<a name="id2696549"></a><h3>
 <a name="gimp-clone-default"></a>gimp_clone_default ()</h3>
-<a class="indexterm" name="id2679404"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_clone_default                  (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2696560"></a><pre class="programlisting">gboolean            gimp_clone_default                  (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Clone from the source to the dest drawable using the current brush
 </p>
 <p>
 This tool clones (copies) from the source drawable starting at the
 specified source coordinates to the dest drawable. This function
-performs exactly the same as the <a href="libgimp-gimptools.html#gimp-clone"><code class="function">gimp_clone()</code></a> function except that
+performs exactly the same as the <a class="link" href="libgimp-gimptools.html#gimp-clone"><code class="function">gimp_clone()</code></a> function except that
 the tools arguments are obtained from the clones option dialog. It
 this dialog has not been activated then the dialogs default values
 will be used.</p>
@@ -1148,22 +680,22 @@ will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1172,23 +704,13 @@ will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679518"></a><h3>
+<a name="id2696673"></a><h3>
 <a name="gimp-convolve"></a>gimp_convolve ()</h3>
-<a class="indexterm" name="id2679528"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_convolve                       (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> pressure,
-                                                         <a href="libgimp-gimpenums.html#GimpConvolveType">GimpConvolveType</a> convolve_type,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2696683"></a><pre class="programlisting">gboolean            gimp_convolve                       (gint32 drawable_ID,
+                                                         gdouble pressure,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpConvolveType">GimpConvolveType</a> convolve_type,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Convolve (Blur, Sharpen) using the current brush.
 </p>
@@ -1204,32 +726,32 @@ between the specified stroke coordinates.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></p></td>
 <td> The pressure.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>convolve_type</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>convolve_type</code></em>&#160;:</span></p></td>
 <td> Convolve type.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1238,26 +760,18 @@ between the specified stroke coordinates.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679669"></a><h3>
+<a name="id2696825"></a><h3>
 <a name="gimp-convolve-default"></a>gimp_convolve_default ()</h3>
-<a class="indexterm" name="id2679680"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_convolve_default               (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2696835"></a><pre class="programlisting">gboolean            gimp_convolve_default               (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Convolve (Blur, Sharpen) using the current brush.
 </p>
 <p>
 This tool convolves the specified drawable with either a sharpening
 or blurring kernel. This function performs exactly the same as the
-<a href="libgimp-gimptools.html#gimp-convolve"><code class="function">gimp_convolve()</code></a> function except that the tools arguments are
+<a class="link" href="libgimp-gimptools.html#gimp-convolve"><code class="function">gimp_convolve()</code></a> function except that the tools arguments are
 obtained from the convolve option dialog. It this dialog has not
 been activated then the dialogs default values will be used.</p>
 <p>
@@ -1267,22 +781,22 @@ been activated then the dialogs default values will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1291,28 +805,18 @@ been activated then the dialogs default values will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679792"></a><h3>
+<a name="id2696948"></a><h3>
 <a name="gimp-dodgeburn"></a>gimp_dodgeburn ()</h3>
-<a class="indexterm" name="id2679803"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_dodgeburn                      (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> exposure,
+<a class="indexterm" name="id2696958"></a><pre class="programlisting">gboolean            gimp_dodgeburn                      (gint32 drawable_ID,
+                                                         gdouble exposure,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpDodgeBurnType"
 >GimpDodgeBurnType</a> dodgeburn_type,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpTransferMode"
 >GimpTransferMode</a> dodgeburn_mode,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Dodgeburn image with varying exposure.
 </p>
@@ -1325,37 +829,37 @@ Dodgeburn. More details here later.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>exposure</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>exposure</code></em>&#160;:</span></p></td>
 <td> The exposure of the strokes.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>dodgeburn_type</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>dodgeburn_type</code></em>&#160;:</span></p></td>
 <td> The type either dodge or burn.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>dodgeburn_mode</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>dodgeburn_mode</code></em>&#160;:</span></p></td>
 <td> The mode.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1364,22 +868,14 @@ Dodgeburn. More details here later.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2679958"></a><h3>
+<a name="id2697114"></a><h3>
 <a name="gimp-dodgeburn-default"></a>gimp_dodgeburn_default ()</h3>
-<a class="indexterm" name="id2679968"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_dodgeburn_default              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2697124"></a><pre class="programlisting">gboolean            gimp_dodgeburn_default              (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Dodgeburn image with varying exposure. This is the same as the
-<a href="libgimp-gimptools.html#gimp-dodgeburn"><code class="function">gimp_dodgeburn()</code></a> function except that the exposure, type and mode
+<a class="link" href="libgimp-gimptools.html#gimp-dodgeburn"><code class="function">gimp_dodgeburn()</code></a> function except that the exposure, type and mode
 are taken from the tools option dialog. If the dialog has not been
 activated then the defaults as used by the dialog will be used.
 </p>
@@ -1392,22 +888,22 @@ Dodgeburn. More details here later.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1416,36 +912,20 @@ Dodgeburn. More details here later.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680079"></a><h3>
+<a name="id2697234"></a><h3>
 <a name="gimp-edit-bucket-fill-full"></a>gimp_edit_bucket_fill_full ()</h3>
-<a class="indexterm" name="id2680091"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_edit_bucket_fill_full          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
+<a class="indexterm" name="id2697247"></a><pre class="programlisting">gboolean            gimp_edit_bucket_fill_full          (gint32 drawable_ID,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
-                                                         <a href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> opacity,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> threshold,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> fill_transparent,
-                                                         <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y);</pre>
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
+                                                         gdouble opacity,
+                                                         gdouble threshold,
+                                                         gboolean sample_merged,
+                                                         gboolean fill_transparent,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion,
+                                                         gdouble x,
+                                                         gdouble y);</pre>
 <p>
 Fill the area specified either by the current selection if there is
 one, or by a seed fill starting at the specified coordinates.
@@ -1470,57 +950,57 @@ relative to the drawable's origin.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>fill_mode</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>fill_mode</code></em>&#160;:</span></p></td>
 <td> The type of fill.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></p></td>
 <td> The paint application mode.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></p></td>
 <td> The opacity of the final bucket fill.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></p></td>
 <td> The threshold determines how extensive the seed fill will be. It's value is specified in terms of intensity levels. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></p></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>fill_transparent</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>fill_transparent</code></em>&#160;:</span></p></td>
 <td> Whether to consider transparent pixels for filling. If TRUE, transparency is considered as a unique fillable color.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></p></td>
 <td> The criterion used to determine color similarity. SELECT_CRITERION_COMPOSITE is the standard choice.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
 <td> The x coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
 <td> The y coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -1532,37 +1012,19 @@ relative to the drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680355"></a><h3>
+<a name="id2697511"></a><h3>
 <a name="gimp-ellipse-select"></a>gimp_ellipse_select ()</h3>
-<a class="indexterm" name="id2680366"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_ellipse_select                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> height,
+<a class="indexterm" name="id2697521"></a><pre class="programlisting">gboolean            gimp_ellipse_select                 (gint32 image_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gdouble width,
+                                                         gdouble height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius);</pre>
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius);</pre>
 <p>
 Create an elliptical selection over the specified image.
 </p>
@@ -1583,52 +1045,52 @@ radius.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
 <td> x coordinate of upper-left corner of ellipse bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
 <td> y coordinate of upper-left corner of ellipse bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
 <td> The width of the ellipse.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
 <td> The height of the ellipse.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></p></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></p></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1637,20 +1099,12 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680588"></a><h3>
+<a name="id2697743"></a><h3>
 <a name="gimp-eraser"></a>gimp_eraser ()</h3>
-<a class="indexterm" name="id2680598"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_eraser                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes,
-                                                         <a href="libgimp-gimpenums.html#GimpBrushApplicationMode">GimpBrushApplicationMode</a> hardness,
+<a class="indexterm" name="id2697754"></a><pre class="programlisting">gboolean            gimp_eraser                         (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpBrushApplicationMode">GimpBrushApplicationMode</a> hardness,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"
 >GimpPaintApplicationMode</a> method);</pre>
@@ -1670,32 +1124,32 @@ tool linearly interpolates between the specified stroke coordinates.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>hardness</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>hardness</code></em>&#160;:</span></p></td>
 <td> How to apply the brush.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>method</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>method</code></em>&#160;:</span></p></td>
 <td> The paint method to use.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1704,25 +1158,17 @@ tool linearly interpolates between the specified stroke coordinates.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680748"></a><h3>
+<a name="id2697904"></a><h3>
 <a name="gimp-eraser-default"></a>gimp_eraser_default ()</h3>
-<a class="indexterm" name="id2680762"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_eraser_default                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2697918"></a><pre class="programlisting">gboolean            gimp_eraser_default                 (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Erase using the current brush.
 </p>
 <p>
 This tool erases using the current brush mask. This function
-performs exactly the same as the <a href="libgimp-gimptools.html#gimp-eraser"><code class="function">gimp_eraser()</code></a> function except that
+performs exactly the same as the <a class="link" href="libgimp-gimptools.html#gimp-eraser"><code class="function">gimp_eraser()</code></a> function except that
 the tools arguments are obtained from the eraser option dialog. It
 this dialog has not been activated then the dialogs default values
 will be used.</p>
@@ -1733,22 +1179,22 @@ will be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1757,21 +1203,17 @@ will be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2680885"></a><h3>
+<a name="id2698041"></a><h3>
 <a name="gimp-flip"></a>gimp_flip ()</h3>
-<a class="indexterm" name="id2680900"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_flip                           (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);</pre>
+<a class="indexterm" name="id2698056"></a><pre class="programlisting">gint32              gimp_flip                           (gint32 drawable_ID,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> flip_type);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_flip</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
 This procedure is deprecated! Use
-<a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip-simple"><code class="function">gimp_drawable_transform_flip_simple()</code></a> instead.</p>
+<a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-flip-simple"><code class="function">gimp_drawable_transform_flip_simple()</code></a> instead.</p>
 <p>
 
 </p>
@@ -1779,17 +1221,17 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>flip_type</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>flip_type</code></em>&#160;:</span></p></td>
 <td> Type of flip.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The flipped drawable.
 </td>
 </tr>
@@ -1798,31 +1240,17 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2681006"></a><h3>
+<a name="id2698162"></a><h3>
 <a name="gimp-free-select"></a>gimp_free_select ()</h3>
-<a class="indexterm" name="id2681020"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_free_select                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_segs,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *segs,
+<a class="indexterm" name="id2698176"></a><pre class="programlisting">gboolean            gimp_free_select                    (gint32 image_ID,
+                                                         gint num_segs,
+                                                         const gdouble *segs,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius);</pre>
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius);</pre>
 <p>
 Create a polygonal selection over the specified image.
 </p>
@@ -1845,42 +1273,42 @@ radius.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_segs</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_segs</code></em>&#160;:</span></p></td>
 <td> Number of points (count 1 coordinate as two points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>segs</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>segs</code></em>&#160;:</span></p></td>
 <td> Array of points: { p1.x, p1.y, p2.x, p2.y, ..., pn.x, pn.y}.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></p></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></p></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1889,37 +1317,19 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2681227"></a><h3>
+<a name="id2698383"></a><h3>
 <a name="gimp-fuzzy-select"></a>gimp_fuzzy_select ()</h3>
-<a class="indexterm" name="id2681241"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_fuzzy_select                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> threshold,
+<a class="indexterm" name="id2698397"></a><pre class="programlisting">gboolean            gimp_fuzzy_select                   (gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gint threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged);</pre>
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius,
+                                                         gboolean sample_merged);</pre>
 <p>
 Create a fuzzy selection starting at the specified coordinates on
 the specified drawable.
@@ -1950,52 +1360,52 @@ drawable's origin.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
 <td> x coordinate of initial seed fill point: (image coordinates).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
 <td> y coordinate of initial seed fill point: (image coordinates).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></p></td>
 <td> Threshold in intensity levels.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></p></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></p></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></p></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2004,44 +1414,22 @@ drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2681501"></a><h3>
+<a name="id2698656"></a><h3>
 <a name="gimp-fuzzy-select-full"></a>gimp_fuzzy_select_full ()</h3>
-<a class="indexterm" name="id2681516"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_fuzzy_select_full              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> threshold,
+<a class="indexterm" name="id2698672"></a><pre class="programlisting">gboolean            gimp_fuzzy_select_full              (gint32 drawable_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gint threshold,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> sample_merged,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> select_transparent,
-                                                         <a href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);</pre>
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius_x,
+                                                         gdouble feather_radius_y,
+                                                         gboolean sample_merged,
+                                                         gboolean select_transparent,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpSelectCriterion">GimpSelectCriterion</a> select_criterion);</pre>
 <p>
 Create a fuzzy selection starting at the specified coordinates on
 the specified drawable.
@@ -2072,67 +1460,67 @@ drawable's origin.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
 <td> x coordinate of initial seed fill point: (image coordinates).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
 <td> y coordinate of initial seed fill point: (image coordinates).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></p></td>
 <td> Threshold in intensity levels.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></p></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></p></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation in X direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation in Y direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></p></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>select_transparent</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>select_transparent</code></em>&#160;:</span></p></td>
 <td> Whether to consider transparent pixels for selection. If TRUE, transparency is considered as a unique selectable color.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>select_criterion</code></em>&#160;:</span></p></td>
 <td> The criterion used to determine color similarity. SELECT_CRITERION_COMPOSITE is the standard choice.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -2144,28 +1532,14 @@ drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2681853"></a><h3>
+<a name="id2699009"></a><h3>
 <a name="gimp-heal"></a>gimp_heal ()</h3>
-<a class="indexterm" name="id2681868"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_heal                           (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> src_drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> src_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> src_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2699024"></a><pre class="programlisting">gboolean            gimp_heal                           (gint32 drawable_ID,
+                                                         gint32 src_drawable_ID,
+                                                         gdouble src_x,
+                                                         gdouble src_y,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Heal from the source to the dest drawable using the current brush
 </p>
@@ -2183,37 +1557,37 @@ except RGB-&gt;Indexed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>src_drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>src_drawable_ID</code></em>&#160;:</span></p></td>
 <td> The source drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>src_x</code></em>&#160;:</span></p></td>
 <td> The x coordinate in the source image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>src_y</code></em>&#160;:</span></p></td>
 <td> The y coordinate in the source image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -2225,26 +1599,18 @@ except RGB-&gt;Indexed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2682057"></a><h3>
+<a name="id2699212"></a><h3>
 <a name="gimp-heal-default"></a>gimp_heal_default ()</h3>
-<a class="indexterm" name="id2682073"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_heal_default                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2699228"></a><pre class="programlisting">gboolean            gimp_heal_default                   (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Heal from the source to the dest drawable using the current brush
 </p>
 <p>
 This tool heals from the source drawable starting at the specified
 source coordinates to the dest drawable. This function performs
-exactly the same as the <a href="libgimp-gimptools.html#gimp-heal"><code class="function">gimp_heal()</code></a> function except that the tools
+exactly the same as the <a class="link" href="libgimp-gimptools.html#gimp-heal"><code class="function">gimp_heal()</code></a> function except that the tools
 arguments are obtained from the healing option dialog. It this
 dialog has not been activated then the dialogs default values will
 be used.</p>
@@ -2255,22 +1621,22 @@ be used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -2282,28 +1648,16 @@ be used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2682205"></a><h3>
+<a name="id2699360"></a><h3>
 <a name="gimp-paintbrush"></a>gimp_paintbrush ()</h3>
-<a class="indexterm" name="id2682218"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_paintbrush                     (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> fade_out,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes,
+<a class="indexterm" name="id2699374"></a><pre class="programlisting">gboolean            gimp_paintbrush                     (gint32 drawable_ID,
+                                                         gdouble fade_out,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpPaintApplicationMode"
 >GimpPaintApplicationMode</a> method,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> gradient_length);</pre>
+                                                         gdouble gradient_length);</pre>
 <p>
 Paint in the current brush with optional fade out parameter and pull
 colors from a gradient.
@@ -2325,37 +1679,37 @@ pixels. If the gradient-length is 0, no gradient is used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>fade_out</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>fade_out</code></em>&#160;:</span></p></td>
 <td> Fade out parameter.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>method</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>method</code></em>&#160;:</span></p></td>
 <td> The paint method to use.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>gradient_length</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>gradient_length</code></em>&#160;:</span></p></td>
 <td> Length of gradient to draw.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2364,19 +1718,11 @@ pixels. If the gradient-length is 0, no gradient is used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2682404"></a><h3>
+<a name="id2699560"></a><h3>
 <a name="gimp-paintbrush-default"></a>gimp_paintbrush_default ()</h3>
-<a class="indexterm" name="id2682418"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_paintbrush_default             (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2699574"></a><pre class="programlisting">gboolean            gimp_paintbrush_default             (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Paint in the current brush. The fade out parameter and pull colors
 from a gradient parameter are set from the paintbrush options
@@ -2402,22 +1748,22 @@ is 0, no gradient is used.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2426,19 +1772,11 @@ is 0, no gradient is used.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2682543"></a><h3>
+<a name="id2699698"></a><h3>
 <a name="gimp-pencil"></a>gimp_pencil ()</h3>
-<a class="indexterm" name="id2682555"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_pencil                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2699711"></a><pre class="programlisting">gboolean            gimp_pencil                         (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Paint in the current brush without sub-pixel sampling.
 </p>
@@ -2456,22 +1794,22 @@ white.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2480,47 +1818,25 @@ white.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2682671"></a><h3>
+<a name="id2699827"></a><h3>
 <a name="gimp-perspective"></a>gimp_perspective ()</h3>
-<a class="indexterm" name="id2682687"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_perspective                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x0,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y0,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x1,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y1,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x2,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y2,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x3,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y3);</pre>
+<a class="indexterm" name="id2699843"></a><pre class="programlisting">gint32              gimp_perspective                    (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble x1,
+                                                         gdouble y1,
+                                                         gdouble x2,
+                                                         gdouble y2,
+                                                         gdouble x3,
+                                                         gdouble y3);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_perspective</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
 This procedure is deprecated! Use
-<a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-perspective-default"><code class="function">gimp_drawable_transform_perspective_default()</code></a> instead.</p>
+<a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-perspective-default"><code class="function">gimp_drawable_transform_perspective_default()</code></a> instead.</p>
 <p>
 
 </p>
@@ -2528,57 +1844,57 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></p></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></p></td>
 <td> The new x coordinate of upper-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></p></td>
 <td> The new y coordinate of upper-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></p></td>
 <td> The new x coordinate of upper-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></p></td>
 <td> The new y coordinate of upper-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></p></td>
 <td> The new x coordinate of lower-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></p></td>
 <td> The new y coordinate of lower-left corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x3</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x3</code></em>&#160;:</span></p></td>
 <td> The new x coordinate of lower-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y3</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y3</code></em>&#160;:</span></p></td>
 <td> The new y coordinate of lower-right corner of original bounding box.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The newly mapped drawable.
 </td>
 </tr>
@@ -2587,34 +1903,18 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2682972"></a><h3>
+<a name="id2700128"></a><h3>
 <a name="gimp-rect-select"></a>gimp_rect_select ()</h3>
-<a class="indexterm" name="id2682985"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_rect_select                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> height,
+<a class="indexterm" name="id2700140"></a><pre class="programlisting">gboolean            gimp_rect_select                    (gint32 image_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gdouble width,
+                                                         gdouble height,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius);</pre>
+                                                         gboolean feather,
+                                                         gdouble feather_radius);</pre>
 <p>
 Create a rectangular selection over the specified image;
 </p>
@@ -2632,47 +1932,47 @@ radius.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
 <td> x coordinate of upper-left corner of rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
 <td> y coordinate of upper-left corner of rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
 <td> The width of the rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
 <td> The height of the rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></p></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -2681,46 +1981,22 @@ radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2683208"></a><h3>
+<a name="id2700364"></a><h3>
 <a name="gimp-round-rect-select"></a>gimp_round_rect_select ()</h3>
-<a class="indexterm" name="id2683224"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_round_rect_select              (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> width,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> height,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> corner_radius_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> corner_radius_y,
+<a class="indexterm" name="id2700380"></a><pre class="programlisting">gboolean            gimp_round_rect_select              (gint32 image_ID,
+                                                         gdouble x,
+                                                         gdouble y,
+                                                         gdouble width,
+                                                         gdouble height,
+                                                         gdouble corner_radius_x,
+                                                         gdouble corner_radius_y,
                                                          <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
 >GimpChannelOps</a> operation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> antialias,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> feather,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> feather_radius_y);</pre>
+                                                         gboolean antialias,
+                                                         gboolean feather,
+                                                         gdouble feather_radius_x,
+                                                         gdouble feather_radius_y);</pre>
 <p>
 Create a rectangular selection with round corners over the specified
 image;
@@ -2739,67 +2015,67 @@ specified feather radius.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> The image.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
 <td> x coordinate of upper-left corner of rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
 <td> y coordinate of upper-left corner of rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>width</code></em>&#160;:</span></p></td>
 <td> The width of the rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>height</code></em>&#160;:</span></p></td>
 <td> The height of the rectangle.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>corner_radius_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>corner_radius_x</code></em>&#160;:</span></p></td>
 <td> The corner radius in X direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>corner_radius_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>corner_radius_y</code></em>&#160;:</span></p></td>
 <td> The corner radius in Y direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>operation</code></em>&#160;:</span></p></td>
 <td> The selection operation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>antialias</code></em>&#160;:</span></p></td>
 <td> Antialiasing.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather</code></em>&#160;:</span></p></td>
 <td> Feather option for selections.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius_x</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation in X direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>feather_radius_y</code></em>&#160;:</span></p></td>
 <td> Radius for feather operation in Y direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -2811,26 +2087,18 @@ specified feather radius.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2683543"></a><h3>
+<a name="id2700699"></a><h3>
 <a name="gimp-rotate"></a>gimp_rotate ()</h3>
-<a class="indexterm" name="id2683558"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_rotate                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> angle);</pre>
+<a class="indexterm" name="id2700714"></a><pre class="programlisting">gint32              gimp_rotate                         (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         gdouble angle);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_rotate</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
 This procedure is deprecated! Use
-<a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-rotate-default"><code class="function">gimp_drawable_transform_rotate_default()</code></a> instead.</p>
+<a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-rotate-default"><code class="function">gimp_drawable_transform_rotate_default()</code></a> instead.</p>
 <p>
 
 </p>
@@ -2838,22 +2106,22 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></p></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></p></td>
 <td> The angle of rotation (radians).
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The rotated drawable.
 </td>
 </tr>
@@ -2862,35 +2130,21 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2683686"></a><h3>
+<a name="id2700842"></a><h3>
 <a name="gimp-scale"></a>gimp_scale ()</h3>
-<a class="indexterm" name="id2683702"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_scale                          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x0,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y0,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> x1,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> y1);</pre>
+<a class="indexterm" name="id2700857"></a><pre class="programlisting">gint32              gimp_scale                          (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         gdouble x0,
+                                                         gdouble y0,
+                                                         gdouble x1,
+                                                         gdouble y1);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_scale</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
 This procedure is deprecated! Use
-<a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-scale-default"><code class="function">gimp_drawable_transform_scale_default()</code></a> instead.</p>
+<a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-scale-default"><code class="function">gimp_drawable_transform_scale_default()</code></a> instead.</p>
 <p>
 
 </p>
@@ -2898,37 +2152,37 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></p></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x0</code></em>&#160;:</span></p></td>
 <td> The new x coordinate of the upper-left corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y0</code></em>&#160;:</span></p></td>
 <td> The new y coordinate of the upper-left corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></p></td>
 <td> The new x coordinate of the lower-right corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></p></td>
 <td> The new y coordinate of the lower-right corner of the scaled region.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The scaled drawable.
 </td>
 </tr>
@@ -2937,27 +2191,19 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2683897"></a><h3>
+<a name="id2701053"></a><h3>
 <a name="gimp-shear"></a>gimp_shear ()</h3>
-<a class="indexterm" name="id2683912"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_shear                          (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> magnitude);</pre>
+<a class="indexterm" name="id2701068"></a><pre class="programlisting">gint32              gimp_shear                          (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpOrientationType">GimpOrientationType</a> shear_type,
+                                                         gdouble magnitude);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_shear</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
 This procedure is deprecated! Use
-<a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-shear-default"><code class="function">gimp_drawable_transform_shear_default()</code></a> instead.</p>
+<a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-shear-default"><code class="function">gimp_drawable_transform_shear_default()</code></a> instead.</p>
 <p>
 
 </p>
@@ -2965,27 +2211,27 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></p></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>shear_type</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>shear_type</code></em>&#160;:</span></p></td>
 <td> Type of shear.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>magnitude</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>magnitude</code></em>&#160;:</span></p></td>
 <td> The magnitude of the shear.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The sheared drawable.
 </td>
 </tr>
@@ -2994,22 +2240,12 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2684062"></a><h3>
+<a name="id2701218"></a><h3>
 <a name="gimp-smudge"></a>gimp_smudge ()</h3>
-<a class="indexterm" name="id2684075"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_smudge                         (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> pressure,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2701231"></a><pre class="programlisting">gboolean            gimp_smudge                         (gint32 drawable_ID,
+                                                         gdouble pressure,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Smudge image with varying pressure.
 </p>
@@ -3024,27 +2260,27 @@ lesser smudge.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>pressure</code></em>&#160;:</span></p></td>
 <td> The pressure of the smudge strokes.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -3053,25 +2289,17 @@ lesser smudge.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2684210"></a><h3>
+<a name="id2701365"></a><h3>
 <a name="gimp-smudge-default"></a>gimp_smudge_default ()</h3>
-<a class="indexterm" name="id2684224"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            gimp_smudge_default                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint"
->gint</a> num_strokes,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> *strokes);</pre>
+<a class="indexterm" name="id2701379"></a><pre class="programlisting">gboolean            gimp_smudge_default                 (gint32 drawable_ID,
+                                                         gint num_strokes,
+                                                         const gdouble *strokes);</pre>
 <p>
 Smudge image with varying pressure.
 </p>
 <p>
 This tool simulates a smudge using the current brush. It behaves
-exactly the same as <a href="libgimp-gimptools.html#gimp-smudge"><code class="function">gimp_smudge()</code></a> except that the pressure value is
+exactly the same as <a class="link" href="libgimp-gimptools.html#gimp-smudge"><code class="function">gimp_smudge()</code></a> except that the pressure value is
 taken from the smudge tool options or the options default if the
 tools option dialog has not been activated.</p>
 <p>
@@ -3081,22 +2309,22 @@ tools option dialog has not been activated.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>num_strokes</code></em>&#160;:</span></p></td>
 <td> Number of stroke control points (count each coordinate as 2 points).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>strokes</code></em>&#160;:</span></p></td>
 <td> Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -3105,44 +2333,24 @@ tools option dialog has not been activated.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2684346"></a><h3>
+<a name="id2701502"></a><h3>
 <a name="gimp-transform-2d"></a>gimp_transform_2d ()</h3>
-<a class="indexterm" name="id2684362"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              gimp_transform_2d                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> drawable_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a> interpolation,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> source_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> source_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> scale_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> scale_y,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> angle,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> dest_x,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gdouble"
->gdouble</a> dest_y);</pre>
+<a class="indexterm" name="id2701518"></a><pre class="programlisting">gint32              gimp_transform_2d                   (gint32 drawable_ID,
+                                                         gboolean interpolation,
+                                                         gdouble source_x,
+                                                         gdouble source_y,
+                                                         gdouble scale_x,
+                                                         gdouble scale_y,
+                                                         gdouble angle,
+                                                         gdouble dest_x,
+                                                         gdouble dest_y);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_transform_2d</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
 This procedure is deprecated! Use
-<a href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-2d-default"><code class="function">gimp_drawable_transform_2d_default()</code></a> instead.</p>
+<a class="link" href="libgimp-gimpdrawabletransform.html#gimp-drawable-transform-2d-default"><code class="function">gimp_drawable_transform_2d_default()</code></a> instead.</p>
 <p>
 
 </p>
@@ -3150,52 +2358,52 @@ This procedure is deprecated! Use
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>interpolation</code></em>&#160;:</span></p></td>
 <td> Whether to use interpolation.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>source_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>source_x</code></em>&#160;:</span></p></td>
 <td> X coordinate of the transformation center.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>source_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>source_y</code></em>&#160;:</span></p></td>
 <td> Y coordinate of the transformation center.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>scale_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>scale_x</code></em>&#160;:</span></p></td>
 <td> Amount to scale in x direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>scale_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>scale_y</code></em>&#160;:</span></p></td>
 <td> Amount to scale in y direction.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>angle</code></em>&#160;:</span></p></td>
 <td> The angle of rotation (radians).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>dest_x</code></em>&#160;:</span></p></td>
 <td> X coordinate of where the centre goes.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>dest_y</code></em>&#160;:</span></p></td>
 <td> Y coordinate of where the centre goes.
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
 <td> The transformed drawable.
 </td>
 </tr>

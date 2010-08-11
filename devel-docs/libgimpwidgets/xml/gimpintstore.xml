@@ -50,7 +50,7 @@ enum                <link linkend="GimpIntStoreColumns">GimpIntStoreColumns</lin
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpIntStore implements
- <link linkend="GtkTreeModel">GtkTreeModel</link>,  <link linkend="GtkTreeDragSource">GtkTreeDragSource</link>,  <link linkend="GtkTreeDragDest">GtkTreeDragDest</link> and  <link linkend="GtkTreeSortable">GtkTreeSortable</link>.</para>
+ <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="GtkTreeModel">GtkTreeModel</link>,  <link linkend="GtkTreeDragSource">GtkTreeDragSource</link>,  <link linkend="GtkTreeDragDest">GtkTreeDragDest</link> and  <link linkend="GtkTreeSortable">GtkTreeSortable</link>.</para>
 
 </refsect1>
 

@@ -64,7 +64,7 @@ const  <link linkend="gchar">gchar</link>*       <link linkend="gimp-brush-selec
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpBrushSelectButton implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link> and  <link linkend="GtkBuildable">GtkBuildable</link>.</para>
 
 </refsect1>
 

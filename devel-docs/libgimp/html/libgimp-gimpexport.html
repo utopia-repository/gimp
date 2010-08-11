@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>gimpexport</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
 <link rel="prev" href="libgimp-gimpui.html" title="gimpui">
@@ -31,16 +31,16 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="GimpDrawablePreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2608872" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2601105" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2578138" class="shortcut">Description</a></nobr></td></tr>
+                  <a href="#id2613151" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpexport"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2608872"></a><span class="refentrytitle">gimpexport</span>
+<a name="id2601105"></a><span class="refentrytitle">gimpexport</span>
 </h2>
 <p>gimpexport &#8212; Export an image before it is saved.</p>
 </td>
@@ -52,22 +52,16 @@
 
 
 
-enum                <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a>;
-enum                <a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>;
-<a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>    <a href="libgimp-gimpexport.html#gimp-export-image">gimp_export_image</a>                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> *image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> *drawable_ID,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *format_name,
-                                                         <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);
+enum                <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a>;
+enum                <a class="link" href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>;
+<a class="link" href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>    <a class="link" href="libgimp-gimpexport.html#gimp-export-image">gimp_export_image</a>                   (gint32 *image_ID,
+                                                         gint32 *drawable_ID,
+                                                         const gchar *format_name,
+                                                         <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2578138"></a><h2>Description</h2>
+<a name="id2613151"></a><h2>Description</h2>
 <p>
 This function should be called by all save_plugins unless they are
 able to save all image formats GIMP knows about. It takes care
@@ -77,18 +71,18 @@ save_plugin can handle. It then performs the necessary conversions
 without changing the original image.
 
 The capabilities of the save_plugin are specified by combining
-<a href="libgimp-gimpexport.html#GimpExportCapabilities"><span class="type">GimpExportCapabilities</span></a> using a bitwise OR. 
+<a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities"><span class="type">GimpExportCapabilities</span></a> using a bitwise OR. 
 
 Make sure you have initialized GTK+ before you call this function
 as it will most probably have to open a dialog. 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2511099"></a><h2>Details</h2>
+<a name="id2728981"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2711393"></a><h3>
+<a name="id2728990"></a><h3>
 <a name="GimpExportCapabilities"></a>enum GimpExportCapabilities</h3>
-<a class="indexterm" name="id2711404"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2729000"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CAN_HANDLE_RGB                 = 1 &lt;&lt; 0,
   GIMP_EXPORT_CAN_HANDLE_GRAY                = 1 &lt;&lt; 1,
@@ -107,9 +101,9 @@ as it will most probably have to open a dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711428"></a><h3>
+<a name="id2729024"></a><h3>
 <a name="GimpExportReturn"></a>enum GimpExportReturn</h3>
-<a class="indexterm" name="id2711439"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2728331"></a><pre class="programlisting">typedef enum
 {
   GIMP_EXPORT_CANCEL,
   GIMP_EXPORT_IGNORE,
@@ -122,18 +116,12 @@ as it will most probably have to open a dialog.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2711456"></a><h3>
+<a name="id2728347"></a><h3>
 <a name="gimp-export-image"></a>gimp_export_image ()</h3>
-<a class="indexterm" name="id2711467"></a><pre class="programlisting"><a href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (<a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> *image_ID,
-                                                         <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a> *drawable_ID,
-                                                         const <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a> *format_name,
-                                                         <a href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);</pre>
+<a class="indexterm" name="id2728358"></a><pre class="programlisting"><a class="link" href="libgimp-gimpexport.html#GimpExportReturn">GimpExportReturn</a>    gimp_export_image                   (gint32 *image_ID,
+                                                         gint32 *drawable_ID,
+                                                         const gchar *format_name,
+                                                         <a class="link" href="libgimp-gimpexport.html#GimpExportCapabilities">GimpExportCapabilities</a> capabilities);</pre>
 <p>
 Takes an image and a drawable to be saved together with a
 description of the capabilities of the image_format. If the
@@ -146,7 +134,7 @@ If the user chooses to export the image, a copy is created.
 This copy is then converted, the image_ID and drawable_ID
 are changed to point to the new image and the procedure returns
 GIMP_EXPORT_EXPORT. The save_plugin has to take care of deleting the
-created image using <a href="libgimp-gimpimage.html#gimp-image-delete"><code class="function">gimp_image_delete()</code></a> when it has saved it.
+created image using <a class="link" href="libgimp-gimpimage.html#gimp-image-delete"><code class="function">gimp_image_delete()</code></a> when it has saved it.
 </p>
 <p>
 If the user chooses to Ignore the export problem, the image_ID
@@ -161,28 +149,28 @@ save_plugin should quit itself with status <span class="type">GIMP_PDB_CANCEL</s
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
 <td> Pointer to the image_ID.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
 <td> Pointer to the drawable_ID.
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>format_name</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>format_name</code></em>&#160;:</span></p></td>
 <td> The (short) name of the image_format (e.g. JPEG or GIF).
 </td>
 </tr>
 <tr>
-<td><span class="term"><em class="parameter"><code>capabilities</code></em>&#160;:</span></td>
+<td><p><span class="term"><em class="parameter"><code>capabilities</code></em>&#160;:</span></p></td>
 <td> What can the image_format do?
 </td>
 </tr>
 <tr>
-<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> An enum of <a href="libgimp-gimpexport.html#GimpExportReturn"><span class="type">GimpExportReturn</span></a> describing the user_action.
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td> An enum of <a class="link" href="libgimp-gimpexport.html#GimpExportReturn"><span class="type">GimpExportReturn</span></a> describing the user_action.
 </td>
 </tr>
 </tbody>

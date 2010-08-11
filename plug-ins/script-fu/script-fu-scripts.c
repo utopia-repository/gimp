@@ -41,7 +41,6 @@
 
 #include "script-fu-intl.h"
 
-
 typedef struct
 {
   SFScript *script;
@@ -125,15 +124,6 @@ script_fu_find_scripts (const gchar *path)
   g_list_free (script_menu_list);
   script_menu_list = NULL;
 }
-
-#if 1   /* ~~~~~ */
-static pointer
-my_err(scheme *sc, char *msg)
-{
-  g_printerr (msg);
-  return sc->F;
-}
-#endif
 
 pointer
 script_fu_add_script (scheme *sc, pointer a)
@@ -224,22 +214,22 @@ script_fu_add_script (scheme *sc, pointer a)
           if (a != sc->NIL)
             {
               if (!sc->vptr->is_integer (sc->vptr->pair_car (a)))
-                return my_err (sc, "script-fu-register: argument types must be integer values");
+                return foreign_error (sc, "script-fu-register: argument types must be integer values", 0);
               script->arg_types[i] = sc->vptr->ivalue (sc->vptr->pair_car (a));
               a = sc->vptr->pair_cdr (a);
             }
           else
-            return my_err (sc, "script-fu-register: missing type specifier");
+            return foreign_error (sc, "script-fu-register: missing type specifier", 0);
 
           if (a != sc->NIL)
             {
               if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                return my_err (sc, "script-fu-register: argument labels must be strings");
+                return foreign_error (sc, "script-fu-register: argument labels must be strings", 0);
               script->arg_labels[i] = g_strdup (sc->vptr->string_value (sc->vptr->pair_car (a)));
               a = sc->vptr->pair_cdr (a);
             }
           else
-            return my_err (sc, "script-fu-register: missing arguments label");
+            return foreign_error (sc, "script-fu-register: missing arguments label", 0);
 
           if (a != sc->NIL)
             {
@@ -252,7 +242,7 @@ script_fu_add_script (scheme *sc, pointer a)
                 case SF_VECTORS:
                 case SF_DISPLAY:
                   if (!sc->vptr->is_integer (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: default IDs must be integer values");
+                    return foreign_error (sc, "script-fu-register: default IDs must be integer values", 0);
                   script->arg_defaults[i].sfa_image =
                       sc->vptr->ivalue (sc->vptr->pair_car (a));
                   script->arg_values[i].sfa_image =
@@ -303,7 +293,7 @@ script_fu_add_script (scheme *sc, pointer a)
                       if (! gimp_rgb_parse_css (&script->arg_defaults[i].sfa_color,
                                                 sc->vptr->string_value (sc->vptr->pair_car (a)),
                                                 -1))
-                        return my_err (sc, "script-fu-register: invalid default color name");
+                        return foreign_error (sc, "script-fu-register: invalid default color name", 0);
                       gimp_rgb_set_alpha (&script->arg_defaults[i].sfa_color,
                                           1.0);
                     }
@@ -321,7 +311,7 @@ script_fu_add_script (scheme *sc, pointer a)
                     }
                   else
                     {
-                      return my_err (sc, "script-fu-register: color defaults must be a list of 3 integers or a color name");
+                      return foreign_error (sc, "script-fu-register: color defaults must be a list of 3 integers or a color name", 0);
                     }
 
                   script->arg_values[i].sfa_color = script->arg_defaults[i].sfa_color;
@@ -333,7 +323,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_TOGGLE:
                   if (!sc->vptr->is_integer (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: toggle default must be an integer value");
+                    return foreign_error (sc, "script-fu-register: toggle default must be an integer value", 0);
 
                   script->arg_defaults[i].sfa_toggle =
                     (sc->vptr->ivalue (sc->vptr->pair_car (a))) ? TRUE : FALSE;
@@ -347,7 +337,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_VALUE:
                   if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: value defaults must be string values");
+                    return foreign_error (sc, "script-fu-register: value defaults must be string values", 0);
 
                   script->arg_defaults[i].sfa_value =
                     g_strdup (sc->vptr->string_value (sc->vptr->pair_car (a)));
@@ -362,7 +352,7 @@ script_fu_add_script (scheme *sc, pointer a)
                 case SF_STRING:
                 case SF_TEXT:
                   if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: string defaults must be string values");
+                    return foreign_error (sc, "script-fu-register: string defaults must be string values", 0);
 
                   script->arg_defaults[i].sfa_value =
                     g_strdup (sc->vptr->string_value (sc->vptr->pair_car (a)));
@@ -376,7 +366,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_ADJUSTMENT:
                   if (!sc->vptr->is_list (sc, a))
-                    return my_err (sc, "script-fu-register: adjustment defaults must be a list");
+                    return foreign_error (sc, "script-fu-register: adjustment defaults must be a list", 0);
 
                   adj_list = sc->vptr->pair_car (a);
                   script->arg_defaults[i].sfa_adjustment.value =
@@ -417,12 +407,12 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_FILENAME:
                   if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: filename defaults must be string values");
+                    return foreign_error (sc, "script-fu-register: filename defaults must be string values", 0);
                   /* fallthrough */
 
                 case SF_DIRNAME:
                   if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: dirname defaults must be string values");
+                    return foreign_error (sc, "script-fu-register: dirname defaults must be string values", 0);
 
                   script->arg_defaults[i].sfa_file.filename =
                     g_strdup (sc->vptr->string_value (sc->vptr->pair_car (a)));
@@ -451,7 +441,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_FONT:
                   if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: font defaults must be string values");
+                    return foreign_error (sc, "script-fu-register: font defaults must be string values", 0);
 
                   script->arg_defaults[i].sfa_font =
                     g_strdup (sc->vptr->string_value (sc->vptr->pair_car (a)));
@@ -465,7 +455,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_PALETTE:
                   if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: palette defaults must be string values");
+                    return foreign_error (sc, "script-fu-register: palette defaults must be string values", 0);
 
                   script->arg_defaults[i].sfa_palette =
                     g_strdup (sc->vptr->string_value (sc->vptr->pair_car (a)));
@@ -479,7 +469,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_PATTERN:
                   if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: pattern defaults must be string values");
+                    return foreign_error (sc, "script-fu-register: pattern defaults must be string values", 0);
 
                   script->arg_defaults[i].sfa_pattern =
                     g_strdup (sc->vptr->string_value (sc->vptr->pair_car (a)));
@@ -493,7 +483,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_BRUSH:
                   if (!sc->vptr->is_list (sc, a))
-                    return my_err (sc, "script-fu-register: brush defaults must be a list");
+                    return foreign_error (sc, "script-fu-register: brush defaults must be a list", 0);
 
                   brush_list = sc->vptr->pair_car (a);
                   script->arg_defaults[i].sfa_brush.name =
@@ -526,7 +516,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_GRADIENT:
                   if (!sc->vptr->is_string (sc->vptr->pair_car (a)))
-                    return my_err (sc, "script-fu-register: gradient defaults must be string values");
+                    return foreign_error (sc, "script-fu-register: gradient defaults must be string values", 0);
 
                   script->arg_defaults[i].sfa_gradient =
                     g_strdup (sc->vptr->string_value (sc->vptr->pair_car (a)));
@@ -540,7 +530,7 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_OPTION:
                   if (!sc->vptr->is_list (sc, a))
-                    return my_err (sc, "script-fu-register: option defaults must be a list");
+                    return foreign_error (sc, "script-fu-register: option defaults must be a list", 0);
 
                   for (option_list = sc->vptr->pair_car (a);
                        option_list != sc->NIL;
@@ -562,11 +552,11 @@ script_fu_add_script (scheme *sc, pointer a)
 
                 case SF_ENUM:
                   if (!sc->vptr->is_list (sc, a))
-                    return my_err (sc, "script-fu-register: enum defaults must be a list");
+                    return foreign_error (sc, "script-fu-register: enum defaults must be a list", 0);
 
                   option_list = sc->vptr->pair_car (a);
                   if (!sc->vptr->is_string (sc->vptr->pair_car (option_list)))
-                    return my_err (sc, "script-fu-register: first element in enum defaults must be a type-name");
+                    return foreign_error (sc, "script-fu-register: first element in enum defaults must be a type-name", 0);
 
                   val =
                     sc->vptr->string_value (sc->vptr->pair_car (option_list));
@@ -579,14 +569,14 @@ script_fu_add_script (scheme *sc, pointer a)
                   if (! G_TYPE_IS_ENUM (enum_type))
                     {
                       g_free (val);
-                      return my_err (sc, "script-fu-register: first element in enum defaults must be the name of a registered type");
+                      return foreign_error (sc, "script-fu-register: first element in enum defaults must be the name of a registered type", 0);
                     }
 
                   script->arg_defaults[i].sfa_enum.type_name = val;
 
                   option_list = sc->vptr->pair_cdr (option_list);
                   if (!sc->vptr->is_string (sc->vptr->pair_car (option_list)))
-                    return my_err (sc, "script-fu-register: second element in enum defaults must be a string");
+                    return foreign_error (sc, "script-fu-register: second element in enum defaults must be a string", 0);
 
                   enum_value =
                     g_enum_get_value_by_nick (g_type_class_peek (enum_type),
@@ -605,8 +595,7 @@ script_fu_add_script (scheme *sc, pointer a)
             }
           else
             {
-              return my_err (sc,
-                             "script-fu-register: missing default argument");
+              return foreign_error (sc, "script-fu-register: missing default argument", 0);
             }
         }
     }
@@ -634,8 +623,7 @@ script_fu_add_menu (scheme *sc, pointer a)
 
   /*  Check the length of a  */
   if (sc->vptr->list_length (sc, a) != 2)
-    return my_err (sc,
-                   "Incorrect number of arguments for script-fu-menu-register");
+    return foreign_error (sc, "Incorrect number of arguments for script-fu-menu-register", 0);
 
   /*  Find the script PDB entry name  */
   name = sc->vptr->string_value (sc->vptr->pair_car (a));
@@ -663,10 +651,10 @@ script_fu_add_menu (scheme *sc, pointer a)
 }
 
 void
-script_fu_error_msg (const gchar *command)
+script_fu_error_msg (const gchar *command, const gchar *msg)
 {
   g_message (_("Error while executing\n%s\n\n%s"),
-             command, ts_get_error_msg ());
+             command, msg);
 }
 
 
@@ -680,12 +668,16 @@ script_fu_load_script (const GimpDatafileData *file_data,
     {
       gchar *command;
       gchar *escaped = g_strescape (file_data->filename, NULL);
+      GString *output;
 
       command = g_strdup_printf ("(load \"%s\")", escaped);
       g_free (escaped);
 
+      output = g_string_new ("");
+      ts_register_output_func (ts_gstring_output_func, output);
       if (ts_interpret_string (command))
-        script_fu_error_msg (command);
+        script_fu_error_msg (command, output->str);
+      g_string_free (output, TRUE);
 
 #ifdef G_OS_WIN32
       /* No, I don't know why, but this is
@@ -844,6 +836,7 @@ script_fu_script_proc (const gchar      *name,
   GimpRunMode        run_mode;
   SFScript          *script;
   gint               min_args = 0;
+  GString           *output;
 
   run_mode = params[0].data.d_int32;
 
@@ -1001,8 +994,11 @@ script_fu_script_proc (const gchar      *name,
               command = g_string_free (s, FALSE);
 
               /*  run the command through the interpreter  */
+              output = g_string_new ("");
+              ts_register_output_func (ts_gstring_output_func, output);
               if (ts_interpret_string (command))
-                script_fu_error_msg (command);
+                script_fu_error_msg (command, output->str);
+              g_string_free (output, TRUE);
 
               g_free (command);
             }

@@ -54,7 +54,7 @@
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpImageComboBox implements
- <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
+ <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkBuildable">GtkBuildable</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
 
 </refsect1>
 

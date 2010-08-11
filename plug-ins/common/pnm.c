@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* $Id: pnm.c 15909 2004-12-12 17:18:03Z weskaggs $ */
+/* $Id: pnm.c 22868 2007-07-05 13:13:58Z raphael $ */
 
 /*
  * The pnm reading and writing code was written from scratch by Erik Nygren
@@ -487,6 +487,8 @@ load_image (const gchar *filename)
   pnminfo->xres = g_ascii_isdigit(*buf)?atoi(buf):0;
   CHECK_FOR_ERROR(pnminfo->xres<=0, pnminfo->jmpbuf,
 		  _("PNM: Invalid X resolution."));
+  CHECK_FOR_ERROR (pnminfo->xres > GIMP_MAX_IMAGE_SIZE, pnminfo->jmpbuf,
+                   _("Image width is larger than GIMP can handle."));
 
   pnmscanner_gettoken(scan, buf, BUFLEN);
   CHECK_FOR_ERROR(pnmscanner_eof(scan), pnminfo->jmpbuf,
@@ -494,6 +496,8 @@ load_image (const gchar *filename)
   pnminfo->yres = g_ascii_isdigit(*buf)?atoi(buf):0;
   CHECK_FOR_ERROR(pnminfo->yres<=0, pnminfo->jmpbuf,
 		  _("PNM: Invalid Y resolution."));
+  CHECK_FOR_ERROR (pnminfo->yres > GIMP_MAX_IMAGE_SIZE, pnminfo->jmpbuf,
+                   _("Image height is larger than GIMP can handle."));
 
   if (pnminfo->np != 0)		/* pbm's don't have a maxval field */
     {
@@ -554,6 +558,7 @@ pnm_load_ascii (PNMScanner *scan,
   char           buf[BUFLEN];
 
   np = (info->np)?(info->np):1;
+  /* No overflow as long as gimp_tile_height() < 2730 = 2^(31 - 18) / 3 */
   data = g_malloc (gimp_tile_height () * info->xres * np);
 
   /* Buffer reads to increase performance */

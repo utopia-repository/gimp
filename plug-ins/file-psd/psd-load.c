@@ -304,6 +304,15 @@ read_header_block (PSDimage  *img_a,
       return -1;
     }
 
+  /* img_a->rows is sanitized above, so a division by zero is avoided here */
+  if (img_a->columns > G_MAXINT32 / img_a->rows)
+    {
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Unsupported or invalid image size: %dx%d"),
+                   img_a->columns, img_a->rows);
+      return -1;
+    }
+
   if (img_a->color_mode != PSD_BITMAP
       && img_a->color_mode != PSD_GRAYSCALE
       && img_a->color_mode != PSD_INDEXED
@@ -533,10 +542,10 @@ read_layer_block (PSDimage  *img_a,
                   psd_set_error (feof (f), errno, error);
                   return NULL;
                 }
-              lyr_a[lidx]->top = GUINT32_FROM_BE (lyr_a[lidx]->top);
-              lyr_a[lidx]->left = GUINT32_FROM_BE (lyr_a[lidx]->left);
-              lyr_a[lidx]->bottom = GUINT32_FROM_BE (lyr_a[lidx]->bottom);
-              lyr_a[lidx]->right = GUINT32_FROM_BE (lyr_a[lidx]->right);
+              lyr_a[lidx]->top = GINT32_FROM_BE (lyr_a[lidx]->top);
+              lyr_a[lidx]->left = GINT32_FROM_BE (lyr_a[lidx]->left);
+              lyr_a[lidx]->bottom = GINT32_FROM_BE (lyr_a[lidx]->bottom);
+              lyr_a[lidx]->right = GINT32_FROM_BE (lyr_a[lidx]->right);
               lyr_a[lidx]->num_channels = GUINT16_FROM_BE (lyr_a[lidx]->num_channels);
 
               if (lyr_a[lidx]->num_channels > MAX_CHANNELS)
@@ -546,18 +555,30 @@ read_layer_block (PSDimage  *img_a,
                               lyr_a[lidx]->num_channels);
                   return NULL;
                 }
-              if (lyr_a[lidx]->bottom - lyr_a[lidx]->top > GIMP_MAX_IMAGE_SIZE)
+              if (lyr_a[lidx]->bottom < lyr_a[lidx]->top ||
+                  lyr_a[lidx]->bottom - lyr_a[lidx]->top > GIMP_MAX_IMAGE_SIZE)
                 {
                   g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                               _("Unsupported or invalid layer height: %d"),
                               lyr_a[lidx]->bottom - lyr_a[lidx]->top);
                   return NULL;
                 }
-              if (lyr_a[lidx]->right - lyr_a[lidx]->left > GIMP_MAX_IMAGE_SIZE)
+              if (lyr_a[lidx]->right < lyr_a[lidx]->left ||
+                  lyr_a[lidx]->right - lyr_a[lidx]->left > GIMP_MAX_IMAGE_SIZE)
                 {
                   g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
                               _("Unsupported or invalid layer width: %d"),
                               lyr_a[lidx]->right - lyr_a[lidx]->left);
+                  return NULL;
+                }
+
+              if ((lyr_a[lidx]->right - lyr_a[lidx]->left) >
+                  G_MAXINT32 / MAX (lyr_a[lidx]->bottom - lyr_a[lidx]->top, 1))
+                {
+                  g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                               _("Unsupported or invalid layer size: %dx%d"),
+                               lyr_a[lidx]->right - lyr_a[lidx]->left,
+                               lyr_a[lidx]->bottom - lyr_a[lidx]->top);
                   return NULL;
                 }
 
@@ -670,13 +691,13 @@ read_layer_block (PSDimage  *img_a,
                         return NULL;
                       }
                     lyr_a[lidx]->layer_mask.top =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask.top);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask.top);
                     lyr_a[lidx]->layer_mask.left =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask.left);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask.left);
                     lyr_a[lidx]->layer_mask.bottom =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask.bottom);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask.bottom);
                     lyr_a[lidx]->layer_mask.right =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask.right);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask.right);
                     lyr_a[lidx]->layer_mask.mask_flags.relative_pos =
                       lyr_a[lidx]->layer_mask.flags & 1 ? TRUE : FALSE;
                     lyr_a[lidx]->layer_mask.mask_flags.disabled =
@@ -702,21 +723,21 @@ read_layer_block (PSDimage  *img_a,
                         return NULL;
                       }
                     lyr_a[lidx]->layer_mask_extra.top =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask_extra.top);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask_extra.top);
                     lyr_a[lidx]->layer_mask_extra.left =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask_extra.left);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask_extra.left);
                     lyr_a[lidx]->layer_mask_extra.bottom =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask_extra.bottom);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask_extra.bottom);
                     lyr_a[lidx]->layer_mask_extra.right =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask_extra.right);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask_extra.right);
                     lyr_a[lidx]->layer_mask.top =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask.top);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask.top);
                     lyr_a[lidx]->layer_mask.left =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask.left);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask.left);
                     lyr_a[lidx]->layer_mask.bottom =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask.bottom);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask.bottom);
                     lyr_a[lidx]->layer_mask.right =
-                      GUINT32_FROM_BE (lyr_a[lidx]->layer_mask.right);
+                      GINT32_FROM_BE (lyr_a[lidx]->layer_mask.right);
                     lyr_a[lidx]->layer_mask.mask_flags.relative_pos =
                       lyr_a[lidx]->layer_mask.flags & 1 ? TRUE : FALSE;
                     lyr_a[lidx]->layer_mask.mask_flags.disabled =
@@ -732,6 +753,34 @@ read_layer_block (PSDimage  *img_a,
                         psd_set_error (feof (f), errno, error);
                         return NULL;
                       }
+                }
+
+              /* sanity checks */
+              if (lyr_a[lidx]->layer_mask.bottom < lyr_a[lidx]->layer_mask.top ||
+                  lyr_a[lidx]->layer_mask.bottom - lyr_a[lidx]->layer_mask.top > GIMP_MAX_IMAGE_SIZE)
+                {
+                  g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                               _("Unsupported or invalid layer mask height: %d"),
+                               lyr_a[lidx]->layer_mask.bottom - lyr_a[lidx]->layer_mask.top);
+                  return NULL;
+                }
+              if (lyr_a[lidx]->layer_mask.right < lyr_a[lidx]->layer_mask.left ||
+                  lyr_a[lidx]->layer_mask.right - lyr_a[lidx]->layer_mask.left > GIMP_MAX_IMAGE_SIZE)
+                {
+                  g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                               _("Unsupported or invalid layer mask width: %d"),
+                               lyr_a[lidx]->layer_mask.right - lyr_a[lidx]->layer_mask.left);
+                  return NULL;
+                }
+
+              if ((lyr_a[lidx]->layer_mask.right - lyr_a[lidx]->layer_mask.left) >
+                  G_MAXINT32 / MAX (lyr_a[lidx]->layer_mask.bottom - lyr_a[lidx]->layer_mask.top, 1))
+                {
+                  g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                               _("Unsupported or invalid layer mask size: %dx%d"),
+                               lyr_a[lidx]->layer_mask.right - lyr_a[lidx]->layer_mask.left,
+                               lyr_a[lidx]->layer_mask.bottom - lyr_a[lidx]->layer_mask.top);
+                  return NULL;
                 }
 
               IFDBG(2) g_debug ("Layer mask coords %d %d %d %d, Rel pos %d",
@@ -1135,7 +1184,7 @@ add_layers (const gint32  image_id,
                                 psd_set_error (feof (f), errno, error);
                                 return -1;
                               }
-                                rle_pack_len[rowi] = GUINT16_FROM_BE (rle_pack_len[rowi]);
+                            rle_pack_len[rowi] = GUINT16_FROM_BE (rle_pack_len[rowi]);
                           }
 
                         IFDBG(3) g_debug ("RLE decode - data");
@@ -1761,6 +1810,16 @@ read_channel_data (PSDchannel     *channel,
 
   IFDBG(3) g_debug ("raw data size %d x %d = %d", readline_len,
                     channel->rows, readline_len * channel->rows);
+
+  /* sanity check, int overflow check (avoid divisions by zero) */
+  if ((channel->rows == 0) || (channel->columns == 0) ||
+      (channel->rows > G_MAXINT32 / channel->columns / MAX (bps >> 3, 1)))
+    {
+      g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                   _("Unsupported or invalid channel size"));
+      return -1;
+    }
+
   raw_data = g_malloc (readline_len * channel->rows);
   switch (compression)
     {

@@ -303,9 +303,7 @@ that the string was trimmed is indicated by appending an ellipsis.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
-<td> an UTF-8 encoded string (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> an UTF-8 encoded string (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
@@ -345,9 +343,7 @@ them to mnemonics.</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
-<td> Underline infested string (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> Underline infested string (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
@@ -388,9 +384,7 @@ rid of the mnemonic (see bug <span class="type">157561</span>).</p>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
-<td> underline infested string (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> underline infested string (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
@@ -453,9 +447,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Fl
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint"
 >gint</a> value);</pre>
 <p>
-Retrieves <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="GimpEnumDesc"><span class="type">GimpEnumDesc</span></a> associated with the given value, or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>.</p>
+Retrieves <a class="link" href="libgimpbase-gimpbasetypes.html#GimpEnumDesc" title="GimpEnumDesc"><span class="type">GimpEnumDesc</span></a> associated with the given value, or <code class="literal">NULL</code>.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -510,9 +502,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 Checks if <em class="parameter"><code>value</code></em> is valid for the enum registered as <em class="parameter"><code>enum_type</code></em>.
 If the value exists in that enum, its name, nick and its translated
 desc and help are returned (if <em class="parameter"><code>value_name</code></em>, <em class="parameter"><code>value_nick</code></em>, <em class="parameter"><code>value_desc</code></em>
-and <em class="parameter"><code>value_help</code></em> are not <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>).</p>
+and <em class="parameter"><code>value_help</code></em> are not <code class="literal">NULL</code>).</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -532,40 +522,28 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_name</code></em> :</span></p></td>
-<td> return location for the value's name (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for the value's name (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_nick</code></em> :</span></p></td>
-<td> return location for the value's nick (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for the value's nick (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_desc</code></em> :</span></p></td>
-<td> return location for the value's translated desc (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for the value's translated desc (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_help</code></em> :</span></p></td>
-<td> return location for the value's translated help (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for the value's translated help (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a> if <em class="parameter"><code>value</code></em> is valid for the <em class="parameter"><code>enum_type</code></em>,
-              <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>value</code></em> is valid for the <em class="parameter"><code>enum_type</code></em>,
+              <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>
@@ -667,9 +645,7 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Enumeration-and-Fl
 href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"
 >guint</a> value);</pre>
 <p>
-Retrieves the first <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="GimpFlagsDesc"><span class="type">GimpFlagsDesc</span></a> that matches the given value, or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>.</p>
+Retrieves the first <a class="link" href="libgimpbase-gimpbasetypes.html#GimpFlagsDesc" title="GimpFlagsDesc"><span class="type">GimpFlagsDesc</span></a> that matches the given value, or <code class="literal">NULL</code>.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -724,9 +700,7 @@ href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"
 Checks if <em class="parameter"><code>value</code></em> is valid for the flags registered as <em class="parameter"><code>flags_type</code></em>.
 If the value exists in that flags, its name, nick and its translated
 desc and help are returned (if <em class="parameter"><code>value_name</code></em>, <em class="parameter"><code>value_nick</code></em>, <em class="parameter"><code>value_desc</code></em>
-and <em class="parameter"><code>value_help</code></em> are not <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>).</p>
+and <em class="parameter"><code>value_help</code></em> are not <code class="literal">NULL</code>).</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -746,40 +720,28 @@ href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.h
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_name</code></em> :</span></p></td>
-<td> return location for the value's name (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for the value's name (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_nick</code></em> :</span></p></td>
-<td> return location for the value's nick (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for the value's nick (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_desc</code></em> :</span></p></td>
-<td> return location for the value's translated desc (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for the value's translated desc (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>value_help</code></em> :</span></p></td>
-<td> return location for the value's translated help (or <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL--CAPS"
-><code class="literal">NULL</code></a>)
+<td> return location for the value's translated help (or <code class="literal">NULL</code>)
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE--CAPS"
-><code class="literal">TRUE</code></a> if <em class="parameter"><code>value</code></em> is valid for the <em class="parameter"><code>flags_type</code></em>,
-              <a
-href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE--CAPS"
-><code class="literal">FALSE</code></a> otherwise
+<td> <code class="literal">TRUE</code> if <em class="parameter"><code>value</code></em> is valid for the <em class="parameter"><code>flags_type</code></em>,
+              <code class="literal">FALSE</code> otherwise
 
 </td>
 </tr>

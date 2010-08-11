@@ -1,3 +1,707 @@
+commit 31b47c749ac4097be3c496bb860889fbece92b23
+Author: Sven Neumann <sven@gimp.org>
+Date:   Thu Dec 10 22:15:56 2009 +0100
+
+    correct gimp_interface_age
+
+ configure.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit c54b53da5589a0eadf5fd2c8d95bf9d01ad77d34
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Wed Dec 9 17:11:21 2009 +0100
+
+    SGI: allocate memory more consistently
+
+    Allocate memory for both pixels and rows in the same way to make the
+    code easier understandable.
+    (cherry picked from commit b7ae59e9a470fa6e7cfdade1613729c94c3e3a5e)
+
+ plug-ins/file-sgi/sgi.c |   24 +++++++++++-------------
+ 1 files changed, 11 insertions(+), 13 deletions(-)
+
+commit b428adfa9f24eceba2066f656f495b68480f6101
+Author: Simon Budig <simon@gimp.org>
+Date:   Wed Dec 9 16:05:05 2009 +0100
+
+    SGI: fix out of bounds writes
+
+    The functions read_rle8() and read_rle16() didn't check if the
+    addresses
+    to which they wrote are in bounds when expanding runlength encoded
+    data.
+    (cherry picked from commit 4d9724f2f67bca4005ca50c22afccd7bf30cc2e8)
+
+ plug-ins/file-sgi/sgi-lib.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 88dfad9dc8bd9a20b46b1c3824634c969ef43986
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Mon Dec 7 16:21:44 2009 +0100
+
+    SGI: cast allocation calculations
+
+    In order to avoid overflows when calculating needed memory, cast the
+    first variable used into a large enough type so the whole calculation
+    is
+    done in that type.
+    (cherry picked from commit 838be627be38d3ff25fddf7af16f0c98ddf4cc04)
+
+ plug-ins/file-sgi/sgi.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 611bad86d2c05743c67c5066fb3eb5bb89b12b50
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Wed Dec 9 15:43:28 2009 +0100
+
+    SGI: sanitize input data
+
+    Refuse nonsensical xsize, ysize, zsize values.
+    (cherry picked from commit daaf1d2b97c74271d9f8cc517f16b53d0089e094)
+
+ plug-ins/file-sgi/sgi.c |   22 ++++++++++++++++++++++
+ 1 files changed, 22 insertions(+), 0 deletions(-)
+
+commit aee2bc35febf336d6b9ddba0c0a9d2883be8fd21
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Tue Dec 8 17:44:54 2009 +0100
+
+    PAT: sanitize input data
+
+    Guard against bogus values of ph.width, ph.height and document
+    why there
+    are no allocation overflows.
+    (cherry picked from commit 5aa82f3b6d55280012efc6973c799a46b2ad5d75)
+
+ plug-ins/common/file-pat.c |   15 +++++++++++++++
+ 1 files changed, 15 insertions(+), 0 deletions(-)
+
+commit aecccbc62cdb0e0a287502fbf34b98e2371b69b4
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Tue Dec 8 16:36:10 2009 +0100
+
+    GBR: more input data sanitation
+
+    Guard against bh.width or bh.height > GIMP_MAX_IMAGE_SIZE, only allow
+    valid values of bh.bytes.
+    (cherry picked from commit b053021a2938d5967edfc966470bfac9257fc03a)
+
+ plug-ins/common/file-gbr.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+commit 343651e87f8a4227b02a34fbff4188b519417de5
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Fri Dec 4 11:17:21 2009 +0100
+
+    GBR: sanitize input data
+
+    Guard against bogus zero width, height, bytes and allocation
+    overflows.
+    (cherry picked from commit 869dcd7be1c1ec991256ba079f670574f1e57b90)
+
+ plug-ins/common/file-gbr.c |   14 +++++++++++++-
+ 1 files changed, 13 insertions(+), 1 deletions(-)
+
+commit aaf0dfe5306f8a6bf66c927fa6c5148d9ce53c36
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Wed Dec 2 15:12:17 2009 +0100
+
+    PCX: Avoid allocation overflows.
+
+    Multiplying gint values may overflow unless cast into a larger type.
+    (cherry picked from commit a9671395f6573e90316a9d748588c5435216f6ce)
+
+ plug-ins/common/file-pcx.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 5bc9aaf753eae6999fb1497e6dd19e586016e193
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Tue Dec 1 15:31:52 2009 +0100
+
+    PCX: sanitize input data
+
+    Harden PCX plugin against bad width, height.
+    (cherry picked from commit ed7f48be05d233607460ce331a5c07ebfa5830fa)
+
+ plug-ins/common/file-pcx.c |    7 +++++++
+ 1 files changed, 7 insertions(+), 0 deletions(-)
+
+commit 864d7cbc655fbbaa6e98780c7b3aa6fbc6f96289
+Author: Simon Budig <simon@gimp.org>
+Date:   Wed Dec 9 23:01:21 2009 +0100
+
+    further NEWS updates
+
+ NEWS |   22 ++++++++++++++++++++++
+ 1 files changed, 22 insertions(+), 0 deletions(-)
+
+commit c2da042234d89caa5689d1d8a97b3c11b1eb0ad9
+Author: Simon Budig <simon@gimp.org>
+Date:   Wed Dec 9 22:49:34 2009 +0100
+
+    Start collecting release info in NEWS
+
+ NEWS |   20 ++++++++++++++++++++
+ 1 files changed, 20 insertions(+), 0 deletions(-)
+
+commit 46c91ebc2fead486b2b8849bacb7d91085c5aad6
+Author: Martin Nordholts <martinn@src.gnome.org>
+Date:   Tue Dec 8 22:27:32 2009 +0100
+
+    Bug 604078 - Crash when pressing Backspace with Free Select Tool
+
+    Make sure we never call gimp_free_select_tool_remove_last_segment()
+    with priv->n_segment_indices being negative, and increase robustness
+    of the code in general.
+
+    Note that we always halt the tool when backspace is pressed and there
+    are no vertices left. This is to minimize the risk of ending up in an
+    invalid tool state.
+    (cherry picked from commit c7a5195bdf42aa194fed640943ada8d2114c4218)
+
+ app/tools/gimpfreeselecttool.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit df956417c42747f9512089e8faa084e74b6d0fa4
+Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+Date:   Wed Dec 2 05:07:47 2009 +0300
+
+    Updated Russian translation for 2.6
+
+ po/ru.po | 1658
+ +++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 files changed, 1276 insertions(+), 382 deletions(-)
+
+commit ba14f4d7b5679b2835046f0e572557497cb0af33
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Mon Nov 30 12:20:59 2009 +0100
+
+    Small fix in italian translation
+
+ po/it.po |   56 ++++++++++++++++++++++++++++----------------------------
+ 1 files changed, 28 insertions(+), 28 deletions(-)
+
+commit 0403a4c33b16dad25568d50603d3487879d90e00
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Thu Aug 20 23:03:01 2009 +0200
+
+    Small fix in italian translation
+
+ po-plug-ins/it.po |  208
+ ++++++++++++++++++++++++++--------------------------
+ 1 files changed, 104 insertions(+), 104 deletions(-)
+
+commit acc37a4e5d08c0f97920cd1b6bd757f126cafb45
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Nov 24 14:49:17 2009 +0100
+
+    Bug 602761 - plug-in-grid: Parameters Horizontal/Vertical Spacing
+    and Horizontal/Vertical Offset are reversed
+
+    Revert commits bc099a98f306c3246a3ca2fd950d6f1af056e4c4 and
+    c77781de8927bac39817424ae5c732ad3b7fe343 from Jul 27 2006;
+    also changed refval boundaries of the "width" size entries
+    in the spirit of the original fix, only reversed.
+
+    Rationale: the "horizontal" parameters all have to affect the
+    horizontal *lines*, so have an effect in *vertical* direction.
+
+    Will commit a label change on top to clarify this.
+    (cherry picked from commit 028b66beba66dd6b1fe0a9a6b825034d3b971b5a)
+
+ plug-ins/common/grid.c |   68
+ ++++++++++++++++++++++++------------------------
+ 1 files changed, 34 insertions(+), 34 deletions(-)
+
+commit 88eccea84aa375197cc04a2a0e2e29debb56bfa5
+Author: Simon Budig <simon@gimp.org>
+Date:   Tue Nov 17 00:41:39 2009 +0100
+
+    Harden the PSD plugin against integer overflows.
+
+    Issues discovered by Stefan Cornelius, Secunia Research, advisory
+    SA37232
+    and CVE identifier CVE-2009-3909. Fixes bug #600741.
+    (cherry picked from commit 9cc8d78ff33b7a36852b74e64b427489cad44d0e)
+
+ plug-ins/file-psd/psd-load.c |   65
+ ++++++++++++++++++++++++++++++++++++++++--
+ 1 files changed, 62 insertions(+), 3 deletions(-)
+
+commit 687ec47914ec08d6e460918cb641c196d80140a3
+Author: Simon Budig <simon@gimp.org>
+Date:   Tue Nov 17 01:12:19 2009 +0100
+
+    Fix the PSD structs to use signed ints for bounding box coordinates.
+    (cherry picked from commit 0e440cb6d4d6ee029667363d244aff61b154c33c)
+
+ plug-ins/file-psd/psd-load.c |   32 ++++++++++++++++----------------
+ plug-ins/file-psd/psd.h      |   24 ++++++++++++------------
+ 2 files changed, 28 insertions(+), 28 deletions(-)
+
+commit 153ae579f7e7508d7a5b95bd569e91890f6b666e
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Mon Nov 16 18:16:38 2009 +0100
+
+    Ensure valid bit depths when reading BMP files.
+    (cherry picked from commit 16e6a37687bb4b9748c5a5d166d90f5d5bd2e9f3)
+
+ plug-ins/file-bmp/bmp-read.c |   19 ++++++++++++++++++-
+ 1 files changed, 18 insertions(+), 1 deletions(-)
+
+commit 6e8ff603a2ee6a0940373723d1f075930dfd3ce0
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Mon Nov 16 17:16:09 2009 +0100
+
+    Use more defensive coding in plausibility check.
+
+    Use an equivalent division instead of multiplying values and
+    checking if
+    they are more than G_MAXINT32, because divisions cannot overflow.
+    (cherry picked from commit f63ba36dd9cc01ca6da83fa05ddd12419ad8953e)
+
+ plug-ins/file-bmp/bmp-read.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 0214e1ff271a5310731de81d00450a92d9bf0fcd
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Mon Nov 16 17:15:32 2009 +0100
+
+    Make plausibility check easier to understand.
+
+    Explicitly check that Bitmap_Head.biHeight is not G_MININT32
+    instead of relying on ABS(G_MININT32) being negative.
+    (cherry picked from commit 43d57c666346320436a0b668de5525387952784e)
+
+ plug-ins/file-bmp/bmp-read.c |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit f05ea433536399963fb493c30f27c928259a21d8
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sat Nov 14 16:50:42 2009 +0100
+
+    Bug 601891 -  gimp_image_get_selection returns None
+
+    The code used to make the assumption that the selection mask was
+    a layer. Actually it is a channel and changing the code accordingly
+    fixes the reported problem.
+    (cherry picked from commit 474b5fdff3b0bb39f252e67f7ead6357e6f69007)
+
+ plug-ins/pygimp/pygimp-pdb.c |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
+
+commit df2b0aca2e7cdb95ebfd3454c65aaba0a83e9bbe
+Author: Simon Budig <simon@gimp.org>
+Date:   Tue Nov 10 00:08:59 2009 +0100
+
+    Harden the BMP plugin against integer overflows.
+
+    Issues discovered by Stefan Cornelius, Secunia Research, advisory
+    SA37232
+    and CVE identifier CVE-2009-1570. Fixes bug #600484.
+
+ plug-ins/file-bmp/bmp-read.c |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
+
+commit b8c28ab2b4b96c57f25bba0489de7655f685a012
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Sun Nov 8 14:22:26 2009 +0100
+
+    Bug 593848 - FG color changed to black when FG-BG Editor tab created
+
+    When a color gets set on the module via
+    GimpColorSelector::set_color(),
+    make sure that the result of its transformation to CMYK doesn't
+    get set back on GIMP. Also, when the color profile changes, make
+    sure we only re-transform the RGB value to CMYK and don't set that
+    result back on GIMP either.
+    (cherry picked from commit 659cf3743e3c48e18a08ba41c83c7ef77c841410)
+
+ modules/color-selector-cmyk-lcms.c |   25 ++++++++++++++++++++-----
+ 1 files changed, 20 insertions(+), 5 deletions(-)
+
+commit e22c3aaf4cd5aafbaee1cb2ef4988a8fc6a16f14
+Author: Petr Kovar <pknbe@volny.cz>
+Date:   Wed Nov 4 21:28:29 2009 +0100
+
+    Updated Czech translation by Marek Cernocky
+
+ po-plug-ins/cs.po |  482
+ +++++++++++++++++++++++++++--------------------------
+ 1 files changed, 243 insertions(+), 239 deletions(-)
+
+commit 177a6f376dd6935f080fc2e3d218d4a4f7550cc8
+Author: Marek Černocký <marek@manet.cz>
+Date:   Sat Oct 31 16:58:26 2009 +0100
+
+    Update Czech translation
+
+ po-python/cs.po |  150
+ ++++++++++++++++++++++++++++--------------------------
+ 1 files changed, 78 insertions(+), 72 deletions(-)
+
+commit 4dfe94ace60acdfc88d6c36c398b0b0152d8f206
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Oct 27 18:52:47 2009 +0100
+
+    Bug 599765 - F1 key on gimp-tool-align in menu have wrong link and
+    it open gimp-tool-move
+
+    Add help ID "gimp-tool-align" and use it for the align tool.
+    (cherry picked from commit 398607ee94c11acad4676a7003d8914804d24156)
+
+ app/tools/gimpaligntool.c  |    2 +-
+ app/widgets/gimphelp-ids.h |    1 +
+ 2 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 3b985d2c2ba8e1eaa7714788e1f8386629d1de66
+Author: Tournaris Pavlos <p.tournaris@gmail.com>
+Date:   Tue Oct 20 14:41:36 2009 +0300
+
+    Updated Greek po-python translation
+
+ po-python/el.po |  338
+ ++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 files changed, 323 insertions(+), 15 deletions(-)
+
+commit 295a32bcc0de96e4837814bfa540795a6579d0ab
+Author: Vasilis Kontogiannis <vasilisk@ics.forth.gr>
+Date:   Tue Oct 20 14:37:52 2009 +0300
+
+    Updated Greek libgimp translation
+
+ po-libgimp/el.po | 1957
+ +++++++++++++++++++++++++++++++++++++-----------------
+ 1 files changed, 1360 insertions(+), 597 deletions(-)
+
+commit d37ad2af45e0feba58c12ea9ed041d02fcb4df18
+Author: Vasilis Kontogiannis <vasilisk@ics.forth.gr>
+Date:   Tue Oct 20 14:36:10 2009 +0300
+
+    Updated Greek script-fu translation
+
+ po-script-fu/el.po | 3297
+ ++++++++++++++++++++++++++++++----------------------
+ 1 files changed, 1886 insertions(+), 1411 deletions(-)
+
+commit 36549276aecff97c0124efd5e8462aaccf51c009
+Author: Bruce Cowan <bcowan@fastmail.co.uk>
+Date:   Sat Oct 17 23:09:00 2009 +0100
+
+    Updated British English translation
+
+ po-libgimp/en_GB.po   |  515 ++-
+ po-plug-ins/en_GB.po  |11906
+ +++++++++++++++++++++++++------------------------
+ po-python/en_GB.po    |  140 +-
+ po-script-fu/en_GB.po |  379 +-
+ po-tips/en_GB.po      |  117 +-
+ po/en_GB.po           | 4171 ++++++++++--------
+ 6 files changed, 9003 insertions(+), 8225 deletions(-)
+
+commit 0799d78db2d13ca9d22152e37bd972d9c9a8653e
+Author: Sven Neumann <sven@gimp.org>
+Date:   Fri Oct 16 22:06:34 2009 +0200
+
+    Fix a width/height confusion in the healing tool algorithm
+
+    As pointed out by Massimo Valentini in bug #519503, the code used
+    height where width should have been used. Correct.
+    (cherry picked from commit f7ff0903ff9e87caadd70df6dece0bf2b9d88fdb)
+
+ app/paint/gimpheal.c |   13 +++++++------
+ 1 files changed, 7 insertions(+), 6 deletions(-)
+
+commit 35873d22b26e794125718c2ac189289aeee6b4ea
+Author: Funda Wang <fundawang@gmail.com>
+Date:   Fri Oct 16 08:52:25 2009 +0800
+
+    Updated zh_CN translation.
+
+ po/ChangeLog |    4 ++++
+ po/zh_CN.po  |   29 +++++++++++++++--------------
+ 2 files changed, 19 insertions(+), 14 deletions(-)
+
+commit 2acf42dfe7f720c1909bdf9953e75d79bf338557
+Author: Kolbjørn Stuestøl <kolbjoern@stuestoel.no>
+Date:   Mon Oct 12 21:50:43 2009 +0200
+
+    Updated Norwegian Nynorsk translation
+
+ po-libgimp/nn.po   |  673 ++--
+ po-plug-ins/nn.po  |14524
+ ++++++++++++++++++++++++++--------------------------
+ po-python/nn.po    |   90 +-
+ po-script-fu/nn.po |  592 +--
+ po/nn.po           | 5802 +++++++++++----------
+ 5 files changed, 10926 insertions(+), 10755 deletions(-)
+
+commit d67177d74438ff5883e97150f2764af5e7b5af1d
+Author: Massimo Valentini <sixtysix@inwind.it>
+Date:   Mon Oct 12 20:26:42 2009 +0200
+
+    Bug 470698 -  MapObject cannot modify highlight
+
+ plug-ins/map-object/map-object-shade.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 5270f707014701df968a4342acf16a2d1d240a4b
+Author: Tor Lillqvist <tml@iki.fi>
+Date:   Wed Oct 7 22:31:55 2009 +0300
+
+    Add missing NULL to g_strconcat() call
+
+ tools/gimptool.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 507521fc23d56709fd758145da654c0fd3b0ed42
+Author: Nishibori Kiyotaka <ml.nishibori.kiyotaka@gmail.com>
+Date:   Sat Oct 3 21:48:11 2009 +0900
+
+    Updated Japanese translation
+
+ po-libgimp/ja.po   |   31 +-
+ po-plug-ins/ja.po  | 3283
+ +++++++++++++++++++++++++++++++++++++---------------
+ po-python/ja.po    |   49 +-
+ po-script-fu/ja.po |   41 +-
+ po-tips/ja.po      |   17 +-
+ po/ja.po           |  628 +++++-----
+ 6 files changed, 2738 insertions(+), 1311 deletions(-)
+
+commit a2e48eeda198d6a485669efbdd6d663c2bed70b8
+Author: Cristian Secară <cristi@secarica.ro>
+Date:   Mon Sep 28 23:10:53 2009 +0300
+
+    Updated Romanian translation
+
+ po-libgimp/ro.po   |   16 +-
+ po-plug-ins/ro.po  | 1895
+ ++++++++++++++++++++--------------------------------
+ po-python/ro.po    |   11 +-
+ po-script-fu/ro.po |  385 ++++-------
+ po-tips/ro.po      |  313 ++-------
+ po/ro.po           |  140 ++--
+ 6 files changed, 1021 insertions(+), 1739 deletions(-)
+
+commit 2d08956cebd37457b6f230c0617f654e640d868d
+Author: Sven Neumann <sven@gimp.org>
+Date:   Wed Sep 23 21:21:07 2009 +0200
+
+    app: fix compilation
+
+    The fix for bug #594998 introduced a reference to
+    gimp_dock_get_context().
+    This function does not exist in the gimp-2-6 branch.
+
+ app/widgets/gimpimagedock.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit e2afa0e23fec5b07cc1924909606af181ddc1c80
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon Sep 21 10:43:26 2009 +0200
+
+    Make sure the layer preview's border is correct after removing a mask
+
+    (gimp_layer_tree_view_mask_update): call
+    gimp_layer_tree_view_update_borders() unconditionally; not only when a
+    mask has been added, but also when it has been removed.
+    (cherry picked from commit 098a0e4491795a57a5c5a151ab32e132e9455b1d)
+
+ app/widgets/gimplayertreeview.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit cd9d331b6e650dcf56e15d9eb70e47fd57c1d65c
+Author: Martin Nordholts <martinn@src.gnome.org>
+Date:   Sat Sep 12 14:57:46 2009 +0200
+
+    Bug 594998 - Keyboard shortcuts does not work for first image when
+    dock is focused
+
+    The dock needs to listen to image changes in the context and not only
+    display changes since the introduction of the empty-image-window does
+    not cause any display changes when creating the first image.
+
+ app/widgets/gimpimagedock.c |   14 ++++++++++++++
+ 1 files changed, 14 insertions(+), 0 deletions(-)
+
+commit 1eaa17430c1625c0a23470240287845e328dd36a
+Author: Julien Hardelin <jm.hard@wanadoo.fr>
+Date:   Sat Sep 12 09:48:04 2009 +0200
+
+    Improved French translation
+
+ po/fr.po |   85
+ +++++++++++++++++++++++++++++++------------------------------
+ 1 files changed, 43 insertions(+), 42 deletions(-)
+
+commit b3fdf6141bae20b3c63217bd22abf1f725d58079
+Author: Manish Singh <yosh@gimp.org>
+Date:   Fri Sep 11 12:55:25 2009 -0700
+
+    Bug 594651 - layer.scale() raises RuntimeError
+
+    Add "interpolation" to kwlist for pygimp layer.scale()
+    (cherry picked from commit 2182dec09bee12db007b28f0797dc111ea6a1ec2)
+
+ plug-ins/pygimp/pygimp-drawable.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit eb4273227c0760fcef761492ad3be35016392449
+Author: Martin Nordholts <martinn@src.gnome.org>
+Date:   Sun Jun 28 11:02:26 2009 +0200
+
+    Check for automake-1.11
+
+    (Cherry picked from commit 66cc3e5f22c61115d0c3057b4475f1a6a7508ea9)
+
+ autogen.sh |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit 2872f1d4277aa2aa5d7f0c384db0c122823c8a1a
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Tue Sep 8 20:54:51 2009 +0200
+
+    gimp_layer_transform_color(): don't assume the dest region has alpha
+
+    Don't blindly fill the dest region's alpha channel even if it has
+    none. Fixes longstanding bug that made things without alpha dropped
+    to indexed images to arrive broken.
+    (cherry picked from commit 0c57e8c68e256b81cda1de7b8aca66cdfd4afe04)
+
+ app/core/gimplayer.c |   11 ++++++-----
+ 1 files changed, 6 insertions(+), 5 deletions(-)
+
+commit 36dc72aa34e6178157a65010ff624d8b66e02b4a
+Author: Inaki Larranaga <dooteo@zundan.com>
+Date:   Mon Sep 7 12:44:35 2009 +0200
+
+    Updated Basque translation
+
+ po-libgimp/eu.po |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 4fba8e413fee914230558cadf9055d67405b89fb
+Author: Aron Xu <aronxu@gnome.org>
+Date:   Mon Sep 7 16:26:42 2009 +0800
+
+    Updated Simplified Chinese translations.
+
+ po-libgimp/zh_CN.po   |    5 ++---
+ po-plug-ins/zh_CN.po  |   25 ++++++++++++-------------
+ po-script-fu/zh_CN.po |    8 +++-----
+ po/zh_CN.po           |   25 +++++++++++++------------
+ 4 files changed, 30 insertions(+), 33 deletions(-)
+
+commit 12ad3b4822d39d9abff9e770a0ba02c13f2ad0eb
+Author: Petr Kovar <pknbe@volny.cz>
+Date:   Sun Sep 6 00:55:56 2009 +0200
+
+    Updated Czech translation by Jaroslav Krejci
+
+    Reviewed by: Petr Kovar
+
+ po-libgimp/cs.po   |  102 ++-----
+ po-plug-ins/cs.po  |  867
+ ++++++++++++++++++++++------------------------------
+ po-script-fu/cs.po |  208 +++----------
+ po/cs.po           |  700 +++++++++++-------------------------------
+ 4 files changed, 624 insertions(+), 1253 deletions(-)
+
+commit 4a68e70eef5e84496dc8738338b125b8f7afe112
+Author: Julien Hardelin <jm.hard@wanadoo.fr>
+Date:   Sat Sep 5 23:26:20 2009 +0200
+
+    Fix po-script-fu French translation
+
+ po-script-fu/fr.po |   30 +++++++++++++++---------------
+ 1 files changed, 15 insertions(+), 15 deletions(-)
+
+commit 227a68fde2adfc4ebb09008af50db04ff1e22c21
+Author: Julien Hardelin <jm.hard@wanadoo.fr>
+Date:   Sat Sep 5 22:44:17 2009 +0200
+
+    Fix po-plug-ins French translation
+
+ po-plug-ins/fr.po |  427
+ ++++++++++++++++++++++++++---------------------------
+ 1 files changed, 213 insertions(+), 214 deletions(-)
+
+commit 9aa0f9ab79b483d3dbfdbd77d72c112f14efc9d3
+Author: Michael Natterer <mitch@gimp.org>
+Date:   Mon Aug 31 19:25:25 2009 +0200
+
+    Bug 563770 -  Layer border visibility don't work with masks
+
+    (gimp_display_shell_selection_control): don't draw the layer boundary
+    if it is hidden.
+    (cherry picked from commit 064448cb50185c581646d918e70eff477ababd4c)
+
+ app/display/gimpdisplayshell-selection.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit de42f754cbdfe4e7e0fce57a3ade5e264bcc28eb
+Author: Sven Neumann <sven@gimp.org>
+Date:   Tue Aug 18 22:18:59 2009 +0200
+
+    print: don't store image specific settings globally
+
+    It doesn't make sense to store image-specific settings such as
+    resolution
+    and offsets in the global print-settings file. Only store them in the
+    image parasite, but remove them before saving the print-settings file.
+    (cherry picked from commit 9464d303a999aea805370234ef5814df6062fb75)
+
+ plug-ins/print/print-settings.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+commit 07fa4c3d3ec1ae35304e1be9f85d4e591e4918bc
+Author: Tomasz Dominikowski <dominikowski@gmail.com>
+Date:   Tue Aug 18 16:09:36 2009 +0200
+
+    Updated Polish translation
+
+ po/pl.po | 2253
+ +++++++++++++++++++++++++++-----------------------------------
+ 1 files changed, 990 insertions(+), 1263 deletions(-)
+
+commit 16f66f8c8d723a0053c3896417757d81a460ea3c
+Author: Marco Ciampa <ciampix@libero.it>
+Date:   Mon Aug 17 17:01:14 2009 +0200
+
+    Updated italian translation.
+
+ po-libgimp/it.po |  204
+ +++++++++++++++++++++++++++++++++---------------------
+ 1 files changed, 124 insertions(+), 80 deletions(-)
+
+commit ae341cc8b79ffe6165c2ea9bf38c03e362005e30
+Author: Sven Neumann <sven@gimp.org>
+Date:   Sun Aug 16 12:16:46 2009 +0200
+
+    remove duplicate line in NEWS file
+
+ NEWS |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 3dc0a93e5ae513f840286de9a276e74fb2174cc2
+Author: Sven Neumann <sven@gimp.org>
+Date:   Fri Aug 14 21:51:42 2009 +0200
+
+    bumped version to 2.6.8
+
+ configure.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 1a21ea58dd33aabf31cf084d5a965e3d2dc0f78b
+Author: Nils Philippsen <nils@redhat.com>
+Date:   Fri Aug 14 11:56:50 2009 +0200
+
+    fix typo in NEWS file
+
+ NEWS |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
 commit 11d217410575cfb9d55b8d50d0996ed6a0e7ebf4
 Author: Sven Neumann <sven@gimp.org>
 Date:   Thu Aug 13 22:17:12 2009 +0200

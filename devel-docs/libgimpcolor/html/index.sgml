@@ -41,6 +41,7 @@
 <ANCHOR id="GIMP-TYPE-RGB:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-TYPE-RGB:CAPS">
 <ANCHOR id="GIMP-TYPE-PARAM-RGB:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-TYPE-PARAM-RGB:CAPS">
 <ANCHOR id="gimp-param-spec-rgb" href="libgimpcolor/libgimpcolor-GimpRGB.html#gimp-param-spec-rgb">
+<ANCHOR id="gimp-param-spec-rgb-has-alpha" href="libgimpcolor/libgimpcolor-GimpRGB.html#gimp-param-spec-rgb-has-alpha">
 <ANCHOR id="GIMP-VALUE-HOLDS-RGB:CAPS" href="libgimpcolor/libgimpcolor-GimpRGB.html#GIMP-VALUE-HOLDS-RGB:CAPS">
 <ANCHOR id="libgimpcolor-GimpHSV" href="libgimpcolor/libgimpcolor-GimpHSV.html">
 <ANCHOR id="GimpHSV" href="libgimpcolor/libgimpcolor-GimpHSV.html#GimpHSV">

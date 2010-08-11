@@ -4,16 +4,19 @@
 
 <refentry id="libgimpbase-gimpparasite">
 <refmeta>
-<refentrytitle>gimpparasite</refentrytitle>
+<refentrytitle id="top_of_page">gimpparasite</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpparasite</refname><refpurpose>Arbitrary pieces of data which can be attached to various GIMP objects.</refpurpose>
+<refname>gimpparasite</refname>
+<refpurpose>Arbitrary pieces of data which can be attached to various GIMP objects.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -66,18 +69,18 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-parasite-name">gim
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Arbitrary pieces of data which can be attached to various GIMP objects.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpParasite"/>GimpParasite</title>
+<title><anchor id="GimpParasite" role="struct"/>GimpParasite</title>
 <indexterm><primary>GimpParasite</primary></indexterm><programlisting>typedef struct {
   gchar    *name;   /* The name of the parasite. USE A UNIQUE PREFIX! */
   guint32   flags;  /* save Parasite in XCF file, etc.                */
@@ -90,7 +93,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-new"/>gimp_parasite_new ()</title>
+<title><anchor id="gimp-parasite-new" role="function"/>gimp_parasite_new ()</title>
 <indexterm><primary>gimp_parasite_new</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>* gimp_parasite_new             (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="guint32">guint32</link> flags,
                                              <link linkend="guint32">guint32</link> size,
@@ -116,7 +119,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-free"/>gimp_parasite_free ()</title>
+<title><anchor id="gimp-parasite-free" role="function"/>gimp_parasite_free ()</title>
 <indexterm><primary>gimp_parasite_free</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_parasite_free              (<link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 
@@ -128,7 +131,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-copy"/>gimp_parasite_copy ()</title>
+<title><anchor id="gimp-parasite-copy" role="function"/>gimp_parasite_copy ()</title>
 <indexterm><primary>gimp_parasite_copy</primary></indexterm><programlisting><link linkend="GimpParasite">GimpParasite</link>* gimp_parasite_copy            (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 
@@ -142,7 +145,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-compare"/>gimp_parasite_compare ()</title>
+<title><anchor id="gimp-parasite-compare" role="function"/>gimp_parasite_compare ()</title>
 <indexterm><primary>gimp_parasite_compare</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_parasite_compare           (const <link linkend="GimpParasite">GimpParasite</link> *a,
                                              const <link linkend="GimpParasite">GimpParasite</link> *b);</programlisting>
 <para>
@@ -160,7 +163,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-is-type"/>gimp_parasite_is_type ()</title>
+<title><anchor id="gimp-parasite-is-type" role="function"/>gimp_parasite_is_type ()</title>
 <indexterm><primary>gimp_parasite_is_type</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_parasite_is_type           (const <link linkend="GimpParasite">GimpParasite</link> *parasite,
                                              const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
@@ -178,7 +181,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-is-persistent"/>gimp_parasite_is_persistent ()</title>
+<title><anchor id="gimp-parasite-is-persistent" role="function"/>gimp_parasite_is_persistent ()</title>
 <indexterm><primary>gimp_parasite_is_persistent</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_parasite_is_persistent     (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 
@@ -192,7 +195,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-is-undoable"/>gimp_parasite_is_undoable ()</title>
+<title><anchor id="gimp-parasite-is-undoable" role="function"/>gimp_parasite_is_undoable ()</title>
 <indexterm><primary>gimp_parasite_is_undoable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_parasite_is_undoable       (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 
@@ -206,7 +209,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-has-flag"/>gimp_parasite_has_flag ()</title>
+<title><anchor id="gimp-parasite-has-flag" role="function"/>gimp_parasite_has_flag ()</title>
 <indexterm><primary>gimp_parasite_has_flag</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_parasite_has_flag          (const <link linkend="GimpParasite">GimpParasite</link> *parasite,
                                              <link linkend="gulong">gulong</link> flag);</programlisting>
 <para>
@@ -224,7 +227,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-flags"/>gimp_parasite_flags ()</title>
+<title><anchor id="gimp-parasite-flags" role="function"/>gimp_parasite_flags ()</title>
 <indexterm><primary>gimp_parasite_flags</primary></indexterm><programlisting><link linkend="gulong">gulong</link>      gimp_parasite_flags             (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 
@@ -238,7 +241,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-name"/>gimp_parasite_name ()</title>
+<title><anchor id="gimp-parasite-name" role="function"/>gimp_parasite_name ()</title>
 <indexterm><primary>gimp_parasite_name</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_parasite_name             (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 
@@ -252,7 +255,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-data"/>gimp_parasite_data ()</title>
+<title><anchor id="gimp-parasite-data" role="function"/>gimp_parasite_data ()</title>
 <indexterm><primary>gimp_parasite_data</primary></indexterm><programlisting><link linkend="gconstpointer">gconstpointer</link> gimp_parasite_data            (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 
@@ -266,7 +269,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-parasite-data-size"/>gimp_parasite_data_size ()</title>
+<title><anchor id="gimp-parasite-data-size" role="function"/>gimp_parasite_data_size ()</title>
 <indexterm><primary>gimp_parasite_data_size</primary></indexterm><programlisting><link linkend="glong">glong</link>       gimp_parasite_data_size         (const <link linkend="GimpParasite">GimpParasite</link> *parasite);</programlisting>
 <para>
 
@@ -280,77 +283,77 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARASITE-PERSISTENT:CAPS"/>GIMP_PARASITE_PERSISTENT</title>
+<title><anchor id="GIMP-PARASITE-PERSISTENT:CAPS" role="macro"/>GIMP_PARASITE_PERSISTENT</title>
 <indexterm><primary>GIMP_PARASITE_PERSISTENT</primary></indexterm><programlisting>#define GIMP_PARASITE_PERSISTENT 1
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARASITE-UNDOABLE:CAPS"/>GIMP_PARASITE_UNDOABLE</title>
+<title><anchor id="GIMP-PARASITE-UNDOABLE:CAPS" role="macro"/>GIMP_PARASITE_UNDOABLE</title>
 <indexterm><primary>GIMP_PARASITE_UNDOABLE</primary></indexterm><programlisting>#define GIMP_PARASITE_UNDOABLE   2
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARASITE-ATTACH-PARENT:CAPS"/>GIMP_PARASITE_ATTACH_PARENT</title>
+<title><anchor id="GIMP-PARASITE-ATTACH-PARENT:CAPS" role="macro"/>GIMP_PARASITE_ATTACH_PARENT</title>
 <indexterm><primary>GIMP_PARASITE_ATTACH_PARENT</primary></indexterm><programlisting>#define GIMP_PARASITE_ATTACH_PARENT     (0x80 &lt;&lt; 8)
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARASITE-PARENT-PERSISTENT:CAPS"/>GIMP_PARASITE_PARENT_PERSISTENT</title>
+<title><anchor id="GIMP-PARASITE-PARENT-PERSISTENT:CAPS" role="macro"/>GIMP_PARASITE_PARENT_PERSISTENT</title>
 <indexterm><primary>GIMP_PARASITE_PARENT_PERSISTENT</primary></indexterm><programlisting>#define GIMP_PARASITE_PARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT &lt;&lt; 8)
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARASITE-PARENT-UNDOABLE:CAPS"/>GIMP_PARASITE_PARENT_UNDOABLE</title>
+<title><anchor id="GIMP-PARASITE-PARENT-UNDOABLE:CAPS" role="macro"/>GIMP_PARASITE_PARENT_UNDOABLE</title>
 <indexterm><primary>GIMP_PARASITE_PARENT_UNDOABLE</primary></indexterm><programlisting>#define GIMP_PARASITE_PARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE &lt;&lt; 8)
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARASITE-ATTACH-GRANDPARENT:CAPS"/>GIMP_PARASITE_ATTACH_GRANDPARENT</title>
+<title><anchor id="GIMP-PARASITE-ATTACH-GRANDPARENT:CAPS" role="macro"/>GIMP_PARASITE_ATTACH_GRANDPARENT</title>
 <indexterm><primary>GIMP_PARASITE_ATTACH_GRANDPARENT</primary></indexterm><programlisting>#define GIMP_PARASITE_ATTACH_GRANDPARENT     (0x80 &lt;&lt; 16)
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARASITE-GRANDPARENT-PERSISTENT:CAPS"/>GIMP_PARASITE_GRANDPARENT_PERSISTENT</title>
+<title><anchor id="GIMP-PARASITE-GRANDPARENT-PERSISTENT:CAPS" role="macro"/>GIMP_PARASITE_GRANDPARENT_PERSISTENT</title>
 <indexterm><primary>GIMP_PARASITE_GRANDPARENT_PERSISTENT</primary></indexterm><programlisting>#define GIMP_PARASITE_GRANDPARENT_PERSISTENT (GIMP_PARASITE_PERSISTENT &lt;&lt; 16)
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-PARASITE-GRANDPARENT-UNDOABLE:CAPS"/>GIMP_PARASITE_GRANDPARENT_UNDOABLE</title>
+<title><anchor id="GIMP-PARASITE-GRANDPARENT-UNDOABLE:CAPS" role="macro"/>GIMP_PARASITE_GRANDPARENT_UNDOABLE</title>
 <indexterm><primary>GIMP_PARASITE_GRANDPARENT_UNDOABLE</primary></indexterm><programlisting>#define GIMP_PARASITE_GRANDPARENT_UNDOABLE   (GIMP_PARASITE_UNDOABLE &lt;&lt; 16)
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-TYPE-PARASITE:CAPS"/>GIMP_TYPE_PARASITE</title>
+<title><anchor id="GIMP-TYPE-PARASITE:CAPS" role="macro"/>GIMP_TYPE_PARASITE</title>
 <indexterm><primary>GIMP_TYPE_PARASITE</primary></indexterm><programlisting>#define GIMP_TYPE_PARASITE               (gimp_parasite_get_type ())
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-TYPE-PARAM-PARASITE:CAPS"/>GIMP_TYPE_PARAM_PARASITE</title>
+<title><anchor id="GIMP-TYPE-PARAM-PARASITE:CAPS" role="macro"/>GIMP_TYPE_PARAM_PARASITE</title>
 <indexterm><primary>GIMP_TYPE_PARAM_PARASITE</primary></indexterm><programlisting>#define GIMP_TYPE_PARAM_PARASITE           (gimp_param_parasite_get_type ())
 </programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GIMP-IS-PARAM-SPEC-PARASITE:CAPS"/>GIMP_IS_PARAM_SPEC_PARASITE()</title>
+<title><anchor id="GIMP-IS-PARAM-SPEC-PARASITE:CAPS" role="macro"/>GIMP_IS_PARAM_SPEC_PARASITE()</title>
 <indexterm><primary>GIMP_IS_PARAM_SPEC_PARASITE</primary></indexterm><programlisting>#define GIMP_IS_PARAM_SPEC_PARASITE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_PARASITE))
 </programlisting>
 <para>
@@ -363,7 +366,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-param-spec-parasite"/>gimp_param_spec_parasite ()</title>
+<title><anchor id="gimp-param-spec-parasite" role="function"/>gimp_param_spec_parasite ()</title>
 <indexterm><primary>gimp_param_spec_parasite</primary></indexterm><programlisting><link linkend="GParamSpec">GParamSpec</link>* gimp_param_spec_parasite        (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *nick,
                                              const <link linkend="gchar">gchar</link> *blurb,
@@ -389,7 +392,7 @@ Arbitrary pieces of data which can be attached to various GIMP objects.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-VALUE-HOLDS-PARASITE:CAPS"/>GIMP_VALUE_HOLDS_PARASITE()</title>
+<title><anchor id="GIMP-VALUE-HOLDS-PARASITE:CAPS" role="macro"/>GIMP_VALUE_HOLDS_PARASITE()</title>
 <indexterm><primary>GIMP_VALUE_HOLDS_PARASITE</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_PARASITE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_PARASITE))
 </programlisting>
 <para>

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimpcolor.html" title="gimpcolor">
 <link rel="next" href="libgimp-gimpdisplay.html" title="gimpdisplay">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -23,24 +24,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpcolor.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpdisplay.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpconvert"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpconvert</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpconvert</span></h2>
 <p>gimpconvert &#8212; Conversions between RGB, indexed, and grayscale modes.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -57,25 +63,25 @@ gboolean    <a href="libgimp-gimpconvert.html#gimp-image-convert-indexed">gimp_i
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2573079"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Conversions between RGB, indexed, and grayscale modes.
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2574838"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2574844"></a><h3>
+<a name="id2575550"></a><h3>
 <a name="gimp-image-convert-rgb"></a>gimp_image_convert_rgb ()</h3>
-<a class="indexterm" name="id2574853"></a><pre class="programlisting">gboolean    gimp_image_convert_rgb          (gint32 image_ID);</pre>
+<a class="indexterm" name="id2575561"></a><pre class="programlisting">gboolean    gimp_image_convert_rgb          (gint32 image_ID);</pre>
 <p>
 Convert specified image to RGB color
 </p>
 <p>
 This procedure converts the specified image to RGB color. This
-process requires an image of type GIMP_GRAY or GIMP_INDEXED. No
-image content is lost in this process aside from the colormap for an
+process requires an image in RGB or Indexed color mode. No image
+content is lost in this process aside from the colormap for an
 indexed image.</p>
 <p>
 
@@ -100,16 +106,16 @@ indexed image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574919"></a><h3>
+<a name="id2575627"></a><h3>
 <a name="gimp-image-convert-grayscale"></a>gimp_image_convert_grayscale ()</h3>
-<a class="indexterm" name="id2574928"></a><pre class="programlisting">gboolean    gimp_image_convert_grayscale    (gint32 image_ID);</pre>
+<a class="indexterm" name="id2575638"></a><pre class="programlisting">gboolean    gimp_image_convert_grayscale    (gint32 image_ID);</pre>
 <p>
 Convert specified image to grayscale (256 intensity levels)
 </p>
 <p>
 This procedure converts the specified image to grayscale with 8 bits
-per pixel (256 intensity levels). This process requires an image of
-type GIMP_RGB or GIMP_INDEXED.</p>
+per pixel (256 intensity levels). This process requires an image in
+RGB or Indexed color mode.</p>
 <p>
 
 </p>
@@ -133,9 +139,9 @@ type GIMP_RGB or GIMP_INDEXED.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2574995"></a><h3>
+<a name="id2571579"></a><h3>
 <a name="gimp-image-convert-indexed"></a>gimp_image_convert_indexed ()</h3>
-<a class="indexterm" name="id2575004"></a><pre class="programlisting">gboolean    gimp_image_convert_indexed      (gint32 image_ID,
+<a class="indexterm" name="id2571591"></a><pre class="programlisting">gboolean    gimp_image_convert_indexed      (gint32 image_ID,
                                              <a href="libgimp-gimpenums.html#GimpConvertDitherType">GimpConvertDitherType</a> dither_type,
                                              <a href="libgimp-gimpenums.html#GimpConvertPaletteType">GimpConvertPaletteType</a> palette_type,
                                              gint num_cols,
@@ -147,7 +153,7 @@ Convert specified image to and Indexed image
 </p>
 <p>
 This procedure converts the specified image to 'indexed' color. This
-process requires an image of type GIMP_GRAY or GIMP_RGB. The
+process requires an image in RGB or Grayscale mode. The
 'palette_type' specifies what kind of palette to use, A type of '0'
 means to use an optimal palette of 'num_cols' generated from the
 colors in the image. A type of '1' means to re-use the previous
@@ -218,9 +224,5 @@ location ('Fixed' dithering).</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpcolor.html"><b>&lt;&lt;&#160;gimpcolor</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimpdisplay.html"><b>gimpdisplay&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

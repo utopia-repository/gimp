@@ -1,4 +1,4 @@
-/* $Id: maze.c,v 1.41 2006/03/28 12:58:47 neo Exp $
+/* $Id: maze.c,v 1.42 2006/05/16 12:26:16 neo Exp $
  * This is a plug-in for the GIMP.
  * It draws mazes...
  *
@@ -102,7 +102,7 @@ extern void      drawbox    (GimpPixelRgn *dest_rgn,
 			     guint8        clr[4]);
 
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,    /* init_proc */
   NULL,    /* quit_proc */
@@ -133,7 +133,7 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef args[] =
+  static const GimpParamDef args[] =
   {
     { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",     "(unused)" },

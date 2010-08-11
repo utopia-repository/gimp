@@ -57,7 +57,7 @@
 
 
 #ifdef RCSID
-static gchar rcsid[] = "$Id: edge.c,v 1.74 2006/03/17 09:29:44 neo Exp $";
+static gchar rcsid[] = "$Id: edge.c,v 1.75 2006/05/16 12:26:06 neo Exp $";
 #endif
 
 /* Some useful macros */
@@ -110,7 +110,7 @@ static gint       sobel               (const guchar     *data);
 
 /***** Local vars *****/
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,  /* init  */
   NULL,  /* quit  */
@@ -133,7 +133,7 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef args[] =
+  static const GimpParamDef args[] =
   {
     { GIMP_PDB_INT32,    "run-mode", "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",    "Input image (unused)" },

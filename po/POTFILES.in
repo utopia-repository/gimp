@@ -8,6 +8,7 @@ app/app_procs.c
 app/batch.c
 app/main.c
 app/sanity.c
+
 app/actions/actions.c
 app/actions/brush-editor-actions.c
 app/actions/brushes-actions.c
@@ -84,6 +85,7 @@ app/core/gimp-gradients.c
 app/core/gimp-gui.c
 app/core/gimp-modules.c
 app/core/gimp-units.c
+app/core/gimp-user-install.c
 app/core/gimp.c
 app/core/gimpbrush.c
 app/core/gimpbrush-load.c
@@ -105,7 +107,6 @@ app/core/gimpdrawable-offset.c
 app/core/gimpdrawable-stroke.c
 app/core/gimpdrawable-transform.c
 app/core/gimpdrawable.c
-app/core/gimpenvirontable.c
 app/core/gimpgradient-load.c
 app/core/gimpgradient-save.c
 app/core/gimpgrid.c
@@ -123,7 +124,6 @@ app/core/gimpimage-scale.c
 app/core/gimpimage-undo-push.c
 app/core/gimpimage.c
 app/core/gimpimagefile.c
-app/core/gimpinterpreterdb.c
 app/core/gimpitem.c
 app/core/gimplayer-floating-sel.c
 app/core/gimplayer.c
@@ -216,7 +216,11 @@ app/pdb/drawable_cmds.c
 app/pdb/drawable_transform_cmds.c
 app/pdb/edit_cmds.c
 app/pdb/gimp-pdb.c
+app/pdb/gimppdb-query.c
+app/pdb/gimppdb.c
+app/pdb/gimppluginprocedure.c
 app/pdb/gimpprocedure.c
+app/pdb/gimptemporaryprocedure.c
 app/pdb/guides_cmds.c
 app/pdb/image_cmds.c
 app/pdb/layer_cmds.c
@@ -228,9 +232,13 @@ app/pdb/transform_tools_cmds.c
 app/pdb/undo_cmds.c
 app/pdb/vectors_cmds.c
 
-app/plug-in/plug-in.c
+app/plug-in/gimpenvirontable.c
+app/plug-in/gimpinterpreterdb.c
+app/plug-in/gimppluginmanager.c
+app/plug-in/gimppluginmanager-call.c
+app/plug-in/gimpplugin.c
+app/plug-in/plug-in-enums.c
 app/plug-in/plug-in-rc.c
-app/plug-in/plug-ins.c
 
 app/text/text-enums.c
 app/text/gimpfont.c

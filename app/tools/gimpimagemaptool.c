@@ -102,7 +102,7 @@ static void     gimp_image_map_tool_notify_preview   (GObject          *config,
                                                       GimpImageMapTool *im_tool);
 
 
-G_DEFINE_TYPE (GimpImageMapTool, gimp_image_map_tool, GIMP_TYPE_COLOR_TOOL);
+G_DEFINE_TYPE (GimpImageMapTool, gimp_image_map_tool, GIMP_TYPE_COLOR_TOOL)
 
 #define parent_class gimp_image_map_tool_parent_class
 
@@ -330,13 +330,14 @@ gimp_image_map_tool_control (GimpTool       *tool,
 
   switch (action)
     {
-    case HALT:
+    case GIMP_TOOL_ACTION_PAUSE:
+    case GIMP_TOOL_ACTION_RESUME:
+      break;
+
+    case GIMP_TOOL_ACTION_HALT:
       if (image_map_tool->shell)
         gtk_dialog_response (GTK_DIALOG (image_map_tool->shell),
                              GTK_RESPONSE_CANCEL);
-      break;
-
-    default:
       break;
     }
 

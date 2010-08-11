@@ -27,7 +27,7 @@
 #include "libgimpcolor/gimpcolor.h"
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
@@ -571,7 +571,7 @@ palette_entry_set_name_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_palette_procs (Gimp *gimp)
+register_palette_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -588,7 +588,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -603,7 +602,7 @@ register_palette_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -619,7 +618,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -634,7 +632,7 @@ register_palette_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -650,7 +648,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -672,7 +669,7 @@ register_palette_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -688,7 +685,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -696,7 +692,7 @@ register_palette_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -712,7 +708,6 @@ register_palette_procs (Gimp *gimp)
                                      "Bill Skaggs",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -726,7 +721,7 @@ register_palette_procs (Gimp *gimp)
                                                          "TRUE if the palette can be edited",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -742,7 +737,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -756,7 +750,7 @@ register_palette_procs (Gimp *gimp)
                                                           "The number of colors in the palette",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -772,7 +766,6 @@ register_palette_procs (Gimp *gimp)
                                      "Sven Neumann",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -786,7 +779,7 @@ register_palette_procs (Gimp *gimp)
                                                           "The number of columns used to display this palette",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -802,7 +795,6 @@ register_palette_procs (Gimp *gimp)
                                      "Sven Neumann",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -816,7 +808,7 @@ register_palette_procs (Gimp *gimp)
                                                       "The new number of columns",
                                                       0, 64, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -832,7 +824,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -851,6 +842,7 @@ register_palette_procs (Gimp *gimp)
                                gimp_param_spec_rgb ("color",
                                                     "color",
                                                     "The new entry's color color",
+                                                    FALSE,
                                                     NULL,
                                                     GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
@@ -859,7 +851,7 @@ register_palette_procs (Gimp *gimp)
                                                           "The index of the added entry",
                                                           G_MININT32, G_MAXINT32, 0,
                                                           GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -875,7 +867,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -889,7 +880,7 @@ register_palette_procs (Gimp *gimp)
                                                       "The index of the added entry",
                                                       G_MININT32, G_MAXINT32, 0,
                                                       GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -905,7 +896,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -923,9 +913,10 @@ register_palette_procs (Gimp *gimp)
                                    gimp_param_spec_rgb ("color",
                                                         "color",
                                                         "The color requested",
+                                                        FALSE,
                                                         NULL,
                                                         GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -941,7 +932,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -959,9 +949,10 @@ register_palette_procs (Gimp *gimp)
                                gimp_param_spec_rgb ("color",
                                                     "color",
                                                     "The new color",
+                                                    FALSE,
                                                     NULL,
                                                     GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -977,7 +968,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -998,7 +988,7 @@ register_palette_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -1014,7 +1004,6 @@ register_palette_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("name",
                                                        "name",
@@ -1035,7 +1024,6 @@ register_palette_procs (Gimp *gimp)
                                                        FALSE, TRUE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

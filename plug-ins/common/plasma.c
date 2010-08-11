@@ -39,7 +39,7 @@
  * Ported to GIMP Plug-in API 1.0
  *    by Eiichi Takamori <taka@ma1.seikyou.ne.jp>
  *
- * $Id: plasma.c,v 1.82 2006/03/17 09:29:46 neo Exp $
+ * $Id: plasma.c,v 1.83 2006/05/16 12:26:06 neo Exp $
  *
  * A few functions names and their order are changed :)
  * Plasma implementation almost hasn't been changed.
@@ -130,7 +130,7 @@ static gboolean do_plasma    (GimpPixelFetcher *pft,
 
 /***** Local vars *****/
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,  /* init_proc  */
   NULL,  /* quit_proc  */
@@ -165,7 +165,7 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef args[]=
+  static const GimpParamDef args[]=
   {
     { GIMP_PDB_INT32,    "run-mode",   "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",      "Input image (unused)"         },

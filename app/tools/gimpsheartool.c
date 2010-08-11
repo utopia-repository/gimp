@@ -72,7 +72,7 @@ static void   shear_y_mag_changed           (GtkAdjustment      *adj,
                                              GimpTransformTool  *tr_tool);
 
 
-G_DEFINE_TYPE (GimpShearTool, gimp_shear_tool, GIMP_TYPE_TRANSFORM_TOOL);
+G_DEFINE_TYPE (GimpShearTool, gimp_shear_tool, GIMP_TYPE_TRANSFORM_TOOL)
 
 
 void
@@ -162,8 +162,6 @@ gimp_shear_tool_dialog_update (GimpTransformTool *tr_tool)
                             tr_tool->trans_info[XSHEAR]);
   gtk_adjustment_set_value (GTK_ADJUSTMENT (shear->y_adj),
                             tr_tool->trans_info[YSHEAR]);
-
-  gtk_widget_show (tr_tool->dialog);
 }
 
 static void

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
 <book xmlns="http://www.devhelp.net/book" title="GIMP Base Library Reference Manual" link="index.html" author="" name="libgimpbase">
   <chapters>
     <sub name="GIMP Base Library" link="libgimpbase.html">
@@ -8,6 +9,7 @@
       <sub name="gimplimits" link="libgimpbase-gimplimits.html"/>
       <sub name="gimpparam" link="libgimpbase-gimpparam.html"/>
       <sub name="gimpchecks" link="libgimpbase-gimpchecks.html"/>
+      <sub name="gimpcpuaccel" link="libgimpbase-gimpcpuaccel.html"/>
       <sub name="gimpdatafiles" link="libgimpbase-gimpdatafiles.html"/>
       <sub name="gimpenv" link="libgimpbase-gimpenv.html"/>
       <sub name="gimpmemsize" link="libgimpbase-gimpmemsize.html"/>
@@ -80,6 +82,9 @@
     <function name="GIMP_CHECK_DARK" link="libgimpbase-gimpchecks.html#GIMP-CHECK-DARK:CAPS"/>
     <function name="GIMP_CHECK_LIGHT" link="libgimpbase-gimpchecks.html#GIMP-CHECK-LIGHT:CAPS"/>
     <function name="gimp_checks_get_shades ()" link="libgimpbase-gimpchecks.html#gimp-checks-get-shades"/>
+    <function name="enum GimpCpuAccelFlags" link="libgimpbase-gimpcpuaccel.html#GimpCpuAccelFlags"/>
+    <function name="gimp_cpu_accel_get_support ()" link="libgimpbase-gimpcpuaccel.html#gimp-cpu-accel-get-support"/>
+    <function name="gimp_cpu_accel_set_use ()" link="libgimpbase-gimpcpuaccel.html#gimp-cpu-accel-set-use"/>
     <function name="GimpDatafileData" link="libgimpbase-gimpdatafiles.html#GimpDatafileData"/>
     <function name="GimpDatafileLoaderFunc ()" link="libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc"/>
     <function name="gimp_datafiles_check_extension ()" link="libgimpbase-gimpdatafiles.html#gimp-datafiles-check-extension"/>

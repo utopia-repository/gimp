@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
 <link rel="prev" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
 <link rel="next" href="libgimpbase-gimpbasetypes.html" title="gimpbasetypes">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpbase.html" title="Part&#160;I.&#160;GIMP Base Library">
 <link rel="index" href="ix01.html" title="Index">
@@ -16,24 +17,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpbase.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Base Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpbase-gimpbasetypes.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpbase-gimpbaseenums"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpbaseenums</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpbaseenums</span></h2>
 <p>gimpbaseenums &#8212; Basic GIMP enumeration data types.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -71,24 +77,25 @@ enum        <a href="libgimpbase-gimpbaseenums.html#GimpTransformDirection">Gimp
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2492530"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Basic GIMP enumeration data types.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2492541"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2492547"></a><h3>
+<a name="id2494418"></a><h3>
 <a name="GimpAddMaskType"></a>enum GimpAddMaskType</h3>
-<a class="indexterm" name="id2492557"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2494430"></a><pre class="programlisting">typedef enum
 {
   GIMP_ADD_WHITE_MASK,          /*&lt; desc="_White (full opacity)"           &gt;*/
   GIMP_ADD_BLACK_MASK,          /*&lt; desc="_Black (full transparency)"      &gt;*/
   GIMP_ADD_ALPHA_MASK,          /*&lt; desc="Layer's _alpha channel"          &gt;*/
   GIMP_ADD_ALPHA_TRANSFER_MASK, /*&lt; desc="_Transfer layer's alpha channel" &gt;*/
   GIMP_ADD_SELECTION_MASK,      /*&lt; desc="_Selection"                      &gt;*/
-  GIMP_ADD_COPY_MASK            /*&lt; desc="_Grayscale copy of layer"        &gt;*/
+  GIMP_ADD_COPY_MASK,           /*&lt; desc="_Grayscale copy of layer"        &gt;*/
+  GIMP_ADD_CHANNEL_MASK         /*&lt; desc="C_hannel"                        &gt;*/
 } GimpAddMaskType;
 </pre>
 <p>
@@ -97,9 +104,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2541762"></a><h3>
+<a name="id2544609"></a><h3>
 <a name="GimpBlendMode"></a>enum GimpBlendMode</h3>
-<a class="indexterm" name="id2542316"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2542990"></a><pre class="programlisting">typedef enum
 {
   GIMP_FG_BG_RGB_MODE,         /*&lt; desc="FG to BG (RGB)"    &gt;*/
   GIMP_FG_BG_HSV_MODE,         /*&lt; desc="FG to BG (HSV)"    &gt;*/
@@ -113,9 +120,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2492585"></a><h3>
+<a name="id2494459"></a><h3>
 <a name="GimpBucketFillMode"></a>enum GimpBucketFillMode</h3>
-<a class="indexterm" name="id2492595"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2494472"></a><pre class="programlisting">typedef enum
 {
   GIMP_FG_BUCKET_FILL,      /*&lt; desc="FG color fill" &gt;*/
   GIMP_BG_BUCKET_FILL,      /*&lt; desc="BG color fill" &gt;*/
@@ -128,9 +135,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2492614"></a><h3>
+<a name="id2494490"></a><h3>
 <a name="GimpChannelOps"></a>enum GimpChannelOps</h3>
-<a class="indexterm" name="id2492624"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2494503"></a><pre class="programlisting">typedef enum
 {
   GIMP_CHANNEL_OP_ADD,       /*&lt; desc="Add to the current selection"         &gt;*/
   GIMP_CHANNEL_OP_SUBTRACT,  /*&lt; desc="Subtract from the current selection"  &gt;*/
@@ -144,9 +151,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2492646"></a><h3>
+<a name="id2494524"></a><h3>
 <a name="GimpChannelType"></a>enum GimpChannelType</h3>
-<a class="indexterm" name="id2492656"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2536418"></a><pre class="programlisting">typedef enum
 {
   GIMP_RED_CHANNEL,      /*&lt; desc="Red"     &gt;*/
   GIMP_GREEN_CHANNEL,    /*&lt; desc="Green"   &gt;*/
@@ -162,9 +169,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2492676"></a><h3>
+<a name="id2536439"></a><h3>
 <a name="GimpCheckSize"></a>enum GimpCheckSize</h3>
-<a class="indexterm" name="id2543887"></a><pre class="programlisting">typedef enum  /*&lt; pdb-skip &gt;*/
+<a class="indexterm" name="id2536451"></a><pre class="programlisting">typedef enum  /*&lt; pdb-skip &gt;*/
 {
   GIMP_CHECK_SIZE_SMALL_CHECKS  = 0,  /*&lt; desc="Small"  &gt;*/
   GIMP_CHECK_SIZE_MEDIUM_CHECKS = 1,  /*&lt; desc="Medium" &gt;*/
@@ -177,9 +184,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534580"></a><h3>
+<a name="id2536470"></a><h3>
 <a name="GimpCheckType"></a>enum GimpCheckType</h3>
-<a class="indexterm" name="id2534590"></a><pre class="programlisting">typedef enum  /*&lt; pdb-skip &gt;*/
+<a class="indexterm" name="id2536483"></a><pre class="programlisting">typedef enum  /*&lt; pdb-skip &gt;*/
 {
   GIMP_CHECK_TYPE_LIGHT_CHECKS = 0,  /*&lt; desc="Light checks"    &gt;*/
   GIMP_CHECK_TYPE_GRAY_CHECKS  = 1,  /*&lt; desc="Mid-tone checks" &gt;*/
@@ -195,9 +202,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534613"></a><h3>
+<a name="id2536506"></a><h3>
 <a name="GimpCloneType"></a>enum GimpCloneType</h3>
-<a class="indexterm" name="id2534623"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2536518"></a><pre class="programlisting">typedef enum
 {
   GIMP_IMAGE_CLONE,   /*&lt; desc="Image source"   &gt;*/
   GIMP_PATTERN_CLONE  /*&lt; desc="Pattern source" &gt;*/
@@ -209,9 +216,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534641"></a><h3>
+<a name="id2536536"></a><h3>
 <a name="GimpDesaturateMode"></a>enum GimpDesaturateMode</h3>
-<a class="indexterm" name="id2534651"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2536549"></a><pre class="programlisting">typedef enum
 {
   GIMP_DESATURATE_LIGHTNESS,   /*&lt; desc="Lightness"  &gt;*/
   GIMP_DESATURATE_LUMINOSITY,  /*&lt; desc="Luminosity" &gt;*/
@@ -224,9 +231,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534670"></a><h3>
+<a name="id2536567"></a><h3>
 <a name="GimpDodgeBurnType"></a>enum GimpDodgeBurnType</h3>
-<a class="indexterm" name="id2534680"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2536580"></a><pre class="programlisting">typedef enum
 {
   GIMP_DODGE,  /*&lt; desc="Dodge" &gt;*/
   GIMP_BURN    /*&lt; desc="Burn"  &gt;*/
@@ -238,9 +245,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534697"></a><h3>
+<a name="id2536597"></a><h3>
 <a name="GimpForegroundExtractMode"></a>enum GimpForegroundExtractMode</h3>
-<a class="indexterm" name="id2534706"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2536608"></a><pre class="programlisting">typedef enum
 {
   GIMP_FOREGROUND_EXTRACT_SIOX
 } GimpForegroundExtractMode;
@@ -251,9 +258,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534722"></a><h3>
+<a name="id2536624"></a><h3>
 <a name="GimpGradientType"></a>enum GimpGradientType</h3>
-<a class="indexterm" name="id2534732"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2536637"></a><pre class="programlisting">typedef enum
 {
   GIMP_GRADIENT_LINEAR,                /*&lt; desc="Linear"            &gt;*/
   GIMP_GRADIENT_BILINEAR,              /*&lt; desc="Bi-linear"         &gt;*/
@@ -274,9 +281,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534761"></a><h3>
+<a name="id2536666"></a><h3>
 <a name="GimpGridStyle"></a>enum GimpGridStyle</h3>
-<a class="indexterm" name="id2534771"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476385"></a><pre class="programlisting">typedef enum
 {
   GIMP_GRID_DOTS,           /*&lt; desc="Intersections (dots)"       &gt;*/
   GIMP_GRID_INTERSECTIONS,  /*&lt; desc="Intersections (crosshairs)" &gt;*/
@@ -291,9 +298,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2534793"></a><h3>
+<a name="id2476407"></a><h3>
 <a name="GimpIconType"></a>enum GimpIconType</h3>
-<a class="indexterm" name="id2534804"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476419"></a><pre class="programlisting">typedef enum
 {
   GIMP_ICON_TYPE_STOCK_ID,      /*&lt; desc="Stock ID"      &gt;*/
   GIMP_ICON_TYPE_INLINE_PIXBUF, /*&lt; desc="Inline pixbuf" &gt;*/
@@ -306,9 +313,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474537"></a><h3>
+<a name="id2476439"></a><h3>
 <a name="GimpImageBaseType"></a>enum GimpImageBaseType</h3>
-<a class="indexterm" name="id2474547"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476451"></a><pre class="programlisting">typedef enum
 {
   GIMP_RGB,     /*&lt; desc="RGB color"     &gt;*/
   GIMP_GRAY,    /*&lt; desc="Grayscale"     &gt;*/
@@ -321,9 +328,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474565"></a><h3>
+<a name="id2476469"></a><h3>
 <a name="GimpImageType"></a>enum GimpImageType</h3>
-<a class="indexterm" name="id2474576"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476481"></a><pre class="programlisting">typedef enum
 {
   GIMP_RGB_IMAGE,      /*&lt; desc="RGB"             &gt;*/
   GIMP_RGBA_IMAGE,     /*&lt; desc="RGB-alpha"       &gt;*/
@@ -339,9 +346,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474597"></a><h3>
+<a name="id2476503"></a><h3>
 <a name="GimpInterpolationType"></a>enum GimpInterpolationType</h3>
-<a class="indexterm" name="id2474606"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476514"></a><pre class="programlisting">typedef enum
 {
   GIMP_INTERPOLATION_NONE,   /*&lt; desc="None (Fastest)" &gt;*/
   GIMP_INTERPOLATION_LINEAR, /*&lt; desc="Linear"         &gt;*/
@@ -355,9 +362,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474626"></a><h3>
+<a name="id2476534"></a><h3>
 <a name="GimpMessageHandlerType"></a>enum GimpMessageHandlerType</h3>
-<a class="indexterm" name="id2474635"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476545"></a><pre class="programlisting">typedef enum
 {
   GIMP_MESSAGE_BOX,
   GIMP_CONSOLE,
@@ -370,9 +377,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474652"></a><h3>
+<a name="id2476562"></a><h3>
 <a name="GimpPaintApplicationMode"></a>enum GimpPaintApplicationMode</h3>
-<a class="indexterm" name="id2474661"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476573"></a><pre class="programlisting">typedef enum
 {
   GIMP_PAINT_CONSTANT,    /*&lt; desc="Constant"    &gt;*/
   GIMP_PAINT_INCREMENTAL  /*&lt; desc="Incremental" &gt;*/
@@ -384,9 +391,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474678"></a><h3>
+<a name="id2476591"></a><h3>
 <a name="GimpPDBArgType"></a>enum GimpPDBArgType</h3>
-<a class="indexterm" name="id2474688"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476603"></a><pre class="programlisting">typedef enum
 {
   GIMP_PDB_INT32,
   GIMP_PDB_INT16,
@@ -421,9 +428,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474713"></a><h3>
+<a name="id2476628"></a><h3>
 <a name="GimpPDBProcType"></a>enum GimpPDBProcType</h3>
-<a class="indexterm" name="id2474723"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2476640"></a><pre class="programlisting">typedef enum
 {
   GIMP_INTERNAL,   /*&lt; desc="Internal GIMP procedure" &gt;*/
   GIMP_PLUGIN,     /*&lt; desc="GIMP Plug-In" &gt;*/
@@ -437,9 +444,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474742"></a><h3>
+<a name="id2559284"></a><h3>
 <a name="GimpPDBStatusType"></a>enum GimpPDBStatusType</h3>
-<a class="indexterm" name="id2474753"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2559294"></a><pre class="programlisting">typedef enum
 {
   GIMP_PDB_EXECUTION_ERROR,
   GIMP_PDB_CALLING_ERROR,
@@ -454,9 +461,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474770"></a><h3>
+<a name="id2559311"></a><h3>
 <a name="GimpProgressCommand"></a>enum GimpProgressCommand</h3>
-<a class="indexterm" name="id2474780"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2559321"></a><pre class="programlisting">typedef enum
 {
   GIMP_PROGRESS_COMMAND_START,
   GIMP_PROGRESS_COMMAND_END,
@@ -472,9 +479,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2474800"></a><h3>
+<a name="id2559339"></a><h3>
 <a name="GimpRepeatMode"></a>enum GimpRepeatMode</h3>
-<a class="indexterm" name="id2474810"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2559349"></a><pre class="programlisting">typedef enum
 {
   GIMP_REPEAT_NONE,       /*&lt; desc="None"            &gt;*/
   GIMP_REPEAT_SAWTOOTH,   /*&lt; desc="Sawtooth wave"   &gt;*/
@@ -487,9 +494,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2557345"></a><h3>
+<a name="id2559366"></a><h3>
 <a name="GimpRunMode"></a>enum GimpRunMode</h3>
-<a class="indexterm" name="id2557353"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2559377"></a><pre class="programlisting">typedef enum
 {
   GIMP_RUN_INTERACTIVE,     /*&lt; desc="Run interactively"         &gt;*/
   GIMP_RUN_NONINTERACTIVE,  /*&lt; desc="Run non-interactively"     &gt;*/
@@ -502,9 +509,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2557371"></a><h3>
+<a name="id2559394"></a><h3>
 <a name="GimpSizeType"></a>enum GimpSizeType</h3>
-<a class="indexterm" name="id2557380"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2559405"></a><pre class="programlisting">typedef enum
 {
   GIMP_PIXELS,  /*&lt; desc="Pixels" &gt;*/
   GIMP_POINTS   /*&lt; desc="Points" &gt;*/
@@ -516,9 +523,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2557395"></a><h3>
+<a name="id2559420"></a><h3>
 <a name="GimpStackTraceMode"></a>enum GimpStackTraceMode</h3>
-<a class="indexterm" name="id2557403"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2559431"></a><pre class="programlisting">typedef enum
 {
   GIMP_STACK_TRACE_NEVER,
   GIMP_STACK_TRACE_QUERY,
@@ -531,9 +538,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2557419"></a><h3>
+<a name="id2559446"></a><h3>
 <a name="GimpTransferMode"></a>enum GimpTransferMode</h3>
-<a class="indexterm" name="id2557427"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2559457"></a><pre class="programlisting">typedef enum
 {
   GIMP_SHADOWS,     /*&lt; desc="Shadows"    &gt;*/
   GIMP_MIDTONES,    /*&lt; desc="Midtones"   &gt;*/
@@ -546,9 +553,9 @@ Basic GIMP enumeration data types.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2557444"></a><h3>
+<a name="id2559473"></a><h3>
 <a name="GimpTransformDirection"></a>enum GimpTransformDirection</h3>
-<a class="indexterm" name="id2557452"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2559484"></a><pre class="programlisting">typedef enum
 {
   GIMP_TRANSFORM_FORWARD,   /*&lt; desc="Forward" &gt;*/
   GIMP_TRANSFORM_BACKWARD   /*&lt; desc="Backward" &gt;*/
@@ -560,9 +567,5 @@ Basic GIMP enumeration data types.
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpbase.html"><b>&lt;&lt;&#160;Part&#160;I.&#160;GIMP Base Library</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpbase-gimpbasetypes.html"><b>gimpbasetypes&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

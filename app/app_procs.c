@@ -33,6 +33,7 @@
 #include <glib-object.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 
 #include "core/core-types.h"
 
@@ -41,6 +42,9 @@
 #include "base/base.h"
 
 #include "core/gimp.h"
+#include "core/gimp-user-install.h"
+
+#include "plug-in/gimppluginmanager.h"
 
 #include "file/file-open.h"
 #include "file/file-utils.h"
@@ -160,6 +164,7 @@ app_run (const gchar         *full_prog_name,
 {
   GimpInitStatusFunc  update_status_func = NULL;
   Gimp               *gimp;
+  GimpBaseConfig     *config;
   GMainLoop          *loop;
   gboolean            swap_is_ok;
   gint                i;
@@ -217,28 +222,18 @@ app_run (const gchar         *full_prog_name,
    */
   if (! g_file_test (gimp_directory (), G_FILE_TEST_IS_DIR))
     {
-      /*  not properly installed  */
+      GimpUserInstall *install = gimp_user_install_new (be_verbose);
 
-#ifndef GIMP_CONSOLE_COMPILATION
-      if (no_interface)
+#ifdef GIMP_CONSOLE_COMPILATION
+      gimp_user_install_run (install);
+#else
+      if (! (no_interface ?
+	     gimp_user_install_run (install) :
+	     user_install_dialog_run (install)))
+	exit (EXIT_FAILURE);
 #endif
-        {
-          const gchar *msg;
 
-          msg = _("GIMP is not properly installed for the current user.\n"
-                  "User installation was skipped because the '--no-interface' flag was used.\n"
-                  "To perform user installation, run the GIMP without the '--no-interface' flag.");
-
-          g_printerr ("%s\n\n", msg);
-        }
-#ifndef GIMP_CONSOLE_COMPILATION
-      else
-        {
-          user_install_dialog_run (alternate_system_gimprc,
-                                   alternate_gimprc,
-                                   be_verbose);
-        }
-#endif
+      gimp_user_install_free (install);
     }
 
 #if defined G_OS_WIN32 && !defined GIMP_CONSOLE_COMPILATION
@@ -253,9 +248,10 @@ app_run (const gchar         *full_prog_name,
 
   gimp_load_config (gimp, alternate_system_gimprc, alternate_gimprc);
 
+  config = GIMP_BASE_CONFIG (gimp->config);
+
   /*  initialize lowlevel stuff  */
-  swap_is_ok = base_init (GIMP_BASE_CONFIG (gimp->config),
-                          be_verbose, use_cpu_accel);
+  swap_is_ok = base_init (config, be_verbose, use_cpu_accel);
 
 #ifndef GIMP_CONSOLE_COMPILATION
   if (! no_interface)
@@ -276,11 +272,16 @@ app_run (const gchar         *full_prog_name,
 
   /* display a warning when no test swap file could be generated */
   if (! swap_is_ok)
-    g_message (_("Unable to open a test swap file.\n\n"
-                 "To avoid data loss, please check the location "
-                 "and permissions of the swap directory defined in "
-                 "your Preferences (currently \"%s\")."),
-               GIMP_BASE_CONFIG (gimp->config)->swap_path);
+    {
+      gchar *path = gimp_config_path_expand (config->swap_path, FALSE, NULL);
+
+      g_message (_("Unable to open a test swap file.\n\n"
+		   "To avoid data loss, please check the location "
+		   "and permissions of the swap directory defined in "
+		   "your Preferences (currently \"%s\")."), path);
+
+      g_free (path);
+    }
 
   /*  enable autosave late so we don't autosave when the
    *  monitor resolution is set in gui_init()
@@ -306,8 +307,9 @@ app_run (const gchar         *full_prog_name,
             }
           else
             {
-              uri = file_utils_filename_to_uri (gimp->load_procs,
-                                                filenames[i], &error);
+              uri =
+                file_utils_filename_to_uri (gimp->plug_in_manager->load_procs,
+                                            filenames[i], &error);
             }
 
           if (! uri)

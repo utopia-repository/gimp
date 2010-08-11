@@ -28,7 +28,7 @@
 #include "libgimpconfig/gimpconfig.h"
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
@@ -38,7 +38,8 @@
 #include "core/gimplayer.h"
 #include "file/file-open.h"
 #include "file/file-utils.h"
-#include "plug-in/plug-in-file.h"
+#include "plug-in/gimppluginmanager-file.h"
+#include "plug-in/gimppluginmanager.h"
 
 
 static GValueArray *
@@ -55,14 +56,14 @@ file_load_invoker (GimpProcedure     *procedure,
   gchar               *uri;
   gint                 i;
 
-  uri = file_utils_filename_to_uri (gimp->load_procs,
+  uri = file_utils_filename_to_uri (gimp->plug_in_manager->load_procs,
                                     g_value_get_string (&args->values[1]),
                                     NULL);
 
   if (! uri)
     return gimp_procedure_get_return_values (procedure, FALSE);
 
-  file_proc = file_utils_find_proc (gimp->load_procs, uri);
+  file_proc = file_utils_find_proc (gimp->plug_in_manager->load_procs, uri);
 
   g_free (uri);
 
@@ -80,8 +81,10 @@ file_load_invoker (GimpProcedure     *procedure,
     if (G_IS_PARAM_SPEC_STRING (proc->args[i]))        
       g_value_set_static_string (&new_args->values[i], "");
 
-  return_vals = gimp_pdb_execute (gimp, context, progress,
-                                  GIMP_OBJECT (proc)->name, new_args);
+  return_vals = gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
+                                                         context, progress,
+                                                         GIMP_OBJECT (proc)->name,
+                                                         new_args);
 
   g_value_array_free (new_args);
 
@@ -108,7 +111,7 @@ file_load_layer_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      gchar *uri = file_utils_filename_to_uri (gimp->load_procs,
+      gchar *uri = file_utils_filename_to_uri (gimp->plug_in_manager->load_procs,
                                                filename, NULL);
 
       if (uri)
@@ -147,14 +150,14 @@ file_save_invoker (GimpProcedure     *procedure,
   gchar               *uri;
   gint                 i;
 
-  uri = file_utils_filename_to_uri (gimp->load_procs,
+  uri = file_utils_filename_to_uri (gimp->plug_in_manager->load_procs,
                                     g_value_get_string (&args->values[3]),
                                     NULL);
 
   if (! uri)
     return gimp_procedure_get_return_values (procedure, FALSE);
 
-  file_proc = file_utils_find_proc (gimp->save_procs, uri);
+  file_proc = file_utils_find_proc (gimp->plug_in_manager->save_procs, uri);
 
   g_free (uri);
 
@@ -172,8 +175,10 @@ file_save_invoker (GimpProcedure     *procedure,
     if (G_IS_PARAM_SPEC_STRING (proc->args[i]))
       g_value_set_static_string (&new_args->values[i], "");
 
-  return_vals = gimp_pdb_execute (gimp, context, progress,
-                                  GIMP_OBJECT (proc)->name, new_args);
+  return_vals = gimp_pdb_execute_procedure_by_name_args (gimp->pdb,
+                                                         context, progress,
+                                                         GIMP_OBJECT (proc)->name,
+                                                         new_args);
 
   g_value_array_free (new_args);
 
@@ -299,8 +304,9 @@ register_magic_load_handler_invoker (GimpProcedure     *procedure,
     {
       gchar *canonical = gimp_canonicalize_identifier (procedure_name);
 
-      success = plug_in_file_register_load_handler (gimp, canonical,
-                                                    extensions, prefixes, magics);
+      success = gimp_plug_in_manager_register_load_handler (gimp->plug_in_manager,
+                                                            canonical,
+                                                            extensions, prefixes, magics);
 
       g_free (canonical);
     }
@@ -328,8 +334,9 @@ register_load_handler_invoker (GimpProcedure     *procedure,
     {
       gchar *canonical = gimp_canonicalize_identifier (procedure_name);
 
-      success = plug_in_file_register_load_handler (gimp, canonical,
-                                                    extensions, prefixes, NULL);
+      success = gimp_plug_in_manager_register_load_handler (gimp->plug_in_manager,
+                                                            canonical,
+                                                            extensions, prefixes, NULL);
 
       g_free (canonical);
     }
@@ -357,8 +364,9 @@ register_save_handler_invoker (GimpProcedure     *procedure,
     {
       gchar *canonical = gimp_canonicalize_identifier (procedure_name);
 
-      success = plug_in_file_register_save_handler (gimp, canonical,
-                                                    extensions, prefixes);
+      success = gimp_plug_in_manager_register_save_handler (gimp->plug_in_manager,
+                                                            canonical,
+                                                            extensions, prefixes);
 
       g_free (canonical);
     }
@@ -384,7 +392,8 @@ register_file_handler_mime_invoker (GimpProcedure     *procedure,
     {
       gchar *canonical = gimp_canonicalize_identifier (procedure_name);
 
-      success = plug_in_file_register_mime_type (gimp, canonical, mime_type);
+      success = gimp_plug_in_manager_register_mime_type (gimp->plug_in_manager,
+                                                         canonical, mime_type);
 
       g_free (canonical);
     }
@@ -410,7 +419,8 @@ register_thumbnail_loader_invoker (GimpProcedure     *procedure,
     {
       gchar *canonical = gimp_canonicalize_identifier (load_proc);
 
-      success = plug_in_file_register_thumb_loader (gimp, canonical, thumb_proc);
+      success = gimp_plug_in_manager_register_thumb_loader (gimp->plug_in_manager,
+                                                            canonical, thumb_proc);
 
       g_free (canonical);
     }
@@ -419,7 +429,7 @@ register_thumbnail_loader_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_fileops_procs (Gimp *gimp)
+register_fileops_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -436,11 +446,10 @@ register_fileops_procs (Gimp *gimp)
                                      "Josh MacDonald",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_enum ("run-mode",
                                                      "run mode",
-                                                     "The run mode: { GIMP_RUN_INTERACTIVE (0), GIMP_RUN_NONINTERACTIVE (1) }",
+                                                     "The run mode",
                                                      GIMP_TYPE_RUN_MODE,
                                                      GIMP_RUN_INTERACTIVE,
                                                      GIMP_PARAM_READWRITE));
@@ -464,9 +473,9 @@ register_fileops_procs (Gimp *gimp)
                                    gimp_param_spec_image_id ("image",
                                                              "image",
                                                              "The output image",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -482,11 +491,10 @@ register_fileops_procs (Gimp *gimp)
                                      "Sven Neumann",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_enum ("run-mode",
                                                      "run mode",
-                                                     "The run mode: { GIMP_RUN_INTERACTIVE (0), GIMP_RUN_NONINTERACTIVE (1) }",
+                                                     "The run mode",
                                                      GIMP_TYPE_RUN_MODE,
                                                      GIMP_RUN_INTERACTIVE,
                                                      GIMP_PARAM_READWRITE));
@@ -496,7 +504,7 @@ register_fileops_procs (Gimp *gimp)
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "Destination image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("filename",
@@ -509,9 +517,9 @@ register_fileops_procs (Gimp *gimp)
                                    gimp_param_spec_layer_id ("layer",
                                                              "layer",
                                                              "The layer created when loading the image file",
-                                                             gimp,
+                                                             pdb->gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -527,11 +535,10 @@ register_fileops_procs (Gimp *gimp)
                                      "Josh MacDonald",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("run-mode",
                                                   "run mode",
-                                                  "The run mode: { GIMP_RUN_INTERACTIVE (0), GIMP_RUN_NONINTERACTIVE (1), GIMP_RUN_WITH_LAST_VALS (2) }",
+                                                  "The run mode",
                                                   GIMP_TYPE_RUN_MODE,
                                                   GIMP_RUN_INTERACTIVE,
                                                   GIMP_PARAM_READWRITE));
@@ -539,13 +546,13 @@ register_fileops_procs (Gimp *gimp)
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "Input image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "drawable",
                                                             "Drawable to save",
-                                                            gimp,
+                                                            pdb->gimp, FALSE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("filename",
@@ -561,7 +568,7 @@ register_fileops_procs (Gimp *gimp)
                                                        TRUE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -577,7 +584,6 @@ register_fileops_procs (Gimp *gimp)
                                      "Adam D. Moss, Sven Neumann",
                                      "1999-2003",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("filename",
                                                        "filename",
@@ -608,7 +614,7 @@ register_fileops_procs (Gimp *gimp)
                                                                "thumb data",
                                                                "The thumbnail data",
                                                                GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -624,12 +630,11 @@ register_fileops_procs (Gimp *gimp)
                                      "Josh MacDonald",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("filename",
@@ -638,7 +643,7 @@ register_fileops_procs (Gimp *gimp)
                                                        TRUE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -654,7 +659,6 @@ register_fileops_procs (Gimp *gimp)
                                      "Josh MacDonald",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("extension",
                                                        "extension",
@@ -669,7 +673,7 @@ register_fileops_procs (Gimp *gimp)
                                                            FALSE, FALSE,
                                                            NULL,
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -685,7 +689,6 @@ register_fileops_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -714,7 +717,7 @@ register_fileops_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -730,7 +733,6 @@ register_fileops_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -752,7 +754,7 @@ register_fileops_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -768,7 +770,6 @@ register_fileops_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -790,7 +791,7 @@ register_fileops_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -806,7 +807,6 @@ register_fileops_procs (Gimp *gimp)
                                      "Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -821,7 +821,7 @@ register_fileops_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -837,7 +837,6 @@ register_fileops_procs (Gimp *gimp)
                                      "Sven Neumann",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("load-proc",
                                                        "load proc",
@@ -852,7 +851,6 @@ register_fileops_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

@@ -16,8 +16,12 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * $Revision: 1.11 $
+ * $Revision: 1.13 $
  */
+
+#include "config.h"
+
+#define _POSIX_C_SOURCE 199309L  /* all the sigaction stuff is POSIX */
 
 #include <glib.h>
 
@@ -89,7 +93,7 @@ gimp_signal_private (gint                   signum,
 
   return (GimpSignalHandlerFunc) osa.sa_handler;
 #else
-  return NULL;                        /* Or g_error()? Should all calls to
+  return NULL;                  /* Or g_error()? Should all calls to
                                  * this function really be inside
                                  * #ifdef G_OS_UNIX?
                                  */

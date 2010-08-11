@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpIntComboBox.html" title="GimpIntComboBox">
 <link rel="next" href="GimpMemsizeEntry.html" title="GimpMemsizeEntry">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -24,90 +25,81 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="GimpIntComboBox.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpMemsizeEntry.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpIntStore"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpIntStore</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpIntStore</span></h2>
 <p>GimpIntStore &#8212; A model for integer based name-value pairs (e.g. enums)</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
             <a href="GimpIntStore.html#GimpIntStore-struct">GimpIntStore</a>;
 enum        <a href="GimpIntStore.html#GimpIntStoreColumns">GimpIntStoreColumns</a>;
-<a
-href="../gtk/GtkListStore.html"
->GtkListStore</a>* <a href="GimpIntStore.html#gimp-int-store-new">gimp_int_store_new</a>            (void);
-gboolean    <a href="GimpIntStore.html#gimp-int-store-lookup-by-value">gimp_int_store_lookup_by_value</a>  (<a
-href="../gtk/GtkTreeModel.html"
->GtkTreeModel</a> *model,
+GtkListStore* <a href="GimpIntStore.html#gimp-int-store-new">gimp_int_store_new</a>            (void);
+gboolean    <a href="GimpIntStore.html#gimp-int-store-lookup-by-value">gimp_int_store_lookup_by_value</a>  (GtkTreeModel *model,
                                              gint value,
-                                             <a
-href="../gtk/GtkTreeModel.html#GtkTreeIter"
->GtkTreeIter</a> *iter);
+                                             GtkTreeIter *iter);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571070"></a><h2>Object Hierarchy</h2>
+<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
-   +----<a
-href="../gtk/GtkListStore.html"
->GtkListStore</a>
+   +----GtkListStore
          +----GimpIntStore
                +----<a href="GimpEnumStore.html" title="GimpEnumStore">GimpEnumStore</a>
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2571103"></a><h2>Implemented Interfaces</h2>
+<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpIntStore implements
- <a
-href="../gtk/GtkTreeModel.html"
->GtkTreeModel</a>,  <a
-href="../gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragSource"
->GtkTreeDragSource</a>,  <a
-href="../gtk/gtk-GtkTreeView-drag-and-drop.html#GtkTreeDragDest"
->GtkTreeDragDest</a> and  <a
-href="../gtk/GtkTreeSortable.html"
->GtkTreeSortable</a>.</p>
+ GtkTreeModel,  GtkTreeDragSource,  GtkTreeDragDest and  GtkTreeSortable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2555390"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 A model for integer based name-value pairs (e.g. enums)
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2555402"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2555408"></a><h3>
+<a name="id2571532"></a><h3>
 <a name="GimpIntStore-struct"></a>GimpIntStore</h3>
-<a class="indexterm" name="id2555418"></a><pre class="programlisting">typedef struct _GimpIntStore GimpIntStore;</pre>
+<a class="indexterm" name="id2574456"></a><pre class="programlisting">typedef struct _GimpIntStore GimpIntStore;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2555434"></a><h3>
+<a name="id2574471"></a><h3>
 <a name="GimpIntStoreColumns"></a>enum GimpIntStoreColumns</h3>
-<a class="indexterm" name="id2555444"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2574484"></a><pre class="programlisting">typedef enum
 {
   GIMP_INT_STORE_VALUE,
   GIMP_INT_STORE_LABEL,
@@ -123,15 +115,11 @@ A model for integer based name-value pairs (e.g. enums)
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2555462"></a><h3>
+<a name="id2574502"></a><h3>
 <a name="gimp-int-store-new"></a>gimp_int_store_new ()</h3>
-<a class="indexterm" name="id2555473"></a><pre class="programlisting"><a
-href="../gtk/GtkListStore.html"
->GtkListStore</a>* gimp_int_store_new            (void);</pre>
+<a class="indexterm" name="id2574516"></a><pre class="programlisting">GtkListStore* gimp_int_store_new            (void);</pre>
 <p>
-Creates a <a
-href="../gtk/GtkListStore.html"
-><span class="type">GtkListStore</span></a> with a number of useful columns.
+Creates a <span class="type">GtkListStore</span> with a number of useful columns.
 <a href="GimpIntStore.html" title="GimpIntStore"><span class="type">GimpIntStore</span></a> is especially useful if the items you want to store
 are identified using an integer value.</p>
 <p>
@@ -152,15 +140,11 @@ are identified using an integer value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569662"></a><h3>
+<a name="id2574584"></a><h3>
 <a name="gimp-int-store-lookup-by-value"></a>gimp_int_store_lookup_by_value ()</h3>
-<a class="indexterm" name="id2569671"></a><pre class="programlisting">gboolean    gimp_int_store_lookup_by_value  (<a
-href="../gtk/GtkTreeModel.html"
->GtkTreeModel</a> *model,
+<a class="indexterm" name="id2574597"></a><pre class="programlisting">gboolean    gimp_int_store_lookup_by_value  (GtkTreeModel *model,
                                              gint value,
-                                             <a
-href="../gtk/GtkTreeModel.html#GtkTreeIter"
->GtkTreeIter</a> *iter);</pre>
+                                             GtkTreeIter *iter);</pre>
 <p>
 Iterate over the <em class="parameter"><code>model</code></em> looking for <em class="parameter"><code>value</code></em>.</p>
 <p>
@@ -202,9 +186,5 @@ Iterate over the <em class="parameter"><code>model</code></em> looking for <em c
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="GimpIntComboBox.html"><b>&lt;&lt;&#160;GimpIntComboBox</b></a></td>
-<td align="right"><a accesskey="n" href="GimpMemsizeEntry.html"><b>GimpMemsizeEntry&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

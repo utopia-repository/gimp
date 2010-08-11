@@ -42,6 +42,12 @@ sub transform_invoke {
       gimp_drawable_mask_intersect (drawable, &x, &y, &width, &height))
     {
       GimpMatrix3 matrix;
+      gint        off_x, off_y;
+
+      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+
+      x += off_x;
+      y += off_y;
 
       /* Assemble the transformation matrix */
 $assemble_matrix
@@ -84,6 +90,12 @@ sub transform_default_invoke {
     {
       GimpMatrix3           matrix;
       GimpInterpolationType interpolation_type = GIMP_INTERPOLATION_NONE;
+      gint                  off_x, off_y;
+
+      gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
+
+      x += off_x;
+      y += off_y;
 
       /* Assemble the transformation matrix */
 $assemble_matrix
@@ -137,7 +149,7 @@ HELP
 	  desc => 'The affected drawable' },
         { name => 'flip_type',
 	  type => 'enum GimpOrientationType (no GIMP_ORIENTATION_UNKNOWN)',
-          desc => 'Type of flip: %%desc%%' },
+          desc => 'Type of flip' },
         { name => 'auto_center', type => 'boolean',
           desc => 'Whether to automatically position the axis in the selection center' },
         { name => 'axis', type => 'float',
@@ -204,9 +216,9 @@ HELP
         { name => 'y1', type => 'float',
           desc => 'vert. coord. of other end of axis' },
 	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
-	  desc => 'Direction of Transformation: %%desc%%' },
+	  desc => 'Direction of transformation' },
 	{ name => 'interpolation', type => 'enum GimpInterpolationType',
-	  desc => 'Type of interpolation: %%desc%%' },
+	  desc => 'Type of interpolation' },
 	{ name => 'supersample', type => 'boolean',
 	  desc => 'Whether to perform supersample' },
 	{ name => 'recursion_level', type => '1 <= int32',
@@ -223,7 +235,8 @@ HELP
     transform_invoke ("Flipping", <<CODE);
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_flip_free (&matrix,
-                                       x, y, width, height, x0, y0, x1, y1);
+                                       x, y, width, height,
+                                       x0, y0, x1, y1);
 CODE
 }
 
@@ -266,7 +279,8 @@ HELP
     transform_default_invoke ("Flipping", <<CODE);
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_flip_free (&matrix,
-                                       x, y, width, height, x0, y0, x1, y1);
+                                       x, y, width, height,
+                                       x0, y0, x1, y1);
 CODE
 }
 
@@ -324,9 +338,9 @@ HELP
 	  desc => 'The new y coordinate of lower-right corner of original
 		   bounding box' },
 	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
-	  desc => 'Direction of Transformation: %%desc%%' },
+	  desc => 'Direction of transformation' },
 	{ name => 'interpolation', type => 'enum GimpInterpolationType',
-	  desc => 'Type of interpolation: %%desc%%' },
+	  desc => 'Type of interpolation' },
 	{ name => 'supersample', type => 'boolean',
 	  desc => 'Whether to perform supersample' },
 	{ name => 'recursion_level', type => '1 <= int32',
@@ -344,10 +358,8 @@ HELP
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_perspective (&matrix,
                                          x, y, width, height,
-                                         x0, y0,
-                                         x1, y1,
-                                         x2, y2,
-                                         x3, y3);
+                                         x0, y0, x1, y1,
+                                         x2, y2, x3, y3);
 CODE
 }
 
@@ -407,10 +419,8 @@ HELP
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_perspective (&matrix,
                                          x, y, width, height,
-                                         x0, y0,
-                                         x1, y1,
-                                         x2, y2,
-                                         x3, y3);
+                                         x0, y0, x1, y1,
+                                         x2, y2, x3, y3);
 CODE
 }
 
@@ -436,7 +446,7 @@ HELP
 	{ name => 'drawable', type => 'drawable',
 	  desc => 'The affected drawable' },
         { name => 'rotate_type', type => 'enum GimpRotationType',
-          desc => 'Type of rotation: %%desc%%' },
+          desc => 'Type of rotation' },
         { name => 'auto_center', type => 'boolean',
           desc => 'Whether to automatically rotate around the selection center' },
         { name => 'center_x', type => 'int32',
@@ -474,7 +484,8 @@ CODE
 
 sub drawable_transform_rotate {
     $blurb = <<'BLURB';
-Rotate the specified drawable about given coordinates through the specified angle.
+Rotate the specified drawable about given coordinates through the
+specified angle.
 BLURB
 
     $help = <<'HELP';
@@ -501,9 +512,9 @@ HELP
         { name => 'center_y', type => 'int32',
           desc => 'The vert. coordinate of the center of rotation' },
 	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
-	  desc => 'Direction of Transformation: %%desc%%' },
+	  desc => 'Direction of transformation' },
 	{ name => 'interpolation', type => 'enum GimpInterpolationType',
-	  desc => 'Type of interpolation: %%desc%%' },
+	  desc => 'Type of interpolation' },
 	{ name => 'supersample', type => 'boolean',
 	  desc => 'Whether to perform supersample' },
 	{ name => 'recursion_level', type => '1 <= int32',
@@ -520,7 +531,8 @@ HELP
     transform_invoke ("Rotating", <<CODE);
       gimp_matrix3_identity (&matrix);
       if (auto_center)
-        gimp_transform_matrix_rotate_rect (&matrix, x, y, width, height, angle);
+        gimp_transform_matrix_rotate_rect (&matrix,
+                                           x, y, width, height, angle);
       else
         gimp_transform_matrix_rotate_center (&matrix,
                                              center_x, center_y, angle);
@@ -566,7 +578,8 @@ HELP
     transform_default_invoke ("Rotating", <<CODE);
       gimp_matrix3_identity (&matrix);
       if (auto_center)
-        gimp_transform_matrix_rotate_rect (&matrix, x, y, width, height, angle);
+        gimp_transform_matrix_rotate_rect (&matrix,
+                                           x, y, width, height, angle);
       else
         gimp_transform_matrix_rotate_center (&matrix,
                                              center_x, center_y, angle);
@@ -605,9 +618,9 @@ HELP
 	  desc => 'The new y coordinate of the lower-right corner of the
 		    scaled region' },
 	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
-	  desc => 'Direction of Transformation: %%desc%%' },
+	  desc => 'Direction of transformation' },
 	{ name => 'interpolation', type => 'enum GimpInterpolationType',
-	  desc => 'Type of interpolation: %%desc%%' },
+	  desc => 'Type of interpolation' },
 	{ name => 'supersample', type => 'boolean',
 	  desc => 'Whether to perform supersample' },
 	{ name => 'recursion_level', type => '1 <= int32',
@@ -625,9 +638,7 @@ HELP
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_scale (&matrix,
                                    x, y, width, height,
-                                   x0, y0,
-                                   x1 - x0,
-                                   y1 - y0);
+                                   x0, y0, x1 - x0, y1 - y0);
 CODE
 }
 
@@ -673,9 +684,7 @@ HELP
       gimp_matrix3_identity (&matrix);
       gimp_transform_matrix_scale (&matrix,
                                    x, y, width, height,
-                                   x0, y0,
-                                   x1 - x0,
-                                   y1 - y0);
+                                   x0, y0, x1 - x0, y1 - y0);
 CODE
 }
 
@@ -705,13 +714,13 @@ HELP
 	  desc => 'The affected drawable' },
         { name => 'shear_type',
 	  type => 'enum GimpOrientationType (no GIMP_ORIENTATION_UNKNOWN)',
-          desc => 'Type of shear: %%desc%%' },
+          desc => 'Type of shear' },
         { name => 'magnitude', type => 'float',
           desc => 'The magnitude of the shear' },
 	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
-	  desc => 'Direction of Transformation: %%desc%%' },
+	  desc => 'Direction of transformation' },
 	{ name => 'interpolation', type => 'enum GimpInterpolationType',
-	  desc => 'Type of interpolation: %%desc%%' },
+	  desc => 'Type of interpolation' },
 	{ name => 'supersample', type => 'boolean',
 	  desc => 'Whether to perform supersample' },
 	{ name => 'recursion_level', type => '1 <= int32',
@@ -752,7 +761,7 @@ HELP
 	  desc => 'The affected drawable' },
         { name => 'shear_type',
 	  type => 'enum GimpOrientationType (no GIMP_ORIENTATION_UNKNOWN)',
-          desc => 'Type of shear: %%desc%%' },
+          desc => 'Type of shear' },
         { name => 'magnitude', type => 'float',
           desc => 'The magnitude of the shear' },
 	{ name => 'interpolate', type => 'boolean',
@@ -814,9 +823,9 @@ HELP
         { name => 'dest_y', type => 'float',
           desc => 'Y coordinate of where the center goes' },
 	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
-	  desc => 'Direction of Transformation: %%desc%%' },
+	  desc => 'Direction of transformation' },
 	{ name => 'interpolation', type => 'enum GimpInterpolationType',
-	  desc => 'Type of interpolation: %%desc%%' },
+	  desc => 'Type of interpolation' },
 	{ name => 'supersample', type => 'boolean',
 	  desc => 'Whether to perform supersample' },
 	{ name => 'recursion_level', type => '1 <= int32',
@@ -931,9 +940,9 @@ HELP
         { name => 'coeff_2_2', type => 'float',
           desc => 'coefficient (2,2) of the transformation matrix' },
 	{ name => 'transform_direction', type => 'enum GimpTransformDirection',
-	  desc => 'Direction of Transformation: %%desc%%' },
+	  desc => 'Direction of transformation' },
 	{ name => 'interpolation', type => 'enum GimpInterpolationType',
-	  desc => 'Type of interpolation: %%desc%%' },
+	  desc => 'Type of interpolation' },
 	{ name => 'supersample', type => 'boolean',
 	  desc => 'Whether to perform supersample' },
 	{ name => 'recursion_level', type => '1 <= int32',

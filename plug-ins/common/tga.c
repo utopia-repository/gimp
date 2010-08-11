@@ -1,7 +1,7 @@
 /* The GIMP -- an image manipulation program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * $Id: tga.c,v 1.59 2005/11/02 17:33:53 neo Exp $
+ * $Id: tga.c,v 1.61 2006/05/19 16:10:07 weskaggs Exp $
  * TrueVision Targa loading and saving file filter for the Gimp.
  * Targa code Copyright (C) 1997 Raphael FRANCOIS and Gordon Matzigkeit
  *
@@ -186,7 +186,7 @@ static gint32    ReadImage     (FILE             *fp,
                                 const gchar      *filename);
 
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,  /* init_proc  */
   NULL,  /* quit_proc  */
@@ -200,19 +200,19 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef load_args[] =
+  static const GimpParamDef load_args[] =
   {
     { GIMP_PDB_INT32,  "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
 
-  static GimpParamDef load_return_vals[] =
+  static const GimpParamDef load_return_vals[] =
   {
     { GIMP_PDB_IMAGE, "image", "Output image" }
   };
 
-  static GimpParamDef save_args[] =
+  static const GimpParamDef save_args[] =
   {
     { GIMP_PDB_INT32,    "run_mode",     "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",        "Input image"                  },
@@ -504,6 +504,10 @@ load_image (const gchar *filename)
   info.alphaBits = header[17] & 0x0f; /* Just the low 4 bits */
   info.flipHoriz = (header[17] & 0x10) ? 1 : 0;
   info.flipVert  = (header[17] & 0x20) ? 0 : 1;
+
+  /* hack to handle some existing files with incorrect headers, see bug #306675 */
+  if (info.alphaBits == info.bpp)
+    info.alphaBits = 0;
 
   switch (info.imageType)
     {

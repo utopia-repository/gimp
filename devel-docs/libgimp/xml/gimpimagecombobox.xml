@@ -4,16 +4,19 @@
 
 <refentry id="GimpImageComboBox">
 <refmeta>
-<refentrytitle>gimpimagecombobox</refentrytitle>
+<refentrytitle id="top_of_page">gimpimagecombobox</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpimagecombobox</refname><refpurpose>A widget providing a popup menu of images.</refpurpose>
+<refname>gimpimagecombobox</refname>
+<refpurpose>A widget providing a popup menu of images.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -28,8 +31,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -47,8 +50,8 @@
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpImageComboBox implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>,  <link linkend="GtkCellLayout">GtkCellLayout</link> and  <link linkend="GtkCellEditable">GtkCellEditable</link>.</para>
@@ -59,23 +62,23 @@ GimpImageComboBox implements
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 A widget providing a popup menu of images.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpImageComboBox-struct"/>GimpImageComboBox</title>
+<title><anchor id="GimpImageComboBox-struct" role="struct"/>GimpImageComboBox</title>
 <indexterm><primary>GimpImageComboBox</primary></indexterm><programlisting>typedef struct _GimpImageComboBox GimpImageComboBox;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpImageConstraintFunc"/>GimpImageConstraintFunc ()</title>
+<title><anchor id="GimpImageConstraintFunc" role="function"/>GimpImageConstraintFunc ()</title>
 <indexterm><primary>GimpImageConstraintFunc</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    (*GimpImageConstraintFunc)      (<link linkend="gint32">gint32</link> image_id,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -93,13 +96,13 @@ A widget providing a popup menu of images.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-image-combo-box-new"/>gimp_image_combo_box_new ()</title>
+<title><anchor id="gimp-image-combo-box-new" role="function" condition="since:GIMP 2.2"/>gimp_image_combo_box_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_image_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_image_combo_box_new        (<link linkend="GimpImageConstraintFunc">GimpImageConstraintFunc</link> constraint,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
 Creates a new <link linkend="GimpIntComboBox"><type>GimpIntComboBox</type></link> filled with all currently opened
 images. If a <parameter>constraint</parameter> function is specified, it is called for
-each image and only if the function returns <literal>TRUE</literal>, the image is
+each image and only if the function returns <link linkend="TRUE:CAPS"><literal>TRUE</literal></link>, the image is
 added to the combobox.
 </para>
 <para>
@@ -111,7 +114,7 @@ the selected image.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>constraint</parameter>&nbsp;:</term>
-<listitem><simpara> a <link linkend="GimpImageConstraintFunc"><type>GimpImageConstraintFunc</type></link> or <literal>NULL</literal>
+<listitem><simpara> a <link linkend="GimpImageConstraintFunc"><type>GimpImageConstraintFunc</type></link> or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>       a pointer that is passed to <parameter>constraint</parameter>

@@ -33,10 +33,9 @@
 #include "core/gimpimage.h"
 #include "core/gimpparamspecs.h"
 
-#include "pdb/gimp-pdb.h"
 #include "pdb/gimppluginprocedure.h"
 
-#include "plug-in/plug-ins.h"
+#include "plug-in/gimppluginmanager.h"
 
 #include "xcf.h"
 #include "xcf-private.h"
@@ -175,13 +174,13 @@ xcf_init (Gimp *gimp)
                                gimp_param_spec_image_id ("image",
                                                          "Image",
                                                          "Input image",
-                                                         gimp,
+                                                         gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_drawable_id ("drawable",
                                                             "Drawable",
                                                             "Active drawable of input image",
-                                                            gimp,
+                                                            gimp, TRUE,
                                                             GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("filename",
@@ -200,7 +199,7 @@ xcf_init (Gimp *gimp)
                                                        "file, in UTF-8",
                                                        FALSE, FALSE, NULL,
                                                        GIMP_PARAM_READWRITE));
-  plug_ins_procedure_add (gimp, proc);
+  gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, proc);
   g_object_unref (procedure);
 
   /*  gimp-xcf-load  */
@@ -259,9 +258,9 @@ xcf_init (Gimp *gimp)
                                    gimp_param_spec_image_id ("image",
                                                              "Image",
                                                              "Output image",
-                                                             gimp,
+                                                             gimp, FALSE,
                                                              GIMP_PARAM_READWRITE));
-  plug_ins_procedure_add (gimp, proc);
+  gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, proc);
   g_object_unref (procedure);
 }
 

@@ -9,27 +9,27 @@
 
 /* enumerations from "./plug-in-enums.h" */
 GType
-plug_in_image_type_get_type (void)
+gimp_plug_in_image_type_get_type (void)
 {
   static const GFlagsValue values[] =
   {
-    { PLUG_IN_RGB_IMAGE, "PLUG_IN_RGB_IMAGE", "rgb-image" },
-    { PLUG_IN_GRAY_IMAGE, "PLUG_IN_GRAY_IMAGE", "gray-image" },
-    { PLUG_IN_INDEXED_IMAGE, "PLUG_IN_INDEXED_IMAGE", "indexed-image" },
-    { PLUG_IN_RGBA_IMAGE, "PLUG_IN_RGBA_IMAGE", "rgba-image" },
-    { PLUG_IN_GRAYA_IMAGE, "PLUG_IN_GRAYA_IMAGE", "graya-image" },
-    { PLUG_IN_INDEXEDA_IMAGE, "PLUG_IN_INDEXEDA_IMAGE", "indexeda-image" },
+    { GIMP_PLUG_IN_RGB_IMAGE, "GIMP_PLUG_IN_RGB_IMAGE", "rgb-image" },
+    { GIMP_PLUG_IN_GRAY_IMAGE, "GIMP_PLUG_IN_GRAY_IMAGE", "gray-image" },
+    { GIMP_PLUG_IN_INDEXED_IMAGE, "GIMP_PLUG_IN_INDEXED_IMAGE", "indexed-image" },
+    { GIMP_PLUG_IN_RGBA_IMAGE, "GIMP_PLUG_IN_RGBA_IMAGE", "rgba-image" },
+    { GIMP_PLUG_IN_GRAYA_IMAGE, "GIMP_PLUG_IN_GRAYA_IMAGE", "graya-image" },
+    { GIMP_PLUG_IN_INDEXEDA_IMAGE, "GIMP_PLUG_IN_INDEXEDA_IMAGE", "indexeda-image" },
     { 0, NULL, NULL }
   };
 
   static const GimpFlagsDesc descs[] =
   {
-    { PLUG_IN_RGB_IMAGE, "PLUG_IN_RGB_IMAGE", NULL },
-    { PLUG_IN_GRAY_IMAGE, "PLUG_IN_GRAY_IMAGE", NULL },
-    { PLUG_IN_INDEXED_IMAGE, "PLUG_IN_INDEXED_IMAGE", NULL },
-    { PLUG_IN_RGBA_IMAGE, "PLUG_IN_RGBA_IMAGE", NULL },
-    { PLUG_IN_GRAYA_IMAGE, "PLUG_IN_GRAYA_IMAGE", NULL },
-    { PLUG_IN_INDEXEDA_IMAGE, "PLUG_IN_INDEXEDA_IMAGE", NULL },
+    { GIMP_PLUG_IN_RGB_IMAGE, "GIMP_PLUG_IN_RGB_IMAGE", NULL },
+    { GIMP_PLUG_IN_GRAY_IMAGE, "GIMP_PLUG_IN_GRAY_IMAGE", NULL },
+    { GIMP_PLUG_IN_INDEXED_IMAGE, "GIMP_PLUG_IN_INDEXED_IMAGE", NULL },
+    { GIMP_PLUG_IN_RGBA_IMAGE, "GIMP_PLUG_IN_RGBA_IMAGE", NULL },
+    { GIMP_PLUG_IN_GRAYA_IMAGE, "GIMP_PLUG_IN_GRAYA_IMAGE", NULL },
+    { GIMP_PLUG_IN_INDEXEDA_IMAGE, "GIMP_PLUG_IN_INDEXEDA_IMAGE", NULL },
     { 0, NULL, NULL }
   };
 
@@ -37,8 +37,40 @@ plug_in_image_type_get_type (void)
 
   if (! type)
     {
-      type = g_flags_register_static ("PlugInImageType", values);
+      type = g_flags_register_static ("GimpPlugInImageType", values);
       gimp_flags_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
+GType
+gimp_plug_in_call_mode_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_PLUG_IN_CALL_NONE, "GIMP_PLUG_IN_CALL_NONE", "none" },
+    { GIMP_PLUG_IN_CALL_RUN, "GIMP_PLUG_IN_CALL_RUN", "run" },
+    { GIMP_PLUG_IN_CALL_QUERY, "GIMP_PLUG_IN_CALL_QUERY", "query" },
+    { GIMP_PLUG_IN_CALL_INIT, "GIMP_PLUG_IN_CALL_INIT", "init" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_PLUG_IN_CALL_NONE, "GIMP_PLUG_IN_CALL_NONE", NULL },
+    { GIMP_PLUG_IN_CALL_RUN, "GIMP_PLUG_IN_CALL_RUN", NULL },
+    { GIMP_PLUG_IN_CALL_QUERY, "GIMP_PLUG_IN_CALL_QUERY", NULL },
+    { GIMP_PLUG_IN_CALL_INIT, "GIMP_PLUG_IN_CALL_INIT", NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (! type)
+    {
+      type = g_enum_register_static ("GimpPlugInCallMode", values);
+      gimp_enum_set_value_descriptions (type, descs);
     }
 
   return type;

@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
@@ -61,7 +63,7 @@ static void   gimp_scale_tool_size_notify   (GtkWidget          *box,
                                              GimpTransformTool  *tr_tool);
 
 
-G_DEFINE_TYPE (GimpScaleTool, gimp_scale_tool, GIMP_TYPE_TRANSFORM_TOOL);
+G_DEFINE_TYPE (GimpScaleTool, gimp_scale_tool, GIMP_TYPE_TRANSFORM_TOOL)
 
 #define parent_class gimp_scale_tool_parent_class
 
@@ -110,11 +112,61 @@ gimp_scale_tool_init (GimpScaleTool *scale_tool)
 static void
 gimp_scale_tool_dialog (GimpTransformTool *tr_tool)
 {
-  GimpScaleTool *scale = GIMP_SCALE_TOOL (tr_tool);
+}
 
-  scale->box = g_object_new (GIMP_TYPE_SIZE_BOX,
-                             "keep-aspect", FALSE,
-                             NULL);
+static void
+gimp_scale_tool_dialog_update (GimpTransformTool *tr_tool)
+{
+  GimpTransformOptions *options;
+
+  gint width  = ROUND (tr_tool->trans_info[X1] - tr_tool->trans_info[X0]);
+  gint height = ROUND (tr_tool->trans_info[Y1] - tr_tool->trans_info[Y0]);
+
+  options =
+    GIMP_TRANSFORM_OPTIONS (GIMP_TOOL (tr_tool)->tool_info->tool_options);
+
+  g_object_set (GIMP_SCALE_TOOL (tr_tool)->box,
+                "width",       width,
+                "height",      height,
+                "keep-aspect", options->constrain,
+                NULL);
+}
+
+static void
+gimp_scale_tool_prepare (GimpTransformTool *tr_tool,
+                         GimpDisplay       *display)
+{
+  GimpScaleTool        *scale = GIMP_SCALE_TOOL (tr_tool);
+  GimpTransformOptions *options;
+
+  options = GIMP_TRANSFORM_OPTIONS (GIMP_TOOL (scale)->tool_info->tool_options);
+
+  tr_tool->trans_info[X0] = (gdouble) tr_tool->x1;
+  tr_tool->trans_info[Y0] = (gdouble) tr_tool->y1;
+  tr_tool->trans_info[X1] = (gdouble) tr_tool->x2;
+  tr_tool->trans_info[Y1] = (gdouble) tr_tool->y2;
+
+  if (scale->box)
+    {
+      g_signal_handlers_disconnect_by_func (scale->box,
+                                            gimp_scale_tool_size_notify,
+                                            tr_tool);
+      gtk_widget_destroy (scale->box);
+    }
+
+  /*  Need to create a new GimpSizeBox widget because the initial
+   *  width and height is what counts as 100%.
+   */
+  scale->box =
+    g_object_new (GIMP_TYPE_SIZE_BOX,
+                  "width",       tr_tool->x2 - tr_tool->x1,
+                  "height",      tr_tool->y2 - tr_tool->y1,
+                  "keep-aspect", options->constrain,
+                  "unit",        GIMP_DISPLAY_SHELL (display->shell)->unit,
+                  "xresolution", display->image->xresolution,
+                  "yresolution", display->image->yresolution,
+                  NULL);
+
   gtk_container_set_border_width (GTK_CONTAINER (scale->box), 6);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (tr_tool->dialog)->vbox), scale->box,
                       FALSE, FALSE, 0);
@@ -123,40 +175,6 @@ gimp_scale_tool_dialog (GimpTransformTool *tr_tool)
   g_signal_connect (scale->box, "notify",
                     G_CALLBACK (gimp_scale_tool_size_notify),
                     tr_tool);
-}
-
-static void
-gimp_scale_tool_dialog_update (GimpTransformTool *tr_tool)
-{
-  gint width  = (gint) tr_tool->trans_info[X1] - (gint) tr_tool->trans_info[X0];
-  gint height = (gint) tr_tool->trans_info[Y1] - (gint) tr_tool->trans_info[Y0];
-
-  g_object_set (GIMP_SCALE_TOOL (tr_tool)->box,
-                "width",  width,
-                "height", height,
-                NULL);
-
-  gtk_widget_show (tr_tool->dialog);
-}
-
-static void
-gimp_scale_tool_prepare (GimpTransformTool *tr_tool,
-                         GimpDisplay       *display)
-{
-  GimpScaleTool *scale = GIMP_SCALE_TOOL (tr_tool);
-
-  tr_tool->trans_info[X0] = (gdouble) tr_tool->x1;
-  tr_tool->trans_info[Y0] = (gdouble) tr_tool->y1;
-  tr_tool->trans_info[X1] = (gdouble) tr_tool->x2;
-  tr_tool->trans_info[Y1] = (gdouble) tr_tool->y2;
-
-  g_object_set (scale->box,
-                "width",       tr_tool->x2 - tr_tool->x1,
-                "height",      tr_tool->y2 - tr_tool->y1,
-                "unit",        GIMP_DISPLAY_SHELL (display->shell)->unit,
-                "xresolution", display->image->xresolution,
-                "yresolution", display->image->yresolution,
-                NULL);
 }
 
 static void
@@ -230,18 +248,8 @@ gimp_scale_tool_motion (GimpTransformTool *tr_tool,
       return;
     }
 
-  /*  if just the mod1 key is down, affect only the height  */
-  if (options->constrain_2 && ! options->constrain_1)
-    {
-      diff_x = 0;
-    }
-  /*  if just the control key is down, affect only the width  */
-  else if (options->constrain_1 && ! options->constrain_2)
-    {
-      diff_y = 0;
-    }
-  /*  if control and mod1 are both down, constrain the aspect ratio  */
-  else if (options->constrain_1 && options->constrain_2)
+  /*  if control is being held, constrain the aspect ratio  */
+  if (options->constrain)
     {
       mag = hypot ((gdouble) (tr_tool->x2 - tr_tool->x1),
                    (gdouble) (tr_tool->y2 - tr_tool->y1));
@@ -303,26 +311,54 @@ gimp_scale_tool_size_notify (GtkWidget         *box,
                              GParamSpec        *pspec,
                              GimpTransformTool *tr_tool)
 {
-  gint width;
-  gint height;
+  GimpTransformOptions *options;
 
-  g_object_get (box,
-                "width",  &width,
-                "height", &height,
-                NULL);
+  options =
+    GIMP_TRANSFORM_OPTIONS (GIMP_TOOL (tr_tool)->tool_info->tool_options);
 
-  if ((width  != (tr_tool->trans_info[X1] - tr_tool->trans_info[X0])) ||
-      (height != (tr_tool->trans_info[Y1] - tr_tool->trans_info[Y0])))
+  if (! strcmp (pspec->name, "width") ||
+      ! strcmp (pspec->name, "height"))
     {
-      gimp_draw_tool_pause (GIMP_DRAW_TOOL (tr_tool));
+      gint width;
+      gint height;
+      gint old_width;
+      gint old_height;
 
-      tr_tool->trans_info[X1] = tr_tool->trans_info[X0] + width;
-      tr_tool->trans_info[Y1] = tr_tool->trans_info[Y0] + height;
+      g_object_get (box,
+                    "width",  &width,
+                    "height", &height,
+                    NULL);
 
-      gimp_transform_tool_recalc (tr_tool, GIMP_TOOL (tr_tool)->display);
+      old_width  = ROUND (tr_tool->trans_info[X1] - tr_tool->trans_info[X0]);
+      old_height = ROUND (tr_tool->trans_info[Y1] - tr_tool->trans_info[Y0]);
 
-      gimp_transform_tool_expose_preview (tr_tool);
+      if ((width != old_width) || (height != old_height))
+        {
+          gimp_draw_tool_pause (GIMP_DRAW_TOOL (tr_tool));
 
-      gimp_draw_tool_resume (GIMP_DRAW_TOOL (tr_tool));
+          tr_tool->trans_info[X1] = tr_tool->trans_info[X0] + width;
+          tr_tool->trans_info[Y1] = tr_tool->trans_info[Y0] + height;
+
+          gimp_transform_tool_recalc (tr_tool, GIMP_TOOL (tr_tool)->display);
+
+          gimp_transform_tool_expose_preview (tr_tool);
+
+          gimp_draw_tool_resume (GIMP_DRAW_TOOL (tr_tool));
+        }
+    }
+  else if (! strcmp (pspec->name, "keep-aspect"))
+    {
+      gboolean constrain;
+
+      g_object_get (box,
+                    "keep-aspect", &constrain,
+                    NULL);
+
+      if (constrain != options->constrain)
+        {
+          g_object_set (options,
+                        "constrain", constrain,
+                        NULL);
+        }
     }
 }

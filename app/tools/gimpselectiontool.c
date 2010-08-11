@@ -60,7 +60,7 @@ static void   gimp_selection_tool_cursor_update (GimpTool        *tool,
                                                  GimpDisplay     *display);
 
 
-G_DEFINE_TYPE (GimpSelectionTool, gimp_selection_tool, GIMP_TYPE_DRAW_TOOL);
+G_DEFINE_TYPE (GimpSelectionTool, gimp_selection_tool, GIMP_TYPE_DRAW_TOOL)
 
 #define parent_class gimp_selection_tool_parent_class
 
@@ -80,8 +80,10 @@ gimp_selection_tool_class_init (GimpSelectionToolClass *klass)
 static void
 gimp_selection_tool_init (GimpSelectionTool *selection_tool)
 {
-  selection_tool->op       = SELECTION_REPLACE;
-  selection_tool->saved_op = SELECTION_REPLACE;
+  selection_tool->op         = SELECTION_REPLACE;
+  selection_tool->saved_op   = SELECTION_REPLACE;
+
+  selection_tool->allow_move = TRUE;
 }
 
 static void
@@ -89,8 +91,16 @@ gimp_selection_tool_control (GimpTool       *tool,
                              GimpToolAction  action,
                              GimpDisplay    *display)
 {
-  if (action == HALT)
-    gimp_tool_pop_status (tool, display);
+  switch (action)
+    {
+    case GIMP_TOOL_ACTION_PAUSE:
+    case GIMP_TOOL_ACTION_RESUME:
+      break;
+
+    case GIMP_TOOL_ACTION_HALT:
+      gimp_tool_pop_status (tool, display);
+      break;
+    }
 
   GIMP_TOOL_CLASS (parent_class)->control (tool, action, display);
 }
@@ -186,16 +196,24 @@ gimp_selection_tool_oper_update (GimpTool        *tool,
         }
     }
 
-  if ((state & GDK_MOD1_MASK) && (state & GDK_CONTROL_MASK) && move_layer)
+  if (selection_tool->allow_move &&
+      (state & GDK_MOD1_MASK) && (state & GDK_CONTROL_MASK) && move_layer)
+    {
+      selection_tool->op = SELECTION_MOVE;      /* move the selection */
+    }
+  else if (selection_tool->allow_move &&
+           (state & GDK_MOD1_MASK) && (state & GDK_SHIFT_MASK) && move_layer)
     {
       selection_tool->op = SELECTION_MOVE_COPY; /* move a copy of the selection */
     }
-  else if ((state & GDK_MOD1_MASK) && ! gimp_channel_is_empty (selection))
+  else if (selection_tool->allow_move &&
+           (state & GDK_MOD1_MASK) && ! gimp_channel_is_empty (selection))
     {
       selection_tool->op = SELECTION_MOVE_MASK; /* move the selection mask */
     }
-  else if (! (state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK)) &&
-           (move_layer || move_floating_sel))
+  else if (selection_tool->allow_move &&
+           ! (state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK)) &&
+           move_floating_sel)
     {
       selection_tool->op = SELECTION_MOVE;      /* move the selection */
     }
@@ -265,37 +283,50 @@ gimp_selection_tool_cursor_update (GimpTool        *tool,
 {
   GimpSelectionTool  *selection_tool = GIMP_SELECTION_TOOL (tool);
   GimpToolCursorType  tool_cursor;
-  GimpCursorModifier  cmodifier;
+  GimpCursorModifier  modifier;
 
   tool_cursor = gimp_tool_control_get_tool_cursor (tool->control);
-  cmodifier   = GIMP_CURSOR_MODIFIER_NONE;
+  modifier    = GIMP_CURSOR_MODIFIER_NONE;
 
   switch (selection_tool->op)
     {
     case SELECTION_ADD:
-      cmodifier = GIMP_CURSOR_MODIFIER_PLUS;
+      modifier = GIMP_CURSOR_MODIFIER_PLUS;
       break;
     case SELECTION_SUBTRACT:
-      cmodifier = GIMP_CURSOR_MODIFIER_MINUS;
+      modifier = GIMP_CURSOR_MODIFIER_MINUS;
       break;
     case SELECTION_INTERSECT:
-      cmodifier = GIMP_CURSOR_MODIFIER_INTERSECT;
+      modifier = GIMP_CURSOR_MODIFIER_INTERSECT;
       break;
     case SELECTION_REPLACE:
       break;
     case SELECTION_MOVE_MASK:
-      cmodifier = GIMP_CURSOR_MODIFIER_MOVE;
+      modifier = GIMP_CURSOR_MODIFIER_MOVE;
       break;
     case SELECTION_MOVE:
     case SELECTION_MOVE_COPY:
       tool_cursor = GIMP_TOOL_CURSOR_MOVE;
       break;
     case SELECTION_ANCHOR:
-      cmodifier = GIMP_CURSOR_MODIFIER_ANCHOR;
+      modifier = GIMP_CURSOR_MODIFIER_ANCHOR;
       break;
     }
 
-  gimp_tool_set_cursor (tool, display, GIMP_CURSOR_MOUSE, tool_cursor, cmodifier);
+  /*  we don't set the bad modifier ourselves, so a subclass has set
+   *  it, always leave it there since it's more important than what we
+   *  have to say.
+   */
+  if (gimp_tool_control_get_cursor_modifier (tool->control) ==
+      GIMP_CURSOR_MODIFIER_BAD)
+    {
+      modifier = GIMP_CURSOR_MODIFIER_BAD;
+    }
+
+  gimp_tool_set_cursor (tool, display,
+                        gimp_tool_control_get_cursor (tool->control),
+                        tool_cursor,
+                        modifier);
 }
 
 

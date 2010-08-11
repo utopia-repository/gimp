@@ -232,7 +232,7 @@ GimpImage     * gimp_image_new                   (Gimp               *gimp,
                                                   GimpImageBaseType   base_type);
 
 GimpImageBaseType  gimp_image_base_type            (const GimpImage  *image);
-GimpImageType           gimp_image_base_type_with_alpha (const GimpImage  *image);
+GimpImageType      gimp_image_base_type_with_alpha (const GimpImage  *image);
 CombinationMode    gimp_image_get_combination_mode (GimpImageType     dest_type,
                                                     gint              src_bytes);
 
@@ -265,8 +265,8 @@ void            gimp_image_set_unit              (GimpImage          *image,
 GimpUnit        gimp_image_get_unit              (const GimpImage    *image);
 void            gimp_image_unit_changed          (GimpImage          *image);
 
-gint                gimp_image_get_width             (const GimpImage    *image);
-gint                gimp_image_get_height            (const GimpImage    *image);
+gint            gimp_image_get_width             (const GimpImage    *image);
+gint            gimp_image_get_height            (const GimpImage    *image);
 
 gboolean        gimp_image_has_alpha             (const GimpImage    *image);
 gboolean        gimp_image_is_empty              (const GimpImage    *image);
@@ -307,7 +307,7 @@ void            gimp_image_sample_point_added    (GimpImage          *image,
                                                   GimpSamplePoint    *sample_point);
 void            gimp_image_sample_point_removed  (GimpImage          *image,
                                                   GimpSamplePoint    *sample_point);
-void                gimp_image_colormap_changed      (GimpImage          *image,
+void            gimp_image_colormap_changed      (GimpImage          *image,
                                                   gint                col);
 void            gimp_image_selection_control     (GimpImage          *image,
                                                   GimpSelectionControl  control);
@@ -321,7 +321,7 @@ gboolean        gimp_image_undo_enable           (GimpImage          *image);
 gboolean        gimp_image_undo_disable          (GimpImage          *image);
 gboolean        gimp_image_undo_freeze           (GimpImage          *image);
 gboolean        gimp_image_undo_thaw             (GimpImage          *image);
-void                gimp_image_undo_event            (GimpImage          *image,
+void            gimp_image_undo_event            (GimpImage          *image,
                                                   GimpUndoEvent       event,
                                                   GimpUndo           *undo);
 gint            gimp_image_dirty                 (GimpImage          *image,
@@ -504,8 +504,10 @@ gboolean        gimp_image_layer_boundary        (const GimpImage    *image,
 GimpLayer     * gimp_image_pick_correlate_layer  (const GimpImage    *image,
                                                   gint                x,
                                                   gint                y);
-gboolean    gimp_image_coords_in_active_drawable (GimpImage          *image,
-                                                  const GimpCoords   *coords);
+gboolean    gimp_image_coords_in_active_pickable (GimpImage          *image,
+                                                  const GimpCoords   *coords,
+                                                  gboolean            sample_merged,
+                                                  gboolean            selected_only);
 
 void        gimp_image_invalidate_layer_previews (GimpImage          *image);
 void      gimp_image_invalidate_channel_previews (GimpImage          *image);

@@ -61,6 +61,8 @@
 #include "gimptemplate.h"
 #include "gimpundostack.h"
 
+#include "plug-in/gimppluginmanager.h"
+
 #include "file/file-utils.h"
 
 #include "vectors/gimpvectors.h"
@@ -196,7 +198,7 @@ static const gint valid_combinations[][MAX_CHANNELS + 1] =
 };
 
 
-G_DEFINE_TYPE (GimpImage, gimp_image, GIMP_TYPE_VIEWABLE);
+G_DEFINE_TYPE (GimpImage, gimp_image, GIMP_TYPE_VIEWABLE)
 
 #define parent_class gimp_image_parent_class
 
@@ -639,7 +641,15 @@ gimp_image_constructor (GType                  type,
 
   config = image->gimp->config;
 
-  image->ID = image->gimp->next_image_ID++;
+  do
+    {
+      image->ID = image->gimp->next_image_ID++;
+
+      if (image->gimp->next_image_ID == G_MAXINT)
+        image->gimp->next_image_ID = 1;
+    }
+  while (g_hash_table_lookup (image->gimp->image_table,
+                              GINT_TO_POINTER (image->ID)));
 
   g_hash_table_insert (image->gimp->image_table,
                        GINT_TO_POINTER (image->ID),
@@ -685,6 +695,8 @@ gimp_image_constructor (GType                  type,
   g_signal_connect_object (config, "notify::layer-previews",
                            G_CALLBACK (gimp_viewable_size_changed),
                            image, G_CONNECT_SWAPPED);
+
+  gimp_container_add (image->gimp->images, GIMP_OBJECT (image));
 
   return object;
 }
@@ -1326,8 +1338,8 @@ gimp_image_set_filename (GimpImage   *image,
     {
       gchar *uri;
 
-      uri = file_utils_filename_to_uri (image->gimp->load_procs, filename,
-                                        NULL);
+      uri = file_utils_filename_to_uri (image->gimp->plug_in_manager->load_procs,
+                                        filename, NULL);
 
       gimp_image_set_uri (image, uri);
 
@@ -1557,7 +1569,21 @@ gimp_image_set_component_active (GimpImage       *image,
 
   if (index != -1 && active != image->active[index])
     {
+      GimpLayer *floating_sel = gimp_image_floating_sel (image);
+
+      if (floating_sel)
+        floating_sel_relax (floating_sel, FALSE);
+
       image->active[index] = active ? TRUE : FALSE;
+
+      if (floating_sel)
+        {
+          floating_sel_rigor (floating_sel, FALSE);
+          gimp_drawable_update (GIMP_DRAWABLE (floating_sel),
+                                0, 0,
+                                GIMP_ITEM (floating_sel)->width,
+                                GIMP_ITEM (floating_sel)->height);
+        }
 
       /*  If there is an active channel and we mess with the components,
        *  the active channel gets unset...
@@ -3537,35 +3563,59 @@ gimp_image_pick_correlate_layer (const GimpImage *image,
 }
 
 gboolean
-gimp_image_coords_in_active_drawable (GimpImage        *image,
-                                      const GimpCoords *coords)
+gimp_image_coords_in_active_pickable (GimpImage        *image,
+                                      const GimpCoords *coords,
+                                      gboolean          sample_merged,
+                                      gboolean          selected_only)
 {
-  GimpDrawable *drawable;
+  gint     x, y;
+  gboolean in_pickable = FALSE;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
 
-  drawable = gimp_image_active_drawable (image);
+  x = floor (coords->x);
+  y = floor (coords->y);
 
-  if (drawable)
+  if (sample_merged)
     {
-      GimpItem *item = GIMP_ITEM (drawable);
-      gint      x, y;
+      if (x >= 0 && x < image->width &&
+          y >= 0 && y < image->height)
+        in_pickable = TRUE;
+    }
+  else
+    {
+      GimpDrawable *drawable = gimp_image_active_drawable (image);
 
-      gimp_item_offsets (item, &x, &y);
+      if (drawable)
+        {
+          GimpItem *item = GIMP_ITEM (drawable);
+          gint      off_x, off_y;
+          gint      d_x, d_y;
 
-      x = ROUND (coords->x) - x;
-      y = ROUND (coords->y) - y;
+          gimp_item_offsets (item, &off_x, &off_y);
 
-      if (x < 0 || x > gimp_item_width (item))
-        return FALSE;
+          d_x = x - off_x;
+          d_y = y - off_y;
 
-      if (y < 0 || y > gimp_item_height (item))
-        return FALSE;
-
-      return TRUE;
+          if (d_x >= 0 && d_x < gimp_item_width (item) &&
+              d_y >= 0 && d_y < gimp_item_height (item))
+            in_pickable = TRUE;
+        }
     }
 
-  return FALSE;
+  if (in_pickable && selected_only)
+    {
+      GimpChannel *selection = gimp_image_get_mask (image);
+
+      if (! gimp_channel_is_empty (selection) &&
+          ! gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
+                                          x, y))
+        {
+          in_pickable = FALSE;
+        }
+    }
+
+  return in_pickable;
 }
 
 void

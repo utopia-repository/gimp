@@ -124,7 +124,7 @@ static gboolean          load_dialog       (gchar             *name);
 static gboolean          save_dialog       (gchar             *filename,
                                             gint32             image_id,
                                             gint32             drawable_id);
-static void              palette_callback  (GimpFileEntry     *file_entry,
+static void              palette_callback  (GtkFileChooser    *button,
                                             GimpPreviewArea   *preview);
 
 
@@ -135,7 +135,7 @@ static guchar     preview_cmap[1024];
 static gboolean   preview_cmap_update = TRUE;
 
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,   /* init_proc  */
   NULL,   /* quit_proc  */
@@ -148,19 +148,19 @@ MAIN()
 static void
 query (void)
 {
-  static GimpParamDef load_args[] =
+  static const GimpParamDef load_args[] =
   {
     { GIMP_PDB_INT32,  "run-mode",     "Interactive"                  },
     { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING, "raw-filename", "The name entered"             }
   };
 
-  static GimpParamDef load_return_vals[] =
+  static const GimpParamDef load_return_vals[] =
   {
     { GIMP_PDB_IMAGE, "image", "Output image" }
   };
 
-  static GimpParamDef save_args[] =
+  static const GimpParamDef save_args[] =
   {
     { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",        "Input image"                  },
@@ -913,8 +913,8 @@ load_dialog (gchar *filename)
   GtkWidget *table;
   GtkWidget *frame;
   GtkWidget *combo;
+  GtkWidget *button;
   GtkObject *adj;
-  GtkWidget *entry;
   gint32     size;
   gboolean   run;
 
@@ -1062,13 +1062,16 @@ load_dialog (gchar *filename)
                             G_CALLBACK (palette_update),
                             preview);
 
-  entry = gimp_file_entry_new (_("Select Palette File to Load"),
-                               palfile, FALSE, TRUE);
+  button = gtk_file_chooser_button_new (_("Select Palette File"),
+                                        GTK_FILE_CHOOSER_ACTION_OPEN);
+  if (palfile)
+    gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (button), palfile);
+
   gimp_table_attach_aligned (GTK_TABLE (table), 0, 2,
                              _("Pal_ette File:"), 0.0, 0.5,
-                             entry, 2, FALSE);
+                             button, 2, FALSE);
 
-  g_signal_connect (entry, "filename-changed",
+  g_signal_connect (button, "selection-changed",
                     G_CALLBACK (palette_callback),
                     preview);
 
@@ -1147,13 +1150,13 @@ save_dialog (gchar * filename,
 }
 
 static void
-palette_callback (GimpFileEntry   *file_entry,
+palette_callback (GtkFileChooser  *button,
                   GimpPreviewArea *preview)
 {
   if (palfile)
     g_free (palfile);
 
-  palfile = gimp_file_entry_get_filename (file_entry);
+  palfile = gtk_file_chooser_get_filename (button);
 
   palette_update (preview);
 }

@@ -133,10 +133,10 @@ static gdouble  cubic                    (gdouble         dx,
                                           gint            j,
                                           gint            jp1,
                                           gint            jp2);
-static void     apply_layer_mode_replace (guchar         *src1,
-                                          guchar         *src2,
+static void     apply_layer_mode_replace (const guchar   *src1,
+                                          const guchar   *src2,
                                           guchar         *dest,
-                                          guchar         *mask,
+                                          const guchar   *mask,
                                           gint            x,
                                           gint            y,
                                           guint           opacity,
@@ -609,6 +609,72 @@ combine_indexed_a_and_indexed_a_pixels (const guchar   *src1,
 
           src1 += bytes;
           src2 += bytes;
+          dest += bytes;
+        }
+    }
+}
+
+
+void
+combine_inten_a_and_indexed_pixels (const guchar *src1,
+                                    const guchar *src2,
+                                    guchar       *dest,
+                                    const guchar *mask,
+                                    const guchar *cmap,
+                                    guint         opacity,
+                                    guint         length,
+                                    guint         bytes)
+{
+  gint   b;
+  guchar new_alpha;
+  gint   src2_bytes;
+  gint   index;
+  glong  tmp;
+  const guchar *m;
+
+  src2_bytes = 1;
+
+  if (mask)
+    {
+      m = mask;
+
+      while (length --)
+        {
+          new_alpha = INT_MULT3(255, *m, opacity, tmp);
+
+          index = src2[0] * 3;
+
+          for (b = 0; b < bytes-1; b++)
+            dest[b] = (new_alpha > 127) ? cmap[index + b] : src1[b];
+
+          dest[b] = (new_alpha > 127) ? OPAQUE_OPACITY : src1[b];
+          /*  alpha channel is opaque  */
+
+          m++;
+
+          src1 += bytes;
+          src2 += src2_bytes;
+          dest += bytes;
+        }
+    }
+  else
+    {
+      while (length --)
+        {
+          new_alpha = INT_MULT(255, opacity, tmp);
+
+          index = src2[0] * 3;
+
+          for (b = 0; b < bytes-1; b++)
+            dest[b] = (new_alpha > 127) ? cmap[index + b] : src1[b];
+
+          dest[b] = (new_alpha > 127) ? OPAQUE_OPACITY : src1[b];
+          /*  alpha channel is opaque  */
+
+          /* m++; /Per */
+
+          src1 += bytes;
+          src2 += src2_bytes;
           dest += bytes;
         }
     }
@@ -2386,7 +2452,7 @@ extract_from_region (PixelRegion       *src,
 void
 convolve_region (PixelRegion         *srcR,
                  PixelRegion         *destR,
-                 gfloat              *matrix,
+                 const gfloat        *matrix,
                  gint                 size,
                  gdouble              divisor,
                  GimpConvolutionType  mode,
@@ -2394,20 +2460,20 @@ convolve_region (PixelRegion         *srcR,
 {
   /*  Convolve the src image using the convolution matrix, writing to dest  */
   /*  Convolve is not tile-enabled--use accordingly  */
-  guchar  *src, *s_row, *s;
-  guchar  *dest, *d;
-  gfloat  *m;
-  gdouble  total [4];
-  gint     b, bytes;
-  gint     alpha, a_byte;
-  gint     length;
-  gint     wraparound;
-  gint     margin;      /*  margin imposed by size of conv. matrix  */
-  gint     i, j;
-  gint     x, y;
-  gint     offset;
-  gdouble  matrixsum = 0.0;
-  gdouble  weighted_divisor, mult_alpha;
+  guchar       *src, *s_row, *s;
+  guchar       *dest, *d;
+  const gfloat *m;
+  gdouble       total [4];
+  gint          b, bytes;
+  gint          alpha, a_byte;
+  gint          length;
+  gint          wraparound;
+  gint          margin;      /*  margin imposed by size of conv. matrix  */
+  gint          i, j;
+  gint          x, y;
+  gint          offset;
+  gdouble       matrixsum = 0.0;
+  gdouble       weighted_divisor, mult_alpha;
 
   /*  If the mode is NEGATIVE_CONVOL, the offset should be 128  */
   if (mode == GIMP_NEGATIVE_CONVOL)
@@ -2686,7 +2752,8 @@ gaussian_blur_region (PixelRegion *srcR,
   gint    alpha;
   gint    initial_p, initial_m;
 
-  if (radius_x == 0.0 && radius_y == 0.0) return;    /* zero blur is a no-op */
+  if (radius_x == 0.0 && radius_y == 0.0)
+    return;
 
   /*  allocate the result buffer  */
   length = MAX (srcR->w, srcR->h) * srcR->bytes;
@@ -2705,11 +2772,13 @@ gaussian_blur_region (PixelRegion *srcR,
     {
       std_dev = sqrt (-(radius_y * radius_y) / (2 * log (1.0 / 255.0)));
       curve = make_curve (std_dev, &length);
+
       sum = g_new (gint, 2 * length + 1);
       sum[0] = 0;
 
-      for (i = 1; i <= length*2; i++)
+      for (i = 1; i <= length * 2; i++)
         sum[i] = curve[i - length - 1] + sum[i - 1];
+
       sum += length;
 
       total = sum[length] - sum[-length];
@@ -2765,11 +2834,13 @@ gaussian_blur_region (PixelRegion *srcR,
     {
       std_dev = sqrt (-(radius_x * radius_x) / (2 * log (1.0 / 255.0)));
       curve = make_curve (std_dev, &length);
+
       sum = g_new (gint, 2 * length + 1);
       sum[0] = 0;
 
       for (i = 1; i <= length * 2; i++)
         sum[i] = curve[i - length - 1] + sum[i - 1];
+
       sum += length;
 
       total = sum[length] - sum[-length];
@@ -2801,9 +2872,11 @@ gaussian_blur_region (PixelRegion *srcR,
               while (i < end)
                 {
                   pixels = b[0];
+
                   i += pixels;
                   if (i > end)
                     i = end;
+
                   val += b[1] * (sum[i] - sum[start]);
                   b += (pixels * 2);
                   start = i;
@@ -2925,12 +2998,14 @@ shapeburst_region (PixelRegion      *srcPR,
                   while (boundary--)
                     {
                       src = *tile_data;
+
                       if (src == 0)
                         {
                           min = k;
                           y = -1;
                           break;
                         }
+
                       if (src < fraction)
                         fraction = src;
 
@@ -2951,10 +3026,13 @@ shapeburst_region (PixelRegion      *srcPR,
               if (min_left != min)
                 {
                   prev_frac = (int) (255 * (min_prev - min));
+
                   if (prev_frac == 255)
                     prev_frac = 0;
+
                   fraction = MIN (fraction, prev_frac);
                 }
+
               min++;
             }
 
@@ -2965,7 +3043,9 @@ shapeburst_region (PixelRegion      *srcPR,
         }
 
       /*  set the dist row  */
-      pixel_region_set_row (distPR, distPR->x, distPR->y + i, distPR->w, (guchar *) distp_cur);
+      pixel_region_set_row (distPR,
+                            distPR->x, distPR->y + i, distPR->w,
+                            (guchar *) distp_cur);
 
       /*  swap pointers around  */
       tmp = distp_prev;
@@ -3031,11 +3111,12 @@ fatten_region (PixelRegion *region,
 
   max = g_new (guchar *, region->w + 2 * xradius);
   buf = g_new (guchar *, yradius + 1);
+
   for (i = 0; i < yradius + 1; i++)
-    {
-      buf[i] = g_new (guchar, region->w);
-    }
+    buf[i] = g_new (guchar, region->w);
+
   buffer = g_new (guchar, (region->w + 2 * xradius) * (yradius + 1));
+
   for (i = 0; i < region->w + 2 * xradius; i++)
     {
       if (i < xradius)
@@ -3048,6 +3129,7 @@ fatten_region (PixelRegion *region,
       for (j = 0; j < xradius + 1; j++)
         max[i][j] = 0;
     }
+
   /* offset the max pointer by xradius so the range of the array
      is [-xradius] to [region->w + xradius] */
   max += xradius;
@@ -3062,6 +3144,7 @@ fatten_region (PixelRegion *region,
   circ += xradius;
 
   memset (buf[0], 0, region->w);
+
   for (i = 0; i < yradius && i < region->h; i++) /* load top of image */
     pixel_region_get_row (region,
                           region->x, region->y + i, region->w, buf[i + 1], 1);
@@ -3070,6 +3153,7 @@ fatten_region (PixelRegion *region,
     {
       max[x][0] = 0;         /* buf[0][x] is always 0 */
       max[x][1] = buf[1][x]; /* MAX (buf[1][x], max[x][0]) always = buf[1][x]*/
+
       for (j = 2; j < yradius + 1; j++)
         max[x][j] = MAX(buf[j][x], max[x][j-1]);
     }
@@ -3077,38 +3161,46 @@ fatten_region (PixelRegion *region,
   for (y = 0; y < region->h; y++)
     {
       rotate_pointers (buf, yradius + 1);
+
       if (y < region->h - (yradius))
         pixel_region_get_row (region,
                               region->x, region->y + y + yradius, region->w,
                               buf[yradius], 1);
       else
         memset (buf[yradius], 0, region->w);
+
       for (x = 0; x < region->w; x++) /* update max array */
         {
           for (i = yradius; i > 0; i--)
-            {
-              max[x][i] = MAX (MAX (max[x][i - 1], buf[i - 1][x]), buf[i][x]);
-            }
+            max[x][i] = MAX (MAX (max[x][i - 1], buf[i - 1][x]), buf[i][x]);
+
           max[x][0] = buf[0][x];
         }
+
       last_max = max[0][circ[-1]];
       last_index = 1;
+
       for (x = 0; x < region->w; x++) /* render scan line */
         {
           last_index--;
+
           if (last_index >= 0)
             {
               if (last_max == 255)
-                out[x] = 255;
+                {
+                  out[x] = 255;
+                }
               else
                 {
                   last_max = 0;
+
                   for (i = xradius; i >= 0; i--)
                     if (last_max < max[x + i][circ[i]])
                       {
                         last_max = max[x + i][circ[i]];
                         last_index = i;
                       }
+
                   out[x] = last_max;
                 }
             }
@@ -3116,17 +3208,21 @@ fatten_region (PixelRegion *region,
             {
               last_index = xradius;
               last_max = max[x + xradius][circ[xradius]];
+
               for (i = xradius - 1; i >= -xradius; i--)
                 if (last_max < max[x + i][circ[i]])
                   {
                     last_max = max[x + i][circ[i]];
                     last_index = i;
                   }
+
               out[x] = last_max;
             }
         }
+
       pixel_region_set_row (region, region->x, region->y + y, region->w, out);
     }
+
   /* undo the offsets to the pointers so we can free the malloced memmory */
   circ -= xradius;
   max -= xradius;
@@ -3134,8 +3230,10 @@ fatten_region (PixelRegion *region,
   g_free (circ);
   g_free (buffer);
   g_free (max);
+
   for (i = 0; i < yradius + 1; i++)
     g_free (buf[i]);
+
   g_free (buf);
   g_free (out);
 }
@@ -3168,15 +3266,14 @@ thin_region (PixelRegion *region,
     return;
 
   max = g_new (guchar *, region->w + 2 * xradius);
-
   buf = g_new (guchar *, yradius + 1);
+
   for (i = 0; i < yradius + 1; i++)
-    {
-      buf[i] = g_new (guchar, region->w);
-    }
+    buf[i] = g_new (guchar, region->w);
 
   buffer_size = (region->w + 2 * xradius + 1) * (yradius + 1);
   buffer = g_new (guchar, buffer_size);
+
   if (edge_lock)
     memset(buffer, 255, buffer_size);
   else
@@ -3185,19 +3282,26 @@ thin_region (PixelRegion *region,
   for (i = 0; i < region->w + 2 * xradius; i++)
     {
       if (i < xradius)
-        if (edge_lock)
-          max[i] = buffer;
-        else
-          max[i] = &buffer[(yradius + 1) * (region->w + xradius)];
+        {
+          if (edge_lock)
+            max[i] = buffer;
+          else
+            max[i] = &buffer[(yradius + 1) * (region->w + xradius)];
+        }
       else if (i < region->w + xradius)
-        max[i] = &buffer[(yradius + 1) * (i - xradius)];
+        {
+          max[i] = &buffer[(yradius + 1) * (i - xradius)];
+        }
       else
-        if (edge_lock)
-          max[i] = &buffer[(yradius + 1) * (region->w + xradius - 1)];
-        else
-          max[i] = &buffer[(yradius + 1) * (region->w + xradius)];
+        {
+          if (edge_lock)
+            max[i] = &buffer[(yradius + 1) * (region->w + xradius - 1)];
+          else
+            max[i] = &buffer[(yradius + 1) * (region->w + xradius)];
+        }
     }
-  if (!edge_lock)
+
+  if (! edge_lock)
     for (j = 0 ; j < xradius + 1; j++)
       max[0][j] = 0;
 
@@ -3250,25 +3354,31 @@ thin_region (PixelRegion *region,
             }
           max[x][0] = buf[0][x];
         }
+
       last_max =  max[0][circ[-1]];
       last_index = 0;
 
       for (x = 0 ; x < region->w; x++) /* render scan line */
         {
           last_index--;
+
           if (last_index >= 0)
             {
               if (last_max == 0)
-                out[x] = 0;
+                {
+                  out[x] = 0;
+                }
               else
                 {
                   last_max = 255;
+
                   for (i = xradius; i >= 0; i--)
                     if (last_max > max[x + i][circ[i]])
                       {
                         last_max = max[x + i][circ[i]];
                         last_index = i;
                       }
+
                   out[x] = last_max;
                 }
             }
@@ -3276,27 +3386,33 @@ thin_region (PixelRegion *region,
             {
               last_index = xradius;
               last_max = max[x + xradius][circ[xradius]];
+
               for (i = xradius - 1; i >= -xradius; i--)
                 if (last_max > max[x + i][circ[i]])
                   {
                     last_max = max[x + i][circ[i]];
                     last_index = i;
                   }
+
               out[x] = last_max;
             }
         }
+
       pixel_region_set_row (region, region->x, region->y + y, region->w, out);
     }
 
   /* undo the offsets to the pointers so we can free the malloced memmory */
   circ -= xradius;
   max -= xradius;
+
   /* free the memmory */
   g_free (circ);
   g_free (buffer);
   g_free (max);
+
   for (i = 0; i < yradius + 1; i++)
     g_free (buf[i]);
+
   g_free (buf);
   g_free (out);
 }
@@ -3514,7 +3630,10 @@ compute_transition (guchar  *transition,
         transition[x] = 0;
     }
   else
-    transition[x] = 0;
+    {
+      transition[x] = 0;
+    }
+
   for (x = 1; x < width - 1; x++)
     {
       if (buf[1][x] >= 128)
@@ -3527,8 +3646,11 @@ compute_transition (guchar  *transition,
             transition[x] = 0;
         }
       else
-        transition[x] = 0;
+        {
+          transition[x] = 0;
+        }
     }
+
   if (buf[1][x] >= 128)
     {
       if ( buf[0][x - 1] < 128 || buf[0][x] < 128 ||
@@ -3539,13 +3661,16 @@ compute_transition (guchar  *transition,
         transition[x] = 0;
     }
   else
-    transition[x] = 0;
+    {
+      transition[x] = 0;
+    }
 }
 
 void
 border_region (PixelRegion *src,
                gint16       xradius,
-               gint16       yradius)
+               gint16       yradius,
+               gboolean     feather)
 {
   /*
      This function has no bugs, but if you imagine some you can
@@ -3586,6 +3711,7 @@ border_region (PixelRegion *src,
 
       pixel_region_get_row (src, src->x, src->y + 0, src->w, source[0], 1);
       memcpy (source[1], source[0], src->w);
+
       if (src->h > 1)
         pixel_region_get_row (src, src->x, src->y + 1, src->w, source[2], 1);
       else
@@ -3597,37 +3723,46 @@ border_region (PixelRegion *src,
       for (y = 1; y < src->h; y++)
         {
           rotate_pointers (source, 3);
+
           if (y + 1 < src->h)
             pixel_region_get_row (src, src->x, src->y + y + 1, src->w,
                                   source[2], 1);
           else
             memcpy(source[2], source[1], src->w);
+
           compute_transition (transition, source, src->w);
           pixel_region_set_row (src, src->x, src->y + y, src->w, transition);
         }
 
       for (i = 0; i < 3; i++)
         g_free (source[i]);
+
       g_free (transition);
+
       return;
     }
 
   max = g_new (gint16, src->w + 2 * xradius);
+
   for (i = 0; i < (src->w + 2 * xradius); i++)
     max[i] = yradius + 2;
+
   max += xradius;
 
   for (i = 0; i < 3; i++)
     buf[i] = g_new (guchar, src->w);
 
   transition = g_new (guchar *, yradius + 1);
+
   for (i = 0; i < yradius + 1; i++)
     {
       transition[i] = g_new (guchar, src->w + 2 * xradius);
       memset(transition[i], 0, src->w + 2 * xradius);
       transition[i] += xradius;
     }
+
   out = g_new (guchar, src->w);
+
   density = g_new (guchar *, 2 * xradius + 1);
   density += xradius;
 
@@ -3637,6 +3772,7 @@ border_region (PixelRegion *src,
       density[ x] += yradius;
       density[-x]  = density[x];
     }
+
   for (x = 0; x < (xradius + 1); x++) /* compute density[][] */
     {
       register gdouble tmpx, tmpy, dist;
@@ -3657,24 +3793,37 @@ border_region (PixelRegion *src,
             tmpy = y + 0.5;
           else
             tmpy = 0.0;
+
           dist = ((tmpy * tmpy) / (yradius * yradius) +
                   (tmpx * tmpx) / (xradius * xradius));
+
           if (dist < 1.0)
-            a = 255 * (1.0 - sqrt (dist));
+            {
+              if (feather)
+                a = 255 * (1.0 - sqrt (dist));
+              else
+                a = 255;
+            }
           else
-            a = 0;
+            {
+              a = 0;
+            }
+
           density[ x][ y] = a;
           density[ x][-y] = a;
           density[-x][ y] = a;
           density[-x][-y] = a;
         }
     }
+
   pixel_region_get_row (src, src->x, src->y + 0, src->w, buf[0], 1);
   memcpy (buf[1], buf[0], src->w);
+
   if (src->h > 1)
     pixel_region_get_row (src, src->x, src->y + 1, src->w, buf[2], 1);
   else
     memcpy (buf[2], buf[1], src->w);
+
   compute_transition (transition[1], buf, src->w);
 
   for (y = 1; y < yradius && y + 1 < src->h; y++) /* set up top of image */
@@ -3683,9 +3832,11 @@ border_region (PixelRegion *src,
       pixel_region_get_row (src, src->x, src->y + y + 1, src->w, buf[2], 1);
       compute_transition (transition[y + 1], buf, src->w);
     }
+
   for (x = 0; x < src->w; x++) /* set up max[] for top of image */
     {
       max[x] = -(yradius + 7);
+
       for (j = 1; j < yradius + 1; j++)
         if (transition[j][x])
           {
@@ -3693,10 +3844,12 @@ border_region (PixelRegion *src,
             break;
           }
     }
+
   for (y = 0; y < src->h; y++) /* main calculation loop */
     {
       rotate_pointers (buf, 3);
       rotate_pointers (transition, yradius + 1);
+
       if (y < src->h - (yradius + 1))
         {
           pixel_region_get_row (src, src->x, src->y + y + yradius + 1, src->w,
@@ -3704,7 +3857,9 @@ border_region (PixelRegion *src,
           compute_transition (transition[yradius], buf, src->w);
         }
       else
-        memcpy (transition[yradius], transition[yradius - 1], src->w);
+        {
+          memcpy (transition[yradius], transition[yradius - 1], src->w);
+        }
 
       for (x = 0; x < src->w; x++) /* update max array */
         {
@@ -3718,26 +3873,35 @@ border_region (PixelRegion *src,
                     max[x]--;
                 }
               else
-                if (transition[-max[x]][x])
-                  max[x] = -max[x];
-                else if (transition[-max[x] + 1][x])
-                  max[x] = -max[x] + 1;
-                else
-                  max[x]--;
+                {
+                  if (transition[-max[x]][x])
+                    max[x] = -max[x];
+                  else if (transition[-max[x] + 1][x])
+                    max[x] = -max[x] + 1;
+                  else
+                    max[x]--;
+                }
             }
           else
-            max[x]--;
+            {
+              max[x]--;
+            }
+
           if (max[x] < -yradius - 1)
             max[x] = -yradius - 1;
         }
+
       last_max =  max[0][density[-1]];
       last_index = 1;
+
       for (x = 0 ; x < src->w; x++) /* render scan line */
         {
           last_index--;
+
           if (last_index >= 0)
             {
               last_max = 0;
+
               for (i = xradius; i >= 0; i--)
                 if (max[x + i] <= yradius && max[x + i] >= -yradius &&
                     density[i][max[x+i]] > last_max)
@@ -3745,11 +3909,13 @@ border_region (PixelRegion *src,
                     last_max = density[i][max[x + i]];
                     last_index = i;
                   }
+
               out[x] = last_max;
             }
           else
             {
               last_max = 0;
+
               for (i = xradius; i >= -xradius; i--)
                 if (max[x + i] <= yradius && max[x + i] >= -yradius &&
                     density[i][max[x + i]] > last_max)
@@ -3757,8 +3923,10 @@ border_region (PixelRegion *src,
                     last_max = density[i][max[x + i]];
                     last_index = i;
                   }
+
               out[x] = last_max;
             }
+
           if (last_max == 0)
             {
               for (i = x + 1; i < src->w; i++)
@@ -3766,17 +3934,22 @@ border_region (PixelRegion *src,
                   if (max[i] >= -yradius)
                     break;
                 }
+
               if (i - x > xradius)
                 {
                   for (; x < i - xradius; x++)
                     out[x] = 0;
+
                   x--;
                 }
+
               last_index = xradius;
             }
         }
+
       pixel_region_set_row (src, src->x, src->y + y, src->w, out);
     }
+
   g_free (out);
 
   for (i = 0; i < 3; i++)
@@ -3790,6 +3963,7 @@ border_region (PixelRegion *src,
       transition[i] -= xradius;
       g_free (transition[i]);
     }
+
   g_free (transition);
 
   for (i = 0; i < xradius + 1 ; i++)
@@ -3797,6 +3971,7 @@ border_region (PixelRegion *src,
       density[i] -= yradius;
       g_free (density[i]);
     }
+
   density -= xradius;
   g_free (density);
 }
@@ -3834,16 +4009,12 @@ apply_mask_to_sub_region (gint        *opacityp,
                           PixelRegion *src,
                           PixelRegion *mask)
 {
-  gint    h;
-  guchar *s;
-  guchar *m;
-  guint   opacity = *opacityp;
+  guchar       *s       = src->data;
+  const guchar *m       = mask->data;
+  gint          h       = src->h;
+  guint         opacity = *opacityp;
 
-  s = src->data;
-  m = mask->data;
-  h = src->h;
-
-  while (h --)
+  while (h--)
     {
       apply_mask_to_alpha_channel (s, m, opacity, src->w, src->bytes);
       s += src->rowstride;
@@ -3867,18 +4038,15 @@ combine_mask_and_sub_region_stipple (gint        *opacityp,
                                      PixelRegion *src,
                                      PixelRegion *mask)
 {
-  gint    h;
-  guchar *s;
-  guchar *m;
-  guint   opacity = *opacityp;
+  guchar       *s       = src->data;
+  const guchar *m       = mask->data;
+  gint          h       = src->h;
+  guint         opacity = *opacityp;
 
-  s = src->data;
-  m = mask->data;
-  h = src->h;
-
-  while (h --)
+  while (h--)
     {
-      combine_mask_and_alpha_channel_stipple (s, m, opacity, src->w, src->bytes);
+      combine_mask_and_alpha_channel_stipple (s, m, opacity,
+                                              src->w, src->bytes);
       s += src->rowstride;
       m += mask->rowstride;
     }
@@ -3890,16 +4058,12 @@ combine_mask_and_sub_region_stroke (gint        *opacityp,
                                     PixelRegion *src,
                                     PixelRegion *mask)
 {
-  gint    h;
-  guchar *s;
-  guchar *m;
-  guint   opacity = *opacityp;
+  guchar       *s       = src->data;
+  const guchar *m       = mask->data;
+  gint          h       = src->h;
+  guint         opacity = *opacityp;
 
-  s = src->data;
-  m = mask->data;
-  h = src->h;
-
-  while (h --)
+  while (h--)
     {
       combine_mask_and_alpha_channel_stroke (s, m, opacity, src->w, src->bytes);
       s += src->rowstride;
@@ -3929,22 +4093,20 @@ void
 copy_gray_to_region (PixelRegion *src,
                      PixelRegion *dest)
 {
-  gint    h;
-  guchar *s;
-  guchar *d;
-  void   *pr;
+  gpointer pr;
 
   for (pr = pixel_regions_register (2, src, dest);
        pr != NULL;
        pr = pixel_regions_process (pr))
     {
-      s = src->data;
-      d = dest->data;
-      h = src->h;
+      const guchar *s = src->data;
+      guchar       *d = dest->data;
+      gint          h = src->h;
 
-      while (h --)
+      while (h--)
         {
           copy_gray_to_inten_a_pixels (s, d, src->w, dest->bytes);
+
           s += src->rowstride;
           d += dest->rowstride;
         }
@@ -3956,22 +4118,42 @@ copy_component (PixelRegion *src,
                 PixelRegion *dest,
                 guint        pixel)
 {
-  gint    h;
-  guchar *s;
-  guchar *d;
-  void   *pr;
+  gpointer pr;
 
   for (pr = pixel_regions_register (2, src, dest);
        pr != NULL;
        pr = pixel_regions_process (pr))
     {
-      s = src->data;
-      d = dest->data;
-      h = src->h;
+      const guchar *s = src->data;
+      guchar       *d = dest->data;
+      gint          h = src->h;
 
-      while (h --)
+      while (h--)
         {
-          component_pixels (s, d, src->w, src->bytes, pixel);
+          copy_component_pixels (s, d, src->w, src->bytes, pixel);
+          s += src->rowstride;
+          d += dest->rowstride;
+        }
+    }
+}
+
+void
+copy_color (PixelRegion *src,
+            PixelRegion *dest)
+{
+  gpointer pr;
+
+  for (pr = pixel_regions_register (2, src, dest);
+       pr != NULL;
+       pr = pixel_regions_process (pr))
+    {
+      const guchar *s = src->data;
+      guchar       *d = dest->data;
+      gint          h = src->h;
+
+      while (h--)
+        {
+          copy_color_pixels (s, d, src->w, src->bytes);
           s += src->rowstride;
           d += dest->rowstride;
         }
@@ -4120,7 +4302,8 @@ initial_sub_region (struct initial_regions_struct *st,
             }
           else
             {
-              initial_inten_a_pixels (s, d, m, opacity, affect, src->w, src->bytes);
+              initial_inten_a_pixels (s, d, m,
+                                      opacity, affect, src->w, src->bytes);
             }
           break;
         }
@@ -4300,6 +4483,7 @@ combine_sub_region (struct combine_regions_struct *st,
       /*  apply the paint mode based on the combination type & mode  */
       switch (type)
         {
+        case COMBINE_INTEN_A_INDEXED:
         case COMBINE_INTEN_A_INDEXED_A:
         case COMBINE_INTEN_A_CHANNEL_MASK:
         case COMBINE_INTEN_A_CHANNEL_SELECTION:
@@ -4352,8 +4536,11 @@ combine_sub_region (struct combine_regions_struct *st,
                 ctx.dissolve.y       = src1->y + h;
                 ctx.dissolve.opacity = layer_mode_opacity;
 
-                mode_affect = gimp_composite_operation_effects[mode].affect_opacity;
+                mode_affect =
+                  gimp_composite_operation_effects[mode].affect_opacity;
+
                 gimp_composite_dispatch (&ctx);
+
                 s = ctx.D;
                 combine = (ctx.combine == NO_COMBINATION) ? type : ctx.combine;
               }
@@ -4411,6 +4598,14 @@ combine_sub_region (struct combine_regions_struct *st,
           combine_indexed_a_and_indexed_a_pixels (s1, s2, d, m, opacity,
                                                   affect, src1->w,
                                                   src1->bytes);
+          break;
+
+        case COMBINE_INTEN_A_INDEXED:
+          /*  assume the data passed to this procedure is the
+           *  indexed layer's colormap
+           */
+          combine_inten_a_and_indexed_pixels (s1, s2, d, m, data, opacity,
+                                              src1->w, dest->bytes);
           break;
 
         case COMBINE_INTEN_A_INDEXED_A:
@@ -4566,6 +4761,7 @@ combine_regions (PixelRegion          *src1,
       has_alpha1 = has_alpha2 = FALSE;
       break;
     case COMBINE_INTEN_A_INTEN:
+    case COMBINE_INTEN_A_INDEXED:
       has_alpha1 = TRUE;
       has_alpha2 = FALSE;
       break;
@@ -4641,21 +4837,17 @@ combine_regions_replace (PixelRegion     *src1,
                          const gboolean  *affect,
                          CombinationMode  type)
 {
-  guint    h;
-  guchar  *s1;
-  guchar  *s2;
-  guchar  *d;
-  guchar  *m;
   gpointer pr;
 
   for (pr = pixel_regions_register (4, src1, src2, dest, mask);
        pr != NULL;
        pr = pixel_regions_process (pr))
     {
-      s1 = src1->data;
-      s2 = src2->data;
-      d = dest->data;
-      m = mask->data;
+      const guchar  *s1 = src1->data;
+      const guchar  *s2 = src2->data;
+      guchar        *d  = dest->data;
+      const guchar  *m  = mask->data;
+      guint          h;
 
       for (h = 0; h < src1->h; h++)
         {
@@ -4674,10 +4866,10 @@ combine_regions_replace (PixelRegion     *src1,
 }
 
 static void
-apply_layer_mode_replace (guchar         *src1,
-                          guchar         *src2,
+apply_layer_mode_replace (const guchar   *src1,
+                          const guchar   *src2,
                           guchar         *dest,
-                          guchar         *mask,
+                          const guchar   *mask,
                           gint            x,
                           gint            y,
                           guint           opacity,
@@ -4686,5 +4878,6 @@ apply_layer_mode_replace (guchar         *src1,
                           guint           bytes2,
                           const gboolean *affect)
 {
-  replace_pixels (src1, src2, dest, mask, length, opacity, affect, bytes1, bytes2);
+  replace_pixels (src1, src2, dest, mask, length,
+                  opacity, affect, bytes1, bytes2);
 }

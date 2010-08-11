@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="prev" href="GimpPathEditor.html" title="GimpPathEditor">
 <link rel="next" href="GimpPixmap.html" title="GimpPixmap">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -24,77 +25,74 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="GimpPathEditor.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-widgets.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpPixmap.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#signal_proto" class="shortcut">Signals</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpPickButton"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpPickButton</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpPickButton</span></h2>
 <p>GimpPickButton &#8212; Widget to pick a color from screen.</p>
 </td>
 <td valign="top" align="right"><img src="gimp-pick-button.png"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
             <a href="GimpPickButton.html#GimpPickButton-struct">GimpPickButton</a>;
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="GimpPickButton.html#gimp-pick-button-new">gimp_pick_button_new</a>            (void);
+GtkWidget*  <a href="GimpPickButton.html#gimp-pick-button-new">gimp_pick_button_new</a>            (void);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2554064"></a><h2>Object Hierarchy</h2>
+<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
    +----GInitiallyUnowned
-         +----<a
-href="../gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>
-                     +----<a
-href="../gtk/GtkContainer.html"
->GtkContainer</a>
-                           +----<a
-href="../gtk/GtkBin.html"
->GtkBin</a>
-                                 +----<a
-href="../gtk/GtkButton.html"
->GtkButton</a>
+         +----GtkObject
+               +----GtkWidget
+                     +----GtkContainer
+                           +----GtkBin
+                                 +----GtkButton
                                        +----GimpPickButton
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2541650"></a><h2>Implemented Interfaces</h2>
+<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpPickButton implements
  AtkImplementorIface.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2567989"></a><h2>Signal Prototypes</h2>
+<a name="signal_proto"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpPickButton.html#GimpPickButton-color-picked">color-picked</a>"
             void        user_function      (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
-                                            gpointer arg1,
-                                            gpointer user_data);
+                                            gpointer        arg1,
+                                            gpointer        user_data)           : Run first
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2568035"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> is a specialized button. When clicked, it changes the
 cursor to a color-picker pipette and allows the user to pick a color
@@ -102,22 +100,20 @@ from any point on the screen.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2570522"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2570528"></a><h3>
+<a name="id2572759"></a><h3>
 <a name="GimpPickButton-struct"></a>GimpPickButton</h3>
-<a class="indexterm" name="id2570538"></a><pre class="programlisting">typedef struct _GimpPickButton GimpPickButton;</pre>
+<a class="indexterm" name="id2572770"></a><pre class="programlisting">typedef struct _GimpPickButton GimpPickButton;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2570554"></a><h3>
+<a name="id2572786"></a><h3>
 <a name="gimp-pick-button-new"></a>gimp_pick_button_new ()</h3>
-<a class="indexterm" name="id2570563"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_pick_button_new            (void);</pre>
+<a class="indexterm" name="id2572797"></a><pre class="programlisting">GtkWidget*  gimp_pick_button_new            (void);</pre>
 <p>
 Creates a new <a href="GimpPickButton.html" title="GimpPickButton"><span class="type">GimpPickButton</span></a> widget.</p>
 <p>
@@ -135,13 +131,13 @@ Creates a new <a href="GimpPickButton.html" title="GimpPickButton"><span class="
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2570618"></a><h2>Signals</h2>
+<a name="signals"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2570624"></a><h3>
+<a name="id2577849"></a><h3>
 <a name="GimpPickButton-color-picked"></a>The "color-picked" signal</h3>
-<pre class="programlisting">void        user_function                  (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
-                                            gpointer arg1,
-                                            gpointer user_data);</pre>
+<a class="indexterm" name="id2577857"></a><pre class="programlisting">void        user_function                  (<a href="GimpPickButton.html" title="GimpPickButton">GimpPickButton</a> *gimppickbutton,
+                                            gpointer        arg1,
+                                            gpointer        user_data)           : Run first</pre>
 <p>
 
 </p>
@@ -173,9 +169,5 @@ href="../libgimpcolor/libgimpcolor-GimpRGB.html#GimpRGB"
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="GimpPathEditor.html"><b>&lt;&lt;&#160;GimpPathEditor</b></a></td>
-<td align="right"><a accesskey="n" href="GimpPixmap.html"><b>GimpPixmap&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

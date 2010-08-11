@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
 <link rel="next" href="libgimpwidgets-GimpQueryBox.html" title="GimpQueryBox">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -24,27 +25,30 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpwidgets-utils.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-utils.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-GimpQueryBox.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpHelpUI"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpHelpUI</span></h2>
-<p>GimpHelpUI &#8212; Functions for setting <a
-href="../gtk/GtkTooltips.html"
-><span class="type">GtkTooltips</span></a> and help identifier used by GIMP help
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpHelpUI</span></h2>
+<p>GimpHelpUI &#8212; Functions for setting <span class="type">GtkTooltips</span> and help identifier used by GIMP help
 system.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -56,35 +60,29 @@ void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-enable-tooltips">g
 void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-disable-tooltips">gimp_help_disable_tooltips</a>      (void);
 void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-standard-help-func">gimp_standard_help_func</a>         (const gchar *help_id,
                                              gpointer help_data);
-void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-connect">gimp_help_connect</a>               (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-connect">gimp_help_connect</a>               (GtkWidget *widget,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              gpointer help_data);
-void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data">gimp_help_set_help_data</a>         (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-help-set-help-data">gimp_help_set_help_data</a>         (GtkWidget *widget,
                                              const gchar *tooltip,
                                              const gchar *help_id);
-void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-context-help">gimp_context_help</a>               (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget);
+void        <a href="libgimpwidgets-GimpHelpUI.html#gimp-context-help">gimp_context_help</a>               (GtkWidget *widget);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2600382"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2600393"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2600399"></a><h3>
+<a name="id2605169"></a><h3>
 <a name="GimpHelpFunc"></a>GimpHelpFunc ()</h3>
-<a class="indexterm" name="id2600409"></a><pre class="programlisting">void        (*GimpHelpFunc)                 (const gchar *help_id,
+<a class="indexterm" name="id2605181"></a><pre class="programlisting">void        (*GimpHelpFunc)                 (const gchar *help_id,
                                              gpointer help_data);</pre>
 <p>
 This is the prototype for all functions you pass as <em class="parameter"><code>help_func</code></em> to the
@@ -131,9 +129,9 @@ the help.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596806"></a><h3>
+<a name="id2602001"></a><h3>
 <a name="GIMP-HELP-ID:CAPS"></a>GIMP_HELP_ID</h3>
-<a class="indexterm" name="id2596816"></a><pre class="programlisting">#define GIMP_HELP_ID (gimp_help_id_quark ())
+<a class="indexterm" name="id2602014"></a><pre class="programlisting">#define GIMP_HELP_ID (gimp_help_id_quark ())
 </pre>
 <p>
 Since: GIMP 2.2
@@ -141,35 +139,31 @@ Since: GIMP 2.2
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596832"></a><h3>
+<a name="id2602030"></a><h3>
 <a name="gimp-help-enable-tooltips"></a>gimp_help_enable_tooltips ()</h3>
-<a class="indexterm" name="id2596841"></a><pre class="programlisting">void        gimp_help_enable_tooltips       (void);</pre>
+<a class="indexterm" name="id2602041"></a><pre class="programlisting">void        gimp_help_enable_tooltips       (void);</pre>
 <p>
-This function calls <a
-href="../gtk/GtkTooltips.html#gtk-tooltips-enable"
-><code class="function">gtk_tooltips_enable()</code></a>.</p>
+This function calls <code class="function">gtk_tooltips_enable()</code>.</p>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596875"></a><h3>
+<a name="id2602075"></a><h3>
 <a name="gimp-help-disable-tooltips"></a>gimp_help_disable_tooltips ()</h3>
-<a class="indexterm" name="id2596884"></a><pre class="programlisting">void        gimp_help_disable_tooltips      (void);</pre>
+<a class="indexterm" name="id2602086"></a><pre class="programlisting">void        gimp_help_disable_tooltips      (void);</pre>
 <p>
-This function calls <a
-href="../gtk/GtkTooltips.html#gtk-tooltips-disable"
-><code class="function">gtk_tooltips_disable()</code></a>.</p>
+This function calls <code class="function">gtk_tooltips_disable()</code>.</p>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596917"></a><h3>
+<a name="id2602119"></a><h3>
 <a name="gimp-standard-help-func"></a>gimp_standard_help_func ()</h3>
-<a class="indexterm" name="id2596926"></a><pre class="programlisting">void        gimp_standard_help_func         (const gchar *help_id,
+<a class="indexterm" name="id2602130"></a><pre class="programlisting">void        gimp_standard_help_func         (const gchar *help_id,
                                              gpointer help_data);</pre>
 <p>
 This is the standard GIMP help function which does nothing but calling
@@ -199,11 +193,9 @@ href="../libgimp/libgimp-gimphelp.html#gimp-help"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596261"></a><h3>
+<a name="id2602227"></a><h3>
 <a name="gimp-help-connect"></a>gimp_help_connect ()</h3>
-<a class="indexterm" name="id2596271"></a><pre class="programlisting">void        gimp_help_connect               (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+<a class="indexterm" name="id2602239"></a><pre class="programlisting">void        gimp_help_connect               (GtkWidget *widget,
                                              <a href="libgimpwidgets-GimpHelpUI.html#GimpHelpFunc">GimpHelpFunc</a> help_func,
                                              const gchar *help_id,
                                              gpointer help_data);</pre>
@@ -221,9 +213,7 @@ constructors. You only have to call it for windows/dialogs you created
 <td>
 <span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
 <td> The widget you want to connect the help accelerator for. Will
-         be a <a
-href="../gtk/GtkWindow.html"
-><span class="type">GtkWindow</span></a> in most cases.
+         be a <span class="type">GtkWindow</span> in most cases.
 </td>
 </tr>
 <tr>
@@ -249,17 +239,13 @@ href="../gtk/GtkWindow.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2596419"></a><h3>
+<a name="id2603061"></a><h3>
 <a name="gimp-help-set-help-data"></a>gimp_help_set_help_data ()</h3>
-<a class="indexterm" name="id2596428"></a><pre class="programlisting">void        gimp_help_set_help_data         (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+<a class="indexterm" name="id2603073"></a><pre class="programlisting">void        gimp_help_set_help_data         (GtkWidget *widget,
                                              const gchar *tooltip,
                                              const gchar *help_id);</pre>
 <p>
-The reason why we don't use <a
-href="../gtk/GtkTooltips.html#gtk-tooltips-set-tip"
-><code class="function">gtk_tooltips_set_tip()</code></a> is that it's
+The reason why we don't use <code class="function">gtk_tooltips_set_tip()</code> is that it's
 impossible to set a <em class="parameter"><code>private_tip</code></em> (aka <em class="parameter"><code>help_id</code></em>) without a visible
 <em class="parameter"><code>tooltip</code></em>.
 </p>
@@ -276,9 +262,7 @@ a visible tooltip.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
-<td>  The <a
-href="../gtk/GtkWidget.html"
-><span class="type">GtkWidget</span></a> you want to set a <em class="parameter"><code>tooltip</code></em> and/or <em class="parameter"><code>help_id</code></em> for.
+<td>  The <span class="type">GtkWidget</span> you want to set a <em class="parameter"><code>tooltip</code></em> and/or <em class="parameter"><code>help_id</code></em> for.
 </td>
 </tr>
 <tr>
@@ -290,9 +274,7 @@ href="../gtk/GtkWidget.html"
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>help_id</code></em>&#160;:</span></td>
-<td> The <em class="parameter"><code>help_id</code></em> for the <a
-href="../gtk/GtkTipsQuery.html"
-><span class="type">GtkTipsQuery</span></a> tooltips inspector.
+<td> The <em class="parameter"><code>help_id</code></em> for the <span class="type">GtkTipsQuery</span> tooltips inspector.
 </td>
 </tr>
 </tbody>
@@ -300,11 +282,9 @@ href="../gtk/GtkTipsQuery.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597782"></a><h3>
+<a name="id2603249"></a><h3>
 <a name="gimp-context-help"></a>gimp_context_help ()</h3>
-<a class="indexterm" name="id2597792"></a><pre class="programlisting">void        gimp_context_help               (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget);</pre>
+<a class="indexterm" name="id2603261"></a><pre class="programlisting">void        gimp_context_help               (GtkWidget *widget);</pre>
 <p>
 This function invokes the context help inspector.
 </p>
@@ -326,18 +306,12 @@ case at least for every window/dialog).</p>
 <tbody><tr>
 <td>
 <span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
-<td> Any <a
-href="../gtk/GtkWidget.html"
-><span class="type">GtkWidget</span></a> on the screen.
+<td> Any <span class="type">GtkWidget</span> on the screen.
 </td>
 </tr></tbody>
 </table></div>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpwidgets-utils.html"><b>&lt;&lt;&#160;Part&#160;V.&#160;GIMP Widgets Utilities</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpwidgets-GimpQueryBox.html"><b>GimpQueryBox&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

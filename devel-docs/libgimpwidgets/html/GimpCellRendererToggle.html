@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
 <link rel="prev" href="GimpCellRendererColor.html" title="GimpCellRendererColor">
 <link rel="next" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -24,62 +25,63 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="GimpCellRendererColor.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-cell-renderers.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-colordisplay.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#properties" class="shortcut">Properties</a>
+                  &#160;|&#160;
+                  <a href="#signal_proto" class="shortcut">Signals</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpCellRendererToggle"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpCellRendererToggle</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpCellRendererToggle</span></h2>
 <p>GimpCellRendererToggle &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
             <a href="GimpCellRendererToggle.html#GimpCellRendererToggle-struct">GimpCellRendererToggle</a>;
-<a
-href="../gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>* <a href="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-new">gimp_cell_renderer_toggle_new</a>
+GtkCellRenderer* <a href="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-new">gimp_cell_renderer_toggle_new</a>
                                             (const gchar *stock_id);
 void        <a href="GimpCellRendererToggle.html#gimp-cell-renderer-toggle-clicked">gimp_cell_renderer_toggle_clicked</a>
                                             (<a href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a> *cell,
                                              const gchar *path,
-                                             <a
-href="../gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> state);
+                                             GdkModifierType state);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585504"></a><h2>Object Hierarchy</h2>
+<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
    +----GInitiallyUnowned
-         +----<a
-href="../gtk/GtkObject.html"
->GtkObject</a>
-               +----<a
-href="../gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>
-                     +----<a
-href="../gtk/GtkCellRendererToggle.html"
->GtkCellRendererToggle</a>
+         +----GtkObject
+               +----GtkCellRenderer
+                     +----GtkCellRendererToggle
                            +----GimpCellRendererToggle
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585548"></a><h2>Properties</h2>
+<a name="properties"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpCellRendererToggle.html#GimpCellRendererToggle--stock-id">stock-id</a>"             gchararray            : Read / Write / Construct
@@ -87,49 +89,43 @@ href="../gtk/GtkCellRendererToggle.html"
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585689"></a><h2>Signal Prototypes</h2>
+<a name="signal_proto"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpCellRendererToggle.html#GimpCellRendererToggle-clicked">clicked</a>"   void        user_function      (<a href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a> *gimpcellrenderertoggle,
-                                            gchar *arg1,
-                                            <a
-href="../gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> arg2,
-                                            gpointer user_data);
+                                            gchar                  *arg1,
+                                            GdkModifierType        *arg2,
+                                            gpointer                user_data)                   : Run last
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585740"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585752"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2585758"></a><h3>
+<a name="id2590955"></a><h3>
 <a name="GimpCellRendererToggle-struct"></a>GimpCellRendererToggle</h3>
-<a class="indexterm" name="id2585767"></a><pre class="programlisting">typedef struct _GimpCellRendererToggle GimpCellRendererToggle;</pre>
+<a class="indexterm" name="id2590966"></a><pre class="programlisting">typedef struct _GimpCellRendererToggle GimpCellRendererToggle;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585782"></a><h3>
+<a name="id2590981"></a><h3>
 <a name="gimp-cell-renderer-toggle-new"></a>gimp_cell_renderer_toggle_new ()</h3>
-<a class="indexterm" name="id2585791"></a><pre class="programlisting"><a
-href="../gtk/GtkCellRenderer.html"
->GtkCellRenderer</a>* gimp_cell_renderer_toggle_new
+<a class="indexterm" name="id2590994"></a><pre class="programlisting">GtkCellRenderer* gimp_cell_renderer_toggle_new
                                             (const gchar *stock_id);</pre>
 <p>
-Creates a custom version of the <a
-href="../gtk/GtkCellRendererToggle.html"
-><span class="type">GtkCellRendererToggle</span></a>. Instead of
+Creates a custom version of the <span class="type">GtkCellRendererToggle</span>. Instead of
 showing the standard toggle button, it shows a stock icon if the
 cell is active and no icon otherwise. This cell renderer is for
 example used in the Layers treeview to indicate and control the
-layer's visibility by showing <code class="literal">GIMP_STOCK_VISIBLE</code>.</p>
+layer's visibility by showing <a href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VISIBLE:CAPS"><code class="literal">GIMP_STOCK_VISIBLE</code></a>.</p>
 <p>
 
 </p>
@@ -156,14 +152,12 @@ layer's visibility by showing <code class="literal">GIMP_STOCK_VISIBLE</code>.</
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2585880"></a><h3>
+<a name="id2591373"></a><h3>
 <a name="gimp-cell-renderer-toggle-clicked"></a>gimp_cell_renderer_toggle_clicked ()</h3>
-<a class="indexterm" name="id2585891"></a><pre class="programlisting">void        gimp_cell_renderer_toggle_clicked
+<a class="indexterm" name="id2591386"></a><pre class="programlisting">void        gimp_cell_renderer_toggle_clicked
                                             (<a href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a> *cell,
                                              const gchar *path,
-                                             <a
-href="../gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> state);</pre>
+                                             GdkModifierType state);</pre>
 <p>
 Emits the "clicked" signal from a <a href="GimpCellRendererToggle.html" title="GimpCellRendererToggle"><span class="type">GimpCellRendererToggle</span></a>.</p>
 <p>
@@ -197,35 +191,33 @@ Emits the "clicked" signal from a <a href="GimpCellRendererToggle.html" title="G
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2579801"></a><h2>Properties</h2>
+<a name="property_details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2579808"></a><h3>
+<a name="id2591508"></a><h3>
 <a name="GimpCellRendererToggle--stock-id"></a>The "<code class="literal">stock-id</code>" property</h3>
-<pre class="programlisting">  "stock-id"             gchararray            : Read / Write / Construct</pre>
+<a class="indexterm" name="id2591522"></a><pre class="programlisting">  "stock-id"             gchararray            : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2579841"></a><h3>
+<a name="id2591545"></a><h3>
 <a name="GimpCellRendererToggle--stock-size"></a>The "<code class="literal">stock-size</code>" property</h3>
-<pre class="programlisting">  "stock-size"           gint                  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2591559"></a><pre class="programlisting">  "stock-size"           gint                  : Read / Write / Construct</pre>
 <p></p>
 <p>Allowed values: &gt;= 0</p>
 <p>Default value: 4</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2579880"></a><h2>Signals</h2>
+<a name="signals"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2579886"></a><h3>
+<a name="id2591599"></a><h3>
 <a name="GimpCellRendererToggle-clicked"></a>The "clicked" signal</h3>
-<pre class="programlisting">void        user_function                  (<a href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a> *gimpcellrenderertoggle,
-                                            gchar *arg1,
-                                            <a
-href="../gdk/gdk-Windows.html#GdkModifierType"
->GdkModifierType</a> arg2,
-                                            gpointer user_data);</pre>
+<a class="indexterm" name="id2591607"></a><pre class="programlisting">void        user_function                  (<a href="GimpCellRendererToggle.html" title="GimpCellRendererToggle">GimpCellRendererToggle</a> *gimpcellrenderertoggle,
+                                            gchar                  *arg1,
+                                            GdkModifierType        *arg2,
+                                            gpointer                user_data)                   : Run last</pre>
 <p>
 
 </p>
@@ -261,9 +253,5 @@ href="../gdk/gdk-Windows.html#GdkModifierType"
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="GimpCellRendererColor.html"><b>&lt;&lt;&#160;GimpCellRendererColor</b></a></td>
-<td align="right"><a accesskey="n" href="libgimpwidgets-colordisplay.html"><b>Part&#160;II.&#160;GIMP Display Filters&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

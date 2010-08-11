@@ -420,7 +420,6 @@ script_fu_add_script (LISP a)
 #endif
 		  script->arg_values[i].sfa_file.filename =
 		    g_strdup (script->arg_defaults[i].sfa_file.filename);
-		  script->arg_values[i].sfa_file.file_entry = NULL;
 
 		  args[i + 1].type        = GIMP_PDB_STRING;
 		  args[i + 1].name        = (script->arg_types[i] == SF_FILENAME ?
@@ -594,10 +593,10 @@ script_fu_add_script (LISP a)
   script->args = args;
 
   {
-    gchar *key  = gettext (script->menu_path);
-    GList *list = g_tree_lookup (script_tree, key);
+    const gchar *key  = gettext (script->menu_path);
+    GList       *list = g_tree_lookup (script_tree, key);
 
-    g_tree_insert (script_tree, key, g_list_append (list, script));
+    g_tree_insert (script_tree, (gpointer) key, g_list_append (list, script));
   }
 
   return NIL;
@@ -1056,8 +1055,10 @@ script_fu_menu_compare (gconstpointer a,
 
       if (retval == 0 &&
           menu_a->script->menu_path && menu_b->script->menu_path)
-        retval = g_utf8_collate (gettext (menu_a->script->menu_path),
-                                 gettext (menu_b->script->menu_path));
+        {
+          retval = g_utf8_collate (gettext (menu_a->script->menu_path),
+                                   gettext (menu_b->script->menu_path));
+        }
     }
 
   return retval;

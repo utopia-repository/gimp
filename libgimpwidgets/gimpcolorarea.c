@@ -88,7 +88,7 @@ static void  gimp_color_area_drag_data_get      (GtkWidget        *widget,
                                                  guint             time);
 
 
-G_DEFINE_TYPE (GimpColorArea, gimp_color_area, GTK_TYPE_DRAWING_AREA);
+G_DEFINE_TYPE (GimpColorArea, gimp_color_area, GTK_TYPE_DRAWING_AREA)
 
 #define parent_class gimp_color_area_parent_class
 
@@ -139,7 +139,7 @@ gimp_color_area_class_init (GimpColorAreaClass *klass)
    */
   g_object_class_install_property (object_class, PROP_COLOR,
                                    gimp_param_spec_rgb ("color", NULL, NULL,
-                                                        &color,
+                                                        TRUE, &color,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT));
   /**

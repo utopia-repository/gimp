@@ -21,6 +21,9 @@
 
 #include "config.h"
 
+#define _POSIX_SOURCE  /* all the sigaction stuff is POSIX */
+#define _SVID_SOURCE   /* except for SA_RESTART, it seems  */
+
 #include <errno.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -386,7 +389,6 @@ gimp_main (const GimpPlugInInfo *info,
 
     gimp_base_init (&vtable);
   }
-
 
   /* initialize i18n support */
 
@@ -1690,9 +1692,9 @@ gimp_config (GPConfig *config)
   _shm_ID           = config->shm_ID;
   _check_size       = config->check_size;
   _check_type       = config->check_type;
-  _install_cmap     = config->install_cmap;
-  _show_tool_tips   = config->show_tooltips;
-  _show_help_button = config->show_help_button;
+  _install_cmap     = config->install_cmap     ? TRUE : FALSE;
+  _show_tool_tips   = config->show_tooltips    ? TRUE : FALSE;
+  _show_help_button = config->show_help_button ? TRUE : FALSE;
   _min_colors       = config->min_colors;
   _gdisp_ID         = config->gdisp_ID;
   _wm_class         = g_strdup (config->wm_class);
@@ -1701,6 +1703,8 @@ gimp_config (GPConfig *config)
 
   if (config->app_name)
     g_set_application_name (config->app_name);
+
+  gimp_cpu_accel_set_use (config->use_cpu_accel);
 
   if (_shm_ID != -1)
     {

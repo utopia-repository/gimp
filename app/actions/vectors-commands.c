@@ -41,7 +41,7 @@
 #include "core/gimpstrokedesc.h"
 #include "core/gimptoolinfo.h"
 
-#include "pdb/gimp-pdb.h"
+#include "pdb/gimppdb.h"
 #include "pdb/gimpprocedure.h"
 
 #include "vectors/gimpvectors.h"
@@ -316,9 +316,11 @@ vectors_selection_to_vectors_cmd_callback (GtkAction *action,
   return_if_no_image (image, data);
 
   if (value)
-    procedure = gimp_pdb_lookup (image->gimp, "plug-in-sel2path-advanced");
+    procedure = gimp_pdb_lookup_procedure (image->gimp->pdb,
+                                           "plug-in-sel2path-advanced");
   else
-    procedure = gimp_pdb_lookup (image->gimp, "plug-in-sel2path");
+    procedure = gimp_pdb_lookup_procedure (image->gimp->pdb,
+                                           "plug-in-sel2path");
 
   if (! procedure)
     {
@@ -328,18 +330,16 @@ vectors_selection_to_vectors_cmd_callback (GtkAction *action,
 
   display = gimp_context_get_display (action_data_get_context (data));
 
-  /*  plug-in arguments as if called by <Image>/Filters/...  */
   args = gimp_procedure_get_arguments (procedure);
-  gimp_value_array_truncate (args, 3);
+  gimp_value_array_truncate (args, 2);
 
-  g_value_set_int         (&args->values[0], GIMP_RUN_INTERACTIVE);
-  gimp_value_set_image    (&args->values[1], image);
-  gimp_value_set_drawable (&args->values[2], NULL /* unused */);
+  g_value_set_int      (&args->values[0], GIMP_RUN_INTERACTIVE);
+  gimp_value_set_image (&args->values[1], image);
 
   gimp_procedure_execute_async (procedure, image->gimp,
                                 action_data_get_context (data),
                                 GIMP_PROGRESS (display), args,
-                                display ? gimp_display_get_ID (display) : 0);
+                                GIMP_OBJECT (display));
 
   g_value_array_free (args);
 }

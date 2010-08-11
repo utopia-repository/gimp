@@ -24,14 +24,15 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpimage.h"
-#include "plug-in/plug-in.h"
+#include "plug-in/gimpplugin.h"
+#include "plug-in/gimppluginmanager.h"
 
 
 static GValueArray *
@@ -48,10 +49,11 @@ image_undo_group_start_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      gchar *undo_desc = NULL;
+      GimpPlugIn *plug_in  = gimp->plug_in_manager->current_plug_in;
+      gchar      *undo_desc = NULL;
 
-      if (gimp->current_plug_in)
-        undo_desc = plug_in_get_undo_desc (gimp->current_plug_in);
+      if (plug_in)
+        undo_desc = gimp_plug_in_get_undo_desc (plug_in);
 
       gimp_image_undo_group_start (image, GIMP_UNDO_GROUP_MISC, undo_desc);
 
@@ -218,7 +220,7 @@ image_undo_thaw_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_undo_procs (Gimp *gimp)
+register_undo_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -235,14 +237,13 @@ register_undo_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The ID of the image in which to open an undo group",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -258,14 +259,13 @@ register_undo_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1997",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The ID of the image in which to close an undo group",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -281,12 +281,11 @@ register_undo_procs (Gimp *gimp)
                                      "Raphael Quinet",
                                      "1999",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("enabled",
@@ -294,7 +293,7 @@ register_undo_procs (Gimp *gimp)
                                                          "TRUE if undo is enabled for this image",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -310,12 +309,11 @@ register_undo_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("disabled",
@@ -323,7 +321,7 @@ register_undo_procs (Gimp *gimp)
                                                          "TRUE if the image undo has been disabled",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -339,12 +337,11 @@ register_undo_procs (Gimp *gimp)
                                      "Spencer Kimball & Peter Mattis",
                                      "1995-1996",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("enabled",
@@ -352,7 +349,7 @@ register_undo_procs (Gimp *gimp)
                                                          "TRUE if the image undo has been enabled",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -368,12 +365,11 @@ register_undo_procs (Gimp *gimp)
                                      "Adam D. Moss",
                                      "1999",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("frozen",
@@ -381,7 +377,7 @@ register_undo_procs (Gimp *gimp)
                                                          "TRUE if the image undo has been frozen",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -397,12 +393,11 @@ register_undo_procs (Gimp *gimp)
                                      "Adam D. Moss",
                                      "1999",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_image_id ("image",
                                                          "image",
                                                          "The image",
-                                                         gimp,
+                                                         pdb->gimp, FALSE,
                                                          GIMP_PARAM_READWRITE));
   gimp_procedure_add_return_value (procedure,
                                    g_param_spec_boolean ("thawed",
@@ -410,7 +405,6 @@ register_undo_procs (Gimp *gimp)
                                                          "TRUE if the image undo has been thawed",
                                                          FALSE,
                                                          GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

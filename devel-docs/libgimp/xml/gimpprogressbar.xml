@@ -4,16 +4,19 @@
 
 <refentry id="GimpProgressBar">
 <refmeta>
-<refentrytitle>GimpProgressBar</refentrytitle>
+<refentrytitle id="top_of_page">GimpProgressBar</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpProgressBar</refname><refpurpose>A widget providing a progress bar.</refpurpose>
+<refname>GimpProgressBar</refname>
+<refpurpose>A widget providing a progress bar.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -25,8 +28,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -42,8 +45,8 @@
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpProgressBar implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -54,24 +57,24 @@ GimpProgressBar implements
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 A widget providing a progress bar that automatically redirects any progress
 calls to itself.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpProgressBar-struct"/>GimpProgressBar</title>
+<title><anchor id="GimpProgressBar-struct" role="struct"/>GimpProgressBar</title>
 <indexterm><primary>GimpProgressBar</primary></indexterm><programlisting>typedef struct _GimpProgressBar GimpProgressBar;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-progress-bar-new"/>gimp_progress_bar_new ()</title>
+<title><anchor id="gimp-progress-bar-new" role="function" condition="since:GIMP 2.2"/>gimp_progress_bar_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_progress_bar_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_progress_bar_new           (void);</programlisting>
 <para>
 Creates a new <link linkend="GimpProgressBar"><type>GimpProgressBar</type></link> widget.</para>

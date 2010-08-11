@@ -1,3 +1,19 @@
+2006-05-11  Jakub Friedl <jfriedl@suse.cz>
+
+	* cs.po: updated Czech translation.
+
+2006-05-03  Marco Ciampa <ciampix@libero.it>
+
+	* it.po: updated italian translation.
+
+2006-05-03  Funda Wang  <fundawang@linux.net.cn>
+
+	* zh_CN.po: Updated Simplified Chinese translation.
+
+2006-04-16  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
+
+	* gl.po: Updated Galician Translation.
+
 2006-04-10  Clytie Siddall <clytie@riverland.net.au>
 
 	* vi.po: Updated Vietnamese translation.
@@ -8,7 +24,7 @@
 
 2006-04-05  Marco Ciampa <ciampix@libero.it>
 
-        * it.po: updated italian translation.
+	* it.po: updated italian translation.
 
 2006-03-27  Jakub Friedl  <jfriedl@suse.cz>
 

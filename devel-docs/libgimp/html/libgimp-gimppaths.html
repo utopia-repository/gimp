@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and all their Properties">
 <link rel="prev" href="libgimp-gimplayer.html" title="gimplayer">
 <link rel="next" href="libgimp-gimppixelfetcher.html" title="gimppixelfetcher">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -23,24 +24,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimplayer.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-image.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimppixelfetcher.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimppaths"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimppaths</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimppaths</span></h2>
 <p>gimppaths &#8212; Operations related to paths.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -100,17 +106,17 @@ gboolean    <a href="libgimp-gimppaths.html#gimp-path-import-string">gimp_path_i
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2597014"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Operations related to paths.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2597025"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2597031"></a><h3>
+<a name="id2601121"></a><h3>
 <a name="gimp-path-list"></a>gimp_path_list ()</h3>
-<a class="indexterm" name="id2597041"></a><pre class="programlisting">gchar**     gimp_path_list                  (gint32 image_ID,
+<a class="indexterm" name="id2601135"></a><pre class="programlisting">gchar**     gimp_path_list                  (gint32 image_ID,
                                              gint *num_paths);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -147,9 +153,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpimage.html#gimp-image-get
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597143"></a><h3>
+<a name="id2599277"></a><h3>
 <a name="gimp-path-get-points"></a>gimp_path_get_points ()</h3>
-<a class="indexterm" name="id2597152"></a><pre class="programlisting">gint        gimp_path_get_points            (gint32 image_ID,
+<a class="indexterm" name="id2599289"></a><pre class="programlisting">gint        gimp_path_get_points            (gint32 image_ID,
                                              const gchar *name,
                                              gint *path_closed,
                                              gint *num_path_point_details,
@@ -206,9 +212,9 @@ List the points associated with the named path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2597310"></a><h3>
+<a name="id2599447"></a><h3>
 <a name="gimp-path-get-current"></a>gimp_path_get_current ()</h3>
-<a class="indexterm" name="id2597319"></a><pre class="programlisting">gchar*      gimp_path_get_current           (gint32 image_ID);</pre>
+<a class="indexterm" name="id2599460"></a><pre class="programlisting">gchar*      gimp_path_get_current           (gint32 image_ID);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_path_get_current</code> is deprecated and should not be used in newly-written code.</p>
@@ -239,9 +245,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606125"></a><h3>
+<a name="id2602141"></a><h3>
 <a name="gimp-path-set-current"></a>gimp_path_set_current ()</h3>
-<a class="indexterm" name="id2606134"></a><pre class="programlisting">gboolean    gimp_path_set_current           (gint32 image_ID,
+<a class="indexterm" name="id2602154"></a><pre class="programlisting">gboolean    gimp_path_set_current           (gint32 image_ID,
                                              const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -279,9 +285,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606236"></a><h3>
+<a name="id2602256"></a><h3>
 <a name="gimp-path-set-points"></a>gimp_path_set_points ()</h3>
-<a class="indexterm" name="id2606244"></a><pre class="programlisting">gboolean    gimp_path_set_points            (gint32 image_ID,
+<a class="indexterm" name="id2602267"></a><pre class="programlisting">gboolean    gimp_path_set_points            (gint32 image_ID,
                                              const gchar *name,
                                              gint ptype,
                                              gint num_path_points,
@@ -338,9 +344,9 @@ Set the points associated with the named path.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606414"></a><h3>
+<a name="id2602437"></a><h3>
 <a name="gimp-path-stroke-current"></a>gimp_path_stroke_current ()</h3>
-<a class="indexterm" name="id2606423"></a><pre class="programlisting">gboolean    gimp_path_stroke_current        (gint32 image_ID);</pre>
+<a class="indexterm" name="id2602448"></a><pre class="programlisting">gboolean    gimp_path_stroke_current        (gint32 image_ID);</pre>
 <p>
 Stroke the current path in the passed image.
 </p>
@@ -369,9 +375,9 @@ Stroke the current path in the passed image.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606488"></a><h3>
+<a name="id2602513"></a><h3>
 <a name="gimp-path-get-point-at-dist"></a>gimp_path_get_point_at_dist ()</h3>
-<a class="indexterm" name="id2606497"></a><pre class="programlisting">gint        gimp_path_get_point_at_dist     (gint32 image_ID,
+<a class="indexterm" name="id2602526"></a><pre class="programlisting">gint        gimp_path_get_point_at_dist     (gint32 image_ID,
                                              gdouble distance,
                                              gint *y_point,
                                              gdouble *slope);</pre>
@@ -423,9 +429,9 @@ This procedure is deprecated! Use
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606641"></a><h3>
+<a name="id2602672"></a><h3>
 <a name="gimp-path-get-tattoo"></a>gimp_path_get_tattoo ()</h3>
-<a class="indexterm" name="id2606650"></a><pre class="programlisting">gint        gimp_path_get_tattoo            (gint32 image_ID,
+<a class="indexterm" name="id2602685"></a><pre class="programlisting">gint        gimp_path_get_tattoo            (gint32 image_ID,
                                              const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -462,9 +468,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpvectors.html#gimp-vectors
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600030"></a><h3>
+<a name="id2602789"></a><h3>
 <a name="gimp-get-path-by-tattoo"></a>gimp_get_path_by_tattoo ()</h3>
-<a class="indexterm" name="id2600039"></a><pre class="programlisting">gchar*      gimp_get_path_by_tattoo         (gint32 image_ID,
+<a class="indexterm" name="id2602802"></a><pre class="programlisting">gchar*      gimp_get_path_by_tattoo         (gint32 image_ID,
                                              gint tattoo);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -504,9 +510,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600143"></a><h3>
+<a name="id2608538"></a><h3>
 <a name="gimp-path-delete"></a>gimp_path_delete ()</h3>
-<a class="indexterm" name="id2600153"></a><pre class="programlisting">gboolean    gimp_path_delete                (gint32 image_ID,
+<a class="indexterm" name="id2608552"></a><pre class="programlisting">gboolean    gimp_path_delete                (gint32 image_ID,
                                              const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -544,9 +550,9 @@ instead.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600256"></a><h3>
+<a name="id2608657"></a><h3>
 <a name="gimp-path-get-locked"></a>gimp_path_get_locked ()</h3>
-<a class="indexterm" name="id2600265"></a><pre class="programlisting">gboolean    gimp_path_get_locked            (gint32 image_ID,
+<a class="indexterm" name="id2608670"></a><pre class="programlisting">gboolean    gimp_path_get_locked            (gint32 image_ID,
                                              const gchar *name);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -583,9 +589,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpvectors.html#gimp-vectors
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600368"></a><h3>
+<a name="id2608775"></a><h3>
 <a name="gimp-path-set-locked"></a>gimp_path_set_locked ()</h3>
-<a class="indexterm" name="id2600377"></a><pre class="programlisting">gboolean    gimp_path_set_locked            (gint32 image_ID,
+<a class="indexterm" name="id2608788"></a><pre class="programlisting">gboolean    gimp_path_set_locked            (gint32 image_ID,
                                              const gchar *name,
                                              gboolean locked);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -629,9 +635,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpvectors.html#gimp-vectors
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600503"></a><h3>
+<a name="id2608913"></a><h3>
 <a name="gimp-path-set-tattoo"></a>gimp_path_set_tattoo ()</h3>
-<a class="indexterm" name="id2600512"></a><pre class="programlisting">gboolean    gimp_path_set_tattoo            (gint32 image_ID,
+<a class="indexterm" name="id2608927"></a><pre class="programlisting">gboolean    gimp_path_set_tattoo            (gint32 image_ID,
                                              const gchar *name,
                                              gint tattovalue);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -675,9 +681,9 @@ This procedure is deprecated! Use <a href="libgimp-gimpvectors.html#gimp-vectors
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600638"></a><h3>
+<a name="id2609053"></a><h3>
 <a name="gimp-path-to-selection"></a>gimp_path_to_selection ()</h3>
-<a class="indexterm" name="id2600647"></a><pre class="programlisting">gboolean    gimp_path_to_selection          (gint32 image_ID,
+<a class="indexterm" name="id2609064"></a><pre class="programlisting">gboolean    gimp_path_to_selection          (gint32 image_ID,
                                              const gchar *name,
                                              <a
 href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpChannelOps"
@@ -750,9 +756,9 @@ This procedure renders the desired path into the current selection.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600841"></a><h3>
+<a name="id2609258"></a><h3>
 <a name="gimp-path-import"></a>gimp_path_import ()</h3>
-<a class="indexterm" name="id2600851"></a><pre class="programlisting">gboolean    gimp_path_import                (gint32 image_ID,
+<a class="indexterm" name="id2609271"></a><pre class="programlisting">gboolean    gimp_path_import                (gint32 image_ID,
                                              const gchar *filename,
                                              gboolean merge,
                                              gboolean scale);</pre>
@@ -803,9 +809,9 @@ than paths and basic shapes are ignored.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2600982"></a><h3>
+<a name="id2609402"></a><h3>
 <a name="gimp-path-import-string"></a>gimp_path_import_string ()</h3>
-<a class="indexterm" name="id2600991"></a><pre class="programlisting">gboolean    gimp_path_import_string         (gint32 image_ID,
+<a class="indexterm" name="id2609416"></a><pre class="programlisting">gboolean    gimp_path_import_string         (gint32 image_ID,
                                              const gchar *string,
                                              gint length,
                                              gboolean merge,
@@ -867,9 +873,5 @@ scripts that generate SVG and feed it to GIMP.</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimplayer.html"><b>&lt;&lt;&#160;gimplayer</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-gimppixelfetcher.html"><b>gimppixelfetcher&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

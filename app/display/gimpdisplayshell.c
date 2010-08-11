@@ -120,14 +120,14 @@ static void      gimp_display_shell_hide_tooltip   (GimpUIManager    *manager,
                                                     GimpDisplayShell *shell);
 
 
-G_DEFINE_TYPE (GimpDisplayShell, gimp_display_shell, GTK_TYPE_WINDOW);
+G_DEFINE_TYPE (GimpDisplayShell, gimp_display_shell, GTK_TYPE_WINDOW)
 
 #define parent_class gimp_display_shell_parent_class
 
 static guint display_shell_signals[LAST_SIGNAL] = { 0 };
 
 
-static const gchar *display_rc_style =
+static const gchar display_rc_style[] =
   "style \"fullscreen-menubar-style\"\n"
   "{\n"
   "  GtkMenuBar::shadow-type      = none\n"
@@ -1400,7 +1400,8 @@ gimp_display_shell_pause (GimpDisplayShell *shell)
   if (shell->paused_count == 1)
     {
       /*  pause the currently active tool  */
-      tool_manager_control_active (shell->display->image->gimp, PAUSE,
+      tool_manager_control_active (shell->display->image->gimp,
+                                   GIMP_TOOL_ACTION_PAUSE,
                                    shell->display);
 
       gimp_display_shell_draw_vectors (shell);
@@ -1429,7 +1430,8 @@ gimp_display_shell_resume (GimpDisplayShell *shell)
       gimp_display_shell_draw_vectors (shell);
 
       /* start the currently active tool */
-      tool_manager_control_active (shell->display->image->gimp, RESUME,
+      tool_manager_control_active (shell->display->image->gimp,
+                                   GIMP_TOOL_ACTION_RESUME,
                                    shell->display);
     }
 }

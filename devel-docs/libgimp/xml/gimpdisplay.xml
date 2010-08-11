@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpdisplay">
 <refmeta>
-<refentrytitle>gimpdisplay</refentrytitle>
+<refentrytitle id="top_of_page">gimpdisplay</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpdisplay</refname><refpurpose>Functions to create, delete and flush new displays (views) on an image.</refpurpose>
+<refname>gimpdisplay</refname>
+<refpurpose>Functions to create, delete and flush new displays (views) on an image.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -36,18 +39,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions to create, delete and flush new displays (views) on an image.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-display-new"/>gimp_display_new ()</title>
+<title><anchor id="gimp-display-new" role="function"/>gimp_display_new ()</title>
 <indexterm><primary>gimp_display_new</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_display_new                (<link linkend="gint32">gint32</link> image_ID);</programlisting>
 <para>
 Create a new display for the specified image.
@@ -68,7 +71,7 @@ This procedure only makes sense for use with the GIMP UI.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-display-delete"/>gimp_display_delete ()</title>
+<title><anchor id="gimp-display-delete" role="function"/>gimp_display_delete ()</title>
 <indexterm><primary>gimp_display_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_display_delete             (<link linkend="gint32">gint32</link> display_ID);</programlisting>
 <para>
 Delete the specified display.
@@ -87,7 +90,7 @@ deleted also.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-display-get-window-handle"/>gimp_display_get_window_handle ()</title>
+<title><anchor id="gimp-display-get-window-handle" role="function" condition="since:GIMP 2.4"/>gimp_display_get_window_handle ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_display_get_window_handle</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_display_get_window_handle  (<link linkend="gint32">gint32</link> display_ID);</programlisting>
 <para>
 Get a handle to the native window for an image display.
@@ -110,7 +113,7 @@ system that is being used.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-displays-flush"/>gimp_displays_flush ()</title>
+<title><anchor id="gimp-displays-flush" role="function"/>gimp_displays_flush ()</title>
 <indexterm><primary>gimp_displays_flush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_displays_flush             (void);</programlisting>
 <para>
 Flush all internal changes to the user interface
@@ -127,7 +130,7 @@ appropriate.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-displays-reconnect"/>gimp_displays_reconnect ()</title>
+<title><anchor id="gimp-displays-reconnect" role="function"/>gimp_displays_reconnect ()</title>
 <indexterm><primary>gimp_displays_reconnect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_displays_reconnect         (<link linkend="gint32">gint32</link> old_image_ID,
                                              <link linkend="gint32">gint32</link> new_image_ID);</programlisting>
 <para>

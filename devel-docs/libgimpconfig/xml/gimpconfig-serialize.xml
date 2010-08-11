@@ -4,16 +4,19 @@
 
 <refentry id="libgimpconfig-gimpconfig-serialize">
 <refmeta>
-<refentrytitle>gimpconfig-serialize</refentrytitle>
+<refentrytitle id="top_of_page">gimpconfig-serialize</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpconfig-serialize</refname><refpurpose>Serializing for libgimpconfig.</refpurpose>
+<refname>gimpconfig-serialize</refname>
+<refpurpose>Serializing for libgimpconfig.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -42,18 +45,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Serializing interface for libgimpconfig.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-config-serialize-properties"/>gimp_config_serialize_properties ()</title>
+<title><anchor id="gimp-config-serialize-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_properties ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_serialize_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_properties
                                             (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
@@ -68,13 +71,13 @@ This function serializes a single object property to the <parameter>writer</para
 <varlistentry><term><parameter>writer</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpConfigWriter"><type>GimpConfigWriter</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if serialization succeeded, <literal>FALSE</literal> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if serialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-serialize-changed-properties"/>gimp_config_serialize_changed_properties ()</title>
+<title><anchor id="gimp-config-serialize-changed-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_changed_properties ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_serialize_changed_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_changed_properties
                                             (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
@@ -90,13 +93,13 @@ their default values to the <parameter>writer</parameter>.</para>
 <varlistentry><term><parameter>writer</parameter>&nbsp;:</term>
 <listitem><simpara> a <link linkend="GimpConfigWriter"><type>GimpConfigWriter</type></link>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if serialization succeeded, <literal>FALSE</literal> otherwise
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if serialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-serialize-property"/>gimp_config_serialize_property ()</title>
+<title><anchor id="gimp-config-serialize-property" role="function"/>gimp_config_serialize_property ()</title>
 <indexterm><primary>gimp_config_serialize_property</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_property  (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              <link linkend="GParamSpec">GParamSpec</link> *param_spec,
                                              <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
@@ -118,7 +121,7 @@ their default values to the <parameter>writer</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-serialize-value"/>gimp_config_serialize_value ()</title>
+<title><anchor id="gimp-config-serialize-value" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_value ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_serialize_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_value     (const <link linkend="GValue">GValue</link> *value,
                                              <link linkend="GString">GString</link> *str,
                                              <link linkend="gboolean">gboolean</link> escaped);</programlisting>
@@ -136,7 +139,7 @@ This utility function appends a string representation of <link linkend="GValue">
 <varlistentry><term><parameter>escaped</parameter>&nbsp;:</term>
 <listitem><simpara> whether to escape string values.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if serialization succeeded, <literal>FALSE</literal> otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if serialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4

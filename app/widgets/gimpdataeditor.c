@@ -97,7 +97,7 @@ static void       gimp_data_editor_save_dirty        (GimpDataEditor *editor);
 
 G_DEFINE_TYPE_WITH_CODE (GimpDataEditor, gimp_data_editor, GIMP_TYPE_EDITOR,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,
-                                                gimp_data_editor_docked_iface_init));
+                                                gimp_data_editor_docked_iface_init))
 
 #define parent_class gimp_data_editor_parent_class
 
@@ -488,8 +488,23 @@ gimp_data_editor_name_activate (GtkWidget      *widget,
                                 GimpDataEditor *editor)
 {
   if (editor->data)
-    gimp_object_set_name (GIMP_OBJECT (editor->data),
-                          gtk_entry_get_text (GTK_ENTRY (widget)));
+    {
+      gchar *new_name;
+
+      new_name = g_strdup (gtk_entry_get_text (GTK_ENTRY (widget)));
+      new_name = g_strstrip (new_name);
+
+      if (strlen (new_name))
+        {
+          gimp_object_take_name (GIMP_OBJECT (editor->data), new_name);
+        }
+      else
+        {
+          gtk_entry_set_text (GTK_ENTRY (widget),
+                              gimp_object_get_name (GIMP_OBJECT (editor->data)));
+          g_free (new_name);
+        }
+    }
 }
 
 static gboolean

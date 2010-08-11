@@ -4,16 +4,19 @@
 
 <refentry id="GimpZoomPreview">
 <refmeta>
-<refentrytitle>GimpZoomPreview</refentrytitle>
+<refentrytitle id="top_of_page">GimpZoomPreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpZoomPreview</refname><refpurpose></refpurpose>
+<refname>GimpZoomPreview</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -32,8 +35,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -52,8 +55,8 @@
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpZoomPreview implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -61,8 +64,8 @@ GimpZoomPreview implements
 </refsect1>
 
 
-<refsect1>
-<title>Properties</title>
+<refsect1 id="properties">
+<title id="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpZoomPreview--drawable">drawable</link>&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
@@ -71,23 +74,23 @@ GimpZoomPreview implements
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpZoomPreview-struct"/>GimpZoomPreview</title>
+<title><anchor id="GimpZoomPreview-struct" role="struct"/>GimpZoomPreview</title>
 <indexterm><primary>GimpZoomPreview</primary></indexterm><programlisting>typedef struct _GimpZoomPreview GimpZoomPreview;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-zoom-preview-new"/>gimp_zoom_preview_new ()</title>
+<title><anchor id="gimp-zoom-preview-new" role="function" condition="since:GIMP 2.4"/>gimp_zoom_preview_new ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_zoom_preview_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_zoom_preview_new           (<link linkend="GimpDrawable">GimpDrawable</link> *drawable);</programlisting>
 <para>
 Creates a new <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link> widget for <parameter>drawable</parameter>.</para>
@@ -104,7 +107,7 @@ Creates a new <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-zoom-preview-get-source"/>gimp_zoom_preview_get_source ()</title>
+<title><anchor id="gimp-zoom-preview-get-source" role="function" condition="since:GIMP 2.4"/>gimp_zoom_preview_get_source ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_zoom_preview_get_source</primary></indexterm><programlisting><link linkend="guchar">guchar</link>*     gimp_zoom_preview_get_source    (<link linkend="GimpZoomPreview">GimpZoomPreview</link> *preview,
                                              <link linkend="gint">gint</link> *width,
                                              <link linkend="gint">gint</link> *height,
@@ -138,7 +141,7 @@ This function also allow to get the current width, height and bpp of the
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-zoom-preview-get-drawable"/>gimp_zoom_preview_get_drawable ()</title>
+<title><anchor id="gimp-zoom-preview-get-drawable" role="function"/>gimp_zoom_preview_get_drawable ()</title>
 <indexterm><primary>gimp_zoom_preview_get_drawable</primary></indexterm><programlisting><link linkend="GimpDrawable">GimpDrawable</link>* gimp_zoom_preview_get_drawable
                                             (<link linkend="GimpZoomPreview">GimpZoomPreview</link> *preview);</programlisting>
 <para>
@@ -153,7 +156,7 @@ This function also allow to get the current width, height and bpp of the
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-zoom-preview-get-factor"/>gimp_zoom_preview_get_factor ()</title>
+<title><anchor id="gimp-zoom-preview-get-factor" role="function"/>gimp_zoom_preview_get_factor ()</title>
 <indexterm><primary>gimp_zoom_preview_get_factor</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>     gimp_zoom_preview_get_factor    (<link linkend="GimpZoomPreview">GimpZoomPreview</link> *preview);</programlisting>
 <para>
 
@@ -168,10 +171,10 @@ This function also allow to get the current width, height and bpp of the
 </variablelist></refsect2>
 
 </refsect1>
-<refsect1>
-<title>Properties</title>
+<refsect1 id="property_details">
+<title id="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpZoomPreview--drawable"/>The &quot;<literal>drawable</literal>&quot; property</title>
-<programlisting>  &quot;drawable&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
+<indexterm role="GIMP 2.4"><primary>GimpZoomPreview:drawable</primary></indexterm><programlisting>  &quot;drawable&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para>
 The drawable the <link linkend="GimpZoomPreview"><type>GimpZoomPreview</type></link> is currently attached to.</para>
 <para>

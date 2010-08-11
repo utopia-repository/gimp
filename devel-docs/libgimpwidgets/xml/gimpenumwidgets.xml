@@ -4,16 +4,19 @@
 
 <refentry id="libgimpwidgets-GimpEnumWidgets">
 <refmeta>
-<refentrytitle>GimpEnumWidgets</refentrytitle>
+<refentrytitle id="top_of_page">GimpEnumWidgets</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpEnumWidgets</refname><refpurpose></refpurpose>
+<refname>GimpEnumWidgets</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -73,17 +76,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-enum-radio-box-new"/>gimp_enum_radio_box_new ()</title>
+<title><anchor id="gimp-enum-radio-box-new" role="function" condition="since:GIMP 2.4"/>gimp_enum_radio_box_new ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_radio_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_enum_radio_box_new         (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="GCallback">GCallback</link> callback,
                                              <link linkend="gpointer">gpointer</link> callback_data,
@@ -115,7 +118,7 @@ with up to three or four values. Often it is better to use a
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-radio-box-new-with-range"/>gimp_enum_radio_box_new_with_range ()</title>
+<title><anchor id="gimp-enum-radio-box-new-with-range" role="function" condition="since:GIMP 2.4"/>gimp_enum_radio_box_new_with_range ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_radio_box_new_with_range</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_enum_radio_box_new_with_range
                                             (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="gint">gint</link> minimum,
@@ -155,7 +158,7 @@ enum values.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-radio-frame-new"/>gimp_enum_radio_frame_new ()</title>
+<title><anchor id="gimp-enum-radio-frame-new" role="function" condition="since:GIMP 2.4"/>gimp_enum_radio_frame_new ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_radio_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_enum_radio_frame_new       (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="GtkWidget">GtkWidget</link> *label_widget,
                                              <link linkend="GCallback">GCallback</link> callback,
@@ -190,7 +193,7 @@ Calls <link linkend="gimp-enum-radio-box-new"><function>gimp_enum_radio_box_new(
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-radio-frame-new-with-range"/>gimp_enum_radio_frame_new_with_range ()</title>
+<title><anchor id="gimp-enum-radio-frame-new-with-range" role="function" condition="since:GIMP 2.4"/>gimp_enum_radio_frame_new_with_range ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_radio_frame_new_with_range</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_enum_radio_frame_new_with_range
                                             (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="gint">gint</link> minimum,
@@ -233,7 +236,7 @@ vbox into a <link linkend="GtkFrame"><type>GtkFrame</type></link>.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-stock-box-new"/>gimp_enum_stock_box_new ()</title>
+<title><anchor id="gimp-enum-stock-box-new" role="function" condition="since:GIMP 2.4"/>gimp_enum_stock_box_new ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_stock_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_enum_stock_box_new         (<link linkend="GType">GType</link> enum_type,
                                              const <link linkend="gchar">gchar</link> *stock_prefix,
                                              <link linkend="GtkIconSize">GtkIconSize</link> icon_size,
@@ -272,7 +275,7 @@ nick to the given <parameter>stock_prefix</parameter>.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-stock-box-new-with-range"/>gimp_enum_stock_box_new_with_range ()</title>
+<title><anchor id="gimp-enum-stock-box-new-with-range" role="function" condition="since:GIMP 2.4"/>gimp_enum_stock_box_new_with_range ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_stock_box_new_with_range</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_enum_stock_box_new_with_range
                                             (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="gint">gint</link> minimum,
@@ -320,7 +323,7 @@ enum values.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-stock-box-set-child-padding"/>gimp_enum_stock_box_set_child_padding ()</title>
+<title><anchor id="gimp-enum-stock-box-set-child-padding" role="function" condition="since:GIMP 2.4"/>gimp_enum_stock_box_set_child_padding ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_stock_box_set_child_padding</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_enum_stock_box_set_child_padding
                                             (<link linkend="GtkWidget">GtkWidget</link> *stock_box,
                                              <link linkend="gint">gint</link> xpad,

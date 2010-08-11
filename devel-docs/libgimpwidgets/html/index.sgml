@@ -297,6 +297,13 @@
 <ANCHOR id="GIMP-COLOR-SELECTOR-SIZE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-SIZE:CAPS">
 <ANCHOR id="GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-BAR-SIZE:CAPS">
 <ANCHOR id="GimpColorSelectorChannel" href="libgimpwidgets/GimpColorSelector.html#GimpColorSelectorChannel">
+<ANCHOR id="GIMP-COLOR-SELECTOR-HUE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-HUE:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-SATURATION:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-SATURATION:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-VALUE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-VALUE:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-RED:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-RED:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-GREEN:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-GREEN:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-BLUE:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-BLUE:CAPS">
+<ANCHOR id="GIMP-COLOR-SELECTOR-ALPHA:CAPS" href="libgimpwidgets/GimpColorSelector.html#GIMP-COLOR-SELECTOR-ALPHA:CAPS">
 <ANCHOR id="gimp-color-selector-new" href="libgimpwidgets/GimpColorSelector.html#gimp-color-selector-new">
 <ANCHOR id="gimp-color-selector-set-toggles-visible" href="libgimpwidgets/GimpColorSelector.html#gimp-color-selector-set-toggles-visible">
 <ANCHOR id="gimp-color-selector-set-toggles-sensitive" href="libgimpwidgets/GimpColorSelector.html#gimp-color-selector-set-toggles-sensitive">

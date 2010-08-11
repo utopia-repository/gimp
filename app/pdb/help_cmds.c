@@ -24,13 +24,14 @@
 #include <glib-object.h>
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
-#include "plug-in/plug-in-help-domain.h"
-#include "plug-in/plug-in.h"
+#include "plug-in/gimpplugin.h"
+#include "plug-in/gimppluginmanager-help-domain.h"
+#include "plug-in/gimppluginmanager.h"
 
 
 static GValueArray *
@@ -49,9 +50,13 @@ help_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (! help_domain && gimp->current_plug_in)
+      GimpPlugInManager *manager = gimp->plug_in_manager;
+
+      if (! help_domain && manager->current_plug_in)
         help_domain = (gchar *)
-          plug_in_help_domain (gimp, gimp->current_plug_in->prog, NULL);
+          gimp_plug_in_manager_get_help_domain (manager,
+                                                manager->current_plug_in->prog,
+                                                NULL);
 
       gimp_help (gimp, help_domain, help_id);
     }
@@ -60,7 +65,7 @@ help_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_help_procs (Gimp *gimp)
+register_help_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -77,7 +82,6 @@ register_help_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2000",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("help-domain",
                                                        "help domain",
@@ -92,7 +96,6 @@ register_help_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

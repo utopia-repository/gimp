@@ -69,24 +69,7 @@ struct _Gimp
   GimpModuleDB           *module_db;
   gboolean                write_modulerc;
 
-  GSList                 *plug_in_defs;
-  gboolean                write_pluginrc;
-
-  GSList                 *plug_in_procedures;
-  GSList                 *plug_in_menu_branches;
-  GSList                 *plug_in_locale_domains;
-  GSList                 *plug_in_help_domains;
-
-  PlugIn                 *current_plug_in;
-  GSList                 *open_plug_ins;
-  GSList                 *plug_in_stack;
-  GSList                 *last_plug_ins;
-
-  PlugInShm              *plug_in_shm;
-  GimpInterpreterDB      *interpreter_db;
-  GimpEnvironTable       *environ_table;
-  GimpPlugInDebug        *plug_in_debug;
-  GList                  *plug_in_data_list;
+  GimpPlugInManager      *plug_in_manager;
 
   GimpContainer          *images;
   gint                    next_image_ID;
@@ -110,11 +93,7 @@ struct _Gimp
   GimpDataFactory        *gradient_factory;
   GimpDataFactory        *palette_factory;
 
-  GHashTable             *procedural_ht;
-  GHashTable             *procedural_compat_ht;
-
-  GSList                 *load_procs;
-  GSList                 *save_procs;
+  GimpPDB                *pdb;
 
   GimpContainer          *tool_info_list;
   GimpToolInfo           *standard_tool_info;
@@ -140,15 +119,14 @@ struct _GimpClass
 {
   GimpObjectClass  parent_class;
 
-  void     (* initialize)            (Gimp               *gimp,
-                                      GimpInitStatusFunc  status_callback);
-  void     (* restore)               (Gimp               *gimp,
-                                      GimpInitStatusFunc  status_callback);
-  gboolean (* exit)                  (Gimp               *gimp,
-                                      gboolean            force);
+  void     (* initialize)     (Gimp               *gimp,
+                               GimpInitStatusFunc  status_callback);
+  void     (* restore)        (Gimp               *gimp,
+                               GimpInitStatusFunc  status_callback);
+  gboolean (* exit)           (Gimp               *gimp,
+                               gboolean            force);
 
-  void     (* buffer_changed)        (Gimp               *gimp);
-  void     (* last_plug_ins_changed) (Gimp               *gimp);
+  void     (* buffer_changed) (Gimp               *gimp);
 };
 
 
@@ -178,8 +156,6 @@ void          gimp_exit                 (Gimp                *gimp,
 
 void          gimp_set_global_buffer    (Gimp                *gimp,
                                          GimpBuffer          *buffer);
-void          gimp_set_last_plug_in     (Gimp                *gimp,
-                                         GimpPlugInProcedure *procedure);
 
 GimpImage   * gimp_create_image         (Gimp                *gimp,
                                          gint                 width,

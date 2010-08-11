@@ -4,16 +4,19 @@
 
 <refentry id="GimpModuleDB">
 <refmeta>
-<refentrytitle>GimpModuleDB</refentrytitle>
+<refentrytitle id="top_of_page">GimpModuleDB</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPMODULE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpModuleDB</refname><refpurpose>Keeps a list of <link linkend="GimpModule"><type>GimpModule</type></link>'s found in a given searchpath.</refpurpose>
+<refname>GimpModuleDB</refname>
+<refpurpose>Keeps a list of <link linkend="GimpModule"><type>GimpModule</type></link>'s found in a given searchpath.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -33,8 +36,8 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-module-db-get-load
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -48,41 +51,41 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-module-db-get-load
 
 
 
-<refsect1>
-<title>Signal Prototypes</title>
+<refsect1 id="signal_proto">
+<title id="signal_proto.title">Signals</title>
 <synopsis>
 
 &quot;<link linkend="GimpModuleDB-add">add</link>&quot;       <link linkend="void">void</link>        user_function      (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
-                                            <link linkend="GimpModule">GimpModule</link> *arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="GimpModule">GimpModule</link>   *arg1,
+                                            <link linkend="gpointer">gpointer</link>      user_data)         : Run first
 &quot;<link linkend="GimpModuleDB-module-modified">module-modified</link>&quot;
             <link linkend="void">void</link>        user_function      (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
-                                            <link linkend="GimpModule">GimpModule</link> *arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="GimpModule">GimpModule</link>   *arg1,
+                                            <link linkend="gpointer">gpointer</link>      user_data)         : Run first
 &quot;<link linkend="GimpModuleDB-remove">remove</link>&quot;    <link linkend="void">void</link>        user_function      (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
-                                            <link linkend="GimpModule">GimpModule</link> *arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);
+                                            <link linkend="GimpModule">GimpModule</link>   *arg1,
+                                            <link linkend="gpointer">gpointer</link>      user_data)         : Run first
 </synopsis>
 </refsect1>
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Keeps a list of <link linkend="GimpModule"><type>GimpModule</type></link>'s found in a given searchpath.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpModuleDB-struct"/>GimpModuleDB</title>
+<title><anchor id="GimpModuleDB-struct" role="struct"/>GimpModuleDB</title>
 <indexterm><primary>GimpModuleDB</primary></indexterm><programlisting>typedef struct _GimpModuleDB GimpModuleDB;</programlisting>
 <para>
 The <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link> struct contains no public members.
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-module-db-new"/>gimp_module_db_new ()</title>
+<title><anchor id="gimp-module-db-new" role="function"/>gimp_module_db_new ()</title>
 <indexterm><primary>gimp_module_db_new</primary></indexterm><programlisting><link linkend="GimpModuleDB">GimpModuleDB</link>* gimp_module_db_new            (<link linkend="gboolean">gboolean</link> verbose);</programlisting>
 <para>
 Creates a new <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link> instance. The <parameter>verbose</parameter> parameter will be
@@ -91,13 +94,13 @@ passed to the created <link linkend="GimpModule"><type>GimpModule</type></link> 
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>verbose</parameter>&nbsp;:</term>
-<listitem><simpara> Pass <literal>TRUE</literal> to enable debugging output.
+<listitem><simpara> Pass <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> to enable debugging output.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The new <link linkend="GimpModuleDB"><type>GimpModuleDB</type></link> instance.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-module-db-set-load-inhibit"/>gimp_module_db_set_load_inhibit ()</title>
+<title><anchor id="gimp-module-db-set-load-inhibit" role="function"/>gimp_module_db_set_load_inhibit ()</title>
 <indexterm><primary>gimp_module_db_set_load_inhibit</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_module_db_set_load_inhibit (<link linkend="GimpModuleDB">GimpModuleDB</link> *db,
                                              const <link linkend="gchar">gchar</link> *load_inhibit);</programlisting>
 <para>
@@ -115,7 +118,7 @@ by <parameter>db</parameter> (using <link linkend="gimp-module-set-load-inhibit"
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-module-db-get-load-inhibit"/>gimp_module_db_get_load_inhibit ()</title>
+<title><anchor id="gimp-module-db-get-load-inhibit" role="function"/>gimp_module_db_get_load_inhibit ()</title>
 <indexterm><primary>gimp_module_db_get_load_inhibit</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_module_db_get_load_inhibit
                                             (<link linkend="GimpModuleDB">GimpModuleDB</link> *db);</programlisting>
 <para>
@@ -131,7 +134,7 @@ which are excluded from auto-loading.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-module-db-load"/>gimp_module_db_load ()</title>
+<title><anchor id="gimp-module-db-load" role="function"/>gimp_module_db_load ()</title>
 <indexterm><primary>gimp_module_db_load</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_module_db_load             (<link linkend="GimpModuleDB">GimpModuleDB</link> *db,
                                              const <link linkend="gchar">gchar</link> *module_path);</programlisting>
 <para>
@@ -150,7 +153,7 @@ instance for every loadable module contained in the directories.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-module-db-refresh"/>gimp_module_db_refresh ()</title>
+<title><anchor id="gimp-module-db-refresh" role="function"/>gimp_module_db_refresh ()</title>
 <indexterm><primary>gimp_module_db_refresh</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_module_db_refresh          (<link linkend="GimpModuleDB">GimpModuleDB</link> *db,
                                              const <link linkend="gchar">gchar</link> *module_path);</programlisting>
 <para>
@@ -175,12 +178,12 @@ instances which actually implement types.</para>
 
 </refsect1>
 
-<refsect1>
-<title>Signals</title>
+<refsect1 id="signals">
+<title id="signals.title">Signal Details</title>
 <refsect2><title><anchor id="GimpModuleDB-add"/>The &quot;add&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
-                                            <link linkend="GimpModule">GimpModule</link> *arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpModuleDB::add</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
+                                            <link linkend="GimpModule">GimpModule</link>   *arg1,
+                                            <link linkend="gpointer">gpointer</link>      user_data)         : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -194,9 +197,9 @@ instances which actually implement types.</para>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2><refsect2><title><anchor id="GimpModuleDB-module-modified"/>The &quot;module-modified&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
-                                            <link linkend="GimpModule">GimpModule</link> *arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpModuleDB::module-modified</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
+                                            <link linkend="GimpModule">GimpModule</link>   *arg1,
+                                            <link linkend="gpointer">gpointer</link>      user_data)         : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -210,9 +213,9 @@ instances which actually implement types.</para>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
 </variablelist></refsect2><refsect2><title><anchor id="GimpModuleDB-remove"/>The &quot;remove&quot; signal</title>
-<programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
-                                            <link linkend="GimpModule">GimpModule</link> *arg1,
-                                            <link linkend="gpointer">gpointer</link> user_data);</programlisting>
+<indexterm><primary>GimpModuleDB::remove</primary></indexterm><programlisting><link linkend="void">void</link>        user_function                  (<link linkend="GimpModuleDB">GimpModuleDB</link> *gimpmoduledb,
+                                            <link linkend="GimpModule">GimpModule</link>   *arg1,
+                                            <link linkend="gpointer">gpointer</link>      user_data)         : Run first</programlisting>
 <para>
 
 </para><variablelist role="params">

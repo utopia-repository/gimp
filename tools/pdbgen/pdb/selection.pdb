@@ -81,7 +81,7 @@ HELP
 
     @outargs = (
 	{ name => 'value', type => '0 <= int32 <= 255',
-	  desc => 'Value of the selection %%desc%%' }
+	  desc => 'Value of the selection' }
     );
 
     %invoke = (
@@ -206,7 +206,7 @@ sub selection_invert {
 
     $help = <<'HELP';
 This procedure inverts the selection mask. For every pixel in the selection
-channel, its new value is calculated as (255 - old_value).
+channel, its new value is calculated as (255 - old-value).
 HELP
 
     &std_pdb_misc;
@@ -230,8 +230,9 @@ sub selection_sharpen {
 
     $help = <<'HELP';
 This procedure sharpens the selection mask. For every pixel in the selection
-channel, if the value is > 0, the new pixel is assigned a value of 255. This
-removes any "anti-aliasing" that might exist in the selection mask's boundary.
+channel, if the value is > 127, the new pixel is assigned a value of 255.
+This removes any "anti-aliasing" that might exist in the selection mask's
+boundary.
 HELP
 
     &std_pdb_misc;
@@ -254,8 +255,8 @@ sub selection_all {
     $blurb = 'Select all of the image.';
 
     $help = <<'HELP';
-This procedure sets the selection mask to completely encompass the image. Every
-pixel in the selection channel is set to 255.
+This procedure sets the selection mask to completely encompass the image.
+Every pixel in the selection channel is set to 255.
 HELP
 
     &std_pdb_misc;
@@ -346,8 +347,9 @@ HELP
     %invoke = (
 	code => <<'CODE'
 {
+  /* FIXME: "feather" hardcoded to TRUE */
   gimp_channel_border (gimp_image_get_mask (image),
-                       radius, radius, TRUE);
+                       radius, radius, TRUE, TRUE);
 }
 CODE
     );
@@ -488,7 +490,7 @@ HELP
 	{ name => 'channel', type => 'channel',
 	  desc => 'The channel' },
 	{ name => 'operation', type => 'enum GimpChannelOps',
-	  desc => 'The selection operation: %%desc%%' }
+	  desc => 'The selection operation' }
     );
 
     %invoke = (

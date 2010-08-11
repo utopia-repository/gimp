@@ -50,8 +50,15 @@ static void  run   (const gchar      *name,
                     gint             *nreturn_vals,
                     GimpParam       **return_vals);
 
+gboolean      undo_touched;
+gboolean      load_interactive;
+gchar        *image_comment;
+gint32        display_ID;
+JpegSaveVals  jsvals;
+gint32        orig_image_ID_global;
+gint32        drawable_ID_global;
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,  /* init_proc  */
   NULL,  /* quit_proc  */
@@ -66,25 +73,25 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef load_args[] =
+  static const GimpParamDef load_args[] =
   {
     { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_STRING,   "filename",     "The name of the file to load" },
     { GIMP_PDB_STRING,   "raw-filename", "The name of the file to load" }
   };
-  static GimpParamDef load_return_vals[] =
+  static const GimpParamDef load_return_vals[] =
   {
     { GIMP_PDB_IMAGE,   "image",         "Output image" }
   };
 
 #ifdef HAVE_EXIF
 
-  static GimpParamDef thumb_args[] =
+  static const GimpParamDef thumb_args[] =
   {
     { GIMP_PDB_STRING, "filename",     "The name of the file to load"  },
     { GIMP_PDB_INT32,  "thumb-size",   "Preferred thumbnail size"      }
   };
-  static GimpParamDef thumb_return_vals[] =
+  static const GimpParamDef thumb_return_vals[] =
   {
     { GIMP_PDB_IMAGE,  "image",        "Thumbnail image"               },
     { GIMP_PDB_INT32,  "image-width",  "Width of full-sized image"     },
@@ -93,7 +100,7 @@ query (void)
 
 #endif /* HAVE_EXIF */
 
-  static GimpParamDef save_args[] =
+  static const GimpParamDef save_args[] =
   {
     { GIMP_PDB_INT32,    "run-mode",     "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",        "Input image" },
@@ -190,6 +197,9 @@ run (const gchar      *name,
   *return_vals  = values;
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+
+  image_ID_global = -1;
+  layer_ID_global = -1;
 
   if (strcmp (name, LOAD_PROC) == 0)
     {

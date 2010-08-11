@@ -4,16 +4,19 @@
 
 <refentry id="GimpEnumLabel">
 <refmeta>
-<refentrytitle>GimpEnumLabel</refentrytitle>
+<refentrytitle id="top_of_page">GimpEnumLabel</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpEnumLabel</refname><refpurpose></refpurpose>
+<refname>GimpEnumLabel</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -28,8 +31,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -45,8 +48,8 @@
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpEnumLabel implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -57,23 +60,23 @@ GimpEnumLabel implements
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpEnumLabel-struct"/>GimpEnumLabel</title>
+<title><anchor id="GimpEnumLabel-struct" role="struct"/>GimpEnumLabel</title>
 <indexterm><primary>GimpEnumLabel</primary></indexterm><programlisting>typedef struct _GimpEnumLabel GimpEnumLabel;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-label-new"/>gimp_enum_label_new ()</title>
+<title><anchor id="gimp-enum-label-new" role="function" condition="since:GIMP 2.4"/>gimp_enum_label_new ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_label_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_enum_label_new             (<link linkend="GType">GType</link> enum_type,
                                              <link linkend="gint">gint</link> value);</programlisting>
 <para>
@@ -93,7 +96,7 @@ GimpEnumLabel implements
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enum-label-set-value"/>gimp_enum_label_set_value ()</title>
+<title><anchor id="gimp-enum-label-set-value" role="function" condition="since:GIMP 2.4"/>gimp_enum_label_set_value ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enum_label_set_value</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_enum_label_set_value       (<link linkend="GimpEnumLabel">GimpEnumLabel</link> *label,
                                              <link linkend="gint">gint</link> value);</programlisting>
 <para>

@@ -4,17 +4,20 @@
 
 <refentry id="libgimp-gimpui">
 <refmeta>
-<refentrytitle>gimpui</refentrytitle>
+<refentrytitle id="top_of_page">gimpui</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpui</refname><refpurpose>Common user interface functions. This header includes all other GIMP User
+<refname>gimpui</refname>
+<refpurpose>Common user interface functions. This header includes all other GIMP User
 Interface Library headers.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -39,8 +42,8 @@ Interface Library headers.</refpurpose>
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Common user interface functions. This header includes all other GIMP User
 Interface Library headers.
@@ -48,10 +51,10 @@ Interface Library headers.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-ui-init"/>gimp_ui_init ()</title>
+<title><anchor id="gimp-ui-init" role="function"/>gimp_ui_init ()</title>
 <indexterm><primary>gimp_ui_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_ui_init                    (const <link linkend="gchar">gchar</link> *prog_name,
                                              <link linkend="gboolean">gboolean</link> preview);</programlisting>
 <para>
@@ -76,7 +79,7 @@ gimprc variables <parameter>min_colors</parameter> and <parameter>install_cmap</
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-ui-get-display-window"/>gimp_ui_get_display_window ()</title>
+<title><anchor id="gimp-ui-get-display-window" role="function" condition="since:GIMP 2.4"/>gimp_ui_get_display_window ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_ui_get_display_window</primary></indexterm><programlisting><link linkend="GdkWindow">GdkWindow</link>*  gimp_ui_get_display_window      (<link linkend="guint32">guint32</link> gdisp_ID);</programlisting>
 <para>
 Returns the <link linkend="GdkWindow"><type>GdkWindow</type></link> of a display window. The purpose is to allow
@@ -92,7 +95,7 @@ You shouldn't have to call this function directly. Use
 <varlistentry><term><parameter>gdisp_ID</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A reference to a <link linkend="GdkWindow"><type>GdkWindow</type></link> or <literal>NULL</literal>. You should
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A reference to a <link linkend="GdkWindow"><type>GdkWindow</type></link> or <link linkend="NULL:CAPS"><literal>NULL</literal></link>. You should
               unref the window using <link linkend="g-object-unref"><function>g_object_unref()</function></link> as soon as
               you don't need it any longer.
 
@@ -100,7 +103,7 @@ You shouldn't have to call this function directly. Use
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-ui-get-progress-window"/>gimp_ui_get_progress_window ()</title>
+<title><anchor id="gimp-ui-get-progress-window" role="function" condition="since:GIMP 2.4"/>gimp_ui_get_progress_window ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_ui_get_progress_window</primary></indexterm><programlisting><link linkend="GdkWindow">GdkWindow</link>*  gimp_ui_get_progress_window     (void);</programlisting>
 <para>
 Returns the <link linkend="GdkWindow"><type>GdkWindow</type></link> of the window this plug-in's progress bar is
@@ -113,7 +116,7 @@ You shouldn't have to call this function directly. Use
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A reference to a <link linkend="GdkWindow"><type>GdkWindow</type></link> or <literal>NULL</literal>. You should
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A reference to a <link linkend="GdkWindow"><type>GdkWindow</type></link> or <link linkend="NULL:CAPS"><literal>NULL</literal></link>. You should
               unref the window using <link linkend="g-object-unref"><function>g_object_unref()</function></link> as soon as
               you don't need it any longer.
 
@@ -121,7 +124,7 @@ You shouldn't have to call this function directly. Use
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-window-set-transient"/>gimp_window_set_transient ()</title>
+<title><anchor id="gimp-window-set-transient" role="function" condition="since:GIMP 2.4"/>gimp_window_set_transient ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_window_set_transient</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_window_set_transient       (<link linkend="GtkWindow">GtkWindow</link> *window);</programlisting>
 <para>
 Indicates to the window manager that <parameter>window</parameter> is a transient dialog
@@ -136,7 +139,7 @@ started from. See also <link linkend="gimp-window-set-transient-for-display"><fu
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-window-set-transient-for-display"/>gimp_window_set_transient_for_display ()</title>
+<title><anchor id="gimp-window-set-transient-for-display" role="function" condition="since:GIMP 2.4"/>gimp_window_set_transient_for_display ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_window_set_transient_for_display</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_window_set_transient_for_display
                                             (<link linkend="GtkWindow">GtkWindow</link> *window,
                                              <link linkend="guint32">guint32</link> gdisp_ID);</programlisting>

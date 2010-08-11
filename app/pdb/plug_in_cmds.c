@@ -28,17 +28,17 @@
 #include "libgimpbase/gimpbase.h"
 
 #include "pdb-types.h"
-#include "gimp-pdb.h"
+#include "gimppdb.h"
 #include "gimpprocedure.h"
 #include "core/gimpparamspecs.h"
 
 #include "core/gimp.h"
 #include "gimppluginprocedure.h"
+#include "plug-in/gimpplugin.h"
+#include "plug-in/gimppluginmanager-menu-branch.h"
+#include "plug-in/gimppluginmanager-query.h"
+#include "plug-in/gimppluginmanager.h"
 #include "plug-in/plug-in-def.h"
-#include "plug-in/plug-in-menu-branch.h"
-#include "plug-in/plug-in.h"
-#include "plug-in/plug-ins-query.h"
-#include "plug-in/plug-ins.h"
 
 
 static GValueArray *
@@ -60,13 +60,14 @@ plugins_query_invoker (GimpProcedure     *procedure,
 
   search_string = g_value_get_string (&args->values[0]);
 
-  num_plugins = plug_ins_query (gimp, search_string,
-                                &menu_path,
-                                &plugin_accelerator,
-                                &plugin_location,
-                                &plugin_image_type,
-                                &plugin_real_name,
-                                &plugin_install_time);
+  num_plugins = gimp_plug_in_manager_query (gimp->plug_in_manager,
+                                            search_string,
+                                            &menu_path,
+                                            &plugin_accelerator,
+                                            &plugin_location,
+                                            &plugin_image_type,
+                                            &plugin_real_name,
+                                            &plugin_install_time);
 
   return_vals = gimp_procedure_get_return_values (procedure, TRUE);
 
@@ -102,12 +103,12 @@ plugin_domain_register_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (gimp->current_plug_in && gimp->current_plug_in->query)
+      GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+      if (plug_in && plug_in->call_mode == GIMP_PLUG_IN_CALL_QUERY)
         {
-          plug_in_def_set_locale_domain_name (gimp->current_plug_in->plug_in_def,
-                                              domain_name);
-          plug_in_def_set_locale_domain_path (gimp->current_plug_in->plug_in_def,
-                                              domain_path);
+          plug_in_def_set_locale_domain_name (plug_in->plug_in_def, domain_name);
+          plug_in_def_set_locale_domain_path (plug_in->plug_in_def, domain_path);
         }
       else
         success = FALSE;
@@ -132,12 +133,12 @@ plugin_help_register_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (gimp->current_plug_in && gimp->current_plug_in->query)
+      GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+      if (plug_in && plug_in->call_mode == GIMP_PLUG_IN_CALL_QUERY)
         {
-          plug_in_def_set_help_domain_name (gimp->current_plug_in->plug_in_def,
-                                            domain_name);
-          plug_in_def_set_help_domain_uri (gimp->current_plug_in->plug_in_def,
-                                           domain_uri);
+          plug_in_def_set_help_domain_name (plug_in->plug_in_def, domain_name);
+          plug_in_def_set_help_domain_uri  (plug_in->plug_in_def, domain_uri);
         }
       else
         success = FALSE;
@@ -162,12 +163,12 @@ plugin_menu_register_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (gimp->current_plug_in)
+      GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+      if (plug_in)
         {
           gchar *canonical = gimp_canonicalize_identifier (procedure_name);
-
-          success = plug_in_menu_register (gimp->current_plug_in,
-                                           canonical, menu_path);
+          success = gimp_plug_in_menu_register (plug_in, canonical, menu_path);
           g_free (canonical);
         }
       else
@@ -195,10 +196,12 @@ plugin_menu_branch_register_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (gimp->current_plug_in)
+      GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+      if (plug_in)
         {
-          plug_in_menu_branch_add (gimp, gimp->current_plug_in->prog,
-                                   menu_path, menu_name);
+          gimp_plug_in_manager_add_menu_branch (gimp->plug_in_manager,
+                                                plug_in->prog, menu_path, menu_name);
         }
       else
         success = FALSE;
@@ -227,14 +230,16 @@ plugin_icon_register_invoker (GimpProcedure     *procedure,
 
   if (success)
     {
-      if (gimp->current_plug_in && gimp->current_plug_in->query)
+      GimpPlugIn *plug_in = gimp->plug_in_manager->current_plug_in;
+
+      if (plug_in && plug_in->call_mode == GIMP_PLUG_IN_CALL_QUERY)
         {
           GimpPlugInProcedure *proc;
           gchar               *canonical;
 
           canonical = gimp_canonicalize_identifier (procedure_name);
 
-          proc = gimp_plug_in_procedure_find (gimp->current_plug_in->plug_in_def->procedures,
+          proc = gimp_plug_in_procedure_find (plug_in->plug_in_def->procedures,
                                               canonical);
 
           g_free (canonical);
@@ -253,7 +258,7 @@ plugin_icon_register_invoker (GimpProcedure     *procedure,
 }
 
 void
-register_plug_in_procs (Gimp *gimp)
+register_plug_in_procs (GimpPDB *pdb)
 {
   GimpProcedure *procedure;
 
@@ -270,7 +275,6 @@ register_plug_in_procs (Gimp *gimp)
                                      "Andy Thomas",
                                      "1998",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("search-string",
                                                        "search string",
@@ -344,7 +348,7 @@ register_plug_in_procs (Gimp *gimp)
                                                                  "plugin real name",
                                                                  "The internal name of the plugin",
                                                                  GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -360,7 +364,6 @@ register_plug_in_procs (Gimp *gimp)
                                      "Sven Neumann",
                                      "2000",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("domain-name",
                                                        "domain name",
@@ -375,7 +378,7 @@ register_plug_in_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE | GIMP_PARAM_NO_VALIDATE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -391,7 +394,6 @@ register_plug_in_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2000",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("domain-name",
                                                        "domain name",
@@ -406,7 +408,7 @@ register_plug_in_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -422,7 +424,6 @@ register_plug_in_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -437,7 +438,7 @@ register_plug_in_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -453,7 +454,6 @@ register_plug_in_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2005",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("menu-path",
                                                        "menu path",
@@ -468,7 +468,7 @@ register_plug_in_procs (Gimp *gimp)
                                                        FALSE, FALSE,
                                                        NULL,
                                                        GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
 
   /*
@@ -484,7 +484,6 @@ register_plug_in_procs (Gimp *gimp)
                                      "Michael Natterer",
                                      "2004",
                                      NULL);
-
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_string ("procedure-name",
                                                        "procedure name",
@@ -495,14 +494,14 @@ register_plug_in_procs (Gimp *gimp)
   gimp_procedure_add_argument (procedure,
                                g_param_spec_enum ("icon-type",
                                                   "icon type",
-                                                  "The type of the icon: { GIMP_ICON_TYPE_STOCK_ID (0), GIMP_ICON_TYPE_INLINE_PIXBUF (1), GIMP_ICON_TYPE_IMAGE_FILE (2) }",
+                                                  "The type of the icon",
                                                   GIMP_TYPE_ICON_TYPE,
                                                   GIMP_ICON_TYPE_STOCK_ID,
                                                   GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
                                gimp_param_spec_int32 ("icon-data-length",
                                                       "icon data length",
-                                                      "The length of 'icon-data' (1 <= icon_data_length)",
+                                                      "The length of 'icon-data'",
                                                       1, G_MAXINT32, 1,
                                                       GIMP_PARAM_READWRITE));
   gimp_procedure_add_argument (procedure,
@@ -510,7 +509,6 @@ register_plug_in_procs (Gimp *gimp)
                                                            "icon data",
                                                            "The procedure's icon. The format depends on the 'icon_type' parameter",
                                                            GIMP_PARAM_READWRITE));
-  gimp_pdb_register (gimp, procedure);
+  gimp_pdb_register_procedure (pdb, procedure);
   g_object_unref (procedure);
-
 }

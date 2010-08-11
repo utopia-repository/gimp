@@ -40,6 +40,7 @@
 #include "core/gimpimage-undo.h"
 #include "core/gimpimage-undo-push.h"
 #include "core/gimplayer-floating-sel.h"
+#include "core/gimplist.h"
 #include "core/gimptoolinfo.h"
 #include "core/gimpundo.h"
 #include "core/gimpundostack.h"
@@ -125,7 +126,7 @@ static gboolean  gimp_text_tool_set_drawable   (GimpTextTool      *text_tool,
                                                 gboolean           confirm);
 
 
-G_DEFINE_TYPE (GimpTextTool, gimp_text_tool, GIMP_TYPE_TOOL);
+G_DEFINE_TYPE (GimpTextTool, gimp_text_tool, GIMP_TYPE_TOOL)
 
 #define parent_class gimp_text_tool_parent_class
 
@@ -241,11 +242,11 @@ gimp_text_tool_control (GimpTool       *tool,
 
   switch (action)
     {
-    case PAUSE:
-    case RESUME:
+    case GIMP_TOOL_ACTION_PAUSE:
+    case GIMP_TOOL_ACTION_RESUME:
       break;
 
-    case HALT:
+    case GIMP_TOOL_ACTION_HALT:
       gimp_text_tool_set_drawable (text_tool, NULL, FALSE);
       break;
     }
@@ -264,8 +265,8 @@ gimp_text_tool_button_press (GimpTool        *tool,
   GimpText     *text      = text_tool->text;
   GimpDrawable *drawable;
 
-  gimp_tool_control_activate (tool->control);
-  tool->display = display;
+  GIMP_TOOL_CLASS (parent_class)->button_press (tool, coords, time, state,
+                                                display);
 
   text_tool->x1 = coords->x;
   text_tool->y1 = coords->y;
@@ -327,12 +328,8 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
   if (text_tool->text != text)
     {
       GimpTextOptions *options;
-      GtkWidget       *button;
-      GtkWidget       *button2;
 
       options = GIMP_TEXT_OPTIONS (tool->tool_info->tool_options);
-      button  = g_object_get_data (G_OBJECT (options), "gimp-text-to-vectors");
-      button2 = g_object_get_data (G_OBJECT (options), "gimp-text-to-vectors-warped");
 
       if (text_tool->text)
         {
@@ -343,18 +340,19 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
           if (text_tool->pending)
             gimp_text_tool_apply (text_tool);
 
-          if (button)
+          if (options->to_vectors_button)
             {
-              gtk_widget_set_sensitive (button, FALSE);
-              g_signal_handlers_disconnect_by_func (button,
+              gtk_widget_set_sensitive (options->to_vectors_button, FALSE);
+              g_signal_handlers_disconnect_by_func (options->to_vectors_button,
                                                     gimp_text_tool_create_vectors,
                                                     text_tool);
             }
 
-          if (button2)
+          if (options->along_vectors_button)
             {
-              gtk_widget_set_sensitive (button2, FALSE);
-              g_signal_handlers_disconnect_by_func (button2,
+              gtk_widget_set_sensitive (options->along_vectors_button,
+                                        FALSE);
+              g_signal_handlers_disconnect_by_func (options->along_vectors_button,
                                                     gimp_text_tool_create_vectors_warped,
                                                     text_tool);
             }
@@ -379,20 +377,20 @@ gimp_text_tool_connect (GimpTextTool  *text_tool,
                             G_CALLBACK (gimp_text_tool_text_notify),
                             text_tool);
 
-          if (button)
+          if (options->to_vectors_button)
             {
-              g_signal_connect_swapped (button, "clicked",
+              g_signal_connect_swapped (options->to_vectors_button, "clicked",
                                         G_CALLBACK (gimp_text_tool_create_vectors),
                                         text_tool);
-              gtk_widget_set_sensitive (button, TRUE);
+              gtk_widget_set_sensitive (options->to_vectors_button, TRUE);
             }
 
-          if (button2)
+          if (options->along_vectors_button)
             {
-              g_signal_connect_swapped (button2, "clicked",
+              g_signal_connect_swapped (options->along_vectors_button, "clicked",
                                         G_CALLBACK (gimp_text_tool_create_vectors_warped),
                                         text_tool);
-              gtk_widget_set_sensitive (button2, TRUE);
+              gtk_widget_set_sensitive (options->along_vectors_button, TRUE);
             }
 
           if (text_tool->editor)
@@ -956,7 +954,7 @@ gimp_text_tool_set_image (GimpTextTool *text_tool,
                                text_tool, 0);
 
       options = GIMP_TOOL (text_tool)->tool_info->tool_options;
-      gimp_size_entry_set_resolution (GIMP_TEXT_OPTIONS (options)->size_entry,
+      gimp_size_entry_set_resolution (GIMP_SIZE_ENTRY (GIMP_TEXT_OPTIONS (options)->size_entry),
                                       0, image->yresolution, FALSE);
     }
 }
@@ -976,29 +974,26 @@ gimp_text_tool_set_drawable (GimpTextTool *text_tool,
 
   gimp_text_tool_set_image (text_tool, image);
 
-  if (drawable && GIMP_IS_LAYER (drawable))
+  if (GIMP_IS_TEXT_LAYER (drawable) && GIMP_TEXT_LAYER (drawable)->text)
     {
-      if (GIMP_IS_TEXT_LAYER (drawable) && GIMP_TEXT_LAYER (drawable)->text)
+      GimpTextLayer *layer = GIMP_TEXT_LAYER (drawable);
+
+      if (layer == text_tool->layer && layer->text == text_tool->text)
+        return TRUE;
+
+      if (layer->modified)
         {
-          GimpTextLayer *layer = GIMP_TEXT_LAYER (drawable);
-
-          if (layer == text_tool->layer && layer->text == text_tool->text)
-            return TRUE;
-
-          if (layer->modified)
+          if (confirm)
             {
-              if (confirm)
-                {
-                  gimp_text_tool_connect (text_tool, layer, NULL);
-                  gimp_text_tool_confirm_dialog (text_tool);
-                  return TRUE;
-                }
-            }
-          else
-            {
-              gimp_text_tool_connect (text_tool, layer, layer->text);
+              gimp_text_tool_connect (text_tool, layer, NULL);
+              gimp_text_tool_confirm_dialog (text_tool);
               return TRUE;
             }
+        }
+      else
+        {
+          gimp_text_tool_connect (text_tool, layer, layer->text);
+          return TRUE;
         }
     }
 
@@ -1016,5 +1011,44 @@ gimp_text_tool_set_layer (GimpTextTool *text_tool,
   g_return_if_fail (layer == NULL || GIMP_IS_LAYER (layer));
 
   if (gimp_text_tool_set_drawable (text_tool, GIMP_DRAWABLE (layer), TRUE))
-    gimp_text_tool_editor (text_tool);
+    {
+      GimpTool    *tool = GIMP_TOOL (text_tool);
+      GimpItem    *item = GIMP_ITEM (layer);
+      GimpContext *context;
+      GimpDisplay *display;
+
+      context = gimp_get_user_context (tool->tool_info->gimp);
+      display = gimp_context_get_display (context);
+
+      if (! display || display->image != item->image)
+        {
+          GList *list;
+
+          display = NULL;
+
+          for (list = GIMP_LIST (tool->tool_info->gimp->displays)->list;
+               list;
+               list = g_list_next (list))
+            {
+              display = list->data;
+
+              if (display->image == item->image)
+                {
+                  gimp_context_set_display (context, display);
+                  break;
+                }
+
+              display = NULL;
+            }
+        }
+
+      tool->display = display;
+
+      if (tool->display)
+        {
+          tool->drawable = GIMP_DRAWABLE (layer);
+
+          gimp_text_tool_editor (text_tool);
+        }
+    }
 }

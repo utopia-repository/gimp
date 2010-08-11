@@ -68,7 +68,7 @@ static inline void   gimp_draw_tool_shift_to_center
                                                 gdouble        *shifted_y);
 
 
-G_DEFINE_TYPE (GimpDrawTool, gimp_draw_tool, GIMP_TYPE_TOOL);
+G_DEFINE_TYPE (GimpDrawTool, gimp_draw_tool, GIMP_TYPE_TOOL)
 
 #define parent_class gimp_draw_tool_parent_class
 
@@ -127,19 +127,16 @@ gimp_draw_tool_control (GimpTool       *tool,
 
   switch (action)
     {
-    case PAUSE:
+    case GIMP_TOOL_ACTION_PAUSE:
       gimp_draw_tool_pause (draw_tool);
       break;
 
-    case RESUME:
+    case GIMP_TOOL_ACTION_RESUME:
       gimp_draw_tool_resume (draw_tool);
       break;
 
-    case HALT:
+    case GIMP_TOOL_ACTION_HALT:
       gimp_draw_tool_stop (draw_tool);
-      break;
-
-    default:
       break;
     }
 
@@ -548,10 +545,10 @@ gimp_draw_tool_draw_rectangle_by_anchor (GimpDrawTool   *draw_tool,
                                       anchor,
                                       &tx, &ty);
 
-  if (filled)
+  if (! filled)
     {
-      width++;
-      height++;
+      width  -= 1;
+      height -= 1;
     }
 
   gimp_canvas_draw_rectangle (GIMP_CANVAS (shell->canvas),
@@ -594,10 +591,10 @@ gimp_draw_tool_draw_arc_by_anchor (GimpDrawTool  *draw_tool,
                                       anchor,
                                       &tx, &ty);
 
-  if (filled)
+  if (! filled)
     {
-      radius_x += 1;
-      radius_y += 1;
+      radius_x -= 1;
+      radius_y -= 1;
     }
 
   gimp_canvas_draw_arc (GIMP_CANVAS (shell->canvas), GIMP_CANVAS_STYLE_XOR,

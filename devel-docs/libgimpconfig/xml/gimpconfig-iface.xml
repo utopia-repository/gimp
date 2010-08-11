@@ -4,16 +4,19 @@
 
 <refentry id="libgimpconfig-GimpConfig">
 <refmeta>
-<refentrytitle>gimpconfig-iface</refentrytitle>
+<refentrytitle id="top_of_page">gimpconfig-iface</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpconfig-iface</refname><refpurpose>High-level API for libgimpconfig.</refpurpose>
+<refname>gimpconfig-iface</refname>
+<refpurpose>High-level API for libgimpconfig.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 <anchor id="GimpConfigInterface"/>
 <synopsis>
 
@@ -52,8 +55,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GInterface">GInterface</link>
@@ -62,8 +65,8 @@
 
 </refsect1>
 
-<refsect1>
-<title>Prerequisites</title>
+<refsect1 id="prerequisites">
+<title id="prerequisites.title">Prerequisites</title>
 <para>
 GimpConfigInterface requires
  <link linkend="GObject">GObject</link>.</para>
@@ -72,8 +75,8 @@ GimpConfigInterface requires
 
 
 
-<refsect1>
-<title>Known Implementations</title>
+<refsect1 id="implementations">
+<title id="implementations.title">Known Implementations</title>
 <para>
 GimpConfigInterface is implemented by
  <link linkend="GimpColorConfig">GimpColorConfig</link>.</para>
@@ -83,30 +86,30 @@ GimpConfigInterface is implemented by
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 High-level API functions for libgimpconfig.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpConfig"/>GimpConfig</title>
+<title><anchor id="GimpConfig" role="struct"/>GimpConfig</title>
 <indexterm><primary>GimpConfig</primary></indexterm><programlisting>typedef struct _GimpConfig GimpConfig;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpConfigInterface-struct"/>GimpConfigInterface</title>
+<title><anchor id="GimpConfigInterface-struct" role="struct"/>GimpConfigInterface</title>
 <indexterm><primary>GimpConfigInterface</primary></indexterm><programlisting>typedef struct _GimpConfigInterface GimpConfigInterface;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-serialize-to-file"/>gimp_config_serialize_to_file ()</title>
+<title><anchor id="gimp-config-serialize-to-file" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_to_file ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_serialize_to_file</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_to_file   (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              const <link linkend="gchar">gchar</link> *filename,
                                              const <link linkend="gchar">gchar</link> *header,
@@ -139,13 +142,13 @@ calls the serialize function of the <parameter>config</parameter>'s <link linken
 <varlistentry><term><parameter>error</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if serialization succeeded, <literal>FALSE</literal> otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if serialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-serialize-to-fd"/>gimp_config_serialize_to_fd ()</title>
+<title><anchor id="gimp-config-serialize-to-fd" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_to_fd ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_serialize_to_fd</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_serialize_to_fd     (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              <link linkend="gint">gint</link> fd,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -164,13 +167,13 @@ descriptor.</para>
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara> user data passed to the serialize implementation.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if serialization succeeded, <literal>FALSE</literal> otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if serialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-serialize-to-string"/>gimp_config_serialize_to_string ()</title>
+<title><anchor id="gimp-config-serialize-to-string" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_to_string ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_serialize_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_config_serialize_to_string (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
 <para>
@@ -184,13 +187,13 @@ Serializes the object properties of <parameter>config</parameter> to a string.</
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara> user data passed to the serialize implementation.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a newly allocated <literal>NUL</literal>-terminated string.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> a newly allocated <link linkend="NUL:CAPS"><literal>NUL</literal></link>-terminated string.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-deserialize-file"/>gimp_config_deserialize_file ()</title>
+<title><anchor id="gimp-config-deserialize-file" role="function"/>gimp_config_deserialize_file ()</title>
 <indexterm><primary>gimp_config_deserialize_file</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_deserialize_file    (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              const <link linkend="gchar">gchar</link> *filename,
                                              <link linkend="gpointer">gpointer</link> data,
@@ -216,7 +219,7 @@ Serializes the object properties of <parameter>config</parameter> to a string.</
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-deserialize-string"/>gimp_config_deserialize_string ()</title>
+<title><anchor id="gimp-config-deserialize-string" role="function" condition="since:GIMP 2.4"/>gimp_config_deserialize_string ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_deserialize_string</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_deserialize_string  (<link linkend="GimpConfig">GimpConfig</link> *config,
                                              const <link linkend="gchar">gchar</link> *text,
                                              <link linkend="gint">gint</link> text_len,
@@ -244,13 +247,13 @@ function of the <parameter>config</parameter>'s <link linkend="GimpConfigInterfa
 <varlistentry><term><parameter>error</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if deserialization succeeded, <literal>FALSE</literal> otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if deserialization succeeded, <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-deserialize-return"/>gimp_config_deserialize_return ()</title>
+<title><anchor id="gimp-config-deserialize-return" role="function" condition="since:GIMP 2.4"/>gimp_config_deserialize_return ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_deserialize_return</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_deserialize_return  (<link linkend="GScanner">GScanner</link> *scanner,
                                              <link linkend="GTokenType">GTokenType</link> expected_token,
                                              <link linkend="gint">gint</link> nest_level);</programlisting>
@@ -274,7 +277,7 @@ function of the <parameter>config</parameter>'s <link linkend="GimpConfigInterfa
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-duplicate"/>gimp_config_duplicate ()</title>
+<title><anchor id="gimp-config-duplicate" role="function" condition="since:GIMP 2.4"/>gimp_config_duplicate ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_duplicate</primary></indexterm><programlisting><link linkend="gpointer">gpointer</link>    gimp_config_duplicate           (<link linkend="GimpConfig">GimpConfig</link> *config);</programlisting>
 <para>
 Creates a copy of the passed object by copying all object
@@ -293,7 +296,7 @@ properties.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-is-equal-to"/>gimp_config_is_equal_to ()</title>
+<title><anchor id="gimp-config-is-equal-to" role="function" condition="since:GIMP 2.4"/>gimp_config_is_equal_to ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_is_equal_to</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_config_is_equal_to         (<link linkend="GimpConfig">GimpConfig</link> *a,
                                              <link linkend="GimpConfig">GimpConfig</link> *b);</programlisting>
 <para>
@@ -310,13 +313,13 @@ properties.</para>
 <varlistentry><term><parameter>b</parameter>&nbsp;:</term>
 <listitem><simpara> another <link linkend="GObject"><type>GObject</type></link> of the same type as <parameter>a</parameter>.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <literal>TRUE</literal> if the two objects are equal.
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the two objects are equal.
 
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-config-reset"/>gimp_config_reset ()</title>
+<title><anchor id="gimp-config-reset" role="function" condition="since:GIMP 2.4"/>gimp_config_reset ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_config_reset</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_config_reset               (<link linkend="GimpConfig">GimpConfig</link> *config);</programlisting>
 <para>
 Resets the object to its default state. The default implementation of the

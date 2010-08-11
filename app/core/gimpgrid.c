@@ -64,7 +64,7 @@ static void   gimp_grid_set_property (GObject      *object,
 
 
 G_DEFINE_TYPE_WITH_CODE (GimpGrid, gimp_grid, GIMP_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL));
+                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG, NULL))
 
 
 static void
@@ -89,13 +89,13 @@ gimp_grid_class_init (GimpGridClass *klass)
   GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_FGCOLOR,
                                 "fgcolor",
                                 N_("The foreground color of the grid."),
-                                &black,
+                                TRUE, &black,
                                 GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_RGB (object_class, PROP_BGCOLOR,
                                 "bgcolor",
                                 N_("The background color of the grid; "
                                    "only used in double dashed line style."),
-                                &white,
+                                TRUE, &white,
                                 GIMP_PARAM_STATIC_STRINGS);
   GIMP_CONFIG_INSTALL_PROP_DOUBLE (object_class, PROP_XSPACING,
                                    "xspacing",

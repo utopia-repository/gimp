@@ -1,7 +1,7 @@
 /* The GIMP -- an image manipulation program
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  *
- * plug-in-proc-def.c
+ * gimppluginprocedure.c
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,53 +30,78 @@
 #include "pdb-types.h"
 
 #include "core/gimp.h"
+#include "core/gimpmarshal.h"
 #include "core/gimpparamspecs.h"
 
-#include "plug-in/plug-in.h"
-#include "plug-in/plug-ins.h"
-#define __YES_I_NEED_PLUG_IN_RUN__
-#include "plug-in/plug-in-run.h"
+#define __YES_I_NEED_GIMP_PLUG_IN_MANAGER_CALL__
+#include "plug-in/gimppluginmanager-call.h"
 
 #include "gimppluginprocedure.h"
 
 #include "gimp-intl.h"
 
 
-static void          gimp_plug_in_procedure_finalize   (GObject       *object);
+enum
+{
+  MENU_PATH_ADDED,
+  LAST_SIGNAL
+};
 
-static GValueArray * gimp_plug_in_procedure_execute    (GimpProcedure *procedure,
-                                                        Gimp          *gimp,
-                                                        GimpContext   *context,
-                                                        GimpProgress  *progress,
-                                                        GValueArray   *args);
-static void       gimp_plug_in_procedure_execute_async (GimpProcedure *procedure,
-                                                        Gimp          *gimp,
-                                                        GimpContext   *context,
-                                                        GimpProgress  *progress,
-                                                        GValueArray   *args,
-                                                        gint32         display_ID);
+
+static void          gimp_plug_in_procedure_finalize    (GObject       *object);
+
+static gint64        gimp_plug_in_procedure_get_memsize (GimpObject    *object,
+                                                         gint64        *gui_size);
+
+static GValueArray * gimp_plug_in_procedure_execute     (GimpProcedure *procedure,
+                                                         Gimp          *gimp,
+                                                         GimpContext   *context,
+                                                         GimpProgress  *progress,
+                                                         GValueArray   *args);
+static void       gimp_plug_in_procedure_execute_async  (GimpProcedure *procedure,
+                                                         Gimp          *gimp,
+                                                         GimpContext   *context,
+                                                         GimpProgress  *progress,
+                                                         GValueArray   *args,
+                                                         GimpObject    *display);
 
 const gchar * gimp_plug_in_procedure_real_get_progname (const GimpPlugInProcedure *procedure);
 
 
 G_DEFINE_TYPE (GimpPlugInProcedure, gimp_plug_in_procedure,
-               GIMP_TYPE_PROCEDURE);
+               GIMP_TYPE_PROCEDURE)
 
 #define parent_class gimp_plug_in_procedure_parent_class
+
+static guint gimp_plug_in_procedure_signals[LAST_SIGNAL] = { 0 };
 
 
 static void
 gimp_plug_in_procedure_class_init (GimpPlugInProcedureClass *klass)
 {
-  GObjectClass       *object_class = G_OBJECT_CLASS (klass);
-  GimpProcedureClass *proc_class   = GIMP_PROCEDURE_CLASS (klass);
+  GObjectClass       *object_class      = G_OBJECT_CLASS (klass);
+  GimpObjectClass    *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+  GimpProcedureClass *proc_class        = GIMP_PROCEDURE_CLASS (klass);
 
-  object_class->finalize = gimp_plug_in_procedure_finalize;
+  gimp_plug_in_procedure_signals[MENU_PATH_ADDED] =
+    g_signal_new ("menu-path-added",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (GimpPlugInProcedureClass, menu_path_added),
+                  NULL, NULL,
+                  gimp_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
 
-  proc_class->execute       = gimp_plug_in_procedure_execute;
-  proc_class->execute_async = gimp_plug_in_procedure_execute_async;
+  object_class->finalize         = gimp_plug_in_procedure_finalize;
 
-  klass->get_progname       = gimp_plug_in_procedure_real_get_progname;
+  gimp_object_class->get_memsize = gimp_plug_in_procedure_get_memsize;
+
+  proc_class->execute            = gimp_plug_in_procedure_execute;
+  proc_class->execute_async      = gimp_plug_in_procedure_execute_async;
+
+  klass->get_progname            = gimp_plug_in_procedure_real_get_progname;
+  klass->menu_path_added         = NULL;
 }
 
 static void
@@ -120,6 +145,65 @@ gimp_plug_in_procedure_finalize (GObject *object)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+static gint64
+gimp_plug_in_procedure_get_memsize (GimpObject *object,
+                                    gint64     *gui_size)
+{
+  GimpPlugInProcedure *proc    = GIMP_PLUG_IN_PROCEDURE (object);
+  gint64               memsize = 0;
+  GList               *list;
+  GSList              *slist;
+
+  if (proc->prog)
+    memsize += strlen (proc->prog) + 1;
+
+  if (proc->menu_label)
+    memsize += strlen (proc->menu_label) + 1;
+
+  for (list = proc->menu_paths; list; list = g_list_next (list))
+    memsize += sizeof (GList) + strlen (list->data) + 1;
+
+  switch (proc->icon_type)
+    {
+    case GIMP_ICON_TYPE_STOCK_ID:
+    case GIMP_ICON_TYPE_IMAGE_FILE:
+      if (proc->icon_data)
+        memsize += strlen ((gchar *) proc->icon_data) + 1;
+      break;
+
+    case GIMP_ICON_TYPE_INLINE_PIXBUF:
+      memsize += proc->icon_data_length;
+      break;
+    }
+
+  if (proc->extensions)
+    memsize += strlen (proc->extensions) + 1;
+
+  if (proc->prefixes)
+    memsize += strlen (proc->prefixes) + 1;
+
+  if (proc->magics)
+    memsize += strlen (proc->magics) + 1;
+
+  if (proc->mime_type)
+    memsize += strlen (proc->mime_type) + 1;
+
+  if (proc->thumb_loader)
+    memsize += strlen (proc->thumb_loader) + 1;
+
+  for (slist = proc->extensions_list; slist; slist = g_slist_next (slist))
+    memsize += sizeof (GSList) + strlen (slist->data) + 1;
+
+  for (slist = proc->prefixes_list; slist; slist = g_slist_next (slist))
+    memsize += sizeof (GSList) + strlen (slist->data) + 1;
+
+  for (slist = proc->magics_list; slist; slist = g_slist_next (slist))
+    memsize += sizeof (GSList) + strlen (slist->data) + 1;
+
+  return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+                                                                  gui_size);
+}
+
 static GValueArray *
 gimp_plug_in_procedure_execute (GimpProcedure *procedure,
                                 Gimp          *gimp,
@@ -132,9 +216,10 @@ gimp_plug_in_procedure_execute (GimpProcedure *procedure,
                                                          context, progress,
                                                          args);
 
-  return plug_in_run (gimp, context, progress,
-                      GIMP_PLUG_IN_PROCEDURE (procedure),
-                      args, TRUE, FALSE, -1);
+  return gimp_plug_in_manager_call_run (gimp->plug_in_manager,
+                                        context, progress,
+                                        GIMP_PLUG_IN_PROCEDURE (procedure),
+                                        args, TRUE, FALSE, NULL);
 }
 
 static void
@@ -143,11 +228,12 @@ gimp_plug_in_procedure_execute_async (GimpProcedure *procedure,
                                       GimpContext   *context,
                                       GimpProgress  *progress,
                                       GValueArray   *args,
-                                      gint32         display_ID)
+                                      GimpObject    *display)
 {
-  plug_in_run (gimp, context, progress,
-               GIMP_PLUG_IN_PROCEDURE (procedure),
-               args, FALSE, TRUE, display_ID);
+  gimp_plug_in_manager_call_run (gimp->plug_in_manager,
+                                 context, progress,
+                                 GIMP_PLUG_IN_PROCEDURE (procedure),
+                                 args, FALSE, TRUE, display);
 }
 
 const gchar *
@@ -366,6 +452,9 @@ gimp_plug_in_procedure_add_menu_path (GimpPlugInProcedure  *proc,
 
   proc->menu_paths = g_list_append (proc->menu_paths, g_strdup (menu_path));
 
+  g_signal_emit (proc, gimp_plug_in_procedure_signals[MENU_PATH_ADDED], 0,
+                 menu_path);
+
   return TRUE;
 
  failure:
@@ -515,22 +604,22 @@ gimp_plug_in_procedure_get_sensitive (const GimpPlugInProcedure *proc,
   switch (image_type)
     {
     case GIMP_RGB_IMAGE:
-      sensitive = proc->image_types_val & PLUG_IN_RGB_IMAGE;
+      sensitive = proc->image_types_val & GIMP_PLUG_IN_RGB_IMAGE;
       break;
     case GIMP_RGBA_IMAGE:
-      sensitive = proc->image_types_val & PLUG_IN_RGBA_IMAGE;
+      sensitive = proc->image_types_val & GIMP_PLUG_IN_RGBA_IMAGE;
       break;
     case GIMP_GRAY_IMAGE:
-      sensitive = proc->image_types_val & PLUG_IN_GRAY_IMAGE;
+      sensitive = proc->image_types_val & GIMP_PLUG_IN_GRAY_IMAGE;
       break;
     case GIMP_GRAYA_IMAGE:
-      sensitive = proc->image_types_val & PLUG_IN_GRAYA_IMAGE;
+      sensitive = proc->image_types_val & GIMP_PLUG_IN_GRAYA_IMAGE;
       break;
     case GIMP_INDEXED_IMAGE:
-      sensitive = proc->image_types_val & PLUG_IN_INDEXED_IMAGE;
+      sensitive = proc->image_types_val & GIMP_PLUG_IN_INDEXED_IMAGE;
       break;
     case GIMP_INDEXEDA_IMAGE:
-      sensitive = proc->image_types_val & PLUG_IN_INDEXEDA_IMAGE;
+      sensitive = proc->image_types_val & GIMP_PLUG_IN_INDEXEDA_IMAGE;
       break;
     default:
       sensitive = FALSE;
@@ -540,11 +629,11 @@ gimp_plug_in_procedure_get_sensitive (const GimpPlugInProcedure *proc,
   return sensitive ? TRUE : FALSE;
 }
 
-static PlugInImageType
+static GimpPlugInImageType
 image_types_parse (const gchar *image_types)
 {
-  const gchar     *type_spec = image_types;
-  PlugInImageType  types     = 0;
+  const gchar         *type_spec = image_types;
+  GimpPlugInImageType  types     = 0;
 
   /*  If the plug_in registers with image_type == NULL or "", return 0
    *  By doing so it won't be touched by plug_in_set_menu_sensitivity()
@@ -564,54 +653,54 @@ image_types_parse (const gchar *image_types)
         {
           if (strncmp (image_types, "RGBA", 4) == 0)
             {
-              types |= PLUG_IN_RGBA_IMAGE;
+              types |= GIMP_PLUG_IN_RGBA_IMAGE;
               image_types += 4;
             }
           else if (strncmp (image_types, "RGB*", 4) == 0)
             {
-              types |= PLUG_IN_RGB_IMAGE | PLUG_IN_RGBA_IMAGE;
+              types |= GIMP_PLUG_IN_RGB_IMAGE | GIMP_PLUG_IN_RGBA_IMAGE;
               image_types += 4;
             }
           else if (strncmp (image_types, "RGB", 3) == 0)
             {
-              types |= PLUG_IN_RGB_IMAGE;
+              types |= GIMP_PLUG_IN_RGB_IMAGE;
               image_types += 3;
             }
           else if (strncmp (image_types, "GRAYA", 5) == 0)
             {
-              types |= PLUG_IN_GRAYA_IMAGE;
+              types |= GIMP_PLUG_IN_GRAYA_IMAGE;
               image_types += 5;
             }
           else if (strncmp (image_types, "GRAY*", 5) == 0)
             {
-              types |= PLUG_IN_GRAY_IMAGE | PLUG_IN_GRAYA_IMAGE;
+              types |= GIMP_PLUG_IN_GRAY_IMAGE | GIMP_PLUG_IN_GRAYA_IMAGE;
               image_types += 5;
             }
           else if (strncmp (image_types, "GRAY", 4) == 0)
             {
-              types |= PLUG_IN_GRAY_IMAGE;
+              types |= GIMP_PLUG_IN_GRAY_IMAGE;
               image_types += 4;
             }
           else if (strncmp (image_types, "INDEXEDA", 8) == 0)
             {
-              types |= PLUG_IN_INDEXEDA_IMAGE;
+              types |= GIMP_PLUG_IN_INDEXEDA_IMAGE;
               image_types += 8;
             }
           else if (strncmp (image_types, "INDEXED*", 8) == 0)
             {
-              types |= PLUG_IN_INDEXED_IMAGE | PLUG_IN_INDEXEDA_IMAGE;
+              types |= GIMP_PLUG_IN_INDEXED_IMAGE | GIMP_PLUG_IN_INDEXEDA_IMAGE;
               image_types += 8;
             }
           else if (strncmp (image_types, "INDEXED", 7) == 0)
             {
-              types |= PLUG_IN_INDEXED_IMAGE;
+              types |= GIMP_PLUG_IN_INDEXED_IMAGE;
               image_types += 7;
             }
           else if (strncmp (image_types, "*", 1) == 0)
             {
-              types |= PLUG_IN_RGB_IMAGE | PLUG_IN_RGBA_IMAGE
-                     | PLUG_IN_GRAY_IMAGE | PLUG_IN_GRAYA_IMAGE
-                     | PLUG_IN_INDEXED_IMAGE | PLUG_IN_INDEXEDA_IMAGE;
+              types |= (GIMP_PLUG_IN_RGB_IMAGE     | GIMP_PLUG_IN_RGBA_IMAGE  |
+                        GIMP_PLUG_IN_GRAY_IMAGE    | GIMP_PLUG_IN_GRAYA_IMAGE |
+                        GIMP_PLUG_IN_INDEXED_IMAGE | GIMP_PLUG_IN_INDEXEDA_IMAGE);
               image_types += 1;
             }
           else

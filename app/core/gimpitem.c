@@ -103,7 +103,7 @@ static void       gimp_item_real_resize       (GimpItem      *item,
                                                gint           offset_y);
 
 
-G_DEFINE_TYPE (GimpItem, gimp_item, GIMP_TYPE_VIEWABLE);
+G_DEFINE_TYPE (GimpItem, gimp_item, GIMP_TYPE_VIEWABLE)
 
 #define parent_class gimp_item_parent_class
 
@@ -505,7 +505,15 @@ gimp_item_configure (GimpItem    *item,
 
   if (item->ID == 0)
     {
-      item->ID = image->gimp->next_item_ID++;
+      do
+        {
+          item->ID = image->gimp->next_item_ID++;
+
+          if (image->gimp->next_item_ID == G_MAXINT)
+            image->gimp->next_item_ID = 1;
+        }
+      while (g_hash_table_lookup (image->gimp->item_table,
+                                  GINT_TO_POINTER (item->ID)));
 
       g_hash_table_insert (image->gimp->item_table,
                            GINT_TO_POINTER (item->ID),
@@ -1320,4 +1328,32 @@ gimp_item_get_linked (const GimpItem *item)
   g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
 
   return item->linked;
+}
+
+gboolean
+gimp_item_is_in_set (GimpItem    *item,
+                     GimpItemSet  set)
+{
+  g_return_val_if_fail (GIMP_IS_ITEM (item), FALSE);
+
+  switch (set)
+    {
+    case GIMP_ITEM_SET_NONE:
+      return FALSE;
+
+    case GIMP_ITEM_SET_ALL:
+      return TRUE;
+
+    case GIMP_ITEM_SET_IMAGE_SIZED:
+      return (item->width  == item->image->width &&
+              item->height == item->image->height);
+
+    case GIMP_ITEM_SET_VISIBLE:
+      return gimp_item_get_visible (item);
+
+    case GIMP_ITEM_SET_LINKED:
+      return gimp_item_get_linked (item);
+    }
+
+  return FALSE;
 }

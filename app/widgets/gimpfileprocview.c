@@ -30,10 +30,10 @@
 #include "core/gimp.h"
 #include "core/gimpmarshal.h"
 
-#include "plug-in/plug-in-help-domain.h"
-#include "plug-in/plug-in-locale-domain.h"
-
 #include "pdb/gimppluginprocedure.h"
+
+#include "plug-in/gimppluginmanager-help-domain.h"
+#include "plug-in/gimppluginmanager-locale-domain.h"
 
 #include "gimpfileprocview.h"
 
@@ -62,7 +62,7 @@ static void  gimp_file_proc_view_selection_changed (GtkTreeSelection *selection,
                                                     GimpFileProcView *view);
 
 
-G_DEFINE_TYPE (GimpFileProcView, gimp_file_proc_view, GTK_TYPE_TREE_VIEW);
+G_DEFINE_TYPE (GimpFileProcView, gimp_file_proc_view, GTK_TYPE_TREE_VIEW)
 
 #define parent_class gimp_file_proc_view_parent_class
 
@@ -148,8 +148,10 @@ gimp_file_proc_view_new (Gimp        *gimp,
           gchar       *help_id;
           GSList      *list2;
 
-          locale_domain = plug_in_locale_domain (gimp, proc->prog, NULL);
-          help_domain   = plug_in_help_domain (gimp, proc->prog, NULL);
+          locale_domain = gimp_plug_in_manager_get_locale_domain (gimp->plug_in_manager,
+                                                                  proc->prog, NULL);
+          help_domain   = gimp_plug_in_manager_get_help_domain (gimp->plug_in_manager,
+                                                                proc->prog, NULL);
           label         = gimp_plug_in_procedure_get_label (proc, locale_domain);
           help_id       = gimp_plug_in_procedure_get_help_id (proc, help_domain);
 

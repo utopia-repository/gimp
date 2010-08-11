@@ -8,7 +8,7 @@ AC_PREREQ(2.54)
 
 m4_define([gimp_major_version], [2])
 m4_define([gimp_minor_version], [3])
-m4_define([gimp_micro_version], [8])
+m4_define([gimp_micro_version], [9])
 m4_define([gimp_real_version],
           [gimp_major_version.gimp_minor_version.gimp_micro_version])
 m4_define([gimp_version], [gimp_real_version])
@@ -391,7 +391,7 @@ fi
 dnl Note to translators: you MUST have .po files in all 4 directories: po,
 dnl po-libgimp, po-plug-ins, and po-script-fu before adding your language
 dnl code to ALL_LINGUAS
-ALL_LINGUAS="bg ca cs da de el en_CA en_GB es et eu fi fr ga gl gu he hu hr id it ja ko lt mk ms nb ne nl no pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW"
+ALL_LINGUAS="bg ca cs da de el en_CA en_GB es et eu fi fr ga gl gu he hu hr id it ja ko lt mk ms nb ne nl pa pl pt pt_BR ro ru rw sk sr sr@Latn sv tr tt uk vi xh yi zh_CN zh_TW"
 
 AC_PROG_INTLTOOL
 AM_GLIB_GNU_GETTEXT
@@ -405,15 +405,15 @@ AM_PATH_GLIB_2_0(glib_required_version, :,
   AC_MSG_ERROR(Test for GLIB failed. See the file 'INSTALL' for help.),
   gobject)
 
-PKG_CHECK_MODULES(GMODULE, gmodule-2.0 gobject-2.0)
+PKG_CHECK_MODULES(GMODULE_NO_EXPORT, gmodule-no-export-2.0)
 
-AC_MSG_CHECKING([if GLib is version 2.9.0 or newer])
-if $PKG_CONFIG --atleast-version=2.9.0 glib-2.0; then
-  have_glib_2_9=yes
+AC_MSG_CHECKING([if GLib is version 2.11.0 or newer])
+if $PKG_CONFIG --atleast-version=2.11.0 glib-2.0; then
+  have_glib_2_11=yes
 else
-  have_glib_2_9=no
+  have_glib_2_11=no
 fi
-AC_MSG_RESULT($have_glib_2_9)
+AC_MSG_RESULT($have_glib_2_11)
 
 dnl Check for bind_textdomain_codeset, including -lintl if GLib brings it in.
 gimp_save_LIBS=$LIBS
@@ -451,13 +451,13 @@ PKG_CHECK_MODULES(PANGOFT2, pangoft2 >= pangoft2_required_version, :,
 *** We require Pango with the optional support for FreeType2 compiled in.
 *** See the file 'INSTALL' for more help.]))
 
-AC_MSG_CHECKING([if Pango is version 1.11.0 or newer])
-if $PKG_CONFIG --atleast-version=1.11.0 pango; then
-  have_pango_1_11=yes
+AC_MSG_CHECKING([if Pango is version 1.13.0 or newer])
+if $PKG_CONFIG --atleast-version=1.13.0 pango; then
+  have_pango_1_13=yes
 else
-  have_pango_1_11=no
+  have_pango_1_13=no
 fi
-AC_MSG_RESULT($have_pango_1_11)
+AC_MSG_RESULT($have_pango_1_13)
 
 gimp_save_CFLAGS=$CFLAGS
 CFLAGS="$PANGOFT2_CFLAGS $CFLAGS"
@@ -1031,35 +1031,16 @@ AC_SUBST(PSP)
 
 have_libpng=no
 AC_ARG_WITH(libpng,  [  --without-libpng        build without PNG support])
+if test x$with_libpng != xno; then
   have_libpng=yes
-  if test x$with_libpng != xno && test -z "$LIBPNG" && test -n "$LIBZ"; then
-    AC_CHECK_LIB(png, png_read_info,
-      [AC_CHECK_HEADER(png.h,
-	png_ok=yes,
-	png_ok=no)],
-      [have_libpng="no (PNG library not found)"], -lz -lm)
-    if test "$png_ok" = yes; then
-      AC_MSG_CHECKING([for png_structp in png.h])
-      AC_TRY_COMPILE([#include <png.h>],
-        [png_structp pp; png_infop info; png_colorp cmap; png_create_read_struct;],
-        png_ok=yes,
-        png_ok=no)
-      AC_MSG_RESULT($png_ok)
-      if test "$png_ok" = yes; then
-        PNG='png$(EXEEXT)'; LIBPNG="-lpng $LIBZ"
-      else
-        have_libpng="no (PNG library is too old)"
-      fi
-    else
-      have_libpng="no (PNG header file not found)"
-    fi
-  fi
-
-  if test x$with_libpng != xno && test -z "$LIBPNG"; then
+  PKG_CHECK_MODULES(PNG, libpng,
+    PNG='png$(EXEEXT)'
+    LIBPNG="$PNG_LIBS",
+    [have_libpng="no (libpng not found)"
      AC_MSG_ERROR([
-*** Checks for PNG library failed. You can build without it by passing 
-*** --without-libpng to configure but you won't be able to use PNGs then.])
-  fi
+*** Checks for PNG library failed. You can build without it by passing
+*** --without-libpng to configure but you won't be able to use PNGs then.])])
+fi
 
 AC_SUBST(PNG)
 AC_SUBST(LIBPNG)
@@ -1179,7 +1160,7 @@ else
   have_gtkhtml2="no (GtkHtml2 support disabled)"
 fi
 
-AM_CONDITIONAL(BUILD_HELPBROWSER, test x$have_gtkhtml2 = xyes)
+AM_CONDITIONAL(BUILD_HELPBROWSER, test "x$have_gtkhtml2" = xyes)
 
 
 ###################
@@ -1293,7 +1274,7 @@ if test "x$with_gnomeprint" != xno; then
     have_gnomeprint="no (libgnomeprintui not found!)")
 fi
 
-AM_CONDITIONAL(HAVE_GNOMEPRINT, test x$have_gnomeprint = xyes)
+AM_CONDITIONAL(HAVE_GNOMEPRINT, test "x$have_gnomeprint" = xyes)
 
 if test "x$have_gnomeprint" = xyes; then
   GNOMEPRINT='gnomeprint$(EXEEXT)'
@@ -1404,7 +1385,7 @@ if test "x$with_alsa" != xno; then
   have_alsa=yes
   AM_PATH_ALSA(alsa_required_version,
                AC_DEFINE(HAVE_ALSA, 1, [Define to 1 if alsa is available]),
-               have_alsa="no (alsa not found or unuseable)")
+               have_alsa="no (libasound not found or unusable)")
 fi
 
 
@@ -1668,7 +1649,7 @@ AC_SUBST(GIMP_MKENUMS)
 
 CPPFLAGS="${CPPFLAGS} -DGIMP_DISABLE_DEPRECATED"
 
-if test "x$have_glib_2_9" != "xyes"; then
+if test "x$have_glib_2_11" != "xyes"; then
   CPPFLAGS="${CPPFLAGS} -DG_DISABLE_DEPRECATED"
 fi
 
@@ -1676,7 +1657,7 @@ if test "x$have_gtk_2_9" != "xyes"; then
   CPPFLAGS="${CPPFLAGS} -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED"
 fi
 
-if test "x$have_pango_1_11" != "xyes"; then
+if test "x$have_pango_1_13" != "xyes"; then
   CPPFLAGS="${CPPFLAGS} -DPANGO_DISABLE_DEPRECATED"
 fi
 
@@ -1910,38 +1891,38 @@ Building GIMP with prefix=$prefix
 Desktop files install into $DESKTOP_DATADIR
 
 Extra Binaries:
-  gimp-console:     $enable_gimp_console
-  gimp-remote:      $enable_gimp_remote
+  gimp-console:      $enable_gimp_console
+  gimp-remote:       $enable_gimp_remote
 
 Optional Plug-Ins:
-  Ascii Art:        $have_libaa
-  Help Browser:     $have_gtkhtml2
-  Gimp-Print:       $have_gimp_print
-  GNOME Print:      $have_gnomeprint
-  JPEG:             $jpeg_ok
-  MNG:              $have_libmng
-  PDF:              $have_poppler
-  PNG:              $have_libpng
-  PSP:              $have_zlib
-  SVG:              $have_librsvg
-  TIFF:             $have_libtiff
-  MacOS X TWAIN:    $mac_twain_ok
-  URI:              $uri_plugin
-  Win Print:        $os_win32
-  Win Snap:         $os_win32
-  WMF:              $have_libwmf
-  XJT:              $have_xjt
-  XPM:              $have_libxpm
+  Ascii Art:         $have_libaa
+  Help Browser:      $have_gtkhtml2
+  Gimp-Print:        $have_gimp_print
+  GNOME Print:       $have_gnomeprint
+  JPEG:              $jpeg_ok
+  MNG:               $have_libmng
+  PDF:               $have_poppler
+  PNG:               $have_libpng
+  PSP:               $have_zlib
+  SVG:               $have_librsvg
+  TIFF:              $have_libtiff
+  MacOS X TWAIN:     $mac_twain_ok
+  URI:               $uri_plugin
+  Win Print:         $os_win32
+  Win Snap:          $os_win32
+  WMF:               $have_libwmf
+  XJT:               $have_xjt
+  XPM:               $have_libxpm
 
 Plug-In Features:
-  EXIF support:     $have_libexif
-  GNOME UI:         $have_gnomeui
-  GNOME keyring:    $have_gnome_keyring
+  EXIF support:      $have_libexif
+  GNOME UI:          $have_gnomeui
+  GNOME keyring:     $have_gnome_keyring
 
 Optional Modules:
-  ALSA (MIDI):      $have_alsa
-  Linux Input:      $have_linux_input
-  Color Correction: $have_lcms
-  Soft Proof:       $have_lcms
+  ALSA (MIDI Input): $have_alsa
+  Linux Input:       $have_linux_input
+  Color Correction:  $have_lcms
+  Soft Proof:        $have_lcms
 ]);
 

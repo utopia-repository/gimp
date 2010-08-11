@@ -57,7 +57,7 @@ static void   gimp_color_frame_menu_callback (GtkWidget      *widget,
 static void   gimp_color_frame_update        (GimpColorFrame *frame);
 
 
-G_DEFINE_TYPE (GimpColorFrame, gimp_color_frame, GIMP_TYPE_FRAME);
+G_DEFINE_TYPE (GimpColorFrame, gimp_color_frame, GIMP_TYPE_FRAME)
 
 #define parent_class gimp_color_frame_parent_class
 
@@ -340,7 +340,7 @@ gimp_color_frame_set_color (GimpColorFrame *frame,
   if (frame->sample_valid               &&
       frame->sample_type == sample_type &&
       frame->color_index == color_index &&
-      gimp_rgb_distance (&frame->color, color) < 0.0001)
+      gimp_rgba_distance (&frame->color, color) < 0.0001)
     {
       frame->color = *color;
       return;

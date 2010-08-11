@@ -4,16 +4,19 @@
 
 <refentry id="libgimpwidgets-GimpQueryBox">
 <refmeta>
-<refentrytitle>GimpQueryBox</refentrytitle>
+<refentrytitle id="top_of_page">GimpQueryBox</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpQueryBox</refname><refpurpose>Some simple dialogs to enter a single int, double, string or boolean value.</refpurpose>
+<refname>GimpQueryBox</refname>
+<refpurpose>Some simple dialogs to enter a single int, double, string or boolean value.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -110,8 +113,8 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 These functions provide simple dialogs for entering a single string,
 integer, double, boolean or pixel size value.
@@ -128,10 +131,10 @@ callback function is called and returns the entered value.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpQueryStringCallback"/>GimpQueryStringCallback ()</title>
+<title><anchor id="GimpQueryStringCallback" role="function"/>GimpQueryStringCallback ()</title>
 <indexterm><primary>GimpQueryStringCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpQueryStringCallback)      (<link linkend="GtkWidget">GtkWidget</link> *query_box,
                                              const <link linkend="gchar">gchar</link> *string,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -151,7 +154,7 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpQueryIntCallback"/>GimpQueryIntCallback ()</title>
+<title><anchor id="GimpQueryIntCallback" role="function"/>GimpQueryIntCallback ()</title>
 <indexterm><primary>GimpQueryIntCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpQueryIntCallback)         (<link linkend="GtkWidget">GtkWidget</link> *query_box,
                                              <link linkend="gint">gint</link> value,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -171,7 +174,7 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpQueryDoubleCallback"/>GimpQueryDoubleCallback ()</title>
+<title><anchor id="GimpQueryDoubleCallback" role="function"/>GimpQueryDoubleCallback ()</title>
 <indexterm><primary>GimpQueryDoubleCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpQueryDoubleCallback)      (<link linkend="GtkWidget">GtkWidget</link> *query_box,
                                              <link linkend="gdouble">gdouble</link> value,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -191,7 +194,7 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpQuerySizeCallback"/>GimpQuerySizeCallback ()</title>
+<title><anchor id="GimpQuerySizeCallback" role="function"/>GimpQuerySizeCallback ()</title>
 <indexterm><primary>GimpQuerySizeCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpQuerySizeCallback)        (<link linkend="GtkWidget">GtkWidget</link> *query_box,
                                              <link linkend="gdouble">gdouble</link> size,
                                              <link linkend="GimpUnit">GimpUnit</link> unit,
@@ -215,7 +218,7 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GimpQueryBooleanCallback"/>GimpQueryBooleanCallback ()</title>
+<title><anchor id="GimpQueryBooleanCallback" role="function"/>GimpQueryBooleanCallback ()</title>
 <indexterm><primary>GimpQueryBooleanCallback</primary></indexterm><programlisting><link linkend="void">void</link>        (*GimpQueryBooleanCallback)     (<link linkend="GtkWidget">GtkWidget</link> *query_box,
                                              <link linkend="gboolean">gboolean</link> value,
                                              <link linkend="gpointer">gpointer</link> data);</programlisting>
@@ -235,7 +238,7 @@ Note that you have to <link linkend="g-free"><function>g_free()</function></link
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-query-string-box"/>gimp_query_string_box ()</title>
+<title><anchor id="gimp-query-string-box" role="function"/>gimp_query_string_box ()</title>
 <indexterm><primary>gimp_query_string_box</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_query_string_box           (const <link linkend="gchar">gchar</link> *title,
                                              <link linkend="GtkWidget">GtkWidget</link> *parent,
                                              <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
@@ -285,7 +288,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-query-int-box"/>gimp_query_int_box ()</title>
+<title><anchor id="gimp-query-int-box" role="function"/>gimp_query_int_box ()</title>
 <indexterm><primary>gimp_query_int_box</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_query_int_box              (const <link linkend="gchar">gchar</link> *title,
                                              <link linkend="GtkWidget">GtkWidget</link> *parent,
                                              <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
@@ -343,7 +346,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-query-double-box"/>gimp_query_double_box ()</title>
+<title><anchor id="gimp-query-double-box" role="function"/>gimp_query_double_box ()</title>
 <indexterm><primary>gimp_query_double_box</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_query_double_box           (const <link linkend="gchar">gchar</link> *title,
                                              <link linkend="GtkWidget">GtkWidget</link> *parent,
                                              <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
@@ -405,7 +408,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-query-size-box"/>gimp_query_size_box ()</title>
+<title><anchor id="gimp-query-size-box" role="function"/>gimp_query_size_box ()</title>
 <indexterm><primary>gimp_query_size_box</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_query_size_box             (const <link linkend="gchar">gchar</link> *title,
                                              <link linkend="GtkWidget">GtkWidget</link> *parent,
                                              <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
@@ -464,7 +467,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
               calculations.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dot_for_dot</parameter>&nbsp;:</term>
-<listitem><simpara> <literal>TRUE</literal> if the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>'s initial unit should be "pixels".
+<listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>'s initial unit should be "pixels".
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>object</parameter>&nbsp;:</term>
 <listitem><simpara>      The object this query box is associated with.
@@ -483,7 +486,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that queri
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-query-boolean-box"/>gimp_query_boolean_box ()</title>
+<title><anchor id="gimp-query-boolean-box" role="function"/>gimp_query_boolean_box ()</title>
 <indexterm><primary>gimp_query_boolean_box</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_query_boolean_box          (const <link linkend="gchar">gchar</link> *title,
                                              <link linkend="GtkWidget">GtkWidget</link> *parent,
                                              <link linkend="GimpHelpFunc">GimpHelpFunc</link> help_func,
@@ -544,7 +547,7 @@ Creates a new <link linkend="GtkDialog"><type>GtkDialog</type></link> that asks 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="GIMP-QUERY-BOX-VBOX:CAPS"/>GIMP_QUERY_BOX_VBOX()</title>
+<title><anchor id="GIMP-QUERY-BOX-VBOX:CAPS" role="macro"/>GIMP_QUERY_BOX_VBOX()</title>
 <indexterm><primary>GIMP_QUERY_BOX_VBOX</primary></indexterm><programlisting>#define     GIMP_QUERY_BOX_VBOX(qbox)</programlisting>
 <para>
 A macro to access the <link linkend="GtkVBox"><type>GtkVBox</type></link> in a <link linkend="GimpQueryBox"><type>GimpQueryBox</type></link>. Useful if you want to add

@@ -4,6 +4,7 @@
  *
  * Copyright (C) 1995 Spencer Kimball and Peter Mattis
  * Copyright (C) 1999 Thom van Os <thom@vanos.com>
+ * Copyright (C) 2006 Loren Merritt
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +40,14 @@
 #define PLUG_IN_PROC   "plug-in-sel-gauss"
 #define PLUG_IN_BINARY "sel_gauss"
 
+#ifndef ALWAYS_INLINE
+#if defined(__GNUC__) && (__GNUC__ > 3 || __GNUC__ == 3 && __GNUC_MINOR__ > 0)
+#    define ALWAYS_INLINE __attribute__((always_inline)) inline
+#else
+#    define ALWAYS_INLINE inline
+#endif
+#endif
+
 
 typedef struct
 {
@@ -64,7 +73,7 @@ static gboolean  sel_gauss_dialog (GimpDrawable     *drawable);
 static void      preview_update   (GimpPreview      *preview);
 
 
-GimpPlugInInfo PLUG_IN_INFO =
+const GimpPlugInInfo PLUG_IN_INFO =
 {
   NULL,  /* init_proc  */
   NULL,  /* quit_proc  */
@@ -84,7 +93,7 @@ MAIN ()
 static void
 query (void)
 {
-  static GimpParamDef args[] =
+  static const GimpParamDef args[] =
   {
     { GIMP_PDB_INT32,    "run-mode",  "Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,    "image",     "Input image (unused)"         },
@@ -292,11 +301,11 @@ sel_gauss_dialog (GimpDrawable *drawable)
 }
 
 static void
-init_matrix (gdouble   radius,
-             gdouble **mat,
-             gint      num)
+init_matrix (gdouble  radius,
+             gdouble *mat,
+             gint     num)
 {
-  gint    dx, dy;
+  gint    dx;
   gdouble sd, c1, c2;
 
   /* This formula isn't really correct, but it'll do */
@@ -304,91 +313,377 @@ init_matrix (gdouble   radius,
   c1 = 1.0 / sqrt (2.0 * G_PI * sd);
   c2 = -2.0 * (sd * sd);
 
-  for (dy = 0; dy < num; dy++)
-    {
-      for (dx = dy; dx < num; dx++)
-        {
-          mat[dx][dy] = c1 * exp ((dx * dx + dy * dy)/ c2);
-          mat[dy][dx] = mat[dx][dy];
-        }
-    }
+  for (dx = 0; dx < num; dx++)
+    mat[dx] = c1 * exp ((dx * dx)/ c2);
 }
 
-static void
-matrixmult (guchar   *src,
-            guchar   *dest,
-            gint      width,
-            gint      height,
-            gdouble **mat,
-            gint      numrad,
-            gint      bytes,
-            gboolean  has_alpha,
-            gint      maxdelta,
-            gboolean  preview_mode)
-{
-  gint     i, j, b, nb, x, y;
-  gint     six, dix, tmp;
-  gint     rowstride;
-  gdouble  sum, fact, d, alpha = 1.0;
-  guchar  *src_b, *src_db;
-  gdouble *m;
-  gint     offset;
 
-  nb = bytes - (has_alpha ? 1 : 0);
-  rowstride = width * bytes;
+#if defined(ARCH_X86) && defined(USE_MMX) && defined(__GNUC__)
+#define HAVE_ACCEL 1
+
+static ALWAYS_INLINE void
+matrixmult_mmx (const guchar  *src,
+                guchar        *dest,
+                gint           width,
+                gint           height,
+                const gdouble *mat,
+                gint           numrad,
+                gint           bytes,
+                gboolean       has_alpha,
+                gint           maxdelta,
+                gboolean       preview_mode)
+{
+  const gint       rowstride = width * bytes;
+  const long long  maxdelta4 = maxdelta * 0x0001000100010001ULL;
+  gushort         *imat;
+  gdouble          fsum, fscale;
+  gint             i, j, x, y, d;
+
+  g_assert (has_alpha ? (bytes == 4) : (bytes == 3 || bytes == 1));
+
+  imat = g_new (gushort, 2 * numrad + 3);
+
+  fsum = 0.0;
+  for (y = 1 - numrad; y < numrad; y++)
+    fsum += mat[ABS(y)];
+
+  /* Ensure that one pixel's product fits in 16bits,
+   * and that the sum fits in 32bits.
+   */
+  fscale = MIN (0x100 / mat[0], 0x1000 / fsum);
+  for (y = 0; y < numrad; y++)
+    imat[numrad - y] = imat[numrad + y] = mat[y] * fscale;
+
+  for (y = numrad; y < numrad + 3; y++)
+    imat[numrad + y] = 0;
+
+  for (y = 0; y < height; y++)
+    {
+      asm volatile (
+        "pxor  %%mm7, %%mm7 \n\t":
+      );
+
+      for (x = 0; x < width; x++)
+        {
+          guint r, g, b, fr, fg, fb;
+          gint  offset;
+          gint  dix;
+
+          r = g = b = fr = fg = fb = 0;
+
+          dix = bytes * (width * y + x);
+
+          if (has_alpha)
+            {
+              *(guint*) &dest[dix] = *(guint*) &src[dix];
+
+              if (!src[dix + 3])
+                continue;
+            }
+
+          asm volatile (
+            "movd         %0, %%mm6 \n\t"
+            "punpcklbw %%mm7, %%mm6 \n\t" /* center pixel */
+            :: "m"(src[dix])
+          );
+
+          offset = rowstride * (y - numrad) + bytes * (x - numrad);
+
+          if (bytes == 1)
+            {
+              asm volatile (
+                "pshufw $0, %%mm6, %%mm6 \n\t": /* center pixel x4 */
+              );
+              for (j = 1 - numrad; j < numrad; j++)
+                {
+                  const guchar *src_b;
+                  guint         rowsum  = 0;
+                  guint         rowfact = 0;
+
+                  offset += rowstride;
+
+                  if (y + j < 0 || y + j >= height)
+                    continue;
+
+                  src_b = src + offset - 3;
+
+                  asm volatile (
+                    "pxor  %%mm5, %%mm5 \n\t" /* row fact */
+                    "pxor  %%mm4, %%mm4 \n\t" /* row sum  */
+                    :
+                  );
+
+                  for (i = 1 - numrad; i < numrad; i += 4)
+                    {
+                      src_b += 4;
+                      if (x + i < 0 || x + i >= width)
+                        continue;
+
+                      asm volatile (
+                        "movd         %0, %%mm0 \n\t"
+                        "movq      %%mm6, %%mm1 \n\t"
+                        "punpcklbw %%mm7, %%mm0 \n\t" /* one pixel      */
+                        "psubusw   %%mm0, %%mm1 \n\t" /* diff           */
+                        "movq      %%mm0, %%mm2 \n\t"
+                        "psubusw   %%mm6, %%mm2 \n\t"
+                        "por       %%mm2, %%mm1 \n\t" /* abs diff       */
+                        "pcmpgtw      %1, %%mm1 \n\t" /* threshold      */
+                        "pandn        %2, %%mm1 \n\t" /* weight         */
+                        "pmullw    %%mm1, %%mm0 \n\t" /* pixel * weight */
+                        "paddusw   %%mm1, %%mm5 \n\t" /* fact           */
+                        "movq      %%mm0, %%mm2 \n\t"
+                        "punpcklwd %%mm7, %%mm0 \n\t"
+                        "punpckhwd %%mm7, %%mm2 \n\t"
+                        "paddd     %%mm0, %%mm4 \n\t"
+                        "paddd     %%mm2, %%mm4 \n\t" /* sum            */
+                        :: "m"(*src_b), "m"(maxdelta4), "m"(imat[numrad + i])
+                      );
+                    }
+
+                  asm volatile (
+                    "pshufw $0xb1, %%mm5, %%mm3 \n\t"
+                    "paddusw       %%mm3, %%mm5 \n\t"
+                    "pshufw $0x0e, %%mm4, %%mm2 \n\t"
+                    "pshufw $0x0e, %%mm5, %%mm3 \n\t"
+                    "paddd         %%mm2, %%mm4 \n\t"
+                    "paddusw       %%mm3, %%mm5 \n\t"
+                    "movd          %%mm4, %0    \n\t"
+                    "movd          %%mm5, %1    \n\t"
+                    :"=g"(rowsum), "=g"(rowfact)
+                  );
+                  d = imat[numrad + j];
+                  r += d * rowsum;
+                  fr += d * (gushort) rowfact;
+                }
+
+              dest[dix] = r / fr;
+            }
+          else
+            {
+              for (j = 1 - numrad; j < numrad; j++)
+                {
+                  const guchar *src_b;
+                  gushort       rf[4];
+                  guint         rr, rg, rb;
+
+                  offset += rowstride;
+                  if (y + j < 0 || y + j >= height)
+                    continue;
+
+                  src_b = src + offset;
+
+                  asm volatile (
+                    "pxor  %%mm5, %%mm5 \n\t" /* row fact   */
+                    "pxor  %%mm4, %%mm4 \n\t" /* row sum RG */
+                    "pxor  %%mm3, %%mm3 \n\t" /* row sum B  */
+                    :
+                  );
+
+                  for (i = 1 - numrad; i < numrad; i++)
+                    {
+                      src_b += bytes;
+                      if (x + i < 0 || x + i >= width)
+                        continue;
+
+                      if (has_alpha)
+                        asm volatile (
+                          "movd         %0, %%mm0 \n\t"
+                          "movq      %%mm6, %%mm1 \n\t"
+                          "punpcklbw %%mm7, %%mm0 \n\t" /* one pixel       */
+                          "psubusw   %%mm0, %%mm1 \n\t" /* diff            */
+                          "movq      %%mm0, %%mm2 \n\t"
+                          "psubusw   %%mm6, %%mm2 \n\t"
+                          "por       %%mm2, %%mm1 \n\t" /* abs diff        */
+                          "pcmpgtw      %1, %%mm1 \n\t" /* threshold       */
+                          "pshufw   $0, %2, %%mm2 \n\t" /* weight          */
+                          "pandn     %%mm2, %%mm1 \n\t"
+                          "pshufw $0xff, %%mm0, %%mm2 \n\t" /* alpha       */
+                          "psllw        $8, %%mm2 \n\t"
+                          "pmulhuw   %%mm2, %%mm1 \n\t" /* weight *= alpha */
+                          "pmullw    %%mm1, %%mm0 \n\t" /* pixel * weight  */
+                          "paddusw   %%mm1, %%mm5 \n\t" /* fact            */
+                          "movq      %%mm0, %%mm2 \n\t"
+                          "punpcklwd %%mm7, %%mm0 \n\t" /* RG              */
+                          "punpckhwd %%mm7, %%mm2 \n\t" /* B               */
+                          "paddd     %%mm0, %%mm4 \n\t"
+                          "paddd     %%mm2, %%mm3 \n\t"
+                          :: "m"(*src_b), "m"(maxdelta4), "m"(imat[numrad + i])
+                        );
+                      else
+                        asm volatile (
+                          "movd         %0, %%mm0 \n\t"
+                          "movq      %%mm6, %%mm1 \n\t"
+                          "punpcklbw %%mm7, %%mm0 \n\t" /* one pixel       */
+                          "psubusw   %%mm0, %%mm1 \n\t" /* diff            */
+                          "movq      %%mm0, %%mm2 \n\t"
+                          "psubusw   %%mm6, %%mm2 \n\t"
+                          "por       %%mm2, %%mm1 \n\t" /* abs diff        */
+                          "pcmpgtw      %1, %%mm1 \n\t" /* threshold       */
+                          "pshufw   $0, %2, %%mm2 \n\t" /* weight          */
+                          "pandn     %%mm2, %%mm1 \n\t"
+                          "pmullw    %%mm1, %%mm0 \n\t" /* pixel * weight  */
+                          "paddusw   %%mm1, %%mm5 \n\t" /* fact            */
+                          "movq      %%mm0, %%mm2 \n\t"
+                          "punpcklwd %%mm7, %%mm0 \n\t" /* RG              */
+                          "punpckhwd %%mm7, %%mm2 \n\t" /* B               */
+                          "paddd     %%mm0, %%mm4 \n\t"
+                          "paddd     %%mm2, %%mm3 \n\t"
+                          :: "m"(*src_b), "m"(maxdelta4), "m"(imat[numrad + i])
+                        );
+                    }
+
+                  asm volatile (
+                    "movd    %%mm4, %0 \n\t"
+                    "movd    %%mm3, %2 \n\t"
+                    "psrlq  $32, %%mm4 \n\t"
+                    "movq    %%mm5, %3 \n\t"
+                    "movd    %%mm4, %1 \n\t"
+                    :"=g"(rr), "=g"(rg), "=g"(rb), "=m"(*rf)
+                    ::"memory"
+                  );
+                  d = imat[numrad + j];
+                  r += d * rr;
+                  g += d * rg;
+                  b += d * rb;
+                  fr += d * rf[0];
+                  fg += d * rf[1];
+                  fb += d * rf[2];
+                }
+
+              if (has_alpha)
+                {
+                  if (fr)
+                    dest[dix+0] = r / fr;
+                  if (fg)
+                    dest[dix+1] = g / fg;
+                  if (fb)
+                    dest[dix+2] = b / fb;
+                }
+              else
+                {
+                  dest[dix+0] = r / fr;
+                  dest[dix+1] = g / fg;
+                  dest[dix+2] = b / fb;
+                }
+            }
+        }
+
+      if (!(y % 10) && !preview_mode)
+        {
+          asm volatile ("emms");
+          gimp_progress_update ((double)y / (double)height);
+        }
+    }
+
+  asm volatile ("emms");
+
+  g_free (imat);
+}
+#endif /* ARCH_X86 && USE_MMX && __GNUC__ */
+
+
+static ALWAYS_INLINE void
+matrixmult_int (const guchar  *src,
+                guchar        *dest,
+                gint           width,
+                gint           height,
+                const gdouble *mat,
+                gint           numrad,
+                gint           bytes,
+                gboolean       has_alpha,
+                gint           maxdelta,
+                gboolean       preview_mode)
+{
+  const gint  nb        = bytes - (has_alpha ? 1 : 0);
+  const gint  rowstride = width * bytes;
+  gushort    *imat;
+  gdouble     fsum, fscale;
+  gint        i, j, b, x, y, d;
+
+#ifdef HAVE_ACCEL
+  GimpCpuAccelFlags cpu = gimp_cpu_accel_get_support ();
+
+  if ((has_alpha ? (bytes == 4) : (bytes == 3 || bytes == 1))
+      && (cpu & (GIMP_CPU_ACCEL_X86_MMXEXT | GIMP_CPU_ACCEL_X86_SSE)))
+    return matrixmult_mmx (src, dest, width, height, mat, numrad,
+                           bytes, has_alpha, maxdelta, preview_mode);
+#endif
+
+  imat = g_new (gushort, 2 * numrad);
+
+  fsum = 0.0;
+  for (y = 1 - numrad; y < numrad; y++)
+    fsum += mat[ABS(y)];
+
+  /* Ensure that the sum fits in 32bits. */
+  fscale = 0x1000 / fsum;
+  for (y = 0; y < numrad; y++)
+    imat[numrad - y] = imat[numrad + y] = mat[y] * fscale;
 
   for (y = 0; y < height; y++)
     {
       for (x = 0; x < width; x++)
         {
-          dix = bytes * (width * y + x);
+          gint dix = bytes * (width * y + x);
+
           if (has_alpha)
             dest[dix + nb] = src[dix + nb];
 
           for (b = 0; b < nb; b++)
             {
-              sum = 0.0;
-              fact = 0.0;
-              src_db = src + dix + b;
+              const guchar *src_db = src + dix + b;
+              guint         sum    = 0;
+              guint         fact   = 0;
+              gint          offset;
 
               offset = rowstride * (y - numrad) + bytes * (x - numrad);
 
-              for (i = 1 - numrad; i < numrad; i++)
+              for (j = 1 - numrad; j < numrad; j++)
                 {
-                  offset += bytes;
-                  if (x + i < 0 || x + i >= width)
+                  const guchar *src_b;
+                  guint         rowsum  = 0;
+                  guint         rowfact = 0;
+
+                  offset += rowstride;
+                  if (y + j < 0 || y + j >= height)
                     continue;
 
-                  six = offset;
-                  m = mat[ABS(i)];
+                  src_b = src + offset + b;
 
-                  src_b = src + six + b;
-
-                  for (j = 1 - numrad; j < numrad; j++)
+                  for (i = 1 - numrad; i < numrad; i++)
                     {
-                      src_b += rowstride;
-                      six += rowstride;
+                      gint tmp;
 
-                      if (y + j < 0 || y + j >= height)
+                      src_b += bytes;
+
+                      if (x + i < 0 || x + i >= width)
                         continue;
 
                       tmp = *src_db - *src_b;
                       if (tmp > maxdelta || tmp < -maxdelta)
                         continue;
 
-                      d = m[ABS(j)];
+                      d = imat[numrad+i];
                       if (has_alpha)
-                        {
-                          if (!src[six + nb])
-                            continue;
-                          alpha = (double) src[six + nb] / 255.0;
-                          d *= alpha;
-                        }
-                      sum += d * *src_b;
-                      fact += d;
+                        d *= src_b[nb - b];
+
+                      rowsum += d * *src_b;
+                      rowfact += d;
                     }
+
+                  d = imat[numrad+j];
+
+                  if (has_alpha)
+                    {
+                      rowsum >>= 8;
+                      rowfact >>= 8;
+                    }
+
+                  sum += d * rowsum;
+                  fact += d * rowfact;
                 }
-              if (fact == 0.0)
+
+              if (fact == 0)
                 dest[dix + b] = *src_db;
               else
                 dest[dix + b] = sum / fact;
@@ -396,8 +691,37 @@ matrixmult (guchar   *src,
         }
 
       if (!(y % 10) && !preview_mode)
-        gimp_progress_update ((double)y / (double)height);
+        gimp_progress_update ((gdouble) y / (gdouble) height);
     }
+
+  g_free (imat);
+}
+
+/* Force compilation of several versions with inlined constants. */
+static void
+matrixmult (const guchar  *src,
+            guchar        *dest,
+            gint           width,
+            gint           height,
+            const gdouble *mat,
+            gint           numrad,
+            gint           bytes,
+            gboolean       has_alpha,
+            gint           maxdelta,
+            gboolean       preview_mode)
+{
+  has_alpha = has_alpha ? 1 : 0;
+
+#define EXPAND(BYTES, ALPHA)\
+  if (bytes == BYTES && has_alpha == ALPHA)\
+    return matrixmult_int (src, dest, width, height, mat, numrad,\
+                           BYTES, ALPHA, maxdelta, preview_mode);
+  EXPAND (1, 0)
+  EXPAND (2, 1)
+  EXPAND (3, 0)
+  EXPAND (4, 1)
+  EXPAND (bytes, has_alpha)
+#undef EXPAND
 }
 
 static void
@@ -412,8 +736,7 @@ sel_gauss (GimpDrawable *drawable,
   guchar      *dest;
   guchar      *src;
   gint         x1, y1, x2, y2;
-  gint         i;
-  gdouble    **mat;
+  gdouble     *mat;
   gint         numrad;
 
   gimp_drawable_mask_bounds (drawable->drawable_id, &x1, &y1, &x2, &y2);
@@ -424,9 +747,7 @@ sel_gauss (GimpDrawable *drawable,
   has_alpha = gimp_drawable_has_alpha (drawable->drawable_id);
 
   numrad = (gint) (radius + 1.0);
-  mat = g_new (gdouble *, numrad);
-  for (i = 0; i < numrad; i++)
-    mat[i] = g_new (gdouble, numrad);
+  mat = g_new (gdouble, numrad);
   init_matrix(radius, mat, numrad);
 
   src  = g_new (guchar, width * height * bytes);
@@ -451,8 +772,6 @@ sel_gauss (GimpDrawable *drawable,
   /* free up buffers */
   g_free (src);
   g_free (dest);
-  for (i = 0; i < numrad; i++)
-    g_free (mat[i]);
   g_free (mat);
 }
 
@@ -469,8 +788,8 @@ preview_update (GimpPreview *preview)
   GimpPixelRgn   srcPR;           /* Pixel region */
   guchar        *src;
   gboolean       has_alpha;
-  gint           numrad, i;
-  gdouble      **mat;
+  gint           numrad;
+  gdouble       *mat;
   gdouble       radius;
 
   /* Get drawable info */
@@ -499,19 +818,14 @@ preview_update (GimpPreview *preview)
   radius = fabs (bvals.radius) + 1.0;
   numrad = (gint) (radius + 1.0);
 
-  mat = g_new (gdouble *, numrad);
-  for (i = 0; i < numrad; i++)
-    mat[i] = g_new (gdouble, numrad);
-
-  init_matrix(radius, mat, numrad);
+  mat = g_new (gdouble, numrad);
+  init_matrix (radius, mat, numrad);
 
   matrixmult (src, render_buffer,
               width, height,
               mat, numrad,
               bytes, has_alpha, bvals.maxdelta, TRUE);
 
-  for (i = 0; i < numrad; i++)
-    g_free (mat[i]);
   g_free (mat);
   g_free (src);
 

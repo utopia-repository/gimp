@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpprocview">
 <refmeta>
-<refentrytitle>gimpprocview</refentrytitle>
+<refentrytitle id="top_of_page">gimpprocview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpprocview</refname><refpurpose></refpurpose>
+<refname>gimpprocview</refname>
+<refpurpose></refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -42,17 +45,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-proc-view-new"/>gimp_proc_view_new ()</title>
+<title><anchor id="gimp-proc-view-new" role="function"/>gimp_proc_view_new ()</title>
 <indexterm><primary>gimp_proc_view_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_proc_view_new              (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *menu_path,
                                              const <link linkend="gchar">gchar</link> *blurb,

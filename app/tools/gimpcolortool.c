@@ -25,14 +25,21 @@
 
 #include "tools-types.h"
 
+#include "config/gimpdisplayconfig.h"
+
 #include "core/gimp.h"
+#include "core/gimpdata.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-pick-color.h"
 #include "core/gimpimage-sample-points.h"
 #include "core/gimpitem.h"
 #include "core/gimpmarshal.h"
 
-#include "config/gimpdisplayconfig.h"
+#include "widgets/gimpcolormapeditor.h"
+#include "widgets/gimpdialogfactory.h"
+#include "widgets/gimpdockable.h"
+#include "widgets/gimppaletteeditor.h"
+#include "widgets/gimpsessioninfo.h"
 
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
@@ -95,9 +102,14 @@ static gboolean   gimp_color_tool_real_pick      (GimpColorTool   *color_tool,
                                                   GimpRGB         *color,
                                                   gint            *color_index);
 static void       gimp_color_tool_pick           (GimpColorTool   *tool,
-                                                  GimpColorPickState  pick_state,
+                                                  GimpColorPickState pick_state,
                                                   gint             x,
                                                   gint             y);
+static void       gimp_color_tool_real_picked    (GimpColorTool   *color_tool,
+                                                  GimpColorPickState pick_state,
+                                                  GimpImageType    sample_type,
+                                                  GimpRGB         *color,
+                                                  gint             color_index);
 
 
 G_DEFINE_TYPE (GimpColorTool, gimp_color_tool, GIMP_TYPE_DRAW_TOOL);
@@ -139,7 +151,7 @@ gimp_color_tool_class_init (GimpColorToolClass *klass)
   draw_class->draw           = gimp_color_tool_draw;
 
   klass->pick                = gimp_color_tool_real_pick;
-  klass->picked              = NULL;
+  klass->picked              = gimp_color_tool_real_picked;
 }
 
 static void
@@ -187,24 +199,21 @@ gimp_color_tool_control (GimpTool       *tool,
 
   switch (action)
     {
-    case PAUSE:
+    case GIMP_TOOL_ACTION_PAUSE:
       break;
 
-    case RESUME:
+    case GIMP_TOOL_ACTION_RESUME:
       if (color_tool->sample_point &&
           gimp_display_shell_get_show_sample_points (GIMP_DISPLAY_SHELL (shell)))
         gimp_display_shell_draw_sample_point (GIMP_DISPLAY_SHELL (shell),
                                               color_tool->sample_point, TRUE);
       break;
 
-    case HALT:
+    case GIMP_TOOL_ACTION_HALT:
       if (color_tool->sample_point &&
           gimp_display_shell_get_show_sample_points (GIMP_DISPLAY_SHELL (shell)))
         gimp_display_shell_draw_sample_point (GIMP_DISPLAY_SHELL (shell),
                                               color_tool->sample_point, FALSE);
-      break;
-
-    default:
       break;
     }
 
@@ -495,36 +504,32 @@ gimp_color_tool_cursor_update (GimpTool        *tool,
         }
       else
         {
-          GimpCursorType     cursor   = GIMP_CURSOR_BAD;
-          GimpCursorModifier modifier = GIMP_CURSOR_MODIFIER_NONE;
+          GimpCursorModifier modifier = GIMP_CURSOR_MODIFIER_BAD;
 
-          if (coords->x > 0 && coords->x < display->image->width  &&
-              coords->y > 0 && coords->y < display->image->height &&
-
-              (color_tool->options->sample_merged ||
-               gimp_image_coords_in_active_drawable (display->image, coords)))
+          if (gimp_image_coords_in_active_pickable (display->image, coords,
+                                                    color_tool->options->sample_merged,
+                                                    FALSE))
             {
-              cursor = GIMP_CURSOR_MOUSE;
-            }
-
-          switch (color_tool->pick_mode)
-            {
-            case GIMP_COLOR_PICK_MODE_NONE:
-              modifier = GIMP_CURSOR_MODIFIER_NONE;
-              break;
-            case GIMP_COLOR_PICK_MODE_FOREGROUND:
-              modifier = GIMP_CURSOR_MODIFIER_FOREGROUND;
-              break;
-            case GIMP_COLOR_PICK_MODE_BACKGROUND:
-              modifier = GIMP_CURSOR_MODIFIER_BACKGROUND;
-              break;
-            case GIMP_COLOR_PICK_MODE_PALETTE:
-              modifier = GIMP_CURSOR_MODIFIER_PLUS;
-              break;
+              switch (color_tool->pick_mode)
+                {
+                case GIMP_COLOR_PICK_MODE_NONE:
+                  modifier = GIMP_CURSOR_MODIFIER_NONE;
+                  break;
+                case GIMP_COLOR_PICK_MODE_FOREGROUND:
+                  modifier = GIMP_CURSOR_MODIFIER_FOREGROUND;
+                  break;
+                case GIMP_COLOR_PICK_MODE_BACKGROUND:
+                  modifier = GIMP_CURSOR_MODIFIER_BACKGROUND;
+                  break;
+                case GIMP_COLOR_PICK_MODE_PALETTE:
+                  modifier = GIMP_CURSOR_MODIFIER_PLUS;
+                  break;
+                }
             }
 
           gimp_tool_set_cursor (tool, display,
-                                cursor, GIMP_TOOL_CURSOR_COLOR_PICKER,
+                                GIMP_CURSOR_COLOR_PICKER,
+                                GIMP_TOOL_CURSOR_COLOR_PICKER,
                                 modifier);
         }
 
@@ -596,6 +601,95 @@ gimp_color_tool_real_pick (GimpColorTool *color_tool,
                                 sample_type,
                                 color,
                                 color_index);
+}
+
+static void
+gimp_color_tool_real_picked (GimpColorTool      *color_tool,
+                             GimpColorPickState  pick_state,
+                             GimpImageType       sample_type,
+                             GimpRGB            *color,
+                             gint                color_index)
+{
+  GimpTool    *tool = GIMP_TOOL (color_tool);
+  GimpContext *user_context;
+
+  user_context = gimp_get_user_context (tool->display->image->gimp);
+
+  if ((color_tool->pick_mode == GIMP_COLOR_PICK_MODE_FOREGROUND ||
+       color_tool->pick_mode == GIMP_COLOR_PICK_MODE_BACKGROUND) &&
+      GIMP_IMAGE_TYPE_IS_INDEXED (sample_type))
+    {
+      GimpDialogFactory *dialog_factory;
+      GimpSessionInfo   *info;
+
+      dialog_factory = gimp_dialog_factory_from_name ("dock");
+      info = gimp_dialog_factory_find_session_info (dialog_factory,
+                                                    "gimp-indexed-palette");
+
+      if (info && info->widget)
+        {
+          GtkWidget *colormap_editor;
+
+          colormap_editor = gtk_bin_get_child (GTK_BIN (info->widget));
+
+          gtk_adjustment_set_value
+            (GIMP_COLORMAP_EDITOR (colormap_editor)->index_adjustment,
+             color_index);
+        }
+    }
+
+  switch (color_tool->pick_mode)
+    {
+    case GIMP_COLOR_PICK_MODE_NONE:
+      break;
+
+    case GIMP_COLOR_PICK_MODE_FOREGROUND:
+      gimp_context_set_foreground (user_context, color);
+      break;
+
+    case GIMP_COLOR_PICK_MODE_BACKGROUND:
+      gimp_context_set_background (user_context, color);
+      break;
+
+    case GIMP_COLOR_PICK_MODE_PALETTE:
+      {
+        GimpDialogFactory *dialog_factory;
+        GdkScreen         *screen;
+        GtkWidget         *dockable;
+
+        dialog_factory = gimp_dialog_factory_from_name ("dock");
+        screen = gtk_widget_get_screen (tool->display->shell);
+        dockable = gimp_dialog_factory_dialog_raise (dialog_factory, screen,
+                                                     "gimp-palette-editor",
+                                                     -1);
+
+        if (dockable)
+          {
+            GtkWidget *palette_editor;
+            GimpData  *data;
+
+            /* don't blink like mad when updating */
+            if (pick_state == GIMP_COLOR_PICK_STATE_UPDATE)
+              gimp_dockable_blink_cancel (GIMP_DOCKABLE (dockable));
+
+            palette_editor = gtk_bin_get_child (GTK_BIN (dockable));
+
+            data = gimp_data_editor_get_data (GIMP_DATA_EDITOR (palette_editor));
+
+            if (! data)
+              {
+                data = GIMP_DATA (gimp_context_get_palette (user_context));
+
+                gimp_data_editor_set_data (GIMP_DATA_EDITOR (palette_editor),
+                                           data);
+              }
+
+            gimp_palette_editor_pick_color (GIMP_PALETTE_EDITOR (palette_editor),
+                                            color, pick_state);
+          }
+      }
+      break;
+    }
 }
 
 static void

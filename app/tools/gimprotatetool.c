@@ -70,7 +70,7 @@ static void   rotate_center_changed          (GtkWidget           *entry,
                                               GimpTransformTool   *tr_tool);
 
 
-G_DEFINE_TYPE (GimpRotateTool, gimp_rotate_tool, GIMP_TYPE_TRANSFORM_TOOL);
+G_DEFINE_TYPE (GimpRotateTool, gimp_rotate_tool, GIMP_TYPE_TRANSFORM_TOOL)
 
 #define parent_class gimp_rotate_tool_parent_class
 
@@ -189,8 +189,6 @@ gimp_rotate_tool_dialog_update (GimpTransformTool *tr_tool)
   g_signal_handlers_unblock_by_func (rotate->sizeentry,
                                      rotate_center_changed,
                                      tr_tool);
-
-  gtk_widget_show (tr_tool->dialog);
 }
 
 static void
@@ -286,7 +284,7 @@ gimp_rotate_tool_motion (GimpTransformTool *tr_tool,
       tr_tool->trans_info[REAL_ANGLE] - 2.0 * G_PI;
 
   /*  constrain the angle to 15-degree multiples if ctrl is held down  */
-  if (options->constrain_1)
+  if (options->constrain)
     {
       tr_tool->trans_info[ANGLE] =
         FIFTEEN_DEG * (int) ((tr_tool->trans_info[REAL_ANGLE] +

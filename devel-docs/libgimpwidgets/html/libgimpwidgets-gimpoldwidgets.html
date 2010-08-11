@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
 <link rel="prev" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
 <link rel="next" href="ix01.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
@@ -24,92 +25,79 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpwidgets-deprecated.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpwidgets-deprecated.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="ix01.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-gimpoldwidgets"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpoldwidgets</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpoldwidgets</span></h2>
 <p>gimpoldwidgets &#8212; Old API that is still available but declared as deprecated.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
 
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-new">gimp_int_option_menu_new</a>        (gboolean menu_only,
+GtkWidget*  <a href="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-new">gimp_int_option_menu_new</a>        (gboolean menu_only,
                                              GCallback menu_item_callback,
                                              gpointer menu_item_callback_data,
                                              gint initial,
                                              ...);
 void        <a href="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-set-history">gimp_int_option_menu_set_history</a>
-                                            (<a
-href="../gtk/GtkOptionMenu.html"
->GtkOptionMenu</a> *option_menu,
+                                            (GtkOptionMenu *option_menu,
                                              gint item_data);
 gboolean    (<a href="libgimpwidgets-gimpoldwidgets.html#GimpIntOptionMenuSensitivityCallback">*GimpIntOptionMenuSensitivityCallback</a>)
                                             (gint item_data,
                                              gpointer callback_data);
 void        <a href="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-set-sensitive">gimp_int_option_menu_set_sensitive</a>
-                                            (<a
-href="../gtk/GtkOptionMenu.html"
->GtkOptionMenu</a> *option_menu,
+                                            (GtkOptionMenu *option_menu,
                                              <a href="libgimpwidgets-gimpoldwidgets.html#GimpIntOptionMenuSensitivityCallback">GimpIntOptionMenuSensitivityCallback</a> callback,
                                              gpointer callback_data);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new">gimp_option_menu_new</a>            (gboolean menu_only,
+GtkWidget*  <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new">gimp_option_menu_new</a>            (gboolean menu_only,
                                              ...);
-<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new2">gimp_option_menu_new2</a>           (gboolean menu_only,
+GtkWidget*  <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new2">gimp_option_menu_new2</a>           (gboolean menu_only,
                                              GCallback menu_item_callback,
                                              gpointer menu_item_callback_data,
                                              gpointer initial,
                                              ...);
-void        <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-history">gimp_option_menu_set_history</a>    (<a
-href="../gtk/GtkOptionMenu.html"
->GtkOptionMenu</a> *option_menu,
+void        <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-history">gimp_option_menu_set_history</a>    (GtkOptionMenu *option_menu,
                                              gpointer item_data);
 gboolean    (<a href="libgimpwidgets-gimpoldwidgets.html#GimpOptionMenuSensitivityCallback">*GimpOptionMenuSensitivityCallback</a>)
                                             (gpointer item_data,
                                              gpointer callback_data);
-void        <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-sensitive">gimp_option_menu_set_sensitive</a>  (<a
-href="../gtk/GtkOptionMenu.html"
->GtkOptionMenu</a> *option_menu,
+void        <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-sensitive">gimp_option_menu_set_sensitive</a>  (GtkOptionMenu *option_menu,
                                              <a href="libgimpwidgets-gimpoldwidgets.html#GimpOptionMenuSensitivityCallback">GimpOptionMenuSensitivityCallback</a> callback,
                                              gpointer callback_data);
-void        <a href="libgimpwidgets-gimpoldwidgets.html#gimp-menu-item-update">gimp_menu_item_update</a>           (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+void        <a href="libgimpwidgets-gimpoldwidgets.html#gimp-menu-item-update">gimp_menu_item_update</a>           (GtkWidget *widget,
                                              gpointer data);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2625713"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 These functions are not defined if you <span class="type">define</span> GIMP_DISABLE_DEPRECATED.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2625730"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2625736"></a><h3>
+<a name="id2621260"></a><h3>
 <a name="gimp-int-option-menu-new"></a>gimp_int_option_menu_new ()</h3>
-<a class="indexterm" name="id2625745"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_int_option_menu_new        (gboolean menu_only,
+<a class="indexterm" name="id2621273"></a><pre class="programlisting">GtkWidget*  gimp_int_option_menu_new        (gboolean menu_only,
                                              GCallback menu_item_callback,
                                              gpointer menu_item_callback_data,
                                              gint initial,
@@ -119,11 +107,7 @@ href="../gtk/GtkWidget.html"
 <p><code class="literal">gimp_int_option_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Convenience function to create a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> or a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a>. This
+Convenience function to create a <span class="type">GtkOptionMenu</span> or a <span class="type">GtkMenu</span>. This
 function does the same thing as the deprecated function
 <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new2"><code class="function">gimp_option_menu_new2()</code></a>, but it takes integers as <em class="parameter"><code>item_data</code></em>
 instead of pointers, since that is a very common case (mapping an
@@ -137,9 +121,7 @@ enum to a menu).</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>menu_only</code></em>&#160;:</span></td>
-<td>          <code class="literal">TRUE</code> if the function should return a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a> only.
+<td>          <code class="literal">TRUE</code> if the function should return a <span class="type">GtkMenu</span> only.
 </td>
 </tr>
 <tr>
@@ -171,11 +153,7 @@ href="../gtk/GtkMenu.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> or a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a> (depending on <em class="parameter"><code>menu_only</code></em>).
+<td> A <span class="type">GtkOptionMenu</span> or a <span class="type">GtkMenu</span> (depending on <em class="parameter"><code>menu_only</code></em>).
 </td>
 </tr>
 </tbody>
@@ -183,24 +161,18 @@ href="../gtk/GtkMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606137"></a><h3>
+<a name="id2622658"></a><h3>
 <a name="gimp-int-option-menu-set-history"></a>gimp_int_option_menu_set_history ()</h3>
-<a class="indexterm" name="id2606146"></a><pre class="programlisting">void        gimp_int_option_menu_set_history
-                                            (<a
-href="../gtk/GtkOptionMenu.html"
->GtkOptionMenu</a> *option_menu,
+<a class="indexterm" name="id2622671"></a><pre class="programlisting">void        gimp_int_option_menu_set_history
+                                            (GtkOptionMenu *option_menu,
                                              gint item_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_int_option_menu_set_history</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Iterates over all entries in a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> and selects the one with the
-matching <em class="parameter"><code>item_data</code></em>. Probably only makes sense to use with a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a>
+Iterates over all entries in a <span class="type">GtkOptionMenu</span> and selects the one with the
+matching <em class="parameter"><code>item_data</code></em>. Probably only makes sense to use with a <span class="type">GtkOptionMenu</span>
 that was created using <a href="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-new"><code class="function">gimp_int_option_menu_new()</code></a>. This function does the
 same thing as <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-history"><code class="function">gimp_option_menu_set_history()</code></a>, but takes integers as
 <em class="parameter"><code>item_data</code></em> instead of pointers.</p>
@@ -213,9 +185,7 @@ same thing as <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-h
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>option_menu</code></em>&#160;:</span></td>
-<td> A <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> as returned by <a href="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-new"><code class="function">gimp_int_option_menu_new()</code></a>.
+<td> A <span class="type">GtkOptionMenu</span> as returned by <a href="libgimpwidgets-gimpoldwidgets.html#gimp-int-option-menu-new"><code class="function">gimp_int_option_menu_new()</code></a>.
 </td>
 </tr>
 <tr>
@@ -229,9 +199,9 @@ href="../gtk/GtkOptionMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606298"></a><h3>
+<a name="id2618156"></a><h3>
 <a name="GimpIntOptionMenuSensitivityCallback"></a>GimpIntOptionMenuSensitivityCallback ()</h3>
-<a class="indexterm" name="id2606309"></a><pre class="programlisting">gboolean    (*GimpIntOptionMenuSensitivityCallback)
+<a class="indexterm" name="id2618172"></a><pre class="programlisting">gboolean    (*GimpIntOptionMenuSensitivityCallback)
                                             (gint item_data,
                                              gpointer callback_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -269,12 +239,10 @@ href="../gtk/GtkOptionMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2606402"></a><h3>
+<a name="id2618264"></a><h3>
 <a name="gimp-int-option-menu-set-sensitive"></a>gimp_int_option_menu_set_sensitive ()</h3>
-<a class="indexterm" name="id2626605"></a><pre class="programlisting">void        gimp_int_option_menu_set_sensitive
-                                            (<a
-href="../gtk/GtkOptionMenu.html"
->GtkOptionMenu</a> *option_menu,
+<a class="indexterm" name="id2618279"></a><pre class="programlisting">void        gimp_int_option_menu_set_sensitive
+                                            (GtkOptionMenu *option_menu,
                                              <a href="libgimpwidgets-gimpoldwidgets.html#GimpIntOptionMenuSensitivityCallback">GimpIntOptionMenuSensitivityCallback</a> callback,
                                              gpointer callback_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -296,9 +264,7 @@ same thing as <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-set-s
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>option_menu</code></em>&#160;:</span></td>
-<td> a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> as returned by <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"><code class="function">gimp_option_menu_new()</code></a> or
+<td> a <span class="type">GtkOptionMenu</span> as returned by <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"><code class="function">gimp_option_menu_new()</code></a> or
            <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new2"><code class="function">gimp_option_menu_new2()</code></a>.
 </td>
 </tr>
@@ -320,22 +286,16 @@ href="../gtk/GtkOptionMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2626774"></a><h3>
+<a name="id2618447"></a><h3>
 <a name="gimp-option-menu-new"></a>gimp_option_menu_new ()</h3>
-<a class="indexterm" name="id2626783"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_option_menu_new            (gboolean menu_only,
+<a class="indexterm" name="id2618460"></a><pre class="programlisting">GtkWidget*  gimp_option_menu_new            (gboolean menu_only,
                                              ...);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_option_menu_new</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Convenience function to create a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> or a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a>.</p>
+Convenience function to create a <span class="type">GtkOptionMenu</span> or a <span class="type">GtkMenu</span>.</p>
 <p>
 
 </p>
@@ -345,9 +305,7 @@ href="../gtk/GtkMenu.html"
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>menu_only</code></em>&#160;:</span></td>
-<td> <code class="literal">TRUE</code> if the function should return a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a> only.
+<td> <code class="literal">TRUE</code> if the function should return a <span class="type">GtkMenu</span> only.
 </td>
 </tr>
 <tr>
@@ -359,11 +317,7 @@ href="../gtk/GtkMenu.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> or a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a> (depending on <em class="parameter"><code>menu_only</code></em>).
+<td> A <span class="type">GtkOptionMenu</span> or a <span class="type">GtkMenu</span> (depending on <em class="parameter"><code>menu_only</code></em>).
 </td>
 </tr>
 </tbody>
@@ -371,11 +325,9 @@ href="../gtk/GtkMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614987"></a><h3>
+<a name="id2618614"></a><h3>
 <a name="gimp-option-menu-new2"></a>gimp_option_menu_new2 ()</h3>
-<a class="indexterm" name="id2614996"></a><pre class="programlisting"><a
-href="../gtk/GtkWidget.html"
->GtkWidget</a>*  gimp_option_menu_new2           (gboolean menu_only,
+<a class="indexterm" name="id2618627"></a><pre class="programlisting">GtkWidget*  gimp_option_menu_new2           (gboolean menu_only,
                                              GCallback menu_item_callback,
                                              gpointer menu_item_callback_data,
                                              gpointer initial,
@@ -385,11 +337,7 @@ href="../gtk/GtkWidget.html"
 <p><code class="literal">gimp_option_menu_new2</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Convenience function to create a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> or a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a>.</p>
+Convenience function to create a <span class="type">GtkOptionMenu</span> or a <span class="type">GtkMenu</span>.</p>
 <p>
 
 </p>
@@ -399,9 +347,7 @@ href="../gtk/GtkMenu.html"
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>menu_only</code></em>&#160;:</span></td>
-<td>          <code class="literal">TRUE</code> if the function should return a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a> only.
+<td>          <code class="literal">TRUE</code> if the function should return a <span class="type">GtkMenu</span> only.
 </td>
 </tr>
 <tr>
@@ -433,11 +379,7 @@ href="../gtk/GtkMenu.html"
 <tr>
 <td>
 <span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
-<td> A <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> or a <a
-href="../gtk/GtkMenu.html"
-><span class="type">GtkMenu</span></a> (depending on <em class="parameter"><code>menu_only</code></em>).
+<td> A <span class="type">GtkOptionMenu</span> or a <span class="type">GtkMenu</span> (depending on <em class="parameter"><code>menu_only</code></em>).
 </td>
 </tr>
 </tbody>
@@ -445,24 +387,18 @@ href="../gtk/GtkMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615226"></a><h3>
+<a name="id2631594"></a><h3>
 <a name="gimp-option-menu-set-history"></a>gimp_option_menu_set_history ()</h3>
-<a class="indexterm" name="id2615237"></a><pre class="programlisting">void        gimp_option_menu_set_history    (<a
-href="../gtk/GtkOptionMenu.html"
->GtkOptionMenu</a> *option_menu,
+<a class="indexterm" name="id2631609"></a><pre class="programlisting">void        gimp_option_menu_set_history    (GtkOptionMenu *option_menu,
                                              gpointer item_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">gimp_option_menu_set_history</code> is deprecated and should not be used in newly-written code.</p>
 </div>
 <p>
-Iterates over all entries in a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> and selects the one
+Iterates over all entries in a <span class="type">GtkOptionMenu</span> and selects the one
 with the matching <em class="parameter"><code>item_data</code></em>. Probably only makes sense to use with
-a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> that was created using <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"><code class="function">gimp_option_menu_new()</code></a> or
+a <span class="type">GtkOptionMenu</span> that was created using <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"><code class="function">gimp_option_menu_new()</code></a> or
 <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new2"><code class="function">gimp_option_menu_new2()</code></a>.</p>
 <p>
 
@@ -473,9 +409,7 @@ href="../gtk/GtkOptionMenu.html"
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>option_menu</code></em>&#160;:</span></td>
-<td> A <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> as returned by <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"><code class="function">gimp_option_menu_new()</code></a> or
+<td> A <span class="type">GtkOptionMenu</span> as returned by <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"><code class="function">gimp_option_menu_new()</code></a> or
               <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new2"><code class="function">gimp_option_menu_new2()</code></a>.
 </td>
 </tr>
@@ -490,9 +424,9 @@ href="../gtk/GtkOptionMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615393"></a><h3>
+<a name="id2631765"></a><h3>
 <a name="GimpOptionMenuSensitivityCallback"></a>GimpOptionMenuSensitivityCallback ()</h3>
-<a class="indexterm" name="id2615405"></a><pre class="programlisting">gboolean    (*GimpOptionMenuSensitivityCallback)
+<a class="indexterm" name="id2631781"></a><pre class="programlisting">gboolean    (*GimpOptionMenuSensitivityCallback)
                                             (gpointer item_data,
                                              gpointer callback_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -530,11 +464,9 @@ href="../gtk/GtkOptionMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613053"></a><h3>
+<a name="id2631872"></a><h3>
 <a name="gimp-option-menu-set-sensitive"></a>gimp_option_menu_set_sensitive ()</h3>
-<a class="indexterm" name="id2613064"></a><pre class="programlisting">void        gimp_option_menu_set_sensitive  (<a
-href="../gtk/GtkOptionMenu.html"
->GtkOptionMenu</a> *option_menu,
+<a class="indexterm" name="id2631888"></a><pre class="programlisting">void        gimp_option_menu_set_sensitive  (GtkOptionMenu *option_menu,
                                              <a href="libgimpwidgets-gimpoldwidgets.html#GimpOptionMenuSensitivityCallback">GimpOptionMenuSensitivityCallback</a> callback,
                                              gpointer callback_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -554,9 +486,7 @@ according to the return value of this function.</p>
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>option_menu</code></em>&#160;:</span></td>
-<td> a <a
-href="../gtk/GtkOptionMenu.html"
-><span class="type">GtkOptionMenu</span></a> as returned by <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"><code class="function">gimp_option_menu_new()</code></a> or
+<td> a <span class="type">GtkOptionMenu</span> as returned by <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new"><code class="function">gimp_option_menu_new()</code></a> or
            <a href="libgimpwidgets-gimpoldwidgets.html#gimp-option-menu-new2"><code class="function">gimp_option_menu_new2()</code></a>.
 </td>
 </tr>
@@ -578,11 +508,9 @@ href="../gtk/GtkOptionMenu.html"
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613217"></a><h3>
+<a name="id2632041"></a><h3>
 <a name="gimp-menu-item-update"></a>gimp_menu_item_update ()</h3>
-<a class="indexterm" name="id2613226"></a><pre class="programlisting">void        gimp_menu_item_update           (<a
-href="../gtk/GtkWidget.html"
->GtkWidget</a> *widget,
+<a class="indexterm" name="id2632055"></a><pre class="programlisting">void        gimp_menu_item_update           (GtkWidget *widget,
                                              gpointer data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -599,9 +527,7 @@ href="../gtk/GtkWidget.html"
 <tr>
 <td>
 <span class="term"><em class="parameter"><code>widget</code></em>&#160;:</span></td>
-<td> A <a
-href="../gtk/GtkMenuItem.html"
-><span class="type">GtkMenuItem</span></a>.
+<td> A <span class="type">GtkMenuItem</span>.
 </td>
 </tr>
 <tr>
@@ -616,15 +542,11 @@ href="../gtk/GtkMenuItem.html"
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613332"></a><h2>See Also</h2>
+<a name="id2632160"></a><h2>See Also</h2>
 <p>
 GimpIntComboBox
 </p>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpwidgets-deprecated.html"><b>&lt;&lt;&#160;Part&#160;VI.&#160;Deprecated API</b></a></td>
-<td align="right"><a accesskey="n" href="ix01.html"><b>Index&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

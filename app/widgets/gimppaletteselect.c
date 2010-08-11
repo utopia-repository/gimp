@@ -32,7 +32,7 @@
 #include "core/gimppalette.h"
 #include "core/gimpparamspecs.h"
 
-#include "pdb/gimp-pdb.h"
+#include "pdb/gimppdb.h"
 
 #include "gimpcontainerbox.h"
 #include "gimpdatafactoryview.h"
@@ -48,7 +48,7 @@ static GValueArray * gimp_palette_select_run_callback (GimpPdbDialog *dialog,
                                                        gboolean       closing);
 
 
-G_DEFINE_TYPE (GimpPaletteSelect, gimp_palette_select, GIMP_TYPE_PDB_DIALOG);
+G_DEFINE_TYPE (GimpPaletteSelect, gimp_palette_select, GIMP_TYPE_PDB_DIALOG)
 
 #define parent_class gimp_palette_select_parent_class
 
@@ -108,12 +108,12 @@ gimp_palette_select_run_callback (GimpPdbDialog *dialog,
 {
   GimpPalette *palette = GIMP_PALETTE (object);
 
-  return gimp_pdb_run_proc (dialog->caller_context->gimp,
-                            dialog->caller_context,
-                            NULL,
-                            dialog->callback_name,
-                            G_TYPE_STRING,   GIMP_OBJECT (palette)->name,
-                            GIMP_TYPE_INT32, palette->n_colors,
-                            GIMP_TYPE_INT32, closing,
-                            G_TYPE_NONE);
+  return gimp_pdb_execute_procedure_by_name (dialog->pdb,
+                                             dialog->caller_context,
+                                             NULL,
+                                             dialog->callback_name,
+                                             G_TYPE_STRING,   object->name,
+                                             GIMP_TYPE_INT32, palette->n_colors,
+                                             GIMP_TYPE_INT32, closing,
+                                             G_TYPE_NONE);
 }

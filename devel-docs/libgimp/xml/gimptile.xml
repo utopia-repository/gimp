@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimptile">
 <refmeta>
-<refentrytitle>gimptile</refentrytitle>
+<refentrytitle id="top_of_page">gimptile</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimptile</refname><refpurpose>Functions for working with tiles.</refpurpose>
+<refname>gimptile</refname>
+<refpurpose>Functions for working with tiles.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -38,18 +41,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions for working with tiles.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpTile"/>GimpTile</title>
+<title><anchor id="GimpTile" role="struct"/>GimpTile</title>
 <indexterm><primary>GimpTile</primary></indexterm><programlisting>typedef struct {
   guint         ewidth;     /* the effective width of the tile */
   guint         eheight;    /* the effective height of the tile */
@@ -66,7 +69,7 @@ Functions for working with tiles.
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-tile-ref"/>gimp_tile_ref ()</title>
+<title><anchor id="gimp-tile-ref" role="function"/>gimp_tile_ref ()</title>
 <indexterm><primary>gimp_tile_ref</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_tile_ref                   (<link linkend="GimpTile">GimpTile</link> *tile);</programlisting>
 <para>
 
@@ -78,7 +81,7 @@ Functions for working with tiles.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-tile-ref-zero"/>gimp_tile_ref_zero ()</title>
+<title><anchor id="gimp-tile-ref-zero" role="function"/>gimp_tile_ref_zero ()</title>
 <indexterm><primary>gimp_tile_ref_zero</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_tile_ref_zero              (<link linkend="GimpTile">GimpTile</link> *tile);</programlisting>
 <para>
 
@@ -90,7 +93,7 @@ Functions for working with tiles.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-tile-unref"/>gimp_tile_unref ()</title>
+<title><anchor id="gimp-tile-unref" role="function"/>gimp_tile_unref ()</title>
 <indexterm><primary>gimp_tile_unref</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_tile_unref                 (<link linkend="GimpTile">GimpTile</link> *tile,
                                              <link linkend="gboolean">gboolean</link> dirty);</programlisting>
 <para>
@@ -106,7 +109,7 @@ Functions for working with tiles.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-tile-flush"/>gimp_tile_flush ()</title>
+<title><anchor id="gimp-tile-flush" role="function"/>gimp_tile_flush ()</title>
 <indexterm><primary>gimp_tile_flush</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_tile_flush                 (<link linkend="GimpTile">GimpTile</link> *tile);</programlisting>
 <para>
 
@@ -118,7 +121,7 @@ Functions for working with tiles.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-tile-cache-size"/>gimp_tile_cache_size ()</title>
+<title><anchor id="gimp-tile-cache-size" role="function"/>gimp_tile_cache_size ()</title>
 <indexterm><primary>gimp_tile_cache_size</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_tile_cache_size            (<link linkend="gulong">gulong</link> kilobytes);</programlisting>
 <para>
 Sets the size of the tile cache on the plug-in side. The tile cache
@@ -132,7 +135,7 @@ and the plug-in. See also <link linkend="gimp-tile-cache-ntiles"><function>gimp_
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-tile-cache-ntiles"/>gimp_tile_cache_ntiles ()</title>
+<title><anchor id="gimp-tile-cache-ntiles" role="function"/>gimp_tile_cache_ntiles ()</title>
 <indexterm><primary>gimp_tile_cache_ntiles</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_tile_cache_ntiles          (<link linkend="gulong">gulong</link> ntiles);</programlisting>
 <para>
 Sets the size of the tile cache on the plug-in side. This function

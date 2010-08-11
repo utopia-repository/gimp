@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimppalette">
 <refmeta>
-<refentrytitle>gimppalette</refentrytitle>
+<refentrytitle id="top_of_page">gimppalette</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimppalette</refname><refpurpose>Functions operating on a single palette.</refpurpose>
+<refname>gimppalette</refname>
+<refpurpose>Functions operating on a single palette.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -65,17 +68,17 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Functions operating on a single palette.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-palette-new"/>gimp_palette_new ()</title>
+<title><anchor id="gimp-palette-new" role="function" condition="since:GIMP 2.2"/>gimp_palette_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_new</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_new                (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Creates a new palette
@@ -94,7 +97,7 @@ This procedure creates a new, uninitialized palette</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-duplicate"/>gimp_palette_duplicate ()</title>
+<title><anchor id="gimp-palette-duplicate" role="function" condition="since:GIMP 2.2"/>gimp_palette_duplicate ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_duplicate</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_duplicate          (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Duplicates a palette
@@ -113,7 +116,7 @@ This procedure creates an identical palette by a different name</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-rename"/>gimp_palette_rename ()</title>
+<title><anchor id="gimp-palette-rename" role="function" condition="since:GIMP 2.2"/>gimp_palette_rename ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_rename</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_palette_rename             (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *new_name);</programlisting>
 <para>
@@ -136,7 +139,7 @@ This procedure renames a palette</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-delete"/>gimp_palette_delete ()</title>
+<title><anchor id="gimp-palette-delete" role="function" condition="since:GIMP 2.2"/>gimp_palette_delete ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_delete</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_delete             (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Deletes a palette
@@ -155,7 +158,7 @@ This procedure deletes a palette</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-get-info"/>gimp_palette_get_info ()</title>
+<title><anchor id="gimp-palette-get-info" role="function" condition="since:GIMP 2.2"/>gimp_palette_get_info ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_get_info           (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> *num_colors);</programlisting>
 <para>
@@ -179,7 +182,7 @@ This includes the name, and the number of colors.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-get-columns"/>gimp_palette_get_columns ()</title>
+<title><anchor id="gimp-palette-get-columns" role="function" condition="since:GIMP 2.4"/>gimp_palette_get_columns ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_palette_get_columns</primary></indexterm><programlisting><link linkend="gint">gint</link>        gimp_palette_get_columns        (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Retrieves the number of columns to use to display this palette
@@ -199,7 +202,7 @@ the palette is being displayed.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-set-columns"/>gimp_palette_set_columns ()</title>
+<title><anchor id="gimp-palette-set-columns" role="function" condition="since:GIMP 2.4"/>gimp_palette_set_columns ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_palette_set_columns</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_set_columns        (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> columns);</programlisting>
 <para>
@@ -224,7 +227,7 @@ if the palette is writable. The maximum allowed value is 64.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-add-entry"/>gimp_palette_add_entry ()</title>
+<title><anchor id="gimp-palette-add-entry" role="function" condition="since:GIMP 2.2"/>gimp_palette_add_entry ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_add_entry</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_add_entry          (const <link linkend="gchar">gchar</link> *name,
                                              const <link linkend="gchar">gchar</link> *entry_name,
                                              const <link linkend="GimpRGB">GimpRGB</link> *color,
@@ -256,7 +259,7 @@ error if the entry palette does not exist.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-delete-entry"/>gimp_palette_delete_entry ()</title>
+<title><anchor id="gimp-palette-delete-entry" role="function" condition="since:GIMP 2.2"/>gimp_palette_delete_entry ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_delete_entry</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_delete_entry       (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num);</programlisting>
 <para>
@@ -280,7 +283,7 @@ returns an error if the entry palette does not exist.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-entry-get-color"/>gimp_palette_entry_get_color ()</title>
+<title><anchor id="gimp-palette-entry-get-color" role="function" condition="since:GIMP 2.2"/>gimp_palette_entry_get_color ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_entry_get_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_get_color    (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
@@ -309,7 +312,7 @@ exist.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-entry-set-color"/>gimp_palette_entry_set_color ()</title>
+<title><anchor id="gimp-palette-entry-set-color" role="function" condition="since:GIMP 2.2"/>gimp_palette_entry_set_color ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_entry_set_color</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_set_color    (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              const <link linkend="GimpRGB">GimpRGB</link> *color);</programlisting>
@@ -338,7 +341,7 @@ exist.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-entry-get-name"/>gimp_palette_entry_get_name ()</title>
+<title><anchor id="gimp-palette-entry-get-name" role="function" condition="since:GIMP 2.2"/>gimp_palette_entry_get_name ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_entry_get_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_get_name     (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              <link linkend="gchar">gchar</link> **entry_name);</programlisting>
@@ -367,7 +370,7 @@ exist.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-entry-set-name"/>gimp_palette_entry_set_name ()</title>
+<title><anchor id="gimp-palette-entry-set-name" role="function" condition="since:GIMP 2.2"/>gimp_palette_entry_set_name ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_palette_entry_set_name</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_entry_set_name     (const <link linkend="gchar">gchar</link> *name,
                                              <link linkend="gint">gint</link> entry_num,
                                              const <link linkend="gchar">gchar</link> *entry_name);</programlisting>
@@ -396,7 +399,7 @@ exist.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-get-foreground"/>gimp_palette_get_foreground ()</title>
+<title><anchor id="gimp-palette-get-foreground" role="function" condition="deprecated:"/>gimp_palette_get_foreground ()</title>
 <indexterm role="deprecated"><primary>gimp_palette_get_foreground</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_get_foreground     (<link linkend="GimpRGB">GimpRGB</link> *foreground);</programlisting>
 <warning><para><literal>gimp_palette_get_foreground</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -416,7 +419,7 @@ blending, and bucket fill.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-get-background"/>gimp_palette_get_background ()</title>
+<title><anchor id="gimp-palette-get-background" role="function" condition="deprecated:"/>gimp_palette_get_background ()</title>
 <indexterm role="deprecated"><primary>gimp_palette_get_background</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_get_background     (<link linkend="GimpRGB">GimpRGB</link> *background);</programlisting>
 <warning><para><literal>gimp_palette_get_background</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -436,7 +439,7 @@ erasing (with non-alpha images), and image filling.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-set-foreground"/>gimp_palette_set_foreground ()</title>
+<title><anchor id="gimp-palette-set-foreground" role="function" condition="deprecated:"/>gimp_palette_set_foreground ()</title>
 <indexterm role="deprecated"><primary>gimp_palette_set_foreground</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_set_foreground     (const <link linkend="GimpRGB">GimpRGB</link> *foreground);</programlisting>
 <warning><para><literal>gimp_palette_set_foreground</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -456,7 +459,7 @@ and bucket fill will use the new value.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-set-background"/>gimp_palette_set_background ()</title>
+<title><anchor id="gimp-palette-set-background" role="function" condition="deprecated:"/>gimp_palette_set_background ()</title>
 <indexterm role="deprecated"><primary>gimp_palette_set_background</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_set_background     (const <link linkend="GimpRGB">GimpRGB</link> *background);</programlisting>
 <warning><para><literal>gimp_palette_set_background</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -477,7 +480,7 @@ value.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-set-default-colors"/>gimp_palette_set_default_colors ()</title>
+<title><anchor id="gimp-palette-set-default-colors" role="function" condition="deprecated:"/>gimp_palette_set_default_colors ()</title>
 <indexterm role="deprecated"><primary>gimp_palette_set_default_colors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_set_default_colors (void);</programlisting>
 <warning><para><literal>gimp_palette_set_default_colors</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -494,7 +497,7 @@ colors to their initial default values, black and white.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-swap-colors"/>gimp_palette_swap_colors ()</title>
+<title><anchor id="gimp-palette-swap-colors" role="function" condition="deprecated:"/>gimp_palette_swap_colors ()</title>
 <indexterm role="deprecated"><primary>gimp_palette_swap_colors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_swap_colors        (void);</programlisting>
 <warning><para><literal>gimp_palette_swap_colors</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -511,7 +514,7 @@ color and vice versa.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-palette-is-editable"/>gimp_palette_is_editable ()</title>
+<title><anchor id="gimp-palette-is-editable" role="function" condition="since:GIMP 2.4"/>gimp_palette_is_editable ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_palette_is_editable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_palette_is_editable        (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Tests if palette can be edited

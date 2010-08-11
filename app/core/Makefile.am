@@ -1,7 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
 AM_CPPFLAGS = \
-	-DG_LOG_DOMAIN=\"Gimp-Core\"	\
+	-DGIMP_APP_VERSION=\"$(GIMP_APP_VERSION)\"	\
+	-DG_LOG_DOMAIN=\"Gimp-Core\"			\
 	@GTHREAD_CFLAGS@
 
 INCLUDES = \
@@ -40,6 +41,8 @@ libappcore_a_sources = \
 	gimp-transform-utils.h		\
 	gimp-units.c			\
 	gimp-units.h			\
+	gimp-user-install.c		\
+	gimp-user-install.h		\
 	gimp-utils.c			\
 	gimp-utils.h			\
 	gimparea.c			\
@@ -49,6 +52,8 @@ libappcore_a_sources = \
 	gimpbrush-header.h		\
 	gimpbrush-load.c		\
 	gimpbrush-load.h		\
+	gimpbrushclipboard.c		\
+	gimpbrushclipboard.h		\
 	gimpbrushgenerated.c		\
 	gimpbrushgenerated.h		\
 	gimpbrushpipe.c			\
@@ -107,8 +112,6 @@ libappcore_a_sources = \
 	gimpdrawable-stroke.h		\
 	gimpdrawable-transform.c	\
 	gimpdrawable-transform.h	\
-	gimpenvirontable.h		\
-	gimpenvirontable.c		\
 	gimpgradient.c			\
 	gimpgradient.h			\
 	gimpgradient-load.c		\
@@ -139,6 +142,8 @@ libappcore_a_sources = \
 	gimpimage-grid.c                \
 	gimpimage-guides.c		\
 	gimpimage-guides.h		\
+	gimpimage-item-list.c		\
+	gimpimage-item-list.h		\
 	gimpimage-merge.c		\
 	gimpimage-merge.h		\
 	gimpimage-new.c			\
@@ -167,8 +172,6 @@ libappcore_a_sources = \
 	gimpimagefile.h			\
 	gimpimagemap.c			\
 	gimpimagemap.h			\
-	gimpinterpreterdb.c		\
-	gimpinterpreterdb.h		\
 	gimpitem.c			\
 	gimpitem.h			\
 	gimpitem-align.c		\
@@ -194,12 +197,16 @@ libappcore_a_sources = \
 	gimppattern.c			\
 	gimppattern.h			\
 	gimppattern-header.h		\
+	gimppatternclipboard.c		\
+	gimppatternclipboard.h		\
 	gimppalette.c			\
 	gimppalette.h			\
 	gimppalette-import.c		\
 	gimppalette-import.h		\
 	gimpparamspecs.c		\
 	gimpparamspecs.h		\
+	gimpparamspecs-desc.c		\
+	gimpparamspecs-desc.h		\
 	gimpparasitelist.c		\
 	gimpparasitelist.h		\
 	gimppdbprogress.c		\

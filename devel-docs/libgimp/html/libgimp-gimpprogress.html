@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="prev" href="libgimp-gimpproceduraldb.html" title="gimpproceduraldb">
 <link rel="next" href="libgimp-image.html" title="Manupulating Images and all their Properties">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="gimpdefinitions.html" title="Part&#160;I.&#160;GIMP Constants">
 <link rel="part" href="libgimp.html" title="Part&#160;II.&#160;GIMP Library">
@@ -23,24 +24,29 @@
 <link rel="index" href="ix04.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimp-gimpproceduraldb.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimp-general.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-image.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpprogress"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">gimpprogress</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>gimpprogress</span></h2>
 <p>gimpprogress &#8212; Functions for embedding the progress bar into a plug-in's GUI.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -75,17 +81,17 @@ const gchar* <a href="libgimp-gimpprogress.html#gimp-progress-install">gimp_prog
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569225"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 Functions for embedding the progress bar into a plug-in's GUI.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2569237"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2569243"></a><h3>
+<a name="id2540436"></a><h3>
 <a name="GimpProgressVtable"></a>GimpProgressVtable</h3>
-<a class="indexterm" name="id2569253"></a><pre class="programlisting">typedef struct {
+<a class="indexterm" name="id2540448"></a><pre class="programlisting">typedef struct {
   void    (* start)        (const gchar *message,
                             gboolean     cancelable,
                             gpointer     user_data);
@@ -115,9 +121,9 @@ Functions for embedding the progress bar into a plug-in's GUI.
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569284"></a><h3>
+<a name="id2571239"></a><h3>
 <a name="gimp-progress-init"></a>gimp_progress_init ()</h3>
-<a class="indexterm" name="id2569294"></a><pre class="programlisting">gboolean    gimp_progress_init              (const gchar *message);</pre>
+<a class="indexterm" name="id2571252"></a><pre class="programlisting">gboolean    gimp_progress_init              (const gchar *message);</pre>
 <p>
 Initializes the progress bar for the current plug-in.
 </p>
@@ -147,9 +153,9 @@ valid to call this procedure from a plug-in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2569359"></a><h3>
+<a name="id2571317"></a><h3>
 <a name="gimp-progress-init-printf"></a>gimp_progress_init_printf ()</h3>
-<a class="indexterm" name="id2569368"></a><pre class="programlisting">gboolean    gimp_progress_init_printf       (const gchar *format,
+<a class="indexterm" name="id2571331"></a><pre class="programlisting">gboolean    gimp_progress_init_printf       (const gchar *format,
                                              ...);</pre>
 <p>
 Initializes the progress bar for the current plug-in.
@@ -189,9 +195,9 @@ valid to call this procedure from a plug-in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2515583"></a><h3>
+<a name="id2571441"></a><h3>
 <a name="gimp-progress-update"></a>gimp_progress_update ()</h3>
-<a class="indexterm" name="id2515592"></a><pre class="programlisting">gboolean    gimp_progress_update            (gdouble percentage);</pre>
+<a class="indexterm" name="id2571452"></a><pre class="programlisting">gboolean    gimp_progress_update            (gdouble percentage);</pre>
 <p>
 Updates the progress bar for the current plug-in.</p>
 <p>
@@ -217,9 +223,9 @@ Updates the progress bar for the current plug-in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2515652"></a><h3>
+<a name="id2539591"></a><h3>
 <a name="gimp-progress-pulse"></a>gimp_progress_pulse ()</h3>
-<a class="indexterm" name="id2515663"></a><pre class="programlisting">gboolean    gimp_progress_pulse             (void);</pre>
+<a class="indexterm" name="id2539606"></a><pre class="programlisting">gboolean    gimp_progress_pulse             (void);</pre>
 <p>
 Pulses the progress bar for the current plug-in.
 </p>
@@ -247,9 +253,9 @@ mode\", where a block bounces back and forth.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2515724"></a><h3>
+<a name="id2539668"></a><h3>
 <a name="gimp-progress-set-text"></a>gimp_progress_set_text ()</h3>
-<a class="indexterm" name="id2515733"></a><pre class="programlisting">gboolean    gimp_progress_set_text          (const gchar *message);</pre>
+<a class="indexterm" name="id2539681"></a><pre class="programlisting">gboolean    gimp_progress_set_text          (const gchar *message);</pre>
 <p>
 Changes the text in the progress bar for the current plug-in.
 </p>
@@ -283,9 +289,9 @@ displayed value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2515812"></a><h3>
+<a name="id2539761"></a><h3>
 <a name="gimp-progress-set-text-printf"></a>gimp_progress_set_text_printf ()</h3>
-<a class="indexterm" name="id2515821"></a><pre class="programlisting">gboolean    gimp_progress_set_text_printf   (const gchar *format,
+<a class="indexterm" name="id2539774"></a><pre class="programlisting">gboolean    gimp_progress_set_text_printf   (const gchar *format,
                                              ...);</pre>
 <p>
 Changes the text in the progress bar for the current plug-in.
@@ -326,9 +332,9 @@ displayed value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2571559"></a><h3>
+<a name="id2574151"></a><h3>
 <a name="gimp-progress-uninstall"></a>gimp_progress_uninstall ()</h3>
-<a class="indexterm" name="id2571567"></a><pre class="programlisting">gpointer    gimp_progress_uninstall         (const gchar *progress_callback);</pre>
+<a class="indexterm" name="id2574164"></a><pre class="programlisting">gpointer    gimp_progress_uninstall         (const gchar *progress_callback);</pre>
 <p>
 Uninstalls a temporary progress procedure that was installed using
 <a href="libgimp-gimpprogress.html#gimp-progress-install"><code class="function">gimp_progress_install()</code></a>.</p>
@@ -358,9 +364,9 @@ Uninstalls a temporary progress procedure that was installed using
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2571648"></a><h3>
+<a name="id2574245"></a><h3>
 <a name="gimp-progress-cancel"></a>gimp_progress_cancel ()</h3>
-<a class="indexterm" name="id2571656"></a><pre class="programlisting">gboolean    gimp_progress_cancel            (const gchar *progress_callback);</pre>
+<a class="indexterm" name="id2574257"></a><pre class="programlisting">gboolean    gimp_progress_cancel            (const gchar *progress_callback);</pre>
 <p>
 Cancels a running progress.
 </p>
@@ -392,9 +398,9 @@ This function cancels the currently running progress.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2571718"></a><h3>
+<a name="id2574320"></a><h3>
 <a name="gimp-progress-get-window-handle"></a>gimp_progress_get_window_handle ()</h3>
-<a class="indexterm" name="id2571727"></a><pre class="programlisting">gint        gimp_progress_get_window_handle (void);</pre>
+<a class="indexterm" name="id2574333"></a><pre class="programlisting">gint        gimp_progress_get_window_handle (void);</pre>
 <p>
 Returns the native window ID of the toplevel window this plug-in's
 progress is displayed in.
@@ -420,9 +426,9 @@ this plug-in\'s progress is displayed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2571774"></a><h3>
+<a name="id2574380"></a><h3>
 <a name="GimpProgressStartCallback"></a>GimpProgressStartCallback ()</h3>
-<a class="indexterm" name="id2571783"></a><pre class="programlisting">void        (*GimpProgressStartCallback)    (const gchar *message,
+<a class="indexterm" name="id2574392"></a><pre class="programlisting">void        (*GimpProgressStartCallback)    (const gchar *message,
                                              gboolean cancelable,
                                              gpointer user_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -460,9 +466,9 @@ this plug-in\'s progress is displayed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2571873"></a><h3>
+<a name="id2574483"></a><h3>
 <a name="GimpProgressEndCallback"></a>GimpProgressEndCallback ()</h3>
-<a class="indexterm" name="id2571881"></a><pre class="programlisting">void        (*GimpProgressEndCallback)      (gpointer user_data);</pre>
+<a class="indexterm" name="id2574495"></a><pre class="programlisting">void        (*GimpProgressEndCallback)      (gpointer user_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p><code class="literal">GimpProgressEndCallback</code> is deprecated and should not be used in newly-written code.</p>
@@ -484,9 +490,9 @@ this plug-in\'s progress is displayed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2571933"></a><h3>
+<a name="id2574547"></a><h3>
 <a name="GimpProgressTextCallback"></a>GimpProgressTextCallback ()</h3>
-<a class="indexterm" name="id2571942"></a><pre class="programlisting">void        (*GimpProgressTextCallback)     (const gchar *message,
+<a class="indexterm" name="id2574560"></a><pre class="programlisting">void        (*GimpProgressTextCallback)     (const gchar *message,
                                              gpointer user_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -517,9 +523,9 @@ this plug-in\'s progress is displayed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572013"></a><h3>
+<a name="id2574631"></a><h3>
 <a name="GimpProgressValueCallback"></a>GimpProgressValueCallback ()</h3>
-<a class="indexterm" name="id2572022"></a><pre class="programlisting">void        (*GimpProgressValueCallback)    (gdouble percentage,
+<a class="indexterm" name="id2574643"></a><pre class="programlisting">void        (*GimpProgressValueCallback)    (gdouble percentage,
                                              gpointer user_data);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -550,9 +556,9 @@ this plug-in\'s progress is displayed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572093"></a><h3>
+<a name="id2574714"></a><h3>
 <a name="gimp-progress-install-vtable"></a>gimp_progress_install_vtable ()</h3>
-<a class="indexterm" name="id2572103"></a><pre class="programlisting">const gchar* gimp_progress_install_vtable   (const <a href="libgimp-gimpprogress.html#GimpProgressVtable">GimpProgressVtable</a> *vtable,
+<a class="indexterm" name="id2574728"></a><pre class="programlisting">const gchar* gimp_progress_install_vtable   (const <a href="libgimp-gimpprogress.html#GimpProgressVtable">GimpProgressVtable</a> *vtable,
                                              gpointer user_data);</pre>
 <p>
 </p>
@@ -588,9 +594,9 @@ this plug-in\'s progress is displayed in.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2572189"></a><h3>
+<a name="id2574814"></a><h3>
 <a name="gimp-progress-install"></a>gimp_progress_install ()</h3>
-<a class="indexterm" name="id2572198"></a><pre class="programlisting">const gchar* gimp_progress_install          (<a href="libgimp-gimpprogress.html#GimpProgressStartCallback">GimpProgressStartCallback</a> start_callback,
+<a class="indexterm" name="id2574826"></a><a class="indexterm" name="id2574833"></a><pre class="programlisting">const gchar* gimp_progress_install          (<a href="libgimp-gimpprogress.html#GimpProgressStartCallback">GimpProgressStartCallback</a> start_callback,
                                              <a href="libgimp-gimpprogress.html#GimpProgressEndCallback">GimpProgressEndCallback</a> end_callback,
                                              <a href="libgimp-gimpprogress.html#GimpProgressTextCallback">GimpProgressTextCallback</a> text_callback,
                                              <a href="libgimp-gimpprogress.html#GimpProgressValueCallback">GimpProgressValueCallback</a> value_callback,
@@ -656,9 +662,5 @@ e.g. by calling gtk_progress_bar_pulse().
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimp-gimpproceduraldb.html"><b>&lt;&lt;&#160;gimpproceduraldb</b></a></td>
-<td align="right"><a accesskey="n" href="libgimp-image.html"><b>Manupulating Images and all their Properties&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

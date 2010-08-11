@@ -41,7 +41,7 @@ static void   gimp_new_rect_select_options_rectangle_options_iface_init (GimpRec
 G_DEFINE_TYPE_WITH_CODE (GimpNewRectSelectOptions, gimp_new_rect_select_options,
                          GIMP_TYPE_SELECTION_OPTIONS,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_RECTANGLE_OPTIONS,
-                                                gimp_new_rect_select_options_rectangle_options_iface_init));
+                                                gimp_new_rect_select_options_rectangle_options_iface_init))
 
 
 static void
@@ -78,5 +78,7 @@ gimp_new_rect_select_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), vbox_rectangle, FALSE, FALSE, 0);
   gtk_widget_show (vbox_rectangle);
 
+  gimp_rectangle_options_set_highlight (GIMP_RECTANGLE_OPTIONS (tool_options),
+                                        FALSE);
   return vbox;
 }

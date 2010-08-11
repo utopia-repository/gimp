@@ -61,6 +61,10 @@
 <ANCHOR id="GIMP-CHECK-DARK:CAPS" href="libgimpbase/libgimpbase-gimpchecks.html#GIMP-CHECK-DARK:CAPS">
 <ANCHOR id="GIMP-CHECK-LIGHT:CAPS" href="libgimpbase/libgimpbase-gimpchecks.html#GIMP-CHECK-LIGHT:CAPS">
 <ANCHOR id="gimp-checks-get-shades" href="libgimpbase/libgimpbase-gimpchecks.html#gimp-checks-get-shades">
+<ANCHOR id="libgimpbase-gimpcpuaccel" href="libgimpbase/libgimpbase-gimpcpuaccel.html">
+<ANCHOR id="GimpCpuAccelFlags" href="libgimpbase/libgimpbase-gimpcpuaccel.html#GimpCpuAccelFlags">
+<ANCHOR id="gimp-cpu-accel-get-support" href="libgimpbase/libgimpbase-gimpcpuaccel.html#gimp-cpu-accel-get-support">
+<ANCHOR id="gimp-cpu-accel-set-use" href="libgimpbase/libgimpbase-gimpcpuaccel.html#gimp-cpu-accel-set-use">
 <ANCHOR id="libgimpbase-gimpdatafiles" href="libgimpbase/libgimpbase-gimpdatafiles.html">
 <ANCHOR id="GimpDatafileData" href="libgimpbase/libgimpbase-gimpdatafiles.html#GimpDatafileData">
 <ANCHOR id="GimpDatafileLoaderFunc" href="libgimpbase/libgimpbase-gimpdatafiles.html#GimpDatafileLoaderFunc">

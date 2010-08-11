@@ -74,6 +74,7 @@ static gint      select_border_radius     = 5;
 static gint      select_grow_pixels       = 1;
 static gint      select_shrink_pixels     = 1;
 static gboolean  select_shrink_edge_lock  = FALSE;
+static gboolean  select_border_feather    = FALSE;
 
 
 /*  public functions  */
@@ -181,7 +182,7 @@ select_shrink_cmd_callback (GtkAction *action,
                                 G_OBJECT (display->image), "disconnect",
                                 select_shrink_callback, display->image);
 
-  edge_lock = gtk_check_button_new_with_label (_("Shrink from image border"));
+  edge_lock = gtk_check_button_new_with_mnemonic (_("_Shrink from image border"));
 
   gtk_box_pack_start (GTK_BOX (GIMP_QUERY_BOX_VBOX (dialog)), edge_lock,
                       FALSE, FALSE, 0);
@@ -223,6 +224,7 @@ select_border_cmd_callback (GtkAction *action,
 {
   GimpDisplay *display;
   GtkWidget   *dialog;
+  GtkWidget   *button;
   return_if_no_display (display, data);
 
   dialog = gimp_query_size_box (_("Border Selection"),
@@ -237,6 +239,18 @@ select_border_cmd_callback (GtkAction *action,
                                 FALSE,
                                 G_OBJECT (display->image), "disconnect",
                                 select_border_callback, display->image);
+
+  button = gtk_check_button_new_with_mnemonic (_("_Feather border"));
+
+  gtk_box_pack_start (GTK_BOX (GIMP_QUERY_BOX_VBOX (dialog)), button,
+                      FALSE, FALSE, 0);
+
+  g_object_set_data (G_OBJECT (dialog), "border-feather-toggle", button);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+                                select_border_feather);
+  gtk_widget_show (button);
+
   gtk_widget_show (dialog);
 }
 
@@ -332,9 +346,7 @@ select_feather_callback (GtkWidget *widget,
   gdouble    radius_x;
   gdouble    radius_y;
 
-  select_feather_radius = size;
-
-  radius_x = radius_y = select_feather_radius;
+  radius_x = radius_y = select_feather_radius = size;
 
   if (unit != GIMP_UNIT_PIXEL)
     {
@@ -359,13 +371,16 @@ select_border_callback (GtkWidget *widget,
                         GimpUnit   unit,
                         gpointer   data)
 {
-  GimpImage *image = GIMP_IMAGE (data);
+  GimpImage *image  = GIMP_IMAGE (data);
+  GtkWidget *button = g_object_get_data (G_OBJECT (widget),
+					 "border-feather-toggle");
   gdouble    radius_x;
   gdouble    radius_y;
 
-  select_border_radius = ROUND (size);
+  radius_x = radius_y = select_border_radius = ROUND (size);
 
-  radius_x = radius_y = select_border_radius;
+  select_border_feather =
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
 
   if (unit != GIMP_UNIT_PIXEL)
     {
@@ -380,7 +395,8 @@ select_border_callback (GtkWidget *widget,
         radius_x *= factor;
     }
 
-  gimp_channel_border (gimp_image_get_mask (image), radius_x, radius_y, TRUE);
+  gimp_channel_border (gimp_image_get_mask (image), radius_x, radius_y,
+                       select_border_feather, TRUE);
   gimp_image_flush (image);
 }
 
@@ -394,9 +410,7 @@ select_grow_callback (GtkWidget *widget,
   gdouble    radius_x;
   gdouble    radius_y;
 
-  select_grow_pixels = ROUND (size);
-
-  radius_x = radius_y = select_grow_pixels;
+  radius_x = radius_y = select_grow_pixels = ROUND (size);
 
   if (unit != GIMP_UNIT_PIXEL)
     {
@@ -425,9 +439,7 @@ select_shrink_callback (GtkWidget *widget,
   gint       radius_x;
   gint       radius_y;
 
-  select_shrink_pixels = ROUND (size);
-
-  radius_x = radius_y = select_shrink_pixels;
+  radius_x = radius_y = select_shrink_pixels = ROUND (size);
 
   select_shrink_edge_lock =
     ! GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (widget),

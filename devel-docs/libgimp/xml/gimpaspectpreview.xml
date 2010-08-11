@@ -4,16 +4,19 @@
 
 <refentry id="GimpAspectPreview">
 <refmeta>
-<refentrytitle>GimpAspectPreview</refentrytitle>
+<refentrytitle id="top_of_page">GimpAspectPreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>GimpAspectPreview</refname><refpurpose>A widget providing a preview with fixed aspect ratio.</refpurpose>
+<refname>GimpAspectPreview</refname>
+<refpurpose>A widget providing a preview with fixed aspect ratio.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -26,8 +29,8 @@
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1>
-<title>Object Hierarchy</title>
+<refsect1 id="object_hierarchy">
+<title id="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
 
   <link linkend="GObject">GObject</link>
@@ -45,8 +48,8 @@
 
 
 
-<refsect1>
-<title>Implemented Interfaces</title>
+<refsect1 id="impl_interfaces">
+<title id="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpAspectPreview implements
  <link linkend="AtkImplementorIface">AtkImplementorIface</link>.</para>
@@ -54,8 +57,8 @@ GimpAspectPreview implements
 </refsect1>
 
 
-<refsect1>
-<title>Properties</title>
+<refsect1 id="properties">
+<title id="properties.title">Properties</title>
 <synopsis>
 
   &quot;<link linkend="GimpAspectPreview--drawable">drawable</link>&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
@@ -64,23 +67,23 @@ GimpAspectPreview implements
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 A widget providing a preview with fixed aspect ratio.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="GimpAspectPreview-struct"/>GimpAspectPreview</title>
+<title><anchor id="GimpAspectPreview-struct" role="struct"/>GimpAspectPreview</title>
 <indexterm><primary>GimpAspectPreview</primary></indexterm><programlisting>typedef struct _GimpAspectPreview GimpAspectPreview;</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-aspect-preview-new"/>gimp_aspect_preview_new ()</title>
+<title><anchor id="gimp-aspect-preview-new" role="function" condition="since:GIMP 2.2"/>gimp_aspect_preview_new ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_aspect_preview_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*  gimp_aspect_preview_new         (<link linkend="GimpDrawable">GimpDrawable</link> *drawable,
                                              <link linkend="gboolean">gboolean</link> *toggle);</programlisting>
 <para>
@@ -94,7 +97,7 @@ Creates a new <link linkend="GimpAspectPreview"><type>GimpAspectPreview</type></
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>toggle</parameter>&nbsp;:</term>
 <listitem><simpara>   pointer to a <link linkend="gboolean"><type>gboolean</type></link> variable to sync with the "Preview"
-           check-button or <literal>NULL</literal>
+           check-button or <link linkend="NULL:CAPS"><literal>NULL</literal></link>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>
 
@@ -104,10 +107,10 @@ Creates a new <link linkend="GimpAspectPreview"><type>GimpAspectPreview</type></
 </para></refsect2>
 
 </refsect1>
-<refsect1>
-<title>Properties</title>
+<refsect1 id="property_details">
+<title id="property_details.title">Property Details</title>
 <refsect2><title><anchor id="GimpAspectPreview--drawable"/>The &quot;<literal>drawable</literal>&quot; property</title>
-<programlisting>  &quot;drawable&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
+<indexterm role="GIMP 2.4"><primary>GimpAspectPreview:drawable</primary></indexterm><programlisting>  &quot;drawable&quot;             <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para>
 </para>
 <para>

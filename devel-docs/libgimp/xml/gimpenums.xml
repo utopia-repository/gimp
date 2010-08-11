@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpenums">
 <refmeta>
-<refentrytitle>gimpenums</refentrytitle>
+<refentrytitle id="top_of_page">gimpenums</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpenums</refname><refpurpose>Enums and definitions.</refpurpose>
+<refname>gimpenums</refname>
+<refpurpose>Enums and definitions.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -50,18 +53,18 @@ const <link linkend="gchar">gchar</link>** <link linkend="gimp-enums-get-type-na
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 Enums and definitions.
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-enums-init"/>gimp_enums_init ()</title>
+<title><anchor id="gimp-enums-init" role="function" condition="since:GIMP 2.4"/>gimp_enums_init ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_enums_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_enums_init                 (void);</programlisting>
 <para>
 This function makes sure all the enum types are registered
@@ -75,7 +78,7 @@ implicitly.</para>
 </para><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpBrushApplicationMode"/>enum GimpBrushApplicationMode</title>
+<title><anchor id="GimpBrushApplicationMode" role="enum"/>enum GimpBrushApplicationMode</title>
 <indexterm><primary>GimpBrushApplicationMode</primary></indexterm><programlisting>typedef enum
 {
   GIMP_BRUSH_HARD,
@@ -86,7 +89,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpBrushGeneratedShape"/>enum GimpBrushGeneratedShape</title>
+<title><anchor id="GimpBrushGeneratedShape" role="enum"/>enum GimpBrushGeneratedShape</title>
 <indexterm><primary>GimpBrushGeneratedShape</primary></indexterm><programlisting>typedef enum
 {
   GIMP_BRUSH_GENERATED_CIRCLE,
@@ -98,7 +101,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpConvertDitherType"/>enum GimpConvertDitherType</title>
+<title><anchor id="GimpConvertDitherType" role="enum"/>enum GimpConvertDitherType</title>
 <indexterm><primary>GimpConvertDitherType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_NO_DITHER,
@@ -111,7 +114,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpConvertPaletteType"/>enum GimpConvertPaletteType</title>
+<title><anchor id="GimpConvertPaletteType" role="enum"/>enum GimpConvertPaletteType</title>
 <indexterm><primary>GimpConvertPaletteType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_MAKE_PALETTE,
@@ -125,7 +128,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpConvolutionType"/>enum GimpConvolutionType</title>
+<title><anchor id="GimpConvolutionType" role="enum"/>enum GimpConvolutionType</title>
 <indexterm><primary>GimpConvolutionType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_NORMAL_CONVOL,
@@ -137,7 +140,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpConvolveType"/>enum GimpConvolveType</title>
+<title><anchor id="GimpConvolveType" role="enum"/>enum GimpConvolveType</title>
 <indexterm><primary>GimpConvolveType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_BLUR_CONVOLVE,
@@ -148,7 +151,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpFillType"/>enum GimpFillType</title>
+<title><anchor id="GimpFillType" role="enum"/>enum GimpFillType</title>
 <indexterm><primary>GimpFillType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_FOREGROUND_FILL,
@@ -162,7 +165,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpGradientSegmentColor"/>enum GimpGradientSegmentColor</title>
+<title><anchor id="GimpGradientSegmentColor" role="enum"/>enum GimpGradientSegmentColor</title>
 <indexterm><primary>GimpGradientSegmentColor</primary></indexterm><programlisting>typedef enum
 {
   GIMP_GRADIENT_SEGMENT_RGB,
@@ -174,7 +177,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpGradientSegmentType"/>enum GimpGradientSegmentType</title>
+<title><anchor id="GimpGradientSegmentType" role="enum"/>enum GimpGradientSegmentType</title>
 <indexterm><primary>GimpGradientSegmentType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_GRADIENT_SEGMENT_LINEAR,
@@ -188,7 +191,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpHistogramChannel"/>enum GimpHistogramChannel</title>
+<title><anchor id="GimpHistogramChannel" role="enum"/>enum GimpHistogramChannel</title>
 <indexterm><primary>GimpHistogramChannel</primary></indexterm><programlisting>typedef enum
 {
   GIMP_HISTOGRAM_VALUE,
@@ -202,7 +205,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpHueRange"/>enum GimpHueRange</title>
+<title><anchor id="GimpHueRange" role="enum"/>enum GimpHueRange</title>
 <indexterm><primary>GimpHueRange</primary></indexterm><programlisting>typedef enum
 {
   GIMP_ALL_HUES,
@@ -218,7 +221,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpLayerModeEffects"/>enum GimpLayerModeEffects</title>
+<title><anchor id="GimpLayerModeEffects" role="enum"/>enum GimpLayerModeEffects</title>
 <indexterm><primary>GimpLayerModeEffects</primary></indexterm><programlisting>typedef enum
 {
   GIMP_NORMAL_MODE,
@@ -250,7 +253,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpMaskApplyMode"/>enum GimpMaskApplyMode</title>
+<title><anchor id="GimpMaskApplyMode" role="enum"/>enum GimpMaskApplyMode</title>
 <indexterm><primary>GimpMaskApplyMode</primary></indexterm><programlisting>typedef enum
 {
   GIMP_MASK_APPLY,
@@ -261,7 +264,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpMergeType"/>enum GimpMergeType</title>
+<title><anchor id="GimpMergeType" role="enum"/>enum GimpMergeType</title>
 <indexterm><primary>GimpMergeType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_EXPAND_AS_NECESSARY,
@@ -274,7 +277,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpOffsetType"/>enum GimpOffsetType</title>
+<title><anchor id="GimpOffsetType" role="enum"/>enum GimpOffsetType</title>
 <indexterm><primary>GimpOffsetType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_OFFSET_BACKGROUND,
@@ -285,7 +288,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpOrientationType"/>enum GimpOrientationType</title>
+<title><anchor id="GimpOrientationType" role="enum"/>enum GimpOrientationType</title>
 <indexterm><primary>GimpOrientationType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_ORIENTATION_HORIZONTAL,
@@ -297,7 +300,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="GimpRotationType"/>enum GimpRotationType</title>
+<title><anchor id="GimpRotationType" role="enum"/>enum GimpRotationType</title>
 <indexterm><primary>GimpRotationType</primary></indexterm><programlisting>typedef enum
 {
   GIMP_ROTATE_90,
@@ -309,7 +312,7 @@ implicitly.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-enums-get-type-names"/>gimp_enums_get_type_names ()</title>
+<title><anchor id="gimp-enums-get-type-names" role="function" condition="since:GIMP 2.2"/>gimp_enums_get_type_names ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_enums_get_type_names</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>** gimp_enums_get_type_names     (<link linkend="gint">gint</link> *n_type_names);</programlisting>
 <para>
 This function gives access to the list of enums registered by libgimp.

@@ -1,13 +1,17 @@
 pluginexecdir = $(gimpplugindir)/plug-ins
 
 scripts = \
-	colorxhtml.py	\
-	clothify.py	\
-	foggify.py	\
-	gimpcons.py	\
-	pdbbrowse.py	\
-	py-slice.py	\
-	shadow_bevel.py	\
+	colorxhtml.py		\
+	clothify.py		\
+	foggify.py		\
+	gimpcons.py		\
+	happy-valley-relief.py	\
+	palette-offset.py	\
+	palette-sort.py		\
+	palette-to-gradient.py	\
+	pdbbrowse.py		\
+	py-slice.py		\
+	shadow_bevel.py		\
 	whirlpinch.py
 
 test_scripts = \

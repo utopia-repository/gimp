@@ -4,16 +4,19 @@
 
 <refentry id="libgimpbase-gimpenv">
 <refmeta>
-<refentrytitle>gimpenv</refentrytitle>
+<refentrytitle id="top_of_page">gimpenv</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpenv</refname><refpurpose>Functions to access the GIMP environment.</refpurpose>
+<refname>gimpenv</refname>
+<refpurpose>Functions to access the GIMP environment.</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -45,18 +48,18 @@ const <link linkend="gchar">gchar</link>* <link linkend="gimp-gtkrc">gimp_gtkrc<
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 A set of functions to find the locations of GIMP's data directories and
 configuration files.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-env-init"/>gimp_env_init ()</title>
+<title><anchor id="gimp-env-init" role="function" condition="since:GIMP 2.4"/>gimp_env_init ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_env_init</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_env_init                   (<link linkend="gboolean">gboolean</link> plug_in);</programlisting>
 <para>
 You don't need to care about this function. It is being called for
@@ -66,12 +69,12 @@ runs). Calling it again will cause a fatal error.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>plug_in</parameter>&nbsp;:</term>
-<listitem><simpara> must be <literal>TRUE</literal> if this function is called from a plug-in
+<listitem><simpara> must be <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if this function is called from a plug-in
 </simpara></listitem></varlistentry>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-directory"/>gimp_directory ()</title>
+<title><anchor id="gimp-directory" role="function"/>gimp_directory ()</title>
 <indexterm><primary>gimp_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_directory                 (void);</programlisting>
 <para>
 Returns the user-specific GIMP settings directory. If the
@@ -100,7 +103,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-personal-rc-file"/>gimp_personal_rc_file ()</title>
+<title><anchor id="gimp-personal-rc-file" role="function"/>gimp_personal_rc_file ()</title>
 <indexterm><primary>gimp_personal_rc_file</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_personal_rc_file           (const <link linkend="gchar">gchar</link> *basename);</programlisting>
 <para>
 Returns the name of a file in the user-specific GIMP settings directory.
@@ -120,7 +123,7 @@ is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-data-directory"/>gimp_data_directory ()</title>
+<title><anchor id="gimp-data-directory" role="function"/>gimp_data_directory ()</title>
 <indexterm><primary>gimp_data_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_data_directory            (void);</programlisting>
 <para>
 Returns the top directory for GIMP data. If the environment
@@ -140,7 +143,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-locale-directory"/>gimp_locale_directory ()</title>
+<title><anchor id="gimp-locale-directory" role="function"/>gimp_locale_directory ()</title>
 <indexterm><primary>gimp_locale_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_locale_directory          (void);</programlisting>
 <para>
 Returns the top directory for GIMP locale files. If the environment
@@ -160,7 +163,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-plug-in-directory"/>gimp_plug_in_directory ()</title>
+<title><anchor id="gimp-plug-in-directory" role="function"/>gimp_plug_in_directory ()</title>
 <indexterm><primary>gimp_plug_in_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_plug_in_directory         (void);</programlisting>
 <para>
 Returns the top directory for GIMP plug_ins and modules. If the
@@ -180,7 +183,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-sysconf-directory"/>gimp_sysconf_directory ()</title>
+<title><anchor id="gimp-sysconf-directory" role="function"/>gimp_sysconf_directory ()</title>
 <indexterm><primary>gimp_sysconf_directory</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_sysconf_directory         (void);</programlisting>
 <para>
 Returns the top directory for GIMP config files. If the environment
@@ -200,7 +203,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-gtkrc"/>gimp_gtkrc ()</title>
+<title><anchor id="gimp-gtkrc" role="function"/>gimp_gtkrc ()</title>
 <indexterm><primary>gimp_gtkrc</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>* gimp_gtkrc                     (void);</programlisting>
 <para>
 Returns the name of the GIMP's application-specific gtkrc file.
@@ -216,7 +219,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-path-parse"/>gimp_path_parse ()</title>
+<title><anchor id="gimp-path-parse" role="function"/>gimp_path_parse ()</title>
 <indexterm><primary>gimp_path_parse</primary></indexterm><programlisting><link linkend="GList">GList</link>*      gimp_path_parse                 (const <link linkend="gchar">gchar</link> *path,
                                              <link linkend="gint">gint</link> max_paths,
                                              <link linkend="gboolean">gboolean</link> check,
@@ -233,7 +236,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 <listitem><simpara>    The maximum number of directories to return.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>check</parameter>&nbsp;:</term>
-<listitem><simpara>        <literal>TRUE</literal> if you want the directories to be checked.
+<listitem><simpara>        <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if you want the directories to be checked.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>check_failed</parameter>&nbsp;:</term>
 <listitem><simpara> Returns a <link linkend="GList"><type>GList</type></link> of path elements for which the
@@ -243,7 +246,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-path-to-str"/>gimp_path_to_str ()</title>
+<title><anchor id="gimp-path-to-str" role="function"/>gimp_path_to_str ()</title>
 <indexterm><primary>gimp_path_to_str</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_path_to_str                (<link linkend="GList">GList</link> *path);</programlisting>
 <para>
 </para>
@@ -257,7 +260,7 @@ the system, which isn't necessarily UTF-8 (never is on Windows).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-path-free"/>gimp_path_free ()</title>
+<title><anchor id="gimp-path-free" role="function"/>gimp_path_free ()</title>
 <indexterm><primary>gimp_path_free</primary></indexterm><programlisting><link linkend="void">void</link>        gimp_path_free                  (<link linkend="GList">GList</link> *path);</programlisting>
 <para>
 This function frees the memory allocated for the list and the strings
@@ -270,7 +273,7 @@ it contains.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-path-get-user-writable-dir"/>gimp_path_get_user_writable_dir ()</title>
+<title><anchor id="gimp-path-get-user-writable-dir" role="function"/>gimp_path_get_user_writable_dir ()</title>
 <indexterm><primary>gimp_path_get_user_writable_dir</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_path_get_user_writable_dir (<link linkend="GList">GList</link> *path);</programlisting>
 <para>
 Note that you have to <link linkend="g-free"><function>g_free()</function></link> the returned string.</para>

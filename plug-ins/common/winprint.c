@@ -189,7 +189,7 @@ rgb_to_bgr(guchar *rgbin,
 static void
 query (void)
 {
-  static GimpParamDef	print_args[] =
+  static const GimpParamDef	print_args[] =
   {
     { GIMP_PDB_INT32,	"run_mode",	"Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,	"image",	"Input image" },
@@ -208,7 +208,7 @@ query (void)
     { GIMP_PDB_INT32,	"top",		"Top offset (points, -1 = centered)" }
   };
 
-  static GimpParamDef	pagesetup_args[] =
+  static const GimpParamDef	pagesetup_args[] =
   {
     { GIMP_PDB_INT32,	"run_mode",	"Interactive, non-interactive" },
     { GIMP_PDB_IMAGE,	"image",	"Input image" },
@@ -220,7 +220,7 @@ query (void)
 			  "Prints images to any printer recognized by Windows.",
 			  "Tor Lillqvist <tml@iki.fi>",
 			  "Copyright 1999 Tor Lillqvist",
-			  "$Id: winprint.c,v 1.23 2006/03/29 09:45:42 tml Exp $",
+			  "$Id: winprint.c,v 1.24 2006/05/16 12:26:07 neo Exp $",
 			  N_("_Print..."),
 			  "RGB*,GRAY*,INDEXED*",
 			  GIMP_PLUGIN,
@@ -232,7 +232,7 @@ query (void)
 			  "Sets up the page parameters for printing to a Windows printer.",
 			  "Tor Lillqvist <tml@iki.fi>",
 			  "Copyright 1999 Tor Lillqvist",
-			  "$Id: winprint.c,v 1.23 2006/03/29 09:45:42 tml Exp $",
+			  "$Id: winprint.c,v 1.24 2006/05/16 12:26:07 neo Exp $",
 			  N_("Page Setup"),
 			  "RGB*,GRAY*,INDEXED*",
 			  GIMP_PLUGIN,
@@ -716,7 +716,7 @@ run (const gchar      *name,
   gimp_drawable_detach(drawable);
 }
 
-GimpPlugInInfo	PLUG_IN_INFO =		/* Plug-in information */
+const GimpPlugInInfo	PLUG_IN_INFO =		/* Plug-in information */
 {
   NULL,  /* init_proc  */
   NULL,  /* quit_proc  */

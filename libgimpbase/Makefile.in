@@ -38,6 +38,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+EXTRA_PROGRAMS = test-cpu-accel$(EXEEXT)
 subdir = libgimpbase
 DIST_COMMON = $(libgimpbaseinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
@@ -66,12 +67,15 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 am__objects_1 = gimpbasetypes.lo gimpbase-private.lo gimpchecks.lo \
-	gimpdatafiles.lo gimpenv.lo gimpmemsize.lo gimpparasite.lo \
-	gimpparasiteio.lo gimpprotocol.lo gimpreloc.lo gimpsignal.lo \
-	gimpunit.lo gimputils.lo gimpwire.lo
+	gimpcpuaccel.lo gimpdatafiles.lo gimpenv.lo gimpmemsize.lo \
+	gimpparasite.lo gimpparasiteio.lo gimpprotocol.lo gimpreloc.lo \
+	gimpsignal.lo gimpunit.lo gimputils.lo gimpwire.lo
 am__objects_2 = gimpbaseenums.lo
 am_libgimpbase_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 libgimpbase_2_0_la_OBJECTS = $(am_libgimpbase_2_0_la_OBJECTS)
+am_test_cpu_accel_OBJECTS = test-cpu-accel.$(OBJEXT)
+test_cpu_accel_OBJECTS = $(am_test_cpu_accel_OBJECTS)
+am__DEPENDENCIES_2 = $(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -83,8 +87,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libgimpbase_2_0_la_SOURCES)
-DIST_SOURCES = $(libgimpbase_2_0_la_SOURCES)
+SOURCES = $(libgimpbase_2_0_la_SOURCES) $(test_cpu_accel_SOURCES)
+DIST_SOURCES = $(libgimpbase_2_0_la_SOURCES) $(test_cpu_accel_SOURCES)
 DATA = $(noinst_DATA)
 libgimpbaseincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(libgimpbaseinclude_HEADERS)
@@ -198,14 +202,15 @@ GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
 GLIB_REQUIRED_VERSION = @GLIB_REQUIRED_VERSION@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
+GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
+GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 GNOMEPRINT = @GNOMEPRINT@
 GNOMEPRINT_CFLAGS = @GNOMEPRINT_CFLAGS@
 GNOMEPRINT_LIBS = @GNOMEPRINT_LIBS@
 GOBJECT_QUERY = @GOBJECT_QUERY@
+GREP = @GREP@
 GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
 GTHREAD_LIBS = @GTHREAD_LIBS@
 GTKDOC_REQUIRED_VERSION = @GTKDOC_REQUIRED_VERSION@
@@ -329,6 +334,8 @@ PKG_CONFIG = @PKG_CONFIG@
 PLATFORM_WIN32_FALSE = @PLATFORM_WIN32_FALSE@
 PLATFORM_WIN32_TRUE = @PLATFORM_WIN32_TRUE@
 PNG = @PNG@
+PNG_CFLAGS = @PNG_CFLAGS@
+PNG_LIBS = @PNG_LIBS@
 POFILES = @POFILES@
 POPPLER = @POPPLER@
 POPPLER_CFLAGS = @POPPLER_CFLAGS@
@@ -383,6 +390,7 @@ WMF_CFLAGS = @WMF_CFLAGS@
 WMF_CONFIG = @WMF_CONFIG@
 WMF_REQUIRED_VERSION = @WMF_REQUIRED_VERSION@
 XGETTEXT = @XGETTEXT@
+XMKMF = @XMKMF@
 XMLLINT = @XMLLINT@
 XPM = @XPM@
 XSLTPROC = @XSLTPROC@
@@ -390,17 +398,9 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-ac_ct_AR = @ac_ct_AR@
-ac_ct_AS = @ac_ct_AS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_DLLTOOL = @ac_ct_DLLTOOL@
 ac_ct_F77 = @ac_ct_F77@
-ac_ct_OBJDUMP = @ac_ct_OBJDUMP@
-ac_ct_RANLIB = @ac_ct_RANLIB@
-ac_ct_STRIP = @ac_ct_STRIP@
-ac_ct_WINDRES = @ac_ct_WINDRES@
-ac_pt_PKG_CONFIG = @ac_pt_PKG_CONFIG@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
 am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
@@ -417,6 +417,9 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
+datarootdir = @datarootdir@
+docdir = @docdir@
+dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 gimpdatadir = @gimpdatadir@
 gimpdir = @gimpdir@
@@ -428,20 +431,24 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
+htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
 libdir = @libdir@
 libexecdir = @libexecdir@
+localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 ms_librarian = @ms_librarian@
 oldincludedir = @oldincludedir@
+pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
+psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
@@ -468,6 +475,10 @@ AM_CPPFLAGS = \
 	@BINRELOC_CFLAGS@			\
 	@GTHREAD_CFLAGS@
 
+AM_CCASFLAGS = \
+	-I$(top_builddir)	\
+	-I$(top_srcdir)
+
 INCLUDES = \
 	-I$(top_srcdir)	\
 	$(GLIB_CFLAGS)	\
@@ -491,6 +502,8 @@ libgimpbase_sources = \
 	gimpbase-private.h	\
 	gimpchecks.c           	\
 	gimpchecks.h           	\
+	gimpcpuaccel.c		\
+	gimpcpuaccel.h		\
 	gimpdatafiles.c		\
 	gimpdatafiles.h		\
 	gimpenv.c		\
@@ -523,6 +536,7 @@ libgimpbaseinclude_HEADERS = \
 	gimpbase.h		\
 	gimpbaseenums.h		\
 	gimpbasetypes.h		\
+	gimpcpuaccel.h		\
 	gimplimits.h		\
 	gimpparam.h		\
 	gimpversion.h		\
@@ -546,10 +560,23 @@ libgimpbase_2_0_la_DEPENDENCIES = $(gimpbase_def)
 libgimpbase_2_0_la_LIBADD = $(GLIB_LIBS)
 
 #
+# test programs, not to be built by default and never installed
+#
+TESTS = test-cpu-accel
+test_cpu_accel_SOURCES = test-cpu-accel.c
+test_cpu_accel_DEPENDENCIES = \
+	$(top_builddir)/libgimpbase/libgimpbase-$(GIMP_API_VERSION).la
+
+test_cpu_accel_LDADD = \
+	$(GLIB_LIBS)	\
+	$(test_cpu_accel_DEPENDENCIES)
+
+
+#
 # rules to generate built sources
 #
 gen_sources = xgen-bec
-CLEANFILES = $(gen_sources)
+CLEANFILES = $(EXTRA_PROGRAMS) $(gen_sources)
 all: all-am
 
 .SUFFIXES:
@@ -612,6 +639,9 @@ clean-libLTLIBRARIES:
 	done
 libgimpbase-2.0.la: $(libgimpbase_2_0_la_OBJECTS) $(libgimpbase_2_0_la_DEPENDENCIES) 
 	$(LINK) -rpath $(libdir) $(libgimpbase_2_0_la_LDFLAGS) $(libgimpbase_2_0_la_OBJECTS) $(libgimpbase_2_0_la_LIBADD) $(LIBS)
+test-cpu-accel$(EXEEXT): $(test_cpu_accel_OBJECTS) $(test_cpu_accel_DEPENDENCIES) 
+	@rm -f test-cpu-accel$(EXEEXT)
+	$(LINK) $(test_cpu_accel_LDFLAGS) $(test_cpu_accel_OBJECTS) $(test_cpu_accel_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -623,6 +653,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbaseenums.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpbasetypes.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpchecks.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpcpuaccel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpdatafiles.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpenv.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpmemsize.Plo@am__quote@
@@ -634,6 +665,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimputils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwire.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-cpu-accel.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -731,6 +763,79 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
+check-TESTS: $(TESTS)
+	@failed=0; all=0; xfail=0; xpass=0; skip=0; \
+	srcdir=$(srcdir); export srcdir; \
+	list='$(TESTS)'; \
+	if test -n "$$list"; then \
+	  for tst in $$list; do \
+	    if test -f ./$$tst; then dir=./; \
+	    elif test -f $$tst; then dir=; \
+	    else dir="$(srcdir)/"; fi; \
+	    if $(TESTS_ENVIRONMENT) $${dir}$$tst; then \
+	      all=`expr $$all + 1`; \
+	      case " $(XFAIL_TESTS) " in \
+	      *" $$tst "*) \
+		xpass=`expr $$xpass + 1`; \
+		failed=`expr $$failed + 1`; \
+		echo "XPASS: $$tst"; \
+	      ;; \
+	      *) \
+		echo "PASS: $$tst"; \
+	      ;; \
+	      esac; \
+	    elif test $$? -ne 77; then \
+	      all=`expr $$all + 1`; \
+	      case " $(XFAIL_TESTS) " in \
+	      *" $$tst "*) \
+		xfail=`expr $$xfail + 1`; \
+		echo "XFAIL: $$tst"; \
+	      ;; \
+	      *) \
+		failed=`expr $$failed + 1`; \
+		echo "FAIL: $$tst"; \
+	      ;; \
+	      esac; \
+	    else \
+	      skip=`expr $$skip + 1`; \
+	      echo "SKIP: $$tst"; \
+	    fi; \
+	  done; \
+	  if test "$$failed" -eq 0; then \
+	    if test "$$xfail" -eq 0; then \
+	      banner="All $$all tests passed"; \
+	    else \
+	      banner="All $$all tests behaved as expected ($$xfail expected failures)"; \
+	    fi; \
+	  else \
+	    if test "$$xpass" -eq 0; then \
+	      banner="$$failed of $$all tests failed"; \
+	    else \
+	      banner="$$failed of $$all tests did not behave as expected ($$xpass unexpected passes)"; \
+	    fi; \
+	  fi; \
+	  dashes="$$banner"; \
+	  skipped=""; \
+	  if test "$$skip" -ne 0; then \
+	    skipped="($$skip tests were not run)"; \
+	    test `echo "$$skipped" | wc -c` -le `echo "$$banner" | wc -c` || \
+	      dashes="$$skipped"; \
+	  fi; \
+	  report=""; \
+	  if test "$$failed" -ne 0 && test -n "$(PACKAGE_BUGREPORT)"; then \
+	    report="Please report to $(PACKAGE_BUGREPORT)"; \
+	    test `echo "$$report" | wc -c` -le `echo "$$banner" | wc -c` || \
+	      dashes="$$report"; \
+	  fi; \
+	  dashes=`echo "$$dashes" | sed s/./=/g`; \
+	  echo "$$dashes"; \
+	  echo "$$banner"; \
+	  test -z "$$skipped" || echo "$$skipped"; \
+	  test -z "$$report" || echo "$$report"; \
+	  echo "$$dashes"; \
+	  test "$$failed" -eq 0; \
+	else :; fi
+
 distdir: $(DISTFILES)
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
@@ -759,6 +864,7 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-am
 all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
@@ -842,20 +948,20 @@ ps-am:
 uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-libgimpbaseincludeHEADERS uninstall-local
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool ctags distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am \
-	install-data-local install-exec install-exec-am install-info \
-	install-info-am install-libLTLIBRARIES \
-	install-libgimpbaseincludeHEADERS install-man install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-libgimpbaseincludeHEADERS \
-	uninstall-local
+.PHONY: CTAGS GTAGS all all-am check check-TESTS check-am clean \
+	clean-generic clean-libLTLIBRARIES clean-libtool ctags \
+	distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-data-local install-exec \
+	install-exec-am install-info install-info-am \
+	install-libLTLIBRARIES install-libgimpbaseincludeHEADERS \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libgimpbaseincludeHEADERS uninstall-local
 
 
 @OS_WIN32_TRUE@install-libtool-import-lib:

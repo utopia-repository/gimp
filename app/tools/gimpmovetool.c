@@ -99,7 +99,7 @@ static void   gimp_move_tool_start_guide    (GimpMoveTool      *move,
                                              GimpOrientationType  orientation);
 
 
-G_DEFINE_TYPE (GimpMoveTool, gimp_move_tool, GIMP_TYPE_DRAW_TOOL);
+G_DEFINE_TYPE (GimpMoveTool, gimp_move_tool, GIMP_TYPE_DRAW_TOOL)
 
 #define parent_class gimp_move_tool_parent_class
 
@@ -172,24 +172,21 @@ gimp_move_tool_control (GimpTool       *tool,
 
   switch (action)
     {
-    case PAUSE:
+    case GIMP_TOOL_ACTION_PAUSE:
       break;
 
-    case RESUME:
+    case GIMP_TOOL_ACTION_RESUME:
       if (move->guide &&
           gimp_display_shell_get_show_guides (GIMP_DISPLAY_SHELL (shell)))
         gimp_display_shell_draw_guide (GIMP_DISPLAY_SHELL (shell),
                                        move->guide, TRUE);
       break;
 
-    case HALT:
+    case GIMP_TOOL_ACTION_HALT:
       if (move->guide &&
           gimp_display_shell_get_show_guides (GIMP_DISPLAY_SHELL (shell)))
         gimp_display_shell_draw_guide (GIMP_DISPLAY_SHELL (shell),
                                        move->guide, FALSE);
-      break;
-
-    default:
       break;
     }
 
@@ -651,7 +648,7 @@ gimp_move_tool_cursor_update (GimpTool        *tool,
   GimpDisplayShell *shell   = GIMP_DISPLAY_SHELL (display->shell);
   GimpMoveOptions  *options = GIMP_MOVE_OPTIONS (tool->tool_info->tool_options);
 
-  GimpCursorType     cursor      = GIMP_CURSOR_BAD;
+  GimpCursorType     cursor      = GIMP_CURSOR_MOUSE;
   GimpToolCursorType tool_cursor = GIMP_TOOL_CURSOR_MOVE;
   GimpCursorModifier modifier    = GIMP_CURSOR_MODIFIER_NONE;
 
@@ -662,8 +659,8 @@ gimp_move_tool_cursor_update (GimpTool        *tool,
 
       if (options->move_current)
         {
-          if (gimp_image_get_active_vectors (display->image))
-            cursor = GIMP_CURSOR_MOUSE;
+          if (! gimp_image_get_active_vectors (display->image))
+            modifier = GIMP_CURSOR_MODIFIER_BAD;
         }
       else
         {
@@ -671,8 +668,11 @@ gimp_move_tool_cursor_update (GimpTool        *tool,
                                          coords, 7, 7,
                                          NULL, NULL, NULL, NULL, NULL, NULL))
             {
-              cursor      = GIMP_CURSOR_MOUSE;
               tool_cursor = GIMP_TOOL_CURSOR_HAND;
+            }
+          else
+            {
+              modifier = GIMP_CURSOR_MODIFIER_BAD;
             }
         }
     }
@@ -681,13 +681,13 @@ gimp_move_tool_cursor_update (GimpTool        *tool,
       tool_cursor = GIMP_TOOL_CURSOR_RECT_SELECT;
       modifier    = GIMP_CURSOR_MODIFIER_MOVE;
 
-      if (! gimp_channel_is_empty (gimp_image_get_mask (display->image)))
-        cursor = GIMP_CURSOR_MOUSE;
+      if (gimp_channel_is_empty (gimp_image_get_mask (display->image)))
+        modifier = GIMP_CURSOR_MODIFIER_BAD;
     }
   else if (options->move_current)
     {
-      if (gimp_image_active_drawable (display->image))
-        cursor = GIMP_CURSOR_MOUSE;
+      if (! gimp_image_active_drawable (display->image))
+        modifier = GIMP_CURSOR_MODIFIER_BAD;
     }
   else
     {
@@ -703,7 +703,6 @@ gimp_move_tool_cursor_update (GimpTool        *tool,
                                           FUNSCALEX (shell, snap_distance),
                                           FUNSCALEY (shell, snap_distance))))
         {
-          cursor      = GIMP_CURSOR_MOUSE;
           tool_cursor = GIMP_TOOL_CURSOR_HAND;
           modifier    = GIMP_CURSOR_MODIFIER_MOVE;
         }
@@ -714,20 +713,18 @@ gimp_move_tool_cursor_update (GimpTool        *tool,
           if (gimp_image_floating_sel (display->image) &&
               ! gimp_layer_is_floating_sel (layer))
             {
-              cursor      = GIMP_CURSOR_MOUSE;
               tool_cursor = GIMP_TOOL_CURSOR_MOVE;
               modifier    = GIMP_CURSOR_MODIFIER_ANCHOR;
             }
-          else if (layer == gimp_image_get_active_layer (display->image))
+          else if (layer != gimp_image_get_active_layer (display->image))
             {
-              cursor = GIMP_CURSOR_MOUSE;
-            }
-          else
-            {
-              cursor      = GIMP_CURSOR_MOUSE;
               tool_cursor = GIMP_TOOL_CURSOR_HAND;
               modifier    = GIMP_CURSOR_MODIFIER_MOVE;
             }
+        }
+      else
+        {
+          modifier = GIMP_CURSOR_MODIFIER_BAD;
         }
     }
 

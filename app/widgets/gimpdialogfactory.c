@@ -93,7 +93,7 @@ static GtkWidget *
               gimp_dialog_factory_get_toolbox     (GimpDialogFactory *toolbox_factory);
 
 
-G_DEFINE_TYPE (GimpDialogFactory, gimp_dialog_factory, GIMP_TYPE_OBJECT);
+G_DEFINE_TYPE (GimpDialogFactory, gimp_dialog_factory, GIMP_TYPE_OBJECT)
 
 #define parent_class gimp_dialog_factory_parent_class
 
@@ -125,6 +125,7 @@ gimp_dialog_factory_dispose (GObject *object)
 {
   GimpDialogFactory *factory = GIMP_DIALOG_FACTORY (object);
   GList             *list;
+  gpointer           key;
 
   /*  start iterating from the beginning each time we destroyed a
    *  toplevel because destroying a dock may cause lots of items
@@ -152,6 +153,28 @@ gimp_dialog_factory_dispose (GObject *object)
         }
     }
 
+  if (factory->open_dialogs)
+    {
+      g_list_free (factory->open_dialogs);
+      factory->open_dialogs = NULL;
+    }
+
+  if (factory->session_infos)
+    {
+      g_list_foreach (factory->session_infos, (GFunc) gimp_session_info_free,
+                      NULL);
+      g_list_free (factory->session_infos);
+      factory->session_infos = NULL;
+    }
+
+  if (strcmp (GIMP_OBJECT (factory)->name, "toolbox") == 0)
+    key = "";
+  else
+    key = GIMP_OBJECT (factory)->name;
+
+  g_hash_table_remove (GIMP_DIALOG_FACTORY_GET_CLASS (object)->factories,
+                       key);
+
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
@@ -160,9 +183,6 @@ gimp_dialog_factory_finalize (GObject *object)
 {
   GimpDialogFactory *factory = GIMP_DIALOG_FACTORY (object);
   GList             *list;
-
-  g_hash_table_remove (GIMP_DIALOG_FACTORY_GET_CLASS (object)->factories,
-                       GIMP_OBJECT (factory)->name);
 
   for (list = factory->registered_dialogs; list; list = g_list_next (list))
     {
@@ -180,11 +200,6 @@ gimp_dialog_factory_finalize (GObject *object)
     {
       g_list_free (factory->registered_dialogs);
       factory->registered_dialogs = NULL;
-    }
-  if (factory->open_dialogs)
-    {
-      g_list_free (factory->open_dialogs);
-      factory->open_dialogs = NULL;
     }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -479,45 +494,41 @@ gimp_dialog_factory_dialog_new_internal (GimpDialogFactory *factory,
         gimp_dialog_factory_add_dialog (factory, dialog);
     }
 
-  /*  finally, if we found an existing dialog or created a new one,
-   *  raise it
+  /*  Finally, if we found an existing dialog or created a new one, raise it.
    */
-  if (dialog)
+  if (! dialog)
+    return NULL;
+
+  if (GTK_WIDGET_TOPLEVEL (dialog))
     {
-      if (GTK_WIDGET_TOPLEVEL (dialog))
+      gtk_window_set_screen (GTK_WINDOW (dialog), screen);
+
+      if (present)
+        gtk_window_present (GTK_WINDOW (dialog));
+    }
+  else if (GIMP_IS_DOCKABLE (dialog))
+    {
+      GimpDockable *dockable = GIMP_DOCKABLE (dialog);
+
+      if (dockable->dockbook && dockable->dockbook->dock)
         {
-          gtk_window_set_screen (GTK_WINDOW (dialog), screen);
+          GtkNotebook *notebook = GTK_NOTEBOOK (dockable->dockbook);
+          gint         num      = gtk_notebook_page_num (notebook, dialog);
 
-          if (present)
-            gtk_window_present (GTK_WINDOW (dialog));
-        }
-      else if (GIMP_IS_DOCKABLE (dialog))
-        {
-          GimpDockable *dockable;
-          gint          page_num;
-
-          dockable = GIMP_DOCKABLE (dialog);
-
-          if (dockable->dockbook && dockable->dockbook->dock)
+          if (num != -1)
             {
-              page_num =
-                gtk_notebook_page_num (GTK_NOTEBOOK (dockable->dockbook),
-                                       dialog);
+              gtk_notebook_set_current_page (notebook, num);
 
-              if (page_num != -1)
-                {
-                  GtkWidget *toplevel;
-
-                  gtk_notebook_set_current_page (GTK_NOTEBOOK (dockable->dockbook),
-                                                 page_num);
-
-                  toplevel = gtk_widget_get_toplevel (dialog);
-
-                  gtk_window_present (GTK_WINDOW (toplevel));
-
-                  gimp_dockable_blink (GIMP_DOCKABLE (dialog));
-                }
+              gimp_dockable_blink (dockable);
             }
+        }
+
+      if (present)
+        {
+          GtkWidget *toplevel = gtk_widget_get_toplevel (dialog);
+
+          if (GTK_IS_WINDOW (toplevel))
+            gtk_window_present (GTK_WINDOW (toplevel));
         }
     }
 
@@ -1072,9 +1083,10 @@ gimp_dialog_factories_set_busy (void)
 
   factory_class = g_type_class_peek (GIMP_TYPE_DIALOG_FACTORY);
 
-  g_hash_table_foreach (factory_class->factories,
-                        (GHFunc) gimp_dialog_factories_set_busy_foreach,
-                        NULL);
+  if (factory_class)
+    g_hash_table_foreach (factory_class->factories,
+                          (GHFunc) gimp_dialog_factories_set_busy_foreach,
+                          NULL);
 }
 
 void
@@ -1084,9 +1096,10 @@ gimp_dialog_factories_unset_busy (void)
 
   factory_class = g_type_class_peek (GIMP_TYPE_DIALOG_FACTORY);
 
-  g_hash_table_foreach (factory_class->factories,
-                        (GHFunc) gimp_dialog_factories_unset_busy_foreach,
-                        NULL);
+  if (factory_class)
+    g_hash_table_foreach (factory_class->factories,
+                          (GHFunc) gimp_dialog_factories_unset_busy_foreach,
+                          NULL);
 }
 
 

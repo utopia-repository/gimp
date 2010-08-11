@@ -4,16 +4,19 @@
 
 <refentry id="libgimp-gimpfileops">
 <refmeta>
-<refentrytitle>gimpfileops</refentrytitle>
+<refentrytitle id="top_of_page">gimpfileops</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>gimpfileops</refname><refpurpose>File operations (load, save, etc.)</refpurpose>
+<refname>gimpfileops</refname>
+<refpurpose>File operations (load, save, etc.)</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="synopsis">
+<title id="synopsis.title">Synopsis</title>
 
 <synopsis>
 
@@ -57,18 +60,18 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="desc">
+<title id="desc.title">Description</title>
 <para>
 File operations (load, save, etc.)
 
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
+<refsect1 id="details">
+<title id="details.title">Details</title>
 <refsect2>
-<title><anchor id="gimp-temp-name"/>gimp_temp_name ()</title>
+<title><anchor id="gimp-temp-name" role="function"/>gimp_temp_name ()</title>
 <indexterm><primary>gimp_temp_name</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*      gimp_temp_name                  (const <link linkend="gchar">gchar</link> *extension);</programlisting>
 <para>
 Generates a unique filename.
@@ -86,7 +89,7 @@ user's gimprc.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-file-load"/>gimp_file_load ()</title>
+<title><anchor id="gimp-file-load" role="function"/>gimp_file_load ()</title>
 <indexterm><primary>gimp_file_load</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_file_load                  (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
                                              const <link linkend="gchar">gchar</link> *filename,
                                              const <link linkend="gchar">gchar</link> *raw_filename);</programlisting>
@@ -117,7 +120,7 @@ will not look like a URL.\"</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-file-load-layer"/>gimp_file_load_layer ()</title>
+<title><anchor id="gimp-file-load-layer" role="function" condition="since:GIMP 2.4"/>gimp_file_load_layer ()</title>
 <indexterm role="GIMP 2.4"><primary>gimp_file_load_layer</primary></indexterm><programlisting><link linkend="gint32">gint32</link>      gimp_file_load_layer            (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
                                              <link linkend="gint32">gint32</link> image_ID,
                                              const <link linkend="gchar">gchar</link> *filename);</programlisting>
@@ -145,7 +148,7 @@ specified image as a layer into an already opened image.</para>
 </variablelist><para>Since  GIMP 2.4
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-file-save"/>gimp_file_save ()</title>
+<title><anchor id="gimp-file-save" role="function"/>gimp_file_save ()</title>
 <indexterm><primary>gimp_file_save</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_file_save                  (<link linkend="GimpRunMode">GimpRunMode</link> run_mode,
                                              <link linkend="gint32">gint32</link> image_ID,
                                              <link linkend="gint32">gint32</link> drawable_ID,
@@ -183,7 +186,7 @@ fetch a URL, and the full pathname will not look like a URL.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-register-magic-load-handler"/>gimp_register_magic_load_handler ()</title>
+<title><anchor id="gimp-register-magic-load-handler" role="function"/>gimp_register_magic_load_handler ()</title>
 <indexterm><primary>gimp_register_magic_load_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_magic_load_handler
                                             (const <link linkend="gchar">gchar</link> *procedure_name,
                                              const <link linkend="gchar">gchar</link> *extensions,
@@ -214,7 +217,7 @@ of a particular file format using magic file information.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-register-load-handler"/>gimp_register_load_handler ()</title>
+<title><anchor id="gimp-register-load-handler" role="function"/>gimp_register_load_handler ()</title>
 <indexterm><primary>gimp_register_load_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_load_handler      (const <link linkend="gchar">gchar</link> *procedure_name,
                                              const <link linkend="gchar">gchar</link> *extensions,
                                              const <link linkend="gchar">gchar</link> *prefixes);</programlisting>
@@ -240,7 +243,7 @@ of a particular file format.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-register-save-handler"/>gimp_register_save_handler ()</title>
+<title><anchor id="gimp-register-save-handler" role="function"/>gimp_register_save_handler ()</title>
 <indexterm><primary>gimp_register_save_handler</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_save_handler      (const <link linkend="gchar">gchar</link> *procedure_name,
                                              const <link linkend="gchar">gchar</link> *extensions,
                                              const <link linkend="gchar">gchar</link> *prefixes);</programlisting>
@@ -266,7 +269,7 @@ in a particular file format.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="gimp-register-file-handler-mime"/>gimp_register_file_handler_mime ()</title>
+<title><anchor id="gimp-register-file-handler-mime" role="function" condition="since:GIMP 2.2"/>gimp_register_file_handler_mime ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_register_file_handler_mime</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_file_handler_mime (const <link linkend="gchar">gchar</link> *procedure_name,
                                              const <link linkend="gchar">gchar</link> *mime_type);</programlisting>
 <para>
@@ -291,7 +294,7 @@ procedure.</para>
 </variablelist><para>Since  GIMP 2.2
 </para></refsect2>
 <refsect2>
-<title><anchor id="gimp-register-thumbnail-loader"/>gimp_register_thumbnail_loader ()</title>
+<title><anchor id="gimp-register-thumbnail-loader" role="function" condition="since:GIMP 2.2"/>gimp_register_thumbnail_loader ()</title>
 <indexterm role="GIMP 2.2"><primary>gimp_register_thumbnail_loader</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gimp_register_thumbnail_loader  (const <link linkend="gchar">gchar</link> *load_proc,
                                              const <link linkend="gchar">gchar</link> *thumb_proc);</programlisting>
 <para>

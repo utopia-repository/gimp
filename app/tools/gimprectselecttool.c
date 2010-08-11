@@ -77,7 +77,7 @@ static void   gimp_rect_select_tool_update_options   (GimpRectSelectTool *rect_s
 
 
 G_DEFINE_TYPE (GimpRectSelectTool, gimp_rect_select_tool,
-               GIMP_TYPE_SELECTION_TOOL);
+               GIMP_TYPE_SELECTION_TOOL)
 
 #define parent_class gimp_rect_select_tool_parent_class
 
@@ -93,7 +93,7 @@ gimp_rect_select_tool_register (GimpToolRegisterCallback  callback,
                 "gimp-rect-select-tool",
                 _("Rectangle Select"),
                 _("Select rectangular regions"),
-                N_("_Rectangle Select"), "R",
+                N_("_Rectangle Select"), NULL,
                 NULL, GIMP_HELP_TOOL_RECT_SELECT,
                 GIMP_STOCK_TOOL_RECT_SELECT,
                 data);

@@ -50,7 +50,7 @@ static gboolean  gimp_color_bar_expose       (GtkWidget      *widget,
                                               GdkEventExpose *event);
 
 
-G_DEFINE_TYPE (GimpColorBar, gimp_color_bar, GTK_TYPE_MISC);
+G_DEFINE_TYPE (GimpColorBar, gimp_color_bar, GTK_TYPE_MISC)
 
 #define parent_class gimp_color_bar_parent_class
 
@@ -77,7 +77,7 @@ gimp_color_bar_class_init (GimpColorBarClass *klass)
   g_object_class_install_property (object_class, PROP_COLOR,
                                    gimp_param_spec_rgb ("color",
                                                         NULL, NULL,
-                                                        &white,
+                                                        FALSE, &white,
                                                         GIMP_PARAM_WRITABLE |
                                                         G_PARAM_CONSTRUCT));
   g_object_class_install_property (object_class, PROP_ORIENTATION,

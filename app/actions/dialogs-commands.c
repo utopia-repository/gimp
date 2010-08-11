@@ -41,10 +41,10 @@
 
 /*  local function prototypes  */
 
-static void   dialogs_create_dock (GdkScreen   *screen,
-                                   gboolean     show_image_menu,
-                                   const gchar *tabs[],
-                                   gint         n_tabs);
+static void   dialogs_create_dock (GdkScreen           *screen,
+                                   gboolean             show_image_menu,
+                                   const gchar * const  tabs[],
+                                   gint                 n_tabs);
 
 
 /*  public functions  */
@@ -88,7 +88,7 @@ void
 dialogs_create_lc_cmd_callback (GtkAction *action,
                                 gpointer   data)
 {
-  static const gchar *tabs[] =
+  static const gchar * const tabs[] =
   {
     "gimp-layer-list",
     "gimp-channel-list",
@@ -107,7 +107,7 @@ void
 dialogs_create_data_cmd_callback (GtkAction *action,
                                   gpointer   data)
 {
-  static const gchar *tabs[] =
+  static const gchar * const tabs[] =
   {
     "gimp-brush-grid",
     "gimp-pattern-grid",
@@ -127,7 +127,7 @@ void
 dialogs_create_stuff_cmd_callback (GtkAction *action,
                                    gpointer   data)
 {
-  static const gchar *tabs[] =
+  static const gchar * const tabs[] =
   {
     "gimp-buffer-list",
     "gimp-image-list",
@@ -164,10 +164,10 @@ dialogs_show_toolbox (void)
 /*  private functions  */
 
 static void
-dialogs_create_dock (GdkScreen   *screen,
-                     gboolean     show_image_menu,
-                     const gchar *tabs[],
-                     gint         n_tabs)
+dialogs_create_dock (GdkScreen          *screen,
+                     gboolean            show_image_menu,
+                     const gchar * const tabs[],
+                     gint                n_tabs)
 {
   GtkWidget *dock;
   GtkWidget *dockbook;

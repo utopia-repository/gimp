@@ -34,6 +34,8 @@
 #include "core/gimpimagefile.h"
 #include "core/gimpprogress.h"
 
+#include "plug-in/gimppluginmanager.h"
+
 #include "file/file-utils.h"
 
 #include "gimpfiledialog.h" /* eek */
@@ -93,7 +95,7 @@ static gboolean gimp_thumb_box_auto_thumbnail     (GimpThumbBox      *box);
 
 G_DEFINE_TYPE_WITH_CODE (GimpThumbBox, gimp_thumb_box, GTK_TYPE_FRAME,
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS,
-                                                gimp_thumb_box_progress_iface_init));
+                                                gimp_thumb_box_progress_iface_init))
 
 #define parent_class gimp_thumb_box_parent_class
 
@@ -326,7 +328,7 @@ gimp_thumb_box_new (Gimp *gimp)
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  label = gtk_label_new_with_mnemonic (_("_Preview"));
+  label = gtk_label_new_with_mnemonic (_("Pr_eview"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_container_add (GTK_CONTAINER (button), label);
   gtk_widget_show (label);
@@ -710,7 +712,8 @@ gimp_thumb_box_auto_thumbnail (GimpThumbBox *box)
     case GIMP_THUMB_STATE_OLD:
       if (thumb->image_filesize < gimp->config->thumbnail_filesize_limit &&
           ! gimp_thumbnail_has_failed (thumb)                            &&
-          file_utils_find_proc_by_extension (gimp->load_procs, uri))
+          file_utils_find_proc_by_extension (gimp->plug_in_manager->load_procs,
+                                             uri))
         {
           if (thumb->image_filesize > 0)
             {

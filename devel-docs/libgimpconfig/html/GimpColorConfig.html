@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -7,7 +8,7 @@
 <link rel="up" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="prev" href="libgimpconfig-GimpScanner.html" title="gimpscanner">
 <link rel="next" href="ix01.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.4 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.6 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 <link rel="part" href="libgimpconfig.html" title="Part&#160;I.&#160;GIMP Config Library">
 <link rel="chapter" href="libgimpconfig-hierarchy.html" title="Object Hierarchy">
@@ -16,24 +17,33 @@
 <link rel="index" href="ix03.html" title="Index of deprecated symbols">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
 <td><a accesskey="p" href="libgimpconfig-GimpScanner.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
 <td><a accesskey="u" href="libgimpconfig.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">GIMP Config Library Reference Manual</th>
 <td><a accesskey="n" href="ix01.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
-</tr></table>
+</tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#top_of_page" class="shortcut">Top</a>
+                  &#160;|&#160;
+                  <a href="#desc" class="shortcut">Description</a>
+                  &#160;|&#160;
+                  <a href="#object_hierarchy" class="shortcut">Object Hierarchy</a>
+                  &#160;|&#160;
+                  <a href="#properties" class="shortcut">Properties</a></nobr></td></tr>
+</table>
 <div class="refentry" lang="en">
 <a name="GimpColorConfig"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GimpColorConfig</span></h2>
+<h2><span class="refentrytitle"><a name="top_of_page"></a>GimpColorConfig</span></h2>
 <p>GimpColorConfig &#8212; </p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
 
 
@@ -46,7 +56,7 @@ enum        <a href="GimpColorConfig.html#GimpColorFileOpenBehaviour">GimpColorF
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2522587"></a><h2>Object Hierarchy</h2>
+<a name="object_hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -54,13 +64,13 @@ enum        <a href="GimpColorConfig.html#GimpColorFileOpenBehaviour">GimpColorF
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2546483"></a><h2>Implemented Interfaces</h2>
+<a name="impl_interfaces"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpColorConfig implements
  <a href="libgimpconfig-GimpConfig.html#GimpConfigInterface">GimpConfigInterface</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2563661"></a><h2>Properties</h2>
+<a name="properties"></a><h2>Properties</h2>
 <pre class="synopsis">
 
   "<a href="GimpColorConfig.html#GimpColorConfig--cmyk-profile">cmyk-profile</a>"         GimpConfigPath        : Read / Write / Construct
@@ -75,26 +85,26 @@ GimpColorConfig implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2563781"></a><h2>Description</h2>
+<a name="desc"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2565239"></a><h2>Details</h2>
+<a name="details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2565245"></a><h3>
+<a name="id2569676"></a><h3>
 <a name="GimpColorConfig-struct"></a>GimpColorConfig</h3>
-<a class="indexterm" name="id2565254"></a><pre class="programlisting">typedef struct _GimpColorConfig GimpColorConfig;</pre>
+<a class="indexterm" name="id2569687"></a><pre class="programlisting">typedef struct _GimpColorConfig GimpColorConfig;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565270"></a><h3>
+<a name="id2569703"></a><h3>
 <a name="GimpColorManagementMode"></a>enum GimpColorManagementMode</h3>
-<a class="indexterm" name="id2565279"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2569714"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_MANAGEMENT_OFF,       /*&lt; desc="No color management"   &gt;*/
   GIMP_COLOR_MANAGEMENT_DISPLAY,   /*&lt; desc="Color managed display" &gt;*/
@@ -107,9 +117,9 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565299"></a><h3>
+<a name="id2569734"></a><h3>
 <a name="GimpColorRenderingIntent"></a>enum GimpColorRenderingIntent</h3>
-<a class="indexterm" name="id2565308"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2569745"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL,            /*&lt; desc="Perceptual"            &gt;*/
   GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC, /*&lt; desc="Relative colorimetric" &gt;*/
@@ -123,9 +133,9 @@ GimpColorConfig implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2565329"></a><h3>
+<a name="id2569767"></a><h3>
 <a name="GimpColorFileOpenBehaviour"></a>enum GimpColorFileOpenBehaviour</h3>
-<a class="indexterm" name="id2565338"></a><pre class="programlisting">typedef enum
+<a class="indexterm" name="id2569778"></a><pre class="programlisting">typedef enum
 {
   GIMP_COLOR_FILE_OPEN_ASK,         /*&lt; desc="Ask"                       &gt;*/
   GIMP_COLOR_FILE_OPEN_LEAVE,       /*&lt; desc="Use embedded profile"      &gt;*/
@@ -138,83 +148,79 @@ GimpColorConfig implements
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2565360"></a><h2>Properties</h2>
+<a name="property_details"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2565366"></a><h3>
+<a name="id2563122"></a><h3>
 <a name="GimpColorConfig--cmyk-profile"></a>The "<code class="literal">cmyk-profile</code>" property</h3>
-<pre class="programlisting">  "cmyk-profile"         GimpConfigPath        : Read / Write / Construct</pre>
+<a class="indexterm" name="id2563136"></a><pre class="programlisting">  "cmyk-profile"         GimpConfigPath        : Read / Write / Construct</pre>
 <p>The CMYK color profile used to convert between RGB and CMYK.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560642"></a><h3>
+<a name="id2563160"></a><h3>
 <a name="GimpColorConfig--display-module"></a>The "<code class="literal">display-module</code>" property</h3>
-<pre class="programlisting">  "display-module"       gchararray            : Read / Write / Construct</pre>
+<a class="indexterm" name="id2563174"></a><pre class="programlisting">  "display-module"       gchararray            : Read / Write / Construct</pre>
 <p></p>
 <p>Default value: "CdisplayLcms"</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560676"></a><h3>
+<a name="id2563199"></a><h3>
 <a name="GimpColorConfig--display-profile"></a>The "<code class="literal">display-profile</code>" property</h3>
-<pre class="programlisting">  "display-profile"      GimpConfigPath        : Read / Write / Construct</pre>
+<a class="indexterm" name="id2563215"></a><pre class="programlisting">  "display-profile"      GimpConfigPath        : Read / Write / Construct</pre>
 <p>The color profile of your (primary) monitor.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560712"></a><h3>
+<a name="id2563241"></a><h3>
 <a name="GimpColorConfig--display-profile-from-gdk"></a>The "<code class="literal">display-profile-from-gdk</code>" property</h3>
-<pre class="programlisting">  "display-profile-from-gdk" gboolean              : Read / Write / Construct</pre>
+<a class="indexterm" name="id2563257"></a><pre class="programlisting">  "display-profile-from-gdk" gboolean              : Read / Write / Construct</pre>
 <p>When enabled, the GIMP will try to use the display color profile from the windowing system. The configured monitor profile is then only used as a fallback.</p>
 <p>Default value: TRUE</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2560750"></a><h3>
+<a name="id2562672"></a><h3>
 <a name="GimpColorConfig--display-rendering-intent"></a>The "<code class="literal">display-rendering-intent</code>" property</h3>
-<pre class="programlisting">  "display-rendering-intent" <a href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2562688"></a><pre class="programlisting">  "display-rendering-intent" <a href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
 <p>Sets how colors are mapped for your display.</p>
 <p>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564709"></a><h3>
+<a name="id2562715"></a><h3>
 <a name="GimpColorConfig--mode"></a>The "<code class="literal">mode</code>" property</h3>
-<pre class="programlisting">  "mode"                 <a href="GimpColorConfig.html#GimpColorManagementMode">GimpColorManagementMode</a>  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2562729"></a><pre class="programlisting">  "mode"                 <a href="GimpColorConfig.html#GimpColorManagementMode">GimpColorManagementMode</a>  : Read / Write / Construct</pre>
 <p>Mode of operation for color management.</p>
 <p>Default value: GIMP_COLOR_MANAGEMENT_DISPLAY</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564743"></a><h3>
+<a name="id2562754"></a><h3>
 <a name="GimpColorConfig--printer-profile"></a>The "<code class="literal">printer-profile</code>" property</h3>
-<pre class="programlisting">  "printer-profile"      GimpConfigPath        : Read / Write / Construct</pre>
+<a class="indexterm" name="id2562770"></a><pre class="programlisting">  "printer-profile"      GimpConfigPath        : Read / Write / Construct</pre>
 <p>The color profile used for simulating a printed version (softproof).</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564779"></a><h3>
+<a name="id2562797"></a><h3>
 <a name="GimpColorConfig--rgb-profile"></a>The "<code class="literal">rgb-profile</code>" property</h3>
-<pre class="programlisting">  "rgb-profile"          GimpConfigPath        : Read / Write / Construct</pre>
+<a class="indexterm" name="id2562813"></a><pre class="programlisting">  "rgb-profile"          GimpConfigPath        : Read / Write / Construct</pre>
 <p>The default RGB workspace color profile.</p>
 <p>Default value: NULL</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2564814"></a><h3>
+<a name="id2562838"></a><h3>
 <a name="GimpColorConfig--simulation-rendering-intent"></a>The "<code class="literal">simulation-rendering-intent</code>" property</h3>
-<pre class="programlisting">  "simulation-rendering-intent" <a href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
+<a class="indexterm" name="id2562854"></a><pre class="programlisting">  "simulation-rendering-intent" <a href="GimpColorConfig.html#GimpColorRenderingIntent">GimpColorRenderingIntent</a>  : Read / Write / Construct</pre>
 <p>Sets how colors are converted from workspace to the print simulation device.</p>
 <p>Default value: GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL</p>
 </div>
 </div>
 </div>
-<table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="0"><tr valign="middle">
-<td align="left"><a accesskey="p" href="libgimpconfig-GimpScanner.html"><b>&lt;&lt;&#160;gimpscanner</b></a></td>
-<td align="right"><a accesskey="n" href="ix01.html"><b>Index&#160;&gt;&gt;</b></a></td>
-</tr></table>
 </body>
 </html>

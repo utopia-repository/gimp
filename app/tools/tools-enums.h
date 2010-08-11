@@ -36,6 +36,19 @@ typedef enum
 } GimpColorPickMode;
 
 
+#define GIMP_TYPE_RECTANGLE_GUIDE (gimp_rectangle_guide_get_type ())
+
+GType gimp_rectangle_guide_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_RECTANGLE_GUIDE_NONE,          /*< desc="No guides"       >*/
+  GIMP_RECTANGLE_GUIDE_CENTER_LINES,  /*< desc="Center lines"    >*/
+  GIMP_RECTANGLE_GUIDE_THIRDS,        /*< desc="Rule of thirds"  >*/
+  GIMP_RECTANGLE_GUIDE_GOLDEN         /*< desc="Golden sections" >*/
+} GimpRectangleGuide;
+
+
 #define GIMP_TYPE_CROP_MODE (gimp_crop_mode_get_type ())
 
 GType gimp_crop_mode_get_type (void) G_GNUC_CONST;
@@ -45,17 +58,6 @@ typedef enum
   GIMP_CROP_MODE_CROP,   /*< desc="Crop"   >*/
   GIMP_CROP_MODE_RESIZE  /*< desc="Resize" >*/
 } GimpCropMode;
-
-
-#define GIMP_TYPE_RECTANGLE_MODE (gimp_rectangle_mode_get_type ())
-
-GType gimp_rectangle_mode_get_type (void) G_GNUC_CONST;
-
-typedef enum
-{
-  GIMP_RECTANGLE_MODE_EXECUTE,   /*< desc="Execute"   >*/
-  GIMP_RECTANGLE_MODE_RESIZE     /*< desc="Resize" >*/
-} GimpRectangleMode;
 
 
 #define GIMP_TYPE_RECT_SELECT_MODE (gimp_rect_select_mode_get_type ())
@@ -137,9 +139,9 @@ typedef enum /*< skip >*/
 /*  Tool control actions  */
 typedef enum /*< skip >*/
 {
-  PAUSE,
-  RESUME,
-  HALT
+  GIMP_TOOL_ACTION_PAUSE,
+  GIMP_TOOL_ACTION_RESUME,
+  GIMP_TOOL_ACTION_HALT
 } GimpToolAction;
 
 /*  Modes of GimpEditSelectionTool  */

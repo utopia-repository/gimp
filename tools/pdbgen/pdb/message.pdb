@@ -35,8 +35,9 @@ HELP
     %invoke = (
         code => <<'CODE'
 {
-  if (gimp->current_plug_in)
-    plug_in_progress_message (gimp->current_plug_in, message);
+  if (gimp->plug_in_manager->current_plug_in)
+    gimp_plug_in_progress_message (gimp->plug_in_manager->current_plug_in,
+                                   message);
   else
     gimp_message (gimp, NULL, message);
 }
@@ -58,7 +59,7 @@ HELP
 
     @outargs = (
 	{ name => 'handler', type => 'enum GimpMessageHandlerType',
-	  desc => 'The current handler type: %%desc%%' }
+	  desc => 'The current handler type' }
     );
 
     %invoke = (
@@ -82,7 +83,7 @@ HELP
 
     @inargs = (
 	{ name => 'handler', type => 'enum GimpMessageHandlerType',
-	  desc => 'The new handler type: %%desc%%' }
+	  desc => 'The new handler type' }
     );
 
     %invoke = (
@@ -95,8 +96,12 @@ CODE
 }
 
 
-@headers = qw(<string.h> "core/gimp.h" "plug-in/plug-in.h"
-              "plug-in/plug-in-progress.h" "gimp-intl.h");
+@headers = qw(<string.h>
+              "core/gimp.h"
+              "plug-in/gimpplugin.h"
+              "plug-in/gimpplugin-progress.h"
+              "plug-in/gimppluginmanager.h"
+              "gimp-intl.h");
 
 @procs = qw(message message_get_handler message_set_handler);
 

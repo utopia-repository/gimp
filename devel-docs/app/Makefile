@@ -75,13 +75,13 @@ AS = as
 AUTOCONF = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run autoconf
 AUTOHEADER = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run autoheader
 AUTOMAKE = ${SHELL} /home/sven/gnomesvn/gimp-dist/missing --run automake-1.9
-AWK = mawk
+AWK = gawk
 BINRELOC_CFLAGS = 
 BINRELOC_LIBS = 
 BUILD_HELPBROWSER_FALSE = #
 BUILD_HELPBROWSER_TRUE = 
-BUILD_PRINT_FALSE = 
-BUILD_PRINT_TRUE = #
+BUILD_PRINT_FALSE = #
+BUILD_PRINT_TRUE = 
 BUILD_PYTHON_FALSE = #
 BUILD_PYTHON_TRUE = 
 BUILD_SCRIPT_FU_FALSE = #
@@ -142,20 +142,20 @@ GETTEXT_PACKAGE = gimp20
 GIMPINSTALL = 
 GIMP_API_VERSION = 2.0
 GIMP_APP_VERSION = 2.3
-GIMP_BINARY_AGE = 314
+GIMP_BINARY_AGE = 315
 GIMP_COMMAND = gimp-2.3
 GIMP_DATA_VERSION = 2.0
 GIMP_FULL_NAME = GNU Image Manipulation Program
 GIMP_INTERFACE_AGE = 0
 GIMP_MAJOR_VERSION = 2
-GIMP_MICRO_VERSION = 14
+GIMP_MICRO_VERSION = 15
 GIMP_MINOR_VERSION = 3
 GIMP_MKENUMS = $(PERL) $(top_srcdir)/tools/gimp-mkenums
 GIMP_MODULES = modules
 GIMP_PKGCONFIG_VERSION = 2.0
 GIMP_PLUGINS = plug-ins
 GIMP_PLUGIN_VERSION = 2.0
-GIMP_REAL_VERSION = 2.3.14
+GIMP_REAL_VERSION = 2.3.15
 GIMP_REMOTE = gimp-remote-2.3$(EXEEXT)
 GIMP_SYSCONF_VERSION = 2.0
 GIMP_TOOL_VERSION = 2.0
@@ -163,7 +163,7 @@ GIMP_UNSTABLE = yes
 GIMP_UNSTABLE_FALSE = #
 GIMP_UNSTABLE_TRUE = 
 GIMP_USER_VERSION = 2.3
-GIMP_VERSION = 2.3.14
+GIMP_VERSION = 2.3.15
 GLIB_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 GLIB_GENMARSHAL = glib-genmarshal
 GLIB_LIBS = -lgobject-2.0 -lglib-2.0  
@@ -186,6 +186,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = #
 GTK_DOC_USE_LIBTOOL_TRUE = 
 GTK_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 GTK_REQUIRED_VERSION = 2.8.17
+HAL_CFLAGS = -DDBUS_API_SUBJECT_TO_CHANGE -I/usr/include/hal -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include  
+HAL_LIBS = -lhal -ldbus-1  
+HAVE_DX_DINPUT_FALSE = 
+HAVE_DX_DINPUT_TRUE = #
 HAVE_FINITE = 
 HAVE_GLIBC_REGEX = 
 HAVE_GLIBC_REGEX_FALSE = #
@@ -255,18 +259,18 @@ LIBOBJS =
 LIBPNG = -lpng12  
 LIBPOPPLER = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lgthread-2.0 -lglib-2.0  
 LIBS = 
-LIBSCREENSHOT =   -lSM -lICE -lX11 -lXmu -lXt
+LIBSCREENSHOT =   -lSM -lICE -lX11 -lXmu -lXt -lXext
 LIBSVG = -lrsvg-2 -lgdk_pixbuf-2.0 -lm -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 LIBTIFF = -ltiff
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
-LIBWMF = -L/usr/lib -lwmf -lwmflite -lfreetype -lz -lX11 -lexpat -ljpeg -lpng -lz -lm
+LIBWMF = 
 LIBXMU =   -lSM -lICE -lX11 -lXmu -lXt
 LIBXPM =   -lSM -lICE -lX11 -lXpm
 LIBZ = -lz
 LN_S = ln -s
 LTLIBOBJS = 
 LT_CURRENT_MINUS_AGE = 0
-LT_VERSION_INFO = 314:0:314
+LT_VERSION_INFO = 315:0:315
 MAIL = mail$(EXEEXT)
 MAINT = 
 MAINTAINER_MODE_FALSE = #
@@ -287,9 +291,9 @@ OS_WIN32_TRUE = #
 PACKAGE = gimp
 PACKAGE_BUGREPORT = http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
 PACKAGE_NAME = GIMP
-PACKAGE_STRING = GIMP 2.3.14
+PACKAGE_STRING = GIMP 2.3.15
 PACKAGE_TARNAME = gimp
-PACKAGE_VERSION = 2.3.14
+PACKAGE_VERSION = 2.3.15
 PANGOFT2_CFLAGS = -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
 PANGOFT2_LIBS = -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PANGOFT2_REQUIRED_VERSION = 1.12.2
@@ -309,8 +313,8 @@ POPPLER_LIBS = -pthread -lpoppler-glib -lpoppler -lgdk_pixbuf-2.0 -lm -lgobject-
 POSUB = po
 PO_IN_DATADIR_FALSE = 
 PO_IN_DATADIR_TRUE = 
-PRINT_CFLAGS = 
-PRINT_LIBS = 
+PRINT_CFLAGS = -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng12  
+PRINT_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lfontconfig -lXext -lXrender -lXinerama -lXi -lXrandr -lXcursor -lXfixes -lpango-1.0 -lcairo -lX11 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
 PSP = psp$(EXEEXT)
 PYBIN_PATH = /usr/bin/python
 PYGIMP_EXTRA_CFLAGS = -fno-strict-aliasing
@@ -349,13 +353,13 @@ URI_LIBCURL_LIBS =
 USE_BINRELOC_FALSE = 
 USE_BINRELOC_TRUE = #
 USE_NLS = yes
-VERSION = 2.3.14
+VERSION = 2.3.15
 WINDRES = :
 WITH_PDBGEN_FALSE = #
 WITH_PDBGEN_TRUE = 
-WMF = wmf$(EXEEXT)
-WMF_CFLAGS = -I/usr/include/freetype2 -I/usr/include
-WMF_CONFIG = /usr/bin/libwmf-config
+WMF = 
+WMF_CFLAGS = 
+WMF_CONFIG = no
 WMF_REQUIRED_VERSION = 0.2.8
 XGETTEXT = /usr/bin/xgettext
 XMKMF = 
@@ -486,7 +490,9 @@ GTKDOC_CFLAGS = \
 	-I$(includedir)
 
 GTKDOC_LIBS = \
-	-u $(SYMPREFIX)xcf_init -u $(SYMPREFIX)internal_procs_init	     \
+	-u $(SYMPREFIX)xcf_init		   \
+	-u $(SYMPREFIX)internal_procs_init \
+	-u $(SYMPREFIX)gimp_coords_mix	   \
 	$(top_builddir)/app/app_procs.o					     \
         $(top_builddir)/app/batch.o					     \
         $(top_builddir)/app/errors.o					     \
@@ -504,8 +510,8 @@ GTKDOC_LIBS = \
         $(top_builddir)/app/file/libappfile.a				     \
         $(top_builddir)/app/plug-in/libappplug-in.a			     \
         $(top_builddir)/app/pdb/libapppdb.a				     \
-        $(top_builddir)/app/vectors/libappvectors.a			     \
         $(top_builddir)/app/core/libappcore.a				     \
+        $(top_builddir)/app/vectors/libappvectors.a			     \
         $(top_builddir)/app/paint/libapppaint.a				     \
         $(top_builddir)/app/text/libapptext.a				     \
         $(top_builddir)/app/config/libappconfig.a			     \
@@ -525,6 +531,7 @@ GTKDOC_LIBS = \
         $(PANGOFT2_LIBS)                                                     \
         $(FONTCONFIG_LIBS)                                                   \
         $(FREETYPE_LIBS)                                                     \
+	$(DBUS_GLIB_LIBS)						     \
         $(GTHREAD_LIBS)                                                      \
 	$(RT_LIBS)							     \
         $(INTLLIBS)

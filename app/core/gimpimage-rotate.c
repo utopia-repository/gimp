@@ -34,6 +34,7 @@
 #include "gimpitem.h"
 #include "gimplist.h"
 #include "gimpprogress.h"
+#include "gimpsamplepoint.h"
 
 
 static void  gimp_image_rotate_item_offset   (GimpImage        *image,
@@ -53,7 +54,6 @@ gimp_image_rotate (GimpImage        *image,
                    GimpRotationType  rotate_type,
                    GimpProgress     *progress)
 {
-  GimpItem *item;
   GList    *list;
   gdouble   center_x;
   gdouble   center_y;
@@ -107,7 +107,7 @@ gimp_image_rotate (GimpImage        *image,
        list;
        list = g_list_next (list))
     {
-      item = (GimpItem *) list->data;
+      GimpItem *item = list->data;
 
       gimp_item_rotate (item, context, rotate_type, center_x, center_y, FALSE);
 
@@ -123,7 +123,7 @@ gimp_image_rotate (GimpImage        *image,
        list;
        list = g_list_next (list))
     {
-      item = (GimpItem *) list->data;
+      GimpItem *item = list->data;
 
       gimp_item_rotate (item, context, rotate_type, center_x, center_y, FALSE);
 
@@ -156,9 +156,9 @@ gimp_image_rotate (GimpImage        *image,
        list;
        list = g_list_next (list))
     {
-      gint off_x, off_y;
-
-      item = (GimpItem *) list->data;
+      GimpItem *item = list->data;
+      gint      off_x;
+      gint      off_y;
 
       gimp_item_offsets (item, &off_x, &off_y);
 
@@ -192,7 +192,7 @@ gimp_image_rotate (GimpImage        *image,
 
           gimp_image_undo_push_image_resolution (image, NULL);
 
-          tmp                 = image->xresolution;
+          tmp                = image->xresolution;
           image->yresolution = image->xresolution;
           image->xresolution = tmp;
         }
@@ -263,13 +263,13 @@ gimp_image_rotate_guides (GimpImage        *image,
           switch (orientation)
             {
             case GIMP_ORIENTATION_HORIZONTAL:
-              gimp_image_undo_push_image_guide (image, NULL, guide);
+              gimp_image_undo_push_guide (image, NULL, guide);
               gimp_guide_set_orientation (guide, GIMP_ORIENTATION_VERTICAL);
               gimp_guide_set_position (guide, image->height - position);
               break;
 
             case GIMP_ORIENTATION_VERTICAL:
-              gimp_image_undo_push_image_guide (image, NULL, guide);
+              gimp_image_undo_push_guide (image, NULL, guide);
               gimp_guide_set_orientation (guide, GIMP_ORIENTATION_HORIZONTAL);
               break;
 
@@ -300,12 +300,12 @@ gimp_image_rotate_guides (GimpImage        *image,
           switch (orientation)
             {
             case GIMP_ORIENTATION_HORIZONTAL:
-              gimp_image_undo_push_image_guide (image, NULL, guide);
+              gimp_image_undo_push_guide (image, NULL, guide);
               gimp_guide_set_orientation (guide, GIMP_ORIENTATION_VERTICAL);
               break;
 
             case GIMP_ORIENTATION_VERTICAL:
-              gimp_image_undo_push_image_guide (image, NULL, guide);
+              gimp_image_undo_push_guide (image, NULL, guide);
               gimp_guide_set_orientation (guide, GIMP_ORIENTATION_HORIZONTAL);
               gimp_guide_set_position (guide, image->width - position);
               break;
@@ -331,6 +331,8 @@ gimp_image_rotate_sample_points (GimpImage        *image,
       GimpSamplePoint *sample_point = list->data;
       gint             old_x;
       gint             old_y;
+
+      gimp_image_undo_push_sample_point (image, NULL, sample_point);
 
       old_x = sample_point->x;
       old_y = sample_point->y;

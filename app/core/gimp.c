@@ -147,7 +147,7 @@ gimp_class_init (GimpClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GimpClass, exit),
-                  gimp_boolean_handled_accum, NULL,
+                  g_signal_accumulator_true_handled, NULL,
                   gimp_marshal_BOOLEAN__BOOLEAN,
                   G_TYPE_BOOLEAN, 1,
                   G_TYPE_BOOLEAN);
@@ -433,8 +433,8 @@ gimp_get_memsize (GimpObject *object,
   memsize += gimp_g_object_get_memsize (G_OBJECT (gimp->module_db));
   memsize += gimp_g_object_get_memsize (G_OBJECT (gimp->plug_in_manager));
 
-  memsize += gimp_g_hash_table_get_memsize (gimp->image_table);
-  memsize += gimp_g_hash_table_get_memsize (gimp->item_table);
+  memsize += gimp_g_hash_table_get_memsize (gimp->image_table, 0);
+  memsize += gimp_g_hash_table_get_memsize (gimp->item_table,  0);
 
   memsize += gimp_object_get_memsize (GIMP_OBJECT (gimp->displays), gui_size);
 

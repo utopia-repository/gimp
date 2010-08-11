@@ -25,8 +25,6 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "libgimpmath/gimpmath.h"
-#include "libgimpbase/gimpbase.h"
-#include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
@@ -65,18 +63,19 @@
 #define ARROW_VELOCITY          25
 
 
-static void    gimp_edit_selection_tool_button_release (GimpTool        *tool,
-                                                        GimpCoords      *coords,
-                                                        guint32          time,
-                                                        GdkModifierType  state,
-                                                        GimpDisplay     *display);
-static void    gimp_edit_selection_tool_motion         (GimpTool        *tool,
-                                                        GimpCoords      *coords,
-                                                        guint32          time,
-                                                        GdkModifierType  state,
-                                                        GimpDisplay     *display);
+static void   gimp_edit_selection_tool_button_release (GimpTool              *tool,
+                                                       GimpCoords            *coords,
+                                                       guint32                time,
+                                                       GdkModifierType        state,
+                                                       GimpButtonReleaseType  release_type,
+                                                       GimpDisplay           *display);
+static void   gimp_edit_selection_tool_motion         (GimpTool              *tool,
+                                                       GimpCoords            *coords,
+                                                       guint32                time,
+                                                       GdkModifierType        state,
+                                                       GimpDisplay           *display);
 
-static void    gimp_edit_selection_tool_draw           (GimpDrawTool    *tool);
+static void   gimp_edit_selection_tool_draw           (GimpDrawTool          *tool);
 
 
 G_DEFINE_TYPE (GimpEditSelectionTool, gimp_edit_selection_tool,
@@ -116,15 +115,11 @@ gimp_edit_selection_tool_init (GimpEditSelectionTool *edit_selection_tool)
 
 static void
 gimp_edit_selection_tool_calc_coords (GimpEditSelectionTool *edit_select,
-                                      GimpDisplay           *display,
                                       gdouble                x,
                                       gdouble                y)
 {
-  GimpDisplayShell *shell;
-  gdouble           x1, y1;
-  gdouble           dx, dy;
-
-  shell = GIMP_DISPLAY_SHELL (display->shell);
+  gdouble x1, y1;
+  gdouble dx, dy;
 
   dx = x - edit_select->origx;
   dy = y - edit_select->origy;
@@ -256,7 +251,7 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
                                  &edit_select->x2, &edit_select->y2);
     }
 
-  gimp_edit_selection_tool_calc_coords (edit_select, display,
+  gimp_edit_selection_tool_calc_coords (edit_select,
                                         edit_select->origx,
                                         edit_select->origy);
 
@@ -405,11 +400,12 @@ gimp_edit_selection_tool_start (GimpTool          *parent_tool,
 
 
 static void
-gimp_edit_selection_tool_button_release (GimpTool        *tool,
-                                         GimpCoords      *coords,
-                                         guint32          time,
-                                         GdkModifierType  state,
-                                         GimpDisplay     *display)
+gimp_edit_selection_tool_button_release (GimpTool              *tool,
+                                         GimpCoords            *coords,
+                                         guint32                time,
+                                         GdkModifierType        state,
+                                         GimpButtonReleaseType  release_type,
+                                         GimpDisplay           *display)
 {
   GimpEditSelectionTool *edit_select = GIMP_EDIT_SELECTION_TOOL (tool);
   GimpDisplayShell      *shell       = GIMP_DISPLAY_SHELL (display->shell);
@@ -430,7 +426,7 @@ gimp_edit_selection_tool_button_release (GimpTool        *tool,
   else
     active_item = GIMP_ITEM (gimp_image_active_drawable (display->image));
 
-  gimp_edit_selection_tool_calc_coords (edit_select, display,
+  gimp_edit_selection_tool_calc_coords (edit_select,
                                         coords->x,
                                         coords->y);
 
@@ -467,7 +463,7 @@ gimp_edit_selection_tool_button_release (GimpTool        *tool,
       edit_select->edit_mode == GIMP_TRANSLATE_MODE_CHANNEL ||
       edit_select->edit_mode == GIMP_TRANSLATE_MODE_LAYER)
     {
-      if (! (state & GDK_BUTTON3_MASK) &&
+      if ((release_type != GIMP_BUTTON_RELEASE_CANCEL) &&
           (edit_select->cumlx != 0 ||
            edit_select->cumly != 0))
         {
@@ -495,7 +491,7 @@ gimp_edit_selection_tool_button_release (GimpTool        *tool,
 
   gimp_image_undo_group_end (display->image);
 
-  if (state & GDK_BUTTON3_MASK) /* OPERATION CANCELLED */
+  if (release_type == GIMP_BUTTON_RELEASE_CANCEL)
     {
       /* Operation cancelled - undo the undo-group! */
       gimp_image_undo (display->image);
@@ -551,7 +547,7 @@ gimp_edit_selection_tool_motion (GimpTool        *tool,
 
   /* now do the actual move. */
 
-  gimp_edit_selection_tool_calc_coords (edit_select, display,
+  gimp_edit_selection_tool_calc_coords (edit_select,
                                         motion_x,
                                         motion_y);
 
@@ -870,9 +866,6 @@ gimp_edit_selection_tool_draw (GimpDrawTool *draw_tool)
   GIMP_DRAW_TOOL_CLASS (parent_class)->draw (draw_tool);
 }
 
-/* could move this function to a more central location
- * so it can be used by other tools?
- */
 static gint
 process_event_queue_keys (GdkEventKey *kevent,
                           ... /* GdkKeyType, GdkModifierType, value ... 0 */)
@@ -973,6 +966,25 @@ gimp_edit_selection_tool_key_press (GimpTool    *tool,
                                     GdkEventKey *kevent,
                                     GimpDisplay *display)
 {
+  GimpTransformType translate_type;
+
+  if (kevent->state & GDK_MOD1_MASK)
+    translate_type = GIMP_TRANSFORM_TYPE_SELECTION;
+  else if (kevent->state & GDK_CONTROL_MASK)
+    translate_type = GIMP_TRANSFORM_TYPE_PATH;
+  else
+    translate_type = GIMP_TRANSFORM_TYPE_LAYER;
+
+  return gimp_edit_selection_tool_translate (tool, kevent, translate_type,
+                                             display);
+}
+
+gboolean
+gimp_edit_selection_tool_translate (GimpTool          *tool,
+                                    GdkEventKey       *kevent,
+                                    GimpTransformType  translate_type,
+                                    GimpDisplay       *display)
+{
   gint               inc_x     = 0;
   gint               inc_y     = 0;
   GimpUndo          *undo;
@@ -991,150 +1003,96 @@ gimp_edit_selection_tool_key_press (GimpTool    *tool,
       kevent->keyval != GDK_Down)
     return FALSE;
 
-  /*  adapt arrow velocity to the zoom factor  */
+  /*  adapt arrow velocity to the zoom factor when holding <shift>  */
   velocity = (ARROW_VELOCITY /
               gimp_zoom_model_get_factor (GIMP_DISPLAY_SHELL (display->shell)->zoom));
   velocity = MAX (1.0, velocity);
 
-  /*  check for mask translation first because the translate_layer
-   *  modifiers match the translate_mask ones...
+  /*  check the event queue for key events with the same modifier mask
+   *  as the current event, allowing only GDK_SHIFT_MASK to vary between
+   *  them.
    */
-  inc_x =
-    process_event_queue_keys (kevent,
-                              GDK_Left, (GDK_MOD1_MASK | GDK_SHIFT_MASK),
-                              -1 * velocity,
+  inc_x = process_event_queue_keys (kevent,
+                                    GDK_Left,
+                                    kevent->state | GDK_SHIFT_MASK,
+                                    -1 * velocity,
 
-                              GDK_Left, GDK_MOD1_MASK,
-                              -1,
+                                    GDK_Left,
+                                    kevent->state & ~GDK_SHIFT_MASK,
+                                    -1,
 
-                              GDK_Right, (GDK_MOD1_MASK | GDK_SHIFT_MASK),
-                              1 * velocity,
+                                    GDK_Right,
+                                    kevent->state | GDK_SHIFT_MASK,
+                                    1 * velocity,
 
-                              GDK_Right, GDK_MOD1_MASK,
-                              1,
+                                    GDK_Right,
+                                    kevent->state & ~GDK_SHIFT_MASK,
+                                    1,
 
-                              0);
+                                    0);
 
-  inc_y =
-    process_event_queue_keys (kevent,
-                              GDK_Up, (GDK_MOD1_MASK | GDK_SHIFT_MASK),
-                              -1 * velocity,
+  inc_y = process_event_queue_keys (kevent,
+                                    GDK_Up,
+                                    kevent->state | GDK_SHIFT_MASK,
+                                    -1 * velocity,
 
-                              GDK_Up, GDK_MOD1_MASK,
-                              -1,
+                                    GDK_Up,
+                                    kevent->state & ~GDK_SHIFT_MASK,
+                                    -1,
 
-                              GDK_Down, (GDK_MOD1_MASK | GDK_SHIFT_MASK),
-                              1 * velocity,
+                                    GDK_Down,
+                                    kevent->state | GDK_SHIFT_MASK,
+                                    1 * velocity,
 
-                              GDK_Down, GDK_MOD1_MASK,
-                              1,
+                                    GDK_Down,
+                                    kevent->state & ~GDK_SHIFT_MASK,
+                                    1,
 
-                              0);
+                                    0);
 
   if (inc_x != 0 || inc_y != 0)
     {
-      item = GIMP_ITEM (gimp_image_get_mask (display->image));
-
-      edit_mode = GIMP_TRANSLATE_MODE_MASK;
-      undo_type = GIMP_UNDO_GROUP_MASK;
-    }
-  else
-    {
-      inc_x = process_event_queue_keys (kevent,
-                                        GDK_Left, (GDK_CONTROL_MASK | GDK_SHIFT_MASK),
-                                        -1 * velocity,
-
-                                        GDK_Left, GDK_CONTROL_MASK,
-                                        -1,
-
-                                        GDK_Right, (GDK_CONTROL_MASK | GDK_SHIFT_MASK),
-                                        1 * velocity,
-
-                                        GDK_Right, GDK_CONTROL_MASK,
-                                        1,
-
-                                        0);
-
-      inc_y = process_event_queue_keys (kevent,
-                                        GDK_Up, (GDK_CONTROL_MASK | GDK_SHIFT_MASK),
-                                        -1 * velocity,
-
-                                        GDK_Up, GDK_CONTROL_MASK,
-                                        -1,
-
-                                        GDK_Down, (GDK_CONTROL_MASK | GDK_SHIFT_MASK),
-                                        1 * velocity,
-
-                                        GDK_Down, GDK_CONTROL_MASK,
-                                        1,
-
-                                        0);
-
-      if (inc_x != 0 || inc_y != 0)
+      switch (translate_type)
         {
-          item = (GimpItem *) gimp_image_get_active_vectors (display->image);
+        case GIMP_TRANSFORM_TYPE_SELECTION:
+          item = GIMP_ITEM (gimp_image_get_mask (display->image));
+
+          edit_mode = GIMP_TRANSLATE_MODE_MASK;
+          undo_type = GIMP_UNDO_GROUP_MASK;
+          break;
+
+        case GIMP_TRANSFORM_TYPE_PATH:
+          item = GIMP_ITEM (gimp_image_get_active_vectors (display->image));
 
           edit_mode = GIMP_TRANSLATE_MODE_VECTORS;
           undo_type = GIMP_UNDO_GROUP_ITEM_DISPLACE;
-        }
-      else
-        {
-          inc_x = process_event_queue_keys (kevent,
-                                            GDK_Left, GDK_SHIFT_MASK,
-                                            -1 * velocity,
+          break;
 
-                                            GDK_Left, 0,
-                                            -1,
+        case GIMP_TRANSFORM_TYPE_LAYER:
+          item = GIMP_ITEM (gimp_image_active_drawable (display->image));
 
-                                            GDK_Right, GDK_SHIFT_MASK,
-                                            1 * velocity,
-
-                                            GDK_Right, 0,
-                                            1,
-
-                                            0);
-
-          inc_y = process_event_queue_keys (kevent,
-                                            GDK_Up, GDK_SHIFT_MASK,
-                                            -1 * velocity,
-
-                                            GDK_Up, 0,
-                                            -1,
-
-                                            GDK_Down, GDK_SHIFT_MASK,
-                                            1 * velocity,
-
-                                            GDK_Down, 0,
-                                            1,
-
-                                            0);
-
-          if (inc_x != 0 || inc_y != 0)
+          if (item)
             {
-              item = (GimpItem *) gimp_image_active_drawable (display->image);
-
-              if (item)
+              if (GIMP_IS_LAYER_MASK (item))
                 {
-                  if (GIMP_IS_LAYER_MASK (item))
-                    {
-                      edit_mode = GIMP_TRANSLATE_MODE_LAYER_MASK;
-                    }
-                  else if (GIMP_IS_CHANNEL (item))
-                    {
-                      edit_mode = GIMP_TRANSLATE_MODE_CHANNEL;
-                    }
-                  else if (gimp_layer_is_floating_sel (GIMP_LAYER (item)))
-                    {
-                      edit_mode = GIMP_TRANSLATE_MODE_FLOATING_SEL;
-                    }
-                  else
-                    {
-                      edit_mode = GIMP_TRANSLATE_MODE_LAYER;
-                    }
-
-                  undo_type = GIMP_UNDO_GROUP_ITEM_DISPLACE;
+                  edit_mode = GIMP_TRANSLATE_MODE_LAYER_MASK;
                 }
+              else if (GIMP_IS_CHANNEL (item))
+                {
+                  edit_mode = GIMP_TRANSLATE_MODE_CHANNEL;
+                }
+              else if (gimp_layer_is_floating_sel (GIMP_LAYER (item)))
+                {
+                  edit_mode = GIMP_TRANSLATE_MODE_FLOATING_SEL;
+                }
+              else
+                {
+                  edit_mode = GIMP_TRANSLATE_MODE_LAYER;
+                }
+
+              undo_type = GIMP_UNDO_GROUP_ITEM_DISPLACE;
             }
+          break;
         }
     }
 

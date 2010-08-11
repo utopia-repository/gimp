@@ -1,8 +1,9 @@
 K 10
 svn:ignore
-V 197
+V 203
 Makefile
 Makefile.in
+.libs
 deprecated
 app.args
 app.hierarchy

@@ -55,6 +55,9 @@ static void      gimp_drawable_undo_get_property (GObject               *object,
                                                   GValue                *value,
                                                   GParamSpec            *pspec);
 
+static gint64    gimp_drawable_undo_get_memsize  (GimpObject            *object,
+                                                  gint64                *gui_size);
+
 static void      gimp_drawable_undo_pop          (GimpUndo              *undo,
                                                   GimpUndoMode           undo_mode,
                                                   GimpUndoAccumulator   *accum);
@@ -70,15 +73,18 @@ G_DEFINE_TYPE (GimpDrawableUndo, gimp_drawable_undo, GIMP_TYPE_ITEM_UNDO)
 static void
 gimp_drawable_undo_class_init (GimpDrawableUndoClass *klass)
 {
-  GObjectClass  *object_class = G_OBJECT_CLASS (klass);
-  GimpUndoClass *undo_class   = GIMP_UNDO_CLASS (klass);
+  GObjectClass    *object_class      = G_OBJECT_CLASS (klass);
+  GimpObjectClass *gimp_object_class = GIMP_OBJECT_CLASS (klass);
+  GimpUndoClass   *undo_class        = GIMP_UNDO_CLASS (klass);
 
-  object_class->constructor  = gimp_drawable_undo_constructor;
-  object_class->set_property = gimp_drawable_undo_set_property;
-  object_class->get_property = gimp_drawable_undo_get_property;
+  object_class->constructor      = gimp_drawable_undo_constructor;
+  object_class->set_property     = gimp_drawable_undo_set_property;
+  object_class->get_property     = gimp_drawable_undo_get_property;
 
-  undo_class->pop            = gimp_drawable_undo_pop;
-  undo_class->free           = gimp_drawable_undo_free;
+  gimp_object_class->get_memsize = gimp_drawable_undo_get_memsize;
+
+  undo_class->pop                = gimp_drawable_undo_pop;
+  undo_class->free               = gimp_drawable_undo_free;
 
   g_object_class_install_property (object_class, PROP_TILES,
                                    g_param_spec_pointer ("tiles", NULL, NULL,
@@ -134,6 +140,7 @@ gimp_drawable_undo_constructor (GType                  type,
   drawable_undo = GIMP_DRAWABLE_UNDO (object);
 
   g_assert (GIMP_IS_DRAWABLE (GIMP_ITEM_UNDO (object)->item));
+  g_assert (drawable_undo->tiles != NULL);
 
   return object;
 }
@@ -208,6 +215,21 @@ gimp_drawable_undo_get_property (GObject    *object,
     }
 }
 
+static gint64
+gimp_drawable_undo_get_memsize (GimpObject *object,
+                                gint64     *gui_size)
+{
+  GimpDrawableUndo *drawable_undo = GIMP_DRAWABLE_UNDO (object);
+  gint64            memsize       = 0;
+
+  if (drawable_undo->tiles)
+    memsize += tile_manager_get_memsize (drawable_undo->tiles,
+                                         drawable_undo->sparse);
+
+  return memsize + GIMP_OBJECT_CLASS (parent_class)->get_memsize (object,
+                                                                  gui_size);
+}
+
 static void
 gimp_drawable_undo_pop (GimpUndo            *undo,
                         GimpUndoMode         undo_mode,
@@ -217,9 +239,6 @@ gimp_drawable_undo_pop (GimpUndo            *undo,
 
   GIMP_UNDO_CLASS (parent_class)->pop (undo, undo_mode, accum);
 
-  undo->size -= tile_manager_get_memsize (drawable_undo->tiles,
-                                          drawable_undo->sparse);
-
   gimp_drawable_swap_pixels (GIMP_DRAWABLE (GIMP_ITEM_UNDO (undo)->item),
                              drawable_undo->tiles,
                              drawable_undo->sparse,
@@ -227,9 +246,6 @@ gimp_drawable_undo_pop (GimpUndo            *undo,
                              drawable_undo->y,
                              drawable_undo->width,
                              drawable_undo->height);
-
-  undo->size += tile_manager_get_memsize (drawable_undo->tiles,
-                                          drawable_undo->sparse);
 }
 
 static void
@@ -237,8 +253,6 @@ gimp_drawable_undo_free (GimpUndo     *undo,
                          GimpUndoMode  undo_mode)
 {
   GimpDrawableUndo *drawable_undo = GIMP_DRAWABLE_UNDO (undo);
-
-  GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 
   if (drawable_undo->tiles)
     {
@@ -251,4 +265,6 @@ gimp_drawable_undo_free (GimpUndo     *undo,
       tile_manager_unref (drawable_undo->src2_tiles);
       drawable_undo->src2_tiles = NULL;
     }
+
+  GIMP_UNDO_CLASS (parent_class)->free (undo, undo_mode);
 }

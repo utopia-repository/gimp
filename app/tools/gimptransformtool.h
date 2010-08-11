@@ -20,6 +20,7 @@
 #define __GIMP_TRANSFORM_TOOL_H__
 
 
+#include "libgimpmath/gimpmatrix.h"
 #include "gimpdrawtool.h"
 
 
@@ -97,8 +98,6 @@ struct _GimpTransformTool
   GimpTransformDirection  direction;
 
   const gchar    *undo_desc;
-
-  const gchar    *shell_desc;
   const gchar    *progress_text;
 
   GtkWidget      *dialog;

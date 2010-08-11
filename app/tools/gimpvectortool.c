@@ -24,7 +24,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "libgimpmath/gimpmath.h"
 #include "libgimpbase/gimpbase.h"
 #include "libgimpwidgets/gimpwidgets.h"
 
@@ -38,7 +37,6 @@
 #include "core/gimplist.h"
 #include "core/gimpprogress.h"
 #include "core/gimptoolinfo.h"
-#include "core/gimpundo.h"
 #include "core/gimpundostack.h"
 
 #include "vectors/gimpanchor.h"
@@ -70,75 +68,76 @@
 
 /*  local function prototypes  */
 
-static void     gimp_vector_tool_control         (GimpTool        *tool,
-                                                  GimpToolAction   action,
-                                                  GimpDisplay     *display);
-static void     gimp_vector_tool_button_press    (GimpTool        *tool,
-                                                  GimpCoords      *coords,
-                                                  guint32          time,
-                                                  GdkModifierType  state,
-                                                  GimpDisplay     *display);
-static void     gimp_vector_tool_button_release  (GimpTool        *tool,
-                                                  GimpCoords      *coords,
-                                                  guint32          time,
-                                                  GdkModifierType  state,
-                                                  GimpDisplay     *display);
-static void     gimp_vector_tool_motion          (GimpTool        *tool,
-                                                  GimpCoords      *coords,
-                                                  guint32          time,
-                                                  GdkModifierType  state,
-                                                  GimpDisplay     *display);
-static gboolean gimp_vector_tool_key_press       (GimpTool        *tool,
-                                                  GdkEventKey     *kevent,
-                                                  GimpDisplay     *display);
-static void     gimp_vector_tool_modifier_key    (GimpTool        *tool,
-                                                  GdkModifierType  key,
-                                                  gboolean         press,
-                                                  GdkModifierType  state,
-                                                  GimpDisplay     *display);
-static void     gimp_vector_tool_oper_update     (GimpTool        *tool,
-                                                  GimpCoords      *coords,
-                                                  GdkModifierType  state,
-                                                  gboolean         proximity,
-                                                  GimpDisplay     *display);
-static void     gimp_vector_tool_status_update   (GimpTool        *tool,
-                                                  GimpDisplay     *display,
-                                                  GdkModifierType  state,
-                                                  gboolean         proximity);
-static void     gimp_vector_tool_cursor_update   (GimpTool        *tool,
-                                                  GimpCoords      *coords,
-                                                  GdkModifierType  state,
-                                                  GimpDisplay     *display);
+static void     gimp_vector_tool_control         (GimpTool              *tool,
+                                                  GimpToolAction         action,
+                                                  GimpDisplay           *display);
+static void     gimp_vector_tool_button_press    (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  guint32                time,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
+static void     gimp_vector_tool_button_release  (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  guint32                time,
+                                                  GdkModifierType        state,
+                                                  GimpButtonReleaseType  release_type,
+                                                  GimpDisplay           *display);
+static void     gimp_vector_tool_motion          (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  guint32                time,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
+static gboolean gimp_vector_tool_key_press       (GimpTool              *tool,
+                                                  GdkEventKey           *kevent,
+                                                  GimpDisplay           *display);
+static void     gimp_vector_tool_modifier_key    (GimpTool              *tool,
+                                                  GdkModifierType        key,
+                                                  gboolean               press,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
+static void     gimp_vector_tool_oper_update     (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  GdkModifierType        state,
+                                                  gboolean               proximity,
+                                                  GimpDisplay           *display);
+static void     gimp_vector_tool_status_update   (GimpTool              *tool,
+                                                  GimpDisplay           *display,
+                                                  GdkModifierType        state,
+                                                  gboolean               proximity);
+static void     gimp_vector_tool_cursor_update   (GimpTool              *tool,
+                                                  GimpCoords            *coords,
+                                                  GdkModifierType        state,
+                                                  GimpDisplay           *display);
 
-static void     gimp_vector_tool_draw            (GimpDrawTool    *draw_tool);
+static void     gimp_vector_tool_draw            (GimpDrawTool          *draw_tool);
 
-static void     gimp_vector_tool_vectors_changed (GimpImage       *image,
-                                                  GimpVectorTool  *vector_tool);
-static void     gimp_vector_tool_vectors_removed (GimpVectors     *vectors,
-                                                  GimpVectorTool  *vector_tool);
-static void     gimp_vector_tool_vectors_visible (GimpVectors     *vectors,
-                                                  GimpVectorTool  *vector_tool);
-static void     gimp_vector_tool_vectors_freeze  (GimpVectors     *vectors,
-                                                  GimpVectorTool  *vector_tool);
-static void     gimp_vector_tool_vectors_thaw    (GimpVectors     *vectors,
-                                                  GimpVectorTool  *vector_tool);
+static void     gimp_vector_tool_vectors_changed (GimpImage             *image,
+                                                  GimpVectorTool        *vector_tool);
+static void     gimp_vector_tool_vectors_removed (GimpVectors           *vectors,
+                                                  GimpVectorTool        *vector_tool);
+static void     gimp_vector_tool_vectors_visible (GimpVectors           *vectors,
+                                                  GimpVectorTool        *vector_tool);
+static void     gimp_vector_tool_vectors_freeze  (GimpVectors           *vectors,
+                                                  GimpVectorTool        *vector_tool);
+static void     gimp_vector_tool_vectors_thaw    (GimpVectors           *vectors,
+                                                  GimpVectorTool        *vector_tool);
 
 static void     gimp_vector_tool_move_selected_anchors
-                                                 (GimpVectorTool  *vector_tool,
-                                                  gdouble          x,
-                                                  gdouble          y);
+                                                 (GimpVectorTool        *vector_tool,
+                                                  gdouble                x,
+                                                  gdouble                y);
 static void     gimp_vector_tool_delete_selected_anchors
-                                                 (GimpVectorTool  *vector_tool);
-static void     gimp_vector_tool_verify_state    (GimpVectorTool  *vector_tool);
-static void     gimp_vector_tool_undo_push       (GimpVectorTool  *vector_tool,
-                                                  const gchar     *desc);
+                                                 (GimpVectorTool        *vector_tool);
+static void     gimp_vector_tool_verify_state    (GimpVectorTool        *vector_tool);
+static void     gimp_vector_tool_undo_push       (GimpVectorTool        *vector_tool,
+                                                  const gchar           *desc);
 
-static void     gimp_vector_tool_to_selection    (GimpVectorTool  *vector_tool);
+static void     gimp_vector_tool_to_selection    (GimpVectorTool        *vector_tool);
 static void     gimp_vector_tool_to_selection_extended
-                                                 (GimpVectorTool  *vector_tool,
-                                                  gint             state);
-static void     gimp_vector_tool_stroke_vectors  (GimpVectorTool  *vector_tool,
-                                                  GtkWidget       *button);
+                                                 (GimpVectorTool        *vector_tool,
+                                                  gint                   state);
+static void     gimp_vector_tool_stroke_vectors  (GimpVectorTool        *vector_tool,
+                                                  GtkWidget             *button);
 
 
 G_DEFINE_TYPE (GimpVectorTool, gimp_vector_tool, GIMP_TYPE_DRAW_TOOL)
@@ -599,18 +598,20 @@ gimp_vector_tool_button_press (GimpTool        *tool,
 }
 
 static void
-gimp_vector_tool_button_release (GimpTool        *tool,
-                                 GimpCoords      *coords,
-                                 guint32          time,
-                                 GdkModifierType  state,
-                                 GimpDisplay     *display)
+gimp_vector_tool_button_release (GimpTool              *tool,
+                                 GimpCoords            *coords,
+                                 guint32                time,
+                                 GdkModifierType        state,
+                                 GimpButtonReleaseType  release_type,
+                                 GimpDisplay           *display)
 {
   GimpVectorTool *vector_tool = GIMP_VECTOR_TOOL (tool);
 
   vector_tool->function = VECTORS_FINISHED;
 
   if (vector_tool->have_undo &&
-      (! vector_tool->undo_motion || (state & GDK_BUTTON3_MASK)))
+      (! vector_tool->undo_motion ||
+       (release_type == GIMP_BUTTON_RELEASE_CANCEL)))
     {
       GimpUndo            *undo;
       GimpUndoAccumulator  accum = { 0, };
@@ -1126,7 +1127,8 @@ gimp_vector_tool_status_update (GimpTool        *tool,
                                 GdkModifierType  state,
                                 gboolean         proximity)
 {
-  GimpVectorTool *vector_tool = GIMP_VECTOR_TOOL (tool);
+  GimpVectorTool    *vector_tool = GIMP_VECTOR_TOOL (tool);
+  GimpVectorOptions *options     = GIMP_VECTOR_TOOL_GET_OPTIONS (tool);
 
   gimp_tool_pop_status (tool, display);
 
@@ -1147,13 +1149,23 @@ gimp_vector_tool_status_update (GimpTool        *tool,
           status = _("Click to create a new component of the path");
           break;
         case VECTORS_ADD_ANCHOR:
-          status = gimp_suggest_modifiers (_("Click to create a new anchor"),
+          status = gimp_suggest_modifiers (_("Click or Click-Drag to create "
+                                             "a new anchor"),
                                            GDK_SHIFT_MASK & ~state,
                                            NULL, NULL, NULL);
           free_status = TRUE;
           break;
         case VECTORS_MOVE_ANCHOR:
-          status = _("Click-Drag to move the anchor around");
+          if (options->edit_mode != GIMP_VECTOR_MODE_EDIT)
+            {
+              status = gimp_suggest_modifiers (_("Click-Drag to move the "
+                                                 "anchor around"),
+                                               GDK_CONTROL_MASK & ~state,
+                                               NULL, NULL, NULL);
+              free_status = TRUE;
+            }
+          else
+            status = _("Click-Drag to move the anchor around");
           break;
         case VECTORS_MOVE_ANCHORSET:
           status = _("Click-Drag to move the anchors around");

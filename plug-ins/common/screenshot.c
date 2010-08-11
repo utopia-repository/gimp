@@ -18,7 +18,7 @@
 
 /*
  *  Screenshot plug-in
- *  Copyright 1998-2000 Sven Neumann <sven@gimp.org>
+ *  Copyright 1998-2007 Sven Neumann <sven@gimp.org>
  *  Copyright 2003      Henrik Brix Andersen <brix@gimp.org>
  *
  *  Any suggestions, bug-reports or patches are very welcome.
@@ -36,6 +36,10 @@
 
 #if defined(GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
+
+#ifdef HAVE_X11_EXTENSIONS_SHAPE_H
+#include <X11/extensions/shape.h>
+#endif /* HAVE_X11_EXTENSIONS_SHAPE_H */
 
 #ifdef HAVE_X11_XMU_WINUTIL_H
 #include <X11/Xmu/WinUtil.h>
@@ -181,14 +185,15 @@ static void      run   (const gchar      *name,
 			gint             *nreturn_vals,
 			GimpParam       **return_vals);
 
-static GdkNativeWindow select_window  (GdkScreen  *screen);
-static gint32          create_image   (GdkPixbuf  *pixbuf);
+static GdkNativeWindow   select_window (GdkScreen  *screen);
+static gint32            create_image  (GdkPixbuf  *pixbuf,
+                                        GdkRegion  *shape);
 
-static gint32    shoot                (GdkScreen  *screen);
-static gboolean  shoot_dialog         (GdkScreen **screen);
-static void      shoot_delay          (gint32      delay);
-static gboolean  shoot_delay_callback (gpointer    data);
-static gboolean  shoot_quit_timeout   (gpointer    data);
+static gint32     shoot                (GdkScreen  *screen);
+static gboolean   shoot_dialog         (GdkScreen **screen);
+static void       shoot_delay          (gint32      delay);
+static gboolean   shoot_delay_callback (gpointer    data);
+static gboolean   shoot_quit_timeout   (gpointer    data);
 
 
 /* Global Variables */
@@ -236,8 +241,8 @@ query (void)
                           "of the region to be grabbed.",
 			  "Sven Neumann <sven@gimp.org>, "
                           "Henrik Brix Andersen <brix@gimp.org>",
-			  "1998 - 2003",
-			  "v0.9.7 (2003/11/15)",
+			  "1998 - 2007",
+			  "v0.9.9 (2007/02/15)",
 			  N_("_Screenshot..."),
 			  NULL,
 			  GIMP_PLUGIN,
@@ -291,10 +296,8 @@ run (const gchar      *name,
       if (nparams == 3)
 	{
           gboolean do_root = param[1].data.d_int32;
-          if (do_root)
-            shootvals.shoot_type = SHOOT_ROOT;
-          else
-            shootvals.shoot_type = SHOOT_WINDOW;
+
+          shootvals.shoot_type   = do_root ? SHOOT_ROOT : SHOOT_WINDOW;
 	  shootvals.window_id    = param[2].data.d_int32;
           shootvals.select_delay = 0;
 	}
@@ -398,10 +401,14 @@ select_window_x11 (GdkScreen *screen)
 
   if (status != GrabSuccess)
     {
-      g_message (_("Error grabbing the pointer"));
+      gint  x, y;
+      guint xmask;
 
-      XFreeCursor (x_dpy, x_cursor);
-      return 0;
+      /* if we can't grab the pointer, return the window under the pointer */
+      XQueryPointer (x_dpy, x_root, &x_root, &x_win, &x, &y, &x, &y, &xmask);
+
+      if (x_win == None || x_win == x_root)
+        g_message (_("Error selecting the window"));
     }
 
   if (shootvals.shoot_type == SHOOT_REGION)
@@ -574,9 +581,11 @@ select_window_x11 (GdkScreen *screen)
       g_free (keys);
     }
 
-  XUngrabPointer (x_dpy, CurrentTime);
+  if (status == GrabSuccess)
+    XUngrabPointer (x_dpy, CurrentTime);
 
   XFreeCursor (x_dpy, x_cursor);
+
   if (x_gc != None)
     XFreeGC (x_dpy, x_gc);
 
@@ -626,18 +635,82 @@ select_window (GdkScreen *screen)
 #endif
 }
 
+static GdkRegion *
+window_get_shape (GdkScreen       *screen,
+                  GdkNativeWindow  window)
+{
+  GdkRegion  *shape = NULL;
+
+#if defined(GDK_WINDOWING_X11) && defined(HAVE_X11_EXTENSIONS_SHAPE_H)
+  Display    *x_dpy = GDK_SCREEN_XDISPLAY (screen);
+  XRectangle *rects;
+  gint        rect_count;
+  gint        rect_order;
+
+  rects = XShapeGetRectangles (x_dpy, window, ShapeBounding,
+                               &rect_count, &rect_order);
+
+  if (rects)
+    {
+      if (rect_count > 1)
+        {
+          gint i;
+
+          shape = gdk_region_new ();
+
+          for (i = 0; i < rect_count; i++)
+            {
+              GdkRectangle rect = { rects[i].x,
+                                    rects[i].y,
+                                    rects[i].width,
+                                    rects[i].height };
+
+              gdk_region_union_with_rect (shape, &rect);
+            }
+        }
+
+      XFree (rects);
+    }
+#endif
+
+  return shape;
+}
+
+static void
+image_select_shape (gint32     image,
+                    GdkRegion *shape)
+{
+  GdkRectangle *rects;
+  gint          num_rects;
+  gint          i;
+
+  gimp_selection_none (image);
+
+  gdk_region_get_rectangles (shape, &rects, &num_rects);
+
+  for (i = 0; i < num_rects; i++)
+    gimp_rect_select (image,
+                      rects[i].x, rects[i].y, rects[i].width, rects[i].height,
+                      GIMP_CHANNEL_OP_ADD, FALSE, 0);
+
+  g_free (rects);
+
+  gimp_selection_invert (image);
+}
+
 
 /* Create a GimpImage from a GdkPixbuf */
 
 static gint32
-create_image (GdkPixbuf *pixbuf)
+create_image (GdkPixbuf *pixbuf,
+              GdkRegion *shape)
 {
-  gint32        image;
-  gint32        layer;
-  gdouble       xres, yres;
-  gchar        *comment;
-  gint          width, height;
-  gboolean      status;
+  gint32     image;
+  gint32     layer;
+  gdouble    xres, yres;
+  gchar     *comment;
+  gint       width, height;
+  gboolean   status;
 
   status = gimp_progress_init (_("Importing screenshot"));
 
@@ -646,10 +719,6 @@ create_image (GdkPixbuf *pixbuf)
 
   image = gimp_image_new (width, height, GIMP_RGB);
   gimp_image_undo_disable (image);
-
-  layer = gimp_layer_new_from_pixbuf (image, _("Screenshot"), pixbuf,
-                                      100, GIMP_NORMAL_MODE, 0.0, 1.0);
-  gimp_image_add_layer (image, layer, 0);
 
   gimp_get_monitor_resolution (&xres, &yres);
   gimp_image_set_resolution (image, xres, yres);
@@ -667,6 +736,18 @@ create_image (GdkPixbuf *pixbuf)
       g_free (comment);
     }
 
+  layer = gimp_layer_new_from_pixbuf (image, _("Screenshot"), pixbuf,
+                                      100, GIMP_NORMAL_MODE, 0.0, 1.0);
+  gimp_image_add_layer (image, layer, 0);
+
+  if (shape)
+    {
+      image_select_shape (image, shape);
+      gimp_layer_add_alpha (layer);
+      gimp_edit_clear (layer);
+      gimp_selection_none (image);
+    }
+
   gimp_image_undo_enable (image);
 
   return image;
@@ -679,9 +760,12 @@ shoot (GdkScreen *screen)
 {
   GdkWindow    *window;
   GdkPixbuf    *screenshot;
+  GdkRegion    *shape = NULL;
   GdkRectangle  rect;
   GdkRectangle  screen_rect;
   gint32        image;
+  gint          screen_x;
+  gint          screen_y;
   gint          x, y;
 
   /* use default screen if we are running non-interactively */
@@ -728,16 +812,17 @@ shoot (GdkScreen *screen)
       rect.y = y;
     }
 
-  window = gdk_screen_get_root_window (screen);
-  gdk_window_get_origin (window, &x, &y);
-
   if (! gdk_rectangle_intersect (&rect, &screen_rect, &rect))
     return -1;
 
+  window = gdk_screen_get_root_window (screen);
+  gdk_window_get_origin (window, &screen_x, &screen_y);
+
   screenshot = gdk_pixbuf_get_from_drawable (NULL, window,
                                              NULL,
-                                             rect.x - x, rect.y - y, 0, 0,
-                                             rect.width, rect.height);
+                                             rect.x - screen_x,
+                                             rect.y - screen_y,
+                                             0, 0, rect.width, rect.height);
 
   gdk_display_beep (gdk_screen_get_display (screen));
   gdk_flush ();
@@ -748,20 +833,63 @@ shoot (GdkScreen *screen)
       return -1;
     }
 
-  image = create_image (screenshot);
+  if (shootvals.shoot_type == SHOOT_WINDOW)
+    {
+      shape = window_get_shape (screen, shootvals.window_id);
+
+      if (shape)
+        gdk_region_offset (shape, x - rect.x, y - rect.y);
+    }
+
+  image = create_image (screenshot, shape);
 
   g_object_unref (screenshot);
+
+  if (shape)
+    gdk_region_destroy (shape);
 
   return image;
 }
 
 /*  Screenshot dialog  */
 
+static void
+shoot_dialog_add_hint (GtkNotebook *notebook,
+                       ShootType    type,
+                       const gchar *hint)
+{
+  GtkWidget *label;
+
+  label = g_object_new (GTK_TYPE_LABEL,
+                        "label",   hint,
+                        "wrap",    TRUE,
+                        "justify", GTK_JUSTIFY_LEFT,
+                        "xalign",  0.0,
+                        "yalign",  0.0,
+                        NULL);
+  gimp_label_set_attributes (GTK_LABEL (label),
+                             PANGO_ATTR_STYLE, PANGO_STYLE_ITALIC,
+                             -1);
+
+  gtk_notebook_insert_page (notebook, label, NULL, type);
+  gtk_widget_show (label);
+}
+
+static void
+shoot_radio_button_toggled (GtkWidget *widget,
+                            GtkWidget *notebook)
+{
+  gimp_radio_button_update (widget, &shootvals.shoot_type);
+
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), shootvals.shoot_type);
+}
+
 static gboolean
 shoot_dialog (GdkScreen **screen)
 {
   GtkWidget *dialog;
   GtkWidget *main_vbox;
+  GtkWidget *notebook;
   GtkWidget *frame;
   GtkWidget *vbox;
   GtkWidget *hbox;
@@ -785,7 +913,7 @@ shoot_dialog (GdkScreen **screen)
 			    NULL);
 
   button = gtk_dialog_add_button (GTK_DIALOG (dialog),
-                                  _("_Grab"), GTK_RESPONSE_OK);
+                                  _("S_nap"), GTK_RESPONSE_OK);
 
   gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                            GTK_RESPONSE_OK,
@@ -806,6 +934,25 @@ shoot_dialog (GdkScreen **screen)
                       FALSE, FALSE, 0);
   gtk_widget_show (main_vbox);
 
+  /*  Hints  */
+  notebook = g_object_new (GTK_TYPE_NOTEBOOK,
+                           "show-tabs", FALSE,
+                           NULL);
+  gtk_box_pack_end (GTK_BOX (main_vbox), notebook, FALSE, FALSE, 0);
+  gtk_widget_show (notebook);
+
+  shoot_dialog_add_hint (GTK_NOTEBOOK (notebook), SHOOT_ROOT,
+                         _("After the delay, the screenshot is taken."));
+  shoot_dialog_add_hint (GTK_NOTEBOOK (notebook), SHOOT_REGION,
+                         _("After the delay, drag your mouse to select "
+                           "the region for the screenshot."));
+  shoot_dialog_add_hint (GTK_NOTEBOOK (notebook), SHOOT_WINDOW,
+                         _("At the end of the delay, click in a window "
+                           "to snap it."));
+
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), shootvals.shoot_type);
+
+  /*  Area  */
   frame = gimp_frame_new (_("Area"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
@@ -829,8 +976,8 @@ shoot_dialog (GdkScreen **screen)
                      GINT_TO_POINTER (SHOOT_WINDOW));
 
   g_signal_connect (button, "toggled",
-                    G_CALLBACK (gimp_radio_button_update),
-                    &shootvals.shoot_type);
+                    G_CALLBACK (shoot_radio_button_toggled),
+                    notebook);
 
 #ifdef HAVE_X11_XMU_WINUTIL_H
 
@@ -866,9 +1013,8 @@ shoot_dialog (GdkScreen **screen)
                      GINT_TO_POINTER (SHOOT_ROOT));
 
   g_signal_connect (button, "toggled",
-                    G_CALLBACK (gimp_radio_button_update),
-                    &shootvals.shoot_type);
-
+                    G_CALLBACK (shoot_radio_button_toggled),
+                    notebook);
 
   /*  dragged region  */
   button = gtk_radio_button_new_with_mnemonic (radio_group,
@@ -879,19 +1025,14 @@ shoot_dialog (GdkScreen **screen)
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
 
-  gimp_help_set_help_data (button, _("If enabled, you can use the mouse to "
-                                     "select a rectangular region of the "
-                                     "screen."), NULL);
-
   g_object_set_data (G_OBJECT (button), "gimp-item-data",
                      GINT_TO_POINTER (SHOOT_REGION));
 
   g_signal_connect (button, "toggled",
-                    G_CALLBACK (gimp_radio_button_update),
-                    &shootvals.shoot_type);
+                    G_CALLBACK (shoot_radio_button_toggled),
+                    notebook);
 
-
-  /*  grab delay  */
+  /*  Delay  */
   frame = gimp_frame_new (_("Delay"));
   gtk_box_pack_start (GTK_BOX (main_vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
@@ -904,30 +1045,19 @@ shoot_dialog (GdkScreen **screen)
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
 
-  /* this string is part of "Wait [spinbutton] seconds before grabbing" */
-  label = gtk_label_new_with_mnemonic (_("W_ait"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-
   spinner = gimp_spin_button_new (&adj, shootvals.select_delay,
                                   0.0, 100.0, 1.0, 5.0, 0.0, 0, 0);
   gtk_box_pack_start (GTK_BOX (hbox), spinner, FALSE, FALSE, 0);
   gtk_widget_show (spinner);
 
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), spinner);
-
   g_signal_connect (adj, "value-changed",
                     G_CALLBACK (gimp_int_adjustment_update),
                     &shootvals.select_delay);
 
-  /* this string is part of "Wait [spinbutton] seconds before grabbing" */
-  label = gtk_label_new (_("seconds before grabbing"));
+  /* this is the unit label of a spinbutton */
+  label = gtk_label_new (_("seconds"));
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
-
-  gimp_help_set_help_data (spinner, _("The number of seconds to wait after "
-                                      "selecting the window or region and "
-                                      "actually taking the screenshot."), NULL);
 
   gtk_widget_show (dialog);
 
@@ -956,14 +1086,14 @@ shoot_dialog (GdkScreen **screen)
 
 /*  delay functions  */
 
-void
+static void
 shoot_delay (gint delay)
 {
   g_timeout_add (1000, shoot_delay_callback, &delay);
   gtk_main ();
 }
 
-gboolean
+static gboolean
 shoot_delay_callback (gpointer data)
 {
   gint *seconds_left = data;

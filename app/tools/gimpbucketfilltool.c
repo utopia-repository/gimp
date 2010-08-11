@@ -19,18 +19,14 @@
 #include "config.h"
 
 #include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
 
 #include "libgimpwidgets/gimpwidgets.h"
 
 #include "tools-types.h"
 
-#include "config/gimpguiconfig.h"
-
-#include "core/gimp.h"
-#include "core/gimpchannel.h"
 #include "core/gimpdrawable-bucket-fill.h"
 #include "core/gimpimage.h"
+#include "core/gimpitem.h"
 #include "core/gimppickable.h"
 
 #include "widgets/gimphelp-ids.h"
@@ -46,25 +42,21 @@
 
 /*  local function prototypes  */
 
-static void   gimp_bucket_fill_tool_button_press   (GimpTool        *tool,
-                                                    GimpCoords      *coords,
-                                                    guint32          time,
-                                                    GdkModifierType  state,
-                                                    GimpDisplay     *display);
-static void   gimp_bucket_fill_tool_button_release (GimpTool        *tool,
-                                                    GimpCoords      *coords,
-                                                    guint32          time,
-                                                    GdkModifierType  state,
-                                                    GimpDisplay     *display);
-static void   gimp_bucket_fill_tool_modifier_key   (GimpTool        *tool,
-                                                    GdkModifierType  key,
-                                                    gboolean         press,
-                                                    GdkModifierType  state,
-                                                    GimpDisplay     *display);
-static void   gimp_bucket_fill_tool_cursor_update  (GimpTool        *tool,
-                                                    GimpCoords      *coords,
-                                                    GdkModifierType  state,
-                                                    GimpDisplay     *display);
+static void   gimp_bucket_fill_tool_button_release (GimpTool              *tool,
+                                                    GimpCoords            *coords,
+                                                    guint32                time,
+                                                    GdkModifierType        state,
+                                                    GimpButtonReleaseType  release_type,
+                                                    GimpDisplay           *display);
+static void   gimp_bucket_fill_tool_modifier_key   (GimpTool              *tool,
+                                                    GdkModifierType        key,
+                                                    gboolean               press,
+                                                    GdkModifierType        state,
+                                                    GimpDisplay           *display);
+static void   gimp_bucket_fill_tool_cursor_update  (GimpTool              *tool,
+                                                    GimpCoords            *coords,
+                                                    GdkModifierType        state,
+                                                    GimpDisplay           *display);
 
 
 G_DEFINE_TYPE (GimpBucketFillTool, gimp_bucket_fill_tool, GIMP_TYPE_TOOL)
@@ -98,7 +90,6 @@ gimp_bucket_fill_tool_class_init (GimpBucketFillToolClass *klass)
 {
   GimpToolClass *tool_class = GIMP_TOOL_CLASS (klass);
 
-  tool_class->button_press   = gimp_bucket_fill_tool_button_press;
   tool_class->button_release = gimp_bucket_fill_tool_button_release;
   tool_class->modifier_key   = gimp_bucket_fill_tool_modifier_key;
   tool_class->cursor_update  = gimp_bucket_fill_tool_cursor_update;
@@ -110,6 +101,7 @@ gimp_bucket_fill_tool_init (GimpBucketFillTool *bucket_fill_tool)
   GimpTool *tool = GIMP_TOOL (bucket_fill_tool);
 
   gimp_tool_control_set_scroll_lock     (tool->control, TRUE);
+  gimp_tool_control_set_wants_click     (tool->control, TRUE);
   gimp_tool_control_set_tool_cursor     (tool->control,
                                          GIMP_TOOL_CURSOR_BUCKET_FILL);
   gimp_tool_control_set_action_value_1  (tool->control,
@@ -119,48 +111,37 @@ gimp_bucket_fill_tool_init (GimpBucketFillTool *bucket_fill_tool)
 }
 
 static void
-gimp_bucket_fill_tool_button_press (GimpTool        *tool,
-                                    GimpCoords      *coords,
-                                    guint32          time,
-                                    GdkModifierType  state,
-                                    GimpDisplay     *display)
+gimp_bucket_fill_tool_button_release (GimpTool              *tool,
+                                      GimpCoords            *coords,
+                                      guint32                time,
+                                      GdkModifierType        state,
+                                      GimpButtonReleaseType  release_type,
+                                      GimpDisplay           *display)
 {
-  GimpBucketFillTool    *bucket_tool = GIMP_BUCKET_FILL_TOOL (tool);
-  GimpBucketFillOptions *options     = GIMP_BUCKET_FILL_TOOL_GET_OPTIONS (tool);
+  GimpBucketFillOptions *options = GIMP_BUCKET_FILL_TOOL_GET_OPTIONS (tool);
 
-  bucket_tool->target_x = coords->x;
-  bucket_tool->target_y = coords->y;
-
-  if (! options->sample_merged)
+  if (release_type == GIMP_BUTTON_RELEASE_CLICK &&
+      gimp_image_coords_in_active_pickable (display->image, coords,
+                                            options->sample_merged, TRUE))
     {
-      gint off_x, off_y;
+      GimpDrawable *drawable = gimp_image_active_drawable (display->image);
+      GimpContext  *context  = GIMP_CONTEXT (options);
+      gint          x, y;
 
-      gimp_item_offsets (GIMP_ITEM (gimp_image_active_drawable (display->image)),
-                         &off_x, &off_y);
+      x = coords->x;
+      y = coords->y;
 
-      bucket_tool->target_x -= off_x;
-      bucket_tool->target_y -= off_y;
-    }
+      if (! options->sample_merged)
+        {
+          gint off_x, off_y;
 
-  tool->display = display;
-  gimp_tool_control_activate (tool->control);
-}
+          gimp_item_offsets (GIMP_ITEM (drawable), &off_x, &off_y);
 
-static void
-gimp_bucket_fill_tool_button_release (GimpTool        *tool,
-                                      GimpCoords      *coords,
-                                      guint32          time,
-                                      GdkModifierType  state,
-                                      GimpDisplay     *display)
-{
-  GimpBucketFillTool    *bucket_tool = GIMP_BUCKET_FILL_TOOL (tool);
-  GimpBucketFillOptions *options     = GIMP_BUCKET_FILL_TOOL_GET_OPTIONS (tool);
-  GimpContext           *context     = GIMP_CONTEXT (options);
+          x -= off_x;
+          y -= off_y;
+        }
 
-  /*  if the 3rd button isn't pressed, fill the selected region  */
-  if (! (state & GDK_BUTTON3_MASK))
-    {
-      gimp_drawable_bucket_fill (gimp_image_active_drawable (display->image),
+      gimp_drawable_bucket_fill (drawable,
                                  context,
                                  options->fill_mode,
                                  gimp_context_get_paint_mode (context),
@@ -170,13 +151,13 @@ gimp_bucket_fill_tool_button_release (GimpTool        *tool,
                                  options->fill_criterion,
                                  options->threshold,
                                  options->sample_merged,
-                                 bucket_tool->target_x,
-                                 bucket_tool->target_y);
+                                 x, y);
 
       gimp_image_flush (display->image);
     }
 
-  gimp_tool_control_halt (tool->control);
+  GIMP_TOOL_CLASS (parent_class)->button_release (tool, coords, time, state,
+                                                  release_type, display);
 }
 
 static void

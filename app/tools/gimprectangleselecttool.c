@@ -33,7 +33,6 @@
 #include "core/gimpimage-undo.h"
 #include "core/gimppickable.h"
 #include "core/gimp-utils.h"
-#include "core/gimpundo.h"
 #include "core/gimpundostack.h"
 
 #include "widgets/gimpdialogfactory.h"
@@ -41,7 +40,6 @@
 #include "widgets/gimpviewabledialog.h"
 #include "widgets/gimpwidgets-utils.h"
 
-#include "display/gimpcanvas.h"
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-transform.h"
@@ -75,6 +73,7 @@ static void     gimp_rect_select_tool_button_release      (GimpTool          *to
                                                            GimpCoords        *coords,
                                                            guint32            time,
                                                            GdkModifierType    state,
+                                                           GimpButtonReleaseType release_type,
                                                            GimpDisplay       *display);
 static void     gimp_rect_select_tool_active_modifier_key (GimpTool          *tool,
                                                            GdkModifierType    key,
@@ -91,7 +90,7 @@ static void     gimp_rect_select_tool_cursor_update       (GimpTool          *to
                                                            GdkModifierType    state,
                                                            GimpDisplay       *display);
 static void     gimp_rect_select_tool_draw                (GimpDrawTool      *draw_tool);
-static void     gimp_rect_select_tool_select              (GimpRectangleTool *rect_tool,
+static gboolean gimp_rect_select_tool_select              (GimpRectangleTool *rect_tool,
                                                            gint               x,
                                                            gint               y,
                                                            gint               w,
@@ -180,6 +179,7 @@ gimp_rect_select_tool_init (GimpRectSelectTool *rect_select)
 {
   GimpTool *tool = GIMP_TOOL (rect_select);
 
+  gimp_tool_control_set_wants_click (tool->control, TRUE);
   gimp_tool_control_set_tool_cursor (tool->control,
                                      GIMP_TOOL_CURSOR_RECT_SELECT);
   gimp_tool_control_set_dirty_mask  (tool->control,
@@ -376,14 +376,14 @@ gimp_rect_select_tool_button_press (GimpTool        *tool,
 }
 
 static void
-gimp_rect_select_tool_button_release (GimpTool        *tool,
-                                      GimpCoords      *coords,
-                                      guint32          time,
-                                      GdkModifierType  state,
-                                      GimpDisplay     *display)
+gimp_rect_select_tool_button_release (GimpTool              *tool,
+                                      GimpCoords            *coords,
+                                      guint32                time,
+                                      GdkModifierType        state,
+                                      GimpButtonReleaseType  release_type,
+                                      GimpDisplay           *display)
 {
   GimpRectSelectTool *rect_select = GIMP_RECT_SELECT_TOOL (tool);
-  GimpRectangleTool  *rectangle   = GIMP_RECTANGLE_TOOL (tool);
 
   gimp_tool_pop_status (tool, display);
   gimp_display_shell_set_show_selection (GIMP_DISPLAY_SHELL (display->shell),
@@ -393,10 +393,10 @@ gimp_rect_select_tool_button_release (GimpTool        *tool,
    * if the user has not moved the mouse, we need to redo the operation
    * that was undone on button press.
    */
-  if (gimp_rectangle_tool_no_movement (rectangle))
+  if (release_type == GIMP_BUTTON_RELEASE_CLICK)
     {
-      GimpImage             *image       = tool->display->image;
-      GimpUndo              *redo;
+      GimpImage *image = tool->display->image;
+      GimpUndo  *redo;
 
       redo = gimp_undo_stack_peek (image->redo_stack);
 
@@ -412,9 +412,10 @@ gimp_rect_select_tool_button_release (GimpTool        *tool,
         }
     }
 
-  gimp_rectangle_tool_button_release (tool, coords, time, state, display);
+  gimp_rectangle_tool_button_release (tool, coords, time, state, release_type,
+                                      display);
 
-  if ((state & GDK_BUTTON3_MASK))
+  if (release_type == GIMP_BUTTON_RELEASE_CANCEL)
     {
       if (rect_select->redo)
         {
@@ -483,7 +484,7 @@ gimp_rect_select_tool_cursor_update (GimpTool        *tool,
 }
 
 
-static void
+static gboolean
 gimp_rect_select_tool_select (GimpRectangleTool *rectangle,
                               gint               x,
                               gint               y,
@@ -517,6 +518,8 @@ gimp_rect_select_tool_select (GimpRectangleTool *rectangle,
     GIMP_RECT_SELECT_TOOL_GET_CLASS (rect_select)->select (rect_select,
                                                            operation,
                                                            x, y, w, h);
+
+  return rectangle_exists;
 }
 
 static void
@@ -602,55 +605,17 @@ gimp_rect_select_tool_execute (GimpRectangleTool *rectangle,
 
       /*  if the click was inside the marching ants  */
       if (gimp_pickable_get_opacity_at (GIMP_PICKABLE (selection),
-                                        pressx, pressy) > 127)
+                                        pressx, pressy) > BOUNDARY_HALF_WAY)
         {
-          const BoundSeg *segs_in;
-          const BoundSeg *segs_out;
-          gint            n_segs_in;
-          gint            n_segs_out;
+          gint x1, y1, x2, y2;
 
-          if (gimp_channel_boundary (selection,
-                                     &segs_in, &segs_out,
-                                     &n_segs_in, &n_segs_out,
-                                     0, 0, 0, 0))
+          if (gimp_channel_bounds (selection, &x1, &y1, &x2, &y2))
             {
-              gint x1 = 0;
-              gint y1 = 0;
-              gint x2 = 0;
-              gint y2 = 0;
-
-              if (n_segs_in > 0)
-                {
-                  gint i;
-
-                  x1 = segs_in[0].x1;
-                  x2 = segs_in[0].x1;
-                  y1 = segs_in[0].y1;
-                  y2 = segs_in[0].y1;
-
-                  for (i = 1; i < n_segs_in; i++)
-                    {
-                      x1 = MIN (x1, segs_in[i].x1);
-                      x2 = MAX (x2, segs_in[i].x1);
-                      y1 = MIN (y1, segs_in[i].y1);
-                      y2 = MAX (y2, segs_in[i].y1);
-                    }
-                }
-
               g_object_set (rectangle,
                             "x1", x1,
                             "y1", y1,
                             "x2", x2,
                             "y2", y2,
-                            NULL);
-            }
-          else
-            {
-              g_object_set (rectangle,
-                            "x1", 0,
-                            "y1", 0,
-                            "x2", image->width,
-                            "y2", image->height,
                             NULL);
             }
 
@@ -717,7 +682,7 @@ gimp_rect_select_tool_rectangle_changed (GimpRectangleTool *rectangle)
   /* prevent change in selection from halting the tool */
   gimp_tool_control_set_preserve (tool->control, TRUE);
 
-  if (tool->display)
+  if (tool->display && ! gimp_tool_control_is_active (tool->control))
     {
       GimpRectSelectTool *rect_select = GIMP_RECT_SELECT_TOOL (tool);
       GimpImage          *image       = tool->display->image;
@@ -743,11 +708,14 @@ gimp_rect_select_tool_rectangle_changed (GimpRectangleTool *rectangle)
                     "y2", &y2,
                     NULL);
 
-      gimp_rect_select_tool_select (rectangle, x1, y1, x2 - x1, y2 - y1);
-
-      /* save the undo that we got when executing */
-      rect_select->undo = gimp_undo_stack_peek (image->undo_stack);
-      rect_select->redo = NULL;
+      if (gimp_rect_select_tool_select (rectangle, x1, y1, x2 - x1, y2 - y1))
+        {
+          /* save the undo that we got when executing, but only if
+           * we actually selected something
+           */
+          rect_select->undo = gimp_undo_stack_peek (image->undo_stack);
+          rect_select->redo = NULL;
+        }
 
       if (! rect_select->use_saved_op)
         {

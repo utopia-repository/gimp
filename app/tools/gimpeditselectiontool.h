@@ -72,6 +72,10 @@ void       gimp_edit_selection_tool_start     (GimpTool          *parent_tool,
 gboolean   gimp_edit_selection_tool_key_press (GimpTool          *tool,
                                                GdkEventKey       *kevent,
                                                GimpDisplay       *display);
+gboolean   gimp_edit_selection_tool_translate (GimpTool          *tool,
+                                               GdkEventKey       *kevent,
+                                               GimpTransformType  translate_type,
+                                               GimpDisplay       *display);
 
 
 #endif  /*  __GIMP_EDIT_SELECTION_TOOL_H__  */

@@ -385,7 +385,6 @@ plug_in_actions_menu_path_added (GimpPlugInProcedure *plug_in_proc,
                                  const gchar         *menu_path,
                                  GimpActionGroup     *group)
 {
-  const gchar *progname;
   const gchar *locale_domain;
   const gchar *path_translated;
 
@@ -394,10 +393,7 @@ plug_in_actions_menu_path_added (GimpPlugInProcedure *plug_in_proc,
            gimp_object_get_name (GIMP_OBJECT (plug_in_proc)), menu_path);
 #endif
 
-  progname = gimp_plug_in_procedure_get_progname (plug_in_proc);
-
-  locale_domain = gimp_plug_in_manager_get_locale_domain (group->gimp->plug_in_manager,
-                                                          progname, NULL);
+  locale_domain = gimp_plug_in_procedure_get_locale_domain (plug_in_proc);
 
   path_translated = dgettext (locale_domain, menu_path);
 
@@ -412,20 +408,12 @@ plug_in_actions_add_proc (GimpActionGroup     *group,
                           GimpPlugInProcedure *proc)
 {
   GimpPlugInActionEntry  entry;
-  const gchar           *progname;
   const gchar           *locale_domain;
-  const gchar           *help_domain;
   const gchar           *label;
-  const gchar           *tooltip          = NULL;
   gchar                 *path_original    = NULL;
   gchar                 *path_translated  = NULL;
 
-  progname = gimp_plug_in_procedure_get_progname (proc);
-
-  locale_domain = gimp_plug_in_manager_get_locale_domain (group->gimp->plug_in_manager,
-                                                          progname, NULL);
-  help_domain   = gimp_plug_in_manager_get_help_domain (group->gimp->plug_in_manager,
-                                                        progname, NULL);
+  locale_domain = gimp_plug_in_procedure_get_locale_domain (proc);
 
   if (proc->menu_label)
     {
@@ -454,16 +442,13 @@ plug_in_actions_add_proc (GimpActionGroup     *group,
       label = p2 + 1;
     }
 
-  if (GIMP_PROCEDURE (proc)->blurb)
-    tooltip = dgettext (locale_domain, GIMP_PROCEDURE (proc)->blurb);
-
   entry.name        = GIMP_OBJECT (proc)->name;
   entry.stock_id    = gimp_plug_in_procedure_get_stock_id (proc);
   entry.label       = label;
   entry.accelerator = NULL;
-  entry.tooltip     = tooltip;
+  entry.tooltip     = gimp_plug_in_procedure_get_blurb (proc);
   entry.procedure   = proc;
-  entry.help_id     = gimp_plug_in_procedure_get_help_id (proc, help_domain);
+  entry.help_id     = gimp_plug_in_procedure_get_help_id (proc);
 
 #if 0
   g_print ("adding plug-in action '%s' (%s)\n",
@@ -504,8 +489,6 @@ plug_in_actions_history_changed (GimpPlugInManager *manager,
                                  GimpActionGroup   *group)
 {
   GimpPlugInProcedure *proc;
-  const gchar         *progname;
-  const gchar         *domain;
   gint                 i;
 
   proc = gimp_plug_in_manager_history_nth (manager, 0);
@@ -516,11 +499,7 @@ plug_in_actions_history_changed (GimpPlugInManager *manager,
       gchar *repeat;
       gchar *reshow;
 
-      progname = gimp_plug_in_procedure_get_progname (proc);
-      domain   = gimp_plug_in_manager_get_locale_domain (manager,
-                                                         progname, NULL);
-
-      label = gimp_plug_in_procedure_get_label (proc, domain);
+      label = gimp_plug_in_procedure_get_label (proc);
 
       repeat = g_strdup_printf (_("Re_peat \"%s\""),  label);
       reshow = g_strdup_printf (_("R_e-Show \"%s\""), label);
@@ -543,30 +522,23 @@ plug_in_actions_history_changed (GimpPlugInManager *manager,
 
   for (i = 0; i < gimp_plug_in_manager_history_length (manager); i++)
     {
-      GtkAction   *action;
-      gchar       *name    = g_strdup_printf ("plug-in-recent-%02d", i + 1);
-      gchar       *label;
-      const gchar *tooltip = NULL;
+      GtkAction *action;
+      gchar     *name    = g_strdup_printf ("plug-in-recent-%02d", i + 1);
+      gchar     *label;
 
       action = gtk_action_group_get_action (GTK_ACTION_GROUP (group), name);
       g_free (name);
 
-      proc     = gimp_plug_in_manager_history_nth (manager, i);
-      progname = gimp_plug_in_procedure_get_progname (proc);
-      domain   = gimp_plug_in_manager_get_locale_domain (manager,
-                                                         progname, NULL);
+      proc  = gimp_plug_in_manager_history_nth (manager, i);
 
-      label = gimp_plug_in_procedure_get_label (proc, domain);
-
-      if (GIMP_PROCEDURE (proc)->blurb)
-        tooltip = dgettext (domain, GIMP_PROCEDURE (proc)->blurb);
+      label = gimp_plug_in_procedure_get_label (proc);
 
       g_object_set (action,
                     "visible",   TRUE,
                     "procedure", proc,
                     "label",     label,
                     "stock-id",  gimp_plug_in_procedure_get_stock_id (proc),
-                    "tooltip",   tooltip,
+                    "tooltip",   gimp_plug_in_procedure_get_blurb (proc),
                     NULL);
 
       g_free (label);

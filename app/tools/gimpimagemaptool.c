@@ -41,7 +41,6 @@
 #include "core/gimptoolinfo.h"
 
 #include "widgets/gimptooldialog.h"
-#include "widgets/gimpviewabledialog.h"
 #include "widgets/gimpwidgets-utils.h"
 
 #include "display/gimpdisplay.h"
@@ -767,6 +766,11 @@ gimp_image_map_tool_settings_dialog (GimpImageMapTool *tool,
                              (gpointer) &tool->settings_dialog);
 
   gtk_window_set_destroy_with_parent (GTK_WINDOW (chooser), TRUE);
+
+  gtk_dialog_set_default_response (GTK_DIALOG (chooser), GTK_RESPONSE_OK);
+
+  if (save)
+    gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
 
   g_signal_connect (chooser, "response",
                     G_CALLBACK (settings_dialog_response),

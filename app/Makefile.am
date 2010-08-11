@@ -38,14 +38,14 @@ bin_PROGRAMS = gimp-2.3
 endif
 
 app_sources = \
-	app_procs.c	\
-	app_procs.h	\
-	main.c		\
 	about.h		\
+	app.c		\
+	app.h		\
 	batch.c		\
 	batch.h		\
 	errors.c	\
 	errors.h	\
+	main.c		\
 	sanity.c	\
 	sanity.h	\
 	units.c		\
@@ -92,7 +92,7 @@ INCLUDES = \
 	$(DBUS_GLIB_CFLAGS)	\
 	-I$(includedir)
 
-gimp_2_3_LDFLAGS = $(mwindows) $(munix) -u $(SYMPREFIX)xcf_init -u $(SYMPREFIX)internal_procs_init
+gimp_2_3_LDFLAGS = $(mwindows) $(munix) -u $(SYMPREFIX)xcf_init -u $(SYMPREFIX)internal_procs_init -u $(SYMPREFIX)gimp_coords_mix
 
 gimp_2_3_LDADD = \
 	gui/libappgui.a			\
@@ -107,8 +107,8 @@ gimp_2_3_LDADD = \
 	file/libappfile.a		\
 	plug-in/libappplug-in.a		\
 	pdb/libapppdb.a			\
-	vectors/libappvectors.a		\
 	core/libappcore.a		\
+	vectors/libappvectors.a		\
 	paint/libapppaint.a		\
 	text/libapptext.a		\
 	config/libappconfig.a		\
@@ -143,7 +143,7 @@ gimp_console_2_3_CPPFLAGS = \
 	$(AM_CPPFLAGS)			\
 	-DGIMP_CONSOLE_COMPILATION
 
-gimp_console_2_3_LDFLAGS = $(mwindows) $(munix) -u $(SYMPREFIX)xcf_init -u $(SYMPREFIX)internal_procs_init
+gimp_console_2_3_LDFLAGS = $(mwindows) $(munix) -u $(SYMPREFIX)xcf_init -u $(SYMPREFIX)internal_procs_init -u $(SYMPREFIX)gimp_coords_mix
 
 gimp_console_2_3_LDADD = \
 	widgets/widgets-enums.o		\
@@ -154,8 +154,8 @@ gimp_console_2_3_LDADD = \
 	file/libappfile.a		\
 	plug-in/libappplug-in.a		\
 	pdb/libapppdb.a			\
-	vectors/libappvectors.a		\
 	core/libappcore.a		\
+	vectors/libappvectors.a		\
 	paint/libapppaint.a		\
 	text/libapptext.a		\
 	config/libappconfig.a		\

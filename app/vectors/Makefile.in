@@ -60,7 +60,8 @@ am_libappvectors_a_OBJECTS = gimpanchor.$(OBJEXT) \
 	gimpstroke-new.$(OBJEXT) gimpvectors.$(OBJEXT) \
 	gimpvectors-compat.$(OBJEXT) gimpvectors-export.$(OBJEXT) \
 	gimpvectors-import.$(OBJEXT) gimpvectors-preview.$(OBJEXT) \
-	gimpvectors-warp.$(OBJEXT)
+	gimpvectors-warp.$(OBJEXT) gimpvectorsmodundo.$(OBJEXT) \
+	gimpvectorspropundo.$(OBJEXT) gimpvectorsundo.$(OBJEXT)
 libappvectors_a_OBJECTS = $(am_libappvectors_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -204,6 +205,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
 GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
+HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
+HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
@@ -477,7 +482,13 @@ libappvectors_a_SOURCES = \
 	gimpvectors-preview.c	\
 	gimpvectors-preview.h	\
 	gimpvectors-warp.c	\
-	gimpvectors-warp.h
+	gimpvectors-warp.h	\
+	gimpvectorsmodundo.c	\
+	gimpvectorsmodundo.h	\
+	gimpvectorspropundo.c	\
+	gimpvectorspropundo.h	\
+	gimpvectorsundo.c	\
+	gimpvectorsundo.h
 
 EXTRA_DIST = makefile.msc
 all: all-am
@@ -537,6 +548,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectors-preview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectors-warp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectors.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectorsmodundo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectorspropundo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpvectorsundo.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

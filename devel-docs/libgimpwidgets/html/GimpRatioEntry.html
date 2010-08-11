@@ -33,28 +33,28 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="GimpScrolledPreview.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2502282" class="shortcut">Top</a>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2582258" class="shortcut">Top</a>
                   &#160;|&#160;
-                  <a href="#id2614168" class="shortcut">Description</a>
+                  <a href="#id2615876" class="shortcut">Description</a>
                   &#160;|&#160;
-                  <a href="#id2613370" class="shortcut">Object Hierarchy</a>
+                  <a href="#id2613926" class="shortcut">Object Hierarchy</a>
                   &#160;|&#160;
-                  <a href="#id2614038" class="shortcut">Implemented Interfaces</a>
+                  <a href="#id2613974" class="shortcut">Implemented Interfaces</a>
                   &#160;|&#160;
-                  <a href="#id2614072" class="shortcut">Properties</a>
+                  <a href="#id2614008" class="shortcut">Properties</a>
                   &#160;|&#160;
-                  <a href="#id2614124" class="shortcut">Signals</a></nobr></td></tr>
+                  <a href="#id2614073" class="shortcut">Signals</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="GimpRatioEntry"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
 <h2>
-<a name="id2502282"></a><span class="refentrytitle">GimpRatioEntry</span>
+<a name="id2582258"></a><span class="refentrytitle">GimpRatioEntry</span>
 </h2>
 <p>GimpRatioEntry</p>
 </td>
-<td valign="top" align="right"></td>
+<td valign="top" align="right"><img src="gimp-ratio-entry.png"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
 <h2>Synopsis</h2>
@@ -63,6 +63,7 @@
 
 
             <a href="GimpRatioEntry.html#GimpRatioEntry-struct">GimpRatioEntry</a>;
+enum        <a href="GimpRatioEntry.html#GimpAspectType">GimpAspectType</a>;
 GtkWidget*  <a href="GimpRatioEntry.html#gimp-ratio-entry-new">gimp_ratio_entry_new</a>            (void);
 void        <a href="GimpRatioEntry.html#gimp-ratio-entry-set-fraction">gimp_ratio_entry_set_fraction</a>   (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
                                              gdouble numerator,
@@ -73,11 +74,14 @@ void        <a href="GimpRatioEntry.html#gimp-ratio-entry-get-fraction">gimp_rat
 void        <a href="GimpRatioEntry.html#gimp-ratio-entry-set-ratio">gimp_ratio_entry_set_ratio</a>      (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
                                              gdouble ratio);
 gdouble     <a href="GimpRatioEntry.html#gimp-ratio-entry-get-ratio">gimp_ratio_entry_get_ratio</a>      (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry);
+void        <a href="GimpRatioEntry.html#gimp-ratio-entry-set-aspect">gimp_ratio_entry_set_aspect</a>     (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
+                                             <a href="GimpRatioEntry.html#GimpAspectType">GimpAspectType</a> aspect);
+<a href="GimpRatioEntry.html#GimpAspectType">GimpAspectType</a> <a href="GimpRatioEntry.html#gimp-ratio-entry-get-aspect">gimp_ratio_entry_get_aspect</a>  (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry);
 
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613370"></a><h2>Object Hierarchy</h2>
+<a name="id2613926"></a><h2>Object Hierarchy</h2>
 <pre class="synopsis">
 
   GObject
@@ -89,22 +93,23 @@ gdouble     <a href="GimpRatioEntry.html#gimp-ratio-entry-get-ratio">gimp_ratio_
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614038"></a><h2>Implemented Interfaces</h2>
+<a name="id2613974"></a><h2>Implemented Interfaces</h2>
 <p>
 GimpRatioEntry implements
  AtkImplementorIface,  GtkEditable and  GtkCellEditable.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614072"></a><h2>Properties</h2>
+<a name="id2614008"></a><h2>Properties</h2>
 <pre class="synopsis">
 
+  "<a href="GimpRatioEntry.html#GimpRatioEntry--aspect">aspect</a>"               <a href="GimpRatioEntry.html#GimpAspectType">GimpAspectType</a>        : Read / Write
   "<a href="GimpRatioEntry.html#GimpRatioEntry--denominator">denominator</a>"          gdouble               : Read / Write
   "<a href="GimpRatioEntry.html#GimpRatioEntry--numerator">numerator</a>"            gdouble               : Read / Write
   "<a href="GimpRatioEntry.html#GimpRatioEntry--ratio">ratio</a>"                gdouble               : Read / Write
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614124"></a><h2>Signals</h2>
+<a name="id2614073"></a><h2>Signals</h2>
 <pre class="synopsis">
 
 "<a href="GimpRatioEntry.html#GimpRatioEntry-ratio-changed">ratio-changed</a>"
@@ -113,26 +118,41 @@ GimpRatioEntry implements
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614168"></a><h2>Description</h2>
+<a name="id2615876"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2614183"></a><h2>Details</h2>
+<a name="id2615891"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2614194"></a><h3>
+<a name="id2615902"></a><h3>
 <a name="GimpRatioEntry-struct"></a>GimpRatioEntry</h3>
-<a class="indexterm" name="id2615121"></a><pre class="programlisting">typedef struct _GimpRatioEntry GimpRatioEntry;</pre>
+<a class="indexterm" name="id2615914"></a><pre class="programlisting">typedef struct _GimpRatioEntry GimpRatioEntry;</pre>
 <p>
 
 </p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615137"></a><h3>
+<a name="id2615930"></a><h3>
+<a name="GimpAspectType"></a>enum GimpAspectType</h3>
+<a class="indexterm" name="id2615942"></a><pre class="programlisting">typedef enum
+{
+  GIMP_ASPECT_SQUARE,    /*&lt; desc="Square"    &gt;*/
+  GIMP_ASPECT_PORTRAIT,  /*&lt; desc="Portrait"  &gt;*/
+  GIMP_ASPECT_LANDSCAPE  /*&lt; desc="Landscape" &gt;*/
+} GimpAspectType;
+</pre>
+<p>
+
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2615961"></a><h3>
 <a name="gimp-ratio-entry-new"></a>gimp_ratio_entry_new ()</h3>
-<a class="indexterm" name="id2615151"></a><pre class="programlisting">GtkWidget*  gimp_ratio_entry_new            (void);</pre>
+<a class="indexterm" name="id2615975"></a><pre class="programlisting">GtkWidget*  gimp_ratio_entry_new            (void);</pre>
 <p>
 </p>
 <p>
@@ -152,9 +172,9 @@ GimpRatioEntry implements
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2615202"></a><h3>
+<a name="id2614570"></a><h3>
 <a name="gimp-ratio-entry-set-fraction"></a>gimp_ratio_entry_set_fraction ()</h3>
-<a class="indexterm" name="id2615216"></a><pre class="programlisting">void        gimp_ratio_entry_set_fraction   (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
+<a class="indexterm" name="id2614584"></a><pre class="programlisting">void        gimp_ratio_entry_set_fraction   (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
                                              gdouble numerator,
                                              gdouble denominator);</pre>
 <p>
@@ -193,9 +213,9 @@ convert it to 1.0.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614658"></a><h3>
+<a name="id2614707"></a><h3>
 <a name="gimp-ratio-entry-get-fraction"></a>gimp_ratio_entry_get_fraction ()</h3>
-<a class="indexterm" name="id2614673"></a><pre class="programlisting">void        gimp_ratio_entry_get_fraction   (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
+<a class="indexterm" name="id2614722"></a><pre class="programlisting">void        gimp_ratio_entry_get_fraction   (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
                                              gdouble *numerator,
                                              gdouble *denominator);</pre>
 <p>
@@ -233,9 +253,9 @@ as a single decimal value.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2614805"></a><h3>
+<a name="id2613616"></a><h3>
 <a name="gimp-ratio-entry-set-ratio"></a>gimp_ratio_entry_set_ratio ()</h3>
-<a class="indexterm" name="id2614819"></a><pre class="programlisting">void        gimp_ratio_entry_set_ratio      (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
+<a class="indexterm" name="id2613630"></a><pre class="programlisting">void        gimp_ratio_entry_set_ratio      (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
                                              gdouble ratio);</pre>
 <p>
 Sets the ratio displayed by a <a href="GimpRatioEntry.html" title="GimpRatioEntry"><span class="type">GimpRatioEntry</span></a>. If the new ratio is
@@ -268,9 +288,9 @@ numerator and denominator &lt; 1000.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613735"></a><h3>
+<a name="id2613728"></a><h3>
 <a name="gimp-ratio-entry-get-ratio"></a>gimp_ratio_entry_get_ratio ()</h3>
-<a class="indexterm" name="id2613749"></a><pre class="programlisting">gdouble     gimp_ratio_entry_get_ratio      (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry);</pre>
+<a class="indexterm" name="id2613742"></a><pre class="programlisting">gdouble     gimp_ratio_entry_get_ratio      (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry);</pre>
 <p>
 Retrieves the ratio value displayed by a <a href="GimpRatioEntry.html" title="GimpRatioEntry"><span class="type">GimpRatioEntry</span></a>.</p>
 <p>
@@ -295,42 +315,109 @@ Retrieves the ratio value displayed by a <a href="GimpRatioEntry.html" title="Gi
 <p>Since  GIMP 2.4
 </p>
 </div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2613823"></a><h3>
+<a name="gimp-ratio-entry-set-aspect"></a>gimp_ratio_entry_set_aspect ()</h3>
+<a class="indexterm" name="id2613837"></a><pre class="programlisting">void        gimp_ratio_entry_set_aspect     (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry,
+                                             <a href="GimpRatioEntry.html#GimpAspectType">GimpAspectType</a> aspect);</pre>
+<p>
+Sets the aspect of the ratio by swapping the numerator and denominator
+(or setting them to 1.0 in case that <em class="parameter"><code>aspect</code></em> is <code class="literal">GIMP_ASPECT_SQUARE</code>).</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><span class="term"><em class="parameter"><code>entry</code></em>&#160;:</span></td>
+<td> a <a href="GimpRatioEntry.html" title="GimpRatioEntry"><span class="type">GimpRatioEntry</span></a> widget
+</td>
+</tr>
+<tr>
+<td><span class="term"><em class="parameter"><code>aspect</code></em>&#160;:</span></td>
+<td> the new aspect
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2609986"></a><h3>
+<a name="gimp-ratio-entry-get-aspect"></a>gimp_ratio_entry_get_aspect ()</h3>
+<a class="indexterm" name="id2610000"></a><pre class="programlisting"><a href="GimpRatioEntry.html#GimpAspectType">GimpAspectType</a> gimp_ratio_entry_get_aspect  (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *entry);</pre>
+<p>
+Gets the aspect of the ratio displayed by a <a href="GimpRatioEntry.html" title="GimpRatioEntry"><span class="type">GimpRatioEntry</span></a>.</p>
+<p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><span class="term"><em class="parameter"><code>entry</code></em>&#160;:</span></td>
+<td> a <a href="GimpRatioEntry.html" title="GimpRatioEntry"><span class="type">GimpRatioEntry</span></a> widget
+</td>
+</tr>
+<tr>
+<td><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></td>
+<td> The entry's current aspect.
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>Since  GIMP 2.4
+</p>
+</div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613831"></a><h2>Property Details</h2>
+<a name="id2610082"></a><h2>Property Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2613842"></a><h3>
+<a name="id2610093"></a><h3>
+<a name="GimpRatioEntry--aspect"></a>The "<code class="literal">aspect</code>" property</h3>
+<a class="indexterm" name="id2610107"></a><pre class="programlisting">  "aspect"               <a href="GimpRatioEntry.html#GimpAspectType">GimpAspectType</a>        : Read / Write</pre>
+<p></p>
+<p>Default value: GIMP_ASPECT_SQUARE</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="id2610130"></a><h3>
 <a name="GimpRatioEntry--denominator"></a>The "<code class="literal">denominator</code>" property</h3>
-<a class="indexterm" name="id2613856"></a><pre class="programlisting">  "denominator"          gdouble               : Read / Write</pre>
+<a class="indexterm" name="id2610144"></a><pre class="programlisting">  "denominator"          gdouble               : Read / Write</pre>
 <p></p>
 <p>Allowed values: &gt;= G_MINDOUBLE</p>
 <p>Default value: 1</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613884"></a><h3>
+<a name="id2610172"></a><h3>
 <a name="GimpRatioEntry--numerator"></a>The "<code class="literal">numerator</code>" property</h3>
-<a class="indexterm" name="id2613898"></a><pre class="programlisting">  "numerator"            gdouble               : Read / Write</pre>
+<a class="indexterm" name="id2610186"></a><pre class="programlisting">  "numerator"            gdouble               : Read / Write</pre>
 <p></p>
 <p>Allowed values: &gt;= G_MINDOUBLE</p>
 <p>Default value: 1</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2613926"></a><h3>
+<a name="id2610214"></a><h3>
 <a name="GimpRatioEntry--ratio"></a>The "<code class="literal">ratio</code>" property</h3>
-<a class="indexterm" name="id2613940"></a><pre class="programlisting">  "ratio"                gdouble               : Read / Write</pre>
+<a class="indexterm" name="id2610228"></a><pre class="programlisting">  "ratio"                gdouble               : Read / Write</pre>
 <p></p>
 <p>Allowed values: &gt;= G_MINDOUBLE</p>
 <p>Default value: 1</p>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2615561"></a><h2>Signal Details</h2>
+<a name="id2610258"></a><h2>Signal Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2615572"></a><h3>
+<a name="id2610269"></a><h3>
 <a name="GimpRatioEntry-ratio-changed"></a>The "ratio-changed" signal</h3>
-<a class="indexterm" name="id2615581"></a><pre class="programlisting">void        user_function                  (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *gimpratioentry,
+<a class="indexterm" name="id2610278"></a><pre class="programlisting">void        user_function                  (<a href="GimpRatioEntry.html" title="GimpRatioEntry">GimpRatioEntry</a> *gimpratioentry,
                                             gpointer        user_data)           : Run first</pre>
 <p>
 

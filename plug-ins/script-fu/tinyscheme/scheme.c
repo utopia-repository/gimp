@@ -1136,7 +1136,7 @@ static pointer mk_atom(scheme *sc, char *q) {
           }
      }
      if(has_dec_point) {
-          return mk_real(sc,atof(q));
+       return mk_real(sc,g_ascii_strtod(q,NULL));
      }
      return (mk_integer(sc, atol(q)));
 }
@@ -1467,6 +1467,7 @@ static gunichar basic_inchar(port *pt) {
        s = &utf8[1];
        for (i = 0; i < len; ++i)
          *s++ = fgetc(pt->rep.stdio.file);
+       /* FIXME: Check for bad character and search for next good char. */
        return g_utf8_get_char_validated(utf8, len+1);
     }
     return (gunichar)utf8[0];
@@ -1479,8 +1480,21 @@ static gunichar basic_inchar(port *pt) {
 
       len = pt->rep.string.past_the_end - pt->rep.string.curr;
       c = g_utf8_get_char_validated(pt->rep.string.curr, len);
-      len = g_unichar_to_utf8(c, NULL);
-      pt->rep.string.curr += len;
+
+      if (c < 0)
+      {
+        pt->rep.string.curr = g_utf8_find_next_char(pt->rep.string.curr,
+                                                    pt->rep.string.past_the_end);
+        if (pt->rep.string.curr == NULL)
+            pt->rep.string.curr = pt->rep.string.past_the_end;
+        c = ' ';
+      }
+      else
+      {
+        len = g_unichar_to_utf8(c, NULL);
+        pt->rep.string.curr += len;
+      }
+
       return c;
     }
   }
@@ -1909,7 +1923,8 @@ static void atom2str(scheme *sc, pointer l, int f, char **pp, int *plen) {
           if(is_integer(l)) {
                sprintf(p, "%ld", ivalue_unchecked(l));
           } else {
-               sprintf(p, "%.10g", rvalue_unchecked(l));
+               g_ascii_formatd (p, sizeof (sc->strbuff), "%.10g",
+                                rvalue_unchecked(l));
           }
      } else if (is_string(l)) {
           if (!f) {

@@ -969,7 +969,7 @@ gradcolor (GimpVector4 *col, gradient *t, gdouble val)
           return;
         }
     }
-  fprintf (stderr, "Error in gradient!\n");
+  g_printerr ("Error in gradient!\n");
   vset (col, 0, 1, 0);
 }
 
@@ -1178,7 +1178,7 @@ objcolor (GimpVector4 *col, GimpVector4 *p, common *obj)
           continue;
           break;
         default:
-          fprintf (stderr, "Warning: unknown texture %d\n", t->type);
+          g_printerr ("Warning: unknown texture %d\n", t->type);
           break;
         }
       vmul (&tmpcol, t->amount);
@@ -1186,7 +1186,7 @@ objcolor (GimpVector4 *col, GimpVector4 *p, common *obj)
     }
   if (!i)
     {
-      fprintf (stderr, "Warning: object %p has no textures\n", obj);
+      g_printerr ("Warning: object %p has no textures\n", obj);
     }
 }
 
@@ -1278,7 +1278,7 @@ objnormal (GimpVector4 *res, common *obj, GimpVector4 *p)
           continue;
           break;
         default:
-          fprintf (stderr, "Warning: unknown texture %d\n", t->type);
+          g_printerr ("Warning: unknown texture %d\n", t->type);
           break;
         }
 
@@ -2195,7 +2195,7 @@ fileselect (GtkFileChooserAction  action,
   gchar *titles[]   = { N_("Open File"), N_("Save File") };
   void  *handlers[] = { loadpreset_response,   savepreset_response };
 
-  if (!windows[action])
+  if (! windows[action])
     {
       GtkWidget *dialog = windows[action] =
         gtk_file_chooser_dialog_new (gettext (titles[action]),
@@ -2216,6 +2216,10 @@ fileselect (GtkFileChooserAction  action,
                                                -1);
 
       gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+
+      if (action == GTK_FILE_CHOOSER_ACTION_SAVE)
+        gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog),
+                                                        TRUE);
 
       g_signal_connect (dialog, "destroy",
                         G_CALLBACK (gtk_widget_destroyed),

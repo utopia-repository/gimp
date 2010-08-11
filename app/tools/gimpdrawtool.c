@@ -856,7 +856,7 @@ gimp_draw_tool_draw_corner (GimpDrawTool   *draw_tool,
   g_return_if_fail (GIMP_IS_DRAW_TOOL (draw_tool));
   g_return_if_fail (width > 2 && height > 2);
 
-  shell = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
+  shell  = GIMP_DISPLAY_SHELL (draw_tool->display->shell);
   canvas = GIMP_CANVAS (shell->canvas);
 
   gimp_display_shell_transform_xy (shell, x1, y1, &tx1, &ty1, use_offsets);

@@ -60,7 +60,8 @@ am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) \
 	gimpplugindebug.$(OBJEXT) gimpplugin.$(OBJEXT) \
 	gimpplugin-cleanup.$(OBJEXT) gimpplugin-context.$(OBJEXT) \
 	gimpplugin-message.$(OBJEXT) gimpplugin-progress.$(OBJEXT) \
-	gimppluginmanager.$(OBJEXT) gimppluginmanager-call.$(OBJEXT) \
+	gimpplugindef.$(OBJEXT) gimppluginmanager.$(OBJEXT) \
+	gimppluginmanager-call.$(OBJEXT) \
 	gimppluginmanager-data.$(OBJEXT) \
 	gimppluginmanager-file.$(OBJEXT) \
 	gimppluginmanager-help-domain.$(OBJEXT) \
@@ -70,8 +71,8 @@ am_libappplug_in_a_OBJECTS = plug-in-enums.$(OBJEXT) \
 	gimppluginmanager-query.$(OBJEXT) \
 	gimppluginprocedure.$(OBJEXT) gimppluginprocframe.$(OBJEXT) \
 	gimppluginshm.$(OBJEXT) gimptemporaryprocedure.$(OBJEXT) \
-	plug-in-def.$(OBJEXT) plug-in-params.$(OBJEXT) \
-	plug-in-rc.$(OBJEXT) plug-in-icc-profile.$(OBJEXT)
+	plug-in-params.$(OBJEXT) plug-in-rc.$(OBJEXT) \
+	plug-in-icc-profile.$(OBJEXT)
 libappplug_in_a_OBJECTS = $(am_libappplug_in_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -215,6 +216,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
 GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
+HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
+HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
@@ -486,6 +491,8 @@ libappplug_in_a_SOURCES = \
 	gimpplugin-message.h			\
 	gimpplugin-progress.c			\
 	gimpplugin-progress.h			\
+	gimpplugindef.c				\
+	gimpplugindef.h				\
 	gimppluginmanager.c			\
 	gimppluginmanager.h			\
 	gimppluginmanager-call.c		\
@@ -513,8 +520,6 @@ libappplug_in_a_SOURCES = \
 	gimptemporaryprocedure.c		\
 	gimptemporaryprocedure.h		\
 	\
-	plug-in-def.c				\
-	plug-in-def.h				\
 	plug-in-params.c			\
 	plug-in-params.h			\
 	plug-in-rc.c				\
@@ -586,6 +591,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin-progress.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugin.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugindebug.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpplugindef.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-call.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-data.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginmanager-file.Po@am__quote@
@@ -599,7 +605,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginprocframe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimppluginshm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimptemporaryprocedure.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-def.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-enums.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-icc-profile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plug-in-params.Po@am__quote@

@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GIMP_IMAGE_UNDO_H__
-#define __GIMP_IMAGE_UNDO_H__
+#ifndef __GIMP_IMAGE__UNDO_H__
+#define __GIMP_IMAGE__UNDO_H__
 
 
 gboolean   gimp_image_undo              (GimpImage        *image);
@@ -35,13 +35,9 @@ gboolean   gimp_image_undo_group_end    (GimpImage        *image);
 
 GimpUndo * gimp_image_undo_push         (GimpImage        *image,
                                          GType             object_type,
-                                         gint64            size,
-                                         gsize             struct_size,
                                          GimpUndoType      undo_type,
                                          const gchar      *name,
                                          GimpDirtyMask     dirty_mask,
-                                         GimpUndoPopFunc   pop_func,
-                                         GimpUndoFreeFunc  free_func,
                                          ...) G_GNUC_NULL_TERMINATED;
 
 GimpUndo * gimp_image_undo_can_compress (GimpImage        *image,
@@ -51,4 +47,4 @@ GimpUndo * gimp_image_undo_can_compress (GimpImage        *image,
 GimpUndo * gimp_image_undo_get_fadeable (GimpImage        *image);
 
 
-#endif /* __GIMP_IMAGE_UNDO_H__ */
+#endif /* __GIMP_IMAGE__UNDO_H__ */

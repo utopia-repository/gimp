@@ -104,6 +104,39 @@ gimp_environ_table_new (void)
   return g_object_new (GIMP_TYPE_ENVIRON_TABLE, NULL);
 }
 
+static guint
+gimp_environ_table_str_hash (gconstpointer v)
+{
+#ifdef G_OS_WIN32
+  gchar *p      = g_ascii_strup ((const gchar *) v, -1);
+  guint  retval = g_str_hash (p);
+
+  g_free (p);
+
+  return retval;
+#else
+  return g_str_hash (v);
+#endif
+}
+
+static gboolean
+gimp_environ_table_str_equal (gconstpointer v1,
+                              gconstpointer v2)
+{
+#ifdef G_OS_WIN32
+  gchar    *string1 = g_ascii_strup ((const gchar *) v1, -1);
+  gchar    *string2 = g_ascii_strup ((const gchar *) v2, -1);
+  gboolean  retval  = g_str_equal (string1, string2);
+
+  g_free (string1);
+  g_free (string2);
+
+  return retval;
+#else
+  return g_str_equal (v1, v2);
+#endif
+}
+
 void
 gimp_environ_table_load (GimpEnvironTable *environ_table,
                          const gchar      *env_path)
@@ -113,7 +146,8 @@ gimp_environ_table_load (GimpEnvironTable *environ_table,
   gimp_environ_table_clear (environ_table);
 
   environ_table->vars =
-    g_hash_table_new_full (g_str_hash, g_str_equal,
+    g_hash_table_new_full (gimp_environ_table_str_hash,
+                           gimp_environ_table_str_equal,
                            g_free, gimp_environ_table_free_value);
 
   gimp_datafiles_read_directories (env_path,

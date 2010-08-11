@@ -76,6 +76,10 @@ libappcore_a_sources = \
 	gimpchannel-combine.h		\
 	gimpchannel-select.c		\
 	gimpchannel-select.h		\
+	gimpchannelpropundo.c		\
+	gimpchannelpropundo.h		\
+	gimpchannelundo.c		\
+	gimpchannelundo.h		\
 	gimpcontainer.c			\
 	gimpcontainer.h			\
 	gimpcontainer-filter.c		\
@@ -122,18 +126,24 @@ libappcore_a_sources = \
 	gimpdrawable-stroke.h		\
 	gimpdrawable-transform.c	\
 	gimpdrawable-transform.h	\
+	gimpdrawablemodundo.c		\
+	gimpdrawablemodundo.h		\
 	gimpdrawableundo.c		\
 	gimpdrawableundo.h		\
+	gimpfloatingselundo.c		\
+	gimpfloatingselundo.h		\
 	gimpgradient.c			\
 	gimpgradient.h			\
 	gimpgradient-load.c		\
 	gimpgradient-load.h		\
 	gimpgradient-save.c		\
 	gimpgradient-save.h		\
-	gimpgrid.c                      \
-	gimpgrid.h                      \
-	gimpguide.c                     \
-	gimpguide.h                     \
+	gimpgrid.c			\
+	gimpgrid.h			\
+	gimpguide.c			\
+	gimpguide.h			\
+	gimpguideundo.c			\
+	gimpguideundo.h			\
 	gimpimage.c			\
 	gimpimage.h			\
 	gimpimage-arrange.c		\
@@ -184,6 +194,8 @@ libappcore_a_sources = \
 	gimpimage-undo.h		\
 	gimpimage-undo-push.c		\
 	gimpimage-undo-push.h		\
+	gimpimageundo.c			\
+	gimpimageundo.h			\
 	gimpimagefile.c			\
 	gimpimagefile.h			\
 	gimpimagemap.c			\
@@ -194,6 +206,8 @@ libappcore_a_sources = \
 	gimpitem-linked.h		\
 	gimpitem-preview.c		\
 	gimpitem-preview.h		\
+	gimpitempropundo.c		\
+	gimpitempropundo.h		\
 	gimpitemundo.c			\
 	gimpitemundo.h			\
 	gimplayer.c			\
@@ -202,8 +216,18 @@ libappcore_a_sources = \
 	gimplayer-floating-sel.h	\
 	gimplayermask.c			\
 	gimplayermask.h			\
+	gimplayermaskpropundo.c		\
+	gimplayermaskpropundo.h		\
+	gimplayermaskundo.c		\
+	gimplayermaskundo.h		\
+	gimplayerpropundo.c		\
+	gimplayerpropundo.h		\
+	gimplayerundo.c			\
+	gimplayerundo.h			\
 	gimplist.c			\
 	gimplist.h			\
+	gimpmaskundo.c			\
+	gimpmaskundo.h			\
 	gimpobject.c			\
 	gimpobject.h			\
 	gimppaintinfo.c			\
@@ -241,6 +265,10 @@ libappcore_a_sources = \
 	gimpprojection.h		\
 	gimpprojection-construct.c	\
 	gimpprojection-construct.h	\
+	gimpsamplepoint.c		\
+	gimpsamplepoint.h		\
+	gimpsamplepointundo.c		\
+	gimpsamplepointundo.h		\
 	gimpscanconvert.c		\
 	gimpscanconvert.h		\
 	gimpselection.c			\
@@ -249,6 +277,8 @@ libappcore_a_sources = \
 	gimpstrokedesc.h		\
 	gimpstrokeoptions.c		\
 	gimpstrokeoptions.h		\
+	gimpsubprogress.c		\
+	gimpsubprogress.h		\
 	gimptemplate.c			\
 	gimptemplate.h			\
 	gimptoolinfo.c			\

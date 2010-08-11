@@ -51,12 +51,9 @@ enum
 {
   PROP_0,
   PROP_IMAGE,
+  PROP_TIME,
   PROP_UNDO_TYPE,
-  PROP_DIRTY_MASK,
-  PROP_DATA,
-  PROP_SIZE,
-  PROP_POP_FUNC,
-  PROP_FREE_FUNC
+  PROP_DIRTY_MASK
 };
 
 
@@ -153,6 +150,11 @@ gimp_undo_class_init (GimpUndoClass *klass)
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
 
+  g_object_class_install_property (object_class, PROP_TIME,
+                                   g_param_spec_uint ("time", NULL, NULL,
+                                                      0, G_MAXUINT, 0,
+                                                      GIMP_PARAM_READWRITE));
+
   g_object_class_install_property (object_class, PROP_UNDO_TYPE,
                                    g_param_spec_enum ("undo-type", NULL, NULL,
                                                       GIMP_TYPE_UNDO_TYPE,
@@ -167,27 +169,6 @@ gimp_undo_class_init (GimpUndoClass *klass)
                                                        GIMP_DIRTY_NONE,
                                                        GIMP_PARAM_READWRITE |
                                                        G_PARAM_CONSTRUCT_ONLY));
-
-  g_object_class_install_property (object_class, PROP_DATA,
-                                   g_param_spec_pointer ("data", NULL, NULL,
-                                                         GIMP_PARAM_READWRITE |
-                                                         G_PARAM_CONSTRUCT_ONLY));
-
-  g_object_class_install_property (object_class, PROP_SIZE,
-                                   g_param_spec_int64 ("size", NULL, NULL,
-                                                       0, G_MAXINT64, 0,
-                                                       GIMP_PARAM_READWRITE |
-                                                       G_PARAM_CONSTRUCT));
-
-  g_object_class_install_property (object_class, PROP_POP_FUNC,
-                                   g_param_spec_pointer ("pop-func", NULL, NULL,
-                                                         GIMP_PARAM_READWRITE |
-                                                         G_PARAM_CONSTRUCT_ONLY));
-
-  g_object_class_install_property (object_class, PROP_FREE_FUNC,
-                                   g_param_spec_pointer ("free-func", NULL, NULL,
-                                                         GIMP_PARAM_READWRITE |
-                                                         G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -247,24 +228,16 @@ gimp_undo_set_property (GObject      *object,
       /* don't ref */
       undo->image = g_value_get_object (value);
       break;
+    case PROP_TIME:
+      undo->time = g_value_get_uint (value);
+      break;
     case PROP_UNDO_TYPE:
       undo->undo_type = g_value_get_enum (value);
       break;
     case PROP_DIRTY_MASK:
       undo->dirty_mask = g_value_get_flags (value);
       break;
-    case PROP_DATA:
-      undo->data = g_value_get_pointer (value);
-      break;
-    case PROP_SIZE:
-      undo->size = g_value_get_int64 (value);
-      break;
-    case PROP_POP_FUNC:
-      undo->pop_func = g_value_get_pointer (value);
-      break;
-    case PROP_FREE_FUNC:
-      undo->free_func = g_value_get_pointer (value);
-      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -284,24 +257,16 @@ gimp_undo_get_property (GObject    *object,
     case PROP_IMAGE:
       g_value_set_object (value, undo->image);
       break;
+    case PROP_TIME:
+      g_value_set_uint (value, undo->time);
+      break;
     case PROP_UNDO_TYPE:
       g_value_set_enum (value, undo->undo_type);
       break;
     case PROP_DIRTY_MASK:
       g_value_set_flags (value, undo->dirty_mask);
       break;
-    case PROP_DATA:
-      g_value_set_pointer (value, undo->data);
-      break;
-    case PROP_SIZE:
-      g_value_set_int64 (value, undo->size);
-      break;
-    case PROP_POP_FUNC:
-      g_value_set_pointer (value, undo->pop_func);
-      break;
-    case PROP_FREE_FUNC:
-      g_value_set_pointer (value, undo->free_func);
-      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -313,7 +278,7 @@ gimp_undo_get_memsize (GimpObject *object,
                        gint64     *gui_size)
 {
   GimpUndo *undo    = GIMP_UNDO (object);
-  gint64    memsize = undo->size;
+  gint64    memsize = 0;
 
   if (undo->preview)
     *gui_size += temp_buf_get_memsize (undo->preview);
@@ -383,16 +348,12 @@ gimp_undo_real_pop (GimpUndo            *undo,
                     GimpUndoMode         undo_mode,
                     GimpUndoAccumulator *accum)
 {
-  if (undo->pop_func)
-    undo->pop_func (undo, undo_mode, accum);
 }
 
 static void
 gimp_undo_real_free (GimpUndo     *undo,
                      GimpUndoMode  undo_mode)
 {
-  if (undo->free_func)
-    undo->free_func (undo, undo_mode);
 }
 
 void
@@ -472,8 +433,8 @@ gimp_undo_create_preview (GimpUndo    *undo,
 
       undo->preview_idle_id =
         g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
-                         gimp_undo_create_preview_idle,
-                         idle, (GDestroyNotify) gimp_undo_idle_free);
+                         gimp_undo_create_preview_idle, idle,
+                         (GDestroyNotify) gimp_undo_idle_free);
     }
 }
 
@@ -599,4 +560,37 @@ gimp_undo_is_weak (GimpUndo *undo)
     }
 
   return FALSE;
+}
+
+/**
+ * gimp_undo_get_age:
+ * @undo:
+ *
+ * Return value: the time in seconds since this undo item was created
+ */
+gint
+gimp_undo_get_age (GimpUndo *undo)
+{
+  guint now = time (NULL);
+
+  g_return_val_if_fail (GIMP_IS_UNDO (undo), 0);
+  g_return_val_if_fail (now >= undo->time, 0);
+
+  return now - undo->time;
+}
+
+/**
+ * gimp_undo_reset_age:
+ * @undo:
+ *
+ * Changes the creation time of this undo item to the current time.
+ */
+void
+gimp_undo_reset_age (GimpUndo *undo)
+{
+  g_return_if_fail (GIMP_IS_UNDO (undo));
+
+  undo->time = time (NULL);
+
+  g_object_notify (G_OBJECT (undo), "time");
 }

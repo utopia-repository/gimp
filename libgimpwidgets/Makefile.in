@@ -85,8 +85,8 @@ am__objects_2 = gimpwidgets.lo gimpbrowser.lo gimpbutton.lo \
 	gimppixmap.lo gimppreview.lo gimppreviewarea.lo \
 	gimppropwidgets.lo gimpquerybox.lo gimpratioentry.lo \
 	gimpresolutionentry.lo gimpscrolledpreview.lo gimpsizeentry.lo \
-	gimpstock.lo gimpunitmenu.lo gimpzoommodel.lo \
-	gimpwidgets-private.lo
+	gimpstock.lo gimpstringcombobox.lo gimpunitmenu.lo \
+	gimpzoommodel.lo gimpwidgets-private.lo
 am_libgimpwidgets_2_0_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 libgimpwidgets_2_0_la_OBJECTS = $(am_libgimpwidgets_2_0_la_OBJECTS)
 am_test_preview_area_OBJECTS = test-preview-area.$(OBJEXT)
@@ -240,6 +240,10 @@ GTK_DOC_USE_LIBTOOL_FALSE = @GTK_DOC_USE_LIBTOOL_FALSE@
 GTK_DOC_USE_LIBTOOL_TRUE = @GTK_DOC_USE_LIBTOOL_TRUE@
 GTK_LIBS = @GTK_LIBS@
 GTK_REQUIRED_VERSION = @GTK_REQUIRED_VERSION@
+HAL_CFLAGS = @HAL_CFLAGS@
+HAL_LIBS = @HAL_LIBS@
+HAVE_DX_DINPUT_FALSE = @HAVE_DX_DINPUT_FALSE@
+HAVE_DX_DINPUT_TRUE = @HAVE_DX_DINPUT_TRUE@
 HAVE_FINITE = @HAVE_FINITE@
 HAVE_GLIBC_REGEX = @HAVE_GLIBC_REGEX@
 HAVE_GLIBC_REGEX_FALSE = @HAVE_GLIBC_REGEX_FALSE@
@@ -589,6 +593,8 @@ libgimpwidgets_2_0_la_sources = \
 	gimpsizeentry.h		\
 	gimpstock.c		\
 	gimpstock.h		\
+	gimpstringcombobox.c	\
+	gimpstringcombobox.h	\
 	gimpunitmenu.c		\
 	gimpunitmenu.h		\
 	gimpzoommodel.c		\
@@ -655,6 +661,7 @@ libgimpwidgetsinclude_HEADERS = \
 	gimpscrolledpreview.h	\
 	gimpsizeentry.h		\
 	gimpstock.h		\
+	gimpstringcombobox.h	\
 	gimpunitmenu.h		\
 	gimpzoommodel.h
 
@@ -821,6 +828,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpscrolledpreview.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpsizeentry.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstock.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpstringcombobox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpunitmenu.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwidgets-private.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gimpwidgets.Plo@am__quote@

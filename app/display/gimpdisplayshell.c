@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpmath/gimpmath.h"
 #include "libgimpcolor/gimpcolor.h"
 #include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
@@ -38,10 +39,9 @@
 #include "core/gimpcontext.h"
 #include "core/gimpguide.h"
 #include "core/gimpimage.h"
-#include "core/gimpimage-guides.h"
-#include "core/gimpimage-sample-points.h"
 #include "core/gimpimage-snap.h"
 #include "core/gimpmarshal.h"
+#include "core/gimpsamplepoint.h"
 
 #include "widgets/gimprender.h"
 #include "widgets/gimphelp-ids.h"
@@ -220,6 +220,11 @@ gimp_display_shell_init (GimpDisplayShell *shell)
 
   shell->offset_x               = 0;
   shell->offset_y               = 0;
+
+  shell->last_scale             = 0.0;
+  shell->last_scale_time        = 0;
+  shell->last_offset_x          = 0;
+  shell->last_offset_y          = 0;
 
   shell->disp_width             = 0;
   shell->disp_height            = 0;

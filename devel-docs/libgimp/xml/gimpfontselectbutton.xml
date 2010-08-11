@@ -4,7 +4,7 @@
 
 <refentry id="GimpFontSelectButton">
 <refmeta>
-<refentrytitle role="top_of_page">GimpFontSelectButton</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpFontSelectButton.top_of_page">GimpFontSelectButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,27 +15,22 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpFontSelectButton.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpFontSelectButton-struct">GimpFontSelectButton</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-font-select-button-new">gimp_font_select_button_new</link>         (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *font_name);
 const <link linkend="gchar">gchar</link>*        <link linkend="gimp-font-select-button-get-font">gimp_font_select_button_get_font</link>    (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *button);
 <link linkend="void">void</link>                <link linkend="gimp-font-select-button-set-font">gimp_font_select_button_set_font</link>    (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *button,
                                                          const <link linkend="gchar">gchar</link> *font_name);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpFontSelectButton.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -51,7 +46,7 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-font-select
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpFontSelectButton.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpFontSelectButton implements
@@ -60,42 +55,40 @@ GimpFontSelectButton implements
 </refsect1>
 
 
-<refsect1 role="properties">
+<refsect1 id="GimpFontSelectButton.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
-
-  &quot;<link linkend="GimpFontSelectButton--font-name">font-name</link>&quot;                <link linkend="gchararray">gchararray</link>            : Read / Write
-  &quot;<link linkend="GimpFontSelectButton--title">title</link>&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
+  &quot;<link linkend="GimpFontSelectButton--font-name">font-name</link>&quot;                <link linkend="gchar">gchar</link>*                : Read / Write
+  &quot;<link linkend="GimpFontSelectButton--title">title</link>&quot;                    <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpFontSelectButton.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpFontSelectButton-font-set">font-set</link>&quot;                                       : Run First
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpFontSelectButton.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpFontSelectButton.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpFontSelectButton-struct" role="struct"/>GimpFontSelectButton</title>
-<indexterm><primary>GimpFontSelectButton</primary></indexterm><programlisting>typedef struct _GimpFontSelectButton GimpFontSelectButton;</programlisting>
+<refsect2 id="GimpFontSelectButton-struct" role="struct">
+<title>GimpFontSelectButton</title>
+<indexterm zone="GimpFontSelectButton-struct"><primary>GimpFontSelectButton</primary></indexterm><programlisting>typedef struct _GimpFontSelectButton GimpFontSelectButton;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-font-select-button-new" role="function" condition="since:GIMP 2.4"/>gimp_font_select_button_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_font_select_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_font_select_button_new         (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-font-select-button-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_font_select_button_new ()</title>
+<indexterm zone="gimp-font-select-button-new" role="GIMP 2.4"><primary>gimp_font_select_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_font_select_button_new         (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *font_name);</programlisting>
 <para>
 Creates a new <link linkend="GtkWidget"><type>GtkWidget</type></link> that completely controls the selection of
@@ -115,9 +108,9 @@ plug-in dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-font-select-button-get-font" role="function" condition="since:GIMP 2.4"/>gimp_font_select_button_get_font ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_font_select_button_get_font</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_font_select_button_get_font    (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *button);</programlisting>
+<refsect2 id="gimp-font-select-button-get-font" role="function" condition="since:GIMP 2.4">
+<title>gimp_font_select_button_get_font ()</title>
+<indexterm zone="gimp-font-select-button-get-font" role="GIMP 2.4"><primary>gimp_font_select_button_get_font</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_font_select_button_get_font    (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *button);</programlisting>
 <para>
 Retrieves the name of currently selected font.</para>
 <para>
@@ -131,9 +124,9 @@ Retrieves the name of currently selected font.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-font-select-button-set-font" role="function" condition="since:GIMP 2.4"/>gimp_font_select_button_set_font ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_font_select_button_set_font</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_font_select_button_set_font    (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *button,
+<refsect2 id="gimp-font-select-button-set-font" role="function" condition="since:GIMP 2.4">
+<title>gimp_font_select_button_set_font ()</title>
+<indexterm zone="gimp-font-select-button-set-font" role="GIMP 2.4"><primary>gimp_font_select_button_set_font</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_font_select_button_set_font    (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *button,
                                                          const <link linkend="gchar">gchar</link> *font_name);</programlisting>
 <para>
 Sets the current font for the font select button.</para>
@@ -150,10 +143,10 @@ Sets the current font for the font select button.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
+<refsect1 id="GimpFontSelectButton.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpFontSelectButton--font-name"/>The <literal>&quot;font-name&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpFontSelectButton:font-name</primary></indexterm><programlisting>  &quot;font-name&quot;                <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
+<refsect2 id="GimpFontSelectButton--font-name"><title>The <literal>&quot;font-name&quot;</literal> property</title>
+<indexterm zone="GimpFontSelectButton--font-name" role="GIMP 2.4"><primary>GimpFontSelectButton:font-name</primary></indexterm><programlisting>  &quot;font-name&quot;                <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>
 The name of the currently selected font.</para>
 <para>
@@ -162,8 +155,8 @@ The name of the currently selected font.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpFontSelectButton--title"/>The <literal>&quot;title&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpFontSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
+<refsect2 id="GimpFontSelectButton--title"><title>The <literal>&quot;title&quot;</literal> property</title>
+<indexterm zone="GimpFontSelectButton--title" role="GIMP 2.4"><primary>GimpFontSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only</programlisting>
 <para>
 The title to be used for the font selection popup dialog.</para>
 <para>
@@ -175,10 +168,10 @@ The title to be used for the font selection popup dialog.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpFontSelectButton.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpFontSelectButton-font-set"/>The <literal>&quot;font-set&quot;</literal> signal</title>
-<indexterm role="GIMP 2.4"><primary>GimpFontSelectButton::font-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *widget,
+<refsect2 id="GimpFontSelectButton-font-set"><title>The <literal>&quot;font-set&quot;</literal> signal</title>
+<indexterm zone="GimpFontSelectButton-font-set" role="GIMP 2.4"><primary>GimpFontSelectButton::font-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpFontSelectButton">GimpFontSelectButton</link> *widget,
                                                         <link linkend="gchar">gchar</link>                *font_name,
                                                         <link linkend="gboolean">gboolean</link>              dialog_closing,
                                                         <link linkend="gpointer">gpointer</link>              user_data)           : Run First</programlisting>
@@ -204,6 +197,4 @@ The ::font-set signal is emitted when the user selects a font.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

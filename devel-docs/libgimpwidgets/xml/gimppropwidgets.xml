@@ -4,7 +4,7 @@
 
 <refentry id="libgimpwidgets-GimpPropWidgets">
 <refmeta>
-<refentrytitle role="top_of_page">GimpPropWidgets</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpwidgets-GimpPropWidgets.top_of_page">GimpPropWidgets</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpwidgets-GimpPropWidgets.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-prop-boolean-combo-box-new">gimp_prop_boolean_combo_box_new</link>     (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *true_text,
@@ -166,18 +163,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpwidgets-GimpPropWidgets.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpwidgets-GimpPropWidgets.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-prop-boolean-combo-box-new" role="function"/>gimp_prop_boolean_combo_box_new ()</title>
-<indexterm><primary>gimp_prop_boolean_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_boolean_combo_box_new     (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-boolean-combo-box-new" role="function">
+<title>gimp_prop_boolean_combo_box_new ()</title>
+<indexterm zone="gimp-prop-boolean-combo-box-new"><primary>gimp_prop_boolean_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_boolean_combo_box_new     (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *true_text,
                                                          const <link linkend="gchar">gchar</link> *false_text);</programlisting>
@@ -207,9 +204,9 @@ displaying the <parameter>true_text</parameter> label, the other displaying the
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-boolean-radio-frame-new" role="function"/>gimp_prop_boolean_radio_frame_new ()</title>
-<indexterm><primary>gimp_prop_boolean_radio_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_boolean_radio_frame_new   (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-boolean-radio-frame-new" role="function">
+<title>gimp_prop_boolean_radio_frame_new ()</title>
+<indexterm zone="gimp-prop-boolean-radio-frame-new"><primary>gimp_prop_boolean_radio_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_boolean_radio_frame_new   (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *true_text,
@@ -240,9 +237,9 @@ the specified boolean property.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-check-button-new" role="function"/>gimp_prop_check_button_new ()</title>
-<indexterm><primary>gimp_prop_check_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_check_button_new          (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-check-button-new" role="function">
+<title>gimp_prop_check_button_new ()</title>
+<indexterm zone="gimp-prop-check-button-new"><primary>gimp_prop_check_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_check_button_new          (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *label);</programlisting>
 <para>
@@ -265,9 +262,9 @@ boolean property.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-color-area-new" role="function"/>gimp_prop_color_area_new ()</title>
-<indexterm><primary>gimp_prop_color_area_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_color_area_new            (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-color-area-new" role="function">
+<title>gimp_prop_color_area_new ()</title>
+<indexterm zone="gimp-prop-color-area-new"><primary>gimp_prop_color_area_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_color_area_new            (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="gint">gint</link> width,
                                                          <link linkend="gint">gint</link> height,
@@ -298,9 +295,9 @@ property.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-coordinates-connect" role="function"/>gimp_prop_coordinates_connect ()</title>
-<indexterm><primary>gimp_prop_coordinates_connect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_prop_coordinates_connect       (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-coordinates-connect" role="function">
+<title>gimp_prop_coordinates_connect ()</title>
+<indexterm zone="gimp-prop-coordinates-connect"><primary>gimp_prop_coordinates_connect</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_prop_coordinates_connect       (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *x_property_name,
                                                          const <link linkend="gchar">gchar</link> *y_property_name,
                                                          const <link linkend="gchar">gchar</link> *unit_property_name,
@@ -340,9 +337,9 @@ Since GIMP 2.4
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-coordinates-new" role="function"/>gimp_prop_coordinates_new ()</title>
-<indexterm><primary>gimp_prop_coordinates_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_coordinates_new           (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-coordinates-new" role="function">
+<title>gimp_prop_coordinates_new ()</title>
+<indexterm zone="gimp-prop-coordinates-new"><primary>gimp_prop_coordinates_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_coordinates_new           (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *x_property_name,
                                                          const <link linkend="gchar">gchar</link> *y_property_name,
                                                          const <link linkend="gchar">gchar</link> *unit_property_name,
@@ -392,9 +389,9 @@ their associated unit property.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-entry-new" role="function"/>gimp_prop_entry_new ()</title>
-<indexterm><primary>gimp_prop_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_entry_new                 (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-entry-new" role="function">
+<title>gimp_prop_entry_new ()</title>
+<indexterm zone="gimp-prop-entry-new"><primary>gimp_prop_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_entry_new                 (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="gint">gint</link> max_len);</programlisting>
 <para>
@@ -417,9 +414,9 @@ string property.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-enum-check-button-new" role="function"/>gimp_prop_enum_check_button_new ()</title>
-<indexterm><primary>gimp_prop_enum_check_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_check_button_new     (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-enum-check-button-new" role="function">
+<title>gimp_prop_enum_check_button_new ()</title>
+<indexterm zone="gimp-prop-enum-check-button-new"><primary>gimp_prop_enum_check_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_check_button_new     (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *label,
                                                          <link linkend="gint">gint</link> false_value,
@@ -452,9 +449,9 @@ other to the "unchecked" state.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-enum-combo-box-new" role="function"/>gimp_prop_enum_combo_box_new ()</title>
-<indexterm><primary>gimp_prop_enum_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_combo_box_new        (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-enum-combo-box-new" role="function">
+<title>gimp_prop_enum_combo_box_new ()</title>
+<indexterm zone="gimp-prop-enum-combo-box-new"><primary>gimp_prop_enum_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_combo_box_new        (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="gint">gint</link> minimum,
                                                          <link linkend="gint">gint</link> maximum);</programlisting>
@@ -485,9 +482,9 @@ range of the Enum is used.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-enum-label-new" role="function"/>gimp_prop_enum_label_new ()</title>
-<indexterm><primary>gimp_prop_enum_label_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_label_new            (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-enum-label-new" role="function">
+<title>gimp_prop_enum_label_new ()</title>
+<indexterm zone="gimp-prop-enum-label-new"><primary>gimp_prop_enum_label_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_label_new            (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name);</programlisting>
 <para>
 </para>
@@ -505,9 +502,9 @@ Since GIMP 2.4
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-enum-radio-box-new" role="function"/>gimp_prop_enum_radio_box_new ()</title>
-<indexterm><primary>gimp_prop_enum_radio_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_radio_box_new        (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-enum-radio-box-new" role="function">
+<title>gimp_prop_enum_radio_box_new ()</title>
+<indexterm zone="gimp-prop-enum-radio-box-new"><primary>gimp_prop_enum_radio_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_radio_box_new        (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="gint">gint</link> minimum,
                                                          <link linkend="gint">gint</link> maximum);</programlisting>
@@ -538,9 +535,9 @@ If you want to assign a label to the group of radio buttons, use
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-enum-radio-frame-new" role="function"/>gimp_prop_enum_radio_frame_new ()</title>
-<indexterm><primary>gimp_prop_enum_radio_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_radio_frame_new      (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-enum-radio-frame-new" role="function">
+<title>gimp_prop_enum_radio_frame_new ()</title>
+<indexterm zone="gimp-prop-enum-radio-frame-new"><primary>gimp_prop_enum_radio_frame_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_radio_frame_new      (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *title,
                                                          <link linkend="gint">gint</link> minimum,
@@ -573,9 +570,9 @@ are equal (e.g., 0, 0), then the full range of the enum will be used.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-enum-stock-box-new" role="function"/>gimp_prop_enum_stock_box_new ()</title>
-<indexterm><primary>gimp_prop_enum_stock_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_stock_box_new        (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-enum-stock-box-new" role="function">
+<title>gimp_prop_enum_stock_box_new ()</title>
+<indexterm zone="gimp-prop-enum-stock-box-new"><primary>gimp_prop_enum_stock_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_enum_stock_box_new        (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *stock_prefix,
                                                          <link linkend="gint">gint</link> minimum,
@@ -609,9 +606,9 @@ enum_value's nick to the given <parameter>stock_prefix</parameter>.  See
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-expander-new" role="function"/>gimp_prop_expander_new ()</title>
-<indexterm><primary>gimp_prop_expander_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_expander_new              (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-expander-new" role="function">
+<title>gimp_prop_expander_new ()</title>
+<indexterm zone="gimp-prop-expander-new"><primary>gimp_prop_expander_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_expander_new              (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *label);</programlisting>
 <para>
@@ -635,9 +632,9 @@ for the widget.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-file-chooser-button-new" role="function"/>gimp_prop_file_chooser_button_new ()</title>
-<indexterm><primary>gimp_prop_file_chooser_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_file_chooser_button_new   (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-file-chooser-button-new" role="function">
+<title>gimp_prop_file_chooser_button_new ()</title>
+<indexterm zone="gimp-prop-file-chooser-button-new"><primary>gimp_prop_file_chooser_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_file_chooser_button_new   (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *title,
                                                          <link linkend="GtkFileChooserAction">GtkFileChooserAction</link> action);</programlisting>
@@ -667,9 +664,9 @@ interface; you can use the <link linkend="GtkFileChooser"><type>GtkFileChooser</
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-file-chooser-button-new-with-dialog" role="function"/>gimp_prop_file_chooser_button_new_with_dialog ()</title>
-<indexterm><primary>gimp_prop_file_chooser_button_new_with_dialog</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_file_chooser_button_new_with_dialog
+<refsect2 id="gimp-prop-file-chooser-button-new-with-dialog" role="function">
+<title>gimp_prop_file_chooser_button_new_with_dialog ()</title>
+<indexterm zone="gimp-prop-file-chooser-button-new-with-dialog"><primary>gimp_prop_file_chooser_button_new_with_dialog</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_file_chooser_button_new_with_dialog
                                                         (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="GtkWidget">GtkWidget</link> *dialog);</programlisting>
@@ -701,9 +698,9 @@ interface; you can use the <link linkend="GtkFileChooser"><type>GtkFileChooser</
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-hscale-new" role="function"/>gimp_prop_hscale_new ()</title>
-<indexterm><primary>gimp_prop_hscale_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_hscale_new                (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-hscale-new" role="function">
+<title>gimp_prop_hscale_new ()</title>
+<indexterm zone="gimp-prop-hscale-new"><primary>gimp_prop_hscale_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_hscale_new                (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="gdouble">gdouble</link> step_increment,
                                                          <link linkend="gdouble">gdouble</link> page_increment,
@@ -734,9 +731,9 @@ integer or double property.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-int-combo-box-new" role="function"/>gimp_prop_int_combo_box_new ()</title>
-<indexterm><primary>gimp_prop_int_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_int_combo_box_new         (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-int-combo-box-new" role="function">
+<title>gimp_prop_int_combo_box_new ()</title>
+<indexterm zone="gimp-prop-int-combo-box-new"><primary>gimp_prop_int_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_int_combo_box_new         (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="GimpIntStore">GimpIntStore</link> *store);</programlisting>
 <para>
@@ -761,9 +758,9 @@ which should be created using <link linkend="gimp-int-store-new"><function>gimp_
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-label-new" role="function"/>gimp_prop_label_new ()</title>
-<indexterm><primary>gimp_prop_label_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_label_new                 (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-label-new" role="function">
+<title>gimp_prop_label_new ()</title>
+<indexterm zone="gimp-prop-label-new"><primary>gimp_prop_label_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_label_new                 (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name);</programlisting>
 <para>
 Creates a <link linkend="GtkLabel"><type>GtkLabel</type></link> to display the value of the specified property.
@@ -784,9 +781,9 @@ to a string.  If the user should be able to edit the string, use
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-memsize-entry-new" role="function"/>gimp_prop_memsize_entry_new ()</title>
-<indexterm><primary>gimp_prop_memsize_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_memsize_entry_new         (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-memsize-entry-new" role="function">
+<title>gimp_prop_memsize_entry_new ()</title>
+<indexterm zone="gimp-prop-memsize-entry-new"><primary>gimp_prop_memsize_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_memsize_entry_new         (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name);</programlisting>
 <para>
 Creates a <link linkend="GimpMemsizeEntry"><type>GimpMemsizeEntry</type></link> (spin button and option menu) to set
@@ -806,9 +803,9 @@ and display the value of the specified memsize property.  See
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-opacity-entry-new" role="function"/>gimp_prop_opacity_entry_new ()</title>
-<indexterm><primary>gimp_prop_opacity_entry_new</primary></indexterm><programlisting><link linkend="GtkObject">GtkObject</link>*          gimp_prop_opacity_entry_new         (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-opacity-entry-new" role="function">
+<title>gimp_prop_opacity_entry_new ()</title>
+<indexterm zone="gimp-prop-opacity-entry-new"><primary>gimp_prop_opacity_entry_new</primary></indexterm><programlisting><link linkend="GtkObject">GtkObject</link>*          gimp_prop_opacity_entry_new         (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="GtkTable">GtkTable</link> *table,
                                                          <link linkend="gint">gint</link> column,
@@ -846,9 +843,9 @@ represent an "opacity" variable with range 0 to 100.  See
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-path-editor-new" role="function"/>gimp_prop_path_editor_new ()</title>
-<indexterm><primary>gimp_prop_path_editor_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_path_editor_new           (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-path-editor-new" role="function">
+<title>gimp_prop_path_editor_new ()</title>
+<indexterm zone="gimp-prop-path-editor-new"><primary>gimp_prop_path_editor_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_path_editor_new           (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *path_property_name,
                                                          const <link linkend="gchar">gchar</link> *writable_property_name,
                                                          const <link linkend="gchar">gchar</link> *filesel_title);</programlisting>
@@ -872,9 +869,9 @@ Since GIMP 2.4
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-scale-entry-new" role="function"/>gimp_prop_scale_entry_new ()</title>
-<indexterm><primary>gimp_prop_scale_entry_new</primary></indexterm><programlisting><link linkend="GtkObject">GtkObject</link>*          gimp_prop_scale_entry_new           (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-scale-entry-new" role="function">
+<title>gimp_prop_scale_entry_new ()</title>
+<indexterm zone="gimp-prop-scale-entry-new"><primary>gimp_prop_scale_entry_new</primary></indexterm><programlisting><link linkend="GtkObject">GtkObject</link>*          gimp_prop_scale_entry_new           (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="GtkTable">GtkTable</link> *table,
                                                          <link linkend="gint">gint</link> column,
@@ -936,9 +933,9 @@ display the value of the specified double property.  See
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-size-entry-new" role="function"/>gimp_prop_size_entry_new ()</title>
-<indexterm><primary>gimp_prop_size_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_size_entry_new            (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-size-entry-new" role="function">
+<title>gimp_prop_size_entry_new ()</title>
+<indexterm zone="gimp-prop-size-entry-new"><primary>gimp_prop_size_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_size_entry_new            (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="gboolean">gboolean</link> property_is_pixel,
                                                          const <link linkend="gchar">gchar</link> *unit_property_name,
@@ -983,9 +980,9 @@ entry holding two values.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-spin-button-new" role="function"/>gimp_prop_spin_button_new ()</title>
-<indexterm><primary>gimp_prop_spin_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_spin_button_new           (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-spin-button-new" role="function">
+<title>gimp_prop_spin_button_new ()</title>
+<indexterm zone="gimp-prop-spin-button-new"><primary>gimp_prop_spin_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_spin_button_new           (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="gdouble">gdouble</link> step_increment,
                                                          <link linkend="gdouble">gdouble</link> page_increment,
@@ -1016,9 +1013,9 @@ specified double property.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-stock-image-new" role="function"/>gimp_prop_stock_image_new ()</title>
-<indexterm><primary>gimp_prop_stock_image_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_stock_image_new           (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-stock-image-new" role="function">
+<title>gimp_prop_stock_image_new ()</title>
+<indexterm zone="gimp-prop-stock-image-new"><primary>gimp_prop_stock_image_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_stock_image_new           (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="GtkIconSize">GtkIconSize</link> icon_size);</programlisting>
 <para>
@@ -1042,9 +1039,9 @@ See <link linkend="gtk-image-new-from-stock"><function>gtk_image_new_from_stock(
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-string-combo-box-new" role="function"/>gimp_prop_string_combo_box_new ()</title>
-<indexterm><primary>gimp_prop_string_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_string_combo_box_new      (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-string-combo-box-new" role="function">
+<title>gimp_prop_string_combo_box_new ()</title>
+<indexterm zone="gimp-prop-string-combo-box-new"><primary>gimp_prop_string_combo_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_string_combo_box_new      (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="GtkTreeModel">GtkTreeModel</link> *model,
                                                          <link linkend="gint">gint</link> id_column,
@@ -1077,9 +1074,9 @@ specified property.  The contents of the widget are determined by
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-text-buffer-new" role="function"/>gimp_prop_text_buffer_new ()</title>
-<indexterm><primary>gimp_prop_text_buffer_new</primary></indexterm><programlisting><link linkend="GtkTextBuffer">GtkTextBuffer</link>*      gimp_prop_text_buffer_new           (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-text-buffer-new" role="function">
+<title>gimp_prop_text_buffer_new ()</title>
+<indexterm zone="gimp-prop-text-buffer-new"><primary>gimp_prop_text_buffer_new</primary></indexterm><programlisting><link linkend="GtkTextBuffer">GtkTextBuffer</link>*      gimp_prop_text_buffer_new           (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          <link linkend="gint">gint</link> max_len);</programlisting>
 <para>
@@ -1109,9 +1106,9 @@ number of characters to be entered.</para>
 Since GIMP 2.4
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-prop-unit-menu-new" role="function"/>gimp_prop_unit_menu_new ()</title>
-<indexterm><primary>gimp_prop_unit_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_unit_menu_new             (<link linkend="GObject">GObject</link> *config,
+<refsect2 id="gimp-prop-unit-menu-new" role="function">
+<title>gimp_prop_unit_menu_new ()</title>
+<indexterm zone="gimp-prop-unit-menu-new"><primary>gimp_prop_unit_menu_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_prop_unit_menu_new             (<link linkend="GObject">GObject</link> *config,
                                                          const <link linkend="gchar">gchar</link> *property_name,
                                                          const <link linkend="gchar">gchar</link> *unit_format);</programlisting>
 <para>
@@ -1141,6 +1138,4 @@ Since GIMP 2.4
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimptools">
 <refmeta>
-<refentrytitle role="top_of_page">gimptools</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimptools.top_of_page">gimptools</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimptools.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-airbrush">gimp_airbrush</link>                       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> pressure,
                                                          <link linkend="gint">gint</link> num_strokes,
@@ -223,7 +220,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimptools.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions giving access to common toolbox tools.
@@ -231,11 +228,11 @@ Functions giving access to common toolbox tools.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimptools.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-airbrush" role="function"/>gimp_airbrush ()</title>
-<indexterm><primary>gimp_airbrush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_airbrush                       (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-airbrush" role="function">
+<title>gimp_airbrush ()</title>
+<indexterm zone="gimp-airbrush"><primary>gimp_airbrush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_airbrush                       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> pressure,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
@@ -266,9 +263,9 @@ results in a thinner layer.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-airbrush-default" role="function"/>gimp_airbrush_default ()</title>
-<indexterm><primary>gimp_airbrush_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_airbrush_default               (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-airbrush-default" role="function">
+<title>gimp_airbrush_default ()</title>
+<indexterm zone="gimp-airbrush-default"><primary>gimp_airbrush_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_airbrush_default               (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -295,9 +292,9 @@ default for the option will be used.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-by-color-select" role="function"/>gimp_by_color_select ()</title>
-<indexterm><primary>gimp_by_color_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_by_color_select                (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-by-color-select" role="function">
+<title>gimp_by_color_select ()</title>
+<indexterm zone="gimp-by-color-select"><primary>gimp_by_color_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_by_color_select                (<link linkend="gint32">gint32</link> drawable_ID,
                                                          const <link linkend="GimpRGB">GimpRGB</link> *color,
                                                          <link linkend="gint">gint</link> threshold,
                                                          <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
@@ -353,9 +350,9 @@ In the case of a merged sampling, the supplied drawable is ignored.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-by-color-select-full" role="function" condition="since:GIMP 2.4"/>gimp_by_color_select_full ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_by_color_select_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_by_color_select_full           (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-by-color-select-full" role="function" condition="since:GIMP 2.4">
+<title>gimp_by_color_select_full ()</title>
+<indexterm zone="gimp-by-color-select-full" role="GIMP 2.4"><primary>gimp_by_color_select_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_by_color_select_full           (<link linkend="gint32">gint32</link> drawable_ID,
                                                          const <link linkend="GimpRGB">GimpRGB</link> *color,
                                                          <link linkend="gint">gint</link> threshold,
                                                          <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
@@ -426,9 +423,9 @@ In the case of a merged sampling, the supplied drawable is ignored.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-clone" role="function"/>gimp_clone ()</title>
-<indexterm><primary>gimp_clone</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_clone                          (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-clone" role="function">
+<title>gimp_clone ()</title>
+<indexterm zone="gimp-clone"><primary>gimp_clone</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_clone                          (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint32">gint32</link> src_drawable_ID,
                                                          <link linkend="GimpCloneType">GimpCloneType</link> clone_type,
                                                          <link linkend="gdouble">gdouble</link> src_x,
@@ -478,9 +475,9 @@ significantly slower.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-clone-default" role="function"/>gimp_clone_default ()</title>
-<indexterm><primary>gimp_clone_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_clone_default                  (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-clone-default" role="function">
+<title>gimp_clone_default ()</title>
+<indexterm zone="gimp-clone-default"><primary>gimp_clone_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_clone_default                  (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -508,9 +505,9 @@ will be used.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-convolve" role="function"/>gimp_convolve ()</title>
-<indexterm><primary>gimp_convolve</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_convolve                       (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-convolve" role="function">
+<title>gimp_convolve ()</title>
+<indexterm zone="gimp-convolve"><primary>gimp_convolve</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_convolve                       (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> pressure,
                                                          <link linkend="GimpConvolveType">GimpConvolveType</link> convolve_type,
                                                          <link linkend="gint">gint</link> num_strokes,
@@ -544,9 +541,9 @@ between the specified stroke coordinates.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-convolve-default" role="function"/>gimp_convolve_default ()</title>
-<indexterm><primary>gimp_convolve_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_convolve_default               (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-convolve-default" role="function">
+<title>gimp_convolve_default ()</title>
+<indexterm zone="gimp-convolve-default"><primary>gimp_convolve_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_convolve_default               (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -573,9 +570,9 @@ been activated then the dialogs default values will be used.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-dodgeburn" role="function"/>gimp_dodgeburn ()</title>
-<indexterm><primary>gimp_dodgeburn</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_dodgeburn                      (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-dodgeburn" role="function">
+<title>gimp_dodgeburn ()</title>
+<indexterm zone="gimp-dodgeburn"><primary>gimp_dodgeburn</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_dodgeburn                      (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> exposure,
                                                          <link linkend="GimpDodgeBurnType">GimpDodgeBurnType</link> dodgeburn_type,
                                                          <link linkend="GimpTransferMode">GimpTransferMode</link> dodgeburn_mode,
@@ -610,9 +607,9 @@ Dodgeburn. More details here later.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-dodgeburn-default" role="function"/>gimp_dodgeburn_default ()</title>
-<indexterm><primary>gimp_dodgeburn_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_dodgeburn_default              (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-dodgeburn-default" role="function">
+<title>gimp_dodgeburn_default ()</title>
+<indexterm zone="gimp-dodgeburn-default"><primary>gimp_dodgeburn_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_dodgeburn_default              (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -638,9 +635,9 @@ Dodgeburn. More details here later.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-edit-bucket-fill-full" role="function" condition="since:GIMP 2.4"/>gimp_edit_bucket_fill_full ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_edit_bucket_fill_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_bucket_fill_full          (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-edit-bucket-fill-full" role="function" condition="since:GIMP 2.4">
+<title>gimp_edit_bucket_fill_full ()</title>
+<indexterm zone="gimp-edit-bucket-fill-full" role="GIMP 2.4"><primary>gimp_edit_bucket_fill_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_edit_bucket_fill_full          (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpBucketFillMode">GimpBucketFillMode</link> fill_mode,
                                                          <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode,
                                                          <link linkend="gdouble">gdouble</link> opacity,
@@ -705,9 +702,9 @@ relative to the drawable's origin.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-ellipse-select" role="function"/>gimp_ellipse_select ()</title>
-<indexterm><primary>gimp_ellipse_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_ellipse_select                 (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-ellipse-select" role="function">
+<title>gimp_ellipse_select ()</title>
+<indexterm zone="gimp-ellipse-select"><primary>gimp_ellipse_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_ellipse_select                 (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gdouble">gdouble</link> width,
@@ -762,9 +759,9 @@ radius.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-eraser" role="function"/>gimp_eraser ()</title>
-<indexterm><primary>gimp_eraser</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_eraser                         (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-eraser" role="function">
+<title>gimp_eraser ()</title>
+<indexterm zone="gimp-eraser"><primary>gimp_eraser</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_eraser                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes,
                                                          <link linkend="GimpBrushApplicationMode">GimpBrushApplicationMode</link> hardness,
@@ -799,9 +796,9 @@ tool linearly interpolates between the specified stroke coordinates.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-eraser-default" role="function"/>gimp_eraser_default ()</title>
-<indexterm><primary>gimp_eraser_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_eraser_default                 (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-eraser-default" role="function">
+<title>gimp_eraser_default ()</title>
+<indexterm zone="gimp-eraser-default"><primary>gimp_eraser_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_eraser_default                 (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -828,9 +825,9 @@ will be used.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-flip" role="function" condition="deprecated:"/>gimp_flip ()</title>
-<indexterm role="deprecated"><primary>gimp_flip</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_flip                           (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-flip" role="function" condition="deprecated:">
+<title>gimp_flip ()</title>
+<indexterm zone="gimp-flip" role="deprecated"><primary>gimp_flip</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_flip                           (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="GimpOrientationType">GimpOrientationType</link> flip_type);</programlisting>
 <warning><para><literal>gimp_flip</literal> is deprecated and should not be used in newly-written code.</para></warning>
 <para>
@@ -848,9 +845,9 @@ This procedure is deprecated! Use
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The flipped drawable.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-free-select" role="function"/>gimp_free_select ()</title>
-<indexterm><primary>gimp_free_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_free_select                    (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-free-select" role="function">
+<title>gimp_free_select ()</title>
+<indexterm zone="gimp-free-select"><primary>gimp_free_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_free_select                    (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gint">gint</link> num_segs,
                                                          const <link linkend="gdouble">gdouble</link> *segs,
                                                          <link linkend="GimpChannelOps">GimpChannelOps</link> operation,
@@ -899,9 +896,9 @@ radius.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-fuzzy-select" role="function"/>gimp_fuzzy_select ()</title>
-<indexterm><primary>gimp_fuzzy_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_fuzzy_select                   (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-fuzzy-select" role="function">
+<title>gimp_fuzzy_select ()</title>
+<indexterm zone="gimp-fuzzy-select"><primary>gimp_fuzzy_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_fuzzy_select                   (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gint">gint</link> threshold,
@@ -966,9 +963,9 @@ drawable's origin.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-fuzzy-select-full" role="function" condition="since:GIMP 2.4"/>gimp_fuzzy_select_full ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_fuzzy_select_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_fuzzy_select_full              (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-fuzzy-select-full" role="function" condition="since:GIMP 2.4">
+<title>gimp_fuzzy_select_full ()</title>
+<indexterm zone="gimp-fuzzy-select-full" role="GIMP 2.4"><primary>gimp_fuzzy_select_full</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_fuzzy_select_full              (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gint">gint</link> threshold,
@@ -1047,9 +1044,9 @@ drawable's origin.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-heal" role="function" condition="since:GIMP 2.4"/>gimp_heal ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_heal</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_heal                           (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-heal" role="function" condition="since:GIMP 2.4">
+<title>gimp_heal ()</title>
+<indexterm zone="gimp-heal" role="GIMP 2.4"><primary>gimp_heal</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_heal                           (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint32">gint32</link> src_drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> src_x,
                                                          <link linkend="gdouble">gdouble</link> src_y,
@@ -1091,9 +1088,9 @@ except RGB-&gt;Indexed.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-heal-default" role="function" condition="since:GIMP 2.4"/>gimp_heal_default ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_heal_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_heal_default                   (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-heal-default" role="function" condition="since:GIMP 2.4">
+<title>gimp_heal_default ()</title>
+<indexterm zone="gimp-heal-default" role="GIMP 2.4"><primary>gimp_heal_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_heal_default                   (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -1123,9 +1120,9 @@ be used.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-paintbrush" role="function"/>gimp_paintbrush ()</title>
-<indexterm><primary>gimp_paintbrush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_paintbrush                     (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-paintbrush" role="function">
+<title>gimp_paintbrush ()</title>
+<indexterm zone="gimp-paintbrush"><primary>gimp_paintbrush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_paintbrush                     (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> fade_out,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes,
@@ -1169,9 +1166,9 @@ pixels. If the gradient-length is 0, no gradient is used.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-paintbrush-default" role="function"/>gimp_paintbrush_default ()</title>
-<indexterm><primary>gimp_paintbrush_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_paintbrush_default             (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-paintbrush-default" role="function">
+<title>gimp_paintbrush_default ()</title>
+<indexterm zone="gimp-paintbrush-default"><primary>gimp_paintbrush_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_paintbrush_default             (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -1207,9 +1204,9 @@ is 0, no gradient is used.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-pencil" role="function"/>gimp_pencil ()</title>
-<indexterm><primary>gimp_pencil</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_pencil                         (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-pencil" role="function">
+<title>gimp_pencil ()</title>
+<indexterm zone="gimp-pencil"><primary>gimp_pencil</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_pencil                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -1237,9 +1234,9 @@ white.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-perspective" role="function" condition="deprecated:"/>gimp_perspective ()</title>
-<indexterm role="deprecated"><primary>gimp_perspective</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_perspective                    (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-perspective" role="function" condition="deprecated:">
+<title>gimp_perspective ()</title>
+<indexterm zone="gimp-perspective" role="deprecated"><primary>gimp_perspective</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_perspective                    (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> interpolation,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
@@ -1289,9 +1286,9 @@ This procedure is deprecated! Use
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The newly mapped drawable.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-rect-select" role="function"/>gimp_rect_select ()</title>
-<indexterm><primary>gimp_rect_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_rect_select                    (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-rect-select" role="function">
+<title>gimp_rect_select ()</title>
+<indexterm zone="gimp-rect-select"><primary>gimp_rect_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_rect_select                    (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gdouble">gdouble</link> width,
@@ -1339,9 +1336,9 @@ radius.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-round-rect-select" role="function" condition="since:GIMP 2.4"/>gimp_round_rect_select ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_round_rect_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_round_rect_select              (<link linkend="gint32">gint32</link> image_ID,
+<refsect2 id="gimp-round-rect-select" role="function" condition="since:GIMP 2.4">
+<title>gimp_round_rect_select ()</title>
+<indexterm zone="gimp-round-rect-select" role="GIMP 2.4"><primary>gimp_round_rect_select</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_round_rect_select              (<link linkend="gint32">gint32</link> image_ID,
                                                          <link linkend="gdouble">gdouble</link> x,
                                                          <link linkend="gdouble">gdouble</link> y,
                                                          <link linkend="gdouble">gdouble</link> width,
@@ -1408,9 +1405,9 @@ specified feather radius.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-rotate" role="function" condition="deprecated:"/>gimp_rotate ()</title>
-<indexterm role="deprecated"><primary>gimp_rotate</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_rotate                         (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-rotate" role="function" condition="deprecated:">
+<title>gimp_rotate ()</title>
+<indexterm zone="gimp-rotate" role="deprecated"><primary>gimp_rotate</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_rotate                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> interpolation,
                                                          <link linkend="gdouble">gdouble</link> angle);</programlisting>
 <warning><para><literal>gimp_rotate</literal> is deprecated and should not be used in newly-written code.</para></warning>
@@ -1432,9 +1429,9 @@ This procedure is deprecated! Use
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The rotated drawable.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-scale" role="function" condition="deprecated:"/>gimp_scale ()</title>
-<indexterm role="deprecated"><primary>gimp_scale</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_scale                          (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-scale" role="function" condition="deprecated:">
+<title>gimp_scale ()</title>
+<indexterm zone="gimp-scale" role="deprecated"><primary>gimp_scale</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_scale                          (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> interpolation,
                                                          <link linkend="gdouble">gdouble</link> x0,
                                                          <link linkend="gdouble">gdouble</link> y0,
@@ -1468,9 +1465,9 @@ This procedure is deprecated! Use
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The scaled drawable.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-shear" role="function" condition="deprecated:"/>gimp_shear ()</title>
-<indexterm role="deprecated"><primary>gimp_shear</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_shear                          (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-shear" role="function" condition="deprecated:">
+<title>gimp_shear ()</title>
+<indexterm zone="gimp-shear" role="deprecated"><primary>gimp_shear</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_shear                          (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> interpolation,
                                                          <link linkend="GimpOrientationType">GimpOrientationType</link> shear_type,
                                                          <link linkend="gdouble">gdouble</link> magnitude);</programlisting>
@@ -1496,9 +1493,9 @@ This procedure is deprecated! Use
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The sheared drawable.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-smudge" role="function"/>gimp_smudge ()</title>
-<indexterm><primary>gimp_smudge</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_smudge                         (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-smudge" role="function">
+<title>gimp_smudge ()</title>
+<indexterm zone="gimp-smudge"><primary>gimp_smudge</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_smudge                         (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gdouble">gdouble</link> pressure,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
@@ -1527,9 +1524,9 @@ lesser smudge.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-smudge-default" role="function"/>gimp_smudge_default ()</title>
-<indexterm><primary>gimp_smudge_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_smudge_default                 (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-smudge-default" role="function">
+<title>gimp_smudge_default ()</title>
+<indexterm zone="gimp-smudge-default"><primary>gimp_smudge_default</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_smudge_default                 (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gint">gint</link> num_strokes,
                                                          const <link linkend="gdouble">gdouble</link> *strokes);</programlisting>
 <para>
@@ -1555,9 +1552,9 @@ tools option dialog has not been activated.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-transform-2d" role="function" condition="deprecated:"/>gimp_transform_2d ()</title>
-<indexterm role="deprecated"><primary>gimp_transform_2d</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_transform_2d                   (<link linkend="gint32">gint32</link> drawable_ID,
+<refsect2 id="gimp-transform-2d" role="function" condition="deprecated:">
+<title>gimp_transform_2d ()</title>
+<indexterm zone="gimp-transform-2d" role="deprecated"><primary>gimp_transform_2d</primary></indexterm><programlisting><link linkend="gint32">gint32</link>              gimp_transform_2d                   (<link linkend="gint32">gint32</link> drawable_ID,
                                                          <link linkend="gboolean">gboolean</link> interpolation,
                                                          <link linkend="gdouble">gdouble</link> source_x,
                                                          <link linkend="gdouble">gdouble</link> source_y,
@@ -1609,6 +1606,4 @@ This procedure is deprecated! Use
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorNotebook">
 <refmeta>
-<refentrytitle role="top_of_page">GimpColorNotebook</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpColorNotebook.top_of_page">GimpColorNotebook</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,25 +15,20 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpColorNotebook.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpColorNotebook-struct">GimpColorNotebook</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-color-notebook-set-has-page">gimp_color_notebook_set_has_page</link>    (<link linkend="GimpColorNotebook">GimpColorNotebook</link> *notebook,
                                                          <link linkend="GType">GType</link> page_type,
                                                          <link linkend="gboolean">gboolean</link> has_page);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpColorNotebook.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -49,7 +44,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpColorNotebook.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpColorNotebook implements
@@ -58,10 +53,9 @@ GimpColorNotebook implements
 </refsect1>
 
 
-<refsect1 role="style_properties">
+<refsect1 id="GimpColorNotebook.style-properties" role="style_properties">
 <title role="style_properties.title">Style Properties</title>
 <synopsis>
-
   &quot;<link linkend="GimpColorNotebook--tab-border">tab-border</link>&quot;               <link linkend="gint">gint</link>                  : Read
   &quot;<link linkend="GimpColorNotebook--tab-icon-size">tab-icon-size</link>&quot;            <link linkend="GtkIconSize">GtkIconSize</link>           : Read
 </synopsis>
@@ -69,7 +63,7 @@ GimpColorNotebook implements
 
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpColorNotebook.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 The <link linkend="GimpColorNotebook"><type>GimpColorNotebook</type></link> widget is an implementation of a <link linkend="GimpColorSelector"><type>GimpColorSelector</type></link>.
@@ -77,17 +71,17 @@ It serves as a container for <link linkend="GimpColorSelectors"><type>GimpColorS
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpColorNotebook.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpColorNotebook-struct" role="struct"/>GimpColorNotebook</title>
-<indexterm><primary>GimpColorNotebook</primary></indexterm><programlisting>typedef struct _GimpColorNotebook GimpColorNotebook;</programlisting>
+<refsect2 id="GimpColorNotebook-struct" role="struct">
+<title>GimpColorNotebook</title>
+<indexterm zone="GimpColorNotebook-struct"><primary>GimpColorNotebook</primary></indexterm><programlisting>typedef struct _GimpColorNotebook GimpColorNotebook;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-notebook-set-has-page" role="function"/>gimp_color_notebook_set_has_page ()</title>
-<indexterm><primary>gimp_color_notebook_set_has_page</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_notebook_set_has_page    (<link linkend="GimpColorNotebook">GimpColorNotebook</link> *notebook,
+<refsect2 id="gimp-color-notebook-set-has-page" role="function">
+<title>gimp_color_notebook_set_has_page ()</title>
+<indexterm zone="gimp-color-notebook-set-has-page"><primary>gimp_color_notebook_set_has_page</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_color_notebook_set_has_page    (<link linkend="GimpColorNotebook">GimpColorNotebook</link> *notebook,
                                                          <link linkend="GType">GType</link> page_type,
                                                          <link linkend="gboolean">gboolean</link> has_page);</programlisting>
 <para>
@@ -111,15 +105,15 @@ The <parameter>page_type</parameter> passed must be a <link linkend="GimpColorSe
 </variablelist></refsect2>
 
 </refsect1>
-<refsect1 role="style_properties_details">
+<refsect1 id="GimpColorNotebook.style-property-details" role="style_properties_details">
 <title role="style_properties_details.title">Style Property Details</title>
-<refsect2><title><anchor id="GimpColorNotebook--tab-border"/>The <literal>&quot;tab-border&quot;</literal> style property</title>
-<indexterm><primary>GimpColorNotebook:tab-border</primary></indexterm><programlisting>  &quot;tab-border&quot;               <link linkend="gint">gint</link>                  : Read</programlisting>
+<refsect2 id="GimpColorNotebook--tab-border"><title>The <literal>&quot;tab-border&quot;</literal> style property</title>
+<indexterm zone="GimpColorNotebook--tab-border"><primary>GimpColorNotebook:tab-border</primary></indexterm><programlisting>  &quot;tab-border&quot;               <link linkend="gint">gint</link>                  : Read</programlisting>
 <para>Width of the border around the tab contents.</para><para>Allowed values: &gt;= 0</para>
 <para>Default value: 0</para>
 </refsect2>
-<refsect2><title><anchor id="GimpColorNotebook--tab-icon-size"/>The <literal>&quot;tab-icon-size&quot;</literal> style property</title>
-<indexterm><primary>GimpColorNotebook:tab-icon-size</primary></indexterm><programlisting>  &quot;tab-icon-size&quot;            <link linkend="GtkIconSize">GtkIconSize</link>           : Read</programlisting>
+<refsect2 id="GimpColorNotebook--tab-icon-size"><title>The <literal>&quot;tab-icon-size&quot;</literal> style property</title>
+<indexterm zone="GimpColorNotebook--tab-icon-size"><primary>GimpColorNotebook:tab-icon-size</primary></indexterm><programlisting>  &quot;tab-icon-size&quot;            <link linkend="GtkIconSize">GtkIconSize</link>           : Read</programlisting>
 <para>Size for icons displayed in the tab.</para><para>Default value: GTK_ICON_SIZE_BUTTON</para>
 </refsect2>
 
@@ -128,6 +122,4 @@ The <parameter>page_type</parameter> passed must be a <link linkend="GimpColorSe
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

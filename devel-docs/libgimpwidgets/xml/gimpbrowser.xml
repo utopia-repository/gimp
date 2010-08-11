@@ -4,7 +4,7 @@
 
 <refentry id="GimpBrowser">
 <refmeta>
-<refentrytitle role="top_of_page">GimpBrowser</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpBrowser.top_of_page">GimpBrowser</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpBrowser.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpBrowser-struct">GimpBrowser</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-browser-new">gimp_browser_new</link>                    (void);
 <link linkend="void">void</link>                <link linkend="gimp-browser-add-search-types">gimp_browser_add_search_types</link>       (<link linkend="GimpBrowser">GimpBrowser</link> *browser,
@@ -32,14 +29,12 @@
                                                          <link linkend="GtkWidget">GtkWidget</link> *widget);
 <link linkend="void">void</link>                <link linkend="gimp-browser-show-message">gimp_browser_show_message</link>           (<link linkend="GimpBrowser">GimpBrowser</link> *browser,
                                                          const <link linkend="gchar">gchar</link> *message);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpBrowser.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -54,7 +49,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpBrowser.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpBrowser implements
@@ -64,33 +59,32 @@ GimpBrowser implements
 
 
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpBrowser.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpBrowser-search">search</link>&quot;                                         : Run Last
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpBrowser.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpBrowser.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpBrowser-struct" role="struct"/>GimpBrowser</title>
-<indexterm><primary>GimpBrowser</primary></indexterm><programlisting>typedef struct _GimpBrowser GimpBrowser;</programlisting>
+<refsect2 id="GimpBrowser-struct" role="struct">
+<title>GimpBrowser</title>
+<indexterm zone="GimpBrowser-struct"><primary>GimpBrowser</primary></indexterm><programlisting>typedef struct _GimpBrowser GimpBrowser;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-browser-new" role="function" condition="since:GIMP 2.4"/>gimp_browser_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_browser_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_browser_new                    (void);</programlisting>
+<refsect2 id="gimp-browser-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_browser_new ()</title>
+<indexterm zone="gimp-browser-new" role="GIMP 2.4"><primary>gimp_browser_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_browser_new                    (void);</programlisting>
 <para>
 Create a new <link linkend="GimpBrowser"><type>GimpBrowser</type></link> widget.</para>
 <para>
@@ -101,9 +95,9 @@ Create a new <link linkend="GimpBrowser"><type>GimpBrowser</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-browser-add-search-types" role="function" condition="since:GIMP 2.4"/>gimp_browser_add_search_types ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_browser_add_search_types</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_browser_add_search_types       (<link linkend="GimpBrowser">GimpBrowser</link> *browser,
+<refsect2 id="gimp-browser-add-search-types" role="function" condition="since:GIMP 2.4">
+<title>gimp_browser_add_search_types ()</title>
+<indexterm zone="gimp-browser-add-search-types" role="GIMP 2.4"><primary>gimp_browser_add_search_types</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_browser_add_search_types       (<link linkend="GimpBrowser">GimpBrowser</link> *browser,
                                                          const <link linkend="gchar">gchar</link> *first_type_label,
                                                          <link linkend="gint">gint</link> first_type_id,
                                                          ...);</programlisting>
@@ -126,9 +120,9 @@ Populates the <link linkend="GtkComboBox"><type>GtkComboBox</type></link> with s
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-browser-set-widget" role="function" condition="since:GIMP 2.4"/>gimp_browser_set_widget ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_browser_set_widget</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_browser_set_widget             (<link linkend="GimpBrowser">GimpBrowser</link> *browser,
+<refsect2 id="gimp-browser-set-widget" role="function" condition="since:GIMP 2.4">
+<title>gimp_browser_set_widget ()</title>
+<indexterm zone="gimp-browser-set-widget" role="GIMP 2.4"><primary>gimp_browser_set_widget</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_browser_set_widget             (<link linkend="GimpBrowser">GimpBrowser</link> *browser,
                                                          <link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
 <para>
 Sets the widget to appear on the right side of the <parameter>browser</parameter>.</para>
@@ -143,9 +137,9 @@ Sets the widget to appear on the right side of the <parameter>browser</parameter
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-browser-show-message" role="function" condition="since:GIMP 2.4"/>gimp_browser_show_message ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_browser_show_message</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_browser_show_message           (<link linkend="GimpBrowser">GimpBrowser</link> *browser,
+<refsect2 id="gimp-browser-show-message" role="function" condition="since:GIMP 2.4">
+<title>gimp_browser_show_message ()</title>
+<indexterm zone="gimp-browser-show-message" role="GIMP 2.4"><primary>gimp_browser_show_message</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_browser_show_message           (<link linkend="GimpBrowser">GimpBrowser</link> *browser,
                                                          const <link linkend="gchar">gchar</link> *message);</programlisting>
 <para>
 Displays <parameter>message</parameter> in the right side of the <parameter>browser</parameter>. Unless the right
@@ -165,10 +159,10 @@ side already contains a <link linkend="GtkLabel"><type>GtkLabel</type></link>, t
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpBrowser.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpBrowser-search"/>The <literal>&quot;search&quot;</literal> signal</title>
-<indexterm><primary>GimpBrowser::search</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpBrowser">GimpBrowser</link> *gimpbrowser,
+<refsect2 id="GimpBrowser-search"><title>The <literal>&quot;search&quot;</literal> signal</title>
+<indexterm zone="GimpBrowser-search"><primary>GimpBrowser::search</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpBrowser">GimpBrowser</link> *gimpbrowser,
                                                         <link linkend="gchar">gchar</link>       *arg1,
                                                         <link linkend="gint">gint</link>         arg2,
                                                         <link linkend="gpointer">gpointer</link>     user_data)        : Run Last</programlisting>
@@ -192,6 +186,4 @@ side already contains a <link linkend="GtkLabel"><type>GtkLabel</type></link>, t
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

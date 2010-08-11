@@ -4,7 +4,7 @@
 
 <refentry id="libgimpwidgets-GimpHintBox">
 <refmeta>
-<refentrytitle role="top_of_page">GimpHintBox</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpwidgets-GimpHintBox.top_of_page">GimpHintBox</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,15 +15,11 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpwidgets-GimpHintBox.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-hint-box-new">gimp_hint_box_new</link>                   (const <link linkend="gchar">gchar</link> *hint);
-
 </synopsis>
 </refsynopsisdiv>
 
@@ -35,18 +31,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpwidgets-GimpHintBox.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpwidgets-GimpHintBox.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-hint-box-new" role="function"/>gimp_hint_box_new ()</title>
-<indexterm><primary>gimp_hint_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_hint_box_new                   (const <link linkend="gchar">gchar</link> *hint);</programlisting>
+<refsect2 id="gimp-hint-box-new" role="function">
+<title>gimp_hint_box_new ()</title>
+<indexterm zone="gimp-hint-box-new"><primary>gimp_hint_box_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_hint_box_new                   (const <link linkend="gchar">gchar</link> *hint);</programlisting>
 <para>
 Creates a new widget that shows a text label showing <parameter>hint</parameter>,
 decorated with a GIMP_STOCK_INFO wilber icon.</para>
@@ -67,6 +63,4 @@ Since GIMP 2.4
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

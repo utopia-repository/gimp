@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpprocview">
 <refmeta>
-<refentrytitle role="top_of_page">gimpprocview</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpprocview.top_of_page">gimpprocview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpprocview.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-proc-view-new">gimp_proc_view_new</link>                  (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *menu_path,
                                                          const <link linkend="gchar">gchar</link> *blurb,
@@ -45,18 +42,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpprocview.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpprocview.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-proc-view-new" role="function"/>gimp_proc_view_new ()</title>
-<indexterm><primary>gimp_proc_view_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_proc_view_new                  (const <link linkend="gchar">gchar</link> *name,
+<refsect2 id="gimp-proc-view-new" role="function">
+<title>gimp_proc_view_new ()</title>
+<indexterm zone="gimp-proc-view-new"><primary>gimp_proc_view_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_proc_view_new                  (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *menu_path,
                                                          const <link linkend="gchar">gchar</link> *blurb,
                                                          const <link linkend="gchar">gchar</link> *help,
@@ -118,6 +115,4 @@
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

@@ -4,7 +4,7 @@
 
 <refentry id="GimpBrushSelectButton">
 <refmeta>
-<refentrytitle role="top_of_page">GimpBrushSelectButton</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpBrushSelectButton.top_of_page">GimpBrushSelectButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpBrushSelectButton.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpBrushSelectButton-struct">GimpBrushSelectButton</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-brush-select-button-new">gimp_brush_select_button_new</link>        (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *brush_name,
@@ -37,14 +34,12 @@ const  <link linkend="gchar">gchar</link>*       <link linkend="gimp-brush-selec
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
                                                          <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpBrushSelectButton.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -60,7 +55,7 @@ const  <link linkend="gchar">gchar</link>*       <link linkend="gimp-brush-selec
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpBrushSelectButton.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpBrushSelectButton implements
@@ -69,45 +64,43 @@ GimpBrushSelectButton implements
 </refsect1>
 
 
-<refsect1 role="properties">
+<refsect1 id="GimpBrushSelectButton.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
-
-  &quot;<link linkend="GimpBrushSelectButton--brush-name">brush-name</link>&quot;               <link linkend="gchararray">gchararray</link>            : Read / Write
+  &quot;<link linkend="GimpBrushSelectButton--brush-name">brush-name</link>&quot;               <link linkend="gchar">gchar</link>*                : Read / Write
   &quot;<link linkend="GimpBrushSelectButton--brush-opacity">brush-opacity</link>&quot;            <link linkend="gdouble">gdouble</link>               : Read / Write
   &quot;<link linkend="GimpBrushSelectButton--brush-paint-mode">brush-paint-mode</link>&quot;         <link linkend="gint">gint</link>                  : Read / Write
   &quot;<link linkend="GimpBrushSelectButton--brush-spacing">brush-spacing</link>&quot;            <link linkend="gint">gint</link>                  : Read / Write
-  &quot;<link linkend="GimpBrushSelectButton--title">title</link>&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
+  &quot;<link linkend="GimpBrushSelectButton--title">title</link>&quot;                    <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpBrushSelectButton.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpBrushSelectButton-brush-set">brush-set</link>&quot;                                      : Run First
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpBrushSelectButton.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpBrushSelectButton.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpBrushSelectButton-struct" role="struct"/>GimpBrushSelectButton</title>
-<indexterm><primary>GimpBrushSelectButton</primary></indexterm><programlisting>typedef struct _GimpBrushSelectButton GimpBrushSelectButton;</programlisting>
+<refsect2 id="GimpBrushSelectButton-struct" role="struct">
+<title>GimpBrushSelectButton</title>
+<indexterm zone="GimpBrushSelectButton-struct"><primary>GimpBrushSelectButton</primary></indexterm><programlisting>typedef struct _GimpBrushSelectButton GimpBrushSelectButton;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-brush-select-button-new" role="function" condition="since:GIMP 2.4"/>gimp_brush_select_button_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_brush_select_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_brush_select_button_new        (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-brush-select-button-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_brush_select_button_new ()</title>
+<indexterm zone="gimp-brush-select-button-new" role="GIMP 2.4"><primary>gimp_brush_select_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_brush_select_button_new        (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
@@ -140,9 +133,9 @@ a plug-in dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-brush-select-button-get-brush" role="function" condition="since:GIMP 2.4"/>gimp_brush_select_button_get_brush ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_brush_select_button_get_brush</primary></indexterm><programlisting>const  <link linkend="gchar">gchar</link>*       gimp_brush_select_button_get_brush  (<link linkend="GimpBrushSelectButton">GimpBrushSelectButton</link> *button,
+<refsect2 id="gimp-brush-select-button-get-brush" role="function" condition="since:GIMP 2.4">
+<title>gimp_brush_select_button_get_brush ()</title>
+<indexterm zone="gimp-brush-select-button-get-brush" role="GIMP 2.4"><primary>gimp_brush_select_button_get_brush</primary></indexterm><programlisting>const  <link linkend="gchar">gchar</link>*       gimp_brush_select_button_get_brush  (<link linkend="GimpBrushSelectButton">GimpBrushSelectButton</link> *button,
                                                          <link linkend="gdouble">gdouble</link> *opacity,
                                                          <link linkend="gint">gint</link> *spacing,
                                                          <link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> *paint_mode);</programlisting>
@@ -168,9 +161,9 @@ Retrieves the properties of currently selected brush.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-brush-select-button-set-brush" role="function" condition="since:GIMP 2.4"/>gimp_brush_select_button_set_brush ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_brush_select_button_set_brush</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_button_set_brush  (<link linkend="GimpBrushSelectButton">GimpBrushSelectButton</link> *button,
+<refsect2 id="gimp-brush-select-button-set-brush" role="function" condition="since:GIMP 2.4">
+<title>gimp_brush_select_button_set_brush ()</title>
+<indexterm zone="gimp-brush-select-button-set-brush" role="GIMP 2.4"><primary>gimp_brush_select_button_set_brush</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_brush_select_button_set_brush  (<link linkend="GimpBrushSelectButton">GimpBrushSelectButton</link> *button,
                                                          const <link linkend="gchar">gchar</link> *brush_name,
                                                          <link linkend="gdouble">gdouble</link> opacity,
                                                          <link linkend="gint">gint</link> spacing,
@@ -200,10 +193,10 @@ button.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
+<refsect1 id="GimpBrushSelectButton.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpBrushSelectButton--brush-name"/>The <literal>&quot;brush-name&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpBrushSelectButton:brush-name</primary></indexterm><programlisting>  &quot;brush-name&quot;               <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
+<refsect2 id="GimpBrushSelectButton--brush-name"><title>The <literal>&quot;brush-name&quot;</literal> property</title>
+<indexterm zone="GimpBrushSelectButton--brush-name" role="GIMP 2.4"><primary>GimpBrushSelectButton:brush-name</primary></indexterm><programlisting>  &quot;brush-name&quot;               <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>
 The name of the currently selected brush.</para>
 <para>
@@ -212,23 +205,23 @@ The name of the currently selected brush.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpBrushSelectButton--brush-opacity"/>The <literal>&quot;brush-opacity&quot;</literal> property</title>
-<indexterm><primary>GimpBrushSelectButton:brush-opacity</primary></indexterm><programlisting>  &quot;brush-opacity&quot;            <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
+<refsect2 id="GimpBrushSelectButton--brush-opacity"><title>The <literal>&quot;brush-opacity&quot;</literal> property</title>
+<indexterm zone="GimpBrushSelectButton--brush-opacity"><primary>GimpBrushSelectButton:brush-opacity</primary></indexterm><programlisting>  &quot;brush-opacity&quot;            <link linkend="gdouble">gdouble</link>               : Read / Write</programlisting>
 <para>The opacity of the currently selected brush.</para><para>Allowed values: [-1,100]</para>
 <para>Default value: -1</para>
 </refsect2>
-<refsect2><title><anchor id="GimpBrushSelectButton--brush-paint-mode"/>The <literal>&quot;brush-paint-mode&quot;</literal> property</title>
-<indexterm><primary>GimpBrushSelectButton:brush-paint-mode</primary></indexterm><programlisting>  &quot;brush-paint-mode&quot;         <link linkend="gint">gint</link>                  : Read / Write</programlisting>
+<refsect2 id="GimpBrushSelectButton--brush-paint-mode"><title>The <literal>&quot;brush-paint-mode&quot;</literal> property</title>
+<indexterm zone="GimpBrushSelectButton--brush-paint-mode"><primary>GimpBrushSelectButton:brush-paint-mode</primary></indexterm><programlisting>  &quot;brush-paint-mode&quot;         <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>The paint mode of the currently selected brush.</para><para>Allowed values: [-1,22]</para>
 <para>Default value: -1</para>
 </refsect2>
-<refsect2><title><anchor id="GimpBrushSelectButton--brush-spacing"/>The <literal>&quot;brush-spacing&quot;</literal> property</title>
-<indexterm><primary>GimpBrushSelectButton:brush-spacing</primary></indexterm><programlisting>  &quot;brush-spacing&quot;            <link linkend="gint">gint</link>                  : Read / Write</programlisting>
+<refsect2 id="GimpBrushSelectButton--brush-spacing"><title>The <literal>&quot;brush-spacing&quot;</literal> property</title>
+<indexterm zone="GimpBrushSelectButton--brush-spacing"><primary>GimpBrushSelectButton:brush-spacing</primary></indexterm><programlisting>  &quot;brush-spacing&quot;            <link linkend="gint">gint</link>                  : Read / Write</programlisting>
 <para>The spacing of the currently selected brush.</para><para>Allowed values: [-2147483647,1000]</para>
 <para>Default value: -1</para>
 </refsect2>
-<refsect2><title><anchor id="GimpBrushSelectButton--title"/>The <literal>&quot;title&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpBrushSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
+<refsect2 id="GimpBrushSelectButton--title"><title>The <literal>&quot;title&quot;</literal> property</title>
+<indexterm zone="GimpBrushSelectButton--title" role="GIMP 2.4"><primary>GimpBrushSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only</programlisting>
 <para>
 The title to be used for the brush selection popup dialog.</para>
 <para>
@@ -240,10 +233,10 @@ The title to be used for the brush selection popup dialog.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpBrushSelectButton.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpBrushSelectButton-brush-set"/>The <literal>&quot;brush-set&quot;</literal> signal</title>
-<indexterm role="GIMP 2.4"><primary>GimpBrushSelectButton::brush-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpBrushSelectButton">GimpBrushSelectButton</link> *widget,
+<refsect2 id="GimpBrushSelectButton-brush-set"><title>The <literal>&quot;brush-set&quot;</literal> signal</title>
+<indexterm zone="GimpBrushSelectButton-brush-set" role="GIMP 2.4"><primary>GimpBrushSelectButton::brush-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpBrushSelectButton">GimpBrushSelectButton</link> *widget,
                                                         <link linkend="gchar">gchar</link>                 *brush_name,
                                                         <link linkend="gdouble">gdouble</link>                opacity,
                                                         <link linkend="gint">gint</link>                   spacing,
@@ -293,6 +286,4 @@ The ::brush-set signal is emitted when the user selects a brush.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

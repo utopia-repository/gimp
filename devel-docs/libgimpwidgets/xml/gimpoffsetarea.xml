@@ -4,7 +4,7 @@
 
 <refentry id="GimpOffsetArea">
 <refmeta>
-<refentrytitle role="top_of_page">GimpOffsetArea</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpOffsetArea.top_of_page">GimpOffsetArea</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpOffsetArea.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpOffsetArea-struct">GimpOffsetArea</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-offset-area-new">gimp_offset_area_new</link>                (<link linkend="gint">gint</link> orig_width,
                                                          <link linkend="gint">gint</link> orig_height);
@@ -33,14 +30,12 @@
                                                          <link linkend="gint">gint</link> offset_y);
 <link linkend="void">void</link>                <link linkend="gimp-offset-area-set-pixbuf">gimp_offset_area_set_pixbuf</link>         (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
                                                          <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpOffsetArea.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -53,7 +48,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpOffsetArea.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpOffsetArea implements
@@ -63,33 +58,32 @@ GimpOffsetArea implements
 
 
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpOffsetArea.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpOffsetArea-offsets-changed">offsets-changed</link>&quot;                                : Run First
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpOffsetArea.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpOffsetArea.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpOffsetArea-struct" role="struct"/>GimpOffsetArea</title>
-<indexterm><primary>GimpOffsetArea</primary></indexterm><programlisting>typedef struct _GimpOffsetArea GimpOffsetArea;</programlisting>
+<refsect2 id="GimpOffsetArea-struct" role="struct">
+<title>GimpOffsetArea</title>
+<indexterm zone="GimpOffsetArea-struct"><primary>GimpOffsetArea</primary></indexterm><programlisting>typedef struct _GimpOffsetArea GimpOffsetArea;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-offset-area-new" role="function"/>gimp_offset_area_new ()</title>
-<indexterm><primary>gimp_offset_area_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_offset_area_new                (<link linkend="gint">gint</link> orig_width,
+<refsect2 id="gimp-offset-area-new" role="function">
+<title>gimp_offset_area_new ()</title>
+<indexterm zone="gimp-offset-area-new"><primary>gimp_offset_area_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_offset_area_new                (<link linkend="gint">gint</link> orig_width,
                                                          <link linkend="gint">gint</link> orig_height);</programlisting>
 <para>
 Creates a new <link linkend="GimpOffsetArea"><type>GimpOffsetArea</type></link> widget. A <link linkend="GimpOffsetArea"><type>GimpOffsetArea</type></link> can be used
@@ -107,9 +101,9 @@ specify the new offsets.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GimpOffsetArea"><type>GimpOffsetArea</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-offset-area-set-size" role="function"/>gimp_offset_area_set_size ()</title>
-<indexterm><primary>gimp_offset_area_set_size</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_offset_area_set_size           (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
+<refsect2 id="gimp-offset-area-set-size" role="function">
+<title>gimp_offset_area_set_size ()</title>
+<indexterm zone="gimp-offset-area-set-size"><primary>gimp_offset_area_set_size</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_offset_area_set_size           (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
                                                          <link linkend="gint">gint</link> width,
                                                          <link linkend="gint">gint</link> height);</programlisting>
 <para>
@@ -129,9 +123,9 @@ signal is emitted.</para>
 <listitem><simpara> the new height
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-offset-area-set-offsets" role="function"/>gimp_offset_area_set_offsets ()</title>
-<indexterm><primary>gimp_offset_area_set_offsets</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_offset_area_set_offsets        (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
+<refsect2 id="gimp-offset-area-set-offsets" role="function">
+<title>gimp_offset_area_set_offsets ()</title>
+<indexterm zone="gimp-offset-area-set-offsets"><primary>gimp_offset_area_set_offsets</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_offset_area_set_offsets        (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
                                                          <link linkend="gint">gint</link> offset_x,
                                                          <link linkend="gint">gint</link> offset_y);</programlisting>
 <para>
@@ -150,9 +144,9 @@ It does not emit the "offsets-changed" signal.</para>
 <listitem><simpara> the Y offset
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-offset-area-set-pixbuf" role="function" condition="since:GIMP 2.2"/>gimp_offset_area_set_pixbuf ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_offset_area_set_pixbuf</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_offset_area_set_pixbuf         (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
+<refsect2 id="gimp-offset-area-set-pixbuf" role="function" condition="since:GIMP 2.2">
+<title>gimp_offset_area_set_pixbuf ()</title>
+<indexterm zone="gimp-offset-area-set-pixbuf" role="GIMP 2.2"><primary>gimp_offset_area_set_pixbuf</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_offset_area_set_pixbuf         (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *offset_area,
                                                          <link linkend="GdkPixbuf">GdkPixbuf</link> *pixbuf);</programlisting>
 <para>
 Sets the pixbuf which represents the original image/drawable which
@@ -171,10 +165,10 @@ is being offset.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpOffsetArea.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpOffsetArea-offsets-changed"/>The <literal>&quot;offsets-changed&quot;</literal> signal</title>
-<indexterm><primary>GimpOffsetArea::offsets-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *gimpoffsetarea,
+<refsect2 id="GimpOffsetArea-offsets-changed"><title>The <literal>&quot;offsets-changed&quot;</literal> signal</title>
+<indexterm zone="GimpOffsetArea-offsets-changed"><primary>GimpOffsetArea::offsets-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpOffsetArea">GimpOffsetArea</link> *gimpoffsetarea,
                                                         <link linkend="gint">gint</link>            arg1,
                                                         <link linkend="gint">gint</link>            arg2,
                                                         <link linkend="gpointer">gpointer</link>        user_data)           : Run First</programlisting>
@@ -198,6 +192,4 @@ is being offset.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

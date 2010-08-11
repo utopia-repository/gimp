@@ -4,7 +4,7 @@
 
 <refentry id="GimpPatternSelectButton">
 <refmeta>
-<refentrytitle role="top_of_page">GimpPatternSelectButton</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpPatternSelectButton.top_of_page">GimpPatternSelectButton</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpPatternSelectButton.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpPatternSelectButton-struct">GimpPatternSelectButton</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-pattern-select-button-new">gimp_pattern_select_button_new</link>      (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *pattern_name);
@@ -30,14 +27,12 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-pattern-sel
 <link linkend="void">void</link>                <link linkend="gimp-pattern-select-button-set-pattern">gimp_pattern_select_button_set_pattern</link>
                                                         (<link linkend="GimpPatternSelectButton">GimpPatternSelectButton</link> *button,
                                                          const <link linkend="gchar">gchar</link> *pattern_name);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpPatternSelectButton.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -53,7 +48,7 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-pattern-sel
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpPatternSelectButton.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpPatternSelectButton implements
@@ -62,42 +57,40 @@ GimpPatternSelectButton implements
 </refsect1>
 
 
-<refsect1 role="properties">
+<refsect1 id="GimpPatternSelectButton.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
-
-  &quot;<link linkend="GimpPatternSelectButton--pattern-name">pattern-name</link>&quot;             <link linkend="gchararray">gchararray</link>            : Read / Write
-  &quot;<link linkend="GimpPatternSelectButton--title">title</link>&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
+  &quot;<link linkend="GimpPatternSelectButton--pattern-name">pattern-name</link>&quot;             <link linkend="gchar">gchar</link>*                : Read / Write
+  &quot;<link linkend="GimpPatternSelectButton--title">title</link>&quot;                    <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpPatternSelectButton.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpPatternSelectButton-pattern-set">pattern-set</link>&quot;                                    : Run First
 </synopsis>
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpPatternSelectButton.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpPatternSelectButton.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpPatternSelectButton-struct" role="struct"/>GimpPatternSelectButton</title>
-<indexterm><primary>GimpPatternSelectButton</primary></indexterm><programlisting>typedef struct _GimpPatternSelectButton GimpPatternSelectButton;</programlisting>
+<refsect2 id="GimpPatternSelectButton-struct" role="struct">
+<title>GimpPatternSelectButton</title>
+<indexterm zone="GimpPatternSelectButton-struct"><primary>GimpPatternSelectButton</primary></indexterm><programlisting>typedef struct _GimpPatternSelectButton GimpPatternSelectButton;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-pattern-select-button-new" role="function" condition="since:GIMP 2.4"/>gimp_pattern_select_button_new ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_pattern_select_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_pattern_select_button_new      (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-pattern-select-button-new" role="function" condition="since:GIMP 2.4">
+<title>gimp_pattern_select_button_new ()</title>
+<indexterm zone="gimp-pattern-select-button-new" role="GIMP 2.4"><primary>gimp_pattern_select_button_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_pattern_select_button_new      (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *pattern_name);</programlisting>
 <para>
 Creates a new <link linkend="GtkWidget"><type>GtkWidget</type></link> that completely controls the selection of
@@ -117,9 +110,9 @@ plug-in dialog.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-pattern-select-button-get-pattern" role="function" condition="since:GIMP 2.4"/>gimp_pattern_select_button_get_pattern ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_pattern_select_button_get_pattern</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_pattern_select_button_get_pattern
+<refsect2 id="gimp-pattern-select-button-get-pattern" role="function" condition="since:GIMP 2.4">
+<title>gimp_pattern_select_button_get_pattern ()</title>
+<indexterm zone="gimp-pattern-select-button-get-pattern" role="GIMP 2.4"><primary>gimp_pattern_select_button_get_pattern</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_pattern_select_button_get_pattern
                                                         (<link linkend="GimpPatternSelectButton">GimpPatternSelectButton</link> *button);</programlisting>
 <para>
 Retrieves the name of currently selected pattern.</para>
@@ -134,9 +127,9 @@ Retrieves the name of currently selected pattern.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-pattern-select-button-set-pattern" role="function" condition="since:GIMP 2.4"/>gimp_pattern_select_button_set_pattern ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_pattern_select_button_set_pattern</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_button_set_pattern
+<refsect2 id="gimp-pattern-select-button-set-pattern" role="function" condition="since:GIMP 2.4">
+<title>gimp_pattern_select_button_set_pattern ()</title>
+<indexterm zone="gimp-pattern-select-button-set-pattern" role="GIMP 2.4"><primary>gimp_pattern_select_button_set_pattern</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pattern_select_button_set_pattern
                                                         (<link linkend="GimpPatternSelectButton">GimpPatternSelectButton</link> *button,
                                                          const <link linkend="gchar">gchar</link> *pattern_name);</programlisting>
 <para>
@@ -154,10 +147,10 @@ Sets the current pattern for the pattern select button.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
+<refsect1 id="GimpPatternSelectButton.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpPatternSelectButton--pattern-name"/>The <literal>&quot;pattern-name&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpPatternSelectButton:pattern-name</primary></indexterm><programlisting>  &quot;pattern-name&quot;             <link linkend="gchararray">gchararray</link>            : Read / Write</programlisting>
+<refsect2 id="GimpPatternSelectButton--pattern-name"><title>The <literal>&quot;pattern-name&quot;</literal> property</title>
+<indexterm zone="GimpPatternSelectButton--pattern-name" role="GIMP 2.4"><primary>GimpPatternSelectButton:pattern-name</primary></indexterm><programlisting>  &quot;pattern-name&quot;             <link linkend="gchar">gchar</link>*                : Read / Write</programlisting>
 <para>
 The name of the currently selected pattern.</para>
 <para>
@@ -166,8 +159,8 @@ The name of the currently selected pattern.</para>
 <para>Since  GIMP 2.4
 </para>
 </refsect2>
-<refsect2><title><anchor id="GimpPatternSelectButton--title"/>The <literal>&quot;title&quot;</literal> property</title>
-<indexterm role="GIMP 2.4"><primary>GimpPatternSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
+<refsect2 id="GimpPatternSelectButton--title"><title>The <literal>&quot;title&quot;</literal> property</title>
+<indexterm zone="GimpPatternSelectButton--title" role="GIMP 2.4"><primary>GimpPatternSelectButton:title</primary></indexterm><programlisting>  &quot;title&quot;                    <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only</programlisting>
 <para>
 The title to be used for the pattern selection popup dialog.</para>
 <para>
@@ -179,10 +172,10 @@ The title to be used for the pattern selection popup dialog.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpPatternSelectButton.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpPatternSelectButton-pattern-set"/>The <literal>&quot;pattern-set&quot;</literal> signal</title>
-<indexterm role="GIMP 2.4"><primary>GimpPatternSelectButton::pattern-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPatternSelectButton">GimpPatternSelectButton</link> *widget,
+<refsect2 id="GimpPatternSelectButton-pattern-set"><title>The <literal>&quot;pattern-set&quot;</literal> signal</title>
+<indexterm zone="GimpPatternSelectButton-pattern-set" role="GIMP 2.4"><primary>GimpPatternSelectButton::pattern-set</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpPatternSelectButton">GimpPatternSelectButton</link> *widget,
                                                         <link linkend="gchar">gchar</link>                   *pattern_name,
                                                         <link linkend="gint">gint</link>                     width,
                                                         <link linkend="gint">gint</link>                     height,
@@ -224,6 +217,4 @@ The ::pattern-set signal is emitted when the user selects a pattern.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

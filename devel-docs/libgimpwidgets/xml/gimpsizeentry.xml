@@ -4,7 +4,7 @@
 
 <refentry id="GimpSizeEntry">
 <refmeta>
-<refentrytitle role="top_of_page">GimpSizeEntry</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpSizeEntry.top_of_page">GimpSizeEntry</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpSizeEntry.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpSizeEntry-struct">GimpSizeEntry</link>;
                     <link linkend="GimpSizeEntryField">GimpSizeEntryField</link>;
 enum                <link linkend="GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdatePolicy</link>;
@@ -85,14 +82,12 @@ enum                <link linkend="GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdat
                                                          <link linkend="gboolean">gboolean</link> setting);
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-size-entry-get-help-widget">gimp_size_entry_get_help_widget</link>     (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpSizeEntry.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -106,7 +101,7 @@ enum                <link linkend="GimpSizeEntryUpdatePolicy">GimpSizeEntryUpdat
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpSizeEntry.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpSizeEntry implements
@@ -116,10 +111,9 @@ GimpSizeEntry implements
 
 
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpSizeEntry.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpSizeEntry-refval-changed">refval-changed</link>&quot;                                 : Run First
   &quot;<link linkend="GimpSizeEntry-unit-changed">unit-changed</link>&quot;                                   : Run First
   &quot;<link linkend="GimpSizeEntry-value-changed">value-changed</link>&quot;                                  : Run First
@@ -127,7 +121,7 @@ GimpSizeEntry implements
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpSizeEntry.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 This widget is used to enter pixel distances/sizes and resolutions.
@@ -156,23 +150,23 @@ real-world-unit.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpSizeEntry.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpSizeEntry-struct" role="struct"/>GimpSizeEntry</title>
-<indexterm><primary>GimpSizeEntry</primary></indexterm><programlisting>typedef struct _GimpSizeEntry GimpSizeEntry;</programlisting>
+<refsect2 id="GimpSizeEntry-struct" role="struct">
+<title>GimpSizeEntry</title>
+<indexterm zone="GimpSizeEntry-struct"><primary>GimpSizeEntry</primary></indexterm><programlisting>typedef struct _GimpSizeEntry GimpSizeEntry;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpSizeEntryField" role="struct"/>GimpSizeEntryField</title>
-<indexterm><primary>GimpSizeEntryField</primary></indexterm><programlisting>typedef struct _GimpSizeEntryField GimpSizeEntryField;</programlisting>
+<refsect2 id="GimpSizeEntryField" role="struct">
+<title>GimpSizeEntryField</title>
+<indexterm zone="GimpSizeEntryField"><primary>GimpSizeEntryField</primary></indexterm><programlisting>typedef struct _GimpSizeEntryField GimpSizeEntryField;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpSizeEntryUpdatePolicy" role="enum"/>enum GimpSizeEntryUpdatePolicy</title>
-<indexterm><primary>GimpSizeEntryUpdatePolicy</primary></indexterm><programlisting>typedef enum
+<refsect2 id="GimpSizeEntryUpdatePolicy" role="enum">
+<title>enum GimpSizeEntryUpdatePolicy</title>
+<indexterm zone="GimpSizeEntryUpdatePolicy"><primary>GimpSizeEntryUpdatePolicy</primary></indexterm><programlisting>typedef enum
 {
   GIMP_SIZE_ENTRY_UPDATE_NONE       = 0,
   GIMP_SIZE_ENTRY_UPDATE_SIZE       = 1,
@@ -182,9 +176,9 @@ real-world-unit.
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-new" role="function"/>gimp_size_entry_new ()</title>
-<indexterm><primary>gimp_size_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_size_entry_new                 (<link linkend="gint">gint</link> number_of_fields,
+<refsect2 id="gimp-size-entry-new" role="function">
+<title>gimp_size_entry_new ()</title>
+<indexterm zone="gimp-size-entry-new"><primary>gimp_size_entry_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_size_entry_new                 (<link linkend="gint">gint</link> number_of_fields,
                                                          <link linkend="GimpUnit">GimpUnit</link> unit,
                                                          const <link linkend="gchar">gchar</link> *unit_format,
                                                          <link linkend="gboolean">gboolean</link> menu_show_pixels,
@@ -265,9 +259,9 @@ of the <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link> to allow th
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A Pointer to the new <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-add-field" role="function"/>gimp_size_entry_add_field ()</title>
-<indexterm><primary>gimp_size_entry_add_field</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_add_field           (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-add-field" role="function">
+<title>gimp_size_entry_add_field ()</title>
+<indexterm zone="gimp-size-entry-add-field"><primary>gimp_size_entry_add_field</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_add_field           (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="GtkSpinButton">GtkSpinButton</link> *value_spinbutton,
                                                          <link linkend="GtkSpinButton">GtkSpinButton</link> *refval_spinbutton);</programlisting>
 <para>
@@ -291,9 +285,9 @@ as <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> in <link linkend="gi
 <listitem><simpara> The spinbutton to display the field's reference value.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-attach-label" role="function"/>gimp_size_entry_attach_label ()</title>
-<indexterm><primary>gimp_size_entry_attach_label</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_size_entry_attach_label        (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-attach-label" role="function">
+<title>gimp_size_entry_attach_label ()</title>
+<indexterm zone="gimp-size-entry-attach-label"><primary>gimp_size_entry_attach_label</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_size_entry_attach_label        (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          const <link linkend="gchar">gchar</link> *text,
                                                          <link linkend="gint">gint</link> row,
                                                          <link linkend="gint">gint</link> column,
@@ -321,9 +315,9 @@ Attaches a <link linkend="GtkLabel"><type>GtkLabel</type></link> to the <link li
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A pointer to the new <link linkend="GtkLabel"><type>GtkLabel</type></link> widget.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-resolution" role="function"/>gimp_size_entry_set_resolution ()</title>
-<indexterm><primary>gimp_size_entry_set_resolution</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_resolution      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-set-resolution" role="function">
+<title>gimp_size_entry_set_resolution ()</title>
+<indexterm zone="gimp-size-entry-set-resolution"><primary>gimp_size_entry_set_resolution</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_resolution      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field,
                                                          <link linkend="gdouble">gdouble</link> resolution,
                                                          <link linkend="gboolean">gboolean</link> keep_size);</programlisting>
@@ -354,9 +348,9 @@ This function does nothing if the <link linkend="GimpSizeEntryUpdatePolicy"><typ
              <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> if the <parameter>field</parameter>'s size in units should stay the same.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-size" role="function"/>gimp_size_entry_set_size ()</title>
-<indexterm><primary>gimp_size_entry_set_size</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_size            (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-set-size" role="function">
+<title>gimp_size_entry_set_size ()</title>
+<indexterm zone="gimp-size-entry-set-size"><primary>gimp_size_entry_set_size</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_size            (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field,
                                                          <link linkend="gdouble">gdouble</link> lower,
                                                          <link linkend="gdouble">gdouble</link> upper);</programlisting>
@@ -388,9 +382,9 @@ This function does nothing if the <link linkend="GimpSizeEntryUpdatePolicy"><typ
 <listitem><simpara> The reference value which will be treated as 100%.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-value-boundaries" role="function"/>gimp_size_entry_set_value_boundaries ()</title>
-<indexterm><primary>gimp_size_entry_set_value_boundaries</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_value_boundaries
+<refsect2 id="gimp-size-entry-set-value-boundaries" role="function">
+<title>gimp_size_entry_set_value_boundaries ()</title>
+<indexterm zone="gimp-size-entry-set-value-boundaries"><primary>gimp_size_entry_set_value_boundaries</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_value_boundaries
                                                         (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field,
                                                          <link linkend="gdouble">gdouble</link> lower,
@@ -425,9 +419,9 @@ NOTE: In most cases you won't be interested in this function because the
 <listitem><simpara> The new upper boundary of the value of the chosen <parameter>field</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-get-value" role="function"/>gimp_size_entry_get_value ()</title>
-<indexterm><primary>gimp_size_entry_get_value</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_size_entry_get_value           (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-get-value" role="function">
+<title>gimp_size_entry_get_value ()</title>
+<indexterm zone="gimp-size-entry-get-value"><primary>gimp_size_entry_get_value</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_size_entry_get_value           (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field);</programlisting>
 <para>
 Returns the value of field # <parameter>field</parameter> of the <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link>.
@@ -453,9 +447,9 @@ NOTE: In most cases you won't be interested in this value because the
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The value of the chosen <parameter>field</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-value" role="function"/>gimp_size_entry_set_value ()</title>
-<indexterm><primary>gimp_size_entry_set_value</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_value           (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-set-value" role="function">
+<title>gimp_size_entry_set_value ()</title>
+<indexterm zone="gimp-size-entry-set-value"><primary>gimp_size_entry_set_value</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_value           (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field,
                                                          <link linkend="gdouble">gdouble</link> value);</programlisting>
 <para>
@@ -483,9 +477,9 @@ NOTE: In most cases you won't be interested in this value because the
 <listitem><simpara> The new value for <parameter>field</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-refval-boundaries" role="function"/>gimp_size_entry_set_refval_boundaries ()</title>
-<indexterm><primary>gimp_size_entry_set_refval_boundaries</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_refval_boundaries
+<refsect2 id="gimp-size-entry-set-refval-boundaries" role="function">
+<title>gimp_size_entry_set_refval_boundaries ()</title>
+<indexterm zone="gimp-size-entry-set-refval-boundaries"><primary>gimp_size_entry_set_refval_boundaries</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_refval_boundaries
                                                         (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field,
                                                          <link linkend="gdouble">gdouble</link> lower,
@@ -514,9 +508,9 @@ The current reference value of the <parameter>field</parameter> will be clamped 
 <listitem><simpara> The new upper boundary of the reference value of the chosen <parameter>field</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-refval-digits" role="function"/>gimp_size_entry_set_refval_digits ()</title>
-<indexterm><primary>gimp_size_entry_set_refval_digits</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_refval_digits   (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-set-refval-digits" role="function">
+<title>gimp_size_entry_set_refval_digits ()</title>
+<indexterm zone="gimp-size-entry-set-refval-digits"><primary>gimp_size_entry_set_refval_digits</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_refval_digits   (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field,
                                                          <link linkend="gint">gint</link> digits);</programlisting>
 <para>
@@ -541,9 +535,9 @@ of digits will equal to 0 for <link linkend="GIMP-SIZE-ENTRY-UPDATE-SIZE:CAPS"><
          displays <parameter>field</parameter>'s reference value.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-get-refval" role="function"/>gimp_size_entry_get_refval ()</title>
-<indexterm><primary>gimp_size_entry_get_refval</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_size_entry_get_refval          (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-get-refval" role="function">
+<title>gimp_size_entry_get_refval ()</title>
+<indexterm zone="gimp-size-entry-get-refval"><primary>gimp_size_entry_get_refval</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_size_entry_get_refval          (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field);</programlisting>
 <para>
 Returns the reference value for field # <parameter>field</parameter> of the <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link>.
@@ -564,9 +558,9 @@ in dpi, depending on which <link linkend="GimpSizeEntryUpdatePolicy"><type>GimpS
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The reference value of the chosen <parameter>field</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-refval" role="function"/>gimp_size_entry_set_refval ()</title>
-<indexterm><primary>gimp_size_entry_set_refval</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_refval          (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-set-refval" role="function">
+<title>gimp_size_entry_set_refval ()</title>
+<indexterm zone="gimp-size-entry-set-refval"><primary>gimp_size_entry_set_refval</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_refval          (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field,
                                                          <link linkend="gdouble">gdouble</link> refval);</programlisting>
 <para>
@@ -589,9 +583,9 @@ depending on which <link linkend="GimpSizeEntryUpdatePolicy"><type>GimpSizeEntry
 <listitem><simpara> The new reference value for <parameter>field</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-get-unit" role="function"/>gimp_size_entry_get_unit ()</title>
-<indexterm><primary>gimp_size_entry_get_unit</primary></indexterm><programlisting><link linkend="GimpUnit">GimpUnit</link>            gimp_size_entry_get_unit            (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse);</programlisting>
+<refsect2 id="gimp-size-entry-get-unit" role="function">
+<title>gimp_size_entry_get_unit ()</title>
+<indexterm zone="gimp-size-entry-get-unit"><primary>gimp_size_entry_get_unit</primary></indexterm><programlisting><link linkend="GimpUnit">GimpUnit</link>            gimp_size_entry_get_unit            (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse);</programlisting>
 <para>
 Returns the <link linkend="GimpUnit"><type>GimpUnit</type></link> the user has selected in the <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link>'s
 <link linkend="GimpUnitMenu"><type>GimpUnitMenu</type></link>.</para>
@@ -604,9 +598,9 @@ Returns the <link linkend="GimpUnit"><type>GimpUnit</type></link> the user has s
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> The sizeentry's unit.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-unit" role="function"/>gimp_size_entry_set_unit ()</title>
-<indexterm><primary>gimp_size_entry_set_unit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_unit            (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-set-unit" role="function">
+<title>gimp_size_entry_set_unit ()</title>
+<indexterm zone="gimp-size-entry-set-unit"><primary>gimp_size_entry_set_unit</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_unit            (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="GimpUnit">GimpUnit</link> unit);</programlisting>
 <para>
 Sets the <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link>'s unit. The reference value for all fields will
@@ -623,9 +617,9 @@ according to which <link linkend="GimpSizeEntryUpdatePolicy"><type>GimpSizeEntry
 <listitem><simpara> The new unit.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-pixel-digits" role="function"/>gimp_size_entry_set_pixel_digits ()</title>
-<indexterm><primary>gimp_size_entry_set_pixel_digits</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_pixel_digits    (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-set-pixel-digits" role="function">
+<title>gimp_size_entry_set_pixel_digits ()</title>
+<indexterm zone="gimp-size-entry-set-pixel-digits"><primary>gimp_size_entry_set_pixel_digits</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_pixel_digits    (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> digits);</programlisting>
 <para>
 Similar to <link linkend="gimp-unit-menu-set-pixel-digits"><function>gimp_unit_menu_set_pixel_digits()</function></link>, this function allows
@@ -640,9 +634,9 @@ you set up a <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link> so 
 <listitem><simpara> the number of digits to display for a pixel size
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-show-unit-menu" role="function" condition="since:GIMP 2.4"/>gimp_size_entry_show_unit_menu ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_size_entry_show_unit_menu</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_show_unit_menu      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-show-unit-menu" role="function" condition="since:GIMP 2.4">
+<title>gimp_size_entry_show_unit_menu ()</title>
+<indexterm zone="gimp-size-entry-show-unit-menu" role="GIMP 2.4"><primary>gimp_size_entry_show_unit_menu</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_show_unit_menu      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gboolean">gboolean</link> show);</programlisting>
 <para>
 Controls whether a unit menu is shown in the size entry.  If
@@ -658,9 +652,9 @@ Controls whether a unit menu is shown in the size entry.  If
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-grab-focus" role="function"/>gimp_size_entry_grab_focus ()</title>
-<indexterm><primary>gimp_size_entry_grab_focus</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_grab_focus          (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse);</programlisting>
+<refsect2 id="gimp-size-entry-grab-focus" role="function">
+<title>gimp_size_entry_grab_focus ()</title>
+<indexterm zone="gimp-size-entry-grab-focus"><primary>gimp_size_entry_grab_focus</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_grab_focus          (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse);</programlisting>
 <para>
 This function is rather ugly and just a workaround for the fact that
 it's impossible to implement <link linkend="gtk-widget-grab-focus"><function>gtk_widget_grab_focus()</function></link> for a <link linkend="GtkTable"><type>GtkTable</type></link>.</para>
@@ -671,9 +665,9 @@ it's impossible to implement <link linkend="gtk-widget-grab-focus"><function>gtk
 <listitem><simpara> The sizeentry you want to grab the keyboard focus.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-set-activates-default" role="function" condition="since:GIMP 2.4"/>gimp_size_entry_set_activates_default ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_size_entry_set_activates_default</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_activates_default
+<refsect2 id="gimp-size-entry-set-activates-default" role="function" condition="since:GIMP 2.4">
+<title>gimp_size_entry_set_activates_default ()</title>
+<indexterm zone="gimp-size-entry-set-activates-default" role="GIMP 2.4"><primary>gimp_size_entry_set_activates_default</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_size_entry_set_activates_default
                                                         (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gboolean">gboolean</link> setting);</programlisting>
 <para>
@@ -690,9 +684,9 @@ Iterates over all entries in the <link linkend="GimpSizeEntry"><type>GimpSizeEnt
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-size-entry-get-help-widget" role="function"/>gimp_size_entry_get_help_widget ()</title>
-<indexterm><primary>gimp_size_entry_get_help_widget</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_size_entry_get_help_widget     (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
+<refsect2 id="gimp-size-entry-get-help-widget" role="function">
+<title>gimp_size_entry_get_help_widget ()</title>
+<indexterm zone="gimp-size-entry-get-help-widget"><primary>gimp_size_entry_get_help_widget</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_size_entry_get_help_widget     (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gse,
                                                          <link linkend="gint">gint</link> field);</programlisting>
 <para>
 You shouldn't fiddle with the internals of a <link linkend="GimpSizeEntry"><type>GimpSizeEntry</type></link> but
@@ -713,10 +707,10 @@ can use this function to get a pointer to the spinbuttons.</para>
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpSizeEntry.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpSizeEntry-refval-changed"/>The <literal>&quot;refval-changed&quot;</literal> signal</title>
-<indexterm><primary>GimpSizeEntry::refval-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
+<refsect2 id="GimpSizeEntry-refval-changed"><title>The <literal>&quot;refval-changed&quot;</literal> signal</title>
+<indexterm zone="GimpSizeEntry-refval-changed"><primary>GimpSizeEntry::refval-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
                                                         <link linkend="gpointer">gpointer</link>       user_data)          : Run First</programlisting>
 <para>
 
@@ -727,8 +721,8 @@ can use this function to get a pointer to the spinbuttons.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpSizeEntry-unit-changed"/>The <literal>&quot;unit-changed&quot;</literal> signal</title>
-<indexterm><primary>GimpSizeEntry::unit-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
+</variablelist></refsect2><refsect2 id="GimpSizeEntry-unit-changed"><title>The <literal>&quot;unit-changed&quot;</literal> signal</title>
+<indexterm zone="GimpSizeEntry-unit-changed"><primary>GimpSizeEntry::unit-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
                                                         <link linkend="gpointer">gpointer</link>       user_data)          : Run First</programlisting>
 <para>
 
@@ -739,8 +733,8 @@ can use this function to get a pointer to the spinbuttons.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpSizeEntry-value-changed"/>The <literal>&quot;value-changed&quot;</literal> signal</title>
-<indexterm><primary>GimpSizeEntry::value-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
+</variablelist></refsect2><refsect2 id="GimpSizeEntry-value-changed"><title>The <literal>&quot;value-changed&quot;</literal> signal</title>
+<indexterm zone="GimpSizeEntry-value-changed"><primary>GimpSizeEntry::value-changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpSizeEntry">GimpSizeEntry</link> *gimpsizeentry,
                                                         <link linkend="gpointer">gpointer</link>       user_data)          : Run First</programlisting>
 <para>
 
@@ -755,7 +749,7 @@ can use this function to get a pointer to the spinbuttons.</para>
 </refsect1>
 
 
-<refsect1>
+<refsect1 id="GimpSizeEntry.see-also">
 <title>See Also</title>
 <para>
 <link linkend="GimpUnit"><type>GimpUnit</type></link>
@@ -768,6 +762,4 @@ can use this function to get a pointer to the spinbuttons.</para>
 </para>
 </refsect1>
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

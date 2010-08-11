@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimpmemsize">
 <refmeta>
-<refentrytitle role="top_of_page">gimpmemsize</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpbase-gimpmemsize.top_of_page">gimpmemsize</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpbase-gimpmemsize.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gchar">gchar</link>*              <link linkend="gimp-memsize-serialize">gimp_memsize_serialize</link>              (<link linkend="guint64">guint64</link> memsize);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-memsize-deserialize">gimp_memsize_deserialize</link>            (const <link linkend="gchar">gchar</link> *string,
                                                          <link linkend="guint64">guint64</link> *memsize);
@@ -37,7 +34,6 @@
                                                          <link linkend="guint64">guint64</link> default_value,
                                                          <link linkend="GParamFlags">GParamFlags</link> flags);
 #define             <link linkend="GIMP-VALUE-HOLDS-MEMSIZE:CAPS">GIMP_VALUE_HOLDS_MEMSIZE</link>            (value)
-
 </synopsis>
 </refsynopsisdiv>
 
@@ -49,18 +45,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpbase-gimpmemsize.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions to (de)serialize a given memory size.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpbase-gimpmemsize.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-memsize-serialize" role="function" condition="since:GIMP 2.2"/>gimp_memsize_serialize ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_memsize_serialize</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_memsize_serialize              (<link linkend="guint64">guint64</link> memsize);</programlisting>
+<refsect2 id="gimp-memsize-serialize" role="function" condition="since:GIMP 2.2">
+<title>gimp_memsize_serialize ()</title>
+<indexterm zone="gimp-memsize-serialize" role="GIMP 2.2"><primary>gimp_memsize_serialize</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_memsize_serialize              (<link linkend="guint64">guint64</link> memsize);</programlisting>
 <para>
 Creates a string representation of a given memory size. This string
 can be parsed by <link linkend="gimp-memsize-deserialize"><function>gimp_memsize_deserialize()</function></link> and can thus be used in
@@ -77,9 +73,9 @@ nice human-readable string please use <link linkend="gimp-memsize-to-string"><fu
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-memsize-deserialize" role="function" condition="since:GIMP 2.2"/>gimp_memsize_deserialize ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_memsize_deserialize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_memsize_deserialize            (const <link linkend="gchar">gchar</link> *string,
+<refsect2 id="gimp-memsize-deserialize" role="function" condition="since:GIMP 2.2">
+<title>gimp_memsize_deserialize ()</title>
+<indexterm zone="gimp-memsize-deserialize" role="GIMP 2.2"><primary>gimp_memsize_deserialize</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_memsize_deserialize            (const <link linkend="gchar">gchar</link> *string,
                                                          <link linkend="guint64">guint64</link> *memsize);</programlisting>
 <para>
 Parses a string representation of a memory size as returned by
@@ -99,9 +95,9 @@ Parses a string representation of a memory size as returned by
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-memsize-to-string" role="function"/>gimp_memsize_to_string ()</title>
-<indexterm><primary>gimp_memsize_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_memsize_to_string              (<link linkend="guint64">guint64</link> memsize);</programlisting>
+<refsect2 id="gimp-memsize-to-string" role="function">
+<title>gimp_memsize_to_string ()</title>
+<indexterm zone="gimp-memsize-to-string"><primary>gimp_memsize_to_string</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_memsize_to_string              (<link linkend="guint64">guint64</link> memsize);</programlisting>
 <para>
 This function returns a human readable, translated representation
 of the passed <parameter>memsize</parameter>. Large values are displayed using a
@@ -116,23 +112,23 @@ becomes "4.4 KB" and so on.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A newly allocated human-readable, translated string.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="GIMP-TYPE-MEMSIZE:CAPS" role="macro"/>GIMP_TYPE_MEMSIZE</title>
-<indexterm><primary>GIMP_TYPE_MEMSIZE</primary></indexterm><programlisting>#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
+<refsect2 id="GIMP-TYPE-MEMSIZE:CAPS" role="macro">
+<title>GIMP_TYPE_MEMSIZE</title>
+<indexterm zone="GIMP-TYPE-MEMSIZE:CAPS"><primary>GIMP_TYPE_MEMSIZE</primary></indexterm><programlisting>#define GIMP_TYPE_MEMSIZE               (gimp_memsize_get_type ())
 </programlisting>
 <para>
 <link linkend="GIMP-TYPE-MEMSIZE:CAPS"><type>GIMP_TYPE_MEMSIZE</type></link> is a <link linkend="GType"><type>GType</type></link> derived from <link linkend="G-TYPE-UINT64:CAPS"><type>G_TYPE_UINT64</type></link>.
 </para></refsect2>
-<refsect2>
-<title><anchor id="GIMP-TYPE-PARAM-MEMSIZE:CAPS" role="macro"/>GIMP_TYPE_PARAM_MEMSIZE</title>
-<indexterm><primary>GIMP_TYPE_PARAM_MEMSIZE</primary></indexterm><programlisting>#define GIMP_TYPE_PARAM_MEMSIZE           (gimp_param_memsize_get_type ())
+<refsect2 id="GIMP-TYPE-PARAM-MEMSIZE:CAPS" role="macro">
+<title>GIMP_TYPE_PARAM_MEMSIZE</title>
+<indexterm zone="GIMP-TYPE-PARAM-MEMSIZE:CAPS"><primary>GIMP_TYPE_PARAM_MEMSIZE</primary></indexterm><programlisting>#define GIMP_TYPE_PARAM_MEMSIZE           (gimp_param_memsize_get_type ())
 </programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS" role="macro"/>GIMP_IS_PARAM_SPEC_MEMSIZE()</title>
-<indexterm><primary>GIMP_IS_PARAM_SPEC_MEMSIZE</primary></indexterm><programlisting>#define GIMP_IS_PARAM_SPEC_MEMSIZE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MEMSIZE))
+<refsect2 id="GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS" role="macro">
+<title>GIMP_IS_PARAM_SPEC_MEMSIZE()</title>
+<indexterm zone="GIMP-IS-PARAM-SPEC-MEMSIZE:CAPS"><primary>GIMP_IS_PARAM_SPEC_MEMSIZE</primary></indexterm><programlisting>#define GIMP_IS_PARAM_SPEC_MEMSIZE(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), GIMP_TYPE_PARAM_MEMSIZE))
 </programlisting>
 <para>
 
@@ -143,9 +139,9 @@ becomes "4.4 KB" and so on.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-param-spec-memsize" role="function" condition="since:GIMP 2.4"/>gimp_param_spec_memsize ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_param_spec_memsize</primary></indexterm><programlisting><link linkend="GParamSpec">GParamSpec</link>*         gimp_param_spec_memsize             (const <link linkend="gchar">gchar</link> *name,
+<refsect2 id="gimp-param-spec-memsize" role="function" condition="since:GIMP 2.4">
+<title>gimp_param_spec_memsize ()</title>
+<indexterm zone="gimp-param-spec-memsize" role="GIMP 2.4"><primary>gimp_param_spec_memsize</primary></indexterm><programlisting><link linkend="GParamSpec">GParamSpec</link>*         gimp_param_spec_memsize             (const <link linkend="gchar">gchar</link> *name,
                                                          const <link linkend="gchar">gchar</link> *nick,
                                                          const <link linkend="gchar">gchar</link> *blurb,
                                                          <link linkend="guint64">guint64</link> minimum,
@@ -184,9 +180,9 @@ See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</fun
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="GIMP-VALUE-HOLDS-MEMSIZE:CAPS" role="macro"/>GIMP_VALUE_HOLDS_MEMSIZE()</title>
-<indexterm><primary>GIMP_VALUE_HOLDS_MEMSIZE</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
+<refsect2 id="GIMP-VALUE-HOLDS-MEMSIZE:CAPS" role="macro">
+<title>GIMP_VALUE_HOLDS_MEMSIZE()</title>
+<indexterm zone="GIMP-VALUE-HOLDS-MEMSIZE:CAPS"><primary>GIMP_VALUE_HOLDS_MEMSIZE</primary></indexterm><programlisting>#define GIMP_VALUE_HOLDS_MEMSIZE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), GIMP_TYPE_MEMSIZE))
 </programlisting>
 <para>
 
@@ -203,6 +199,4 @@ See <link linkend="g-param-spec-internal"><function>g_param_spec_internal()</fun
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

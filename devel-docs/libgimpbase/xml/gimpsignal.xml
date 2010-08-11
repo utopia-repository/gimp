@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimpsignal">
 <refmeta>
-<refentrytitle role="top_of_page">gimpsignal</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpbase-gimpsignal.top_of_page">gimpsignal</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpbase-gimpsignal.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="void">void</link>                (<link linkend="GimpSignalHandlerFunc">*GimpSignalHandlerFunc</link>)            (<link linkend="gint">gint</link> signum);
 <link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> <link linkend="gimp-signal-private">gimp_signal_private</link>               (<link linkend="gint">gint</link> signum,
                                                          <link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> handler,
@@ -37,7 +34,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpbase-gimpsignal.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Portable signal handling.
@@ -45,11 +42,11 @@ Portable signal handling.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpbase-gimpsignal.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpSignalHandlerFunc" role="function"/>GimpSignalHandlerFunc ()</title>
-<indexterm><primary>GimpSignalHandlerFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpSignalHandlerFunc)            (<link linkend="gint">gint</link> signum);</programlisting>
+<refsect2 id="GimpSignalHandlerFunc" role="function">
+<title>GimpSignalHandlerFunc ()</title>
+<indexterm zone="GimpSignalHandlerFunc"><primary>GimpSignalHandlerFunc</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpSignalHandlerFunc)            (<link linkend="gint">gint</link> signum);</programlisting>
 <para>
 A prototype for signal handler functions. Note that each function which
 takes or returns a variable of this type also accepts or may return
@@ -63,9 +60,9 @@ special values defined by your system's signal.h header file (like
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-signal-private" role="function"/>gimp_signal_private ()</title>
-<indexterm><primary>gimp_signal_private</primary></indexterm><programlisting><link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> gimp_signal_private               (<link linkend="gint">gint</link> signum,
+<refsect2 id="gimp-signal-private" role="function">
+<title>gimp_signal_private ()</title>
+<indexterm zone="gimp-signal-private"><primary>gimp_signal_private</primary></indexterm><programlisting><link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> gimp_signal_private               (<link linkend="gint">gint</link> signum,
                                                          <link linkend="GimpSignalHandlerFunc">GimpSignalHandlerFunc</link> handler,
                                                          <link linkend="gint">gint</link> flags);</programlisting>
 <para>
@@ -106,13 +103,11 @@ exactly what we want. [austin 06.04.2000]</para>
 
 
 
-<refsect1>
+<refsect1 id="libgimpbase-gimpsignal.see-also">
 <title>See Also</title>
 <para>
 signal(2), signal(5 or 7), sigaction(2).
 </para>
 </refsect1>
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

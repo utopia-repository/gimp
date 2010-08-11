@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimppattern">
 <refmeta>
-<refentrytitle role="top_of_page">gimppattern</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimppattern.top_of_page">gimppattern</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimppattern.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-pattern-get-info">gimp_pattern_get_info</link>               (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *width,
                                                          <link linkend="gint">gint</link> *height,
@@ -43,18 +40,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimppattern.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions operating on a single pattern.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimppattern.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-pattern-get-info" role="function" condition="since:GIMP 2.2"/>gimp_pattern_get_info ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_pattern_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_pattern_get_info               (const <link linkend="gchar">gchar</link> *name,
+<refsect2 id="gimp-pattern-get-info" role="function" condition="since:GIMP 2.2">
+<title>gimp_pattern_get_info ()</title>
+<indexterm zone="gimp-pattern-get-info" role="GIMP 2.2"><primary>gimp_pattern_get_info</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_pattern_get_info               (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *width,
                                                          <link linkend="gint">gint</link> *height,
                                                          <link linkend="gint">gint</link> *bpp);</programlisting>
@@ -84,9 +81,9 @@ This includes the pattern extents (width and height).</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-pattern-get-pixels" role="function" condition="since:GIMP 2.2"/>gimp_pattern_get_pixels ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_pattern_get_pixels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_pattern_get_pixels             (const <link linkend="gchar">gchar</link> *name,
+<refsect2 id="gimp-pattern-get-pixels" role="function" condition="since:GIMP 2.2">
+<title>gimp_pattern_get_pixels ()</title>
+<indexterm zone="gimp-pattern-get-pixels" role="GIMP 2.2"><primary>gimp_pattern_get_pixels</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_pattern_get_pixels             (const <link linkend="gchar">gchar</link> *name,
                                                          <link linkend="gint">gint</link> *width,
                                                          <link linkend="gint">gint</link> *height,
                                                          <link linkend="gint">gint</link> *bpp,
@@ -131,6 +128,4 @@ pixel data.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

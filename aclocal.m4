@@ -15,8 +15,8 @@
 # Owen Taylor     1997-2001
 
 dnl AM_PATH_GLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
-dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if gmodule, gobject or 
-dnl gthread is specified in MODULES, pass to pkg-config
+dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if gmodule, gobject,
+dnl gthread, or gio is specified in MODULES, pass to pkg-config
 dnl
 AC_DEFUN([AM_PATH_GLIB_2_0],
 [dnl 
@@ -40,6 +40,9 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
          ;;
          gthread) 
              pkg_config_args="$pkg_config_args gthread-2.0"
+         ;;
+         gio*) 
+             pkg_config_args="$pkg_config_args $module-2.0"
          ;;
       esac
   done
@@ -323,8 +326,7 @@ AC_SUBST($1)dnl
 #-----------------
 glib_DEFUN([GLIB_WITH_NLS],
   dnl NLS is obligatory
-  [AC_REQUIRE([AC_CANONICAL_HOST])dnl
-    USE_NLS=yes
+  [USE_NLS=yes
     AC_SUBST(USE_NLS)
 
     gt_cv_have_gettext=no
@@ -1065,7 +1067,7 @@ AU_ALIAS([AC_PROG_INTLTOOL], [IT_PROG_INTLTOOL])
 
 # libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
 
-# serial 52 Debian 1.5.26-1 AC_PROG_LIBTOOL
+# serial 52 Debian 1.5.26-4 AC_PROG_LIBTOOL
 
 
 # AC_PROVIDE_IFELSE(MACRO-NAME, IF-PROVIDED, IF-NOT-PROVIDED)

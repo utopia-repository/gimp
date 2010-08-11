@@ -4,7 +4,7 @@
 
 <refentry id="libgimpconfig-gimpconfig-utils">
 <refmeta>
-<refentrytitle role="top_of_page">gimpconfig-utils</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpconfig-gimpconfig-utils.top_of_page">gimpconfig-utils</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpconfig-gimpconfig-utils.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="GList">GList</link>*              <link linkend="gimp-config-diff">gimp_config_diff</link>                    (<link linkend="GObject">GObject</link> *a,
                                                          <link linkend="GObject">GObject</link> *b,
                                                          <link linkend="GParamFlags">GParamFlags</link> flags);
@@ -44,7 +41,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpconfig-gimpconfig-utils.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Miscellaneous utility functions for libgimpconfig.
@@ -52,11 +49,11 @@ Miscellaneous utility functions for libgimpconfig.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpconfig-gimpconfig-utils.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-config-diff" role="function" condition="since:GIMP 2.4"/>gimp_config_diff ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_diff</primary></indexterm><programlisting><link linkend="GList">GList</link>*              gimp_config_diff                    (<link linkend="GObject">GObject</link> *a,
+<refsect2 id="gimp-config-diff" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_diff ()</title>
+<indexterm zone="gimp-config-diff" role="GIMP 2.4"><primary>gimp_config_diff</primary></indexterm><programlisting><link linkend="GList">GList</link>*              gimp_config_diff                    (<link linkend="GObject">GObject</link> *a,
                                                          <link linkend="GObject">GObject</link> *b,
                                                          <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
 <para>
@@ -84,9 +81,9 @@ compared.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-sync" role="function" condition="since:GIMP 2.4"/>gimp_config_sync ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_sync</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_sync                    (<link linkend="GObject">GObject</link> *src,
+<refsect2 id="gimp-config-sync" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_sync ()</title>
+<indexterm zone="gimp-config-sync" role="GIMP 2.4"><primary>gimp_config_sync</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_sync                    (<link linkend="GObject">GObject</link> *src,
                                                          <link linkend="GObject">GObject</link> *dest,
                                                          <link linkend="GParamFlags">GParamFlags</link> flags);</programlisting>
 <para>
@@ -118,9 +115,9 @@ synchronized</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-reset-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_reset_properties ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_reset_properties</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_reset_properties        (<link linkend="GObject">GObject</link> *object);</programlisting>
+<refsect2 id="gimp-config-reset-properties" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_reset_properties ()</title>
+<indexterm zone="gimp-config-reset-properties" role="GIMP 2.4"><primary>gimp_config_reset_properties</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_reset_properties        (<link linkend="GObject">GObject</link> *object);</programlisting>
 <para>
 Resets all writable properties of <parameter>object</parameter> to the default values as
 defined in their <link linkend="GParamSpec"><type>GParamSpec</type></link>. Properties marked as "construct-only"
@@ -136,9 +133,9 @@ If you want to reset a <link linkend="GimpConfig"><type>GimpConfig</type></link>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-reset-property" role="function" condition="since:GIMP 2.4"/>gimp_config_reset_property ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_reset_property</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_reset_property          (<link linkend="GObject">GObject</link> *object,
+<refsect2 id="gimp-config-reset-property" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_reset_property ()</title>
+<indexterm zone="gimp-config-reset-property" role="GIMP 2.4"><primary>gimp_config_reset_property</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_reset_property          (<link linkend="GObject">GObject</link> *object,
                                                          const <link linkend="gchar">gchar</link> *property_name);</programlisting>
 <para>
 Resets the property named <parameter>property_name</parameter> to its default value.  The
@@ -154,9 +151,9 @@ property must be writable and must not be marked as "construct-only".</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-string-append-escaped" role="function" condition="since:GIMP 2.4"/>gimp_config_string_append_escaped ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_string_append_escaped</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_string_append_escaped   (<link linkend="GString">GString</link> *string,
+<refsect2 id="gimp-config-string-append-escaped" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_string_append_escaped ()</title>
+<indexterm zone="gimp-config-string-append-escaped" role="GIMP 2.4"><primary>gimp_config_string_append_escaped</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_config_string_append_escaped   (<link linkend="GString">GString</link> *string,
                                                          const <link linkend="gchar">gchar</link> *val);</programlisting>
 <para>
 Escapes and quotes <parameter>val</parameter> and appends it to <parameter>string</parameter>. The escape
@@ -180,6 +177,4 @@ strings. Only control characters and quotes are being escaped.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

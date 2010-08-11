@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimpbasetypes">
 <refmeta>
-<refentrytitle role="top_of_page">gimpbasetypes</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpbase-gimpbasetypes.top_of_page">gimpbasetypes</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpbase-gimpbasetypes.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpEnumDesc">GimpEnumDesc</link>;
                     <link linkend="GimpFlagsDesc">GimpFlagsDesc</link>;
 <link linkend="void">void</link>                <link linkend="gimp-type-set-translation-domain">gimp_type_set_translation_domain</link>    (<link linkend="GType">GType</link> type,
@@ -44,18 +41,18 @@ const <link linkend="GimpFlagsDesc">GimpFlagsDesc</link>* <link linkend="gimp-fl
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpbase-gimpbasetypes.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Translation between gettext translation domain identifier and GType.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpbase-gimpbasetypes.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpEnumDesc" role="struct"/>GimpEnumDesc</title>
-<indexterm><primary>GimpEnumDesc</primary></indexterm><programlisting>typedef struct {
+<refsect2 id="GimpEnumDesc" role="struct">
+<title>GimpEnumDesc</title>
+<indexterm zone="GimpEnumDesc"><primary>GimpEnumDesc</primary></indexterm><programlisting>typedef struct {
   gint   value;
   gchar *value_desc;
   gchar *value_help;
@@ -64,9 +61,9 @@ Translation between gettext translation domain identifier and GType.
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="GimpFlagsDesc" role="struct"/>GimpFlagsDesc</title>
-<indexterm><primary>GimpFlagsDesc</primary></indexterm><programlisting>typedef struct {
+<refsect2 id="GimpFlagsDesc" role="struct">
+<title>GimpFlagsDesc</title>
+<indexterm zone="GimpFlagsDesc"><primary>GimpFlagsDesc</primary></indexterm><programlisting>typedef struct {
   guint  value;
   gchar *value_desc;
   gchar *value_help;
@@ -75,9 +72,9 @@ Translation between gettext translation domain identifier and GType.
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-type-set-translation-domain" role="function" condition="since:GIMP 2.2"/>gimp_type_set_translation_domain ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_type_set_translation_domain</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_type_set_translation_domain    (<link linkend="GType">GType</link> type,
+<refsect2 id="gimp-type-set-translation-domain" role="function" condition="since:GIMP 2.2">
+<title>gimp_type_set_translation_domain ()</title>
+<indexterm zone="gimp-type-set-translation-domain" role="GIMP 2.2"><primary>gimp_type_set_translation_domain</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_type_set_translation_domain    (<link linkend="GType">GType</link> type,
                                                          const <link linkend="gchar">gchar</link> *domain);</programlisting>
 <para>
 This function attaches a constant string as a gettext translation
@@ -95,9 +92,9 @@ names.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-type-get-translation-domain" role="function" condition="since:GIMP 2.2"/>gimp_type_get_translation_domain ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_type_get_translation_domain</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_type_get_translation_domain    (<link linkend="GType">GType</link> type);</programlisting>
+<refsect2 id="gimp-type-get-translation-domain" role="function" condition="since:GIMP 2.2">
+<title>gimp_type_get_translation_domain ()</title>
+<indexterm zone="gimp-type-get-translation-domain" role="GIMP 2.2"><primary>gimp_type_get_translation_domain</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_type_get_translation_domain    (<link linkend="GType">GType</link> type);</programlisting>
 <para>
 Retrieves the gettext translation domain identifier that has been
 previously set using <link linkend="gimp-type-set-translation-domain"><function>gimp_type_set_translation_domain()</function></link>. You should
@@ -115,9 +112,9 @@ or <link linkend="gimp-enum-value-get-name"><function>gimp_enum_value_get_name()
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-enum-set-value-descriptions" role="function" condition="since:GIMP 2.2"/>gimp_enum_set_value_descriptions ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_enum_set_value_descriptions</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_enum_set_value_descriptions    (<link linkend="GType">GType</link> enum_type,
+<refsect2 id="gimp-enum-set-value-descriptions" role="function" condition="since:GIMP 2.2">
+<title>gimp_enum_set_value_descriptions ()</title>
+<indexterm zone="gimp-enum-set-value-descriptions" role="GIMP 2.2"><primary>gimp_enum_set_value_descriptions</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_enum_set_value_descriptions    (<link linkend="GType">GType</link> enum_type,
                                                          const <link linkend="GimpEnumDesc">GimpEnumDesc</link> *descriptions);</programlisting>
 <para>
 Sets the array of human readable and translatable descriptions
@@ -133,9 +130,9 @@ and help texts for enum values.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-enum-get-value-descriptions" role="function" condition="since:GIMP 2.2"/>gimp_enum_get_value_descriptions ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_enum_get_value_descriptions</primary></indexterm><programlisting>const <link linkend="GimpEnumDesc">GimpEnumDesc</link>* gimp_enum_get_value_descriptions    (<link linkend="GType">GType</link> enum_type);</programlisting>
+<refsect2 id="gimp-enum-get-value-descriptions" role="function" condition="since:GIMP 2.2">
+<title>gimp_enum_get_value_descriptions ()</title>
+<indexterm zone="gimp-enum-get-value-descriptions" role="GIMP 2.2"><primary>gimp_enum_get_value_descriptions</primary></indexterm><programlisting>const <link linkend="GimpEnumDesc">GimpEnumDesc</link>* gimp_enum_get_value_descriptions    (<link linkend="GType">GType</link> enum_type);</programlisting>
 <para>
 Retreives the array of human readable and translatable descriptions
 and help texts for enum values.</para>
@@ -150,9 +147,9 @@ and help texts for enum values.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-flags-get-value-descriptions" role="function" condition="since:GIMP 2.2"/>gimp_flags_get_value_descriptions ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_flags_get_value_descriptions</primary></indexterm><programlisting>const <link linkend="GimpFlagsDesc">GimpFlagsDesc</link>* gimp_flags_get_value_descriptions  (<link linkend="GType">GType</link> flags_type);</programlisting>
+<refsect2 id="gimp-flags-get-value-descriptions" role="function" condition="since:GIMP 2.2">
+<title>gimp_flags_get_value_descriptions ()</title>
+<indexterm zone="gimp-flags-get-value-descriptions" role="GIMP 2.2"><primary>gimp_flags_get_value_descriptions</primary></indexterm><programlisting>const <link linkend="GimpFlagsDesc">GimpFlagsDesc</link>* gimp_flags_get_value_descriptions  (<link linkend="GType">GType</link> flags_type);</programlisting>
 <para>
 Retreives the array of human readable and translatable descriptions
 and help texts for flags values.</para>
@@ -167,9 +164,9 @@ and help texts for flags values.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-flags-set-value-descriptions" role="function" condition="since:GIMP 2.2"/>gimp_flags_set_value_descriptions ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_flags_set_value_descriptions</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_flags_set_value_descriptions   (<link linkend="GType">GType</link> flags_type,
+<refsect2 id="gimp-flags-set-value-descriptions" role="function" condition="since:GIMP 2.2">
+<title>gimp_flags_set_value_descriptions ()</title>
+<indexterm zone="gimp-flags-set-value-descriptions" role="GIMP 2.2"><primary>gimp_flags_set_value_descriptions</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_flags_set_value_descriptions   (<link linkend="GType">GType</link> flags_type,
                                                          const <link linkend="GimpFlagsDesc">GimpFlagsDesc</link> *descriptions);</programlisting>
 <para>
 Sets the array of human readable and translatable descriptions
@@ -191,6 +188,4 @@ and help texts for flags values.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

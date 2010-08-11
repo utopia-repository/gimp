@@ -4,7 +4,7 @@
 
 <refentry id="GimpScrolledPreview">
 <refmeta>
-<refentrytitle role="top_of_page">GimpScrolledPreview</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpScrolledPreview.top_of_page">GimpScrolledPreview</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpScrolledPreview.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpScrolledPreview-struct">GimpScrolledPreview</link>;
 <link linkend="void">void</link>                <link linkend="gimp-scrolled-preview-set-position">gimp_scrolled_preview_set_position</link>  (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
                                                          <link linkend="gint">gint</link> x,
@@ -31,14 +28,12 @@
                                                          <link linkend="GtkPolicyType">GtkPolicyType</link> vscrollbar_policy);
 <link linkend="void">void</link>                <link linkend="gimp-scrolled-preview-freeze">gimp_scrolled_preview_freeze</link>        (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);
 <link linkend="void">void</link>                <link linkend="gimp-scrolled-preview-thaw">gimp_scrolled_preview_thaw</link>          (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpScrolledPreview.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -54,7 +49,7 @@
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpScrolledPreview.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpScrolledPreview implements
@@ -66,24 +61,24 @@ GimpScrolledPreview implements
 
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpScrolledPreview.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link> enhanced by scrolling capabilities.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpScrolledPreview.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpScrolledPreview-struct" role="struct"/>GimpScrolledPreview</title>
-<indexterm><primary>GimpScrolledPreview</primary></indexterm><programlisting>typedef struct _GimpScrolledPreview GimpScrolledPreview;</programlisting>
+<refsect2 id="GimpScrolledPreview-struct" role="struct">
+<title>GimpScrolledPreview</title>
+<indexterm zone="GimpScrolledPreview-struct"><primary>GimpScrolledPreview</primary></indexterm><programlisting>typedef struct _GimpScrolledPreview GimpScrolledPreview;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-scrolled-preview-set-position" role="function" condition="since:GIMP 2.4"/>gimp_scrolled_preview_set_position ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scrolled_preview_set_position</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scrolled_preview_set_position  (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
+<refsect2 id="gimp-scrolled-preview-set-position" role="function" condition="since:GIMP 2.4">
+<title>gimp_scrolled_preview_set_position ()</title>
+<indexterm zone="gimp-scrolled-preview-set-position" role="GIMP 2.4"><primary>gimp_scrolled_preview_set_position</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scrolled_preview_set_position  (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
                                                          <link linkend="gint">gint</link> x,
                                                          <link linkend="gint">gint</link> y);</programlisting>
 <para>
@@ -102,9 +97,9 @@ A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-scrolled-preview-set-policy" role="function" condition="since:GIMP 2.4"/>gimp_scrolled_preview_set_policy ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scrolled_preview_set_policy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scrolled_preview_set_policy    (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
+<refsect2 id="gimp-scrolled-preview-set-policy" role="function" condition="since:GIMP 2.4">
+<title>gimp_scrolled_preview_set_policy ()</title>
+<indexterm zone="gimp-scrolled-preview-set-policy" role="GIMP 2.4"><primary>gimp_scrolled_preview_set_policy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scrolled_preview_set_policy    (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview,
                                                          <link linkend="GtkPolicyType">GtkPolicyType</link> hscrollbar_policy,
                                                          <link linkend="GtkPolicyType">GtkPolicyType</link> vscrollbar_policy);</programlisting>
 <para>
@@ -123,9 +118,9 @@ A widget providing a <link linkend="GimpPreview"><type>GimpPreview</type></link>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-scrolled-preview-freeze" role="function" condition="since:GIMP 2.4"/>gimp_scrolled_preview_freeze ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scrolled_preview_freeze</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scrolled_preview_freeze        (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);</programlisting>
+<refsect2 id="gimp-scrolled-preview-freeze" role="function" condition="since:GIMP 2.4">
+<title>gimp_scrolled_preview_freeze ()</title>
+<indexterm zone="gimp-scrolled-preview-freeze" role="GIMP 2.4"><primary>gimp_scrolled_preview_freeze</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scrolled_preview_freeze        (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);</programlisting>
 <para>
 While the <parameter>preview</parameter> is frozen, it is not going to redraw itself in
 response to scroll events.
@@ -141,9 +136,9 @@ This function should only be used to implement widgets derived from
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-scrolled-preview-thaw" role="function" condition="since:GIMP 2.4"/>gimp_scrolled_preview_thaw ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_scrolled_preview_thaw</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scrolled_preview_thaw          (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);</programlisting>
+<refsect2 id="gimp-scrolled-preview-thaw" role="function" condition="since:GIMP 2.4">
+<title>gimp_scrolled_preview_thaw ()</title>
+<indexterm zone="gimp-scrolled-preview-thaw" role="GIMP 2.4"><primary>gimp_scrolled_preview_thaw</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_scrolled_preview_thaw          (<link linkend="GimpScrolledPreview">GimpScrolledPreview</link> *preview);</programlisting>
 <para>
 While the <parameter>preview</parameter> is frozen, it is not going to redraw itself in
 response to scroll events.
@@ -165,6 +160,4 @@ This function should only be used to implement widgets derived from
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

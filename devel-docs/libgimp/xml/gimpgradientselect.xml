@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpgradientselect">
 <refmeta>
-<refentrytitle role="top_of_page">gimpgradientselect</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpgradientselect.top_of_page">gimpgradientselect</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpgradientselect.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="void">void</link>                (<link linkend="GimpRunGradientCallback">*GimpRunGradientCallback</link>)          (const <link linkend="gchar">gchar</link> *gradient_name,
                                                          <link linkend="gint">gint</link> width,
                                                          const <link linkend="gdouble">gdouble</link> *grad_data,
@@ -51,18 +48,18 @@ const <link linkend="gchar">gchar</link>*        <link linkend="gimp-gradient-se
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpgradientselect.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions providing a gradient selection dialog.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpgradientselect.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpRunGradientCallback" role="function"/>GimpRunGradientCallback ()</title>
-<indexterm><primary>GimpRunGradientCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunGradientCallback)          (const <link linkend="gchar">gchar</link> *gradient_name,
+<refsect2 id="GimpRunGradientCallback" role="function">
+<title>GimpRunGradientCallback ()</title>
+<indexterm zone="GimpRunGradientCallback"><primary>GimpRunGradientCallback</primary></indexterm><programlisting><link linkend="void">void</link>                (*GimpRunGradientCallback)          (const <link linkend="gchar">gchar</link> *gradient_name,
                                                          <link linkend="gint">gint</link> width,
                                                          const <link linkend="gdouble">gdouble</link> *grad_data,
                                                          <link linkend="gboolean">gboolean</link> dialog_closing,
@@ -88,9 +85,9 @@ Functions providing a gradient selection dialog.
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-gradient-select-new" role="function"/>gimp_gradient_select_new ()</title>
-<indexterm><primary>gimp_gradient_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_gradient_select_new            (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-gradient-select-new" role="function">
+<title>gimp_gradient_select_new ()</title>
+<indexterm zone="gimp-gradient-select-new"><primary>gimp_gradient_select_new</primary></indexterm><programlisting>const <link linkend="gchar">gchar</link>*        gimp_gradient_select_new            (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *gradient_name,
                                                          <link linkend="gint">gint</link> sample_size,
                                                          <link linkend="GimpRunGradientCallback">GimpRunGradientCallback</link> callback,
@@ -118,9 +115,9 @@ Functions providing a gradient selection dialog.
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-gradient-select-destroy" role="function"/>gimp_gradient_select_destroy ()</title>
-<indexterm><primary>gimp_gradient_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_gradient_select_destroy        (const <link linkend="gchar">gchar</link> *gradient_callback);</programlisting>
+<refsect2 id="gimp-gradient-select-destroy" role="function">
+<title>gimp_gradient_select_destroy ()</title>
+<indexterm zone="gimp-gradient-select-destroy"><primary>gimp_gradient_select_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_gradient_select_destroy        (const <link linkend="gchar">gchar</link> *gradient_callback);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -130,9 +127,9 @@ Functions providing a gradient selection dialog.
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-gradients-popup" role="function"/>gimp_gradients_popup ()</title>
-<indexterm><primary>gimp_gradients_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_popup                (const <link linkend="gchar">gchar</link> *gradient_callback,
+<refsect2 id="gimp-gradients-popup" role="function">
+<title>gimp_gradients_popup ()</title>
+<indexterm zone="gimp-gradients-popup"><primary>gimp_gradients_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_popup                (const <link linkend="gchar">gchar</link> *gradient_callback,
                                                          const <link linkend="gchar">gchar</link> *popup_title,
                                                          const <link linkend="gchar">gchar</link> *initial_gradient,
                                                          <link linkend="gint">gint</link> sample_size);</programlisting>
@@ -159,9 +156,9 @@ This procedure opens the gradient selection dialog.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-gradients-close-popup" role="function"/>gimp_gradients_close_popup ()</title>
-<indexterm><primary>gimp_gradients_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_close_popup          (const <link linkend="gchar">gchar</link> *gradient_callback);</programlisting>
+<refsect2 id="gimp-gradients-close-popup" role="function">
+<title>gimp_gradients_close_popup ()</title>
+<indexterm zone="gimp-gradients-close-popup"><primary>gimp_gradients_close_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_close_popup          (const <link linkend="gchar">gchar</link> *gradient_callback);</programlisting>
 <para>
 Close the gradient selection dialog.
 </para>
@@ -176,9 +173,9 @@ This procedure closes an opened gradient selection dialog.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE on success.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-gradients-set-popup" role="function"/>gimp_gradients_set_popup ()</title>
-<indexterm><primary>gimp_gradients_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_set_popup            (const <link linkend="gchar">gchar</link> *gradient_callback,
+<refsect2 id="gimp-gradients-set-popup" role="function">
+<title>gimp_gradients_set_popup ()</title>
+<indexterm zone="gimp-gradients-set-popup"><primary>gimp_gradients_set_popup</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_gradients_set_popup            (const <link linkend="gchar">gchar</link> *gradient_callback,
                                                          const <link linkend="gchar">gchar</link> *gradient_name);</programlisting>
 <para>
 Sets the current gradient in a gradient selection dialog.
@@ -203,6 +200,4 @@ Sets the current gradient in a gradient selection dialog.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

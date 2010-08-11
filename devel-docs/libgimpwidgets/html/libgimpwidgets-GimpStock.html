@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>GimpStock</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Widgets Library Reference Manual">
-<link rel="up" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
+<link rel="up" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
 <link rel="prev" href="libgimpwidgets-GimpQueryBox.html" title="GimpQueryBox">
 <link rel="next" href="libgimpwidgets-GimpEnumWidgets.html" title="GimpEnumWidgets">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimpwidgets-widgets.html" title="Part&#160;I.&#160;GIMP Widgets">
+<link rel="part" href="libgimpwidgets-widgets.html" title="Part I. GIMP Widgets">
 <link rel="chapter" href="libgimpwidgets-hierarchy.html" title="Object Hierarchy">
 <link rel="chapter" href="libgimpwidgets-gallery.html" title="Widget Gallery">
 <link rel="chapter" href="libgimpwidgets-cell-renderers.html" title="Cell Renderers for GtkTreeView">
-<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part&#160;II.&#160;GIMP Display Filters">
-<link rel="part" href="libgimpwidgets-colorselector.html" title="Part&#160;III.&#160;GIMP Color Selectors">
-<link rel="part" href="libgimpwidgets-controller.html" title="Part&#160;IV.&#160;GIMP Controllers">
-<link rel="part" href="libgimpwidgets-utils.html" title="Part&#160;V.&#160;GIMP Widgets Utilities">
-<link rel="part" href="libgimpwidgets-deprecated.html" title="Part&#160;VI.&#160;Deprecated API">
+<link rel="part" href="libgimpwidgets-colordisplay.html" title="Part II. GIMP Display Filters">
+<link rel="part" href="libgimpwidgets-colorselector.html" title="Part III. GIMP Color Selectors">
+<link rel="part" href="libgimpwidgets-controller.html" title="Part IV. GIMP Controllers">
+<link rel="part" href="libgimpwidgets-utils.html" title="Part V. GIMP Widgets Utilities">
+<link rel="part" href="libgimpwidgets-deprecated.html" title="Part VI. Deprecated API">
 <link rel="index" href="libgimpwidgets-index.html" title="Index">
 <link rel="index" href="libgimpwidgets-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
 <link rel="index" href="libgimpwidgets-index-new-in-2-4.html" title="Index of new symbols in GIMP 2.4">
@@ -33,233 +33,228 @@
 <th width="100%" align="center">GIMP Widgets Library Reference Manual</th>
 <td><a accesskey="n" href="libgimpwidgets-GimpEnumWidgets.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2623046" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2676809" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimpwidgets-GimpStock.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimpwidgets-GimpStock.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimpwidgets-GimpStock"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2623046"></a><span class="refentrytitle">GimpStock</span>
-</h2>
-<p>GimpStock &#8212; Prebuilt common menu/toolbar items and corresponding icons</p>
+<h2><span class="refentrytitle"><a name="libgimpwidgets-GimpStock.top_of_page"></a>GimpStock</span></h2>
+<p>GimpStock — Prebuilt common menu/toolbar items and corresponding icons</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimpwidgets-GimpStock.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
+void                <a class="link" href="libgimpwidgets-GimpStock.html#gimp-stock-init" title="gimp_stock_init ()">gimp_stock_init</a>                     (void);
 
-
-
-void                <a class="link" href="libgimpwidgets-GimpStock.html#gimp-stock-init">gimp_stock_init</a>                     (void);
-
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ANCHOR:CAPS">GIMP_STOCK_ANCHOR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CENTER:CAPS">GIMP_STOCK_CENTER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DUPLICATE:CAPS">GIMP_STOCK_DUPLICATE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-EDIT:CAPS">GIMP_STOCK_EDIT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESET:CAPS">GIMP_STOCK_RESET</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CLOSE:CAPS">GIMP_STOCK_CLOSE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-MENU-LEFT:CAPS">GIMP_STOCK_MENU_LEFT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-MENU-RIGHT:CAPS">GIMP_STOCK_MENU_RIGHT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-MOVE-TO-SCREEN:CAPS">GIMP_STOCK_MOVE_TO_SCREEN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-INVERT:CAPS">GIMP_STOCK_INVERT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER-TO-IMAGESIZE:CAPS">GIMP_STOCK_LAYER_TO_IMAGESIZE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-MERGE-DOWN:CAPS">GIMP_STOCK_MERGE_DOWN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-NAVIGATION:CAPS">GIMP_STOCK_NAVIGATION</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PASTE-AS-NEW:CAPS">GIMP_STOCK_PASTE_AS_NEW</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PASTE-INTO:CAPS">GIMP_STOCK_PASTE_INTO</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATH-STROKE:CAPS">GIMP_STOCK_PATH_STROKE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PLUGIN:CAPS">GIMP_STOCK_PLUGIN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUICK-MASK-OFF:CAPS">GIMP_STOCK_QUICK_MASK_OFF</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUICK-MASK-ON:CAPS">GIMP_STOCK_QUICK_MASK_ON</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM:CAPS">GIMP_STOCK_HISTOGRAM</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM-LINEAR:CAPS">GIMP_STOCK_HISTOGRAM_LINEAR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM-LOGARITHMIC:CAPS">GIMP_STOCK_HISTOGRAM_LOGARITHMIC</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESHOW-FILTER:CAPS">GIMP_STOCK_RESHOW_FILTER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESIZE:CAPS">GIMP_STOCK_RESIZE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLIP-HORIZONTAL:CAPS">GIMP_STOCK_FLIP_HORIZONTAL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLIP-VERTICAL:CAPS">GIMP_STOCK_FLIP_VERTICAL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-180:CAPS">GIMP_STOCK_ROTATE_180</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-270:CAPS">GIMP_STOCK_ROTATE_270</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-90:CAPS">GIMP_STOCK_ROTATE_90</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SCALE:CAPS">GIMP_STOCK_SCALE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LINKED:CAPS">GIMP_STOCK_LINKED</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VISIBLE:CAPS">GIMP_STOCK_VISIBLE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LIST:CAPS">GIMP_STOCK_LIST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRID:CAPS">GIMP_STOCK_GRID</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PORTRAIT:CAPS">GIMP_STOCK_PORTRAIT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LANDSCAPE:CAPS">GIMP_STOCK_LANDSCAPE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VIDEO:CAPS">GIMP_STOCK_VIDEO</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WEB:CAPS">GIMP_STOCK_WEB</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-IMAGE:CAPS">GIMP_STOCK_IMAGE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER:CAPS">GIMP_STOCK_LAYER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER-MASK:CAPS">GIMP_STOCK_LAYER_MASK</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL:CAPS">GIMP_STOCK_CHANNEL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-RED:CAPS">GIMP_STOCK_CHANNEL_RED</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-GREEN:CAPS">GIMP_STOCK_CHANNEL_GREEN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-BLUE:CAPS">GIMP_STOCK_CHANNEL_BLUE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-GRAY:CAPS">GIMP_STOCK_CHANNEL_GRAY</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-INDEXED:CAPS">GIMP_STOCK_CHANNEL_INDEXED</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-ALPHA:CAPS">GIMP_STOCK_CHANNEL_ALPHA</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATH:CAPS">GIMP_STOCK_PATH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-LAYER:CAPS">GIMP_STOCK_TEXT_LAYER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLOATING-SELECTION:CAPS">GIMP_STOCK_FLOATING_SELECTION</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEMPLATE:CAPS">GIMP_STOCK_TEMPLATE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-IMAGES:CAPS">GIMP_STOCK_IMAGES</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYERS:CAPS">GIMP_STOCK_LAYERS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNELS:CAPS">GIMP_STOCK_CHANNELS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATHS:CAPS">GIMP_STOCK_PATHS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLORMAP:CAPS">GIMP_STOCK_COLORMAP</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-INDEXED-PALETTE:CAPS">GIMP_STOCK_INDEXED_PALETTE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURSOR:CAPS">GIMP_STOCK_CURSOR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SAMPLE-POINT:CAPS">GIMP_STOCK_SAMPLE_POINT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-CIRCLE:CAPS">GIMP_STOCK_SHAPE_CIRCLE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-SQUARE:CAPS">GIMP_STOCK_SHAPE_SQUARE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-DIAMOND:CAPS">GIMP_STOCK_SHAPE_DIAMOND</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-BUTT:CAPS">GIMP_STOCK_CAP_BUTT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-ROUND:CAPS">GIMP_STOCK_CAP_ROUND</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-SQUARE:CAPS">GIMP_STOCK_CAP_SQUARE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-MITER:CAPS">GIMP_STOCK_JOIN_MITER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-ROUND:CAPS">GIMP_STOCK_JOIN_ROUND</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-BEVEL:CAPS">GIMP_STOCK_JOIN_BEVEL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION:CAPS">GIMP_STOCK_SELECTION</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-ALL:CAPS">GIMP_STOCK_SELECTION_ALL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-NONE:CAPS">GIMP_STOCK_SELECTION_NONE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-GROW:CAPS">GIMP_STOCK_SELECTION_GROW</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-SHRINK:CAPS">GIMP_STOCK_SELECTION_SHRINK</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-BORDER:CAPS">GIMP_STOCK_SELECTION_BORDER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-ADD:CAPS">GIMP_STOCK_SELECTION_ADD</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-SUBTRACT:CAPS">GIMP_STOCK_SELECTION_SUBTRACT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-REPLACE:CAPS">GIMP_STOCK_SELECTION_REPLACE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-INTERSECT:CAPS">GIMP_STOCK_SELECTION_INTERSECT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-STROKE:CAPS">GIMP_STOCK_SELECTION_STROKE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-TO-CHANNEL:CAPS">GIMP_STOCK_SELECTION_TO_CHANNEL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-TO-PATH:CAPS">GIMP_STOCK_SELECTION_TO_PATH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-LINEAR:CAPS">GIMP_STOCK_GRADIENT_LINEAR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-BILINEAR:CAPS">GIMP_STOCK_GRADIENT_BILINEAR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-RADIAL:CAPS">GIMP_STOCK_GRADIENT_RADIAL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SQUARE:CAPS">GIMP_STOCK_GRADIENT_SQUARE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-CONICAL-SYMMETRIC:CAPS">GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-CONICAL-ASYMMETRIC:CAPS">GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-SPHERICAL:CAPS">GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-ANGULAR:CAPS">GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-DIMPLED:CAPS">GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SPIRAL-CLOCKWISE:CAPS">GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SPIRAL-ANTICLOCKWISE:CAPS">GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH-WEST:CAPS">GIMP_STOCK_GRAVITY_NORTH_WEST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH:CAPS">GIMP_STOCK_GRAVITY_NORTH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH-EAST:CAPS">GIMP_STOCK_GRAVITY_NORTH_EAST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-WEST:CAPS">GIMP_STOCK_GRAVITY_WEST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-EAST:CAPS">GIMP_STOCK_GRAVITY_EAST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH-WEST:CAPS">GIMP_STOCK_GRAVITY_SOUTH_WEST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH:CAPS">GIMP_STOCK_GRAVITY_SOUTH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH-EAST:CAPS">GIMP_STOCK_GRAVITY_SOUTH_EAST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCENTER:CAPS">GIMP_STOCK_HCENTER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCENTER:CAPS">GIMP_STOCK_VCENTER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHAR-PICKER:CAPS">GIMP_STOCK_CHAR_PICKER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LETTER-SPACING:CAPS">GIMP_STOCK_LETTER_SPACING</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LINE-SPACING:CAPS">GIMP_STOCK_LINE_SPACING</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-DIR-LTR:CAPS">GIMP_STOCK_TEXT_DIR_LTR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-DIR-RTL:CAPS">GIMP_STOCK_TEXT_DIR_RTL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PRINT-RESOLUTION:CAPS">GIMP_STOCK_PRINT_RESOLUTION</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOLS:CAPS">GIMP_STOCK_TOOLS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-OPTIONS:CAPS">GIMP_STOCK_TOOL_OPTIONS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DEVICE-STATUS:CAPS">GIMP_STOCK_DEVICE_STATUS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER:CAPS">GIMP_STOCK_DISPLAY_FILTER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURVE-FREE:CAPS">GIMP_STOCK_CURVE_FREE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURVE-SMOOTH:CAPS">GIMP_STOCK_CURVE_SMOOTH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-BLACK:CAPS">GIMP_STOCK_COLOR_PICKER_BLACK</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-GRAY:CAPS">GIMP_STOCK_COLOR_PICKER_GRAY</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-WHITE:CAPS">GIMP_STOCK_COLOR_PICKER_WHITE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-TRIANGLE:CAPS">GIMP_STOCK_COLOR_TRIANGLE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICK-FROM-SCREEN:CAPS">GIMP_STOCK_COLOR_PICK_FROM_SCREEN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-GRAYSCALE:CAPS">GIMP_STOCK_CONVERT_GRAYSCALE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-INDEXED:CAPS">GIMP_STOCK_CONVERT_INDEXED</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-RGB:CAPS">GIMP_STOCK_CONVERT_RGB</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TRANSPARENCY:CAPS">GIMP_STOCK_TRANSPARENCY</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DEFAULT-COLORS:CAPS">GIMP_STOCK_DEFAULT_COLORS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SWAP-COLORS:CAPS">GIMP_STOCK_SWAP_COLORS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-UNDO-HISTORY:CAPS">GIMP_STOCK_UNDO_HISTORY</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN:CAPS">GIMP_STOCK_HCHAIN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN-BROKEN:CAPS">GIMP_STOCK_HCHAIN_BROKEN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN:CAPS">GIMP_STOCK_VCHAIN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN-BROKEN:CAPS">GIMP_STOCK_VCHAIN_BROKEN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXTURE:CAPS">GIMP_STOCK_TEXTURE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FRAME:CAPS">GIMP_STOCK_FRAME</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ERROR:CAPS">GIMP_STOCK_ERROR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-INFO:CAPS">GIMP_STOCK_INFO</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUESTION:CAPS">GIMP_STOCK_QUESTION</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WARNING:CAPS">GIMP_STOCK_WARNING</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER:CAPS">GIMP_STOCK_WILBER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-EEK:CAPS">GIMP_STOCK_WILBER_EEK</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS">GIMP_STOCK_ZOOM_FOLLOW_WINDOW</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-AIRBRUSH:CAPS">GIMP_STOCK_TOOL_AIRBRUSH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ALIGN:CAPS">GIMP_STOCK_TOOL_ALIGN</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLEND:CAPS">GIMP_STOCK_TOOL_BLEND</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLUR:CAPS">GIMP_STOCK_TOOL_BLUR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS">GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BUCKET-FILL:CAPS">GIMP_STOCK_TOOL_BUCKET_FILL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BY-COLOR-SELECT:CAPS">GIMP_STOCK_TOOL_BY_COLOR_SELECT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CLONE:CAPS">GIMP_STOCK_TOOL_CLONE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLOR-BALANCE:CAPS">GIMP_STOCK_TOOL_COLOR_BALANCE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLOR-PICKER:CAPS">GIMP_STOCK_TOOL_COLOR_PICKER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLORIZE:CAPS">GIMP_STOCK_TOOL_COLORIZE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CROP:CAPS">GIMP_STOCK_TOOL_CROP</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CURVES:CAPS">GIMP_STOCK_TOOL_CURVES</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-DODGE:CAPS">GIMP_STOCK_TOOL_DODGE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS">GIMP_STOCK_TOOL_ELLIPSE_SELECT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ERASER:CAPS">GIMP_STOCK_TOOL_ERASER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FLIP:CAPS">GIMP_STOCK_TOOL_FLIP</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FOREGROUND-SELECT:CAPS">GIMP_STOCK_TOOL_FOREGROUND_SELECT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FREE-SELECT:CAPS">GIMP_STOCK_TOOL_FREE_SELECT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS">GIMP_STOCK_TOOL_FUZZY_SELECT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HEAL:CAPS">GIMP_STOCK_TOOL_HEAL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HUE-SATURATION:CAPS">GIMP_STOCK_TOOL_HUE_SATURATION</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-INK:CAPS">GIMP_STOCK_TOOL_INK</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ISCISSORS:CAPS">GIMP_STOCK_TOOL_ISCISSORS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-LEVELS:CAPS">GIMP_STOCK_TOOL_LEVELS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-MEASURE:CAPS">GIMP_STOCK_TOOL_MEASURE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-MOVE:CAPS">GIMP_STOCK_TOOL_MOVE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PAINTBRUSH:CAPS">GIMP_STOCK_TOOL_PAINTBRUSH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PATH:CAPS">GIMP_STOCK_TOOL_PATH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PENCIL:CAPS">GIMP_STOCK_TOOL_PENCIL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PERSPECTIVE:CAPS">GIMP_STOCK_TOOL_PERSPECTIVE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PERSPECTIVE-CLONE:CAPS">GIMP_STOCK_TOOL_PERSPECTIVE_CLONE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-POSTERIZE:CAPS">GIMP_STOCK_TOOL_POSTERIZE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-RECT-SELECT:CAPS">GIMP_STOCK_TOOL_RECT_SELECT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ROTATE:CAPS">GIMP_STOCK_TOOL_ROTATE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SCALE:CAPS">GIMP_STOCK_TOOL_SCALE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SHEAR:CAPS">GIMP_STOCK_TOOL_SHEAR</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SMUDGE:CAPS">GIMP_STOCK_TOOL_SMUDGE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-TEXT:CAPS">GIMP_STOCK_TOOL_TEXT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-THRESHOLD:CAPS">GIMP_STOCK_TOOL_THRESHOLD</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ZOOM:CAPS">GIMP_STOCK_TOOL_ZOOM</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER:CAPS">GIMP_STOCK_CONTROLLER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-KEYBOARD:CAPS">GIMP_STOCK_CONTROLLER_KEYBOARD</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-LINUX-INPUT:CAPS">GIMP_STOCK_CONTROLLER_LINUX_INPUT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-MIDI:CAPS">GIMP_STOCK_CONTROLLER_MIDI</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-WHEEL:CAPS">GIMP_STOCK_CONTROLLER_WHEEL</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-COLORBLIND:CAPS">GIMP_STOCK_DISPLAY_FILTER_COLORBLIND</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-CONTRAST:CAPS">GIMP_STOCK_DISPLAY_FILTER_CONTRAST</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-GAMMA:CAPS">GIMP_STOCK_DISPLAY_FILTER_GAMMA</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-LCMS:CAPS">GIMP_STOCK_DISPLAY_FILTER_LCMS</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-PROOF:CAPS">GIMP_STOCK_DISPLAY_FILTER_PROOF</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-ON:CAPS">GIMP_STOCK_QMASK_ON</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-OFF:CAPS">GIMP_STOCK_QMASK_OFF</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-BRUSH:CAPS">GIMP_STOCK_BRUSH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-BUFFER:CAPS">GIMP_STOCK_BUFFER</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DETACH:CAPS">GIMP_STOCK_DETACH</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FONT:CAPS">GIMP_STOCK_FONT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT:CAPS">GIMP_STOCK_GRADIENT</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PALETTE:CAPS">GIMP_STOCK_PALETTE</a>
-#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATTERN:CAPS">GIMP_STOCK_PATTERN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ANCHOR:CAPS" title="GIMP_STOCK_ANCHOR">GIMP_STOCK_ANCHOR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CENTER:CAPS" title="GIMP_STOCK_CENTER">GIMP_STOCK_CENTER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DUPLICATE:CAPS" title="GIMP_STOCK_DUPLICATE">GIMP_STOCK_DUPLICATE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-EDIT:CAPS" title="GIMP_STOCK_EDIT">GIMP_STOCK_EDIT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESET:CAPS" title="GIMP_STOCK_RESET">GIMP_STOCK_RESET</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CLOSE:CAPS" title="GIMP_STOCK_CLOSE">GIMP_STOCK_CLOSE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-MENU-LEFT:CAPS" title="GIMP_STOCK_MENU_LEFT">GIMP_STOCK_MENU_LEFT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-MENU-RIGHT:CAPS" title="GIMP_STOCK_MENU_RIGHT">GIMP_STOCK_MENU_RIGHT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-MOVE-TO-SCREEN:CAPS" title="GIMP_STOCK_MOVE_TO_SCREEN">GIMP_STOCK_MOVE_TO_SCREEN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-INVERT:CAPS" title="GIMP_STOCK_INVERT">GIMP_STOCK_INVERT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER-TO-IMAGESIZE:CAPS" title="GIMP_STOCK_LAYER_TO_IMAGESIZE">GIMP_STOCK_LAYER_TO_IMAGESIZE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-MERGE-DOWN:CAPS" title="GIMP_STOCK_MERGE_DOWN">GIMP_STOCK_MERGE_DOWN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-NAVIGATION:CAPS" title="GIMP_STOCK_NAVIGATION">GIMP_STOCK_NAVIGATION</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PASTE-AS-NEW:CAPS" title="GIMP_STOCK_PASTE_AS_NEW">GIMP_STOCK_PASTE_AS_NEW</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PASTE-INTO:CAPS" title="GIMP_STOCK_PASTE_INTO">GIMP_STOCK_PASTE_INTO</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATH-STROKE:CAPS" title="GIMP_STOCK_PATH_STROKE">GIMP_STOCK_PATH_STROKE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PLUGIN:CAPS" title="GIMP_STOCK_PLUGIN">GIMP_STOCK_PLUGIN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUICK-MASK-OFF:CAPS" title="GIMP_STOCK_QUICK_MASK_OFF">GIMP_STOCK_QUICK_MASK_OFF</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUICK-MASK-ON:CAPS" title="GIMP_STOCK_QUICK_MASK_ON">GIMP_STOCK_QUICK_MASK_ON</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM:CAPS" title="GIMP_STOCK_HISTOGRAM">GIMP_STOCK_HISTOGRAM</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM-LINEAR:CAPS" title="GIMP_STOCK_HISTOGRAM_LINEAR">GIMP_STOCK_HISTOGRAM_LINEAR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HISTOGRAM-LOGARITHMIC:CAPS" title="GIMP_STOCK_HISTOGRAM_LOGARITHMIC">GIMP_STOCK_HISTOGRAM_LOGARITHMIC</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESHOW-FILTER:CAPS" title="GIMP_STOCK_RESHOW_FILTER">GIMP_STOCK_RESHOW_FILTER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-RESIZE:CAPS" title="GIMP_STOCK_RESIZE">GIMP_STOCK_RESIZE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLIP-HORIZONTAL:CAPS" title="GIMP_STOCK_FLIP_HORIZONTAL">GIMP_STOCK_FLIP_HORIZONTAL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLIP-VERTICAL:CAPS" title="GIMP_STOCK_FLIP_VERTICAL">GIMP_STOCK_FLIP_VERTICAL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-180:CAPS" title="GIMP_STOCK_ROTATE_180">GIMP_STOCK_ROTATE_180</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-270:CAPS" title="GIMP_STOCK_ROTATE_270">GIMP_STOCK_ROTATE_270</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ROTATE-90:CAPS" title="GIMP_STOCK_ROTATE_90">GIMP_STOCK_ROTATE_90</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SCALE:CAPS" title="GIMP_STOCK_SCALE">GIMP_STOCK_SCALE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LINKED:CAPS" title="GIMP_STOCK_LINKED">GIMP_STOCK_LINKED</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VISIBLE:CAPS" title="GIMP_STOCK_VISIBLE">GIMP_STOCK_VISIBLE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LIST:CAPS" title="GIMP_STOCK_LIST">GIMP_STOCK_LIST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRID:CAPS" title="GIMP_STOCK_GRID">GIMP_STOCK_GRID</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PORTRAIT:CAPS" title="GIMP_STOCK_PORTRAIT">GIMP_STOCK_PORTRAIT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LANDSCAPE:CAPS" title="GIMP_STOCK_LANDSCAPE">GIMP_STOCK_LANDSCAPE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VIDEO:CAPS" title="GIMP_STOCK_VIDEO">GIMP_STOCK_VIDEO</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WEB:CAPS" title="GIMP_STOCK_WEB">GIMP_STOCK_WEB</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-IMAGE:CAPS" title="GIMP_STOCK_IMAGE">GIMP_STOCK_IMAGE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER:CAPS" title="GIMP_STOCK_LAYER">GIMP_STOCK_LAYER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYER-MASK:CAPS" title="GIMP_STOCK_LAYER_MASK">GIMP_STOCK_LAYER_MASK</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL:CAPS" title="GIMP_STOCK_CHANNEL">GIMP_STOCK_CHANNEL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-RED:CAPS" title="GIMP_STOCK_CHANNEL_RED">GIMP_STOCK_CHANNEL_RED</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-GREEN:CAPS" title="GIMP_STOCK_CHANNEL_GREEN">GIMP_STOCK_CHANNEL_GREEN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-BLUE:CAPS" title="GIMP_STOCK_CHANNEL_BLUE">GIMP_STOCK_CHANNEL_BLUE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-GRAY:CAPS" title="GIMP_STOCK_CHANNEL_GRAY">GIMP_STOCK_CHANNEL_GRAY</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-INDEXED:CAPS" title="GIMP_STOCK_CHANNEL_INDEXED">GIMP_STOCK_CHANNEL_INDEXED</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNEL-ALPHA:CAPS" title="GIMP_STOCK_CHANNEL_ALPHA">GIMP_STOCK_CHANNEL_ALPHA</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATH:CAPS" title="GIMP_STOCK_PATH">GIMP_STOCK_PATH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-LAYER:CAPS" title="GIMP_STOCK_TEXT_LAYER">GIMP_STOCK_TEXT_LAYER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FLOATING-SELECTION:CAPS" title="GIMP_STOCK_FLOATING_SELECTION">GIMP_STOCK_FLOATING_SELECTION</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEMPLATE:CAPS" title="GIMP_STOCK_TEMPLATE">GIMP_STOCK_TEMPLATE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-IMAGES:CAPS" title="GIMP_STOCK_IMAGES">GIMP_STOCK_IMAGES</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LAYERS:CAPS" title="GIMP_STOCK_LAYERS">GIMP_STOCK_LAYERS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHANNELS:CAPS" title="GIMP_STOCK_CHANNELS">GIMP_STOCK_CHANNELS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATHS:CAPS" title="GIMP_STOCK_PATHS">GIMP_STOCK_PATHS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLORMAP:CAPS" title="GIMP_STOCK_COLORMAP">GIMP_STOCK_COLORMAP</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-INDEXED-PALETTE:CAPS" title="GIMP_STOCK_INDEXED_PALETTE">GIMP_STOCK_INDEXED_PALETTE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURSOR:CAPS" title="GIMP_STOCK_CURSOR">GIMP_STOCK_CURSOR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SAMPLE-POINT:CAPS" title="GIMP_STOCK_SAMPLE_POINT">GIMP_STOCK_SAMPLE_POINT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-CIRCLE:CAPS" title="GIMP_STOCK_SHAPE_CIRCLE">GIMP_STOCK_SHAPE_CIRCLE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-SQUARE:CAPS" title="GIMP_STOCK_SHAPE_SQUARE">GIMP_STOCK_SHAPE_SQUARE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SHAPE-DIAMOND:CAPS" title="GIMP_STOCK_SHAPE_DIAMOND">GIMP_STOCK_SHAPE_DIAMOND</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-BUTT:CAPS" title="GIMP_STOCK_CAP_BUTT">GIMP_STOCK_CAP_BUTT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-ROUND:CAPS" title="GIMP_STOCK_CAP_ROUND">GIMP_STOCK_CAP_ROUND</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CAP-SQUARE:CAPS" title="GIMP_STOCK_CAP_SQUARE">GIMP_STOCK_CAP_SQUARE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-MITER:CAPS" title="GIMP_STOCK_JOIN_MITER">GIMP_STOCK_JOIN_MITER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-ROUND:CAPS" title="GIMP_STOCK_JOIN_ROUND">GIMP_STOCK_JOIN_ROUND</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-JOIN-BEVEL:CAPS" title="GIMP_STOCK_JOIN_BEVEL">GIMP_STOCK_JOIN_BEVEL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION:CAPS" title="GIMP_STOCK_SELECTION">GIMP_STOCK_SELECTION</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-ALL:CAPS" title="GIMP_STOCK_SELECTION_ALL">GIMP_STOCK_SELECTION_ALL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-NONE:CAPS" title="GIMP_STOCK_SELECTION_NONE">GIMP_STOCK_SELECTION_NONE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-GROW:CAPS" title="GIMP_STOCK_SELECTION_GROW">GIMP_STOCK_SELECTION_GROW</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-SHRINK:CAPS" title="GIMP_STOCK_SELECTION_SHRINK">GIMP_STOCK_SELECTION_SHRINK</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-BORDER:CAPS" title="GIMP_STOCK_SELECTION_BORDER">GIMP_STOCK_SELECTION_BORDER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-ADD:CAPS" title="GIMP_STOCK_SELECTION_ADD">GIMP_STOCK_SELECTION_ADD</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-SUBTRACT:CAPS" title="GIMP_STOCK_SELECTION_SUBTRACT">GIMP_STOCK_SELECTION_SUBTRACT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-REPLACE:CAPS" title="GIMP_STOCK_SELECTION_REPLACE">GIMP_STOCK_SELECTION_REPLACE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-INTERSECT:CAPS" title="GIMP_STOCK_SELECTION_INTERSECT">GIMP_STOCK_SELECTION_INTERSECT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-STROKE:CAPS" title="GIMP_STOCK_SELECTION_STROKE">GIMP_STOCK_SELECTION_STROKE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-TO-CHANNEL:CAPS" title="GIMP_STOCK_SELECTION_TO_CHANNEL">GIMP_STOCK_SELECTION_TO_CHANNEL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SELECTION-TO-PATH:CAPS" title="GIMP_STOCK_SELECTION_TO_PATH">GIMP_STOCK_SELECTION_TO_PATH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-LINEAR:CAPS" title="GIMP_STOCK_GRADIENT_LINEAR">GIMP_STOCK_GRADIENT_LINEAR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-BILINEAR:CAPS" title="GIMP_STOCK_GRADIENT_BILINEAR">GIMP_STOCK_GRADIENT_BILINEAR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-RADIAL:CAPS" title="GIMP_STOCK_GRADIENT_RADIAL">GIMP_STOCK_GRADIENT_RADIAL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SQUARE:CAPS" title="GIMP_STOCK_GRADIENT_SQUARE">GIMP_STOCK_GRADIENT_SQUARE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-CONICAL-SYMMETRIC:CAPS" title="GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC">GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-CONICAL-ASYMMETRIC:CAPS" title="GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC">GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-SPHERICAL:CAPS" title="GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL">GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-ANGULAR:CAPS" title="GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR">GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SHAPEBURST-DIMPLED:CAPS" title="GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED">GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SPIRAL-CLOCKWISE:CAPS" title="GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE">GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT-SPIRAL-ANTICLOCKWISE:CAPS" title="GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE">GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH-WEST:CAPS" title="GIMP_STOCK_GRAVITY_NORTH_WEST">GIMP_STOCK_GRAVITY_NORTH_WEST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH:CAPS" title="GIMP_STOCK_GRAVITY_NORTH">GIMP_STOCK_GRAVITY_NORTH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-NORTH-EAST:CAPS" title="GIMP_STOCK_GRAVITY_NORTH_EAST">GIMP_STOCK_GRAVITY_NORTH_EAST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-WEST:CAPS" title="GIMP_STOCK_GRAVITY_WEST">GIMP_STOCK_GRAVITY_WEST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-EAST:CAPS" title="GIMP_STOCK_GRAVITY_EAST">GIMP_STOCK_GRAVITY_EAST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH-WEST:CAPS" title="GIMP_STOCK_GRAVITY_SOUTH_WEST">GIMP_STOCK_GRAVITY_SOUTH_WEST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH:CAPS" title="GIMP_STOCK_GRAVITY_SOUTH">GIMP_STOCK_GRAVITY_SOUTH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRAVITY-SOUTH-EAST:CAPS" title="GIMP_STOCK_GRAVITY_SOUTH_EAST">GIMP_STOCK_GRAVITY_SOUTH_EAST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCENTER:CAPS" title="GIMP_STOCK_HCENTER">GIMP_STOCK_HCENTER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCENTER:CAPS" title="GIMP_STOCK_VCENTER">GIMP_STOCK_VCENTER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CHAR-PICKER:CAPS" title="GIMP_STOCK_CHAR_PICKER">GIMP_STOCK_CHAR_PICKER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LETTER-SPACING:CAPS" title="GIMP_STOCK_LETTER_SPACING">GIMP_STOCK_LETTER_SPACING</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-LINE-SPACING:CAPS" title="GIMP_STOCK_LINE_SPACING">GIMP_STOCK_LINE_SPACING</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-DIR-LTR:CAPS" title="GIMP_STOCK_TEXT_DIR_LTR">GIMP_STOCK_TEXT_DIR_LTR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXT-DIR-RTL:CAPS" title="GIMP_STOCK_TEXT_DIR_RTL">GIMP_STOCK_TEXT_DIR_RTL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PRINT-RESOLUTION:CAPS" title="GIMP_STOCK_PRINT_RESOLUTION">GIMP_STOCK_PRINT_RESOLUTION</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOLS:CAPS" title="GIMP_STOCK_TOOLS">GIMP_STOCK_TOOLS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-OPTIONS:CAPS" title="GIMP_STOCK_TOOL_OPTIONS">GIMP_STOCK_TOOL_OPTIONS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DEVICE-STATUS:CAPS" title="GIMP_STOCK_DEVICE_STATUS">GIMP_STOCK_DEVICE_STATUS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER:CAPS" title="GIMP_STOCK_DISPLAY_FILTER">GIMP_STOCK_DISPLAY_FILTER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURVE-FREE:CAPS" title="GIMP_STOCK_CURVE_FREE">GIMP_STOCK_CURVE_FREE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CURVE-SMOOTH:CAPS" title="GIMP_STOCK_CURVE_SMOOTH">GIMP_STOCK_CURVE_SMOOTH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-BLACK:CAPS" title="GIMP_STOCK_COLOR_PICKER_BLACK">GIMP_STOCK_COLOR_PICKER_BLACK</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-GRAY:CAPS" title="GIMP_STOCK_COLOR_PICKER_GRAY">GIMP_STOCK_COLOR_PICKER_GRAY</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICKER-WHITE:CAPS" title="GIMP_STOCK_COLOR_PICKER_WHITE">GIMP_STOCK_COLOR_PICKER_WHITE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-TRIANGLE:CAPS" title="GIMP_STOCK_COLOR_TRIANGLE">GIMP_STOCK_COLOR_TRIANGLE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-COLOR-PICK-FROM-SCREEN:CAPS" title="GIMP_STOCK_COLOR_PICK_FROM_SCREEN">GIMP_STOCK_COLOR_PICK_FROM_SCREEN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-GRAYSCALE:CAPS" title="GIMP_STOCK_CONVERT_GRAYSCALE">GIMP_STOCK_CONVERT_GRAYSCALE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-INDEXED:CAPS" title="GIMP_STOCK_CONVERT_INDEXED">GIMP_STOCK_CONVERT_INDEXED</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONVERT-RGB:CAPS" title="GIMP_STOCK_CONVERT_RGB">GIMP_STOCK_CONVERT_RGB</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TRANSPARENCY:CAPS" title="GIMP_STOCK_TRANSPARENCY">GIMP_STOCK_TRANSPARENCY</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DEFAULT-COLORS:CAPS" title="GIMP_STOCK_DEFAULT_COLORS">GIMP_STOCK_DEFAULT_COLORS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-SWAP-COLORS:CAPS" title="GIMP_STOCK_SWAP_COLORS">GIMP_STOCK_SWAP_COLORS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-UNDO-HISTORY:CAPS" title="GIMP_STOCK_UNDO_HISTORY">GIMP_STOCK_UNDO_HISTORY</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN:CAPS" title="GIMP_STOCK_HCHAIN">GIMP_STOCK_HCHAIN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-HCHAIN-BROKEN:CAPS" title="GIMP_STOCK_HCHAIN_BROKEN">GIMP_STOCK_HCHAIN_BROKEN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN:CAPS" title="GIMP_STOCK_VCHAIN">GIMP_STOCK_VCHAIN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-VCHAIN-BROKEN:CAPS" title="GIMP_STOCK_VCHAIN_BROKEN">GIMP_STOCK_VCHAIN_BROKEN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TEXTURE:CAPS" title="GIMP_STOCK_TEXTURE">GIMP_STOCK_TEXTURE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FRAME:CAPS" title="GIMP_STOCK_FRAME">GIMP_STOCK_FRAME</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ERROR:CAPS" title="GIMP_STOCK_ERROR">GIMP_STOCK_ERROR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-INFO:CAPS" title="GIMP_STOCK_INFO">GIMP_STOCK_INFO</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QUESTION:CAPS" title="GIMP_STOCK_QUESTION">GIMP_STOCK_QUESTION</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WARNING:CAPS" title="GIMP_STOCK_WARNING">GIMP_STOCK_WARNING</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER:CAPS" title="GIMP_STOCK_WILBER">GIMP_STOCK_WILBER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-WILBER-EEK:CAPS" title="GIMP_STOCK_WILBER_EEK">GIMP_STOCK_WILBER_EEK</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS" title="GIMP_STOCK_ZOOM_FOLLOW_WINDOW">GIMP_STOCK_ZOOM_FOLLOW_WINDOW</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-AIRBRUSH:CAPS" title="GIMP_STOCK_TOOL_AIRBRUSH">GIMP_STOCK_TOOL_AIRBRUSH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ALIGN:CAPS" title="GIMP_STOCK_TOOL_ALIGN">GIMP_STOCK_TOOL_ALIGN</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLEND:CAPS" title="GIMP_STOCK_TOOL_BLEND">GIMP_STOCK_TOOL_BLEND</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BLUR:CAPS" title="GIMP_STOCK_TOOL_BLUR">GIMP_STOCK_TOOL_BLUR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS" title="GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST">GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BUCKET-FILL:CAPS" title="GIMP_STOCK_TOOL_BUCKET_FILL">GIMP_STOCK_TOOL_BUCKET_FILL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-BY-COLOR-SELECT:CAPS" title="GIMP_STOCK_TOOL_BY_COLOR_SELECT">GIMP_STOCK_TOOL_BY_COLOR_SELECT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CLONE:CAPS" title="GIMP_STOCK_TOOL_CLONE">GIMP_STOCK_TOOL_CLONE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLOR-BALANCE:CAPS" title="GIMP_STOCK_TOOL_COLOR_BALANCE">GIMP_STOCK_TOOL_COLOR_BALANCE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLOR-PICKER:CAPS" title="GIMP_STOCK_TOOL_COLOR_PICKER">GIMP_STOCK_TOOL_COLOR_PICKER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-COLORIZE:CAPS" title="GIMP_STOCK_TOOL_COLORIZE">GIMP_STOCK_TOOL_COLORIZE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CROP:CAPS" title="GIMP_STOCK_TOOL_CROP">GIMP_STOCK_TOOL_CROP</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-CURVES:CAPS" title="GIMP_STOCK_TOOL_CURVES">GIMP_STOCK_TOOL_CURVES</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-DODGE:CAPS" title="GIMP_STOCK_TOOL_DODGE">GIMP_STOCK_TOOL_DODGE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS" title="GIMP_STOCK_TOOL_ELLIPSE_SELECT">GIMP_STOCK_TOOL_ELLIPSE_SELECT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ERASER:CAPS" title="GIMP_STOCK_TOOL_ERASER">GIMP_STOCK_TOOL_ERASER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FLIP:CAPS" title="GIMP_STOCK_TOOL_FLIP">GIMP_STOCK_TOOL_FLIP</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FOREGROUND-SELECT:CAPS" title="GIMP_STOCK_TOOL_FOREGROUND_SELECT">GIMP_STOCK_TOOL_FOREGROUND_SELECT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FREE-SELECT:CAPS" title="GIMP_STOCK_TOOL_FREE_SELECT">GIMP_STOCK_TOOL_FREE_SELECT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS" title="GIMP_STOCK_TOOL_FUZZY_SELECT">GIMP_STOCK_TOOL_FUZZY_SELECT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HEAL:CAPS" title="GIMP_STOCK_TOOL_HEAL">GIMP_STOCK_TOOL_HEAL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-HUE-SATURATION:CAPS" title="GIMP_STOCK_TOOL_HUE_SATURATION">GIMP_STOCK_TOOL_HUE_SATURATION</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-INK:CAPS" title="GIMP_STOCK_TOOL_INK">GIMP_STOCK_TOOL_INK</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ISCISSORS:CAPS" title="GIMP_STOCK_TOOL_ISCISSORS">GIMP_STOCK_TOOL_ISCISSORS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-LEVELS:CAPS" title="GIMP_STOCK_TOOL_LEVELS">GIMP_STOCK_TOOL_LEVELS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-MEASURE:CAPS" title="GIMP_STOCK_TOOL_MEASURE">GIMP_STOCK_TOOL_MEASURE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-MOVE:CAPS" title="GIMP_STOCK_TOOL_MOVE">GIMP_STOCK_TOOL_MOVE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PAINTBRUSH:CAPS" title="GIMP_STOCK_TOOL_PAINTBRUSH">GIMP_STOCK_TOOL_PAINTBRUSH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PATH:CAPS" title="GIMP_STOCK_TOOL_PATH">GIMP_STOCK_TOOL_PATH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PENCIL:CAPS" title="GIMP_STOCK_TOOL_PENCIL">GIMP_STOCK_TOOL_PENCIL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PERSPECTIVE:CAPS" title="GIMP_STOCK_TOOL_PERSPECTIVE">GIMP_STOCK_TOOL_PERSPECTIVE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-PERSPECTIVE-CLONE:CAPS" title="GIMP_STOCK_TOOL_PERSPECTIVE_CLONE">GIMP_STOCK_TOOL_PERSPECTIVE_CLONE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-POSTERIZE:CAPS" title="GIMP_STOCK_TOOL_POSTERIZE">GIMP_STOCK_TOOL_POSTERIZE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-RECT-SELECT:CAPS" title="GIMP_STOCK_TOOL_RECT_SELECT">GIMP_STOCK_TOOL_RECT_SELECT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ROTATE:CAPS" title="GIMP_STOCK_TOOL_ROTATE">GIMP_STOCK_TOOL_ROTATE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SCALE:CAPS" title="GIMP_STOCK_TOOL_SCALE">GIMP_STOCK_TOOL_SCALE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SHEAR:CAPS" title="GIMP_STOCK_TOOL_SHEAR">GIMP_STOCK_TOOL_SHEAR</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-SMUDGE:CAPS" title="GIMP_STOCK_TOOL_SMUDGE">GIMP_STOCK_TOOL_SMUDGE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-TEXT:CAPS" title="GIMP_STOCK_TOOL_TEXT">GIMP_STOCK_TOOL_TEXT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-THRESHOLD:CAPS" title="GIMP_STOCK_TOOL_THRESHOLD">GIMP_STOCK_TOOL_THRESHOLD</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-TOOL-ZOOM:CAPS" title="GIMP_STOCK_TOOL_ZOOM">GIMP_STOCK_TOOL_ZOOM</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER:CAPS" title="GIMP_STOCK_CONTROLLER">GIMP_STOCK_CONTROLLER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-KEYBOARD:CAPS" title="GIMP_STOCK_CONTROLLER_KEYBOARD">GIMP_STOCK_CONTROLLER_KEYBOARD</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-LINUX-INPUT:CAPS" title="GIMP_STOCK_CONTROLLER_LINUX_INPUT">GIMP_STOCK_CONTROLLER_LINUX_INPUT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-MIDI:CAPS" title="GIMP_STOCK_CONTROLLER_MIDI">GIMP_STOCK_CONTROLLER_MIDI</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-CONTROLLER-WHEEL:CAPS" title="GIMP_STOCK_CONTROLLER_WHEEL">GIMP_STOCK_CONTROLLER_WHEEL</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-COLORBLIND:CAPS" title="GIMP_STOCK_DISPLAY_FILTER_COLORBLIND">GIMP_STOCK_DISPLAY_FILTER_COLORBLIND</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-CONTRAST:CAPS" title="GIMP_STOCK_DISPLAY_FILTER_CONTRAST">GIMP_STOCK_DISPLAY_FILTER_CONTRAST</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-GAMMA:CAPS" title="GIMP_STOCK_DISPLAY_FILTER_GAMMA">GIMP_STOCK_DISPLAY_FILTER_GAMMA</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-LCMS:CAPS" title="GIMP_STOCK_DISPLAY_FILTER_LCMS">GIMP_STOCK_DISPLAY_FILTER_LCMS</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DISPLAY-FILTER-PROOF:CAPS" title="GIMP_STOCK_DISPLAY_FILTER_PROOF">GIMP_STOCK_DISPLAY_FILTER_PROOF</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-ON:CAPS" title="GIMP_STOCK_QMASK_ON">GIMP_STOCK_QMASK_ON</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-QMASK-OFF:CAPS" title="GIMP_STOCK_QMASK_OFF">GIMP_STOCK_QMASK_OFF</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-BRUSH:CAPS" title="GIMP_STOCK_BRUSH">GIMP_STOCK_BRUSH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-BUFFER:CAPS" title="GIMP_STOCK_BUFFER">GIMP_STOCK_BUFFER</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-DETACH:CAPS" title="GIMP_STOCK_DETACH">GIMP_STOCK_DETACH</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-FONT:CAPS" title="GIMP_STOCK_FONT">GIMP_STOCK_FONT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-GRADIENT:CAPS" title="GIMP_STOCK_GRADIENT">GIMP_STOCK_GRADIENT</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PALETTE:CAPS" title="GIMP_STOCK_PALETTE">GIMP_STOCK_PALETTE</a>
+#define             <a class="link" href="libgimpwidgets-GimpStock.html#GIMP-STOCK-PATTERN:CAPS" title="GIMP_STOCK_PATTERN">GIMP_STOCK_PATTERN</a>
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676809"></a><h2>Description</h2>
+<a name="libgimpwidgets-GimpStock.description"></a><h2>Description</h2>
 <p>
 GIMP registers a set of menu/toolbar items and corresponding icons in
 addition to the standard GTK+ stock items. These can be used just like
@@ -272,17 +267,16 @@ locales.
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2676833"></a><h2>Details</h2>
+<a name="libgimpwidgets-GimpStock.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2676844"></a><h3>
-<a name="gimp-stock-init"></a>gimp_stock_init ()</h3>
-<a class="indexterm" name="id2676858"></a><pre class="programlisting">void                gimp_stock_init                     (void);</pre>
+<a name="gimp-stock-init"></a><h3>gimp_stock_init ()</h3>
+<pre class="programlisting">void                gimp_stock_init                     (void);</pre>
 <p>
 Initializes the GIMP stock icon factory.
 </p>
 <p>
 You don't need to call this function as <a
-href="../libgimp/libgimp-gimpui.html#gimp-ui-init"
+href="/usr/share/gtk-doc/html/libgimp/libgimp-gimpui.html#gimp-ui-init"
 ><code class="function">gimp_ui_init()</code></a> already does
 this for you.</p>
 <p>
@@ -291,9 +285,8 @@ this for you.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676897"></a><h3>
-<a name="GIMP-STOCK-ANCHOR:CAPS"></a>GIMP_STOCK_ANCHOR</h3>
-<a class="indexterm" name="id2676911"></a><pre class="programlisting">#define GIMP_STOCK_ANCHOR                   "gimp-anchor"
+<a name="GIMP-STOCK-ANCHOR:CAPS"></a><h3>GIMP_STOCK_ANCHOR</h3>
+<pre class="programlisting">#define GIMP_STOCK_ANCHOR                   "gimp-anchor"
 </pre>
 <p>
 <img src="stock-anchor-16.png">
@@ -301,9 +294,8 @@ this for you.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676937"></a><h3>
-<a name="GIMP-STOCK-CENTER:CAPS"></a>GIMP_STOCK_CENTER</h3>
-<a class="indexterm" name="id2676950"></a><pre class="programlisting">#define GIMP_STOCK_CENTER                   "gimp-center"
+<a name="GIMP-STOCK-CENTER:CAPS"></a><h3>GIMP_STOCK_CENTER</h3>
+<pre class="programlisting">#define GIMP_STOCK_CENTER                   "gimp-center"
 </pre>
 <p>
 <img src="stock-center-24.png">
@@ -312,9 +304,8 @@ this for you.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2676983"></a><h3>
-<a name="GIMP-STOCK-DUPLICATE:CAPS"></a>GIMP_STOCK_DUPLICATE</h3>
-<a class="indexterm" name="id2676996"></a><pre class="programlisting">#define GIMP_STOCK_DUPLICATE                "gimp-duplicate"
+<a name="GIMP-STOCK-DUPLICATE:CAPS"></a><h3>GIMP_STOCK_DUPLICATE</h3>
+<pre class="programlisting">#define GIMP_STOCK_DUPLICATE                "gimp-duplicate"
 </pre>
 <p>
 <img src="stock-duplicate-16.png">
@@ -322,9 +313,8 @@ this for you.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677022"></a><h3>
-<a name="GIMP-STOCK-EDIT:CAPS"></a>GIMP_STOCK_EDIT</h3>
-<a class="indexterm" name="id2677037"></a><pre class="programlisting">#define GIMP_STOCK_EDIT                     "gimp-edit"
+<a name="GIMP-STOCK-EDIT:CAPS"></a><h3>GIMP_STOCK_EDIT</h3>
+<pre class="programlisting">#define GIMP_STOCK_EDIT                     "gimp-edit"
 </pre>
 <p>
 <img src="stock-edit-16.png">
@@ -332,9 +322,8 @@ this for you.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677063"></a><h3>
-<a name="GIMP-STOCK-RESET:CAPS"></a>GIMP_STOCK_RESET</h3>
-<a class="indexterm" name="id2677076"></a><pre class="programlisting">#define GIMP_STOCK_RESET                    "gimp-reset"
+<a name="GIMP-STOCK-RESET:CAPS"></a><h3>GIMP_STOCK_RESET</h3>
+<pre class="programlisting">#define GIMP_STOCK_RESET                    "gimp-reset"
 </pre>
 <p>
 <img src="stock-reset-16.png">
@@ -342,9 +331,8 @@ this for you.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677102"></a><h3>
-<a name="GIMP-STOCK-CLOSE:CAPS"></a>GIMP_STOCK_CLOSE</h3>
-<a class="indexterm" name="id2677116"></a><pre class="programlisting">#define GIMP_STOCK_CLOSE                    "gimp-close"
+<a name="GIMP-STOCK-CLOSE:CAPS"></a><h3>GIMP_STOCK_CLOSE</h3>
+<pre class="programlisting">#define GIMP_STOCK_CLOSE                    "gimp-close"
 </pre>
 <p>
 <img src="stock-close-12.png">
@@ -352,9 +340,8 @@ this for you.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677142"></a><h3>
-<a name="GIMP-STOCK-MENU-LEFT:CAPS"></a>GIMP_STOCK_MENU_LEFT</h3>
-<a class="indexterm" name="id2677155"></a><pre class="programlisting">#define GIMP_STOCK_MENU_LEFT                "gimp-menu-left"
+<a name="GIMP-STOCK-MENU-LEFT:CAPS"></a><h3>GIMP_STOCK_MENU_LEFT</h3>
+<pre class="programlisting">#define GIMP_STOCK_MENU_LEFT                "gimp-menu-left"
 </pre>
 <p>
 <img src="stock-menu-left-12.png">
@@ -364,9 +351,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677189"></a><h3>
-<a name="GIMP-STOCK-MENU-RIGHT:CAPS"></a>GIMP_STOCK_MENU_RIGHT</h3>
-<a class="indexterm" name="id2677203"></a><pre class="programlisting">#define GIMP_STOCK_MENU_RIGHT               "gimp-menu-right"
+<a name="GIMP-STOCK-MENU-RIGHT:CAPS"></a><h3>GIMP_STOCK_MENU_RIGHT</h3>
+<pre class="programlisting">#define GIMP_STOCK_MENU_RIGHT               "gimp-menu-right"
 </pre>
 <p>
 <img src="stock-menu-right-12.png">
@@ -376,9 +362,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677236"></a><h3>
-<a name="GIMP-STOCK-MOVE-TO-SCREEN:CAPS"></a>GIMP_STOCK_MOVE_TO_SCREEN</h3>
-<a class="indexterm" name="id2677251"></a><pre class="programlisting">#define GIMP_STOCK_MOVE_TO_SCREEN           "gimp-move-to-screen"
+<a name="GIMP-STOCK-MOVE-TO-SCREEN:CAPS"></a><h3>GIMP_STOCK_MOVE_TO_SCREEN</h3>
+<pre class="programlisting">#define GIMP_STOCK_MOVE_TO_SCREEN           "gimp-move-to-screen"
 </pre>
 <p>
 <img src="stock-move-to-screen-24.png">
@@ -387,9 +372,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677285"></a><h3>
-<a name="GIMP-STOCK-INVERT:CAPS"></a>GIMP_STOCK_INVERT</h3>
-<a class="indexterm" name="id2677299"></a><pre class="programlisting">#define GIMP_STOCK_INVERT                   "gimp-invert"
+<a name="GIMP-STOCK-INVERT:CAPS"></a><h3>GIMP_STOCK_INVERT</h3>
+<pre class="programlisting">#define GIMP_STOCK_INVERT                   "gimp-invert"
 </pre>
 <p>
 <img src="stock-invert-16.png">
@@ -397,9 +381,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677325"></a><h3>
-<a name="GIMP-STOCK-LAYER-TO-IMAGESIZE:CAPS"></a>GIMP_STOCK_LAYER_TO_IMAGESIZE</h3>
-<a class="indexterm" name="id2677338"></a><pre class="programlisting">#define GIMP_STOCK_LAYER_TO_IMAGESIZE       "gimp-layer-to-imagesize"
+<a name="GIMP-STOCK-LAYER-TO-IMAGESIZE:CAPS"></a><h3>GIMP_STOCK_LAYER_TO_IMAGESIZE</h3>
+<pre class="programlisting">#define GIMP_STOCK_LAYER_TO_IMAGESIZE       "gimp-layer-to-imagesize"
 </pre>
 <p>
 <img src="stock-layer-to-imagesize-16.png">
@@ -407,9 +390,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677365"></a><h3>
-<a name="GIMP-STOCK-MERGE-DOWN:CAPS"></a>GIMP_STOCK_MERGE_DOWN</h3>
-<a class="indexterm" name="id2677379"></a><pre class="programlisting">#define GIMP_STOCK_MERGE_DOWN               "gimp-merge-down"
+<a name="GIMP-STOCK-MERGE-DOWN:CAPS"></a><h3>GIMP_STOCK_MERGE_DOWN</h3>
+<pre class="programlisting">#define GIMP_STOCK_MERGE_DOWN               "gimp-merge-down"
 </pre>
 <p>
 <img src="stock-merge-down-16.png">
@@ -417,9 +399,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677405"></a><h3>
-<a name="GIMP-STOCK-NAVIGATION:CAPS"></a>GIMP_STOCK_NAVIGATION</h3>
-<a class="indexterm" name="id2677419"></a><pre class="programlisting">#define GIMP_STOCK_NAVIGATION               "gimp-navigation"
+<a name="GIMP-STOCK-NAVIGATION:CAPS"></a><h3>GIMP_STOCK_NAVIGATION</h3>
+<pre class="programlisting">#define GIMP_STOCK_NAVIGATION               "gimp-navigation"
 </pre>
 <p>
 <img src="stock-navigation-16.png">
@@ -427,9 +408,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677445"></a><h3>
-<a name="GIMP-STOCK-PASTE-AS-NEW:CAPS"></a>GIMP_STOCK_PASTE_AS_NEW</h3>
-<a class="indexterm" name="id2677460"></a><pre class="programlisting">#define GIMP_STOCK_PASTE_AS_NEW             "gimp-paste-as-new"
+<a name="GIMP-STOCK-PASTE-AS-NEW:CAPS"></a><h3>GIMP_STOCK_PASTE_AS_NEW</h3>
+<pre class="programlisting">#define GIMP_STOCK_PASTE_AS_NEW             "gimp-paste-as-new"
 </pre>
 <p>
 <img src="stock-paste-as-new-16.png">
@@ -437,9 +417,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677487"></a><h3>
-<a name="GIMP-STOCK-PASTE-INTO:CAPS"></a>GIMP_STOCK_PASTE_INTO</h3>
-<a class="indexterm" name="id2677500"></a><pre class="programlisting">#define GIMP_STOCK_PASTE_INTO               "gimp-paste-into"
+<a name="GIMP-STOCK-PASTE-INTO:CAPS"></a><h3>GIMP_STOCK_PASTE_INTO</h3>
+<pre class="programlisting">#define GIMP_STOCK_PASTE_INTO               "gimp-paste-into"
 </pre>
 <p>
 <img src="stock-paste-into-16.png">
@@ -447,9 +426,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677527"></a><h3>
-<a name="GIMP-STOCK-PATH-STROKE:CAPS"></a>GIMP_STOCK_PATH_STROKE</h3>
-<a class="indexterm" name="id2677541"></a><pre class="programlisting">#define GIMP_STOCK_PATH_STROKE              "gimp-path-stroke"
+<a name="GIMP-STOCK-PATH-STROKE:CAPS"></a><h3>GIMP_STOCK_PATH_STROKE</h3>
+<pre class="programlisting">#define GIMP_STOCK_PATH_STROKE              "gimp-path-stroke"
 </pre>
 <p>
 <img src="stock-path-stroke-16.png">
@@ -457,9 +435,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677567"></a><h3>
-<a name="GIMP-STOCK-PLUGIN:CAPS"></a>GIMP_STOCK_PLUGIN</h3>
-<a class="indexterm" name="id2677581"></a><pre class="programlisting">#define GIMP_STOCK_PLUGIN                   "gimp-plugin"
+<a name="GIMP-STOCK-PLUGIN:CAPS"></a><h3>GIMP_STOCK_PLUGIN</h3>
+<pre class="programlisting">#define GIMP_STOCK_PLUGIN                   "gimp-plugin"
 </pre>
 <p>
 <img src="stock-plugin-16.png">
@@ -467,9 +444,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677607"></a><h3>
-<a name="GIMP-STOCK-QUICK-MASK-OFF:CAPS"></a>GIMP_STOCK_QUICK_MASK_OFF</h3>
-<a class="indexterm" name="id2677621"></a><pre class="programlisting">#define GIMP_STOCK_QUICK_MASK_OFF           "gimp-quick-mask-off"
+<a name="GIMP-STOCK-QUICK-MASK-OFF:CAPS"></a><h3>GIMP_STOCK_QUICK_MASK_OFF</h3>
+<pre class="programlisting">#define GIMP_STOCK_QUICK_MASK_OFF           "gimp-quick-mask-off"
 </pre>
 <p>
 <img src="stock-quick-mask-off-12.png">
@@ -477,9 +453,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677647"></a><h3>
-<a name="GIMP-STOCK-QUICK-MASK-ON:CAPS"></a>GIMP_STOCK_QUICK_MASK_ON</h3>
-<a class="indexterm" name="id2677661"></a><pre class="programlisting">#define GIMP_STOCK_QUICK_MASK_ON            "gimp-quick-mask-on"
+<a name="GIMP-STOCK-QUICK-MASK-ON:CAPS"></a><h3>GIMP_STOCK_QUICK_MASK_ON</h3>
+<pre class="programlisting">#define GIMP_STOCK_QUICK_MASK_ON            "gimp-quick-mask-on"
 </pre>
 <p>
 <img src="stock-quick-mask-on-12.png">
@@ -487,9 +462,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677687"></a><h3>
-<a name="GIMP-STOCK-HISTOGRAM:CAPS"></a>GIMP_STOCK_HISTOGRAM</h3>
-<a class="indexterm" name="id2677701"></a><pre class="programlisting">#define GIMP_STOCK_HISTOGRAM                "gimp-histogram"
+<a name="GIMP-STOCK-HISTOGRAM:CAPS"></a><h3>GIMP_STOCK_HISTOGRAM</h3>
+<pre class="programlisting">#define GIMP_STOCK_HISTOGRAM                "gimp-histogram"
 </pre>
 <p>
 <img src="stock-histogram-22.png">
@@ -498,9 +472,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677735"></a><h3>
-<a name="GIMP-STOCK-HISTOGRAM-LINEAR:CAPS"></a>GIMP_STOCK_HISTOGRAM_LINEAR</h3>
-<a class="indexterm" name="id2677749"></a><pre class="programlisting">#define GIMP_STOCK_HISTOGRAM_LINEAR         "gimp-histogram-linear"
+<a name="GIMP-STOCK-HISTOGRAM-LINEAR:CAPS"></a><h3>GIMP_STOCK_HISTOGRAM_LINEAR</h3>
+<pre class="programlisting">#define GIMP_STOCK_HISTOGRAM_LINEAR         "gimp-histogram-linear"
 </pre>
 <p>
 <img src="stock-histogram-linear-16.png">
@@ -508,9 +481,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677775"></a><h3>
-<a name="GIMP-STOCK-HISTOGRAM-LOGARITHMIC:CAPS"></a>GIMP_STOCK_HISTOGRAM_LOGARITHMIC</h3>
-<a class="indexterm" name="id2677790"></a><pre class="programlisting">#define GIMP_STOCK_HISTOGRAM_LOGARITHMIC    "gimp-histogram-logarithmic"
+<a name="GIMP-STOCK-HISTOGRAM-LOGARITHMIC:CAPS"></a><h3>GIMP_STOCK_HISTOGRAM_LOGARITHMIC</h3>
+<pre class="programlisting">#define GIMP_STOCK_HISTOGRAM_LOGARITHMIC    "gimp-histogram-logarithmic"
 </pre>
 <p>
 <img src="stock-histogram-logarithmic-16.png">
@@ -518,9 +490,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677817"></a><h3>
-<a name="GIMP-STOCK-RESHOW-FILTER:CAPS"></a>GIMP_STOCK_RESHOW_FILTER</h3>
-<a class="indexterm" name="id2677831"></a><pre class="programlisting">#define GIMP_STOCK_RESHOW_FILTER            "gimp-reshow-filter"
+<a name="GIMP-STOCK-RESHOW-FILTER:CAPS"></a><h3>GIMP_STOCK_RESHOW_FILTER</h3>
+<pre class="programlisting">#define GIMP_STOCK_RESHOW_FILTER            "gimp-reshow-filter"
 </pre>
 <p>
 <img src="stock-reshow-filter-16.png">
@@ -528,9 +499,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677858"></a><h3>
-<a name="GIMP-STOCK-RESIZE:CAPS"></a>GIMP_STOCK_RESIZE</h3>
-<a class="indexterm" name="id2677872"></a><pre class="programlisting">#define GIMP_STOCK_RESIZE                   "gimp-resize"
+<a name="GIMP-STOCK-RESIZE:CAPS"></a><h3>GIMP_STOCK_RESIZE</h3>
+<pre class="programlisting">#define GIMP_STOCK_RESIZE                   "gimp-resize"
 </pre>
 <p>
 <img src="stock-resize-16.png">
@@ -538,9 +508,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677898"></a><h3>
-<a name="GIMP-STOCK-FLIP-HORIZONTAL:CAPS"></a>GIMP_STOCK_FLIP_HORIZONTAL</h3>
-<a class="indexterm" name="id2677911"></a><pre class="programlisting">#define GIMP_STOCK_FLIP_HORIZONTAL          "gimp-flip-horizontal"
+<a name="GIMP-STOCK-FLIP-HORIZONTAL:CAPS"></a><h3>GIMP_STOCK_FLIP_HORIZONTAL</h3>
+<pre class="programlisting">#define GIMP_STOCK_FLIP_HORIZONTAL          "gimp-flip-horizontal"
 </pre>
 <p>
 <img src="stock-flip-horizontal-16.png">
@@ -548,9 +517,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677937"></a><h3>
-<a name="GIMP-STOCK-FLIP-VERTICAL:CAPS"></a>GIMP_STOCK_FLIP_VERTICAL</h3>
-<a class="indexterm" name="id2677952"></a><pre class="programlisting">#define GIMP_STOCK_FLIP_VERTICAL            "gimp-flip-vertical"
+<a name="GIMP-STOCK-FLIP-VERTICAL:CAPS"></a><h3>GIMP_STOCK_FLIP_VERTICAL</h3>
+<pre class="programlisting">#define GIMP_STOCK_FLIP_VERTICAL            "gimp-flip-vertical"
 </pre>
 <p>
 <img src="stock-flip-vertical-16.png">
@@ -558,9 +526,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2677978"></a><h3>
-<a name="GIMP-STOCK-ROTATE-180:CAPS"></a>GIMP_STOCK_ROTATE_180</h3>
-<a class="indexterm" name="id2677992"></a><pre class="programlisting">#define GIMP_STOCK_ROTATE_180               "gimp-rotate-180"
+<a name="GIMP-STOCK-ROTATE-180:CAPS"></a><h3>GIMP_STOCK_ROTATE_180</h3>
+<pre class="programlisting">#define GIMP_STOCK_ROTATE_180               "gimp-rotate-180"
 </pre>
 <p>
 <img src="stock-rotate-180-16.png">
@@ -568,9 +535,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678018"></a><h3>
-<a name="GIMP-STOCK-ROTATE-270:CAPS"></a>GIMP_STOCK_ROTATE_270</h3>
-<a class="indexterm" name="id2678032"></a><pre class="programlisting">#define GIMP_STOCK_ROTATE_270               "gimp-rotate-270"
+<a name="GIMP-STOCK-ROTATE-270:CAPS"></a><h3>GIMP_STOCK_ROTATE_270</h3>
+<pre class="programlisting">#define GIMP_STOCK_ROTATE_270               "gimp-rotate-270"
 </pre>
 <p>
 <img src="stock-rotate-270-16.png">
@@ -578,9 +544,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678058"></a><h3>
-<a name="GIMP-STOCK-ROTATE-90:CAPS"></a>GIMP_STOCK_ROTATE_90</h3>
-<a class="indexterm" name="id2678072"></a><pre class="programlisting">#define GIMP_STOCK_ROTATE_90                "gimp-rotate-90"
+<a name="GIMP-STOCK-ROTATE-90:CAPS"></a><h3>GIMP_STOCK_ROTATE_90</h3>
+<pre class="programlisting">#define GIMP_STOCK_ROTATE_90                "gimp-rotate-90"
 </pre>
 <p>
 <img src="stock-rotate-90-16.png">
@@ -588,9 +553,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678098"></a><h3>
-<a name="GIMP-STOCK-SCALE:CAPS"></a>GIMP_STOCK_SCALE</h3>
-<a class="indexterm" name="id2678113"></a><pre class="programlisting">#define GIMP_STOCK_SCALE                    "gimp-scale"
+<a name="GIMP-STOCK-SCALE:CAPS"></a><h3>GIMP_STOCK_SCALE</h3>
+<pre class="programlisting">#define GIMP_STOCK_SCALE                    "gimp-scale"
 </pre>
 <p>
 <img src="stock-scale-16.png">
@@ -598,9 +562,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678139"></a><h3>
-<a name="GIMP-STOCK-LINKED:CAPS"></a>GIMP_STOCK_LINKED</h3>
-<a class="indexterm" name="id2678152"></a><pre class="programlisting">#define GIMP_STOCK_LINKED                   "gimp-linked"
+<a name="GIMP-STOCK-LINKED:CAPS"></a><h3>GIMP_STOCK_LINKED</h3>
+<pre class="programlisting">#define GIMP_STOCK_LINKED                   "gimp-linked"
 </pre>
 <p>
 <img src="stock-linked-20.png">
@@ -609,9 +572,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2678186"></a><h3>
-<a name="GIMP-STOCK-VISIBLE:CAPS"></a>GIMP_STOCK_VISIBLE</h3>
-<a class="indexterm" name="id2678199"></a><pre class="programlisting">#define GIMP_STOCK_VISIBLE                  "gimp-visible"
+<a name="GIMP-STOCK-VISIBLE:CAPS"></a><h3>GIMP_STOCK_VISIBLE</h3>
+<pre class="programlisting">#define GIMP_STOCK_VISIBLE                  "gimp-visible"
 </pre>
 <p>
 <img src="stock-eye-20.png">
@@ -620,9 +582,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685286"></a><h3>
-<a name="GIMP-STOCK-LIST:CAPS"></a>GIMP_STOCK_LIST</h3>
-<a class="indexterm" name="id2685299"></a><pre class="programlisting">#define GIMP_STOCK_LIST                     "gimp-list"
+<a name="GIMP-STOCK-LIST:CAPS"></a><h3>GIMP_STOCK_LIST</h3>
+<pre class="programlisting">#define GIMP_STOCK_LIST                     "gimp-list"
 </pre>
 <p>
 <img src="stock-list-16.png">
@@ -630,9 +591,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685325"></a><h3>
-<a name="GIMP-STOCK-GRID:CAPS"></a>GIMP_STOCK_GRID</h3>
-<a class="indexterm" name="id2685338"></a><pre class="programlisting">#define GIMP_STOCK_GRID                     "gimp-grid"
+<a name="GIMP-STOCK-GRID:CAPS"></a><h3>GIMP_STOCK_GRID</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRID                     "gimp-grid"
 </pre>
 <p>
 <img src="stock-grid-16.png">
@@ -640,9 +600,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685364"></a><h3>
-<a name="GIMP-STOCK-PORTRAIT:CAPS"></a>GIMP_STOCK_PORTRAIT</h3>
-<a class="indexterm" name="id2685378"></a><pre class="programlisting">#define GIMP_STOCK_PORTRAIT                 "gimp-portrait"
+<a name="GIMP-STOCK-PORTRAIT:CAPS"></a><h3>GIMP_STOCK_PORTRAIT</h3>
+<pre class="programlisting">#define GIMP_STOCK_PORTRAIT                 "gimp-portrait"
 </pre>
 <p>
 <img src="stock-portrait-16.png">
@@ -650,9 +609,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685404"></a><h3>
-<a name="GIMP-STOCK-LANDSCAPE:CAPS"></a>GIMP_STOCK_LANDSCAPE</h3>
-<a class="indexterm" name="id2685418"></a><pre class="programlisting">#define GIMP_STOCK_LANDSCAPE                "gimp-landscape"
+<a name="GIMP-STOCK-LANDSCAPE:CAPS"></a><h3>GIMP_STOCK_LANDSCAPE</h3>
+<pre class="programlisting">#define GIMP_STOCK_LANDSCAPE                "gimp-landscape"
 </pre>
 <p>
 <img src="stock-landscape-16.png">
@@ -660,9 +618,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685444"></a><h3>
-<a name="GIMP-STOCK-VIDEO:CAPS"></a>GIMP_STOCK_VIDEO</h3>
-<a class="indexterm" name="id2685458"></a><pre class="programlisting">#define GIMP_STOCK_VIDEO                    "gimp-video"
+<a name="GIMP-STOCK-VIDEO:CAPS"></a><h3>GIMP_STOCK_VIDEO</h3>
+<pre class="programlisting">#define GIMP_STOCK_VIDEO                    "gimp-video"
 </pre>
 <p>
 <img src="stock-video-24.png">
@@ -671,9 +628,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685492"></a><h3>
-<a name="GIMP-STOCK-WEB:CAPS"></a>GIMP_STOCK_WEB</h3>
-<a class="indexterm" name="id2685504"></a><pre class="programlisting">#define GIMP_STOCK_WEB                      "gimp-web"
+<a name="GIMP-STOCK-WEB:CAPS"></a><h3>GIMP_STOCK_WEB</h3>
+<pre class="programlisting">#define GIMP_STOCK_WEB                      "gimp-web"
 </pre>
 <p>
 <img src="stock-web-24.png">
@@ -682,9 +638,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685538"></a><h3>
-<a name="GIMP-STOCK-IMAGE:CAPS"></a>GIMP_STOCK_IMAGE</h3>
-<a class="indexterm" name="id2685552"></a><pre class="programlisting">#define GIMP_STOCK_IMAGE                    "gimp-image"
+<a name="GIMP-STOCK-IMAGE:CAPS"></a><h3>GIMP_STOCK_IMAGE</h3>
+<pre class="programlisting">#define GIMP_STOCK_IMAGE                    "gimp-image"
 </pre>
 <p>
 <img src="stock-image-48.png">
@@ -695,9 +650,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685599"></a><h3>
-<a name="GIMP-STOCK-LAYER:CAPS"></a>GIMP_STOCK_LAYER</h3>
-<a class="indexterm" name="id2685613"></a><pre class="programlisting">#define GIMP_STOCK_LAYER                    "gimp-layer"
+<a name="GIMP-STOCK-LAYER:CAPS"></a><h3>GIMP_STOCK_LAYER</h3>
+<pre class="programlisting">#define GIMP_STOCK_LAYER                    "gimp-layer"
 </pre>
 <p>
 <img src="stock-layer-48.png">
@@ -708,9 +662,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685660"></a><h3>
-<a name="GIMP-STOCK-LAYER-MASK:CAPS"></a>GIMP_STOCK_LAYER_MASK</h3>
-<a class="indexterm" name="id2685673"></a><pre class="programlisting">#define GIMP_STOCK_LAYER_MASK               "gimp-layer-mask"
+<a name="GIMP-STOCK-LAYER-MASK:CAPS"></a><h3>GIMP_STOCK_LAYER_MASK</h3>
+<pre class="programlisting">#define GIMP_STOCK_LAYER_MASK               "gimp-layer-mask"
 </pre>
 <p>
 <img src="stock-layer-mask-48.png">
@@ -721,9 +674,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685721"></a><h3>
-<a name="GIMP-STOCK-CHANNEL:CAPS"></a>GIMP_STOCK_CHANNEL</h3>
-<a class="indexterm" name="id2685736"></a><pre class="programlisting">#define GIMP_STOCK_CHANNEL                  "gimp-channel"
+<a name="GIMP-STOCK-CHANNEL:CAPS"></a><h3>GIMP_STOCK_CHANNEL</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHANNEL                  "gimp-channel"
 </pre>
 <p>
 <img src="stock-channel-48.png">
@@ -734,9 +686,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685783"></a><h3>
-<a name="GIMP-STOCK-CHANNEL-RED:CAPS"></a>GIMP_STOCK_CHANNEL_RED</h3>
-<a class="indexterm" name="id2685797"></a><pre class="programlisting">#define GIMP_STOCK_CHANNEL_RED              "gimp-channel-red"
+<a name="GIMP-STOCK-CHANNEL-RED:CAPS"></a><h3>GIMP_STOCK_CHANNEL_RED</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHANNEL_RED              "gimp-channel-red"
 </pre>
 <p>
 <img src="stock-channel-red-48.png">
@@ -747,9 +698,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685845"></a><h3>
-<a name="GIMP-STOCK-CHANNEL-GREEN:CAPS"></a>GIMP_STOCK_CHANNEL_GREEN</h3>
-<a class="indexterm" name="id2685859"></a><pre class="programlisting">#define GIMP_STOCK_CHANNEL_GREEN            "gimp-channel-green"
+<a name="GIMP-STOCK-CHANNEL-GREEN:CAPS"></a><h3>GIMP_STOCK_CHANNEL_GREEN</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHANNEL_GREEN            "gimp-channel-green"
 </pre>
 <p>
 <img src="stock-channel-green-48.png">
@@ -760,9 +710,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685907"></a><h3>
-<a name="GIMP-STOCK-CHANNEL-BLUE:CAPS"></a>GIMP_STOCK_CHANNEL_BLUE</h3>
-<a class="indexterm" name="id2685921"></a><pre class="programlisting">#define GIMP_STOCK_CHANNEL_BLUE             "gimp-channel-blue"
+<a name="GIMP-STOCK-CHANNEL-BLUE:CAPS"></a><h3>GIMP_STOCK_CHANNEL_BLUE</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHANNEL_BLUE             "gimp-channel-blue"
 </pre>
 <p>
 <img src="stock-channel-blue-48.png">
@@ -773,9 +722,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2685969"></a><h3>
-<a name="GIMP-STOCK-CHANNEL-GRAY:CAPS"></a>GIMP_STOCK_CHANNEL_GRAY</h3>
-<a class="indexterm" name="id2685983"></a><pre class="programlisting">#define GIMP_STOCK_CHANNEL_GRAY             "gimp-channel-gray"
+<a name="GIMP-STOCK-CHANNEL-GRAY:CAPS"></a><h3>GIMP_STOCK_CHANNEL_GRAY</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHANNEL_GRAY             "gimp-channel-gray"
 </pre>
 <p>
 <img src="stock-channel-gray-48.png">
@@ -786,9 +734,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686031"></a><h3>
-<a name="GIMP-STOCK-CHANNEL-INDEXED:CAPS"></a>GIMP_STOCK_CHANNEL_INDEXED</h3>
-<a class="indexterm" name="id2686045"></a><pre class="programlisting">#define GIMP_STOCK_CHANNEL_INDEXED          "gimp-channel-indexed"
+<a name="GIMP-STOCK-CHANNEL-INDEXED:CAPS"></a><h3>GIMP_STOCK_CHANNEL_INDEXED</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHANNEL_INDEXED          "gimp-channel-indexed"
 </pre>
 <p>
 <img src="stock-channel-indexed-48.png">
@@ -799,9 +746,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686093"></a><h3>
-<a name="GIMP-STOCK-CHANNEL-ALPHA:CAPS"></a>GIMP_STOCK_CHANNEL_ALPHA</h3>
-<a class="indexterm" name="id2686108"></a><pre class="programlisting">#define GIMP_STOCK_CHANNEL_ALPHA            "gimp-channel-alpha"
+<a name="GIMP-STOCK-CHANNEL-ALPHA:CAPS"></a><h3>GIMP_STOCK_CHANNEL_ALPHA</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHANNEL_ALPHA            "gimp-channel-alpha"
 </pre>
 <p>
 <img src="stock-channel-alpha-48.png">
@@ -812,9 +758,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686156"></a><h3>
-<a name="GIMP-STOCK-PATH:CAPS"></a>GIMP_STOCK_PATH</h3>
-<a class="indexterm" name="id2686170"></a><pre class="programlisting">#define GIMP_STOCK_PATH                     "gimp-path"
+<a name="GIMP-STOCK-PATH:CAPS"></a><h3>GIMP_STOCK_PATH</h3>
+<pre class="programlisting">#define GIMP_STOCK_PATH                     "gimp-path"
 </pre>
 <p>
 <img src="stock-path-22.png">
@@ -823,9 +768,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686203"></a><h3>
-<a name="GIMP-STOCK-TEXT-LAYER:CAPS"></a>GIMP_STOCK_TEXT_LAYER</h3>
-<a class="indexterm" name="id2686216"></a><pre class="programlisting">#define GIMP_STOCK_TEXT_LAYER               "gimp-text-layer"
+<a name="GIMP-STOCK-TEXT-LAYER:CAPS"></a><h3>GIMP_STOCK_TEXT_LAYER</h3>
+<pre class="programlisting">#define GIMP_STOCK_TEXT_LAYER               "gimp-text-layer"
 </pre>
 <p>
 <img src="stock-text-layer-48.png">
@@ -836,9 +780,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686264"></a><h3>
-<a name="GIMP-STOCK-FLOATING-SELECTION:CAPS"></a>GIMP_STOCK_FLOATING_SELECTION</h3>
-<a class="indexterm" name="id2686278"></a><pre class="programlisting">#define GIMP_STOCK_FLOATING_SELECTION       "gimp-floating-selection"
+<a name="GIMP-STOCK-FLOATING-SELECTION:CAPS"></a><h3>GIMP_STOCK_FLOATING_SELECTION</h3>
+<pre class="programlisting">#define GIMP_STOCK_FLOATING_SELECTION       "gimp-floating-selection"
 </pre>
 <p>
 <img src="stock-floating-selection-48.png">
@@ -849,9 +792,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686327"></a><h3>
-<a name="GIMP-STOCK-TEMPLATE:CAPS"></a>GIMP_STOCK_TEMPLATE</h3>
-<a class="indexterm" name="id2686341"></a><pre class="programlisting">#define GIMP_STOCK_TEMPLATE                 "gimp-template"
+<a name="GIMP-STOCK-TEMPLATE:CAPS"></a><h3>GIMP_STOCK_TEMPLATE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TEMPLATE                 "gimp-template"
 </pre>
 <p>
 <img src="stock-template-24.png">
@@ -860,9 +802,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686374"></a><h3>
-<a name="GIMP-STOCK-IMAGES:CAPS"></a>GIMP_STOCK_IMAGES</h3>
-<a class="indexterm" name="id2686388"></a><pre class="programlisting">#define GIMP_STOCK_IMAGES                   "gimp-images"
+<a name="GIMP-STOCK-IMAGES:CAPS"></a><h3>GIMP_STOCK_IMAGES</h3>
+<pre class="programlisting">#define GIMP_STOCK_IMAGES                   "gimp-images"
 </pre>
 <p>
 <img src="stock-images-24.png">
@@ -871,9 +812,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686421"></a><h3>
-<a name="GIMP-STOCK-LAYERS:CAPS"></a>GIMP_STOCK_LAYERS</h3>
-<a class="indexterm" name="id2686435"></a><pre class="programlisting">#define GIMP_STOCK_LAYERS                   "gimp-layers"
+<a name="GIMP-STOCK-LAYERS:CAPS"></a><h3>GIMP_STOCK_LAYERS</h3>
+<pre class="programlisting">#define GIMP_STOCK_LAYERS                   "gimp-layers"
 </pre>
 <p>
 <img src="stock-layers-24.png">
@@ -882,9 +822,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686468"></a><h3>
-<a name="GIMP-STOCK-CHANNELS:CAPS"></a>GIMP_STOCK_CHANNELS</h3>
-<a class="indexterm" name="id2686482"></a><pre class="programlisting">#define GIMP_STOCK_CHANNELS                 "gimp-channels"
+<a name="GIMP-STOCK-CHANNELS:CAPS"></a><h3>GIMP_STOCK_CHANNELS</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHANNELS                 "gimp-channels"
 </pre>
 <p>
 <img src="stock-channels-24.png">
@@ -893,9 +832,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686515"></a><h3>
-<a name="GIMP-STOCK-PATHS:CAPS"></a>GIMP_STOCK_PATHS</h3>
-<a class="indexterm" name="id2686529"></a><pre class="programlisting">#define GIMP_STOCK_PATHS                    "gimp-paths"
+<a name="GIMP-STOCK-PATHS:CAPS"></a><h3>GIMP_STOCK_PATHS</h3>
+<pre class="programlisting">#define GIMP_STOCK_PATHS                    "gimp-paths"
 </pre>
 <p>
 <img src="stock-paths-22.png">
@@ -904,9 +842,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686562"></a><h3>
-<a name="GIMP-STOCK-COLORMAP:CAPS"></a>GIMP_STOCK_COLORMAP</h3>
-<a class="indexterm" name="id2686576"></a><pre class="programlisting">#define GIMP_STOCK_COLORMAP                 "gimp-colormap"
+<a name="GIMP-STOCK-COLORMAP:CAPS"></a><h3>GIMP_STOCK_COLORMAP</h3>
+<pre class="programlisting">#define GIMP_STOCK_COLORMAP                 "gimp-colormap"
 </pre>
 <p>
 <img src="stock-colormap-24.png">
@@ -915,9 +852,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686606"></a><h3>
-<a name="GIMP-STOCK-INDEXED-PALETTE:CAPS"></a>GIMP_STOCK_INDEXED_PALETTE</h3>
-<a class="indexterm" name="id2686624"></a><pre class="programlisting">#define GIMP_STOCK_INDEXED_PALETTE          "gimp-colormap"
+<a name="GIMP-STOCK-INDEXED-PALETTE:CAPS"></a><h3>GIMP_STOCK_INDEXED_PALETTE</h3>
+<pre class="programlisting">#define GIMP_STOCK_INDEXED_PALETTE          "gimp-colormap"
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -929,9 +865,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686653"></a><h3>
-<a name="GIMP-STOCK-CURSOR:CAPS"></a>GIMP_STOCK_CURSOR</h3>
-<a class="indexterm" name="id2686668"></a><pre class="programlisting">#define GIMP_STOCK_CURSOR                   "gimp-cursor"
+<a name="GIMP-STOCK-CURSOR:CAPS"></a><h3>GIMP_STOCK_CURSOR</h3>
+<pre class="programlisting">#define GIMP_STOCK_CURSOR                   "gimp-cursor"
 </pre>
 <p>
 <img src="stock-cursor-24.png">
@@ -940,9 +875,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686701"></a><h3>
-<a name="GIMP-STOCK-SAMPLE-POINT:CAPS"></a>GIMP_STOCK_SAMPLE_POINT</h3>
-<a class="indexterm" name="id2686714"></a><pre class="programlisting">#define GIMP_STOCK_SAMPLE_POINT             "gimp-sample-point"
+<a name="GIMP-STOCK-SAMPLE-POINT:CAPS"></a><h3>GIMP_STOCK_SAMPLE_POINT</h3>
+<pre class="programlisting">#define GIMP_STOCK_SAMPLE_POINT             "gimp-sample-point"
 </pre>
 <p>
 <img src="stock-sample-point-24.png">
@@ -951,9 +885,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686748"></a><h3>
-<a name="GIMP-STOCK-SHAPE-CIRCLE:CAPS"></a>GIMP_STOCK_SHAPE_CIRCLE</h3>
-<a class="indexterm" name="id2686762"></a><pre class="programlisting">#define GIMP_STOCK_SHAPE_CIRCLE             "gimp-shape-circle"
+<a name="GIMP-STOCK-SHAPE-CIRCLE:CAPS"></a><h3>GIMP_STOCK_SHAPE_CIRCLE</h3>
+<pre class="programlisting">#define GIMP_STOCK_SHAPE_CIRCLE             "gimp-shape-circle"
 </pre>
 <p>
 <img src="stock-shape-circle-16.png">
@@ -961,9 +894,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686788"></a><h3>
-<a name="GIMP-STOCK-SHAPE-SQUARE:CAPS"></a>GIMP_STOCK_SHAPE_SQUARE</h3>
-<a class="indexterm" name="id2686802"></a><pre class="programlisting">#define GIMP_STOCK_SHAPE_SQUARE             "gimp-shape-square"
+<a name="GIMP-STOCK-SHAPE-SQUARE:CAPS"></a><h3>GIMP_STOCK_SHAPE_SQUARE</h3>
+<pre class="programlisting">#define GIMP_STOCK_SHAPE_SQUARE             "gimp-shape-square"
 </pre>
 <p>
 <img src="stock-shape-square-16.png">
@@ -971,9 +903,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686828"></a><h3>
-<a name="GIMP-STOCK-SHAPE-DIAMOND:CAPS"></a>GIMP_STOCK_SHAPE_DIAMOND</h3>
-<a class="indexterm" name="id2686842"></a><pre class="programlisting">#define GIMP_STOCK_SHAPE_DIAMOND            "gimp-shape-diamond"
+<a name="GIMP-STOCK-SHAPE-DIAMOND:CAPS"></a><h3>GIMP_STOCK_SHAPE_DIAMOND</h3>
+<pre class="programlisting">#define GIMP_STOCK_SHAPE_DIAMOND            "gimp-shape-diamond"
 </pre>
 <p>
 <img src="stock-shape-diamond-16.png">
@@ -981,9 +912,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686869"></a><h3>
-<a name="GIMP-STOCK-CAP-BUTT:CAPS"></a>GIMP_STOCK_CAP_BUTT</h3>
-<a class="indexterm" name="id2686883"></a><pre class="programlisting">#define GIMP_STOCK_CAP_BUTT                 "gimp-cap-butt"
+<a name="GIMP-STOCK-CAP-BUTT:CAPS"></a><h3>GIMP_STOCK_CAP_BUTT</h3>
+<pre class="programlisting">#define GIMP_STOCK_CAP_BUTT                 "gimp-cap-butt"
 </pre>
 <p>
 <img src="stock-cap-butt-16.png">
@@ -991,9 +921,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686909"></a><h3>
-<a name="GIMP-STOCK-CAP-ROUND:CAPS"></a>GIMP_STOCK_CAP_ROUND</h3>
-<a class="indexterm" name="id2686923"></a><pre class="programlisting">#define GIMP_STOCK_CAP_ROUND                "gimp-cap-round"
+<a name="GIMP-STOCK-CAP-ROUND:CAPS"></a><h3>GIMP_STOCK_CAP_ROUND</h3>
+<pre class="programlisting">#define GIMP_STOCK_CAP_ROUND                "gimp-cap-round"
 </pre>
 <p>
 <img src="stock-cap-round-16.png">
@@ -1001,9 +930,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686949"></a><h3>
-<a name="GIMP-STOCK-CAP-SQUARE:CAPS"></a>GIMP_STOCK_CAP_SQUARE</h3>
-<a class="indexterm" name="id2686963"></a><pre class="programlisting">#define GIMP_STOCK_CAP_SQUARE               "gimp-cap-square"
+<a name="GIMP-STOCK-CAP-SQUARE:CAPS"></a><h3>GIMP_STOCK_CAP_SQUARE</h3>
+<pre class="programlisting">#define GIMP_STOCK_CAP_SQUARE               "gimp-cap-square"
 </pre>
 <p>
 <img src="stock-cap-square-16.png">
@@ -1011,9 +939,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2686989"></a><h3>
-<a name="GIMP-STOCK-JOIN-MITER:CAPS"></a>GIMP_STOCK_JOIN_MITER</h3>
-<a class="indexterm" name="id2687003"></a><pre class="programlisting">#define GIMP_STOCK_JOIN_MITER               "gimp-join-miter"
+<a name="GIMP-STOCK-JOIN-MITER:CAPS"></a><h3>GIMP_STOCK_JOIN_MITER</h3>
+<pre class="programlisting">#define GIMP_STOCK_JOIN_MITER               "gimp-join-miter"
 </pre>
 <p>
 <img src="stock-join-miter-16.png">
@@ -1021,9 +948,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687029"></a><h3>
-<a name="GIMP-STOCK-JOIN-ROUND:CAPS"></a>GIMP_STOCK_JOIN_ROUND</h3>
-<a class="indexterm" name="id2687043"></a><pre class="programlisting">#define GIMP_STOCK_JOIN_ROUND               "gimp-join-round"
+<a name="GIMP-STOCK-JOIN-ROUND:CAPS"></a><h3>GIMP_STOCK_JOIN_ROUND</h3>
+<pre class="programlisting">#define GIMP_STOCK_JOIN_ROUND               "gimp-join-round"
 </pre>
 <p>
 <img src="stock-join-round-16.png">
@@ -1031,9 +957,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687069"></a><h3>
-<a name="GIMP-STOCK-JOIN-BEVEL:CAPS"></a>GIMP_STOCK_JOIN_BEVEL</h3>
-<a class="indexterm" name="id2687083"></a><pre class="programlisting">#define GIMP_STOCK_JOIN_BEVEL               "gimp-join-bevel"
+<a name="GIMP-STOCK-JOIN-BEVEL:CAPS"></a><h3>GIMP_STOCK_JOIN_BEVEL</h3>
+<pre class="programlisting">#define GIMP_STOCK_JOIN_BEVEL               "gimp-join-bevel"
 </pre>
 <p>
 <img src="stock-join-bevel-16.png">
@@ -1041,9 +966,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687110"></a><h3>
-<a name="GIMP-STOCK-SELECTION:CAPS"></a>GIMP_STOCK_SELECTION</h3>
-<a class="indexterm" name="id2687123"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION                "gimp-selection"
+<a name="GIMP-STOCK-SELECTION:CAPS"></a><h3>GIMP_STOCK_SELECTION</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION                "gimp-selection"
 </pre>
 <p>
 <img src="stock-selection-16.png">
@@ -1051,9 +975,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687149"></a><h3>
-<a name="GIMP-STOCK-SELECTION-ALL:CAPS"></a>GIMP_STOCK_SELECTION_ALL</h3>
-<a class="indexterm" name="id2687164"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_ALL            "gimp-selection-all"
+<a name="GIMP-STOCK-SELECTION-ALL:CAPS"></a><h3>GIMP_STOCK_SELECTION_ALL</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_ALL            "gimp-selection-all"
 </pre>
 <p>
 <img src="stock-selection-all-16.png">
@@ -1061,9 +984,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687189"></a><h3>
-<a name="GIMP-STOCK-SELECTION-NONE:CAPS"></a>GIMP_STOCK_SELECTION_NONE</h3>
-<a class="indexterm" name="id2687203"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_NONE           "gimp-selection-none"
+<a name="GIMP-STOCK-SELECTION-NONE:CAPS"></a><h3>GIMP_STOCK_SELECTION_NONE</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_NONE           "gimp-selection-none"
 </pre>
 <p>
 <img src="stock-selection-none-16.png">
@@ -1071,9 +993,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687230"></a><h3>
-<a name="GIMP-STOCK-SELECTION-GROW:CAPS"></a>GIMP_STOCK_SELECTION_GROW</h3>
-<a class="indexterm" name="id2687244"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_GROW           "gimp-selection-grow"
+<a name="GIMP-STOCK-SELECTION-GROW:CAPS"></a><h3>GIMP_STOCK_SELECTION_GROW</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_GROW           "gimp-selection-grow"
 </pre>
 <p>
 <img src="stock-selection-grow-16.png">
@@ -1081,9 +1002,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687270"></a><h3>
-<a name="GIMP-STOCK-SELECTION-SHRINK:CAPS"></a>GIMP_STOCK_SELECTION_SHRINK</h3>
-<a class="indexterm" name="id2687284"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_SHRINK         "gimp-selection-shrink"
+<a name="GIMP-STOCK-SELECTION-SHRINK:CAPS"></a><h3>GIMP_STOCK_SELECTION_SHRINK</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_SHRINK         "gimp-selection-shrink"
 </pre>
 <p>
 <img src="stock-selection-shrink-16.png">
@@ -1091,9 +1011,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687310"></a><h3>
-<a name="GIMP-STOCK-SELECTION-BORDER:CAPS"></a>GIMP_STOCK_SELECTION_BORDER</h3>
-<a class="indexterm" name="id2687325"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_BORDER         "gimp-selection-border"
+<a name="GIMP-STOCK-SELECTION-BORDER:CAPS"></a><h3>GIMP_STOCK_SELECTION_BORDER</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_BORDER         "gimp-selection-border"
 </pre>
 <p>
 <img src="stock-selection-border-16.png">
@@ -1101,9 +1020,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687351"></a><h3>
-<a name="GIMP-STOCK-SELECTION-ADD:CAPS"></a>GIMP_STOCK_SELECTION_ADD</h3>
-<a class="indexterm" name="id2687366"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_ADD            "gimp-selection-add"
+<a name="GIMP-STOCK-SELECTION-ADD:CAPS"></a><h3>GIMP_STOCK_SELECTION_ADD</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_ADD            "gimp-selection-add"
 </pre>
 <p>
 <img src="stock-selection-add-16.png">
@@ -1111,9 +1029,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687392"></a><h3>
-<a name="GIMP-STOCK-SELECTION-SUBTRACT:CAPS"></a>GIMP_STOCK_SELECTION_SUBTRACT</h3>
-<a class="indexterm" name="id2687406"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_SUBTRACT       "gimp-selection-subtract"
+<a name="GIMP-STOCK-SELECTION-SUBTRACT:CAPS"></a><h3>GIMP_STOCK_SELECTION_SUBTRACT</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_SUBTRACT       "gimp-selection-subtract"
 </pre>
 <p>
 <img src="stock-selection-subtract-16.png">
@@ -1121,9 +1038,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687433"></a><h3>
-<a name="GIMP-STOCK-SELECTION-REPLACE:CAPS"></a>GIMP_STOCK_SELECTION_REPLACE</h3>
-<a class="indexterm" name="id2687447"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_REPLACE        "gimp-selection-replace"
+<a name="GIMP-STOCK-SELECTION-REPLACE:CAPS"></a><h3>GIMP_STOCK_SELECTION_REPLACE</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_REPLACE        "gimp-selection-replace"
 </pre>
 <p>
 <img src="stock-selection-replace-16.png">
@@ -1131,9 +1047,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687474"></a><h3>
-<a name="GIMP-STOCK-SELECTION-INTERSECT:CAPS"></a>GIMP_STOCK_SELECTION_INTERSECT</h3>
-<a class="indexterm" name="id2687488"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_INTERSECT      "gimp-selection-intersect"
+<a name="GIMP-STOCK-SELECTION-INTERSECT:CAPS"></a><h3>GIMP_STOCK_SELECTION_INTERSECT</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_INTERSECT      "gimp-selection-intersect"
 </pre>
 <p>
 <img src="stock-selection-intersect-16.png">
@@ -1141,9 +1056,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687515"></a><h3>
-<a name="GIMP-STOCK-SELECTION-STROKE:CAPS"></a>GIMP_STOCK_SELECTION_STROKE</h3>
-<a class="indexterm" name="id2687530"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_STROKE         "gimp-selection-stroke"
+<a name="GIMP-STOCK-SELECTION-STROKE:CAPS"></a><h3>GIMP_STOCK_SELECTION_STROKE</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_STROKE         "gimp-selection-stroke"
 </pre>
 <p>
 <img src="stock-selection-stroke-16.png">
@@ -1151,9 +1065,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687556"></a><h3>
-<a name="GIMP-STOCK-SELECTION-TO-CHANNEL:CAPS"></a>GIMP_STOCK_SELECTION_TO_CHANNEL</h3>
-<a class="indexterm" name="id2687571"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_TO_CHANNEL     "gimp-selection-to-channel"
+<a name="GIMP-STOCK-SELECTION-TO-CHANNEL:CAPS"></a><h3>GIMP_STOCK_SELECTION_TO_CHANNEL</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_TO_CHANNEL     "gimp-selection-to-channel"
 </pre>
 <p>
 <img src="stock-selection-to-channel-16.png">
@@ -1161,9 +1074,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687598"></a><h3>
-<a name="GIMP-STOCK-SELECTION-TO-PATH:CAPS"></a>GIMP_STOCK_SELECTION_TO_PATH</h3>
-<a class="indexterm" name="id2687612"></a><pre class="programlisting">#define GIMP_STOCK_SELECTION_TO_PATH        "gimp-selection-to-path"
+<a name="GIMP-STOCK-SELECTION-TO-PATH:CAPS"></a><h3>GIMP_STOCK_SELECTION_TO_PATH</h3>
+<pre class="programlisting">#define GIMP_STOCK_SELECTION_TO_PATH        "gimp-selection-to-path"
 </pre>
 <p>
 <img src="stock-selection-to-path-16.png">
@@ -1171,9 +1083,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687639"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-LINEAR:CAPS"></a>GIMP_STOCK_GRADIENT_LINEAR</h3>
-<a class="indexterm" name="id2687654"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_LINEAR               "gimp-gradient-linear"
+<a name="GIMP-STOCK-GRADIENT-LINEAR:CAPS"></a><h3>GIMP_STOCK_GRADIENT_LINEAR</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_LINEAR               "gimp-gradient-linear"
 </pre>
 <p>
 <img src="stock-gradient-linear-16.png">
@@ -1181,9 +1092,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687680"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-BILINEAR:CAPS"></a>GIMP_STOCK_GRADIENT_BILINEAR</h3>
-<a class="indexterm" name="id2687694"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_BILINEAR             "gimp-gradient-bilinear"
+<a name="GIMP-STOCK-GRADIENT-BILINEAR:CAPS"></a><h3>GIMP_STOCK_GRADIENT_BILINEAR</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_BILINEAR             "gimp-gradient-bilinear"
 </pre>
 <p>
 <img src="stock-gradient-bilinear-16.png">
@@ -1191,9 +1101,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687721"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-RADIAL:CAPS"></a>GIMP_STOCK_GRADIENT_RADIAL</h3>
-<a class="indexterm" name="id2687735"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_RADIAL               "gimp-gradient-radial"
+<a name="GIMP-STOCK-GRADIENT-RADIAL:CAPS"></a><h3>GIMP_STOCK_GRADIENT_RADIAL</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_RADIAL               "gimp-gradient-radial"
 </pre>
 <p>
 <img src="stock-gradient-radial-16.png">
@@ -1201,9 +1110,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687761"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-SQUARE:CAPS"></a>GIMP_STOCK_GRADIENT_SQUARE</h3>
-<a class="indexterm" name="id2687776"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_SQUARE               "gimp-gradient-square"
+<a name="GIMP-STOCK-GRADIENT-SQUARE:CAPS"></a><h3>GIMP_STOCK_GRADIENT_SQUARE</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_SQUARE               "gimp-gradient-square"
 </pre>
 <p>
 <img src="stock-gradient-square-16.png">
@@ -1211,9 +1119,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687802"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-CONICAL-SYMMETRIC:CAPS"></a>GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC</h3>
-<a class="indexterm" name="id2687815"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC    "gimp-gradient-conical-symmetric"
+<a name="GIMP-STOCK-GRADIENT-CONICAL-SYMMETRIC:CAPS"></a><h3>GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_CONICAL_SYMMETRIC    "gimp-gradient-conical-symmetric"
 </pre>
 <p>
 <img src="stock-gradient-conical-symmetric-16.png">
@@ -1221,9 +1128,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687842"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-CONICAL-ASYMMETRIC:CAPS"></a>GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC</h3>
-<a class="indexterm" name="id2687857"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC   "gimp-gradient-conical-asymmetric"
+<a name="GIMP-STOCK-GRADIENT-CONICAL-ASYMMETRIC:CAPS"></a><h3>GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_CONICAL_ASYMMETRIC   "gimp-gradient-conical-asymmetric"
 </pre>
 <p>
 <img src="stock-gradient-conical-asymmetric-16.png">
@@ -1231,9 +1137,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687884"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-SHAPEBURST-SPHERICAL:CAPS"></a>GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL</h3>
-<a class="indexterm" name="id2687899"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL "gimp-gradient-shapeburst-spherical"
+<a name="GIMP-STOCK-GRADIENT-SHAPEBURST-SPHERICAL:CAPS"></a><h3>GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_SHAPEBURST_SPHERICAL "gimp-gradient-shapeburst-spherical"
 </pre>
 <p>
 <img src="stock-gradient-shapeburst-spherical-16.png">
@@ -1241,9 +1146,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687927"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-SHAPEBURST-ANGULAR:CAPS"></a>GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR</h3>
-<a class="indexterm" name="id2687941"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR   "gimp-gradient-shapeburst-angular"
+<a name="GIMP-STOCK-GRADIENT-SHAPEBURST-ANGULAR:CAPS"></a><h3>GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_SHAPEBURST_ANGULAR   "gimp-gradient-shapeburst-angular"
 </pre>
 <p>
 <img src="stock-gradient-shapeburst-angular-16.png">
@@ -1251,9 +1155,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687969"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-SHAPEBURST-DIMPLED:CAPS"></a>GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED</h3>
-<a class="indexterm" name="id2687983"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED   "gimp-gradient-shapeburst-dimpled"
+<a name="GIMP-STOCK-GRADIENT-SHAPEBURST-DIMPLED:CAPS"></a><h3>GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_SHAPEBURST_DIMPLED   "gimp-gradient-shapeburst-dimpled"
 </pre>
 <p>
 <img src="stock-gradient-shapeburst-dimpled-16.png">
@@ -1261,9 +1164,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688010"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-SPIRAL-CLOCKWISE:CAPS"></a>GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE</h3>
-<a class="indexterm" name="id2688025"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE     "gimp-gradient-spiral-clockwise"
+<a name="GIMP-STOCK-GRADIENT-SPIRAL-CLOCKWISE:CAPS"></a><h3>GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_SPIRAL_CLOCKWISE     "gimp-gradient-spiral-clockwise"
 </pre>
 <p>
 <img src="stock-gradient-spiral-clockwise-16.png">
@@ -1271,9 +1173,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688052"></a><h3>
-<a name="GIMP-STOCK-GRADIENT-SPIRAL-ANTICLOCKWISE:CAPS"></a>GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE</h3>
-<a class="indexterm" name="id2688067"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE "gimp-gradient-spiral-anticlockwise"
+<a name="GIMP-STOCK-GRADIENT-SPIRAL-ANTICLOCKWISE:CAPS"></a><h3>GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT_SPIRAL_ANTICLOCKWISE "gimp-gradient-spiral-anticlockwise"
 </pre>
 <p>
 <img src="stock-gradient-spiral-anticlockwise-16.png">
@@ -1281,9 +1182,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688094"></a><h3>
-<a name="GIMP-STOCK-GRAVITY-NORTH-WEST:CAPS"></a>GIMP_STOCK_GRAVITY_NORTH_WEST</h3>
-<a class="indexterm" name="id2688109"></a><pre class="programlisting">#define GIMP_STOCK_GRAVITY_NORTH_WEST       "gimp-gravity-north-west"
+<a name="GIMP-STOCK-GRAVITY-NORTH-WEST:CAPS"></a><h3>GIMP_STOCK_GRAVITY_NORTH_WEST</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRAVITY_NORTH_WEST       "gimp-gravity-north-west"
 </pre>
 <p>
 <img src="stock-gravity-north-west-24.png">
@@ -1291,9 +1191,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688135"></a><h3>
-<a name="GIMP-STOCK-GRAVITY-NORTH:CAPS"></a>GIMP_STOCK_GRAVITY_NORTH</h3>
-<a class="indexterm" name="id2688150"></a><pre class="programlisting">#define GIMP_STOCK_GRAVITY_NORTH            "gimp-gravity-north"
+<a name="GIMP-STOCK-GRAVITY-NORTH:CAPS"></a><h3>GIMP_STOCK_GRAVITY_NORTH</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRAVITY_NORTH            "gimp-gravity-north"
 </pre>
 <p>
 <img src="stock-gravity-north-24.png">
@@ -1301,9 +1200,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688177"></a><h3>
-<a name="GIMP-STOCK-GRAVITY-NORTH-EAST:CAPS"></a>GIMP_STOCK_GRAVITY_NORTH_EAST</h3>
-<a class="indexterm" name="id2688190"></a><pre class="programlisting">#define GIMP_STOCK_GRAVITY_NORTH_EAST       "gimp-gravity-north-east"
+<a name="GIMP-STOCK-GRAVITY-NORTH-EAST:CAPS"></a><h3>GIMP_STOCK_GRAVITY_NORTH_EAST</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRAVITY_NORTH_EAST       "gimp-gravity-north-east"
 </pre>
 <p>
 <img src="stock-gravity-north-east-24.png">
@@ -1311,9 +1209,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688217"></a><h3>
-<a name="GIMP-STOCK-GRAVITY-WEST:CAPS"></a>GIMP_STOCK_GRAVITY_WEST</h3>
-<a class="indexterm" name="id2688232"></a><pre class="programlisting">#define GIMP_STOCK_GRAVITY_WEST             "gimp-gravity-west"
+<a name="GIMP-STOCK-GRAVITY-WEST:CAPS"></a><h3>GIMP_STOCK_GRAVITY_WEST</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRAVITY_WEST             "gimp-gravity-west"
 </pre>
 <p>
 <img src="stock-gravity-west-24.png">
@@ -1321,9 +1218,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688258"></a><h3>
-<a name="GIMP-STOCK-GRAVITY-EAST:CAPS"></a>GIMP_STOCK_GRAVITY_EAST</h3>
-<a class="indexterm" name="id2688272"></a><pre class="programlisting">#define GIMP_STOCK_GRAVITY_EAST             "gimp-gravity-east"
+<a name="GIMP-STOCK-GRAVITY-EAST:CAPS"></a><h3>GIMP_STOCK_GRAVITY_EAST</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRAVITY_EAST             "gimp-gravity-east"
 </pre>
 <p>
 <img src="stock-gravity-east-24.png">
@@ -1331,9 +1227,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688298"></a><h3>
-<a name="GIMP-STOCK-GRAVITY-SOUTH-WEST:CAPS"></a>GIMP_STOCK_GRAVITY_SOUTH_WEST</h3>
-<a class="indexterm" name="id2688312"></a><pre class="programlisting">#define GIMP_STOCK_GRAVITY_SOUTH_WEST       "gimp-gravity-south-west"
+<a name="GIMP-STOCK-GRAVITY-SOUTH-WEST:CAPS"></a><h3>GIMP_STOCK_GRAVITY_SOUTH_WEST</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRAVITY_SOUTH_WEST       "gimp-gravity-south-west"
 </pre>
 <p>
 <img src="stock-gravity-south-west-24.png">
@@ -1341,9 +1236,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688339"></a><h3>
-<a name="GIMP-STOCK-GRAVITY-SOUTH:CAPS"></a>GIMP_STOCK_GRAVITY_SOUTH</h3>
-<a class="indexterm" name="id2688353"></a><pre class="programlisting">#define GIMP_STOCK_GRAVITY_SOUTH            "gimp-gravity-south"
+<a name="GIMP-STOCK-GRAVITY-SOUTH:CAPS"></a><h3>GIMP_STOCK_GRAVITY_SOUTH</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRAVITY_SOUTH            "gimp-gravity-south"
 </pre>
 <p>
 <img src="stock-gravity-south-24.png">
@@ -1351,9 +1245,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688380"></a><h3>
-<a name="GIMP-STOCK-GRAVITY-SOUTH-EAST:CAPS"></a>GIMP_STOCK_GRAVITY_SOUTH_EAST</h3>
-<a class="indexterm" name="id2688393"></a><pre class="programlisting">#define GIMP_STOCK_GRAVITY_SOUTH_EAST       "gimp-gravity-south-east"
+<a name="GIMP-STOCK-GRAVITY-SOUTH-EAST:CAPS"></a><h3>GIMP_STOCK_GRAVITY_SOUTH_EAST</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRAVITY_SOUTH_EAST       "gimp-gravity-south-east"
 </pre>
 <p>
 <img src="stock-gravity-south-east-24.png">
@@ -1361,9 +1254,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688420"></a><h3>
-<a name="GIMP-STOCK-HCENTER:CAPS"></a>GIMP_STOCK_HCENTER</h3>
-<a class="indexterm" name="id2688434"></a><pre class="programlisting">#define GIMP_STOCK_HCENTER                  "gimp-hcenter"
+<a name="GIMP-STOCK-HCENTER:CAPS"></a><h3>GIMP_STOCK_HCENTER</h3>
+<pre class="programlisting">#define GIMP_STOCK_HCENTER                  "gimp-hcenter"
 </pre>
 <p>
 <img src="stock-hcenter-24.png">
@@ -1371,9 +1263,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688460"></a><h3>
-<a name="GIMP-STOCK-VCENTER:CAPS"></a>GIMP_STOCK_VCENTER</h3>
-<a class="indexterm" name="id2688474"></a><pre class="programlisting">#define GIMP_STOCK_VCENTER                  "gimp-vcenter"
+<a name="GIMP-STOCK-VCENTER:CAPS"></a><h3>GIMP_STOCK_VCENTER</h3>
+<pre class="programlisting">#define GIMP_STOCK_VCENTER                  "gimp-vcenter"
 </pre>
 <p>
 <img src="stock-vcenter-24.png">
@@ -1381,9 +1272,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688500"></a><h3>
-<a name="GIMP-STOCK-CHAR-PICKER:CAPS"></a>GIMP_STOCK_CHAR_PICKER</h3>
-<a class="indexterm" name="id2688514"></a><pre class="programlisting">#define GIMP_STOCK_CHAR_PICKER              "gimp-char-picker"
+<a name="GIMP-STOCK-CHAR-PICKER:CAPS"></a><h3>GIMP_STOCK_CHAR_PICKER</h3>
+<pre class="programlisting">#define GIMP_STOCK_CHAR_PICKER              "gimp-char-picker"
 </pre>
 <p>
 <img src="stock-char-picker-22.png">
@@ -1391,9 +1281,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688540"></a><h3>
-<a name="GIMP-STOCK-LETTER-SPACING:CAPS"></a>GIMP_STOCK_LETTER_SPACING</h3>
-<a class="indexterm" name="id2688555"></a><pre class="programlisting">#define GIMP_STOCK_LETTER_SPACING           "gimp-letter-spacing"
+<a name="GIMP-STOCK-LETTER-SPACING:CAPS"></a><h3>GIMP_STOCK_LETTER_SPACING</h3>
+<pre class="programlisting">#define GIMP_STOCK_LETTER_SPACING           "gimp-letter-spacing"
 </pre>
 <p>
 <img src="stock-letter-spacing-22.png">
@@ -1401,9 +1290,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688581"></a><h3>
-<a name="GIMP-STOCK-LINE-SPACING:CAPS"></a>GIMP_STOCK_LINE_SPACING</h3>
-<a class="indexterm" name="id2688596"></a><pre class="programlisting">#define GIMP_STOCK_LINE_SPACING             "gimp-line-spacing"
+<a name="GIMP-STOCK-LINE-SPACING:CAPS"></a><h3>GIMP_STOCK_LINE_SPACING</h3>
+<pre class="programlisting">#define GIMP_STOCK_LINE_SPACING             "gimp-line-spacing"
 </pre>
 <p>
 <img src="stock-line-spacing-22.png">
@@ -1411,9 +1299,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688622"></a><h3>
-<a name="GIMP-STOCK-TEXT-DIR-LTR:CAPS"></a>GIMP_STOCK_TEXT_DIR_LTR</h3>
-<a class="indexterm" name="id2688636"></a><pre class="programlisting">#define GIMP_STOCK_TEXT_DIR_LTR             "gimp-text-dir-ltr"
+<a name="GIMP-STOCK-TEXT-DIR-LTR:CAPS"></a><h3>GIMP_STOCK_TEXT_DIR_LTR</h3>
+<pre class="programlisting">#define GIMP_STOCK_TEXT_DIR_LTR             "gimp-text-dir-ltr"
 </pre>
 <p>
 <img src="stock-text-dir-ltr-24.png">
@@ -1421,9 +1308,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688662"></a><h3>
-<a name="GIMP-STOCK-TEXT-DIR-RTL:CAPS"></a>GIMP_STOCK_TEXT_DIR_RTL</h3>
-<a class="indexterm" name="id2688677"></a><pre class="programlisting">#define GIMP_STOCK_TEXT_DIR_RTL             "gimp-text-dir-rtl"
+<a name="GIMP-STOCK-TEXT-DIR-RTL:CAPS"></a><h3>GIMP_STOCK_TEXT_DIR_RTL</h3>
+<pre class="programlisting">#define GIMP_STOCK_TEXT_DIR_RTL             "gimp-text-dir-rtl"
 </pre>
 <p>
 <img src="stock-text-dir-rtl-24.png">
@@ -1431,9 +1317,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688703"></a><h3>
-<a name="GIMP-STOCK-PRINT-RESOLUTION:CAPS"></a>GIMP_STOCK_PRINT_RESOLUTION</h3>
-<a class="indexterm" name="id2688717"></a><pre class="programlisting">#define GIMP_STOCK_PRINT_RESOLUTION         "gimp-print-resolution"
+<a name="GIMP-STOCK-PRINT-RESOLUTION:CAPS"></a><h3>GIMP_STOCK_PRINT_RESOLUTION</h3>
+<pre class="programlisting">#define GIMP_STOCK_PRINT_RESOLUTION         "gimp-print-resolution"
 </pre>
 <p>
 <img src="stock-print-resolution-24.png">
@@ -1442,9 +1327,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688750"></a><h3>
-<a name="GIMP-STOCK-TOOLS:CAPS"></a>GIMP_STOCK_TOOLS</h3>
-<a class="indexterm" name="id2688765"></a><pre class="programlisting">#define GIMP_STOCK_TOOLS                    "gimp-tools"
+<a name="GIMP-STOCK-TOOLS:CAPS"></a><h3>GIMP_STOCK_TOOLS</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOLS                    "gimp-tools"
 </pre>
 <p>
 <img src="stock-tools-24.png">
@@ -1453,9 +1337,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688798"></a><h3>
-<a name="GIMP-STOCK-TOOL-OPTIONS:CAPS"></a>GIMP_STOCK_TOOL_OPTIONS</h3>
-<a class="indexterm" name="id2688812"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_OPTIONS             "gimp-tool-options"
+<a name="GIMP-STOCK-TOOL-OPTIONS:CAPS"></a><h3>GIMP_STOCK_TOOL_OPTIONS</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_OPTIONS             "gimp-tool-options"
 </pre>
 <p>
 <img src="stock-tool-options-24.png">
@@ -1464,9 +1347,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688846"></a><h3>
-<a name="GIMP-STOCK-DEVICE-STATUS:CAPS"></a>GIMP_STOCK_DEVICE_STATUS</h3>
-<a class="indexterm" name="id2688860"></a><pre class="programlisting">#define GIMP_STOCK_DEVICE_STATUS            "gimp-device-status"
+<a name="GIMP-STOCK-DEVICE-STATUS:CAPS"></a><h3>GIMP_STOCK_DEVICE_STATUS</h3>
+<pre class="programlisting">#define GIMP_STOCK_DEVICE_STATUS            "gimp-device-status"
 </pre>
 <p>
 <img src="stock-device-status-24.png">
@@ -1475,9 +1357,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688893"></a><h3>
-<a name="GIMP-STOCK-DISPLAY-FILTER:CAPS"></a>GIMP_STOCK_DISPLAY_FILTER</h3>
-<a class="indexterm" name="id2688907"></a><pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER           "gimp-display-filter"
+<a name="GIMP-STOCK-DISPLAY-FILTER:CAPS"></a><h3>GIMP_STOCK_DISPLAY_FILTER</h3>
+<pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER           "gimp-display-filter"
 </pre>
 <p>
 <img src="stock-display-filter-24.png">
@@ -1486,9 +1367,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688941"></a><h3>
-<a name="GIMP-STOCK-CURVE-FREE:CAPS"></a>GIMP_STOCK_CURVE_FREE</h3>
-<a class="indexterm" name="id2688954"></a><pre class="programlisting">#define GIMP_STOCK_CURVE_FREE               "gimp-curve-free"
+<a name="GIMP-STOCK-CURVE-FREE:CAPS"></a><h3>GIMP_STOCK_CURVE_FREE</h3>
+<pre class="programlisting">#define GIMP_STOCK_CURVE_FREE               "gimp-curve-free"
 </pre>
 <p>
 <img src="stock-curve-free-16.png">
@@ -1496,9 +1376,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2688981"></a><h3>
-<a name="GIMP-STOCK-CURVE-SMOOTH:CAPS"></a>GIMP_STOCK_CURVE_SMOOTH</h3>
-<a class="indexterm" name="id2688995"></a><pre class="programlisting">#define GIMP_STOCK_CURVE_SMOOTH             "gimp-curve-smooth"
+<a name="GIMP-STOCK-CURVE-SMOOTH:CAPS"></a><h3>GIMP_STOCK_CURVE_SMOOTH</h3>
+<pre class="programlisting">#define GIMP_STOCK_CURVE_SMOOTH             "gimp-curve-smooth"
 </pre>
 <p>
 <img src="stock-curve-smooth-16.png">
@@ -1506,9 +1385,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689021"></a><h3>
-<a name="GIMP-STOCK-COLOR-PICKER-BLACK:CAPS"></a>GIMP_STOCK_COLOR_PICKER_BLACK</h3>
-<a class="indexterm" name="id2689035"></a><pre class="programlisting">#define GIMP_STOCK_COLOR_PICKER_BLACK       "gimp-color-picker-black"
+<a name="GIMP-STOCK-COLOR-PICKER-BLACK:CAPS"></a><h3>GIMP_STOCK_COLOR_PICKER_BLACK</h3>
+<pre class="programlisting">#define GIMP_STOCK_COLOR_PICKER_BLACK       "gimp-color-picker-black"
 </pre>
 <p>
 <img src="stock-color-picker-black-18.png">
@@ -1516,9 +1394,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689062"></a><h3>
-<a name="GIMP-STOCK-COLOR-PICKER-GRAY:CAPS"></a>GIMP_STOCK_COLOR_PICKER_GRAY</h3>
-<a class="indexterm" name="id2689076"></a><pre class="programlisting">#define GIMP_STOCK_COLOR_PICKER_GRAY        "gimp-color-picker-gray"
+<a name="GIMP-STOCK-COLOR-PICKER-GRAY:CAPS"></a><h3>GIMP_STOCK_COLOR_PICKER_GRAY</h3>
+<pre class="programlisting">#define GIMP_STOCK_COLOR_PICKER_GRAY        "gimp-color-picker-gray"
 </pre>
 <p>
 <img src="stock-color-picker-gray-18.png">
@@ -1526,9 +1403,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689103"></a><h3>
-<a name="GIMP-STOCK-COLOR-PICKER-WHITE:CAPS"></a>GIMP_STOCK_COLOR_PICKER_WHITE</h3>
-<a class="indexterm" name="id2689117"></a><pre class="programlisting">#define GIMP_STOCK_COLOR_PICKER_WHITE       "gimp-color-picker-white"
+<a name="GIMP-STOCK-COLOR-PICKER-WHITE:CAPS"></a><h3>GIMP_STOCK_COLOR_PICKER_WHITE</h3>
+<pre class="programlisting">#define GIMP_STOCK_COLOR_PICKER_WHITE       "gimp-color-picker-white"
 </pre>
 <p>
 <img src="stock-color-picker-white-18.png">
@@ -1536,9 +1412,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689144"></a><h3>
-<a name="GIMP-STOCK-COLOR-TRIANGLE:CAPS"></a>GIMP_STOCK_COLOR_TRIANGLE</h3>
-<a class="indexterm" name="id2689159"></a><pre class="programlisting">#define GIMP_STOCK_COLOR_TRIANGLE           "gimp-color-triangle"
+<a name="GIMP-STOCK-COLOR-TRIANGLE:CAPS"></a><h3>GIMP_STOCK_COLOR_TRIANGLE</h3>
+<pre class="programlisting">#define GIMP_STOCK_COLOR_TRIANGLE           "gimp-color-triangle"
 </pre>
 <p>
 <img src="stock-color-triangle-16.png">
@@ -1546,9 +1421,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689185"></a><h3>
-<a name="GIMP-STOCK-COLOR-PICK-FROM-SCREEN:CAPS"></a>GIMP_STOCK_COLOR_PICK_FROM_SCREEN</h3>
-<a class="indexterm" name="id2689200"></a><pre class="programlisting">#define GIMP_STOCK_COLOR_PICK_FROM_SCREEN   "gimp-color-pick-from-screen"
+<a name="GIMP-STOCK-COLOR-PICK-FROM-SCREEN:CAPS"></a><h3>GIMP_STOCK_COLOR_PICK_FROM_SCREEN</h3>
+<pre class="programlisting">#define GIMP_STOCK_COLOR_PICK_FROM_SCREEN   "gimp-color-pick-from-screen"
 </pre>
 <p>
 <img src="stock-color-pick-from-screen-16.png">
@@ -1556,9 +1430,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689227"></a><h3>
-<a name="GIMP-STOCK-CONVERT-GRAYSCALE:CAPS"></a>GIMP_STOCK_CONVERT_GRAYSCALE</h3>
-<a class="indexterm" name="id2689241"></a><pre class="programlisting">#define GIMP_STOCK_CONVERT_GRAYSCALE        "gimp-convert-grayscale"
+<a name="GIMP-STOCK-CONVERT-GRAYSCALE:CAPS"></a><h3>GIMP_STOCK_CONVERT_GRAYSCALE</h3>
+<pre class="programlisting">#define GIMP_STOCK_CONVERT_GRAYSCALE        "gimp-convert-grayscale"
 </pre>
 <p>
 <img src="stock-convert-grayscale-16.png">
@@ -1566,9 +1439,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689268"></a><h3>
-<a name="GIMP-STOCK-CONVERT-INDEXED:CAPS"></a>GIMP_STOCK_CONVERT_INDEXED</h3>
-<a class="indexterm" name="id2689282"></a><pre class="programlisting">#define GIMP_STOCK_CONVERT_INDEXED          "gimp-convert-indexed"
+<a name="GIMP-STOCK-CONVERT-INDEXED:CAPS"></a><h3>GIMP_STOCK_CONVERT_INDEXED</h3>
+<pre class="programlisting">#define GIMP_STOCK_CONVERT_INDEXED          "gimp-convert-indexed"
 </pre>
 <p>
 <img src="stock-convert-indexed-16.png">
@@ -1576,9 +1448,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689308"></a><h3>
-<a name="GIMP-STOCK-CONVERT-RGB:CAPS"></a>GIMP_STOCK_CONVERT_RGB</h3>
-<a class="indexterm" name="id2689322"></a><pre class="programlisting">#define GIMP_STOCK_CONVERT_RGB              "gimp-convert-rgb"
+<a name="GIMP-STOCK-CONVERT-RGB:CAPS"></a><h3>GIMP_STOCK_CONVERT_RGB</h3>
+<pre class="programlisting">#define GIMP_STOCK_CONVERT_RGB              "gimp-convert-rgb"
 </pre>
 <p>
 <img src="stock-convert-rgb-16.png">
@@ -1586,9 +1457,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689349"></a><h3>
-<a name="GIMP-STOCK-TRANSPARENCY:CAPS"></a>GIMP_STOCK_TRANSPARENCY</h3>
-<a class="indexterm" name="id2689363"></a><pre class="programlisting">#define GIMP_STOCK_TRANSPARENCY             "gimp-transparency"
+<a name="GIMP-STOCK-TRANSPARENCY:CAPS"></a><h3>GIMP_STOCK_TRANSPARENCY</h3>
+<pre class="programlisting">#define GIMP_STOCK_TRANSPARENCY             "gimp-transparency"
 </pre>
 <p>
 <img src="stock-transparency-24.png"><img src="stock-transparency-16.png">
@@ -1596,9 +1466,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689396"></a><h3>
-<a name="GIMP-STOCK-DEFAULT-COLORS:CAPS"></a>GIMP_STOCK_DEFAULT_COLORS</h3>
-<a class="indexterm" name="id2689410"></a><pre class="programlisting">#define GIMP_STOCK_DEFAULT_COLORS           "gimp-default-colors"
+<a name="GIMP-STOCK-DEFAULT-COLORS:CAPS"></a><h3>GIMP_STOCK_DEFAULT_COLORS</h3>
+<pre class="programlisting">#define GIMP_STOCK_DEFAULT_COLORS           "gimp-default-colors"
 </pre>
 <p>
 <img src="stock-default-colors-12.png">
@@ -1606,9 +1475,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689436"></a><h3>
-<a name="GIMP-STOCK-SWAP-COLORS:CAPS"></a>GIMP_STOCK_SWAP_COLORS</h3>
-<a class="indexterm" name="id2689449"></a><pre class="programlisting">#define GIMP_STOCK_SWAP_COLORS              "gimp-swap-colors"
+<a name="GIMP-STOCK-SWAP-COLORS:CAPS"></a><h3>GIMP_STOCK_SWAP_COLORS</h3>
+<pre class="programlisting">#define GIMP_STOCK_SWAP_COLORS              "gimp-swap-colors"
 </pre>
 <p>
 <img src="stock-swap-colors-12.png">
@@ -1616,9 +1484,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689475"></a><h3>
-<a name="GIMP-STOCK-UNDO-HISTORY:CAPS"></a>GIMP_STOCK_UNDO_HISTORY</h3>
-<a class="indexterm" name="id2689490"></a><pre class="programlisting">#define GIMP_STOCK_UNDO_HISTORY             "gimp-undo-history"
+<a name="GIMP-STOCK-UNDO-HISTORY:CAPS"></a><h3>GIMP_STOCK_UNDO_HISTORY</h3>
+<pre class="programlisting">#define GIMP_STOCK_UNDO_HISTORY             "gimp-undo-history"
 </pre>
 <p>
 <img src="stock-undo-history-24.png"><img src="stock-undo-history-16.png">
@@ -1626,9 +1493,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689522"></a><h3>
-<a name="GIMP-STOCK-HCHAIN:CAPS"></a>GIMP_STOCK_HCHAIN</h3>
-<a class="indexterm" name="id2689536"></a><pre class="programlisting">#define GIMP_STOCK_HCHAIN                   "gimp-hchain"
+<a name="GIMP-STOCK-HCHAIN:CAPS"></a><h3>GIMP_STOCK_HCHAIN</h3>
+<pre class="programlisting">#define GIMP_STOCK_HCHAIN                   "gimp-hchain"
 </pre>
 <p>
 <img src="stock-hchain-24.png">
@@ -1636,9 +1502,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689562"></a><h3>
-<a name="GIMP-STOCK-HCHAIN-BROKEN:CAPS"></a>GIMP_STOCK_HCHAIN_BROKEN</h3>
-<a class="indexterm" name="id2689576"></a><pre class="programlisting">#define GIMP_STOCK_HCHAIN_BROKEN            "gimp-hchain-broken"
+<a name="GIMP-STOCK-HCHAIN-BROKEN:CAPS"></a><h3>GIMP_STOCK_HCHAIN_BROKEN</h3>
+<pre class="programlisting">#define GIMP_STOCK_HCHAIN_BROKEN            "gimp-hchain-broken"
 </pre>
 <p>
 <img src="stock-hchain-broken-24.png">
@@ -1646,9 +1511,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689602"></a><h3>
-<a name="GIMP-STOCK-VCHAIN:CAPS"></a>GIMP_STOCK_VCHAIN</h3>
-<a class="indexterm" name="id2689616"></a><pre class="programlisting">#define GIMP_STOCK_VCHAIN                   "gimp-vchain"
+<a name="GIMP-STOCK-VCHAIN:CAPS"></a><h3>GIMP_STOCK_VCHAIN</h3>
+<pre class="programlisting">#define GIMP_STOCK_VCHAIN                   "gimp-vchain"
 </pre>
 <p>
 <img src="stock-vchain-24.png">
@@ -1656,9 +1520,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689642"></a><h3>
-<a name="GIMP-STOCK-VCHAIN-BROKEN:CAPS"></a>GIMP_STOCK_VCHAIN_BROKEN</h3>
-<a class="indexterm" name="id2689656"></a><pre class="programlisting">#define GIMP_STOCK_VCHAIN_BROKEN            "gimp-vchain-broken"
+<a name="GIMP-STOCK-VCHAIN-BROKEN:CAPS"></a><h3>GIMP_STOCK_VCHAIN_BROKEN</h3>
+<pre class="programlisting">#define GIMP_STOCK_VCHAIN_BROKEN            "gimp-vchain-broken"
 </pre>
 <p>
 <img src="stock-vchain-broken-24.png">
@@ -1666,9 +1529,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689682"></a><h3>
-<a name="GIMP-STOCK-TEXTURE:CAPS"></a>GIMP_STOCK_TEXTURE</h3>
-<a class="indexterm" name="id2689696"></a><pre class="programlisting">#define GIMP_STOCK_TEXTURE                  "gimp-texture"
+<a name="GIMP-STOCK-TEXTURE:CAPS"></a><h3>GIMP_STOCK_TEXTURE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TEXTURE                  "gimp-texture"
 </pre>
 <p>
 <img src="stock-texture-64.png">
@@ -1676,9 +1538,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689722"></a><h3>
-<a name="GIMP-STOCK-FRAME:CAPS"></a>GIMP_STOCK_FRAME</h3>
-<a class="indexterm" name="id2689736"></a><pre class="programlisting">#define GIMP_STOCK_FRAME                    "gimp-frame"
+<a name="GIMP-STOCK-FRAME:CAPS"></a><h3>GIMP_STOCK_FRAME</h3>
+<pre class="programlisting">#define GIMP_STOCK_FRAME                    "gimp-frame"
 </pre>
 <p>
 <img src="stock-frame-64.png">
@@ -1686,9 +1547,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689762"></a><h3>
-<a name="GIMP-STOCK-ERROR:CAPS"></a>GIMP_STOCK_ERROR</h3>
-<a class="indexterm" name="id2689776"></a><pre class="programlisting">#define GIMP_STOCK_ERROR                    "gimp-error"
+<a name="GIMP-STOCK-ERROR:CAPS"></a><h3>GIMP_STOCK_ERROR</h3>
+<pre class="programlisting">#define GIMP_STOCK_ERROR                    "gimp-error"
 </pre>
 <p>
 <img src="stock-error-64.png">
@@ -1696,9 +1556,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689802"></a><h3>
-<a name="GIMP-STOCK-INFO:CAPS"></a>GIMP_STOCK_INFO</h3>
-<a class="indexterm" name="id2689816"></a><pre class="programlisting">#define GIMP_STOCK_INFO                     "gimp-info"
+<a name="GIMP-STOCK-INFO:CAPS"></a><h3>GIMP_STOCK_INFO</h3>
+<pre class="programlisting">#define GIMP_STOCK_INFO                     "gimp-info"
 </pre>
 <p>
 <img src="stock-info-64.png">
@@ -1708,9 +1567,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689856"></a><h3>
-<a name="GIMP-STOCK-QUESTION:CAPS"></a>GIMP_STOCK_QUESTION</h3>
-<a class="indexterm" name="id2689870"></a><pre class="programlisting">#define GIMP_STOCK_QUESTION                 "gimp-question"
+<a name="GIMP-STOCK-QUESTION:CAPS"></a><h3>GIMP_STOCK_QUESTION</h3>
+<pre class="programlisting">#define GIMP_STOCK_QUESTION                 "gimp-question"
 </pre>
 <p>
 <img src="stock-question-64.png">
@@ -1718,9 +1576,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689895"></a><h3>
-<a name="GIMP-STOCK-WARNING:CAPS"></a>GIMP_STOCK_WARNING</h3>
-<a class="indexterm" name="id2689910"></a><pre class="programlisting">#define GIMP_STOCK_WARNING                  "gimp-warning"
+<a name="GIMP-STOCK-WARNING:CAPS"></a><h3>GIMP_STOCK_WARNING</h3>
+<pre class="programlisting">#define GIMP_STOCK_WARNING                  "gimp-warning"
 </pre>
 <p>
 <img src="stock-warning-64.png">
@@ -1730,9 +1587,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689950"></a><h3>
-<a name="GIMP-STOCK-WILBER:CAPS"></a>GIMP_STOCK_WILBER</h3>
-<a class="indexterm" name="id2689964"></a><pre class="programlisting">#define GIMP_STOCK_WILBER                   "gimp-wilber"
+<a name="GIMP-STOCK-WILBER:CAPS"></a><h3>GIMP_STOCK_WILBER</h3>
+<pre class="programlisting">#define GIMP_STOCK_WILBER                   "gimp-wilber"
 </pre>
 <p>
 <img src="stock-wilber-64.png">
@@ -1741,9 +1597,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2689997"></a><h3>
-<a name="GIMP-STOCK-WILBER-EEK:CAPS"></a>GIMP_STOCK_WILBER_EEK</h3>
-<a class="indexterm" name="id2690010"></a><pre class="programlisting">#define GIMP_STOCK_WILBER_EEK               "gimp-wilber-eek"
+<a name="GIMP-STOCK-WILBER-EEK:CAPS"></a><h3>GIMP_STOCK_WILBER_EEK</h3>
+<pre class="programlisting">#define GIMP_STOCK_WILBER_EEK               "gimp-wilber-eek"
 </pre>
 <p>
 <img src="stock-wilber-eek-64.png">
@@ -1751,9 +1606,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690037"></a><h3>
-<a name="GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS"></a>GIMP_STOCK_ZOOM_FOLLOW_WINDOW</h3>
-<a class="indexterm" name="id2690050"></a><pre class="programlisting">#define GIMP_STOCK_ZOOM_FOLLOW_WINDOW       "gimp-zoom-follow-window"
+<a name="GIMP-STOCK-ZOOM-FOLLOW-WINDOW:CAPS"></a><h3>GIMP_STOCK_ZOOM_FOLLOW_WINDOW</h3>
+<pre class="programlisting">#define GIMP_STOCK_ZOOM_FOLLOW_WINDOW       "gimp-zoom-follow-window"
 </pre>
 <p>
 <img src="stock-zoom-follow-window-12.png">
@@ -1761,9 +1615,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690077"></a><h3>
-<a name="GIMP-STOCK-TOOL-AIRBRUSH:CAPS"></a>GIMP_STOCK_TOOL_AIRBRUSH</h3>
-<a class="indexterm" name="id2690092"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_AIRBRUSH            "gimp-tool-airbrush"
+<a name="GIMP-STOCK-TOOL-AIRBRUSH:CAPS"></a><h3>GIMP_STOCK_TOOL_AIRBRUSH</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_AIRBRUSH            "gimp-tool-airbrush"
 </pre>
 <p>
 <img src="stock-tool-airbrush-22.png">
@@ -1772,9 +1625,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690126"></a><h3>
-<a name="GIMP-STOCK-TOOL-ALIGN:CAPS"></a>GIMP_STOCK_TOOL_ALIGN</h3>
-<a class="indexterm" name="id2690139"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_ALIGN               "gimp-tool-align"
+<a name="GIMP-STOCK-TOOL-ALIGN:CAPS"></a><h3>GIMP_STOCK_TOOL_ALIGN</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_ALIGN               "gimp-tool-align"
 </pre>
 <p>
 <img src="stock-tool-align-22.png">
@@ -1783,9 +1635,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690172"></a><h3>
-<a name="GIMP-STOCK-TOOL-BLEND:CAPS"></a>GIMP_STOCK_TOOL_BLEND</h3>
-<a class="indexterm" name="id2690186"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_BLEND               "gimp-tool-blend"
+<a name="GIMP-STOCK-TOOL-BLEND:CAPS"></a><h3>GIMP_STOCK_TOOL_BLEND</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_BLEND               "gimp-tool-blend"
 </pre>
 <p>
 <img src="stock-tool-blend-22.png">
@@ -1794,9 +1645,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690220"></a><h3>
-<a name="GIMP-STOCK-TOOL-BLUR:CAPS"></a>GIMP_STOCK_TOOL_BLUR</h3>
-<a class="indexterm" name="id2690234"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_BLUR                "gimp-tool-blur"
+<a name="GIMP-STOCK-TOOL-BLUR:CAPS"></a><h3>GIMP_STOCK_TOOL_BLUR</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_BLUR                "gimp-tool-blur"
 </pre>
 <p>
 <img src="stock-tool-blur-22.png">
@@ -1805,9 +1655,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690267"></a><h3>
-<a name="GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS"></a>GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST</h3>
-<a class="indexterm" name="id2690282"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST "gimp-tool-brightness-contrast"
+<a name="GIMP-STOCK-TOOL-BRIGHTNESS-CONTRAST:CAPS"></a><h3>GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_BRIGHTNESS_CONTRAST "gimp-tool-brightness-contrast"
 </pre>
 <p>
 <img src="stock-tool-brightness-contrast-22.png">
@@ -1816,9 +1665,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690316"></a><h3>
-<a name="GIMP-STOCK-TOOL-BUCKET-FILL:CAPS"></a>GIMP_STOCK_TOOL_BUCKET_FILL</h3>
-<a class="indexterm" name="id2690331"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_BUCKET_FILL         "gimp-tool-bucket-fill"
+<a name="GIMP-STOCK-TOOL-BUCKET-FILL:CAPS"></a><h3>GIMP_STOCK_TOOL_BUCKET_FILL</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_BUCKET_FILL         "gimp-tool-bucket-fill"
 </pre>
 <p>
 <img src="stock-tool-bucket-fill-22.png">
@@ -1827,9 +1675,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690364"></a><h3>
-<a name="GIMP-STOCK-TOOL-BY-COLOR-SELECT:CAPS"></a>GIMP_STOCK_TOOL_BY_COLOR_SELECT</h3>
-<a class="indexterm" name="id2690379"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_BY_COLOR_SELECT     "gimp-tool-by-color-select"
+<a name="GIMP-STOCK-TOOL-BY-COLOR-SELECT:CAPS"></a><h3>GIMP_STOCK_TOOL_BY_COLOR_SELECT</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_BY_COLOR_SELECT     "gimp-tool-by-color-select"
 </pre>
 <p>
 <img src="stock-tool-by-color-select-22.png">
@@ -1838,9 +1685,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690413"></a><h3>
-<a name="GIMP-STOCK-TOOL-CLONE:CAPS"></a>GIMP_STOCK_TOOL_CLONE</h3>
-<a class="indexterm" name="id2690427"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_CLONE               "gimp-tool-clone"
+<a name="GIMP-STOCK-TOOL-CLONE:CAPS"></a><h3>GIMP_STOCK_TOOL_CLONE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_CLONE               "gimp-tool-clone"
 </pre>
 <p>
 <img src="stock-tool-clone-22.png">
@@ -1849,9 +1695,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690461"></a><h3>
-<a name="GIMP-STOCK-TOOL-COLOR-BALANCE:CAPS"></a>GIMP_STOCK_TOOL_COLOR_BALANCE</h3>
-<a class="indexterm" name="id2690475"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_COLOR_BALANCE       "gimp-tool-color-balance"
+<a name="GIMP-STOCK-TOOL-COLOR-BALANCE:CAPS"></a><h3>GIMP_STOCK_TOOL_COLOR_BALANCE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_COLOR_BALANCE       "gimp-tool-color-balance"
 </pre>
 <p>
 <img src="stock-tool-color-balance-22.png">
@@ -1860,9 +1705,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690509"></a><h3>
-<a name="GIMP-STOCK-TOOL-COLOR-PICKER:CAPS"></a>GIMP_STOCK_TOOL_COLOR_PICKER</h3>
-<a class="indexterm" name="id2690524"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_COLOR_PICKER        "gimp-tool-color-picker"
+<a name="GIMP-STOCK-TOOL-COLOR-PICKER:CAPS"></a><h3>GIMP_STOCK_TOOL_COLOR_PICKER</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_COLOR_PICKER        "gimp-tool-color-picker"
 </pre>
 <p>
 <img src="stock-tool-color-picker-22.png">
@@ -1871,9 +1715,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690558"></a><h3>
-<a name="GIMP-STOCK-TOOL-COLORIZE:CAPS"></a>GIMP_STOCK_TOOL_COLORIZE</h3>
-<a class="indexterm" name="id2690572"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_COLORIZE            "gimp-tool-colorize"
+<a name="GIMP-STOCK-TOOL-COLORIZE:CAPS"></a><h3>GIMP_STOCK_TOOL_COLORIZE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_COLORIZE            "gimp-tool-colorize"
 </pre>
 <p>
 <img src="stock-tool-colorize-22.png">
@@ -1882,9 +1725,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690606"></a><h3>
-<a name="GIMP-STOCK-TOOL-CROP:CAPS"></a>GIMP_STOCK_TOOL_CROP</h3>
-<a class="indexterm" name="id2690620"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_CROP                "gimp-tool-crop"
+<a name="GIMP-STOCK-TOOL-CROP:CAPS"></a><h3>GIMP_STOCK_TOOL_CROP</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_CROP                "gimp-tool-crop"
 </pre>
 <p>
 <img src="stock-tool-crop-22.png">
@@ -1893,9 +1735,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690654"></a><h3>
-<a name="GIMP-STOCK-TOOL-CURVES:CAPS"></a>GIMP_STOCK_TOOL_CURVES</h3>
-<a class="indexterm" name="id2690667"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_CURVES              "gimp-tool-curves"
+<a name="GIMP-STOCK-TOOL-CURVES:CAPS"></a><h3>GIMP_STOCK_TOOL_CURVES</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_CURVES              "gimp-tool-curves"
 </pre>
 <p>
 <img src="stock-tool-curves-22.png">
@@ -1904,9 +1745,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690701"></a><h3>
-<a name="GIMP-STOCK-TOOL-DODGE:CAPS"></a>GIMP_STOCK_TOOL_DODGE</h3>
-<a class="indexterm" name="id2690715"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_DODGE               "gimp-tool-dodge"
+<a name="GIMP-STOCK-TOOL-DODGE:CAPS"></a><h3>GIMP_STOCK_TOOL_DODGE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_DODGE               "gimp-tool-dodge"
 </pre>
 <p>
 <img src="stock-tool-dodge-22.png">
@@ -1915,9 +1755,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690748"></a><h3>
-<a name="GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS"></a>GIMP_STOCK_TOOL_ELLIPSE_SELECT</h3>
-<a class="indexterm" name="id2690762"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_ELLIPSE_SELECT      "gimp-tool-ellipse-select"
+<a name="GIMP-STOCK-TOOL-ELLIPSE-SELECT:CAPS"></a><h3>GIMP_STOCK_TOOL_ELLIPSE_SELECT</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_ELLIPSE_SELECT      "gimp-tool-ellipse-select"
 </pre>
 <p>
 <img src="stock-tool-ellipse-select-22.png">
@@ -1926,9 +1765,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690796"></a><h3>
-<a name="GIMP-STOCK-TOOL-ERASER:CAPS"></a>GIMP_STOCK_TOOL_ERASER</h3>
-<a class="indexterm" name="id2690810"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_ERASER              "gimp-tool-eraser"
+<a name="GIMP-STOCK-TOOL-ERASER:CAPS"></a><h3>GIMP_STOCK_TOOL_ERASER</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_ERASER              "gimp-tool-eraser"
 </pre>
 <p>
 <img src="stock-tool-eraser-22.png">
@@ -1937,9 +1775,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690844"></a><h3>
-<a name="GIMP-STOCK-TOOL-FLIP:CAPS"></a>GIMP_STOCK_TOOL_FLIP</h3>
-<a class="indexterm" name="id2690857"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_FLIP                "gimp-tool-flip"
+<a name="GIMP-STOCK-TOOL-FLIP:CAPS"></a><h3>GIMP_STOCK_TOOL_FLIP</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_FLIP                "gimp-tool-flip"
 </pre>
 <p>
 <img src="stock-tool-flip-22.png">
@@ -1948,9 +1785,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690891"></a><h3>
-<a name="GIMP-STOCK-TOOL-FOREGROUND-SELECT:CAPS"></a>GIMP_STOCK_TOOL_FOREGROUND_SELECT</h3>
-<a class="indexterm" name="id2690905"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_FOREGROUND_SELECT   "gimp-tool-foreground-select"
+<a name="GIMP-STOCK-TOOL-FOREGROUND-SELECT:CAPS"></a><h3>GIMP_STOCK_TOOL_FOREGROUND_SELECT</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_FOREGROUND_SELECT   "gimp-tool-foreground-select"
 </pre>
 <p>
 <img src="stock-tool-foreground-select-22.png">
@@ -1959,9 +1795,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690939"></a><h3>
-<a name="GIMP-STOCK-TOOL-FREE-SELECT:CAPS"></a>GIMP_STOCK_TOOL_FREE_SELECT</h3>
-<a class="indexterm" name="id2690954"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_FREE_SELECT         "gimp-tool-free-select"
+<a name="GIMP-STOCK-TOOL-FREE-SELECT:CAPS"></a><h3>GIMP_STOCK_TOOL_FREE_SELECT</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_FREE_SELECT         "gimp-tool-free-select"
 </pre>
 <p>
 <img src="stock-tool-free-select-22.png">
@@ -1970,9 +1805,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2690987"></a><h3>
-<a name="GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS"></a>GIMP_STOCK_TOOL_FUZZY_SELECT</h3>
-<a class="indexterm" name="id2691001"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_FUZZY_SELECT        "gimp-tool-fuzzy-select"
+<a name="GIMP-STOCK-TOOL-FUZZY-SELECT:CAPS"></a><h3>GIMP_STOCK_TOOL_FUZZY_SELECT</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_FUZZY_SELECT        "gimp-tool-fuzzy-select"
 </pre>
 <p>
 <img src="stock-tool-fuzzy-select-22.png">
@@ -1981,9 +1815,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691035"></a><h3>
-<a name="GIMP-STOCK-TOOL-HEAL:CAPS"></a>GIMP_STOCK_TOOL_HEAL</h3>
-<a class="indexterm" name="id2691049"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_HEAL                "gimp-tool-heal"
+<a name="GIMP-STOCK-TOOL-HEAL:CAPS"></a><h3>GIMP_STOCK_TOOL_HEAL</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_HEAL                "gimp-tool-heal"
 </pre>
 <p>
 <img src="stock-tool-heal-22.png">
@@ -1992,9 +1825,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691083"></a><h3>
-<a name="GIMP-STOCK-TOOL-HUE-SATURATION:CAPS"></a>GIMP_STOCK_TOOL_HUE_SATURATION</h3>
-<a class="indexterm" name="id2691097"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_HUE_SATURATION      "gimp-tool-hue-saturation"
+<a name="GIMP-STOCK-TOOL-HUE-SATURATION:CAPS"></a><h3>GIMP_STOCK_TOOL_HUE_SATURATION</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_HUE_SATURATION      "gimp-tool-hue-saturation"
 </pre>
 <p>
 <img src="stock-tool-hue-saturation-22.png">
@@ -2003,9 +1835,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691131"></a><h3>
-<a name="GIMP-STOCK-TOOL-INK:CAPS"></a>GIMP_STOCK_TOOL_INK</h3>
-<a class="indexterm" name="id2691145"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_INK                 "gimp-tool-ink"
+<a name="GIMP-STOCK-TOOL-INK:CAPS"></a><h3>GIMP_STOCK_TOOL_INK</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_INK                 "gimp-tool-ink"
 </pre>
 <p>
 <img src="stock-tool-ink-22.png">
@@ -2014,9 +1845,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691178"></a><h3>
-<a name="GIMP-STOCK-TOOL-ISCISSORS:CAPS"></a>GIMP_STOCK_TOOL_ISCISSORS</h3>
-<a class="indexterm" name="id2691193"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_ISCISSORS           "gimp-tool-iscissors"
+<a name="GIMP-STOCK-TOOL-ISCISSORS:CAPS"></a><h3>GIMP_STOCK_TOOL_ISCISSORS</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_ISCISSORS           "gimp-tool-iscissors"
 </pre>
 <p>
 <img src="stock-tool-iscissors-22.png">
@@ -2025,9 +1855,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691226"></a><h3>
-<a name="GIMP-STOCK-TOOL-LEVELS:CAPS"></a>GIMP_STOCK_TOOL_LEVELS</h3>
-<a class="indexterm" name="id2691240"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_LEVELS              "gimp-tool-levels"
+<a name="GIMP-STOCK-TOOL-LEVELS:CAPS"></a><h3>GIMP_STOCK_TOOL_LEVELS</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_LEVELS              "gimp-tool-levels"
 </pre>
 <p>
 <img src="stock-tool-levels-22.png">
@@ -2036,9 +1865,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691273"></a><h3>
-<a name="GIMP-STOCK-TOOL-MEASURE:CAPS"></a>GIMP_STOCK_TOOL_MEASURE</h3>
-<a class="indexterm" name="id2691287"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_MEASURE             "gimp-tool-measure"
+<a name="GIMP-STOCK-TOOL-MEASURE:CAPS"></a><h3>GIMP_STOCK_TOOL_MEASURE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_MEASURE             "gimp-tool-measure"
 </pre>
 <p>
 <img src="stock-tool-measure-22.png">
@@ -2047,9 +1875,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691321"></a><h3>
-<a name="GIMP-STOCK-TOOL-MOVE:CAPS"></a>GIMP_STOCK_TOOL_MOVE</h3>
-<a class="indexterm" name="id2691335"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_MOVE                "gimp-tool-move"
+<a name="GIMP-STOCK-TOOL-MOVE:CAPS"></a><h3>GIMP_STOCK_TOOL_MOVE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_MOVE                "gimp-tool-move"
 </pre>
 <p>
 <img src="stock-tool-move-22.png">
@@ -2058,9 +1885,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691368"></a><h3>
-<a name="GIMP-STOCK-TOOL-PAINTBRUSH:CAPS"></a>GIMP_STOCK_TOOL_PAINTBRUSH</h3>
-<a class="indexterm" name="id2691382"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_PAINTBRUSH          "gimp-tool-paintbrush"
+<a name="GIMP-STOCK-TOOL-PAINTBRUSH:CAPS"></a><h3>GIMP_STOCK_TOOL_PAINTBRUSH</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_PAINTBRUSH          "gimp-tool-paintbrush"
 </pre>
 <p>
 <img src="stock-tool-paintbrush-22.png">
@@ -2069,9 +1895,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691416"></a><h3>
-<a name="GIMP-STOCK-TOOL-PATH:CAPS"></a>GIMP_STOCK_TOOL_PATH</h3>
-<a class="indexterm" name="id2691430"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_PATH                "gimp-tool-path"
+<a name="GIMP-STOCK-TOOL-PATH:CAPS"></a><h3>GIMP_STOCK_TOOL_PATH</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_PATH                "gimp-tool-path"
 </pre>
 <p>
 <img src="stock-tool-path-22.png">
@@ -2080,9 +1905,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691463"></a><h3>
-<a name="GIMP-STOCK-TOOL-PENCIL:CAPS"></a>GIMP_STOCK_TOOL_PENCIL</h3>
-<a class="indexterm" name="id2691477"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_PENCIL              "gimp-tool-pencil"
+<a name="GIMP-STOCK-TOOL-PENCIL:CAPS"></a><h3>GIMP_STOCK_TOOL_PENCIL</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_PENCIL              "gimp-tool-pencil"
 </pre>
 <p>
 <img src="stock-tool-pencil-22.png">
@@ -2091,9 +1915,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691511"></a><h3>
-<a name="GIMP-STOCK-TOOL-PERSPECTIVE:CAPS"></a>GIMP_STOCK_TOOL_PERSPECTIVE</h3>
-<a class="indexterm" name="id2691525"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_PERSPECTIVE         "gimp-tool-perspective"
+<a name="GIMP-STOCK-TOOL-PERSPECTIVE:CAPS"></a><h3>GIMP_STOCK_TOOL_PERSPECTIVE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_PERSPECTIVE         "gimp-tool-perspective"
 </pre>
 <p>
 <img src="stock-tool-perspective-22.png">
@@ -2102,9 +1925,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691559"></a><h3>
-<a name="GIMP-STOCK-TOOL-PERSPECTIVE-CLONE:CAPS"></a>GIMP_STOCK_TOOL_PERSPECTIVE_CLONE</h3>
-<a class="indexterm" name="id2691573"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_PERSPECTIVE_CLONE   "gimp-tool-perspective-clone"
+<a name="GIMP-STOCK-TOOL-PERSPECTIVE-CLONE:CAPS"></a><h3>GIMP_STOCK_TOOL_PERSPECTIVE_CLONE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_PERSPECTIVE_CLONE   "gimp-tool-perspective-clone"
 </pre>
 <p>
 
@@ -2112,9 +1934,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691590"></a><h3>
-<a name="GIMP-STOCK-TOOL-POSTERIZE:CAPS"></a>GIMP_STOCK_TOOL_POSTERIZE</h3>
-<a class="indexterm" name="id2691605"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_POSTERIZE           "gimp-tool-posterize"
+<a name="GIMP-STOCK-TOOL-POSTERIZE:CAPS"></a><h3>GIMP_STOCK_TOOL_POSTERIZE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_POSTERIZE           "gimp-tool-posterize"
 </pre>
 <p>
 <img src="stock-tool-posterize-22.png">
@@ -2123,9 +1944,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691639"></a><h3>
-<a name="GIMP-STOCK-TOOL-RECT-SELECT:CAPS"></a>GIMP_STOCK_TOOL_RECT_SELECT</h3>
-<a class="indexterm" name="id2691653"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_RECT_SELECT         "gimp-tool-rect-select"
+<a name="GIMP-STOCK-TOOL-RECT-SELECT:CAPS"></a><h3>GIMP_STOCK_TOOL_RECT_SELECT</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_RECT_SELECT         "gimp-tool-rect-select"
 </pre>
 <p>
 <img src="stock-tool-rect-select-22.png">
@@ -2134,9 +1954,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691686"></a><h3>
-<a name="GIMP-STOCK-TOOL-ROTATE:CAPS"></a>GIMP_STOCK_TOOL_ROTATE</h3>
-<a class="indexterm" name="id2691699"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_ROTATE              "gimp-tool-rotate"
+<a name="GIMP-STOCK-TOOL-ROTATE:CAPS"></a><h3>GIMP_STOCK_TOOL_ROTATE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_ROTATE              "gimp-tool-rotate"
 </pre>
 <p>
 <img src="stock-tool-rotate-22.png">
@@ -2145,9 +1964,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691733"></a><h3>
-<a name="GIMP-STOCK-TOOL-SCALE:CAPS"></a>GIMP_STOCK_TOOL_SCALE</h3>
-<a class="indexterm" name="id2691747"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_SCALE               "gimp-tool-scale"
+<a name="GIMP-STOCK-TOOL-SCALE:CAPS"></a><h3>GIMP_STOCK_TOOL_SCALE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_SCALE               "gimp-tool-scale"
 </pre>
 <p>
 <img src="stock-tool-scale-22.png">
@@ -2156,9 +1974,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691780"></a><h3>
-<a name="GIMP-STOCK-TOOL-SHEAR:CAPS"></a>GIMP_STOCK_TOOL_SHEAR</h3>
-<a class="indexterm" name="id2691794"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_SHEAR               "gimp-tool-shear"
+<a name="GIMP-STOCK-TOOL-SHEAR:CAPS"></a><h3>GIMP_STOCK_TOOL_SHEAR</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_SHEAR               "gimp-tool-shear"
 </pre>
 <p>
 <img src="stock-tool-shear-22.png">
@@ -2167,9 +1984,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691828"></a><h3>
-<a name="GIMP-STOCK-TOOL-SMUDGE:CAPS"></a>GIMP_STOCK_TOOL_SMUDGE</h3>
-<a class="indexterm" name="id2691842"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_SMUDGE              "gimp-tool-smudge"
+<a name="GIMP-STOCK-TOOL-SMUDGE:CAPS"></a><h3>GIMP_STOCK_TOOL_SMUDGE</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_SMUDGE              "gimp-tool-smudge"
 </pre>
 <p>
 <img src="stock-tool-smudge-22.png">
@@ -2178,9 +1994,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691875"></a><h3>
-<a name="GIMP-STOCK-TOOL-TEXT:CAPS"></a>GIMP_STOCK_TOOL_TEXT</h3>
-<a class="indexterm" name="id2691889"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_TEXT                "gimp-tool-text"
+<a name="GIMP-STOCK-TOOL-TEXT:CAPS"></a><h3>GIMP_STOCK_TOOL_TEXT</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_TEXT                "gimp-tool-text"
 </pre>
 <p>
 <img src="stock-tool-text-22.png">
@@ -2189,9 +2004,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691923"></a><h3>
-<a name="GIMP-STOCK-TOOL-THRESHOLD:CAPS"></a>GIMP_STOCK_TOOL_THRESHOLD</h3>
-<a class="indexterm" name="id2691938"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_THRESHOLD           "gimp-tool-threshold"
+<a name="GIMP-STOCK-TOOL-THRESHOLD:CAPS"></a><h3>GIMP_STOCK_TOOL_THRESHOLD</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_THRESHOLD           "gimp-tool-threshold"
 </pre>
 <p>
 <img src="stock-tool-threshold-22.png">
@@ -2200,9 +2014,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2691971"></a><h3>
-<a name="GIMP-STOCK-TOOL-ZOOM:CAPS"></a>GIMP_STOCK_TOOL_ZOOM</h3>
-<a class="indexterm" name="id2691984"></a><pre class="programlisting">#define GIMP_STOCK_TOOL_ZOOM                "gimp-tool-zoom"
+<a name="GIMP-STOCK-TOOL-ZOOM:CAPS"></a><h3>GIMP_STOCK_TOOL_ZOOM</h3>
+<pre class="programlisting">#define GIMP_STOCK_TOOL_ZOOM                "gimp-tool-zoom"
 </pre>
 <p>
 <img src="stock-tool-zoom-22.png">
@@ -2211,9 +2024,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692018"></a><h3>
-<a name="GIMP-STOCK-CONTROLLER:CAPS"></a>GIMP_STOCK_CONTROLLER</h3>
-<a class="indexterm" name="id2692031"></a><pre class="programlisting">#define GIMP_STOCK_CONTROLLER               "gimp-controller"
+<a name="GIMP-STOCK-CONTROLLER:CAPS"></a><h3>GIMP_STOCK_CONTROLLER</h3>
+<pre class="programlisting">#define GIMP_STOCK_CONTROLLER               "gimp-controller"
 </pre>
 <p>
 <img src="stock-controller-24.png">
@@ -2222,9 +2034,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692065"></a><h3>
-<a name="GIMP-STOCK-CONTROLLER-KEYBOARD:CAPS"></a>GIMP_STOCK_CONTROLLER_KEYBOARD</h3>
-<a class="indexterm" name="id2692079"></a><pre class="programlisting">#define GIMP_STOCK_CONTROLLER_KEYBOARD      "gimp-controller-keyboard"
+<a name="GIMP-STOCK-CONTROLLER-KEYBOARD:CAPS"></a><h3>GIMP_STOCK_CONTROLLER_KEYBOARD</h3>
+<pre class="programlisting">#define GIMP_STOCK_CONTROLLER_KEYBOARD      "gimp-controller-keyboard"
 </pre>
 <p>
 <img src="stock-controller-keyboard-24.png">
@@ -2233,9 +2044,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692113"></a><h3>
-<a name="GIMP-STOCK-CONTROLLER-LINUX-INPUT:CAPS"></a>GIMP_STOCK_CONTROLLER_LINUX_INPUT</h3>
-<a class="indexterm" name="id2692128"></a><pre class="programlisting">#define GIMP_STOCK_CONTROLLER_LINUX_INPUT   "gimp-controller-linux-input"
+<a name="GIMP-STOCK-CONTROLLER-LINUX-INPUT:CAPS"></a><h3>GIMP_STOCK_CONTROLLER_LINUX_INPUT</h3>
+<pre class="programlisting">#define GIMP_STOCK_CONTROLLER_LINUX_INPUT   "gimp-controller-linux-input"
 </pre>
 <p>
 <img src="stock-controller-linux-input-24.png">
@@ -2244,9 +2054,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692162"></a><h3>
-<a name="GIMP-STOCK-CONTROLLER-MIDI:CAPS"></a>GIMP_STOCK_CONTROLLER_MIDI</h3>
-<a class="indexterm" name="id2692177"></a><pre class="programlisting">#define GIMP_STOCK_CONTROLLER_MIDI          "gimp-controller-midi"
+<a name="GIMP-STOCK-CONTROLLER-MIDI:CAPS"></a><h3>GIMP_STOCK_CONTROLLER_MIDI</h3>
+<pre class="programlisting">#define GIMP_STOCK_CONTROLLER_MIDI          "gimp-controller-midi"
 </pre>
 <p>
 <img src="stock-controller-midi-24.png">
@@ -2255,9 +2064,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692210"></a><h3>
-<a name="GIMP-STOCK-CONTROLLER-WHEEL:CAPS"></a>GIMP_STOCK_CONTROLLER_WHEEL</h3>
-<a class="indexterm" name="id2692225"></a><pre class="programlisting">#define GIMP_STOCK_CONTROLLER_WHEEL         "gimp-controller-wheel"
+<a name="GIMP-STOCK-CONTROLLER-WHEEL:CAPS"></a><h3>GIMP_STOCK_CONTROLLER_WHEEL</h3>
+<pre class="programlisting">#define GIMP_STOCK_CONTROLLER_WHEEL         "gimp-controller-wheel"
 </pre>
 <p>
 <img src="stock-controller-wheel-24.png">
@@ -2266,9 +2074,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692258"></a><h3>
-<a name="GIMP-STOCK-DISPLAY-FILTER-COLORBLIND:CAPS"></a>GIMP_STOCK_DISPLAY_FILTER_COLORBLIND</h3>
-<a class="indexterm" name="id2692272"></a><pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_COLORBLIND "gimp-display-filter-colorblind"
+<a name="GIMP-STOCK-DISPLAY-FILTER-COLORBLIND:CAPS"></a><h3>GIMP_STOCK_DISPLAY_FILTER_COLORBLIND</h3>
+<pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_COLORBLIND "gimp-display-filter-colorblind"
 </pre>
 <p>
 <img src="stock-display-filter-colorblind-24.png">
@@ -2277,9 +2084,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692307"></a><h3>
-<a name="GIMP-STOCK-DISPLAY-FILTER-CONTRAST:CAPS"></a>GIMP_STOCK_DISPLAY_FILTER_CONTRAST</h3>
-<a class="indexterm" name="id2692322"></a><pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_CONTRAST  "gimp-display-filter-contrast"
+<a name="GIMP-STOCK-DISPLAY-FILTER-CONTRAST:CAPS"></a><h3>GIMP_STOCK_DISPLAY_FILTER_CONTRAST</h3>
+<pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_CONTRAST  "gimp-display-filter-contrast"
 </pre>
 <p>
 <img src="stock-display-filter-contrast-24.png">
@@ -2288,9 +2094,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692356"></a><h3>
-<a name="GIMP-STOCK-DISPLAY-FILTER-GAMMA:CAPS"></a>GIMP_STOCK_DISPLAY_FILTER_GAMMA</h3>
-<a class="indexterm" name="id2692371"></a><pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_GAMMA     "gimp-display-filter-gamma"
+<a name="GIMP-STOCK-DISPLAY-FILTER-GAMMA:CAPS"></a><h3>GIMP_STOCK_DISPLAY_FILTER_GAMMA</h3>
+<pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_GAMMA     "gimp-display-filter-gamma"
 </pre>
 <p>
 <img src="stock-display-filter-gamma-24.png">
@@ -2299,9 +2104,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692405"></a><h3>
-<a name="GIMP-STOCK-DISPLAY-FILTER-LCMS:CAPS"></a>GIMP_STOCK_DISPLAY_FILTER_LCMS</h3>
-<a class="indexterm" name="id2692420"></a><pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_LCMS      "gimp-display-filter-lcms"
+<a name="GIMP-STOCK-DISPLAY-FILTER-LCMS:CAPS"></a><h3>GIMP_STOCK_DISPLAY_FILTER_LCMS</h3>
+<pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_LCMS      "gimp-display-filter-lcms"
 </pre>
 <p>
 <img src="stock-display-filter-lcms-24.png">
@@ -2310,9 +2114,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692454"></a><h3>
-<a name="GIMP-STOCK-DISPLAY-FILTER-PROOF:CAPS"></a>GIMP_STOCK_DISPLAY_FILTER_PROOF</h3>
-<a class="indexterm" name="id2692468"></a><pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_PROOF     "gimp-display-filter-proof"
+<a name="GIMP-STOCK-DISPLAY-FILTER-PROOF:CAPS"></a><h3>GIMP_STOCK_DISPLAY_FILTER_PROOF</h3>
+<pre class="programlisting">#define GIMP_STOCK_DISPLAY_FILTER_PROOF     "gimp-display-filter-proof"
 </pre>
 <p>
 <img src="stock-display-filter-proof-24.png">
@@ -2321,9 +2124,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692502"></a><h3>
-<a name="GIMP-STOCK-QMASK-ON:CAPS"></a>GIMP_STOCK_QMASK_ON</h3>
-<a class="indexterm" name="id2692519"></a><pre class="programlisting">#define GIMP_STOCK_QMASK_ON                 "gimp-quick-mask-on"
+<a name="GIMP-STOCK-QMASK-ON:CAPS"></a><h3>GIMP_STOCK_QMASK_ON</h3>
+<pre class="programlisting">#define GIMP_STOCK_QMASK_ON                 "gimp-quick-mask-on"
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -2335,9 +2137,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692548"></a><h3>
-<a name="GIMP-STOCK-QMASK-OFF:CAPS"></a>GIMP_STOCK_QMASK_OFF</h3>
-<a class="indexterm" name="id2692564"></a><pre class="programlisting">#define GIMP_STOCK_QMASK_OFF                "gimp-quick-mask-off"
+<a name="GIMP-STOCK-QMASK-OFF:CAPS"></a><h3>GIMP_STOCK_QMASK_OFF</h3>
+<pre class="programlisting">#define GIMP_STOCK_QMASK_OFF                "gimp-quick-mask-off"
 </pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
@@ -2349,9 +2150,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692594"></a><h3>
-<a name="GIMP-STOCK-BRUSH:CAPS"></a>GIMP_STOCK_BRUSH</h3>
-<a class="indexterm" name="id2692608"></a><pre class="programlisting">#define GIMP_STOCK_BRUSH                    GIMP_STOCK_TOOL_PAINTBRUSH
+<a name="GIMP-STOCK-BRUSH:CAPS"></a><h3>GIMP_STOCK_BRUSH</h3>
+<pre class="programlisting">#define GIMP_STOCK_BRUSH                    GIMP_STOCK_TOOL_PAINTBRUSH
 </pre>
 <p>
 
@@ -2359,9 +2159,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692625"></a><h3>
-<a name="GIMP-STOCK-BUFFER:CAPS"></a>GIMP_STOCK_BUFFER</h3>
-<a class="indexterm" name="id2692638"></a><pre class="programlisting">#define GIMP_STOCK_BUFFER                   GTK_STOCK_PASTE
+<a name="GIMP-STOCK-BUFFER:CAPS"></a><h3>GIMP_STOCK_BUFFER</h3>
+<pre class="programlisting">#define GIMP_STOCK_BUFFER                   GTK_STOCK_PASTE
 </pre>
 <p>
 
@@ -2369,9 +2168,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692655"></a><h3>
-<a name="GIMP-STOCK-DETACH:CAPS"></a>GIMP_STOCK_DETACH</h3>
-<a class="indexterm" name="id2692668"></a><pre class="programlisting">#define GIMP_STOCK_DETACH                   GTK_STOCK_CONVERT
+<a name="GIMP-STOCK-DETACH:CAPS"></a><h3>GIMP_STOCK_DETACH</h3>
+<pre class="programlisting">#define GIMP_STOCK_DETACH                   GTK_STOCK_CONVERT
 </pre>
 <p>
 
@@ -2379,9 +2177,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692685"></a><h3>
-<a name="GIMP-STOCK-FONT:CAPS"></a>GIMP_STOCK_FONT</h3>
-<a class="indexterm" name="id2692699"></a><pre class="programlisting">#define GIMP_STOCK_FONT                     GTK_STOCK_SELECT_FONT
+<a name="GIMP-STOCK-FONT:CAPS"></a><h3>GIMP_STOCK_FONT</h3>
+<pre class="programlisting">#define GIMP_STOCK_FONT                     GTK_STOCK_SELECT_FONT
 </pre>
 <p>
 
@@ -2389,9 +2186,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692715"></a><h3>
-<a name="GIMP-STOCK-GRADIENT:CAPS"></a>GIMP_STOCK_GRADIENT</h3>
-<a class="indexterm" name="id2692729"></a><pre class="programlisting">#define GIMP_STOCK_GRADIENT                 GIMP_STOCK_TOOL_BLEND
+<a name="GIMP-STOCK-GRADIENT:CAPS"></a><h3>GIMP_STOCK_GRADIENT</h3>
+<pre class="programlisting">#define GIMP_STOCK_GRADIENT                 GIMP_STOCK_TOOL_BLEND
 </pre>
 <p>
 
@@ -2399,9 +2195,8 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692746"></a><h3>
-<a name="GIMP-STOCK-PALETTE:CAPS"></a>GIMP_STOCK_PALETTE</h3>
-<a class="indexterm" name="id2692759"></a><pre class="programlisting">#define GIMP_STOCK_PALETTE                  GTK_STOCK_SELECT_COLOR
+<a name="GIMP-STOCK-PALETTE:CAPS"></a><h3>GIMP_STOCK_PALETTE</h3>
+<pre class="programlisting">#define GIMP_STOCK_PALETTE                  GTK_STOCK_SELECT_COLOR
 </pre>
 <p>
 
@@ -2409,20 +2204,17 @@ RTL variant
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2692776"></a><h3>
-<a name="GIMP-STOCK-PATTERN:CAPS"></a>GIMP_STOCK_PATTERN</h3>
-<a class="indexterm" name="id2692789"></a><pre class="programlisting">#define GIMP_STOCK_PATTERN                  GIMP_STOCK_TOOL_BUCKET_FILL
+<a name="GIMP-STOCK-PATTERN:CAPS"></a><h3>GIMP_STOCK_PATTERN</h3>
+<pre class="programlisting">#define GIMP_STOCK_PATTERN                  GIMP_STOCK_TOOL_BUCKET_FILL
 </pre>
 <p>
 
 </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2692807"></a><div class="refsect2" lang="en"><a name="id2692808"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2692809"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

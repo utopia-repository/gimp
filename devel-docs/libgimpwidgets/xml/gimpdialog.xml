@@ -4,7 +4,7 @@
 
 <refentry id="GimpDialog">
 <refmeta>
-<refentrytitle role="top_of_page">GimpDialog</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpDialog.top_of_page">GimpDialog</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -16,13 +16,10 @@ dialog-related stuff.</refpurpose>
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpDialog.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpDialog-struct">GimpDialog</link>;
 <link linkend="GtkWidget">GtkWidget</link>*          <link linkend="gimp-dialog-new">gimp_dialog_new</link>                     (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *role,
@@ -47,14 +44,12 @@ dialog-related stuff.</refpurpose>
                                                          <link linkend="va-list">va_list</link> args);
 <link linkend="gint">gint</link>                <link linkend="gimp-dialog-run">gimp_dialog_run</link>                     (<link linkend="GimpDialog">GimpDialog</link> *dialog);
 <link linkend="void">void</link>                <link linkend="gimp-dialogs-show-help-button">gimp_dialogs_show_help_button</link>       (<link linkend="gboolean">gboolean</link> show);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpDialog.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----<link linkend="GInitiallyUnowned">GInitiallyUnowned</link>
          +----<link linkend="GtkObject">GtkObject</link>
@@ -70,7 +65,7 @@ dialog-related stuff.</refpurpose>
 
 
 
-<refsect1 role="impl_interfaces">
+<refsect1 id="GimpDialog.implemented-interfaces" role="impl_interfaces">
 <title role="impl_interfaces.title">Implemented Interfaces</title>
 <para>
 GimpDialog implements
@@ -79,35 +74,34 @@ GimpDialog implements
 </refsect1>
 
 
-<refsect1 role="properties">
+<refsect1 id="GimpDialog.properties" role="properties">
 <title role="properties.title">Properties</title>
 <synopsis>
-
   &quot;<link linkend="GimpDialog--help-func">help-func</link>&quot;                <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only
-  &quot;<link linkend="GimpDialog--help-id">help-id</link>&quot;                  <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only
+  &quot;<link linkend="GimpDialog--help-id">help-id</link>&quot;                  <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only
 </synopsis>
 </refsect1>
 
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpDialog.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpDialog.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpDialog-struct" role="struct"/>GimpDialog</title>
-<indexterm><primary>GimpDialog</primary></indexterm><programlisting>typedef struct _GimpDialog GimpDialog;</programlisting>
+<refsect2 id="GimpDialog-struct" role="struct">
+<title>GimpDialog</title>
+<indexterm zone="GimpDialog-struct"><primary>GimpDialog</primary></indexterm><programlisting>typedef struct _GimpDialog GimpDialog;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-dialog-new" role="function"/>gimp_dialog_new ()</title>
-<indexterm><primary>gimp_dialog_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_dialog_new                     (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-dialog-new" role="function">
+<title>gimp_dialog_new ()</title>
+<indexterm zone="gimp-dialog-new"><primary>gimp_dialog_new</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_dialog_new                     (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *role,
                                                          <link linkend="GtkWidget">GtkWidget</link> *parent,
                                                          <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
@@ -154,9 +148,9 @@ action_area buttons see <link linkend="gtk-dialog-new-with-buttons"><function>gt
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GimpDialog"><type>GimpDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-dialog-new-valist" role="function"/>gimp_dialog_new_valist ()</title>
-<indexterm><primary>gimp_dialog_new_valist</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_dialog_new_valist              (const <link linkend="gchar">gchar</link> *title,
+<refsect2 id="gimp-dialog-new-valist" role="function">
+<title>gimp_dialog_new_valist ()</title>
+<indexterm zone="gimp-dialog-new-valist"><primary>gimp_dialog_new_valist</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_dialog_new_valist              (const <link linkend="gchar">gchar</link> *title,
                                                          const <link linkend="gchar">gchar</link> *role,
                                                          <link linkend="GtkWidget">GtkWidget</link> *parent,
                                                          <link linkend="GtkDialogFlags">GtkDialogFlags</link> flags,
@@ -199,9 +193,9 @@ action_area buttons see <link linkend="gtk-dialog-new-with-buttons"><function>gt
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> A <link linkend="GimpDialog"><type>GimpDialog</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-dialog-add-button" role="function"/>gimp_dialog_add_button ()</title>
-<indexterm><primary>gimp_dialog_add_button</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_dialog_add_button              (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+<refsect2 id="gimp-dialog-add-button" role="function">
+<title>gimp_dialog_add_button ()</title>
+<indexterm zone="gimp-dialog-add-button"><primary>gimp_dialog_add_button</primary></indexterm><programlisting><link linkend="GtkWidget">GtkWidget</link>*          gimp_dialog_add_button              (<link linkend="GimpDialog">GimpDialog</link> *dialog,
                                                          const <link linkend="gchar">gchar</link> *button_text,
                                                          <link linkend="gint">gint</link> response_id);</programlisting>
 <para>
@@ -223,9 +217,9 @@ sets the RESPONSE_OK widget as the default response.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the button widget that was added.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-dialog-add-buttons" role="function"/>gimp_dialog_add_buttons ()</title>
-<indexterm><primary>gimp_dialog_add_buttons</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_dialog_add_buttons             (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+<refsect2 id="gimp-dialog-add-buttons" role="function">
+<title>gimp_dialog_add_buttons ()</title>
+<indexterm zone="gimp-dialog-add-buttons"><primary>gimp_dialog_add_buttons</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_dialog_add_buttons             (<link linkend="GimpDialog">GimpDialog</link> *dialog,
                                                          ...);</programlisting>
 <para>
 This function is essentially the same as <link linkend="gtk-dialog-add-buttons"><function>gtk_dialog_add_buttons()</function></link>
@@ -240,9 +234,9 @@ except it calls <link linkend="gimp-dialog-add-button"><function>gimp_dialog_add
 <listitem><simpara> button_text-response_id pairs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-dialog-add-buttons-valist" role="function"/>gimp_dialog_add_buttons_valist ()</title>
-<indexterm><primary>gimp_dialog_add_buttons_valist</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_dialog_add_buttons_valist      (<link linkend="GimpDialog">GimpDialog</link> *dialog,
+<refsect2 id="gimp-dialog-add-buttons-valist" role="function">
+<title>gimp_dialog_add_buttons_valist ()</title>
+<indexterm zone="gimp-dialog-add-buttons-valist"><primary>gimp_dialog_add_buttons_valist</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_dialog_add_buttons_valist      (<link linkend="GimpDialog">GimpDialog</link> *dialog,
                                                          <link linkend="va-list">va_list</link> args);</programlisting>
 <para>
 This function is essentially the same as <link linkend="gimp-dialog-add-buttons"><function>gimp_dialog_add_buttons()</function></link>
@@ -257,9 +251,9 @@ except it takes a va_list instead of '...'</para>
 <listitem><simpara>   The buttons as va_list.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-dialog-run" role="function"/>gimp_dialog_run ()</title>
-<indexterm><primary>gimp_dialog_run</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_dialog_run                     (<link linkend="GimpDialog">GimpDialog</link> *dialog);</programlisting>
+<refsect2 id="gimp-dialog-run" role="function">
+<title>gimp_dialog_run ()</title>
+<indexterm zone="gimp-dialog-run"><primary>gimp_dialog_run</primary></indexterm><programlisting><link linkend="gint">gint</link>                gimp_dialog_run                     (<link linkend="GimpDialog">GimpDialog</link> *dialog);</programlisting>
 <para>
 This function does exactly the same as <link linkend="gtk-dialog-run"><function>gtk_dialog_run()</function></link> except it
 does not make the dialog modal while the <link linkend="GMainLoop"><type>GMainLoop</type></link> is running.</para>
@@ -272,9 +266,9 @@ does not make the dialog modal while the <link linkend="GMainLoop"><type>GMainLo
 <varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> response ID
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-dialogs-show-help-button" role="function" condition="since:GIMP 2.2"/>gimp_dialogs_show_help_button ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_dialogs_show_help_button</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_dialogs_show_help_button       (<link linkend="gboolean">gboolean</link> show);</programlisting>
+<refsect2 id="gimp-dialogs-show-help-button" role="function" condition="since:GIMP 2.2">
+<title>gimp_dialogs_show_help_button ()</title>
+<indexterm zone="gimp-dialogs-show-help-button" role="GIMP 2.2"><primary>gimp_dialogs_show_help_button</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_dialogs_show_help_button       (<link linkend="gboolean">gboolean</link> show);</programlisting>
 <para>
 This function is for internal use only.</para>
 <para>
@@ -287,13 +281,13 @@ This function is for internal use only.</para>
 </para></refsect2>
 
 </refsect1>
-<refsect1 role="property_details">
+<refsect1 id="GimpDialog.property-details" role="property_details">
 <title role="property_details.title">Property Details</title>
-<refsect2><title><anchor id="GimpDialog--help-func"/>The <literal>&quot;help-func&quot;</literal> property</title>
-<indexterm><primary>GimpDialog:help-func</primary></indexterm><programlisting>  &quot;help-func&quot;                <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
+<refsect2 id="GimpDialog--help-func"><title>The <literal>&quot;help-func&quot;</literal> property</title>
+<indexterm zone="GimpDialog--help-func"><primary>GimpDialog:help-func</primary></indexterm><programlisting>  &quot;help-func&quot;                <link linkend="gpointer">gpointer</link>              : Read / Write / Construct Only</programlisting>
 <para></para></refsect2>
-<refsect2><title><anchor id="GimpDialog--help-id"/>The <literal>&quot;help-id&quot;</literal> property</title>
-<indexterm><primary>GimpDialog:help-id</primary></indexterm><programlisting>  &quot;help-id&quot;                  <link linkend="gchararray">gchararray</link>            : Read / Write / Construct Only</programlisting>
+<refsect2 id="GimpDialog--help-id"><title>The <literal>&quot;help-id&quot;</literal> property</title>
+<indexterm zone="GimpDialog--help-id"><primary>GimpDialog:help-id</primary></indexterm><programlisting>  &quot;help-id&quot;                  <link linkend="gchar">gchar</link>*                : Read / Write / Construct Only</programlisting>
 <para></para><para>Default value: NULL</para>
 </refsect2>
 
@@ -302,6 +296,4 @@ This function is for internal use only.</para>
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

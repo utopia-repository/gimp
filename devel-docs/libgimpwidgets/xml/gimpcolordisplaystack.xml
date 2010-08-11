@@ -4,7 +4,7 @@
 
 <refentry id="GimpColorDisplayStack">
 <refmeta>
-<refentrytitle role="top_of_page">GimpColorDisplayStack</refentrytitle>
+<refentrytitle role="top_of_page" id="GimpColorDisplayStack.top_of_page">GimpColorDisplayStack</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPWIDGETS Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="GimpColorDisplayStack.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
                     <link linkend="GimpColorDisplayStack-struct">GimpColorDisplayStack</link>;
 <link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link>* <link linkend="gimp-color-display-stack-new">gimp_color_display_stack_new</link>     (void);
 <link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link>* <link linkend="gimp-color-display-stack-clone">gimp_color_display_stack_clone</link>   (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack);
@@ -41,14 +38,12 @@
                                                          <link linkend="gint">gint</link> height,
                                                          <link linkend="gint">gint</link> bpp,
                                                          <link linkend="gint">gint</link> bpl);
-
 </synopsis>
 </refsynopsisdiv>
 
-<refsect1 role="object_hierarchy">
+<refsect1 id="GimpColorDisplayStack.object-hierarchy" role="object_hierarchy">
 <title role="object_hierarchy.title">Object Hierarchy</title>
 <synopsis>
-
   <link linkend="GObject">GObject</link>
    +----GimpColorDisplayStack
 </synopsis>
@@ -60,10 +55,9 @@
 
 
 
-<refsect1 role="signal_proto">
+<refsect1 id="GimpColorDisplayStack.signals" role="signal_proto">
 <title role="signal_proto.title">Signals</title>
 <synopsis>
-
   &quot;<link linkend="GimpColorDisplayStack-added">added</link>&quot;                                          : Run First
   &quot;<link linkend="GimpColorDisplayStack-changed">changed</link>&quot;                                        : Run First
   &quot;<link linkend="GimpColorDisplayStack-removed">removed</link>&quot;                                        : Run First
@@ -72,24 +66,24 @@
 </refsect1>
 
 
-<refsect1 role="desc">
+<refsect1 id="GimpColorDisplayStack.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="GimpColorDisplayStack.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GimpColorDisplayStack-struct" role="struct"/>GimpColorDisplayStack</title>
-<indexterm><primary>GimpColorDisplayStack</primary></indexterm><programlisting>typedef struct _GimpColorDisplayStack GimpColorDisplayStack;</programlisting>
+<refsect2 id="GimpColorDisplayStack-struct" role="struct">
+<title>GimpColorDisplayStack</title>
+<indexterm zone="GimpColorDisplayStack-struct"><primary>GimpColorDisplayStack</primary></indexterm><programlisting>typedef struct _GimpColorDisplayStack GimpColorDisplayStack;</programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-display-stack-new" role="function"/>gimp_color_display_stack_new ()</title>
-<indexterm><primary>gimp_color_display_stack_new</primary></indexterm><programlisting><link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link>* gimp_color_display_stack_new     (void);</programlisting>
+<refsect2 id="gimp-color-display-stack-new" role="function">
+<title>gimp_color_display_stack_new ()</title>
+<indexterm zone="gimp-color-display-stack-new"><primary>gimp_color_display_stack_new</primary></indexterm><programlisting><link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link>* gimp_color_display_stack_new     (void);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -98,9 +92,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-display-stack-clone" role="function"/>gimp_color_display_stack_clone ()</title>
-<indexterm><primary>gimp_color_display_stack_clone</primary></indexterm><programlisting><link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link>* gimp_color_display_stack_clone   (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack);</programlisting>
+<refsect2 id="gimp-color-display-stack-clone" role="function">
+<title>gimp_color_display_stack_clone ()</title>
+<indexterm zone="gimp-color-display-stack-clone"><primary>gimp_color_display_stack_clone</primary></indexterm><programlisting><link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link>* gimp_color_display_stack_clone   (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -112,9 +106,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-display-stack-changed" role="function"/>gimp_color_display_stack_changed ()</title>
-<indexterm><primary>gimp_color_display_stack_changed</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_changed    (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack);</programlisting>
+<refsect2 id="gimp-color-display-stack-changed" role="function">
+<title>gimp_color_display_stack_changed ()</title>
+<indexterm zone="gimp-color-display-stack-changed"><primary>gimp_color_display_stack_changed</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_changed    (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -124,9 +118,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-display-stack-add" role="function"/>gimp_color_display_stack_add ()</title>
-<indexterm><primary>gimp_color_display_stack_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_add        (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
+<refsect2 id="gimp-color-display-stack-add" role="function">
+<title>gimp_color_display_stack_add ()</title>
+<indexterm zone="gimp-color-display-stack-add"><primary>gimp_color_display_stack_add</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_add        (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
                                                          <link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
 
@@ -140,9 +134,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-display-stack-remove" role="function"/>gimp_color_display_stack_remove ()</title>
-<indexterm><primary>gimp_color_display_stack_remove</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_remove     (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
+<refsect2 id="gimp-color-display-stack-remove" role="function">
+<title>gimp_color_display_stack_remove ()</title>
+<indexterm zone="gimp-color-display-stack-remove"><primary>gimp_color_display_stack_remove</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_remove     (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
                                                          <link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
 
@@ -156,9 +150,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-display-stack-reorder-up" role="function"/>gimp_color_display_stack_reorder_up ()</title>
-<indexterm><primary>gimp_color_display_stack_reorder_up</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_reorder_up (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
+<refsect2 id="gimp-color-display-stack-reorder-up" role="function">
+<title>gimp_color_display_stack_reorder_up ()</title>
+<indexterm zone="gimp-color-display-stack-reorder-up"><primary>gimp_color_display_stack_reorder_up</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_reorder_up (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
                                                          <link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
 
@@ -172,9 +166,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-display-stack-reorder-down" role="function"/>gimp_color_display_stack_reorder_down ()</title>
-<indexterm><primary>gimp_color_display_stack_reorder_down</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_reorder_down
+<refsect2 id="gimp-color-display-stack-reorder-down" role="function">
+<title>gimp_color_display_stack_reorder_down ()</title>
+<indexterm zone="gimp-color-display-stack-reorder-down"><primary>gimp_color_display_stack_reorder_down</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_reorder_down
                                                         (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
                                                          <link linkend="GimpColorDisplay">GimpColorDisplay</link> *display);</programlisting>
 <para>
@@ -189,9 +183,9 @@
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-color-display-stack-convert" role="function"/>gimp_color_display_stack_convert ()</title>
-<indexterm><primary>gimp_color_display_stack_convert</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_convert    (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
+<refsect2 id="gimp-color-display-stack-convert" role="function">
+<title>gimp_color_display_stack_convert ()</title>
+<indexterm zone="gimp-color-display-stack-convert"><primary>gimp_color_display_stack_convert</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_color_display_stack_convert    (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *stack,
                                                          <link linkend="guchar">guchar</link> *buf,
                                                          <link linkend="gint">gint</link> width,
                                                          <link linkend="gint">gint</link> height,
@@ -224,10 +218,10 @@
 
 </refsect1>
 
-<refsect1 role="signals">
+<refsect1 id="GimpColorDisplayStack.signal-details" role="signals">
 <title role="signals.title">Signal Details</title>
-<refsect2><title><anchor id="GimpColorDisplayStack-added"/>The <literal>&quot;added&quot;</literal> signal</title>
-<indexterm><primary>GimpColorDisplayStack::added</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *gimpcolordisplaystack,
+<refsect2 id="GimpColorDisplayStack-added"><title>The <literal>&quot;added&quot;</literal> signal</title>
+<indexterm zone="GimpColorDisplayStack-added"><primary>GimpColorDisplayStack::added</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *gimpcolordisplaystack,
                                                         <link linkend="GimpColorDisplay">GimpColorDisplay</link>      *arg1,
                                                         <link linkend="gint">gint</link>                   arg2,
                                                         <link linkend="gpointer">gpointer</link>               user_data)                  : Run First</programlisting>
@@ -246,8 +240,8 @@
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpColorDisplayStack-changed"/>The <literal>&quot;changed&quot;</literal> signal</title>
-<indexterm><primary>GimpColorDisplayStack::changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *gimpcolordisplaystack,
+</variablelist></refsect2><refsect2 id="GimpColorDisplayStack-changed"><title>The <literal>&quot;changed&quot;</literal> signal</title>
+<indexterm zone="GimpColorDisplayStack-changed"><primary>GimpColorDisplayStack::changed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *gimpcolordisplaystack,
                                                         <link linkend="gpointer">gpointer</link>               user_data)                  : Run First</programlisting>
 <para>
 
@@ -258,8 +252,8 @@
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpColorDisplayStack-removed"/>The <literal>&quot;removed&quot;</literal> signal</title>
-<indexterm><primary>GimpColorDisplayStack::removed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *gimpcolordisplaystack,
+</variablelist></refsect2><refsect2 id="GimpColorDisplayStack-removed"><title>The <literal>&quot;removed&quot;</literal> signal</title>
+<indexterm zone="GimpColorDisplayStack-removed"><primary>GimpColorDisplayStack::removed</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *gimpcolordisplaystack,
                                                         <link linkend="GimpColorDisplay">GimpColorDisplay</link>      *arg1,
                                                         <link linkend="gpointer">gpointer</link>               user_data)                  : Run First</programlisting>
 <para>
@@ -274,8 +268,8 @@
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>user_data</parameter>&nbsp;:</term>
 <listitem><simpara>user data set when the signal handler was connected.</simpara></listitem></varlistentry>
-</variablelist></refsect2><refsect2><title><anchor id="GimpColorDisplayStack-reordered"/>The <literal>&quot;reordered&quot;</literal> signal</title>
-<indexterm><primary>GimpColorDisplayStack::reordered</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *gimpcolordisplaystack,
+</variablelist></refsect2><refsect2 id="GimpColorDisplayStack-reordered"><title>The <literal>&quot;reordered&quot;</literal> signal</title>
+<indexterm zone="GimpColorDisplayStack-reordered"><primary>GimpColorDisplayStack::reordered</primary></indexterm><programlisting><link linkend="void">void</link>                user_function                      (<link linkend="GimpColorDisplayStack">GimpColorDisplayStack</link> *gimpcolordisplaystack,
                                                         <link linkend="GimpColorDisplay">GimpColorDisplay</link>      *arg1,
                                                         <link linkend="gint">gint</link>                   arg2,
                                                         <link linkend="gpointer">gpointer</link>               user_data)                  : Run First</programlisting>
@@ -299,6 +293,4 @@
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

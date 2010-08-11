@@ -4,7 +4,7 @@
 
 <refentry id="libgimpconfig-gimpconfig-serialize">
 <refmeta>
-<refentrytitle role="top_of_page">gimpconfig-serialize</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpconfig-gimpconfig-serialize.top_of_page">gimpconfig-serialize</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPCONFIG Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpconfig-gimpconfig-serialize.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-config-serialize-properties">gimp_config_serialize_properties</link>    (<link linkend="GimpConfig">GimpConfig</link> *config,
                                                          <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-config-serialize-changed-properties">gimp_config_serialize_changed_properties</link>
@@ -44,7 +41,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpconfig-gimpconfig-serialize.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Serializing interface for libgimpconfig.
@@ -52,11 +49,11 @@ Serializing interface for libgimpconfig.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpconfig-gimpconfig-serialize.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-config-serialize-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_properties ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_properties    (<link linkend="GimpConfig">GimpConfig</link> *config,
+<refsect2 id="gimp-config-serialize-properties" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_serialize_properties ()</title>
+<indexterm zone="gimp-config-serialize-properties" role="GIMP 2.4"><primary>gimp_config_serialize_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_properties    (<link linkend="GimpConfig">GimpConfig</link> *config,
                                                          <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
 <para>
 This function serializes a single object property to the <parameter>writer</parameter>.</para>
@@ -74,9 +71,9 @@ This function serializes a single object property to the <parameter>writer</para
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-serialize-changed-properties" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_changed_properties ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_changed_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_changed_properties
+<refsect2 id="gimp-config-serialize-changed-properties" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_serialize_changed_properties ()</title>
+<indexterm zone="gimp-config-serialize-changed-properties" role="GIMP 2.4"><primary>gimp_config_serialize_changed_properties</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_changed_properties
                                                         (<link linkend="GimpConfig">GimpConfig</link> *config,
                                                          <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
 <para>
@@ -96,9 +93,9 @@ their default values to the <parameter>writer</parameter>.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-serialize-property" role="function"/>gimp_config_serialize_property ()</title>
-<indexterm><primary>gimp_config_serialize_property</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_property      (<link linkend="GimpConfig">GimpConfig</link> *config,
+<refsect2 id="gimp-config-serialize-property" role="function">
+<title>gimp_config_serialize_property ()</title>
+<indexterm zone="gimp-config-serialize-property"><primary>gimp_config_serialize_property</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_property      (<link linkend="GimpConfig">GimpConfig</link> *config,
                                                          <link linkend="GParamSpec">GParamSpec</link> *param_spec,
                                                          <link linkend="GimpConfigWriter">GimpConfigWriter</link> *writer);</programlisting>
 <para>
@@ -118,9 +115,9 @@ their default values to the <parameter>writer</parameter>.</para>
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-config-serialize-value" role="function" condition="since:GIMP 2.4"/>gimp_config_serialize_value ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_config_serialize_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_value         (const <link linkend="GValue">GValue</link> *value,
+<refsect2 id="gimp-config-serialize-value" role="function" condition="since:GIMP 2.4">
+<title>gimp_config_serialize_value ()</title>
+<indexterm zone="gimp-config-serialize-value" role="GIMP 2.4"><primary>gimp_config_serialize_value</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_config_serialize_value         (const <link linkend="GValue">GValue</link> *value,
                                                          <link linkend="GString">GString</link> *str,
                                                          <link linkend="gboolean">gboolean</link> escaped);</programlisting>
 <para>
@@ -148,6 +145,4 @@ This utility function appends a string representation of <link linkend="GValue">
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

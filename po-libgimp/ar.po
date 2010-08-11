@@ -3,19 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007.
-# Anas Husseini <anas_h_34@hotmail.com>, 2007.
+# Anas Husseini <anas_h_34@hotmail.com>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: gimp-libgimp.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-22 21:41+0100\n"
-"PO-Revision-Date: 2007-05-02 23:01+0300\n"
-"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"POT-Creation-Date: 2008-05-07 21:38+0100\n"
+"PO-Revision-Date: 2008-04-19 22:37+0300\n"
+"Last-Translator: \n"
+"Language-Team: en_US <kde-i18n-doc@lists.kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: KAider 0.1\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : "
 "3\n"
 
@@ -465,14 +465,12 @@ msgid "Black only"
 msgstr "أسود فقط"
 
 #: ../libgimpbase/gimpbaseenums.c:263
-#, fuzzy
 msgid "Image"
-msgstr "الصور"
+msgstr "صورة"
 
 #: ../libgimpbase/gimpbaseenums.c:264
-#, fuzzy
 msgid "Pattern"
-msgstr "لون تعبئة النموذج"
+msgstr "نمط"
 
 #: ../libgimpbase/gimpbaseenums.c:293
 msgid "Lightness"
@@ -622,7 +620,7 @@ msgstr "ثابت"
 msgid "Incremental"
 msgstr "ازديادي"
 
-#: ../libgimpbase/gimpbaseenums.c:623 ../modules/cdisplay_lcms.c:218
+#: ../libgimpbase/gimpbaseenums.c:623 ../modules/cdisplay_lcms.c:224
 msgid "None"
 msgstr "لا شيء"
 
@@ -761,8 +759,8 @@ msgid "%d GB"
 msgstr "%d ج.ب."
 
 #: ../libgimpbase/gimputils.c:170 ../libgimpbase/gimputils.c:175
-#: ../modules/cdisplay_lcms.c:210 ../modules/colorsel_cmyk_lcms.c:408
-#: ../modules/colorsel_cmyk_lcms.c:414
+#: ../modules/cdisplay_lcms.c:216 ../modules/colorsel_cmyk_lcms.c:410
+#: ../modules/colorsel_cmyk_lcms.c:416
 msgid "(invalid UTF-8 string)"
 msgstr "(غير صحيحة UTF-8 سلسة )"
 
@@ -874,7 +872,7 @@ msgstr "يجري تحليل المعطيات '%s': %s"
 #: ../libgimpconfig/gimpconfig-iface.c:454
 #: ../libgimpconfig/gimpconfig-iface.c:467 ../libgimpconfig/gimpscanner.c:498
 #: ../libgimpconfig/gimpscanner.c:579
-#: ../libgimpwidgets/gimpcolorprofilestore.c:654
+#: ../libgimpwidgets/gimpcolorprofilestore.c:656
 msgid "fatal parse error"
 msgstr "خطأ تحليل فادح"
 
@@ -1001,11 +999,11 @@ msgstr "أبي_ض"
 
 #: ../libgimpwidgets/gimpcolorprofilestore.c:144
 msgid "Select color profile from disk..."
-msgstr ""
+msgstr "انتق مواصفات اللون من القرص..."
 
 #: ../libgimpwidgets/gimpcolorprofilestore.c:280
 msgid "profile|None"
-msgstr ""
+msgstr "profile|لا شيء"
 
 #: ../libgimpwidgets/gimpcolorscales.c:98
 msgid "Scales"
@@ -1358,34 +1356,33 @@ msgstr "التباين"
 msgid "Contrast c_ycles:"
 msgstr "_دورات التباين:"
 
-#: ../modules/cdisplay_lcms.c:105
+#: ../modules/cdisplay_lcms.c:111
 msgid "Color management display filter using ICC color profiles"
 msgstr "مرشّح عرض إدارة الألوان باستخدام ملفات ألوان ICC"
 
-#: ../modules/cdisplay_lcms.c:166
+#: ../modules/cdisplay_lcms.c:172
 msgid "Color Management"
 msgstr "إدارة الألوان"
 
-#: ../modules/cdisplay_lcms.c:239
+#: ../modules/cdisplay_lcms.c:245
 msgid ""
 "This filter takes its configuration from the Color Management section in the "
 "Preferences dialog."
 msgstr "هذا المرشّح يتلقى إعداداته من قسم إدارة الألوان في جدول التفضيلات."
 
-#: ../modules/cdisplay_lcms.c:253
+#: ../modules/cdisplay_lcms.c:259
 msgid "Mode of operation:"
 msgstr "نمط العملية:"
 
-#: ../modules/cdisplay_lcms.c:261
-#, fuzzy
+#: ../modules/cdisplay_lcms.c:267
 msgid "Image profile:"
-msgstr "ملف الصورة"
+msgstr "مواصفات الصورة:"
 
-#: ../modules/cdisplay_lcms.c:269
+#: ../modules/cdisplay_lcms.c:275
 msgid "Monitor profile:"
 msgstr "ملف المراقبة:"
 
-#: ../modules/cdisplay_lcms.c:277
+#: ../modules/cdisplay_lcms.c:283
 msgid "Print simulation profile:"
 msgstr "طباعة ملف المحاكاة:"
 
@@ -1403,7 +1400,7 @@ msgstr "اختر ملف ألوان ICC"
 
 #: ../modules/cdisplay_proof.c:367
 msgid "All files (*.*)"
-msgstr ""
+msgstr "كل الملفات (*.*)"
 
 #: ../modules/cdisplay_proof.c:372
 msgid "ICC color profile (*.icc, *.icm)"
@@ -1430,38 +1427,38 @@ msgid "CMYK"
 msgstr "CMYK"
 
 #. Cyan
-#: ../modules/colorsel_cmyk.c:148 ../modules/colorsel_cmyk_lcms.c:171
+#: ../modules/colorsel_cmyk.c:148 ../modules/colorsel_cmyk_lcms.c:173
 msgid "_C"
 msgstr "_C"
 
 #. Magenta
-#: ../modules/colorsel_cmyk.c:150 ../modules/colorsel_cmyk_lcms.c:173
+#: ../modules/colorsel_cmyk.c:150 ../modules/colorsel_cmyk_lcms.c:175
 msgid "_M"
 msgstr "_M"
 
 #. Yellow
-#: ../modules/colorsel_cmyk.c:152 ../modules/colorsel_cmyk_lcms.c:175
+#: ../modules/colorsel_cmyk.c:152 ../modules/colorsel_cmyk_lcms.c:177
 msgid "_Y"
 msgstr "_Y"
 
 #. Key (Black)
-#: ../modules/colorsel_cmyk.c:154 ../modules/colorsel_cmyk_lcms.c:177
+#: ../modules/colorsel_cmyk.c:154 ../modules/colorsel_cmyk_lcms.c:179
 msgid "_K"
 msgstr "_K"
 
-#: ../modules/colorsel_cmyk.c:158 ../modules/colorsel_cmyk_lcms.c:181
+#: ../modules/colorsel_cmyk.c:158 ../modules/colorsel_cmyk_lcms.c:183
 msgid "Cyan"
 msgstr "سيان"
 
-#: ../modules/colorsel_cmyk.c:159 ../modules/colorsel_cmyk_lcms.c:182
+#: ../modules/colorsel_cmyk.c:159 ../modules/colorsel_cmyk_lcms.c:184
 msgid "Magenta"
 msgstr "وردي"
 
-#: ../modules/colorsel_cmyk.c:160 ../modules/colorsel_cmyk_lcms.c:183
+#: ../modules/colorsel_cmyk.c:160 ../modules/colorsel_cmyk_lcms.c:185
 msgid "Yellow"
 msgstr "أصفر"
 
-#: ../modules/colorsel_cmyk.c:161 ../modules/colorsel_cmyk_lcms.c:184
+#: ../modules/colorsel_cmyk.c:161 ../modules/colorsel_cmyk_lcms.c:186
 msgid "Black"
 msgstr "أسود"
 
@@ -1478,15 +1475,14 @@ msgstr "كمية اللون الأسود التي ينبغي سحبها من ا�
 msgid "CMYK color selector (using color profile)"
 msgstr "مرشّح إثبات الألوان باستخدام ملف ألوان ICC"
 
-#: ../modules/colorsel_cmyk_lcms.c:397
-#, fuzzy
+#: ../modules/colorsel_cmyk_lcms.c:399
 msgid "Profile: (none)"
-msgstr "ال_ملف:"
+msgstr "مواصفات: (لا شيء)"
 
-#: ../modules/colorsel_cmyk_lcms.c:417
-#, fuzzy, c-format
+#: ../modules/colorsel_cmyk_lcms.c:419
+#, c-format
 msgid "Profile: %s"
-msgstr "ال_ملف:"
+msgstr "مواصفات: %s"
 
 #: ../modules/colorsel_triangle.c:104
 msgid "Painter-style triangle color selector"
@@ -1853,6 +1849,21 @@ msgstr "جِمب"
 #: ../modules/controller_midi.c:456
 msgid "GIMP MIDI Input Controller"
 msgstr "متحكم دخْل جِمب MIDI"
+
+#~ msgid "From left to right"
+#~ msgstr "من اليسار إلى اليمين"
+
+#~ msgid "From right to left"
+#~ msgstr "من اليمين إلى اليسار"
+
+#~ msgid "Centered"
+#~ msgstr "مركز"
+
+#~ msgid "Filled"
+#~ msgstr "مملوء"
+
+#~ msgid "Press F1 for more help"
+#~ msgstr "انقر F1 للمزيد من المساعدة"
 
 #~ msgid "Image source"
 #~ msgstr "مصدر الصورة"

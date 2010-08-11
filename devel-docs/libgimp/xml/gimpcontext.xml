@@ -4,7 +4,7 @@
 
 <refentry id="libgimp-gimpcontext">
 <refmeta>
-<refentrytitle role="top_of_page">gimpcontext</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimp-gimpcontext.top_of_page">gimpcontext</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMP Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimp-gimpcontext.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-context-push">gimp_context_push</link>                   (void);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-context-pop">gimp_context_pop</link>                    (void);
 <link linkend="gboolean">gboolean</link>            <link linkend="gimp-context-get-foreground">gimp_context_get_foreground</link>         (<link linkend="GimpRGB">GimpRGB</link> *foreground);
@@ -59,18 +56,18 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimp-gimpcontext.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Functions to manipulate a plug-in's context.
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimp-gimpcontext.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="gimp-context-push" role="function" condition="since:GIMP 2.2"/>gimp_context_push ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_push</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_push                   (void);</programlisting>
+<refsect2 id="gimp-context-push" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_push ()</title>
+<indexterm zone="gimp-context-push" role="GIMP 2.2"><primary>gimp_context_push</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_push                   (void);</programlisting>
 <para>
 Pushes a context to the top of the plug-in's context stack.
 </para>
@@ -86,9 +83,9 @@ until it is popped again using <link linkend="gimp-context-pop"><function>gimp_c
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-pop" role="function" condition="since:GIMP 2.2"/>gimp_context_pop ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_pop</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_pop                    (void);</programlisting>
+<refsect2 id="gimp-context-pop" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_pop ()</title>
+<indexterm zone="gimp-context-pop" role="GIMP 2.2"><primary>gimp_context_pop</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_pop                    (void);</programlisting>
 <para>
 Pops the topmost context from the plug-in's context stack.
 </para>
@@ -105,9 +102,9 @@ plug-in.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-foreground" role="function" condition="since:GIMP 2.2"/>gimp_context_get_foreground ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_foreground</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_get_foreground         (<link linkend="GimpRGB">GimpRGB</link> *foreground);</programlisting>
+<refsect2 id="gimp-context-get-foreground" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_foreground ()</title>
+<indexterm zone="gimp-context-get-foreground" role="GIMP 2.2"><primary>gimp_context_get_foreground</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_get_foreground         (<link linkend="GimpRGB">GimpRGB</link> *foreground);</programlisting>
 <para>
 Get the current GIMP foreground color.
 </para>
@@ -126,9 +123,9 @@ blending, and bucket fill.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-foreground" role="function" condition="since:GIMP 2.2"/>gimp_context_set_foreground ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_foreground</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_foreground         (const <link linkend="GimpRGB">GimpRGB</link> *foreground);</programlisting>
+<refsect2 id="gimp-context-set-foreground" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_foreground ()</title>
+<indexterm zone="gimp-context-set-foreground" role="GIMP 2.2"><primary>gimp_context_set_foreground</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_foreground         (const <link linkend="GimpRGB">GimpRGB</link> *foreground);</programlisting>
 <para>
 Set the current GIMP foreground color.
 </para>
@@ -147,9 +144,9 @@ and bucket fill will use the new value.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-background" role="function" condition="since:GIMP 2.2"/>gimp_context_get_background ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_background</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_get_background         (<link linkend="GimpRGB">GimpRGB</link> *background);</programlisting>
+<refsect2 id="gimp-context-get-background" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_background ()</title>
+<indexterm zone="gimp-context-get-background" role="GIMP 2.2"><primary>gimp_context_get_background</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_get_background         (<link linkend="GimpRGB">GimpRGB</link> *background);</programlisting>
 <para>
 Get the current GIMP background color.
 </para>
@@ -168,9 +165,9 @@ erasing (with non-alpha images), and image filling.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-background" role="function" condition="since:GIMP 2.2"/>gimp_context_set_background ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_background</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_background         (const <link linkend="GimpRGB">GimpRGB</link> *background);</programlisting>
+<refsect2 id="gimp-context-set-background" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_background ()</title>
+<indexterm zone="gimp-context-set-background" role="GIMP 2.2"><primary>gimp_context_set_background</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_background         (const <link linkend="GimpRGB">GimpRGB</link> *background);</programlisting>
 <para>
 Set the current GIMP background color.
 </para>
@@ -190,9 +187,9 @@ value.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-default-colors" role="function" condition="since:GIMP 2.2"/>gimp_context_set_default_colors ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_default_colors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_default_colors     (void);</programlisting>
+<refsect2 id="gimp-context-set-default-colors" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_default_colors ()</title>
+<indexterm zone="gimp-context-set-default-colors" role="GIMP 2.2"><primary>gimp_context_set_default_colors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_default_colors     (void);</programlisting>
 <para>
 Set the current GIMP foreground and background colors to black and
 white.
@@ -208,9 +205,9 @@ colors to their initial default values, black and white.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-swap-colors" role="function" condition="since:GIMP 2.2"/>gimp_context_swap_colors ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_swap_colors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_swap_colors            (void);</programlisting>
+<refsect2 id="gimp-context-swap-colors" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_swap_colors ()</title>
+<indexterm zone="gimp-context-swap-colors" role="GIMP 2.2"><primary>gimp_context_swap_colors</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_swap_colors            (void);</programlisting>
 <para>
 Swap the current GIMP foreground and background colors.
 </para>
@@ -226,9 +223,9 @@ color and vice versa.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-opacity" role="function" condition="since:GIMP 2.2"/>gimp_context_get_opacity ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_context_get_opacity            (void);</programlisting>
+<refsect2 id="gimp-context-get-opacity" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_opacity ()</title>
+<indexterm zone="gimp-context-get-opacity" role="GIMP 2.2"><primary>gimp_context_get_opacity</primary></indexterm><programlisting><link linkend="gdouble">gdouble</link>             gimp_context_get_opacity            (void);</programlisting>
 <para>
 Get the opacity.
 </para>
@@ -243,9 +240,9 @@ floating point number between 0 and 100.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-opacity" role="function" condition="since:GIMP 2.2"/>gimp_context_set_opacity ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_opacity            (<link linkend="gdouble">gdouble</link> opacity);</programlisting>
+<refsect2 id="gimp-context-set-opacity" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_opacity ()</title>
+<indexterm zone="gimp-context-set-opacity" role="GIMP 2.2"><primary>gimp_context_set_opacity</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_opacity            (<link linkend="gdouble">gdouble</link> opacity);</programlisting>
 <para>
 Set the opacity.
 </para>
@@ -263,9 +260,9 @@ floating point number between 0 and 100.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-paint-mode" role="function" condition="since:GIMP 2.2"/>gimp_context_get_paint_mode ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_paint_mode</primary></indexterm><programlisting><link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> gimp_context_get_paint_mode        (void);</programlisting>
+<refsect2 id="gimp-context-get-paint-mode" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_paint_mode ()</title>
+<indexterm zone="gimp-context-get-paint-mode" role="GIMP 2.2"><primary>gimp_context_get_paint_mode</primary></indexterm><programlisting><link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> gimp_context_get_paint_mode        (void);</programlisting>
 <para>
 Get the paint mode.
 </para>
@@ -281,9 +278,9 @@ description.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-paint-mode" role="function" condition="since:GIMP 2.2"/>gimp_context_set_paint_mode ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_paint_mode</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_paint_mode         (<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);</programlisting>
+<refsect2 id="gimp-context-set-paint-mode" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_paint_mode ()</title>
+<indexterm zone="gimp-context-set-paint-mode" role="GIMP 2.2"><primary>gimp_context_set_paint_mode</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_paint_mode         (<link linkend="GimpLayerModeEffects">GimpLayerModeEffects</link> paint_mode);</programlisting>
 <para>
 Set the paint mode.
 </para>
@@ -300,9 +297,9 @@ This procedure modifies the paint_mode setting.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-brush" role="function" condition="since:GIMP 2.2"/>gimp_context_get_brush ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_brush</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_brush              (void);</programlisting>
+<refsect2 id="gimp-context-get-brush" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_brush ()</title>
+<indexterm zone="gimp-context-get-brush" role="GIMP 2.2"><primary>gimp_context_get_brush</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_brush              (void);</programlisting>
 <para>
 Retrieve the currently active brush.
 </para>
@@ -318,9 +315,9 @@ application of paint to the image.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-brush" role="function" condition="since:GIMP 2.2"/>gimp_context_set_brush ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_brush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_brush              (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-context-set-brush" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_brush ()</title>
+<indexterm zone="gimp-context-set-brush" role="GIMP 2.2"><primary>gimp_context_set_brush</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_brush              (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Set the specified brush as the active brush.
 </para>
@@ -341,9 +338,9 @@ becomes active and will be used in all subsequent paint operations.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-pattern" role="function" condition="since:GIMP 2.2"/>gimp_context_get_pattern ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_pattern</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_pattern            (void);</programlisting>
+<refsect2 id="gimp-context-get-pattern" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_pattern ()</title>
+<indexterm zone="gimp-context-get-pattern" role="GIMP 2.2"><primary>gimp_context_get_pattern</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_pattern            (void);</programlisting>
 <para>
 Retrieve the currently active pattern.
 </para>
@@ -359,9 +356,9 @@ to control the application of paint to the image.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-pattern" role="function" condition="since:GIMP 2.2"/>gimp_context_set_pattern ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_pattern</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_pattern            (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-context-set-pattern" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_pattern ()</title>
+<indexterm zone="gimp-context-set-pattern" role="GIMP 2.2"><primary>gimp_context_set_pattern</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_pattern            (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Set the specified pattern as the active pattern.
 </para>
@@ -383,9 +380,9 @@ operations.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-gradient" role="function" condition="since:GIMP 2.2"/>gimp_context_get_gradient ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_gradient</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_gradient           (void);</programlisting>
+<refsect2 id="gimp-context-get-gradient" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_gradient ()</title>
+<indexterm zone="gimp-context-get-gradient" role="GIMP 2.2"><primary>gimp_context_get_gradient</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_gradient           (void);</programlisting>
 <para>
 Retrieve the currently active gradient.
 </para>
@@ -399,9 +396,9 @@ This procedure returns the name of the currently active gradient.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-gradient" role="function" condition="since:GIMP 2.2"/>gimp_context_set_gradient ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_gradient</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_gradient           (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-context-set-gradient" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_gradient ()</title>
+<indexterm zone="gimp-context-set-gradient" role="GIMP 2.2"><primary>gimp_context_set_gradient</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_gradient           (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Sets the specified gradient as the active gradient.
 </para>
@@ -423,9 +420,9 @@ operations.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-palette" role="function" condition="since:GIMP 2.2"/>gimp_context_get_palette ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_palette</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_palette            (void);</programlisting>
+<refsect2 id="gimp-context-get-palette" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_palette ()</title>
+<indexterm zone="gimp-context-get-palette" role="GIMP 2.2"><primary>gimp_context_get_palette</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_palette            (void);</programlisting>
 <para>
 Retrieve the currently active palette.
 </para>
@@ -439,9 +436,9 @@ This procedure returns the name of the the currently active palette.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-palette" role="function" condition="since:GIMP 2.2"/>gimp_context_set_palette ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_palette</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_palette            (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-context-set-palette" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_palette ()</title>
+<indexterm zone="gimp-context-set-palette" role="GIMP 2.2"><primary>gimp_context_set_palette</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_palette            (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Set the specified palette as the active palette.
 </para>
@@ -463,9 +460,9 @@ operations.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-font" role="function" condition="since:GIMP 2.2"/>gimp_context_get_font ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_get_font</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_font               (void);</programlisting>
+<refsect2 id="gimp-context-get-font" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_get_font ()</title>
+<indexterm zone="gimp-context-get-font" role="GIMP 2.2"><primary>gimp_context_get_font</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_font               (void);</programlisting>
 <para>
 Retrieve the currently active font.
 </para>
@@ -479,9 +476,9 @@ This procedure returns the name of the currently active font.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-font" role="function" condition="since:GIMP 2.2"/>gimp_context_set_font ()</title>
-<indexterm role="GIMP 2.2"><primary>gimp_context_set_font</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_font               (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-context-set-font" role="function" condition="since:GIMP 2.2">
+<title>gimp_context_set_font ()</title>
+<indexterm zone="gimp-context-set-font" role="GIMP 2.2"><primary>gimp_context_set_font</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_font               (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Set the specified font as the active font.
 </para>
@@ -502,9 +499,9 @@ becomes active and will be used in all subsequent font operations.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.2
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-get-paint-method" role="function" condition="since:GIMP 2.4"/>gimp_context_get_paint_method ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_context_get_paint_method</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_paint_method       (void);</programlisting>
+<refsect2 id="gimp-context-get-paint-method" role="function" condition="since:GIMP 2.4">
+<title>gimp_context_get_paint_method ()</title>
+<indexterm zone="gimp-context-get-paint-method" role="GIMP 2.4"><primary>gimp_context_get_paint_method</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_context_get_paint_method       (void);</programlisting>
 <para>
 Retrieve the currently active paint method.
 </para>
@@ -519,9 +516,9 @@ method.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-set-paint-method" role="function" condition="since:GIMP 2.4"/>gimp_context_set_paint_method ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_context_set_paint_method</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_paint_method       (const <link linkend="gchar">gchar</link> *name);</programlisting>
+<refsect2 id="gimp-context-set-paint-method" role="function" condition="since:GIMP 2.4">
+<title>gimp_context_set_paint_method ()</title>
+<indexterm zone="gimp-context-set-paint-method" role="GIMP 2.4"><primary>gimp_context_set_paint_method</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_set_paint_method       (const <link linkend="gchar">gchar</link> *name);</programlisting>
 <para>
 Set the specified paint method as the active paint method.
 </para>
@@ -543,9 +540,9 @@ all subsequent paint operations.</para>
 </simpara></listitem></varlistentry>
 </variablelist><para role="since">Since  GIMP 2.4
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-context-list-paint-methods" role="function" condition="since:GIMP 2.4"/>gimp_context_list_paint_methods ()</title>
-<indexterm role="GIMP 2.4"><primary>gimp_context_list_paint_methods</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_list_paint_methods     (<link linkend="gint">gint</link> *num_paint_methods,
+<refsect2 id="gimp-context-list-paint-methods" role="function" condition="since:GIMP 2.4">
+<title>gimp_context_list_paint_methods ()</title>
+<indexterm zone="gimp-context-list-paint-methods" role="GIMP 2.4"><primary>gimp_context_list_paint_methods</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>            gimp_context_list_paint_methods     (<link linkend="gint">gint</link> *num_paint_methods,
                                                          <link linkend="gchar">gchar</link> ***paint_methods);</programlisting>
 <para>
 Lists the available paint methods.
@@ -573,6 +570,4 @@ of the results can be used for <link linkend="gimp-context-set-paint-method"><fu
 
 
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>

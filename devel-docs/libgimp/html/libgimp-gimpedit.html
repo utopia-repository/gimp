@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpedit</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="prev" href="libgimp-gimpdrawabletransform.html" title="gimpdrawabletransform">
 <link rel="next" href="libgimp-gimpfileops.html" title="gimpfileops">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -31,207 +31,201 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpfileops.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2594770" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2638723" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpedit.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimp-gimpedit.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpedit"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2594770"></a><span class="refentrytitle">gimpedit</span>
-</h2>
-<p>gimpedit &#8212; Edit menu functions (cut, copy, paste, clear, etc.)</p>
+<h2><span class="refentrytitle"><a name="libgimp-gimpedit.top_of_page"></a>gimpedit</span></h2>
+<p>gimpedit — Edit menu functions (cut, copy, paste, clear, etc.)</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimp-gimpedit.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut">gimp_edit_cut</a>                       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut" title="gimp_edit_cut ()">gimp_edit_cut</a>                       (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy">gimp_edit_copy</a>                      (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy" title="gimp_edit_copy ()">gimp_edit_copy</a>                      (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy-visible">gimp_edit_copy_visible</a>              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy-visible" title="gimp_edit_copy_visible ()">gimp_edit_copy_visible</a>              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);
 <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste">gimp_edit_paste</a>                     (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()">gimp_edit_paste</a>                     (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> paste_into);
 <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste-as-new">gimp_edit_paste_as_new</a>              (void);
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste-as-new" title="gimp_edit_paste_as_new ()">gimp_edit_paste_as_new</a>              (void);
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-cut">gimp_edit_named_cut</a>                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-cut" title="gimp_edit_named_cut ()">gimp_edit_named_cut</a>                 (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name);
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-copy">gimp_edit_named_copy</a>                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-copy" title="gimp_edit_named_copy ()">gimp_edit_named_copy</a>                (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name);
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-copy-visible">gimp_edit_named_copy_visible</a>        (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-copy-visible" title="gimp_edit_named_copy_visible ()">gimp_edit_named_copy_visible</a>        (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name);
 <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-paste">gimp_edit_named_paste</a>               (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-paste" title="gimp_edit_named_paste ()">gimp_edit_named_paste</a>               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> paste_into);
 <a
-href="../glib/glib-Basic-Types.html#gint32"
->gint32</a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-paste-as-new">gimp_edit_named_paste_as_new</a>        (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
+>gint32</a>              <a class="link" href="libgimp-gimpedit.html#gimp-edit-named-paste-as-new" title="gimp_edit_named_paste_as_new ()">gimp_edit_named_paste_as_new</a>        (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-clear">gimp_edit_clear</a>                     (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-clear" title="gimp_edit_clear ()">gimp_edit_clear</a>                     (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-fill">gimp_edit_fill</a>                      (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-fill" title="gimp_edit_fill ()">gimp_edit_fill</a>                      (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpFillType" title="enum GimpFillType">GimpFillType</a> fill_type);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-bucket-fill">gimp_edit_bucket_fill</a>               (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-bucket-fill" title="gimp_edit_bucket_fill ()">gimp_edit_bucket_fill</a>               (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> threshold,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> y);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-blend">gimp_edit_blend</a>                     (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-blend" title="gimp_edit_blend ()">gimp_edit_blend</a>                     (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"
 >GimpBlendMode</a> blend_mode,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpGradientType"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGradientType"
 >GimpGradientType</a> gradient_type,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> offset,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode"
 >GimpRepeatMode</a> repeat,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> reverse,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> supersample,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> max_depth,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> threshold,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> dither,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> x1,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> y1,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> x2,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> y2);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-stroke">gimp_edit_stroke</a>                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-stroke" title="gimp_edit_stroke ()">gimp_edit_stroke</a>                    (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-stroke-vectors">gimp_edit_stroke_vectors</a>            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpedit.html#gimp-edit-stroke-vectors" title="gimp_edit_stroke_vectors ()">gimp_edit_stroke_vectors</a>            (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> vectors_ID);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2638723"></a><h2>Description</h2>
+<a name="libgimp-gimpedit.description"></a><h2>Description</h2>
 <p>
 Edit menu functions (cut, copy, paste, clear, etc.)
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2638740"></a><h2>Details</h2>
+<a name="libgimp-gimpedit.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2638751"></a><h3>
-<a name="gimp-edit-cut"></a>gimp_edit_cut ()</h3>
-<a class="indexterm" name="id2638763"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-cut"></a><h3>gimp_edit_cut ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_cut                       (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Cut from the specified drawable.
@@ -240,7 +234,7 @@ Cut from the specified drawable.
 If there is a selection in the image, then the area specified by the
 selection is cut from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using
-the <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste"><code class="function">gimp_edit_paste()</code></a> command. If there is no selection, then the
+the <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()"><code class="function">gimp_edit_paste()</code></a> command. If there is no selection, then the
 specified drawable will be removed and its contents stored in the
 internal GIMP edit buffer.</p>
 <p>
@@ -250,12 +244,12 @@ internal GIMP edit buffer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to cut from.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the cut was successful, FALSE if the selection contained only transparent pixels.
 </td>
 </tr>
@@ -264,12 +258,11 @@ internal GIMP edit buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2638843"></a><h3>
-<a name="gimp-edit-copy"></a>gimp_edit_copy ()</h3>
-<a class="indexterm" name="id2639699"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-copy"></a><h3>gimp_edit_copy ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_copy                      (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Copy from the specified drawable.
@@ -278,7 +271,7 @@ Copy from the specified drawable.
 If there is a selection in the image, then the area specified by the
 selection is copied from the specified drawable and placed in an
 internal GIMP edit buffer. It can subsequently be retrieved using
-the <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste"><code class="function">gimp_edit_paste()</code></a> command. If there is no selection, then the
+the <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()"><code class="function">gimp_edit_paste()</code></a> command. If there is no selection, then the
 specified drawable's contents will be stored in the internal GIMP
 edit buffer.</p>
 <p>
@@ -288,12 +281,12 @@ edit buffer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to copy from.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
 </td>
 </tr>
@@ -302,12 +295,11 @@ edit buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639779"></a><h3>
-<a name="gimp-edit-copy-visible"></a>gimp_edit_copy_visible ()</h3>
-<a class="indexterm" name="id2639793"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-copy-visible"></a><h3>gimp_edit_copy_visible ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_copy_visible              (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID);</pre>
 <p>
 Copy from the projection.
@@ -316,7 +308,7 @@ Copy from the projection.
 If there is a selection in the image, then the area specified by the
 selection is copied from the projection and placed in an internal
 GIMP edit buffer. It can subsequently be retrieved using the
-<a class="link" href="libgimp-gimpedit.html#gimp-edit-paste"><code class="function">gimp_edit_paste()</code></a> command. If there is no selection, then the
+<a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()"><code class="function">gimp_edit_paste()</code></a> command. If there is no selection, then the
 projection's contents will be stored in the internal GIMP edit
 buffer.</p>
 <p>
@@ -326,12 +318,12 @@ buffer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
 <td> The image to copy from.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE if the copy was successful, FALSE if the selection contained only transparent pixels.
 
 </td>
@@ -343,15 +335,14 @@ buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2639879"></a><h3>
-<a name="gimp-edit-paste"></a>gimp_edit_paste ()</h3>
-<a class="indexterm" name="id2639891"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-edit-paste"></a><h3>gimp_edit_paste ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a>              gimp_edit_paste                     (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> paste_into);</pre>
 <p>
 Paste buffer to the specified drawable.
@@ -359,7 +350,7 @@ Paste buffer to the specified drawable.
 <p>
 This procedure pastes a copy of the internal GIMP edit buffer to the
 specified drawable. The GIMP edit buffer will be empty unless a call
-was previously made to either <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut"><code class="function">gimp_edit_cut()</code></a> or <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy"><code class="function">gimp_edit_copy()</code></a>.
+was previously made to either <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut" title="gimp_edit_cut ()"><code class="function">gimp_edit_cut()</code></a> or <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy" title="gimp_edit_copy ()"><code class="function">gimp_edit_copy()</code></a>.
 The \"paste_into\" option specifies whether to clear the current
 image selection, or to paste the buffer \"behind\" the selection.
 This allows the selection to act as a mask for the pasted buffer.
@@ -379,17 +370,17 @@ not needed.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to paste to.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>paste_into</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>paste_into</code></em> :</span></p></td>
 <td> Clear selection, or paste behind it?
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The new floating selection.
 </td>
 </tr>
@@ -398,10 +389,9 @@ not needed.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2641969"></a><h3>
-<a name="gimp-edit-paste-as-new"></a>gimp_edit_paste_as_new ()</h3>
-<a class="indexterm" name="id2641982"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-edit-paste-as-new"></a><h3>gimp_edit_paste_as_new ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a>              gimp_edit_paste_as_new              (void);</pre>
 <p>
 Paste buffer to a new image.
@@ -409,7 +399,7 @@ Paste buffer to a new image.
 <p>
 This procedure pastes a copy of the internal GIMP edit buffer to a
 new image. The GIMP edit buffer will be empty unless a call was
-previously made to either <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut"><code class="function">gimp_edit_cut()</code></a> or <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy"><code class="function">gimp_edit_copy()</code></a>. This
+previously made to either <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut" title="gimp_edit_cut ()"><code class="function">gimp_edit_cut()</code></a> or <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy" title="gimp_edit_copy ()"><code class="function">gimp_edit_copy()</code></a>. This
 procedure returns the new image or -1 if the edit buffer was empty.</p>
 <p>
 
@@ -417,7 +407,7 @@ procedure returns the new image or -1 if the edit buffer was empty.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The new image.
 
 </td>
@@ -428,21 +418,20 @@ procedure returns the new image or -1 if the edit buffer was empty.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642055"></a><h3>
-<a name="gimp-edit-named-cut"></a>gimp_edit_named_cut ()</h3>
-<a class="indexterm" name="id2642070"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-edit-named-cut"></a><h3>gimp_edit_named_cut ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_edit_named_cut                 (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name);</pre>
 <p>
 Cut into a named buffer.
 </p>
 <p>
-This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut"><code class="function">gimp_edit_cut()</code></a>, but additionally stores
+This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-cut" title="gimp_edit_cut ()"><code class="function">gimp_edit_cut()</code></a>, but additionally stores
 the cut buffer into a named buffer that will stay available for
 later pasting, regardless of any intermediate copy or cut
 operations.</p>
@@ -453,17 +442,17 @@ operations.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to cut from.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
 <td> The name of the buffer to create.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The real name given to the buffer, or NULL if the selection contained only transparent pixels.
 
 </td>
@@ -475,21 +464,20 @@ operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642175"></a><h3>
-<a name="gimp-edit-named-copy"></a>gimp_edit_named_copy ()</h3>
-<a class="indexterm" name="id2642189"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-edit-named-copy"></a><h3>gimp_edit_named_copy ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_edit_named_copy                (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name);</pre>
 <p>
 Copy into a named buffer.
 </p>
 <p>
-This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy"><code class="function">gimp_edit_copy()</code></a>, but additionally stores
+This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy" title="gimp_edit_copy ()"><code class="function">gimp_edit_copy()</code></a>, but additionally stores
 the copied buffer into a named buffer that will stay available for
 later pasting, regardless of any intermediate copy or cut
 operations.</p>
@@ -500,17 +488,17 @@ operations.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to copy from.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
 <td> The name of the buffer to create.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The real name given to the buffer, or NULL if the selection contained only transparent pixels.
 
 </td>
@@ -522,21 +510,20 @@ operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642294"></a><h3>
-<a name="gimp-edit-named-copy-visible"></a>gimp_edit_named_copy_visible ()</h3>
-<a class="indexterm" name="id2642308"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-edit-named-copy-visible"></a><h3>gimp_edit_named_copy_visible ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>*              gimp_edit_named_copy_visible        (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> image_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name);</pre>
 <p>
 Copy from the projection into a named buffer.
 </p>
 <p>
-This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy-visible"><code class="function">gimp_edit_copy_visible()</code></a>, but additionally
+This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-copy-visible" title="gimp_edit_copy_visible ()"><code class="function">gimp_edit_copy_visible()</code></a>, but additionally
 stores the copied buffer into a named buffer that will stay
 available for later pasting, regardless of any intermediate copy or
 cut operations.</p>
@@ -547,17 +534,17 @@ cut operations.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>image_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>image_ID</code></em> :</span></p></td>
 <td> The image to copy from.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
 <td> The name of the buffer to create.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The real name given to the buffer.
 
 </td>
@@ -569,24 +556,23 @@ cut operations.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642411"></a><h3>
-<a name="gimp-edit-named-paste"></a>gimp_edit_named_paste ()</h3>
-<a class="indexterm" name="id2642424"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-edit-named-paste"></a><h3>gimp_edit_named_paste ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a>              gimp_edit_named_paste               (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> paste_into);</pre>
 <p>
 Paste named buffer to the specified drawable.
 </p>
 <p>
-This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste"><code class="function">gimp_edit_paste()</code></a> but pastes a named
+This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste" title="gimp_edit_paste ()"><code class="function">gimp_edit_paste()</code></a> but pastes a named
 buffer instead of the global buffer.</p>
 <p>
 
@@ -595,22 +581,22 @@ buffer instead of the global buffer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to paste to.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
 <td> The name of the buffer to paste.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>paste_into</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>paste_into</code></em> :</span></p></td>
 <td> Clear selection, or paste behind it?
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The new floating selection.
 
 </td>
@@ -622,18 +608,17 @@ buffer instead of the global buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642548"></a><h3>
-<a name="gimp-edit-named-paste-as-new"></a>gimp_edit_named_paste_as_new ()</h3>
-<a class="indexterm" name="id2642562"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gint32"
+<a name="gimp-edit-named-paste-as-new"></a><h3>gimp_edit_named_paste_as_new ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a>              gimp_edit_named_paste_as_new        (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *buffer_name);</pre>
 <p>
 Paste named buffer to a new image.
 </p>
 <p>
-This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste-as-new"><code class="function">gimp_edit_paste_as_new()</code></a> but pastes a
+This procedure works like <a class="link" href="libgimp-gimpedit.html#gimp-edit-paste-as-new" title="gimp_edit_paste_as_new ()"><code class="function">gimp_edit_paste_as_new()</code></a> but pastes a
 named buffer instead of the global buffer.</p>
 <p>
 
@@ -642,12 +627,12 @@ named buffer instead of the global buffer.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>buffer_name</code></em> :</span></p></td>
 <td> The name of the buffer to paste.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The new image.
 
 </td>
@@ -659,12 +644,11 @@ named buffer instead of the global buffer.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642643"></a><h3>
-<a name="gimp-edit-clear"></a>gimp_edit_clear ()</h3>
-<a class="indexterm" name="id2642655"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-clear"></a><h3>gimp_edit_clear ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_clear                     (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Clear selected area of drawable.
@@ -682,12 +666,12 @@ a selection if there is a selection active.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to clear from.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -696,14 +680,13 @@ a selection if there is a selection active.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642726"></a><h3>
-<a name="gimp-edit-fill"></a>gimp_edit_fill ()</h3>
-<a class="indexterm" name="id2642738"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-fill"></a><h3>gimp_edit_fill ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_fill                      (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpFillType">GimpFillType</a> fill_type);</pre>
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpFillType" title="enum GimpFillType">GimpFillType</a> fill_type);</pre>
 <p>
 Fill selected area of drawable.
 </p>
@@ -714,7 +697,7 @@ If the fill mode is background, the current background color is
 used. Other fill modes should not be used. This procedure only
 affects regions within a selection if there is a selection active.
 If you want to fill the whole drawable, regardless of the selection,
-use <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill"><code class="function">gimp_drawable_fill()</code></a>.</p>
+use <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill" title="gimp_drawable_fill ()"><code class="function">gimp_drawable_fill()</code></a>.</p>
 <p>
 
 </p>
@@ -722,17 +705,17 @@ use <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill"><code cl
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to fill to.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>fill_type</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>fill_type</code></em> :</span></p></td>
 <td> The type of fill.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -741,31 +724,30 @@ use <a class="link" href="libgimp-gimpdrawable.html#gimp-drawable-fill"><code cl
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2642840"></a><h3>
-<a name="gimp-edit-bucket-fill"></a>gimp_edit_bucket_fill ()</h3>
-<a class="indexterm" name="id2642851"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-bucket-fill"></a><h3>gimp_edit_bucket_fill ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_bucket_fill               (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpBucketFillMode"
 >GimpBucketFillMode</a> fill_mode,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> threshold,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> sample_merged,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> x,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> y);</pre>
 <p>
 Fill the area specified either by the current selection if there is
@@ -791,47 +773,47 @@ relative to the drawable's origin.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>fill_mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>fill_mode</code></em> :</span></p></td>
 <td> The type of fill.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>paint_mode</code></em> :</span></p></td>
 <td> The paint application mode.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>opacity</code></em> :</span></p></td>
 <td> The opacity of the final bucket fill.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>threshold</code></em> :</span></p></td>
 <td> The threshold determines how extensive the seed fill will be. It's value is specified in terms of intensity levels. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>sample_merged</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>sample_merged</code></em> :</span></p></td>
 <td> Use the composite image, not the drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
 <td> The x coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
 <td> The y coordinate of this bucket fill's application. This parameter is only valid when there is no selection in the specified image.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -840,55 +822,54 @@ relative to the drawable's origin.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643087"></a><h3>
-<a name="gimp-edit-blend"></a>gimp_edit_blend ()</h3>
-<a class="indexterm" name="id2643099"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-blend"></a><h3>gimp_edit_blend ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_blend                     (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpBlendMode"
 >GimpBlendMode</a> blend_mode,
-                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
+                                                         <a class="link" href="libgimp-gimpenums.html#GimpLayerModeEffects" title="enum GimpLayerModeEffects">GimpLayerModeEffects</a> paint_mode,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpGradientType"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpGradientType"
 >GimpGradientType</a> gradient_type,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> opacity,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> offset,
                                                          <a
-href="../libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode"
+href="/usr/share/gtk-doc/html/libgimpbase/libgimpbase-gimpbaseenums.html#GimpRepeatMode"
 >GimpRepeatMode</a> repeat,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> reverse,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> supersample,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> max_depth,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> threshold,
                                                          <a
-href="../glib/glib-Basic-Types.html#gboolean"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a> dither,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> x1,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> y1,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> x2,
                                                          <a
-href="../glib/glib-Basic-Types.html#gdouble"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gdouble"
 >gdouble</a> y2);</pre>
 <p>
 Blend between the starting and ending coordinates with the specified
@@ -906,87 +887,87 @@ each gradient type.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The affected drawable.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>blend_mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>blend_mode</code></em> :</span></p></td>
 <td> The type of blend.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>paint_mode</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>paint_mode</code></em> :</span></p></td>
 <td> The paint application mode.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>gradient_type</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>gradient_type</code></em> :</span></p></td>
 <td> The type of gradient.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>opacity</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>opacity</code></em> :</span></p></td>
 <td> The opacity of the final blend.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>offset</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>offset</code></em> :</span></p></td>
 <td> Offset relates to the starting and ending coordinates specified for the blend. This parameter is mode dependent.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>repeat</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>repeat</code></em> :</span></p></td>
 <td> Repeat mode.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>reverse</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>reverse</code></em> :</span></p></td>
 <td> Use the reverse gradient.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>supersample</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>supersample</code></em> :</span></p></td>
 <td> Do adaptive supersampling.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>max_depth</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>max_depth</code></em> :</span></p></td>
 <td> Maximum recursion levels for supersampling.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>threshold</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>threshold</code></em> :</span></p></td>
 <td> Supersampling threshold.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>dither</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>dither</code></em> :</span></p></td>
 <td> Use dithering to reduce banding.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x1</code></em> :</span></p></td>
 <td> The x coordinate of this blend's starting point.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y1</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y1</code></em> :</span></p></td>
 <td> The y coordinate of this blend's starting point.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>x2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>x2</code></em> :</span></p></td>
 <td> The x coordinate of this blend's ending point.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>y2</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>y2</code></em> :</span></p></td>
 <td> The y coordinate of this blend's ending point.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -995,12 +976,11 @@ each gradient type.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643493"></a><h3>
-<a name="gimp-edit-stroke"></a>gimp_edit_stroke ()</h3>
-<a class="indexterm" name="id2643506"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-stroke"></a><h3>gimp_edit_stroke ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_stroke                    (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID);</pre>
 <p>
 Stroke the current selection
@@ -1017,12 +997,12 @@ selection.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to stroke to.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr>
@@ -1031,15 +1011,14 @@ selection.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2643574"></a><h3>
-<a name="gimp-edit-stroke-vectors"></a>gimp_edit_stroke_vectors ()</h3>
-<a class="indexterm" name="id2643588"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-edit-stroke-vectors"></a><h3>gimp_edit_stroke_vectors ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_edit_stroke_vectors            (<a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> drawable_ID,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint32"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint32"
 >gint32</a> vectors_ID);</pre>
 <p>
 Stroke the specified vectors object
@@ -1054,17 +1033,17 @@ the path with the active brush and foreground color.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>drawable_ID</code></em> :</span></p></td>
 <td> The drawable to stroke to.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>vectors_ID</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>vectors_ID</code></em> :</span></p></td>
 <td> The vectors object.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 
 </td>
@@ -1075,11 +1054,9 @@ the path with the active brush and foreground color.</p>
 </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2643683"></a><div class="refsect2" lang="en"><a name="id2643684"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2643685"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>gimpfonts</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
 <link rel="start" href="index.html" title="GIMP Library Reference Manual">
 <link rel="up" href="libgimp-data.html" title="Data Objects">
 <link rel="prev" href="libgimp-gimpbrushes.html" title="gimpbrushes">
 <link rel="next" href="libgimp-gimpgradient.html" title="gimpgradient">
-<meta name="generator" content="GTK-Doc V1.9 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.10 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="libgimp.html" title="Part&#160;I.&#160;GIMP Library">
+<link rel="part" href="libgimp.html" title="Part I. GIMP Library">
 <link rel="chapter" href="libgimp-general.html" title="Functions not Related to Specific Images">
 <link rel="chapter" href="libgimp-image.html" title="Manupulating Images and their Properties">
 <link rel="chapter" href="libgimp-data.html" title="Data Objects">
 <link rel="chapter" href="libgimp-selectors.html" title="Controlling the Core's Selection Dialogs">
-<link rel="part" href="libgimpui.html" title="Part&#160;II.&#160;GIMP User Interface Library">
+<link rel="part" href="libgimpui.html" title="Part II. GIMP User Interface Library">
 <link rel="chapter" href="libgimpui-hierarchy.html" title="Object Hierarchy">
 <link rel="index" href="libgimp-index.html" title="Index">
 <link rel="index" href="libgimp-index-new-in-2-2.html" title="Index of new symbols in GIMP 2.2">
@@ -31,53 +31,47 @@
 <th width="100%" align="center">GIMP Library Reference Manual</th>
 <td><a accesskey="n" href="libgimp-gimpgradient.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
-<tr><td colspan="5" class="shortcuts"><nobr><a href="#id2601348" class="shortcut">Top</a>
-                  &#160;|&#160;
-                  <a href="#id2612463" class="shortcut">Description</a></nobr></td></tr>
+<tr><td colspan="5" class="shortcuts"><nobr><a href="#libgimp-gimpfonts.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#libgimp-gimpfonts.description" class="shortcut">Description</a></nobr></td></tr>
 </table>
 <div class="refentry" lang="en">
 <a name="libgimp-gimpfonts"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2>
-<a name="id2601348"></a><span class="refentrytitle">gimpfonts</span>
-</h2>
-<p>gimpfonts &#8212; Operations related to fonts.</p>
+<h2><span class="refentrytitle"><a name="libgimp-gimpfonts.top_of_page"></a>gimpfonts</span></h2>
+<p>gimpfonts — Operations related to fonts.</p>
 </td>
 <td valign="top" align="right"></td>
 </tr></table></div>
 <div class="refsynopsisdiv">
-<h2>Synopsis</h2>
+<a name="libgimp-gimpfonts.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">
-
-
-
 <a
-href="../glib/glib-Basic-Types.html#gboolean"
->gboolean</a>            <a class="link" href="libgimp-gimpfonts.html#gimp-fonts-refresh">gimp_fonts_refresh</a>                  (void);
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a>            <a class="link" href="libgimp-gimpfonts.html#gimp-fonts-refresh" title="gimp_fonts_refresh ()">gimp_fonts_refresh</a>                  (void);
 <a
-href="../glib/glib-Basic-Types.html#gchar"
->gchar</a>**             <a class="link" href="libgimp-gimpfonts.html#gimp-fonts-get-list">gimp_fonts_get_list</a>                 (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>**             <a class="link" href="libgimp-gimpfonts.html#gimp-fonts-get-list" title="gimp_fonts_get_list ()">gimp_fonts_get_list</a>                 (const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filter,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_fonts);
 </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2612463"></a><h2>Description</h2>
+<a name="libgimp-gimpfonts.description"></a><h2>Description</h2>
 <p>
 
 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2573654"></a><h2>Details</h2>
+<a name="libgimp-gimpfonts.details"></a><h2>Details</h2>
 <div class="refsect2" lang="en">
-<a name="id2577454"></a><h3>
-<a name="gimp-fonts-refresh"></a>gimp_fonts_refresh ()</h3>
-<a class="indexterm" name="id2687707"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gboolean"
+<a name="gimp-fonts-refresh"></a><h3>gimp_fonts_refresh ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
 >gboolean</a>            gimp_fonts_refresh                  (void);</pre>
 <p>
 Refresh current fonts. This function always succeeds.
@@ -91,7 +85,7 @@ and updates the font dialogs accordingly.</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> TRUE on success.
 </td>
 </tr></tbody>
@@ -99,15 +93,14 @@ and updates the font dialogs accordingly.</p>
 </div>
 <hr>
 <div class="refsect2" lang="en">
-<a name="id2687752"></a><h3>
-<a name="gimp-fonts-get-list"></a>gimp_fonts_get_list ()</h3>
-<a class="indexterm" name="id2687763"></a><pre class="programlisting"><a
-href="../glib/glib-Basic-Types.html#gchar"
+<a name="gimp-fonts-get-list"></a><h3>gimp_fonts_get_list ()</h3>
+<pre class="programlisting"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a>**             gimp_fonts_get_list                 (const <a
-href="../glib/glib-Basic-Types.html#gchar"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
 >gchar</a> *filter,
                                                          <a
-href="../glib/glib-Basic-Types.html#gint"
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> *num_fonts);</pre>
 <p>
 Retrieve the list of loaded fonts.
@@ -122,17 +115,17 @@ available.</p>
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>filter</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>filter</code></em> :</span></p></td>
 <td> An optional regular expression used to filter the list.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>num_fonts</code></em>&#160;:</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>num_fonts</code></em> :</span></p></td>
 <td> The number of available fonts.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span>&#160;:</span></p></td>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td> The list of font names.
 </td>
 </tr>
@@ -140,11 +133,9 @@ available.</p>
 </table></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2690025"></a><div class="refsect2" lang="en"><a name="id2690026"></a></div>
+</div>
+<div class="footer">
 <hr>
-<div class="refsect2" lang="en"><a name="id2690028"></a></div>
-</div>
-</div>
+          Generated by GTK-Doc V1.10</div>
 </body>
 </html>

@@ -4,7 +4,7 @@
 
 <refentry id="libgimpbase-gimpparasiteio">
 <refmeta>
-<refentrytitle role="top_of_page">gimpparasiteio</refentrytitle>
+<refentrytitle role="top_of_page" id="libgimpbase-gimpparasiteio.top_of_page">gimpparasiteio</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>LIBGIMPBASE Library</refmiscinfo>
 </refmeta>
@@ -15,13 +15,10 @@
 <!--[<xref linkend="desc" endterm="desc.title"/>]-->
 </refnamediv>
 
-<refsynopsisdiv role="synopsis">
+<refsynopsisdiv id="libgimpbase-gimpparasiteio.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
 #define             <link linkend="GIMP-PIXPIPE-MAXDIM:CAPS">GIMP_PIXPIPE_MAXDIM</link>
 <link linkend="void">void</link>                <link linkend="gimp-pixpipe-params-init">gimp_pixpipe_params_init</link>            (<link linkend="GimpPixPipeParams">GimpPixPipeParams</link> *params);
 <link linkend="void">void</link>                <link linkend="gimp-pixpipe-params-parse">gimp_pixpipe_params_parse</link>           (const <link linkend="gchar">gchar</link> *parameters,
@@ -38,7 +35,7 @@
 
 
 
-<refsect1 role="desc">
+<refsect1 id="libgimpbase-gimpparasiteio.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
 Utility functions to (de)serialize certain C structures to/from <link linkend="GimpParasite"><type>GimpParasite</type></link>'s.
@@ -46,18 +43,18 @@ Utility functions to (de)serialize certain C structures to/from <link linkend="G
 </para>
 </refsect1>
 
-<refsect1 role="details">
+<refsect1 id="libgimpbase-gimpparasiteio.details" role="details">
 <title role="details.title">Details</title>
-<refsect2>
-<title><anchor id="GIMP-PIXPIPE-MAXDIM:CAPS" role="macro"/>GIMP_PIXPIPE_MAXDIM</title>
-<indexterm><primary>GIMP_PIXPIPE_MAXDIM</primary></indexterm><programlisting>#define GIMP_PIXPIPE_MAXDIM 4
+<refsect2 id="GIMP-PIXPIPE-MAXDIM:CAPS" role="macro">
+<title>GIMP_PIXPIPE_MAXDIM</title>
+<indexterm zone="GIMP-PIXPIPE-MAXDIM:CAPS"><primary>GIMP_PIXPIPE_MAXDIM</primary></indexterm><programlisting>#define GIMP_PIXPIPE_MAXDIM 4
 </programlisting>
 <para>
 
 </para></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixpipe-params-init" role="function"/>gimp_pixpipe_params_init ()</title>
-<indexterm><primary>gimp_pixpipe_params_init</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixpipe_params_init            (<link linkend="GimpPixPipeParams">GimpPixPipeParams</link> *params);</programlisting>
+<refsect2 id="gimp-pixpipe-params-init" role="function">
+<title>gimp_pixpipe_params_init ()</title>
+<indexterm zone="gimp-pixpipe-params-init"><primary>gimp_pixpipe_params_init</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixpipe_params_init            (<link linkend="GimpPixPipeParams">GimpPixPipeParams</link> *params);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -67,9 +64,9 @@ Utility functions to (de)serialize certain C structures to/from <link linkend="G
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixpipe-params-parse" role="function"/>gimp_pixpipe_params_parse ()</title>
-<indexterm><primary>gimp_pixpipe_params_parse</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixpipe_params_parse           (const <link linkend="gchar">gchar</link> *parameters,
+<refsect2 id="gimp-pixpipe-params-parse" role="function">
+<title>gimp_pixpipe_params_parse ()</title>
+<indexterm zone="gimp-pixpipe-params-parse"><primary>gimp_pixpipe_params_parse</primary></indexterm><programlisting><link linkend="void">void</link>                gimp_pixpipe_params_parse           (const <link linkend="gchar">gchar</link> *parameters,
                                                          <link linkend="GimpPixPipeParams">GimpPixPipeParams</link> *params);</programlisting>
 <para>
 
@@ -83,9 +80,9 @@ Utility functions to (de)serialize certain C structures to/from <link linkend="G
 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="gimp-pixpipe-params-build" role="function"/>gimp_pixpipe_params_build ()</title>
-<indexterm><primary>gimp_pixpipe_params_build</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_pixpipe_params_build           (<link linkend="GimpPixPipeParams">GimpPixPipeParams</link> *params);</programlisting>
+<refsect2 id="gimp-pixpipe-params-build" role="function">
+<title>gimp_pixpipe_params_build ()</title>
+<indexterm zone="gimp-pixpipe-params-build"><primary>gimp_pixpipe_params_build</primary></indexterm><programlisting><link linkend="gchar">gchar</link>*              gimp_pixpipe_params_build           (<link linkend="GimpPixPipeParams">GimpPixPipeParams</link> *params);</programlisting>
 <para>
 
 </para><variablelist role="params">
@@ -102,13 +99,11 @@ Utility functions to (de)serialize certain C structures to/from <link linkend="G
 
 
 
-<refsect1>
+<refsect1 id="libgimpbase-gimpparasiteio.see-also">
 <title>See Also</title>
 <para>
 <link linkend="GimpParasite"><type>GimpParasite</type></link>
 </para>
 </refsect1>
 
-
-<refsect1><refsect2 /><refsect2 /></refsect1>
 </refentry>
